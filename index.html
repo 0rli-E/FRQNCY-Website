@@ -1,0 +1,1315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRQNCY — Built on the Foundations of Oneness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #FFFFFF;
+      --warm-white: #F4F7FF;
+      --dark: #0B1C3D;
+      --dark-2: #0D2451;
+      --mid: #3A4E72;
+      --light-mid: #8A9AB8;
+      --gold: #C4973A;
+      --gold-light: #E8C97D;
+      --blue: #1A3A8F;
+      --blue-mid: #2952B3;
+      --black: #05080F;
+      --pure-white: #FFFFFF;
+      --font-display: 'Cormorant', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+      --section-pad: clamp(80px, 12vw, 160px);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--dark);
+      background: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* =====================
+       NAV
+    ===================== */
+    nav {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 500;
+      padding: 28px clamp(24px, 5vw, 80px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, padding 0.4s, box-shadow 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      padding: 18px clamp(24px, 5vw, 80px);
+      box-shadow: 0 1px 0 rgba(11, 28, 61, 0.1);
+    }
+    nav.over-dark {
+      background: transparent;
+    }
+    nav.over-dark .nav-logo,
+    nav.over-dark .nav-links a {
+      color: var(--pure-white);
+    }
+    nav.over-dark.scrolled {
+      background: rgba(11, 28, 61, 0.92);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: 22px;
+      letter-spacing: 0.38em;
+      color: var(--dark);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--dark);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* =====================
+       SECTION 1: LIGHT INTRO
+    ===================== */
+    #light-intro {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: #050810;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* The orb */
+    .light-orb {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      transform: translate(-50%, -50%);
+      animation: orbExpand 3.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      z-index: 2;
+    }
+
+    @keyframes orbExpand {
+      0% {
+        width: 4px;
+        height: 4px;
+        opacity: 0;
+        box-shadow:
+          0 0 8px 4px rgba(255,255,255,0.95),
+          0 0 20px 10px rgba(255,255,255,0.5);
+      }
+      8% {
+        opacity: 1;
+        width: 8px;
+        height: 8px;
+        box-shadow:
+          0 0 30px 20px rgba(255,255,255,1),
+          0 0 80px 50px rgba(255,255,255,0.7),
+          0 0 140px 100px rgba(255,255,255,0.3);
+      }
+      30% {
+        width: 24px;
+        height: 24px;
+        box-shadow:
+          0 0 80px 60px rgba(255,255,255,1),
+          0 0 200px 140px rgba(255,255,255,0.8),
+          0 0 400px 280px rgba(255,255,255,0.4),
+          0 0 700px 500px rgba(255,240,200,0.2);
+      }
+      65% {
+        width: 120px;
+        height: 120px;
+        box-shadow:
+          0 0 200px 160px rgba(255,255,255,1),
+          0 0 500px 400px rgba(255,255,255,0.95),
+          0 0 900px 700px rgba(255,248,220,0.7);
+      }
+      100% {
+        width: 4000px;
+        height: 4000px;
+        opacity: 1;
+        box-shadow: 0 0 0 0 transparent;
+      }
+    }
+
+    /* Background fade from dark to white */
+    .intro-bg-fill {
+      position: absolute;
+      inset: 0;
+      background: #FFFFFF;
+      opacity: 0;
+      animation: bgFade 3.2s ease-in-out forwards;
+      z-index: 1;
+    }
+    @keyframes bgFade {
+      0%   { opacity: 0; }
+      50%  { opacity: 0; }
+      80%  { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+    /* Floating particles (light motes) */
+    #particles-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0;
+      animation: particleFadeIn 1s ease 2.5s forwards;
+    }
+    @keyframes particleFadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Wordmark appears after light fills */
+    .intro-wordmark {
+      position: relative;
+      z-index: 4;
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(44px, 7vw, 88px);
+      letter-spacing: 0.45em;
+      color: var(--dark);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: wordmarkReveal 1.4s ease-out 2.8s forwards;
+    }
+    @keyframes wordmarkReveal {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: wordmarkReveal 1.2s ease-out 3.8s forwards;
+    }
+    .scroll-hint span {
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--light-mid);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--light-mid), transparent);
+      animation: scrollPulse 2s ease-in-out 4.2s infinite;
+      transform-origin: top;
+      transform: scaleY(0);
+    }
+    @keyframes scrollPulse {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* =====================
+       SUBSCRIBE OVERLAY
+    ===================== */
+    #subscribe-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(244, 247, 255, 0.96);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s ease;
+    }
+    #subscribe-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .subscribe-content {
+      text-align: center;
+      padding: 64px 40px;
+      max-width: 540px;
+    }
+    .subscribe-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+    }
+    .subscribe-headline {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(38px, 5.5vw, 58px);
+      line-height: 1.15;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+    .subscribe-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .subscribe-sub {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: var(--mid);
+      font-weight: 300;
+      margin-bottom: 44px;
+    }
+    .subscribe-form {
+      display: flex;
+      max-width: 420px;
+      margin: 0 auto 22px;
+      border: 1px solid rgba(196, 151, 58, 0.35);
+    }
+    .subscribe-form input {
+      flex: 1;
+      padding: 15px 20px;
+      border: none;
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      color: var(--dark);
+      outline: none;
+    }
+    .subscribe-form input::placeholder { color: var(--light-mid); }
+    .subscribe-form button {
+      padding: 15px 26px;
+      background: var(--dark);
+      border: none;
+      color: var(--cream);
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .subscribe-form button:hover { background: var(--blue-mid); }
+    .subscribe-dismiss {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--light-mid);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+    .subscribe-dismiss:hover { color: var(--mid); }
+
+    /* =====================
+       SECTION 2: QUOTE
+    ===================== */
+    #quote-section {
+      background: var(--pure-white);
+      padding: var(--section-pad) clamp(28px, 8vw, 180px);
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+      border-top: 1px solid rgba(11, 28, 61, 0.06);
+    }
+    .quote-inner { max-width: 860px; }
+    .quote-mark {
+      font-family: var(--font-display);
+      font-size: 100px;
+      line-height: 0.5;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 28px;
+      opacity: 0.6;
+    }
+    .quote-text {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(26px, 3.8vw, 50px);
+      line-height: 1.35;
+      color: var(--dark);
+      letter-spacing: 0.01em;
+    }
+    .quote-text em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .quote-divider {
+      width: 56px;
+      height: 1px;
+      background: var(--gold);
+      margin: 44px 0;
+      opacity: 0.5;
+    }
+    .quote-attribution {
+      font-size: 11px;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--light-mid);
+    }
+
+    /* =====================
+       SECTION 3: BUBBLE MAP
+    ===================== */
+    #bubble-section {
+      background: var(--dark);
+      background: linear-gradient(160deg, #0B1C3D 0%, #0D2451 60%, #0A1830 100%);
+      padding: var(--section-pad) clamp(24px, 6vw, 120px) calc(var(--section-pad) * 0.6);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Subtle grain on dark section */
+    #bubble-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(30px, 3.8vw, 52px);
+      line-height: 1.2;
+      margin-bottom: 70px;
+      max-width: 580px;
+    }
+    .section-title.light { color: var(--cream); }
+    .section-title.dark  { color: var(--dark); }
+
+    #bubble-map {
+      width: 100%;
+      max-width: 1080px;
+      margin: 0 auto;
+      position: relative;
+    }
+    #nm-container {
+      position: relative;
+      width: 100%;
+      height: 680px;
+      overflow: hidden;
+      border-radius: 3px;
+      border: 1px solid rgba(196, 151, 58, 0.18);
+      box-shadow:
+        0 0 0 1px rgba(9, 18, 48, 0.5),
+        0 12px 72px rgba(7, 14, 38, 0.65),
+        0 -12px 72px rgba(7, 14, 38, 0.65);
+    }
+    #nm-fx {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      pointer-events: none; z-index: 0;
+    }
+    #nm-svg {
+      position: absolute; inset: 0;
+      width: 100%; height: 100%;
+      cursor: grab; z-index: 1;
+      background: transparent;
+    }
+    #nm-svg:active { cursor: grabbing; }
+    #nm-tooltip {
+      position: absolute; z-index: 10;
+      background: rgba(11,28,61,0.93);
+      border: 1px solid #C4973A; border-radius: 8px;
+      padding: 10px 16px; color: #fff;
+      font-family: var(--font-body); font-size: 12px;
+      pointer-events: none; opacity: 0;
+      transition: opacity 0.2s; max-width: 210px;
+      backdrop-filter: blur(8px);
+    }
+    .nm-tip-title { font-family: var(--font-display); font-size: 17px; color: #E8C97D; margin-bottom: 3px; }
+    .nm-tip-type  { font-size: 9px; letter-spacing: 0.16em; color: rgba(255,255,255,0.38); text-transform: uppercase; }
+    #nm-legend {
+      position: absolute; top: 18px; right: 18px; z-index: 5;
+      display: flex; flex-direction: column; gap: 7px;
+    }
+    .nm-leg-item { display: flex; align-items: center; gap: 7px; font-size: 9px; letter-spacing: 0.12em; color: rgba(255,255,255,0.36); font-family: var(--font-body); }
+    #nm-hint {
+      position: absolute; bottom: 16px; left: 50%; transform: translateX(-50%);
+      font-size: 9px; letter-spacing: 0.18em; color: rgba(255,255,255,0.2);
+      font-family: var(--font-body); pointer-events: none; z-index: 5; white-space: nowrap;
+    }
+    .network-expand-btn {
+      display: block;
+      text-align: center;
+      margin-top: 28px;
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: rgba(196, 151, 58, 0.45);
+      text-decoration: none;
+      transition: color 0.3s ease;
+    }
+    .network-expand-btn:hover { color: var(--gold); }
+
+    /* =====================
+       SECTION 4: DETAILS
+    ===================== */
+    #details-section {
+      background: var(--pure-white);
+      padding: var(--section-pad) clamp(28px, 8vw, 180px);
+    }
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px;
+      background: rgba(11, 28, 61, 0.1);
+      border: 1px solid rgba(11, 28, 61, 0.1);
+      margin-top: 56px;
+    }
+    .detail-card {
+      background: var(--pure-white);
+      padding: 44px 38px;
+      transition: background 0.3s;
+    }
+    .detail-card:hover { background: var(--warm-white); }
+    .detail-number {
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      color: var(--gold);
+      margin-bottom: 18px;
+      display: block;
+    }
+    .detail-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(20px, 2.4vw, 28px);
+      color: var(--dark);
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .detail-body {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--mid);
+    }
+
+    /* =====================
+       SECTION 5: CONTACT
+    ===================== */
+    #contact-section {
+      background: linear-gradient(160deg, #0B1C3D 0%, #0D2451 100%);
+      padding: var(--section-pad) clamp(28px, 8vw, 180px);
+      position: relative;
+      overflow: hidden;
+    }
+    #contact-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 65% 40%, rgba(41, 82, 179, 0.25) 0%, transparent 60%),
+                  radial-gradient(ellipse at 20% 80%, rgba(196, 151, 58, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+    .contact-inner { max-width: 720px; position: relative; }
+    .contact-title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(34px, 5vw, 62px);
+      color: var(--cream);
+      line-height: 1.15;
+      margin-bottom: 22px;
+    }
+    .contact-sub {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(249, 247, 242, 0.5);
+      margin-bottom: 52px;
+      max-width: 500px;
+    }
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 70px;
+    }
+    .contact-link {
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      padding: 15px 30px;
+      border: 1px solid rgba(249, 247, 242, 0.18);
+      transition: all 0.25s;
+      cursor: pointer;
+      font-family: var(--font-body);
+      background: none;
+    }
+    .contact-link:hover {
+      background: var(--blue-mid);
+      border-color: var(--blue-mid);
+      color: var(--pure-white);
+    }
+    .contact-link.primary {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--dark);
+    }
+    .contact-link.primary:hover {
+      background: var(--gold-light);
+      border-color: var(--gold-light);
+    }
+    .footer-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 36px;
+      border-top: 1px solid rgba(249, 247, 242, 0.08);
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+    .footer-wordmark {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: 17px;
+      letter-spacing: 0.42em;
+      color: rgba(249, 247, 242, 0.25);
+    }
+    .footer-note {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: rgba(249, 247, 242, 0.18);
+      text-transform: uppercase;
+    }
+
+    /* =====================
+       SCROLL REVEAL
+    ===================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+    .reveal-delay-4 { transition-delay: 0.48s; }
+
+    /* =====================
+       RESPONSIVE
+    ===================== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .details-grid { grid-template-columns: 1fr; }
+      #node-tooltip { max-width: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="main-nav">
+    <a href="#" class="nav-logo">FRQNCY</a>
+    <ul class="nav-links">
+      <li><a href="#quote-section">Vision</a></li>
+      <li><a href="#bubble-section">Foundation</a></li>
+      <li><a href="#details-section">How</a></li>
+      <li><a href="#contact-section">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- =====================
+       SECTION 1: LIGHT INTRO
+  ===================== -->
+  <section id="light-intro">
+    <div class="intro-bg-fill"></div>
+    <div class="light-orb"></div>
+    <canvas id="particles-canvas"></canvas>
+    <h1 class="intro-wordmark">FRQNCY</h1>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- =====================
+       SUBSCRIBE OVERLAY
+  ===================== -->
+  <div id="subscribe-overlay" role="dialog" aria-modal="true" aria-label="Subscribe to FRQNCY">
+    <div class="subscribe-content">
+      <h2 class="subscribe-headline">You are <em>love</em> and light.</h2>
+      <p class="subscribe-sub">Subscribe to join the movement</p>
+      <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+        <input type="email" placeholder="your@email.com" required aria-label="Email address">
+        <button type="submit">Join</button>
+      </form>
+      <button class="subscribe-dismiss" onclick="dismissSubscribe()">Continue to site</button>
+    </div>
+  </div>
+
+  <!-- =====================
+       SECTION 2: QUOTE
+  ===================== -->
+  <section id="quote-section">
+    <div class="quote-inner">
+      <span class="quote-mark reveal">"</span>
+      <p class="quote-text reveal reveal-delay-1">
+        Built on the foundations of oneness. FRQNCY's goal is to create a future in which <em>the light dominates</em> everything we experience and know.
+      </p>
+      <div class="quote-divider reveal reveal-delay-2"></div>
+      <p class="quote-attribution reveal reveal-delay-3">FRQNCY Foundation</p>
+    </div>
+  </section>
+
+  <!-- =====================
+       SECTION 3: BUBBLE MAP
+  ===================== -->
+  <section id="bubble-section">
+    <p class="section-label reveal">Problem &amp; Solution</p>
+    <h2 class="section-title light reveal reveal-delay-1">The landscape of<br>light &amp; consciousness</h2>
+
+    <div id="bubble-map">
+      <div id="nm-container">
+        <canvas id="nm-fx"></canvas>
+        <svg id="nm-svg"><defs id="nm-svg-defs"></defs></svg>
+        <div id="nm-tooltip"><div class="nm-tip-title"></div><div class="nm-tip-type"></div></div>
+        <div id="nm-legend">
+          <div class="nm-leg-item"><div class="nm-leg-dot" style="width:12px;height:12px;background:linear-gradient(135deg,#F4DC88,#B0791E);border-radius:50%"></div>CORE</div>
+          <div class="nm-leg-item"><div class="nm-leg-dot" style="width:9px;height:9px;background:linear-gradient(135deg,#5A8AFF,#152E7A);border-radius:50%"></div>PILLARS</div>
+          <div class="nm-leg-item"><div class="nm-leg-dot" style="width:7px;height:7px;background:linear-gradient(135deg,#3062C8,#091840);border-radius:50%"></div>DOMAINS</div>
+          <div class="nm-leg-item"><div class="nm-leg-dot" style="width:5px;height:5px;background:linear-gradient(135deg,#213E88,#080F28);border-radius:50%"></div>TOPICS</div>
+          <div class="nm-leg-item"><div class="nm-leg-dot" style="width:3px;height:3px;background:#fff;box-shadow:0 0 3px rgba(255,255,255,0.8);border-radius:50%"></div>HUMANS</div>
+        </div>
+        <div id="nm-hint">DRAG · SCROLL TO ZOOM · HOVER TO EXPLORE</div>
+      </div>
+      <a href="./network-map/index.html" class="network-expand-btn" target="_blank" rel="noopener">EXPLORE FULL MAP ↗</a>
+    </div>
+  </section>
+
+  <!-- =====================
+       SECTION 4: DETAILS
+  ===================== -->
+  <section id="details-section">
+    <p class="section-label reveal">Details &amp; How</p>
+    <h2 class="section-title dark reveal reveal-delay-1">What FRQNCY<br>builds and funds</h2>
+
+    <div class="details-grid">
+      <div class="detail-card reveal">
+        <span class="detail-number">01</span>
+        <h3 class="detail-title">Network State</h3>
+        <p class="detail-body">A decentralized community united by shared values — a borderless society built on the foundations of light and oneness, operating beyond traditional geographic limits.</p>
+      </div>
+      <div class="detail-card reveal reveal-delay-1">
+        <span class="detail-number">02</span>
+        <h3 class="detail-title">Fund</h3>
+        <p class="detail-body">Allocating capital to researchers, creators, and initiatives advancing the understanding and expansion of human consciousness. Backing the builders of a light-led future.</p>
+      </div>
+      <div class="detail-card reveal reveal-delay-2">
+        <span class="detail-number">03</span>
+        <h3 class="detail-title">Research &amp; Education</h3>
+        <p class="detail-body">Supporting the scientists, educators, and thinkers at the frontier of consciousness research. Building an open knowledge base accessible to all seekers.</p>
+      </div>
+      <div class="detail-card reveal reveal-delay-3">
+        <span class="detail-number">04</span>
+        <h3 class="detail-title">Social Networks</h3>
+        <p class="detail-body">Infrastructure for the movement's community to connect, grow, and organize. Building the social layer that enables a global network of light-aligned individuals.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================
+       SECTION 5: CONTACT
+  ===================== -->
+  <section id="contact-section">
+    <div class="contact-inner">
+      <p class="section-label reveal">Get Involved</p>
+      <h2 class="contact-title reveal reveal-delay-1">Ready to be part<br>of the movement?</h2>
+      <p class="contact-sub reveal reveal-delay-2">Whether you're a researcher, educator, builder, or seeker — there is a place for you within FRQNCY. Reach out, subscribe, or download our overview to learn more.</p>
+
+      <div class="contact-links reveal reveal-delay-3">
+        <a href="mailto:hello@frqncy.com" class="contact-link primary">Get in touch</a>
+        <button class="contact-link" onclick="showSubscribe()">Join mailing list</button>
+        <a href="#" class="contact-link">Download overview</a>
+      </div>
+
+      <div class="footer-line">
+        <span class="footer-wordmark">FRQNCY</span>
+        <span class="footer-note">Built on IPFS &nbsp;·&nbsp; Decentralized &nbsp;·&nbsp; Open</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // =====================
+    // PARTICLES
+    // =====================
+    (function () {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+
+      function resize() {
+        canvas.width  = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+      window.addEventListener('resize', resize, { passive: true });
+      resize();
+
+      function Particle() { this.reset(true); }
+      Particle.prototype.reset = function (scatter) {
+        this.x       = Math.random() * canvas.width;
+        this.y       = scatter ? Math.random() * canvas.height : canvas.height + 10;
+        this.size    = Math.random() * 1.8 + 0.4;
+        this.speed   = Math.random() * 0.35 + 0.1;
+        this.opacity = Math.random() * 0.35 + 0.1;
+        this.drift   = (Math.random() - 0.5) * 0.25;
+      };
+      Particle.prototype.update = function () {
+        this.y       -= this.speed;
+        this.x       += this.drift;
+        this.opacity -= 0.0008;
+        if (this.y < -10 || this.opacity <= 0) this.reset(false);
+      };
+
+      for (let i = 0; i < 70; i++) particles.push(new Particle());
+
+      (function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.update();
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(196, 151, 58, ${p.opacity})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(animate);
+      })();
+    })();
+
+    // =====================
+    // SUBSCRIBE OVERLAY
+    // =====================
+    let subscribeShown = false;
+
+    function showSubscribe() {
+      document.getElementById('subscribe-overlay').classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+    function dismissSubscribe() {
+      document.getElementById('subscribe-overlay').classList.remove('visible');
+      document.body.style.overflow = '';
+      subscribeShown = true;
+    }
+    function handleSubscribe(e) {
+      e.preventDefault();
+      // TODO: connect to mailing list provider (Mailchimp, ConvertKit, etc.)
+      console.log('Subscribed:', e.target.querySelector('input').value);
+      dismissSubscribe();
+    }
+
+    // Trigger overlay on scroll past intro
+    window.addEventListener('scroll', function () {
+      if (!subscribeShown && window.scrollY > window.innerHeight * 0.55) {
+        showSubscribe();
+        subscribeShown = true;
+      }
+    }, { passive: true });
+
+    // =====================
+    // SCROLL REVEAL
+    // =====================
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // =====================
+    // NAV BEHAVIOR
+    // =====================
+    const darkSections = ['bubble-section', 'contact-section'];
+    function updateNav() {
+      const nav   = document.getElementById('main-nav');
+      const scrolled = window.scrollY > 80;
+      nav.classList.toggle('scrolled', scrolled);
+
+      const midY = window.scrollY + window.innerHeight / 3;
+      const overDark = darkSections.some(id => {
+        const el = document.getElementById(id);
+        if (!el) return false;
+        return midY >= el.offsetTop && midY <= el.offsetTop + el.offsetHeight;
+      });
+      nav.classList.toggle('over-dark', overDark);
+    }
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+
+    // =====================
+    // NETWORK MAP (inlined)
+    // =====================
+    (function(){
+    const NM_NODES=[
+      {id:"frqncy",label:"FRQNCY",type:"core",r:52,desc:"The living network of consciousness"},
+      {id:"consciousness",label:"Consciousness",type:"main",r:34,desc:"The awakening field of awareness"},
+      {id:"network-state",label:"Network State",type:"main",r:30,desc:"Sovereign communities of the future"},
+      {id:"education",label:"Education",type:"main",r:30,desc:"Wisdom transmission and learning"},
+      {id:"fund",label:"Fund",type:"main",r:29,desc:"Conscious capital for transformation"},
+      {id:"money",label:"Money",type:"main",r:31,desc:"Financial systems and conscious value exchange"},
+      {id:"d-sciences",label:"Sciences",type:"cluster",r:24,desc:"Empirical exploration of reality"},
+      {id:"d-tech",label:"Technology",type:"cluster",r:24,desc:"Tools shaping the future"},
+      {id:"d-arts",label:"Arts & Culture",type:"cluster",r:23,desc:"Expression of the human spirit"},
+      {id:"d-nature",label:"Nature & Cosmos",type:"cluster",r:24,desc:"The living systems of existence"},
+      {id:"d-business",label:"Business & Finance",type:"cluster",r:23,desc:"Regenerative economic systems"},
+      {id:"d-meta",label:"Metaphysics",type:"cluster",r:25,desc:"The architecture of reality"},
+      {id:"d-lifestyle",label:"Lifestyle",type:"cluster",r:22,desc:"Conscious ways of living"},
+      {id:"d-creation",label:"Creation",type:"cluster",r:23,desc:"Building what has never existed"},
+      {id:"d-wellbeing",label:"Well-being",type:"cluster",r:24,desc:"Healing and wholeness"},
+      {id:"d-society",label:"Society & Networks",type:"cluster",r:23,desc:"Collective human systems"},
+      {id:"t-quantum",label:"Quantum Physics",type:"topic",r:14},
+      {id:"t-neuro",label:"Neuroscience",type:"topic",r:14},
+      {id:"t-bio",label:"Biology",type:"topic",r:13},
+      {id:"t-psych",label:"Psychology",type:"topic",r:14},
+      {id:"t-med",label:"Medicine",type:"topic",r:13},
+      {id:"t-math",label:"Mathematics",type:"topic",r:13},
+      {id:"t-astrophys",label:"Astrophysics",type:"topic",r:14},
+      {id:"t-ecology",label:"Ecology",type:"topic",r:13},
+      {id:"t-genetics",label:"Genetics",type:"topic",r:13},
+      {id:"t-chemistry",label:"Chemistry",type:"topic",r:12},
+      {id:"t-ai",label:"Artificial Intelligence",type:"topic",r:16},
+      {id:"t-blockchain",label:"Blockchain",type:"topic",r:15},
+      {id:"t-decentral",label:"Decentralized Networks",type:"topic",r:15},
+      {id:"t-arvr",label:"AR / VR",type:"topic",r:13},
+      {id:"t-biotech",label:"Biotechnology",type:"topic",r:14},
+      {id:"t-robotics",label:"Robotics",type:"topic",r:13},
+      {id:"t-web3",label:"Web3",type:"topic",r:15},
+      {id:"t-quantcomp",label:"Quantum Computing",type:"topic",r:14},
+      {id:"t-cybersec",label:"Cybersecurity",type:"topic",r:13},
+      {id:"t-music",label:"Music",type:"topic",r:16},
+      {id:"t-visual",label:"Visual Art",type:"topic",r:14},
+      {id:"t-film",label:"Film",type:"topic",r:13},
+      {id:"t-poetry",label:"Poetry",type:"topic",r:13},
+      {id:"t-dance",label:"Dance",type:"topic",r:13},
+      {id:"t-archit",label:"Architecture",type:"topic",r:13},
+      {id:"t-fashion",label:"Fashion",type:"topic",r:12},
+      {id:"t-story",label:"Storytelling",type:"topic",r:14},
+      {id:"t-photo",label:"Photography",type:"topic",r:12},
+      {id:"t-theater",label:"Theater",type:"topic",r:12},
+      {id:"t-sacredgeo",label:"Sacred Geometry",type:"topic",r:15},
+      {id:"t-astrology",label:"Astrology",type:"topic",r:14},
+      {id:"t-climate",label:"Climate",type:"topic",r:14},
+      {id:"t-biodivers",label:"Biodiversity",type:"topic",r:13},
+      {id:"t-oceans",label:"Oceans",type:"topic",r:13},
+      {id:"t-forests",label:"Forests",type:"topic",r:13},
+      {id:"t-cosmos",label:"Stars & Planets",type:"topic",r:14},
+      {id:"t-efields",label:"Energy Fields",type:"topic",r:14},
+      {id:"t-cycles",label:"Seasons & Cycles",type:"topic",r:13},
+      {id:"t-defi",label:"DeFi",type:"topic",r:15},
+      {id:"t-impact",label:"Impact Investing",type:"topic",r:14},
+      {id:"t-socialent",label:"Social Enterprise",type:"topic",r:14},
+      {id:"t-circular",label:"Circular Economy",type:"topic",r:14},
+      {id:"t-conscap",label:"Conscious Capital",type:"topic",r:14},
+      {id:"t-regenbiz",label:"Regenerative Business",type:"topic",r:14},
+      {id:"t-dao",label:"DAOs",type:"topic",r:13},
+      {id:"t-oneness",label:"Oneness",type:"topic",r:16},
+      {id:"t-source",label:"Source Energy",type:"topic",r:15},
+      {id:"t-soul",label:"Soul Purpose",type:"topic",r:14},
+      {id:"t-akashic",label:"Akashic Records",type:"topic",r:14},
+      {id:"t-dims",label:"Higher Dimensions",type:"topic",r:14},
+      {id:"t-sync",label:"Synchronicity",type:"topic",r:13},
+      {id:"t-saclaw",label:"Sacred Law",type:"topic",r:13},
+      {id:"t-merkaba",label:"Merkaba",type:"topic",r:13},
+      {id:"t-vibration",label:"Vibration & Frequency",type:"topic",r:15},
+      {id:"t-nutrition",label:"Nutrition",type:"topic",r:13},
+      {id:"t-movement",label:"Movement",type:"topic",r:13},
+      {id:"t-sleep",label:"Sleep",type:"topic",r:12},
+      {id:"t-plantmed",label:"Plant Medicine",type:"topic",r:14},
+      {id:"t-community",label:"Community Living",type:"topic",r:14},
+      {id:"t-minimalism",label:"Minimalism",type:"topic",r:13},
+      {id:"t-detox",label:"Digital Detox",type:"topic",r:12},
+      {id:"t-sustliving",label:"Sustainable Living",type:"topic",r:14},
+      {id:"t-proddesign",label:"Product Design",type:"topic",r:13},
+      {id:"t-systems",label:"Systems Thinking",type:"topic",r:14},
+      {id:"t-opensource",label:"Open Source",type:"topic",r:14},
+      {id:"t-cocreate",label:"Co-creation",type:"topic",r:14},
+      {id:"t-proto",label:"Prototyping",type:"topic",r:13},
+      {id:"t-emergence",label:"Emergence",type:"topic",r:14},
+      {id:"t-biomimicry",label:"Biomimicry",type:"topic",r:14},
+      {id:"t-futuretech",label:"Future of Work",type:"topic",r:13},
+      {id:"t-meditation",label:"Meditation",type:"topic",r:16},
+      {id:"t-soundheal",label:"Sound Healing",type:"topic",r:15},
+      {id:"t-breathwork",label:"Breathwork",type:"topic",r:14},
+      {id:"t-somatic",label:"Somatic Therapy",type:"topic",r:14},
+      {id:"t-energyheal",label:"Energy Healing",type:"topic",r:14},
+      {id:"t-yoga",label:"Yoga",type:"topic",r:14},
+      {id:"t-mentalhlth",label:"Mental Health",type:"topic",r:14},
+      {id:"t-trauma",label:"Trauma Healing",type:"topic",r:14},
+      {id:"t-governance",label:"Global Governance",type:"topic",r:14},
+      {id:"t-indigenous",label:"Indigenous Wisdom",type:"topic",r:15},
+      {id:"t-collective",label:"Collective Intelligence",type:"topic",r:15},
+      {id:"t-socialmov",label:"Social Movements",type:"topic",r:14},
+      {id:"t-peace",label:"Peace Building",type:"topic",r:14},
+      {id:"t-futurecity",label:"Future Cities",type:"topic",r:14},
+      {id:"t-edusystem",label:"Education Systems",type:"topic",r:14},
+      {id:"t-diaspora",label:"Global Diaspora",type:"topic",r:13},
+    ];
+
+    const NM_RAW=[
+      ["frqncy","consciousness"],["frqncy","network-state"],["frqncy","education"],["frqncy","fund"],["frqncy","money"],
+      ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],["frqncy","d-nature"],["frqncy","d-business"],
+      ["frqncy","d-meta"],["frqncy","d-lifestyle"],["frqncy","d-creation"],["frqncy","d-wellbeing"],["frqncy","d-society"],
+      ["consciousness","d-meta"],["consciousness","d-sciences"],["consciousness","d-wellbeing"],["consciousness","d-lifestyle"],
+      ["consciousness","d-nature"],["consciousness","d-arts"],
+      ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],["network-state","d-creation"],
+      ["education","d-sciences"],["education","d-arts"],["education","d-creation"],["education","d-society"],
+      ["fund","d-business"],["fund","d-tech"],["fund","d-creation"],["fund","d-society"],
+      ["d-sciences","t-quantum"],["d-sciences","t-neuro"],["d-sciences","t-bio"],["d-sciences","t-psych"],
+      ["d-sciences","t-med"],["d-sciences","t-math"],["d-sciences","t-astrophys"],["d-sciences","t-ecology"],
+      ["d-sciences","t-genetics"],["d-sciences","t-chemistry"],
+      ["d-tech","t-ai"],["d-tech","t-blockchain"],["d-tech","t-decentral"],["d-tech","t-arvr"],
+      ["d-tech","t-biotech"],["d-tech","t-robotics"],["d-tech","t-web3"],["d-tech","t-quantcomp"],["d-tech","t-cybersec"],
+      ["d-arts","t-music"],["d-arts","t-visual"],["d-arts","t-film"],["d-arts","t-poetry"],["d-arts","t-dance"],
+      ["d-arts","t-archit"],["d-arts","t-fashion"],["d-arts","t-story"],["d-arts","t-photo"],["d-arts","t-theater"],
+      ["d-nature","t-sacredgeo"],["d-nature","t-astrology"],["d-nature","t-climate"],["d-nature","t-biodivers"],
+      ["d-nature","t-oceans"],["d-nature","t-forests"],["d-nature","t-cosmos"],["d-nature","t-efields"],["d-nature","t-cycles"],
+      ["d-business","t-defi"],["d-business","t-impact"],["d-business","t-socialent"],["d-business","t-circular"],
+      ["d-business","t-conscap"],["d-business","t-regenbiz"],["d-business","t-dao"],
+      ["d-meta","t-oneness"],["d-meta","t-source"],["d-meta","t-soul"],["d-meta","t-akashic"],
+      ["d-meta","t-dims"],["d-meta","t-sync"],["d-meta","t-saclaw"],["d-meta","t-merkaba"],["d-meta","t-vibration"],
+      ["d-lifestyle","t-nutrition"],["d-lifestyle","t-movement"],["d-lifestyle","t-sleep"],["d-lifestyle","t-plantmed"],
+      ["d-lifestyle","t-community"],["d-lifestyle","t-minimalism"],["d-lifestyle","t-detox"],["d-lifestyle","t-sustliving"],
+      ["d-creation","t-proddesign"],["d-creation","t-systems"],["d-creation","t-opensource"],["d-creation","t-cocreate"],
+      ["d-creation","t-proto"],["d-creation","t-emergence"],["d-creation","t-biomimicry"],["d-creation","t-futuretech"],
+      ["d-wellbeing","t-meditation"],["d-wellbeing","t-soundheal"],["d-wellbeing","t-breathwork"],["d-wellbeing","t-somatic"],
+      ["d-wellbeing","t-energyheal"],["d-wellbeing","t-yoga"],["d-wellbeing","t-mentalhlth"],["d-wellbeing","t-trauma"],
+      ["d-society","t-governance"],["d-society","t-indigenous"],["d-society","t-collective"],["d-society","t-socialmov"],
+      ["d-society","t-peace"],["d-society","t-futurecity"],["d-society","t-edusystem"],["d-society","t-diaspora"],
+      ["t-quantum","t-oneness"],["t-quantum","t-vibration"],
+      ["t-neuro","t-meditation"],["t-neuro","t-trauma"],["t-neuro","t-psych"],
+      ["t-psych","t-mentalhlth"],["t-psych","t-trauma"],["t-psych","t-somatic"],
+      ["t-bio","t-ecology"],["t-genetics","t-biotech"],["t-med","t-mentalhlth"],
+      ["t-ai","t-systems"],["t-ai","t-collective"],["t-ai","t-futuretech"],
+      ["t-blockchain","t-defi"],["t-blockchain","t-dao"],
+      ["t-web3","t-decentral"],["t-web3","t-dao"],
+      ["money","d-business"],["money","t-blockchain"],["money","t-defi"],["money","t-web3"],["money","t-dao"],["money","t-conscap"],
+      ["t-music","t-soundheal"],["t-music","t-vibration"],
+      ["t-sacredgeo","t-merkaba"],["t-sacredgeo","t-dims"],["t-sacredgeo","t-math"],
+      ["t-astrology","t-cycles"],["t-cosmos","t-astrophys"],
+      ["t-indigenous","t-saclaw"],["t-indigenous","t-ecology"],["t-indigenous","t-story"],
+      ["t-plantmed","t-energyheal"],["t-plantmed","t-med"],
+      ["t-yoga","t-movement"],["t-yoga","t-breathwork"],
+      ["t-community","t-cocreate"],["t-community","t-peace"],
+      ["t-emergence","t-systems"],["t-biomimicry","t-ecology"],
+      ["t-sustliving","t-circular"],["t-regenbiz","t-sustliving"],
+      ["t-conscap","t-impact"],["t-conscap","t-regenbiz"],
+      ["t-collective","t-cocreate"],["t-collective","t-governance"],
+      ["t-futurecity","t-archit"],["t-futurecity","t-systems"],
+      ["t-source","t-efields"],["t-source","t-vibration"],
+      ["t-oneness","t-collective"],["t-oneness","t-source"],
+      ["t-soul","t-sync"],["t-soul","t-source"],
+      ["t-edusystem","t-collective"],["t-opensource","t-decentral"],
+      ["t-diaspora","t-socialmov"],["t-diaspora","t-community"],
+      ["t-detox","t-minimalism"],["t-dance","t-movement"],
+      ["t-efields","t-energyheal"],["t-efields","t-vibration"],
+      ["t-archit","t-sacredgeo"],["t-story","t-film"],["t-poetry","t-story"],
+    ];
+    const NM_LINKS=NM_RAW.map(([s,t])=>({source:s,target:t}));
+
+    const nmContainer=document.getElementById('nm-container');
+    const nmCanvas=document.getElementById('nm-fx');
+    const nmCtx=nmCanvas.getContext('2d');
+
+    function nmResize(){
+      nmCanvas.width=nmContainer.offsetWidth;
+      nmCanvas.height=nmContainer.offsetHeight;
+    }
+    nmResize();
+    window.addEventListener('resize',nmResize);
+
+    const NM_W=()=>nmContainer.offsetWidth;
+    const NM_H=()=>nmContainer.offsetHeight;
+
+    /* Background stars */
+    const NM_STARS=[];
+    for(let i=0;i<120;i++) NM_STARS.push({
+      x:Math.random()*2000,y:Math.random()*800,
+      r:Math.random()*1.3+0.2,base:Math.random()*0.45+0.08,phase:Math.random()*Math.PI*2
+    });
+
+    /* D3 SVG setup */
+    const nmSvg=d3.select('#nm-svg');
+    const nmDefs=d3.select('#nm-svg-defs');
+    [
+      {id:'nm-g-core',c1:'#F4DC88',c2:'#A06818'},
+      {id:'nm-g-main',c1:'#5A8AFF',c2:'#122878'},
+      {id:'nm-g-cluster',c1:'#3062C8',c2:'#081640'},
+      {id:'nm-g-topic',c1:'#213E88',c2:'#060E24'},
+    ].forEach(g=>{
+      const gr=nmDefs.append('radialGradient').attr('id',g.id).attr('cx','38%').attr('cy','30%');
+      gr.append('stop').attr('offset','0%').attr('stop-color',g.c1);
+      gr.append('stop').attr('offset','100%').attr('stop-color',g.c2);
+    });
+
+    let nmZoom={x:0,y:0,k:1};
+    const nmZoomG=nmSvg.append('g');
+    nmSvg.call(d3.zoom().scaleExtent([0.1,4]).on('zoom',e=>{
+      nmZoomG.attr('transform',e.transform);
+      nmZoom=e.transform;
+    }));
+
+    const nmSim=d3.forceSimulation(NM_NODES)
+      .force('link',d3.forceLink(NM_LINKS).id(d=>d.id)
+        .distance(d=>{
+          const s=d.source.type||'topic',t=d.target.type||'topic';
+          if(s==='core'||t==='core') return (t==='main'||s==='main')?210:258;
+          if(s==='main'||t==='main') return 178;
+          if(s==='cluster'||t==='cluster') return (t==='topic'||s==='topic')?112:148;
+          return 84;
+        })
+        .strength(d=>{
+          const s=d.source.type||'topic',t=d.target.type||'topic';
+          if(s==='core'||t==='core') return 0.55; return 0.38;
+        })
+      )
+      .force('charge',d3.forceManyBody().strength(d=>{
+        switch(d.type){case 'core':return -1600;case 'main':return -750;case 'cluster':return -400;default:return -130;}
+      }).theta(0.9))
+      .force('center',d3.forceCenter(NM_W()/2,NM_H()/2).strength(0.04))
+      .force('collide',d3.forceCollide(d=>d.r+8).strength(0.6).iterations(1))
+      .alphaDecay(0.03).velocityDecay(0.45);
+
+    const nmNodeById={};
+    NM_NODES.forEach(n=>{ nmNodeById[n.id]=n; });
+
+    /* 1000 human stars */
+    const nmTopicPool=NM_NODES.filter(n=>n.type==='topic'||n.type==='cluster');
+    function srand(seed){ let x=seed; return ()=>{ x=((x^(x<<13))^(x>>7)^(x<<17))>>>0; return (x%100000)/100000; }; }
+    const NM_HUMANS=[];
+    for(let i=0;i<1000;i++){
+      const rnd=srand(i*31337+i*i+1);
+      const anchor=nmTopicPool[Math.floor(rnd()*nmTopicPool.length)];
+      const dist=anchor.r+8+rnd()*55;
+      const angle=rnd()*Math.PI*2;
+      NM_HUMANS.push({
+        anchorId:anchor.id,
+        ox:Math.cos(angle)*dist, oy:Math.sin(angle)*dist,
+        r:0.7+rnd()*0.8, baseAlpha:0.55+rnd()*0.40,
+        phase:rnd()*Math.PI*2, speed:1.4+rnd()*1.2,
+        lineAlpha:0.04+rnd()*0.06, showLine:rnd()<0.45,
+      });
+    }
+
+    /* SVG nodes */
+    const nmNodeG=nmZoomG.append('g');
+    const nmNodeSel=nmNodeG.selectAll('g.node').data(NM_NODES).join('g').attr('class','node').style('cursor','pointer');
+    nmNodeSel.append('circle')
+      .attr('r',d=>d.r)
+      .attr('fill',d=>d.type==='cluster'?'url(#nm-g-cluster)':d.type==='topic'?'url(#nm-g-topic)':`url(#nm-g-${d.type})`)
+      .attr('stroke',d=>d.type==='core'?'#E0C06A':d.type==='main'?'#4A7AE8':d.type==='cluster'?'#2952B3':'#1A3A8F')
+      .attr('stroke-width',d=>d.type==='core'?2.5:1);
+    nmNodeSel.filter(d=>d.type!=='dot').append('text')
+      .attr('text-anchor','middle').attr('dominant-baseline','central')
+      .attr('fill',d=>d.type==='core'?'#0A1220':d.type==='main'?'#FFFFFF':d.type==='cluster'?'#E8C97D':'rgba(172,202,255,0.88)')
+      .attr('font-family',d=>(d.type==='core'||d.type==='main')?'Cormorant,Georgia,serif':"'Jost',sans-serif")
+      .attr('font-size',d=>d.type==='core'?'15px':d.type==='main'?'10.5px':d.type==='cluster'?'9.5px':'8px')
+      .attr('font-weight',d=>d.type==='core'?'500':'300')
+      .attr('letter-spacing',d=>d.type==='core'?'0.18em':'0.04em')
+      .attr('pointer-events','none')
+      .each(function(d){
+        const el=d3.select(this);
+        if(d.type==='topic'&&d.label.length>14){
+          const w=d.label.split(' '),m=Math.ceil(w.length/2);
+          el.append('tspan').attr('x',0).attr('dy','-0.5em').text(w.slice(0,m).join(' '));
+          el.append('tspan').attr('x',0).attr('dy','1em').text(w.slice(m).join(' '));
+        } else { el.text(d.label); }
+      });
+    nmNodeSel.call(d3.drag()
+      .on('start',(e,d)=>{ if(!e.active) nmSim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+      .on('drag',(e,d)=>{ d.fx=e.x; d.fy=e.y; })
+      .on('end',(e,d)=>{ if(!e.active) nmSim.alphaTarget(0); d.fx=null; d.fy=null; })
+    );
+    nmSim.on('tick',()=>{ nmNodeSel.attr('transform',d=>`translate(${d.x},${d.y})`); });
+
+    /* Hover / tooltip */
+    const nmTip=document.getElementById('nm-tooltip');
+    let nmHovered=null;
+    nmNodeSel
+      .on('mouseover',(e,d)=>{
+        const conn=new Set([d.id]);
+        NM_LINKS.forEach(l=>{
+          const s=typeof l.source==='object'?l.source.id:l.source;
+          const t=typeof l.target==='object'?l.target.id:l.target;
+          if(s===d.id) conn.add(t); if(t===d.id) conn.add(s);
+        });
+        nmHovered=conn;
+        nmNodeSel.style('opacity',n=>conn.has(n.id)?1:0.05);
+        nmTip.querySelector('.nm-tip-title').textContent=d.label;
+        nmTip.querySelector('.nm-tip-type').textContent=(d.desc||'')+' · '+({core:'FRQNCY CORE',main:'PILLAR',cluster:'DOMAIN',topic:'TOPIC'}[d.type]||'');
+        nmTip.style.opacity=1;
+      })
+      .on('mousemove',e=>{
+        const rect=nmContainer.getBoundingClientRect();
+        nmTip.style.left=(e.clientX-rect.left+14)+'px';
+        nmTip.style.top=(e.clientY-rect.top-14)+'px';
+      })
+      .on('mouseout',()=>{ nmTip.style.opacity=0; nmHovered=null; nmNodeSel.style('opacity',1); });
+
+    /* Render loop */
+    const nmParticles=[];
+    let nmDashOff=0,nmLastMajor=0,nmLastDot=0;
+    const nmMajorLinks=NM_LINKS.filter(l=>{ const s=typeof l.source==='object'?l.source.type:null; return s==='core'||s==='main'; });
+
+    function nmSpawn(fromDot){
+      if(fromDot){
+        const h=NM_HUMANS[Math.floor(Math.random()*NM_HUMANS.length)];
+        const a=nmNodeById[h.anchorId]; if(!a||a.x===undefined) return;
+        const hx=a.x+h.ox,hy=a.y+h.oy,fwd=Math.random()>0.4;
+        nmParticles.push({x1:fwd?hx:a.x,y1:fwd?hy:a.y,x2:fwd?a.x:hx,y2:fwd?a.y:hy,prog:0,speed:0.013+Math.random()*0.01,isDot:true});
+      } else {
+        const l=nmMajorLinks[Math.floor(Math.random()*nmMajorLinks.length)];
+        const s=l.source,t=l.target; if(!s||!t||s.x===undefined) return;
+        nmParticles.push({x1:s.x,y1:s.y,x2:t.x,y2:t.y,prog:0,speed:0.009+Math.random()*0.006,isDot:false});
+      }
+    }
+
+    function nmRender(ts){
+      requestAnimationFrame(nmRender);
+      const CW=nmCanvas.width,CH=nmCanvas.height;
+      nmCtx.clearRect(0,0,CW,CH);
+
+      const t=ts*0.0007;
+      for(let i=0;i<NM_STARS.length;i++){
+        const s=NM_STARS[i];
+        const a=s.base*(0.65+0.35*Math.sin(t+s.phase));
+        nmCtx.fillStyle=`rgba(255,255,255,${a.toFixed(2)})`;
+        nmCtx.beginPath(); nmCtx.arc(s.x%CW,s.y%CH,s.r,0,Math.PI*2); nmCtx.fill();
+      }
+
+      if(ts-nmLastMajor>320){ nmSpawn(false); nmLastMajor=ts; }
+      if(ts-nmLastDot>90){ nmSpawn(true); nmLastDot=ts; }
+
+      const {x:zx,y:zy,k:zk}=nmZoom;
+      nmCtx.save();
+      nmCtx.translate(zx,zy); nmCtx.scale(zk,zk);
+
+      nmCtx.setLineDash([]);
+      nmCtx.strokeStyle='rgba(196,151,58,0.42)'; nmCtx.lineWidth=1.8;
+      nmCtx.beginPath();
+      NM_LINKS.forEach(l=>{ const s=l.source,t_=l.target; if(!s||!t_||s.x===undefined) return; if(s.type!=='core'&&t_.type!=='core') return; if(nmHovered&&!nmHovered.has(s.id)&&!nmHovered.has(t_.id)) return; nmCtx.moveTo(s.x,s.y); nmCtx.lineTo(t_.x,t_.y); });
+      nmCtx.stroke();
+
+      nmCtx.strokeStyle='rgba(74,122,232,0.25)'; nmCtx.lineWidth=1.1;
+      nmCtx.beginPath();
+      NM_LINKS.forEach(l=>{ const s=l.source,t_=l.target; if(!s||!t_||s.x===undefined) return; if((s.type!=='main'&&t_.type!=='main')||(s.type==='core'||t_.type==='core')) return; if(nmHovered&&!nmHovered.has(s.id)&&!nmHovered.has(t_.id)) return; nmCtx.moveTo(s.x,s.y); nmCtx.lineTo(t_.x,t_.y); });
+      nmCtx.stroke();
+
+      nmCtx.strokeStyle='rgba(41,82,179,0.13)'; nmCtx.lineWidth=0.55;
+      nmCtx.beginPath();
+      NM_LINKS.forEach(l=>{ const s=l.source,t_=l.target; if(!s||!t_||s.x===undefined) return; if(s.type==='core'||t_.type==='core'||s.type==='main'||t_.type==='main') return; if(nmHovered&&!nmHovered.has(s.id)&&!nmHovered.has(t_.id)) return; nmCtx.moveTo(s.x,s.y); nmCtx.lineTo(t_.x,t_.y); });
+      nmCtx.stroke();
+
+      NM_NODES.forEach(n=>{
+        if(!n.x) return;
+        if(n.type==='core'){ const g=nmCtx.createRadialGradient(n.x,n.y,n.r*0.6,n.x,n.y,n.r*2.4); g.addColorStop(0,'rgba(196,151,58,0.2)'); g.addColorStop(1,'rgba(196,151,58,0)'); nmCtx.fillStyle=g; nmCtx.beginPath(); nmCtx.arc(n.x,n.y,n.r*2.4,0,Math.PI*2); nmCtx.fill(); }
+        else if(n.type==='main'){ const g=nmCtx.createRadialGradient(n.x,n.y,n.r*0.5,n.x,n.y,n.r*1.9); g.addColorStop(0,'rgba(74,122,232,0.16)'); g.addColorStop(1,'rgba(74,122,232,0)'); nmCtx.fillStyle=g; nmCtx.beginPath(); nmCtx.arc(n.x,n.y,n.r*1.9,0,Math.PI*2); nmCtx.fill(); }
+      });
+
+      const lineGroups=[{a:0.10,lines:[]},{a:0.07,lines:[]},{a:0.04,lines:[]}];
+      for(let i=0;i<NM_HUMANS.length;i++){
+        const h=NM_HUMANS[i]; if(!h.showLine) continue;
+        const a=nmNodeById[h.anchorId]; if(!a||a.x===undefined) continue;
+        if(nmHovered&&!nmHovered.has(h.anchorId)) continue;
+        const hx=a.x+h.ox,hy=a.y+h.oy;
+        const g=h.lineAlpha>0.08?lineGroups[0]:h.lineAlpha>0.055?lineGroups[1]:lineGroups[2];
+        g.lines.push(hx,hy,a.x,a.y);
+      }
+      nmCtx.lineWidth=0.4;
+      lineGroups.forEach(g=>{ if(!g.lines.length) return; nmCtx.strokeStyle=`rgba(190,215,255,${g.a})`; nmCtx.beginPath(); for(let j=0;j<g.lines.length;j+=4){ nmCtx.moveTo(g.lines[j],g.lines[j+1]); nmCtx.lineTo(g.lines[j+2],g.lines[j+3]); } nmCtx.stroke(); });
+
+      for(let i=0;i<NM_HUMANS.length;i++){
+        const h=NM_HUMANS[i]; const a=nmNodeById[h.anchorId]; if(!a||a.x===undefined) continue;
+        const hx=a.x+h.ox,hy=a.y+h.oy;
+        const twinkle=0.55+0.45*Math.sin(ts*0.001*h.speed+h.phase);
+        const dimmed=nmHovered&&!nmHovered.has(h.anchorId);
+        const alpha=dimmed?0.02:h.baseAlpha*twinkle;
+        nmCtx.fillStyle=`rgba(220,235,255,${(alpha*0.25).toFixed(2)})`;
+        nmCtx.beginPath(); nmCtx.arc(hx,hy,h.r*3.5,0,Math.PI*2); nmCtx.fill();
+      }
+      for(let i=0;i<NM_HUMANS.length;i++){
+        const h=NM_HUMANS[i]; const a=nmNodeById[h.anchorId]; if(!a||a.x===undefined) continue;
+        const hx=a.x+h.ox,hy=a.y+h.oy;
+        const twinkle=0.55+0.45*Math.sin(ts*0.001*h.speed+h.phase);
+        const dimmed=nmHovered&&!nmHovered.has(h.anchorId);
+        const alpha=dimmed?0.04:h.baseAlpha*twinkle;
+        nmCtx.fillStyle=`rgba(255,255,255,${alpha.toFixed(2)})`;
+        nmCtx.beginPath(); nmCtx.arc(hx,hy,h.r,0,Math.PI*2); nmCtx.fill();
+      }
+
+      for(let i=nmParticles.length-1;i>=0;i--){
+        const p=nmParticles[i]; p.prog+=p.speed;
+        if(p.prog>=1){ nmParticles.splice(i,1); continue; }
+        const px=p.x1+(p.x2-p.x1)*p.prog,py=p.y1+(p.y2-p.y1)*p.prog;
+        const fade=Math.min(p.prog*5,1)*Math.min((1-p.prog)*5,1);
+        nmCtx.fillStyle=p.isDot?`rgba(210,230,255,${(0.75*fade).toFixed(2)})`:`rgba(240,210,95,${(0.9*fade).toFixed(2)})`;
+        nmCtx.beginPath(); nmCtx.arc(px,py,p.isDot?1.0:2.0,0,Math.PI*2); nmCtx.fill();
+      }
+
+      nmCtx.restore();
+    }
+    requestAnimationFrame(nmRender);
+    })();
+  </script>
+</body>
+</html>

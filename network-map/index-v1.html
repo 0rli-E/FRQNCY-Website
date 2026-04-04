@@ -1,0 +1,665 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRQNCY — Network Map</title>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --gold: #C4973A; --gold-light: #E8C97D;
+      --blue-deep: #0B1C3D; --blue-royal: #1A3A8F;
+      --blue-mid: #2952B3; --blue-bright: #4A7AE8;
+      --white: #FFFFFF;
+      --font-display: 'Cormorant', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+    }
+    html, body { width:100%; height:100%; background:#050810; overflow:hidden; font-family:var(--font-body); }
+
+    #stars-canvas { position:fixed; inset:0; pointer-events:none; z-index:0; }
+    #map-svg { position:fixed; inset:0; width:100%; height:100%; z-index:1; cursor:grab; }
+    #map-svg:active { cursor:grabbing; }
+
+    /* Human dot pulse animation */
+    @keyframes humanPulse {
+      0%   { opacity: 0.65; r: 6px; }
+      50%  { opacity: 1;    r: 8px; }
+      100% { opacity: 0.65; r: 6px; }
+    }
+    @keyframes humanGlowPulse {
+      0%   { opacity: 0.25; }
+      50%  { opacity: 0.55; }
+      100% { opacity: 0.25; }
+    }
+    .human-dot { animation: humanPulse 3s ease-in-out infinite; }
+    .human-glow { animation: humanGlowPulse 3s ease-in-out infinite; }
+
+    /* Passion link glow lines */
+    .passion-link {
+      stroke: rgba(255,255,255,0.32);
+      stroke-width: 1.2;
+    }
+
+    #tooltip {
+      position:fixed; z-index:10; background:rgba(11,28,61,0.93);
+      border:1px solid var(--gold); border-radius:8px; padding:10px 16px;
+      color:var(--white); font-family:var(--font-body); font-size:12px;
+      pointer-events:none; opacity:0; transition:opacity 0.2s;
+      max-width:210px; backdrop-filter:blur(8px);
+    }
+    #tooltip .tip-title { font-family:var(--font-display); font-size:16px; color:var(--gold-light); margin-bottom:3px; }
+    #tooltip .tip-type  { font-size:9px; letter-spacing:0.18em; color:rgba(255,255,255,0.4); text-transform:uppercase; }
+
+    #ui-overlay {
+      position:fixed; top:24px; left:50%; transform:translateX(-50%);
+      z-index:5; text-align:center; pointer-events:none;
+    }
+    #ui-overlay h1 { font-family:var(--font-display); font-size:clamp(20px,2.5vw,30px); font-weight:300; letter-spacing:0.35em; color:var(--gold); }
+    #ui-overlay p  { font-size:10px; letter-spacing:0.2em; color:rgba(255,255,255,0.32); margin-top:5px; }
+
+    #back-btn {
+      position:fixed; bottom:28px; left:50%; transform:translateX(-50%);
+      z-index:5; background:transparent; border:1px solid rgba(196,151,58,0.35);
+      color:rgba(196,151,58,0.65); font-family:var(--font-body); font-size:10px;
+      letter-spacing:0.22em; padding:10px 26px; cursor:pointer; border-radius:2px; transition:all 0.3s;
+    }
+    #back-btn:hover { border-color:var(--gold); color:var(--gold); background:rgba(196,151,58,0.05); }
+
+    #node-count {
+      position:fixed; bottom:28px; right:28px; z-index:5;
+      font-size:10px; letter-spacing:0.12em; color:rgba(255,255,255,0.22);
+    }
+    #legend {
+      position:fixed; top:90px; right:24px; z-index:5;
+      display:flex; flex-direction:column; gap:9px;
+    }
+    .leg-item { display:flex; align-items:center; gap:8px; font-size:10px; letter-spacing:0.12em; color:rgba(255,255,255,0.38); }
+    .leg-dot  { border-radius:50%; flex-shrink:0; }
+  </style>
+</head>
+<body>
+
+<canvas id="stars-canvas"></canvas>
+<svg id="map-svg"></svg>
+<div id="tooltip"><div class="tip-title"></div><div class="tip-type"></div></div>
+
+<div id="ui-overlay">
+  <h1>FRQNCY NETWORK</h1>
+  <p>DRAG · SCROLL TO ZOOM · HOVER TO EXPLORE</p>
+</div>
+
+<div id="legend">
+  <div class="leg-item"><div class="leg-dot" style="width:14px;height:14px;background:linear-gradient(135deg,#F0D080,#C4973A);"></div>CORE</div>
+  <div class="leg-item"><div class="leg-dot" style="width:10px;height:10px;background:linear-gradient(135deg,#4A7AE8,#1A3A8F);"></div>PILLARS</div>
+  <div class="leg-item"><div class="leg-dot" style="width:8px;height:8px;background:linear-gradient(135deg,#2952B3,#0B2060);"></div>DOMAINS</div>
+  <div class="leg-item"><div class="leg-dot" style="width:6px;height:6px;background:linear-gradient(135deg,#1E3A7A,#0D1F45);"></div>TOPICS</div>
+  <div class="leg-item"><div class="leg-dot" style="width:7px;height:7px;background:#FFFFFF;box-shadow:0 0 6px rgba(255,255,255,0.8);"></div>HUMANS</div>
+</div>
+
+<button id="back-btn" onclick="window.location.href='../index.html'">← RETURN TO FRQNCY</button>
+<div id="node-count"></div>
+
+<script>
+/* ── Stars ── */
+(function(){
+  const c = document.getElementById('stars-canvas');
+  const ctx = c.getContext('2d');
+  let stars = [];
+  function resize(){ c.width=innerWidth; c.height=innerHeight; }
+  function initStars(){
+    stars=[];
+    for(let i=0;i<340;i++) stars.push({x:Math.random()*c.width,y:Math.random()*c.height,r:Math.random()*1.5+0.2,a:Math.random()*0.6+0.1});
+  }
+  function drawStars(){
+    ctx.clearRect(0,0,c.width,c.height);
+    stars.forEach(s=>{ ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fillStyle=`rgba(255,255,255,${s.a})`; ctx.fill(); });
+  }
+  window.addEventListener('resize',()=>{ resize(); initStars(); drawStars(); });
+  resize(); initStars(); drawStars();
+})();
+
+/* ──────────── DATA ──────────── */
+const NODES = [
+  // Core
+  { id:"frqncy",       label:"FRQNCY",               type:"core",    r:52, desc:"The living network of consciousness" },
+  // Main pillars
+  { id:"light",        label:"Light Dominance",      type:"main",    r:33, desc:"The primacy of light in all creation" },
+  { id:"consciousness",label:"Consciousness",         type:"main",    r:34, desc:"The awakening field of awareness" },
+  { id:"network-state",label:"Network State",         type:"main",    r:30, desc:"Sovereign communities of the future" },
+  { id:"education",    label:"Education",             type:"main",    r:30, desc:"Wisdom transmission and learning" },
+  { id:"fund",         label:"Fund",                  type:"main",    r:29, desc:"Conscious capital for transformation" },
+  // Domain clusters
+  { id:"d-sciences",   label:"Sciences",              type:"cluster", r:24, desc:"Empirical exploration of reality" },
+  { id:"d-tech",       label:"Technology",            type:"cluster", r:24, desc:"Tools shaping the future" },
+  { id:"d-arts",       label:"Arts & Culture",        type:"cluster", r:23, desc:"Expression of the human spirit" },
+  { id:"d-nature",     label:"Nature & Cosmos",       type:"cluster", r:24, desc:"The living systems of existence" },
+  { id:"d-business",   label:"Business & Finance",    type:"cluster", r:23, desc:"Regenerative economic systems" },
+  { id:"d-meta",       label:"Metaphysics",           type:"cluster", r:25, desc:"The architecture of reality" },
+  { id:"d-lifestyle",  label:"Lifestyle",             type:"cluster", r:22, desc:"Conscious ways of living" },
+  { id:"d-creation",   label:"Creation",              type:"cluster", r:23, desc:"Building what has never existed" },
+  { id:"d-wellbeing",  label:"Well-being",            type:"cluster", r:24, desc:"Healing and wholeness" },
+  { id:"d-society",    label:"Society & Networks",    type:"cluster", r:23, desc:"Collective human systems" },
+  // Sciences
+  { id:"t-quantum",    label:"Quantum Physics",       type:"topic", r:14 },
+  { id:"t-neuro",      label:"Neuroscience",          type:"topic", r:14 },
+  { id:"t-bio",        label:"Biology",               type:"topic", r:13 },
+  { id:"t-psych",      label:"Psychology",            type:"topic", r:14 },
+  { id:"t-med",        label:"Medicine",              type:"topic", r:13 },
+  { id:"t-math",       label:"Mathematics",           type:"topic", r:13 },
+  { id:"t-astrophys",  label:"Astrophysics",          type:"topic", r:14 },
+  { id:"t-ecology",    label:"Ecology",               type:"topic", r:13 },
+  { id:"t-genetics",   label:"Genetics",              type:"topic", r:13 },
+  { id:"t-chemistry",  label:"Chemistry",             type:"topic", r:12 },
+  // Technology
+  { id:"t-ai",         label:"Artificial Intelligence",type:"topic", r:16 },
+  { id:"t-blockchain", label:"Blockchain",            type:"topic", r:15 },
+  { id:"t-decentral",  label:"Decentralized Networks",type:"topic", r:15 },
+  { id:"t-arvr",       label:"AR / VR",               type:"topic", r:13 },
+  { id:"t-biotech",    label:"Biotechnology",         type:"topic", r:14 },
+  { id:"t-robotics",   label:"Robotics",              type:"topic", r:13 },
+  { id:"t-web3",       label:"Web3",                  type:"topic", r:15 },
+  { id:"t-quantcomp",  label:"Quantum Computing",     type:"topic", r:14 },
+  { id:"t-cybersec",   label:"Cybersecurity",         type:"topic", r:13 },
+  // Arts & Culture
+  { id:"t-music",      label:"Music",                 type:"topic", r:16 },
+  { id:"t-visual",     label:"Visual Art",            type:"topic", r:14 },
+  { id:"t-film",       label:"Film",                  type:"topic", r:13 },
+  { id:"t-poetry",     label:"Poetry",                type:"topic", r:13 },
+  { id:"t-dance",      label:"Dance",                 type:"topic", r:13 },
+  { id:"t-archit",     label:"Architecture",          type:"topic", r:13 },
+  { id:"t-fashion",    label:"Fashion",               type:"topic", r:12 },
+  { id:"t-story",      label:"Storytelling",          type:"topic", r:14 },
+  { id:"t-photo",      label:"Photography",           type:"topic", r:12 },
+  { id:"t-theater",    label:"Theater",               type:"topic", r:12 },
+  // Nature & Cosmos
+  { id:"t-sacredgeo",  label:"Sacred Geometry",       type:"topic", r:15 },
+  { id:"t-astrology",  label:"Astrology",             type:"topic", r:14 },
+  { id:"t-climate",    label:"Climate",               type:"topic", r:14 },
+  { id:"t-biodivers",  label:"Biodiversity",          type:"topic", r:13 },
+  { id:"t-oceans",     label:"Oceans",                type:"topic", r:13 },
+  { id:"t-forests",    label:"Forests",               type:"topic", r:13 },
+  { id:"t-cosmos",     label:"Stars & Planets",       type:"topic", r:14 },
+  { id:"t-efields",    label:"Energy Fields",         type:"topic", r:14 },
+  { id:"t-cycles",     label:"Seasons & Cycles",      type:"topic", r:13 },
+  // Business & Finance
+  { id:"t-defi",       label:"DeFi",                  type:"topic", r:15 },
+  { id:"t-impact",     label:"Impact Investing",      type:"topic", r:14 },
+  { id:"t-socialent",  label:"Social Enterprise",     type:"topic", r:14 },
+  { id:"t-circular",   label:"Circular Economy",      type:"topic", r:14 },
+  { id:"t-conscap",    label:"Conscious Capital",     type:"topic", r:14 },
+  { id:"t-regenbiz",   label:"Regenerative Business", type:"topic", r:14 },
+  { id:"t-dao",        label:"DAOs",                  type:"topic", r:13 },
+  // Metaphysics
+  { id:"t-oneness",    label:"Oneness",               type:"topic", r:16 },
+  { id:"t-source",     label:"Source Energy",         type:"topic", r:15 },
+  { id:"t-soul",       label:"Soul Purpose",          type:"topic", r:14 },
+  { id:"t-akashic",    label:"Akashic Records",       type:"topic", r:14 },
+  { id:"t-dims",       label:"Higher Dimensions",     type:"topic", r:14 },
+  { id:"t-sync",       label:"Synchronicity",         type:"topic", r:13 },
+  { id:"t-saclaw",     label:"Sacred Law",            type:"topic", r:13 },
+  { id:"t-merkaba",    label:"Merkaba",               type:"topic", r:13 },
+  { id:"t-vibration",  label:"Vibration & Frequency", type:"topic", r:15 },
+  // Lifestyle
+  { id:"t-nutrition",  label:"Nutrition",             type:"topic", r:13 },
+  { id:"t-movement",   label:"Movement",              type:"topic", r:13 },
+  { id:"t-sleep",      label:"Sleep",                 type:"topic", r:12 },
+  { id:"t-plantmed",   label:"Plant Medicine",        type:"topic", r:14 },
+  { id:"t-community",  label:"Community Living",      type:"topic", r:14 },
+  { id:"t-minimalism", label:"Minimalism",            type:"topic", r:13 },
+  { id:"t-detox",      label:"Digital Detox",         type:"topic", r:12 },
+  { id:"t-sustliving", label:"Sustainable Living",    type:"topic", r:14 },
+  // Creation & Innovation
+  { id:"t-proddesign", label:"Product Design",        type:"topic", r:13 },
+  { id:"t-systems",    label:"Systems Thinking",      type:"topic", r:14 },
+  { id:"t-opensource", label:"Open Source",           type:"topic", r:14 },
+  { id:"t-cocreate",   label:"Co-creation",           type:"topic", r:14 },
+  { id:"t-proto",      label:"Prototyping",           type:"topic", r:13 },
+  { id:"t-emergence",  label:"Emergence",             type:"topic", r:14 },
+  { id:"t-biomimicry", label:"Biomimicry",            type:"topic", r:14 },
+  { id:"t-futuretech", label:"Future of Work",        type:"topic", r:13 },
+  // Well-being
+  { id:"t-meditation", label:"Meditation",            type:"topic", r:16 },
+  { id:"t-soundheal",  label:"Sound Healing",         type:"topic", r:15 },
+  { id:"t-breathwork", label:"Breathwork",            type:"topic", r:14 },
+  { id:"t-somatic",    label:"Somatic Therapy",       type:"topic", r:14 },
+  { id:"t-energyheal", label:"Energy Healing",        type:"topic", r:14 },
+  { id:"t-yoga",       label:"Yoga",                  type:"topic", r:14 },
+  { id:"t-mentalhlth", label:"Mental Health",         type:"topic", r:14 },
+  { id:"t-trauma",     label:"Trauma Healing",        type:"topic", r:14 },
+  // Society & Networks
+  { id:"t-governance", label:"Global Governance",     type:"topic", r:14 },
+  { id:"t-indigenous", label:"Indigenous Wisdom",     type:"topic", r:15 },
+  { id:"t-collective", label:"Collective Intelligence",type:"topic", r:15 },
+  { id:"t-socialmov",  label:"Social Movements",      type:"topic", r:14 },
+  { id:"t-peace",      label:"Peace Building",        type:"topic", r:14 },
+  { id:"t-futurecity", label:"Future Cities",         type:"topic", r:14 },
+  { id:"t-edusystem",  label:"Education Systems",     type:"topic", r:14 },
+  { id:"t-diaspora",   label:"Global Diaspora",       type:"topic", r:13 },
+];
+
+// 30 human dots with staggered pulse offsets
+const DOT_R = [6,5,7,5,6,7,5,6,5,7,6,5,6,7,5,6,5,7,6,5,7,6,5,6,5,7,5,6,7,5];
+for(let i=1;i<=30;i++){
+  NODES.push({ id:`h-${i}`, label:"", type:"dot", r:DOT_R[i-1], pulseOffset: i*0.37 });
+}
+
+/* ── Seeded rand for deterministic dot links ── */
+function seededRand(seed){
+  let x = seed*9301+49297;
+  return ()=>{ x=(x*9301+49297)%233280; return x/233280; };
+}
+
+const RAW_LINKS = [
+  // Core → main
+  ["frqncy","light"],["frqncy","consciousness"],["frqncy","network-state"],
+  ["frqncy","education"],["frqncy","fund"],
+  // Core → clusters
+  ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],
+  ["frqncy","d-nature"],["frqncy","d-business"],["frqncy","d-meta"],
+  ["frqncy","d-lifestyle"],["frqncy","d-creation"],["frqncy","d-wellbeing"],
+  ["frqncy","d-society"],
+  // Main → clusters
+  ["light","d-meta"],["light","d-sciences"],["light","d-nature"],["light","d-wellbeing"],
+  ["consciousness","d-meta"],["consciousness","d-sciences"],["consciousness","d-wellbeing"],["consciousness","d-lifestyle"],
+  ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],["network-state","d-creation"],
+  ["education","d-sciences"],["education","d-arts"],["education","d-creation"],["education","d-society"],
+  ["fund","d-business"],["fund","d-tech"],["fund","d-creation"],["fund","d-society"],
+  // Sciences
+  ["d-sciences","t-quantum"],["d-sciences","t-neuro"],["d-sciences","t-bio"],
+  ["d-sciences","t-psych"],["d-sciences","t-med"],["d-sciences","t-math"],
+  ["d-sciences","t-astrophys"],["d-sciences","t-ecology"],["d-sciences","t-genetics"],
+  ["d-sciences","t-chemistry"],
+  // Technology
+  ["d-tech","t-ai"],["d-tech","t-blockchain"],["d-tech","t-decentral"],
+  ["d-tech","t-arvr"],["d-tech","t-biotech"],["d-tech","t-robotics"],
+  ["d-tech","t-web3"],["d-tech","t-quantcomp"],["d-tech","t-cybersec"],
+  // Arts
+  ["d-arts","t-music"],["d-arts","t-visual"],["d-arts","t-film"],
+  ["d-arts","t-poetry"],["d-arts","t-dance"],["d-arts","t-archit"],
+  ["d-arts","t-fashion"],["d-arts","t-story"],["d-arts","t-photo"],["d-arts","t-theater"],
+  // Nature
+  ["d-nature","t-sacredgeo"],["d-nature","t-astrology"],["d-nature","t-climate"],
+  ["d-nature","t-biodivers"],["d-nature","t-oceans"],["d-nature","t-forests"],
+  ["d-nature","t-cosmos"],["d-nature","t-efields"],["d-nature","t-cycles"],
+  // Business
+  ["d-business","t-defi"],["d-business","t-impact"],["d-business","t-socialent"],
+  ["d-business","t-circular"],["d-business","t-conscap"],["d-business","t-regenbiz"],["d-business","t-dao"],
+  // Metaphysics
+  ["d-meta","t-oneness"],["d-meta","t-source"],["d-meta","t-soul"],
+  ["d-meta","t-akashic"],["d-meta","t-dims"],["d-meta","t-sync"],
+  ["d-meta","t-saclaw"],["d-meta","t-merkaba"],["d-meta","t-vibration"],
+  // Lifestyle
+  ["d-lifestyle","t-nutrition"],["d-lifestyle","t-movement"],["d-lifestyle","t-sleep"],
+  ["d-lifestyle","t-plantmed"],["d-lifestyle","t-community"],["d-lifestyle","t-minimalism"],
+  ["d-lifestyle","t-detox"],["d-lifestyle","t-sustliving"],
+  // Creation
+  ["d-creation","t-proddesign"],["d-creation","t-systems"],["d-creation","t-opensource"],
+  ["d-creation","t-cocreate"],["d-creation","t-proto"],["d-creation","t-emergence"],
+  ["d-creation","t-biomimicry"],["d-creation","t-futuretech"],
+  // Well-being
+  ["d-wellbeing","t-meditation"],["d-wellbeing","t-soundheal"],["d-wellbeing","t-breathwork"],
+  ["d-wellbeing","t-somatic"],["d-wellbeing","t-energyheal"],["d-wellbeing","t-yoga"],
+  ["d-wellbeing","t-mentalhlth"],["d-wellbeing","t-trauma"],
+  // Society
+  ["d-society","t-governance"],["d-society","t-indigenous"],["d-society","t-collective"],
+  ["d-society","t-socialmov"],["d-society","t-peace"],["d-society","t-futurecity"],
+  ["d-society","t-edusystem"],["d-society","t-diaspora"],
+  // Cross-domain
+  ["t-quantum","t-oneness"],["t-quantum","t-vibration"],
+  ["t-neuro","t-meditation"],["t-neuro","t-trauma"],["t-neuro","t-psych"],
+  ["t-psych","t-mentalhlth"],["t-psych","t-somatic"],
+  ["t-bio","t-ecology"],["t-genetics","t-biotech"],["t-med","t-mentalhlth"],
+  ["t-ai","t-systems"],["t-ai","t-collective"],["t-ai","t-futuretech"],
+  ["t-blockchain","t-defi"],["t-blockchain","t-dao"],
+  ["t-web3","t-decentral"],["t-web3","t-dao"],
+  ["t-music","t-soundheal"],["t-music","t-vibration"],
+  ["t-sacredgeo","t-merkaba"],["t-sacredgeo","t-dims"],["t-sacredgeo","t-math"],
+  ["t-astrology","t-cycles"],["t-cosmos","t-astrophys"],
+  ["t-indigenous","t-saclaw"],["t-indigenous","t-ecology"],["t-indigenous","t-story"],
+  ["t-plantmed","t-energyheal"],["t-plantmed","t-med"],
+  ["t-yoga","t-movement"],["t-yoga","t-breathwork"],
+  ["t-community","t-cocreate"],["t-community","t-peace"],
+  ["t-emergence","t-systems"],["t-biomimicry","t-ecology"],
+  ["t-sustliving","t-circular"],["t-regenbiz","t-sustliving"],
+  ["t-conscap","t-impact"],["t-conscap","t-regenbiz"],
+  ["t-collective","t-cocreate"],["t-collective","t-governance"],
+  ["t-futurecity","t-archit"],["t-futurecity","t-systems"],
+  ["t-source","t-efields"],["t-source","t-vibration"],
+  ["t-oneness","t-collective"],["t-oneness","t-source"],
+  ["t-soul","t-sync"],["t-soul","t-source"],
+  ["t-edusystem","t-collective"],["t-opensource","t-decentral"],
+  ["t-diaspora","t-socialmov"],["t-diaspora","t-community"],
+  ["t-detox","t-minimalism"],["t-dance","t-movement"],
+  ["t-efields","t-energyheal"],["t-efields","t-vibration"],
+  ["t-archit","t-sacredgeo"],["t-story","t-film"],["t-poetry","t-story"],
+];
+
+// Separate passion links from structural links
+const LINKS = RAW_LINKS.map(([s,t])=>({source:s,target:t,isPassion:false}));
+
+const topicIds = NODES.filter(n=>n.type==="topic").map(n=>n.id);
+// Store dot→topic connections separately for rendering
+const DOT_LINKS = [];
+NODES.filter(n=>n.type==="dot").forEach((dot,i)=>{
+  const rnd = seededRand(i*37+13);
+  const count = 2+Math.floor(rnd()*3);
+  const pool = [...topicIds].sort(()=>rnd()-0.5);
+  for(let j=0;j<count;j++){
+    const link = {source:dot.id, target:pool[j], isPassion:true};
+    LINKS.push(link);
+    DOT_LINKS.push(link);
+  }
+});
+
+document.getElementById('node-count').textContent =
+  `${NODES.length} nodes · ${LINKS.length} connections`;
+
+/* ──────────── D3 SETUP ──────────── */
+const W = window.innerWidth, H = window.innerHeight;
+const svg  = d3.select('#map-svg');
+const defs = svg.append('defs');
+
+// Radial gradients
+[
+  {id:'grad-core',    c1:'#F0D080', c2:'#B8852A'},
+  {id:'grad-main',    c1:'#5A8AFF', c2:'#1A3A8F'},
+  {id:'grad-cluster', c1:'#3062C8', c2:'#0B2060'},
+  {id:'grad-topic',   c1:'#1E3A7A', c2:'#0A1830'},
+].forEach(g=>{
+  const gr = defs.append('radialGradient').attr('id',g.id).attr('cx','38%').attr('cy','32%');
+  gr.append('stop').attr('offset','0%').attr('stop-color',g.c1);
+  gr.append('stop').attr('offset','100%').attr('stop-color',g.c2);
+});
+
+// White glow gradient for human dots
+const humanGrad = defs.append('radialGradient').attr('id','grad-human').attr('cx','40%').attr('cy','35%');
+humanGrad.append('stop').attr('offset','0%').attr('stop-color','#FFFFFF');
+humanGrad.append('stop').attr('offset','100%').attr('stop-color','rgba(200,220,255,0.7)');
+
+// Glow filters
+[
+  {id:'glow-gold',    dev:10},
+  {id:'glow-blue',    dev:12},
+  {id:'glow-cluster', dev:7 },
+  {id:'glow-soft',    dev:5 },
+  {id:'glow-human',   dev:6 },
+].forEach(g=>{
+  const f = defs.append('filter').attr('id',g.id)
+    .attr('x','-80%').attr('y','-80%').attr('width','260%').attr('height','260%');
+  f.append('feGaussianBlur').attr('stdDeviation',g.dev).attr('result','blur');
+  const fm = f.append('feMerge');
+  fm.append('feMergeNode').attr('in','blur');
+  fm.append('feMergeNode').attr('in','SourceGraphic');
+});
+
+// Passion link filter — warm white soft blur
+const pf = defs.append('filter').attr('id','glow-passion')
+  .attr('x','-50%').attr('y','-50%').attr('width','200%').attr('height','200%');
+pf.append('feGaussianBlur').attr('stdDeviation',2).attr('result','blur');
+const pfm = pf.append('feMerge');
+pfm.append('feMergeNode').attr('in','blur');
+pfm.append('feMergeNode').attr('in','SourceGraphic');
+
+/* ── Zoom ── */
+const zoomG = svg.append('g');
+svg.call(d3.zoom().scaleExtent([0.1,3.5]).on('zoom', e=>zoomG.attr('transform',e.transform)));
+
+/* ── Simulation ── */
+const sim = d3.forceSimulation(NODES)
+  .force('link', d3.forceLink(LINKS).id(d=>d.id)
+    .distance(d=>{
+      const s=d.source.type||'topic', t=d.target.type||'topic';
+      if(d.isPassion) return 100;
+      if(s==='core'||t==='core') return (t==='main'||s==='main')?210:260;
+      if(s==='main'||t==='main') return 175;
+      if(s==='cluster'||t==='cluster') return (t==='topic'||s==='topic')?110:145;
+      return 85;
+    })
+    .strength(d=>{
+      if(d.isPassion) return 0.22;
+      const s=d.source.type||'topic', t=d.target.type||'topic';
+      if(s==='core'||t==='core') return 0.55;
+      return 0.38;
+    })
+  )
+  .force('charge', d3.forceManyBody().strength(d=>{
+    switch(d.type){
+      case 'core':    return -1600;
+      case 'main':    return -750;
+      case 'cluster': return -400;
+      case 'topic':   return -130;
+      case 'dot':     return -20;
+      default:        return -80;
+    }
+  }))
+  .force('center', d3.forceCenter(W/2, H/2).strength(0.04))
+  .force('collide', d3.forceCollide(d=>d.r+(d.type==='dot'?12:9)).strength(0.7))
+  .alphaDecay(0.022)
+  .velocityDecay(0.4);
+
+/* ── Render layers (order matters for z-depth) ── */
+
+// 1. Passion links (behind everything, subtle glow)
+const passionLinkG = zoomG.append('g').attr('class','passion-links');
+const passionLinkSel = passionLinkG.selectAll('line')
+  .data(LINKS.filter(l=>l.isPassion))
+  .join('line')
+  .attr('stroke','rgba(255,255,255,0.28)')
+  .attr('stroke-width',0.9)
+  .attr('filter','url(#glow-passion)');
+
+// 2. Structural links
+const linkG = zoomG.append('g').attr('class','struct-links');
+const linkSel = linkG.selectAll('line')
+  .data(LINKS.filter(l=>!l.isPassion))
+  .join('line')
+  .attr('stroke', d=>{
+    const s=typeof d.source==='object'?d.source.type:'x';
+    const t=typeof d.target==='object'?d.target.type:'x';
+    if(s==='core'||t==='core') return 'rgba(196,151,58,0.48)';
+    if(s==='main'||t==='main') return 'rgba(74,122,232,0.32)';
+    return 'rgba(41,82,179,0.2)';
+  })
+  .attr('stroke-width', d=>{
+    const s=typeof d.source==='object'?d.source.type:'x';
+    if(s==='core') return 1.8;
+    if(s==='main') return 1.2;
+    return 0.75;
+  });
+
+// 3. Human dot nodes (drawn BEFORE topic nodes so they sit behind)
+const dotG = zoomG.append('g').attr('class','dot-nodes');
+const dotSel = dotG.selectAll('g.dot')
+  .data(NODES.filter(n=>n.type==='dot'))
+  .join('g').attr('class','dot').style('cursor','default');
+
+// Outer glow ring (pulsing via CSS)
+dotSel.append('circle')
+  .attr('r', d=>d.r+9)
+  .attr('fill','rgba(255,255,255,0.07)')
+  .attr('stroke','rgba(255,255,255,0.18)')
+  .attr('stroke-width',0.8)
+  .attr('class','human-glow')
+  .style('animation-delay', d=>`${d.pulseOffset}s`);
+
+// White core dot
+dotSel.append('circle')
+  .attr('r', d=>d.r)
+  .attr('fill','url(#grad-human)')
+  .attr('stroke','rgba(255,255,255,0.5)')
+  .attr('stroke-width',0.6)
+  .attr('filter','url(#glow-human)')
+  .attr('class','human-dot')
+  .style('animation-delay', d=>`${d.pulseOffset}s`);
+
+// 4. Topic/cluster/core/main nodes
+const nodeG = zoomG.append('g').attr('class','topic-nodes');
+const nodeSel = nodeG.selectAll('g.node')
+  .data(NODES.filter(n=>n.type!=='dot'))
+  .join('g').attr('class','node').style('cursor','pointer');
+
+// Outer glow ring
+nodeSel.filter(d=>d.type==='core'||d.type==='main'||d.type==='cluster')
+  .append('circle')
+  .attr('r', d=>d.r+(d.type==='core'?22:d.type==='main'?14:9))
+  .attr('fill','none')
+  .attr('filter', d=>d.type==='core'?'url(#glow-gold)':d.type==='main'?'url(#glow-blue)':'url(#glow-cluster)')
+  .attr('stroke', d=>d.type==='core'?'rgba(196,151,58,0.28)':d.type==='main'?'rgba(74,122,232,0.2)':'rgba(41,82,179,0.12)')
+  .attr('stroke-width', d=>d.type==='core'?2.5:1.5);
+
+// Topic subtle glow
+nodeSel.filter(d=>d.type==='topic')
+  .append('circle')
+  .attr('r', d=>d.r+5)
+  .attr('fill','none')
+  .attr('filter','url(#glow-soft)')
+  .attr('stroke','rgba(41,82,179,0.1)')
+  .attr('stroke-width',0.5);
+
+// Main body
+nodeSel.append('circle')
+  .attr('r', d=>d.r)
+  .attr('fill', d=>`url(#grad-${d.type==='cluster'?'cluster':d.type==='topic'?'topic':d.type})`)
+  .attr('stroke', d=>{
+    if(d.type==='core')    return '#E8C97D';
+    if(d.type==='main')    return '#4A7AE8';
+    if(d.type==='cluster') return '#2952B3';
+    return '#1A3A8F';
+  })
+  .attr('stroke-width', d=>d.type==='core'?2.5:1);
+
+// Labels
+nodeSel.append('text')
+  .attr('text-anchor','middle')
+  .attr('dominant-baseline','central')
+  .attr('fill', d=>{
+    if(d.type==='core')    return '#0B1C3D';
+    if(d.type==='main')    return '#FFFFFF';
+    if(d.type==='cluster') return '#E8C97D';
+    return 'rgba(180,212,255,0.88)';
+  })
+  .attr('font-family', d=>(d.type==='core'||d.type==='main')?'Cormorant, Georgia, serif':"'Jost', sans-serif")
+  .attr('font-size', d=>d.type==='core'?'15px':d.type==='main'?'10.5px':d.type==='cluster'?'9.5px':'8px')
+  .attr('font-weight', d=>d.type==='core'?'500':'300')
+  .attr('letter-spacing', d=>d.type==='core'?'0.18em':'0.04em')
+  .attr('pointer-events','none')
+  .each(function(d){
+    const el = d3.select(this);
+    if(d.type==='topic' && d.label.length>14){
+      const words = d.label.split(' ');
+      const mid = Math.ceil(words.length/2);
+      el.append('tspan').attr('x',0).attr('dy','-0.5em').text(words.slice(0,mid).join(' '));
+      el.append('tspan').attr('x',0).attr('dy','1em').text(words.slice(mid).join(' '));
+    } else {
+      el.text(d.label);
+    }
+  });
+
+/* ── Drag (all nodes) ── */
+const allNodeSel = d3.selectAll('#map-svg g.node, #map-svg g.dot');
+allNodeSel.call(
+  d3.drag()
+    .on('start',(e,d)=>{ if(!e.active) sim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+    .on('drag', (e,d)=>{ d.fx=e.x; d.fy=e.y; })
+    .on('end',  (e,d)=>{ if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null; })
+);
+
+/* ── Tooltip ── */
+const tip = document.getElementById('tooltip');
+const typeLabels = {core:'FRQNCY CORE',main:'PILLAR',cluster:'DOMAIN',topic:'TOPIC'};
+
+nodeSel
+  .on('mouseover',(e,d)=>{
+    tip.querySelector('.tip-title').textContent = d.label;
+    tip.querySelector('.tip-type').textContent = (d.desc||'')+' · '+typeLabels[d.type];
+    tip.style.opacity=1;
+    const connected = new Set([d.id]);
+    LINKS.forEach(l=>{
+      const s=typeof l.source==='object'?l.source.id:l.source;
+      const t=typeof l.target==='object'?l.target.id:l.target;
+      if(s===d.id) connected.add(t);
+      if(t===d.id) connected.add(s);
+    });
+    nodeSel.style('opacity',n=>connected.has(n.id)?1:0.06);
+    dotSel.style('opacity',0.08);
+    passionLinkSel.style('opacity',0.04);
+    linkSel.style('opacity',l=>{
+      const s=typeof l.source==='object'?l.source.id:l.source;
+      const t=typeof l.target==='object'?l.target.id:l.target;
+      return (s===d.id||t===d.id)?0.9:0.03;
+    });
+  })
+  .on('mousemove',e=>{ tip.style.left=(e.clientX+18)+'px'; tip.style.top=(e.clientY-14)+'px'; })
+  .on('mouseout',()=>{
+    tip.style.opacity=0;
+    nodeSel.style('opacity',1);
+    dotSel.style('opacity',1);
+    passionLinkSel.style('opacity',1);
+    linkSel.style('opacity',1);
+  });
+
+/* ── Tick ── */
+sim.on('tick',()=>{
+  // Structural links
+  linkSel
+    .attr('x1',d=>d.source.x).attr('y1',d=>d.source.y)
+    .attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+  // Passion links
+  passionLinkSel
+    .attr('x1',d=>d.source.x).attr('y1',d=>d.source.y)
+    .attr('x2',d=>d.target.x).attr('y2',d=>d.target.y);
+  // Dot nodes
+  dotSel.attr('transform',d=>`translate(${d.x},${d.y})`);
+  // Topic/main/core nodes
+  nodeSel.attr('transform',d=>`translate(${d.x},${d.y})`);
+});
+
+/* ── Pulse signals along structural links ── */
+const majorLinks = LINKS.filter(l=>!l.isPassion).filter(l=>{
+  const s=typeof l.source==='object'?l.source.type:'x';
+  return s==='core'||s==='main';
+});
+
+function fireSignal(){
+  if(!majorLinks.length) return;
+  const l = majorLinks[Math.floor(Math.random()*majorLinks.length)];
+  const s=l.source, t=l.target;
+  if(!s||!t||s.x===undefined) return;
+  zoomG.append('circle')
+    .attr('r',2.2).attr('fill','rgba(240,208,100,0.9)').attr('pointer-events','none')
+    .transition().duration(1100).ease(d3.easeLinear)
+    .attrTween('cx',()=>d3.interpolateNumber(s.x,t.x))
+    .attrTween('cy',()=>d3.interpolateNumber(s.y,t.y))
+    .on('end',function(){ d3.select(this).remove(); });
+}
+
+/* ── Pulse signals along passion links (human → topic) ── */
+function firePassionSignal(){
+  const pl = LINKS.filter(l=>l.isPassion);
+  if(!pl.length) return;
+  const l = pl[Math.floor(Math.random()*pl.length)];
+  const s=l.source, t=l.target;
+  if(!s||!t||s.x===undefined) return;
+  // Determine forward/backward randomly for organic feel
+  const fwd = Math.random()>0.5;
+  const sx = fwd?s.x:t.x, sy = fwd?s.y:t.y;
+  const tx = fwd?t.x:s.x, ty = fwd?t.y:s.y;
+  zoomG.append('circle')
+    .attr('r',1.5).attr('fill','rgba(255,255,255,0.75)').attr('pointer-events','none')
+    .transition().duration(900).ease(d3.easeQuadInOut)
+    .attrTween('cx',()=>d3.interpolateNumber(sx,tx))
+    .attrTween('cy',()=>d3.interpolateNumber(sy,ty))
+    .style('opacity',0)
+    .on('end',function(){ d3.select(this).remove(); });
+}
+
+// Start after sim warms up
+setTimeout(()=>{
+  setInterval(fireSignal,        270);
+  setInterval(firePassionSignal, 180); // faster — humans are always interacting
+}, 2500);
+</script>
+</body>
+</html>

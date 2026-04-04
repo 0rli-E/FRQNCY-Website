@@ -1,0 +1,1038 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRQNCY — Built on the Foundations of Oneness</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #F9F7F2;
+      --warm-white: #FDFCF9;
+      --dark: #0F0F0D;
+      --dark-2: #1C1C19;
+      --mid: #4A4A44;
+      --light-mid: #8A8A80;
+      --gold: #C4973A;
+      --gold-light: #E8C97D;
+      --pure-white: #FFFFFF;
+      --font-display: 'Cormorant', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+      --section-pad: clamp(80px, 12vw, 160px);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--dark);
+      background: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* =====================
+       NAV
+    ===================== */
+    nav {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 500;
+      padding: 28px clamp(24px, 5vw, 80px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, padding 0.4s, box-shadow 0.4s;
+    }
+    nav.scrolled {
+      background: rgba(249, 247, 242, 0.93);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      padding: 18px clamp(24px, 5vw, 80px);
+      box-shadow: 0 1px 0 rgba(0,0,0,0.07);
+    }
+    nav.over-dark {
+      background: transparent;
+    }
+    nav.over-dark .nav-logo,
+    nav.over-dark .nav-links a {
+      color: var(--cream);
+    }
+    nav.over-dark.scrolled {
+      background: rgba(15, 15, 13, 0.88);
+    }
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: 22px;
+      letter-spacing: 0.38em;
+      color: var(--dark);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--dark);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+
+    /* =====================
+       SECTION 1: LIGHT INTRO
+    ===================== */
+    #light-intro {
+      position: relative;
+      width: 100%;
+      height: 100vh;
+      background: #080806;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      overflow: hidden;
+    }
+
+    /* The orb */
+    .light-orb {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      width: 6px;
+      height: 6px;
+      border-radius: 50%;
+      background: #FFFFFF;
+      transform: translate(-50%, -50%);
+      animation: orbExpand 3.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
+      z-index: 2;
+    }
+
+    @keyframes orbExpand {
+      0% {
+        width: 4px;
+        height: 4px;
+        opacity: 0;
+        box-shadow:
+          0 0 8px 4px rgba(255,255,255,0.95),
+          0 0 20px 10px rgba(255,255,255,0.5);
+      }
+      8% {
+        opacity: 1;
+        width: 8px;
+        height: 8px;
+        box-shadow:
+          0 0 30px 20px rgba(255,255,255,1),
+          0 0 80px 50px rgba(255,255,255,0.7),
+          0 0 140px 100px rgba(255,255,255,0.3);
+      }
+      30% {
+        width: 24px;
+        height: 24px;
+        box-shadow:
+          0 0 80px 60px rgba(255,255,255,1),
+          0 0 200px 140px rgba(255,255,255,0.8),
+          0 0 400px 280px rgba(255,255,255,0.4),
+          0 0 700px 500px rgba(255,240,200,0.2);
+      }
+      65% {
+        width: 120px;
+        height: 120px;
+        box-shadow:
+          0 0 200px 160px rgba(255,255,255,1),
+          0 0 500px 400px rgba(255,255,255,0.95),
+          0 0 900px 700px rgba(255,248,220,0.7);
+      }
+      100% {
+        width: 4000px;
+        height: 4000px;
+        opacity: 1;
+        box-shadow: 0 0 0 0 transparent;
+      }
+    }
+
+    /* Background fade from dark to white */
+    .intro-bg-fill {
+      position: absolute;
+      inset: 0;
+      background: #FFFFFF;
+      opacity: 0;
+      animation: bgFade 3.2s ease-in-out forwards;
+      z-index: 1;
+    }
+    @keyframes bgFade {
+      0%   { opacity: 0; }
+      50%  { opacity: 0; }
+      80%  { opacity: 0.7; }
+      100% { opacity: 1; }
+    }
+
+    /* Floating particles (light motes) */
+    #particles-canvas {
+      position: absolute;
+      top: 0; left: 0;
+      width: 100%; height: 100%;
+      pointer-events: none;
+      z-index: 3;
+      opacity: 0;
+      animation: particleFadeIn 1s ease 2.5s forwards;
+    }
+    @keyframes particleFadeIn {
+      to { opacity: 1; }
+    }
+
+    /* Wordmark appears after light fills */
+    .intro-wordmark {
+      position: relative;
+      z-index: 4;
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(44px, 7vw, 88px);
+      letter-spacing: 0.45em;
+      color: var(--dark);
+      text-transform: uppercase;
+      opacity: 0;
+      animation: wordmarkReveal 1.4s ease-out 2.8s forwards;
+    }
+    @keyframes wordmarkReveal {
+      from { opacity: 0; transform: translateY(12px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    .scroll-hint {
+      position: absolute;
+      bottom: 44px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 4;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 10px;
+      opacity: 0;
+      animation: wordmarkReveal 1.2s ease-out 3.8s forwards;
+    }
+    .scroll-hint span {
+      font-size: 10px;
+      letter-spacing: 0.35em;
+      text-transform: uppercase;
+      color: var(--light-mid);
+    }
+    .scroll-line {
+      width: 1px;
+      height: 40px;
+      background: linear-gradient(to bottom, var(--light-mid), transparent);
+      animation: scrollPulse 2s ease-in-out 4.2s infinite;
+      transform-origin: top;
+      transform: scaleY(0);
+    }
+    @keyframes scrollPulse {
+      0%   { transform: scaleY(0); transform-origin: top; opacity: 1; }
+      50%  { transform: scaleY(1); transform-origin: top; }
+      51%  { transform-origin: bottom; }
+      100% { transform: scaleY(0); transform-origin: bottom; opacity: 0; }
+    }
+
+    /* =====================
+       SUBSCRIBE OVERLAY
+    ===================== */
+    #subscribe-overlay {
+      position: fixed;
+      inset: 0;
+      background: rgba(249, 247, 242, 0.94);
+      backdrop-filter: blur(28px);
+      -webkit-backdrop-filter: blur(28px);
+      z-index: 1000;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      opacity: 0;
+      pointer-events: none;
+      transition: opacity 0.7s ease;
+    }
+    #subscribe-overlay.visible {
+      opacity: 1;
+      pointer-events: all;
+    }
+    .subscribe-content {
+      text-align: center;
+      padding: 64px 40px;
+      max-width: 540px;
+    }
+    .subscribe-eyebrow {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+    }
+    .subscribe-headline {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(38px, 5.5vw, 58px);
+      line-height: 1.15;
+      color: var(--dark);
+      margin-bottom: 10px;
+    }
+    .subscribe-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .subscribe-sub {
+      font-size: 13px;
+      letter-spacing: 0.08em;
+      color: var(--mid);
+      font-weight: 300;
+      margin-bottom: 44px;
+    }
+    .subscribe-form {
+      display: flex;
+      max-width: 420px;
+      margin: 0 auto 22px;
+      border: 1px solid rgba(196, 151, 58, 0.35);
+    }
+    .subscribe-form input {
+      flex: 1;
+      padding: 15px 20px;
+      border: none;
+      background: transparent;
+      font-family: var(--font-body);
+      font-size: 13px;
+      letter-spacing: 0.05em;
+      color: var(--dark);
+      outline: none;
+    }
+    .subscribe-form input::placeholder { color: var(--light-mid); }
+    .subscribe-form button {
+      padding: 15px 26px;
+      background: var(--dark);
+      border: none;
+      color: var(--cream);
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      cursor: pointer;
+      transition: background 0.25s;
+    }
+    .subscribe-form button:hover { background: var(--gold); }
+    .subscribe-dismiss {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--light-mid);
+      cursor: pointer;
+      background: none;
+      border: none;
+      font-family: var(--font-body);
+      text-decoration: underline;
+      text-underline-offset: 3px;
+      transition: color 0.2s;
+    }
+    .subscribe-dismiss:hover { color: var(--mid); }
+
+    /* =====================
+       SECTION 2: QUOTE
+    ===================== */
+    #quote-section {
+      background: var(--cream);
+      padding: var(--section-pad) clamp(28px, 8vw, 180px);
+      min-height: 70vh;
+      display: flex;
+      align-items: center;
+    }
+    .quote-inner { max-width: 860px; }
+    .quote-mark {
+      font-family: var(--font-display);
+      font-size: 100px;
+      line-height: 0.5;
+      color: var(--gold);
+      display: block;
+      margin-bottom: 28px;
+      opacity: 0.6;
+    }
+    .quote-text {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(26px, 3.8vw, 50px);
+      line-height: 1.35;
+      color: var(--dark);
+      letter-spacing: 0.01em;
+    }
+    .quote-text em {
+      font-style: italic;
+      color: var(--gold);
+    }
+    .quote-divider {
+      width: 56px;
+      height: 1px;
+      background: var(--gold);
+      margin: 44px 0;
+      opacity: 0.5;
+    }
+    .quote-attribution {
+      font-size: 11px;
+      letter-spacing: 0.38em;
+      text-transform: uppercase;
+      color: var(--light-mid);
+    }
+
+    /* =====================
+       SECTION 3: BUBBLE MAP
+    ===================== */
+    #bubble-section {
+      background: var(--dark);
+      padding: var(--section-pad) clamp(24px, 6vw, 120px);
+      position: relative;
+      overflow: hidden;
+    }
+    /* Subtle grain on dark section */
+    #bubble-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='noise'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23noise)' opacity='0.04'/%3E%3C/svg%3E");
+      opacity: 0.4;
+      pointer-events: none;
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+    }
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(30px, 3.8vw, 52px);
+      line-height: 1.2;
+      margin-bottom: 70px;
+      max-width: 580px;
+    }
+    .section-title.light { color: var(--cream); }
+    .section-title.dark  { color: var(--dark); }
+
+    #bubble-map {
+      width: 100%;
+      max-width: 860px;
+      margin: 0 auto;
+      position: relative;
+    }
+    #bubble-svg {
+      width: 100%;
+      height: auto;
+      display: block;
+    }
+    .bubble-connection {
+      stroke: rgba(196, 151, 58, 0.18);
+      stroke-width: 1;
+      stroke-dasharray: 4 6;
+    }
+    .bubble-node { cursor: pointer; }
+    .bubble-node .main-circle {
+      transition: fill 0.3s ease, filter 0.3s ease;
+    }
+    .bubble-node:hover .main-circle {
+      fill: rgba(196, 151, 58, 0.28);
+      filter: drop-shadow(0 0 16px rgba(196, 151, 58, 0.5));
+    }
+    .bubble-node .glow-circle {
+      transition: opacity 0.3s ease;
+      opacity: 0;
+    }
+    .bubble-node:hover .glow-circle { opacity: 1; }
+
+    .node-label {
+      font-family: var(--font-body);
+      font-weight: 400;
+      font-size: 11px;
+      letter-spacing: 0.15em;
+      text-transform: uppercase;
+      fill: rgba(249, 247, 242, 0.75);
+      text-anchor: middle;
+      pointer-events: none;
+      dominant-baseline: middle;
+    }
+    .node-label-center {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 22px;
+      letter-spacing: 0.32em;
+      fill: var(--gold-light);
+      text-anchor: middle;
+      pointer-events: none;
+      dominant-baseline: middle;
+    }
+
+    /* Tooltip */
+    #node-tooltip {
+      position: absolute;
+      background: rgba(28, 28, 25, 0.88);
+      border: 1px solid rgba(196, 151, 58, 0.28);
+      backdrop-filter: blur(20px);
+      -webkit-backdrop-filter: blur(20px);
+      padding: 22px 26px;
+      max-width: 272px;
+      pointer-events: none;
+      opacity: 0;
+      transition: opacity 0.25s ease;
+      z-index: 10;
+    }
+    #node-tooltip.visible { opacity: 1; }
+    .tooltip-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: 19px;
+      color: var(--gold-light);
+      margin-bottom: 9px;
+    }
+    .tooltip-body {
+      font-size: 12px;
+      font-weight: 300;
+      line-height: 1.65;
+      color: rgba(249, 247, 242, 0.65);
+      letter-spacing: 0.02em;
+    }
+
+    /* =====================
+       SECTION 4: DETAILS
+    ===================== */
+    #details-section {
+      background: var(--cream);
+      padding: var(--section-pad) clamp(28px, 8vw, 180px);
+    }
+    .details-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+      gap: 1px;
+      background: rgba(0,0,0,0.07);
+      border: 1px solid rgba(0,0,0,0.07);
+      margin-top: 56px;
+    }
+    .detail-card {
+      background: var(--cream);
+      padding: 44px 38px;
+      transition: background 0.3s;
+    }
+    .detail-card:hover { background: var(--warm-white); }
+    .detail-number {
+      font-family: var(--font-display);
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      color: var(--gold);
+      margin-bottom: 18px;
+      display: block;
+    }
+    .detail-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(20px, 2.4vw, 28px);
+      color: var(--dark);
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+    .detail-body {
+      font-size: 13px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--mid);
+    }
+
+    /* =====================
+       SECTION 5: CONTACT
+    ===================== */
+    #contact-section {
+      background: var(--dark-2);
+      padding: var(--section-pad) clamp(28px, 8vw, 180px);
+      position: relative;
+      overflow: hidden;
+    }
+    #contact-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 60% 50%, rgba(196, 151, 58, 0.07) 0%, transparent 65%);
+      pointer-events: none;
+    }
+    .contact-inner { max-width: 720px; position: relative; }
+    .contact-title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(34px, 5vw, 62px);
+      color: var(--cream);
+      line-height: 1.15;
+      margin-bottom: 22px;
+    }
+    .contact-sub {
+      font-size: 14px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: rgba(249, 247, 242, 0.5);
+      margin-bottom: 52px;
+      max-width: 500px;
+    }
+    .contact-links {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 14px;
+      margin-bottom: 70px;
+    }
+    .contact-link {
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      color: var(--cream);
+      text-decoration: none;
+      padding: 15px 30px;
+      border: 1px solid rgba(249, 247, 242, 0.18);
+      transition: all 0.25s;
+      cursor: pointer;
+      font-family: var(--font-body);
+      background: none;
+    }
+    .contact-link:hover {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--dark);
+    }
+    .contact-link.primary {
+      background: var(--gold);
+      border-color: var(--gold);
+      color: var(--dark);
+    }
+    .contact-link.primary:hover {
+      background: var(--gold-light);
+      border-color: var(--gold-light);
+    }
+    .footer-line {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding-top: 36px;
+      border-top: 1px solid rgba(249, 247, 242, 0.08);
+      flex-wrap: wrap;
+      gap: 18px;
+    }
+    .footer-wordmark {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: 17px;
+      letter-spacing: 0.42em;
+      color: rgba(249, 247, 242, 0.25);
+    }
+    .footer-note {
+      font-size: 10px;
+      letter-spacing: 0.22em;
+      color: rgba(249, 247, 242, 0.18);
+      text-transform: uppercase;
+    }
+
+    /* =====================
+       SCROLL REVEAL
+    ===================== */
+    .reveal {
+      opacity: 0;
+      transform: translateY(28px);
+      transition: opacity 0.85s ease, transform 0.85s ease;
+    }
+    .reveal.visible {
+      opacity: 1;
+      transform: translateY(0);
+    }
+    .reveal-delay-1 { transition-delay: 0.12s; }
+    .reveal-delay-2 { transition-delay: 0.24s; }
+    .reveal-delay-3 { transition-delay: 0.36s; }
+    .reveal-delay-4 { transition-delay: 0.48s; }
+
+    /* =====================
+       RESPONSIVE
+    ===================== */
+    @media (max-width: 768px) {
+      .nav-links { display: none; }
+      .details-grid { grid-template-columns: 1fr; }
+      #node-tooltip { max-width: 220px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- NAV -->
+  <nav id="main-nav">
+    <a href="#" class="nav-logo">FRQNCY</a>
+    <ul class="nav-links">
+      <li><a href="#quote-section">Vision</a></li>
+      <li><a href="#bubble-section">Foundation</a></li>
+      <li><a href="#details-section">How</a></li>
+      <li><a href="#contact-section">Contact</a></li>
+    </ul>
+  </nav>
+
+  <!-- =====================
+       SECTION 1: LIGHT INTRO
+  ===================== -->
+  <section id="light-intro">
+    <div class="intro-bg-fill"></div>
+    <div class="light-orb"></div>
+    <canvas id="particles-canvas"></canvas>
+    <h1 class="intro-wordmark">FRQNCY</h1>
+    <div class="scroll-hint">
+      <span>Scroll</span>
+      <div class="scroll-line"></div>
+    </div>
+  </section>
+
+  <!-- =====================
+       SUBSCRIBE OVERLAY
+  ===================== -->
+  <div id="subscribe-overlay" role="dialog" aria-modal="true" aria-label="Subscribe to FRQNCY">
+    <div class="subscribe-content">
+      <h2 class="subscribe-headline">You are <em>love</em> and light.</h2>
+      <p class="subscribe-sub">Subscribe to join the movement</p>
+      <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+        <input type="email" placeholder="your@email.com" required aria-label="Email address">
+        <button type="submit">Join</button>
+      </form>
+      <button class="subscribe-dismiss" onclick="dismissSubscribe()">Continue to site</button>
+    </div>
+  </div>
+
+  <!-- =====================
+       SECTION 2: QUOTE
+  ===================== -->
+  <section id="quote-section">
+    <div class="quote-inner">
+      <span class="quote-mark reveal">"</span>
+      <p class="quote-text reveal reveal-delay-1">
+        Built on the foundations of oneness. FRQNCY's goal is to create a future in which <em>the light dominates</em> everything we experience and know.
+      </p>
+      <div class="quote-divider reveal reveal-delay-2"></div>
+      <p class="quote-attribution reveal reveal-delay-3">FRQNCY Foundation</p>
+    </div>
+  </section>
+
+  <!-- =====================
+       SECTION 3: BUBBLE MAP
+  ===================== -->
+  <section id="bubble-section">
+    <p class="section-label reveal">Problem &amp; Solution</p>
+    <h2 class="section-title light reveal reveal-delay-1">The landscape of<br>light &amp; consciousness</h2>
+
+    <div id="bubble-map">
+      <svg id="bubble-svg" viewBox="0 0 800 700" xmlns="http://www.w3.org/2000/svg" aria-label="FRQNCY network diagram">
+        <defs>
+          <radialGradient id="nodeGlow" cx="50%" cy="50%" r="50%">
+            <stop offset="0%" stop-color="rgba(196,151,58,0.3)"/>
+            <stop offset="100%" stop-color="rgba(196,151,58,0)"/>
+          </radialGradient>
+          <filter id="softGlow" x="-50%" y="-50%" width="200%" height="200%">
+            <feGaussianBlur in="SourceGraphic" stdDeviation="8" result="blur"/>
+            <feMerge><feMergeNode in="blur"/><feMergeNode in="SourceGraphic"/></feMerge>
+          </filter>
+        </defs>
+        <g id="connections"></g>
+        <g id="nodes"></g>
+      </svg>
+      <div id="node-tooltip">
+        <p class="tooltip-title" id="tooltip-title"></p>
+        <p class="tooltip-body" id="tooltip-body"></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================
+       SECTION 4: DETAILS
+  ===================== -->
+  <section id="details-section">
+    <p class="section-label reveal">Details &amp; How</p>
+    <h2 class="section-title dark reveal reveal-delay-1">What FRQNCY<br>builds and funds</h2>
+
+    <div class="details-grid">
+      <div class="detail-card reveal">
+        <span class="detail-number">01</span>
+        <h3 class="detail-title">Network State</h3>
+        <p class="detail-body">A decentralized community united by shared values — a borderless society built on the foundations of light and oneness, operating beyond traditional geographic limits.</p>
+      </div>
+      <div class="detail-card reveal reveal-delay-1">
+        <span class="detail-number">02</span>
+        <h3 class="detail-title">Fund</h3>
+        <p class="detail-body">Allocating capital to researchers, creators, and initiatives advancing the understanding and expansion of human consciousness. Backing the builders of a light-led future.</p>
+      </div>
+      <div class="detail-card reveal reveal-delay-2">
+        <span class="detail-number">03</span>
+        <h3 class="detail-title">Research &amp; Education</h3>
+        <p class="detail-body">Supporting the scientists, educators, and thinkers at the frontier of consciousness research. Building an open knowledge base accessible to all seekers.</p>
+      </div>
+      <div class="detail-card reveal reveal-delay-3">
+        <span class="detail-number">04</span>
+        <h3 class="detail-title">Social Networks</h3>
+        <p class="detail-body">Infrastructure for the movement's community to connect, grow, and organize. Building the social layer that enables a global network of light-aligned individuals.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- =====================
+       SECTION 5: CONTACT
+  ===================== -->
+  <section id="contact-section">
+    <div class="contact-inner">
+      <p class="section-label reveal">Get Involved</p>
+      <h2 class="contact-title reveal reveal-delay-1">Ready to be part<br>of the movement?</h2>
+      <p class="contact-sub reveal reveal-delay-2">Whether you're a researcher, educator, builder, or seeker — there is a place for you within FRQNCY. Reach out, subscribe, or download our overview to learn more.</p>
+
+      <div class="contact-links reveal reveal-delay-3">
+        <a href="mailto:hello@frqncy.com" class="contact-link primary">Get in touch</a>
+        <button class="contact-link" onclick="showSubscribe()">Join mailing list</button>
+        <a href="#" class="contact-link">Download overview</a>
+      </div>
+
+      <div class="footer-line">
+        <span class="footer-wordmark">FRQNCY</span>
+        <span class="footer-note">Built on IPFS &nbsp;·&nbsp; Decentralized &nbsp;·&nbsp; Open</span>
+      </div>
+    </div>
+  </section>
+
+  <script>
+    // =====================
+    // PARTICLES
+    // =====================
+    (function () {
+      const canvas = document.getElementById('particles-canvas');
+      const ctx = canvas.getContext('2d');
+      let particles = [];
+
+      function resize() {
+        canvas.width  = canvas.offsetWidth;
+        canvas.height = canvas.offsetHeight;
+      }
+      window.addEventListener('resize', resize, { passive: true });
+      resize();
+
+      function Particle() { this.reset(true); }
+      Particle.prototype.reset = function (scatter) {
+        this.x       = Math.random() * canvas.width;
+        this.y       = scatter ? Math.random() * canvas.height : canvas.height + 10;
+        this.size    = Math.random() * 1.8 + 0.4;
+        this.speed   = Math.random() * 0.35 + 0.1;
+        this.opacity = Math.random() * 0.35 + 0.1;
+        this.drift   = (Math.random() - 0.5) * 0.25;
+      };
+      Particle.prototype.update = function () {
+        this.y       -= this.speed;
+        this.x       += this.drift;
+        this.opacity -= 0.0008;
+        if (this.y < -10 || this.opacity <= 0) this.reset(false);
+      };
+
+      for (let i = 0; i < 70; i++) particles.push(new Particle());
+
+      (function animate() {
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.update();
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(196, 151, 58, ${p.opacity})`;
+          ctx.fill();
+        });
+        requestAnimationFrame(animate);
+      })();
+    })();
+
+    // =====================
+    // SUBSCRIBE OVERLAY
+    // =====================
+    let subscribeShown = false;
+
+    function showSubscribe() {
+      document.getElementById('subscribe-overlay').classList.add('visible');
+      document.body.style.overflow = 'hidden';
+    }
+    function dismissSubscribe() {
+      document.getElementById('subscribe-overlay').classList.remove('visible');
+      document.body.style.overflow = '';
+      subscribeShown = true;
+    }
+    function handleSubscribe(e) {
+      e.preventDefault();
+      // TODO: connect to mailing list provider (Mailchimp, ConvertKit, etc.)
+      console.log('Subscribed:', e.target.querySelector('input').value);
+      dismissSubscribe();
+    }
+
+    // Trigger overlay on scroll past intro
+    window.addEventListener('scroll', function () {
+      if (!subscribeShown && window.scrollY > window.innerHeight * 0.55) {
+        showSubscribe();
+        subscribeShown = true;
+      }
+    }, { passive: true });
+
+    // =====================
+    // SCROLL REVEAL
+    // =====================
+    const revealEls = document.querySelectorAll('.reveal');
+    const revealObserver = new IntersectionObserver((entries) => {
+      entries.forEach(e => { if (e.isIntersecting) e.target.classList.add('visible'); });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => revealObserver.observe(el));
+
+    // =====================
+    // NAV BEHAVIOR
+    // =====================
+    const darkSections = ['bubble-section', 'contact-section'];
+    function updateNav() {
+      const nav   = document.getElementById('main-nav');
+      const scrolled = window.scrollY > 80;
+      nav.classList.toggle('scrolled', scrolled);
+
+      const midY = window.scrollY + window.innerHeight / 3;
+      const overDark = darkSections.some(id => {
+        const el = document.getElementById(id);
+        if (!el) return false;
+        return midY >= el.offsetTop && midY <= el.offsetTop + el.offsetHeight;
+      });
+      nav.classList.toggle('over-dark', overDark);
+    }
+    window.addEventListener('scroll', updateNav, { passive: true });
+    updateNav();
+
+    // =====================
+    // BUBBLE MAP
+    // =====================
+    const NODE_DATA = [
+      {
+        id: 'frqncy', label: 'FRQNCY', x: 400, y: 350, r: 68, center: true,
+        description: 'A foundation built on the principle of oneness — dedicated to creating a future in which light dominates everything we experience and know.'
+      },
+      {
+        id: 'light', label: ['Light', 'Dominance'], x: 155, y: 175, r: 55,
+        description: 'Creating a reality where light — awareness, truth, and love — becomes the dominant force shaping human existence and experience.'
+      },
+      {
+        id: 'consciousness', label: ['Consciousness', '& Awareness'], x: 610, y: 155, r: 60,
+        description: 'Elevating collective human consciousness as the foundation for lasting positive change. When awareness expands, the world transforms.'
+      },
+      {
+        id: 'networkstate', label: ['Network', 'State'], x: 668, y: 400, r: 50,
+        description: 'A decentralized, borderless community united by shared values — a new kind of society built for the light movement.'
+      },
+      {
+        id: 'education', label: ['Education', '& Research'], x: 540, y: 575, r: 50,
+        description: 'Funding and supporting researchers, educators, and thinkers advancing the understanding of consciousness and light-based transformation.'
+      },
+      {
+        id: 'fund', label: ['Fund'], x: 260, y: 575, r: 44,
+        description: 'Capital allocation for projects, initiatives, and individuals aligned with FRQNCY\'s mission. Backing the builders of a light-led future.'
+      },
+      {
+        id: 'social', label: ['Social', 'Networks'], x: 120, y: 430, r: 43,
+        description: 'Building the infrastructure for the global light movement\'s community to connect, organize, and grow.'
+      }
+    ];
+
+    const svgEl      = document.getElementById('bubble-svg');
+    const connsG     = document.getElementById('connections');
+    const nodesG     = document.getElementById('nodes');
+    const tooltip    = document.getElementById('node-tooltip');
+    const ttTitle    = document.getElementById('tooltip-title');
+    const ttBody     = document.getElementById('tooltip-body');
+    const bubbleMap  = document.getElementById('bubble-map');
+    const center     = NODE_DATA[0];
+
+    function svgNS(tag) {
+      return document.createElementNS('http://www.w3.org/2000/svg', tag);
+    }
+
+    // Draw connections
+    NODE_DATA.slice(1).forEach(n => {
+      const line = svgNS('line');
+      line.setAttribute('x1', center.x); line.setAttribute('y1', center.y);
+      line.setAttribute('x2', n.x);      line.setAttribute('y2', n.y);
+      line.classList.add('bubble-connection');
+      connsG.appendChild(line);
+    });
+
+    // Draw nodes
+    NODE_DATA.forEach(node => {
+      const g = svgNS('g');
+      g.classList.add('bubble-node');
+      if (node.center) g.classList.add('bubble-center');
+
+      // Glow halo
+      const glow = svgNS('circle');
+      glow.setAttribute('cx', node.x); glow.setAttribute('cy', node.y);
+      glow.setAttribute('r', node.r + 18);
+      glow.setAttribute('fill', 'url(#nodeGlow)');
+      glow.classList.add('glow-circle');
+
+      // Main circle
+      const circle = svgNS('circle');
+      circle.setAttribute('cx', node.x); circle.setAttribute('cy', node.y);
+      circle.setAttribute('r', node.r);
+      circle.setAttribute('fill', node.center ? 'rgba(196,151,58,0.14)' : 'rgba(249,247,242,0.05)');
+      circle.setAttribute('stroke', 'rgba(196,151,58,0.32)');
+      circle.setAttribute('stroke-width', '1');
+      circle.classList.add('main-circle');
+
+      g.appendChild(glow);
+      g.appendChild(circle);
+
+      // Label lines
+      const lines = node.label;
+      lines.forEach((line, i) => {
+        const text = svgNS('text');
+        const offset = lines.length === 1 ? 0 : (i - (lines.length - 1) / 2) * 15;
+        text.setAttribute('x', node.x);
+        text.setAttribute('y', node.y + offset + (node.center ? 0 : 4));
+        text.classList.add(node.center ? 'node-label-center' : 'node-label');
+        text.textContent = line;
+        g.appendChild(text);
+      });
+
+      // Hover interaction
+      g.addEventListener('mouseenter', () => {
+        const mapRect = bubbleMap.getBoundingClientRect();
+        const scale   = mapRect.width / 800;
+        let left = node.x * scale + 20;
+        let top  = node.y * scale - 60;
+        if (left + 285 > mapRect.width) left = node.x * scale - 295;
+        if (top < 0) top = node.y * scale + 20;
+
+        ttTitle.textContent = node.center ? 'FRQNCY' : node.label.join(' ');
+        ttBody.textContent  = node.description;
+        tooltip.style.left  = left + 'px';
+        tooltip.style.top   = top  + 'px';
+        tooltip.classList.add('visible');
+
+        circle.setAttribute('fill', node.center
+          ? 'rgba(196,151,58,0.3)'
+          : 'rgba(196,151,58,0.18)'
+        );
+      });
+      g.addEventListener('mouseleave', () => {
+        tooltip.classList.remove('visible');
+        circle.setAttribute('fill', node.center
+          ? 'rgba(196,151,58,0.14)'
+          : 'rgba(249,247,242,0.05)'
+        );
+      });
+
+      nodesG.appendChild(g);
+    });
+  </script>
+</body>
+</html>
