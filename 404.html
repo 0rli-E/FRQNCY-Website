@@ -1,0 +1,214 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Not Found — FRQNCY</title>
+  <meta name="robots" content="noindex, nofollow">
+  <meta name="theme-color" content="#0B1C3D">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --dark: #0B1C3D;
+      --gold: #C4973A;
+      --light-mid: #8A9AB8;
+      --blue-mid: #2952B3;
+      --font-display: 'Cormorant', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+    }
+    html, body {
+      height: 100%;
+      font-family: var(--font-body);
+      background: var(--dark);
+      color: #fff;
+      overflow: hidden;
+    }
+    body {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      text-align: center;
+      padding: 40px 24px;
+    }
+
+    /* Particle canvas */
+    canvas {
+      position: fixed;
+      inset: 0;
+      pointer-events: none;
+      opacity: 0.4;
+    }
+
+    .content {
+      position: relative;
+      z-index: 2;
+    }
+
+    .eyebrow {
+      font-family: var(--font-body);
+      font-size: 10px;
+      letter-spacing: 0.3em;
+      color: var(--gold);
+      text-transform: uppercase;
+      margin-bottom: 24px;
+    }
+
+    .number {
+      font-family: var(--font-display);
+      font-size: clamp(100px, 20vw, 180px);
+      font-weight: 300;
+      line-height: 1;
+      color: rgba(255,255,255,0.08);
+      letter-spacing: -0.02em;
+      margin-bottom: -20px;
+    }
+
+    h1 {
+      font-family: var(--font-display);
+      font-size: clamp(28px, 5vw, 52px);
+      font-weight: 300;
+      line-height: 1.15;
+      margin-bottom: 20px;
+    }
+    h1 em {
+      font-style: italic;
+      color: rgba(255,255,255,0.6);
+    }
+
+    p {
+      font-size: 14px;
+      color: var(--light-mid);
+      letter-spacing: 0.04em;
+      line-height: 1.7;
+      max-width: 360px;
+      margin: 0 auto 40px;
+    }
+
+    .links {
+      display: flex;
+      gap: 16px;
+      justify-content: center;
+      flex-wrap: wrap;
+    }
+
+    .btn {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.18em;
+      text-transform: uppercase;
+      text-decoration: none;
+      padding: 12px 28px;
+      border-radius: 2px;
+      transition: all 0.25s;
+      cursor: pointer;
+    }
+
+    .btn-primary {
+      background: var(--blue-mid);
+      color: #fff;
+      border: 1px solid var(--blue-mid);
+    }
+    .btn-primary:hover { background: #3a65cc; }
+
+    .btn-ghost {
+      background: transparent;
+      color: rgba(255,255,255,0.5);
+      border: 1px solid rgba(255,255,255,0.15);
+    }
+    .btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.4); }
+
+    .logo {
+      position: fixed;
+      top: 28px;
+      left: clamp(24px, 5vw, 80px);
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: 20px;
+      letter-spacing: 0.38em;
+      color: rgba(255,255,255,0.7);
+      text-decoration: none;
+      text-transform: uppercase;
+      z-index: 10;
+    }
+    .logo:hover { color: #fff; }
+  </style>
+  <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="/chat-widget.js" defer></script>
+</head>
+<body>
+  <canvas id="c"></canvas>
+  <a href="/" class="logo">FRQNCY</a>
+
+  <div class="content">
+    <p class="eyebrow">Lost in the network</p>
+    <div class="number">404</div>
+    <h1>This frequency<br><em>doesn't exist yet</em></h1>
+    <p>The page you're looking for hasn't been tuned in — or it may have moved. Find your way back below.</p>
+    <div class="links">
+      <a href="/" class="btn btn-primary">Return home</a>
+      <a href="/v2/explore.html" class="btn btn-ghost">Explore the network</a>
+    </div>
+  </div>
+
+  <script>
+    // Subtle particle field
+    const canvas = document.getElementById('c');
+    const ctx = canvas.getContext('2d');
+    let W, H, pts = [];
+
+    function resize() {
+      W = canvas.width  = window.innerWidth;
+      H = canvas.height = window.innerHeight;
+    }
+    resize();
+    window.addEventListener('resize', resize);
+
+    for (let i = 0; i < 60; i++) {
+      pts.push({
+        x: Math.random() * window.innerWidth,
+        y: Math.random() * window.innerHeight,
+        vx: (Math.random() - 0.5) * 0.3,
+        vy: (Math.random() - 0.5) * 0.3,
+        r: Math.random() * 1.5 + 0.5
+      });
+    }
+
+    function draw() {
+      ctx.clearRect(0, 0, W, H);
+      pts.forEach(p => {
+        p.x += p.vx; p.y += p.vy;
+        if (p.x < 0) p.x = W; if (p.x > W) p.x = 0;
+        if (p.y < 0) p.y = H; if (p.y > H) p.y = 0;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.r, 0, Math.PI * 2);
+        ctx.fillStyle = 'rgba(74,122,232,0.6)';
+        ctx.fill();
+      });
+      // Draw faint connections
+      for (let i = 0; i < pts.length; i++) {
+        for (let j = i + 1; j < pts.length; j++) {
+          const dx = pts[i].x - pts[j].x;
+          const dy = pts[i].y - pts[j].y;
+          const dist = Math.sqrt(dx*dx + dy*dy);
+          if (dist < 120) {
+            ctx.beginPath();
+            ctx.moveTo(pts[i].x, pts[i].y);
+            ctx.lineTo(pts[j].x, pts[j].y);
+            ctx.strokeStyle = `rgba(74,122,232,${0.12 * (1 - dist/120)})`;
+            ctx.lineWidth = 0.5;
+            ctx.stroke();
+          }
+        }
+      }
+      requestAnimationFrame(draw);
+    }
+    draw();
+  </script>
+</body>
+</html>

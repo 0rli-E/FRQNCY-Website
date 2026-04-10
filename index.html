@@ -4,6 +4,29 @@
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title>FRQNCY — Built on the Foundations of Oneness</title>
+  <meta name="theme-color" content="#0B1C3D">
+
+  <!-- SEO -->
+  <meta name="description" content="FRQNCY is a conscious living network — curating the best teachers, tools, and resources across science, spirituality, arts, technology, and more.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://frqncy.network/">
+
+  <!-- Open Graph (social sharing) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FRQNCY">
+  <meta property="og:title" content="FRQNCY — Built on the Foundations of Oneness">
+  <meta property="og:description" content="FRQNCY is a conscious living network — curating the best teachers, tools, and resources across science, spirituality, arts, technology, and more.">
+  <meta property="og:url" content="https://frqncy.network/">
+  <meta property="og:image" content="https://frqncy.network/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@frqncy">
+  <meta name="twitter:title" content="FRQNCY — Built on the Foundations of Oneness">
+  <meta name="twitter:description" content="FRQNCY is a conscious living network — curating the best teachers, tools, and resources across science, spirituality, arts, technology, and more.">
+  <meta name="twitter:image" content="https://frqncy.network/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -94,6 +117,7 @@
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--gold); }
+    .nav-links a.active { color: var(--gold); }
 
     /* =====================
        SECTION 1: LIGHT INTRO
@@ -652,22 +676,236 @@
        RESPONSIVE
     ===================== */
     @media (max-width: 768px) {
+      /* NAV: Hide links on mobile, keep logo visible */
       .nav-links { display: none; }
-      .details-grid { grid-template-columns: 1fr; }
-      #node-tooltip { max-width: 220px; }
+      nav {
+        padding: 18px clamp(16px, 4vw, 28px);
+      }
+      nav.scrolled {
+        padding: 14px clamp(16px, 4vw, 28px);
+      }
+      .nav-logo {
+        font-size: 16px;
+        letter-spacing: 0.3em;
+      }
+
+      /* HERO: Ensure intro wordmark fits on screen */
+      .intro-wordmark {
+        font-size: clamp(32px, 5vw, 56px);
+        letter-spacing: 0.3em;
+      }
+
+      /* SCROLL HINT: Reduce size on mobile */
+      .scroll-hint {
+        bottom: 32px;
+      }
+      .scroll-hint span {
+        font-size: 8px;
+        letter-spacing: 0.3em;
+      }
+      .scroll-line {
+        height: 24px;
+      }
+
+      /* BUBBLE MAP: Reduce height and add mobile message */
+      #nm-container {
+        height: 60vh;
+        position: relative;
+      }
+      #nm-container::after {
+        content: 'Best explored on desktop';
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.4);
+        letter-spacing: 0.08em;
+        text-transform: uppercase;
+        z-index: 3;
+        pointer-events: none;
+        text-align: center;
+        white-space: nowrap;
+      }
+
+      /* Disable map interaction on mobile (make it static) */
+      #nm-svg {
+        cursor: default;
+        pointer-events: none;
+      }
+      #nm-svg:active {
+        cursor: default;
+      }
+
+      /* Hide map hint on mobile */
+      #nm-hint {
+        display: none;
+      }
+
+      /* Reduce legend on mobile */
+      #nm-legend {
+        top: 12px;
+        right: 12px;
+        gap: 5px;
+      }
+      .nm-leg-item {
+        font-size: 8px;
+        letter-spacing: 0.1em;
+        gap: 5px;
+      }
+      .nm-leg-item .nm-leg-dot {
+        width: 6px !important;
+        height: 6px !important;
+      }
+
+      /* DETAILS GRID: Stack on mobile */
+      .details-grid {
+        grid-template-columns: 1fr;
+      }
+      .detail-card {
+        padding: 32px 24px;
+      }
+
+      /* SUBSCRIBE FORM: Stack on mobile */
+      .subscribe-form {
+        flex-direction: column;
+        max-width: 100%;
+      }
+      .subscribe-form input {
+        border-bottom: 1px solid rgba(196, 151, 58, 0.35);
+        padding: 12px 16px;
+      }
+      .subscribe-form button {
+        padding: 12px 16px;
+        border-top: 1px solid rgba(196, 151, 58, 0.35);
+      }
+
+      /* SUBSCRIBE OVERLAY: Reduce padding */
+      .subscribe-content {
+        padding: 48px 28px;
+        max-width: 100%;
+        margin: 0 12px;
+      }
+      .subscribe-headline {
+        font-size: clamp(28px, 4vw, 48px);
+        margin-bottom: 8px;
+      }
+      .subscribe-sub {
+        font-size: 12px;
+        margin-bottom: 32px;
+      }
+
+      /* CONTACT SECTION: Reduce padding and stack */
+      .contact-subscribe-form {
+        max-width: 100%;
+      }
+      .contact-title {
+        font-size: clamp(28px, 4vw, 48px);
+      }
+      .contact-sub {
+        font-size: 13px;
+        margin-bottom: 36px;
+      }
+
+      /* FOOTER: Stack on small screens */
+      .footer-line {
+        flex-direction: column;
+        gap: 12px;
+      }
+
+      /* TOOLTIP: Reduce size on mobile */
+      #node-tooltip {
+        max-width: 180px;
+        font-size: 11px;
+      }
+    }
+
+    @media (max-width: 640px) {
+      /* INTRO: Further optimization for very small screens */
+      #light-intro {
+        height: 100vh;
+        padding: 0;
+      }
+      .intro-wordmark {
+        font-size: clamp(28px, 4vw, 48px);
+        letter-spacing: 0.25em;
+      }
+
+      /* SECTION PADDING: Tighter on very small screens */
+      #quote-section {
+        padding: 60px clamp(16px, 5vw, 28px);
+        min-height: auto;
+      }
+      .quote-mark {
+        font-size: 60px;
+        margin-bottom: 16px;
+      }
+      .quote-text {
+        font-size: clamp(18px, 3.5vw, 32px);
+      }
+
+      #bubble-section {
+        padding: 60px clamp(16px, 5vw, 28px) 40px;
+      }
+      .section-title {
+        font-size: clamp(24px, 3.5vw, 40px);
+        margin-bottom: 40px;
+      }
+      .section-label {
+        font-size: 9px;
+        margin-bottom: 14px;
+      }
+
+      #details-section {
+        padding: 60px clamp(16px, 5vw, 28px);
+      }
+
+      #contact-section {
+        padding: 60px clamp(16px, 5vw, 28px);
+      }
+      .contact-inner {
+        max-width: 100%;
+      }
+
+      /* DETAIL CARD: Tighter spacing */
+      .detail-card {
+        padding: 24px 16px;
+      }
+      .detail-number {
+        font-size: 10px;
+        margin-bottom: 12px;
+      }
+      .detail-title {
+        font-size: clamp(18px, 2.2vw, 24px);
+        margin-bottom: 10px;
+      }
+      .detail-body {
+        font-size: 12px;
+        line-height: 1.6;
+      }
+
+      /* Network map: reduce overlay padding */
+      .network-expand-btn {
+        font-size: 9px;
+        margin-top: 20px;
+      }
     }
   </style>
+  <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="/chat-widget.js" defer></script>
+<link rel="manifest" href="/manifest.json">
 </head>
 <body>
 
   <!-- NAV -->
   <nav id="main-nav">
-    <a href="#" class="nav-logo">FRQNCY</a>
+    <a href="index.html" class="nav-logo">FRQNCY</a>
     <ul class="nav-links">
-      <li><a href="#quote-section">Vision</a></li>
-      <li><a href="#bubble-section">Foundation</a></li>
-      <li><a href="#details-section">How</a></li>
-      <li><a href="#contact-section">Contact</a></li>
+      <li><a href="about.html">Vision</a></li>
+      <li><a href="platform.html">Platform</a></li>
+      <li><a href="podcast.html">Podcast</a></li>
+      <li><a href="space.html">Space</a></li>
+      <li><a href="v2/explore.html">Explore</a></li>
     </ul>
   </nav>
 
@@ -692,10 +930,12 @@
     <div class="subscribe-content">
       <h2 class="subscribe-headline">You are <em>love</em> and light.</h2>
       <p class="subscribe-sub">Subscribe to join the movement</p>
-      <form class="subscribe-form" onsubmit="handleSubscribe(event)">
-        <input type="email" placeholder="your@email.com" required aria-label="Email address">
-        <button type="submit">Join</button>
+      <form class="subscribe-form" id="subscribe-form-overlay" onsubmit="handleSubscribe(event, this)">
+        <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address" autocomplete="email">
+        <button type="submit" id="subscribe-btn-overlay">Join</button>
       </form>
+      <p class="subscribe-success" id="subscribe-success-overlay" style="display:none;color:var(--blue-mid);font-size:13px;letter-spacing:0.08em;margin-top:12px;">✦ You're in. Welcome to FRQNCY.</p>
+      <p class="subscribe-error" id="subscribe-error-overlay" style="display:none;color:#E87A4A;font-size:12px;margin-top:10px;"></p>
       <button class="subscribe-dismiss" onclick="dismissSubscribe()">Continue to site</button>
     </div>
   </div>
@@ -777,17 +1017,22 @@
     <div class="contact-inner">
       <p class="section-label reveal">Get Involved</p>
       <h2 class="contact-title reveal reveal-delay-1">Ready to be part<br>of the movement?</h2>
-      <p class="contact-sub reveal reveal-delay-2">Whether you're a researcher, educator, builder, or seeker — there is a place for you within FRQNCY. Reach out, subscribe, or download our overview to learn more.</p>
+      <p class="contact-sub reveal reveal-delay-2">Whether you're a researcher, educator, builder, or seeker — there is a place for you within FRQNCY. Reach out or join the mailing list below.</p>
 
-      <div class="contact-links reveal reveal-delay-3">
-        <a href="mailto:hello@frqncy.com" class="contact-link primary">Get in touch</a>
-        <button class="contact-link" onclick="showSubscribe()">Join mailing list</button>
-        <a href="#" class="contact-link">Download overview</a>
+      <form class="subscribe-form contact-subscribe-form reveal reveal-delay-3" id="subscribe-form-contact" onsubmit="handleSubscribe(event, this)" style="margin: 32px auto 0; max-width:440px;">
+        <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address" autocomplete="email">
+        <button type="submit" id="subscribe-btn-contact">Join the movement</button>
+      </form>
+      <p class="subscribe-success" id="subscribe-success-contact" style="display:none;color:var(--blue-mid);font-size:13px;letter-spacing:0.08em;margin-top:14px;text-align:center;">✦ You're in. Welcome to FRQNCY.</p>
+      <p class="subscribe-error" id="subscribe-error-contact" style="display:none;color:#E87A4A;font-size:12px;margin-top:10px;text-align:center;"></p>
+
+      <div class="contact-links reveal reveal-delay-3" style="margin-top:28px;">
+        <a href="mailto:hello@frqncy.network" class="contact-link primary">Get in touch</a>
       </div>
 
       <div class="footer-line">
         <span class="footer-wordmark">FRQNCY</span>
-        <span class="footer-note">Built on IPFS &nbsp;·&nbsp; Decentralized &nbsp;·&nbsp; Open</span>
+        <span class="footer-note">© 2026 FRQNCY &nbsp;·&nbsp; All frequencies reserved</span>
       </div>
     </div>
   </section>
@@ -853,11 +1098,47 @@
       document.body.style.overflow = '';
       subscribeShown = true;
     }
-    function handleSubscribe(e) {
+    async function handleSubscribe(e, form) {
       e.preventDefault();
-      // TODO: connect to mailing list provider (Mailchimp, ConvertKit, etc.)
-      console.log('Subscribed:', e.target.querySelector('input').value);
-      dismissSubscribe();
+      const email = form.querySelector('input[type="email"]').value.trim();
+      const btn   = form.querySelector('button[type="submit"]');
+
+      // Determine which form (overlay vs contact section)
+      const isOverlay = form.id === 'subscribe-form-overlay';
+      const successEl = document.getElementById(isOverlay ? 'subscribe-success-overlay' : 'subscribe-success-contact');
+      const errorEl   = document.getElementById(isOverlay ? 'subscribe-error-overlay'   : 'subscribe-error-contact');
+
+      // Loading state
+      const origText = btn.textContent;
+      btn.textContent = '···';
+      btn.disabled = true;
+      errorEl.style.display = 'none';
+
+      try {
+        const res = await fetch('/api/subscribe', {
+          method: 'POST',
+          headers: { 'Content-Type': 'application/json' },
+          body: JSON.stringify({ email }),
+        });
+        const data = await res.json();
+
+        if (data.success) {
+          form.style.display = 'none';
+          successEl.style.display = 'block';
+          // Auto-dismiss overlay after 2s
+          if (isOverlay) setTimeout(dismissSubscribe, 2000);
+        } else {
+          errorEl.textContent = data.error || 'Something went wrong. Please try again.';
+          errorEl.style.display = 'block';
+          btn.textContent = origText;
+          btn.disabled = false;
+        }
+      } catch (err) {
+        errorEl.textContent = 'Connection error. Please try again.';
+        errorEl.style.display = 'block';
+        btn.textContent = origText;
+        btn.disabled = false;
+      }
     }
 
     // Trigger overlay on scroll past intro
@@ -903,11 +1184,12 @@
     (function(){
     const NM_NODES=[
       {id:"frqncy",label:"FRQNCY",type:"core",r:52,desc:"The living network of consciousness"},
-      {id:"consciousness",label:"Consciousness",type:"main",r:34,desc:"The awakening field of awareness"},
-      {id:"network-state",label:"Network State",type:"main",r:30,desc:"Sovereign communities of the future"},
-      {id:"education",label:"Education",type:"main",r:30,desc:"Wisdom transmission and learning"},
-      {id:"fund",label:"Fund",type:"main",r:29,desc:"Conscious capital for transformation"},
-      {id:"money",label:"Money",type:"main",r:31,desc:"Financial systems and conscious value exchange"},
+      {id:"network-state",label:"Network State",type:"main",r:30,desc:"The sovereign community"},
+      {id:"fund",label:"Fund",type:"main",r:29,desc:"Capital allocation"},
+      {id:"education",label:"Education",type:"main",r:30,desc:"Transmitting what's known"},
+      {id:"research",label:"Research",type:"main",r:29,desc:"Exploring what isn't known yet"},
+      {id:"media",label:"Media",type:"main",r:29,desc:"Spreading the signal"},
+      {id:"builder",label:"Builder",type:"main",r:30,desc:"Creating products, tools, experiences"},
       {id:"d-sciences",label:"Sciences",type:"cluster",r:24,desc:"Empirical exploration of reality"},
       {id:"d-tech",label:"Technology",type:"cluster",r:24,desc:"Tools shaping the future"},
       {id:"d-arts",label:"Arts & Culture",type:"cluster",r:23,desc:"Expression of the human spirit"},
@@ -918,6 +1200,10 @@
       {id:"d-creation",label:"Creation",type:"cluster",r:23,desc:"Building what has never existed"},
       {id:"d-wellbeing",label:"Well-being",type:"cluster",r:24,desc:"Healing and wholeness"},
       {id:"d-society",label:"Society & Networks",type:"cluster",r:23,desc:"Collective human systems"},
+      {id:"d-communication",label:"Communication",type:"cluster",r:23,desc:"How humans connect and express meaning"},
+      {id:"d-energy",label:"Energy",type:"cluster",r:23,desc:"The forces and resources that power existence"},
+      {id:"d-food",label:"Food & Agriculture",type:"cluster",r:23,desc:"Growing, sharing and consuming nourishment"},
+      {id:"d-play",label:"Play & Recreation",type:"cluster",r:22,desc:"Joy, games, sports and leisure"},
       {id:"t-quantum",label:"Quantum Physics",type:"topic",r:14},
       {id:"t-neuro",label:"Neuroscience",type:"topic",r:14},
       {id:"t-bio",label:"Biology",type:"topic",r:13},
@@ -1004,17 +1290,50 @@
       {id:"t-futurecity",label:"Future Cities",type:"topic",r:14},
       {id:"t-edusystem",label:"Education Systems",type:"topic",r:14},
       {id:"t-diaspora",label:"Global Diaspora",type:"topic",r:13},
+      {id:"t-language",label:"Language & Linguistics",type:"topic",r:14},
+      {id:"t-speaking",label:"Public Speaking",type:"topic",r:13},
+      {id:"t-dialogue",label:"Dialogue & Debate",type:"topic",r:13},
+      {id:"t-journalism",label:"Journalism",type:"topic",r:14},
+      {id:"t-socialmedia",label:"Social Media",type:"topic",r:14},
+      {id:"t-nvc",label:"Nonviolent Communication",type:"topic",r:13},
+      {id:"t-translation",label:"Translation",type:"topic",r:12},
+      {id:"t-broadcasting",label:"Broadcasting",type:"topic",r:13},
+      {id:"t-renewable",label:"Renewable Energy",type:"topic",r:15},
+      {id:"t-solar",label:"Solar Energy",type:"topic",r:14},
+      {id:"t-wind",label:"Wind Energy",type:"topic",r:13},
+      {id:"t-geothermal",label:"Geothermal",type:"topic",r:13},
+      {id:"t-storage",label:"Energy Storage",type:"topic",r:13},
+      {id:"t-bioenergy",label:"Bioenergy",type:"topic",r:13},
+      {id:"t-gridtech",label:"Grid Technology",type:"topic",r:13},
+      {id:"t-energypolicy",label:"Energy Policy",type:"topic",r:13},
+      {id:"t-regenfarm",label:"Regenerative Farming",type:"topic",r:14},
+      {id:"t-permaculture",label:"Permaculture",type:"topic",r:14},
+      {id:"t-foodsystems",label:"Food Systems",type:"topic",r:14},
+      {id:"t-urbanfarm",label:"Urban Farming",type:"topic",r:13},
+      {id:"t-fermentation",label:"Fermentation",type:"topic",r:12},
+      {id:"t-foodsov",label:"Food Sovereignty",type:"topic",r:13},
+      {id:"t-cuisine",label:"Cuisine & Culture",type:"topic",r:14},
+      {id:"t-aquaculture",label:"Aquaculture",type:"topic",r:12},
+      {id:"t-sports",label:"Sports & Athletics",type:"topic",r:15},
+      {id:"t-gaming",label:"Games & Gaming",type:"topic",r:14},
+      {id:"t-outdoor",label:"Outdoor Adventure",type:"topic",r:13},
+      {id:"t-esports",label:"Esports",type:"topic",r:13},
+      {id:"t-leisure",label:"Leisure & Rest",type:"topic",r:13},
+      {id:"t-humor",label:"Humor & Comedy",type:"topic",r:13},
+      {id:"t-festivals",label:"Festivals & Events",type:"topic",r:14},
+      {id:"t-playcreat",label:"Play & Creativity",type:"topic",r:13},
     ];
 
     const NM_RAW=[
-      ["frqncy","consciousness"],["frqncy","network-state"],["frqncy","education"],["frqncy","fund"],["frqncy","money"],
+      ["frqncy","network-state"],["frqncy","fund"],["frqncy","education"],["frqncy","research"],["frqncy","media"],["frqncy","builder"],
       ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],["frqncy","d-nature"],["frqncy","d-business"],
       ["frqncy","d-meta"],["frqncy","d-lifestyle"],["frqncy","d-creation"],["frqncy","d-wellbeing"],["frqncy","d-society"],
-      ["consciousness","d-meta"],["consciousness","d-sciences"],["consciousness","d-wellbeing"],["consciousness","d-lifestyle"],
-      ["consciousness","d-nature"],["consciousness","d-arts"],
       ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],["network-state","d-creation"],
-      ["education","d-sciences"],["education","d-arts"],["education","d-creation"],["education","d-society"],
       ["fund","d-business"],["fund","d-tech"],["fund","d-creation"],["fund","d-society"],
+      ["education","d-sciences"],["education","d-arts"],["education","d-creation"],["education","d-society"],
+      ["research","d-sciences"],["research","d-meta"],["research","d-nature"],["research","d-tech"],
+      ["media","d-arts"],["media","d-communication"],["media","d-society"],["media","d-tech"],
+      ["builder","d-creation"],["builder","d-tech"],["builder","d-business"],["builder","d-society"],
       ["d-sciences","t-quantum"],["d-sciences","t-neuro"],["d-sciences","t-bio"],["d-sciences","t-psych"],
       ["d-sciences","t-med"],["d-sciences","t-math"],["d-sciences","t-astrophys"],["d-sciences","t-ecology"],
       ["d-sciences","t-genetics"],["d-sciences","t-chemistry"],
@@ -1043,7 +1362,7 @@
       ["t-ai","t-systems"],["t-ai","t-collective"],["t-ai","t-futuretech"],
       ["t-blockchain","t-defi"],["t-blockchain","t-dao"],
       ["t-web3","t-decentral"],["t-web3","t-dao"],
-      ["money","d-business"],["money","t-blockchain"],["money","t-defi"],["money","t-web3"],["money","t-dao"],["money","t-conscap"],
+      ["fund","t-blockchain"],["fund","t-defi"],["fund","t-web3"],["fund","t-dao"],["fund","t-conscap"],
       ["t-music","t-soundheal"],["t-music","t-vibration"],
       ["t-sacredgeo","t-merkaba"],["t-sacredgeo","t-dims"],["t-sacredgeo","t-math"],
       ["t-astrology","t-cycles"],["t-cosmos","t-astrophys"],
@@ -1064,6 +1383,25 @@
       ["t-detox","t-minimalism"],["t-dance","t-movement"],
       ["t-efields","t-energyheal"],["t-efields","t-vibration"],
       ["t-archit","t-sacredgeo"],["t-story","t-film"],["t-poetry","t-story"],
+      ["frqncy","d-communication"],["frqncy","d-energy"],["frqncy","d-food"],["frqncy","d-play"],
+      ["d-communication","t-language"],["d-communication","t-speaking"],["d-communication","t-dialogue"],
+      ["d-communication","t-journalism"],["d-communication","t-socialmedia"],["d-communication","t-nvc"],
+      ["d-communication","t-translation"],["d-communication","t-broadcasting"],
+      ["d-energy","t-renewable"],["d-energy","t-solar"],["d-energy","t-wind"],["d-energy","t-geothermal"],
+      ["d-energy","t-storage"],["d-energy","t-bioenergy"],["d-energy","t-gridtech"],["d-energy","t-energypolicy"],
+      ["d-food","t-regenfarm"],["d-food","t-permaculture"],["d-food","t-foodsystems"],["d-food","t-urbanfarm"],
+      ["d-food","t-fermentation"],["d-food","t-foodsov"],["d-food","t-cuisine"],["d-food","t-aquaculture"],
+      ["d-play","t-sports"],["d-play","t-gaming"],["d-play","t-outdoor"],["d-play","t-esports"],
+      ["d-play","t-leisure"],["d-play","t-humor"],["d-play","t-festivals"],["d-play","t-playcreat"],
+      ["t-regenfarm","t-ecology"],["t-permaculture","t-ecology"],["t-permaculture","t-sustliving"],
+      ["t-foodsystems","t-circular"],["t-foodsov","t-indigenous"],["t-urbanfarm","t-futurecity"],
+      ["t-renewable","t-climate"],["t-solar","t-renewable"],["t-wind","t-renewable"],["t-bioenergy","t-renewable"],
+      ["t-energypolicy","t-governance"],["t-gridtech","t-systems"],["t-storage","t-gridtech"],
+      ["t-language","t-story"],["t-journalism","t-socialmov"],["t-nvc","t-peace"],
+      ["t-socialmedia","t-collective"],["t-dialogue","t-peace"],["t-broadcasting","t-journalism"],
+      ["t-sports","t-movement"],["t-festivals","t-community"],["t-gaming","t-ai"],
+      ["t-esports","t-gaming"],["t-playcreat","t-cocreate"],["t-outdoor","t-ecology"],
+      ["t-leisure","t-mentalhlth"],["t-humor","t-story"],
     ];
     const NM_LINKS=NM_RAW.map(([s,t])=>({source:s,target:t}));
 
@@ -1175,9 +1513,28 @@
           el.append('tspan').attr('x',0).attr('dy','1em').text(w.slice(m).join(' '));
         } else { el.text(d.label); }
       });
+    const NM_URL={
+      "network-state":"v2/network-state/index.html","fund":"v2/fund/index.html","education":"v2/education/index.html","research":"v2/research/index.html","media":"v2/media/index.html","builder":"v2/builder/index.html",
+      "d-sciences":"v2/sciences/index.html","d-tech":"v2/technology/index.html","d-arts":"v2/arts/index.html","d-nature":"v2/nature/index.html","d-business":"v2/business/index.html","d-meta":"v2/metaphysics/index.html","d-lifestyle":"v2/lifestyle/index.html","d-creation":"v2/creation/index.html","d-wellbeing":"v2/wellbeing/index.html","d-society":"v2/society/index.html","d-communication":"v2/communication/index.html","d-energy":"v2/energy/index.html","d-food":"v2/food/index.html","d-play":"v2/play/index.html",
+      "t-quantum":"v2/quantum/index.html","t-neuro":"v2/neuroscience/index.html","t-bio":"v2/biology/index.html","t-psych":"v2/psychology/index.html","t-med":"v2/medicine/index.html","t-math":"v2/mathematics/index.html","t-astrophys":"v2/astrophysics/index.html","t-ecology":"v2/ecology/index.html","t-genetics":"v2/genetics/index.html","t-chemistry":"v2/chemistry/index.html",
+      "t-ai":"v2/artificial-intelligence/index.html","t-blockchain":"v2/blockchain/index.html","t-decentral":"v2/decentralized-networks/index.html","t-arvr":"v2/ar-vr/index.html","t-biotech":"v2/biotechnology/index.html","t-robotics":"v2/robotics/index.html","t-web3":"v2/web3/index.html","t-quantcomp":"v2/quantum-computing/index.html","t-cybersec":"v2/cybersecurity/index.html",
+      "t-music":"v2/music/index.html","t-visual":"v2/visual-art/index.html","t-film":"v2/film/index.html","t-poetry":"v2/poetry/index.html","t-dance":"v2/dance/index.html","t-archit":"v2/architecture/index.html","t-fashion":"v2/fashion/index.html","t-story":"v2/storytelling/index.html","t-photo":"v2/photography/index.html","t-theater":"v2/theater/index.html",
+      "t-sacredgeo":"v2/sacred-geometry/index.html","t-astrology":"v2/astrology/index.html","t-climate":"v2/climate/index.html","t-biodivers":"v2/biodiversity/index.html","t-oceans":"v2/oceans/index.html","t-forests":"v2/forests/index.html","t-cosmos":"v2/cosmos/index.html","t-efields":"v2/energy-fields/index.html","t-cycles":"v2/natural-cycles/index.html",
+      "t-defi":"v2/defi/index.html","t-impact":"v2/impact-investing/index.html","t-socialent":"v2/social-enterprise/index.html","t-circular":"v2/circular-economy/index.html","t-conscap":"v2/conscious-capital/index.html","t-regenbiz":"v2/regenerative-business/index.html","t-dao":"v2/dao/index.html",
+      "t-oneness":"v2/oneness/index.html","t-source":"v2/source/index.html","t-soul":"v2/soul/index.html","t-akashic":"v2/akashic-records/index.html","t-dims":"v2/dimensions/index.html","t-sync":"v2/synchronicity/index.html","t-saclaw":"v2/sacred-law/index.html","t-merkaba":"v2/merkaba/index.html","t-vibration":"v2/vibration/index.html",
+      "t-nutrition":"v2/nutrition/index.html","t-movement":"v2/movement/index.html","t-sleep":"v2/sleep/index.html","t-plantmed":"v2/plant-medicine/index.html","t-community":"v2/community/index.html","t-minimalism":"v2/minimalism/index.html","t-detox":"v2/detox/index.html","t-sustliving":"v2/sustainable-living/index.html",
+      "t-proddesign":"v2/product-design/index.html","t-systems":"v2/systems-thinking/index.html","t-opensource":"v2/open-source/index.html","t-cocreate":"v2/co-creation/index.html","t-proto":"v2/prototyping/index.html","t-emergence":"v2/emergence/index.html","t-biomimicry":"v2/biomimicry/index.html","t-futuretech":"v2/future-tech/index.html",
+      "t-meditation":"v2/meditation/index.html","t-soundheal":"v2/sound-healing/index.html","t-breathwork":"v2/breathwork/index.html","t-somatic":"v2/somatic-therapy/index.html","t-energyheal":"v2/energy-healing/index.html","t-yoga":"v2/yoga/index.html","t-mentalhlth":"v2/mental-health/index.html","t-trauma":"v2/trauma/index.html",
+      "t-governance":"v2/governance/index.html","t-indigenous":"v2/indigenous-wisdom/index.html","t-collective":"v2/collective-intelligence/index.html","t-socialmov":"v2/social-movements/index.html","t-peace":"v2/peace/index.html","t-futurecity":"v2/future-cities/index.html","t-edusystem":"v2/education-systems/index.html","t-diaspora":"v2/diaspora/index.html",
+      "t-language":"v2/language/index.html","t-speaking":"v2/public-speaking/index.html","t-dialogue":"v2/dialogue/index.html","t-journalism":"v2/journalism/index.html","t-socialmedia":"v2/social-media/index.html","t-nvc":"v2/nonviolent-communication/index.html","t-translation":"v2/translation/index.html","t-broadcasting":"v2/broadcasting/index.html",
+      "t-renewable":"v2/renewable-energy/index.html","t-solar":"v2/solar/index.html","t-wind":"v2/wind-energy/index.html","t-geothermal":"v2/geothermal/index.html","t-storage":"v2/energy-storage/index.html","t-bioenergy":"v2/bioenergy/index.html","t-gridtech":"v2/grid-technology/index.html","t-energypolicy":"v2/energy-policy/index.html",
+      "t-regenfarm":"v2/regenerative-farming/index.html","t-permaculture":"v2/permaculture/index.html","t-foodsystems":"v2/food-systems/index.html","t-urbanfarm":"v2/urban-farming/index.html","t-fermentation":"v2/fermentation/index.html","t-foodsov":"v2/food-sovereignty/index.html","t-cuisine":"v2/cuisine/index.html","t-aquaculture":"v2/aquaculture/index.html",
+      "t-sports":"v2/sports/index.html","t-gaming":"v2/games-gaming/index.html","t-outdoor":"v2/outdoor-adventure/index.html","t-esports":"v2/esports/index.html","t-leisure":"v2/leisure-rest/index.html","t-humor":"v2/humor-comedy/index.html","t-festivals":"v2/festivals-events/index.html","t-playcreat":"v2/play-creativity/index.html"
+    };
+    let nmWasDragged=false;
     nmNodeSel.call(d3.drag()
-      .on('start',(e,d)=>{ if(!e.active) nmSim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
-      .on('drag',(e,d)=>{ d.fx=e.x; d.fy=e.y; })
+      .on('start',(e,d)=>{ nmWasDragged=false; if(!e.active) nmSim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+      .on('drag',(e,d)=>{ nmWasDragged=true; d.fx=e.x; d.fy=e.y; })
       .on('end',(e,d)=>{ if(!e.active) nmSim.alphaTarget(0); d.fx=null; d.fy=null; })
     );
     nmSim.on('tick',()=>{ nmNodeSel.attr('transform',d=>`translate(${d.x},${d.y})`); });
@@ -1196,7 +1553,8 @@
         nmHovered=conn;
         nmNodeSel.style('opacity',n=>conn.has(n.id)?1:0.05);
         nmTip.querySelector('.nm-tip-title').textContent=d.label;
-        nmTip.querySelector('.nm-tip-type').textContent=(d.desc||'')+' · '+({core:'FRQNCY CORE',main:'PILLAR',cluster:'DOMAIN',topic:'TOPIC'}[d.type]||'');
+        const clickHint=NM_URL[d.id]?' · click to explore':'';
+        nmTip.querySelector('.nm-tip-type').textContent=(d.desc||'')+' · '+({core:'FRQNCY CORE',main:'PILLAR',cluster:'DOMAIN',topic:'TOPIC'}[d.type]||'')+clickHint;
         nmTip.style.opacity=1;
       })
       .on('mousemove',e=>{
@@ -1204,7 +1562,15 @@
         nmTip.style.left=(e.clientX-rect.left+14)+'px';
         nmTip.style.top=(e.clientY-rect.top-14)+'px';
       })
-      .on('mouseout',()=>{ nmTip.style.opacity=0; nmHovered=null; nmNodeSel.style('opacity',1); });
+      .on('mouseout',()=>{ nmTip.style.opacity=0; nmHovered=null; nmNodeSel.style('opacity',1); })
+      .on('click',(event,d)=>{
+        if(nmWasDragged){ nmWasDragged=false; return; }
+        if(event.defaultPrevented) return;
+        event.stopPropagation();
+        const url=NM_URL[d.id];
+        if(url) window.location.assign(url);
+      })
+      .style('cursor',d=>NM_URL[d.id]?'pointer':'default');
 
     /* Render loop */
     const nmParticles=[];

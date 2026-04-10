@@ -1,0 +1,20 @@
+{
+  "name": "frqncy-network",
+  "version": "1.0.0",
+  "description": "FRQNCY — The Conscious Living Network",
+  "private": true,
+  "scripts": {
+    "build": "node build-kb.js && node build-og.js && node generate.js",
+    "build:kb": "node build-kb.js",
+    "build:og": "node build-og.js",
+    "build:pages": "node generate.js",
+    "dev": "node generate.js && echo '\\nOpen ./index.html in your browser'",
+    "lint": "node -e \"require('./content.json'); console.log('content.json ✓')\" && node -e \"require('./generate.js')\" && echo 'All files parse OK'"
+  },
+  "dependencies": {
+    "sharp": "^0.34.0"
+  },
+  "engines": {
+    "node": ">=18"
+  }
+}

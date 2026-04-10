@@ -1,0 +1,723 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>About FRQNCY — Built on the Foundations of Oneness</title>
+  <meta name="theme-color" content="#0B1C3D">
+
+  <!-- SEO -->
+  <meta name="description" content="FRQNCY is the Edeka of conscious living — a cooperative curation network pointing to the best resources across 14 domains of human knowledge and experience.">
+  <meta name="robots" content="index, follow">
+  <link rel="canonical" href="https://frqncy.network/about.html">
+
+  <!-- Open Graph (social sharing) -->
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="FRQNCY">
+  <meta property="og:title" content="Vision — FRQNCY">
+  <meta property="og:description" content="FRQNCY is the Edeka of conscious living — a cooperative curation network pointing to the best resources across 14 domains of human knowledge and experience.">
+  <meta property="og:url" content="https://frqncy.network/about.html">
+  <meta property="og:image" content="https://frqncy.network/og-image.png">
+
+  <!-- Twitter Card -->
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:site" content="@frqncy">
+  <meta name="twitter:title" content="Vision — FRQNCY">
+  <meta name="twitter:description" content="FRQNCY is the Edeka of conscious living — a cooperative curation network pointing to the best resources across 14 domains of human knowledge and experience.">
+  <meta name="twitter:image" content="https://frqncy.network/og-image.png">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --cream: #FFFFFF;
+      --warm-white: #F4F7FF;
+      --dark: #0B1C3D;
+      --dark-2: #0D2451;
+      --mid: #3A4E72;
+      --light-mid: #8A9AB8;
+      --gold: #C4973A;
+      --gold-light: #E8C97D;
+      --blue: #1A3A8F;
+      --blue-mid: #2952B3;
+      --black: #05080F;
+      --pure-white: #FFFFFF;
+      --font-display: 'Cormorant', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+      --section-pad: clamp(80px, 12vw, 160px);
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: var(--font-body);
+      color: var(--dark);
+      background: var(--cream);
+      overflow-x: hidden;
+    }
+
+    /* =====================
+       NAV
+    ===================== */
+    nav {
+      position: fixed;
+      top: 0; left: 0;
+      width: 100%;
+      z-index: 500;
+      padding: 28px clamp(24px, 5vw, 80px);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      transition: background 0.4s, padding 0.4s, box-shadow 0.4s;
+      background: rgba(255, 255, 255, 0.95);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      box-shadow: 0 1px 0 rgba(11, 28, 61, 0.1);
+    }
+
+    .nav-logo {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: 22px;
+      letter-spacing: 0.38em;
+      color: var(--dark);
+      text-decoration: none;
+      text-transform: uppercase;
+      transition: color 0.3s;
+    }
+    .nav-logo:hover { color: var(--gold); }
+
+    .nav-links {
+      display: flex;
+      gap: 36px;
+      list-style: none;
+    }
+    .nav-links a {
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.28em;
+      text-transform: uppercase;
+      color: var(--dark);
+      text-decoration: none;
+      transition: color 0.2s;
+    }
+    .nav-links a:hover { color: var(--gold); }
+    .nav-links a.active { color: var(--gold); }
+
+    /* =====================
+       HERO SECTION
+    ===================== */
+    #hero {
+      background: var(--pure-white);
+      padding: clamp(140px, 20vh, 200px) clamp(28px, 8vw, 180px);
+      min-height: 100vh;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      position: relative;
+      overflow: hidden;
+      margin-top: 60px;
+    }
+
+    .hero-content {
+      max-width: 920px;
+      text-align: center;
+    }
+
+    .hero-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 28px;
+      display: block;
+    }
+
+    .hero-headline {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(42px, 6vw, 72px);
+      line-height: 1.25;
+      color: var(--dark);
+      margin-bottom: 32px;
+      letter-spacing: -0.01em;
+    }
+
+    .hero-headline em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .hero-subtitle {
+      font-size: 16px;
+      font-weight: 300;
+      line-height: 1.75;
+      color: var(--mid);
+      max-width: 680px;
+      margin: 0 auto;
+    }
+
+    /* =====================
+       SECTION 1: CURATION THESIS
+    ===================== */
+    #thesis-section {
+      background: var(--pure-white);
+      padding: var(--section-pad) clamp(28px, 8vw, 180px);
+      border-top: 1px solid rgba(11, 28, 61, 0.06);
+    }
+
+    .section-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .section-title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(36px, 5vw, 62px);
+      line-height: 1.2;
+      color: var(--dark);
+      margin-bottom: 50px;
+      max-width: 780px;
+    }
+
+    .section-title em {
+      font-style: italic;
+      color: var(--gold);
+    }
+
+    .thesis-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 60px;
+      max-width: 1100px;
+    }
+
+    .thesis-point {
+      max-width: 400px;
+    }
+
+    .thesis-point-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(22px, 2.8vw, 32px);
+      color: var(--dark);
+      margin-bottom: 16px;
+      line-height: 1.3;
+    }
+
+    .thesis-point-body {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--mid);
+      font-weight: 300;
+    }
+
+    .thesis-point-body strong {
+      color: var(--dark);
+      font-weight: 500;
+    }
+
+    /* =====================
+       SECTION 2: SIX PILLARS
+    ===================== */
+    #pillars-section {
+      background: linear-gradient(160deg, #0B1C3D 0%, #0D2451 100%);
+      padding: var(--section-pad) clamp(24px, 6vw, 120px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #pillars-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 65% 40%, rgba(41, 82, 179, 0.15) 0%, transparent 60%);
+      pointer-events: none;
+    }
+
+    .pillars-inner {
+      max-width: 1200px;
+      margin: 0 auto;
+      position: relative;
+      z-index: 1;
+    }
+
+    .pillars-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .pillars-title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(36px, 5vw, 62px);
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 60px;
+      max-width: 700px;
+    }
+
+    .pillars-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+      gap: 44px;
+    }
+
+    .pillar-card {
+      background: rgba(255, 255, 255, 0.05);
+      border: 1px solid rgba(196, 151, 58, 0.15);
+      padding: 44px 32px;
+      border-radius: 2px;
+      backdrop-filter: blur(4px);
+      -webkit-backdrop-filter: blur(4px);
+      transition: all 0.3s ease;
+    }
+
+    .pillar-card:hover {
+      background: rgba(255, 255, 255, 0.08);
+      border-color: rgba(196, 151, 58, 0.35);
+      transform: translateY(-4px);
+    }
+
+    .pillar-number {
+      font-family: var(--font-display);
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      color: var(--gold);
+      margin-bottom: 12px;
+      display: block;
+    }
+
+    .pillar-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(20px, 2.5vw, 28px);
+      color: var(--cream);
+      margin-bottom: 14px;
+      line-height: 1.2;
+    }
+
+    .pillar-desc {
+      font-size: 13px;
+      line-height: 1.7;
+      color: rgba(249, 247, 242, 0.65);
+      font-weight: 300;
+    }
+
+    /* =====================
+       SECTION 3: THREE MOVES
+    ===================== */
+    #moves-section {
+      background: var(--pure-white);
+      padding: var(--section-pad) clamp(28px, 8vw, 180px);
+      border-top: 1px solid rgba(11, 28, 61, 0.06);
+    }
+
+    .moves-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .moves-title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(36px, 5vw, 62px);
+      color: var(--dark);
+      line-height: 1.2;
+      margin-bottom: 60px;
+      max-width: 700px;
+    }
+
+    .moves-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(320px, 1fr));
+      gap: 40px;
+    }
+
+    .move-card {
+      background: var(--warm-white);
+      padding: 54px 42px;
+      border: 1px solid rgba(11, 28, 61, 0.1);
+      border-radius: 2px;
+      transition: all 0.3s ease;
+    }
+
+    .move-card:hover {
+      background: var(--pure-white);
+      border-color: var(--gold);
+      box-shadow: 0 12px 48px rgba(11, 28, 61, 0.08);
+    }
+
+    .move-number {
+      font-family: var(--font-display);
+      font-size: 10px;
+      letter-spacing: 0.32em;
+      color: var(--gold);
+      margin-bottom: 14px;
+      display: block;
+    }
+
+    .move-title {
+      font-family: var(--font-display);
+      font-weight: 400;
+      font-size: clamp(24px, 3vw, 36px);
+      color: var(--dark);
+      margin-bottom: 18px;
+      line-height: 1.3;
+    }
+
+    .move-desc {
+      font-size: 14px;
+      line-height: 1.75;
+      color: var(--mid);
+      font-weight: 300;
+    }
+
+    /* =====================
+       SECTION 4: WHO WE ARE
+    ===================== */
+    #team-section {
+      background: linear-gradient(160deg, #0B1C3D 0%, #0D2451 100%);
+      padding: var(--section-pad) clamp(28px, 8vw, 180px);
+      position: relative;
+      overflow: hidden;
+    }
+
+    #team-section::before {
+      content: '';
+      position: absolute;
+      inset: 0;
+      background: radial-gradient(ellipse at 35% 60%, rgba(196, 151, 58, 0.08) 0%, transparent 50%);
+      pointer-events: none;
+    }
+
+    .team-inner {
+      max-width: 840px;
+      position: relative;
+      z-index: 1;
+    }
+
+    .team-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .team-title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(36px, 5vw, 62px);
+      color: var(--cream);
+      line-height: 1.2;
+      margin-bottom: 30px;
+    }
+
+    .team-content {
+      font-size: 15px;
+      line-height: 1.8;
+      color: rgba(249, 247, 242, 0.65);
+      font-weight: 300;
+    }
+
+    .team-content strong {
+      color: var(--cream);
+      font-weight: 400;
+    }
+
+    /* =====================
+       SECTION 5: CTA
+    ===================== */
+    #cta-section {
+      background: var(--pure-white);
+      padding: var(--section-pad) clamp(28px, 8vw, 180px);
+      border-top: 1px solid rgba(11, 28, 61, 0.06);
+    }
+
+    .cta-inner {
+      max-width: 800px;
+      text-align: center;
+    }
+
+    .cta-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 18px;
+      display: block;
+    }
+
+    .cta-title {
+      font-family: var(--font-display);
+      font-weight: 300;
+      font-size: clamp(34px, 5vw, 58px);
+      color: var(--dark);
+      line-height: 1.2;
+      margin-bottom: 32px;
+    }
+
+    .cta-subtitle {
+      font-size: 15px;
+      line-height: 1.75;
+      color: var(--mid);
+      margin-bottom: 48px;
+      font-weight: 300;
+    }
+
+    .cta-buttons {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 16px;
+      justify-content: center;
+    }
+
+    .cta-button {
+      font-size: 11px;
+      letter-spacing: 0.26em;
+      text-transform: uppercase;
+      padding: 15px 36px;
+      border: 1px solid var(--dark);
+      background: var(--dark);
+      color: var(--cream);
+      text-decoration: none;
+      display: inline-block;
+      transition: all 0.25s;
+      font-family: var(--font-body);
+      cursor: pointer;
+    }
+
+    .cta-button:hover {
+      background: var(--blue-mid);
+      border-color: var(--blue-mid);
+    }
+
+    .cta-button.secondary {
+      background: transparent;
+      color: var(--dark);
+      border: 1px solid var(--dark);
+    }
+
+    .cta-button.secondary:hover {
+      background: var(--warm-white);
+      border-color: var(--dark);
+    }
+
+    /* =====================
+       RESPONSIVE
+    ===================== */
+    @media (max-width: 768px) {
+      .nav-links {
+        display: none;
+      }
+
+      .thesis-grid {
+        gap: 40px;
+      }
+
+      .pillars-grid {
+        gap: 28px;
+      }
+
+      .moves-grid {
+        gap: 28px;
+      }
+
+      .cta-buttons {
+        flex-direction: column;
+        align-items: center;
+      }
+
+      .cta-button {
+        width: 100%;
+        max-width: 300px;
+      }
+    }
+  </style>
+  <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="/chat-widget.js" defer></script>
+<link rel="manifest" href="/manifest.json">
+</head>
+<body>
+
+  <!-- Navigation -->
+  <nav>
+    <a href="index.html" class="nav-logo">FRQNCY</a>
+    <ul class="nav-links">
+      <li><a href="about.html" class="active">Vision</a></li>
+      <li><a href="platform.html">Platform</a></li>
+      <li><a href="podcast.html">Podcast</a></li>
+      <li><a href="space.html">Space</a></li>
+      <li><a href="v2/explore.html">Explore</a></li>
+    </ul>
+  </nav>
+
+  <!-- Hero Section -->
+  <section id="hero">
+    <div class="hero-content">
+      <span class="hero-label">About FRQNCY</span>
+      <h1 class="hero-headline">Built on the <em>Foundations of Oneness</em></h1>
+      <p class="hero-subtitle">
+        A platform for curating consciousness, connecting seekers to the wisdom, spaces, and practices that align with their spiritual journey. We don't create the content—we filter it, refine it, and make it discoverable for those ready to receive it.
+      </p>
+    </div>
+  </section>
+
+  <!-- Curation Thesis Section -->
+  <section id="thesis-section">
+    <span class="section-label">The Curation Thesis</span>
+    <h2 class="section-title">The Filter, <em>Not the Producer</em></h2>
+
+    <div class="thesis-grid">
+      <div class="thesis-point">
+        <h3 class="thesis-point-title">The Edeka Model</h3>
+        <p class="thesis-point-body">
+          Just as Edeka cooperates with independent stores and curates goods for the discerning consumer, FRQNCY operates as a distributed network. We <strong>don't own the content</strong>—we curate it, verify it, and make it accessible. Trust and taste are the products.
+        </p>
+      </div>
+
+      <div class="thesis-point">
+        <h3 class="thesis-point-title">Quality Over Noise</h3>
+        <p class="thesis-point-body">
+          In a world drowning in information, the scarcest resource is <strong>discernment</strong>. We act as the filter, removing noise and elevating wisdom. Our role is to help you distinguish between passing trends and timeless teachings.
+        </p>
+      </div>
+
+      <div class="thesis-point">
+        <h3 class="thesis-point-title">Trust as Currency</h3>
+        <p class="thesis-point-body">
+          We curate not because we claim to know best, but because we've done the deep work to <strong>verify authenticity</strong>. Each recommendation carries our confidence. You trust the curator, not the marketing.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Six Pillars Section -->
+  <section id="pillars-section">
+    <div class="pillars-inner">
+      <span class="pillars-label">Our Foundation</span>
+      <h2 class="pillars-title">Six Pillars of FRQNCY</h2>
+
+      <div class="pillars-grid">
+        <div class="pillar-card">
+          <span class="pillar-number">01 / Network State</span>
+          <h3 class="pillar-title">Network State</h3>
+          <p class="pillar-desc">Building a distributed network of conscious practitioners, teachers, and seekers. A real community with shared values, not a follower count.</p>
+        </div>
+
+        <div class="pillar-card">
+          <span class="pillar-number">02 / Fund</span>
+          <h3 class="pillar-title">Fund</h3>
+          <p class="pillar-desc">Supporting authentic teachers, researchers, and consciousness projects through grants, sponsorships, and direct investment in growth.</p>
+        </div>
+
+        <div class="pillar-card">
+          <span class="pillar-number">03 / Education</span>
+          <h3 class="pillar-title">Education</h3>
+          <p class="pillar-desc">Curated learning paths and programs that bridge ancient wisdom with contemporary understanding. Depth over certification.</p>
+        </div>
+
+        <div class="pillar-card">
+          <span class="pillar-number">04 / Research</span>
+          <h3 class="pillar-title">Research</h3>
+          <p class="pillar-desc">Investigating consciousness, subjective experience, and the efficacy of spiritual practices through rigorous, open-minded inquiry.</p>
+        </div>
+
+        <div class="pillar-card">
+          <span class="pillar-number">05 / Media</span>
+          <h3 class="pillar-title">Media</h3>
+          <p class="pillar-desc">Our podcast and content arm—featuring conversations with teachers, researchers, and practitioners pushing the frontier of consciousness.</p>
+        </div>
+
+        <div class="pillar-card">
+          <span class="pillar-number">06 / Builder</span>
+          <h3 class="pillar-title">Builder</h3>
+          <p class="pillar-desc">Infrastructure for conscious living. Tools, platforms, and spaces that make spiritual practice more accessible and integrated into daily life.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Three Moves Section -->
+  <section id="moves-section">
+    <span class="moves-label">How We Start</span>
+    <h2 class="moves-title">Three Starting Moves</h2>
+
+    <div class="moves-grid">
+      <div class="move-card">
+        <span class="move-number">Move One</span>
+        <h3 class="move-title">Platform</h3>
+        <p class="move-desc">
+          A curation and referral network connecting seekers with verified teachers, practices, and resources. Transparent, thoughtful, and designed for discovery without the algorithm.
+        </p>
+      </div>
+
+      <div class="move-card">
+        <span class="move-number">Move Two</span>
+        <h3 class="move-title">Podcast</h3>
+        <p class="move-desc">
+          In-depth conversations exploring consciousness, spirituality, and the edges of human experience. Our media arm for deeper connection and knowledge-sharing with our community.
+        </p>
+      </div>
+
+      <div class="move-card">
+        <span class="move-number">Move Three</span>
+        <h3 class="move-title">Physical Space</h3>
+        <p class="move-desc">
+          A coworking and relaxation sanctuary designed for conscious practitioners. A place to meditate, learn, collaborate, and integrate the inner work into meaningful action.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- Who We Are Section -->
+  <section id="team-section">
+    <div class="team-inner">
+      <span class="team-label">Our Community</span>
+      <h2 class="team-title">Who We Are</h2>
+      <div class="team-content">
+        <p>
+          We are a small, intentional team of builders, teachers, and seekers dedicated to creating infrastructure for conscious living. We come from diverse backgrounds—technology, spirituality, research, design—united by a shared belief: <strong>consciousness is the frontier, and it deserves the same rigor and investment we give to any other domain.</strong>
+        </p>
+        <br>
+        <p>
+          We don't claim to have all the answers. Instead, we've committed to asking better questions, supporting authentic voices, and building tools that serve the deepest dimensions of human experience. We're building FRQNCY because the world needs a home for serious, joyful exploration of what it means to be conscious.
+        </p>
+      </div>
+    </div>
+  </section>
+
+  <!-- CTA Section -->
+  <section id="cta-section">
+    <div class="cta-inner">
+      <span class="cta-label">Ready to Connect?</span>
+      <h2 class="cta-title">Join the Network</h2>
+      <p class="cta-subtitle">Explore our growing ecosystem of practitioners, teachers, and conscious spaces.</p>
+      <div class="cta-buttons">
+        <a href="v2/explore.html" class="cta-button">Explore Network</a>
+        <a href="index.html#contact-section" class="cta-button secondary">Get in Touch</a>
+      </div>
+    </div>
+  </section>
+
+</body>
+</html>

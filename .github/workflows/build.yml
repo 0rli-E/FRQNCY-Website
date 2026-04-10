@@ -1,0 +1,43 @@
+name: Build site
+
+# Triggers on any content or generator change
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'content.json'
+      - 'generate.js'
+      - 'build-kb.js'
+      - 'build-og.js'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v4
+
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install sharp for OG image generation
+        run: npm install sharp
+
+      - name: Rebuild AI knowledge base
+        run: node build-kb.js
+
+      - name: Generate OG images
+        run: node build-og.js
+
+      - name: Rebuild v2 pages
+        run: node generate.js
+
+      - name: Commit all generated assets
+        run: |
+          git config user.name  "github-actions[bot]"
+          git config user.email "github-actions[bot]@users.noreply.github.com"
+          git add v2/ functions/api/_kb.js sitemap.xml search.json og-image.png
+          git diff --staged --quiet || git commit -m "chore: rebuild site assets from content.json [skip ci]"
+          git push

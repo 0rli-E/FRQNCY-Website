@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Explore the Network — FRQNCY</title>
+  <meta name="description" content="Navigate 130 topics across 6 pillars of conscious living. An interactive map of the FRQNCY Network.">
+  <meta name="theme-color" content="#0B1C3D">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Explore the Network — FRQNCY">
+  <meta property="og:description" content="Navigate 130 topics across 6 pillars of conscious living. An interactive map of the FRQNCY Network.">
+  <meta property="og:url" content="https://frqncy.network/v2/explore.html">
+  <meta property="og:image" content="https://frqncy.network/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="FRQNCY">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Explore the Network — FRQNCY">
+  <meta name="twitter:description" content="Navigate 130 topics across 6 pillars of conscious living.">
+  <meta name="twitter:image" content="https://frqncy.network/og-image.png">
+  <link rel="canonical" href="https://frqncy.network/v2/explore.html">
+  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
+  <link rel="manifest" href="../manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
+    :root { --gold:#C4973A; --gold-light:#E8C97D; --font-display:'Cormorant',Georgia,serif; --font-body:'Jost',sans-serif; }
+    html, body { width:100%; height:100%; background:linear-gradient(160deg,#0B1C3D 0%,#0D2451 60%,#0A1830 100%); overflow:hidden; font-family:var(--font-body); }
+    #fx  { position:fixed; inset:0; z-index:0; pointer-events:none; }
+    #map-svg { position:fixed; inset:0; width:100%; height:100%; z-index:1; background:transparent; cursor:grab; touch-action:none; user-select:none; }
+    #map-svg:active { cursor:grabbing; }
+    #tooltip {
+      position:fixed; z-index:10; background:rgba(11,28,61,0.93);
+      border:1px solid var(--gold); border-radius:8px; padding:10px 16px;
+      color:#fff; font-family:var(--font-body); font-size:12px;
+      pointer-events:none; opacity:0; transition:opacity 0.2s; max-width:210px; backdrop-filter:blur(8px);
+    }
+    #tooltip .tip-title { font-family:var(--font-display); font-size:17px; color:var(--gold-light); margin-bottom:3px; }
+    #tooltip .tip-type  { font-size:9px; letter-spacing:0.16em; color:rgba(255,255,255,0.38); text-transform:uppercase; }
+    #ui-overlay { position:fixed; top:24px; left:50%; transform:translateX(-50%); z-index:5; text-align:center; pointer-events:none; }
+    #ui-overlay h1 { font-family:var(--font-display); font-size:clamp(20px,2.5vw,30px); font-weight:300; letter-spacing:0.35em; color:var(--gold); }
+    #ui-overlay p  { font-size:10px; letter-spacing:0.2em; color:rgba(255,255,255,0.3); margin-top:5px; }
+    #back-btn {
+      position:fixed; bottom:28px; left:50%; transform:translateX(-50%); z-index:5;
+      background:transparent; border:1px solid rgba(196,151,58,0.3); color:rgba(196,151,58,0.58);
+      font-family:var(--font-body); font-size:10px; letter-spacing:0.22em;
+      padding:10px 26px; cursor:pointer; border-radius:2px; transition:all 0.3s;
+    }
+    #back-btn:hover { border-color:var(--gold); color:var(--gold); background:rgba(196,151,58,0.05); }
+    #node-count { position:fixed; bottom:28px; right:28px; z-index:5; font-size:10px; letter-spacing:0.12em; color:rgba(255,255,255,0.18); }
+    #v2-badge { position:fixed; top:24px; right:24px; z-index:10; font-size:9px; letter-spacing:0.22em; color:#4A7AE8; border:1px solid rgba(74,122,232,0.4); padding:4px 12px; border-radius:2px; font-family:var(--font-body); }
+    #map-svg circle.clickable { cursor:pointer; }
+    #map-svg circle.clickable:hover { filter: brightness(1.3); }
+    #legend { position:fixed; top:90px; right:24px; z-index:5; display:flex; flex-direction:column; gap:9px; }
+    .leg-item { display:flex; align-items:center; gap:8px; font-size:10px; letter-spacing:0.12em; color:rgba(255,255,255,0.36); }
+    .leg-dot  { border-radius:50%; flex-shrink:0; }
+    #search-container {
+      position: fixed;
+      top: 80px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 6;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: 6px;
+    }
+    #search-bar {
+      width: clamp(240px, 40vw, 400px);
+      background: rgba(11, 28, 61, 0.85);
+      border: 1px solid rgba(255, 255, 255, 0.15);
+      border-radius: 2px;
+      padding: 10px 16px;
+      color: #fff;
+      font-family: var(--font-body);
+      font-size: 12px;
+      letter-spacing: 0.1em;
+      outline: none;
+      transition: border-color 0.3s;
+      backdrop-filter: blur(8px);
+    }
+    #search-bar::placeholder {
+      color: rgba(255, 255, 255, 0.3);
+    }
+    #search-bar:focus {
+      border-color: rgba(255, 255, 255, 0.3);
+    }
+    #search-count {
+      font-size: 9px;
+      letter-spacing: 0.08em;
+      color: var(--gold);
+      min-height: 12px;
+      opacity: 0;
+      transition: opacity 0.2s;
+    }
+    #search-count.active {
+      opacity: 1;
+    }
+
+    /* ── Search Results Panel ── */
+    #search-results {
+      position: fixed;
+      top: 140px;
+      left: 50%;
+      transform: translateX(-50%);
+      z-index: 6;
+      width: clamp(280px, 72vw, 720px);
+      max-height: 55vh;
+      overflow-y: auto;
+      background: rgba(9, 22, 51, 0.96);
+      border: 1px solid rgba(196, 151, 58, 0.25);
+      border-radius: 4px;
+      backdrop-filter: blur(16px);
+      display: none;
+      scrollbar-width: thin;
+      scrollbar-color: rgba(196,151,58,0.3) transparent;
+    }
+    #search-results.visible { display: block; }
+    #search-results .sr-item {
+      display: flex;
+      align-items: flex-start;
+      gap: 14px;
+      padding: 12px 16px;
+      border-bottom: 1px solid rgba(255,255,255,0.06);
+      text-decoration: none;
+      color: inherit;
+      transition: background 0.15s;
+      cursor: pointer;
+    }
+    #search-results .sr-item:last-child { border-bottom: none; }
+    #search-results .sr-item:hover { background: rgba(196,151,58,0.08); }
+    #search-results .sr-dot {
+      width: 8px;
+      height: 8px;
+      border-radius: 50%;
+      flex-shrink: 0;
+      margin-top: 5px;
+    }
+    #search-results .sr-body { flex: 1; min-width: 0; }
+    #search-results .sr-label {
+      font-family: var(--font-head, 'Cormorant Garamond', serif);
+      font-size: 14px;
+      color: #fff;
+      margin-bottom: 2px;
+    }
+    #search-results .sr-meta {
+      font-size: 9px;
+      letter-spacing: 0.07em;
+      color: rgba(255,255,255,0.4);
+      text-transform: uppercase;
+      margin-bottom: 4px;
+    }
+    #search-results .sr-desc {
+      font-size: 11px;
+      color: rgba(255,255,255,0.55);
+      line-height: 1.4;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #search-results .sr-picks {
+      font-size: 10px;
+      color: rgba(196,151,58,0.7);
+      margin-top: 3px;
+      white-space: nowrap;
+      overflow: hidden;
+      text-overflow: ellipsis;
+    }
+    #search-results .sr-empty {
+      padding: 24px 16px;
+      text-align: center;
+      font-size: 11px;
+      color: rgba(255,255,255,0.35);
+      letter-spacing: 0.08em;
+    }
+
+    /* =====================
+       MOBILE OPTIMIZATIONS
+    ===================== */
+    @media (max-width: 640px) {
+      /* UI Overlay: Reduce font size and reposition */
+      #ui-overlay {
+        top: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        padding: 0 12px;
+      }
+      #ui-overlay h1 {
+        font-size: clamp(16px, 2.2vw, 24px);
+        letter-spacing: 0.3em;
+      }
+      #ui-overlay p {
+        font-size: 9px;
+        letter-spacing: 0.15em;
+        margin-top: 4px;
+      }
+
+      /* Hint text for mobile */
+      .ui-hint-desktop {
+        display: none !important;
+      }
+      .ui-hint-mobile {
+        display: block !important;
+      }
+
+      /* Badge positioning */
+      #v2-badge {
+        top: 20px;
+        right: 12px;
+        font-size: 8px;
+        letter-spacing: 0.18em;
+        padding: 3px 10px;
+      }
+
+      /* Legend: Reposition to left side for mobile */
+      #legend {
+        top: 80px;
+        right: auto;
+        left: 12px;
+        flex-direction: row;
+        flex-wrap: wrap;
+        gap: 8px;
+        max-width: 150px;
+      }
+      .leg-item {
+        font-size: 8px;
+        letter-spacing: 0.1em;
+        gap: 4px;
+      }
+      .leg-dot {
+        flex-shrink: 0;
+      }
+      .leg-dot {
+        width: 6px !important;
+        height: 6px !important;
+      }
+
+      /* Back button: More accessible on mobile */
+      #back-btn {
+        bottom: 20px;
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 9px;
+        letter-spacing: 0.2em;
+        padding: 8px 20px;
+        border-width: 1px;
+      }
+
+      /* Node count: Hide on very small screens */
+      #node-count {
+        display: none;
+      }
+
+      /* Tooltip: Reposition to avoid cutoff on mobile */
+      #tooltip {
+        position: fixed;
+        max-width: 160px;
+        bottom: auto;
+        top: auto;
+        padding: 8px 12px;
+        font-size: 11px;
+      }
+      #tooltip .tip-title {
+        font-size: 14px;
+        margin-bottom: 2px;
+      }
+      #tooltip .tip-type {
+        font-size: 8px;
+        letter-spacing: 0.15em;
+      }
+
+      /* Map: Ensure it fills the screen properly */
+      #fx {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+      }
+      #map-svg {
+        position: fixed;
+        inset: 0;
+        width: 100%;
+        height: 100%;
+        touch-action: none;
+      }
+
+      /* Reduce node sizes on mobile for clarity */
+      #map-svg circle {
+        /* Will be overridden by JavaScript but CSS fallback */
+        opacity: 0.8;
+      }
+      #map-svg circle.clickable {
+        cursor: pointer;
+      }
+      #map-svg text {
+        font-size: 10px;
+      }
+    }
+
+    @media (max-width: 480px) {
+      /* Extra small screens: Further adjustments */
+      #ui-overlay h1 {
+        font-size: clamp(14px, 2vw, 20px);
+      }
+      #ui-overlay p {
+        font-size: 8px;
+      }
+
+      #legend {
+        top: 70px;
+        gap: 6px;
+      }
+
+      #back-btn {
+        font-size: 8px;
+        padding: 6px 16px;
+      }
+
+      #v2-badge {
+        font-size: 7px;
+        padding: 2px 8px;
+      }
+    }
+  </style>
+  <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="../chat-widget.js" defer></script>
+</head>
+<body>
+
+<canvas id="fx"></canvas>
+<svg id="map-svg"><defs id="svg-defs"></defs></svg>
+<div id="tooltip"><div class="tip-title"></div><div class="tip-type"></div></div>
+
+<div id="ui-overlay">
+  <h1>FRQNCY NETWORK</h1>
+  <p class="ui-hint-desktop">CLICK A NODE TO EXPLORE · DRAG · SCROLL TO ZOOM</p>
+  <p class="ui-hint-mobile" style="display:none;">PINCH TO ZOOM · TAP TO EXPLORE</p>
+</div>
+<div id="search-container">
+  <input type="text" id="search-bar" placeholder="SEARCH THE NETWORK...">
+  <div id="search-count"></div>
+</div>
+<div id="search-results"></div>
+<div id="v2-badge">EXPLORE</div>
+
+<div id="legend">
+  <div class="leg-item"><div class="leg-dot" style="width:14px;height:14px;background:linear-gradient(135deg,#F4DC88,#B0791E);"></div>CORE</div>
+  <div class="leg-item"><div class="leg-dot" style="width:10px;height:10px;background:linear-gradient(135deg,#5A8AFF,#152E7A);"></div>PILLARS</div>
+  <div class="leg-item"><div class="leg-dot" style="width:8px;height:8px;background:linear-gradient(135deg,#3062C8,#091840);"></div>DOMAINS</div>
+  <div class="leg-item"><div class="leg-dot" style="width:6px;height:6px;background:linear-gradient(135deg,#213E88,#080F28);"></div>TOPICS</div>
+  <div class="leg-item"><div class="leg-dot" style="width:3px;height:3px;background:#fff;box-shadow:0 0 3px rgba(255,255,255,0.8);"></div>HUMANS</div>
+</div>
+
+<button id="back-btn" onclick="window.location.href='../index.html'">← MAIN SITE</button>
+<div id="node-count"></div>
+
+<script>
+/* ──────────── NETWORK NODES (no human dots here — canvas-only) ──────────── */
+const NODES = [
+  {id:"frqncy",       label:"FRQNCY",                  type:"core",    r:52, desc:"The living network of consciousness"},
+  {id:"network-state",label:"Network State",            type:"main",    r:30, desc:"The sovereign community"},
+  {id:"fund",         label:"Fund",                     type:"main",    r:29, desc:"Capital allocation"},
+  {id:"education",    label:"Education",                type:"main",    r:30, desc:"Transmitting what's known"},
+  {id:"research",     label:"Research",                 type:"main",    r:29, desc:"Exploring what isn't known yet"},
+  {id:"media",        label:"Media",                    type:"main",    r:29, desc:"Spreading the signal"},
+  {id:"builder",      label:"Builder",                  type:"main",    r:30, desc:"Creating products, tools, experiences"},
+  {id:"d-sciences",   label:"Sciences",                 type:"cluster", r:24, desc:"Empirical exploration of reality"},
+  {id:"d-tech",       label:"Technology",               type:"cluster", r:24, desc:"Tools shaping the future"},
+  {id:"d-arts",       label:"Arts & Culture",           type:"cluster", r:23, desc:"Expression of the human spirit"},
+  {id:"d-nature",     label:"Nature & Cosmos",          type:"cluster", r:24, desc:"The living systems of existence"},
+  {id:"d-business",   label:"Business & Finance",       type:"cluster", r:23, desc:"Regenerative economic systems"},
+  {id:"d-meta",       label:"Metaphysics",              type:"cluster", r:25, desc:"The architecture of reality"},
+  {id:"d-lifestyle",  label:"Lifestyle",                type:"cluster", r:22, desc:"Conscious ways of living"},
+  {id:"d-creation",   label:"Creation",                 type:"cluster", r:23, desc:"Building what has never existed"},
+  {id:"d-wellbeing",  label:"Well-being",               type:"cluster", r:24, desc:"Healing and wholeness"},
+  {id:"d-society",      label:"Society & Networks",       type:"cluster", r:23, desc:"Collective human systems"},
+  {id:"d-communication",label:"Communication",            type:"cluster", r:23, desc:"How humans connect and express meaning"},
+  {id:"d-energy",       label:"Energy",                   type:"cluster", r:23, desc:"The forces and resources that power existence"},
+  {id:"d-food",         label:"Food & Agriculture",       type:"cluster", r:23, desc:"Growing, sharing and consuming nourishment"},
+  {id:"d-play",         label:"Play & Recreation",        type:"cluster", r:22, desc:"Joy, games, sports and leisure"},
+  {id:"t-quantum",    label:"Quantum Physics",          type:"topic", r:14},
+  {id:"t-neuro",      label:"Neuroscience",             type:"topic", r:14},
+  {id:"t-bio",        label:"Biology",                  type:"topic", r:13},
+  {id:"t-psych",      label:"Psychology",               type:"topic", r:14},
+  {id:"t-med",        label:"Medicine",                 type:"topic", r:13},
+  {id:"t-math",       label:"Mathematics",              type:"topic", r:13},
+  {id:"t-astrophys",  label:"Astrophysics",             type:"topic", r:14},
+  {id:"t-ecology",    label:"Ecology",                  type:"topic", r:13},
+  {id:"t-genetics",   label:"Genetics",                 type:"topic", r:13},
+  {id:"t-chemistry",  label:"Chemistry",                type:"topic", r:12},
+  {id:"t-ai",         label:"Artificial Intelligence",  type:"topic", r:16},
+  {id:"t-blockchain", label:"Blockchain",               type:"topic", r:15},
+  {id:"t-decentral",  label:"Decentralized Networks",   type:"topic", r:15},
+  {id:"t-arvr",       label:"AR / VR",                  type:"topic", r:13},
+  {id:"t-biotech",    label:"Biotechnology",            type:"topic", r:14},
+  {id:"t-robotics",   label:"Robotics",                 type:"topic", r:13},
+  {id:"t-web3",       label:"Web3",                     type:"topic", r:15},
+  {id:"t-quantcomp",  label:"Quantum Computing",        type:"topic", r:14},
+  {id:"t-cybersec",   label:"Cybersecurity",            type:"topic", r:13},
+  {id:"t-music",      label:"Music",                    type:"topic", r:16},
+  {id:"t-visual",     label:"Visual Art",               type:"topic", r:14},
+  {id:"t-film",       label:"Film",                     type:"topic", r:13},
+  {id:"t-poetry",     label:"Poetry",                   type:"topic", r:13},
+  {id:"t-dance",      label:"Dance",                    type:"topic", r:13},
+  {id:"t-archit",     label:"Architecture",             type:"topic", r:13},
+  {id:"t-fashion",    label:"Fashion",                  type:"topic", r:12},
+  {id:"t-story",      label:"Storytelling",             type:"topic", r:14},
+  {id:"t-photo",      label:"Photography",              type:"topic", r:12},
+  {id:"t-theater",    label:"Theater",                  type:"topic", r:12},
+  {id:"t-sacredgeo",  label:"Sacred Geometry",          type:"topic", r:15},
+  {id:"t-astrology",  label:"Astrology",                type:"topic", r:14},
+  {id:"t-climate",    label:"Climate",                  type:"topic", r:14},
+  {id:"t-biodivers",  label:"Biodiversity",             type:"topic", r:13},
+  {id:"t-oceans",     label:"Oceans",                   type:"topic", r:13},
+  {id:"t-forests",    label:"Forests",                  type:"topic", r:13},
+  {id:"t-cosmos",     label:"Stars & Planets",          type:"topic", r:14},
+  {id:"t-efields",    label:"Energy Fields",            type:"topic", r:14},
+  {id:"t-cycles",     label:"Seasons & Cycles",         type:"topic", r:13},
+  {id:"t-defi",       label:"DeFi",                     type:"topic", r:15},
+  {id:"t-impact",     label:"Impact Investing",         type:"topic", r:14},
+  {id:"t-socialent",  label:"Social Enterprise",        type:"topic", r:14},
+  {id:"t-circular",   label:"Circular Economy",         type:"topic", r:14},
+  {id:"t-conscap",    label:"Conscious Capital",        type:"topic", r:14},
+  {id:"t-regenbiz",   label:"Regenerative Business",    type:"topic", r:14},
+  {id:"t-dao",        label:"DAOs",                     type:"topic", r:13},
+  {id:"t-oneness",    label:"Oneness",                  type:"topic", r:16},
+  {id:"t-source",     label:"Source Energy",            type:"topic", r:15},
+  {id:"t-soul",       label:"Soul Purpose",             type:"topic", r:14},
+  {id:"t-akashic",    label:"Akashic Records",          type:"topic", r:14},
+  {id:"t-dims",       label:"Higher Dimensions",        type:"topic", r:14},
+  {id:"t-sync",       label:"Synchronicity",            type:"topic", r:13},
+  {id:"t-saclaw",     label:"Sacred Law",               type:"topic", r:13},
+  {id:"t-merkaba",    label:"Merkaba",                  type:"topic", r:13},
+  {id:"t-vibration",  label:"Vibration & Frequency",    type:"topic", r:15},
+  {id:"t-nutrition",  label:"Nutrition",                type:"topic", r:13},
+  {id:"t-movement",   label:"Movement",                 type:"topic", r:13},
+  {id:"t-sleep",      label:"Sleep",                    type:"topic", r:12},
+  {id:"t-plantmed",   label:"Plant Medicine",           type:"topic", r:14},
+  {id:"t-community",  label:"Community Living",         type:"topic", r:14},
+  {id:"t-minimalism", label:"Minimalism",               type:"topic", r:13},
+  {id:"t-detox",      label:"Digital Detox",            type:"topic", r:12},
+  {id:"t-sustliving", label:"Sustainable Living",       type:"topic", r:14},
+  {id:"t-proddesign", label:"Product Design",           type:"topic", r:13},
+  {id:"t-systems",    label:"Systems Thinking",         type:"topic", r:14},
+  {id:"t-opensource", label:"Open Source",              type:"topic", r:14},
+  {id:"t-cocreate",   label:"Co-creation",              type:"topic", r:14},
+  {id:"t-proto",      label:"Prototyping",              type:"topic", r:13},
+  {id:"t-emergence",  label:"Emergence",                type:"topic", r:14},
+  {id:"t-biomimicry", label:"Biomimicry",               type:"topic", r:14},
+  {id:"t-futuretech", label:"Future of Work",           type:"topic", r:13},
+  {id:"t-meditation", label:"Meditation",               type:"topic", r:16},
+  {id:"t-soundheal",  label:"Sound Healing",            type:"topic", r:15},
+  {id:"t-breathwork", label:"Breathwork",               type:"topic", r:14},
+  {id:"t-somatic",    label:"Somatic Therapy",          type:"topic", r:14},
+  {id:"t-energyheal", label:"Energy Healing",           type:"topic", r:14},
+  {id:"t-yoga",       label:"Yoga",                     type:"topic", r:14},
+  {id:"t-mentalhlth", label:"Mental Health",            type:"topic", r:14},
+  {id:"t-trauma",     label:"Trauma Healing",           type:"topic", r:14},
+  {id:"t-governance", label:"Global Governance",        type:"topic", r:14},
+  {id:"t-indigenous", label:"Indigenous Wisdom",        type:"topic", r:15},
+  {id:"t-collective", label:"Collective Intelligence",  type:"topic", r:15},
+  {id:"t-socialmov",  label:"Social Movements",         type:"topic", r:14},
+  {id:"t-peace",      label:"Peace Building",           type:"topic", r:14},
+  {id:"t-futurecity", label:"Future Cities",            type:"topic", r:14},
+  {id:"t-edusystem",  label:"Education Systems",        type:"topic", r:14},
+  {id:"t-diaspora",   label:"Global Diaspora",          type:"topic", r:13},
+  // Communication topics
+  {id:"t-language",   label:"Language & Linguistics",   type:"topic", r:14},
+  {id:"t-speaking",   label:"Public Speaking",           type:"topic", r:13},
+  {id:"t-dialogue",   label:"Dialogue & Debate",         type:"topic", r:13},
+  {id:"t-journalism", label:"Journalism",                type:"topic", r:14},
+  {id:"t-socialmedia",label:"Social Media",              type:"topic", r:14},
+  {id:"t-nvc",        label:"Nonviolent Communication",  type:"topic", r:13},
+  {id:"t-translation",label:"Translation",               type:"topic", r:12},
+  {id:"t-broadcasting",label:"Broadcasting",             type:"topic", r:13},
+  // Energy topics
+  {id:"t-renewable",  label:"Renewable Energy",          type:"topic", r:15},
+  {id:"t-solar",      label:"Solar Energy",              type:"topic", r:14},
+  {id:"t-wind",       label:"Wind Energy",               type:"topic", r:13},
+  {id:"t-geothermal", label:"Geothermal",                type:"topic", r:13},
+  {id:"t-storage",    label:"Energy Storage",            type:"topic", r:13},
+  {id:"t-bioenergy",  label:"Bioenergy",                 type:"topic", r:13},
+  {id:"t-gridtech",   label:"Grid Technology",           type:"topic", r:13},
+  {id:"t-energypolicy",label:"Energy Policy",            type:"topic", r:13},
+  // Food & Agriculture topics
+  {id:"t-regenfarm",  label:"Regenerative Farming",      type:"topic", r:14},
+  {id:"t-permaculture",label:"Permaculture",             type:"topic", r:14},
+  {id:"t-foodsystems",label:"Food Systems",              type:"topic", r:14},
+  {id:"t-urbanfarm",  label:"Urban Farming",             type:"topic", r:13},
+  {id:"t-fermentation",label:"Fermentation",             type:"topic", r:12},
+  {id:"t-foodsov",    label:"Food Sovereignty",          type:"topic", r:13},
+  {id:"t-cuisine",    label:"Cuisine & Culture",         type:"topic", r:14},
+  {id:"t-aquaculture",label:"Aquaculture",               type:"topic", r:12},
+  // Play & Recreation topics
+  {id:"t-sports",     label:"Sports & Athletics",        type:"topic", r:15},
+  {id:"t-gaming",     label:"Games & Gaming",            type:"topic", r:14},
+  {id:"t-outdoor",    label:"Outdoor Adventure",         type:"topic", r:13},
+  {id:"t-esports",    label:"Esports",                   type:"topic", r:13},
+  {id:"t-leisure",    label:"Leisure & Rest",            type:"topic", r:13},
+  {id:"t-humor",      label:"Humor & Comedy",            type:"topic", r:13},
+  {id:"t-festivals",  label:"Festivals & Events",        type:"topic", r:14},
+  {id:"t-playcreat",  label:"Play & Creativity",         type:"topic", r:13},
+
+  // Topics added in content expansion (2025–26)
+  {id:"t-history",    label:"History",                   type:"topic", r:14},
+  {id:"t-aliens",     label:"Extraterrestrial Life",     type:"topic", r:14},
+  {id:"t-channeling", label:"Channeling",                type:"topic", r:13},
+  {id:"t-kriya",      label:"Kriya Yoga",                type:"topic", r:13},
+  {id:"t-remote-view",label:"Remote Viewing",            type:"topic", r:13},
+  {id:"t-manifestation",label:"Manifestation",           type:"topic", r:15},
+  {id:"t-personal-dev",label:"Personal Development",     type:"topic", r:14},
+  {id:"t-wealth-mind",label:"Prosperity Mindset",        type:"topic", r:13},
+  {id:"t-nde",        label:"Near-Death Experiences",    type:"topic", r:13},
+  {id:"t-siddha-yoga",label:"Siddha Yoga",               type:"topic", r:12},
+  {id:"t-eft",        label:"EFT & Tapping",             type:"topic", r:12},
+  {id:"t-decentral-ai",label:"Decentralised AI",         type:"topic", r:14},
+];
+
+/* ── Links ── */
+const RAW=[
+  ["frqncy","network-state"],["frqncy","fund"],["frqncy","education"],["frqncy","research"],["frqncy","media"],["frqncy","builder"],
+  ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],["frqncy","d-nature"],["frqncy","d-business"],
+  ["frqncy","d-meta"],["frqncy","d-lifestyle"],["frqncy","d-creation"],["frqncy","d-wellbeing"],["frqncy","d-society"],
+  ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],["network-state","d-creation"],
+  ["fund","d-business"],["fund","d-tech"],["fund","d-creation"],["fund","d-society"],
+  ["education","d-sciences"],["education","d-arts"],["education","d-creation"],["education","d-society"],
+  ["research","d-sciences"],["research","d-meta"],["research","d-nature"],["research","d-tech"],
+  ["media","d-arts"],["media","d-communication"],["media","d-society"],["media","d-tech"],
+  ["builder","d-creation"],["builder","d-tech"],["builder","d-business"],["builder","d-society"],
+  ["d-sciences","t-quantum"],["d-sciences","t-neuro"],["d-sciences","t-bio"],["d-sciences","t-psych"],
+  ["d-sciences","t-med"],["d-sciences","t-math"],["d-sciences","t-astrophys"],["d-sciences","t-ecology"],
+  ["d-sciences","t-genetics"],["d-sciences","t-chemistry"],
+  ["d-tech","t-ai"],["d-tech","t-blockchain"],["d-tech","t-decentral"],["d-tech","t-arvr"],
+  ["d-tech","t-biotech"],["d-tech","t-robotics"],["d-tech","t-web3"],["d-tech","t-quantcomp"],["d-tech","t-cybersec"],
+  ["d-tech","t-decentral-ai"],
+  ["d-arts","t-music"],["d-arts","t-visual"],["d-arts","t-film"],["d-arts","t-poetry"],["d-arts","t-dance"],
+  ["d-arts","t-archit"],["d-arts","t-fashion"],["d-arts","t-story"],["d-arts","t-photo"],["d-arts","t-theater"],
+  ["d-nature","t-sacredgeo"],["d-nature","t-astrology"],["d-nature","t-climate"],["d-nature","t-biodivers"],
+  ["d-nature","t-oceans"],["d-nature","t-forests"],["d-nature","t-cosmos"],["d-nature","t-efields"],["d-nature","t-cycles"],
+  ["d-business","t-defi"],["d-business","t-impact"],["d-business","t-socialent"],["d-business","t-circular"],
+  ["d-business","t-conscap"],["d-business","t-regenbiz"],["d-business","t-dao"],
+  ["d-business","t-wealth-mind"],
+  ["d-meta","t-oneness"],["d-meta","t-source"],["d-meta","t-soul"],["d-meta","t-akashic"],
+  ["d-meta","t-dims"],["d-meta","t-sync"],["d-meta","t-saclaw"],["d-meta","t-merkaba"],["d-meta","t-vibration"],
+  ["d-meta","t-aliens"],["d-meta","t-channeling"],["d-meta","t-remote-view"],["d-meta","t-manifestation"],["d-meta","t-nde"],
+  ["d-lifestyle","t-nutrition"],["d-lifestyle","t-movement"],["d-lifestyle","t-sleep"],["d-lifestyle","t-plantmed"],
+  ["d-lifestyle","t-community"],["d-lifestyle","t-minimalism"],["d-lifestyle","t-detox"],["d-lifestyle","t-sustliving"],
+  ["d-lifestyle","t-personal-dev"],
+  ["d-creation","t-proddesign"],["d-creation","t-systems"],["d-creation","t-opensource"],["d-creation","t-cocreate"],
+  ["d-creation","t-proto"],["d-creation","t-emergence"],["d-creation","t-biomimicry"],["d-creation","t-futuretech"],
+  ["d-wellbeing","t-meditation"],["d-wellbeing","t-soundheal"],["d-wellbeing","t-breathwork"],["d-wellbeing","t-somatic"],
+  ["d-wellbeing","t-energyheal"],["d-wellbeing","t-yoga"],["d-wellbeing","t-mentalhlth"],["d-wellbeing","t-trauma"],
+  ["d-wellbeing","t-kriya"],["d-wellbeing","t-siddha-yoga"],["d-wellbeing","t-eft"],
+  ["d-society","t-governance"],["d-society","t-indigenous"],["d-society","t-collective"],["d-society","t-socialmov"],
+  ["d-society","t-peace"],["d-society","t-futurecity"],["d-society","t-edusystem"],["d-society","t-diaspora"],
+  ["d-society","t-history"],
+  ["t-quantum","t-oneness"],["t-quantum","t-vibration"],
+  ["t-neuro","t-meditation"],["t-neuro","t-trauma"],["t-neuro","t-psych"],
+  ["t-psych","t-mentalhlth"],["t-psych","t-trauma"],["t-psych","t-somatic"],
+  ["t-bio","t-ecology"],["t-genetics","t-biotech"],["t-med","t-mentalhlth"],
+  ["t-ai","t-systems"],["t-ai","t-collective"],["t-ai","t-futuretech"],
+  ["t-blockchain","t-defi"],["t-blockchain","t-dao"],
+  ["t-web3","t-decentral"],["t-web3","t-dao"],
+  ["fund","t-blockchain"],["fund","t-defi"],["fund","t-web3"],["fund","t-dao"],["fund","t-conscap"],
+  ["t-music","t-soundheal"],["t-music","t-vibration"],
+  ["t-sacredgeo","t-merkaba"],["t-sacredgeo","t-dims"],["t-sacredgeo","t-math"],
+  ["t-astrology","t-cycles"],["t-cosmos","t-astrophys"],
+  ["t-indigenous","t-saclaw"],["t-indigenous","t-ecology"],["t-indigenous","t-story"],
+  ["t-plantmed","t-energyheal"],["t-plantmed","t-med"],
+  ["t-yoga","t-movement"],["t-yoga","t-breathwork"],
+  ["t-community","t-cocreate"],["t-community","t-peace"],
+  ["t-emergence","t-systems"],["t-biomimicry","t-ecology"],
+  ["t-sustliving","t-circular"],["t-regenbiz","t-sustliving"],
+  ["t-conscap","t-impact"],["t-conscap","t-regenbiz"],
+  ["t-collective","t-cocreate"],["t-collective","t-governance"],
+  ["t-futurecity","t-archit"],["t-futurecity","t-systems"],
+  ["t-source","t-efields"],["t-source","t-vibration"],
+  ["t-oneness","t-collective"],["t-oneness","t-source"],
+  ["t-soul","t-sync"],["t-soul","t-source"],
+  ["t-edusystem","t-collective"],["t-opensource","t-decentral"],
+  ["t-diaspora","t-socialmov"],["t-diaspora","t-community"],
+  ["t-detox","t-minimalism"],["t-dance","t-movement"],
+  ["t-efields","t-energyheal"],["t-efields","t-vibration"],
+  ["t-archit","t-sacredgeo"],["t-story","t-film"],["t-poetry","t-story"],
+  // New domain connections to core
+  ["frqncy","d-communication"],["frqncy","d-energy"],["frqncy","d-food"],["frqncy","d-play"],
+  // Communication topics
+  ["d-communication","t-language"],["d-communication","t-speaking"],["d-communication","t-dialogue"],
+  ["d-communication","t-journalism"],["d-communication","t-socialmedia"],["d-communication","t-nvc"],
+  ["d-communication","t-translation"],["d-communication","t-broadcasting"],
+  // Energy topics
+  ["d-energy","t-renewable"],["d-energy","t-solar"],["d-energy","t-wind"],["d-energy","t-geothermal"],
+  ["d-energy","t-storage"],["d-energy","t-bioenergy"],["d-energy","t-gridtech"],["d-energy","t-energypolicy"],
+  // Food & Agriculture topics
+  ["d-food","t-regenfarm"],["d-food","t-permaculture"],["d-food","t-foodsystems"],["d-food","t-urbanfarm"],
+  ["d-food","t-fermentation"],["d-food","t-foodsov"],["d-food","t-cuisine"],["d-food","t-aquaculture"],
+  // Play & Recreation topics
+  ["d-play","t-sports"],["d-play","t-gaming"],["d-play","t-outdoor"],["d-play","t-esports"],
+  ["d-play","t-leisure"],["d-play","t-humor"],["d-play","t-festivals"],["d-play","t-playcreat"],
+  // Cross-connections
+  ["t-regenfarm","t-ecology"],["t-permaculture","t-ecology"],["t-permaculture","t-sustliving"],
+  ["t-foodsystems","t-circular"],["t-foodsov","t-indigenous"],["t-urbanfarm","t-futurecity"],
+  ["t-cuisine","t-community"],["t-renewable","t-climate"],["t-solar","t-renewable"],
+  ["t-wind","t-renewable"],["t-bioenergy","t-renewable"],["t-energypolicy","t-governance"],
+  ["t-gridtech","t-systems"],["t-storage","t-gridtech"],
+  ["t-language","t-story"],["t-journalism","t-socialmov"],["t-nvc","t-peace"],
+  ["t-socialmedia","t-collective"],["t-dialogue","t-peace"],["t-broadcasting","t-journalism"],
+  ["t-sports","t-movement"],["t-festivals","t-community"],["t-gaming","t-ai"],
+  ["t-esports","t-gaming"],["t-playcreat","t-cocreate"],["t-outdoor","t-ecology"],
+  ["t-leisure","t-mentalhlth"],["t-humor","t-story"],
+];
+const LINKS=RAW.map(([s,t])=>({source:s,target:t}));
+
+document.getElementById('node-count').textContent=`${NODES.length} nodes`;
+
+/* ── Node → Page URL map ── */
+const NODE_URL = {
+  // Pillars
+  "network-state": "network-state/index.html",
+  "fund":          "fund/index.html",
+  "education":     "education/index.html",
+  "research":      "research/index.html",
+  "media":         "media/index.html",
+  "builder":       "builder/index.html",
+  // Domains
+  "d-sciences":      "sciences/index.html",
+  "d-tech":          "technology/index.html",
+  "d-arts":          "arts/index.html",
+  "d-nature":        "nature/index.html",
+  "d-business":      "business/index.html",
+  "d-meta":          "metaphysics/index.html",
+  "d-lifestyle":     "lifestyle/index.html",
+  "d-creation":      "creation/index.html",
+  "d-wellbeing":     "wellbeing/index.html",
+  "d-society":       "society/index.html",
+  "d-communication": "communication/index.html",
+  "d-energy":        "energy/index.html",
+  "d-food":          "food/index.html",
+  "d-play":          "play/index.html",
+  // Topics — Sciences
+  "t-quantum":    "quantum/index.html",
+  "t-neuro":      "neuroscience/index.html",
+  "t-bio":        "biology/index.html",
+  "t-psych":      "psychology/index.html",
+  "t-med":        "medicine/index.html",
+  "t-math":       "mathematics/index.html",
+  "t-astrophys":  "astrophysics/index.html",
+  "t-ecology":    "ecology/index.html",
+  "t-genetics":   "genetics/index.html",
+  "t-chemistry":  "chemistry/index.html",
+  // Topics — Technology
+  "t-ai":         "artificial-intelligence/index.html",
+  "t-blockchain": "blockchain/index.html",
+  "t-decentral":  "decentralized-networks/index.html",
+  "t-arvr":       "ar-vr/index.html",
+  "t-biotech":    "biotechnology/index.html",
+  "t-robotics":   "robotics/index.html",
+  "t-web3":       "web3/index.html",
+  "t-quantcomp":  "quantum-computing/index.html",
+  "t-cybersec":   "cybersecurity/index.html",
+  // Topics — Arts
+  "t-music":      "music/index.html",
+  "t-visual":     "visual-art/index.html",
+  "t-film":       "film/index.html",
+  "t-poetry":     "poetry/index.html",
+  "t-dance":      "dance/index.html",
+  "t-archit":     "architecture/index.html",
+  "t-fashion":    "fashion/index.html",
+  "t-story":      "storytelling/index.html",
+  "t-photo":      "photography/index.html",
+  "t-theater":    "theater/index.html",
+  // Topics — Nature
+  "t-sacredgeo":  "sacred-geometry/index.html",
+  "t-astrology":  "astrology/index.html",
+  "t-climate":    "climate/index.html",
+  "t-biodivers":  "biodiversity/index.html",
+  "t-oceans":     "oceans/index.html",
+  "t-forests":    "forests/index.html",
+  "t-cosmos":     "cosmos/index.html",
+  "t-efields":    "energy-fields/index.html",
+  "t-cycles":     "natural-cycles/index.html",
+  // Topics — Business
+  "t-defi":       "defi/index.html",
+  "t-impact":     "impact-investing/index.html",
+  "t-socialent":  "social-enterprise/index.html",
+  "t-circular":   "circular-economy/index.html",
+  "t-conscap":    "conscious-capital/index.html",
+  "t-regenbiz":   "regenerative-business/index.html",
+  "t-dao":        "dao/index.html",
+  // Topics — Metaphysics
+  "t-oneness":    "oneness/index.html",
+  "t-source":     "source/index.html",
+  "t-soul":       "soul/index.html",
+  "t-akashic":    "akashic-records/index.html",
+  "t-dims":       "dimensions/index.html",
+  "t-sync":       "synchronicity/index.html",
+  "t-saclaw":     "sacred-law/index.html",
+  "t-merkaba":    "merkaba/index.html",
+  "t-vibration":  "vibration/index.html",
+  // Topics — Lifestyle
+  "t-nutrition":  "nutrition/index.html",
+  "t-movement":   "movement/index.html",
+  "t-sleep":      "sleep/index.html",
+  "t-plantmed":   "plant-medicine/index.html",
+  "t-community":  "community/index.html",
+  "t-minimalism": "minimalism/index.html",
+  "t-detox":      "detox/index.html",
+  "t-sustliving": "sustainable-living/index.html",
+  // Topics — Creation
+  "t-proddesign": "product-design/index.html",
+  "t-systems":    "systems-thinking/index.html",
+  "t-opensource": "open-source/index.html",
+  "t-cocreate":   "co-creation/index.html",
+  "t-proto":      "prototyping/index.html",
+  "t-emergence":  "emergence/index.html",
+  "t-biomimicry": "biomimicry/index.html",
+  "t-futuretech": "future-tech/index.html",
+  // Topics — Wellbeing
+  "t-meditation": "meditation/index.html",
+  "t-soundheal":  "sound-healing/index.html",
+  "t-breathwork": "breathwork/index.html",
+  "t-somatic":    "somatic-therapy/index.html",
+  "t-energyheal": "energy-healing/index.html",
+  "t-yoga":       "yoga/index.html",
+  "t-mentalhlth": "mental-health/index.html",
+  "t-trauma":     "trauma/index.html",
+  // Topics — Society
+  "t-governance": "governance/index.html",
+  "t-indigenous": "indigenous-wisdom/index.html",
+  "t-collective": "collective-intelligence/index.html",
+  "t-socialmov":  "social-movements/index.html",
+  "t-peace":      "peace/index.html",
+  "t-futurecity": "future-cities/index.html",
+  "t-edusystem":  "education-systems/index.html",
+  "t-diaspora":   "diaspora/index.html",
+  // Topics — Communication
+  "t-language":     "language/index.html",
+  "t-speaking":     "public-speaking/index.html",
+  "t-dialogue":     "dialogue/index.html",
+  "t-journalism":   "journalism/index.html",
+  "t-socialmedia":  "social-media/index.html",
+  "t-nvc":          "nonviolent-communication/index.html",
+  "t-translation":  "translation/index.html",
+  "t-broadcasting": "broadcasting/index.html",
+  // Topics — Energy
+  "t-renewable":    "renewable-energy/index.html",
+  "t-solar":        "solar/index.html",
+  "t-wind":         "wind-energy/index.html",
+  "t-geothermal":   "geothermal/index.html",
+  "t-storage":      "energy-storage/index.html",
+  "t-bioenergy":    "bioenergy/index.html",
+  "t-gridtech":     "grid-technology/index.html",
+  "t-energypolicy": "energy-policy/index.html",
+  // Topics — Food
+  "t-regenfarm":    "regenerative-farming/index.html",
+  "t-permaculture": "permaculture/index.html",
+  "t-foodsystems":  "food-systems/index.html",
+  "t-urbanfarm":    "urban-farming/index.html",
+  "t-fermentation": "fermentation/index.html",
+  "t-foodsov":      "food-sovereignty/index.html",
+  "t-cuisine":      "cuisine/index.html",
+  "t-aquaculture":  "aquaculture/index.html",
+  // Topics — Play
+  "t-sports":      "sports/index.html",
+  "t-gaming":      "gaming/index.html",
+  "t-outdoor":     "outdoor-adventure/index.html",
+  "t-esports":     "esports/index.html",
+  "t-leisure":     "leisure/index.html",
+  "t-humor":       "humor/index.html",
+  "t-festivals":   "festivals/index.html",
+  "t-playcreat":   "play-creativity/index.html",
+  // Topics added in content expansion (2025–26)
+  "t-history":      "history/index.html",
+  "t-aliens":       "aliens/index.html",
+  "t-channeling":   "channeling/index.html",
+  "t-kriya":        "kriya-yoga/index.html",
+  "t-remote-view":  "remote-viewing/index.html",
+  "t-manifestation":"manifestation/index.html",
+  "t-personal-dev": "personal-development/index.html",
+  "t-wealth-mind":  "prosperity-mindset/index.html",
+  "t-nde":          "near-death-experiences/index.html",
+  "t-siddha-yoga":  "siddha-yoga/index.html",
+  "t-eft":          "eft-tapping/index.html",
+  "t-decentral-ai": "decentralised-ai/index.html",
+};
+
+/* ── Embedded mode: hide standalone UI chrome when inside an iframe ── */
+const isEmbedded = (()=>{ try{ return window.self !== window.top; }catch(e){ return true; } })();
+if(isEmbedded){
+  ['back-btn','legend','ui-overlay','node-count'].forEach(id=>{
+    const el=document.getElementById(id);
+    if(el) el.style.display='none';
+  });
+}
+
+/* ──────────── CANVAS ──────────── */
+const canvas=document.getElementById('fx');
+const ctx=canvas.getContext('2d');
+function resizeCanvas(){ canvas.width=innerWidth; canvas.height=innerHeight; }
+resizeCanvas();
+window.addEventListener('resize',resizeCanvas);
+
+/* Background stars */
+const STARS=[];
+for(let i=0;i<120;i++) STARS.push({
+  x:Math.random()*innerWidth, y:Math.random()*innerHeight,
+  r:Math.random()*1.3+0.2, base:Math.random()*0.45+0.08, phase:Math.random()*Math.PI*2
+});
+
+/* ──────────── SVG / D3 ──────────── */
+const W=innerWidth, H=innerHeight;
+const svg=d3.select('#map-svg');
+const defs=d3.select('#svg-defs');
+
+[
+  {id:'g-core',    c1:'#F4DC88',c2:'#A06818'},
+  {id:'g-main',    c1:'#5A8AFF',c2:'#122878'},
+  {id:'g-cluster', c1:'#3062C8',c2:'#081640'},
+  {id:'g-topic',   c1:'#213E88',c2:'#060E24'},
+].forEach(g=>{
+  const gr=defs.append('radialGradient').attr('id',g.id).attr('cx','38%').attr('cy','30%');
+  gr.append('stop').attr('offset','0%').attr('stop-color',g.c1);
+  gr.append('stop').attr('offset','100%').attr('stop-color',g.c2);
+});
+
+let zoomState={x:0,y:0,k:1};
+const zoomG=svg.append('g');
+svg.call(d3.zoom()
+  .scaleExtent([0.1,4])
+  /* Don't pan when the event starts on a node — that's a drag */
+  .filter(event=>event.type==='wheel'||!event.target.closest('.node'))
+  .on('zoom',e=>{
+    zoomG.attr('transform',e.transform);
+    zoomState=e.transform;
+  }));
+
+const sim=d3.forceSimulation(NODES)
+  .force('link',d3.forceLink(LINKS).id(d=>d.id)
+    .distance(d=>{
+      const s=d.source.type||'topic',t=d.target.type||'topic';
+      if(s==='core'||t==='core') return (t==='main'||s==='main')?210:258;
+      if(s==='main'||t==='main') return 178;
+      if(s==='cluster'||t==='cluster') return (t==='topic'||s==='topic')?112:148;
+      return 84;
+    })
+    .strength(d=>{
+      const s=d.source.type||'topic',t=d.target.type||'topic';
+      if(s==='core'||t==='core') return 0.55;
+      return 0.38;
+    })
+  )
+  .force('charge',d3.forceManyBody().strength(d=>{
+    switch(d.type){
+      case 'core': return -1600; case 'main': return -750;
+      case 'cluster': return -400; default: return -130;
+    }
+  }).theta(0.9))
+  .force('center',d3.forceCenter(W/2,H/2).strength(0.04))
+  .force('collide',d3.forceCollide(d=>d.r+8).strength(0.6).iterations(1))
+  .alphaDecay(0.03).velocityDecay(0.45);
+
+/* Node map for fast canvas lookup */
+const nodeById={};
+NODES.forEach(n=>{ nodeById[n.id]=n; });
+
+/* ──────────── 1000 HUMAN STARS (canvas-only, no simulation) ──────────── */
+// Anchor each star to a topic or cluster node with a random offset.
+// Position = anchor.x + offsetX, anchor.y + offsetY each frame — zero cost.
+const topicPool=NODES.filter(n=>n.type==='topic'||n.type==='cluster');
+
+function srand(seed){ let x=seed; return ()=>{ x=((x^(x<<13))^(x>>7)^(x<<17))>>>0; return (x%100000)/100000; }; }
+
+const HUMANS=[];
+for(let i=0;i<1000;i++){
+  const rnd=srand(i*31337+i*i+1);
+  // Bias toward topics (more spread across leaves)
+  const anchor=topicPool[Math.floor(rnd()*topicPool.length)];
+  const dist=anchor.r + 8 + rnd()*55;   // cluster near but not inside node
+  const angle=rnd()*Math.PI*2;
+  HUMANS.push({
+    anchorId: anchor.id,
+    ox: Math.cos(angle)*dist,
+    oy: Math.sin(angle)*dist,
+    r: 0.7 + rnd()*0.8,           // 0.7–1.5px — tiny but visible
+    baseAlpha: 0.55 + rnd()*0.40, // 0.55–0.95 — bright enough to be distinct from bg stars
+    phase: rnd()*Math.PI*2,
+    speed: 1.4 + rnd()*1.2,      // twinkle speed
+    // store a second anchor for the faint connection line (same as anchor for simplicity)
+    lineAlpha: 0.04 + rnd()*0.06,
+    showLine: rnd()<0.45,         // only ~45% have visible lines (reduces clutter)
+  });
+}
+
+/* ── SVG nodes (no dot nodes here) ── */
+const nodeG=zoomG.append('g');
+const nodeSel=nodeG.selectAll('g.node').data(NODES).join('g').attr('class','node').style('cursor','pointer');
+
+nodeSel.append('circle')
+  .attr('r',d=>d.r)
+  .attr('fill',d=>d.type==='cluster'?'url(#g-cluster)':d.type==='topic'?'url(#g-topic)':`url(#g-${d.type})`)
+  .attr('stroke',d=>d.type==='core'?'#E0C06A':d.type==='main'?'#4A7AE8':d.type==='cluster'?'#2952B3':'#1A3A8F')
+  .attr('stroke-width',d=>d.type==='core'?2.5:1);
+
+nodeSel.filter(d=>d.type!=='dot').append('text')
+  .attr('text-anchor','middle').attr('dominant-baseline','central')
+  .attr('fill',d=>d.type==='core'?'#0A1220':d.type==='main'?'#FFFFFF':d.type==='cluster'?'#E8C97D':'rgba(172,202,255,0.88)')
+  .attr('font-family',d=>(d.type==='core'||d.type==='main')?'Cormorant,Georgia,serif':"'Jost',sans-serif")
+  .attr('font-size',d=>d.type==='core'?'15px':d.type==='main'?'10.5px':d.type==='cluster'?'9.5px':'8px')
+  .attr('font-weight',d=>d.type==='core'?'500':'300')
+  .attr('letter-spacing',d=>d.type==='core'?'0.18em':'0.04em')
+  .attr('pointer-events','none')
+  .each(function(d){
+    const el=d3.select(this);
+    if(d.type==='topic'&&d.label.length>14){
+      const w=d.label.split(' '),m=Math.ceil(w.length/2);
+      el.append('tspan').attr('x',0).attr('dy','-0.5em').text(w.slice(0,m).join(' '));
+      el.append('tspan').attr('x',0).attr('dy','1em').text(w.slice(m).join(' '));
+    } else { el.text(d.label); }
+  });
+
+let wasDragged=false;
+nodeSel.call(d3.drag()
+  /* subject: map node position into screen space so drag tracks correctly under any zoom */
+  .subject((event,d)=>{
+    const t=d3.zoomTransform(svg.node());
+    return {x:d.x*t.k+t.x, y:d.y*t.k+t.y};
+  })
+  .on('start',(e,d)=>{ wasDragged=false; if(!e.active) sim.alphaTarget(0.3).restart(); d.fx=d.x; d.fy=d.y; })
+  .on('drag', (e,d)=>{
+    wasDragged=true;
+    const t=d3.zoomTransform(svg.node());
+    d.fx=(e.x-t.x)/t.k;
+    d.fy=(e.y-t.y)/t.k;
+  })
+  .on('end',  (e,d)=>{ if(!e.active) sim.alphaTarget(0); d.fx=null; d.fy=null; })
+);
+
+sim.on('tick',()=>{ nodeSel.attr('transform',d=>`translate(${d.x},${d.y})`); });
+
+/* ── Hover ── */
+const tip=document.getElementById('tooltip');
+let hoveredNodeIds=null;
+let searchMatches=new Set();
+
+nodeSel
+  .on('mouseover',(e,d)=>{
+    const conn=new Set([d.id]);
+    LINKS.forEach(l=>{
+      const s=typeof l.source==='object'?l.source.id:l.source;
+      const t=typeof l.target==='object'?l.target.id:l.target;
+      if(s===d.id) conn.add(t); if(t===d.id) conn.add(s);
+    });
+    hoveredNodeIds=conn;
+    nodeSel.style('opacity',n=>conn.has(n.id)?1:0.05);
+    tip.querySelector('.tip-title').textContent=d.label;
+    const typeLabel={core:'FRQNCY CORE',main:'PILLAR',cluster:'DOMAIN',topic:'TOPIC'}[d.type]||'';
+    const clickHint=NODE_URL[d.id]?' · click to explore':'';
+    tip.querySelector('.tip-type').textContent=(d.desc||'')+' · '+typeLabel+clickHint;
+    tip.style.opacity=1;
+  })
+  .on('mousemove',e=>{ tip.style.left=(e.clientX+18)+'px'; tip.style.top=(e.clientY-14)+'px'; })
+  .on('mouseout',()=>{
+    tip.style.opacity=0;
+    hoveredNodeIds=null;
+    // Restore search filter state or full opacity if no search active
+    if(searchMatches.size>0){
+      nodeSel.style('opacity',n=>searchMatches.has(n.id)?1:0.05);
+    } else {
+      nodeSel.style('opacity',1);
+    }
+  })
+  .style('cursor',d=>NODE_URL[d.id]?'pointer':'default');
+
+/* ── Search functionality ── */
+const searchBar=document.getElementById('search-bar');
+const searchCount=document.getElementById('search-count');
+const searchResults=document.getElementById('search-results');
+
+// Load rich search index from search.json
+let SEARCH_INDEX=[];
+fetch('../search.json').then(r=>r.json()).then(data=>{ SEARCH_INDEX=data; }).catch(()=>{});
+
+function scoreMatch(item, q){
+  let score=0;
+  const label=item.label.toLowerCase();
+  const desc=(item.desc||'').toLowerCase();
+  const picks=item.picks.join(' ').toLowerCase();
+  const domain=item.domain.toLowerCase();
+  if(label===q) score+=100;
+  else if(label.startsWith(q)) score+=60;
+  else if(label.includes(q)) score+=40;
+  if(desc.includes(q)) score+=20;
+  if(picks.includes(q)) score+=15;
+  if(domain.includes(q)) score+=10;
+  return score;
+}
+
+function renderResultsPanel(matches){
+  if(!matches.length){
+    searchResults.innerHTML='<div class="sr-empty">NO TOPICS FOUND</div>';
+    searchResults.classList.add('visible');
+    return;
+  }
+  searchResults.innerHTML=matches.map(item=>`
+    <a class="sr-item" href="${item.url}">
+      <div class="sr-dot" style="background:${item.accent}"></div>
+      <div class="sr-body">
+        <div class="sr-label">${item.label}</div>
+        <div class="sr-meta">${item.pillar} &nbsp;·&nbsp; ${item.domain}</div>
+        ${item.desc?`<div class="sr-desc">${item.desc}</div>`:''}
+        ${item.picks.length?`<div class="sr-picks">✦ ${item.picks.slice(0,3).join('  ·  ')}</div>`:''}
+      </div>
+    </a>`).join('');
+  searchResults.classList.add('visible');
+}
+
+function updateSearchFilter(){
+  const query=searchBar.value.toLowerCase().trim();
+
+  if(!query){
+    searchMatches.clear();
+    nodeSel.style('opacity',1);
+    nodeSel.style('filter','none');
+    searchCount.textContent='';
+    searchCount.classList.remove('active');
+    searchResults.classList.remove('visible');
+    return;
+  }
+
+  // Rich search over search.json index
+  const richMatches=SEARCH_INDEX
+    .map(item=>({ item, score:scoreMatch(item,query) }))
+    .filter(({score})=>score>0)
+    .sort((a,b)=>b.score-a.score)
+    .map(({item})=>item);
+
+  // Sync graph node highlighting (by label only for graph nodes)
+  searchMatches.clear();
+  NODES.forEach(n=>{
+    if(n.label.toLowerCase().includes(query)) searchMatches.add(n.id);
+  });
+  // Also highlight graph nodes that match rich search slugs
+  richMatches.forEach(item=>{
+    NODES.forEach(n=>{ if(n.id===item.id||n.id===item.slug) searchMatches.add(n.id); });
+  });
+
+  nodeSel.style('opacity',n=>searchMatches.has(n.id)?1:0.05);
+  nodeSel.style('filter',n=>searchMatches.has(n.id)?'drop-shadow(0 0 8px rgba(196,151,58,0.4))':'none');
+
+  const topicCount=richMatches.length||searchMatches.size;
+  searchCount.textContent=`${topicCount} topic${topicCount!==1?'s':''} found`;
+  searchCount.classList.add('active');
+
+  // Show results panel with top 12 matches
+  renderResultsPanel(richMatches.slice(0,12));
+}
+
+searchBar.addEventListener('input',updateSearchFilter);
+
+// Close results panel when clicking outside
+document.addEventListener('click',e=>{
+  if(!searchBar.contains(e.target)&&!searchResults.contains(e.target)){
+    if(searchBar.value.trim()) return; // keep open if query active
+    searchResults.classList.remove('visible');
+  }
+});
+
+// Close on Escape
+searchBar.addEventListener('keydown',e=>{
+  if(e.key==='Escape'){
+    searchBar.value='';
+    updateSearchFilter();
+    searchBar.blur();
+  }
+});
+
+// Add click handler that respects search filter
+nodeSel.on('click',(event,d)=>{
+  if(wasDragged){ wasDragged=false; return; }
+  if(event.defaultPrevented) return;
+  if(searchMatches.size>0 && !searchMatches.has(d.id)) return;
+  event.stopPropagation();
+  const url=NODE_URL[d.id];
+  if(url) window.location.assign(url);
+});
+
+/* ──────────── RENDER LOOP (canvas) ──────────── */
+const particles=[];
+let dashOff=0, lastMajor=0, lastDotPulse=0;
+
+const regLinks=LINKS;
+const majorLinks=LINKS.filter(l=>{
+  const s=typeof l.source==='object'?l.source.type:null;
+  return s==='core'||s==='main';
+});
+
+function spawnParticle(fromDot){
+  if(fromDot){
+    // Pick a random human and send pulse toward its anchor
+    const h=HUMANS[Math.floor(Math.random()*HUMANS.length)];
+    const a=nodeById[h.anchorId];
+    if(!a||a.x===undefined) return;
+    const hx=a.x+h.ox, hy=a.y+h.oy;
+    const fwd=Math.random()>0.4;
+    particles.push({x1:fwd?hx:a.x, y1:fwd?hy:a.y, x2:fwd?a.x:hx, y2:fwd?a.y:hy,
+      prog:0, speed:0.013+Math.random()*0.01, isDot:true});
+  } else {
+    const l=majorLinks[Math.floor(Math.random()*majorLinks.length)];
+    const s=l.source,t=l.target;
+    if(!s||!t||s.x===undefined) return;
+    particles.push({x1:s.x,y1:s.y,x2:t.x,y2:t.y,
+      prog:0, speed:0.009+Math.random()*0.006, isDot:false});
+  }
+}
+
+function render(ts){
+  requestAnimationFrame(render);
+  const CW=canvas.width, CH=canvas.height;
+  ctx.clearRect(0,0,CW,CH);
+
+  /* Background stars */
+  const t=ts*0.0007;
+  for(let i=0;i<STARS.length;i++){
+    const s=STARS[i];
+    const a=s.base*(0.65+0.35*Math.sin(t+s.phase));
+    ctx.fillStyle=`rgba(255,255,255,${a.toFixed(2)})`;
+    ctx.beginPath(); ctx.arc(s.x,s.y,s.r,0,Math.PI*2); ctx.fill();
+  }
+
+  /* Spawn particles */
+  if(ts-lastMajor>320){ spawnParticle(false); lastMajor=ts; }
+  if(ts-lastDotPulse>90){ spawnParticle(true); lastDotPulse=ts; }  // frequent for humans
+
+  /* Apply zoom transform */
+  const {x:zx,y:zy,k:zk}=zoomState;
+  ctx.save();
+  ctx.translate(zx,zy); ctx.scale(zk,zk);
+
+  /* ── Network links (batched by tier) ── */
+  ctx.setLineDash([]);
+
+  ctx.strokeStyle='rgba(196,151,58,0.42)'; ctx.lineWidth=1.8;
+  ctx.beginPath();
+  regLinks.forEach(l=>{
+    const s=l.source,t_=l.target;
+    if(!s||!t_||s.x===undefined) return;
+    if(s.type!=='core'&&t_.type!=='core') return;
+    if(hoveredNodeIds&&!hoveredNodeIds.has(s.id)&&!hoveredNodeIds.has(t_.id)) return;
+    ctx.moveTo(s.x,s.y); ctx.lineTo(t_.x,t_.y);
+  });
+  ctx.stroke();
+
+  ctx.strokeStyle='rgba(74,122,232,0.25)'; ctx.lineWidth=1.1;
+  ctx.beginPath();
+  regLinks.forEach(l=>{
+    const s=l.source,t_=l.target;
+    if(!s||!t_||s.x===undefined) return;
+    if((s.type!=='main'&&t_.type!=='main')||(s.type==='core'||t_.type==='core')) return;
+    if(hoveredNodeIds&&!hoveredNodeIds.has(s.id)&&!hoveredNodeIds.has(t_.id)) return;
+    ctx.moveTo(s.x,s.y); ctx.lineTo(t_.x,t_.y);
+  });
+  ctx.stroke();
+
+  ctx.strokeStyle='rgba(41,82,179,0.13)'; ctx.lineWidth=0.55;
+  ctx.beginPath();
+  regLinks.forEach(l=>{
+    const s=l.source,t_=l.target;
+    if(!s||!t_||s.x===undefined) return;
+    if(s.type==='core'||t_.type==='core'||s.type==='main'||t_.type==='main') return;
+    if(hoveredNodeIds&&!hoveredNodeIds.has(s.id)&&!hoveredNodeIds.has(t_.id)) return;
+    ctx.moveTo(s.x,s.y); ctx.lineTo(t_.x,t_.y);
+  });
+  ctx.stroke();
+
+  /* ── Node glows (canvas radial, no SVG filter) ── */
+  NODES.forEach(n=>{
+    if(!n.x) return;
+    if(n.type==='core'){
+      const g=ctx.createRadialGradient(n.x,n.y,n.r*0.6,n.x,n.y,n.r*2.4);
+      g.addColorStop(0,'rgba(196,151,58,0.2)'); g.addColorStop(1,'rgba(196,151,58,0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(n.x,n.y,n.r*2.4,0,Math.PI*2); ctx.fill();
+    } else if(n.type==='main'){
+      const g=ctx.createRadialGradient(n.x,n.y,n.r*0.5,n.x,n.y,n.r*1.9);
+      g.addColorStop(0,'rgba(74,122,232,0.16)'); g.addColorStop(1,'rgba(74,122,232,0)');
+      ctx.fillStyle=g; ctx.beginPath(); ctx.arc(n.x,n.y,n.r*1.9,0,Math.PI*2); ctx.fill();
+    }
+  });
+
+  /* ── 1000 human stars ── */
+  // Connection threads — batch into one path per opacity band to avoid per-line strokeStyle calls
+  const lineGroups = [{a:0.10,lines:[]},{a:0.07,lines:[]},{a:0.04,lines:[]}];
+  for(let i=0;i<HUMANS.length;i++){
+    const h=HUMANS[i];
+    if(!h.showLine) continue;
+    const a=nodeById[h.anchorId];
+    if(!a||a.x===undefined) continue;
+    if(hoveredNodeIds&&!hoveredNodeIds.has(h.anchorId)) continue;
+    const hx=a.x+h.ox, hy=a.y+h.oy;
+    const g = h.lineAlpha > 0.08 ? lineGroups[0] : h.lineAlpha > 0.055 ? lineGroups[1] : lineGroups[2];
+    g.lines.push(hx,hy,a.x,a.y);
+  }
+  ctx.lineWidth=0.4;
+  lineGroups.forEach(g=>{
+    if(!g.lines.length) return;
+    ctx.strokeStyle=`rgba(190,215,255,${g.a})`;
+    ctx.beginPath();
+    for(let j=0;j<g.lines.length;j+=4){ ctx.moveTo(g.lines[j],g.lines[j+1]); ctx.lineTo(g.lines[j+2],g.lines[j+3]); }
+    ctx.stroke();
+  });
+
+  // Star bodies — two-pass: soft outer glow then bright core
+  // Pass 1: glow halos (larger radius, low alpha) — drawn first so cores sit on top
+  for(let i=0;i<HUMANS.length;i++){
+    const h=HUMANS[i];
+    const a=nodeById[h.anchorId];
+    if(!a||a.x===undefined) continue;
+    const hx=a.x+h.ox, hy=a.y+h.oy;
+    const twinkle=0.55+0.45*Math.sin(ts*0.001*h.speed+h.phase);
+    const dimmed=hoveredNodeIds&&!hoveredNodeIds.has(h.anchorId);
+    const alpha=dimmed?0.02:h.baseAlpha*twinkle;
+    // Soft halo
+    ctx.fillStyle=`rgba(220,235,255,${(alpha*0.25).toFixed(2)})`;
+    ctx.beginPath(); ctx.arc(hx,hy,h.r*3.5,0,Math.PI*2); ctx.fill();
+  }
+  // Pass 2: bright core dots
+  for(let i=0;i<HUMANS.length;i++){
+    const h=HUMANS[i];
+    const a=nodeById[h.anchorId];
+    if(!a||a.x===undefined) continue;
+    const hx=a.x+h.ox, hy=a.y+h.oy;
+    const twinkle=0.55+0.45*Math.sin(ts*0.001*h.speed+h.phase);
+    const dimmed=hoveredNodeIds&&!hoveredNodeIds.has(h.anchorId);
+    const alpha=dimmed?0.04:h.baseAlpha*twinkle;
+    ctx.fillStyle=`rgba(255,255,255,${alpha.toFixed(2)})`;
+    ctx.beginPath(); ctx.arc(hx,hy,h.r,0,Math.PI*2); ctx.fill();
+  }
+
+  /* ── Particles ── */
+  for(let i=particles.length-1;i>=0;i--){
+    const p=particles[i];
+    p.prog+=p.speed;
+    if(p.prog>=1){ particles.splice(i,1); continue; }
+    const px=p.x1+(p.x2-p.x1)*p.prog;
+    const py=p.y1+(p.y2-p.y1)*p.prog;
+    const fade=Math.min(p.prog*5,1)*Math.min((1-p.prog)*5,1);
+    ctx.fillStyle=p.isDot
+      ?`rgba(210,230,255,${(0.75*fade).toFixed(2)})`
+      :`rgba(240,210,95,${(0.9*fade).toFixed(2)})`;
+    ctx.beginPath(); ctx.arc(px,py,p.isDot?1.0:2.0,0,Math.PI*2); ctx.fill();
+  }
+
+  ctx.restore();
+}
+
+requestAnimationFrame(render);
+</script>
+</body>
+</html>

@@ -1,0 +1,555 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Space — FRQNCY</title>
+    <meta name="theme-color" content="#0B1C3D">
+
+    <!-- SEO -->
+    <meta name="description" content="A minimal, intentionally designed coworking and relaxation space. The first physical node of the FRQNCY Network State. Membership-based, launching soon.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://frqncy.network/space.html">
+
+    <!-- Open Graph (social sharing) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="FRQNCY">
+    <meta property="og:title" content="The Space — FRQNCY">
+    <meta property="og:description" content="A minimal, intentionally designed coworking and relaxation space. The first physical node of the FRQNCY Network State. Membership-based, launching soon.">
+    <meta property="og:url" content="https://frqncy.network/space.html">
+    <meta property="og:image" content="https://frqncy.network/og-image.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@frqncy">
+    <meta name="twitter:title" content="The Space — FRQNCY">
+    <meta name="twitter:description" content="A minimal, intentionally designed coworking and relaxation space. The first physical node of the FRQNCY Network State. Membership-based, launching soon.">
+    <meta name="twitter:image" content="https://frqncy.network/og-image.png">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FFFFFF;
+            --dark: #0B1C3D;
+            --gold: #C4973A;
+            --blue: #2952B3;
+            --mid: #3A4E72;
+            --light-mid: #8A9AB8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Jost', sans-serif;
+            background-color: var(--cream);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--cream);
+            border-bottom: 1px solid #E8E8E8;
+            padding: 1.5rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Cormorant', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--dark);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a.active {
+            color: var(--gold);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 5rem;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a2f5a 100%);
+            color: var(--cream);
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-label {
+            font-family: 'Jost', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: #E0E0E0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 4rem 1.5rem;
+                margin-top: 4rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Section Container */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'Jost', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-family: 'Cormorant', serif;
+            font-size: 2.8rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            line-height: 1.3;
+        }
+
+        h3 {
+            font-family: 'Cormorant', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1rem;
+            color: var(--mid);
+            line-height: 1.8;
+        }
+
+        /* What It Is */
+        .what-it-is {
+            background: #FAFAFA;
+            padding: 3rem;
+            border-left: 4px solid var(--gold);
+            margin-bottom: 3rem;
+        }
+
+        .what-it-is h3 {
+            color: var(--dark);
+        }
+
+        .features {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 2rem;
+            margin-top: 1.5rem;
+        }
+
+        .feature {
+            padding: 1.5rem 0;
+            border-bottom: 1px solid #DDD;
+        }
+
+        .feature:last-child {
+            border-bottom: none;
+        }
+
+        .feature strong {
+            color: var(--dark);
+            font-weight: 600;
+        }
+
+        /* Membership Tiers */
+        .tiers {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 3rem;
+        }
+
+        .tier {
+            background: #FAFAFA;
+            padding: 2.5rem;
+            border: 2px solid #E8E8E8;
+            border-left: 4px solid var(--gold);
+            transition: all 0.3s ease;
+        }
+
+        .tier:hover {
+            border-color: var(--gold);
+            box-shadow: 0 8px 24px rgba(0, 0, 0, 0.1);
+        }
+
+        .tier-name {
+            font-family: 'Cormorant', serif;
+            font-size: 1.8rem;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+            font-weight: 400;
+        }
+
+        .tier-price {
+            font-size: 1.25rem;
+            color: var(--gold);
+            font-weight: 600;
+            margin-bottom: 1.5rem;
+        }
+
+        .tier-features {
+            list-style: none;
+            margin-bottom: 2rem;
+        }
+
+        .tier-features li {
+            padding: 0.75rem 0;
+            color: var(--mid);
+            font-size: 0.95rem;
+            border-bottom: 1px solid #E0E0E0;
+        }
+
+        .tier-features li:last-child {
+            border-bottom: none;
+        }
+
+        /* Location Section */
+        .location-section {
+            background: linear-gradient(135deg, var(--blue) 0%, var(--mid) 100%);
+            color: var(--cream);
+            padding: 3rem;
+            border-radius: 0;
+            margin-bottom: 3rem;
+        }
+
+        .location-section h3 {
+            color: var(--cream);
+            margin-bottom: 1.5rem;
+        }
+
+        .location-section p {
+            color: #E0E0E0;
+            margin-bottom: 2rem;
+        }
+
+        .subscribe-form {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 500px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .subscribe-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.9rem 1.5rem;
+            border: none;
+            font-family: 'Jost', sans-serif;
+            font-size: 1rem;
+            border-radius: 0;
+        }
+
+        .subscribe-form input::placeholder {
+            color: #999;
+        }
+
+        .subscribe-button {
+            padding: 0.9rem 2rem;
+            background-color: var(--gold);
+            color: var(--dark);
+            border: none;
+            font-family: 'Jost', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .subscribe-button:hover {
+            background-color: #B8862E;
+            transform: translateY(-2px);
+        }
+
+        /* The Bigger Vision */
+        .vision-section {
+            background: #F8F8F8;
+            padding: 3rem;
+            border-radius: 0;
+        }
+
+        .vision-section h3 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .vision-section p {
+            max-width: 800px;
+            margin: 0 auto;
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid #2A3F5F;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--cream);
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 3rem 1.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .tiers {
+                grid-template-columns: 1fr;
+            }
+
+            .features {
+                grid-template-columns: 1fr;
+            }
+
+            .subscribe-form {
+                flex-direction: column;
+            }
+
+            .subscribe-form input,
+            .subscribe-button {
+                width: 100%;
+            }
+        }
+    </style>
+  <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="/chat-widget.js" defer></script>
+<link rel="manifest" href="/manifest.json">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="nav-logo">FRQNCY</a>
+        <ul class="nav-links">
+            <li><a href="about.html">Vision</a></li>
+            <li><a href="platform.html">Platform</a></li>
+            <li><a href="podcast.html">Podcast</a></li>
+            <li><a href="space.html" class="active">Space</a></li>
+            <li><a href="v2/explore.html">Explore</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-label">The Physical Space</div>
+            <h1>A Place to Think, Rest, and Connect</h1>
+            <p>FRQNCY Space is a minimal, intentionally designed sanctuary. Coworking. Breathwork. Community. The first physical node of the FRQNCY Network State.</p>
+        </div>
+    </section>
+
+    <!-- What It Is -->
+    <section>
+        <div class="section-label">What It Is</div>
+        <div class="what-it-is">
+            <h3>A Counterpoint to Noise</h3>
+            <p>Most spaces are loud, fractured, and demand your attention. FRQNCY Space is the opposite. Calm coworking areas. Quiet rooms for deep work. Events. Breathwork sessions. Community dinners. A place designed for the people who want to think, not just exist.</p>
+            <div class="features">
+                <div class="feature"><strong>Calm Coworking</strong> — Focus-friendly environment with intentional design.</div>
+                <div class="feature"><strong>Quiet Rooms</strong> — Deep work spaces free from distraction.</div>
+                <div class="feature"><strong>Breathwork Sessions</strong> — Regular guided sessions for grounding and presence.</div>
+                <div class="feature"><strong>Community Events</strong> — Dinners, talks, and gatherings for members.</div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Membership Tiers -->
+    <section>
+        <div class="section-label">Membership</div>
+        <h2>Choose Your Level of Access</h2>
+        <div class="tiers">
+            <div class="tier">
+                <div class="tier-name">Explorer</div>
+                <div class="tier-price">TBA</div>
+                <ul class="tier-features">
+                    <li>Space access</li>
+                    <li>Monthly drop-ins</li>
+                    <li>Community events</li>
+                </ul>
+            </div>
+            <div class="tier">
+                <div class="tier-name">Member</div>
+                <div class="tier-price">TBA</div>
+                <ul class="tier-features">
+                    <li>Unlimited space access</li>
+                    <li>Quiet rooms</li>
+                    <li>Platform curation access</li>
+                    <li>Community events</li>
+                </ul>
+            </div>
+            <div class="tier">
+                <div class="tier-name">Founding Member</div>
+                <div class="tier-price">TBA</div>
+                <ul class="tier-features">
+                    <li>Everything in Member</li>
+                    <li>Podcast early access</li>
+                    <li>Monthly community calls</li>
+                    <li>Special founding pricing</li>
+                </ul>
+            </div>
+        </div>
+    </section>
+
+    <!-- Location & Waitlist -->
+    <section>
+        <div class="location-section">
+            <h3>First Space Launching Soon</h3>
+            <p>FRQNCY Space is launching in [Location TBD]. Join the waitlist now to be notified at launch and receive founding member pricing.</p>
+            <form class="subscribe-form" onsubmit="handleWaitlist(event)">
+                <input
+                    type="email"
+                    placeholder="Enter your email"
+                    required
+                    aria-label="Email for space waitlist"
+                >
+                <button type="submit" class="subscribe-button">Join Waitlist</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- The Bigger Vision -->
+    <section>
+        <div class="vision-section">
+            <h3>The Network State Vision</h3>
+            <p>FRQNCY Space is the first physical node of the FRQNCY Network. Our vision is multiple spaces, across geographies, all connected by one community layer. Not franchises. Not copies. Each space designed for its context, but all rooted in the same values: intention, curation, and conscious community. Together, these spaces form the physical infrastructure of the FRQNCY Network State.</p>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 FRQNCY. A network for conscious living.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;"><a href="/">Back to Home</a></p>
+    </footer>
+
+    <script>
+        function handleWaitlist(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+
+            // Call the subscribe API endpoint
+            fetch('/api/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Thank you! You\'ve been added to the waitlist. Check your email for updates.');
+                    event.target.reset();
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>

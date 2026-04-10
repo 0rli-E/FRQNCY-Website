@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Podcast — FRQNCY</title>
+    <meta name="theme-color" content="#0B1C3D">
+
+    <!-- SEO -->
+    <meta name="description" content="Conversations at the frontier of consciousness, science, and human potential. FRQNCY invites the builders, teachers, researchers, and healers already doing the work.">
+    <meta name="robots" content="index, follow">
+    <link rel="canonical" href="https://frqncy.network/podcast.html">
+
+    <!-- Open Graph (social sharing) -->
+    <meta property="og:type" content="website">
+    <meta property="og:site_name" content="FRQNCY">
+    <meta property="og:title" content="The Podcast — FRQNCY">
+    <meta property="og:description" content="Conversations at the frontier of consciousness, science, and human potential. FRQNCY invites the builders, teachers, researchers, and healers already doing the work.">
+    <meta property="og:url" content="https://frqncy.network/podcast.html">
+    <meta property="og:image" content="https://frqncy.network/og-image.png">
+
+    <!-- Twitter Card -->
+    <meta name="twitter:card" content="summary_large_image">
+    <meta name="twitter:site" content="@frqncy">
+    <meta name="twitter:title" content="The Podcast — FRQNCY">
+    <meta name="twitter:description" content="Conversations at the frontier of consciousness, science, and human potential. FRQNCY invites the builders, teachers, researchers, and healers already doing the work.">
+    <meta name="twitter:image" content="https://frqncy.network/og-image.png">
+    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            --cream: #FFFFFF;
+            --dark: #0B1C3D;
+            --gold: #C4973A;
+            --blue: #2952B3;
+            --mid: #3A4E72;
+            --light-mid: #8A9AB8;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        html, body {
+            font-family: 'Jost', sans-serif;
+            background-color: var(--cream);
+            color: var(--dark);
+            line-height: 1.6;
+        }
+
+        /* Navigation */
+        nav {
+            position: fixed;
+            top: 0;
+            left: 0;
+            right: 0;
+            background-color: var(--cream);
+            border-bottom: 1px solid #E8E8E8;
+            padding: 1.5rem 2rem;
+            z-index: 1000;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .nav-logo {
+            font-family: 'Cormorant', serif;
+            font-size: 1.8rem;
+            font-weight: 600;
+            color: var(--dark);
+            text-decoration: none;
+            letter-spacing: 0.05em;
+        }
+
+        .nav-links {
+            display: flex;
+            gap: 2rem;
+            list-style: none;
+        }
+
+        .nav-links a {
+            font-size: 0.95rem;
+            font-weight: 500;
+            color: var(--dark);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        .nav-links a:hover {
+            color: var(--gold);
+        }
+
+        .nav-links a.active {
+            color: var(--gold);
+        }
+
+        @media (max-width: 768px) {
+            nav {
+                padding: 1rem 1.5rem;
+            }
+
+            .nav-logo {
+                font-size: 1.5rem;
+            }
+
+            .nav-links {
+                display: none;
+            }
+        }
+
+        /* Hero Section */
+        .hero {
+            margin-top: 5rem;
+            padding: 6rem 2rem;
+            background: linear-gradient(135deg, var(--dark) 0%, #1a2f5a 100%);
+            color: var(--cream);
+            text-align: center;
+        }
+
+        .hero-content {
+            max-width: 900px;
+            margin: 0 auto;
+        }
+
+        .hero-label {
+            font-family: 'Jost', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 1.5rem;
+            font-weight: 600;
+        }
+
+        .hero h1 {
+            font-family: 'Cormorant', serif;
+            font-size: 3.5rem;
+            font-weight: 300;
+            line-height: 1.2;
+            margin-bottom: 1.5rem;
+        }
+
+        .hero p {
+            font-size: 1.25rem;
+            font-weight: 300;
+            line-height: 1.8;
+            color: #E0E0E0;
+            max-width: 700px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .hero {
+                padding: 4rem 1.5rem;
+                margin-top: 4rem;
+            }
+
+            .hero h1 {
+                font-size: 2.5rem;
+            }
+
+            .hero p {
+                font-size: 1.1rem;
+            }
+        }
+
+        /* Section Container */
+        section {
+            padding: 5rem 2rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+
+        .section-label {
+            font-family: 'Jost', sans-serif;
+            font-size: 0.85rem;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            color: var(--gold);
+            margin-bottom: 2rem;
+            font-weight: 600;
+        }
+
+        h2 {
+            font-family: 'Cormorant', serif;
+            font-size: 2.8rem;
+            font-weight: 300;
+            margin-bottom: 2rem;
+            line-height: 1.3;
+        }
+
+        h3 {
+            font-family: 'Cormorant', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            margin-bottom: 1rem;
+        }
+
+        p {
+            font-size: 1rem;
+            color: var(--mid);
+            line-height: 1.8;
+        }
+
+        /* The Format */
+        .format-content {
+            background: #FAFAFA;
+            padding: 3rem;
+            border-left: 4px solid var(--gold);
+            margin-bottom: 3rem;
+        }
+
+        .format-content h3 {
+            color: var(--dark);
+        }
+
+        .format-quote {
+            font-family: 'Cormorant', serif;
+            font-size: 1.5rem;
+            font-weight: 400;
+            color: var(--dark);
+            margin-top: 1.5rem;
+            padding-top: 1.5rem;
+            border-top: 1px solid #DDD;
+            font-style: italic;
+        }
+
+        /* Subscribe Section */
+        .subscribe-section {
+            background: linear-gradient(135deg, var(--blue) 0%, var(--mid) 100%);
+            color: var(--cream);
+            padding: 3rem;
+            border-radius: 0;
+            text-align: center;
+            margin-bottom: 3rem;
+        }
+
+        .subscribe-section h3 {
+            color: var(--cream);
+            margin-bottom: 1.5rem;
+        }
+
+        .subscribe-section p {
+            color: #E0E0E0;
+            margin-bottom: 2rem;
+        }
+
+        .subscribe-form {
+            display: flex;
+            gap: 0.5rem;
+            max-width: 500px;
+            margin: 0 auto;
+            flex-wrap: wrap;
+            justify-content: center;
+        }
+
+        .subscribe-form input {
+            flex: 1;
+            min-width: 250px;
+            padding: 0.9rem 1.5rem;
+            border: none;
+            font-family: 'Jost', sans-serif;
+            font-size: 1rem;
+            border-radius: 0;
+        }
+
+        .subscribe-form input::placeholder {
+            color: #999;
+        }
+
+        .subscribe-button {
+            padding: 0.9rem 2rem;
+            background-color: var(--gold);
+            color: var(--dark);
+            border: none;
+            font-family: 'Jost', sans-serif;
+            font-weight: 600;
+            font-size: 0.95rem;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+
+        .subscribe-button:hover {
+            background-color: #B8862E;
+            transform: translateY(-2px);
+        }
+
+        /* Guest Categories */
+        .categories {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+            gap: 1.5rem;
+            margin-bottom: 3rem;
+        }
+
+        .category-tag {
+            background: linear-gradient(135deg, var(--blue) 0%, var(--mid) 100%);
+            color: var(--cream);
+            padding: 1.25rem;
+            text-align: center;
+            border-radius: 50px;
+            font-weight: 500;
+            font-size: 1rem;
+            transition: transform 0.3s ease;
+        }
+
+        .category-tag:hover {
+            transform: scale(1.05);
+        }
+
+        /* Pitch Section */
+        .pitch-section {
+            background: #F8F8F8;
+            padding: 3rem;
+            border-radius: 0;
+            text-align: center;
+        }
+
+        .pitch-section h3 {
+            color: var(--dark);
+            margin-bottom: 1rem;
+        }
+
+        .pitch-section p {
+            max-width: 600px;
+            margin: 0 auto 2rem;
+        }
+
+        .cta-button {
+            display: inline-block;
+            background-color: var(--gold);
+            color: var(--dark);
+            padding: 1rem 2.5rem;
+            text-decoration: none;
+            font-weight: 600;
+            font-size: 0.95rem;
+            letter-spacing: 0.05em;
+            transition: all 0.3s ease;
+            border: none;
+            cursor: pointer;
+            font-family: 'Jost', sans-serif;
+        }
+
+        .cta-button:hover {
+            background-color: #B8862E;
+            transform: translateY(-2px);
+        }
+
+        /* Footer */
+        footer {
+            background-color: var(--dark);
+            color: var(--cream);
+            padding: 3rem 2rem;
+            text-align: center;
+            border-top: 1px solid #2A3F5F;
+        }
+
+        footer a {
+            color: var(--gold);
+            text-decoration: none;
+            transition: color 0.3s ease;
+        }
+
+        footer a:hover {
+            color: var(--cream);
+        }
+
+        @media (max-width: 768px) {
+            section {
+                padding: 3rem 1.5rem;
+            }
+
+            h2 {
+                font-size: 2rem;
+            }
+
+            .format-content {
+                padding: 2rem;
+            }
+
+            .subscribe-form {
+                flex-direction: column;
+            }
+
+            .subscribe-form input,
+            .subscribe-button {
+                width: 100%;
+            }
+
+            .categories {
+                grid-template-columns: repeat(auto-fit, minmax(150px, 1fr));
+            }
+        }
+    </style>
+  <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="/chat-widget.js" defer></script>
+<link rel="manifest" href="/manifest.json">
+</head>
+<body>
+    <!-- Navigation -->
+    <nav>
+        <a href="index.html" class="nav-logo">FRQNCY</a>
+        <ul class="nav-links">
+            <li><a href="about.html">Vision</a></li>
+            <li><a href="platform.html">Platform</a></li>
+            <li><a href="podcast.html" class="active">Podcast</a></li>
+            <li><a href="space.html">Space</a></li>
+            <li><a href="v2/explore.html">Explore</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero -->
+    <section class="hero">
+        <div class="hero-content">
+            <div class="hero-label">The Podcast</div>
+            <h1>Conversations at the Frontier</h1>
+            <p>Long-form interviews and domain deep-dives with the builders, teachers, researchers, healers, and creators already doing the work worth knowing about.</p>
+        </div>
+    </section>
+
+    <!-- The Format -->
+    <section>
+        <div class="section-label">How It Works</div>
+        <div class="format-content">
+            <h3>Long-Form Conversations & Domain Deep-Dives</h3>
+            <p>We sit down with the people shaping consciousness, science, and human potential. Every episode is a chance to understand how they think, what they're building, and why it matters.</p>
+            <div class="format-quote">
+                "The podcast is how FRQNCY proves its curation thesis — these are the voices we point to."
+            </div>
+        </div>
+    </section>
+
+    <!-- Coming Soon -->
+    <section>
+        <div class="section-label">Coming Soon</div>
+        <div class="subscribe-section">
+            <h3>First Episodes Dropping Soon</h3>
+            <p>Subscribe below to be the first to know when the FRQNCY Podcast launches.</p>
+            <form class="subscribe-form" onsubmit="handleSubscribe(event)">
+                <input
+                    type="email"
+                    placeholder="Enter your email"
+                    required
+                    aria-label="Email for podcast subscription"
+                >
+                <button type="submit" class="subscribe-button">Notify Me</button>
+            </form>
+        </div>
+    </section>
+
+    <!-- Guest Categories -->
+    <section>
+        <div class="section-label">We're Looking For</div>
+        <h2>The Voices We Want to Hear From</h2>
+        <div class="categories">
+            <div class="category-tag">Researchers</div>
+            <div class="category-tag">Educators</div>
+            <div class="category-tag">Artists</div>
+            <div class="category-tag">Builders</div>
+            <div class="category-tag">Healers</div>
+            <div class="category-tag">Founders</div>
+            <div class="category-tag">Philosophers</div>
+        </div>
+    </section>
+
+    <!-- Pitch Yourself -->
+    <section>
+        <div class="pitch-section">
+            <h3>Want to Be a Guest?</h3>
+            <p>If you're doing work that expands consciousness, pushes the boundary of what's possible, or offers wisdom worth sharing, we'd like to hear from you. Send us a pitch.</p>
+            <a href="mailto:podcast@frqncy.network" class="cta-button">podcast@frqncy.network</a>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <p>&copy; 2026 FRQNCY. A network for conscious living.</p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;"><a href="/">Back to Home</a></p>
+    </footer>
+
+    <script>
+        function handleSubscribe(event) {
+            event.preventDefault();
+            const email = event.target.querySelector('input[type="email"]').value;
+
+            // Call the subscribe API endpoint
+            fetch('/api/subscribe', {
+                method: 'POST',
+                headers: {
+                    'Content-Type': 'application/json',
+                },
+                body: JSON.stringify({ email: email })
+            })
+            .then(response => response.json())
+            .then(data => {
+                if (data.success) {
+                    alert('Thank you! Check your email for confirmation.');
+                    event.target.reset();
+                } else {
+                    alert('Something went wrong. Please try again.');
+                }
+            })
+            .catch(error => {
+                console.error('Error:', error);
+                alert('Something went wrong. Please try again.');
+            });
+        }
+    </script>
+</body>
+</html>

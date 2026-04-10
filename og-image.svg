@@ -1,0 +1,90 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="630" viewBox="0 0 1200 630">
+  <defs>
+    <radialGradient id="bg" cx="30%" cy="40%" r="80%">
+      <stop offset="0%" stop-color="#0D2451"/>
+      <stop offset="100%" stop-color="#05080F"/>
+    </radialGradient>
+    <radialGradient id="glow" cx="50%" cy="50%" r="50%">
+      <stop offset="0%" stop-color="#2952B3" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="#2952B3" stop-opacity="0"/>
+    </radialGradient>
+    <filter id="blur">
+      <feGaussianBlur stdDeviation="32"/>
+    </filter>
+  </defs>
+
+  <!-- Background -->
+  <rect width="1200" height="630" fill="url(#bg)"/>
+
+  <!-- Glow orb -->
+  <ellipse cx="360" cy="280" rx="320" ry="260" fill="url(#glow)" filter="url(#blur)"/>
+
+  <!-- Network node dots — constellation feel -->
+  <!-- Core node -->
+  <circle cx="600" cy="315" r="6" fill="#4A7AE8" opacity="0.9"/>
+
+  <!-- Pillar nodes -->
+  <circle cx="480" cy="210" r="4" fill="#4A7AE8" opacity="0.7"/>
+  <circle cx="650" cy="185" r="4" fill="#C4973A" opacity="0.7"/>
+  <circle cx="760" cy="240" r="4" fill="#4A7AE8" opacity="0.7"/>
+  <circle cx="780" cy="360" r="4" fill="#7AAB7A" opacity="0.7"/>
+  <circle cx="680" cy="430" r="4" fill="#7B4AE8" opacity="0.7"/>
+  <circle cx="490" cy="400" r="4" fill="#E87A4A" opacity="0.7"/>
+
+  <!-- Domain nodes — smaller -->
+  <circle cx="400" cy="165" r="2.5" fill="#8A9AB8" opacity="0.5"/>
+  <circle cx="540" cy="140" r="2.5" fill="#8A9AB8" opacity="0.5"/>
+  <circle cx="700" cy="130" r="2.5" fill="#8A9AB8" opacity="0.5"/>
+  <circle cx="830" cy="185" r="2.5" fill="#8A9AB8" opacity="0.5"/>
+  <circle cx="860" cy="310" r="2.5" fill="#8A9AB8" opacity="0.5"/>
+  <circle cx="820" cy="430" r="2.5" fill="#8A9AB8" opacity="0.5"/>
+  <circle cx="720" cy="490" r="2.5" fill="#8A9AB8" opacity="0.5"/>
+  <circle cx="570" cy="500" r="2.5" fill="#8A9AB8" opacity="0.5"/>
+  <circle cx="420" cy="470" r="2.5" fill="#8A9AB8" opacity="0.5"/>
+  <circle cx="360" cy="360" r="2.5" fill="#8A9AB8" opacity="0.5"/>
+  <circle cx="360" cy="250" r="2.5" fill="#8A9AB8" opacity="0.5"/>
+
+  <!-- Connection lines — core to pillars -->
+  <line x1="600" y1="315" x2="480" y2="210" stroke="#4A7AE8" stroke-width="0.8" opacity="0.35"/>
+  <line x1="600" y1="315" x2="650" y2="185" stroke="#4A7AE8" stroke-width="0.8" opacity="0.35"/>
+  <line x1="600" y1="315" x2="760" y2="240" stroke="#4A7AE8" stroke-width="0.8" opacity="0.35"/>
+  <line x1="600" y1="315" x2="780" y2="360" stroke="#4A7AE8" stroke-width="0.8" opacity="0.35"/>
+  <line x1="600" y1="315" x2="680" y2="430" stroke="#4A7AE8" stroke-width="0.8" opacity="0.35"/>
+  <line x1="600" y1="315" x2="490" y2="400" stroke="#4A7AE8" stroke-width="0.8" opacity="0.35"/>
+
+  <!-- Connection lines — pillars to domains -->
+  <line x1="480" y1="210" x2="400" y2="165" stroke="#8A9AB8" stroke-width="0.5" opacity="0.25"/>
+  <line x1="480" y1="210" x2="540" y2="140" stroke="#8A9AB8" stroke-width="0.5" opacity="0.25"/>
+  <line x1="650" y1="185" x2="700" y2="130" stroke="#8A9AB8" stroke-width="0.5" opacity="0.25"/>
+  <line x1="760" y1="240" x2="830" y2="185" stroke="#8A9AB8" stroke-width="0.5" opacity="0.25"/>
+  <line x1="780" y1="360" x2="860" y2="310" stroke="#8A9AB8" stroke-width="0.5" opacity="0.25"/>
+  <line x1="780" y1="360" x2="820" y2="430" stroke="#8A9AB8" stroke-width="0.5" opacity="0.25"/>
+  <line x1="680" y1="430" x2="720" y2="490" stroke="#8A9AB8" stroke-width="0.5" opacity="0.25"/>
+  <line x1="490" y1="400" x2="420" y2="470" stroke="#8A9AB8" stroke-width="0.5" opacity="0.25"/>
+  <line x1="490" y1="400" x2="360" y2="360" stroke="#8A9AB8" stroke-width="0.5" opacity="0.25"/>
+  <line x1="480" y1="210" x2="360" y2="250" stroke="#8A9AB8" stroke-width="0.5" opacity="0.25"/>
+
+  <!-- Wordmark -->
+  <text
+    x="100"
+    y="530"
+    font-family="Georgia, 'Times New Roman', serif"
+    font-size="72"
+    font-weight="300"
+    fill="white"
+    opacity="0.95"
+    letter-spacing="28">FRQNCY</text>
+
+  <!-- Tagline -->
+  <text
+    x="102"
+    y="570"
+    font-family="'Helvetica Neue', Arial, sans-serif"
+    font-size="16"
+    font-weight="300"
+    fill="#8A9AB8"
+    letter-spacing="4">BUILT ON THE FOUNDATIONS OF ONENESS</text>
+
+  <!-- Subtle divider -->
+  <line x1="100" y1="495" x2="340" y2="495" stroke="#C4973A" stroke-width="1" opacity="0.6"/>
+</svg>

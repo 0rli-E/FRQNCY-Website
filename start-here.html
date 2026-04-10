@@ -1,0 +1,287 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Start Here — FRQNCY</title>
+  <meta name="description" content="New to FRQNCY? Start here. A guided introduction to the network, the pillars, and where to begin your exploration.">
+  <meta property="og:type" content="website">
+  <meta property="og:title" content="Start Here — FRQNCY">
+  <meta property="og:description" content="New to FRQNCY? A guided introduction to the network and where to begin.">
+  <meta property="og:url" content="https://frqncy.network/start-here.html">
+  <meta property="og:image" content="https://frqncy.network/og-image.png">
+  <meta property="og:image:width" content="1200">
+  <meta property="og:image:height" content="630">
+  <meta property="og:site_name" content="FRQNCY">
+  <meta name="twitter:card" content="summary_large_image">
+  <meta name="twitter:title" content="Start Here — FRQNCY">
+  <meta name="twitter:description" content="New to FRQNCY? A guided introduction to the network and where to begin.">
+  <meta name="twitter:image" content="https://frqncy.network/og-image.png">
+  <meta name="theme-color" content="#0B1C3D">
+  <link rel="canonical" href="https://frqncy.network/start-here.html">
+  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+  <link rel="manifest" href="/manifest.json">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+  <style>
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    :root {
+      --dark: #0B1C3D; --dark-2: #0D2451; --mid: #3A4E72;
+      --light-mid: #8A9AB8; --gold: #C4973A; --gold-light: #E0C06A;
+      --blue: #1A3A8F; --blue-mid: #2952B3;
+      --text: #C8D8F0; --text-dim: #7090B8;
+      --card-border: rgba(255,255,255,0.08);
+      --font-display: 'Cormorant', Georgia, serif;
+      --font-body: 'Jost', sans-serif;
+    }
+    html { scroll-behavior: smooth; }
+    body { font-family: var(--font-body); background: var(--dark); color: var(--text); overflow-x: hidden; font-weight: 300; }
+
+    /* NAV */
+    nav { position: fixed; top: 0; left: 0; right: 0; z-index: 100; padding: 20px clamp(24px,5vw,80px); display: flex; align-items: center; justify-content: space-between; background: rgba(11,28,61,0.97); backdrop-filter: blur(16px); border-bottom: 1px solid rgba(255,255,255,0.06); }
+    .nav-logo { font-family: var(--font-display); font-weight: 300; font-size: 20px; letter-spacing: 0.38em; color: #fff; text-decoration: none; text-transform: uppercase; opacity: 0.85; }
+    .nav-links { display: flex; gap: 28px; list-style: none; }
+    .nav-links a { font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-dim); text-decoration: none; transition: color 0.2s; }
+    .nav-links a:hover, .nav-links a.active { color: var(--gold); }
+
+    /* HERO */
+    .hero { padding: clamp(120px,18vw,180px) clamp(24px,5vw,80px) clamp(60px,10vw,100px); text-align: center; position: relative; }
+    .hero::before { content: ''; position: absolute; inset: 0; background: radial-gradient(ellipse at 50% 0%, rgba(41,82,179,0.15) 0%, transparent 65%); pointer-events: none; }
+    .hero-eyebrow { display: inline-flex; align-items: center; gap: 12px; font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 24px; }
+    .hero-eyebrow::before, .hero-eyebrow::after { content: ''; display: block; width: 24px; height: 1px; background: currentColor; opacity: 0.5; }
+    .hero h1 { font-family: var(--font-display); font-size: clamp(2.8rem, 7vw, 5.5rem); font-weight: 300; color: #fff; line-height: 1.08; margin-bottom: 24px; }
+    .hero h1 em { font-style: italic; color: rgba(255,255,255,0.55); }
+    .hero-sub { max-width: 520px; margin: 0 auto; font-size: 15px; color: var(--text-dim); line-height: 1.75; }
+
+    /* STEPS */
+    .steps-section { max-width: 860px; margin: 0 auto; padding: 0 clamp(24px,5vw,80px) 80px; }
+    .steps-header { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 48px; padding-bottom: 16px; border-bottom: 1px solid rgba(255,255,255,0.06); opacity: 0.85; }
+    .step { display: grid; grid-template-columns: 48px 1fr; gap: 28px; margin-bottom: 48px; align-items: start; }
+    .step-num { font-family: var(--font-display); font-size: 2.2rem; font-weight: 300; color: rgba(255,255,255,0.12); line-height: 1; padding-top: 4px; }
+    .step-body h3 { font-family: var(--font-display); font-size: 1.6rem; font-weight: 400; color: #fff; margin-bottom: 10px; line-height: 1.2; }
+    .step-body p { font-size: 14px; color: var(--text-dim); line-height: 1.75; margin-bottom: 16px; }
+    .step-link { display: inline-flex; align-items: center; gap: 8px; font-size: 11px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--blue-mid); border: 1px solid rgba(41,82,179,0.4); padding: 8px 18px; border-radius: 2px; text-decoration: none; transition: all 0.2s; }
+    .step-link:hover { background: var(--blue-mid); color: #fff; border-color: var(--blue-mid); }
+
+    /* PILLARS GRID */
+    .pillars-section { background: var(--dark-2); border-top: 1px solid var(--card-border); border-bottom: 1px solid var(--card-border); padding: clamp(60px,10vw,100px) clamp(24px,5vw,80px); }
+    .pillars-inner { max-width: 1100px; margin: 0 auto; }
+    .section-eyebrow { font-size: 10px; letter-spacing: 0.3em; text-transform: uppercase; color: var(--gold); margin-bottom: 48px; opacity: 0.85; }
+    .pillars-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px,1fr)); gap: 1px; background: var(--card-border); border: 1px solid var(--card-border); border-radius: 4px; overflow: hidden; }
+    .pillar-card { background: var(--dark); padding: 28px 28px 22px; text-decoration: none; color: var(--text); transition: background 0.2s; position: relative; }
+    .pillar-card:hover { background: rgba(255,255,255,0.04); }
+    .pillar-accent { width: 28px; height: 2px; margin-bottom: 16px; border-radius: 1px; }
+    .pillar-card h3 { font-family: var(--font-display); font-size: 1.35rem; font-weight: 400; color: #fff; margin-bottom: 8px; }
+    .pillar-card p { font-size: 13px; color: var(--text-dim); line-height: 1.5; margin-bottom: 14px; }
+    .pillar-domains { font-size: 10px; letter-spacing: 0.1em; color: var(--text-dim); opacity: 0.6; }
+    .pillar-arrow { position: absolute; top: 24px; right: 24px; font-size: 14px; opacity: 0; transition: opacity 0.2s; color: var(--text-dim); }
+    .pillar-card:hover .pillar-arrow { opacity: 1; }
+
+    /* PATH SECTION */
+    .paths-section { max-width: 860px; margin: 0 auto; padding: clamp(60px,10vw,100px) clamp(24px,5vw,80px); }
+    .paths-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(240px,1fr)); gap: 16px; margin-top: 32px; }
+    .path-card { background: rgba(255,255,255,0.03); border: 1px solid var(--card-border); border-radius: 4px; padding: 24px; text-decoration: none; color: var(--text); transition: all 0.2s; }
+    .path-card:hover { border-color: rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); }
+    .path-label { font-size: 10px; letter-spacing: 0.25em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px; }
+    .path-card h3 { font-family: var(--font-display); font-size: 1.2rem; color: #fff; font-weight: 400; margin-bottom: 8px; }
+    .path-card p { font-size: 13px; color: var(--text-dim); line-height: 1.55; }
+
+    /* CTA */
+    .cta-section { text-align: center; padding: clamp(60px,10vw,100px) clamp(24px,5vw,80px); border-top: 1px solid var(--card-border); }
+    .cta-section h2 { font-family: var(--font-display); font-size: clamp(2rem,4vw,3.2rem); font-weight: 300; color: #fff; margin-bottom: 16px; }
+    .cta-section p { font-size: 14px; color: var(--text-dim); margin-bottom: 36px; max-width: 440px; margin-left: auto; margin-right: auto; line-height: 1.7; }
+    .cta-buttons { display: flex; gap: 14px; justify-content: center; flex-wrap: wrap; }
+    .btn { font-size: 11px; letter-spacing: 0.16em; text-transform: uppercase; padding: 13px 30px; border-radius: 2px; text-decoration: none; transition: all 0.25s; }
+    .btn-primary { background: var(--blue-mid); color: #fff; border: 1px solid var(--blue-mid); }
+    .btn-primary:hover { background: #3a65cc; }
+    .btn-ghost { background: transparent; color: var(--text-dim); border: 1px solid rgba(255,255,255,0.15); }
+    .btn-ghost:hover { color: #fff; border-color: rgba(255,255,255,0.35); }
+
+    /* FOOTER */
+    footer { border-top: 1px solid rgba(255,255,255,0.05); padding: 28px clamp(24px,5vw,80px); display: flex; align-items: center; justify-content: space-between; flex-wrap: wrap; gap: 12px; }
+    .footer-logo { font-family: var(--font-display); font-size: 16px; letter-spacing: 0.3em; color: rgba(255,255,255,0.25); text-transform: uppercase; }
+    .footer-note { font-size: 11px; color: var(--text-dim); opacity: 0.5; letter-spacing: 0.06em; }
+
+    @media (max-width: 640px) {
+      .nav-links { display: none; }
+      .step { grid-template-columns: 1fr; gap: 12px; }
+      .step-num { font-size: 1.4rem; }
+    }
+  </style>
+<script src="/chat-widget.js" defer></script>
+</head>
+<body>
+
+  <nav>
+    <a href="index.html" class="nav-logo">FRQNCY</a>
+    <ul class="nav-links">
+      <li><a href="about.html">Vision</a></li>
+      <li><a href="platform.html">Platform</a></li>
+      <li><a href="podcast.html">Podcast</a></li>
+      <li><a href="space.html">Space</a></li>
+      <li><a href="v2/explore.html">Explore</a></li>
+    </ul>
+  </nav>
+
+  <!-- HERO -->
+  <section class="hero">
+    <div class="hero-eyebrow">New here</div>
+    <h1>Where do you<br><em>begin?</em></h1>
+    <p class="hero-sub">FRQNCY is a large network — 14 domains, 118 topics, hundreds of resources. This page gives you a way in.</p>
+  </section>
+
+  <!-- STEPS -->
+  <div class="steps-section">
+    <div class="steps-header">Three ways to enter the network</div>
+
+    <div class="step">
+      <div class="step-num">01</div>
+      <div class="step-body">
+        <h3>Explore the living map</h3>
+        <p>The network map is the heart of FRQNCY. Every node is a domain of human knowledge — click any of them to discover curated resources, FRQNCY Picks, and the thinkers we find most essential. Start by clicking whatever pulls you.</p>
+        <a href="v2/explore.html" class="step-link">Open the network map →</a>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">02</div>
+      <div class="step-body">
+        <h3>Choose a pillar</h3>
+        <p>FRQNCY is organised around six pillars — the six ways humans build, know, live, and connect. Each pillar contains multiple domains. If you know what draws you, start there.</p>
+        <a href="#pillars" class="step-link">Browse the six pillars ↓</a>
+      </div>
+    </div>
+
+    <div class="step">
+      <div class="step-num">03</div>
+      <div class="step-body">
+        <h3>Follow a path</h3>
+        <p>If you're new to FRQNCY entirely, these curated paths are a gentle on-ramp — each one is a sequence of domains that fit together naturally.</p>
+        <a href="#paths" class="step-link">See suggested paths ↓</a>
+      </div>
+    </div>
+  </div>
+
+  <!-- PILLARS -->
+  <section class="pillars-section" id="pillars">
+    <div class="pillars-inner">
+      <div class="section-eyebrow">The six pillars</div>
+      <div class="pillars-grid">
+
+        <a href="v2/network-state/index.html" class="pillar-card">
+          <div class="pillar-accent" style="background:#4A7AE8"></div>
+          <h3>Network State</h3>
+          <p>The sovereign community — governance, society, indigenous wisdom, future cities, collective intelligence.</p>
+          <div class="pillar-domains">Society · Governance · Collective Intelligence</div>
+          <span class="pillar-arrow">→</span>
+        </a>
+
+        <a href="v2/fund/index.html" class="pillar-card">
+          <div class="pillar-accent" style="background:#C4973A"></div>
+          <h3>Fund</h3>
+          <p>Capital that creates — conscious capital, DeFi, regenerative business, DAOs, impact investing.</p>
+          <div class="pillar-domains">Business · DeFi · Regenerative Finance</div>
+          <span class="pillar-arrow">→</span>
+        </a>
+
+        <a href="v2/education/index.html" class="pillar-card">
+          <div class="pillar-accent" style="background:#7AAB7A"></div>
+          <h3>Education</h3>
+          <p>Transmitting what's known — lifestyle, wellbeing, food, the practices of conscious living.</p>
+          <div class="pillar-domains">Lifestyle · Wellbeing · Food</div>
+          <span class="pillar-arrow">→</span>
+        </a>
+
+        <a href="v2/research/index.html" class="pillar-card">
+          <div class="pillar-accent" style="background:#7B4AE8"></div>
+          <h3>Research</h3>
+          <p>Exploring what isn't known yet — sciences, metaphysics, nature, the edges of understanding.</p>
+          <div class="pillar-domains">Sciences · Metaphysics · Nature</div>
+          <span class="pillar-arrow">→</span>
+        </a>
+
+        <a href="v2/media/index.html" class="pillar-card">
+          <div class="pillar-accent" style="background:#E87A4A"></div>
+          <h3>Media</h3>
+          <p>Spreading the signal — arts, communication, the forms through which culture moves.</p>
+          <div class="pillar-domains">Arts · Communication · Expression</div>
+          <span class="pillar-arrow">→</span>
+        </a>
+
+        <a href="v2/builder/index.html" class="pillar-card">
+          <div class="pillar-accent" style="background:#00BCD4"></div>
+          <h3>Builder</h3>
+          <p>Creating products, tools, and experiences — technology, creation, play, the making of things.</p>
+          <div class="pillar-domains">Technology · Creation · Play</div>
+          <span class="pillar-arrow">→</span>
+        </a>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- PATHS -->
+  <section class="paths-section" id="paths">
+    <div class="section-eyebrow">Suggested starting paths</div>
+    <p style="font-size:14px;color:var(--text-dim);line-height:1.75;max-width:560px">These are natural sequences — domains that connect and illuminate each other. Each one is a journey, not a checklist.</p>
+
+    <div class="paths-grid">
+
+      <a href="v2/sciences/index.html" class="path-card">
+        <div class="path-label">For the curious mind</div>
+        <h3>Science → Metaphysics → Nature</h3>
+        <p>Start with what's known, move to what's contested, arrive at what's felt.</p>
+      </a>
+
+      <a href="v2/wellbeing/index.html" class="path-card">
+        <div class="path-label">For the seeker</div>
+        <h3>Wellbeing → Lifestyle → Metaphysics</h3>
+        <p>Begin with the body, expand into how you live, dissolve into the bigger questions.</p>
+      </a>
+
+      <a href="v2/technology/index.html" class="path-card">
+        <div class="path-label">For the builder</div>
+        <h3>Technology → Creation → Society</h3>
+        <p>Understand the tools, learn to make with them, understand what they're for.</p>
+      </a>
+
+      <a href="v2/arts/index.html" class="path-card">
+        <div class="path-label">For the artist</div>
+        <h3>Arts → Communication → Play</h3>
+        <p>From the made thing, to how it moves, to the spirit behind all making.</p>
+      </a>
+
+      <a href="v2/business/index.html" class="path-card">
+        <div class="path-label">For the founder</div>
+        <h3>Business → Society → Governance</h3>
+        <p>Build something, understand what it does to the world, help shape the rules.</p>
+      </a>
+
+      <a href="v2/food/index.html" class="path-card">
+        <div class="path-label">For the grounded</div>
+        <h3>Food → Nature → Ecology</h3>
+        <p>Start with what feeds you, follow it back to the earth, see the whole system.</p>
+      </a>
+
+    </div>
+  </section>
+
+  <!-- CTA -->
+  <section class="cta-section">
+    <h2>Ready to explore?</h2>
+    <p>The network map is the best place to go next. Click into any node that calls to you.</p>
+    <div class="cta-buttons">
+      <a href="v2/explore.html" class="btn btn-primary">Open the network map</a>
+      <a href="about.html" class="btn btn-ghost">Read the vision</a>
+    </div>
+  </section>
+
+  <footer>
+    <span class="footer-logo">FRQNCY</span>
+    <span class="footer-note">© 2026 FRQNCY · All frequencies reserved</span>
+  </footer>
+
+</body>
+</html>

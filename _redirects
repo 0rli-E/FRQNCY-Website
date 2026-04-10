@@ -1,0 +1,15 @@
+# Clean URL redirects — Cloudflare Pages
+# Redirect /explore → the v2 map
+/explore          /v2/explore.html    301
+/map              /v2/explore.html    301
+/network          /v2/explore.html    301
+
+# Redirect /vision → about
+/vision           /about.html         301
+
+# Redirect old /v2 root to explore
+/v2               /v2/explore.html    301
+/v2/              /v2/explore.html    301
+
+# 404 fallback — Cloudflare Pages reads this automatically
+/*                /404.html           404
