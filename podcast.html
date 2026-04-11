@@ -69,35 +69,35 @@
         }
 
         .nav-logo {
-            font-family: 'Cormorant', serif;
-            font-size: 1.8rem;
-            font-weight: 600;
+            font-family: 'Cormorant', Georgia, serif;
+            font-size: 22px;
+            font-weight: 300;
             color: var(--dark);
             text-decoration: none;
-            letter-spacing: 0.05em;
+            letter-spacing: 0.38em;
+            text-transform: uppercase;
+            transition: color 0.3s;
         }
 
         .nav-links {
             display: flex;
-            gap: 2rem;
+            gap: 36px;
             list-style: none;
         }
 
         .nav-links a {
-            font-size: 0.95rem;
-            font-weight: 500;
+            font-family: 'Jost', sans-serif;
+            font-size: 11px;
+            font-weight: 300;
+            letter-spacing: 0.28em;
+            text-transform: uppercase;
             color: var(--dark);
             text-decoration: none;
-            transition: color 0.3s ease;
+            transition: color 0.2s;
         }
 
-        .nav-links a:hover {
-            color: var(--gold);
-        }
-
-        .nav-links a.active {
-            color: var(--gold);
-        }
+        .nav-links a:hover { color: var(--gold); }
+        .nav-links a.active { color: var(--gold); }
 
         @media (max-width: 768px) {
             nav {
