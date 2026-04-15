@@ -58,7 +58,7 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 /* MAIN */
 main{max-width:1080px;margin:0 auto;padding:3rem clamp(1.25rem,5vw,2.5rem) 7rem}
 section{margin-bottom:4.5rem}
-.section-label{font-weight:400;margin-top:0;font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
+.section-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
 
 /* GRID */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border)}
@@ -232,7 +232,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   
   
   <section>
-  <h2 class="section-label">Curated Resources</h2>
+  <div class="section-label">Curated Resources</div>
   <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="book">book</button><button class="ftab" data-filter="course">course</button></div>
   <div class="rlist"><div class="rcard" data-type="book">
   <span class="rtype">book</span>
@@ -273,7 +273,7 @@ document.querySelectorAll('.ftab').forEach(btn=>{
 });
 </script>
   <section>
-    <h2 class="section-label">More in Creation</h2>
+    <div class="section-label">More in Creation</div>
     <div class="grid grid-sm">
       <a href="../product-design/index.html" class="ncard">
   <div class="ncard-type">Topic</div>
