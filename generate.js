@@ -8,9 +8,42 @@
 const fs   = require('fs');
 const path = require('path');
 
-const ROOT = __dirname;
-const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content.json'), 'utf8'));
-const OUT  = path.join(ROOT, 'v2');
+const ROOT      = __dirname;
+const DATA      = JSON.parse(fs.readFileSync(path.join(ROOT, 'content.json'),   'utf8'));
+const VIDEOS    = JSON.parse(fs.readFileSync(path.join(ROOT, 'videos.json'),    'utf8'));
+const COURSES   = JSON.parse(fs.readFileSync(path.join(ROOT, 'courses.json'),   'utf8'));
+const PROVIDERS = JSON.parse(fs.readFileSync(path.join(ROOT, 'providers.json'), 'utf8'));
+const OUT       = path.join(ROOT, 'v2');
+
+// ── Provider helpers ─────────────────────────────────────────────
+const providerMap = new Map(PROVIDERS.map(p => [p.id, p]));
+function getProvider(v) { return providerMap.get(v.provider || 'youtube') || providerMap.get('youtube'); }
+function videoId(v)     { return v.video_id || v.youtube_id || ''; }
+function thumbUrl(v) {
+  if (v.thumbnail) return v.thumbnail;
+  const p = getProvider(v);
+  if (!p.thumbnail_url) return '';
+  return p.thumbnail_url.replace('{id}', videoId(v));
+}
+function embedUrl(v, autoplay) {
+  const p = getProvider(v);
+  if (!p.embeddable) return '';
+  const tpl = autoplay ? p.embed_autoplay : p.embed_url;
+  return tpl.replace('{id}', videoId(v));
+}
+function watchUrl(v) {
+  const p = getProvider(v);
+  return p.watch_url.replace('{id}', videoId(v));
+}
+
+// Pre-index courses by topic: topicId → [course, ...]
+const coursesByTopic = new Map();
+for (const course of COURSES) {
+  for (const topicId of (course.topics || [])) {
+    if (!coursesByTopic.has(topicId)) coursesByTopic.set(topicId, []);
+    coursesByTopic.get(topicId).push(course);
+  }
+}
 
 // ── Pre-indexed lookup maps ───────────────────────────────────────
 const pillarMap       = new Map(DATA.pillars.map(p => [p.id, p]));
@@ -22,7 +55,9 @@ for (const d of DATA.domains) domainsByPillar.get(d.pillar)?.push(d);
 for (const t of DATA.topics)  topicsByDomain.get(t.domain)?.push(t);
 
 function resourcesFor(nid) { return DATA.resources[nid] || []; }
+function videosFor(nid)    { return (VIDEOS[nid] || []).filter(v => { const id = videoId(v); return id && !id.startsWith('PLACEHOLDER'); }); }
 function mkdirp(dir)       { fs.mkdirSync(dir, { recursive: true }); }
+function esc(s)            { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
 // Memoized hex → rgba (only ~14 unique accent colors in the dataset)
 const rgbaCache = new Map();
@@ -114,6 +149,87 @@ section{margin-bottom:4.5rem}
 .picks-intro{font-size:0.78rem;color:var(--text-dim);margin-bottom:1.5rem;line-height:1.6;max-width:600px}
 .picks-intro strong{color:var(--gold);font-weight:400}
 
+/* VIDEO SECTION */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-top:0}
+.vcard-t{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
+  overflow:hidden;cursor:pointer;transition:border-color .22s,transform .22s,background .22s;
+  display:flex;flex-direction:column;
+}
+.vcard-t:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.05)}
+.vcard-t:active{transform:translateY(0);transition-duration:.1s}
+.vthumb-t{position:relative;width:100%;aspect-ratio:16/9;background:#0a1428;overflow:hidden;flex-shrink:0}
+.vthumb-t img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.vcard-t:hover .vthumb-t img{transform:scale(1.04)}
+.vplay-t{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);transition:background .2s}
+.vcard-t:hover .vplay-t{background:rgba(0,0,0,0.38)}
+.vplay-btn-t{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,0.18);backdrop-filter:blur(4px);
+  border:1.5px solid rgba(255,255,255,0.35);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,transform .2s;
+}
+.vcard-t:hover .vplay-btn-t{background:rgba(255,255,255,0.28);transform:scale(1.1)}
+.vdur-t{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.78);color:#fff;font-family:'Jost',sans-serif;font-size:0.6rem;padding:1px 6px;border-radius:2px;letter-spacing:0.02em}
+.vpick-t{position:absolute;top:6px;left:6px;background:rgba(196,151,58,0.92);color:#0B1C3D;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;padding:2px 6px;border-radius:2px}
+.vprov-t{position:absolute;bottom:6px;left:6px;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.12em;text-transform:uppercase;padding:2px 6px;border-radius:2px}
+.vthumb-fallback-t{width:100%;height:100%;background:linear-gradient(135deg,rgba(74,122,232,0.12),rgba(196,151,58,0.08))}
+.vplay-ext-t{border-style:dashed}
+.vinfo-t{padding:0.8rem 1rem 0.9rem;flex:1;display:flex;flex-direction:column;gap:0.2rem}
+.vtitle-t{font-family:'Cormorant',serif;font-size:1rem;font-weight:400;color:#fff;line-height:1.25}
+.vchan-t{font-size:0.66rem;color:var(--text-dim)}
+/* VIDEO MODAL */
+.vmodal{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;padding:1.25rem;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.vmodal.open{opacity:1;pointer-events:all}
+.vmodal-box{
+  width:100%;max-width:860px;background:#0c1e42;
+  border:1px solid rgba(255,255,255,0.1);border-radius:6px;overflow:hidden;
+  transform:translateY(10px) scale(0.98);transition:transform .25s;
+}
+.vmodal.open .vmodal-box{transform:translateY(0) scale(1)}
+.vmodal-player{width:100%;aspect-ratio:16/9}
+.vmodal-player iframe{width:100%;height:100%;border:none;display:block}
+.vmodal-footer{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07)}
+.vmodal-title{font-family:'Cormorant',serif;font-size:1.2rem;color:#fff;line-height:1.2;margin-bottom:0.15rem}
+.vmodal-chan{font-size:0.68rem;color:var(--text-dim)}
+.vmodal-close{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  cursor:pointer;width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);font-size:0.95rem;transition:all .2s;
+}
+.vmodal-close:hover{color:#fff;background:rgba(255,255,255,0.12)}
+.watch-link{
+  display:inline-flex;align-items:center;gap:0.4rem;margin-top:1.1rem;
+  font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--accent);border:1px solid rgba(255,255,255,0.1);
+  padding:6px 14px;border-radius:2px;transition:border-color .2s;text-decoration:none;
+}
+.watch-link:hover{border-color:var(--accent);opacity:1}
+
+/* COURSE CALLOUT */
+.course-callout{
+  display:flex;align-items:center;gap:1.25rem;
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
+  padding:1.25rem 1.4rem;margin-bottom:0.75rem;
+  text-decoration:none;color:var(--text);transition:background .2s,border-color .2s;
+  position:relative;overflow:hidden;
+}
+.course-callout::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--course-accent,var(--accent))}
+.course-callout:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.14);opacity:1}
+.cc-level{font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid currentColor;flex-shrink:0;white-space:nowrap}
+.cc-body{flex:1;min-width:0}
+.cc-title{font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:0.25rem}
+.cc-meta{font-size:0.68rem;color:var(--text-dim)}
+.cc-arrow{font-size:1rem;color:var(--accent);flex-shrink:0;transition:transform .2s}
+.course-callout:hover .cc-arrow{transform:translateX(3px)}
+
 /* FOOTER */
 footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center}
 .footer-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
@@ -129,6 +245,15 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rlink{grid-column:2;margin-top:0.5rem}
   .breadcrumb{display:none}
   .footer-inner{flex-direction:column;gap:1rem;text-align:center}
+  .vgrid{grid-template-columns:1fr 1fr;gap:0.75rem}
+  .snav-back{font-size:0.6rem;padding:4px 10px}
+}
+@media(max-width:400px){
+  .vgrid{grid-template-columns:1fr}
+  .rcard{grid-template-columns:1fr}
+  .rlink{grid-column:1}
+  .section-label{font-size:0.6rem}
+  .snav-back:not(:last-child){display:none}
 }
 `;
 
@@ -154,7 +279,11 @@ function nav(crumbHtml) {
     <a href="../explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
     ${crumbHtml ? `<div class="breadcrumb">${crumbHtml}</div>` : ''}
   </div>
-  <a href="../../index.html" class="snav-back">← Main Site</a>
+  <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
+    <a href="../watch/index.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Watch</a>
+    <a href="../courses/index.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Courses</a>
+    <a href="../../index.html" class="snav-back">← Main Site</a>
+  </div>
 </nav>`;
 }
 
@@ -162,7 +291,9 @@ const FOOTER = `<footer>
   <div class="footer-inner">
     <span class="footer-logo">FRQNCY</span>
     <div class="footer-links">
-      <a href="../explore.html">Explore the network</a>
+      <a href="../explore.html">Explore</a>
+      <a href="../watch/index.html">Watch</a>
+      <a href="../courses/index.html">Courses</a>
       <a href="../../index.html">Main site</a>
       <a href="../../about.html">Vision</a>
     </div>
@@ -202,6 +333,111 @@ function resourceSection(nodeId, label, res = null) {
   <div class="rlist">${res.map(rcard).join('\n')}</div>
 </section>
 ${FILTER_JS}`;
+}
+
+// ── Video section for topic pages ────────────────────────────────
+function videoSection(topicId) {
+  const vids = videosFor(topicId);
+  if (!vids.length) return '';
+
+  // Use data-* attributes — avoids fragile onclick string escaping with apostrophes
+  // data-embed: autoplay embed URL (empty string for non-embeddable providers like Gaia)
+  // data-watch: canonical watch URL for external-link fallback
+  const cards = vids.map(v => {
+    const prov       = getProvider(v);
+    const thumb      = thumbUrl(v);
+    const embed      = embedUrl(v, true);  // autoplay
+    const watch      = watchUrl(v);
+    const provBadge  = prov.id !== 'youtube'
+      ? `<span class="vprov-t" style="background:${prov.color}22;color:${prov.color};border:1px solid ${prov.color}55">${esc(prov.name)}</span>`
+      : '';
+    const playIcon   = prov.embeddable
+      ? `<div class="vplay-btn-t"><svg viewBox="0 0 24 24" fill="white" width="16" height="16"><polygon points="5,3 19,12 5,21"/></svg></div>`
+      : `<div class="vplay-btn-t vplay-ext-t"><svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" width="14" height="14"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg></div>`;
+
+    return `
+  <div class="vcard-t" data-embed="${esc(embed)}" data-watch="${esc(watch)}" data-title="${esc(v.title)}" data-chan="${esc(v.channel||'')}" tabindex="0" role="button" aria-label="${prov.embeddable ? 'Play' : 'Watch'} ${esc(v.title)}${prov.id !== 'youtube' ? ' on '+prov.name : ''}">
+    <div class="vthumb-t">
+      ${thumb ? `<img src="${thumb}" alt="" loading="lazy" decoding="async">` : '<div class="vthumb-fallback-t"></div>'}
+      <div class="vplay-t">${playIcon}</div>
+      ${v.duration ? `<span class="vdur-t">${esc(v.duration)}</span>` : ''}
+      ${v.frqncy_pick ? '<span class="vpick-t">FRQNCY Pick</span>' : ''}
+      ${provBadge}
+    </div>
+    <div class="vinfo-t">
+      <div class="vtitle-t">${esc(v.title)}</div>
+      ${v.channel ? `<div class="vchan-t">${esc(v.channel)}</div>` : ''}
+    </div>
+  </div>`;
+  }).join('');
+
+  return `<section>
+  <div class="section-label">Watch</div>
+  <div class="vgrid">${cards}</div>
+  <a href="../watch/" class="watch-link">▶ Browse All Videos</a>
+</section>
+
+<!-- Video modal -->
+<div class="vmodal" id="vmodal">
+  <div class="vmodal-box">
+    <div class="vmodal-player"><iframe id="vmodal-iframe" src="" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen title="Video"></iframe></div>
+    <div class="vmodal-footer">
+      <div>
+        <div class="vmodal-title" id="vmodal-title"></div>
+        <div class="vmodal-chan" id="vmodal-chan"></div>
+      </div>
+      <button class="vmodal-close" id="vmodal-close" aria-label="Close video">✕</button>
+    </div>
+  </div>
+</div>
+<script>
+(function(){
+  function openVid(embed,watch,title,chan){
+    if(embed){
+      document.getElementById('vmodal-title').textContent=title;
+      document.getElementById('vmodal-chan').textContent=chan?'— '+chan:'';
+      document.getElementById('vmodal-iframe').src=embed;
+      document.getElementById('vmodal').classList.add('open');
+      document.body.style.overflow='hidden';
+    } else {
+      window.open(watch,'_blank','noopener,noreferrer');
+    }
+  }
+  function closeVid(){
+    document.getElementById('vmodal').classList.remove('open');
+    document.getElementById('vmodal-iframe').src='';
+    document.body.style.overflow='';
+  }
+  document.querySelectorAll('.vcard-t').forEach(function(card){
+    function activate(){ openVid(card.dataset.embed, card.dataset.watch, card.dataset.title, card.dataset.chan); }
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(); }});
+  });
+  document.getElementById('vmodal-close').addEventListener('click', closeVid);
+  document.getElementById('vmodal').addEventListener('click', function(e){ if(e.target===this) closeVid(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVid(); });
+})();
+<\/script>`;
+}
+
+// ── Course callout for topic pages ───────────────────────────────
+function courseSection(topicId) {
+  const courses = coursesByTopic.get(topicId) || [];
+  if (!courses.length) return '';
+
+  const cards = courses.map(c => `<a class="course-callout" href="../courses/${c.slug}/" style="--course-accent:${c.accent}">
+  <span class="cc-level" style="color:${c.accent};border-color:${c.accent}60">${esc(c.level)}</span>
+  <span class="cc-body">
+    <span class="cc-title">${esc(c.title)}</span>
+    <span class="cc-meta">${c.lessons.length} lessons · ${esc(c.duration)}${c.subtitle ? ' · ' + esc(c.subtitle) : ''}</span>
+  </span>
+  <span class="cc-arrow">→</span>
+</a>`).join('\n');
+
+  return `<section>
+  <div class="section-label">Take a Course</div>
+  ${cards}
+</section>`;
 }
 
 // ── Shared JSON-LD helpers ───────────────────────────────────────
@@ -370,6 +606,9 @@ function topicPage(t) {
 
   const crumb = `<a href="../${pillar.slug}/index.html">${pillar.label}</a><span class="sep">/</span><a href="../${domain.slug}/index.html">${domain.label}</a><span class="sep">/</span><span>${t.label}</span>`;
 
+  const vidSection    = videoSection(t.id);
+  const courseCallout = courseSection(t.id);
+
   return head(t.label, domain.accent, t.desc, canonical, ld, t.slug) +
 nav(crumb) +
 `<div class="hero">
@@ -378,6 +617,8 @@ nav(crumb) +
   ${t.desc ? `<p class="hero-desc">${t.desc}</p>` : ''}
 </div>
 <main>
+  ${vidSection}
+  ${courseCallout}
   ${resourceSection(t.id, 'Curated Resources', res)}
   ${relatedCards}
 </main>

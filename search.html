@@ -1,0 +1,510 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Search — FRQNCY Network</title>
+<meta name="description" content="Search across 135 topics in consciousness, science, wellbeing, technology, and beyond.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:title" content="Search — FRQNCY Network">
+<meta property="og:description" content="Search across 135 topics in consciousness, science, wellbeing, technology, and beyond.">
+<meta property="og:url" content="https://frqncy.network/search.html">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<link rel="canonical" href="https://frqncy.network/search.html">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="manifest" href="manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
+  --card-border:rgba(255,255,255,0.08);--accent:#4A7AE8;--accent-glow:rgba(74,122,232,0.12);
+}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{color:inherit;text-decoration:none}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.nav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;opacity:0.85;transition:opacity .2s}
+.nav-logo:hover{opacity:1}
+.nav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s}
+.nav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+.nav-links{display:flex;align-items:center;gap:clamp(1rem,2vw,2rem);list-style:none}
+.nav-links a{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta{
+  border:1px solid rgba(196,151,58,0.35)!important;border-radius:2px;
+  padding:5px 12px;color:var(--gold)!important;
+  transition:all .2s!important;
+}
+.nav-cta:hover{background:rgba(196,151,58,0.08)!important;border-color:var(--gold)!important}
+@media(max-width:700px){.nav-links{display:none}}
+
+/* ── HERO ── */
+.hero{
+  margin-top:56px;
+  padding:clamp(2.5rem,6vw,4.5rem) clamp(1.25rem,5vw,2.5rem) 0;
+  text-align:center;position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -20%,var(--accent-glow) 0%,transparent 60%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:0.75rem}
+.hero-desc{max-width:480px;margin:0 auto 1.25rem;font-size:0.86rem;color:var(--text-dim);line-height:1.7}
+.hero-cta{
+  display:inline-block;margin-bottom:2rem;
+  font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--gold);border:1px solid rgba(196,151,58,0.35);
+  border-radius:2px;padding:8px 20px;
+  transition:all .2s;
+}
+.hero-cta:hover{background:rgba(196,151,58,0.08);border-color:var(--gold)}
+
+/* ── SEARCH BAR ── */
+.search-wrap{
+  max-width:640px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) 1.5rem;
+  position:relative;
+}
+.search-input-row{position:relative}
+.search-input-row svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);opacity:0.35;pointer-events:none}
+#q{
+  width:100%;
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:3px;
+  padding:14px 48px 14px 46px;
+  color:#fff;font-family:'Jost',sans-serif;font-size:1rem;font-weight:300;letter-spacing:0.04em;
+  outline:none;transition:border-color .2s,background .2s;
+}
+#q::placeholder{color:rgba(255,255,255,0.25)}
+#q:focus{border-color:rgba(74,122,232,0.55);background:rgba(255,255,255,0.08)}
+.clear-btn{
+  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  background:none;border:none;color:var(--text-dim);cursor:pointer;
+  font-size:1.1rem;line-height:1;padding:4px;display:none;transition:color .2s;
+}
+.clear-btn:hover{color:var(--text)}
+.clear-btn.visible{display:block}
+
+/* ── FILTERS ── */
+.filters{
+  max-width:1080px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) 0.6rem;
+  display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center;
+}
+.filter-label{font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-right:0.25rem}
+.ftab{
+  font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;
+  padding:4px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;
+  cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;
+  font-family:'Jost',sans-serif;white-space:nowrap;
+}
+.ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(74,122,232,0.07)}
+
+/* ── RESULTS ── */
+main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
+
+.results-meta{
+  font-size:0.72rem;letter-spacing:0.06em;color:var(--text-dim);
+  margin-bottom:1.25rem;padding-bottom:0.75rem;
+  border-bottom:1px solid rgba(255,255,255,0.05);
+  display:flex;justify-content:space-between;align-items:center;flex-wrap:wrap;gap:0.5rem;
+}
+.results-meta strong{color:var(--text);font-weight:400}
+
+.section-heading{
+  font-size:0.52rem;letter-spacing:0.32em;text-transform:uppercase;
+  color:var(--text-dim);margin:2rem 0 0.9rem;opacity:0.6;
+}
+.section-heading:first-child{margin-top:0}
+
+.results-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(240px,1fr));
+  gap:1px;
+  background:var(--card-border);
+  border:1px solid var(--card-border);
+  border-radius:4px;overflow:hidden;
+  margin-bottom:0.5rem;
+}
+.result-card{
+  background:var(--navy);
+  padding:1.25rem 1.4rem;
+  display:block;
+  transition:background .18s;
+  position:relative;
+}
+.result-card:hover{background:rgba(255,255,255,0.04)}
+.rc-domain{font-size:0.5rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--accent);margin-bottom:0.45rem;opacity:0.8}
+.rc-title{font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:0.35rem}
+.rc-desc{font-size:0.73rem;color:var(--text-dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.rc-arrow{position:absolute;top:1.1rem;right:1.1rem;font-size:0.7rem;color:var(--accent);opacity:0;transition:opacity .18s}
+.result-card:hover .rc-arrow{opacity:1}
+
+/* Resource card extras */
+.rc-meta{display:flex;align-items:center;gap:0.5rem;margin-bottom:0.45rem;flex-wrap:wrap}
+.rc-type{
+  font-size:0.46rem;letter-spacing:0.2em;text-transform:uppercase;font-weight:500;
+  padding:2px 7px;border-radius:2px;line-height:1.7;
+  background:rgba(74,122,232,0.18);color:var(--accent);border:1px solid rgba(74,122,232,0.3);
+}
+.rc-type.person{background:rgba(196,151,58,0.15);color:var(--gold);border-color:rgba(196,151,58,0.35)}
+.rc-type.book{background:rgba(80,180,100,0.12);color:#6ec98a;border-color:rgba(80,180,100,0.3)}
+.rc-type.org{background:rgba(74,122,232,0.15);color:var(--accent);border-color:rgba(74,122,232,0.3)}
+.rc-type.media{background:rgba(160,100,200,0.15);color:#c07ade;border-color:rgba(160,100,200,0.3)}
+.rc-type.course{background:rgba(50,180,180,0.12);color:#5ed0cc;border-color:rgba(50,180,180,0.3)}
+.rc-topic{font-size:0.52rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);opacity:0.7}
+
+/* Highlight matched text */
+mark{background:rgba(74,122,232,0.22);color:#fff;border-radius:2px;padding:0 2px}
+
+/* Empty / no results */
+.empty{
+  text-align:center;padding:5rem 2rem;
+  grid-column:1/-1;
+}
+.empty-icon{font-size:2.5rem;margin-bottom:1.25rem;opacity:0.2}
+.empty p{color:var(--text-dim);font-size:0.9rem;line-height:1.8}
+.empty a{color:var(--accent);text-decoration:underline;text-underline-offset:3px}
+
+/* Popular topics when no query */
+.popular-section{margin-bottom:2rem}
+.popular-heading{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;opacity:0.8}
+.popular-pills{display:flex;flex-wrap:wrap;gap:0.5rem}
+.pill{
+  font-size:0.68rem;letter-spacing:0.08em;
+  padding:5px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:20px;
+  color:var(--text-dim);transition:all .2s;cursor:pointer;background:none;
+  font-family:'Jost',sans-serif;
+}
+.pill:hover{border-color:var(--accent);color:var(--accent);background:rgba(74,122,232,0.06)}
+
+/* ── RESPONSIVE ── */
+@media(max-width:640px){
+  .results-grid{grid-template-columns:1fr}
+  .filters{gap:0.3rem}
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">FRQNCY</a>
+  <ul class="nav-links">
+    <li><a href="about.html">Vision</a></li>
+    <li><a href="platform.html">Platform</a></li>
+    <li><a href="podcast.html">Podcast</a></li>
+    <li><a href="space.html">Space</a></li>
+    <li><a href="v2/explore.html">Explore</a></li>
+    <li><a href="v2/watch/index.html">Watch</a></li>
+    <li><a href="v2/courses/index.html">Courses</a></li>
+    <li><a href="chart.html">Chart Generator</a></li>
+    <li><a href="my-frqncy.html" class="nav-cta">My FRQNCY</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">135 Topics · 617 Resources</div>
+  <h1>Search the Network</h1>
+  <p class="hero-desc">Search topics, people, books, and organisations across the FRQNCY network.</p>
+  <a href="my-frqncy.html" class="hero-cta">Build your constellation ✦</a>
+</section>
+
+<div class="search-wrap">
+  <div class="search-input-row">
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <input id="q" type="search" placeholder="Search topics, domains, descriptions…" autocomplete="off" aria-label="Search topics" autofocus>
+    <button class="clear-btn" id="clear-btn" aria-label="Clear search">✕</button>
+  </div>
+</div>
+
+<div class="filters" id="type-row">
+  <span class="filter-label">Type</span>
+</div>
+<div class="filters" id="filter-row">
+  <span class="filter-label">Domain</span>
+</div>
+
+<main>
+  <div class="results-meta" id="meta" aria-live="polite"></div>
+  <div id="results-area"></div>
+</main>
+
+<script>
+// ── Data ──────────────────────────────────────────────────────────────
+let TOPICS = [];       // from search.json
+let RESOURCES = [];    // from resources.json
+let domainMap = {};
+let activeDomain = 'all';
+let activeType = 'all';  // all | topics | person | book | org | media | course
+let query = '';
+
+const POPULAR = [
+  'Meditation','Quantum Physics','Breathwork','Sacred Geometry',
+  'Neuroscience','Plant Medicine','Sound Healing','Artificial Intelligence',
+  'Oneness','Yoga','Blockchain','Vibration & Frequency'
+];
+
+const TYPE_LABELS = {
+  topics:'Topics', person:'People', book:'Books',
+  org:'Organisations', media:'Media', course:'Courses'
+};
+
+// ── Load ──────────────────────────────────────────────────────────────
+async function loadIndex() {
+  const [topicsRes, resourcesRes] = await Promise.allSettled([
+    fetch('search.json').then(r => r.json()),
+    fetch('resources.json').then(r => r.json())
+  ]);
+  if (topicsRes.status === 'fulfilled') TOPICS = topicsRes.value;
+  if (resourcesRes.status === 'fulfilled') RESOURCES = resourcesRes.value;
+  buildTypeFilters();
+  buildDomainFilters();
+  render();
+}
+
+// ── Filter builders ───────────────────────────────────────────────────
+function buildTypeFilters() {
+  const row = document.getElementById('type-row');
+  row.innerHTML = '<span class="filter-label">Type</span>';
+  const types = ['all','topics','person','book','org','media','course'];
+  for (const t of types) {
+    const btn = makeFilterBtn(t, t === 'all' ? 'All' : TYPE_LABELS[t] || t, 'type');
+    if (t === 'all') btn.classList.add('active');
+    row.appendChild(btn);
+  }
+}
+
+function buildDomainFilters() {
+  const row = document.getElementById('filter-row');
+  row.innerHTML = '<span class="filter-label">Domain</span>';
+  const seen = new Set();
+  for (const item of TOPICS) {
+    if (item.domain && !seen.has(item.domain)) {
+      seen.add(item.domain);
+      domainMap[item.domain] = item.domainLabel || item.domain;
+    }
+  }
+  const allBtn = makeFilterBtn('all', 'All', 'domain');
+  allBtn.classList.add('active');
+  row.appendChild(allBtn);
+  for (const [id, label] of Object.entries(domainMap)) {
+    row.appendChild(makeFilterBtn(id, label, 'domain'));
+  }
+}
+
+function makeFilterBtn(id, label, kind) {
+  const btn = document.createElement('button');
+  btn.className = 'ftab';
+  btn.textContent = label;
+  btn.dataset.filter = id;
+  btn.addEventListener('click', () => {
+    document.querySelectorAll(`#${kind === 'type' ? 'type' : 'filter'}-row .ftab`)
+      .forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (kind === 'type') activeType = id;
+    else activeDomain = id;
+    render();
+  });
+  return btn;
+}
+
+// ── Utils ─────────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+function highlight(text, q) {
+  if (!q || !text) return esc(text || '');
+  const escaped = q.replace(/[.*+?^${}()|[\]\\]/g,'\\$&');
+  return esc(text).replace(new RegExp(`(${escaped})`, 'gi'), '<mark>$1</mark>');
+}
+function matches(str, q) {
+  return (str || '').toLowerCase().includes(q);
+}
+
+// ── Render ────────────────────────────────────────────────────────────
+function render() {
+  const area = document.getElementById('results-area');
+  const meta = document.getElementById('meta');
+  const q = query.toLowerCase().trim();
+
+  const showTopics  = activeType === 'all' || activeType === 'topics';
+  const showResources = activeType === 'all' || (activeType !== 'topics');
+
+  // Filter topics
+  const filteredTopics = showTopics ? TOPICS.filter(item => {
+    if (activeDomain !== 'all' && item.domain !== activeDomain) return false;
+    if (!q) return true;
+    return matches(item.label, q) || matches(item.desc, q) ||
+           matches(item.domainLabel, q) || matches(item.pillarLabel, q);
+  }) : [];
+
+  // Filter resources
+  const filteredResources = showResources ? RESOURCES.filter(item => {
+    if (activeType !== 'all' && activeType !== 'topics' && item.type !== activeType) return false;
+    if (activeDomain !== 'all' && item.domainSlug !== activeDomain) return false;
+    if (!q) return false;  // only show resources when there's a query
+    return matches(item.name, q) || matches(item.desc, q) ||
+           matches(item.topicLabel, q) || matches(item.type, q);
+  }) : [];
+
+  const totalResults = filteredTopics.length + filteredResources.length;
+
+  // Meta
+  if (q || activeDomain !== 'all' || activeType !== 'all') {
+    const domainStr = activeDomain !== 'all' ? ` in <strong>${esc(domainMap[activeDomain] || activeDomain)}</strong>` : '';
+    meta.innerHTML = `<span><strong>${totalResults}</strong> result${totalResults !== 1 ? 's' : ''}${q ? ` for "<strong>${esc(query)}</strong>"` : ''}${domainStr}</span>`;
+  } else {
+    meta.innerHTML = `<span><strong>${TOPICS.length}</strong> topics · <strong>${RESOURCES.length}</strong> resources across the FRQNCY network</span>`;
+  }
+
+  area.innerHTML = '';
+
+  // ── No query: popular section + all topics ──
+  if (!q && activeType !== 'topics' && activeDomain === 'all' && activeType === 'all') {
+    const pop = document.createElement('div');
+    pop.className = 'popular-section';
+    pop.innerHTML = `
+      <div class="popular-heading">Popular topics</div>
+      <div class="popular-pills">${POPULAR.map(p =>
+        `<button class="pill" onclick="searchFor('${p.replace(/'/g,"\\'")}')">
+          ${esc(p)}</button>`
+      ).join('')}</div>`;
+    area.appendChild(pop);
+  }
+
+  const nothingFound = filteredTopics.length === 0 && filteredResources.length === 0;
+  if (nothingFound && q) {
+    const emptyGrid = makeGrid();
+    emptyGrid.innerHTML = `<div class="empty">
+      <div class="empty-icon">○</div>
+      <p>Nothing matched "<strong>${esc(query)}</strong>".<br>
+      Try a broader term, or <a href="#" onclick="clearSearch();return false">clear the search</a>.</p>
+    </div>`;
+    area.appendChild(emptyGrid);
+    return;
+  }
+
+  // ── Topics section ──
+  if (filteredTopics.length > 0) {
+    if (q || activeType === 'topics') {
+      area.appendChild(sectionHeading('Topics'));
+    }
+    const grid = makeGrid();
+    for (const item of filteredTopics) {
+      grid.appendChild(topicCard(item, q));
+    }
+    area.appendChild(grid);
+  }
+
+  // ── Resources section ──
+  if (filteredResources.length > 0) {
+    area.appendChild(sectionHeading('Resources — people, books & organisations'));
+    const grid = makeGrid();
+    for (const item of filteredResources) {
+      grid.appendChild(resourceCard(item, q));
+    }
+    area.appendChild(grid);
+  }
+}
+
+function sectionHeading(text) {
+  const h = document.createElement('div');
+  h.className = 'section-heading';
+  h.textContent = text;
+  return h;
+}
+
+function makeGrid() {
+  const g = document.createElement('div');
+  g.className = 'results-grid';
+  g.setAttribute('role', 'list');
+  return g;
+}
+
+function topicCard(item, q) {
+  const a = document.createElement('a');
+  a.className = 'result-card';
+  a.href = item.url || '#';
+  a.setAttribute('role', 'listitem');
+  a.setAttribute('aria-label', item.label);
+  a.innerHTML = `
+    <div class="rc-domain">${highlight(item.domainLabel || '', q)}</div>
+    <div class="rc-title">${highlight(item.label, q)}</div>
+    <div class="rc-desc">${highlight(item.desc || '', q)}</div>
+    <span class="rc-arrow">→</span>`;
+  return a;
+}
+
+function resourceCard(item, q) {
+  const a = document.createElement('a');
+  a.className = 'result-card';
+  a.href = item.url || item.topicUrl || '#';
+  a.target = item.url ? '_blank' : '_self';
+  a.rel = item.url ? 'noopener noreferrer' : '';
+  a.setAttribute('role', 'listitem');
+  a.setAttribute('aria-label', item.name);
+  const typeClass = item.type || 'org';
+  a.innerHTML = `
+    <div class="rc-meta">
+      <span class="rc-type ${esc(typeClass)}">${esc(item.type || 'resource')}</span>
+      <span class="rc-topic">in <a href="${esc(item.topicUrl)}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:underline;text-underline-offset:2px">${highlight(item.topicLabel, q)}</a></span>
+    </div>
+    <div class="rc-title">${highlight(item.name, q)}</div>
+    <div class="rc-desc">${highlight(item.desc || '', q)}</div>
+    <span class="rc-arrow">↗</span>`;
+  return a;
+}
+
+// ── Controls ──────────────────────────────────────────────────────────
+function searchFor(term) {
+  document.getElementById('q').value = term;
+  query = term;
+  document.getElementById('clear-btn').classList.add('visible');
+  render();
+}
+
+function clearSearch() {
+  document.getElementById('q').value = '';
+  query = '';
+  activeDomain = 'all';
+  activeType = 'all';
+  document.querySelectorAll('.ftab').forEach(b =>
+    b.classList.toggle('active', b.dataset.filter === 'all'));
+  document.getElementById('clear-btn').classList.remove('visible');
+  render();
+}
+
+let timer;
+document.getElementById('q').addEventListener('input', e => {
+  clearTimeout(timer);
+  timer = setTimeout(() => {
+    query = e.target.value;
+    document.getElementById('clear-btn').classList.toggle('visible', !!query);
+    render();
+  }, 100);
+});
+
+document.getElementById('clear-btn').addEventListener('click', clearSearch);
+
+document.addEventListener('keydown', e => {
+  if (e.key === '/' && document.activeElement !== document.getElementById('q')) {
+    e.preventDefault();
+    document.getElementById('q').focus();
+  }
+  if (e.key === 'Escape') clearSearch();
+});
+
+loadIndex();
+</script>
+</body>
+</html>

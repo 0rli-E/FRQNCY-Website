@@ -4,12 +4,15 @@
   "description": "FRQNCY — The Conscious Living Network",
   "private": true,
   "scripts": {
-    "build": "node build-kb.js && node build-og.js && node generate.js",
+    "build": "node build-kb.js && node build-og.js && node generate.js && node generate-courses.js && node generate-watch.js",
     "build:kb": "node build-kb.js",
     "build:og": "node build-og.js",
     "build:pages": "node generate.js",
-    "dev": "node generate.js && echo '\\nOpen ./index.html in your browser'",
-    "lint": "node -e \"require('./content.json'); console.log('content.json ✓')\" && node -e \"require('./generate.js')\" && echo 'All files parse OK'"
+    "build:courses": "node generate-courses.js",
+    "build:watch": "node generate-watch.js",
+    "dev": "npm run build && echo '\\n▶  Run: npx serve . -p 3000\\n   then open http://localhost:3000'",
+    "serve": "npx serve . -p 3000",
+    "lint": "node -e \"require('./content.json'); console.log('content.json ✓')\" && node -e \"require('./videos.json'); console.log('videos.json ✓')\" && node -e \"require('./courses.json'); console.log('courses.json ✓')\" && node -e \"require('./providers.json'); console.log('providers.json ✓')\" && echo 'All data files OK'"
   },
   "dependencies": {
     "sharp": "^0.34.0"

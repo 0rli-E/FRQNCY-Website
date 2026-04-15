@@ -25,7 +25,7 @@
     <meta name="twitter:title" content="The Podcast — FRQNCY">
     <meta name="twitter:description" content="Conversations at the frontier of consciousness, science, and human potential. FRQNCY invites the builders, teachers, researchers, and healers already doing the work.">
     <meta name="twitter:image" content="https://frqncy.network/og-image.png">
-    <link rel="icon" type="image/svg+xml" href="/favicon.svg">
+    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -270,24 +270,27 @@
         }
 
         .subscribe-form input::placeholder {
-            color: #999;
+            color: rgba(255,255,255,0.4);
         }
 
         .subscribe-button {
-            padding: 0.9rem 2rem;
+            padding: 14px 28px;
             background-color: var(--gold);
             color: var(--dark);
-            border: none;
-            font-family: 'Jost', sans-serif;
-            font-weight: 600;
-            font-size: 0.95rem;
+            border: 1px solid var(--gold);
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
             cursor: pointer;
-            transition: all 0.3s ease;
+            transition: all 0.25s;
+            white-space: nowrap;
         }
 
         .subscribe-button:hover {
             background-color: #B8862E;
-            transform: translateY(-2px);
+            border-color: #B8862E;
         }
 
         /* Guest Categories */
@@ -335,20 +338,21 @@
             display: inline-block;
             background-color: var(--gold);
             color: var(--dark);
-            padding: 1rem 2.5rem;
+            padding: 14px 32px;
             text-decoration: none;
-            font-weight: 600;
-            font-size: 0.95rem;
-            letter-spacing: 0.05em;
-            transition: all 0.3s ease;
-            border: none;
+            font-family: var(--font-body);
+            font-weight: 500;
+            font-size: 11px;
+            letter-spacing: 0.2em;
+            text-transform: uppercase;
+            border: 1px solid var(--gold);
             cursor: pointer;
-            font-family: 'Jost', sans-serif;
+            transition: all 0.25s;
         }
 
         .cta-button:hover {
             background-color: #B8862E;
-            transform: translateY(-2px);
+            border-color: #B8862E;
         }
 
         /* Footer */
@@ -398,8 +402,8 @@
         }
     </style>
   <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
-<script src="/chat-widget.js" defer></script>
-<link rel="manifest" href="/manifest.json">
+<script src="chat-widget.js" defer></script>
+<link rel="manifest" href="manifest.json">
 </head>
 <body>
     <!-- Navigation -->
@@ -411,6 +415,8 @@
             <li><a href="podcast.html" class="active">Podcast</a></li>
             <li><a href="space.html">Space</a></li>
             <li><a href="v2/explore.html">Explore</a></li>
+            <li><a href="v2/watch/index.html">Watch</a></li>
+            <li><a href="v2/courses/index.html">Courses</a></li>
         </ul>
     </nav>
 
@@ -480,7 +486,7 @@
     <!-- Footer -->
     <footer>
         <p>&copy; 2026 FRQNCY. A network for conscious living.</p>
-        <p style="margin-top: 1rem; font-size: 0.9rem;"><a href="/">Back to Home</a></p>
+        <p style="margin-top: 1rem; font-size: 0.9rem;"><a href="index.html">Back to Home</a></p>
     </footer>
 
     <script>

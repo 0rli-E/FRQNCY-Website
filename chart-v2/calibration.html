@@ -1,0 +1,140 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>HD Engine Calibration — FRQNCY</title>
+<style>
+  body { background:#0B1C3D; color:#C8D8F0; font:14px/1.55 system-ui,sans-serif; padding:2rem; max-width:1100px; margin:0 auto }
+  h1   { color:#fff; font-weight:400; letter-spacing:0.06em }
+  h2   { color:#E0C06A; font-weight:400; margin-top:2rem }
+  .ctl { background:rgba(255,255,255,0.04); padding:1rem; border-radius:4px; margin:1rem 0; display:flex; gap:1rem; align-items:center; flex-wrap:wrap }
+  .ctl label { color:#7090B8; font-size:12px; letter-spacing:0.1em; text-transform:uppercase }
+  .ctl input { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.15); color:#fff; padding:6px 10px; border-radius:3px; font:inherit; width:100px }
+  .ctl button { background:#C4973A; color:#0B1C3D; border:0; padding:8px 14px; border-radius:3px; cursor:pointer; font:500 12px/1 system-ui; letter-spacing:0.08em; text-transform:uppercase }
+  table { border-collapse:collapse; width:100%; margin-top:1rem; font-size:13px }
+  th,td { padding:6px 8px; text-align:left; border-bottom:1px solid rgba(255,255,255,0.08) }
+  th { color:#7090B8; font-weight:500; font-size:11px; letter-spacing:0.08em; text-transform:uppercase }
+  .ok { color:#6FCF97 }
+  .bad { color:#EB5757; font-weight:500 }
+  .diff { color:#F2C94C }
+  pre { background:rgba(0,0,0,0.3); padding:1rem; border-radius:4px; overflow-x:auto; font-size:12px }
+  .summary { padding:1rem; border-radius:4px; margin:1rem 0; font-size:15px }
+  .summary.pass { background:rgba(111,207,151,0.1); border:1px solid rgba(111,207,151,0.3) }
+  .summary.fail { background:rgba(235,87,87,0.1); border:1px solid rgba(235,87,87,0.3) }
+  a { color:#E0C06A }
+</style>
+</head>
+<body>
+  <h1>FRQNCY · HD Engine Calibration Harness</h1>
+  <p>Runs <code>computeChart()</code> against <code>fixtures.json</code> and diffs each gate/line against the expected Jovian Archive output. Tune <strong>WHEEL_OFFSET</strong> here until all fixtures pass.</p>
+  <p><small>Engine: <a href="hd-engine.js">hd-engine.js</a> · Fixtures: <a href="fixtures.json">fixtures.json</a></small></p>
+
+  <div class="ctl">
+    <label>Wheel offset (°)</label>
+    <input id="offset" type="number" step="0.01" value="1.5">
+    <button id="run">Run calibration</button>
+    <button id="sweep">Sweep −5° to +5° (find best offset)</button>
+    <span id="status" style="color:#7090B8; font-size:12px"></span>
+  </div>
+
+  <div id="summary"></div>
+  <div id="results"></div>
+
+<script type="module">
+import { computeChart, localToUTC, setWheelOffset, HD_BODIES, RAVE_WHEEL } from './hd-engine.js';
+
+const $ = id => document.getElementById(id);
+
+async function loadFixtures() {
+  const r = await fetch('fixtures.json');
+  return (await r.json()).fixtures;
+}
+
+function diffChart(got, expected) {
+  const rows = [];
+  let total = 0, matches = 0;
+  for (const side of ['personality', 'design']) {
+    for (const body of HD_BODIES) {
+      const e = expected[side][body];
+      const g = got[side][body];
+      total++;
+      const gateOk = e.gate === g.gate;
+      const lineOk = e.line === g.line;
+      if (gateOk && lineOk) matches++;
+      rows.push({
+        side, body,
+        expected: `${e.gate}.${e.line}`,
+        got: `${g.gate}.${g.line}`,
+        lon: g.lon.toFixed(3) + '°',
+        status: gateOk && lineOk ? 'ok' : (gateOk ? 'line-only' : 'bad')
+      });
+    }
+  }
+  return { rows, total, matches };
+}
+
+function renderFixture(fx, result, diff) {
+  const typeOk = result.type === fx.expected.type;
+  const profOk = result.profile === fx.expected.profile;
+  const authOk = result.authority === fx.expected.authority;
+  let html = `<h2>${fx.label}</h2>`;
+  html += `<div>Type: <span class="${typeOk?'ok':'bad'}">${result.type}</span> (expected ${fx.expected.type}) · `;
+  html += `Profile: <span class="${profOk?'ok':'bad'}">${result.profile}</span> (expected ${fx.expected.profile}) · `;
+  html += `Authority: <span class="${authOk?'ok':'bad'}">${result.authority}</span></div>`;
+  html += `<div style="margin-top:4px; color:#7090B8; font-size:12px">Birth UTC: ${result.birthUTC.toISOString()} · Design UTC: ${result.designUTC.toISOString()}</div>`;
+  html += `<div style="margin-top:6px">Gate match: <strong>${diff.matches}/${diff.total}</strong> bodies</div>`;
+  html += '<table><thead><tr><th>Side</th><th>Body</th><th>Expected</th><th>Got</th><th>Lon</th><th>Status</th></tr></thead><tbody>';
+  diff.rows.forEach(r => {
+    const cls = r.status === 'ok' ? 'ok' : (r.status === 'line-only' ? 'diff' : 'bad');
+    html += `<tr><td>${r.side[0].toUpperCase()}</td><td>${r.body}</td><td>${r.expected}</td><td class="${cls}">${r.got}</td><td>${r.lon}</td><td class="${cls}">${r.status}</td></tr>`;
+  });
+  html += '</tbody></table>';
+  return html;
+}
+
+async function runOnce(offset) {
+  setWheelOffset(offset);
+  const fixtures = await loadFixtures();
+  let totalMatches = 0, totalBodies = 0;
+  const out = [];
+  for (const fx of fixtures) {
+    const utc = localToUTC(fx.birth.y, fx.birth.mo, fx.birth.d, fx.birth.h, fx.birth.mi, fx.zone);
+    const result = computeChart(utc);
+    const diff = diffChart(result, fx.expected);
+    totalMatches += diff.matches; totalBodies += diff.total;
+    out.push({ fx, result, diff });
+  }
+  return { out, totalMatches, totalBodies };
+}
+
+async function run() {
+  const offset = parseFloat($('offset').value);
+  $('status').textContent = 'computing…';
+  const { out, totalMatches, totalBodies } = await runOnce(offset);
+  const pct = (100 * totalMatches / totalBodies).toFixed(1);
+  const pass = totalMatches === totalBodies;
+  $('summary').innerHTML = `<div class="summary ${pass?'pass':'fail'}">Overall: <strong>${totalMatches}/${totalBodies}</strong> body gates match (${pct}%) at offset ${offset}°.</div>`;
+  $('results').innerHTML = out.map(({ fx, result, diff }) => renderFixture(fx, result, diff)).join('');
+  $('status').textContent = '';
+}
+
+async function sweep() {
+  $('status').textContent = 'sweeping…';
+  let best = { off: 0, matches: -1 };
+  const step = 0.05;
+  for (let off = -5; off <= 5.0001; off += step) {
+    const { totalMatches } = await runOnce(off);
+    if (totalMatches > best.matches) best = { off: +off.toFixed(2), matches: totalMatches };
+  }
+  $('offset').value = best.off;
+  $('status').textContent = `best: offset ${best.off}° → ${best.matches} matches`;
+  await run();
+}
+
+$('run').addEventListener('click', run);
+$('sweep').addEventListener('click', sweep);
+run();
+</script>
+</body>
+</html>

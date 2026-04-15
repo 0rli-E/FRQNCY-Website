@@ -6,8 +6,8 @@
   <title>Not Found — FRQNCY</title>
   <meta name="robots" content="noindex, nofollow">
   <meta name="theme-color" content="#0B1C3D">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
-  <link rel="manifest" href="/manifest.json">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link rel="manifest" href="manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -100,10 +100,11 @@
     .btn {
       font-family: var(--font-body);
       font-size: 11px;
-      letter-spacing: 0.18em;
+      font-weight: 500;
+      letter-spacing: 0.2em;
       text-transform: uppercase;
       text-decoration: none;
-      padding: 12px 28px;
+      padding: 14px 30px;
       border-radius: 2px;
       transition: all 0.25s;
       cursor: pointer;
@@ -137,13 +138,43 @@
       z-index: 10;
     }
     .logo:hover { color: #fff; }
+
+    .search-hint {
+      margin-top: 32px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      gap: 10px;
+    }
+    .search-hint-label {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: rgba(255,255,255,0.25);
+    }
+    .search-hint-link {
+      font-size: 11px;
+      letter-spacing: 0.14em;
+      text-transform: uppercase;
+      color: var(--light-mid);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(138,154,184,0.3);
+      padding-bottom: 1px;
+      transition: color 0.2s, border-color 0.2s;
+    }
+    .search-hint-link:hover { color: #fff; border-color: rgba(255,255,255,0.5); }
   </style>
+  <script>
+    if ('serviceWorker' in navigator) {
+      window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+    }
+  </script>
   <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
-<script src="/chat-widget.js" defer></script>
+<script src="chat-widget.js" defer></script>
 </head>
 <body>
   <canvas id="c"></canvas>
-  <a href="/" class="logo">FRQNCY</a>
+  <a href="index.html" class="logo">FRQNCY</a>
 
   <div class="content">
     <p class="eyebrow">Lost in the network</p>
@@ -151,23 +182,30 @@
     <h1>This frequency<br><em>doesn't exist yet</em></h1>
     <p>The page you're looking for hasn't been tuned in — or it may have moved. Find your way back below.</p>
     <div class="links">
-      <a href="/" class="btn btn-primary">Return home</a>
-      <a href="/v2/explore.html" class="btn btn-ghost">Explore the network</a>
+      <a href="index.html" class="btn btn-primary">Return home</a>
+      <a href="v2/explore.html" class="btn btn-ghost">Explore the network</a>
+    </div>
+    <div class="search-hint">
+      <span class="search-hint-label">Or try</span>
+      <a href="search.html" class="search-hint-link">Search all topics →</a>
     </div>
   </div>
 
   <script>
-    // Subtle particle field
+    // Subtle particle field — pauses when tab is hidden to save CPU
     const canvas = document.getElementById('c');
     const ctx = canvas.getContext('2d');
     let W, H, pts = [];
+    let pageVisible = !document.hidden;
+
+    document.addEventListener('visibilitychange', () => { pageVisible = !document.hidden; });
 
     function resize() {
       W = canvas.width  = window.innerWidth;
       H = canvas.height = window.innerHeight;
     }
     resize();
-    window.addEventListener('resize', resize);
+    window.addEventListener('resize', resize, { passive: true });
 
     for (let i = 0; i < 60; i++) {
       pts.push({
@@ -180,6 +218,8 @@
     }
 
     function draw() {
+      requestAnimationFrame(draw);
+      if (!pageVisible) return;
       ctx.clearRect(0, 0, W, H);
       pts.forEach(p => {
         p.x += p.vx; p.y += p.vy;
@@ -206,7 +246,6 @@
           }
         }
       }
-      requestAnimationFrame(draw);
     }
     draw();
   </script>

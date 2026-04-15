@@ -25,12 +25,10 @@
   <meta name="twitter:title" content="FRQNCY — Built on the Foundations of Oneness">
   <meta name="twitter:description" content="FRQNCY is a conscious living network — curating the best teachers, tools, and resources across science, spirituality, arts, technology, and more.">
   <meta name="twitter:image" content="https://frqncy.network/og-image.png">
-  <link rel="icon" type="image/svg+xml" href="/favicon.svg">
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
-  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -118,6 +116,84 @@
     }
     .nav-links a:hover { color: var(--gold); }
     .nav-links a.active { color: var(--gold); }
+    .nav-cta-gold {
+      border: 1px solid rgba(196,151,58,0.4);
+      border-radius: 2px;
+      padding: 5px 13px;
+      color: var(--gold)!important;
+      transition: all .2s!important;
+    }
+    .nav-cta-gold:hover { background: rgba(196,151,58,0.08)!important; border-color: var(--gold)!important; }
+
+    /* ── HAMBURGER (mobile only) ── */
+    .nav-hamburger {
+      display: none;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      gap: 5px;
+      width: 40px; height: 40px;
+      background: none; border: none; cursor: pointer;
+      padding: 4px; border-radius: 4px;
+      transition: opacity .2s;
+      z-index: 600;
+    }
+    .nav-hamburger:hover { opacity: 0.7; }
+    .nav-hamburger span {
+      display: block;
+      width: 22px; height: 1.5px;
+      background: var(--dark);
+      transition: transform .25s, opacity .25s;
+      border-radius: 2px;
+    }
+    /* X state */
+    .nav-hamburger.open span:nth-child(1) { transform: translateY(6.5px) rotate(45deg); }
+    .nav-hamburger.open span:nth-child(2) { opacity: 0; }
+    .nav-hamburger.open span:nth-child(3) { transform: translateY(-6.5px) rotate(-45deg); }
+
+    /* White bars when over dark sections */
+    nav.over-dark .nav-hamburger span,
+    nav.over-dark .nav-hamburger.open span { background: var(--pure-white); }
+
+    /* ── MOBILE MENU DRAWER ── */
+    #mobile-menu {
+      display: none;
+      position: fixed;
+      top: 0; left: 0; right: 0;
+      background: rgba(255,255,255,0.97);
+      backdrop-filter: blur(24px);
+      -webkit-backdrop-filter: blur(24px);
+      z-index: 490;
+      padding: 0 clamp(16px, 5vw, 32px);
+      padding-top: 72px; /* below nav */
+      padding-bottom: 32px;
+      box-shadow: 0 4px 32px rgba(11,28,61,0.12);
+      transform: translateY(-100%);
+      transition: transform .3s cubic-bezier(0.32, 0.72, 0, 1);
+    }
+    #mobile-menu.open {
+      transform: translateY(0);
+    }
+    #mobile-menu ul {
+      list-style: none;
+      display: flex;
+      flex-direction: column;
+      gap: 0;
+    }
+    #mobile-menu ul li a {
+      display: block;
+      padding: 14px 0;
+      font-family: var(--font-body);
+      font-size: 13px;
+      letter-spacing: 0.22em;
+      text-transform: uppercase;
+      color: var(--dark);
+      text-decoration: none;
+      border-bottom: 1px solid rgba(11,28,61,0.07);
+      transition: color .2s;
+    }
+    #mobile-menu ul li:last-child a { border-bottom: none; }
+    #mobile-menu ul li a:hover { color: var(--gold); }
 
     /* =====================
        SECTION 1: LIGHT INTRO
@@ -125,7 +201,9 @@
     #light-intro {
       position: relative;
       width: 100%;
+      /* 100dvh = dynamic viewport height (shrinks when mobile browser toolbar hides) */
       height: 100vh;
+      height: 100dvh;
       background: #050810;
       display: flex;
       align-items: center;
@@ -297,13 +375,6 @@
       text-align: center;
       padding: 64px 40px;
       max-width: 540px;
-    }
-    .subscribe-eyebrow {
-      font-size: 10px;
-      letter-spacing: 0.4em;
-      text-transform: uppercase;
-      color: var(--gold);
-      margin-bottom: 28px;
     }
     .subscribe-headline {
       font-family: var(--font-display);
@@ -483,6 +554,8 @@
       width: 100%; height: 100%;
       cursor: grab; z-index: 1;
       background: transparent;
+      touch-action: none;
+      user-select: none;
     }
     #nm-svg:active { cursor: grabbing; }
     #nm-tooltip {
@@ -676,8 +749,10 @@
        RESPONSIVE
     ===================== */
     @media (max-width: 768px) {
-      /* NAV: Hide links on mobile, keep logo visible */
+      /* NAV: Hide desktop links, show hamburger */
       .nav-links { display: none; }
+      .nav-hamburger { display: flex; }
+      #mobile-menu { display: block; }
       nav {
         padding: 18px clamp(16px, 4vw, 28px);
       }
@@ -689,7 +764,7 @@
         letter-spacing: 0.3em;
       }
 
-      /* HERO: Ensure intro wordmark fits on screen */
+      /* HERO: Wordmark size on mobile */
       .intro-wordmark {
         font-size: clamp(32px, 5vw, 56px);
         letter-spacing: 0.3em;
@@ -707,39 +782,27 @@
         height: 24px;
       }
 
-      /* BUBBLE MAP: Reduce height and add mobile message */
+      /* BUBBLE MAP: Slightly shorter on mobile, fully interactive */
       #nm-container {
-        height: 60vh;
+        height: 70vh;
         position: relative;
       }
-      #nm-container::after {
-        content: 'Best explored on desktop';
-        position: absolute;
-        top: 50%;
-        left: 50%;
-        transform: translate(-50%, -50%);
-        font-size: 12px;
-        color: rgba(255, 255, 255, 0.4);
-        letter-spacing: 0.08em;
-        text-transform: uppercase;
-        z-index: 3;
-        pointer-events: none;
-        text-align: center;
-        white-space: nowrap;
-      }
 
-      /* Disable map interaction on mobile (make it static) */
+      /* Map is fully interactive — D3 handles touch-drag and pinch-to-zoom natively */
       #nm-svg {
-        cursor: default;
-        pointer-events: none;
+        cursor: grab;
+        touch-action: none;
       }
       #nm-svg:active {
-        cursor: default;
+        cursor: grabbing;
       }
 
-      /* Hide map hint on mobile */
+      /* Show mobile-appropriate hint */
       #nm-hint {
-        display: none;
+        display: block;
+        font-size: 8px;
+        letter-spacing: 0.14em;
+        bottom: 12px;
       }
 
       /* Reduce legend on mobile */
@@ -814,7 +877,7 @@
       }
 
       /* TOOLTIP: Reduce size on mobile */
-      #node-tooltip {
+      #nm-tooltip {
         max-width: 180px;
         font-size: 11px;
       }
@@ -824,10 +887,10 @@
       /* INTRO: Further optimization for very small screens */
       #light-intro {
         height: 100vh;
-        padding: 0;
+        height: 100dvh;
       }
       .intro-wordmark {
-        font-size: clamp(28px, 4vw, 48px);
+        font-size: clamp(28px, 9vw, 48px);
         letter-spacing: 0.25em;
       }
 
@@ -892,8 +955,13 @@
     }
   </style>
   <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
-<script src="/chat-widget.js" defer></script>
-<link rel="manifest" href="/manifest.json">
+<script src="chat-widget.js" defer></script>
+<link rel="manifest" href="manifest.json">
+<script>
+  if ('serviceWorker' in navigator) {
+    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+  }
+</script>
 </head>
 <body>
 
@@ -906,8 +974,30 @@
       <li><a href="podcast.html">Podcast</a></li>
       <li><a href="space.html">Space</a></li>
       <li><a href="v2/explore.html">Explore</a></li>
+      <li><a href="v2/watch/index.html">Watch</a></li>
+      <li><a href="v2/courses/index.html">Courses</a></li>
+      <li><a href="chart.html">Chart Generator</a></li>
+      <li><a href="my-frqncy.html" class="nav-cta-gold">My FRQNCY</a></li>
     </ul>
+    <button class="nav-hamburger" id="nav-hamburger" aria-label="Open menu" aria-expanded="false">
+      <span></span><span></span><span></span>
+    </button>
   </nav>
+
+  <!-- MOBILE MENU DRAWER -->
+  <div id="mobile-menu" aria-hidden="true">
+    <ul>
+      <li><a href="about.html">Vision</a></li>
+      <li><a href="platform.html">Platform</a></li>
+      <li><a href="podcast.html">Podcast</a></li>
+      <li><a href="space.html">Space</a></li>
+      <li><a href="v2/explore.html">Explore</a></li>
+      <li><a href="v2/watch/index.html">Watch</a></li>
+      <li><a href="v2/courses/index.html">Courses</a></li>
+      <li><a href="chart.html">Chart Generator</a></li>
+      <li><a href="my-frqncy.html">My FRQNCY</a></li>
+    </ul>
+  </div>
 
   <!-- =====================
        SECTION 1: LIGHT INTRO
@@ -973,9 +1063,9 @@
           <div class="nm-leg-item"><div class="nm-leg-dot" style="width:5px;height:5px;background:linear-gradient(135deg,#213E88,#080F28);border-radius:50%"></div>TOPICS</div>
           <div class="nm-leg-item"><div class="nm-leg-dot" style="width:3px;height:3px;background:#fff;box-shadow:0 0 3px rgba(255,255,255,0.8);border-radius:50%"></div>HUMANS</div>
         </div>
-        <div id="nm-hint">DRAG · SCROLL TO ZOOM · HOVER TO EXPLORE</div>
+        <div id="nm-hint">DRAG · SCROLL TO ZOOM · CLICK TO EXPLORE</div>
       </div>
-      <a href="./network-map/index.html" class="network-expand-btn" target="_blank" rel="noopener">EXPLORE FULL MAP ↗</a>
+      <a href="v2/explore.html" class="network-expand-btn" target="_blank" rel="noopener">EXPLORE FULL MAP ↗</a>
     </div>
   </section>
 
@@ -1023,8 +1113,8 @@
         <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address" autocomplete="email">
         <button type="submit" id="subscribe-btn-contact">Join the movement</button>
       </form>
-      <p class="subscribe-success" id="subscribe-success-contact" style="display:none;color:var(--blue-mid);font-size:13px;letter-spacing:0.08em;margin-top:14px;text-align:center;">✦ You're in. Welcome to FRQNCY.</p>
-      <p class="subscribe-error" id="subscribe-error-contact" style="display:none;color:#E87A4A;font-size:12px;margin-top:10px;text-align:center;"></p>
+      <p class="subscribe-success" id="subscribe-success-contact" style="display:none;color:var(--gold-light);font-size:13px;letter-spacing:0.08em;margin-top:14px;text-align:center;">✦ You're in. Welcome to FRQNCY.</p>
+      <p class="subscribe-error" id="subscribe-error-contact" style="display:none;color:#F09070;font-size:12px;margin-top:10px;text-align:center;"></p>
 
       <div class="contact-links reveal reveal-delay-3" style="margin-top:28px;">
         <a href="mailto:hello@frqncy.network" class="contact-link primary">Get in touch</a>
@@ -1038,6 +1128,20 @@
   </section>
 
   <script>
+    // =====================
+    // SHARED UTILITIES
+    // =====================
+
+    // Visibility — pause animations when tab is hidden (saves CPU/battery)
+    let pageVisible = !document.hidden;
+    document.addEventListener('visibilitychange', () => { pageVisible = !document.hidden; });
+
+    // Scroll-lock counter — prevents hamburger and subscribe overlay from
+    // fighting over body.style.overflow when both are active simultaneously
+    let _overflowLocks = 0;
+    function lockBody()   { if (++_overflowLocks === 1) document.body.style.overflow = 'hidden'; }
+    function unlockBody() { if (--_overflowLocks <= 0) { _overflowLocks = 0; document.body.style.overflow = ''; } }
+
     // =====================
     // PARTICLES
     // =====================
@@ -1072,31 +1176,52 @@
       for (let i = 0; i < 70; i++) particles.push(new Particle());
 
       (function animate() {
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        particles.forEach(p => {
-          p.update();
-          ctx.beginPath();
-          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-          ctx.fillStyle = `rgba(196, 151, 58, ${p.opacity})`;
-          ctx.fill();
-        });
+        if (pageVisible) {
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+          particles.forEach(p => {
+            p.update();
+            ctx.beginPath();
+            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+            ctx.fillStyle = `rgba(196, 151, 58, ${p.opacity})`;
+            ctx.fill();
+          });
+        }
         requestAnimationFrame(animate);
       })();
     })();
 
     // =====================
-    // SUBSCRIBE OVERLAY
+    // SUBSCRIBE OVERLAY  (with localStorage cookie)
     // =====================
+    const POPUP_KEY = 'frqncy_popup';
+    const POPUP_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
+
+    function popupSeen() {
+      try {
+        const raw = localStorage.getItem(POPUP_KEY);
+        if (!raw) return false;
+        const { ts, reason } = JSON.parse(raw);
+        // After subscribing, suppress permanently; after dismissing, 7 days
+        if (reason === 'subscribed') return true;
+        return (Date.now() - ts) < POPUP_TTL;
+      } catch { return false; }
+    }
+    function markPopupSeen(reason) {
+      try { localStorage.setItem(POPUP_KEY, JSON.stringify({ ts: Date.now(), reason })); } catch {}
+    }
+
     let subscribeShown = false;
 
     function showSubscribe() {
+      if (popupSeen()) { subscribeShown = true; return; } // already dismissed recently
       document.getElementById('subscribe-overlay').classList.add('visible');
-      document.body.style.overflow = 'hidden';
+      lockBody();
     }
     function dismissSubscribe() {
       document.getElementById('subscribe-overlay').classList.remove('visible');
-      document.body.style.overflow = '';
+      unlockBody();
       subscribeShown = true;
+      markPopupSeen('dismissed');
     }
     async function handleSubscribe(e, form) {
       e.preventDefault();
@@ -1115,24 +1240,29 @@
       errorEl.style.display = 'none';
 
       try {
-        const res = await fetch('/api/subscribe', {
+        // Submit to Substack — fire-and-forget (no-cors).
+        // Substack receives the email and sends its confirmation email to the user.
+        await fetch('https://frqncy.substack.com/api/v1/free', {
           method: 'POST',
+          mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
-          body: JSON.stringify({ email }),
+          body: JSON.stringify({
+            email,
+            first_url: window.location.href,
+            first_referrer: document.referrer || '',
+            current_url: window.location.href,
+            current_referrer: document.referrer || '',
+            referral_code: '',
+            source: 'frqncy.network',
+            domain: 'frqncy.substack.com'
+          }),
         });
-        const data = await res.json();
 
-        if (data.success) {
-          form.style.display = 'none';
-          successEl.style.display = 'block';
-          // Auto-dismiss overlay after 2s
-          if (isOverlay) setTimeout(dismissSubscribe, 2000);
-        } else {
-          errorEl.textContent = data.error || 'Something went wrong. Please try again.';
-          errorEl.style.display = 'block';
-          btn.textContent = origText;
-          btn.disabled = false;
-        }
+        form.style.display = 'none';
+        successEl.style.display = 'block';
+        markPopupSeen('subscribed'); // suppress permanently after subscribing
+        // Auto-dismiss overlay after 2s
+        if (isOverlay) setTimeout(dismissSubscribe, 2000);
       } catch (err) {
         errorEl.textContent = 'Connection error. Please try again.';
         errorEl.style.display = 'block';
@@ -1159,9 +1289,52 @@
     revealEls.forEach(el => revealObserver.observe(el));
 
     // =====================
+    // HAMBURGER MENU
+    // =====================
+    (function() {
+      const hamburger = document.getElementById('nav-hamburger');
+      const mobileMenu = document.getElementById('mobile-menu');
+      if (!hamburger || !mobileMenu) return;
+
+      function openMenu() {
+        hamburger.classList.add('open');
+        hamburger.setAttribute('aria-expanded', 'true');
+        mobileMenu.classList.add('open');
+        mobileMenu.setAttribute('aria-hidden', 'false');
+        lockBody();
+      }
+      function closeMenu() {
+        if (!mobileMenu.classList.contains('open')) return; // already closed
+        hamburger.classList.remove('open');
+        hamburger.setAttribute('aria-expanded', 'false');
+        mobileMenu.classList.remove('open');
+        mobileMenu.setAttribute('aria-hidden', 'true');
+        unlockBody();
+      }
+
+      hamburger.addEventListener('click', () => {
+        mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
+      });
+
+      // Close on any link click
+      mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
+
+      // Close on outside tap
+      document.addEventListener('click', e => {
+        if (mobileMenu.classList.contains('open') && !mobileMenu.contains(e.target) && e.target !== hamburger && !hamburger.contains(e.target)) {
+          closeMenu();
+        }
+      });
+
+      // Close on Escape
+      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
+    })();
+
+    // =====================
     // NAV BEHAVIOR
     // =====================
-    const darkSections = ['bubble-section', 'contact-section'];
+    // light-intro is also dark (#050810) — keep nav text white there too
+    const darkSections = ['light-intro', 'bubble-section', 'contact-section'];
     function updateNav() {
       const nav   = document.getElementById('main-nav');
       const scrolled = window.scrollY > 80;
@@ -1178,6 +1351,31 @@
     window.addEventListener('scroll', updateNav, { passive: true });
     updateNav();
 
+  </script>
+  <!-- D3 with automatic CDN fallback — loaded after other scripts so it doesn't block render -->
+  <script>
+  (function(){
+    function _loadScript(src, ok, fail) {
+      var s = document.createElement('script');
+      s.onload = ok; s.onerror = fail; s.src = src;
+      document.head.appendChild(s);
+    }
+    function _showMapError() {
+      var c = document.getElementById('nm-container');
+      if (c) c.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(196,151,58,0.6);font-family:Jost,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;">Network map requires an internet connection</div>';
+      console.error('FRQNCY: D3 failed to load from all CDNs');
+    }
+    _loadScript(
+      'https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js',
+      _initNetworkMap,
+      function() {
+        console.warn('FRQNCY: cdnjs failed, trying jsDelivr');
+        _loadScript('https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js', _initNetworkMap, _showMapError);
+      }
+    );
+  })();
+
+  function _initNetworkMap() {
     // =====================
     // NETWORK MAP (inlined)
     // =====================
@@ -1194,7 +1392,8 @@
       {id:"d-tech",label:"Technology",type:"cluster",r:24,desc:"Tools shaping the future"},
       {id:"d-arts",label:"Arts & Culture",type:"cluster",r:23,desc:"Expression of the human spirit"},
       {id:"d-nature",label:"Nature & Cosmos",type:"cluster",r:24,desc:"The living systems of existence"},
-      {id:"d-business",label:"Business & Finance",type:"cluster",r:23,desc:"Regenerative economic systems"},
+      {id:"d-business",label:"Business",type:"cluster",r:22,desc:"Regenerative enterprise and social models"},
+      {id:"d-money",label:"Money",type:"cluster",r:23,desc:"Capital, crypto, and the new financial layer"},
       {id:"d-meta",label:"Metaphysics",type:"cluster",r:25,desc:"The architecture of reality"},
       {id:"d-lifestyle",label:"Lifestyle",type:"cluster",r:22,desc:"Conscious ways of living"},
       {id:"d-creation",label:"Creation",type:"cluster",r:23,desc:"Building what has never existed"},
@@ -1249,6 +1448,8 @@
       {id:"t-conscap",label:"Conscious Capital",type:"topic",r:14},
       {id:"t-regenbiz",label:"Regenerative Business",type:"topic",r:14},
       {id:"t-dao",label:"DAOs",type:"topic",r:13},
+      {id:"t-crypto",label:"Cryptocurrency",type:"topic",r:15},
+      {id:"t-wealth-mind",label:"Prosperity Mindset",type:"topic",r:13},
       {id:"t-oneness",label:"Oneness",type:"topic",r:16},
       {id:"t-source",label:"Source Energy",type:"topic",r:15},
       {id:"t-soul",label:"Soul Purpose",type:"topic",r:14},
@@ -1326,14 +1527,14 @@
 
     const NM_RAW=[
       ["frqncy","network-state"],["frqncy","fund"],["frqncy","education"],["frqncy","research"],["frqncy","media"],["frqncy","builder"],
-      ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],["frqncy","d-nature"],["frqncy","d-business"],
+      ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],["frqncy","d-nature"],["frqncy","d-business"],["frqncy","d-money"],
       ["frqncy","d-meta"],["frqncy","d-lifestyle"],["frqncy","d-creation"],["frqncy","d-wellbeing"],["frqncy","d-society"],
-      ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],["network-state","d-creation"],
-      ["fund","d-business"],["fund","d-tech"],["fund","d-creation"],["fund","d-society"],
+      ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],["network-state","d-money"],["network-state","d-creation"],
+      ["fund","d-business"],["fund","d-money"],["fund","d-tech"],["fund","d-creation"],["fund","d-society"],
       ["education","d-sciences"],["education","d-arts"],["education","d-creation"],["education","d-society"],
       ["research","d-sciences"],["research","d-meta"],["research","d-nature"],["research","d-tech"],
       ["media","d-arts"],["media","d-communication"],["media","d-society"],["media","d-tech"],
-      ["builder","d-creation"],["builder","d-tech"],["builder","d-business"],["builder","d-society"],
+      ["builder","d-creation"],["builder","d-tech"],["builder","d-business"],["builder","d-money"],["builder","d-society"],
       ["d-sciences","t-quantum"],["d-sciences","t-neuro"],["d-sciences","t-bio"],["d-sciences","t-psych"],
       ["d-sciences","t-med"],["d-sciences","t-math"],["d-sciences","t-astrophys"],["d-sciences","t-ecology"],
       ["d-sciences","t-genetics"],["d-sciences","t-chemistry"],
@@ -1343,8 +1544,8 @@
       ["d-arts","t-archit"],["d-arts","t-fashion"],["d-arts","t-story"],["d-arts","t-photo"],["d-arts","t-theater"],
       ["d-nature","t-sacredgeo"],["d-nature","t-astrology"],["d-nature","t-climate"],["d-nature","t-biodivers"],
       ["d-nature","t-oceans"],["d-nature","t-forests"],["d-nature","t-cosmos"],["d-nature","t-efields"],["d-nature","t-cycles"],
-      ["d-business","t-defi"],["d-business","t-impact"],["d-business","t-socialent"],["d-business","t-circular"],
-      ["d-business","t-conscap"],["d-business","t-regenbiz"],["d-business","t-dao"],
+      ["d-business","t-socialent"],["d-business","t-circular"],["d-business","t-regenbiz"],
+      ["d-money","t-defi"],["d-money","t-impact"],["d-money","t-conscap"],["d-money","t-dao"],["d-money","t-crypto"],["d-money","t-wealth-mind"],
       ["d-meta","t-oneness"],["d-meta","t-source"],["d-meta","t-soul"],["d-meta","t-akashic"],
       ["d-meta","t-dims"],["d-meta","t-sync"],["d-meta","t-saclaw"],["d-meta","t-merkaba"],["d-meta","t-vibration"],
       ["d-lifestyle","t-nutrition"],["d-lifestyle","t-movement"],["d-lifestyle","t-sleep"],["d-lifestyle","t-plantmed"],
@@ -1409,12 +1610,20 @@
     const nmCanvas=document.getElementById('nm-fx');
     const nmCtx=nmCanvas.getContext('2d');
 
+    /* Update hint text for touch devices */
+    if ('ontouchstart' in window || navigator.maxTouchPoints > 0) {
+      const nmHint = document.getElementById('nm-hint');
+      if (nmHint) nmHint.textContent = 'TAP TO EXPLORE · PINCH TO ZOOM · DRAG TO PAN';
+    }
+
     function nmResize(){
       nmCanvas.width=nmContainer.offsetWidth;
       nmCanvas.height=nmContainer.offsetHeight;
+      // Re-centre force simulation when container dimensions change
+      if(nmSim) nmSim.force('center',d3.forceCenter(NM_W()/2,NM_H()/2).strength(0.04)).alpha(0.25).restart();
     }
     nmResize();
-    window.addEventListener('resize',nmResize);
+    window.addEventListener('resize',nmResize,{passive:true});
 
     const NM_W=()=>nmContainer.offsetWidth;
     const NM_H=()=>nmContainer.offsetHeight;
@@ -1447,7 +1656,7 @@
       nmZoom=e.transform;
     }));
 
-    const nmSim=d3.forceSimulation(NM_NODES)
+    let nmSim=d3.forceSimulation(NM_NODES)
       .force('link',d3.forceLink(NM_LINKS).id(d=>d.id)
         .distance(d=>{
           const s=d.source.type||'topic',t=d.target.type||'topic';
@@ -1515,12 +1724,12 @@
       });
     const NM_URL={
       "network-state":"v2/network-state/index.html","fund":"v2/fund/index.html","education":"v2/education/index.html","research":"v2/research/index.html","media":"v2/media/index.html","builder":"v2/builder/index.html",
-      "d-sciences":"v2/sciences/index.html","d-tech":"v2/technology/index.html","d-arts":"v2/arts/index.html","d-nature":"v2/nature/index.html","d-business":"v2/business/index.html","d-meta":"v2/metaphysics/index.html","d-lifestyle":"v2/lifestyle/index.html","d-creation":"v2/creation/index.html","d-wellbeing":"v2/wellbeing/index.html","d-society":"v2/society/index.html","d-communication":"v2/communication/index.html","d-energy":"v2/energy/index.html","d-food":"v2/food/index.html","d-play":"v2/play/index.html",
+      "d-sciences":"v2/sciences/index.html","d-tech":"v2/technology/index.html","d-arts":"v2/arts/index.html","d-nature":"v2/nature/index.html","d-business":"v2/business/index.html","d-money":"v2/money/index.html","d-meta":"v2/metaphysics/index.html","d-lifestyle":"v2/lifestyle/index.html","d-creation":"v2/creation/index.html","d-wellbeing":"v2/wellbeing/index.html","d-society":"v2/society/index.html","d-communication":"v2/communication/index.html","d-energy":"v2/energy/index.html","d-food":"v2/food/index.html","d-play":"v2/play/index.html",
       "t-quantum":"v2/quantum/index.html","t-neuro":"v2/neuroscience/index.html","t-bio":"v2/biology/index.html","t-psych":"v2/psychology/index.html","t-med":"v2/medicine/index.html","t-math":"v2/mathematics/index.html","t-astrophys":"v2/astrophysics/index.html","t-ecology":"v2/ecology/index.html","t-genetics":"v2/genetics/index.html","t-chemistry":"v2/chemistry/index.html",
       "t-ai":"v2/artificial-intelligence/index.html","t-blockchain":"v2/blockchain/index.html","t-decentral":"v2/decentralized-networks/index.html","t-arvr":"v2/ar-vr/index.html","t-biotech":"v2/biotechnology/index.html","t-robotics":"v2/robotics/index.html","t-web3":"v2/web3/index.html","t-quantcomp":"v2/quantum-computing/index.html","t-cybersec":"v2/cybersecurity/index.html",
       "t-music":"v2/music/index.html","t-visual":"v2/visual-art/index.html","t-film":"v2/film/index.html","t-poetry":"v2/poetry/index.html","t-dance":"v2/dance/index.html","t-archit":"v2/architecture/index.html","t-fashion":"v2/fashion/index.html","t-story":"v2/storytelling/index.html","t-photo":"v2/photography/index.html","t-theater":"v2/theater/index.html",
       "t-sacredgeo":"v2/sacred-geometry/index.html","t-astrology":"v2/astrology/index.html","t-climate":"v2/climate/index.html","t-biodivers":"v2/biodiversity/index.html","t-oceans":"v2/oceans/index.html","t-forests":"v2/forests/index.html","t-cosmos":"v2/cosmos/index.html","t-efields":"v2/energy-fields/index.html","t-cycles":"v2/natural-cycles/index.html",
-      "t-defi":"v2/defi/index.html","t-impact":"v2/impact-investing/index.html","t-socialent":"v2/social-enterprise/index.html","t-circular":"v2/circular-economy/index.html","t-conscap":"v2/conscious-capital/index.html","t-regenbiz":"v2/regenerative-business/index.html","t-dao":"v2/dao/index.html",
+      "t-defi":"v2/defi/index.html","t-impact":"v2/impact-investing/index.html","t-socialent":"v2/social-enterprise/index.html","t-circular":"v2/circular-economy/index.html","t-conscap":"v2/conscious-capital/index.html","t-regenbiz":"v2/regenerative-business/index.html","t-dao":"v2/dao/index.html","t-crypto":"v2/cryptocurrency/index.html","t-wealth-mind":"v2/prosperity-mindset/index.html",
       "t-oneness":"v2/oneness/index.html","t-source":"v2/source/index.html","t-soul":"v2/soul/index.html","t-akashic":"v2/akashic-records/index.html","t-dims":"v2/dimensions/index.html","t-sync":"v2/synchronicity/index.html","t-saclaw":"v2/sacred-law/index.html","t-merkaba":"v2/merkaba/index.html","t-vibration":"v2/vibration/index.html",
       "t-nutrition":"v2/nutrition/index.html","t-movement":"v2/movement/index.html","t-sleep":"v2/sleep/index.html","t-plantmed":"v2/plant-medicine/index.html","t-community":"v2/community/index.html","t-minimalism":"v2/minimalism/index.html","t-detox":"v2/detox/index.html","t-sustliving":"v2/sustainable-living/index.html",
       "t-proddesign":"v2/product-design/index.html","t-systems":"v2/systems-thinking/index.html","t-opensource":"v2/open-source/index.html","t-cocreate":"v2/co-creation/index.html","t-proto":"v2/prototyping/index.html","t-emergence":"v2/emergence/index.html","t-biomimicry":"v2/biomimicry/index.html","t-futuretech":"v2/future-tech/index.html",
@@ -1592,6 +1801,7 @@
 
     function nmRender(ts){
       requestAnimationFrame(nmRender);
+      if(!pageVisible) return; // pause when tab is hidden
       const CW=nmCanvas.width,CH=nmCanvas.height;
       nmCtx.clearRect(0,0,CW,CH);
 
@@ -1627,7 +1837,7 @@
       nmCtx.stroke();
 
       NM_NODES.forEach(n=>{
-        if(!n.x) return;
+        if(n.x == null) return;
         if(n.type==='core'){ const g=nmCtx.createRadialGradient(n.x,n.y,n.r*0.6,n.x,n.y,n.r*2.4); g.addColorStop(0,'rgba(196,151,58,0.2)'); g.addColorStop(1,'rgba(196,151,58,0)'); nmCtx.fillStyle=g; nmCtx.beginPath(); nmCtx.arc(n.x,n.y,n.r*2.4,0,Math.PI*2); nmCtx.fill(); }
         else if(n.type==='main'){ const g=nmCtx.createRadialGradient(n.x,n.y,n.r*0.5,n.x,n.y,n.r*1.9); g.addColorStop(0,'rgba(74,122,232,0.16)'); g.addColorStop(1,'rgba(74,122,232,0)'); nmCtx.fillStyle=g; nmCtx.beginPath(); nmCtx.arc(n.x,n.y,n.r*1.9,0,Math.PI*2); nmCtx.fill(); }
       });
@@ -1676,6 +1886,7 @@
     }
     requestAnimationFrame(nmRender);
     })();
+  } // end _initNetworkMap
   </script>
 </body>
 </html>

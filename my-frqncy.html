@@ -1,0 +1,796 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Build Your FRQNCY</title>
+<meta name="description" content="Build your personalised FRQNCY — a constellation of topics, teachers, and resources tailored to you.">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--navy-light:#112860;
+  --gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;
+  --accent:#4A7AE8;--accent-glow:rgba(74,122,232,0.12);
+  --card-border:rgba(255,255,255,0.08);
+}
+html,body{
+  background:var(--navy);color:var(--text);
+  font-family:'Jost',sans-serif;font-weight:300;
+  min-height:100vh;line-height:1.6;
+}
+a{color:inherit;text-decoration:none}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--card-border);
+  padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;opacity:0.85}
+.nav-logo:hover{opacity:1}
+.nav-back{font-size:0.66rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s}
+.nav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+
+/* ── FORM SHELL ── */
+#form-view{
+  min-height:100vh;padding-top:56px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding-bottom:4rem;
+}
+.form-inner{width:100%;max-width:700px;padding:0 clamp(1.25rem,5vw,2rem)}
+
+/* Step indicator */
+.step-bar{display:flex;gap:8px;margin-bottom:2.5rem;align-items:center}
+.step-dot{
+  width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15);
+  transition:all .3s;
+}
+.step-dot.active{background:var(--gold);width:20px;border-radius:3px}
+.step-dot.done{background:rgba(196,151,58,0.4)}
+
+/* Step blocks */
+.form-step{display:none}
+.form-step.visible{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.form-eyebrow{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;opacity:0.85}
+.form-q{font-family:'Cormorant',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:300;color:#fff;line-height:1.15;margin-bottom:0.5rem}
+.form-hint{font-size:0.78rem;color:var(--text-dim);margin-bottom:1.75rem}
+
+/* Domain tiles grid */
+.domain-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  margin-bottom:2rem;
+}
+@media(max-width:520px){.domain-grid{grid-template-columns:repeat(2,1fr)}}
+
+.domain-tile{
+  border:1px solid var(--card-border);border-radius:4px;
+  padding:1rem 1rem 0.85rem;cursor:pointer;
+  background:rgba(255,255,255,0.03);
+  transition:all .2s;user-select:none;
+}
+.domain-tile:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06)}
+.domain-tile.selected{
+  border-color:var(--gold);background:rgba(196,151,58,0.08);
+}
+.domain-tile.selected .dt-name{color:var(--gold)}
+.dt-glyph{font-size:1.25rem;margin-bottom:0.4rem;opacity:0.75}
+.dt-name{font-size:0.78rem;font-weight:400;color:var(--text);line-height:1.3;margin-bottom:0.2rem;transition:color .2s}
+.dt-sub{font-size:0.62rem;color:var(--text-dim);line-height:1.4}
+
+/* Intent & depth tiles */
+.intent-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:1.5rem}
+.depth-grid{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:2rem}
+
+.choice-tile{
+  border:1px solid var(--card-border);border-radius:4px;
+  padding:0.85rem 1rem;cursor:pointer;
+  background:rgba(255,255,255,0.03);transition:all .2s;
+  text-align:left;
+}
+.choice-tile:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06)}
+.choice-tile.selected{border-color:var(--accent);background:rgba(74,122,232,0.1)}
+.choice-tile.selected .ct-name{color:#fff}
+.ct-name{font-size:0.82rem;font-weight:400;color:var(--text);margin-bottom:0.15rem;transition:color .2s}
+.ct-desc{font-size:0.64rem;color:var(--text-dim);line-height:1.4}
+
+/* Name input */
+.name-wrap{margin-bottom:2rem}
+.name-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.5rem;display:block}
+#name-input{
+  width:100%;background:rgba(255,255,255,0.05);
+  border:1px solid var(--card-border);border-radius:3px;
+  padding:12px 16px;color:#fff;font-family:'Jost',sans-serif;
+  font-size:1rem;font-weight:300;letter-spacing:0.04em;outline:none;
+  transition:border-color .2s;
+}
+#name-input::placeholder{color:rgba(255,255,255,0.2)}
+#name-input:focus{border-color:rgba(74,122,232,0.5)}
+
+/* Buttons */
+.btn-row{display:flex;gap:12px;align-items:center}
+.btn-primary{
+  display:inline-block;background:var(--gold);color:var(--navy);
+  padding:13px 32px;font-family:'Jost',sans-serif;font-weight:500;
+  font-size:11px;letter-spacing:0.2em;text-transform:uppercase;
+  border:1px solid var(--gold);cursor:pointer;transition:all .25s;border-radius:2px;
+}
+.btn-primary:hover{background:#B8862E;border-color:#B8862E}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed}
+.btn-ghost{
+  display:inline-block;background:transparent;color:var(--text-dim);
+  padding:13px 20px;font-family:'Jost',sans-serif;font-weight:400;
+  font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,0.1);cursor:pointer;transition:all .25s;border-radius:2px;
+}
+.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,0.25)}
+
+/* ── RESULT VIEW ── */
+#result-view{display:none;min-height:100vh;padding-top:56px}
+
+.result-hero{
+  text-align:center;
+  padding:clamp(2rem,5vw,3.5rem) clamp(1.25rem,5vw,2.5rem) 1rem;
+  position:relative;
+}
+.result-hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(196,151,58,0.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.result-eyebrow{font-size:0.56rem;letter-spacing:0.36em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;opacity:0.8}
+.result-title{font-family:'Cormorant',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:300;color:#fff;line-height:1.1;margin-bottom:0.5rem}
+.result-sub{font-size:0.8rem;color:var(--text-dim);max-width:420px;margin:0 auto}
+
+/* Constellation SVG */
+#constellation-wrap{
+  width:100%;max-width:860px;margin:0 auto;
+  padding:0 clamp(1rem,4vw,2rem);
+  position:relative;
+}
+#constellation-svg{width:100%;display:block}
+
+/* Curated sections */
+.curated{max-width:860px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2rem) 5rem}
+
+.section-label{
+  font-size:0.54rem;letter-spacing:0.36em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.25rem;opacity:0.75;
+}
+.teacher-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--card-border);border:1px solid var(--card-border);border-radius:4px;overflow:hidden;margin-bottom:2.5rem}
+.teacher-card{
+  background:var(--navy);padding:1.1rem 1.25rem;
+  display:block;text-decoration:none;transition:background .18s;
+}
+.teacher-card:hover{background:rgba(255,255,255,0.04)}
+.tc-type{font-size:0.46rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;font-weight:500}
+.tc-name{font-family:'Cormorant',serif;font-size:1.05rem;color:#fff;line-height:1.25;margin-bottom:0.3rem}
+.tc-topic{font-size:0.6rem;color:var(--text-dim);margin-bottom:0.35rem}
+.tc-desc{font-size:0.7rem;color:var(--text-dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+.start-card{
+  border:1px solid var(--card-border);border-radius:4px;
+  padding:1.25rem 1.4rem;display:flex;align-items:flex-start;
+  gap:1rem;margin-bottom:2.5rem;
+  background:rgba(255,255,255,0.02);
+  transition:background .18s;text-decoration:none;color:inherit;
+}
+.start-card:hover{background:rgba(255,255,255,0.04)}
+.start-badge{
+  flex-shrink:0;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--navy);background:var(--gold);padding:3px 8px;border-radius:2px;font-weight:500;
+  margin-top:3px;
+}
+.start-info{}
+.start-title{font-family:'Cormorant',serif;font-size:1.1rem;color:#fff;margin-bottom:0.25rem}
+.start-desc{font-size:0.72rem;color:var(--text-dim);line-height:1.5}
+
+.action-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:3rem}
+.share-url{
+  font-size:0.62rem;color:var(--text-dim);letter-spacing:0.08em;
+  border:1px solid var(--card-border);padding:8px 14px;border-radius:3px;
+  background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s;
+  font-family:'Jost',sans-serif;
+}
+.share-url:hover{border-color:rgba(255,255,255,0.2);color:var(--text)}
+.share-copied{color:var(--gold)!important;border-color:rgba(196,151,58,0.4)!important}
+
+/* ── Loading pulse ── */
+#loading{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:var(--navy);align-items:center;justify-content:center;
+  flex-direction:column;gap:1rem;
+}
+.loading-glyph{
+  font-family:'Cormorant',serif;font-size:3rem;letter-spacing:0.3em;
+  color:rgba(196,151,58,0.6);animation:pulse 1.8s ease-in-out infinite;
+}
+.loading-text{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-dim)}
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="index.html" class="nav-logo">FRQNCY</a>
+  <a href="search.html" class="nav-back">← Search</a>
+</nav>
+
+<!-- Loading overlay -->
+<div id="loading">
+  <div class="loading-glyph">✦</div>
+  <div class="loading-text">Building your constellation</div>
+</div>
+
+<!-- ── FORM VIEW ── -->
+<div id="form-view">
+  <div class="form-inner">
+
+    <div class="step-bar">
+      <div class="step-dot active" id="dot-1"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div class="step-dot" id="dot-3"></div>
+    </div>
+
+    <!-- Step 1: Domains -->
+    <div class="form-step visible" id="step-1">
+      <div class="form-eyebrow">Step 1 of 3</div>
+      <h1 class="form-q">What calls to you?</h1>
+      <p class="form-hint">Pick up to 3 areas. Your constellation will be built around these.</p>
+      <div class="domain-grid" id="domain-grid"></div>
+      <div class="btn-row">
+        <button class="btn-primary" id="btn-s1" onclick="goStep(2)" disabled>Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Intent + Depth -->
+    <div class="form-step" id="step-2">
+      <div class="form-eyebrow">Step 2 of 3</div>
+      <h1 class="form-q">What brings you here?</h1>
+      <p class="form-hint">This shapes which teachers and resources surface for you.</p>
+
+      <div style="margin-bottom:1rem">
+        <div class="form-hint" style="margin-bottom:0.6rem">My intention is to —</div>
+        <div class="intent-grid" id="intent-grid">
+          <div class="choice-tile" data-val="understand" onclick="selectIntent(this)">
+            <div class="ct-name">Understand deeply</div>
+            <div class="ct-desc">Books, papers, core texts</div>
+          </div>
+          <div class="choice-tile" data-val="practice" onclick="selectIntent(this)">
+            <div class="ct-name">Build a practice</div>
+            <div class="ct-desc">Techniques, guides, courses</div>
+          </div>
+          <div class="choice-tile" data-val="discover" onclick="selectIntent(this)">
+            <div class="ct-name">Discover teachers</div>
+            <div class="ct-desc">People, voices, thinkers</div>
+          </div>
+          <div class="choice-tile" data-val="create" onclick="selectIntent(this)">
+            <div class="ct-name">Create and build</div>
+            <div class="ct-desc">Tools, organisations, methods</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem">
+        <div class="form-hint" style="margin-bottom:0.6rem">I am —</div>
+        <div class="depth-grid" id="depth-grid">
+          <div class="choice-tile" data-val="beginning" onclick="selectDepth(this)" style="flex:1;min-width:140px">
+            <div class="ct-name">Just beginning</div>
+            <div class="ct-desc">New to this territory</div>
+          </div>
+          <div class="choice-tile" data-val="exploring" onclick="selectDepth(this)" style="flex:1;min-width:140px">
+            <div class="ct-name">Actively exploring</div>
+            <div class="ct-desc">Some threads already pulled</div>
+          </div>
+          <div class="choice-tile" data-val="deep" onclick="selectDepth(this)" style="flex:1;min-width:140px">
+            <div class="ct-name">Going deeper</div>
+            <div class="ct-desc">Looking for the next layer</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="btn-row">
+        <button class="btn-primary" id="btn-s2" onclick="goStep(3)" disabled>Continue →</button>
+        <button class="btn-ghost" onclick="goStep(1)">← Back</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Name + Generate -->
+    <div class="form-step" id="step-3">
+      <div class="form-eyebrow">Step 3 of 3</div>
+      <h1 class="form-q">What's your name?</h1>
+      <p class="form-hint">Optional — it will appear at the centre of your constellation.</p>
+      <div class="name-wrap">
+        <label class="name-label" for="name-input">Your name</label>
+        <input id="name-input" type="text" placeholder="e.g. Orli" autocomplete="off" maxlength="40">
+      </div>
+      <div class="btn-row">
+        <button class="btn-primary" onclick="generate()">Build my FRQNCY →</button>
+        <button class="btn-ghost" onclick="goStep(2)">← Back</button>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<!-- ── RESULT VIEW ── -->
+<div id="result-view">
+
+  <div class="result-hero">
+    <div class="result-eyebrow" id="result-eyebrow">Your FRQNCY</div>
+    <h1 class="result-title" id="result-title">Your Constellation</h1>
+    <p class="result-sub" id="result-sub"></p>
+  </div>
+
+  <div id="constellation-wrap">
+    <svg id="constellation-svg"></svg>
+  </div>
+
+  <div class="curated">
+
+    <div class="section-label" id="teachers-label">Your teachers</div>
+    <div class="teacher-grid" id="teacher-grid"></div>
+
+    <div class="section-label">Start here</div>
+    <a class="start-card" id="start-card" href="#" target="_blank" rel="noopener noreferrer">
+      <div class="start-badge" id="start-badge">Pick</div>
+      <div class="start-info">
+        <div class="start-title" id="start-title"></div>
+        <div class="start-desc" id="start-desc"></div>
+      </div>
+    </a>
+
+    <div class="action-row">
+      <button class="btn-primary" onclick="restartForm()">Build another →</button>
+      <button class="share-url" id="share-btn" onclick="shareConstellation()">Copy shareable link</button>
+    </div>
+
+  </div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+// ── State ──────────────────────────────────────────────────────────────
+let TOPICS = [], RESOURCES = [];
+let selectedDomains = [];
+let selectedIntent = null;
+let selectedDepth = null;
+
+// ── Domain definitions ─────────────────────────────────────────────────
+const DOMAINS = [
+  { key:'Metaphysics',      glyph:'✦', name:'Metaphysics',        sub:'Consciousness, Sacred Law, Channeling' },
+  { key:'Sciences',         glyph:'◎', name:'Sciences',            sub:'Physics, Biology, Mathematics' },
+  { key:'Well-being',       glyph:'◈', name:'Well-being',          sub:'Meditation, Yoga, Breathwork' },
+  { key:'Technology',       glyph:'⬡', name:'Technology',          sub:'AI, Blockchain, Web3' },
+  { key:'Arts & Culture',   glyph:'◇', name:'Arts & Culture',      sub:'Music, Film, Poetry' },
+  { key:'Society & Networks',glyph:'○', name:'Society & Networks', sub:'Governance, Community, Future Cities' },
+  { key:'Nature & Cosmos',  glyph:'◑', name:'Nature & Cosmos',     sub:'Climate, Oceans, Cosmos' },
+  { key:'Money',            glyph:'◆', name:'Money & Capital',     sub:'DeFi, Impact Investing, Circular Economy' },
+  { key:'Creation',         glyph:'△', name:'Creation',            sub:'Design, Systems, Open Source' },
+];
+
+// ── Load data ─────────────────────────────────────────────────────────
+async function loadData() {
+  const [t, r] = await Promise.allSettled([
+    fetch('search.json').then(x => x.json()),
+    fetch('resources.json').then(x => x.json()),
+  ]);
+  if (t.status === 'fulfilled') TOPICS = t.value;
+  if (r.status === 'fulfilled') RESOURCES = r.value;
+}
+
+// ── Build domain tiles ─────────────────────────────────────────────────
+function buildDomainGrid() {
+  const grid = document.getElementById('domain-grid');
+  grid.innerHTML = '';
+  for (const d of DOMAINS) {
+    const div = document.createElement('div');
+    div.className = 'domain-tile';
+    div.dataset.key = d.key;
+    div.innerHTML = `<div class="dt-glyph">${d.glyph}</div>
+      <div class="dt-name">${d.name}</div>
+      <div class="dt-sub">${d.sub}</div>`;
+    div.addEventListener('click', () => toggleDomain(d.key, div));
+    grid.appendChild(div);
+  }
+}
+
+function toggleDomain(key, el) {
+  if (selectedDomains.includes(key)) {
+    selectedDomains = selectedDomains.filter(d => d !== key);
+    el.classList.remove('selected');
+  } else {
+    if (selectedDomains.length >= 3) return;
+    selectedDomains.push(key);
+    el.classList.add('selected');
+  }
+  document.getElementById('btn-s1').disabled = selectedDomains.length === 0;
+}
+
+// ── Intent / depth ─────────────────────────────────────────────────────
+function selectIntent(el) {
+  document.querySelectorAll('#intent-grid .choice-tile').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedIntent = el.dataset.val;
+  updateStep2Btn();
+}
+function selectDepth(el) {
+  document.querySelectorAll('#depth-grid .choice-tile').forEach(t => t.classList.remove('selected'));
+  el.classList.add('selected');
+  selectedDepth = el.dataset.val;
+  updateStep2Btn();
+}
+function updateStep2Btn() {
+  document.getElementById('btn-s2').disabled = !selectedIntent || !selectedDepth;
+}
+
+// ── Step nav ──────────────────────────────────────────────────────────
+function goStep(n) {
+  document.querySelectorAll('.form-step').forEach(s => s.classList.remove('visible'));
+  document.getElementById(`step-${n}`).classList.add('visible');
+  document.querySelectorAll('.step-dot').forEach((d, i) => {
+    d.classList.toggle('active', i + 1 === n);
+    d.classList.toggle('done', i + 1 < n);
+  });
+}
+
+// ── Generate ──────────────────────────────────────────────────────────
+async function generate() {
+  const name = document.getElementById('name-input').value.trim();
+
+  // Show loading
+  const loading = document.getElementById('loading');
+  loading.style.display = 'flex';
+
+  // Ensure data loaded
+  if (!TOPICS.length) await loadData();
+
+  // Simulate brief delay for effect
+  await new Promise(r => setTimeout(r, 900));
+
+  // Build constellation data
+  const data = buildConstellationData(name);
+
+  // Show result view BEFORE rendering so the SVG container has real dimensions
+  loading.style.display = 'none';
+  document.getElementById('form-view').style.display = 'none';
+  document.getElementById('result-view').style.display = 'block';
+  window.scrollTo(0, 0);
+
+  // Render result (drawConstellation needs the container to be visible)
+  renderResult(data, name);
+
+  // Update URL
+  const params = new URLSearchParams({
+    domains: selectedDomains.join(','),
+    intent: selectedIntent,
+    depth: selectedDepth,
+    ...(name ? { name } : {}),
+  });
+  history.replaceState(null, '', '?' + params.toString());
+}
+
+// ── Build data ─────────────────────────────────────────────────────────
+function buildConstellationData(name) {
+  // Filter topics to selected domains, sort by resource count desc
+  let pool = TOPICS.filter(t => selectedDomains.includes(t.domain));
+  pool.sort((a, b) => (b.resourceCount || 0) - (a.resourceCount || 0));
+  const topicNodes = pool.slice(0, Math.min(6, pool.length));
+
+  // For each topic, pick a resource (prefer person, fallback book/org)
+  const resourceNodes = [];
+  const usedNames = new Set();
+  for (const t of topicNodes) {
+    const candidates = RESOURCES.filter(r =>
+      r.topicSlug === t.slug && r.name && !usedNames.has(r.name)
+    );
+    // Prefer person, then book, then org
+    const pick =
+      candidates.find(r => r.type === 'person') ||
+      candidates.find(r => r.type === 'book') ||
+      candidates.find(r => r.type === 'org') ||
+      candidates[0];
+    if (pick) {
+      resourceNodes.push({ ...pick, parentSlug: t.slug });
+      usedNames.add(pick.name);
+    }
+  }
+
+  // Curated teachers — up to 5 people across selected domains
+  // Exclude names that look like URLs (e.g. "BobLazar.com")
+  const looksLikeUrl = n => /\.(com|org|net|io|co|info|gov|edu|tv)$/i.test(n) || /^https?:\/\//i.test(n);
+  const teacherPool = RESOURCES.filter(r =>
+    r.type === 'person' && selectedDomains.includes(r.domain) && r.name && !looksLikeUrl(r.name)
+  );
+  const seen = new Set();
+  const teachers = [];
+  for (const r of teacherPool) {
+    if (seen.has(r.name)) continue;
+    seen.add(r.name);
+    teachers.push(r);
+    if (teachers.length >= 5) break;
+  }
+
+  // Start here — pick based on intent
+  let startPick = null;
+  const startTypes = selectedIntent === 'understand' ? ['book'] :
+                     selectedIntent === 'practice'  ? ['course', 'media'] :
+                     selectedIntent === 'discover'  ? ['person'] :
+                     ['org', 'media'];
+  for (const type of startTypes) {
+    const p = RESOURCES.find(r =>
+      selectedDomains.includes(r.domain) && r.type === type && r.name
+    );
+    if (p) { startPick = p; break; }
+  }
+  if (!startPick) startPick = RESOURCES.find(r => selectedDomains.includes(r.domain) && r.name);
+
+  return { topicNodes, resourceNodes, teachers, startPick };
+}
+
+// ── Render result ──────────────────────────────────────────────────────
+function renderResult({ topicNodes, resourceNodes, teachers, startPick }, name) {
+  const displayName = name || 'Your';
+  const domainLabels = selectedDomains.join(', ');
+
+  document.getElementById('result-eyebrow').textContent =
+    name ? `${name}'s FRQNCY` : 'Your FRQNCY';
+  document.getElementById('result-title').textContent =
+    name ? `${name}'s Constellation` : 'Your Constellation';
+  document.getElementById('result-sub').textContent =
+    `${topicNodes.length} topics · ${teachers.length} teachers · built around ${domainLabels}`;
+
+  drawConstellation(topicNodes, resourceNodes, name);
+  renderTeachers(teachers);
+  renderStartHere(startPick);
+}
+
+// ── D3 Constellation ──────────────────────────────────────────────────
+function drawConstellation(topics, resources, name) {
+  const wrap = document.getElementById('constellation-wrap');
+  const W = wrap.clientWidth;
+  const H = Math.min(W * 0.72, 500);
+  const cx = W / 2, cy = H / 2;
+
+  const svg = d3.select('#constellation-svg')
+    .attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('height', H);
+
+  svg.selectAll('*').remove();
+
+  // Defs — glow filter
+  const defs = svg.append('defs');
+  const glow = defs.append('filter').attr('id', 'glow');
+  glow.append('feGaussianBlur').attr('stdDeviation', '4').attr('result', 'blur');
+  const merge = glow.append('feMerge');
+  merge.append('feMergeNode').attr('in', 'blur');
+  merge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+  // Build nodes array
+  const R_TOPIC = Math.min(W * 0.28, 170);
+  const R_RES   = Math.min(W * 0.42, 250);
+
+  const nodes = [{ id: 'center', label: name || 'YOU', type: 'center', x: cx, y: cy, fx: cx, fy: cy }];
+  const links = [];
+
+  const n = topics.length;
+  topics.forEach((t, i) => {
+    const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
+    nodes.push({
+      id: t.slug, label: t.label, type: 'topic', url: t.url,
+      x: cx + R_TOPIC * Math.cos(angle),
+      y: cy + R_TOPIC * Math.sin(angle),
+    });
+    links.push({ source: 'center', target: t.slug });
+  });
+
+  resources.forEach((r, i) => {
+    const parent = nodes.find(n => n.id === r.parentSlug);
+    if (!parent) return;
+    const pAngle = Math.atan2(parent.y - cy, parent.x - cx);
+    const spread = 0.4;
+    const angle = pAngle + (i % 2 === 0 ? spread : -spread) * 0.5;
+    nodes.push({
+      id: `r-${i}`, label: r.name.split(' — ')[0], type: r.type || 'resource',
+      url: r.url, x: cx + R_RES * Math.cos(angle), y: cy + R_RES * Math.sin(angle),
+    });
+    links.push({ source: r.parentSlug, target: `r-${i}` });
+  });
+
+  // Simulation
+  const sim = d3.forceSimulation(nodes)
+    .force('link', d3.forceLink(links).id(d => d.id).distance(d =>
+      d.source.id === 'center' ? R_TOPIC : 65).strength(0.6))
+    .force('charge', d3.forceManyBody().strength(-60))
+    .force('collide', d3.forceCollide().radius(d =>
+      d.type === 'center' ? 50 : d.type === 'topic' ? 34 : 22))
+    .alpha(0.8).alphaDecay(0.025);
+
+  // Links
+  const linkSel = svg.append('g').selectAll('line').data(links).join('line')
+    .attr('stroke', d => d.source.id === 'center' ? 'rgba(196,151,58,0.18)' : 'rgba(74,122,232,0.15)')
+    .attr('stroke-width', d => d.source.id === 'center' ? 1 : 0.8);
+
+  // Nodes group
+  const nodeSel = svg.append('g').selectAll('g').data(nodes).join('g')
+    .style('cursor', d => d.url ? 'pointer' : 'default')
+    .on('click', (e, d) => { if (d.url) window.open(d.url, '_blank'); });
+
+  // Circles
+  nodeSel.append('circle')
+    .attr('r', d => d.type === 'center' ? 38 : d.type === 'topic' ? 22 : 13)
+    .attr('fill', d =>
+      d.type === 'center' ? 'rgba(196,151,58,0.15)' :
+      d.type === 'topic'  ? 'rgba(74,122,232,0.12)'  :
+      'rgba(255,255,255,0.04)')
+    .attr('stroke', d =>
+      d.type === 'center' ? 'rgba(196,151,58,0.7)' :
+      d.type === 'topic'  ? 'rgba(74,122,232,0.55)' :
+      'rgba(255,255,255,0.18)')
+    .attr('stroke-width', d => d.type === 'center' ? 1.5 : 1)
+    .attr('filter', d => d.type === 'center' ? 'url(#glow)' : null);
+
+  // Labels — center
+  nodeSel.filter(d => d.type === 'center').append('text')
+    .attr('text-anchor', 'middle').attr('dy', '0.35em')
+    .attr('fill', 'rgba(196,151,58,0.9)')
+    .attr('font-family', 'Jost, sans-serif')
+    .attr('font-size', d => Math.min(11, 80 / Math.max(1, (d.label || '').length)) + 'px')
+    .attr('font-weight', '400').attr('letter-spacing', '0.12em')
+    .text(d => (d.label || '').toUpperCase().substring(0, 10));
+
+  // Labels — topics
+  nodeSel.filter(d => d.type === 'topic').each(function(d) {
+    const g = d3.select(this);
+    const words = (d.label || '').split(' ');
+    if (words.length === 1) {
+      g.append('text').attr('text-anchor', 'middle').attr('dy', '0.35em')
+        .attr('fill', '#C8D8F0').attr('font-family', 'Jost, sans-serif')
+        .attr('font-size', '8.5px').attr('font-weight', '300')
+        .text(d.label);
+    } else {
+      g.append('text').attr('text-anchor', 'middle').attr('dy', '-0.2em')
+        .attr('fill', '#C8D8F0').attr('font-family', 'Jost, sans-serif')
+        .attr('font-size', '8px').attr('font-weight', '300')
+        .text(words[0]);
+      g.append('text').attr('text-anchor', 'middle').attr('dy', '1em')
+        .attr('fill', '#C8D8F0').attr('font-family', 'Jost, sans-serif')
+        .attr('font-size', '8px').attr('font-weight', '300')
+        .text(words.slice(1).join(' '));
+    }
+  });
+
+  // Labels — resources (outside circle, small)
+  nodeSel.filter(d => d.type !== 'center' && d.type !== 'topic').append('text')
+    .attr('text-anchor', 'middle').attr('dy', '2.2em')
+    .attr('fill', 'rgba(200,216,240,0.55)')
+    .attr('font-family', 'Jost, sans-serif')
+    .attr('font-size', '7px').attr('font-weight', '300')
+    .text(d => (d.label || '').substring(0, 18));
+
+  // Tick
+  sim.on('tick', () => {
+    linkSel
+      .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
+      .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
+    nodeSel.attr('transform', d => `translate(${d.x},${d.y})`);
+  });
+
+  // Stop after settling
+  setTimeout(() => sim.stop(), 4000);
+}
+
+// ── Render teachers ────────────────────────────────────────────────────
+function renderTeachers(teachers) {
+  const grid = document.getElementById('teacher-grid');
+  document.getElementById('teachers-label').textContent =
+    `Your teachers (${teachers.length})`;
+  grid.innerHTML = '';
+  if (!teachers.length) {
+    grid.innerHTML = '<div style="padding:1.5rem;color:var(--text-dim);font-size:0.8rem">No people found for these domains. Try different selections.</div>';
+    return;
+  }
+  for (const t of teachers) {
+    const a = document.createElement('a');
+    a.className = 'teacher-card';
+    a.href = t.url || t.topicUrl || '#';
+    if (t.url) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+    a.innerHTML = `<div class="tc-type">${t.type || 'person'}</div>
+      <div class="tc-name">${esc(t.name)}</div>
+      <div class="tc-topic">in ${esc(t.topicLabel || '')}</div>
+      <div class="tc-desc">${esc(t.desc || '')}</div>`;
+    grid.appendChild(a);
+  }
+}
+
+// ── Render start here ──────────────────────────────────────────────────
+function renderStartHere(pick) {
+  if (!pick) return;
+  const card = document.getElementById('start-card');
+  card.href = pick.url || pick.topicUrl || '#';
+  if (pick.url) { card.target = '_blank'; card.rel = 'noopener noreferrer'; }
+  document.getElementById('start-badge').textContent = (pick.type || 'pick').toUpperCase();
+  document.getElementById('start-title').textContent = pick.name;
+  document.getElementById('start-desc').textContent = pick.desc || '';
+}
+
+// ── Share ──────────────────────────────────────────────────────────────
+function shareConstellation() {
+  const url = location.href;
+  navigator.clipboard.writeText(url).then(() => {
+    const btn = document.getElementById('share-btn');
+    btn.textContent = '✓ Link copied';
+    btn.classList.add('share-copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy shareable link';
+      btn.classList.remove('share-copied');
+    }, 2500);
+  });
+}
+
+function restartForm() {
+  selectedDomains = [];
+  selectedIntent = null;
+  selectedDepth = null;
+  document.getElementById('name-input').value = '';
+  document.querySelectorAll('.domain-tile').forEach(t => t.classList.remove('selected'));
+  document.querySelectorAll('.choice-tile').forEach(t => t.classList.remove('selected'));
+  document.getElementById('btn-s1').disabled = true;
+  document.getElementById('btn-s2').disabled = true;
+  document.getElementById('result-view').style.display = 'none';
+  document.getElementById('form-view').style.display = 'flex';
+  goStep(1);
+  history.replaceState(null, '', location.pathname);
+  window.scrollTo(0, 0);
+}
+
+// ── URL param restore ──────────────────────────────────────────────────
+async function restoreFromURL() {
+  const p = new URLSearchParams(location.search);
+  const domains = p.get('domains');
+  const intent = p.get('intent');
+  const depth = p.get('depth');
+  const name = p.get('name') || '';
+
+  if (!domains || !intent || !depth) return false;
+
+  selectedDomains = domains.split(',').filter(d => DOMAINS.some(x => x.key === d));
+  selectedIntent = intent;
+  selectedDepth = depth;
+  if (!selectedDomains.length) return false;
+
+  document.getElementById('name-input').value = name;
+
+  if (!TOPICS.length) await loadData();
+  const data = buildConstellationData(name);
+  renderResult(data, name);
+  document.getElementById('form-view').style.display = 'none';
+  document.getElementById('result-view').style.display = 'block';
+  return true;
+}
+
+// ── Escape HTML ────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────
+(async function init() {
+  buildDomainGrid();
+  await loadData();
+  const restored = await restoreFromURL();
+  if (!restored) {
+    // Eagerly pre-selected nothing — form is ready
+  }
+})();
+</script>
+</body>
+</html>

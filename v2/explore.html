@@ -52,9 +52,11 @@
     #back-btn:hover { border-color:var(--gold); color:var(--gold); background:rgba(196,151,58,0.05); }
     #node-count { position:fixed; bottom:28px; right:28px; z-index:5; font-size:10px; letter-spacing:0.12em; color:rgba(255,255,255,0.18); }
     #v2-badge { position:fixed; top:24px; right:24px; z-index:10; font-size:9px; letter-spacing:0.22em; color:#4A7AE8; border:1px solid rgba(74,122,232,0.4); padding:4px 12px; border-radius:2px; font-family:var(--font-body); }
+    .hub-link { font-family:var(--font-body); font-size:9px; letter-spacing:0.2em; color:#4A7AE8; border:1px solid rgba(74,122,232,0.35); padding:5px 14px; border-radius:2px; text-decoration:none; text-align:right; transition:border-color .2s, color .2s; display:block; }
+    .hub-link:hover { border-color:rgba(74,122,232,0.8); color:#7aa8ff; }
     #map-svg circle.clickable { cursor:pointer; }
     #map-svg circle.clickable:hover { filter: brightness(1.3); }
-    #legend { position:fixed; top:90px; right:24px; z-index:5; display:flex; flex-direction:column; gap:9px; }
+    #legend { position:fixed; top:165px; right:24px; z-index:5; display:flex; flex-direction:column; gap:9px; }
     .leg-item { display:flex; align-items:center; gap:8px; font-size:10px; letter-spacing:0.12em; color:rgba(255,255,255,0.36); }
     .leg-dot  { border-radius:50%; flex-shrink:0; }
     #search-container {
@@ -345,6 +347,10 @@
 </div>
 <div id="search-results"></div>
 <div id="v2-badge">EXPLORE</div>
+<div id="hub-links" style="position:fixed;top:60px;right:24px;z-index:10;display:flex;flex-direction:column;gap:6px">
+  <a href="watch/index.html" class="hub-link">WATCH</a>
+  <a href="courses/index.html" class="hub-link">COURSES</a>
+</div>
 
 <div id="legend">
   <div class="leg-item"><div class="leg-dot" style="width:14px;height:14px;background:linear-gradient(135deg,#F4DC88,#B0791E);"></div>CORE</div>
@@ -371,7 +377,8 @@ const NODES = [
   {id:"d-tech",       label:"Technology",               type:"cluster", r:24, desc:"Tools shaping the future"},
   {id:"d-arts",       label:"Arts & Culture",           type:"cluster", r:23, desc:"Expression of the human spirit"},
   {id:"d-nature",     label:"Nature & Cosmos",          type:"cluster", r:24, desc:"The living systems of existence"},
-  {id:"d-business",   label:"Business & Finance",       type:"cluster", r:23, desc:"Regenerative economic systems"},
+  {id:"d-business",   label:"Business",                 type:"cluster", r:22, desc:"Regenerative enterprise and social models"},
+  {id:"d-money",      label:"Money",                    type:"cluster", r:23, desc:"Capital, crypto, and the new financial layer"},
   {id:"d-meta",       label:"Metaphysics",              type:"cluster", r:25, desc:"The architecture of reality"},
   {id:"d-lifestyle",  label:"Lifestyle",                type:"cluster", r:22, desc:"Conscious ways of living"},
   {id:"d-creation",   label:"Creation",                 type:"cluster", r:23, desc:"Building what has never existed"},
@@ -513,6 +520,7 @@ const NODES = [
   {id:"t-manifestation",label:"Manifestation",           type:"topic", r:15},
   {id:"t-personal-dev",label:"Personal Development",     type:"topic", r:14},
   {id:"t-wealth-mind",label:"Prosperity Mindset",        type:"topic", r:13},
+  {id:"t-crypto",     label:"Cryptocurrency",           type:"topic", r:15},
   {id:"t-nde",        label:"Near-Death Experiences",    type:"topic", r:13},
   {id:"t-siddha-yoga",label:"Siddha Yoga",               type:"topic", r:12},
   {id:"t-eft",            label:"EFT & Tapping",          type:"topic", r:12},
@@ -524,14 +532,14 @@ const NODES = [
 /* ── Links ── */
 const RAW=[
   ["frqncy","network-state"],["frqncy","fund"],["frqncy","education"],["frqncy","research"],["frqncy","media"],["frqncy","builder"],
-  ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],["frqncy","d-nature"],["frqncy","d-business"],
+  ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],["frqncy","d-nature"],["frqncy","d-business"],["frqncy","d-money"],
   ["frqncy","d-meta"],["frqncy","d-lifestyle"],["frqncy","d-creation"],["frqncy","d-wellbeing"],["frqncy","d-society"],
-  ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],["network-state","d-creation"],
-  ["fund","d-business"],["fund","d-tech"],["fund","d-creation"],["fund","d-society"],
+  ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],["network-state","d-money"],["network-state","d-creation"],
+  ["fund","d-business"],["fund","d-money"],["fund","d-tech"],["fund","d-creation"],["fund","d-society"],
   ["education","d-sciences"],["education","d-arts"],["education","d-creation"],["education","d-society"],
   ["research","d-sciences"],["research","d-meta"],["research","d-nature"],["research","d-tech"],
   ["media","d-arts"],["media","d-communication"],["media","d-society"],["media","d-tech"],
-  ["builder","d-creation"],["builder","d-tech"],["builder","d-business"],["builder","d-society"],
+  ["builder","d-creation"],["builder","d-tech"],["builder","d-business"],["builder","d-money"],["builder","d-society"],
   ["d-sciences","t-quantum"],["d-sciences","t-neuro"],["d-sciences","t-bio"],["d-sciences","t-psych"],
   ["d-sciences","t-med"],["d-sciences","t-math"],["d-sciences","t-astrophys"],["d-sciences","t-ecology"],
   ["d-sciences","t-genetics"],["d-sciences","t-chemistry"],
@@ -543,9 +551,8 @@ const RAW=[
   ["d-arts","t-archit"],["d-arts","t-fashion"],["d-arts","t-story"],["d-arts","t-photo"],["d-arts","t-theater"],
   ["d-nature","t-sacredgeo"],["d-nature","t-astrology"],["d-nature","t-climate"],["d-nature","t-biodivers"],
   ["d-nature","t-oceans"],["d-nature","t-forests"],["d-nature","t-cosmos"],["d-nature","t-efields"],["d-nature","t-cycles"],
-  ["d-business","t-defi"],["d-business","t-impact"],["d-business","t-socialent"],["d-business","t-circular"],
-  ["d-business","t-conscap"],["d-business","t-regenbiz"],["d-business","t-dao"],
-  ["d-business","t-wealth-mind"],
+  ["d-business","t-socialent"],["d-business","t-circular"],["d-business","t-regenbiz"],
+  ["d-money","t-defi"],["d-money","t-impact"],["d-money","t-conscap"],["d-money","t-dao"],["d-money","t-crypto"],["d-money","t-wealth-mind"],
   ["d-meta","t-oneness"],["d-meta","t-source"],["d-meta","t-soul"],["d-meta","t-akashic"],
   ["d-meta","t-dims"],["d-meta","t-sync"],["d-meta","t-saclaw"],["d-meta","t-merkaba"],["d-meta","t-vibration"],
   ["d-meta","t-aliens"],["d-meta","t-channeling"],["d-meta","t-remote-view"],["d-meta","t-manifestation"],["d-meta","t-nde"],
@@ -634,6 +641,7 @@ const NODE_URL = {
   "d-arts":          "arts/index.html",
   "d-nature":        "nature/index.html",
   "d-business":      "business/index.html",
+  "d-money":         "money/index.html",
   "d-meta":          "metaphysics/index.html",
   "d-lifestyle":     "lifestyle/index.html",
   "d-creation":      "creation/index.html",
@@ -784,6 +792,7 @@ const NODE_URL = {
   "t-manifestation":"manifestation/index.html",
   "t-personal-dev": "personal-development/index.html",
   "t-wealth-mind":  "prosperity-mindset/index.html",
+  "t-crypto":        "cryptocurrency/index.html",
   "t-nde":          "near-death-experiences/index.html",
   "t-siddha-yoga":  "siddha-yoga/index.html",
   "t-eft":          "eft-tapping/index.html",

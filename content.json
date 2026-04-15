@@ -55,10 +55,18 @@
     {
       "id": "d-business",
       "slug": "business",
-      "label": "Business & Finance",
+      "label": "Business",
       "pillar": "fund",
       "accent": "#C4973A",
-      "desc": "Regenerative economic systems — models of exchange, value, and enterprise that work for people and planet."
+      "desc": "How enterprises are built, run, and scaled — regenerative models, social enterprise, and the organisations creating real-world impact."
+    },
+    {
+      "id": "d-money",
+      "slug": "money",
+      "label": "Money",
+      "pillar": "fund",
+      "accent": "#4AB8A0",
+      "desc": "Capital, finance, and the new monetary systems — from conscious capital and impact investing to crypto, DeFi, and the sovereign individual."
     },
     {
       "id": "d-energy",
@@ -428,14 +436,14 @@
       "id": "t-defi",
       "slug": "defi",
       "label": "DeFi",
-      "domain": "d-business",
+      "domain": "d-money",
       "desc": "Decentralised Finance — financial instruments and markets built on blockchain, without banks."
     },
     {
       "id": "t-impact",
       "slug": "impact-investing",
       "label": "Impact Investing",
-      "domain": "d-business",
+      "domain": "d-money",
       "desc": "Capital directed toward measurable social and environmental outcomes alongside financial returns."
     },
     {
@@ -456,7 +464,7 @@
       "id": "t-conscap",
       "slug": "conscious-capital",
       "label": "Conscious Capital",
-      "domain": "d-business",
+      "domain": "d-money",
       "desc": "Investment and finance as a force for good — capital aligned with values, not just returns."
     },
     {
@@ -470,8 +478,15 @@
       "id": "t-dao",
       "slug": "dao",
       "label": "DAOs",
-      "domain": "d-business",
+      "domain": "d-money",
       "desc": "Decentralised Autonomous Organisations — internet-native entities governed by code and community rather than hierarchy."
+    },
+    {
+      "id": "t-crypto",
+      "slug": "cryptocurrency",
+      "label": "Cryptocurrency",
+      "domain": "d-money",
+      "desc": "Digital assets, monetary networks, and the new financial layer being built on top of the internet — from Bitcoin as sound money to Ethereum as programmable value."
     },
     {
       "id": "t-oneness",
@@ -1037,7 +1052,7 @@
       "id": "t-wealth-mind",
       "slug": "prosperity-mindset",
       "label": "Prosperity Mindset",
-      "domain": "d-business",
+      "domain": "d-money",
       "desc": "Wealth as a state of consciousness first — the philosophy, psychology, and practical wisdom of financial abundance."
     },
     {
@@ -1254,6 +1269,13 @@
         "url": "https://www.alanwatts.org",
         "type": "person",
         "desc": "The philosopher who brought Eastern wisdom to the West. Thousands of lectures freely available — start anywhere.",
+        "frqncy_pick": false
+      },
+      {
+        "title": "Osho",
+        "url": "https://www.osho.com",
+        "type": "person",
+        "desc": "The mystic who dismantled every spiritual cliché and rebuilt the field from scratch. His teachings on consciousness, love, freedom, and presence remain among the most penetrating ever recorded.",
         "frqncy_pick": false
       },
       {
@@ -2761,6 +2783,78 @@
         "frqncy_pick": true
       }
     ],
+    "t-crypto": [
+      {
+        "title": "Bitcoin Whitepaper — Satoshi Nakamoto",
+        "url": "https://bitcoin.org/bitcoin.pdf",
+        "type": "book",
+        "desc": "Nine pages that changed money forever. Read the original — it is shorter, clearer, and more radical than anything written about it since.",
+        "frqncy_pick": true
+      },
+      {
+        "title": "CoinGecko",
+        "url": "https://www.coingecko.com",
+        "type": "tool",
+        "desc": "The most comprehensive crypto market data platform — prices, volumes, market caps, and on-chain metrics across thousands of assets.",
+        "frqncy_pick": false
+      },
+      {
+        "title": "Messari",
+        "url": "https://messari.io",
+        "type": "media",
+        "desc": "Professional-grade crypto research and intelligence. The go-to for serious market analysis, protocol breakdowns, and sector reports.",
+        "frqncy_pick": false
+      },
+      {
+        "title": "The Infinite Machine — Camila Russo",
+        "url": "https://www.harpercollins.com/products/the-infinite-machine-camila-russo",
+        "type": "book",
+        "desc": "The definitive story of Ethereum's creation — Vitalik Buterin, the early contributors, and how a teenager's white paper became programmable money.",
+        "frqncy_pick": false
+      },
+      {
+        "title": "The Internet of Money — Andreas Antonopoulos",
+        "url": "https://aantonop.com/books/",
+        "type": "book",
+        "desc": "The most articulate case for why Bitcoin matters — not as a speculative asset, but as a political and monetary revolution. Required reading.",
+        "frqncy_pick": true
+      },
+      {
+        "title": "Bankless",
+        "url": "https://www.bankless.com",
+        "type": "media",
+        "desc": "The leading crypto media and podcast network — covering Ethereum, DeFi, and the broader move toward a bankless financial system.",
+        "frqncy_pick": false
+      },
+      {
+        "title": "The Block",
+        "url": "https://www.theblock.co",
+        "type": "media",
+        "desc": "Institutional-grade crypto news and data. The standard for breaking developments across Bitcoin, Ethereum, and the broader market.",
+        "frqncy_pick": false
+      },
+      {
+        "title": "Glassnode",
+        "url": "https://glassnode.com",
+        "type": "tool",
+        "desc": "On-chain analytics platform tracking Bitcoin and Ethereum network behaviour — the best lens on what actual holders are doing versus what the price suggests.",
+        "frqncy_pick": false
+      },
+      {
+        "title": "Lyn Alden — Macro & Bitcoin",
+        "url": "https://www.lynalden.com",
+        "type": "person",
+        "desc": "The clearest macro analyst covering Bitcoin as an emerging monetary network. Her long-form research bridges traditional finance and the new monetary paradigm.",
+        "frqncy_pick": false
+      },
+      {
+        "title": "Decrypt",
+        "url": "https://decrypt.co",
+        "type": "media",
+        "desc": "Accessible, well-edited crypto news covering everything from Bitcoin price action to NFT culture and Web3 policy.",
+        "frqncy_pick": false
+      }
+    ],
     "t-oneness": [
       {
         "title": "The Power of Now — Eckhart Tolle",
@@ -2935,6 +3029,13 @@
       }
     ],
     "t-saclaw": [
+      {
+        "title": "For the Claim of the Life",
+        "url": "https://www.fortheclaimofthelife.com/",
+        "type": "website",
+        "desc": "A guide to reclaiming natural sovereignty — exploring the legal, spiritual, and philosophical frameworks for living in your own right.",
+        "frqncy_pick": true
+      },
       {
         "title": "The Kybalion — Three Initiates",
         "url": "https://www.sacred-texts.com/eso/kyb/",
@@ -3415,6 +3516,13 @@
     ],
     "t-meditation": [
       {
+        "title": "Osho",
+        "url": "https://www.osho.com",
+        "type": "person",
+        "desc": "One of the most prolific and radical spiritual teachers of the 20th century. Created hundreds of meditation techniques — including Dynamic Meditation — designed specifically for the modern mind. His 600+ books distil everything from Zen and Tantra to Taoism and Sufism into a single voice of absolute freedom.",
+        "frqncy_pick": true
+      },
+      {
         "title": "Waking Up — Sam Harris",
         "url": "https://www.samharris.org/waking-up",
         "type": "app",
@@ -3541,6 +3649,13 @@
       }
     ],
     "t-energyheal": [
+      {
+        "title": "Sarah — Medical Intuitive",
+        "url": "https://www.youtube.com/watch?v=OrNkpOZYoKU",
+        "type": "person",
+        "desc": "Certified Medical Intuitive and Quantum Healer with over 20 years of practice. Sarah reads the energetic and soul-level patterns underlying physical illness — tracking the unconscious distortions, unresolved trauma, and soul lessons that manifest in the body. Available on YouTube and @medicalintuitive.sarah on Instagram.",
+        "frqncy_pick": false
+      },
       {
         "title": "Energy Medicine — Donna Eden",
         "url": "https://www.innersource.net/em/",
@@ -4726,6 +4841,34 @@
     ],
     "t-channeling": [
       {
+        "title": "The Pleiadians — Barbara Marciniak",
+        "url": "https://www.pleiadians.com",
+        "type": "person",
+        "desc": "Barbara Marciniak has channeled a collective of multidimensional beings from the Pleiades star system since 1988. Her book Bringers of the Dawn is one of the most widely read channeled texts ever published — a dense, demanding transmission on DNA activation, timelines, and the game being played on Earth.",
+        "frqncy_pick": true
+      },
+      {
+        "title": "George Green",
+        "url": "https://projectcamelotportal.com/2008/04/17/project-camelot-interviews-george-green-part-1-of-2/",
+        "type": "person",
+        "desc": "Former investment banker and USAF veteran who published the Pleiadian-channeled Handbook for the New Paradigm trilogy — available free online and read by millions. His Project Camelot interviews are essential: a man who moved money at the highest levels, who walked away, and who spent his final decades broadcasting what he knew.",
+        "frqncy_pick": false
+      },
+      {
+        "title": "Project Camelot — Bill Ryan & Kerry Cassidy",
+        "url": "https://projectcamelotportal.com",
+        "type": "org",
+        "desc": "The most important whistleblower interview archive on the internet. Since 2006, Bill Ryan and Kerry Cassidy have filmed hundreds of hours with insiders, ex-military, scientists, and experiencers — covering everything from off-world programs and ET contact to suppressed technology and deep state operations. George Green's interviews alone are worth the visit.",
+        "frqncy_pick": false
+      },
+      {
+        "title": "Arizona Wilder",
+        "url": "https://podcasts.apple.com/si/podcast/redesigning-destiny/id1383945584",
+        "type": "person",
+        "desc": "Former high priestess and MK-Ultra survivor who conducted Illuminati rituals at the highest levels of global power. Her testimony — first recorded with David Icke in Revelations of a Mother Goddess (1999) — covers shapeshifting bloodlines, Satanic ceremony, and the hidden architecture of control. Unfiltered and unflinching.",
+        "frqncy_pick": false
+      },
+      {
         "title": "The Law of Attraction — Esther & Jerry Hicks (Abraham)",
         "url": "https://www.abrahamhicks.com/books/the-law-of-attraction/",
         "type": "book",
@@ -5488,14 +5631,6 @@
         "frqncy_pick": false
       }
     ],
-    "t-robert-gould": [
-      {
-        "title": "Robert Jay Gould — Overview",
-        "url": "",
-        "type": "reference",
-        "desc": "Exploring the ideas and contributions of Robert Jay Gould to conscious science and human understanding.",
-        "frqncy_pick": true
-      }
-    ]
+    "t-robert-gould": []
   }
 }

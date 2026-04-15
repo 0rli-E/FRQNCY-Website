@@ -1,0 +1,46 @@
+{
+  "_comment": "Known-good Human Design charts from Jovian Archive. Add ≥5 more with your screenshots to drive calibration. Each fixture: birth local time + IANA timezone + the expected Personality/Design gate.line for all 13 bodies. Calibration harness runs computeChart() for each and diffs.",
+  "fixtures": [
+    {
+      "id": "orli-munich-1994",
+      "label": "Orli — Munich, 7 Feb 1994 08:36 local",
+      "birth": { "y": 1994, "mo": 2, "d": 7, "h": 8, "mi": 36 },
+      "zone": "Europe/Berlin",
+      "expected": {
+        "type": "Manifesting Generator",
+        "profile": "6/2",
+        "authority": "Emotional (Solar Plexus)",
+        "personality": {
+          "Sun":       { "gate": 13, "line": 6 },
+          "Earth":     { "gate":  7, "line": 6 },
+          "Moon":      { "gate": 58, "line": 6 },
+          "NorthNode": { "gate": 14, "line": 6 },
+          "SouthNode": { "gate":  8, "line": 6 },
+          "Mercury":   { "gate": 37, "line": 1 },
+          "Venus":     { "gate": 49, "line": 5 },
+          "Mars":      { "gate": 19, "line": 1 },
+          "Jupiter":   { "gate":  1, "line": 1 },
+          "Saturn":    { "gate": 55, "line": 2 },
+          "Uranus":    { "gate": 61, "line": 4 },
+          "Neptune":   { "gate": 61, "line": 2 },
+          "Pluto":     { "gate": 14, "line": 4 }
+        },
+        "design": {
+          "Sun":       { "gate": 43, "line": 2 },
+          "Earth":     { "gate": 23, "line": 2 },
+          "Moon":      { "gate": 28, "line": 2 },
+          "NorthNode": { "gate": 34, "line": 4 },
+          "SouthNode": { "gate": 20, "line": 4 },
+          "Mercury":   { "gate": 28, "line": 6 },
+          "Venus":     { "gate": 28, "line": 3 },
+          "Mars":      { "gate": 34, "line": 3 },
+          "Jupiter":   { "gate": 50, "line": 5 },
+          "Saturn":    { "gate": 49, "line": 6 },
+          "Uranus":    { "gate": 54, "line": 5 },
+          "Neptune":   { "gate": 54, "line": 5 },
+          "Pluto":     { "gate": 14, "line": 1 }
+        }
+      }
+    }
+  ]
+}
