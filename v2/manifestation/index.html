@@ -58,7 +58,7 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 /* MAIN */
 main{max-width:1080px;margin:0 auto;padding:3rem clamp(1.25rem,5vw,2.5rem) 7rem}
 section{margin-bottom:4.5rem}
-.section-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
+.section-label{font-weight:400;margin-top:0;font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
 
 /* GRID */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border)}
@@ -230,7 +230,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 </div>
 <main>
   <section>
-  <div class="section-label">Watch</div>
+  <h2 class="section-label">Watch</h2>
   <div class="vgrid">
   <div class="vcard-t" data-embed="https://www.youtube.com/embed/EFGBVWFyAag?autoplay=1&amp;rel=0&amp;modestbranding=1" data-watch="https://www.youtube.com/watch?v=EFGBVWFyAag" data-title="The Science of Getting What You Want" data-chan="Joe Dispenza" tabindex="0" role="button" aria-label="Play The Science of Getting What You Want">
     <div class="vthumb-t">
@@ -267,6 +267,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     if(embed){
       document.getElementById('vmodal-title').textContent=title;
       document.getElementById('vmodal-chan').textContent=chan?'— '+chan:'';
+      document.getElementById('vmodal-iframe').title=title||'Video';
       document.getElementById('vmodal-iframe').src=embed;
       document.getElementById('vmodal').classList.add('open');
       document.body.style.overflow='hidden';
@@ -290,7 +291,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 })();
 </script>
   <section>
-  <div class="section-label">Take a Course</div>
+  <h2 class="section-label">Take a Course</h2>
   <a class="course-callout" href="../courses/conscious-living-foundations/" style="--course-accent:#C4973A">
   <span class="cc-level" style="color:#C4973A;border-color:#C4973A60">Beginner</span>
   <span class="cc-body">
@@ -301,7 +302,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 </a>
 </section>
   <section>
-  <div class="section-label">Curated Resources</div>
+  <h2 class="section-label">Curated Resources</h2>
   <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="book">book</button><button class="ftab" data-filter="media">media</button></div>
   <div class="rlist"><div class="rcard" data-type="book">
   <span class="rtype">book</span>
@@ -478,7 +479,7 @@ document.querySelectorAll('.ftab').forEach(btn=>{
 });
 </script>
   <section>
-    <div class="section-label">More in Metaphysics</div>
+    <h2 class="section-label">More in Metaphysics</h2>
     <div class="grid grid-sm">
       <a href="../oneness/index.html" class="ncard">
   <div class="ncard-type">Topic</div>

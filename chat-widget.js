@@ -7,6 +7,10 @@
 (function () {
   'use strict';
 
+  // Guard against double-mount (script loaded twice, or partial page swap)
+  if (window.__frqncyChatInit) return;
+  window.__frqncyChatInit = true;
+
   // ── CONFIG ───────────────────────────────────────────────────────
   const API_ENDPOINT  = '/api/chat';
   const BOT_NAME      = 'FRQNCY Navigator';

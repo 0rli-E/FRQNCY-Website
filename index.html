@@ -966,6 +966,7 @@
     window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
   }
 </script>
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
 </head>
 <body>
 
@@ -1028,7 +1029,7 @@
         <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address" autocomplete="email">
         <button type="submit" id="subscribe-btn-overlay">Join</button>
       </form>
-      <p class="subscribe-success" id="subscribe-success-overlay" style="display:none;color:var(--blue-mid);font-size:13px;letter-spacing:0.08em;margin-top:12px;">✦ You're in. Welcome to FRQNCY.</p>
+      <p class="subscribe-success" id="subscribe-success-overlay" style="display:none;color:var(--blue-mid);font-size:13px;letter-spacing:0.08em;margin-top:12px;">✦ You're in. Check your inbox to confirm.</p>
       <p class="subscribe-error" id="subscribe-error-overlay" style="display:none;color:#E87A4A;font-size:12px;margin-top:10px;"></p>
       <button class="subscribe-dismiss" onclick="dismissSubscribe()">Continue to site</button>
     </div>
@@ -1118,7 +1119,7 @@
         <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address" autocomplete="email">
         <button type="submit" id="subscribe-btn-contact">Join the movement</button>
       </form>
-      <p class="subscribe-success" id="subscribe-success-contact" style="display:none;color:var(--gold-light);font-size:13px;letter-spacing:0.08em;margin-top:14px;text-align:center;">✦ You're in. Welcome to FRQNCY.</p>
+      <p class="subscribe-success" id="subscribe-success-contact" style="display:none;color:var(--gold-light);font-size:13px;letter-spacing:0.08em;margin-top:14px;text-align:center;">✦ You're in. Check your inbox to confirm.</p>
       <p class="subscribe-error" id="subscribe-error-contact" style="display:none;color:#F09070;font-size:12px;margin-top:10px;text-align:center;"></p>
 
       <div class="contact-links reveal reveal-delay-3" style="margin-top:28px;">
@@ -1198,7 +1199,7 @@
     // =====================
     // SUBSCRIBE OVERLAY  (with localStorage cookie)
     // =====================
-    const POPUP_KEY = 'frqncy_popup';
+    const POPUP_KEY = 'frqncy_popup_v2';
     const POPUP_TTL = 7 * 24 * 60 * 60 * 1000; // 7 days in ms
 
     function popupSeen() {
@@ -1230,13 +1231,22 @@
     }
     async function handleSubscribe(e, form) {
       e.preventDefault();
-      const email = form.querySelector('input[type="email"]').value.trim();
+      const input = form.querySelector('input[type="email"]');
+      const email = input.value.trim();
       const btn   = form.querySelector('button[type="submit"]');
 
       // Determine which form (overlay vs contact section)
       const isOverlay = form.id === 'subscribe-form-overlay';
       const successEl = document.getElementById(isOverlay ? 'subscribe-success-overlay' : 'subscribe-success-contact');
       const errorEl   = document.getElementById(isOverlay ? 'subscribe-error-overlay'   : 'subscribe-error-contact');
+
+      // Client-side email validation (we can't read Substack's response due to no-cors)
+      if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+        errorEl.textContent = 'Please enter a valid email address.';
+        errorEl.style.display = 'block';
+        input.focus();
+        return;
+      }
 
       // Loading state
       const origText = btn.textContent;

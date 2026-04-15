@@ -26,7 +26,6 @@
     <meta name="twitter:description" content="Conversations at the frontier of consciousness, science, and human potential. FRQNCY invites the builders, teachers, researchers, and healers already doing the work.">
     <meta name="twitter:image" content="https://frqncy.network/og-image.png">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
-    <link rel="icon" type="image/svg+xml" href="favicon.svg">
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -402,8 +401,10 @@
         }
     </style>
   <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="mobile-nav.js" defer></script>
 <script src="chat-widget.js" defer></script>
 <link rel="manifest" href="manifest.json">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
 </head>
 <body>
     <!-- Navigation -->
@@ -492,10 +493,20 @@
     <script>
         function handleSubscribe(event) {
             event.preventDefault();
-            const email = event.target.querySelector('input[type="email"]').value.trim();
+            const form = event.target;
+            const input = form.querySelector('input[type="email"]');
+            const btn = form.querySelector('button[type="submit"]');
+            const email = input.value.trim();
             if (!email) return;
-
-            // Submit directly to Substack (fire-and-forget — Substack sends confirmation email)
+            if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                input.focus();
+                input.setCustomValidity('Please enter a valid email');
+                input.reportValidity();
+                setTimeout(() => input.setCustomValidity(''), 2000);
+                return;
+            }
+            btn.disabled = true;
+            btn.textContent = 'Sending…';
             fetch('https://frqncy.substack.com/api/v1/free', {
                 method: 'POST',
                 mode: 'no-cors',
@@ -511,8 +522,7 @@
                     domain: 'frqncy.substack.com'
                 })
             }).finally(() => {
-                alert('Thank you! Check your email to confirm your subscription.');
-                event.target.reset();
+                form.innerHTML = '<div style="color:#fff;font-family:Cormorant,serif;font-size:1.5rem;padding:0.5rem 0;">Thank you.</div><div style="color:#E0E0E0;font-size:0.95rem;margin-top:0.25rem;">Check your inbox to confirm your subscription.</div>';
             });
         }
     </script>
