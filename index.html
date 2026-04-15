@@ -1628,7 +1628,10 @@
       nmCanvas.width=nmContainer.offsetWidth;
       nmCanvas.height=nmContainer.offsetHeight;
       // Re-centre force simulation when container dimensions change
-      if(nmSim) nmSim.force('center',d3.forceCenter(NM_W()/2,NM_H()/2).strength(0.04)).alpha(0.25).restart();
+      // (guard against temporal dead zone — nmSim is declared further down)
+      try {
+        if(nmSim) nmSim.force('center',d3.forceCenter(NM_W()/2,NM_H()/2).strength(0.04)).alpha(0.25).restart();
+      } catch(_) { /* nmSim not yet initialized — safe to skip */ }
     }
     nmResize();
     window.addEventListener('resize',nmResize,{passive:true});
