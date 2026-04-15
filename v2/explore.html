@@ -44,12 +44,13 @@
     #ui-overlay h1 { font-family:var(--font-display); font-size:clamp(20px,2.5vw,30px); font-weight:300; letter-spacing:0.35em; color:var(--gold); }
     #ui-overlay p  { font-size:10px; letter-spacing:0.2em; color:rgba(255,255,255,0.3); margin-top:5px; }
     #back-btn {
-      position:fixed; bottom:28px; left:50%; transform:translateX(-50%); z-index:5;
-      background:transparent; border:1px solid rgba(196,151,58,0.3); color:rgba(196,151,58,0.58);
-      font-family:var(--font-body); font-size:10px; letter-spacing:0.22em;
-      padding:10px 26px; cursor:pointer; border-radius:2px; transition:all 0.3s;
+      position:fixed; top:24px; left:24px; z-index:10;
+      background:rgba(11,28,61,0.7); border:1px solid rgba(196,151,58,0.55); color:var(--gold);
+      font-family:var(--font-body); font-size:10px; letter-spacing:0.22em; text-transform:uppercase;
+      padding:10px 20px; cursor:pointer; border-radius:2px; transition:all 0.25s;
+      backdrop-filter:blur(8px); text-decoration:none; display:inline-block;
     }
-    #back-btn:hover { border-color:var(--gold); color:var(--gold); background:rgba(196,151,58,0.05); }
+    #back-btn:hover { border-color:var(--gold); color:#fff; background:rgba(196,151,58,0.18); }
     #node-count { position:fixed; bottom:28px; right:28px; z-index:5; font-size:10px; letter-spacing:0.12em; color:rgba(255,255,255,0.18); }
     #v2-badge { position:fixed; top:24px; right:24px; z-index:10; font-size:9px; letter-spacing:0.22em; color:#4A7AE8; border:1px solid rgba(74,122,232,0.4); padding:4px 12px; border-radius:2px; font-family:var(--font-body); }
     .hub-link { font-family:var(--font-body); font-size:9px; letter-spacing:0.2em; color:#4A7AE8; border:1px solid rgba(74,122,232,0.35); padding:5px 14px; border-radius:2px; text-decoration:none; text-align:right; transition:border-color .2s, color .2s; display:block; }
@@ -242,12 +243,11 @@
 
       /* Back button: More accessible on mobile */
       #back-btn {
-        bottom: 20px;
-        left: 50%;
-        transform: translateX(-50%);
+        top: 16px;
+        left: 16px;
         font-size: 9px;
         letter-spacing: 0.2em;
-        padding: 8px 20px;
+        padding: 8px 16px;
         border-width: 1px;
       }
 
@@ -360,7 +360,7 @@
   <div class="leg-item"><div class="leg-dot" style="width:3px;height:3px;background:#fff;box-shadow:0 0 3px rgba(255,255,255,0.8);"></div>HUMANS</div>
 </div>
 
-<button id="back-btn" onclick="window.location.href='../index.html'">← MAIN SITE</button>
+<a id="back-btn" href="../index.html">← FRQNCY Home</a>
 <div id="node-count"></div>
 
 <script>
