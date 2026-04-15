@@ -28,7 +28,10 @@
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link rel="preconnect" href="https://cdnjs.cloudflare.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <!-- Preload D3 so the network map renders quickly on cold loads -->
+  <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" as="script" crossorigin>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
 
@@ -532,6 +535,7 @@
       margin: 0 auto;
       position: relative;
     }
+    @keyframes nmPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
     #nm-container {
       position: relative;
       width: 100%;
@@ -1064,6 +1068,7 @@
           <div class="nm-leg-item"><div class="nm-leg-dot" style="width:3px;height:3px;background:#fff;box-shadow:0 0 3px rgba(255,255,255,0.8);border-radius:50%"></div>HUMANS</div>
         </div>
         <div id="nm-hint">DRAG · SCROLL TO ZOOM · CLICK TO EXPLORE</div>
+      <div id="nm-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(196,151,58,0.7);font-family:Jost,sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;pointer-events:none;z-index:4;animation:nmPulse 1.6s ease-in-out infinite;">✦ Loading network ✦</div>
       </div>
       <a href="v2/explore.html" class="network-expand-btn" target="_blank" rel="noopener">EXPLORE FULL MAP ↗</a>
     </div>
@@ -1376,6 +1381,9 @@
   })();
 
   function _initNetworkMap() {
+    // Hide loading indicator once D3 is ready
+    var _nmLoad = document.getElementById('nm-loading');
+    if (_nmLoad) _nmLoad.remove();
     // =====================
     // NETWORK MAP (inlined)
     // =====================

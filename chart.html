@@ -87,10 +87,25 @@ input::placeholder{color:var(--text-dim);opacity:0.6}
 
 /* RESULT AREA */
 #result-area{margin-top:2.5rem;display:none}
-.result-header{margin-bottom:1.5rem}
+.result-header{margin-bottom:1.5rem;display:flex;align-items:flex-end;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.result-header-text{flex:1;min-width:200px}
 .result-eyebrow{font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem}
 .result-title{font-family:'Cormorant',serif;font-size:clamp(1.5rem,4vw,2.4rem);font-weight:300;color:#fff;margin-bottom:0.35rem}
 .result-sub{font-size:0.78rem;color:var(--text-dim)}
+
+/* DOWNLOAD PDF BUTTON */
+.btn-download{
+  display:none;align-items:center;gap:0.5rem;
+  background:rgba(123,74,232,0.1);color:var(--accent);
+  border:1px solid rgba(123,74,232,0.35);border-radius:3px;
+  padding:9px 16px;font-family:'Jost',sans-serif;font-size:0.66rem;
+  letter-spacing:0.16em;text-transform:uppercase;font-weight:400;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.btn-download:hover{background:rgba(123,74,232,0.18);border-color:var(--accent);color:#fff}
+.btn-download:disabled{opacity:0.5;cursor:wait}
+.btn-download svg{width:13px;height:13px}
+#result-area.has-result .btn-download[data-active="1"]{display:inline-flex}
 
 /* HD RESULT */
 .hd-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(200px,1fr));gap:1rem;margin-bottom:1.5rem}
@@ -242,9 +257,15 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2rem clamp(1.25rem,5v
   <!-- RESULT -->
   <div id="result-area">
     <div class="result-header">
-      <div class="result-eyebrow" id="res-eyebrow">Human Design</div>
-      <div class="result-title" id="res-title">Your Bodygraph</div>
-      <div class="result-sub" id="res-sub"></div>
+      <div class="result-header-text">
+        <div class="result-eyebrow" id="res-eyebrow">Human Design</div>
+        <div class="result-title" id="res-title">Your Bodygraph</div>
+        <div class="result-sub" id="res-sub"></div>
+      </div>
+      <button type="button" class="btn-download" id="btn-download-pdf" data-active="1" onclick="downloadChartPDF()" title="Download your chart as a PDF">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download PDF
+      </button>
     </div>
     <div id="res-content"></div>
     <div class="ext-links" id="ext-links"></div>
@@ -271,9 +292,92 @@ let activeChart = 'hd';
 function setChart(type) {
   activeChart = type;
   document.querySelectorAll('.ctab').forEach(t => t.classList.toggle('active', t.dataset.chart === type));
-  document.getElementById('result-area').style.display = 'none';
+  const rArea = document.getElementById('result-area');
+  rArea.style.display = 'none';
+  rArea.classList.remove('has-result');
   document.getElementById('natal-loc-row').style.display = (type === 'natal') ? 'grid' : 'none';
   updateBtn();
+}
+
+// ── Download HD chart as PDF (lazy-loads jsPDF + html2canvas from CDN) ─
+let _PDF_LIBS_LOADING = null;
+function _loadPdfLibs(){
+  if (_PDF_LIBS_LOADING) return _PDF_LIBS_LOADING;
+  const load = (src) => new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = src; s.onload = res; s.onerror = () => rej(new Error('Failed to load ' + src));
+    document.head.appendChild(s);
+  });
+  _PDF_LIBS_LOADING = Promise.all([
+    load('https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js'),
+    load('https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js')
+  ]);
+  return _PDF_LIBS_LOADING;
+}
+
+async function downloadChartPDF(){
+  const btn = document.getElementById('btn-download-pdf');
+  const original = btn.innerHTML;
+  btn.disabled = true;
+  btn.innerHTML = '<span style="font-size:0.66rem;letter-spacing:0.16em">Preparing…</span>';
+  try {
+    await _loadPdfLibs();
+    const target = document.getElementById('result-area');
+    // Capture with navy background so the PDF matches the on-screen design
+    const canvas = await html2canvas(target, {
+      backgroundColor: '#0B1C3D',
+      scale: 2,
+      useCORS: true,
+      logging: false,
+      windowWidth: document.documentElement.scrollWidth
+    });
+    const { jsPDF } = window.jspdf;
+    // A4 portrait in mm
+    const pdf = new jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
+    const pageW = pdf.internal.pageSize.getWidth();
+    const pageH = pdf.internal.pageSize.getHeight();
+    const margin = 8;
+    const imgW = pageW - margin*2;
+    const imgH = canvas.height * imgW / canvas.width;
+    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+
+    if (imgH <= pageH - margin*2) {
+      // Fits on one page — fill navy behind
+      pdf.setFillColor(11,28,61); pdf.rect(0,0,pageW,pageH,'F');
+      pdf.addImage(imgData, 'JPEG', margin, margin, imgW, imgH);
+    } else {
+      // Multi-page: slice the canvas into page-sized chunks
+      const pageContentH = pageH - margin*2;
+      const pxPerMm = canvas.width / imgW;
+      const sliceHpx = pageContentH * pxPerMm;
+      let y = 0;
+      const tmp = document.createElement('canvas');
+      tmp.width = canvas.width;
+      const ctx = tmp.getContext('2d');
+      let first = true;
+      while (y < canvas.height) {
+        const h = Math.min(sliceHpx, canvas.height - y);
+        tmp.height = h;
+        ctx.fillStyle = '#0B1C3D'; ctx.fillRect(0,0,tmp.width,h);
+        ctx.drawImage(canvas, 0, y, canvas.width, h, 0, 0, canvas.width, h);
+        const slice = tmp.toDataURL('image/jpeg', 0.92);
+        if (!first) pdf.addPage();
+        pdf.setFillColor(11,28,61); pdf.rect(0,0,pageW,pageH,'F');
+        pdf.addImage(slice, 'JPEG', margin, margin, imgW, h / pxPerMm);
+        y += h; first = false;
+      }
+    }
+
+    const title = (document.getElementById('res-title').textContent || 'chart').replace(/[^a-z0-9]+/gi,'-').toLowerCase();
+    const dob = document.getElementById('dob').value || '';
+    pdf.save(`frqncy-human-design-${title}${dob?'-'+dob:''}.pdf`);
+  } catch (e) {
+    console.error(e);
+    alert('Sorry, the PDF could not be generated. Please check your connection and try again.');
+  } finally {
+    btn.disabled = false;
+    btn.innerHTML = original;
+  }
 }
 
 // ── Form validation ────────────────────────────────────────────────────
@@ -672,7 +776,11 @@ function generate() {
   // Wait for astronomy-engine to finish loading (or fail over to Meeus) before rendering
   Promise.all([_AE_LOADING, new Promise(r=>setTimeout(r,1200))]).then(() => {
     document.getElementById('loading').style.display = 'none';
-    document.getElementById('result-area').style.display = 'block';
+    const rArea = document.getElementById('result-area');
+    rArea.style.display = 'block';
+    rArea.classList.add('has-result');
+    // Download PDF button only enabled for HD chart
+    document.getElementById('btn-download-pdf').setAttribute('data-active', activeChart === 'hd' ? '1' : '0');
 
     if (activeChart === 'hd') renderHD(dob, tob, tzLabel, dateStr);
     else if (activeChart === 'gk') renderGK(dob, tob, tzLabel, dateStr);
