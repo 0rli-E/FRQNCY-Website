@@ -492,28 +492,27 @@
     <script>
         function handleSubscribe(event) {
             event.preventDefault();
-            const email = event.target.querySelector('input[type="email"]').value;
+            const email = event.target.querySelector('input[type="email"]').value.trim();
+            if (!email) return;
 
-            // Call the subscribe API endpoint
-            fetch('/api/subscribe', {
+            // Submit directly to Substack (fire-and-forget — Substack sends confirmation email)
+            fetch('https://frqncy.substack.com/api/v1/free', {
                 method: 'POST',
-                headers: {
-                    'Content-Type': 'application/json',
-                },
-                body: JSON.stringify({ email: email })
-            })
-            .then(response => response.json())
-            .then(data => {
-                if (data.success) {
-                    alert('Thank you! Check your email for confirmation.');
-                    event.target.reset();
-                } else {
-                    alert('Something went wrong. Please try again.');
-                }
-            })
-            .catch(error => {
-                console.error('Error:', error);
-                alert('Something went wrong. Please try again.');
+                mode: 'no-cors',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    email,
+                    first_url: window.location.href,
+                    first_referrer: document.referrer || '',
+                    current_url: window.location.href,
+                    current_referrer: document.referrer || '',
+                    referral_code: '',
+                    source: 'frqncy.network',
+                    domain: 'frqncy.substack.com'
+                })
+            }).finally(() => {
+                alert('Thank you! Check your email to confirm your subscription.');
+                event.target.reset();
             });
         }
     </script>
