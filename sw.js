@@ -1,10 +1,10 @@
 /**
  * FRQNCY — Service Worker
- * Strategy: cache-first for static assets, network-first for HTML pages.
+ * Strategy: network-first for HTML & JSON data, cache-first for static assets.
  * Provides offline fallback for the shell and fonts.
  */
 
-const CACHE = 'frqncy-v1';
+const CACHE = 'frqncy-v2';
 
 // Assets that should be pre-cached on install (the app shell)
 const PRECACHE = [
@@ -12,11 +12,10 @@ const PRECACHE = [
   '/index.html',
   '/favicon.svg',
   '/manifest.json',
-  '/og-image.png',
   '/chat-widget.js',
-  '/v2/watch/index.html',
-  '/v2/courses/index.html',
-  '/v2/explore.html',
+  '/mobile-nav.js',
+  '/nav-dropdown.css',
+  '/chart.js',
   '/search.html',
 ];
 
@@ -36,7 +35,7 @@ self.addEventListener('activate', e => {
   );
 });
 
-// ── Fetch: network-first for HTML, cache-first for everything else ───
+// ── Fetch: network-first for HTML & JSON, cache-first for static ────
 self.addEventListener('fetch', e => {
   const { request } = e;
   const url = new URL(request.url);
@@ -57,6 +56,22 @@ self.addEventListener('fetch', e => {
           return res;
         })
         .catch(() => caches.match(request).then(r => r || caches.match('/index.html')))
+    );
+    return;
+  }
+
+  // JSON data files: stale-while-revalidate (serve cache, update in background)
+  if (url.pathname.endsWith('.json') && url.pathname !== '/manifest.json') {
+    e.respondWith(
+      caches.open(CACHE).then(cache =>
+        cache.match(request).then(cached => {
+          const fetchPromise = fetch(request).then(res => {
+            if (res && res.status === 200) cache.put(request, res.clone());
+            return res;
+          }).catch(() => cached);
+          return cached || fetchPromise;
+        })
+      )
     );
     return;
   }

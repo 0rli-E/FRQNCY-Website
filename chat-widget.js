@@ -375,7 +375,27 @@
       const msg = isLocal
         ? `The chat API only runs on the live Cloudflare Pages site. Open frqncy.network to use the chatbot, or run \`wrangler pages dev .\` locally.`
         : `Connection error — please try again. (${err.message})`;
-      addMessage('bot', msg);
+      const el = addMessage('bot', msg);
+      // Add retry button for non-local errors
+      if (!isLocal && el) {
+        const retryBtn = document.createElement('button');
+        retryBtn.textContent = 'Retry ↻';
+        retryBtn.style.cssText = 'margin-top:8px;padding:5px 14px;font-size:12px;letter-spacing:0.08em;background:rgba(196,151,58,0.15);color:#E0C06A;border:1px solid rgba(196,151,58,0.3);border-radius:3px;cursor:pointer;font-family:inherit;';
+        retryBtn.addEventListener('click', function() {
+          retryBtn.remove();
+          // Re-send the last user message
+          var lastUser = '';
+          for (var mi = messages.length - 1; mi >= 0; mi--) {
+            if (messages[mi].role === 'user') { lastUser = messages[mi].content; break; }
+          }
+          if (lastUser) {
+            messages.pop(); // remove the last user message (will re-add)
+            inputEl.value = lastUser;
+            send();
+          }
+        });
+        el.appendChild(retryBtn);
+      }
     }
 
     loading = false;
