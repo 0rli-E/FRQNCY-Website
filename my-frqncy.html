@@ -49,6 +49,83 @@ nav{
 .nav-back{font-size:0.66rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s}
 .nav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
 
+/* ── CHART GENERATOR CTA (form view) ── */
+.chart-cta{
+  display:flex;align-items:center;gap:16px;
+  width:100%;max-width:700px;
+  margin:0 auto 2.5rem;
+  padding:20px 24px;
+  border:1px solid var(--gold);border-radius:4px;
+  background:linear-gradient(135deg, rgba(196,151,58,0.1) 0%, rgba(196,151,58,0.03) 100%);
+  text-decoration:none;color:inherit;
+  transition:all 0.25s;cursor:pointer;
+}
+.chart-cta:hover{
+  background:linear-gradient(135deg, rgba(196,151,58,0.18) 0%, rgba(196,151,58,0.06) 100%);
+  border-color:#E0C06A;transform:translateY(-1px);
+  box-shadow:0 4px 20px rgba(196,151,58,0.15);
+}
+.chart-cta-glyph{
+  font-size:1.8rem;color:var(--gold);flex-shrink:0;
+  width:48px;height:48px;display:flex;align-items:center;justify-content:center;
+  background:rgba(196,151,58,0.1);border-radius:50%;
+}
+.chart-cta-text{flex:1}
+.chart-cta-title{
+  font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;
+  margin-bottom:3px;
+}
+.chart-cta-sub{
+  font-size:0.72rem;color:var(--text-dim);line-height:1.5;
+}
+.chart-cta-arrow{
+  font-size:1.4rem;color:var(--gold);flex-shrink:0;
+  transition:transform 0.2s;
+}
+.chart-cta:hover .chart-cta-arrow{transform:translateX(4px)}
+
+@media(max-width:520px){
+  .chart-cta{padding:16px 18px;gap:12px}
+  .chart-cta-glyph{width:40px;height:40px;font-size:1.4rem}
+  .chart-cta-title{font-size:1.1rem}
+}
+
+/* ── CHART GENERATOR CARD (result view) ── */
+.chart-result-card{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;padding:22px 24px;margin-bottom:1.5rem;
+  border:1px solid var(--gold);border-radius:4px;
+  background:linear-gradient(135deg, rgba(196,151,58,0.12) 0%, rgba(196,151,58,0.03) 100%);
+  text-decoration:none;color:inherit;
+  transition:all 0.25s;cursor:pointer;
+}
+.chart-result-card:hover{
+  background:linear-gradient(135deg, rgba(196,151,58,0.2) 0%, rgba(196,151,58,0.08) 100%);
+  border-color:#E0C06A;transform:translateY(-1px);
+  box-shadow:0 4px 20px rgba(196,151,58,0.15);
+}
+.chart-rc-left{display:flex;align-items:center;gap:16px}
+.chart-rc-glyph{
+  font-size:1.5rem;color:var(--gold);flex-shrink:0;
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  background:rgba(196,151,58,0.1);border-radius:50%;
+}
+.chart-rc-title{
+  font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;color:#fff;
+  margin-bottom:2px;
+}
+.chart-rc-sub{font-size:0.68rem;color:var(--text-dim);line-height:1.5;max-width:400px}
+.chart-rc-arrow{
+  font-size:1.3rem;color:var(--gold);flex-shrink:0;
+  transition:transform 0.2s;
+}
+.chart-result-card:hover .chart-rc-arrow{transform:translateX(4px)}
+
+@media(max-width:520px){
+  .chart-result-card{flex-direction:column;align-items:flex-start;gap:12px;padding:18px}
+  .chart-rc-arrow{align-self:flex-end}
+}
+
 /* ── FORM SHELL ── */
 #form-view{
   min-height:100vh;padding-top:56px;
@@ -254,6 +331,16 @@ nav{
       <div class="step-dot" id="dot-3"></div>
     </div>
 
+    <!-- Chart Generator CTA -->
+    <a href="chart.html" class="chart-cta" id="chart-cta">
+      <div class="chart-cta-glyph">✦</div>
+      <div class="chart-cta-text">
+        <div class="chart-cta-title">Generate Your Chart</div>
+        <div class="chart-cta-sub">Get your personalised FRQNCY chart — map your interests, discover your alignment</div>
+      </div>
+      <div class="chart-cta-arrow">→</div>
+    </a>
+
     <!-- Step 1: Domains -->
     <div class="form-step visible" id="step-1">
       <div class="form-eyebrow">Step 1 of 3</div>
@@ -362,9 +449,21 @@ nav{
       </div>
     </a>
 
+    <!-- Chart Generator featured card -->
+    <div class="section-label" style="margin-top:2.5rem">Go deeper</div>
+    <a href="chart.html" class="chart-result-card">
+      <div class="chart-rc-left">
+        <div class="chart-rc-glyph">✦</div>
+        <div>
+          <div class="chart-rc-title">Generate Your FRQNCY Chart</div>
+          <div class="chart-rc-sub">Map your interests into a personalised chart — your cosmic alignment across all domains</div>
+        </div>
+      </div>
+      <div class="chart-rc-arrow">→</div>
+    </a>
+
     <div class="action-row">
       <button class="btn-primary" onclick="restartForm()">Build another →</button>
-      <a href="chart.html" class="btn-primary" style="background:transparent;border:1px solid var(--gold);color:var(--gold);text-decoration:none;text-align:center;">Chart Generator →</a>
       <button class="share-url" id="share-btn" onclick="shareConstellation()">Copy shareable link</button>
     </div>
 
