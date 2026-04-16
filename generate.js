@@ -282,6 +282,7 @@ function nav(crumbHtml) {
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
     <a href="../watch/index.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Watch</a>
     <a href="../courses/index.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Courses</a>
+    <a href="../../search.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="../../index.html" class="snav-back">← Main Site</a>
   </div>
 </nav>`;

@@ -131,20 +131,32 @@
   </script>
 <script src="chat-widget.js" defer></script>
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<link rel="stylesheet" href="nav-dropdown.css">
 </head>
 <body>
 
   <nav>
     <a href="index.html" class="nav-logo">FRQNCY</a>
     <ul class="nav-links">
-      <li><a href="about.html">Vision</a></li>
-      <li><a href="platform.html">Platform</a></li>
+      <li class="nav-dd">
+        <a href="about.html">About</a>
+        <div class="nav-dd-menu">
+          <a href="about.html"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+          <a href="platform.html"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+        </div>
+      </li>
+      <li class="nav-dd">
+        <a href="v2/explore.html">Discover</a>
+        <div class="nav-dd-menu">
+          <a href="v2/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+          <a href="v2/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video library</span></a>
+          <a href="v2/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+          <a href="search.html"><span class="dd-label">Search</span><span class="dd-sub">Find anything</span></a>
+        </div>
+      </li>
       <li><a href="podcast.html">Podcast</a></li>
       <li><a href="space.html">Space</a></li>
-      <li><a href="v2/explore.html">Explore</a></li>
-      <li><a href="v2/watch/index.html">Watch</a></li>
-      <li><a href="v2/courses/index.html">Courses</a></li>
-      <li><a href="search.html">Search</a></li>
+      <li><a href="my-frqncy.html" class="nav-cta-gold">My FRQNCY</a></li>
     </ul>
     <button class="nav-hamburger" id="hamburger" aria-label="Open menu" aria-expanded="false">
       <span></span><span></span><span></span>

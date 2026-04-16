@@ -1,5 +1,6 @@
 /* FRQNCY shared mobile nav — injects a hamburger + drawer into any page
-   that has <nav> with <ul class="nav-links">. Safe to load on every page. */
+   that has <nav> with <ul class="nav-links">. Supports dropdown menus
+   (.nav-dd) as accordion sections. Safe to load on every page. */
 (function () {
   if (window.__frqncyMobileNavInit) return;
   window.__frqncyMobileNavInit = true;
@@ -10,12 +11,14 @@
     if (!nav || !navLinks) return;
     if (document.getElementById('frqncy-hamburger')) return;
 
-    // Detect dark-nav pages (index, start-here, explore have dark translucent bg)
+    // Detect dark-nav pages
     var navBg = getComputedStyle(nav).backgroundColor || '';
     var isDark = /rgba?\(\s*(0|1\d|2\d|3\d|4\d)/.test(navBg) && !/255/.test(navBg);
-    var barColor = isDark ? 'rgba(255,255,255,0.75)' : 'rgba(11,28,61,0.8)';
+    var barColor = isDark ? 'rgba(255,255,255,0.92)' : 'rgba(11,28,61,0.8)';
     var drawerBg = isDark ? 'rgba(11,28,61,0.98)' : 'rgba(255,255,255,0.98)';
     var linkColor = isDark ? 'rgba(255,255,255,0.85)' : 'rgba(11,28,61,0.85)';
+    var dimColor = isDark ? 'rgba(255,255,255,0.35)' : 'rgba(11,28,61,0.4)';
+    var accentColor = '#C4973A';
 
     var style = document.createElement('style');
     style.id = 'frqncy-mobile-nav-style';
@@ -25,10 +28,19 @@
       '#frqncy-hamburger.open span:nth-child(1){transform:translateY(6px) rotate(45deg);}',
       '#frqncy-hamburger.open span:nth-child(2){opacity:0;}',
       '#frqncy-hamburger.open span:nth-child(3){transform:translateY(-6px) rotate(-45deg);}',
-      '#frqncy-mobile-menu{display:none;position:fixed;inset:0;background:' + drawerBg + ';backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:1001;flex-direction:column;align-items:center;justify-content:center;gap:32px;padding:80px 24px 40px;}',
+      '#frqncy-mobile-menu{display:none;position:fixed;inset:0;background:' + drawerBg + ';backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);z-index:1001;flex-direction:column;align-items:center;justify-content:center;gap:0;padding:80px 24px 40px;overflow-y:auto;}',
       '#frqncy-mobile-menu.open{display:flex;}',
-      '#frqncy-mobile-menu a{font-family:"Jost",sans-serif;font-size:13px;font-weight:300;letter-spacing:0.28em;text-transform:uppercase;color:' + linkColor + ';text-decoration:none;transition:color 0.2s;}',
-      '#frqncy-mobile-menu a:hover,#frqncy-mobile-menu a.active{color:#C4973A;}',
+      '#frqncy-mobile-menu a,#frqncy-mobile-menu .mob-dd-trigger{font-family:"Jost",sans-serif;font-size:13px;font-weight:300;letter-spacing:0.28em;text-transform:uppercase;color:' + linkColor + ';text-decoration:none;transition:color 0.2s;padding:14px 0;display:block;text-align:center;width:100%;max-width:300px;}',
+      '#frqncy-mobile-menu a:hover,#frqncy-mobile-menu a.active{color:' + accentColor + ';}',
+      /* Accordion trigger */
+      '.mob-dd-trigger{background:none;border:none;cursor:pointer;position:relative;}',
+      '.mob-dd-arrow{display:inline-block;font-size:8px;margin-left:6px;transition:transform 0.25s;opacity:0.5;}',
+      '.mob-dd-trigger.open .mob-dd-arrow{transform:rotate(180deg);}',
+      /* Accordion content */
+      '.mob-dd-items{max-height:0;overflow:hidden;transition:max-height 0.3s ease;width:100%;display:flex;flex-direction:column;align-items:center;}',
+      '.mob-dd-items.open{max-height:300px;}',
+      '.mob-dd-items a{font-size:11px !important;letter-spacing:0.2em !important;padding:10px 0 !important;color:' + dimColor + ' !important;}',
+      '.mob-dd-items a:hover{color:' + accentColor + ' !important;}',
       'body.frqncy-menu-open{overflow:hidden;}',
       '@media (max-width:768px){#frqncy-hamburger{display:flex;}}'
     ].join('');
@@ -42,31 +54,77 @@
     btn.innerHTML = '<span></span><span></span><span></span>';
     nav.appendChild(btn);
 
-    // Build drawer by cloning nav-links <a>s
+    // Build drawer
     var drawer = document.createElement('div');
     drawer.id = 'frqncy-mobile-menu';
     drawer.setAttribute('role', 'dialog');
     drawer.setAttribute('aria-modal', 'true');
     drawer.setAttribute('aria-label', 'Navigation');
-    var anchors = navLinks.querySelectorAll('a');
-    anchors.forEach(function (a) {
-      var link = document.createElement('a');
-      link.href = a.getAttribute('href');
-      link.textContent = a.textContent.trim();
-      if (a.classList.contains('active')) link.classList.add('active');
-      link.addEventListener('click', close);
-      drawer.appendChild(link);
-    });
+
+    var items = navLinks.children; // <li> elements
+    for (var i = 0; i < items.length; i++) {
+      var li = items[i];
+      if (li.classList.contains('nav-dd')) {
+        // Dropdown → accordion
+        var triggerA = li.querySelector('a');
+        var menuDiv = li.querySelector('.nav-dd-menu');
+        var triggerBtn = document.createElement('button');
+        triggerBtn.className = 'mob-dd-trigger';
+        triggerBtn.textContent = triggerA ? triggerA.textContent.trim() : '';
+        triggerBtn.innerHTML += ' <span class="mob-dd-arrow">▾</span>';
+
+        var accContent = document.createElement('div');
+        accContent.className = 'mob-dd-items';
+        if (menuDiv) {
+          var subLinks = menuDiv.querySelectorAll('a');
+          subLinks.forEach(function (sa) {
+            var link = document.createElement('a');
+            link.href = sa.getAttribute('href');
+            var label = sa.querySelector('.dd-label');
+            link.textContent = label ? label.textContent.trim() : sa.textContent.trim();
+            link.addEventListener('click', closeDrawer);
+            accContent.appendChild(link);
+          });
+        }
+
+        triggerBtn.addEventListener('click', function (acc) {
+          return function () {
+            var isOpen = acc.classList.contains('open');
+            // Close all others
+            drawer.querySelectorAll('.mob-dd-items.open').forEach(function (el) { el.classList.remove('open'); });
+            drawer.querySelectorAll('.mob-dd-trigger.open').forEach(function (el) { el.classList.remove('open'); });
+            if (!isOpen) {
+              acc.classList.add('open');
+              this.classList.add('open');
+            }
+          };
+        }(accContent));
+
+        drawer.appendChild(triggerBtn);
+        drawer.appendChild(accContent);
+      } else {
+        // Regular link
+        var a = li.querySelector('a');
+        if (a) {
+          var link = document.createElement('a');
+          link.href = a.getAttribute('href');
+          link.textContent = a.textContent.trim();
+          if (a.classList.contains('active')) link.classList.add('active');
+          link.addEventListener('click', closeDrawer);
+          drawer.appendChild(link);
+        }
+      }
+    }
     document.body.appendChild(drawer);
 
-    function open() {
+    function openDrawer() {
       drawer.classList.add('open');
       btn.classList.add('open');
       btn.setAttribute('aria-expanded', 'true');
       btn.setAttribute('aria-label', 'Close menu');
       document.body.classList.add('frqncy-menu-open');
     }
-    function close() {
+    function closeDrawer() {
       drawer.classList.remove('open');
       btn.classList.remove('open');
       btn.setAttribute('aria-expanded', 'false');
@@ -74,10 +132,10 @@
       document.body.classList.remove('frqncy-menu-open');
     }
     btn.addEventListener('click', function () {
-      drawer.classList.contains('open') ? close() : open();
+      drawer.classList.contains('open') ? closeDrawer() : openDrawer();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && drawer.classList.contains('open')) close();
+      if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
     });
   }
 

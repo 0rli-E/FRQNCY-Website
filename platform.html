@@ -270,8 +270,31 @@
             transition: transform 0.3s ease;
         }
 
+        .domain-tag {
+            text-decoration: none;
+            cursor: pointer;
+        }
         .domain-tag:hover {
             transform: scale(1.05);
+        }
+
+        a.step:hover {
+            border-left-color: #B8862E;
+            background: #F5F3EE;
+        }
+
+        .step-link {
+            display: inline-block;
+            margin-top: 1rem;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 500;
+            transition: color 0.2s;
+        }
+        a.step:hover .step-link {
+            color: #B8862E;
         }
 
         /* Why Curation */
@@ -370,20 +393,33 @@
 <script src="chat-widget.js" defer></script>
 <link rel="manifest" href="manifest.json">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<link rel="stylesheet" href="nav-dropdown.css">
 </head>
 <body>
     <!-- Navigation -->
     <nav>
         <a href="index.html" class="nav-logo">FRQNCY</a>
         <ul class="nav-links">
-            <li><a href="about.html">Vision</a></li>
-            <li><a href="platform.html" class="active">Platform</a></li>
-            <li><a href="podcast.html">Podcast</a></li>
-            <li><a href="space.html">Space</a></li>
-            <li><a href="v2/explore.html">Explore</a></li>
-            <li><a href="v2/watch/index.html">Watch</a></li>
-            <li><a href="v2/courses/index.html">Courses</a></li>
-        </ul>
+      <li class="nav-dd">
+        <a href="about.html">About</a>
+        <div class="nav-dd-menu">
+          <a href="about.html"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+          <a href="platform.html"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+        </div>
+      </li>
+      <li class="nav-dd">
+        <a href="v2/explore.html">Discover</a>
+        <div class="nav-dd-menu">
+          <a href="v2/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+          <a href="v2/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video library</span></a>
+          <a href="v2/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+          <a href="search.html"><span class="dd-label">Search</span><span class="dd-sub">Find anything</span></a>
+        </div>
+      </li>
+      <li><a href="podcast.html">Podcast</a></li>
+      <li><a href="space.html">Space</a></li>
+      <li><a href="my-frqncy.html" class="nav-cta-gold">My FRQNCY</a></li>
+    </ul>
     </nav>
 
     <!-- Hero -->
@@ -400,21 +436,24 @@
         <div class="section-label">How it Works</div>
         <h2>Three Steps to Discovery</h2>
         <div class="how-it-works">
-            <div class="step">
+            <a href="v2/explore.html" class="step" style="text-decoration:none;color:inherit;">
                 <div class="step-number">1</div>
                 <h3>Browse the Network Map</h3>
-                <p>Explore 14 carefully chosen domains — everything from sciences and arts to nature and play. Each is curated for depth, not quantity.</p>
-            </div>
-            <div class="step">
+                <p>Explore 15 carefully chosen domains — everything from sciences and arts to nature and play. Each is curated for depth, not quantity.</p>
+                <span class="step-link">Open the map &rarr;</span>
+            </a>
+            <a href="v2/sciences/" class="step" style="text-decoration:none;color:inherit;">
                 <div class="step-number">2</div>
                 <h3>Click Into a Domain</h3>
                 <p>Discover the resources, teachers, and tools we've vetted. Every recommendation carries our taste and trust.</p>
-            </div>
-            <div class="step">
+                <span class="step-link">Try Sciences &rarr;</span>
+            </a>
+            <a href="search.html" class="step" style="text-decoration:none;color:inherit;">
                 <div class="step-number">3</div>
                 <h3>Find What Matters</h3>
                 <p>Save time. Find signal. Connect with the people and resources already doing the work worth knowing about.</p>
-            </div>
+                <span class="step-link">Search the network &rarr;</span>
+            </a>
         </div>
         <div style="text-align: center;">
             <a href="v2/explore.html" class="cta-button">Explore the Network</a>
@@ -426,20 +465,20 @@
         <div class="section-label">Across 14 Domains</div>
         <h2>Everything Worth Knowing About</h2>
         <div class="domains">
-            <div class="domain-tag">Sciences</div>
-            <div class="domain-tag">Technology</div>
-            <div class="domain-tag">Arts</div>
-            <div class="domain-tag">Nature</div>
-            <div class="domain-tag">Business</div>
-            <div class="domain-tag">Metaphysics</div>
-            <div class="domain-tag">Lifestyle</div>
-            <div class="domain-tag">Creation</div>
-            <div class="domain-tag">Wellbeing</div>
-            <div class="domain-tag">Society</div>
-            <div class="domain-tag">Communication</div>
-            <div class="domain-tag">Energy</div>
-            <div class="domain-tag">Food</div>
-            <div class="domain-tag">Play</div>
+            <a href="v2/sciences/" class="domain-tag">Sciences</a>
+            <a href="v2/technology/" class="domain-tag">Technology</a>
+            <a href="v2/arts/" class="domain-tag">Arts &amp; Culture</a>
+            <a href="v2/nature/" class="domain-tag">Nature &amp; Cosmos</a>
+            <a href="v2/business/" class="domain-tag">Business</a>
+            <a href="v2/metaphysics/" class="domain-tag">Metaphysics</a>
+            <a href="v2/lifestyle/" class="domain-tag">Lifestyle</a>
+            <a href="v2/creation/" class="domain-tag">Creation</a>
+            <a href="v2/wellbeing/" class="domain-tag">Well-being</a>
+            <a href="v2/society/" class="domain-tag">Society</a>
+            <a href="v2/communication/" class="domain-tag">Communication</a>
+            <a href="v2/energy/" class="domain-tag">Energy</a>
+            <a href="v2/food/" class="domain-tag">Food &amp; Agriculture</a>
+            <a href="v2/play/" class="domain-tag">Play &amp; Recreation</a>
         </div>
     </section>
 
