@@ -7,8 +7,9 @@
 const fs   = require('fs');
 const path = require('path');
 
-const VIDEOS    = JSON.parse(fs.readFileSync('videos.json',    'utf8'));
-const PROVIDERS = JSON.parse(fs.readFileSync('providers.json', 'utf8'));
+const ROOT      = __dirname;
+const VIDEOS    = JSON.parse(fs.readFileSync(path.join(ROOT, 'videos.json'),    'utf8'));
+const PROVIDERS = JSON.parse(fs.readFileSync(path.join(ROOT, 'providers.json'), 'utf8'));
 
 // ── Build the flat inlined videos array ────────────────────────
 const providerMap = new Map(PROVIDERS.map(p => [p.id, p]));

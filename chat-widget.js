@@ -250,12 +250,18 @@
     //    Markdown links: [text](url) — internal links stay in same tab
     out = out
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, href) => {
+        // Sanitize href: block javascript: and data: protocols
+        const hrefClean = href.replace(/&amp;/g,'&');
+        if (/^\s*(javascript|data|vbscript)\s*:/i.test(hrefClean)) return label;
+        const safeHref = href.replace(/"/g, '&quot;');
         const isInternal = href.startsWith('/');
-        return `<a href="${href}"${isInternal ? '' : ' target="_blank" rel="noopener"'} class="fc-link">${label}</a>`;
+        return `<a href="${safeHref}"${isInternal ? '' : ' target="_blank" rel="noopener"'} class="fc-link">${label}</a>`;
       })
 
     //    Auto-linkify bare FRQNCY paths like /v2/human-design/ that aren't already inside an <a>
-      .replace(/(?<!["=])(\/(v2\/[a-z0-9-]+(?:\/[a-z0-9-]*)*\/?|[a-z0-9-]+\.html))/g, (match, path) => {
+    //    Uses capture-group workaround instead of lookbehind for Safari < 16.4 compat
+      .replace(/(["=])?(\/(v2\/[a-z0-9-]+(?:\/[a-z0-9-]*)*\/?|[a-z0-9-]+\.html))/g, (match, prefix, path) => {
+        if (prefix) return match; // preceded by " or =, skip
         // Build a readable label from the slug
         const slug = path.replace(/^\/v2\//, '').replace(/\.html$/, '').replace(/\/$/, '');
         const label = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
@@ -327,7 +333,7 @@
 
     messages.push({ role: 'user', content: text });
     // Trim history to last 20 messages to prevent unbounded growth
-    if (messages.length > 20) messages = messages.slice(-20);
+    if (messages.length > 10) messages = messages.slice(-10);
     addMessage('user', text);
     showTyping();
 

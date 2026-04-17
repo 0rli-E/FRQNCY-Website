@@ -312,19 +312,25 @@ function _lonToGL(lon){
 
 // ── High-precision backend: astronomy-engine (sub-arcsec) with Meeus fallback ──
 let _AE = null;
-const _AE_LOADING = (async () => {
-  // Try CDN mirrors in order. First success wins. If all fail, keep Meeus.
-  const urls = [
-    'https://esm.sh/astronomy-engine@2.1.19',
-    'https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/+esm',
-    'https://unpkg.com/astronomy-engine@2.1.19/esm/astronomy.js'
-  ];
-  for (const u of urls) {
-    try { const m = await import(u); _AE = m; return; }
-    catch(e){ /* try next */ }
+let _aePromise = null;
+function loadAE() {
+  if (!_aePromise) {
+    _aePromise = (async () => {
+      // Try CDN mirrors in order. First success wins. If all fail, keep Meeus.
+      const urls = [
+        'https://esm.sh/astronomy-engine@2.1.19',
+        'https://cdn.jsdelivr.net/npm/astronomy-engine@2.1.19/+esm',
+        'https://unpkg.com/astronomy-engine@2.1.19/esm/astronomy.js'
+      ];
+      for (const u of urls) {
+        try { const m = await import(u); _AE = m; return; }
+        catch(e){ /* try next */ }
+      }
+      console.warn('[FRQNCY] HD engine: astronomy-engine unavailable, using Meeus fallback (outer-planet lines ±1)');
+    })();
   }
-  console.warn('[FRQNCY] HD engine: astronomy-engine unavailable, using Meeus fallback (outer-planet lines ±1)');
-})();
+  return _aePromise;
+}
 
 function _jdToDate(jd){ return new Date((jd - 2440587.5) * 86400000); }
 
@@ -479,13 +485,14 @@ function generate() {
   document.getElementById('loading').style.display = 'block';
   document.getElementById('loading').scrollIntoView({ behavior: 'smooth', block: 'center' });
 
-  const date = new Date(dob);
+  const [y, m, d] = dob.split('-').map(Number);
+  const date = new Date(y, m - 1, d); // local time, no timezone shift
   const dayNames = ['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'];
   const monthNames = ['January','February','March','April','May','June','July','August','September','October','November','December'];
   const dateStr = `${dayNames[date.getDay()]}, ${date.getDate()} ${monthNames[date.getMonth()]} ${date.getFullYear()}`;
 
   // Wait for astronomy-engine to finish loading (or fail over to Meeus) before rendering
-  Promise.all([_AE_LOADING, new Promise(r=>setTimeout(r,1200))]).then(() => {
+  Promise.all([loadAE(), new Promise(r=>setTimeout(r,1200))]).then(() => {
     document.getElementById('loading').style.display = 'none';
     const rArea = document.getElementById('result-area');
     rArea.style.display = 'block';

@@ -76,7 +76,8 @@ export default {
     // CORS preflight
     const origin = request.headers.get('Origin') || '';
     const allowedOrigins = ['https://frqncy.network', 'https://frqncy-website.pages.dev'];
-    const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+    const isAllowed = allowedOrigins.includes(origin) || origin.endsWith('.frqncy-website.pages.dev');
+    const corsOrigin = isAllowed ? origin : allowedOrigins[0];
 
     if (request.method === 'OPTIONS') {
       return new Response(null, {

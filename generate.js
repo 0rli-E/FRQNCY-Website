@@ -74,7 +74,6 @@ function hexToRgba(hex, a) {
 
 // ── Shared CSS ───────────────────────────────────────────────────
 const CSS = `
-@import url('https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap');
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08)}
 html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
@@ -451,7 +450,8 @@ function collectionLd(label, desc, url) {
 // ── Head template ────────────────────────────────────────────────
 function head(title, accent, desc = '', canonical = '', jsonLd = null, ogImageSlug = null) {
   const glow     = hexToRgba(accent, 0.14);
-  const metaDesc = (desc || `Explore ${title} — curated resources, FRQNCY Picks, and the best thinkers in this space. Part of the FRQNCY conscious living network.`).slice(0, 155);
+  const safeTitle = esc(title);
+  const metaDesc = esc((desc || `Explore ${title} — curated resources, FRQNCY Picks, and the best thinkers in this space. Part of the FRQNCY conscious living network.`).slice(0, 155));
   const url      = canonical || 'https://frqncy.network/v2/';
   const ogImage  = ogImageSlug
     ? `https://frqncy.network/v2/og/${ogImageSlug}.png`
@@ -462,11 +462,11 @@ function head(title, accent, desc = '', canonical = '', jsonLd = null, ogImageSl
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>${title} — FRQNCY Network</title>
+<title>${safeTitle} — FRQNCY Network</title>
 <meta name="description" content="${metaDesc}">
 <meta name="theme-color" content="#0B1C3D">
 <meta property="og:type" content="website">
-<meta property="og:title" content="${title} — FRQNCY Network">
+<meta property="og:title" content="${safeTitle} — FRQNCY Network">
 <meta property="og:description" content="${metaDesc}">
 <meta property="og:url" content="${url}">
 <meta property="og:image" content="${ogImage}">
@@ -474,7 +474,7 @@ function head(title, accent, desc = '', canonical = '', jsonLd = null, ogImageSl
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="FRQNCY">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="${title} — FRQNCY Network">
+<meta name="twitter:title" content="${safeTitle} — FRQNCY Network">
 <meta name="twitter:description" content="${metaDesc}">
 <meta name="twitter:image" content="${ogImage}">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
@@ -482,6 +482,7 @@ function head(title, accent, desc = '', canonical = '', jsonLd = null, ogImageSl
 <link rel="canonical" href="${url}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 :root{--accent:${accent};--accent-glow:${glow}}
 ${CSS}
@@ -490,7 +491,6 @@ ${CSS}
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
-<link rel="manifest" href="../../manifest.json">
 ${ldTag}
 </head>
 <body>`;

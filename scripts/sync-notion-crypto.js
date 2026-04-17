@@ -61,7 +61,11 @@ if (!NOTION_TOKEN || !DATABASE_ID) {
 
 /* ── Notion API helpers ─────────────────────────────────────── */
 
-function notionRequest(method, endpoint, body) {
+function sleep(ms) {
+  return new Promise(resolve => setTimeout(resolve, ms));
+}
+
+function notionRequestOnce(method, endpoint, body) {
   return new Promise((resolve, reject) => {
     const data = body ? JSON.stringify(body) : null;
     const options = {
@@ -81,14 +85,46 @@ function notionRequest(method, endpoint, body) {
       res.on('data', c => chunks.push(c));
       res.on('end', () => {
         const raw = Buffer.concat(chunks).toString();
-        try { resolve(JSON.parse(raw)); }
-        catch(e) { reject(new Error(`Invalid JSON: ${raw.slice(0,200)}`)); }
+        const statusCode = res.statusCode;
+        let parsed;
+        try { parsed = JSON.parse(raw); }
+        catch(e) { return reject(new Error(`Invalid JSON (HTTP ${statusCode}): ${raw.slice(0,200)}`)); }
+        resolve({ statusCode, body: parsed, retryAfter: res.headers['retry-after'] });
       });
     });
     req.on('error', reject);
     if (data) req.write(data);
     req.end();
   });
+}
+
+async function notionRequest(method, endpoint, body, maxRetries = 2) {
+  for (let attempt = 0; attempt <= maxRetries; attempt++) {
+    const { statusCode, body: responseBody, retryAfter } = await notionRequestOnce(method, endpoint, body);
+
+    if (statusCode >= 200 && statusCode < 300) {
+      return responseBody;
+    }
+
+    if (statusCode === 429) {
+      const waitSec = parseInt(retryAfter, 10) || 5;
+      console.warn(`Rate limited (429). Waiting ${waitSec}s before retry (attempt ${attempt + 1}/${maxRetries})...`);
+      await sleep(waitSec * 1000);
+      continue;
+    }
+
+    if (statusCode >= 500 && attempt < maxRetries) {
+      const delay = (attempt + 1) * 2;
+      console.warn(`Server error (${statusCode}). Retrying in ${delay}s (attempt ${attempt + 1}/${maxRetries})...`);
+      await sleep(delay * 1000);
+      continue;
+    }
+
+    const msg = responseBody?.message || JSON.stringify(responseBody).slice(0, 200);
+    throw new Error(`Notion API error (HTTP ${statusCode}): ${msg}`);
+  }
+
+  throw new Error('Notion API: max retries exceeded');
 }
 
 async function queryDatabase(startCursor) {

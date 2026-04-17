@@ -35,7 +35,7 @@ function checkRateLimit(ip) {
     rateBuckets.set(ip, bucket);
   }
   bucket.count++;
-  if (rateBuckets.size > 5000) {
+  if (rateBuckets.size > 1000) {
     for (const [k, v] of rateBuckets) { if (now >= v.resetAt) rateBuckets.delete(k); }
   }
   return bucket.count > RATE_MAX;

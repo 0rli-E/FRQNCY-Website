@@ -5,7 +5,11 @@
 
     // Visibility — pause animations when tab is hidden (saves CPU/battery)
     let pageVisible = !document.hidden;
-    document.addEventListener('visibilitychange', () => { pageVisible = !document.hidden; });
+    let animRunning = false;
+    document.addEventListener('visibilitychange', () => {
+      pageVisible = !document.hidden;
+      if (pageVisible && !animRunning) { animRunning = true; requestAnimationFrame(animate); }
+    });
 
     // Scroll-lock counter — prevents hamburger and subscribe overlay from
     // fighting over body.style.overflow when both are active simultaneously
@@ -48,19 +52,20 @@
 
       for (let i = 0; i < 70; i++) particles.push(new Particle());
 
-      (function animate() {
-        if (pageVisible) {
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-          particles.forEach(p => {
-            p.update();
-            ctx.beginPath();
-            ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
-            ctx.fillStyle = `rgba(196, 151, 58, ${p.opacity})`;
-            ctx.fill();
-          });
-        }
+      function animate() {
+        if (!pageVisible) { animRunning = false; return; }
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        particles.forEach(p => {
+          p.update();
+          ctx.beginPath();
+          ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+          ctx.fillStyle = `rgba(196, 151, 58, ${p.opacity})`;
+          ctx.fill();
+        });
         requestAnimationFrame(animate);
-      })();
+      }
+      animRunning = true;
+      requestAnimationFrame(animate);
     })();
 
     // =====================
@@ -91,11 +96,22 @@
       if (!overlay) return;
       overlay.classList.add('visible');
       lockBody();
+      // Focus trap: keep Tab within the overlay
+      const focusable = overlay.querySelectorAll('input, button, a, [tabindex]:not([tabindex="-1"])');
+      if (focusable.length) focusable[0].focus();
+      overlay._trapHandler = function(e) {
+        if (e.key !== 'Tab' || !focusable.length) return;
+        const first = focusable[0], last = focusable[focusable.length - 1];
+        if (e.shiftKey) { if (document.activeElement === first) { e.preventDefault(); last.focus(); } }
+        else { if (document.activeElement === last) { e.preventDefault(); first.focus(); } }
+      };
+      overlay.addEventListener('keydown', overlay._trapHandler);
     }
     function dismissSubscribe() {
       const overlay = document.getElementById('subscribe-overlay');
       if (!overlay) return;
       overlay.classList.remove('visible');
+      if (overlay._trapHandler) { overlay.removeEventListener('keydown', overlay._trapHandler); overlay._trapHandler = null; }
       unlockBody();
       subscribeShown = true;
       markPopupSeen('dismissed');
@@ -175,54 +191,13 @@
     revealEls.forEach(el => revealObserver.observe(el));
 
     // =====================
-    // HAMBURGER MENU
-    // =====================
-    (function() {
-      const hamburger = document.getElementById('nav-hamburger');
-      const mobileMenu = document.getElementById('mobile-menu');
-      if (!hamburger || !mobileMenu) return;
-
-      function openMenu() {
-        hamburger.classList.add('open');
-        hamburger.setAttribute('aria-expanded', 'true');
-        mobileMenu.classList.add('open');
-        mobileMenu.setAttribute('aria-hidden', 'false');
-        lockBody();
-      }
-      function closeMenu() {
-        if (!mobileMenu.classList.contains('open')) return; // already closed
-        hamburger.classList.remove('open');
-        hamburger.setAttribute('aria-expanded', 'false');
-        mobileMenu.classList.remove('open');
-        mobileMenu.setAttribute('aria-hidden', 'true');
-        unlockBody();
-      }
-
-      hamburger.addEventListener('click', () => {
-        mobileMenu.classList.contains('open') ? closeMenu() : openMenu();
-      });
-
-      // Close on any link click
-      mobileMenu.querySelectorAll('a').forEach(a => a.addEventListener('click', closeMenu));
-
-      // Close on outside tap
-      document.addEventListener('click', e => {
-        if (mobileMenu.classList.contains('open') && !mobileMenu.contains(e.target) && e.target !== hamburger && !hamburger.contains(e.target)) {
-          closeMenu();
-        }
-      });
-
-      // Close on Escape
-      document.addEventListener('keydown', e => { if (e.key === 'Escape') closeMenu(); });
-    })();
-
-    // =====================
     // NAV BEHAVIOR
     // =====================
     // light-intro is also dark (#050810) — keep nav text white there too
     const darkSections = ['light-intro', 'bubble-section', 'contact-section'];
     function updateNav() {
-      const nav   = document.getElementById('main-nav');
+      const nav = document.getElementById('main-nav');
+      if (!nav) return;
       const scrolled = window.scrollY > 80;
       nav.classList.toggle('scrolled', scrolled);
 

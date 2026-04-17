@@ -12,12 +12,20 @@
 <meta property="og:url" content="https://frqncy.network/v2/crypto/explorer.html">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crypto Explorer — FRQNCY Network">
+<meta name="twitter:description" content="Learn about the crypto ecosystem chapter by chapter with FRQNCY conviction ratings.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="manifest" href="../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/crypto/explorer.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -143,7 +151,6 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
-<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </head>
 <body>
 
@@ -227,7 +234,6 @@ const CHAPTERS = [
       {n:"Cosmos",s:"ATOM",t:"C",type:"L1",mc:"Mid cap"},
       {n:"Hedera",s:"HBAR",t:"D",type:"L1",mc:"Mid cap"},
       {n:"TRON",s:"TRX",t:"D",type:"L1",mc:"Large Cap"},
-      {n:"Stellar",s:"XLM",t:"D",type:"L1",mc:"Mid cap"},
       {n:"Algorand",s:"ALGO",t:"D",type:"L1",mc:"Mid cap"},
       {n:"Fantom",s:"FTM",t:"D",type:"L1",mc:"Mid cap"}
     ]
@@ -244,8 +250,8 @@ const CHAPTERS = [
       {n:"Polygon",s:"POL",t:"C",type:"L2",mc:"Mid cap"},
       {n:"Starknet",s:"STRK",t:"C",type:"L2",mc:"Mid cap"},
       {n:"Base",s:"—",t:"B",type:"L2",note:"Coinbase's L2 — no token"},
-      {n:"zkSync",s:"ZK",t:"C",type:"L2",mc:"small capp"},
-      {n:"Scroll",s:"SCR",t:"D",type:"L2",mc:"small capp"}
+      {n:"zkSync",s:"ZK",t:"C",type:"L2",mc:"Small cap"},
+      {n:"Scroll",s:"SCR",t:"D",type:"L2",mc:"Small cap"}
     ]
   },
   {
@@ -297,7 +303,7 @@ const CHAPTERS = [
       {n:"Fetch.ai",s:"FET",t:"B",type:"projecttoken",mc:"Mid cap"},
       {n:"Akash Network",s:"AKT",t:"B",type:"projecttoken",mc:"Mid cap"},
       {n:"Sahara AI",s:"—",t:"C",type:"projecttoken"},
-      {n:"Humans.ai",s:"HEART",t:"D",type:"projecttoken",mc:"small capp"},
+      {n:"Humans.ai",s:"HEART",t:"D",type:"projecttoken",mc:"Small cap"},
       {n:"SingularityNET",s:"AGIX",t:"C",type:"projecttoken",mc:"Mid cap"}
     ]
   },
@@ -311,10 +317,10 @@ const CHAPTERS = [
       {n:"Shiba Inu",s:"SHIB",t:"C",type:"projecttoken",mc:"Large Cap"},
       {n:"Floki",s:"FLOKI",t:"D",type:"projecttoken",mc:"Mid cap"},
       {n:"Bonk",s:"BONK",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"Book of Meme",s:"BOME",t:"E",type:"projecttoken",mc:"small capp"},
-      {n:"Memecoin",s:"MEME",t:"E",type:"projecttoken",mc:"small capp"},
-      {n:"Milady Meme",s:"LADYS",t:"F",type:"projecttoken",mc:"small capp"},
-      {n:"Melania Meme",s:"MELANIA",t:"F",type:"projecttoken",mc:"small capp"}
+      {n:"Book of Meme",s:"BOME",t:"E",type:"projecttoken",mc:"Small cap"},
+      {n:"Memecoin",s:"MEME",t:"E",type:"projecttoken",mc:"Small cap"},
+      {n:"Milady Meme",s:"LADYS",t:"F",type:"projecttoken",mc:"Small cap"},
+      {n:"Melania Meme",s:"MELANIA",t:"F",type:"projecttoken",mc:"Small cap"}
     ]
   },
   {
@@ -325,9 +331,9 @@ const CHAPTERS = [
     projects: [
       {n:"Zcash",s:"ZEC",t:"S",type:"L1",mc:"Mid cap"},
       {n:"Monero",s:"XMR",t:"A",type:"L1",mc:"Mid cap"},
-      {n:"Secret Network",s:"SCRT",t:"C",type:"L1",mc:"small capp"},
+      {n:"Secret Network",s:"SCRT",t:"C",type:"L1",mc:"Small cap"},
       {n:"Aztec",s:"—",t:"B",type:"L2",note:"ZK privacy layer for Ethereum"},
-      {n:"Nillion",s:"NIL",t:"C",type:"projecttoken",mc:"small capp"},
+      {n:"Nillion",s:"NIL",t:"C",type:"projecttoken",mc:"Small cap"},
       {n:"Miden",s:"—",t:"C",type:"L2",note:"ZK rollup by Polygon"},
       {n:"Arcium",s:"—",t:"C",type:"projecttoken",note:"Encrypted computation network"}
     ]
@@ -340,7 +346,7 @@ const CHAPTERS = [
     projects: [
       {n:"XRP",s:"XRP",t:"C",type:"L1",mc:"Large Cap"},
       {n:"Stellar",s:"XLM",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"Nano",s:"XNO",t:"D",type:"L1",mc:"small capp"},
+      {n:"Nano",s:"XNO",t:"D",type:"L1",mc:"Small cap"},
       {n:"Celo",s:"CELO",t:"C",type:"L1",mc:"Mid cap"}
     ]
   },
@@ -353,7 +359,7 @@ const CHAPTERS = [
       {n:"Chainlink",s:"LINK",t:"S",type:"projecttoken",mc:"Large Cap"},
       {n:"Pyth Network",s:"PYTH",t:"B",type:"projecttoken",mc:"Mid cap"},
       {n:"The Graph",s:"GRT",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Band Protocol",s:"BAND",t:"D",type:"projecttoken",mc:"small capp"}
+      {n:"Band Protocol",s:"BAND",t:"D",type:"projecttoken",mc:"Small cap"}
     ]
   },
   {
@@ -367,8 +373,8 @@ const CHAPTERS = [
       {n:"Axie Infinity",s:"AXS",t:"D",type:"projecttoken",mc:"Mid cap"},
       {n:"The Sandbox",s:"SAND",t:"D",type:"projecttoken",mc:"Mid cap"},
       {n:"Decentraland",s:"MANA",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"Yield Guild Games",s:"YGG",t:"E",type:"projecttoken",mc:"small capp"},
-      {n:"Nakamoto Games",s:"NAKA",t:"E",type:"projecttoken",mc:"small capp"}
+      {n:"Yield Guild Games",s:"YGG",t:"E",type:"projecttoken",mc:"Small cap"},
+      {n:"Nakamoto Games",s:"NAKA",t:"E",type:"projecttoken",mc:"Small cap"}
     ]
   },
   {
@@ -377,8 +383,8 @@ const CHAPTERS = [
     title: "DeSci & Longevity",
     intro: "Decentralized science applies crypto coordination to research funding. Instead of waiting for grants from institutions, communities pool capital to fund the science that matters to them — from longevity research to rare diseases. It's early, radical, and deeply aligned with sovereignty over health.",
     projects: [
-      {n:"Bio Protocol",s:"BIO",t:"B",type:"projecttoken",mc:"small capp"},
-      {n:"VitaDAO",s:"VITA",t:"C",type:"projecttoken",mc:"small capp"},
+      {n:"Bio Protocol",s:"BIO",t:"B",type:"projecttoken",mc:"Small cap"},
+      {n:"VitaDAO",s:"VITA",t:"C",type:"projecttoken",mc:"Small cap"},
       {n:"Molecule",s:"—",t:"C",type:"projecttoken",note:"IP-NFT platform for research"}
     ]
   },
@@ -389,11 +395,11 @@ const CHAPTERS = [
     intro: "SocialFi reimagines social media through crypto — where content is ownable, creators are paid directly, and identity is self-sovereign. These projects challenge the model where platforms own your data and attention. Your identity, your content, your value.",
     projects: [
       {n:"Worldcoin",s:"WLD",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Zora",s:"ZORA",t:"C",type:"projecttoken",mc:"small capp"},
+      {n:"Zora",s:"ZORA",t:"C",type:"projecttoken",mc:"Small cap"},
       {n:"Lens Protocol",s:"—",t:"B",type:"projecttoken",note:"Decentralized social graph"},
       {n:"Farcaster",s:"—",t:"B",type:"projecttoken",note:"Sufficiently decentralized social"},
       {n:"Story Protocol",s:"IP",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Galxe",s:"GAL",t:"D",type:"projecttoken",mc:"small capp"}
+      {n:"Galxe",s:"GAL",t:"D",type:"projecttoken",mc:"Small cap"}
     ]
   },
   {
@@ -404,8 +410,8 @@ const CHAPTERS = [
     projects: [
       {n:"LayerZero",s:"ZRO",t:"B",type:"projecttoken",mc:"Mid cap"},
       {n:"Wormhole",s:"W",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Across Protocol",s:"ACX",t:"C",type:"projecttoken",mc:"small capp"},
-      {n:"Stargate",s:"STG",t:"D",type:"projecttoken",mc:"small capp"}
+      {n:"Across Protocol",s:"ACX",t:"C",type:"projecttoken",mc:"Small cap"},
+      {n:"Stargate",s:"STG",t:"D",type:"projecttoken",mc:"Small cap"}
     ]
   },
   {
@@ -468,7 +474,7 @@ function buildChapters() {
     const sorted = [...ch.projects].sort((a,b) => TIER_ORDER.indexOf(a.t) - TIER_ORDER.indexOf(b.t));
 
     section.innerHTML = `
-      <div class="chapter-header" data-chapter="${ch.id}">
+      <div class="chapter-header" data-chapter="${ch.id}" tabindex="0" role="button">
         <div class="chapter-icon">${ch.icon}</div>
         <div class="chapter-title">${esc(ch.title)}</div>
         <span class="chapter-count">${ch.projects.length} project${ch.projects.length !== 1 ? 's' : ''}</span>
@@ -483,6 +489,9 @@ function buildChapters() {
     `;
 
     section.querySelector('.chapter-header').addEventListener('click', () => toggleChapter(ch.id));
+    section.querySelector('.chapter-header').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleChapter(ch.id); }
+    });
     container.appendChild(section);
   }
 }
@@ -575,5 +584,6 @@ if (hash) {
   }
 }
 </script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </body>
 </html>

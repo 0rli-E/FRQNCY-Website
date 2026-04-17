@@ -505,8 +505,10 @@ nav{
   </div>
 </div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" defer></script>
 <script>
+// Wait for DOMContentLoaded so deferred D3 script is loaded before we run
+document.addEventListener('DOMContentLoaded', function() {
 // ── State ──────────────────────────────────────────────────────────────
 let TOPICS = [], RESOURCES = [];
 let selectedDomains = [];
@@ -940,6 +942,7 @@ function esc(s) {
     // Eagerly pre-selected nothing — form is ready
   }
 })();
+}); // end DOMContentLoaded
 </script>
 
 <!-- Footer -->
