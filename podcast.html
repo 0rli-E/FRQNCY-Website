@@ -208,6 +208,67 @@
             line-height: 1.8;
         }
 
+        /* Host Cards */
+        .hosts-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 2.5rem;
+            margin-top: 2rem;
+        }
+
+        .host-card {
+            text-align: center;
+        }
+
+        .host-photo {
+            width: 180px;
+            height: 180px;
+            border-radius: 50%;
+            object-fit: cover;
+            margin: 0 auto 1.5rem;
+            display: block;
+            border: 3px solid var(--gold);
+            box-shadow: 0 4px 24px rgba(196, 151, 58, 0.15);
+        }
+
+        .host-card h3 {
+            font-family: 'Cormorant', serif;
+            font-size: 1.8rem;
+            font-weight: 400;
+            color: var(--dark);
+            margin-bottom: 0.5rem;
+        }
+
+        .host-role {
+            font-family: 'Jost', sans-serif;
+            font-size: 0.8rem;
+            letter-spacing: 0.15em;
+            text-transform: uppercase;
+            color: var(--gold);
+            font-weight: 500;
+            margin-bottom: 1rem;
+        }
+
+        .host-card p.host-bio {
+            font-size: 0.95rem;
+            color: var(--mid);
+            line-height: 1.7;
+            max-width: 360px;
+            margin: 0 auto;
+        }
+
+        @media (max-width: 768px) {
+            .hosts-grid {
+                grid-template-columns: 1fr;
+                gap: 2rem;
+            }
+
+            .host-photo {
+                width: 150px;
+                height: 150px;
+            }
+        }
+
         /* The Format */
         .format-content {
             background: #FAFAFA;
@@ -444,6 +505,26 @@
             <div class="hero-label">The Podcast</div>
             <h1>Conversations at the Frontier</h1>
             <p>Long-form interviews and domain deep-dives with the builders, teachers, researchers, healers, and creators already doing the work worth knowing about.</p>
+        </div>
+    </section>
+
+    <!-- Your Hosts -->
+    <section>
+        <div class="section-label">Your Hosts</div>
+        <h2>Meet the Voices Behind FRQNCY</h2>
+        <div class="hosts-grid">
+            <div class="host-card">
+                <img src="images/orlando-eisenreich.jpg" alt="Orlando Eisenreich" class="host-photo">
+                <h3>Orlando Eisenreich</h3>
+                <div class="host-role">Co-Host & Founder</div>
+                <p class="host-bio">Explorer at the intersection of consciousness, technology, and human potential. Orlando founded FRQNCY to map the frontier of conscious living and connect the people doing the work worth knowing about.</p>
+            </div>
+            <div class="host-card">
+                <img src="images/norman-graeter.jpg" alt="Norman Gräter" class="host-photo">
+                <h3>Norman Gräter</h3>
+                <div class="host-role">Co-Host</div>
+                <p class="host-bio">Speaker, coach, and thought leader in personal transformation and peak performance. Norman brings deep expertise in human potential and the art of meaningful conversation.</p>
+            </div>
         </div>
     </section>
 
