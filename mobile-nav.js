@@ -146,6 +146,7 @@
         { label: 'Podcast', href: base + 'podcast.html' },
         { label: 'Space', href: base + 'space.html' },
         { label: 'Chart', href: base + 'chart.html' },
+        { label: 'People', href: base + 'v2/people/index.html' },
         { label: 'My FRQNCY', href: base + 'my-frqncy.html' }
       ];
       fallbackLinks.forEach(function(item) {
