@@ -2,30 +2,32 @@
  * /api/chat  — FRQNCY AI Navigator
  * Cloudflare Pages Function
  *
- * Env vars required (Cloudflare Pages → Settings → Environment Variables):
- *   ANTHROPIC_API_KEY   your Anthropic API key
+ * Uses Cloudflare Workers AI — no API key needed, runs free on Cloudflare's edge.
+ * Model: @cf/qwen/qwen1.5-14b-chat-awq
  *
  * POST /api/chat
  * Body: { messages: [{ role: "user"|"assistant", content: "..." }] }
- * Returns: text/event-stream (Anthropic SSE proxied through)
+ * Returns: JSON { response: "..." }
+ *
+ * Requires AI binding in Pages project:
+ *   Cloudflare Dashboard → Pages → frqncy-website → Settings → Bindings
+ *   → Add binding → Workers AI → variable name: AI
  */
 
 import { KB } from './_kb.js';
 
-const MODEL       = 'claude-haiku-4-5-20251001';
+const MODEL       = '@cf/qwen/qwen1.5-14b-chat-awq';
 const MAX_TOKENS  = 1024;
-const MAX_HISTORY = 12;   // keep last N messages to bound context size
-const MAX_CONTENT = 4000; // max chars per message
+const MAX_HISTORY = 10;   // keep last N messages to bound context size
+const MAX_CONTENT = 3000; // max chars per message
 
 // ── In-memory rate limiter ────────────────────────────────────────
-// Resets per worker instance (Cloudflare spins up many, but still limits bursts)
-// For persistent limits, bind a KV namespace as env.RATE_LIMIT_KV
-const RATE_WINDOW_MS = 60_000; // 1 minute
-const RATE_MAX       = 20;     // max requests per IP per window
-const rateBuckets    = new Map(); // ip → { count, resetAt }
+const RATE_WINDOW_MS = 60_000;
+const RATE_MAX       = 20;
+const rateBuckets    = new Map();
 
 function checkRateLimit(ip) {
-  if (!ip) return false; // no IP = can't limit, allow
+  if (!ip) return false;
   const now = Date.now();
   let bucket = rateBuckets.get(ip);
   if (!bucket || now >= bucket.resetAt) {
@@ -33,7 +35,6 @@ function checkRateLimit(ip) {
     rateBuckets.set(ip, bucket);
   }
   bucket.count++;
-  // Prune map if it grows large (many unique IPs)
   if (rateBuckets.size > 5000) {
     for (const [k, v] of rateBuckets) { if (now >= v.resetAt) rateBuckets.delete(k); }
   }
@@ -69,15 +70,14 @@ export function onRequestOptions() {
 }
 
 export async function onRequestPost({ request, env }) {
-  // Rate limiting — Cloudflare sets CF-Connecting-IP on all requests
   const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For');
   if (checkRateLimit(ip)) {
     return jsonError('Too many requests — please wait a moment and try again.', 429);
   }
 
-  const apiKey = env.ANTHROPIC_API_KEY;
-  if (!apiKey) {
-    return jsonError('ANTHROPIC_API_KEY not set. Add it in Cloudflare Pages → Settings → Environment Variables.', 500);
+  // Check for Workers AI binding
+  if (!env.AI) {
+    return jsonError('Workers AI binding not configured. Add an AI binding in Cloudflare Pages → Settings → Bindings.', 500);
   }
 
   let body;
@@ -100,36 +100,28 @@ export async function onRequestPost({ request, env }) {
 
   if (clean.length === 0) return jsonError('No valid messages', 400);
 
-  let upstream;
   try {
-    upstream = await fetch('https://api.anthropic.com/v1/messages', {
-      method: 'POST',
-      headers: {
-        'Content-Type':      'application/json',
-        'x-api-key':         apiKey,
-        'anthropic-version': '2023-06-01',
-      },
-      body: JSON.stringify({ model: MODEL, max_tokens: MAX_TOKENS, system: SYSTEM, messages: clean, stream: true }),
+    const result = await env.AI.run(MODEL, {
+      messages: [
+        { role: 'system', content: SYSTEM },
+        ...clean
+      ],
+      max_tokens: MAX_TOKENS,
+      temperature: 0.7,
     });
+
+    return new Response(JSON.stringify({ response: result.response }), {
+      status: 200,
+      headers: {
+        'Content-Type': 'application/json',
+        'Cache-Control': 'no-cache',
+        ...CORS_HEADERS,
+      },
+    });
+
   } catch (err) {
-    return jsonError(`Upstream request failed: ${err.message}`, 502);
+    return jsonError(`AI service error: ${err.message}`, 502);
   }
-
-  if (!upstream.ok) {
-    // Return a generic error to the client — avoid leaking API details
-    return jsonError(`AI service error (${upstream.status})`, upstream.status);
-  }
-
-  // Proxy the SSE stream straight through to the client
-  return new Response(upstream.body, {
-    status: 200,
-    headers: {
-      'Content-Type':      'text/event-stream',
-      'Cache-Control':     'no-cache',
-      'X-Accel-Buffering': 'no',
-      ...CORS_HEADERS,
-    },
-  });
 }
 
 function jsonError(message, status = 400) {

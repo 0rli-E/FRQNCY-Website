@@ -331,43 +331,10 @@
         return;
       }
 
-      // Stream the response
-      const botEl = addMessage('bot', '', true);
-      let accumulated = '';
-      let buf = '';
-
-      const decoder = new TextDecoder();
-      const streamReader = res.body.getReader();
-
-      try {
-        while (true) {
-          const { done, value } = await streamReader.read();
-          if (done) break;
-          buf += decoder.decode(value, { stream: true });
-
-          const lines = buf.split('\n');
-          buf = lines.pop(); // retain any incomplete trailing line
-
-          for (const line of lines) {
-            if (!line.startsWith('data: ')) continue;
-            const payload = line.slice(6).trim();
-            if (payload === '[DONE]') continue;
-            try {
-              const evt = JSON.parse(payload);
-              if (evt.type === 'content_block_delta' && evt.delta?.type === 'text_delta') {
-                accumulated += evt.delta.text;
-                botEl.innerHTML = md(accumulated);
-                msgsEl.scrollTop = msgsEl.scrollHeight;
-              }
-            } catch { /* skip malformed SSE frame */ }
-          }
-        }
-      } finally {
-        streamReader.releaseLock();
-      }
-
-      delete botEl.dataset.streaming;
-      if (accumulated) messages.push({ role: 'assistant', content: accumulated });
+      const data = await res.json();
+      const reply = data.response || 'Sorry, I didn\'t get a response. Try again.';
+      addMessage('bot', reply);
+      messages.push({ role: 'assistant', content: reply });
 
     } catch (err) {
       hideTyping();
