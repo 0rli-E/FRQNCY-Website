@@ -191,6 +191,7 @@
       transform: translate(-50%, -50%);
       animation: orbExpand 3.2s cubic-bezier(0.25, 0.46, 0.45, 0.94) forwards;
       z-index: 2;
+      pointer-events: none;
     }
 
     @keyframes orbExpand {
@@ -244,6 +245,7 @@
       opacity: 0;
       animation: bgFade 3.2s ease-in-out forwards;
       z-index: 1;
+      pointer-events: none;
     }
     @keyframes bgFade {
       0%   { opacity: 0; }

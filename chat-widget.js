@@ -51,6 +51,7 @@
   style.textContent = `
   #frqncy-chat-btn {
     position:fixed; bottom:24px; right:24px; z-index:9998;
+    isolation:isolate;
     width:56px; height:56px; border-radius:50%;
     background:${C.gold}; border:none; cursor:pointer;
     box-shadow:0 4px 20px rgba(196,151,58,0.45);
