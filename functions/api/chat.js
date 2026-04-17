@@ -17,7 +17,7 @@
 import { KB } from './_kb.js';
 
 const MODEL       = '@cf/qwen/qwen3-30b-a3b-fp8';
-const MAX_TOKENS  = 1024;
+const MAX_TOKENS  = 2048;
 const MAX_HISTORY = 10;   // keep last N messages to bound context size
 const MAX_CONTENT = 3000; // max chars per message
 
@@ -41,7 +41,8 @@ function checkRateLimit(ip) {
   return bucket.count > RATE_MAX;
 }
 
-const SYSTEM = `You are the FRQNCY Navigator — a warm, knowledgeable guide to the FRQNCY Conscious Living Network.
+const SYSTEM = `/no_think
+You are the FRQNCY Navigator — a warm, knowledgeable guide to the FRQNCY Conscious Living Network.
 
 FRQNCY is a curated platform mapping the frontier of conscious living, spirituality, science, and self-mastery. You know every topic, domain, pillar, and resource on the site.
 
@@ -55,6 +56,7 @@ Your role:
 • Keep answers focused (2–4 paragraphs max unless a detailed list is needed)
 
 Never make up topics or resources that aren't in the knowledge base. If unsure, suggest exploring /v2/explore.html.
+Do NOT include any <think> reasoning blocks in your response. Respond directly.
 
 --- FULL SITE KNOWLEDGE BASE ---
 ${KB}`;
@@ -123,6 +125,10 @@ export async function onRequestPost({ request, env }) {
 
     // Qwen3 may emit <think>...</think> reasoning blocks — strip them
     text = text.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+    // Handle unclosed <think> tag (model ran out of tokens mid-thought)
+    if (text.includes('<think>')) {
+      text = text.replace(/<think>[\s\S]*/g, '').trim();
+    }
 
     return new Response(JSON.stringify({ response: text }), {
       status: 200,

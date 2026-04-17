@@ -183,7 +183,8 @@
   btn.id = 'frqncy-chat-btn';
   btn.setAttribute('aria-label', 'Open FRQNCY chat');
   btn.innerHTML = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M12 2l2.4 7.4H22l-6.2 4.5 2.4 7.4L12 17l-6.2 4.3 2.4-7.4L2 9.4h7.6z"/>
+    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/>
+    <circle cx="8" cy="10" r="1.2"/><circle cx="12" cy="10" r="1.2"/><circle cx="16" cy="10" r="1.2"/>
   </svg>`;
 
   // Panel
@@ -227,7 +228,7 @@
       const b = document.createElement('button');
       b.className = 'fc-sug';
       b.textContent = s;
-      b.addEventListener('click', () => sendMessage(s));
+      b.addEventListener('click', (e) => { e.stopPropagation(); sendMessage(s); });
       sugsEl.appendChild(b);
     });
   }
@@ -336,7 +337,9 @@
       const data = await res.json();
       let reply = data.response || 'Sorry, I didn\'t get a response. Try again.';
       // Strip any <think> blocks that may have leaked through
-      reply = reply.replace(/<think>[\s\S]*?<\/think>/g, '').trim() || reply;
+      reply = reply.replace(/<think>[\s\S]*?<\/think>/g, '');
+      if (reply.includes('<think>')) reply = reply.replace(/<think>[\s\S]*/g, '');
+      reply = reply.trim() || 'Let me try that again — could you rephrase your question?';
       addMessage('bot', reply);
       messages.push({ role: 'assistant', content: reply });
 
@@ -352,7 +355,8 @@
         const retryBtn = document.createElement('button');
         retryBtn.textContent = 'Retry ↻';
         retryBtn.style.cssText = 'margin-top:8px;padding:5px 14px;font-size:12px;letter-spacing:0.08em;background:rgba(196,151,58,0.15);color:#E0C06A;border:1px solid rgba(196,151,58,0.3);border-radius:3px;cursor:pointer;font-family:inherit;';
-        retryBtn.addEventListener('click', function() {
+        retryBtn.addEventListener('click', function(e) {
+          e.stopPropagation();
           // Remove the error bubble (which contains the retry button)
           el.remove();
           // Find and remove the last user message bubble + array entry, then re-send
@@ -406,7 +410,7 @@
   // ── EVENTS ───────────────────────────────────────────────────────
   btn.addEventListener('click', () => open ? closeChat() : openChat());
   panel.querySelector('#frqncy-close-btn').addEventListener('click', closeChat);
-  sendBtn.addEventListener('click', () => sendMessage());
+  sendBtn.addEventListener('click', (e) => { e.stopPropagation(); sendMessage(); });
 
   inputEl.addEventListener('keydown', e => {
     if (e.key === 'Enter' && !e.shiftKey) {
