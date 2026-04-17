@@ -120,6 +120,12 @@ main{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
 .ptag.depin{border-color:rgba(46,204,113,0.25);color:#2ecc71;background:rgba(46,204,113,0.04)}
 .ptag.id{border-color:rgba(155,89,182,0.25);color:#9b59b6;background:rgba(155,89,182,0.04)}
 .ptag.fund{border-color:rgba(0,212,170,0.25);color:#00d4aa;background:rgba(0,212,170,0.04)}
+.ptag.privacy{border-color:rgba(244,183,40,0.25);color:#F4B728;background:rgba(244,183,40,0.04)}
+.ptag.meme{border-color:rgba(255,165,0,0.25);color:#FFA500;background:rgba(255,165,0,0.04)}
+.ptag.pay{border-color:rgba(26,188,156,0.25);color:#1abc9c;background:rgba(26,188,156,0.04)}
+.ptag.rwa{border-color:rgba(22,82,240,0.25);color:#6EA0F0;background:rgba(22,82,240,0.04)}
+.ptag.sci{border-color:rgba(0,200,83,0.25);color:#00C853;background:rgba(0,200,83,0.04)}
+.ptag.social{border-color:rgba(43,92,230,0.25);color:#5B8CE6;background:rgba(43,92,230,0.04)}
 
 /* Description & thesis */
 .pcard-desc{font-size:0.76rem;color:var(--text-dim);line-height:1.6}
@@ -207,12 +213,18 @@ const MCAP_LABELS = { high:'Large Cap', mid:'Mid Cap', low:'Small Cap', micro:'M
 /* Tag class mapping — maps category keywords to visual classes */
 function tagClass(cat) {
   const c = cat.toLowerCase();
-  if (c.includes('infra') || c.includes('oracle') || c.includes('modular') || c.includes('store')) return 'infra';
-  if (c.includes('defi') || c.includes('yield')) return 'defi';
+  if (c.includes('infra') || c.includes('oracle') || c.includes('modular') || c.includes('store') || c.includes('l1') || c.includes('l2') || c.includes('enterprise')) return 'infra';
+  if (c.includes('defi') || c.includes('yield') || c.includes('money market') || c.includes('dex') || c.includes('perp') || c.includes('stablecoin')) return 'defi';
   if (c.includes('ai')) return 'ai';
   if (c.includes('depin')) return 'depin';
   if (c.includes('identity')) return 'id';
   if (c.includes('fund') || c.includes('communit')) return 'fund';
+  if (c.includes('privacy')) return 'privacy';
+  if (c.includes('meme') || c.includes('culture')) return 'meme';
+  if (c.includes('payment')) return 'pay';
+  if (c.includes('rwa') || c.includes('ip')) return 'rwa';
+  if (c.includes('desci') || c.includes('longevity')) return 'sci';
+  if (c.includes('social') || c.includes('nft')) return 'social';
   return '';
 }
 
