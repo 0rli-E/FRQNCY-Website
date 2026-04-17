@@ -299,6 +299,11 @@ nav.snav{
   .reflection-box,.reading-card{max-width:100%}
 }
 </style>
+<script src="../../../mobile-nav.js" defer></script>
+<script src="../../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../../nav-dropdown.css">
+<link rel="manifest" href="../../../manifest.json">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </head>
 <body>
 
@@ -306,7 +311,7 @@ nav.snav{
   <div class="snav-left">
     <a href="../../../../" class="snav-logo">FRQNCY</a>
     <div class="breadcrumb">
-      <a href="../index.html">Courses</a>
+      <a href="../../">Courses</a>
       <span class="sep">›</span>
       <span>Conscious Living Foundations</span>
     </div>
@@ -476,11 +481,11 @@ nav.snav{
       <h1 class="lesson-h1">Finding Your Network</h1>
       <p class="lesson-subdesc">Explore the FRQNCY network map and find the three topics that pull you most. These are your signal.</p>
     </div>
-    <a class="reading-card" href="../../explore.html" >
+    <a class="reading-card" href="/v2/explore.html" >
       <span class="reading-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
       <span class="reading-body">
         <span class="reading-title">Explore the FRQNCY network map and find the three topics that pull you most. These are your signal.</span>
-        <span class="reading-domain">frqncy.com</span>
+        <span class="reading-domain">/v2/explore.html</span>
         <span class="reading-dur">20 min read</span>
       </span>
       <span class="reading-arrow">→</span>
@@ -564,14 +569,14 @@ nav.snav{
     <div class="completion-desc">You've completed all 5 lessons. The ideas are yours — carry them into practice.</div>
     <div class="completion-btns">
       <button class="cbtn cbtn-primary" onclick="closeCompletion()">Keep Exploring</button>
-      <a href="../index.html" class="cbtn cbtn-sec">All Courses</a>
+      <a href="../../" class="cbtn cbtn-sec">All Courses</a>
     </div>
   </div>
 </div>
 
 <script>
 const SLUG      = 'conscious-living-foundations';
-const LESSONS   = [{"id":"l1","title":"What is Conscious Living?","type":"reflection","duration":"10 min","content":"Before we begin — write down three questions you're currently sitting with about your life. Not problems to solve, just genuine open questions. These will be your compass through this course."},{"id":"l2","title":"The Science of Manifestation","type":"video","youtube_id":"EFGBVWFyAag","duration":"30 min","desc":"Dr Joe Dispenza connects neuroscience, quantum physics, and intentional creation."},{"id":"l3","title":"Vibration & Frequency","type":"video","youtube_id":"Q3oItpVa9fs","duration":"5 min","desc":"Cymatics visualises the patterns that sound creates in matter — a window into vibrational reality."},{"id":"l4","title":"Daily Practice — Morning Intention","type":"reflection","duration":"10 min","content":"Each morning for the next 7 days, before you check your phone: sit quietly for 3 minutes. Then write one sentence starting with 'Today I am...' — not what you'll do, but who you'll be. Notice what shifts."},{"id":"l5","title":"Finding Your Network","type":"reading","url":"../../explore.html","duration":"20 min","desc":"Explore the FRQNCY network map and find the three topics that pull you most. These are your signal."}];
+const LESSONS   = [{"id":"l1","title":"What is Conscious Living?","type":"reflection","duration":"10 min","content":"Before we begin — write down three questions you're currently sitting with about your life. Not problems to solve, just genuine open questions. These will be your compass through this course."},{"id":"l2","title":"The Science of Manifestation","type":"video","youtube_id":"EFGBVWFyAag","duration":"30 min","desc":"Dr Joe Dispenza connects neuroscience, quantum physics, and intentional creation."},{"id":"l3","title":"Vibration & Frequency","type":"video","youtube_id":"Q3oItpVa9fs","duration":"5 min","desc":"Cymatics visualises the patterns that sound creates in matter — a window into vibrational reality."},{"id":"l4","title":"Daily Practice — Morning Intention","type":"reflection","duration":"10 min","content":"Each morning for the next 7 days, before you check your phone: sit quietly for 3 minutes. Then write one sentence starting with 'Today I am...' — not what you'll do, but who you'll be. Notice what shifts."},{"id":"l5","title":"Finding Your Network","type":"reading","url":"/v2/explore.html","duration":"20 min","desc":"Explore the FRQNCY network map and find the three topics that pull you most. These are your signal."}];
 const TOTAL     = LESSONS.length;
 const STORE_KEY = 'frqncy-course-' + SLUG;
 const REFLECT_IDS = ["l1","l4"];

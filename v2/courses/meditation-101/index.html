@@ -299,6 +299,11 @@ nav.snav{
   .reflection-box,.reading-card{max-width:100%}
 }
 </style>
+<script src="../../../mobile-nav.js" defer></script>
+<script src="../../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../../nav-dropdown.css">
+<link rel="manifest" href="../../../manifest.json">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </head>
 <body>
 
@@ -306,7 +311,7 @@ nav.snav{
   <div class="snav-left">
     <a href="../../../../" class="snav-logo">FRQNCY</a>
     <div class="breadcrumb">
-      <a href="../index.html">Courses</a>
+      <a href="../../">Courses</a>
       <span class="sep">›</span>
       <span>Meditation 101</span>
     </div>
@@ -555,7 +560,7 @@ nav.snav{
     <div class="completion-desc">You've completed all 5 lessons. The ideas are yours — carry them into practice.</div>
     <div class="completion-btns">
       <button class="cbtn cbtn-primary" onclick="closeCompletion()">Keep Exploring</button>
-      <a href="../index.html" class="cbtn cbtn-sec">All Courses</a>
+      <a href="../../" class="cbtn cbtn-sec">All Courses</a>
     </div>
   </div>
 </div>
