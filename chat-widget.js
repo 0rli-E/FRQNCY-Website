@@ -115,7 +115,9 @@
   .fc-msg.user { align-self:flex-end; background:${C.user_bg}; border-bottom-right-radius:4px; }
   .fc-msg.bot  { align-self:flex-start; background:${C.bot_bg}; border-bottom-left-radius:4px; border:1px solid ${C.border}; }
   .fc-msg.bot strong { color:${C.gold}; font-weight:600; }
-  .fc-msg.bot a { color:${C.goldL}; text-decoration:underline; text-underline-offset:2px; }
+  .fc-msg.bot a { color:${C.goldL}; text-decoration:underline; text-underline-offset:2px; cursor:pointer; }
+  .fc-msg.bot a.fc-link { display:inline-block; margin:4px 0; padding:4px 10px; background:rgba(196,151,58,0.12); border:1px solid rgba(196,151,58,0.3); border-radius:6px; text-decoration:none; font-size:.82rem; letter-spacing:0.02em; transition:background .15s, border-color .15s; }
+  .fc-msg.bot a.fc-link:hover { background:rgba(196,151,58,0.25); border-color:rgba(196,151,58,0.5); }
   .fc-msg.bot ul, .fc-msg.bot ol { padding-left:1.2em; margin:.4em 0; }
   .fc-msg.bot li { margin:.2em 0; }
   .fc-msg.bot code { background:rgba(255,255,255,.08); padding:1px 5px; border-radius:4px; font-size:.82em; }
@@ -243,8 +245,20 @@
       .replace(/>/g, '&gt;');
 
     // 2. Inline: links before bold/italic so URLs with * aren't mangled
+    //    Markdown links: [text](url) — internal links stay in same tab
     out = out
-      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, '<a href="$2" target="_blank" rel="noopener">$1</a>')
+      .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, href) => {
+        const isInternal = href.startsWith('/');
+        return `<a href="${href}"${isInternal ? '' : ' target="_blank" rel="noopener"'} class="fc-link">${label}</a>`;
+      })
+
+    //    Auto-linkify bare FRQNCY paths like /v2/human-design/ that aren't already inside an <a>
+      .replace(/(?<!["=])(\/(v2\/[a-z0-9-]+(?:\/[a-z0-9-]*)*\/?|[a-z0-9-]+\.html))/g, (match, path) => {
+        // Build a readable label from the slug
+        const slug = path.replace(/^\/v2\//, '').replace(/\.html$/, '').replace(/\/$/, '');
+        const label = slug.split('-').map(w => w.charAt(0).toUpperCase() + w.slice(1)).join(' ');
+        return `<a href="${path}" class="fc-link">${label} →</a>`;
+      })
       .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
       .replace(/\*(.+?)\*/g,     '<em>$1</em>')
       .replace(/`(.+?)`/g,       '<code>$1</code>')
