@@ -16,7 +16,7 @@
 
 import { KB } from './_kb.js';
 
-const MODEL       = '@cf/qwen/qwen1.5-14b-chat-awq';
+const MODEL       = '@cf/qwen/qwen3-30b-a3b-fp8';
 const MAX_TOKENS  = 1024;
 const MAX_HISTORY = 10;   // keep last N messages to bound context size
 const MAX_CONTENT = 3000; // max chars per message
