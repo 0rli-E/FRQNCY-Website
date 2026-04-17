@@ -24,13 +24,25 @@
 /search.json
   Cache-Control: public, max-age=86400, stale-while-revalidate=3600
 
-# Chat widget — cache 1 day
+# JS/CSS — always serve latest (SW handles offline caching)
 /chat-widget.js
-  Cache-Control: public, max-age=86400, stale-while-revalidate=3600
+  Cache-Control: public, max-age=0, must-revalidate
+/index.js
+  Cache-Control: public, max-age=0, must-revalidate
+/index.css
+  Cache-Control: public, max-age=0, must-revalidate
+/mobile-nav.js
+  Cache-Control: public, max-age=0, must-revalidate
+/nav-dropdown.css
+  Cache-Control: public, max-age=0, must-revalidate
+/chart.js
+  Cache-Control: public, max-age=0, must-revalidate
+/sw.js
+  Cache-Control: public, max-age=0, must-revalidate
 
-# v2 sub-pages (non-HTML static assets inside v2)
+# v2 sub-pages — short cache with revalidation
 /v2/*
-  Cache-Control: public, max-age=86400, stale-while-revalidate=3600
+  Cache-Control: public, max-age=300, must-revalidate
 
 # HTML pages — always serve latest
 /*.html
