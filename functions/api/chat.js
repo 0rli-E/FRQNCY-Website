@@ -110,11 +110,18 @@ export async function onRequestPost({ request, env }) {
       temperature: 0.7,
     });
 
-    // Workers AI returns different shapes depending on model
-    // Try common fields: result.response (older), result.result (newer), or result itself
-    const text = result.response || result.result || (typeof result === 'string' ? result : JSON.stringify(result));
+    // Qwen3 returns OpenAI-compatible format: { choices: [{ message: { content } }] }
+    // Older models returned: { response: "..." }
+    let text;
+    if (result.choices && result.choices[0]?.message?.content) {
+      text = result.choices[0].message.content.trim();
+    } else if (result.response) {
+      text = result.response;
+    } else {
+      text = typeof result === 'string' ? result : JSON.stringify(result);
+    }
 
-    return new Response(JSON.stringify({ response: text, _debug: Object.keys(result) }), {
+    return new Response(JSON.stringify({ response: text }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
