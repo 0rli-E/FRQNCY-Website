@@ -103,6 +103,11 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 .pcard-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);transition:opacity .2s;white-space:nowrap}
 .pcard:hover .pcard-link{opacity:0.8}
 .pcard-domain-tag{font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+.pcard-links{display:flex;gap:0.75rem;align-items:center;flex-wrap:wrap}
+.pcard-yt{font-size:0.6rem;letter-spacing:0.1em;color:#FF4040;border:1px solid rgba(255,64,64,0.3);padding:3px 10px;border-radius:2px;transition:all .2s;display:inline-flex;align-items:center;gap:4px}
+.pcard-yt:hover{background:rgba(255,64,64,0.08);border-color:#FF4040;opacity:1}
+.pcard-watch{font-size:0.6rem;letter-spacing:0.1em;color:var(--accent);border:1px solid rgba(196,151,58,0.3);padding:3px 10px;border-radius:2px;transition:all .2s}
+.pcard-watch:hover{background:rgba(196,151,58,0.08);border-color:var(--gold);opacity:1}
 
 /* FOOTER */
 footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center}
@@ -180,6 +185,8 @@ const PEOPLE = [
     known: "Dynamic Meditation, discourse series on Zen, Tao, Sufism, and Tantra, the Rajneesh movement, and over 600 published books synthesizing Eastern mysticism with Western psychology.",
     link: "https://www.osho.com",
     linkLabel: "osho.com",
+    youtube: "https://www.youtube.com/@OSHO",
+    watchFilter: "t-osho",
     initials: "OS",
     accent: "#E85D3A"
   },
@@ -192,6 +199,8 @@ const PEOPLE = [
     known: "Inner Engineering program, Dhyanalinga consecration, Save Soil movement, Isha Yoga Center, bestselling books, and one of the most-watched spiritual voices on YouTube.",
     link: "https://isha.sadhguru.org",
     linkLabel: "isha.sadhguru.org",
+    youtube: "https://www.youtube.com/@Sadhguru",
+    watchFilter: "t-sadhguru",
     initials: "SG",
     accent: "#4A7AE8"
   },
@@ -202,8 +211,10 @@ const PEOPLE = [
     domains: ["Self-Mastery", "Manifestation", "Hidden Knowledge"],
     desc: "Author, speaker, and controversial figure in the world of self-development and alternative knowledge. Trudeau has dedicated decades to sharing information about manifestation, the law of attraction, and systems of knowledge he argues are deliberately kept from the public.",
     known: "\"Natural Cures They Don't Want You to Know About\", \"Your Wish Is Your Command\" audio series, teachings on the law of attraction, the Brotherhood, and secret societies' role in knowledge suppression.",
-    link: "https://kevintrudeaufanclub.com",
-    linkLabel: "kevintrudeaufanclub.com",
+    link: "https://kevintrudeau.com",
+    linkLabel: "kevintrudeau.com",
+    youtube: "https://www.youtube.com/@KevinTrudeauShow",
+    watchFilter: "t-trudeau",
     initials: "KT",
     accent: "#D4A843"
   },
@@ -216,6 +227,8 @@ const PEOPLE = [
     known: "Awakened Life program, brain enlightenment practices, Sai Maa Foundation humanitarian work, teachings on Kundalini and Diksha, and international retreats integrating science and spirituality.",
     link: "https://www.saimaa.com",
     linkLabel: "saimaa.com",
+    youtube: "https://www.youtube.com/results?search_query=Sai+Maa+Lakshmi+Devi",
+    watchFilter: "t-saimaa",
     initials: "SM",
     accent: "#9B59B6"
   },
@@ -228,6 +241,8 @@ const PEOPLE = [
     known: "Psychic readings and energy healings, media appearances on national television, live healing events, teachings on spiritual awareness and energetic transformation.",
     link: "https://www.garyspivey.com",
     linkLabel: "garyspivey.com",
+    youtube: "https://www.youtube.com/@GarySpivey",
+    watchFilter: "t-garyspivey",
     initials: "GS",
     accent: "#1ABC9C"
   }
@@ -296,8 +311,11 @@ for (const p of PEOPLE) {
       </div>
     </div>
     <div class="pcard-footer">
-      <a href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" class="pcard-link">${esc(p.linkLabel)} →</a>
-      <span class="pcard-domain-tag">${esc(p.domains[0])}</span>
+      <div class="pcard-links">
+        <a href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" class="pcard-link">${esc(p.linkLabel)} →</a>
+        ${p.youtube ? `<a href="${esc(p.youtube)}" target="_blank" rel="noopener noreferrer" class="pcard-yt">▶ YouTube</a>` : ''}
+        ${p.watchFilter ? `<a href="../watch/index.html#${esc(p.watchFilter)}" class="pcard-watch">Watch on FRQNCY</a>` : ''}
+      </div>
     </div>
   `;
   grid.appendChild(card);
