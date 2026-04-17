@@ -110,7 +110,11 @@ export async function onRequestPost({ request, env }) {
       temperature: 0.7,
     });
 
-    return new Response(JSON.stringify({ response: result.response }), {
+    // Workers AI returns different shapes depending on model
+    // Try common fields: result.response (older), result.result (newer), or result itself
+    const text = result.response || result.result || (typeof result === 'string' ? result : JSON.stringify(result));
+
+    return new Response(JSON.stringify({ response: text, _debug: Object.keys(result) }), {
       status: 200,
       headers: {
         'Content-Type': 'application/json',
