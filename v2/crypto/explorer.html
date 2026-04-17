@@ -1,0 +1,579 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crypto Explorer — FRQNCY Network</title>
+<meta name="description" content="Learn about the crypto ecosystem — chapter by chapter. Explore projects by sector, understand what each category does, and see FRQNCY's conviction ratings.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Crypto Explorer — FRQNCY Network">
+<meta property="og:description" content="Learn about the crypto ecosystem chapter by chapter. Projects organized by sector with FRQNCY conviction ratings.">
+<meta property="og:url" content="https://frqncy.network/v2/crypto/explorer.html">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:site_name" content="FRQNCY">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/v2/crypto/explorer.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
+  --card-border:rgba(255,255,255,0.08);--accent:#7B61FF;
+  --tier-s:#C4973A;--tier-a:#7B61FF;--tier-b:#4A9AE8;--tier-c:#7090B8;--tier-d:#5A6A7A;--tier-e:#4A5260;--tier-f:#3A3F48;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{text-decoration:none;color:var(--accent)}
+a:hover{opacity:0.85}
+
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text)}
+.breadcrumb .sep{opacity:0.25}
+.snav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.snav-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);transition:color .2s;white-space:nowrap}
+.snav-link:hover{color:var(--text)}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(2.5rem,5vw,4rem) clamp(1.25rem,5vw,2.5rem) clamp(1.5rem,3vw,2rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(123,97,255,0.12) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:0.8rem}
+.hero-desc{max-width:640px;margin:0 auto;font-size:0.84rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+
+/* TIER LEGEND */
+.tier-legend{max-width:900px;margin:1.5rem auto 0;display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap;padding:0 1rem}
+.tier-legend-item{display:flex;align-items:center;gap:0.35rem;font-size:0.56rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim)}
+.tier-legend-pip{width:10px;height:10px;border-radius:2px}
+
+/* STICKY CHAPTER NAV */
+.chapter-nav{position:sticky;top:56px;z-index:90;background:rgba(11,28,61,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0.6rem clamp(1.25rem,4vw,2.5rem);display:flex;align-items:center;gap:0.5rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.chapter-nav::-webkit-scrollbar{display:none}
+.chapter-nav-label{font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);flex-shrink:0;margin-right:0.25rem}
+.cpill{font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif;white-space:nowrap;flex-shrink:0}
+.cpill:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.cpill.active{border-color:var(--accent);color:var(--accent);background:rgba(123,97,255,0.06)}
+.cpill.tier-pill{margin-left:auto}
+.tier-divider{width:1px;height:16px;background:rgba(255,255,255,0.1);flex-shrink:0;margin:0 0.25rem}
+.cpill.tier-active{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.06)}
+
+/* CHAPTERS */
+main{max-width:1100px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5rem}
+
+.chapter{margin-bottom:0.75rem;border:1px solid var(--card-border);border-radius:6px;overflow:hidden;transition:border-color .25s}
+.chapter.open{border-color:rgba(255,255,255,0.12)}
+
+.chapter-header{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.5rem;cursor:pointer;transition:background .2s;user-select:none}
+.chapter-header:hover{background:rgba(255,255,255,0.03)}
+.chapter-icon{font-size:1.5rem;flex-shrink:0;width:36px;text-align:center}
+.chapter-title{font-family:'Cormorant',serif;font-size:1.4rem;font-weight:400;color:#fff;flex:1}
+.chapter-count{font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);padding:2px 10px;border:1px solid rgba(255,255,255,0.08);border-radius:2px}
+.chapter-arrow{font-size:0.7rem;color:var(--text-dim);transition:transform .3s;flex-shrink:0}
+.chapter.open .chapter-arrow{transform:rotate(180deg)}
+
+.chapter-body{display:none;padding:0 1.5rem 1.5rem}
+.chapter.open .chapter-body{display:block}
+
+.chapter-intro{font-size:0.82rem;color:var(--text-dim);line-height:1.75;max-width:700px;margin-bottom:1.5rem;padding-left:0.25rem;border-left:2px solid rgba(123,97,255,0.2)}
+.chapter-intro{padding-left:1rem}
+
+/* PROJECT CARDS GRID */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem}
+
+.pcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1rem 1rem 0.8rem;display:flex;flex-direction:column;gap:0.35rem;transition:all .25s;position:relative;border-left:3px solid var(--tier-c)}
+.pcard:hover{border-color:rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);transform:translateY(-2px)}
+.pcard[data-tier="S"]{border-left-color:var(--tier-s)}
+.pcard[data-tier="A"]{border-left-color:var(--tier-a)}
+.pcard[data-tier="B"]{border-left-color:var(--tier-b)}
+.pcard[data-tier="C"]{border-left-color:var(--tier-c)}
+.pcard[data-tier="D"]{border-left-color:var(--tier-d)}
+.pcard[data-tier="E"]{border-left-color:var(--tier-e)}
+.pcard[data-tier="F"]{border-left-color:var(--tier-f)}
+
+.pcard-top{display:flex;align-items:center;justify-content:space-between;gap:0.5rem}
+.pcard-name{font-family:'Cormorant',serif;font-size:1.1rem;font-weight:400;color:#fff;line-height:1.15;text-transform:capitalize}
+.pcard-tier{font-size:0.48rem;letter-spacing:0.16em;text-transform:uppercase;padding:2px 7px;border-radius:2px;font-weight:400;border:1px solid;white-space:nowrap}
+.pcard-tier[data-tier="S"]{color:var(--tier-s);border-color:rgba(196,151,58,0.4);background:rgba(196,151,58,0.08)}
+.pcard-tier[data-tier="A"]{color:var(--tier-a);border-color:rgba(123,97,255,0.35);background:rgba(123,97,255,0.06)}
+.pcard-tier[data-tier="B"]{color:var(--tier-b);border-color:rgba(74,154,232,0.3);background:rgba(74,154,232,0.05)}
+.pcard-tier[data-tier="C"]{color:var(--tier-c);border-color:rgba(112,144,184,0.25);background:rgba(112,144,184,0.04)}
+.pcard-tier[data-tier="D"]{color:var(--tier-d);border-color:rgba(90,106,122,0.3);background:rgba(90,106,122,0.05)}
+.pcard-tier[data-tier="E"]{color:var(--tier-e);border-color:rgba(74,82,96,0.3);background:rgba(74,82,96,0.05)}
+.pcard-tier[data-tier="F"]{color:var(--tier-f);border-color:rgba(58,63,72,0.3);background:rgba(58,63,72,0.05)}
+
+.pcard-symbol{font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim)}
+.pcard-meta{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-top:0.15rem}
+.pcard-tag{font-size:0.46rem;letter-spacing:0.12em;text-transform:uppercase;padding:1px 6px;border-radius:2px;border:1px solid rgba(255,255,255,0.08);color:var(--text-dim)}
+.pcard-notes{font-size:0.72rem;color:var(--text-dim);line-height:1.55;margin-top:0.2rem}
+.pcard-coingecko{font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-top:auto;padding-top:0.4rem}
+
+/* DIM for tier filter */
+.pcard.dimmed{opacity:0.12;pointer-events:none;transform:none !important}
+
+/* EMPTY */
+.empty-chapter{text-align:center;padding:2rem;font-size:0.8rem;color:var(--text-dim);opacity:0.6}
+
+/* DISCLAIMER */
+.disclaimer{max-width:640px;margin:0 auto 1.5rem;text-align:center;font-size:0.68rem;color:var(--text-dim);opacity:0.6;line-height:1.6;padding:0 1.25rem}
+
+@media(max-width:600px){
+  .pgrid{grid-template-columns:1fr 1fr}
+  .chapter-header{padding:1rem 1.2rem}
+  .chapter-body{padding:0 1.2rem 1.2rem}
+  .chapter-title{font-size:1.15rem}
+  .tier-legend{gap:0.6rem}
+}
+@media(max-width:400px){
+  .pgrid{grid-template-columns:1fr}
+}
+</style>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+</head>
+<body>
+
+<nav class="snav">
+  <div class="snav-left">
+    <a href="../../" class="snav-logo">FRQNCY</a>
+    <div class="breadcrumb">
+      <a href="../explore.html">Network</a>
+      <span class="sep">›</span>
+      <a href="index.html">Crypto</a>
+      <span class="sep">›</span>
+      <span>Explorer</span>
+    </div>
+  </div>
+  <div class="snav-right">
+    <a href="projects.html" class="snav-link">Curation</a>
+    <a href="index.html" class="snav-back">← Crypto</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Learn by Sector</div>
+  <h1>Crypto Explorer</h1>
+  <p class="hero-desc">The crypto ecosystem is vast. Instead of scrolling through hundreds of tokens, explore it chapter by chapter — learn what each sector does, then discover the projects within it. Rated by FRQNCY conviction.</p>
+  <div class="tier-legend">
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-s)"></div>S — Diamond</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-a)"></div>A — Gold</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-b)"></div>B — Silver</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-c)"></div>C — Utility</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-d)"></div>D — Speculative</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-e)"></div>E — Caution</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-f)"></div>F — Avoid</div>
+  </div>
+</section>
+
+<p class="disclaimer">Not financial advice. Tier ratings reflect FRQNCY's philosophical and technical conviction — always do your own research.</p>
+
+<div class="chapter-nav" id="chapter-nav">
+  <span class="chapter-nav-label">Chapters</span>
+  <!-- pills injected by JS -->
+</div>
+
+<main id="chapters">
+  <!-- chapters injected by JS -->
+</main>
+
+<script>
+/* ── DATA ────────────────────────────────────────────────────────────── */
+const CHAPTERS = [
+  {
+    id: "sov",
+    icon: "🏛",
+    title: "Store of Value",
+    intro: "Store-of-value assets are the foundations of crypto — digital commodities designed to hold and grow wealth over time without relying on any central institution. Bitcoin invented the category; others follow the principle that scarcity plus decentralization equals sovereignty.",
+    projects: [
+      {n:"Bitcoin",s:"BTC",t:"S",type:"L1",mc:"Large Cap"},
+      {n:"Ethereum",s:"ETH",t:"S",type:"L1",mc:"Large Cap"},
+      {n:"Dogecoin",s:"DOGE",t:"A",type:"projecttoken",mc:"Large Cap"},
+      {n:"Bitcoin Cash",s:"BCH",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Bitcoin Gold",s:"BTG",t:"F",type:"L1"},
+      {n:"Ethereum Classic",s:"ETC",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Litecoin",s:"LTC",t:"D",type:"L1",mc:"Mid cap"}
+    ]
+  },
+  {
+    id: "l1",
+    icon: "⛓",
+    title: "Smart Contract Platforms",
+    intro: "Layer 1 blockchains are the base infrastructure of the decentralized web — independent networks with their own consensus, security, and rules. Each one represents a different bet on how to scale trust without intermediaries. They compete on speed, decentralization, and developer ecosystems.",
+    projects: [
+      {n:"Solana",s:"SOL",t:"S",type:"L1",mc:"Large Cap"},
+      {n:"Sui",s:"SUI",t:"S",type:"L1",mc:"Large Cap"},
+      {n:"Avalanche",s:"AVAX",t:"B",type:"L1",mc:"Large Cap"},
+      {n:"BNB Chain",s:"BNB",t:"B",type:"L1",mc:"Large Cap"},
+      {n:"Toncoin",s:"TON",t:"B",type:"L1",mc:"Large Cap"},
+      {n:"NEAR Protocol",s:"NEAR",t:"B",type:"L1",mc:"Mid cap"},
+      {n:"Cardano",s:"ADA",t:"C",type:"L1",mc:"Large Cap"},
+      {n:"Polkadot",s:"DOT",t:"C",type:"L1",mc:"Mid cap"},
+      {n:"Aptos",s:"APT",t:"C",type:"L1",mc:"Mid cap"},
+      {n:"Internet Computer",s:"ICP",t:"C",type:"L1",mc:"Mid cap"},
+      {n:"Cosmos",s:"ATOM",t:"C",type:"L1",mc:"Mid cap"},
+      {n:"Hedera",s:"HBAR",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"TRON",s:"TRX",t:"D",type:"L1",mc:"Large Cap"},
+      {n:"Stellar",s:"XLM",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Algorand",s:"ALGO",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Fantom",s:"FTM",t:"D",type:"L1",mc:"Mid cap"}
+    ]
+  },
+  {
+    id: "l2",
+    icon: "🧩",
+    title: "Layer 2 Solutions",
+    intro: "Layer 2s scale existing blockchains by processing transactions off the main chain while inheriting its security. They make decentralized apps faster and cheaper without sacrificing the trust guarantees of the base layer. Think of them as express lanes built on top of the highway.",
+    projects: [
+      {n:"Mantle",s:"MNT",t:"A",type:"L2",mc:"Mid cap"},
+      {n:"Arbitrum",s:"ARB",t:"B",type:"L2",mc:"Mid cap"},
+      {n:"Optimism",s:"OP",t:"B",type:"L2",mc:"Mid cap"},
+      {n:"Polygon",s:"POL",t:"C",type:"L2",mc:"Mid cap"},
+      {n:"Starknet",s:"STRK",t:"C",type:"L2",mc:"Mid cap"},
+      {n:"Base",s:"—",t:"B",type:"L2",note:"Coinbase's L2 — no token"},
+      {n:"zkSync",s:"ZK",t:"C",type:"L2",mc:"small capp"},
+      {n:"Scroll",s:"SCR",t:"D",type:"L2",mc:"small capp"}
+    ]
+  },
+  {
+    id: "defi",
+    icon: "🏦",
+    title: "DeFi Protocols",
+    intro: "Decentralized finance replaces traditional financial intermediaries — banks, brokers, exchanges — with transparent, permissionless smart contracts. Anyone with an internet connection can lend, borrow, trade, and earn yield. No credit checks, no gatekeepers, no opening hours.",
+    projects: [
+      {n:"Aave",s:"AAVE",t:"S",type:"projecttoken",mc:"Large Cap",cat:"Money Market"},
+      {n:"Uniswap",s:"UNI",t:"A",type:"projecttoken",mc:"Large Cap",cat:"DEX"},
+      {n:"Pendle",s:"PENDLE",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Yield"},
+      {n:"Hyperliquid",s:"HYPE",t:"S",type:"L1",mc:"Large Cap",cat:"Perps"},
+      {n:"Ethena",s:"ENA",t:"S",type:"projecttoken",mc:"Mid cap",cat:"Stablecoin"},
+      {n:"Ondo Finance",s:"ONDO",t:"B",type:"projecttoken",mc:"Mid cap",cat:"RWA"},
+      {n:"Maker / Sky",s:"MKR",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Stablecoin"},
+      {n:"Lido",s:"LDO",t:"B",type:"projecttoken",mc:"Mid cap",cat:"Liquid Staking"},
+      {n:"Curve",s:"CRV",t:"B",type:"projecttoken",mc:"Mid cap",cat:"DEX"},
+      {n:"Jupiter",s:"JUP",t:"B",type:"projecttoken",mc:"Mid cap",cat:"DEX Aggregator"},
+      {n:"dYdX",s:"DYDX",t:"C",type:"projecttoken",mc:"Mid cap",cat:"Perps"},
+      {n:"Compound",s:"COMP",t:"C",type:"projecttoken",mc:"Mid cap",cat:"Money Market"},
+      {n:"Synthetix",s:"SNX",t:"D",type:"projecttoken",mc:"Mid cap",cat:"Derivatives"}
+    ]
+  },
+  {
+    id: "stablecoin",
+    icon: "💵",
+    title: "Stablecoins",
+    intro: "Stablecoins are crypto assets pegged to real-world currencies — usually the US dollar. They're the bridge between traditional finance and DeFi, used for payments, trading, and savings. The key question is always: what backs the peg, and who controls it?",
+    projects: [
+      {n:"Tether",s:"USDT",t:"S",type:"projecttoken",mc:"Large Cap"},
+      {n:"USDC",s:"USDC",t:"S",type:"projecttoken",mc:"Large Cap"},
+      {n:"Sky Dollar",s:"USDS",t:"A",type:"projecttoken",mc:"Large Cap"},
+      {n:"PayPal USD",s:"PYUSD",t:"B",type:"projecttoken",mc:"Mid cap"},
+      {n:"FRAX",s:"FRAX",t:"C",type:"projecttoken",mc:"Mid cap"},
+      {n:"Dai (legacy)",s:"DAI",t:"C",type:"projecttoken",mc:"Large Cap"},
+      {n:"TrueUSD",s:"TUSD",t:"D",type:"projecttoken",mc:"Mid cap"}
+    ]
+  },
+  {
+    id: "ai",
+    icon: "🤖",
+    title: "AI & Blockchain",
+    intro: "The intersection of artificial intelligence and crypto is about one question: who controls AI? These projects aim to decentralize machine intelligence — from training data to compute power to autonomous agents — so that AI serves everyone, not just a few corporations.",
+    projects: [
+      {n:"Bittensor",s:"TAO",t:"S",type:"projecttoken",mc:"Large Cap"},
+      {n:"Virtuals Protocol",s:"VIRTUAL",t:"A",type:"projecttoken",mc:"Mid cap"},
+      {n:"ai16z",s:"AI16Z",t:"A",type:"projecttoken",mc:"Mid cap"},
+      {n:"Render Network",s:"RNDR",t:"A",type:"projecttoken",mc:"Large Cap"},
+      {n:"Fetch.ai",s:"FET",t:"B",type:"projecttoken",mc:"Mid cap"},
+      {n:"Akash Network",s:"AKT",t:"B",type:"projecttoken",mc:"Mid cap"},
+      {n:"Sahara AI",s:"—",t:"C",type:"projecttoken"},
+      {n:"Humans.ai",s:"HEART",t:"D",type:"projecttoken",mc:"small capp"},
+      {n:"SingularityNET",s:"AGIX",t:"C",type:"projecttoken",mc:"Mid cap"}
+    ]
+  },
+  {
+    id: "meme",
+    icon: "🐸",
+    title: "Meme Coins",
+    intro: "Meme coins are crypto's cultural layer — assets driven by community, humor, and social consensus rather than technology or utility. They remind us that value is ultimately a shared belief. Some become multi-billion dollar networks; most return to zero. Approach with humor and caution.",
+    projects: [
+      {n:"Pepe",s:"PEPE",t:"A",type:"projecttoken",mc:"Large Cap"},
+      {n:"Shiba Inu",s:"SHIB",t:"C",type:"projecttoken",mc:"Large Cap"},
+      {n:"Floki",s:"FLOKI",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"Bonk",s:"BONK",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"Book of Meme",s:"BOME",t:"E",type:"projecttoken",mc:"small capp"},
+      {n:"Memecoin",s:"MEME",t:"E",type:"projecttoken",mc:"small capp"},
+      {n:"Milady Meme",s:"LADYS",t:"F",type:"projecttoken",mc:"small capp"},
+      {n:"Melania Meme",s:"MELANIA",t:"F",type:"projecttoken",mc:"small capp"}
+    ]
+  },
+  {
+    id: "privacy",
+    icon: "🔐",
+    title: "Privacy",
+    intro: "Privacy coins and protocols protect the fundamental right to financial confidentiality. In a world of increasing surveillance, these projects use advanced cryptography — zero-knowledge proofs, ring signatures, and encrypted computation — to keep transactions private without sacrificing verifiability.",
+    projects: [
+      {n:"Zcash",s:"ZEC",t:"S",type:"L1",mc:"Mid cap"},
+      {n:"Monero",s:"XMR",t:"A",type:"L1",mc:"Mid cap"},
+      {n:"Secret Network",s:"SCRT",t:"C",type:"L1",mc:"small capp"},
+      {n:"Aztec",s:"—",t:"B",type:"L2",note:"ZK privacy layer for Ethereum"},
+      {n:"Nillion",s:"NIL",t:"C",type:"projecttoken",mc:"small capp"},
+      {n:"Miden",s:"—",t:"C",type:"L2",note:"ZK rollup by Polygon"},
+      {n:"Arcium",s:"—",t:"C",type:"projecttoken",note:"Encrypted computation network"}
+    ]
+  },
+  {
+    id: "payments",
+    icon: "💸",
+    title: "Payments",
+    intro: "Payment-focused crypto projects aim to make moving money as fast and borderless as sending a message. From cross-border remittances to point-of-sale transactions, these protocols compete with legacy payment rails by offering instant settlement, low fees, and no intermediaries.",
+    projects: [
+      {n:"XRP",s:"XRP",t:"C",type:"L1",mc:"Large Cap"},
+      {n:"Stellar",s:"XLM",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Nano",s:"XNO",t:"D",type:"L1",mc:"small capp"},
+      {n:"Celo",s:"CELO",t:"C",type:"L1",mc:"Mid cap"}
+    ]
+  },
+  {
+    id: "oracle",
+    icon: "🔮",
+    title: "Oracles & Infrastructure",
+    intro: "Blockchains can't access external data on their own. Oracles bridge this gap — feeding real-world information (prices, weather, sports scores) into smart contracts. They're the nervous system connecting blockchains to reality, and their accuracy is critical to everything built on top.",
+    projects: [
+      {n:"Chainlink",s:"LINK",t:"S",type:"projecttoken",mc:"Large Cap"},
+      {n:"Pyth Network",s:"PYTH",t:"B",type:"projecttoken",mc:"Mid cap"},
+      {n:"The Graph",s:"GRT",t:"C",type:"projecttoken",mc:"Mid cap"},
+      {n:"Band Protocol",s:"BAND",t:"D",type:"projecttoken",mc:"small capp"}
+    ]
+  },
+  {
+    id: "gaming",
+    icon: "🎮",
+    title: "Gaming & Metaverse",
+    intro: "Blockchain gaming gives players true ownership of in-game assets — items, characters, and currencies that exist outside any single game. The metaverse vision extends this to entire virtual worlds. The sector is young and speculative, with many projects still finding product-market fit.",
+    projects: [
+      {n:"Immutable",s:"IMX",t:"B",type:"projecttoken",mc:"Mid cap"},
+      {n:"Gala Games",s:"GALA",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"Axie Infinity",s:"AXS",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"The Sandbox",s:"SAND",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"Decentraland",s:"MANA",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"Yield Guild Games",s:"YGG",t:"E",type:"projecttoken",mc:"small capp"},
+      {n:"Nakamoto Games",s:"NAKA",t:"E",type:"projecttoken",mc:"small capp"}
+    ]
+  },
+  {
+    id: "desci",
+    icon: "🧬",
+    title: "DeSci & Longevity",
+    intro: "Decentralized science applies crypto coordination to research funding. Instead of waiting for grants from institutions, communities pool capital to fund the science that matters to them — from longevity research to rare diseases. It's early, radical, and deeply aligned with sovereignty over health.",
+    projects: [
+      {n:"Bio Protocol",s:"BIO",t:"B",type:"projecttoken",mc:"small capp"},
+      {n:"VitaDAO",s:"VITA",t:"C",type:"projecttoken",mc:"small capp"},
+      {n:"Molecule",s:"—",t:"C",type:"projecttoken",note:"IP-NFT platform for research"}
+    ]
+  },
+  {
+    id: "socialfi",
+    icon: "🌐",
+    title: "SocialFi & Identity",
+    intro: "SocialFi reimagines social media through crypto — where content is ownable, creators are paid directly, and identity is self-sovereign. These projects challenge the model where platforms own your data and attention. Your identity, your content, your value.",
+    projects: [
+      {n:"Worldcoin",s:"WLD",t:"C",type:"projecttoken",mc:"Mid cap"},
+      {n:"Zora",s:"ZORA",t:"C",type:"projecttoken",mc:"small capp"},
+      {n:"Lens Protocol",s:"—",t:"B",type:"projecttoken",note:"Decentralized social graph"},
+      {n:"Farcaster",s:"—",t:"B",type:"projecttoken",note:"Sufficiently decentralized social"},
+      {n:"Story Protocol",s:"IP",t:"C",type:"projecttoken",mc:"Mid cap"},
+      {n:"Galxe",s:"GAL",t:"D",type:"projecttoken",mc:"small capp"}
+    ]
+  },
+  {
+    id: "bridge",
+    icon: "🌉",
+    title: "Bridges & Interoperability",
+    intro: "Cross-chain bridges let assets and data move between different blockchains. They're essential infrastructure for a multi-chain world, but also one of crypto's biggest security challenges — bridge exploits have lost billions. The best bridges prioritize security over speed.",
+    projects: [
+      {n:"LayerZero",s:"ZRO",t:"B",type:"projecttoken",mc:"Mid cap"},
+      {n:"Wormhole",s:"W",t:"C",type:"projecttoken",mc:"Mid cap"},
+      {n:"Across Protocol",s:"ACX",t:"C",type:"projecttoken",mc:"small capp"},
+      {n:"Stargate",s:"STG",t:"D",type:"projecttoken",mc:"small capp"}
+    ]
+  },
+  {
+    id: "icm",
+    icon: "🚀",
+    title: "Internet Capital Markets",
+    intro: "A new category emerging at the intersection of crypto and venture capital. These platforms democratize access to early-stage investing — turning fundraising from a closed, gatekept process into an open, community-driven one. Your contribution and reputation matter more than your wallet size.",
+    projects: [
+      {n:"Echo",s:"—",t:"B",type:"projecttoken",note:"Coinbase-acquired, $200M+ facilitated"},
+      {n:"Legion",s:"—",t:"B",type:"projecttoken",note:"Merit-based MiCA-compliant ICOs"},
+      {n:"Polymarket",s:"—",t:"A",type:"projecttoken",note:"Prediction markets for real events"},
+      {n:"Believe",s:"—",t:"C",type:"projecttoken",note:"Community-driven project launches"}
+    ]
+  }
+];
+
+const TIER_ORDER = ['S','A','B','C','D','E','F'];
+const TIER_LABELS = {S:'💎 S',A:'🥇 A',B:'🥈 B',C:'⚙️ C',D:'🪙 D',E:'🧱 E',F:'🗑️ F'};
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+/* ── STATE ──────────────────────────────────────────────────────────── */
+let openChapter = null;
+let activeTierFilter = null;
+
+/* ── BUILD NAV ──────────────────────────────────────────────────────── */
+function buildNav() {
+  const nav = document.getElementById('chapter-nav');
+  for (const ch of CHAPTERS) {
+    const pill = document.createElement('button');
+    pill.className = 'cpill';
+    pill.dataset.chapter = ch.id;
+    pill.textContent = ch.title;
+    pill.addEventListener('click', () => toggleChapter(ch.id));
+    nav.appendChild(pill);
+  }
+  // tier filter divider + pills
+  const divider = document.createElement('div');
+  divider.className = 'tier-divider';
+  nav.appendChild(divider);
+  for (const tier of TIER_ORDER) {
+    const pill = document.createElement('button');
+    pill.className = 'cpill tier-pill';
+    pill.dataset.tierfilter = tier;
+    pill.textContent = TIER_LABELS[tier];
+    pill.addEventListener('click', () => toggleTierFilter(tier));
+    nav.appendChild(pill);
+  }
+}
+
+/* ── BUILD CHAPTERS ─────────────────────────────────────────────────── */
+function buildChapters() {
+  const container = document.getElementById('chapters');
+  for (const ch of CHAPTERS) {
+    const section = document.createElement('div');
+    section.className = 'chapter';
+    section.id = 'ch-' + ch.id;
+
+    // Sort projects by tier
+    const sorted = [...ch.projects].sort((a,b) => TIER_ORDER.indexOf(a.t) - TIER_ORDER.indexOf(b.t));
+
+    section.innerHTML = `
+      <div class="chapter-header" data-chapter="${ch.id}">
+        <div class="chapter-icon">${ch.icon}</div>
+        <div class="chapter-title">${esc(ch.title)}</div>
+        <span class="chapter-count">${ch.projects.length} project${ch.projects.length !== 1 ? 's' : ''}</span>
+        <div class="chapter-arrow">▼</div>
+      </div>
+      <div class="chapter-body">
+        <div class="chapter-intro">${esc(ch.intro)}</div>
+        <div class="pgrid">
+          ${sorted.map(p => makeCard(p)).join('')}
+        </div>
+      </div>
+    `;
+
+    section.querySelector('.chapter-header').addEventListener('click', () => toggleChapter(ch.id));
+    container.appendChild(section);
+  }
+}
+
+function makeCard(p) {
+  const tierLabel = TIER_LABELS[p.t] || p.t;
+  const metaTags = [];
+  if (p.type) metaTags.push(p.type);
+  if (p.mc) metaTags.push(p.mc);
+  if (p.cat) metaTags.push(p.cat);
+
+  return `
+    <div class="pcard" data-tier="${esc(p.t)}">
+      <div class="pcard-top">
+        <div class="pcard-name">${esc(p.n)}</div>
+        <div class="pcard-tier" data-tier="${esc(p.t)}">${esc(tierLabel)}</div>
+      </div>
+      ${p.s ? `<div class="pcard-symbol">${esc(p.s)}</div>` : ''}
+      <div class="pcard-meta">
+        ${metaTags.map(t => `<span class="pcard-tag">${esc(t)}</span>`).join('')}
+      </div>
+      ${p.note ? `<div class="pcard-notes">${esc(p.note)}</div>` : ''}
+      ${p.cg ? `<a href="${esc(p.cg)}" target="_blank" rel="noopener noreferrer" class="pcard-coingecko">CoinGecko →</a>` : ''}
+    </div>
+  `;
+}
+
+/* ── INTERACTIONS ───────────────────────────────────────────────────── */
+function toggleChapter(id) {
+  const target = document.getElementById('ch-' + id);
+  const wasOpen = target.classList.contains('open');
+
+  // Close all
+  document.querySelectorAll('.chapter.open').forEach(ch => ch.classList.remove('open'));
+  document.querySelectorAll('.cpill[data-chapter]').forEach(p => p.classList.remove('active'));
+
+  if (!wasOpen) {
+    target.classList.add('open');
+    openChapter = id;
+    // Highlight nav pill
+    const pill = document.querySelector(`.cpill[data-chapter="${id}"]`);
+    if (pill) pill.classList.add('active');
+    // Scroll into view with offset
+    setTimeout(() => {
+      const rect = target.getBoundingClientRect();
+      const offset = 120; // nav + chapter-nav height
+      if (rect.top < offset || rect.top > window.innerHeight * 0.5) {
+        window.scrollTo({top: window.scrollY + rect.top - offset, behavior: 'smooth'});
+      }
+    }, 50);
+  } else {
+    openChapter = null;
+  }
+}
+
+function toggleTierFilter(tier) {
+  const pills = document.querySelectorAll('.cpill[data-tierfilter]');
+  if (activeTierFilter === tier) {
+    // Deactivate
+    activeTierFilter = null;
+    pills.forEach(p => p.classList.remove('tier-active'));
+    document.querySelectorAll('.pcard').forEach(c => c.classList.remove('dimmed'));
+  } else {
+    activeTierFilter = tier;
+    pills.forEach(p => p.classList.toggle('tier-active', p.dataset.tierfilter === tier));
+    document.querySelectorAll('.pcard').forEach(c => {
+      c.classList.toggle('dimmed', c.dataset.tier !== tier);
+    });
+  }
+}
+
+/* ── INIT ───────────────────────────────────────────────────────────── */
+buildNav();
+buildChapters();
+
+// Open first chapter by default
+if (CHAPTERS.length > 0) {
+  toggleChapter(CHAPTERS[0].id);
+}
+
+// Hash-based chapter opening
+const hash = location.hash.replace('#','');
+if (hash) {
+  const ch = CHAPTERS.find(c => c.id === hash);
+  if (ch) {
+    // close default, open hash target
+    document.querySelectorAll('.chapter.open').forEach(c => c.classList.remove('open'));
+    document.querySelectorAll('.cpill.active').forEach(p => p.classList.remove('active'));
+    toggleChapter(ch.id);
+  }
+}
+</script>
+</body>
+</html>
