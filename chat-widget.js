@@ -358,7 +358,7 @@
           if (lastUser) {
             messages.pop(); // remove the last user message (will re-add)
             inputEl.value = lastUser;
-            send();
+            sendMessage();
           }
         });
         el.appendChild(retryBtn);

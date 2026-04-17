@@ -10,6 +10,8 @@ const CACHE = 'frqncy-v3';
 const PRECACHE = [
   '/',
   '/index.html',
+  '/index.css',
+  '/index.js',
   '/favicon.svg',
   '/manifest.json',
   '/chat-widget.js',

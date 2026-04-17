@@ -4,12 +4,10 @@
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://api.anthropic.com https://plausible.io; frame-src https://www.youtube.com https://player.vimeo.com https://www.gaia.com; frame-ancestors 'none'
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io https://cdnjs.cloudflare.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://plausible.io https://*.workers.dev; frame-src https://www.youtube.com https://player.vimeo.com https://www.gaia.com; frame-ancestors 'none'
 
 # Favicon + manifest — cache forever (immutable per deploy)
 /favicon.svg
-  Cache-Control: public, max-age=31536000, immutable
-/favicon.ico
   Cache-Control: public, max-age=31536000, immutable
 /manifest.json
   Cache-Control: public, max-age=86400

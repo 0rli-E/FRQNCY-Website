@@ -121,6 +121,9 @@ export async function onRequestPost({ request, env }) {
       text = typeof result === 'string' ? result : JSON.stringify(result);
     }
 
+    // Qwen3 may emit <think>...</think> reasoning blocks — strip them
+    text = text.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+
     return new Response(JSON.stringify({ response: text }), {
       status: 200,
       headers: {

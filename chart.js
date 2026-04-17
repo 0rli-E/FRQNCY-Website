@@ -321,7 +321,7 @@ const _AE_LOADING = (async () => {
     'https://unpkg.com/astronomy-engine@2.1.19/esm/astronomy.js'
   ];
   for (const u of urls) {
-    try { const m = await import(u); _AE = m; console.log('[FRQNCY] HD engine: astronomy-engine active ('+u+')'); return; }
+    try { const m = await import(u); _AE = m; return; }
     catch(e){ /* try next */ }
   }
   console.warn('[FRQNCY] HD engine: astronomy-engine unavailable, using Meeus fallback (outer-planet lines ±1)');
