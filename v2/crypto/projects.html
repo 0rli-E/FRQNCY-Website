@@ -1,0 +1,382 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project Curation — FRQNCY Crypto</title>
+<meta name="description" content="FRQNCY's curated crypto project list — tiered by conviction, organized by category, chain, and thesis alignment.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Project Curation — FRQNCY Crypto">
+<meta property="og:description" content="Curated crypto projects tiered by conviction and philosophy alignment.">
+<meta property="og:url" content="https://frqncy.network/v2/crypto/projects.html">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:site_name" content="FRQNCY">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/v2/crypto/projects.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
+  --card-border:rgba(255,255,255,0.08);--accent:#7B61FF;
+}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{text-decoration:none;color:var(--accent)}
+a:hover{opacity:0.85}
+
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text)}
+.breadcrumb .sep{opacity:0.25}
+.snav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.snav-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);transition:color .2s;white-space:nowrap}
+.snav-link:hover{color:var(--text)}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(2.5rem,5vw,4rem) clamp(1.25rem,5vw,2.5rem) clamp(1.5rem,3vw,2.5rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(123,97,255,0.12) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:0.8rem}
+.hero-desc{max-width:600px;margin:0 auto;font-size:0.84rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+.hero-stats{display:flex;justify-content:center;gap:2.5rem;margin-top:1.5rem}
+.hero-stat{text-align:center}
+.hero-stat-num{font-family:'Cormorant',serif;font-size:1.8rem;color:#fff;font-weight:400;line-height:1}
+.hero-stat-label{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-top:0.25rem}
+
+/* DISCLAIMER */
+.disclaimer{max-width:640px;margin:0 auto 1.5rem;text-align:center;font-size:0.68rem;color:var(--text-dim);opacity:0.6;line-height:1.6;padding:0 1.25rem}
+
+/* FILTERS */
+.filters{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 1.5rem}
+.filter-row{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem}
+.filter-label{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);min-width:60px;flex-shrink:0}
+.ftab{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif}
+.ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(123,97,255,0.06)}
+/* Tier-specific active styles */
+.ftab[data-tier="core"].active{border-color:#C4973A;color:#C4973A;background:rgba(196,151,58,0.06)}
+.ftab[data-tier="strong"].active{border-color:#4A9AE8;color:#4A9AE8;background:rgba(74,154,232,0.06)}
+.ftab[data-tier="watch"].active{border-color:#7090B8;color:#7090B8;background:rgba(112,144,184,0.06)}
+
+/* GRID */
+main{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
+.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem}
+
+/* TIER SECTION HEADERS */
+.tier-header{margin:2rem 0 1rem;display:flex;align-items:center;gap:0.75rem}
+.tier-header:first-child{margin-top:0}
+.tier-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+.tier-header h2{font-family:'Cormorant',serif;font-size:1.35rem;font-weight:300;color:#fff}
+.tier-header .tier-count{font-size:0.6rem;letter-spacing:0.12em;color:var(--text-dim)}
+
+/* PROJECT CARD */
+.pcard{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;
+  overflow:hidden;display:flex;flex-direction:column;
+  transition:border-color .25s,transform .25s,background .25s;
+}
+.pcard:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.06)}
+.pcard-top{height:3px;flex-shrink:0}
+.pcard-body{padding:1.4rem 1.4rem 1rem;flex:1;display:flex;flex-direction:column;gap:0.45rem}
+
+/* Card header row */
+.pcard-header{display:flex;align-items:center;gap:0.8rem}
+.pcard-icon{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:500;color:#fff;flex-shrink:0;font-family:'Cormorant',serif}
+.pcard-info{flex:1;min-width:0}
+.pcard-name{font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;line-height:1.15;display:flex;align-items:center;gap:0.5rem}
+.pcard-ticker{font-size:0.56rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim)}
+
+/* Tier badge */
+.tier-badge{font-size:0.46rem;letter-spacing:0.16em;text-transform:uppercase;padding:2px 8px;border-radius:2px;font-weight:400;border:1px solid;white-space:nowrap}
+.tier-badge.core{color:#C4973A;border-color:rgba(196,151,58,0.5);background:rgba(196,151,58,0.08)}
+.tier-badge.strong{color:#4A9AE8;border-color:rgba(74,154,232,0.4);background:rgba(74,154,232,0.06)}
+.tier-badge.watch{color:#7090B8;border-color:rgba(112,144,184,0.3);background:rgba(112,144,184,0.05)}
+
+/* Meta row: chain + mcap */
+.pcard-meta{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.pcard-chain{font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);display:flex;align-items:center;gap:0.25rem}
+.pcard-chain::before{content:'◆';font-size:0.4rem;opacity:0.4}
+.pcard-mcap{font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;padding:1px 7px;border-radius:2px;border:1px solid rgba(255,255,255,0.08);color:var(--text-dim)}
+
+/* Tags */
+.pcard-tags{display:flex;gap:0.25rem;flex-wrap:wrap}
+.ptag{font-size:0.48rem;letter-spacing:0.14em;text-transform:uppercase;padding:2px 7px;border-radius:2px;border:1px solid rgba(123,97,255,0.25);color:var(--accent);background:rgba(123,97,255,0.04)}
+.ptag.infra{border-color:rgba(241,196,15,0.25);color:#f1c40f;background:rgba(241,196,15,0.04)}
+.ptag.defi{border-color:rgba(52,152,219,0.25);color:#3498db;background:rgba(52,152,219,0.04)}
+.ptag.ai{border-color:rgba(231,76,60,0.25);color:#e74c3c;background:rgba(231,76,60,0.04)}
+.ptag.depin{border-color:rgba(46,204,113,0.25);color:#2ecc71;background:rgba(46,204,113,0.04)}
+.ptag.id{border-color:rgba(155,89,182,0.25);color:#9b59b6;background:rgba(155,89,182,0.04)}
+.ptag.fund{border-color:rgba(0,212,170,0.25);color:#00d4aa;background:rgba(0,212,170,0.04)}
+
+/* Description & thesis */
+.pcard-desc{font-size:0.76rem;color:var(--text-dim);line-height:1.6}
+.pcard-thesis{font-size:0.72rem;color:var(--text);line-height:1.55;margin-top:0.15rem}
+.pcard-thesis strong{font-weight:400;color:var(--gold);font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:0.15rem}
+
+/* Card footer with links */
+.pcard-footer{margin-top:auto;padding:0.75rem 1.4rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap}
+.pcard-flink{font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);transition:color .2s;display:inline-flex;align-items:center;gap:0.2rem}
+.pcard-flink:hover{color:var(--accent)}
+.pcard-flink.primary{color:var(--accent)}
+
+/* EMPTY STATE */
+.empty{text-align:center;padding:4rem 2rem;color:var(--text-dim);font-size:0.84rem}
+
+/* LAST SYNC */
+.sync-note{max-width:1200px;margin:1.5rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.58rem;color:var(--text-dim);opacity:0.5;text-align:right}
+
+@media(max-width:600px){
+  .project-grid{grid-template-columns:1fr}
+  .filter-row{gap:0.4rem}
+  .hero-stats{gap:1.5rem}
+}
+</style>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<link rel="manifest" href="../../manifest.json">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+</head>
+<body>
+
+<nav class="snav">
+  <div class="snav-left">
+    <a href="../../" class="snav-logo">FRQNCY</a>
+    <div class="breadcrumb">
+      <a href="../explore.html">Network</a>
+      <span class="sep">›</span>
+      <a href="index.html">Crypto</a>
+      <span class="sep">›</span>
+      <span>Projects</span>
+    </div>
+  </div>
+  <div class="snav-right">
+    <a href="../fund/index.html" class="snav-link">Fund</a>
+    <a href="index.html" class="snav-back">← Crypto</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Curated Portfolio</div>
+  <h1>Project Curation</h1>
+  <p class="hero-desc">Every project here has been reviewed through the FRQNCY lens — sovereignty, decentralization, and alignment with conscious building. Tiered by conviction, organized for clarity.</p>
+  <div class="hero-stats" id="hero-stats"></div>
+</section>
+
+<p class="disclaimer">Not financial advice. FRQNCY curates projects we find philosophically and technologically aligned. Always do your own research.</p>
+
+<div class="filters" id="filters">
+  <div class="filter-row" id="tier-filters">
+    <span class="filter-label">Conviction</span>
+  </div>
+  <div class="filter-row" id="cat-filters">
+    <span class="filter-label">Category</span>
+  </div>
+  <div class="filter-row" id="chain-filters">
+    <span class="filter-label">Chain</span>
+  </div>
+</div>
+
+<main>
+  <div id="content"></div>
+</main>
+
+<div class="sync-note" id="sync-note"></div>
+
+<script>
+/* ── DATA ───────────────────────────────────────────────────────────── */
+let DATA = { projects: [], lastSync: '' };
+const TIER_ORDER = ['core','strong','watch'];
+const TIER_LABELS = { core:'Core Conviction', strong:'Strong Conviction', watch:'On the Radar' };
+const TIER_COLORS = { core:'#C4973A', strong:'#4A9AE8', watch:'#7090B8' };
+const MCAP_LABELS = { high:'Large Cap', mid:'Mid Cap', low:'Small Cap', micro:'Micro Cap', 'n/a':'' };
+
+/* Tag class mapping — maps category keywords to visual classes */
+function tagClass(cat) {
+  const c = cat.toLowerCase();
+  if (c.includes('infra') || c.includes('oracle') || c.includes('modular') || c.includes('store')) return 'infra';
+  if (c.includes('defi') || c.includes('yield')) return 'defi';
+  if (c.includes('ai')) return 'ai';
+  if (c.includes('depin')) return 'depin';
+  if (c.includes('identity')) return 'id';
+  if (c.includes('fund') || c.includes('communit')) return 'fund';
+  return '';
+}
+
+function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
+
+/* ── STATE ──────────────────────────────────────────────────────────── */
+let activeTier = 'all';
+let activeCat  = 'all';
+let activeChain = 'all';
+
+/* ── FILTERS ────────────────────────────────────────────────────────── */
+function buildFilters(projects) {
+  const tiers  = [...new Set(projects.map(p => p.tier))].sort((a,b) => TIER_ORDER.indexOf(a) - TIER_ORDER.indexOf(b));
+  const cats   = [...new Set(projects.flatMap(p => p.categories))].sort();
+  const chains = [...new Set(projects.map(p => p.chain))].sort();
+
+  fillRow('tier-filters', tiers, 'tier', t => TIER_LABELS[t] || t);
+  fillRow('cat-filters', cats, 'cat');
+  fillRow('chain-filters', chains, 'chain');
+}
+
+function fillRow(rowId, items, type, labelFn) {
+  const row = document.getElementById(rowId);
+  const allBtn = mk('button','ftab active');
+  allBtn.dataset[type] = 'all';
+  allBtn.textContent = 'All';
+  row.appendChild(allBtn);
+  for (const item of items) {
+    const btn = mk('button','ftab');
+    btn.dataset[type] = item;
+    if (type === 'tier') btn.dataset.tier = item; /* for CSS */
+    btn.textContent = labelFn ? labelFn(item) : item;
+    row.appendChild(btn);
+  }
+  row.addEventListener('click', e => {
+    const btn = e.target.closest('.ftab');
+    if (!btn) return;
+    row.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (type === 'tier')  activeTier  = btn.dataset.tier;
+    if (type === 'cat')   activeCat   = btn.dataset.cat;
+    if (type === 'chain') activeChain = btn.dataset.chain;
+    render();
+  });
+}
+
+function mk(tag, cls) { const el = document.createElement(tag); el.className = cls; return el; }
+
+/* ── RENDER ─────────────────────────────────────────────────────────── */
+function render() {
+  const container = document.getElementById('content');
+  container.innerHTML = '';
+
+  let filtered = DATA.projects.filter(p => {
+    if (activeTier !== 'all' && p.tier !== activeTier) return false;
+    if (activeCat  !== 'all' && !p.categories.includes(activeCat)) return false;
+    if (activeChain !== 'all' && p.chain !== activeChain) return false;
+    return true;
+  });
+
+  if (!filtered.length) {
+    container.innerHTML = '<div class="empty">No projects match the current filters.</div>';
+    return;
+  }
+
+  /* Group by tier */
+  for (const tier of TIER_ORDER) {
+    const group = filtered.filter(p => p.tier === tier);
+    if (!group.length) continue;
+
+    /* Tier section header */
+    const hdr = mk('div','tier-header');
+    hdr.innerHTML = `<div class="tier-dot" style="background:${TIER_COLORS[tier]}"></div><h2>${esc(TIER_LABELS[tier])}</h2><span class="tier-count">${group.length} project${group.length !== 1 ? 's' : ''}</span>`;
+    container.appendChild(hdr);
+
+    /* Grid */
+    const grid = mk('div','project-grid');
+    for (const p of group) grid.appendChild(makeCard(p));
+    container.appendChild(grid);
+  }
+}
+
+function makeCard(p) {
+  const card = mk('div','pcard');
+  const initials = p.name.slice(0,2).toUpperCase();
+  const tagsHtml = p.categories.map(c => `<span class="ptag ${tagClass(c)}">${esc(c)}</span>`).join('');
+  const mcapHtml = MCAP_LABELS[p.mcap] ? `<span class="pcard-mcap">${esc(MCAP_LABELS[p.mcap])}</span>` : '';
+
+  /* Build links */
+  let linksHtml = '';
+  if (p.links) {
+    if (p.links.website) linksHtml += `<a href="${esc(p.links.website)}" target="_blank" rel="noopener noreferrer" class="pcard-flink primary">Website →</a>`;
+    if (p.links.twitter)  linksHtml += `<a href="${esc(p.links.twitter)}" target="_blank" rel="noopener noreferrer" class="pcard-flink">𝕏</a>`;
+    if (p.links.docs)     linksHtml += `<a href="${esc(p.links.docs)}" target="_blank" rel="noopener noreferrer" class="pcard-flink">Docs</a>`;
+  }
+
+  card.innerHTML = `
+    <div class="pcard-top" style="background:${p.accent || 'var(--accent)'}"></div>
+    <div class="pcard-body">
+      <div class="pcard-header">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,${p.accent || '#7B61FF'}40,${p.accent || '#7B61FF'}20);border:1px solid ${p.accent || '#7B61FF'}50">${initials}</div>
+        <div class="pcard-info">
+          <div class="pcard-name">${esc(p.name)} <span class="tier-badge ${p.tier}">${esc(TIER_LABELS[p.tier] || p.tier)}</span></div>
+          <div class="pcard-ticker">${esc(p.ticker)}</div>
+        </div>
+      </div>
+      <div class="pcard-meta">
+        <span class="pcard-chain">${esc(p.chain)}</span>
+        ${mcapHtml}
+      </div>
+      <div class="pcard-tags">${tagsHtml}</div>
+      <div class="pcard-desc">${esc(p.desc)}</div>
+      ${p.thesis ? `<div class="pcard-thesis"><strong>FRQNCY Thesis</strong>${esc(p.thesis)}</div>` : ''}
+    </div>
+    <div class="pcard-footer">${linksHtml}</div>
+  `;
+  return card;
+}
+
+/* ── HERO STATS ─────────────────────────────────────────────────────── */
+function updateStats(projects) {
+  const tierCounts = {};
+  for (const p of projects) tierCounts[p.tier] = (tierCounts[p.tier]||0) + 1;
+  const statsEl = document.getElementById('hero-stats');
+  statsEl.innerHTML = `
+    <div class="hero-stat"><div class="hero-stat-num">${projects.length}</div><div class="hero-stat-label">Projects</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">${tierCounts.core||0}</div><div class="hero-stat-label">Core</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">${tierCounts.strong||0}</div><div class="hero-stat-label">Strong</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">${tierCounts.watch||0}</div><div class="hero-stat-label">Watch</div></div>
+  `;
+}
+
+/* ── INIT ───────────────────────────────────────────────────────────── */
+async function init() {
+  try {
+    const res = await fetch('crypto-projects.json');
+    if (!res.ok) throw new Error('Failed to load');
+    DATA = await res.json();
+  } catch(e) {
+    document.getElementById('content').innerHTML = '<div class="empty">Could not load project data. Please try again later.</div>';
+    return;
+  }
+  buildFilters(DATA.projects);
+  updateStats(DATA.projects);
+  render();
+
+  /* Show last sync */
+  if (DATA.lastSync) {
+    const d = new Date(DATA.lastSync);
+    document.getElementById('sync-note').textContent = 'Last synced: ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+  }
+
+  /* Hash-based tier filter */
+  const hash = location.hash.replace('#','');
+  if (hash && TIER_ORDER.includes(hash)) {
+    activeTier = hash;
+    document.querySelectorAll('#tier-filters .ftab').forEach(b => {
+      b.classList.toggle('active', (b.dataset.tier === hash));
+    });
+    render();
+  }
+}
+
+init();
+</script>
+</body>
+</html>

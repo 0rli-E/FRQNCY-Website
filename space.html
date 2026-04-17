@@ -416,6 +416,11 @@
             .subscribe-button {
                 width: 100%;
             }
+
+            /* Forest City two-column → single column on mobile */
+            section > div[style*="grid-template-columns: 1fr 1fr"] {
+                grid-template-columns: 1fr !important;
+            }
         }
     </style>
   <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
@@ -518,11 +523,80 @@
         </div>
     </section>
 
+    <!-- Events (Luma) -->
+    <section>
+        <div class="section-label">Upcoming Events</div>
+        <h2>Gatherings, Sessions &amp; Community</h2>
+        <p style="max-width:700px;margin-bottom:2.5rem;">In-person and virtual events for the FRQNCY community. Breathwork sessions, community dinners, talks, and more. Hosted on Luma.</p>
+
+        <div id="luma-embed" style="background:#FAFAFA;border:2px dashed #E0E0E0;border-radius:4px;padding:3rem 2rem;text-align:center;margin-bottom:2rem;">
+            <!--
+              LUMA EMBED PLACEHOLDER
+              Replace this entire div with the Luma embed widget once you have the calendar URL.
+              Example embed code:
+              <iframe src="https://lu.ma/embed/calendar/YOUR-CALENDAR-ID/events"
+                      style="width:100%;height:600px;border:none;border-radius:4px;"
+                      allowfullscreen></iframe>
+            -->
+            <div style="font-family:'Cormorant',serif;font-size:1.8rem;color:var(--dark);margin-bottom:0.75rem;">Events Calendar</div>
+            <p style="color:var(--light-mid);font-size:0.95rem;margin-bottom:1.5rem;">Our Luma events calendar will be embedded here once live.</p>
+            <a href="https://lu.ma" target="_blank" rel="noopener noreferrer" style="display:inline-block;padding:12px 28px;background:var(--gold);color:var(--dark);font-family:'Jost',sans-serif;font-size:11px;letter-spacing:0.2em;text-transform:uppercase;text-decoration:none;font-weight:500;border:1px solid var(--gold);transition:all 0.25s;">Coming Soon on Luma</a>
+        </div>
+
+        <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:1.5rem;">
+            <div style="background:#FAFAFA;padding:2rem;border-left:4px solid var(--gold);">
+                <strong style="color:var(--dark);font-weight:600;">Breathwork Sessions</strong>
+                <p style="font-size:0.9rem;margin-top:0.5rem;">Guided group breathwork for grounding, clarity, and presence. Regular schedule.</p>
+            </div>
+            <div style="background:#FAFAFA;padding:2rem;border-left:4px solid var(--gold);">
+                <strong style="color:var(--dark);font-weight:600;">Community Dinners</strong>
+                <p style="font-size:0.9rem;margin-top:0.5rem;">Intentional gatherings around food and conversation. Monthly, intimate settings.</p>
+            </div>
+            <div style="background:#FAFAFA;padding:2rem;border-left:4px solid var(--gold);">
+                <strong style="color:var(--dark);font-weight:600;">Speaker Nights</strong>
+                <p style="font-size:0.9rem;margin-top:0.5rem;">Talks from the FRQNCY network — consciousness, science, crypto, wellbeing.</p>
+            </div>
+            <div style="background:#FAFAFA;padding:2rem;border-left:4px solid var(--gold);">
+                <strong style="color:var(--dark);font-weight:600;">Retreat Days</strong>
+                <p style="font-size:0.9rem;margin-top:0.5rem;">Full-day immersions combining multiple practices. Quarterly signature events.</p>
+            </div>
+        </div>
+    </section>
+
+    <!-- Forest City Retreat -->
+    <section>
+        <div class="section-label">Retreat Space</div>
+        <h2>Forest City — The FRQNCY Retreat</h2>
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:3rem;align-items:start;">
+            <div>
+                <p style="font-size:1.05rem;line-height:1.9;margin-bottom:1.5rem;">Forest City is the vision for FRQNCY's dedicated retreat destination — a space designed for deep immersion, away from the rhythm of daily life. Multi-day retreats combining breathwork, meditation, movement, conscious technology, and community in a setting built for transformation.</p>
+                <p style="font-size:1.05rem;line-height:1.9;margin-bottom:1.5rem;">Not a resort. Not a hotel. A place where the FRQNCY community comes together for extended practice — where conversations become collaborations, and ideas become action.</p>
+                <div style="background:#FAFAFA;padding:2rem;border-left:4px solid var(--gold);margin-top:1.5rem;">
+                    <strong style="color:var(--dark);font-weight:600;font-size:0.95rem;">The Vision</strong>
+                    <ul style="list-style:none;margin-top:1rem;">
+                        <li style="padding:0.5rem 0;color:var(--mid);font-size:0.95rem;border-bottom:1px solid #E8E8E8;">Multi-day immersive retreats</li>
+                        <li style="padding:0.5rem 0;color:var(--mid);font-size:0.95rem;border-bottom:1px solid #E8E8E8;">Breathwork, meditation &amp; movement</li>
+                        <li style="padding:0.5rem 0;color:var(--mid);font-size:0.95rem;border-bottom:1px solid #E8E8E8;">Conscious technology workshops</li>
+                        <li style="padding:0.5rem 0;color:var(--mid);font-size:0.95rem;border-bottom:1px solid #E8E8E8;">Community building &amp; collaboration</li>
+                        <li style="padding:0.5rem 0;color:var(--mid);font-size:0.95rem;">Nature-integrated design</li>
+                    </ul>
+                </div>
+            </div>
+            <div style="background:linear-gradient(135deg, #1a3a2a 0%, #0B1C3D 60%, #1a2f5a 100%);border-radius:4px;padding:3rem;display:flex;flex-direction:column;justify-content:center;align-items:center;min-height:420px;text-align:center;">
+                <div style="font-family:'Jost',sans-serif;font-size:0.7rem;letter-spacing:0.25em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;">Coming Soon</div>
+                <div style="font-family:'Cormorant',serif;font-size:2.8rem;font-weight:300;color:#fff;line-height:1.2;margin-bottom:1rem;">Forest City</div>
+                <div style="font-family:'Cormorant',serif;font-size:1.2rem;font-weight:300;color:#E0E0E0;font-style:italic;margin-bottom:2rem;">Where depth meets nature</div>
+                <div style="width:60px;height:1px;background:var(--gold);margin-bottom:2rem;opacity:0.5;"></div>
+                <p style="color:#A0B8A0;font-size:0.85rem;max-width:280px;line-height:1.7;">A dedicated retreat destination for the FRQNCY community. Details and location announcement coming soon.</p>
+            </div>
+        </div>
+    </section>
+
     <!-- Location & Waitlist -->
     <section>
         <div class="location-section">
-            <h3>First Space Launching Soon</h3>
-            <p>FRQNCY Space is launching in [Location TBD]. Join the waitlist now to be notified at launch and receive founding member pricing.</p>
+            <h3>Join the FRQNCY Space Waitlist</h3>
+            <p>Be the first to know when FRQNCY Space launches — events, retreats, and the physical network. Join now for founding member access.</p>
             <form class="subscribe-form" onsubmit="handleWaitlist(event)">
                 <input
                     type="email"
@@ -539,7 +613,7 @@
     <section>
         <div class="vision-section">
             <h3>The Network State Vision</h3>
-            <p>FRQNCY Space is the first physical node of the FRQNCY Network. Our vision is multiple spaces, across geographies, all connected by one community layer. Not franchises. Not copies. Each space designed for its context, but all rooted in the same values: intention, curation, and conscious community. Together, these spaces form the physical infrastructure of the FRQNCY Network State.</p>
+            <p>FRQNCY Space is the first physical node of the FRQNCY Network. The coworking space, the events calendar, and the Forest City retreat are all part of one vision: multiple spaces, across geographies, connected by one community layer. Not franchises. Not copies. Each space designed for its context, but all rooted in the same values — intention, curation, and conscious community. Together, these spaces form the physical infrastructure of the FRQNCY Network State.</p>
         </div>
     </section>
 
