@@ -4,7 +4,7 @@
  * Provides offline fallback for the shell and fonts.
  */
 
-const CACHE = 'frqncy-v10';
+const CACHE = 'frqncy-v11';
 
 // Assets that should be pre-cached on install (the app shell)
 const PRECACHE = [

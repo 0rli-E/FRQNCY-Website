@@ -147,6 +147,8 @@
         { label: 'Space', href: base + 'space.html' },
         { label: 'Chart', href: base + 'chart.html' },
         { label: 'People', href: base + 'v2/people/index.html' },
+        { label: 'Crypto', href: base + 'v2/crypto/index.html' },
+        { label: 'Fund', href: base + 'v2/fund/index.html' },
         { label: 'My FRQNCY', href: base + 'my-frqncy.html' }
       ];
       fallbackLinks.forEach(function(item) {

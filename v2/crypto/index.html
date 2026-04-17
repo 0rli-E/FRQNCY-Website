@@ -1,0 +1,353 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crypto — FRQNCY Network</title>
+<meta name="description" content="Curated Web3 projects, tokens, and protocols aligned with sovereignty, decentralization, and conscious community building.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Crypto — FRQNCY Network">
+<meta property="og:description" content="Curated Web3 projects aligned with sovereignty, decentralization, and conscious community.">
+<meta property="og:url" content="https://frqncy.network/v2/crypto/">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:site_name" content="FRQNCY">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/v2/crypto/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
+  --card-border:rgba(255,255,255,0.08);--accent:#7B61FF;
+}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{text-decoration:none;color:var(--accent)}
+a:hover{opacity:0.85}
+
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text)}
+.breadcrumb .sep{opacity:0.25}
+.snav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.snav-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);transition:color .2s;white-space:nowrap}
+.snav-link:hover{color:var(--text)}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(3rem,7vw,5.5rem) clamp(1.25rem,5vw,2.5rem) clamp(2rem,4vw,3rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(123,97,255,0.12) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.2rem}
+.hero-desc{max-width:580px;margin:0 auto;font-size:0.88rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+
+/* DISCLAIMER */
+.disclaimer{max-width:640px;margin:0 auto 2.5rem;text-align:center;font-size:0.7rem;color:var(--text-dim);opacity:0.7;line-height:1.6;padding:0 1.25rem}
+
+/* FILTER */
+.filter-bar{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem);display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:2rem}
+.ftab{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;padding:5px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif}
+.ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(123,97,255,0.06)}
+
+/* GRID */
+main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
+.crypto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+
+/* CRYPTO CARD */
+.ccard{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;
+  overflow:hidden;display:flex;flex-direction:column;
+  transition:border-color .25s,transform .25s,background .25s;
+  color:var(--text);
+}
+.ccard:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-3px);background:rgba(255,255,255,0.06)}
+.ccard-accent{height:4px;flex-shrink:0}
+.ccard-body{padding:1.6rem 1.6rem 1.2rem;flex:1;display:flex;flex-direction:column;gap:0.5rem}
+.ccard-header{display:flex;align-items:center;gap:0.9rem}
+.ccard-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:500;color:#fff;flex-shrink:0;font-family:'Cormorant',serif}
+.ccard-meta{flex:1;min-width:0}
+.ccard-name{font-family:'Cormorant',serif;font-size:1.35rem;font-weight:400;color:#fff;line-height:1.15}
+.ccard-ticker{font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim)}
+.ccard-tags{display:flex;gap:0.3rem;flex-wrap:wrap;margin-top:0.3rem}
+.ctag{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid rgba(123,97,255,0.3);color:var(--accent);background:rgba(123,97,255,0.05)}
+.ctag.eco{border-color:rgba(46,204,113,0.3);color:#2ecc71;background:rgba(46,204,113,0.05)}
+.ctag.defi{border-color:rgba(52,152,219,0.3);color:#3498db;background:rgba(52,152,219,0.05)}
+.ctag.infra{border-color:rgba(241,196,15,0.3);color:#f1c40f;background:rgba(241,196,15,0.05)}
+.ctag.ai{border-color:rgba(231,76,60,0.3);color:#e74c3c;background:rgba(231,76,60,0.05)}
+.ccard-desc{font-size:0.8rem;color:var(--text-dim);line-height:1.65;margin-top:0.2rem}
+.ccard-why{font-size:0.72rem;line-height:1.55;color:var(--text);margin-top:0.2rem}
+.ccard-why strong{font-weight:400;color:var(--gold);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:0.2rem}
+.ccard-footer{margin-top:auto;padding:0.9rem 1.6rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.ccard-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);transition:opacity .2s;white-space:nowrap}
+.ccard:hover .ccard-link{opacity:0.8}
+.ccard-type{font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+
+/* SECTION DIVIDER */
+.section-break{max-width:1080px;margin:3rem auto 2rem;padding:0 clamp(1.25rem,5vw,2.5rem)}
+.section-break h2{font-family:'Cormorant',serif;font-size:1.6rem;font-weight:300;color:#fff;margin-bottom:0.4rem}
+.section-break p{font-size:0.8rem;color:var(--text-dim);max-width:600px}
+
+/* CTA BANNER */
+.cta-banner{max-width:1080px;margin:4rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem)}
+.cta-inner{background:rgba(123,97,255,0.06);border:1px solid rgba(123,97,255,0.2);border-radius:6px;padding:2.5rem;text-align:center}
+.cta-inner h3{font-family:'Cormorant',serif;font-size:1.5rem;font-weight:300;color:#fff;margin-bottom:0.6rem}
+.cta-inner p{font-size:0.82rem;color:var(--text-dim);margin-bottom:1.5rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+.cta-buttons{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap}
+.cta-btn{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:10px 24px;border-radius:2px;border:1px solid;transition:all .2s;font-family:'Jost',sans-serif}
+.cta-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.cta-btn.primary:hover{background:rgba(123,97,255,0.8)}
+.cta-btn.secondary{border-color:rgba(255,255,255,0.15);color:var(--text-dim)}
+.cta-btn.secondary:hover{border-color:rgba(255,255,255,0.3);color:var(--text)}
+
+@media(max-width:600px){
+  .crypto-grid{grid-template-columns:1fr}
+  .filter-bar{justify-content:center}
+}
+</style>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<link rel="manifest" href="../../manifest.json">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+</head>
+<body>
+
+<nav class="snav">
+  <div class="snav-left">
+    <a href="../../" class="snav-logo">FRQNCY</a>
+    <div class="breadcrumb">
+      <a href="../explore.html">Network</a>
+      <span class="sep">›</span>
+      <span>Crypto</span>
+    </div>
+  </div>
+  <div class="snav-right">
+    <a href="../fund/index.html" class="snav-link">Fund</a>
+    <a href="../explore.html" class="snav-back">← Network Map</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Web3 Curation</div>
+  <h1>Crypto</h1>
+  <p class="hero-desc">Projects, protocols, and tokens we believe in. Curated through the lens of sovereignty, decentralization, and building a more conscious world.</p>
+</section>
+
+<p class="disclaimer">This is not financial advice. FRQNCY curates projects we find philosophically aligned — always do your own research before investing.</p>
+
+<div class="filter-bar" id="filter-bar"></div>
+
+<main>
+  <div class="crypto-grid" id="grid"></div>
+</main>
+
+<div class="cta-banner">
+  <div class="cta-inner">
+    <h3>Want to Go Deeper?</h3>
+    <p>Explore our Crypto Fundamentals course to understand the technology behind decentralization, or check out the FRQNCY Fund vision.</p>
+    <div class="cta-buttons">
+      <a href="../courses/index.html" class="cta-btn primary">Crypto Course</a>
+      <a href="../fund/index.html" class="cta-btn secondary">FRQNCY Fund →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROJECTS = [
+  {
+    name: "Bitcoin",
+    ticker: "BTC",
+    categories: ["Store of Value", "Infrastructure"],
+    tagClass: "infra",
+    accent: "#F7931A",
+    desc: "The original decentralized currency. A peer-to-peer electronic cash system that requires no trusted third party — the foundation of financial sovereignty.",
+    why: "Bitcoin is the bedrock. It proved that value can exist outside institutions, that trust can be mathematical, and that individuals can hold their own wealth without permission.",
+    link: "https://bitcoin.org",
+    linkLabel: "bitcoin.org"
+  },
+  {
+    name: "Ethereum",
+    ticker: "ETH",
+    categories: ["Infrastructure", "DeFi"],
+    tagClass: "infra",
+    accent: "#627EEA",
+    desc: "A decentralized platform for smart contracts and applications. Ethereum enables programmable money, DAOs, and the infrastructure for a new internet.",
+    why: "Ethereum is the canvas. It's where communities can build their own rules, their own economies, and their own governance — without asking permission from anyone.",
+    link: "https://ethereum.org",
+    linkLabel: "ethereum.org"
+  },
+  {
+    name: "Solana",
+    ticker: "SOL",
+    categories: ["Infrastructure", "DeFi"],
+    tagClass: "infra",
+    accent: "#9945FF",
+    desc: "A high-performance blockchain built for speed and scale. Sub-second finality, low fees, and a thriving ecosystem of DeFi, NFTs, and consumer apps.",
+    why: "Speed matters for adoption. Solana brings blockchain to the speed of thought — making decentralized apps feel as fast as the centralized ones people are used to.",
+    link: "https://solana.com",
+    linkLabel: "solana.com"
+  },
+  {
+    name: "Chainlink",
+    ticker: "LINK",
+    categories: ["Infrastructure", "Oracle"],
+    tagClass: "infra",
+    accent: "#375BD2",
+    desc: "The decentralized oracle network connecting smart contracts to real-world data. Chainlink is the bridge between blockchains and the external world.",
+    why: "For blockchains to interact with reality — weather data, prices, events — they need a decentralized truth layer. Chainlink is that layer.",
+    link: "https://chain.link",
+    linkLabel: "chain.link"
+  },
+  {
+    name: "Worldcoin",
+    ticker: "WLD",
+    categories: ["Identity", "AI"],
+    tagClass: "ai",
+    accent: "#1A1A2E",
+    desc: "A global identity and financial network built to distinguish humans from AI online. Uses biometric proof-of-personhood to create a universal human identity layer.",
+    why: "As AI grows, proving you're human becomes essential. Worldcoin asks a critical question: how do we preserve human agency in an age of intelligent machines?",
+    link: "https://worldcoin.org",
+    linkLabel: "worldcoin.org"
+  },
+  {
+    name: "Render",
+    ticker: "RNDR",
+    categories: ["AI", "Infrastructure"],
+    tagClass: "ai",
+    accent: "#E33F3F",
+    desc: "A decentralized GPU rendering network. Render connects artists and developers who need computing power with people who have GPUs sitting idle.",
+    why: "Decentralizing compute is decentralizing power. Render turns GPU capacity into a shared resource — no gatekeepers, no cloud monopolies.",
+    link: "https://rendernetwork.com",
+    linkLabel: "rendernetwork.com"
+  },
+  {
+    name: "Celestia",
+    ticker: "TIA",
+    categories: ["Infrastructure", "Modular"],
+    tagClass: "infra",
+    accent: "#7B2FF7",
+    desc: "The first modular data availability network. Celestia enables anyone to deploy their own blockchain without the cost of building consensus from scratch.",
+    why: "Modularity is sovereignty. Celestia lets communities build custom chains for custom purposes — your rules, your data, your consensus.",
+    link: "https://celestia.org",
+    linkLabel: "celestia.org"
+  },
+  {
+    name: "Helium",
+    ticker: "HNT",
+    categories: ["DePIN", "Infrastructure"],
+    tagClass: "eco",
+    accent: "#474DFF",
+    desc: "A decentralized wireless network built by people. Helium lets anyone deploy hotspots to provide 5G and IoT coverage, earning tokens for contributing to physical infrastructure.",
+    why: "Infrastructure owned by people, not corporations. Helium proves that decentralized communities can build real-world networks — from the ground up.",
+    link: "https://www.helium.com",
+    linkLabel: "helium.com"
+  },
+  {
+    name: "Echo",
+    ticker: "—",
+    categories: ["Fundraising", "DeFi"],
+    tagClass: "defi",
+    accent: "#00D4AA",
+    desc: "Onchain capital formation platform for early-stage investing in startups and tokens. Now part of Coinbase, Echo has facilitated $200M+ across 300+ deals since 2024.",
+    why: "Echo democratizes access to early-stage deals that were once reserved for VCs and insiders. This is the infrastructure for community-driven capital.",
+    link: "https://echo.xyz",
+    linkLabel: "echo.xyz"
+  },
+  {
+    name: "Legion",
+    ticker: "—",
+    categories: ["Fundraising", "Community"],
+    tagClass: "defi",
+    accent: "#FF6B35",
+    desc: "A merit-based, MiCA-compliant ICO platform. Legion uses reputation scoring to allocate investments — rewarding community involvement, not just wallet size.",
+    why: "Legion flips the script: your contribution to the ecosystem matters more than your capital. Merit-based fundraising aligned with building real community.",
+    link: "https://legion.cc",
+    linkLabel: "legion.cc"
+  }
+];
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Build filter tabs
+const allCats = [...new Set(PROJECTS.flatMap(p => p.categories))].sort();
+const filterBar = document.getElementById('filter-bar');
+const allBtn = document.createElement('button');
+allBtn.className = 'ftab active';
+allBtn.dataset.filter = 'all';
+allBtn.textContent = 'All';
+filterBar.appendChild(allBtn);
+for (const c of allCats) {
+  const btn = document.createElement('button');
+  btn.className = 'ftab';
+  btn.dataset.filter = c;
+  btn.textContent = c;
+  filterBar.appendChild(btn);
+}
+
+filterBar.addEventListener('click', e => {
+  const btn = e.target.closest('.ftab');
+  if (!btn) return;
+  filterBar.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const f = btn.dataset.filter;
+  document.querySelectorAll('.ccard').forEach(card => {
+    const cats = card.dataset.categories.split(',');
+    card.style.display = (f === 'all' || cats.includes(f)) ? '' : 'none';
+  });
+});
+
+// Build cards
+const grid = document.getElementById('grid');
+for (const p of PROJECTS) {
+  const card = document.createElement('div');
+  card.className = 'ccard';
+  card.dataset.categories = p.categories.join(',');
+
+  const tagsHtml = p.categories.map(c => {
+    const cls = p.tagClass || '';
+    return `<span class="ctag ${cls}">${esc(c)}</span>`;
+  }).join('');
+
+  const initials = p.name.slice(0,2).toUpperCase();
+
+  card.innerHTML = `
+    <div class="ccard-accent" style="background:${p.accent}"></div>
+    <div class="ccard-body">
+      <div class="ccard-header">
+        <div class="ccard-icon" style="background:linear-gradient(135deg,${p.accent}40,${p.accent}20);border:1px solid ${p.accent}50">${initials}</div>
+        <div class="ccard-meta">
+          <div class="ccard-name">${esc(p.name)}</div>
+          <div class="ccard-ticker">${esc(p.ticker)}</div>
+        </div>
+      </div>
+      <div class="ccard-tags">${tagsHtml}</div>
+      <div class="ccard-desc">${esc(p.desc)}</div>
+      <div class="ccard-why">
+        <strong>Why FRQNCY watches this</strong>
+        ${esc(p.why)}
+      </div>
+    </div>
+    <div class="ccard-footer">
+      <a href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" class="ccard-link">${esc(p.linkLabel)} →</a>
+      <span class="ccard-type">${esc(p.categories[0])}</span>
+    </div>
+  `;
+  grid.appendChild(card);
+}
+</script>
+</body>
+</html>
