@@ -3,7 +3,7 @@
  * Cloudflare Pages Function
  *
  * Uses Cloudflare Workers AI — no API key needed, runs free on Cloudflare's edge.
- * Model: @cf/qwen/qwen1.5-14b-chat-awq
+ * Model: @cf/qwen/qwen3-30b-a3b-fp8
  *
  * POST /api/chat
  * Body: { messages: [{ role: "user"|"assistant", content: "..." }] }
@@ -134,7 +134,7 @@ export async function onRequestPost({ request, env }) {
     });
 
   } catch (err) {
-    return jsonError(`AI service error: ${err.message}`, 502);
+    return jsonError('AI service temporarily unavailable — please try again.', 502);
   }
 }
 

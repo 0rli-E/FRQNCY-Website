@@ -43,15 +43,17 @@ function lessonTypeLabel(type) {
 }
 
 /* ── Sidebar lesson button ── */
-function sidebarItem(l, i) {
+function sidebarItem(l, i, prefix) {
+  prefix = prefix || 'nav';
+  var chkPrefix = prefix === 'nav' ? 'chk' : 'm-chk';
   return `
-    <button class="lesson-btn" data-idx="${i}" id="nav-${i}">
+    <button class="lesson-btn" data-idx="${i}" id="${prefix}-${i}">
       <span class="lbtn-icon">${lessonTypeIcon(l.type)}</span>
       <span class="lbtn-body">
         <span class="lbtn-title">${esc(l.title)}</span>
         <span class="lbtn-meta">${lessonTypeLabel(l.type)}${l.duration ? ' · ' + esc(l.duration) : ''}</span>
       </span>
-      <span class="lbtn-check" id="chk-${i}" aria-hidden="true">✓</span>
+      <span class="lbtn-check" id="${chkPrefix}-${i}" aria-hidden="true">✓</span>
     </button>`;
 }
 
@@ -152,8 +154,8 @@ function buildPage(c) {
 <meta property="og:url" content="https://frqncy.network/v2/courses/${esc(c.slug)}/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:site_name" content="FRQNCY">
-<link rel="icon" type="image/svg+xml" href="../../../../favicon.svg">
-<link rel="manifest" href="../../../../manifest.json">
+<link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="manifest" href="../../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/courses/${esc(c.slug)}/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -450,7 +452,7 @@ nav.snav{
 
 <nav class="snav">
   <div class="snav-left">
-    <a href="../../../../" class="snav-logo">FRQNCY</a>
+    <a href="../../../" class="snav-logo">FRQNCY</a>
     <div class="breadcrumb">
       <a href="../../">Courses</a>
       <span class="sep">›</span>
@@ -501,7 +503,7 @@ nav.snav{
     <button class="mobile-sidebar-close" onclick="closeMobileSidebar()" aria-label="Close">✕</button>
   </div>
   <div class="lesson-list" id="mobile-lesson-list">
-    ${c.lessons.map((l, i) => sidebarItem(l, i)).join('')}
+    ${c.lessons.map((l, i) => sidebarItem(l, i, 'm-nav')).join('')}
   </div>
 </div>
 

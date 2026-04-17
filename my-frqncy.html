@@ -49,8 +49,12 @@ nav{
 }
 .nav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;opacity:0.85}
 .nav-logo:hover{opacity:1}
-.nav-back{font-size:0.66rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s}
-.nav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+.nav-links{list-style:none;display:flex;align-items:center;gap:1.75rem}
+.nav-links a{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-cta-gold{color:var(--gold) !important;border:1px solid rgba(196,151,58,0.35);padding:5px 14px;border-radius:2px}
+.nav-cta-gold:hover{background:rgba(196,151,58,0.08)}
+@media(max-width:768px){.nav-links{display:none}}
 
 /* ── CHART GENERATOR CTA (form view) ── */
 .chart-cta{
@@ -319,7 +323,28 @@ nav{
 
 <nav>
   <a href="index.html" class="nav-logo">FRQNCY</a>
-  <a href="search.html" class="nav-back">← Search</a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <a href="about.html">About</a>
+      <div class="nav-dd-menu">
+        <a href="about.html"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+        <a href="platform.html"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="v2/explore.html">Discover</a>
+      <div class="nav-dd-menu">
+        <a href="v2/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="v2/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video library</span></a>
+        <a href="v2/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="search.html"><span class="dd-label">Search</span><span class="dd-sub">Find anything</span></a>
+        <a href="chart.html"><span class="dd-label">Chart Generator</span><span class="dd-sub">Map your alignment</span></a>
+      </div>
+    </li>
+    <li><a href="podcast.html">Podcast</a></li>
+    <li><a href="space.html">Space</a></li>
+    <li><a href="my-frqncy.html" class="nav-cta-gold active">My FRQNCY</a></li>
+  </ul>
 </nav>
 
 <!-- Loading overlay -->

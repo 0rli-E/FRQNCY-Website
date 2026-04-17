@@ -205,7 +205,7 @@
   <div id="frqncy-chat-msgs"></div>
   <div id="frqncy-suggestions"></div>
   <div id="frqncy-chat-bar">
-    <textarea id="frqncy-chat-input" rows="1" placeholder="Ask about any topic…" aria-label="Chat input"></textarea>
+    <textarea id="frqncy-chat-input" rows="1" placeholder="Ask about any topic…" aria-label="Chat input" maxlength="3000"></textarea>
     <button id="frqncy-send-btn" aria-label="Send message">
       <svg viewBox="0 0 24 24"><path d="M2 21l21-9L2 3v7l15 2-15 2z"/></svg>
     </button>
@@ -334,7 +334,9 @@
       }
 
       const data = await res.json();
-      const reply = data.response || 'Sorry, I didn\'t get a response. Try again.';
+      let reply = data.response || 'Sorry, I didn\'t get a response. Try again.';
+      // Strip any <think> blocks that may have leaked through
+      reply = reply.replace(/<think>[\s\S]*?<\/think>/g, '').trim() || reply;
       addMessage('bot', reply);
       messages.push({ role: 'assistant', content: reply });
 
@@ -351,12 +353,16 @@
         retryBtn.textContent = 'Retry ↻';
         retryBtn.style.cssText = 'margin-top:8px;padding:5px 14px;font-size:12px;letter-spacing:0.08em;background:rgba(196,151,58,0.15);color:#E0C06A;border:1px solid rgba(196,151,58,0.3);border-radius:3px;cursor:pointer;font-family:inherit;';
         retryBtn.addEventListener('click', function() {
-          retryBtn.remove();
-          // Find and remove the last user message, then re-send it
+          // Remove the error bubble (which contains the retry button)
+          el.remove();
+          // Find and remove the last user message bubble + array entry, then re-send
           for (var mi = messages.length - 1; mi >= 0; mi--) {
             if (messages[mi].role === 'user') {
               var lastUser = messages[mi].content;
-              messages.splice(mi, 1); // remove exactly this message
+              messages.splice(mi, 1);
+              // Also remove the duplicate user bubble from the DOM
+              var bubbles = msgsEl.querySelectorAll('.fc-msg.user');
+              if (bubbles.length > 0) bubbles[bubbles.length - 1].remove();
               inputEl.value = lastUser;
               sendMessage();
               break;
@@ -411,7 +417,7 @@
 
   // Close on outside click
   document.addEventListener('click', e => {
-    if (open && !panel.contains(e.target) && e.target !== btn) {
+    if (open && !panel.contains(e.target) && !btn.contains(e.target)) {
       closeChat();
     }
   });

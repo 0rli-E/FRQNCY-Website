@@ -7,9 +7,10 @@
 
   function init() {
     var nav = document.querySelector('nav');
-    var navLinks = document.querySelector('nav .nav-links');
-    if (!nav || !navLinks) return;
+    if (!nav) return;
     if (document.getElementById('frqncy-hamburger')) return;
+
+    var navLinks = document.querySelector('nav .nav-links');
 
     // Detect dark-nav pages
     var navBg = getComputedStyle(nav).backgroundColor || '';
@@ -61,59 +62,99 @@
     drawer.setAttribute('aria-modal', 'true');
     drawer.setAttribute('aria-label', 'Navigation');
 
-    var items = navLinks.children; // <li> elements
-    for (var i = 0; i < items.length; i++) {
-      var li = items[i];
-      if (li.classList.contains('nav-dd')) {
-        // Dropdown → accordion
-        var triggerA = li.querySelector('a');
-        var menuDiv = li.querySelector('.nav-dd-menu');
-        var triggerBtn = document.createElement('button');
-        triggerBtn.className = 'mob-dd-trigger';
-        triggerBtn.textContent = triggerA ? triggerA.textContent.trim() : '';
-        triggerBtn.innerHTML += ' <span class="mob-dd-arrow">▾</span>';
+    if (navLinks) {
+      // Clone links from existing nav-links
+      var items = navLinks.children; // <li> elements
+      for (var i = 0; i < items.length; i++) {
+        var li = items[i];
+        if (li.classList.contains('nav-dd')) {
+          // Dropdown → accordion
+          var triggerA = li.querySelector('a');
+          var menuDiv = li.querySelector('.nav-dd-menu');
+          var triggerBtn = document.createElement('button');
+          triggerBtn.className = 'mob-dd-trigger';
+          triggerBtn.textContent = triggerA ? triggerA.textContent.trim() : '';
+          triggerBtn.innerHTML += ' <span class="mob-dd-arrow">▾</span>';
 
-        var accContent = document.createElement('div');
-        accContent.className = 'mob-dd-items';
-        if (menuDiv) {
-          var subLinks = menuDiv.querySelectorAll('a');
-          subLinks.forEach(function (sa) {
+          var accContent = document.createElement('div');
+          accContent.className = 'mob-dd-items';
+          if (menuDiv) {
+            var subLinks = menuDiv.querySelectorAll('a');
+            subLinks.forEach(function (sa) {
+              var link = document.createElement('a');
+              link.href = sa.getAttribute('href');
+              var label = sa.querySelector('.dd-label');
+              link.textContent = label ? label.textContent.trim() : sa.textContent.trim();
+              link.addEventListener('click', closeDrawer);
+              accContent.appendChild(link);
+            });
+          }
+
+          triggerBtn.addEventListener('click', function (acc) {
+            return function () {
+              var isOpen = acc.classList.contains('open');
+              drawer.querySelectorAll('.mob-dd-items.open').forEach(function (el) { el.classList.remove('open'); });
+              drawer.querySelectorAll('.mob-dd-trigger.open').forEach(function (el) { el.classList.remove('open'); });
+              if (!isOpen) {
+                acc.classList.add('open');
+                this.classList.add('open');
+              }
+            };
+          }(accContent));
+
+          drawer.appendChild(triggerBtn);
+          drawer.appendChild(accContent);
+        } else {
+          var a = li.querySelector('a');
+          if (a) {
             var link = document.createElement('a');
-            link.href = sa.getAttribute('href');
-            var label = sa.querySelector('.dd-label');
-            link.textContent = label ? label.textContent.trim() : sa.textContent.trim();
+            link.href = a.getAttribute('href');
+            link.textContent = a.textContent.trim();
+            if (a.classList.contains('active')) link.classList.add('active');
             link.addEventListener('click', closeDrawer);
-            accContent.appendChild(link);
-          });
-        }
-
-        triggerBtn.addEventListener('click', function (acc) {
-          return function () {
-            var isOpen = acc.classList.contains('open');
-            // Close all others
-            drawer.querySelectorAll('.mob-dd-items.open').forEach(function (el) { el.classList.remove('open'); });
-            drawer.querySelectorAll('.mob-dd-trigger.open').forEach(function (el) { el.classList.remove('open'); });
-            if (!isOpen) {
-              acc.classList.add('open');
-              this.classList.add('open');
-            }
-          };
-        }(accContent));
-
-        drawer.appendChild(triggerBtn);
-        drawer.appendChild(accContent);
-      } else {
-        // Regular link
-        var a = li.querySelector('a');
-        if (a) {
-          var link = document.createElement('a');
-          link.href = a.getAttribute('href');
-          link.textContent = a.textContent.trim();
-          if (a.classList.contains('active')) link.classList.add('active');
-          link.addEventListener('click', closeDrawer);
-          drawer.appendChild(link);
+            drawer.appendChild(link);
+          }
         }
       }
+    } else {
+      // Fallback: inject standard nav links for pages without .nav-links
+      // Detect depth from site root by checking logo href or script src
+      var base = '';
+      var logoLink = nav.querySelector('a[class*="logo"]') || nav.querySelector('a');
+      if (logoLink) {
+        var h = logoLink.getAttribute('href') || '';
+        if (h.indexOf('../../') === 0) base = '../../';
+        else if (h.indexOf('../') === 0) base = '../';
+      }
+      // Also detect from mobile-nav.js script src
+      if (!base) {
+        var scripts = document.querySelectorAll('script[src*="mobile-nav"]');
+        scripts.forEach(function(s) {
+          var src = s.getAttribute('src') || '';
+          if (src.indexOf('../../../') === 0) base = '../../../';
+          else if (src.indexOf('../../') === 0) base = '../../';
+          else if (src.indexOf('../') === 0) base = '../';
+        });
+      }
+      var fallbackLinks = [
+        { label: 'Home', href: base + 'index.html' },
+        { label: 'Explore', href: base + 'v2/explore.html' },
+        { label: 'Watch', href: base + 'v2/watch/index.html' },
+        { label: 'Courses', href: base + 'v2/courses/index.html' },
+        { label: 'Search', href: base + 'search.html' },
+        { label: 'About', href: base + 'about.html' },
+        { label: 'Podcast', href: base + 'podcast.html' },
+        { label: 'Space', href: base + 'space.html' },
+        { label: 'Chart', href: base + 'chart.html' },
+        { label: 'My FRQNCY', href: base + 'my-frqncy.html' }
+      ];
+      fallbackLinks.forEach(function(item) {
+        var link = document.createElement('a');
+        link.href = item.href;
+        link.textContent = item.label;
+        link.addEventListener('click', closeDrawer);
+        drawer.appendChild(link);
+      });
     }
     document.body.appendChild(drawer);
 

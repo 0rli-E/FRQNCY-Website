@@ -40,7 +40,7 @@
     }
     #tooltip .tip-title { font-family:var(--font-display); font-size:17px; color:var(--gold-light); margin-bottom:3px; }
     #tooltip .tip-type  { font-size:9px; letter-spacing:0.16em; color:rgba(255,255,255,0.38); text-transform:uppercase; }
-    #ui-overlay { position:fixed; top:24px; left:50%; transform:translateX(-50%); z-index:5; text-align:center; pointer-events:none; }
+    #ui-overlay { position:fixed; top:68px; left:50%; transform:translateX(-50%); z-index:5; text-align:center; pointer-events:none; }
     #ui-overlay h1 { font-family:var(--font-display); font-size:clamp(20px,2.5vw,30px); font-weight:300; letter-spacing:0.35em; color:var(--gold); }
     #ui-overlay p  { font-size:10px; letter-spacing:0.2em; color:rgba(255,255,255,0.3); margin-top:5px; }
     #back-btn {
@@ -62,7 +62,7 @@
     .leg-dot  { border-radius:50%; flex-shrink:0; }
     #search-container {
       position: fixed;
-      top: 80px;
+      top: 90px;
       left: 50%;
       transform: translateX(-50%);
       z-index: 6;
@@ -335,6 +335,16 @@
 </head>
 <body>
 
+<nav class="explore-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between;">
+  <a href="../index.html" class="snav-logo" style="font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;opacity:0.85;">FRQNCY</a>
+  <div style="display:flex;align-items:center;gap:1rem;">
+    <a href="watch/index.html" style="font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s;">Watch</a>
+    <a href="courses/index.html" style="font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s;">Courses</a>
+    <a href="../search.html" style="font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s;">Search</a>
+    <a href="../index.html" style="font-size:0.68rem;letter-spacing:0.1em;color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;text-decoration:none;transition:all .2s;white-space:nowrap;">← Home</a>
+  </div>
+</nav>
+
 <canvas id="fx"></canvas>
 <svg id="map-svg"><defs id="svg-defs"></defs></svg>
 <div id="tooltip"><div class="tip-title"></div><div class="tip-type"></div></div>
@@ -350,10 +360,7 @@
 </div>
 <div id="search-results"></div>
 <div id="v2-badge">EXPLORE</div>
-<div id="hub-links" style="position:fixed;top:60px;right:24px;z-index:10;display:flex;flex-direction:column;gap:6px">
-  <a href="watch/index.html" class="hub-link">WATCH</a>
-  <a href="courses/index.html" class="hub-link">COURSES</a>
-</div>
+<!-- hub-links moved to nav -->
 
 <div id="legend">
   <div class="leg-item"><div class="leg-dot" style="width:14px;height:14px;background:linear-gradient(135deg,#F4DC88,#B0791E);"></div>CORE</div>
@@ -363,7 +370,7 @@
   <div class="leg-item"><div class="leg-dot" style="width:3px;height:3px;background:#fff;box-shadow:0 0 3px rgba(255,255,255,0.8);"></div>HUMANS</div>
 </div>
 
-<a id="back-btn" href="../index.html">← FRQNCY Home</a>
+<!-- back-btn removed — nav has Home link now -->
 <div id="node-count"></div>
 
 <script>
@@ -811,6 +818,7 @@ if(isEmbedded){
     const el=document.getElementById(id);
     if(el) el.style.display='none';
   });
+  var enav=document.querySelector('.explore-nav'); if(enav) enav.style.display='none';
 }
 
 /* ──────────── CANVAS ──────────── */
@@ -998,7 +1006,7 @@ const searchResults=document.getElementById('search-results');
 
 // Load rich search index from search.json
 let SEARCH_INDEX=[];
-fetch('../search.json').then(r=>r.json()).then(data=>{ SEARCH_INDEX=data; }).catch(()=>{});
+fetch('../search.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(data=>{ SEARCH_INDEX=data; }).catch(()=>{ /* search will use graph-only fallback */ });
 
 function scoreMatch(item, q){
   let score=0;
