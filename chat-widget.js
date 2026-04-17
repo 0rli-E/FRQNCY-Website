@@ -46,6 +46,9 @@
   let messages = [];   // { role, content }
   let loading  = false;
 
+  // ── FRQNCY LOGO SVG (radiant wave symbol) ───────────────────────
+  const FRQNCY_LOGO_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:60%;height:60%"><g stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"><line x1="50" y1="4" x2="50" y2="24"/><line x1="72" y1="10" x2="62" y2="26"/><line x1="92" y1="30" x2="74" y2="38"/><line x1="92" y1="70" x2="74" y2="62"/><line x1="50" y1="96" x2="50" y2="76"/><line x1="28" y1="90" x2="38" y2="74"/><line x1="8" y1="70" x2="26" y2="62"/><line x1="8" y1="30" x2="26" y2="38"/></g><path d="M8,50 C22,50 32,33 50,33 C68,33 78,50 92,50" stroke="currentColor" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M8,50 C22,50 32,67 50,67 C68,67 78,50 92,50" stroke="currentColor" stroke-width="3.2" fill="none" stroke-linecap="round"/><circle cx="38" cy="55" r="3.2" fill="currentColor"/><circle cx="62" cy="55" r="3.2" fill="currentColor"/></svg>`;
+
   // ── INJECT STYLES ────────────────────────────────────────────────
   const style = document.createElement('style');
   style.textContent = `
@@ -59,7 +62,8 @@
     transition:transform .2s, box-shadow .2s;
   }
   #frqncy-chat-btn:hover { transform:scale(1.08); box-shadow:0 6px 28px rgba(196,151,58,0.6); }
-  #frqncy-chat-btn svg   { width:26px; height:26px; fill:${C.navy}; }
+  #frqncy-chat-btn svg   { width:34px; height:34px; color:${C.navy}; }
+  #frqncy-chat-btn       { color:${C.navy}; }
 
   #frqncy-chat-panel {
     position:fixed; bottom:90px; right:24px; z-index:9999;
@@ -84,10 +88,11 @@
   }
   #frqncy-chat-head .avatar {
     width:36px; height:36px; border-radius:50%;
-    background:${C.gold};
+    background:${C.gold}; color:${C.navy};
     display:flex; align-items:center; justify-content:center;
-    font-size:18px; flex-shrink:0;
+    flex-shrink:0;
   }
+  #frqncy-chat-head .avatar svg { width:24px; height:24px; }
   #frqncy-chat-head .info { flex:1; }
   #frqncy-chat-head .name  { font-size:.85rem; font-weight:700; color:${C.white}; }
   #frqncy-chat-head .tag   { font-size:.72rem; color:${C.dim}; }
@@ -185,10 +190,7 @@
   const btn = document.createElement('button');
   btn.id = 'frqncy-chat-btn';
   btn.setAttribute('aria-label', 'Open FRQNCY chat');
-  btn.innerHTML = `<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-    <path d="M20 2H4c-1.1 0-2 .9-2 2v18l4-4h14c1.1 0 2-.9 2-2V4c0-1.1-.9-2-2-2zm0 14H5.2L4 17.2V4h16v12z"/>
-    <circle cx="8" cy="10" r="1.2"/><circle cx="12" cy="10" r="1.2"/><circle cx="16" cy="10" r="1.2"/>
-  </svg>`;
+  btn.innerHTML = FRQNCY_LOGO_SVG;
 
   // Panel
   const panel = document.createElement('div');
@@ -199,7 +201,7 @@
 
   panel.innerHTML = `
   <div id="frqncy-chat-head">
-    <div class="avatar">✦</div>
+    <div class="avatar">${FRQNCY_LOGO_SVG}</div>
     <div class="info">
       <div class="name">${BOT_NAME}</div>
       <div class="tag">${BOT_TAGLINE}</div>
