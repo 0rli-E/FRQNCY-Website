@@ -37,6 +37,8 @@
             --blue: #2952B3;
             --mid: #3A4E72;
             --light-mid: #8A9AB8;
+            --font-display: 'Cormorant', Georgia, serif;
+            --font-body: 'Jost', sans-serif;
         }
 
         * {
@@ -422,6 +424,7 @@
 <link rel="manifest" href="manifest.json">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="stylesheet" href="nav-dropdown.css">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </head>
 <body>
     <!-- Navigation -->

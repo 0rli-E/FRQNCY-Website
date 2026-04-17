@@ -18,7 +18,9 @@
     // =====================
     (function () {
       const canvas = document.getElementById('particles-canvas');
+      if (!canvas) return;
       const ctx = canvas.getContext('2d');
+      if (!ctx) return;
       let particles = [];
 
       function resize() {
@@ -84,12 +86,16 @@
     let subscribeShown = false;
 
     function showSubscribe() {
-      if (popupSeen()) { subscribeShown = true; return; } // already dismissed recently
-      document.getElementById('subscribe-overlay').classList.add('visible');
+      if (popupSeen()) { subscribeShown = true; return; }
+      const overlay = document.getElementById('subscribe-overlay');
+      if (!overlay) return;
+      overlay.classList.add('visible');
       lockBody();
     }
     function dismissSubscribe() {
-      document.getElementById('subscribe-overlay').classList.remove('visible');
+      const overlay = document.getElementById('subscribe-overlay');
+      if (!overlay) return;
+      overlay.classList.remove('visible');
       unlockBody();
       subscribeShown = true;
       markPopupSeen('dismissed');
@@ -248,7 +254,7 @@
       'https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js',
       _initNetworkMap,
       function() {
-        console.warn('FRQNCY: cdnjs failed, trying jsDelivr');
+        // cdnjs failed, trying jsDelivr fallback
         _loadScript('https://cdn.jsdelivr.net/npm/d3@7.8.5/dist/d3.min.js', _initNetworkMap, _showMapError);
       }
     );
@@ -672,6 +678,7 @@
     const nmMajorLinks=NM_LINKS.filter(l=>{ const s=typeof l.source==='object'?l.source.type:null; return s==='core'||s==='main'; });
 
     function nmSpawn(fromDot){
+      if(nmParticles.length>200) return; // cap to prevent unbounded growth
       if(fromDot){
         const h=NM_HUMANS[Math.floor(Math.random()*NM_HUMANS.length)];
         const a=nmNodeById[h.anchorId]; if(!a||a.x===undefined) return;

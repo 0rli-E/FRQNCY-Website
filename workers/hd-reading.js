@@ -4,12 +4,7 @@
  * Deploy: wrangler deploy --name frqncy-hd-reading
  *
  * Uses Cloudflare Workers AI (runs on Cloudflare's edge, no external API key needed)
- * Model: @cf/qwen/qwen1.5-14b-chat-awq (token-efficient, fast, good at structured explanation)
- *
- * Alternative models (swap in env.AI.run call):
- *   @cf/meta/llama-3.1-8b-instruct    — Meta, very fast
- *   @cf/qwen/qwen1.5-7b-chat-awq      — Smaller Qwen, cheaper
- *   @hf/thebloke/mistral-7b-instruct   — Mistral, balanced
+ * Model: @cf/qwen/qwen3-30b-a3b-fp8 (free tier, OpenAI-compatible response format)
  *
  * Setup:
  *   1. wrangler init frqncy-hd-reading
@@ -79,10 +74,14 @@ const AUTHORITIES = {
 export default {
   async fetch(request, env) {
     // CORS preflight
+    const origin = request.headers.get('Origin') || '';
+    const allowedOrigins = ['https://frqncy.network', 'https://frqncy-website.pages.dev'];
+    const corsOrigin = allowedOrigins.includes(origin) ? origin : allowedOrigins[0];
+
     if (request.method === 'OPTIONS') {
       return new Response(null, {
         headers: {
-          'Access-Control-Allow-Origin': 'https://frqncy.network',
+          'Access-Control-Allow-Origin': corsOrigin,
           'Access-Control-Allow-Methods': 'POST, OPTIONS',
           'Access-Control-Allow-Headers': 'Content-Type',
           'Access-Control-Max-Age': '86400',
@@ -136,15 +135,29 @@ Type context: ${typeRef.description}`;
         temperature: 0.7,
       });
 
+      // Qwen3 returns OpenAI-compatible: { choices: [{ message: { content } }] }
+      // Older models returned: { response: "..." }
+      let reading;
+      if (response.choices && response.choices[0]?.message?.content) {
+        reading = response.choices[0].message.content.trim();
+      } else if (response.response) {
+        reading = response.response;
+      } else {
+        reading = typeof response === 'string' ? response : JSON.stringify(response);
+      }
+
+      // Strip Qwen3 <think>...</think> reasoning blocks
+      reading = reading.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+
       return new Response(JSON.stringify({
-        reading: response.response,
+        reading,
         type: typeRef.name,
         strategy: typeRef.strategy,
         authority: authRef || authority
       }), {
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': 'https://frqncy.network',
+          'Access-Control-Allow-Origin': corsOrigin,
         }
       });
 
@@ -153,7 +166,7 @@ Type context: ${typeRef.description}`;
         status: 500,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': 'https://frqncy.network',
+          'Access-Control-Allow-Origin': corsOrigin,
         }
       });
     }

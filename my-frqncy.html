@@ -3,6 +3,8 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0B1C3D">
+<meta name="robots" content="index, follow">
 <title>Build Your FRQNCY</title>
 <meta name="description" content="Build your personalised FRQNCY — a constellation of topics, teachers, and resources tailored to you.">
 <link rel="canonical" href="https://frqncy.network/my-frqncy.html">
@@ -13,6 +15,7 @@
 <meta property="og:url" content="https://frqncy.network/my-frqncy.html">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@frqncy">
 <meta name="twitter:title" content="Build Your FRQNCY">
 <meta name="twitter:description" content="A personalised constellation of topics, teachers, and resources tailored to you.">
 <meta name="twitter:image" content="https://frqncy.network/og-image.png">
@@ -306,8 +309,10 @@ nav{
 </style>
 <script src="mobile-nav.js" defer></script>
 <script src="chat-widget.js" defer></script>
+<link rel="manifest" href="manifest.json">
 <link rel="stylesheet" href="nav-dropdown.css">
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
   <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 </head>
 <body>
@@ -908,5 +913,13 @@ function esc(s) {
   }
 })();
 </script>
+
+<!-- Footer -->
+<footer style="padding:28px clamp(24px,6vw,80px);text-align:center;border-top:1px solid rgba(196,151,58,0.15);margin-top:60px;">
+  <span style="font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:16px;letter-spacing:0.3em;color:#C8D8F0;text-transform:uppercase;">FRQNCY</span>
+  <br>
+  <span style="font-size:11px;color:#7090B8;letter-spacing:0.12em;margin-top:8px;display:inline-block;">&copy; 2026 FRQNCY &middot; All frequencies reserved</span>
+</footer>
+
 </body>
 </html>

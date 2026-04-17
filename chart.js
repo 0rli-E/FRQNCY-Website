@@ -84,7 +84,6 @@ async function downloadChartPDF(){
     const dob = document.getElementById('dob').value || '';
     pdf.save(`frqncy-human-design-${title}${dob?'-'+dob:''}.pdf`);
   } catch (e) {
-    console.error(e);
     alert('Sorry, the PDF could not be generated. Please check your connection and try again.');
   } finally {
     btn.disabled = false;

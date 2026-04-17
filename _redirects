@@ -11,5 +11,24 @@
 /v2               /v2/explore.html    301
 /v2/              /v2/explore.html    301
 
+# Block access to internal docs and build scripts
+/CHATBOT-SETUP.md       /404.html 404
+/EMAIL-SETUP.md         /404.html 404
+/SETUP-CHECKLIST.md     /404.html 404
+/codex-tasks.md         /404.html 404
+/link-audit.md          /404.html 404
+/name-fixes.md          /404.html 404
+/README.md              /404.html 404
+/FRQNCY*                /404.html 404
+/package.json           /404.html 404
+/generate.js            /404.html 404
+/generate-courses.js    /404.html 404
+/generate-watch.js      /404.html 404
+/build-kb.js            /404.html 404
+/build-og.js            /404.html 404
+/og-image.svg           /404.html 404
+/workers/*              /404.html 404
+/versions/*             /404.html 404
+
 # 404 fallback — Cloudflare Pages reads this automatically
 /*                /404.html           404

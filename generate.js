@@ -487,7 +487,10 @@ function head(title, accent, desc = '', canonical = '', jsonLd = null, ogImageSl
 ${CSS}
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<link rel="manifest" href="../../manifest.json">
 ${ldTag}
 </head>
 <body>`;

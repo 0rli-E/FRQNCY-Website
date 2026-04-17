@@ -308,6 +308,8 @@
     sendBtn.disabled = true;
 
     messages.push({ role: 'user', content: text });
+    // Trim history to last 20 messages to prevent unbounded growth
+    if (messages.length > 20) messages = messages.slice(-20);
     addMessage('user', text);
     showTyping();
 
@@ -350,15 +352,15 @@
         retryBtn.style.cssText = 'margin-top:8px;padding:5px 14px;font-size:12px;letter-spacing:0.08em;background:rgba(196,151,58,0.15);color:#E0C06A;border:1px solid rgba(196,151,58,0.3);border-radius:3px;cursor:pointer;font-family:inherit;';
         retryBtn.addEventListener('click', function() {
           retryBtn.remove();
-          // Re-send the last user message
-          var lastUser = '';
+          // Find and remove the last user message, then re-send it
           for (var mi = messages.length - 1; mi >= 0; mi--) {
-            if (messages[mi].role === 'user') { lastUser = messages[mi].content; break; }
-          }
-          if (lastUser) {
-            messages.pop(); // remove the last user message (will re-add)
-            inputEl.value = lastUser;
-            sendMessage();
+            if (messages[mi].role === 'user') {
+              var lastUser = messages[mi].content;
+              messages.splice(mi, 1); // remove exactly this message
+              inputEl.value = lastUser;
+              sendMessage();
+              break;
+            }
           }
         });
         el.appendChild(retryBtn);
