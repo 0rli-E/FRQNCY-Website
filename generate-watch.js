@@ -36,7 +36,7 @@ for (const [topicId, videos] of Object.entries(VIDEOS)) {
 allVideos.sort((a, b) => (b.frqncy_pick ? 1 : 0) - (a.frqncy_pick ? 1 : 0));
 
 // ── Inject into the template ────────────────────────────────────
-const TEMPLATE_PATH = path.join('v2', 'watch', 'index.html');
+const TEMPLATE_PATH = path.join(ROOT, 'v2', 'watch', 'index.html');
 let html = fs.readFileSync(TEMPLATE_PATH, 'utf8');
 
 const MARKER_START = '// ▼▼ INLINE_VIDEOS_START ▼▼';

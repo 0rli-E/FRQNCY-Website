@@ -148,15 +148,12 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
   .pgrid{grid-template-columns:1fr}
 }
 </style>
-<script src="../../mobile-nav.js" defer></script>
-<script src="../../chat-widget.js" defer></script>
-<link rel="stylesheet" href="../../nav-dropdown.css">
 </head>
 <body>
 
-<nav class="snav">
+<nav class="snav" aria-label="Main navigation">
   <div class="snav-left">
-    <a href="../../" class="snav-logo">FRQNCY</a>
+    <a href="../../" class="snav-logo" aria-label="FRQNCY Home">FRQNCY</a>
     <div class="breadcrumb">
       <a href="../explore.html">Network</a>
       <span class="sep">›</span>
@@ -188,7 +185,7 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
 
 <p class="disclaimer">Not financial advice. Tier ratings reflect FRQNCY's philosophical and technical conviction — always do your own research.</p>
 
-<div class="chapter-nav" id="chapter-nav">
+<div class="chapter-nav" id="chapter-nav" role="navigation" aria-label="Chapter navigation">
   <span class="chapter-nav-label">Chapters</span>
   <!-- pills injected by JS -->
 </div>
@@ -209,10 +206,12 @@ const CHAPTERS = [
       {n:"Bitcoin",s:"BTC",t:"S",type:"L1",mc:"Large Cap"},
       {n:"Ethereum",s:"ETH",t:"S",type:"L1",mc:"Large Cap"},
       {n:"Dogecoin",s:"DOGE",t:"A",type:"projecttoken",mc:"Large Cap"},
-      {n:"Bitcoin Cash",s:"BCH",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Bitcoin Cash",s:"BCH",t:"F",type:"L1",mc:"Mid cap"},
       {n:"Bitcoin Gold",s:"BTG",t:"F",type:"L1"},
-      {n:"Ethereum Classic",s:"ETC",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"Litecoin",s:"LTC",t:"D",type:"L1",mc:"Mid cap"}
+      {n:"Ethereum Classic",s:"ETC",t:"F",type:"L1",mc:"Mid cap"},
+      {n:"Litecoin",s:"LTC",t:"F",type:"L1",mc:"Mid cap"},
+      {n:"PAX Gold",s:"PAXG",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"Tether Gold",s:"XAUT",t:"B",type:"projecttoken",mc:"Mid cap"}
     ]
   },
   {
@@ -227,15 +226,29 @@ const CHAPTERS = [
       {n:"BNB Chain",s:"BNB",t:"B",type:"L1",mc:"Large Cap"},
       {n:"Toncoin",s:"TON",t:"B",type:"L1",mc:"Large Cap"},
       {n:"NEAR Protocol",s:"NEAR",t:"B",type:"L1",mc:"Mid cap"},
-      {n:"Cardano",s:"ADA",t:"C",type:"L1",mc:"Large Cap"},
+      {n:"Cardano",s:"ADA",t:"D",type:"L1",mc:"Large Cap"},
       {n:"Polkadot",s:"DOT",t:"C",type:"L1",mc:"Mid cap"},
       {n:"Aptos",s:"APT",t:"C",type:"L1",mc:"Mid cap"},
-      {n:"Internet Computer",s:"ICP",t:"C",type:"L1",mc:"Mid cap"},
+      {n:"Internet Computer",s:"ICP",t:"E",type:"L1",mc:"Mid cap"},
       {n:"Cosmos",s:"ATOM",t:"C",type:"L1",mc:"Mid cap"},
-      {n:"Hedera",s:"HBAR",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"TRON",s:"TRX",t:"D",type:"L1",mc:"Large Cap"},
-      {n:"Algorand",s:"ALGO",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"Fantom",s:"FTM",t:"D",type:"L1",mc:"Mid cap"}
+      {n:"Hedera",s:"HBAR",t:"E",type:"L1",mc:"Mid cap"},
+      {n:"TRON",s:"TRX",t:"E",type:"L1",mc:"Large Cap"},
+      {n:"Algorand",s:"ALGO",t:"C",type:"L1",mc:"Mid cap"},
+      {n:"Fantom",s:"FTM",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Berachain",s:"BERA",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Dash",s:"DASH",t:"F",type:"L1",mc:"Mid cap"},
+      {n:"eCash",s:"XEC",t:"E",type:"L1",mc:"Mid cap"},
+      {n:"Injective",s:"INJ",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"IOTA",s:"IOTA",t:"F",type:"L1",mc:"Mid cap"},
+      {n:"Kaia",s:"KAIA",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Kaspa",s:"KAS",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Kava",s:"KAVA",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Neo",s:"NEO",t:"F",type:"L1",mc:"Mid cap"},
+      {n:"Sei",s:"SEI",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Sonic",s:"S",t:"B",type:"L1",mc:"Mid cap"},
+      {n:"Tezos",s:"XTZ",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"Theta Network",s:"THETA",t:"D",type:"L1",mc:"Mid cap"},
+      {n:"VeChain",s:"VET",t:"D",type:"L1",mc:"Mid cap"}
     ]
   },
   {
@@ -250,8 +263,9 @@ const CHAPTERS = [
       {n:"Polygon",s:"POL",t:"C",type:"L2",mc:"Mid cap"},
       {n:"Starknet",s:"STRK",t:"C",type:"L2",mc:"Mid cap"},
       {n:"Base",s:"—",t:"B",type:"L2",note:"Coinbase's L2 — no token"},
-      {n:"zkSync",s:"ZK",t:"C",type:"L2",mc:"Small cap"},
-      {n:"Scroll",s:"SCR",t:"D",type:"L2",mc:"Small cap"}
+      {n:"zkSync",s:"ZK",t:"D",type:"L2",mc:"Small cap"},
+      {n:"Scroll",s:"SCR",t:"D",type:"L2",mc:"Small cap"},
+      {n:"Linea",s:"—",t:"D",type:"L2",mc:"Mid cap"}
     ]
   },
   {
@@ -261,18 +275,35 @@ const CHAPTERS = [
     intro: "Decentralized finance replaces traditional financial intermediaries — banks, brokers, exchanges — with transparent, permissionless smart contracts. Anyone with an internet connection can lend, borrow, trade, and earn yield. No credit checks, no gatekeepers, no opening hours.",
     projects: [
       {n:"Aave",s:"AAVE",t:"S",type:"projecttoken",mc:"Large Cap",cat:"Money Market"},
-      {n:"Uniswap",s:"UNI",t:"A",type:"projecttoken",mc:"Large Cap",cat:"DEX"},
+      {n:"Uniswap",s:"UNI",t:"B",type:"projecttoken",mc:"Large Cap",cat:"DEX"},
       {n:"Pendle",s:"PENDLE",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Yield"},
       {n:"Hyperliquid",s:"HYPE",t:"S",type:"L1",mc:"Large Cap",cat:"Perps"},
       {n:"Ethena",s:"ENA",t:"S",type:"projecttoken",mc:"Mid cap",cat:"Stablecoin"},
       {n:"Ondo Finance",s:"ONDO",t:"B",type:"projecttoken",mc:"Mid cap",cat:"RWA"},
       {n:"Maker / Sky",s:"MKR",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Stablecoin"},
       {n:"Lido",s:"LDO",t:"B",type:"projecttoken",mc:"Mid cap",cat:"Liquid Staking"},
-      {n:"Curve",s:"CRV",t:"B",type:"projecttoken",mc:"Mid cap",cat:"DEX"},
-      {n:"Jupiter",s:"JUP",t:"B",type:"projecttoken",mc:"Mid cap",cat:"DEX Aggregator"},
-      {n:"dYdX",s:"DYDX",t:"C",type:"projecttoken",mc:"Mid cap",cat:"Perps"},
+      {n:"Curve",s:"CRV",t:"A",type:"projecttoken",mc:"Mid cap",cat:"DEX"},
+      {n:"Jupiter",s:"JUP",t:"C",type:"projecttoken",mc:"Mid cap",cat:"DEX Aggregator"},
+      {n:"dYdX",s:"DYDX",t:"D",type:"projecttoken",mc:"Mid cap",cat:"Perps"},
       {n:"Compound",s:"COMP",t:"C",type:"projecttoken",mc:"Mid cap",cat:"Money Market"},
-      {n:"Synthetix",s:"SNX",t:"D",type:"projecttoken",mc:"Mid cap",cat:"Derivatives"}
+      {n:"Synthetix",s:"SNX",t:"C",type:"projecttoken",mc:"Mid cap",cat:"Derivatives"},
+      {n:"1inch",s:"1INCH",t:"D",type:"projecttoken",mc:"Mid cap",cat:"DEX Aggregator"},
+      {n:"Aerodrome",s:"AERO",t:"A",type:"projecttoken",mc:"Mid cap",cat:"DEX"},
+      {n:"DeXe",s:"DEXE",t:"D",type:"projecttoken",mc:"Small cap",cat:"DAO"},
+      {n:"Ether.fi",s:"ETHFI",t:"B",type:"projecttoken",mc:"Mid cap",cat:"Liquid Staking"},
+      {n:"Gnosis",s:"GNO",t:"C",type:"projecttoken",mc:"Mid cap",cat:"Infrastructure"},
+      {n:"Jito",s:"JTO",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Liquid Staking"},
+      {n:"Maple Finance",s:"SYRUP",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Lending"},
+      {n:"Morpho",s:"MORPHO",t:"C",type:"projecttoken",mc:"Mid cap",cat:"Lending"},
+      {n:"MYX Finance",s:"MYX",t:"F",type:"projecttoken",mc:"Small cap",cat:"Perps"},
+      {n:"Olympus",s:"OHM",t:"C",type:"projecttoken",mc:"Small cap",cat:"Reserve Currency"},
+      {n:"PancakeSwap",s:"CAKE",t:"C",type:"projecttoken",mc:"Mid cap",cat:"DEX"},
+      {n:"Pump.fun",s:"PUMP",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Launchpad"},
+      {n:"Raydium",s:"RAY",t:"C",type:"projecttoken",mc:"Mid cap",cat:"DEX"},
+      {n:"Saros",s:"SAROS",t:"D",type:"projecttoken",mc:"Small cap",cat:"DEX"},
+      {n:"SwissBorg",s:"BORG",t:"F",type:"projecttoken",mc:"Small cap",cat:"CeFi"},
+      {n:"THORChain",s:"RUNE",t:"F",type:"projecttoken",mc:"Mid cap",cat:"Cross-chain DEX"},
+      {n:"Useless Coin",s:"USELESS",t:"B",type:"projecttoken",mc:"Small cap"}
     ]
   },
   {
@@ -287,7 +318,8 @@ const CHAPTERS = [
       {n:"PayPal USD",s:"PYUSD",t:"B",type:"projecttoken",mc:"Mid cap"},
       {n:"FRAX",s:"FRAX",t:"C",type:"projecttoken",mc:"Mid cap"},
       {n:"Dai (legacy)",s:"DAI",t:"C",type:"projecttoken",mc:"Large Cap"},
-      {n:"TrueUSD",s:"TUSD",t:"D",type:"projecttoken",mc:"Mid cap"}
+      {n:"TrueUSD",s:"TUSD",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"USD1",s:"USD1",t:"C",type:"projecttoken",mc:"Mid cap"}
     ]
   },
   {
@@ -297,14 +329,17 @@ const CHAPTERS = [
     intro: "The intersection of artificial intelligence and crypto is about one question: who controls AI? These projects aim to decentralize machine intelligence — from training data to compute power to autonomous agents — so that AI serves everyone, not just a few corporations.",
     projects: [
       {n:"Bittensor",s:"TAO",t:"S",type:"projecttoken",mc:"Large Cap"},
-      {n:"Virtuals Protocol",s:"VIRTUAL",t:"A",type:"projecttoken",mc:"Mid cap"},
+      {n:"Virtuals Protocol",s:"VIRTUAL",t:"S",type:"projecttoken",mc:"Mid cap"},
       {n:"ai16z",s:"AI16Z",t:"A",type:"projecttoken",mc:"Mid cap"},
-      {n:"Render Network",s:"RNDR",t:"A",type:"projecttoken",mc:"Large Cap"},
+      {n:"Render Network",s:"RNDR",t:"B",type:"projecttoken",mc:"Large Cap"},
       {n:"Fetch.ai",s:"FET",t:"B",type:"projecttoken",mc:"Mid cap"},
       {n:"Akash Network",s:"AKT",t:"B",type:"projecttoken",mc:"Mid cap"},
       {n:"Sahara AI",s:"—",t:"C",type:"projecttoken"},
       {n:"Humans.ai",s:"HEART",t:"D",type:"projecttoken",mc:"Small cap"},
-      {n:"SingularityNET",s:"AGIX",t:"C",type:"projecttoken",mc:"Mid cap"}
+      {n:"SingularityNET",s:"AGIX",t:"C",type:"projecttoken",mc:"Mid cap"},
+      {n:"AI Companions",s:"—",t:"F",type:"projecttoken",mc:"Small cap"},
+      {n:"ASI Alliance",s:"FET",t:"C",type:"projecttoken",mc:"Large Cap"},
+      {n:"ChainOpera AI",s:"—",t:"F",type:"projecttoken",mc:"Small cap"}
     ]
   },
   {
@@ -314,13 +349,21 @@ const CHAPTERS = [
     intro: "Meme coins are crypto's cultural layer — assets driven by community, humor, and social consensus rather than technology or utility. They remind us that value is ultimately a shared belief. Some become multi-billion dollar networks; most return to zero. Approach with humor and caution.",
     projects: [
       {n:"Pepe",s:"PEPE",t:"A",type:"projecttoken",mc:"Large Cap"},
-      {n:"Shiba Inu",s:"SHIB",t:"C",type:"projecttoken",mc:"Large Cap"},
-      {n:"Floki",s:"FLOKI",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"Bonk",s:"BONK",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"Shiba Inu",s:"SHIB",t:"E",type:"projecttoken",mc:"Large Cap"},
+      {n:"Floki",s:"FLOKI",t:"C",type:"projecttoken",mc:"Mid cap"},
+      {n:"Bonk",s:"BONK",t:"C",type:"projecttoken",mc:"Mid cap"},
       {n:"Book of Meme",s:"BOME",t:"E",type:"projecttoken",mc:"Small cap"},
       {n:"Memecoin",s:"MEME",t:"E",type:"projecttoken",mc:"Small cap"},
       {n:"Milady Meme",s:"LADYS",t:"F",type:"projecttoken",mc:"Small cap"},
-      {n:"Melania Meme",s:"MELANIA",t:"F",type:"projecttoken",mc:"Small cap"}
+      {n:"Melania Meme",s:"MELANIA",t:"F",type:"projecttoken",mc:"Small cap"},
+      {n:"Ape & Pepe",s:"—",t:"F",type:"projecttoken",mc:"Small cap"},
+      {n:"Brett",s:"BRETT",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"Cheems",s:"CHEEMS",t:"F",type:"projecttoken",mc:"Small cap"},
+      {n:"Dogwifhat",s:"WIF",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"Fartcoin",s:"FARTCOIN",t:"A",type:"projecttoken",mc:"Mid cap"},
+      {n:"Loaded Lions",s:"—",t:"F",type:"projecttoken",mc:"Small cap"},
+      {n:"Pudgy Penguins",s:"PENGU",t:"S",type:"projecttoken",mc:"Large Cap"},
+      {n:"SPX6900",s:"SPX",t:"S",type:"projecttoken",mc:"Mid cap"}
     ]
   },
   {
@@ -329,13 +372,14 @@ const CHAPTERS = [
     title: "Privacy",
     intro: "Privacy coins and protocols protect the fundamental right to financial confidentiality. In a world of increasing surveillance, these projects use advanced cryptography — zero-knowledge proofs, ring signatures, and encrypted computation — to keep transactions private without sacrificing verifiability.",
     projects: [
-      {n:"Zcash",s:"ZEC",t:"S",type:"L1",mc:"Mid cap"},
+      {n:"Zcash",s:"ZEC",t:"A",type:"L1",mc:"Mid cap"},
       {n:"Monero",s:"XMR",t:"A",type:"L1",mc:"Mid cap"},
       {n:"Secret Network",s:"SCRT",t:"C",type:"L1",mc:"Small cap"},
       {n:"Aztec",s:"—",t:"B",type:"L2",note:"ZK privacy layer for Ethereum"},
       {n:"Nillion",s:"NIL",t:"C",type:"projecttoken",mc:"Small cap"},
       {n:"Miden",s:"—",t:"C",type:"L2",note:"ZK rollup by Polygon"},
-      {n:"Arcium",s:"—",t:"C",type:"projecttoken",note:"Encrypted computation network"}
+      {n:"Arcium",s:"—",t:"C",type:"projecttoken",note:"Encrypted computation network"},
+      {n:"Beldex",s:"BDX",t:"D",type:"projecttoken",mc:"Small cap"}
     ]
   },
   {
@@ -347,7 +391,8 @@ const CHAPTERS = [
       {n:"XRP",s:"XRP",t:"C",type:"L1",mc:"Large Cap"},
       {n:"Stellar",s:"XLM",t:"D",type:"L1",mc:"Mid cap"},
       {n:"Nano",s:"XNO",t:"D",type:"L1",mc:"Small cap"},
-      {n:"Celo",s:"CELO",t:"C",type:"L1",mc:"Mid cap"}
+      {n:"Celo",s:"CELO",t:"C",type:"L1",mc:"Mid cap"},
+      {n:"Telcoin",s:"TEL",t:"F",type:"projecttoken",mc:"Small cap"}
     ]
   },
   {
@@ -357,9 +402,14 @@ const CHAPTERS = [
     intro: "Blockchains can't access external data on their own. Oracles bridge this gap — feeding real-world information (prices, weather, sports scores) into smart contracts. They're the nervous system connecting blockchains to reality, and their accuracy is critical to everything built on top.",
     projects: [
       {n:"Chainlink",s:"LINK",t:"S",type:"projecttoken",mc:"Large Cap"},
-      {n:"Pyth Network",s:"PYTH",t:"B",type:"projecttoken",mc:"Mid cap"},
-      {n:"The Graph",s:"GRT",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Band Protocol",s:"BAND",t:"D",type:"projecttoken",mc:"Small cap"}
+      {n:"Pyth Network",s:"PYTH",t:"C",type:"projecttoken",mc:"Mid cap"},
+      {n:"The Graph",s:"GRT",t:"B",type:"projecttoken",mc:"Mid cap"},
+      {n:"Band Protocol",s:"BAND",t:"D",type:"projecttoken",mc:"Small cap"},
+      {n:"Arweave",s:"AR",t:"B",type:"projecttoken",mc:"Mid cap"},
+      {n:"DoubleZero",s:"—",t:"D",type:"projecttoken",mc:"Small cap"},
+      {n:"Eigencloud",s:"—",t:"B",type:"projecttoken",mc:"Small cap"},
+      {n:"ENS",s:"ENS",t:"B",type:"projecttoken",mc:"Mid cap"},
+      {n:"Filecoin",s:"FIL",t:"C",type:"projecttoken",mc:"Mid cap"}
     ]
   },
   {
@@ -368,13 +418,14 @@ const CHAPTERS = [
     title: "Gaming & Metaverse",
     intro: "Blockchain gaming gives players true ownership of in-game assets — items, characters, and currencies that exist outside any single game. The metaverse vision extends this to entire virtual worlds. The sector is young and speculative, with many projects still finding product-market fit.",
     projects: [
-      {n:"Immutable",s:"IMX",t:"B",type:"projecttoken",mc:"Mid cap"},
+      {n:"Immutable",s:"IMX",t:"C",type:"projecttoken",mc:"Mid cap"},
       {n:"Gala Games",s:"GALA",t:"D",type:"projecttoken",mc:"Mid cap"},
       {n:"Axie Infinity",s:"AXS",t:"D",type:"projecttoken",mc:"Mid cap"},
       {n:"The Sandbox",s:"SAND",t:"D",type:"projecttoken",mc:"Mid cap"},
       {n:"Decentraland",s:"MANA",t:"D",type:"projecttoken",mc:"Mid cap"},
       {n:"Yield Guild Games",s:"YGG",t:"E",type:"projecttoken",mc:"Small cap"},
-      {n:"Nakamoto Games",s:"NAKA",t:"E",type:"projecttoken",mc:"Small cap"}
+      {n:"Nakamoto Games",s:"NAKA",t:"E",type:"projecttoken",mc:"Small cap"},
+      {n:"SuperVerse",s:"SUPER",t:"C",type:"projecttoken",mc:"Mid cap"}
     ]
   },
   {
@@ -395,7 +446,7 @@ const CHAPTERS = [
     intro: "SocialFi reimagines social media through crypto — where content is ownable, creators are paid directly, and identity is self-sovereign. These projects challenge the model where platforms own your data and attention. Your identity, your content, your value.",
     projects: [
       {n:"Worldcoin",s:"WLD",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Zora",s:"ZORA",t:"C",type:"projecttoken",mc:"Small cap"},
+      {n:"Zora",s:"ZORA",t:"A",type:"projecttoken",mc:"Small cap"},
       {n:"Lens Protocol",s:"—",t:"B",type:"projecttoken",note:"Decentralized social graph"},
       {n:"Farcaster",s:"—",t:"B",type:"projecttoken",note:"Sufficiently decentralized social"},
       {n:"Story Protocol",s:"IP",t:"C",type:"projecttoken",mc:"Mid cap"},
@@ -424,6 +475,33 @@ const CHAPTERS = [
       {n:"Legion",s:"—",t:"B",type:"projecttoken",note:"Merit-based MiCA-compliant ICOs"},
       {n:"Polymarket",s:"—",t:"A",type:"projecttoken",note:"Prediction markets for real events"},
       {n:"Believe",s:"—",t:"C",type:"projecttoken",note:"Community-driven project launches"}
+    ]
+  },
+  {
+    id: "other",
+    icon: "📦",
+    title: "Other Projects",
+    intro: "Projects that don't fit neatly into a single sector — exchange tokens, experimental protocols, and niche assets. Included for completeness with their Notion-sourced tier ratings.",
+    projects: [
+      {n:"AB",s:"—",t:"D",type:"projecttoken"},
+      {n:"Astar",s:"ASTR",t:"F",type:"L1",mc:"Mid cap"},
+      {n:"BitcoinSV",s:"BSV",t:"F",type:"L1"},
+      {n:"Fasttoken",s:"FTN",t:"F",type:"projecttoken",mc:"Small cap"},
+      {n:"Figure",s:"—",t:"F",type:"projecttoken"},
+      {n:"HTX DAO",s:"HT",t:"F",type:"projecttoken",mc:"Mid cap"},
+      {n:"JasmyCoin",s:"JASMY",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"KuCoin Token",s:"KCS",t:"F",type:"projecttoken",mc:"Mid cap"},
+      {n:"Merlin Chain",s:"MERL",t:"D",type:"L2",mc:"Small cap"},
+      {n:"NEXO",s:"NEXO",t:"D",type:"projecttoken",mc:"Mid cap",cat:"CeFi"},
+      {n:"OG",s:"OG",t:"C",type:"projecttoken",mc:"Small cap"},
+      {n:"OKB",s:"OKB",t:"D",type:"projecttoken",mc:"Mid cap"},
+      {n:"Pi Network",s:"PI",t:"F",type:"L1",mc:"Mid cap"},
+      {n:"Plasma",s:"PLASMA",t:"A",type:"projecttoken",mc:"Small cap"},
+      {n:"Provenance",s:"HASH",t:"F",type:"L1",mc:"Small cap"},
+      {n:"Sun Token",s:"SUN",t:"F",type:"projecttoken",mc:"Small cap"},
+      {n:"Treehouse",s:"—",t:"F",type:"projecttoken",mc:"Small cap"},
+      {n:"Vision",s:"VS",t:"F",type:"projecttoken",mc:"Small cap"},
+      {n:"WhiteBIT Token",s:"WBT",t:"E",type:"projecttoken",mc:"Mid cap"}
     ]
   }
 ];

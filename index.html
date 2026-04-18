@@ -38,7 +38,9 @@
 <link rel="manifest" href="manifest.json">
 <script>
   if ('serviceWorker' in navigator) {
-    window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+    window.addEventListener('load', () => {
+      navigator.serviceWorker.register('/sw.js').catch(function() { /* sw not available */ });
+    });
   }
 </script>
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
@@ -48,8 +50,8 @@
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#C4973A;color:#0B1C3D;padding:8px 16px;z-index:10000;font-size:14px;transition:top .2s;">Skip to main content</a>
 
   <!-- NAV -->
-  <nav id="main-nav">
-    <a href="index.html" class="nav-logo">FRQNCY</a>
+  <nav id="main-nav" aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
     <ul class="nav-links">
       <li class="nav-dd">
         <a href="about.html">About</a>
@@ -84,7 +86,7 @@
   <section id="light-intro">
     <div class="intro-bg-fill"></div>
     <div class="light-orb"></div>
-    <canvas id="particles-canvas"></canvas>
+    <canvas id="particles-canvas" aria-hidden="true"></canvas>
     <h1 class="intro-wordmark">FRQNCY</h1>
     <div class="scroll-hint">
       <span>Scroll</span>
@@ -114,7 +116,7 @@
   ===================== -->
   <section id="quote-section">
     <div class="quote-inner">
-      <span class="quote-mark reveal">"</span>
+      <span class="quote-mark reveal" aria-hidden="true">"</span>
       <p class="quote-text reveal reveal-delay-1">
         Built on the foundations of oneness. FRQNCY's goal is to create a future in which <em>the light dominates</em> everything we experience and know.
       </p>
@@ -132,7 +134,7 @@
 
     <div id="bubble-map">
       <div id="nm-container">
-        <canvas id="nm-fx"></canvas>
+        <canvas id="nm-fx" aria-hidden="true"></canvas>
         <svg id="nm-svg"><defs id="nm-svg-defs"></defs></svg>
         <div id="nm-tooltip"><div class="nm-tip-title"></div><div class="nm-tip-type"></div></div>
         <div id="nm-legend">
@@ -200,16 +202,16 @@
         <a href="mailto:hello@frqncy.network" class="contact-link primary">Get in touch</a>
       </div>
 
-      <div class="footer-line">
+      <footer class="footer-line" role="contentinfo">
         <span class="footer-wordmark">FRQNCY</span>
         <span class="footer-note">© 2026 FRQNCY &nbsp;·&nbsp; All frequencies reserved</span>
-      </div>
+      </footer>
     </div>
   </section>
 
 
   </main>
-  <script src="mobile-nav.js" defer></script>
-  <script src="index.js" defer></script>
+  <script src="mobile-nav.js"></script>
+  <script src="index.js"></script>
 </body>
 </html>

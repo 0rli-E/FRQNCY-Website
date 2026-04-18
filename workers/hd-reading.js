@@ -70,6 +70,26 @@ const AUTHORITIES = {
   lunar: 'Lunar (Reflectors only) — Wait through a complete 28-day lunar cycle before major decisions. Each day brings a different perspective as the moon transits your open centers.'
 };
 
+// ── In-memory rate limiter ────────────────────────────────────────────
+const RATE_WINDOW_MS = 60_000;
+const RATE_MAX = 10;
+const rateBuckets = new Map();
+
+function checkRateLimit(ip) {
+  if (!ip) return false;
+  const now = Date.now();
+  let bucket = rateBuckets.get(ip);
+  if (!bucket || now >= bucket.resetAt) {
+    bucket = { count: 0, resetAt: now + RATE_WINDOW_MS };
+    rateBuckets.set(ip, bucket);
+  }
+  bucket.count++;
+  if (rateBuckets.size > 500) {
+    for (const [k, v] of rateBuckets) { if (now >= v.resetAt) rateBuckets.delete(k); }
+  }
+  return bucket.count > RATE_MAX;
+}
+
 // ── Worker handler ──────────────────────────────────────────────────────
 export default {
   async fetch(request, env) {
@@ -79,23 +99,51 @@ export default {
     const isAllowed = allowedOrigins.includes(origin) || origin.endsWith('.frqncy-website.pages.dev');
     const corsOrigin = isAllowed ? origin : allowedOrigins[0];
 
+    const corsHeaders = {
+      'Access-Control-Allow-Origin': corsOrigin,
+      'Access-Control-Allow-Methods': 'POST, OPTIONS',
+      'Access-Control-Allow-Headers': 'Content-Type',
+      'Access-Control-Max-Age': '86400',
+    };
+
     if (request.method === 'OPTIONS') {
-      return new Response(null, {
-        headers: {
-          'Access-Control-Allow-Origin': corsOrigin,
-          'Access-Control-Allow-Methods': 'POST, OPTIONS',
-          'Access-Control-Allow-Headers': 'Content-Type',
-          'Access-Control-Max-Age': '86400',
-        }
-      });
+      return new Response(null, { headers: corsHeaders });
     }
 
     if (request.method !== 'POST') {
-      return new Response('Method not allowed', { status: 405 });
+      return new Response(JSON.stringify({ error: 'Method not allowed' }), {
+        status: 405,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
+    }
+
+    // Rate limit
+    const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For');
+    if (checkRateLimit(ip)) {
+      return new Response(JSON.stringify({ error: 'Too many requests. Please wait a moment.' }), {
+        status: 429,
+        headers: { 'Content-Type': 'application/json', ...corsHeaders }
+      });
     }
 
     try {
-      const { type, authority, profile, definedCenters, gates, channels } = await request.json();
+      let body;
+      try { body = await request.json(); }
+      catch { return new Response(JSON.stringify({ error: 'Invalid JSON body' }), { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } }); }
+
+      const { type, authority, profile, definedCenters, gates, channels } = body;
+
+      // Input validation
+      if (!type || typeof type !== 'string' || type.length > 100) {
+        return new Response(JSON.stringify({ error: 'Invalid or missing type' }), { status: 400, headers: { 'Content-Type': 'application/json', ...corsHeaders } });
+      }
+
+      // Sanitize array inputs to prevent prompt injection
+      const safeArr = (arr, max) => Array.isArray(arr) ? arr.slice(0, max).map(s => String(s).slice(0, 40)) : [];
+      const safeDefinedCenters = safeArr(definedCenters, 9);
+      const safeGates = safeArr(gates, 26);
+      const safeChannels = safeArr(channels, 36);
+      const safeProfile = typeof profile === 'string' ? profile.slice(0, 10) : '';
 
       // Look up compressed reference for this type
       const typeKey = type?.toLowerCase().replace(/[\s-]/g, '_') || 'generator';
@@ -112,11 +160,11 @@ Strategy: ${typeRef.strategy}
 Signature: ${typeRef.signature}
 Not-Self Theme: ${typeRef.notSelf}
 Aura: ${typeRef.aura}
-Authority: ${authRef || authority || 'Unknown'}
-Profile: ${profile || 'Unknown'}
-${definedCenters ? 'Defined Centers: ' + definedCenters.join(', ') : ''}
-${gates ? 'Key Gates: ' + gates.slice(0, 8).join(', ') : ''}
-${channels ? 'Active Channels: ' + channels.join(', ') : ''}
+Authority: ${authRef || (typeof authority === 'string' ? authority.slice(0, 60) : 'Unknown')}
+Profile: ${safeProfile || 'Unknown'}
+${safeDefinedCenters.length ? 'Defined Centers: ' + safeDefinedCenters.join(', ') : ''}
+${safeGates.length ? 'Key Gates: ' + safeGates.slice(0, 8).join(', ') : ''}
+${safeChannels.length ? 'Active Channels: ' + safeChannels.join(', ') : ''}
 
 Give a personalised reading covering:
 1. What their Type means for how they move through life
@@ -158,16 +206,16 @@ Type context: ${typeRef.description}`;
       }), {
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': corsOrigin,
+          ...corsHeaders,
         }
       });
 
     } catch (err) {
-      return new Response(JSON.stringify({ error: err.message }), {
+      return new Response(JSON.stringify({ error: 'AI service temporarily unavailable.' }), {
         status: 500,
         headers: {
           'Content-Type': 'application/json',
-          'Access-Control-Allow-Origin': corsOrigin,
+          ...corsHeaders,
         }
       });
     }

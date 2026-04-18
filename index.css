@@ -20,7 +20,17 @@
 
     html { scroll-behavior: smooth; }
 
-    .skip-nav:focus{top:0}
+    .skip-nav:focus{top:0;}
+
+    /* Focus visible styles for keyboard navigation */
+    :focus-visible {
+      outline: 2px solid var(--gold);
+      outline-offset: 2px;
+    }
+    a:focus:not(:focus-visible),
+    button:focus:not(:focus-visible) {
+      outline: none;
+    }
 
     body {
       font-family: var(--font-body);
@@ -85,6 +95,7 @@
       transition: color 0.2s;
     }
     .nav-links a:hover { color: var(--gold); }
+    .nav-links a { min-height: 44px; display: inline-flex; align-items: center; }
     .nav-links a.active { color: var(--gold); }
     .nav-cta-gold {
       border: 1px solid rgba(196,151,58,0.4);
@@ -265,6 +276,7 @@
       z-index: 3;
       opacity: 0;
       animation: particleFadeIn 1s ease 2.5s forwards;
+      will-change: opacity;
     }
     @keyframes particleFadeIn {
       to { opacity: 1; }
@@ -341,7 +353,7 @@
     }
     #subscribe-overlay.visible {
       opacity: 1;
-      pointer-events: all;
+      pointer-events: auto;
     }
     .subscribe-content {
       text-align: center;
@@ -412,6 +424,11 @@
       transition: color 0.2s;
     }
     .subscribe-dismiss:hover { color: var(--mid); }
+    .subscribe-dismiss {
+      min-height: 44px;
+      display: inline-flex;
+      align-items: center;
+    }
 
     /* =====================
        SECTION 2: QUOTE
@@ -708,6 +725,7 @@
       opacity: 0;
       transform: translateY(28px);
       transition: opacity 0.85s ease, transform 0.85s ease;
+      will-change: opacity, transform;
     }
     .reveal.visible {
       opacity: 1;

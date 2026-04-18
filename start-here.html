@@ -105,6 +105,13 @@
     .footer-logo { font-family: var(--font-display); font-size: 16px; letter-spacing: 0.3em; color: rgba(255,255,255,0.25); text-transform: uppercase; }
     .footer-note { font-size: 11px; color: var(--text-dim); opacity: 0.5; letter-spacing: 0.06em; }
 
+    /* Focus visible styles for keyboard navigation */
+    :focus-visible { outline: 2px solid var(--gold); outline-offset: 2px; }
+    a:focus:not(:focus-visible), button:focus:not(:focus-visible) { outline: none; }
+
+    .skip-nav { position: absolute; top: -40px; left: 0; background: var(--gold); color: var(--dark); padding: 8px 16px; z-index: 10000; font-size: 14px; transition: top 0.2s; text-decoration: none; }
+    .skip-nav:focus { top: 0; }
+
     @media (max-width: 640px) {
       .nav-links { display: none; }
       .step { grid-template-columns: 1fr; gap: 12px; }
@@ -113,7 +120,9 @@
   </style>
   <script>
     if ('serviceWorker' in navigator) {
-      window.addEventListener('load', () => navigator.serviceWorker.register('/sw.js'));
+      window.addEventListener('load', () => {
+        navigator.serviceWorker.register('/sw.js').catch(function() { /* sw not available */ });
+      });
     }
   </script>
 <script src="chat-widget.js" defer></script>
@@ -122,9 +131,10 @@
 <link rel="stylesheet" href="nav-dropdown.css">
 </head>
 <body>
+  <a href="#main-content" class="skip-nav">Skip to main content</a>
 
-  <nav>
-    <a href="index.html" class="nav-logo">FRQNCY</a>
+  <nav aria-label="Main navigation">
+    <a href="index.html" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
     <ul class="nav-links">
       <li class="nav-dd">
         <a href="about.html">About</a>
@@ -152,6 +162,7 @@
     </ul>
   </nav>
 
+  <main id="main-content">
   <!-- HERO -->
   <section class="hero">
     <div class="hero-eyebrow">New here</div>
@@ -304,6 +315,7 @@
       <a href="about.html" class="btn btn-ghost">Read the vision</a>
     </div>
   </section>
+  </main>
 
   <footer>
     <span class="footer-logo">FRQNCY</span>

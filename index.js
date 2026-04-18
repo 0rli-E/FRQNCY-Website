@@ -173,6 +173,16 @@
       }
     }
 
+    // Close subscribe overlay on Escape key
+    document.addEventListener('keydown', function (e) {
+      if (e.key === 'Escape') {
+        const overlay = document.getElementById('subscribe-overlay');
+        if (overlay && overlay.classList.contains('visible')) {
+          dismissSubscribe();
+        }
+      }
+    });
+
     // Trigger overlay on scroll past intro
     window.addEventListener('scroll', function () {
       if (!subscribeShown && window.scrollY > window.innerHeight * 0.55) {
@@ -223,7 +233,7 @@
     function _showMapError() {
       var c = document.getElementById('nm-container');
       if (c) c.innerHTML = '<div style="display:flex;align-items:center;justify-content:center;height:100%;color:rgba(196,151,58,0.6);font-family:Jost,sans-serif;font-size:12px;letter-spacing:.18em;text-transform:uppercase;">Network map requires an internet connection</div>';
-      console.error('FRQNCY: D3 failed to load from all CDNs');
+      /* D3 failed to load from all CDNs — network map unavailable */
     }
     _loadScript(
       'https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js',

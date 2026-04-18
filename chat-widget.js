@@ -115,7 +115,7 @@
   .fc-msg {
     max-width:88%; padding:10px 13px; border-radius:12px;
     font-size:.84rem; line-height:1.55; color:${C.white};
-    word-break:break-word;
+    word-break:break-word; overflow-wrap:break-word;
   }
   .fc-msg.user { align-self:flex-end; background:${C.user_bg}; border-bottom-right-radius:4px; }
   .fc-msg.bot  { align-self:flex-start; background:${C.bot_bg}; border-bottom-left-radius:4px; border:1px solid ${C.border}; }
@@ -190,6 +190,7 @@
   const btn = document.createElement('button');
   btn.id = 'frqncy-chat-btn';
   btn.setAttribute('aria-label', 'Open FRQNCY chat');
+  btn.setAttribute('aria-expanded', 'false');
   btn.innerHTML = FRQNCY_LOGO_SVG;
 
   // Panel
@@ -252,7 +253,7 @@
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, href) => {
         // Sanitize href: block javascript: and data: protocols
         const hrefClean = href.replace(/&amp;/g,'&');
-        if (/^\s*(javascript|data|vbscript)\s*:/i.test(hrefClean)) return label;
+        if (/^\s*(javascript|data|vbscript|blob)\s*:/i.test(hrefClean)) return label;
         const safeHref = href.replace(/"/g, '&quot;');
         const isInternal = href.startsWith('/');
         return `<a href="${safeHref}"${isInternal ? '' : ' target="_blank" rel="noopener"'} class="fc-link">${label}</a>`;
@@ -323,6 +324,8 @@
   async function sendMessage(text) {
     text = (text || inputEl.value).trim();
     if (!text || loading) return;
+    // Enforce maxlength on programmatic sends too
+    if (text.length > 3000) text = text.slice(0, 3000);
 
     inputEl.value = '';
     inputEl.style.height = 'auto';
@@ -332,7 +335,7 @@
     sendBtn.disabled = true;
 
     messages.push({ role: 'user', content: text });
-    // Trim history to last 20 messages to prevent unbounded growth
+    // Trim history to last 10 messages to prevent unbounded growth
     if (messages.length > 10) messages = messages.slice(-10);
     addMessage('user', text);
     showTyping();
@@ -441,6 +444,17 @@
       sendMessage();
     }
   });
+
+  // Mobile keyboard: scroll input into view when focused
+  if ('visualViewport' in window) {
+    window.visualViewport.addEventListener('resize', () => {
+      if (open && document.activeElement === inputEl) {
+        requestAnimationFrame(() => {
+          inputEl.scrollIntoView({ block: 'nearest' });
+        });
+      }
+    });
+  }
 
   // Close on outside click
   document.addEventListener('click', e => {

@@ -123,18 +123,19 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </head>
 <body>
 
-<nav class="snav">
+<nav class="snav" aria-label="Main navigation">
   <div class="snav-left">
-    <a href="../../" class="snav-logo">FRQNCY</a>
-    <div class="breadcrumb">
+    <a href="../../" class="snav-logo" aria-label="FRQNCY Home">FRQNCY</a>
+    <div class="breadcrumb" aria-label="Breadcrumb">
       <a href="../explore.html">Network</a>
-      <span class="sep">›</span>
-      <span>Crypto</span>
+      <span class="sep" aria-hidden="true">›</span>
+      <span aria-current="page">Crypto</span>
     </div>
   </div>
   <div class="snav-right">
@@ -247,7 +248,7 @@ const PROJECTS = [
     ticker: "TAO",
     categories: ["AI", "Infrastructure"],
     tagClass: "ai",
-    accent: "#000000",
+    accent: "#1FD0A3",
     desc: "Decentralized AI network where anyone can contribute and earn from machine intelligence. A marketplace of AI models competing and collaborating on-chain.",
     why: "If AI is the most powerful technology of our time, it must not be controlled by a few corporations. Bittensor decentralizes intelligence itself.",
     link: "https://bittensor.com",
@@ -258,7 +259,7 @@ const PROJECTS = [
     ticker: "ENA",
     categories: ["DeFi", "Stablecoin"],
     tagClass: "defi",
-    accent: "#1A1A2E",
+    accent: "#7B5CFF",
     desc: "Synthetic dollar protocol generating yield through delta-neutral strategies. A crypto-native stable asset backed by hedged positions, not banks.",
     why: "Ethena challenges the idea that stable value needs banking rails. A yield-bearing dollar built entirely on-chain — DeFi-native stability.",
     link: "https://ethena.fi",

@@ -72,7 +72,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(123,97,255,0.06)}
 /* Tier-specific active styles */
 .ftab[data-tier="core"].active{border-color:#C4973A;color:#C4973A;background:rgba(196,151,58,0.06)}
-.ftab[data-tier="strong"].active{border-color:#4A9AE8;color:#4A9AE8;background:rgba(74,154,232,0.06)}
+.ftab[data-tier="conviction"].active{border-color:#7B61FF;color:#7B61FF;background:rgba(123,97,255,0.06)}
+.ftab[data-tier="speculative"].active{border-color:#5A6A7A;color:#5A6A7A;background:rgba(90,106,122,0.06)}
+.ftab[data-tier="avoid"].active{border-color:#3A3F48;color:#8A8F98;background:rgba(58,63,72,0.06)}
 .ftab[data-tier="watch"].active{border-color:#7090B8;color:#7090B8;background:rgba(112,144,184,0.06)}
 
 /* GRID */
@@ -106,7 +108,9 @@ main{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
 /* Tier badge */
 .tier-badge{font-size:0.46rem;letter-spacing:0.16em;text-transform:uppercase;padding:2px 8px;border-radius:2px;font-weight:400;border:1px solid;white-space:nowrap}
 .tier-badge.core{color:#C4973A;border-color:rgba(196,151,58,0.5);background:rgba(196,151,58,0.08)}
-.tier-badge.strong{color:#4A9AE8;border-color:rgba(74,154,232,0.4);background:rgba(74,154,232,0.06)}
+.tier-badge.conviction{color:#7B61FF;border-color:rgba(123,97,255,0.4);background:rgba(123,97,255,0.06)}
+.tier-badge.speculative{color:#5A6A7A;border-color:rgba(90,106,122,0.3);background:rgba(90,106,122,0.05)}
+.tier-badge.avoid{color:#3A3F48;border-color:rgba(58,63,72,0.3);background:rgba(58,63,72,0.05)}
 .tier-badge.watch{color:#7090B8;border-color:rgba(112,144,184,0.3);background:rgba(112,144,184,0.05)}
 
 /* Meta row: chain + mcap */
@@ -162,15 +166,15 @@ main{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
 </head>
 <body>
 
-<nav class="snav">
+<nav class="snav" aria-label="Main navigation">
   <div class="snav-left">
-    <a href="../../" class="snav-logo">FRQNCY</a>
-    <div class="breadcrumb">
+    <a href="../../" class="snav-logo" aria-label="FRQNCY Home">FRQNCY</a>
+    <div class="breadcrumb" aria-label="Breadcrumb">
       <a href="../explore.html">Network</a>
-      <span class="sep">›</span>
+      <span class="sep" aria-hidden="true">›</span>
       <a href="index.html">Crypto</a>
-      <span class="sep">›</span>
-      <span>Projects</span>
+      <span class="sep" aria-hidden="true">›</span>
+      <span aria-current="page">Projects</span>
     </div>
   </div>
   <div class="snav-right">
@@ -210,9 +214,9 @@ main{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
 <script>
 /* ── DATA ───────────────────────────────────────────────────────────── */
 let DATA = { projects: [], lastSync: '' };
-const TIER_ORDER = ['core','strong','watch'];
-const TIER_LABELS = { core:'Core Conviction', strong:'Strong Conviction', watch:'On the Radar' };
-const TIER_COLORS = { core:'#C4973A', strong:'#4A9AE8', watch:'#7090B8' };
+const TIER_ORDER = ['core','conviction','watch','speculative','avoid'];
+const TIER_LABELS = { core:'Core Conviction', conviction:'Strong Conviction', watch:'On the Radar', speculative:'Speculative', avoid:'Avoid' };
+const TIER_COLORS = { core:'#C4973A', conviction:'#7B61FF', watch:'#7090B8', speculative:'#5A6A7A', avoid:'#3A3F48' };
 const MCAP_LABELS = { high:'Large Cap', mid:'Mid Cap', low:'Small Cap', micro:'Micro Cap', 'n/a':'' };
 
 /* Tag class mapping — maps category keywords to visual classes */
@@ -357,7 +361,7 @@ function updateStats(projects) {
   statsEl.innerHTML = `
     <div class="hero-stat"><div class="hero-stat-num">${projects.length}</div><div class="hero-stat-label">Projects</div></div>
     <div class="hero-stat"><div class="hero-stat-num">${tierCounts.core||0}</div><div class="hero-stat-label">Core</div></div>
-    <div class="hero-stat"><div class="hero-stat-num">${tierCounts.strong||0}</div><div class="hero-stat-label">Strong</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">${tierCounts.conviction||0}</div><div class="hero-stat-label">Conviction</div></div>
     <div class="hero-stat"><div class="hero-stat-num">${tierCounts.watch||0}</div><div class="hero-stat-label">Watch</div></div>
   `;
 }

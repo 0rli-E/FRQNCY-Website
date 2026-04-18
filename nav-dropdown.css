@@ -34,7 +34,6 @@
   position: absolute;
   top: calc(100% + 12px);
   left: 50%;
-  transform: translateX(-50%);
   min-width: 200px;
   background: rgba(255, 255, 255, 0.97);
   backdrop-filter: blur(20px);
@@ -65,6 +64,12 @@
   left: 0;
   right: 0;
   height: 14px;
+}
+
+/* Focus styles for keyboard nav */
+.nav-dd-menu a:focus-visible {
+  outline: 2px solid #C4973A;
+  outline-offset: -2px;
 }
 
 /* Menu items */

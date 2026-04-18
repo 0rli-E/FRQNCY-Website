@@ -62,17 +62,23 @@ Do NOT include any <think> reasoning blocks in your response. Respond directly.
 --- FULL SITE KNOWLEDGE BASE ---
 ${KB}`;
 
-const CORS_HEADERS = {
-  'Access-Control-Allow-Origin':  '*',
-  'Access-Control-Allow-Methods': 'POST, OPTIONS',
-  'Access-Control-Allow-Headers': 'Content-Type',
-};
+function getCorsHeaders(request) {
+  const origin = request.headers.get('Origin') || '';
+  const allowedOrigins = ['https://frqncy.network', 'https://frqncy-website.pages.dev'];
+  const isAllowed = allowedOrigins.includes(origin) || origin.endsWith('.frqncy-website.pages.dev');
+  return {
+    'Access-Control-Allow-Origin':  isAllowed ? origin : allowedOrigins[0],
+    'Access-Control-Allow-Methods': 'POST, OPTIONS',
+    'Access-Control-Allow-Headers': 'Content-Type',
+  };
+}
 
-export function onRequestOptions() {
-  return new Response(null, { status: 204, headers: CORS_HEADERS });
+export function onRequestOptions({ request }) {
+  return new Response(null, { status: 204, headers: getCorsHeaders(request) });
 }
 
 export async function onRequestPost({ request, env }) {
+  const CORS_HEADERS = getCorsHeaders(request);
   const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For');
   if (checkRateLimit(ip)) {
     return jsonError('Too many requests — please wait a moment and try again.', 429);

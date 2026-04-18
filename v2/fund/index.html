@@ -25,10 +25,8 @@
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--accent:#C4973A;--accent-glow:rgba(196,151,58,0.14)}
-
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08)}
+:root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);--accent:#C4973A;--accent-glow:rgba(196,151,58,0.14)}
 html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
 a{color:var(--accent);text-decoration:none}
 a:hover{opacity:0.8}
@@ -214,11 +212,17 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Fund — FRQNCY Network","description":"Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.","url":"https://frqncy.network/v2/fund/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </head>
-<body><nav class="snav">
+<body>
+<nav class="snav">
   <div class="snav-left">
-    <a href="../explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
-    
+    <a href="../../" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
+    <div class="breadcrumb">
+      <a href="../explore.html">Network</a>
+      <span class="sep">/</span>
+      <span>Fund</span>
+    </div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
     <a href="../watch/index.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Watch</a>

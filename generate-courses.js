@@ -914,13 +914,13 @@ if (!COURSES.length) {
 
 /* ── Build ── */
 for (const c of courses) {
-  const outDir = path.join('v2', 'courses', c.slug);
+  const outDir = path.join(ROOT, 'v2', 'courses', c.slug);
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'index.html'), buildPage(c), 'utf8');
   console.log(`✓  v2/courses/${c.slug}/index.html`);
 }
 
 // Hub page — always regenerated, inline data, no fetch() dependency
-fs.writeFileSync(path.join('v2', 'courses', 'index.html'), buildHubPage(courses), 'utf8');
+fs.writeFileSync(path.join(ROOT, 'v2', 'courses', 'index.html'), buildHubPage(courses), 'utf8');
 console.log(`✓  v2/courses/index.html (hub)`);
 console.log(`\nGenerated ${courses.length} course pages + hub.`);

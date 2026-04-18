@@ -379,7 +379,7 @@ function render() {
   // Filter resources
   const filteredResources = showResources ? RESOURCES.filter(item => {
     if (activeType !== 'all' && activeType !== 'topics' && item.type !== activeType) return false;
-    if (activeDomain !== 'all' && item.domainSlug !== activeDomain) return false;
+    if (activeDomain !== 'all' && item.domain !== activeDomain) return false;
     if (!q) return false;  // only show resources when there's a query
     return matches(item.name, q) || matches(item.desc, q) ||
            matches(item.topicLabel, q) || matches(item.type, q);
@@ -404,9 +404,12 @@ function render() {
     pop.innerHTML = `
       <div class="popular-heading">Popular topics</div>
       <div class="popular-pills">${POPULAR.map(p =>
-        `<button class="pill" onclick="searchFor('${p.replace(/'/g,"\\'")}')">
+        `<button class="pill" data-term="${esc(p)}">
           ${esc(p)}</button>`
       ).join('')}</div>`;
+    pop.querySelectorAll('.pill[data-term]').forEach(btn => {
+      btn.addEventListener('click', () => searchFor(btn.dataset.term));
+    });
     area.appendChild(pop);
   }
 

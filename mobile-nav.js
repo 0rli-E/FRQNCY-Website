@@ -179,7 +179,10 @@
       drawer.classList.contains('open') ? closeDrawer() : openDrawer();
     });
     document.addEventListener('keydown', function (e) {
-      if (e.key === 'Escape' && drawer.classList.contains('open')) closeDrawer();
+      if (e.key === 'Escape' && drawer.classList.contains('open')) {
+        closeDrawer();
+        btn.focus(); // Return focus to hamburger button on Escape
+      }
     });
   }
 

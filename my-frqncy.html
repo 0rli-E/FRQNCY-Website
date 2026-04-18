@@ -507,8 +507,10 @@ nav{
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" defer></script>
 <script>
-// Wait for DOMContentLoaded so deferred D3 script is loaded before we run
-document.addEventListener('DOMContentLoaded', function() {
+// Functions must be in global scope because onclick attributes reference them.
+// D3 is loaded with defer so it runs before this inline script, but we still
+// guard drawConstellation in case D3 fails to load.
+
 // ── State ──────────────────────────────────────────────────────────────
 let TOPICS = [], RESOURCES = [];
 let selectedDomains = [];
@@ -706,6 +708,11 @@ function renderResult({ topicNodes, resourceNodes, teachers, startPick }, name) 
 
 // ── D3 Constellation ──────────────────────────────────────────────────
 function drawConstellation(topics, resources, name) {
+  if (typeof d3 === 'undefined') {
+    const wrap = document.getElementById('constellation-wrap');
+    wrap.innerHTML = '<p style="text-align:center;color:var(--text-dim);padding:2rem;">Constellation visualisation could not load. Please check your connection and refresh.</p>';
+    return;
+  }
   const wrap = document.getElementById('constellation-wrap');
   const W = wrap.clientWidth;
   const H = Math.min(W * 0.72, 500);
@@ -942,7 +949,6 @@ function esc(s) {
     // Eagerly pre-selected nothing — form is ready
   }
 })();
-}); // end DOMContentLoaded
 </script>
 
 <!-- Footer -->

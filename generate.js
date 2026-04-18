@@ -303,13 +303,13 @@ const FOOTER = `<footer>
 // ── Resource cards ───────────────────────────────────────────────
 function rcard(r) {
   const link = r.url
-    ? `<a href="${r.url}" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>`
+    ? `<a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>`
     : '';
-  return `<div class="rcard" data-type="${r.type}">
-  <span class="rtype">${r.type}</span>
+  return `<div class="rcard" data-type="${esc(r.type)}">
+  <span class="rtype">${esc(r.type)}</span>
   <div class="rinfo">
-    <h4>${r.title}${r.frqncy_pick ? ' <span class="fpick">✦ FRQNCY PICK</span>' : ''}</h4>
-    ${r.desc ? `<p>${r.desc}</p>` : ''}
+    <h4>${esc(r.title)}${r.frqncy_pick ? ' <span class="fpick">✦ FRQNCY PICK</span>' : ''}</h4>
+    ${r.desc ? `<p>${esc(r.desc)}</p>` : ''}
   </div>
   ${link}
 </div>`;
@@ -491,6 +491,7 @@ ${CSS}
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 ${ldTag}
 </head>
 <body>`;
@@ -501,8 +502,8 @@ function pillarPage(p) {
   const domains = domainsByPillar.get(p.id) || [];
   const dcards  = domains.map(d => `<a href="../${d.slug}/index.html" class="ncard">
   <div class="ncard-type">Domain</div>
-  <h3>${d.label}</h3>
-  <p>${d.desc || ''}</p>
+  <h3>${esc(d.label)}</h3>
+  <p>${esc(d.desc || '')}</p>
   <span class="ncard-arrow">→</span>
 </a>`).join('\n');
 
@@ -512,12 +513,12 @@ function pillarPage(p) {
 nav('') +
 `<div class="hero">
   <div class="hero-eyebrow">Pillar</div>
-  <h1>${p.label}</h1>
-  <p class="hero-desc">${p.desc}</p>
+  <h1>${esc(p.label)}</h1>
+  <p class="hero-desc">${esc(p.desc)}</p>
 </div>
 <main>
   <section>
-    <div class="section-label">Domains within ${p.label}</div>
+    <div class="section-label">Domains within ${esc(p.label)}</div>
     <div class="grid">${dcards}</div>
   </section>
   ${resourceSection(p.id, 'FRQNCY Picks')}
@@ -533,25 +534,25 @@ function domainPage(d) {
 
   const tcards = topics.map(t => `<a href="../${t.slug}/index.html" class="ncard">
   <div class="ncard-type">Topic</div>
-  <h3>${t.label}</h3>
-  ${t.desc ? `<p>${t.desc.slice(0, 85)}…</p>` : ''}
+  <h3>${esc(t.label)}</h3>
+  ${t.desc ? `<p>${esc(t.desc.slice(0, 85))}…</p>` : ''}
   <span class="ncard-arrow">→</span>
 </a>`).join('\n');
 
-  const crumb    = `<a href="../${pillar.slug}/index.html">${pillar.label}</a><span class="sep">/</span><span>${d.label}</span>`;
+  const crumb    = `<a href="../${pillar.slug}/index.html">${esc(pillar.label)}</a><span class="sep">/</span><span>${esc(d.label)}</span>`;
   const canonical = `https://frqncy.network/v2/${d.slug}/`;
 
   return head(d.label, d.accent, d.desc, canonical, collectionLd(d.label, d.desc, canonical), d.slug) +
 nav(crumb) +
 `<div class="hero">
-  <div class="hero-eyebrow">${pillar.label} &nbsp;·&nbsp; Domain</div>
-  <h1>${d.label}</h1>
-  ${d.desc ? `<p class="hero-desc">${d.desc}</p>` : ''}
+  <div class="hero-eyebrow">${esc(pillar.label)} &nbsp;·&nbsp; Domain</div>
+  <h1>${esc(d.label)}</h1>
+  ${d.desc ? `<p class="hero-desc">${esc(d.desc)}</p>` : ''}
 </div>
 <main>
-  ${resourceSection(d.id, `FRQNCY Picks — ${d.label}`)}
+  ${resourceSection(d.id, `FRQNCY Picks — ${esc(d.label)}`)}
   <section>
-    <div class="section-label">Explore topics in ${d.label}</div>
+    <div class="section-label">Explore topics in ${esc(d.label)}</div>
     <div class="grid grid-sm">${tcards}</div>
   </section>
 </main>
@@ -567,12 +568,12 @@ function topicPage(t) {
   // Related topics in same domain (exclude current, max 6)
   const related = (topicsByDomain.get(t.domain) || []).filter(r => r.id !== t.id).slice(0, 6);
   const relatedCards = related.length ? `<section>
-    <div class="section-label">More in ${domain.label}</div>
+    <div class="section-label">More in ${esc(domain.label)}</div>
     <div class="grid grid-sm">
       ${related.map(r => `<a href="../${r.slug}/index.html" class="ncard">
   <div class="ncard-type">Topic</div>
-  <h3>${r.label}</h3>
-  ${r.desc ? `<p>${r.desc.slice(0, 70)}…</p>` : ''}
+  <h3>${esc(r.label)}</h3>
+  ${r.desc ? `<p>${esc(r.desc.slice(0, 70))}…</p>` : ''}
   <span class="ncard-arrow">→</span>
 </a>`).join('\n')}
     </div>
@@ -608,7 +609,7 @@ function topicPage(t) {
     },
   };
 
-  const crumb = `<a href="../${pillar.slug}/index.html">${pillar.label}</a><span class="sep">/</span><a href="../${domain.slug}/index.html">${domain.label}</a><span class="sep">/</span><span>${t.label}</span>`;
+  const crumb = `<a href="../${pillar.slug}/index.html">${esc(pillar.label)}</a><span class="sep">/</span><a href="../${domain.slug}/index.html">${esc(domain.label)}</a><span class="sep">/</span><span>${esc(t.label)}</span>`;
 
   const vidSection    = videoSection(t.id);
   const courseCallout = courseSection(t.id);
@@ -616,9 +617,9 @@ function topicPage(t) {
   return head(t.label, domain.accent, t.desc, canonical, ld, t.slug) +
 nav(crumb) +
 `<div class="hero">
-  <div class="hero-eyebrow">${domain.label} &nbsp;·&nbsp; Topic</div>
-  <h1>${t.label}</h1>
-  ${t.desc ? `<p class="hero-desc">${t.desc}</p>` : ''}
+  <div class="hero-eyebrow">${esc(domain.label)} &nbsp;·&nbsp; Topic</div>
+  <h1>${esc(t.label)}</h1>
+  ${t.desc ? `<p class="hero-desc">${esc(t.desc)}</p>` : ''}
 </div>
 <main>
   ${vidSection}
@@ -660,6 +661,7 @@ const sitemapEntries = [
   { loc: 'https://frqncy.network/platform.html',      priority: '0.8', freq: 'monthly' },
   { loc: 'https://frqncy.network/podcast.html',       priority: '0.7', freq: 'weekly'  },
   { loc: 'https://frqncy.network/space.html',         priority: '0.7', freq: 'monthly' },
+  { loc: 'https://frqncy.network/search.html',         priority: '0.8', freq: 'weekly'  },
   { loc: 'https://frqncy.network/v2/explore.html',    priority: '0.9', freq: 'weekly'  },
   ...DATA.pillars.map(p => ({ loc: `https://frqncy.network/v2/${p.slug}/`, priority: '0.8', freq: 'weekly'  })),
   ...DATA.domains.map(d => ({ loc: `https://frqncy.network/v2/${d.slug}/`, priority: '0.7', freq: 'weekly'  })),
@@ -687,8 +689,10 @@ const searchIndex = DATA.topics.map(t => {
     slug:          t.slug,
     desc:          t.desc || '',
     domain:        domain.label,
+    domainLabel:   domain.label,
     domainSlug:    domain.slug,
     pillar:        pillar.label,
+    pillarLabel:   pillar.label,
     pillarSlug:    pillar.slug,
     accent:        domain.accent,
     picks:         res.filter(r => r.frqncy_pick).map(r => r.title).slice(0, 5),

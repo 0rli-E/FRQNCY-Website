@@ -326,7 +326,7 @@ function loadAE() {
         try { const m = await import(u); _AE = m; return; }
         catch(e){ /* try next */ }
       }
-      console.warn('[FRQNCY] HD engine: astronomy-engine unavailable, using Meeus fallback (outer-planet lines ±1)');
+      /* astronomy-engine unavailable, using Meeus fallback */
     })();
   }
   return _aePromise;
@@ -340,11 +340,11 @@ function _jdToDate(jd){ return new Date((jd - 2440587.5) * 86400000); }
 // Planets → GeoVector + Ecliptic (J2000; precession drift for 1900-2100 is ~5-10',
 // negligible vs HD's 56' line width).
 function _sunLonJd(jd){
-  if (_AE) { try { return _AE.SunPosition(_AE.MakeTime(_jdToDate(jd))).elon; } catch(e){ console.warn('[FRQNCY] AE Sun failed:',e.message); } }
+  if (_AE) { try { return _AE.SunPosition(_AE.MakeTime(_jdToDate(jd))).elon; } catch(e){ /* AE Sun fallback */ } }
   return _sunLon((jd-2451545)/36525);
 }
 function _moonLonJd(jd){
-  if (_AE) { try { const m = _AE.EclipticGeoMoon(_AE.MakeTime(_jdToDate(jd))); return (m.lon ?? m.elon); } catch(e){ console.warn('[FRQNCY] AE Moon failed:',e.message); } }
+  if (_AE) { try { const m = _AE.EclipticGeoMoon(_AE.MakeTime(_jdToDate(jd))); return (m.lon ?? m.elon); } catch(e){ /* AE Moon fallback */ } }
   return _moonLon((jd-2451545)/36525);
 }
 function _planetLonJd(name, jd){
@@ -354,7 +354,7 @@ function _planetLonJd(name, jd){
       const gv = _AE.GeoVector(_AE.Body[name], t, true);      // apparent geocentric (J2000 eq)
       const ecl = _AE.Ecliptic(gv);                             // convert to J2000 ecliptic
       if (typeof ecl.elon === 'number' && !isNaN(ecl.elon)) return ecl.elon;
-    } catch(e){ console.warn('[FRQNCY] AE '+name+' failed:',e.message); }
+    } catch(e){ /* AE planet fallback */ }
   }
   return _planetGeoLon(name,(jd-2451545)/36525);
 }
@@ -557,7 +557,11 @@ const HD_AUTHORITY_GUIDANCE = {
 
 function _markdownToHtml(md) {
   if (!md) return '';
+  // Sanitize HTML entities first to prevent XSS from API responses
   return md
+    .replace(/&/g, '&amp;')
+    .replace(/</g, '&lt;')
+    .replace(/>/g, '&gt;')
     .replace(/### (.+)/g, '<h4>$1</h4>')
     .replace(/## (.+)/g, '<h3>$1</h3>')
     .replace(/\*\*(.+?)\*\*/g, '<strong>$1</strong>')
