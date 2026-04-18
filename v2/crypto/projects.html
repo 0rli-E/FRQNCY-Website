@@ -162,7 +162,10 @@ main{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
 .empty{text-align:center;padding:4rem 2rem;color:var(--text-dim);font-size:0.84rem}
 
 /* LAST SYNC */
-.sync-note{max-width:1200px;margin:1.5rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.58rem;color:var(--text-dim);opacity:0.5;text-align:right}
+.sync-note{max-width:1200px;margin:1.5rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.58rem;color:var(--text-dim);opacity:0.5;text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:0.5rem}
+.refresh-btn{background:none;border:1px solid rgba(255,255,255,0.1);color:var(--text-dim);font-size:0.58rem;letter-spacing:0.1em;padding:3px 10px;border-radius:2px;cursor:pointer;transition:all .2s;font-family:'Jost',sans-serif;margin-right:0.5rem}
+.refresh-btn:hover{border-color:rgba(255,255,255,0.3);color:var(--text)}
+.refresh-btn:disabled{opacity:0.4;cursor:wait}
 
 @media(max-width:600px){
   .project-grid{grid-template-columns:1fr}
@@ -221,7 +224,10 @@ main{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
   <div id="content"></div>
 </main>
 
-<div class="sync-note" id="sync-note"></div>
+<div class="sync-note" id="sync-note">
+  <button id="refresh-btn" class="refresh-btn" onclick="refreshData()" title="Refresh from Notion">&#8635; Refresh</button>
+  <span id="sync-text"></span>
+</div>
 
 <script>
 /* ── DATA ───────────────────────────────────────────────────────────── */
@@ -387,24 +393,70 @@ function updateStats(projects) {
   `;
 }
 
-/* ── INIT ───────────────────────────────────────────────────────────── */
-async function init() {
-  try {
-    const res = await fetch('crypto-projects.json');
-    if (!res.ok) throw new Error('Failed to load');
-    DATA = await res.json();
-  } catch(e) {
-    document.getElementById('content').innerHTML = '<div class="empty">Could not load project data. Please try again later.</div>';
-    return;
-  }
-  buildFilters(DATA.projects);
-  updateStats(DATA.projects);
-  render();
+/* ── MAP API DATA ──────────────────────────────────────────────────── */
+function mapApiProjects(data) {
+  return data.projects.map(p => ({
+    name: p.name,
+    ticker: p.symbol || '',
+    tier: p.tierLabel,
+    categories: [p.category].filter(Boolean),
+    chain: p.type || 'Multi-chain',
+    mcap: p.mcap === 'Large Cap' ? 'high' : p.mcap === 'Mid cap' ? 'mid' : p.mcap === 'small capp' ? 'low' : '',
+    desc: p.thesis || '',
+    thesis: p.conviction || '',
+    links: p.coingecko ? { coingecko: p.coingecko } : {},
+    accent: p.accent || '#7B61FF'
+  }));
+}
 
-  /* Show last sync */
-  if (DATA.lastSync) {
-    const d = new Date(DATA.lastSync);
-    document.getElementById('sync-note').textContent = 'Last synced: ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+function updateSyncNote(data) {
+  const syncText = document.getElementById('sync-text');
+  if (data.cached) {
+    syncText.textContent = 'Cached \u00B7 Last sync ' + new Date(data.lastSync).toLocaleString();
+  } else {
+    syncText.textContent = 'Live from Notion \u00B7 ' + new Date(data.lastSync).toLocaleString();
+  }
+}
+
+function updateHeroFromApi(data) {
+  document.getElementById('hero-stats').innerHTML = `
+    <div class="hero-stat"><div class="hero-stat-num">${data.totalProjects}</div><div class="hero-stat-label">Projects</div></div>
+    <div class="hero-stat"><div class="hero-stat-num">${data.projects.filter(p=>p.tier).length}</div><div class="hero-stat-label">Rated</div></div>
+  `;
+}
+
+/* ── INIT ───────────────────────────────────────────────────────────── */
+async function loadData() {
+  document.getElementById('content').innerHTML = '<div class="empty">Loading projects from Notion\u2026</div>';
+
+  try {
+    const res = await fetch('/api/crypto/projects');
+    if (!res.ok) throw new Error('API failed');
+    const data = await res.json();
+    DATA.projects = mapApiProjects(data);
+    DATA.lastSync = data.lastSync;
+    buildFilters(DATA.projects);
+    updateStats(DATA.projects);
+    render();
+    updateHeroFromApi(data);
+    updateSyncNote(data);
+  } catch (e) {
+    // Fallback to static JSON
+    try {
+      const res = await fetch('crypto-projects.json');
+      if (!res.ok) throw new Error('Static fallback failed');
+      DATA = await res.json();
+      buildFilters(DATA.projects);
+      updateStats(DATA.projects);
+      render();
+      if (DATA.lastSync) {
+        const d = new Date(DATA.lastSync);
+        document.getElementById('sync-text').textContent = 'Offline \u00B7 Last synced: ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      }
+    } catch {
+      document.getElementById('content').innerHTML = '<div class="empty">Failed to load projects. Please try again.</div>';
+      return;
+    }
   }
 
   /* Hash-based tier filter */
@@ -418,7 +470,29 @@ async function init() {
   }
 }
 
-init();
+async function refreshData() {
+  const btn = document.getElementById('refresh-btn');
+  btn.disabled = true;
+  btn.textContent = '\u21BB Refreshing\u2026';
+  try {
+    const res = await fetch('/api/crypto/projects?refresh=true');
+    if (!res.ok) throw new Error('Refresh failed');
+    const data = await res.json();
+    DATA.projects = mapApiProjects(data);
+    DATA.lastSync = data.lastSync;
+    render();
+    updateStats(DATA.projects);
+    updateHeroFromApi(data);
+    updateSyncNote(data);
+  } catch (e) {
+    document.getElementById('sync-text').textContent = 'Refresh failed \u2014 showing cached data';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '\u21BB Refresh';
+  }
+}
+
+loadData();
 </script>
 </body>
 </html>

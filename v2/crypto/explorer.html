@@ -137,6 +137,12 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
 /* DISCLAIMER */
 .disclaimer{max-width:640px;margin:0 auto 1.5rem;text-align:center;font-size:0.68rem;color:var(--text-dim);opacity:0.6;line-height:1.6;padding:0 1.25rem}
 
+/* SYNC NOTE & REFRESH */
+.sync-note{max-width:1100px;margin:1.5rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.58rem;color:var(--text-dim);opacity:0.5;text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:0.5rem}
+.refresh-btn{background:none;border:1px solid rgba(255,255,255,0.1);color:var(--text-dim);font-size:0.58rem;letter-spacing:0.1em;padding:3px 10px;border-radius:2px;cursor:pointer;transition:all .2s;font-family:'Jost',sans-serif;margin-right:0.5rem}
+.refresh-btn:hover{border-color:rgba(255,255,255,0.3);color:var(--text)}
+.refresh-btn:disabled{opacity:0.4;cursor:wait}
+
 @media(max-width:600px){
   .pgrid{grid-template-columns:1fr 1fr}
   .chapter-header{padding:1rem 1.2rem}
@@ -194,320 +200,25 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
   <!-- chapters injected by JS -->
 </main>
 
+<div class="sync-note" id="sync-note">
+  <button id="refresh-btn" class="refresh-btn" onclick="refreshData()" title="Refresh from Notion">&#8635; Refresh</button>
+  <span id="sync-text"></span>
+</div>
+
 <script>
 /* ── DATA ────────────────────────────────────────────────────────────── */
-const CHAPTERS = [
-  {
-    id: "sov",
-    icon: "🏛",
-    title: "Store of Value",
-    intro: "Store-of-value assets are the foundations of crypto — digital commodities designed to hold and grow wealth over time without relying on any central institution. Bitcoin invented the category; others follow the principle that scarcity plus decentralization equals sovereignty.",
-    projects: [
-      {n:"Bitcoin",s:"BTC",t:"S",type:"L1",mc:"Large Cap"},
-      {n:"Ethereum",s:"ETH",t:"S",type:"L1",mc:"Large Cap"},
-      {n:"Dogecoin",s:"DOGE",t:"A",type:"projecttoken",mc:"Large Cap"},
-      {n:"Bitcoin Cash",s:"BCH",t:"F",type:"L1",mc:"Mid cap"},
-      {n:"Bitcoin Gold",s:"BTG",t:"F",type:"L1"},
-      {n:"Ethereum Classic",s:"ETC",t:"F",type:"L1",mc:"Mid cap"},
-      {n:"Litecoin",s:"LTC",t:"F",type:"L1",mc:"Mid cap"},
-      {n:"PAX Gold",s:"PAXG",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"Tether Gold",s:"XAUT",t:"B",type:"projecttoken",mc:"Mid cap"}
-    ]
-  },
-  {
-    id: "l1",
-    icon: "⛓",
-    title: "Smart Contract Platforms",
-    intro: "Layer 1 blockchains are the base infrastructure of the decentralized web — independent networks with their own consensus, security, and rules. Each one represents a different bet on how to scale trust without intermediaries. They compete on speed, decentralization, and developer ecosystems.",
-    projects: [
-      {n:"Solana",s:"SOL",t:"S",type:"L1",mc:"Large Cap"},
-      {n:"Sui",s:"SUI",t:"S",type:"L1",mc:"Large Cap"},
-      {n:"Avalanche",s:"AVAX",t:"B",type:"L1",mc:"Large Cap"},
-      {n:"BNB Chain",s:"BNB",t:"B",type:"L1",mc:"Large Cap"},
-      {n:"Toncoin",s:"TON",t:"B",type:"L1",mc:"Large Cap"},
-      {n:"NEAR Protocol",s:"NEAR",t:"B",type:"L1",mc:"Mid cap"},
-      {n:"Cardano",s:"ADA",t:"D",type:"L1",mc:"Large Cap"},
-      {n:"Polkadot",s:"DOT",t:"C",type:"L1",mc:"Mid cap"},
-      {n:"Aptos",s:"APT",t:"C",type:"L1",mc:"Mid cap"},
-      {n:"Internet Computer",s:"ICP",t:"E",type:"L1",mc:"Mid cap"},
-      {n:"Cosmos",s:"ATOM",t:"C",type:"L1",mc:"Mid cap"},
-      {n:"Hedera",s:"HBAR",t:"E",type:"L1",mc:"Mid cap"},
-      {n:"TRON",s:"TRX",t:"E",type:"L1",mc:"Large Cap"},
-      {n:"Algorand",s:"ALGO",t:"C",type:"L1",mc:"Mid cap"},
-      {n:"Fantom",s:"FTM",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"Berachain",s:"BERA",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"Dash",s:"DASH",t:"F",type:"L1",mc:"Mid cap"},
-      {n:"eCash",s:"XEC",t:"E",type:"L1",mc:"Mid cap"},
-      {n:"Injective",s:"INJ",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"IOTA",s:"IOTA",t:"F",type:"L1",mc:"Mid cap"},
-      {n:"Kaia",s:"KAIA",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"Kaspa",s:"KAS",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"Kava",s:"KAVA",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"Neo",s:"NEO",t:"F",type:"L1",mc:"Mid cap"},
-      {n:"Sei",s:"SEI",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"Sonic",s:"S",t:"B",type:"L1",mc:"Mid cap"},
-      {n:"Tezos",s:"XTZ",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"Theta Network",s:"THETA",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"VeChain",s:"VET",t:"D",type:"L1",mc:"Mid cap"}
-    ]
-  },
-  {
-    id: "l2",
-    icon: "🧩",
-    title: "Layer 2 Solutions",
-    intro: "Layer 2s scale existing blockchains by processing transactions off the main chain while inheriting its security. They make decentralized apps faster and cheaper without sacrificing the trust guarantees of the base layer. Think of them as express lanes built on top of the highway.",
-    projects: [
-      {n:"Mantle",s:"MNT",t:"A",type:"L2",mc:"Mid cap"},
-      {n:"Arbitrum",s:"ARB",t:"B",type:"L2",mc:"Mid cap"},
-      {n:"Optimism",s:"OP",t:"B",type:"L2",mc:"Mid cap"},
-      {n:"Polygon",s:"POL",t:"C",type:"L2",mc:"Mid cap"},
-      {n:"Starknet",s:"STRK",t:"C",type:"L2",mc:"Mid cap"},
-      {n:"Base",s:"—",t:"B",type:"L2",note:"Coinbase's L2 — no token"},
-      {n:"zkSync",s:"ZK",t:"D",type:"L2",mc:"Small cap"},
-      {n:"Scroll",s:"SCR",t:"D",type:"L2",mc:"Small cap"},
-      {n:"Linea",s:"—",t:"D",type:"L2",mc:"Mid cap"}
-    ]
-  },
-  {
-    id: "defi",
-    icon: "🏦",
-    title: "DeFi Protocols",
-    intro: "Decentralized finance replaces traditional financial intermediaries — banks, brokers, exchanges — with transparent, permissionless smart contracts. Anyone with an internet connection can lend, borrow, trade, and earn yield. No credit checks, no gatekeepers, no opening hours.",
-    projects: [
-      {n:"Aave",s:"AAVE",t:"S",type:"projecttoken",mc:"Large Cap",cat:"Money Market"},
-      {n:"Uniswap",s:"UNI",t:"B",type:"projecttoken",mc:"Large Cap",cat:"DEX"},
-      {n:"Pendle",s:"PENDLE",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Yield"},
-      {n:"Hyperliquid",s:"HYPE",t:"S",type:"L1",mc:"Large Cap",cat:"Perps"},
-      {n:"Ethena",s:"ENA",t:"S",type:"projecttoken",mc:"Mid cap",cat:"Stablecoin"},
-      {n:"Ondo Finance",s:"ONDO",t:"B",type:"projecttoken",mc:"Mid cap",cat:"RWA"},
-      {n:"Maker / Sky",s:"MKR",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Stablecoin"},
-      {n:"Lido",s:"LDO",t:"B",type:"projecttoken",mc:"Mid cap",cat:"Liquid Staking"},
-      {n:"Curve",s:"CRV",t:"A",type:"projecttoken",mc:"Mid cap",cat:"DEX"},
-      {n:"Jupiter",s:"JUP",t:"C",type:"projecttoken",mc:"Mid cap",cat:"DEX Aggregator"},
-      {n:"dYdX",s:"DYDX",t:"D",type:"projecttoken",mc:"Mid cap",cat:"Perps"},
-      {n:"Compound",s:"COMP",t:"C",type:"projecttoken",mc:"Mid cap",cat:"Money Market"},
-      {n:"Synthetix",s:"SNX",t:"C",type:"projecttoken",mc:"Mid cap",cat:"Derivatives"},
-      {n:"1inch",s:"1INCH",t:"D",type:"projecttoken",mc:"Mid cap",cat:"DEX Aggregator"},
-      {n:"Aerodrome",s:"AERO",t:"A",type:"projecttoken",mc:"Mid cap",cat:"DEX"},
-      {n:"DeXe",s:"DEXE",t:"D",type:"projecttoken",mc:"Small cap",cat:"DAO"},
-      {n:"Ether.fi",s:"ETHFI",t:"B",type:"projecttoken",mc:"Mid cap",cat:"Liquid Staking"},
-      {n:"Gnosis",s:"GNO",t:"C",type:"projecttoken",mc:"Mid cap",cat:"Infrastructure"},
-      {n:"Jito",s:"JTO",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Liquid Staking"},
-      {n:"Maple Finance",s:"SYRUP",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Lending"},
-      {n:"Morpho",s:"MORPHO",t:"C",type:"projecttoken",mc:"Mid cap",cat:"Lending"},
-      {n:"MYX Finance",s:"MYX",t:"F",type:"projecttoken",mc:"Small cap",cat:"Perps"},
-      {n:"Olympus",s:"OHM",t:"C",type:"projecttoken",mc:"Small cap",cat:"Reserve Currency"},
-      {n:"PancakeSwap",s:"CAKE",t:"C",type:"projecttoken",mc:"Mid cap",cat:"DEX"},
-      {n:"Pump.fun",s:"PUMP",t:"A",type:"projecttoken",mc:"Mid cap",cat:"Launchpad"},
-      {n:"Raydium",s:"RAY",t:"C",type:"projecttoken",mc:"Mid cap",cat:"DEX"},
-      {n:"Saros",s:"SAROS",t:"D",type:"projecttoken",mc:"Small cap",cat:"DEX"},
-      {n:"SwissBorg",s:"BORG",t:"F",type:"projecttoken",mc:"Small cap",cat:"CeFi"},
-      {n:"THORChain",s:"RUNE",t:"F",type:"projecttoken",mc:"Mid cap",cat:"Cross-chain DEX"},
-      {n:"Useless Coin",s:"USELESS",t:"B",type:"projecttoken",mc:"Small cap"}
-    ]
-  },
-  {
-    id: "stablecoin",
-    icon: "💵",
-    title: "Stablecoins",
-    intro: "Stablecoins are crypto assets pegged to real-world currencies — usually the US dollar. They're the bridge between traditional finance and DeFi, used for payments, trading, and savings. The key question is always: what backs the peg, and who controls it?",
-    projects: [
-      {n:"Tether",s:"USDT",t:"S",type:"projecttoken",mc:"Large Cap"},
-      {n:"USDC",s:"USDC",t:"S",type:"projecttoken",mc:"Large Cap"},
-      {n:"Sky Dollar",s:"USDS",t:"A",type:"projecttoken",mc:"Large Cap"},
-      {n:"PayPal USD",s:"PYUSD",t:"B",type:"projecttoken",mc:"Mid cap"},
-      {n:"FRAX",s:"FRAX",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Dai (legacy)",s:"DAI",t:"C",type:"projecttoken",mc:"Large Cap"},
-      {n:"TrueUSD",s:"TUSD",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"USD1",s:"USD1",t:"C",type:"projecttoken",mc:"Mid cap"}
-    ]
-  },
-  {
-    id: "ai",
-    icon: "🤖",
-    title: "AI & Blockchain",
-    intro: "The intersection of artificial intelligence and crypto is about one question: who controls AI? These projects aim to decentralize machine intelligence — from training data to compute power to autonomous agents — so that AI serves everyone, not just a few corporations.",
-    projects: [
-      {n:"Bittensor",s:"TAO",t:"S",type:"projecttoken",mc:"Large Cap"},
-      {n:"Virtuals Protocol",s:"VIRTUAL",t:"S",type:"projecttoken",mc:"Mid cap"},
-      {n:"ai16z",s:"AI16Z",t:"A",type:"projecttoken",mc:"Mid cap"},
-      {n:"Render Network",s:"RNDR",t:"B",type:"projecttoken",mc:"Large Cap"},
-      {n:"Fetch.ai",s:"FET",t:"B",type:"projecttoken",mc:"Mid cap"},
-      {n:"Akash Network",s:"AKT",t:"B",type:"projecttoken",mc:"Mid cap"},
-      {n:"Sahara AI",s:"—",t:"C",type:"projecttoken"},
-      {n:"Humans.ai",s:"HEART",t:"D",type:"projecttoken",mc:"Small cap"},
-      {n:"SingularityNET",s:"AGIX",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"AI Companions",s:"—",t:"F",type:"projecttoken",mc:"Small cap"},
-      {n:"ASI Alliance",s:"FET",t:"C",type:"projecttoken",mc:"Large Cap"},
-      {n:"ChainOpera AI",s:"—",t:"F",type:"projecttoken",mc:"Small cap"}
-    ]
-  },
-  {
-    id: "meme",
-    icon: "🐸",
-    title: "Meme Coins",
-    intro: "Meme coins are crypto's cultural layer — assets driven by community, humor, and social consensus rather than technology or utility. They remind us that value is ultimately a shared belief. Some become multi-billion dollar networks; most return to zero. Approach with humor and caution.",
-    projects: [
-      {n:"Pepe",s:"PEPE",t:"A",type:"projecttoken",mc:"Large Cap"},
-      {n:"Shiba Inu",s:"SHIB",t:"E",type:"projecttoken",mc:"Large Cap"},
-      {n:"Floki",s:"FLOKI",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Bonk",s:"BONK",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Book of Meme",s:"BOME",t:"E",type:"projecttoken",mc:"Small cap"},
-      {n:"Memecoin",s:"MEME",t:"E",type:"projecttoken",mc:"Small cap"},
-      {n:"Milady Meme",s:"LADYS",t:"F",type:"projecttoken",mc:"Small cap"},
-      {n:"Melania Meme",s:"MELANIA",t:"F",type:"projecttoken",mc:"Small cap"},
-      {n:"Ape & Pepe",s:"—",t:"F",type:"projecttoken",mc:"Small cap"},
-      {n:"Brett",s:"BRETT",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"Cheems",s:"CHEEMS",t:"F",type:"projecttoken",mc:"Small cap"},
-      {n:"Dogwifhat",s:"WIF",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"Fartcoin",s:"FARTCOIN",t:"A",type:"projecttoken",mc:"Mid cap"},
-      {n:"Loaded Lions",s:"—",t:"F",type:"projecttoken",mc:"Small cap"},
-      {n:"Pudgy Penguins",s:"PENGU",t:"S",type:"projecttoken",mc:"Large Cap"},
-      {n:"SPX6900",s:"SPX",t:"S",type:"projecttoken",mc:"Mid cap"}
-    ]
-  },
-  {
-    id: "privacy",
-    icon: "🔐",
-    title: "Privacy",
-    intro: "Privacy coins and protocols protect the fundamental right to financial confidentiality. In a world of increasing surveillance, these projects use advanced cryptography — zero-knowledge proofs, ring signatures, and encrypted computation — to keep transactions private without sacrificing verifiability.",
-    projects: [
-      {n:"Zcash",s:"ZEC",t:"A",type:"L1",mc:"Mid cap"},
-      {n:"Monero",s:"XMR",t:"A",type:"L1",mc:"Mid cap"},
-      {n:"Secret Network",s:"SCRT",t:"C",type:"L1",mc:"Small cap"},
-      {n:"Aztec",s:"—",t:"B",type:"L2",note:"ZK privacy layer for Ethereum"},
-      {n:"Nillion",s:"NIL",t:"C",type:"projecttoken",mc:"Small cap"},
-      {n:"Miden",s:"—",t:"C",type:"L2",note:"ZK rollup by Polygon"},
-      {n:"Arcium",s:"—",t:"C",type:"projecttoken",note:"Encrypted computation network"},
-      {n:"Beldex",s:"BDX",t:"D",type:"projecttoken",mc:"Small cap"}
-    ]
-  },
-  {
-    id: "payments",
-    icon: "💸",
-    title: "Payments",
-    intro: "Payment-focused crypto projects aim to make moving money as fast and borderless as sending a message. From cross-border remittances to point-of-sale transactions, these protocols compete with legacy payment rails by offering instant settlement, low fees, and no intermediaries.",
-    projects: [
-      {n:"XRP",s:"XRP",t:"C",type:"L1",mc:"Large Cap"},
-      {n:"Stellar",s:"XLM",t:"D",type:"L1",mc:"Mid cap"},
-      {n:"Nano",s:"XNO",t:"D",type:"L1",mc:"Small cap"},
-      {n:"Celo",s:"CELO",t:"C",type:"L1",mc:"Mid cap"},
-      {n:"Telcoin",s:"TEL",t:"F",type:"projecttoken",mc:"Small cap"}
-    ]
-  },
-  {
-    id: "oracle",
-    icon: "🔮",
-    title: "Oracles & Infrastructure",
-    intro: "Blockchains can't access external data on their own. Oracles bridge this gap — feeding real-world information (prices, weather, sports scores) into smart contracts. They're the nervous system connecting blockchains to reality, and their accuracy is critical to everything built on top.",
-    projects: [
-      {n:"Chainlink",s:"LINK",t:"S",type:"projecttoken",mc:"Large Cap"},
-      {n:"Pyth Network",s:"PYTH",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"The Graph",s:"GRT",t:"B",type:"projecttoken",mc:"Mid cap"},
-      {n:"Band Protocol",s:"BAND",t:"D",type:"projecttoken",mc:"Small cap"},
-      {n:"Arweave",s:"AR",t:"B",type:"projecttoken",mc:"Mid cap"},
-      {n:"DoubleZero",s:"—",t:"D",type:"projecttoken",mc:"Small cap"},
-      {n:"Eigencloud",s:"—",t:"B",type:"projecttoken",mc:"Small cap"},
-      {n:"ENS",s:"ENS",t:"B",type:"projecttoken",mc:"Mid cap"},
-      {n:"Filecoin",s:"FIL",t:"C",type:"projecttoken",mc:"Mid cap"}
-    ]
-  },
-  {
-    id: "gaming",
-    icon: "🎮",
-    title: "Gaming & Metaverse",
-    intro: "Blockchain gaming gives players true ownership of in-game assets — items, characters, and currencies that exist outside any single game. The metaverse vision extends this to entire virtual worlds. The sector is young and speculative, with many projects still finding product-market fit.",
-    projects: [
-      {n:"Immutable",s:"IMX",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Gala Games",s:"GALA",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"Axie Infinity",s:"AXS",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"The Sandbox",s:"SAND",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"Decentraland",s:"MANA",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"Yield Guild Games",s:"YGG",t:"E",type:"projecttoken",mc:"Small cap"},
-      {n:"Nakamoto Games",s:"NAKA",t:"E",type:"projecttoken",mc:"Small cap"},
-      {n:"SuperVerse",s:"SUPER",t:"C",type:"projecttoken",mc:"Mid cap"}
-    ]
-  },
-  {
-    id: "desci",
-    icon: "🧬",
-    title: "DeSci & Longevity",
-    intro: "Decentralized science applies crypto coordination to research funding. Instead of waiting for grants from institutions, communities pool capital to fund the science that matters to them — from longevity research to rare diseases. It's early, radical, and deeply aligned with sovereignty over health.",
-    projects: [
-      {n:"Bio Protocol",s:"BIO",t:"B",type:"projecttoken",mc:"Small cap"},
-      {n:"VitaDAO",s:"VITA",t:"C",type:"projecttoken",mc:"Small cap"},
-      {n:"Molecule",s:"—",t:"C",type:"projecttoken",note:"IP-NFT platform for research"}
-    ]
-  },
-  {
-    id: "socialfi",
-    icon: "🌐",
-    title: "SocialFi & Identity",
-    intro: "SocialFi reimagines social media through crypto — where content is ownable, creators are paid directly, and identity is self-sovereign. These projects challenge the model where platforms own your data and attention. Your identity, your content, your value.",
-    projects: [
-      {n:"Worldcoin",s:"WLD",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Zora",s:"ZORA",t:"A",type:"projecttoken",mc:"Small cap"},
-      {n:"Lens Protocol",s:"—",t:"B",type:"projecttoken",note:"Decentralized social graph"},
-      {n:"Farcaster",s:"—",t:"B",type:"projecttoken",note:"Sufficiently decentralized social"},
-      {n:"Story Protocol",s:"IP",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Galxe",s:"GAL",t:"D",type:"projecttoken",mc:"Small cap"}
-    ]
-  },
-  {
-    id: "bridge",
-    icon: "🌉",
-    title: "Bridges & Interoperability",
-    intro: "Cross-chain bridges let assets and data move between different blockchains. They're essential infrastructure for a multi-chain world, but also one of crypto's biggest security challenges — bridge exploits have lost billions. The best bridges prioritize security over speed.",
-    projects: [
-      {n:"LayerZero",s:"ZRO",t:"B",type:"projecttoken",mc:"Mid cap"},
-      {n:"Wormhole",s:"W",t:"C",type:"projecttoken",mc:"Mid cap"},
-      {n:"Across Protocol",s:"ACX",t:"C",type:"projecttoken",mc:"Small cap"},
-      {n:"Stargate",s:"STG",t:"D",type:"projecttoken",mc:"Small cap"}
-    ]
-  },
-  {
-    id: "icm",
-    icon: "🚀",
-    title: "Internet Capital Markets",
-    intro: "A new category emerging at the intersection of crypto and venture capital. These platforms democratize access to early-stage investing — turning fundraising from a closed, gatekept process into an open, community-driven one. Your contribution and reputation matter more than your wallet size.",
-    projects: [
-      {n:"Echo",s:"—",t:"B",type:"projecttoken",note:"Coinbase-acquired, $200M+ facilitated"},
-      {n:"Legion",s:"—",t:"B",type:"projecttoken",note:"Merit-based MiCA-compliant ICOs"},
-      {n:"Polymarket",s:"—",t:"A",type:"projecttoken",note:"Prediction markets for real events"},
-      {n:"Believe",s:"—",t:"C",type:"projecttoken",note:"Community-driven project launches"}
-    ]
-  },
-  {
-    id: "other",
-    icon: "📦",
-    title: "Other Projects",
-    intro: "Projects that don't fit neatly into a single sector — exchange tokens, experimental protocols, and niche assets. Included for completeness with their Notion-sourced tier ratings.",
-    projects: [
-      {n:"AB",s:"—",t:"D",type:"projecttoken"},
-      {n:"Astar",s:"ASTR",t:"F",type:"L1",mc:"Mid cap"},
-      {n:"BitcoinSV",s:"BSV",t:"F",type:"L1"},
-      {n:"Fasttoken",s:"FTN",t:"F",type:"projecttoken",mc:"Small cap"},
-      {n:"Figure",s:"—",t:"F",type:"projecttoken"},
-      {n:"HTX DAO",s:"HT",t:"F",type:"projecttoken",mc:"Mid cap"},
-      {n:"JasmyCoin",s:"JASMY",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"KuCoin Token",s:"KCS",t:"F",type:"projecttoken",mc:"Mid cap"},
-      {n:"Merlin Chain",s:"MERL",t:"D",type:"L2",mc:"Small cap"},
-      {n:"NEXO",s:"NEXO",t:"D",type:"projecttoken",mc:"Mid cap",cat:"CeFi"},
-      {n:"OG",s:"OG",t:"C",type:"projecttoken",mc:"Small cap"},
-      {n:"OKB",s:"OKB",t:"D",type:"projecttoken",mc:"Mid cap"},
-      {n:"Pi Network",s:"PI",t:"F",type:"L1",mc:"Mid cap"},
-      {n:"Plasma",s:"PLASMA",t:"A",type:"projecttoken",mc:"Small cap"},
-      {n:"Provenance",s:"HASH",t:"F",type:"L1",mc:"Small cap"},
-      {n:"Sun Token",s:"SUN",t:"F",type:"projecttoken",mc:"Small cap"},
-      {n:"Treehouse",s:"—",t:"F",type:"projecttoken",mc:"Small cap"},
-      {n:"Vision",s:"VS",t:"F",type:"projecttoken",mc:"Small cap"},
-      {n:"WhiteBIT Token",s:"WBT",t:"E",type:"projecttoken",mc:"Mid cap"}
-    ]
-  }
-];
+let CHAPTERS = [];
 
 const TIER_ORDER = ['S','A','B','C','D','E','F'];
 const TIER_LABELS = {S:'💎 S',A:'🥇 A',B:'🥈 B',C:'⚙️ C',D:'🪙 D',E:'🧱 E',F:'🗑️ F'};
+
+const CHAPTER_ORDER = [
+  "Store of Value", "Smart Contract Platforms", "Layer 2 Solutions",
+  "DeFi Protocols", "Stablecoins", "AI & Blockchain", "Meme Coins",
+  "Privacy", "Payments", "Oracles & Infrastructure", "Gaming & Metaverse",
+  "DeSci & Longevity", "SocialFi & Identity", "Bridges & Interoperability",
+  "Internet Capital Markets", "Prediction Markets", "Real World Assets", "Other"
+];
 
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
@@ -516,8 +227,13 @@ let openChapter = null;
 let activeTierFilter = null;
 
 /* ── BUILD NAV ──────────────────────────────────────────────────────── */
-function buildNav() {
+function buildChapterNav() {
   const nav = document.getElementById('chapter-nav');
+  // Clear existing pills (keep label)
+  const label = nav.querySelector('.chapter-nav-label');
+  nav.innerHTML = '';
+  if (label) nav.appendChild(label);
+
   for (const ch of CHAPTERS) {
     const pill = document.createElement('button');
     pill.className = 'cpill';
@@ -540,9 +256,10 @@ function buildNav() {
   }
 }
 
-/* ── BUILD CHAPTERS ─────────────────────────────────────────────────── */
-function buildChapters() {
+/* ── BUILD CHAPTERS (UI) ───────────────────────────────────────────── */
+function buildUI() {
   const container = document.getElementById('chapters');
+  container.innerHTML = '';
   for (const ch of CHAPTERS) {
     const section = document.createElement('div');
     section.className = 'chapter';
@@ -641,26 +358,153 @@ function toggleTierFilter(tier) {
   }
 }
 
-/* ── INIT ───────────────────────────────────────────────────────────── */
-buildNav();
-buildChapters();
-
-// Open first chapter by default
-if (CHAPTERS.length > 0) {
-  toggleChapter(CHAPTERS[0].id);
-}
-
-// Hash-based chapter opening
-const hash = location.hash.replace('#','');
-if (hash) {
-  const ch = CHAPTERS.find(c => c.id === hash);
-  if (ch) {
-    // close default, open hash target
-    document.querySelectorAll('.chapter.open').forEach(c => c.classList.remove('open'));
-    document.querySelectorAll('.cpill.active').forEach(p => p.classList.remove('active'));
-    toggleChapter(ch.id);
+/* ── SYNC NOTE ─────────────────────────────────────────────────────── */
+function updateSyncNote(data) {
+  const syncText = document.getElementById('sync-text');
+  if (data.cached) {
+    syncText.textContent = 'Cached \u00B7 Last sync ' + new Date(data.lastSync).toLocaleString();
+  } else {
+    syncText.textContent = 'Live from Notion \u00B7 ' + new Date(data.lastSync).toLocaleString();
   }
 }
+
+/* ── LOAD DATA FROM API ────────────────────────────────────────────── */
+async function loadData() {
+  document.getElementById('chapters').innerHTML = '<div style="text-align:center;padding:4rem;color:var(--text-dim)">Loading projects from Notion\u2026</div>';
+
+  try {
+    const res = await fetch('/api/crypto/projects');
+    if (!res.ok) throw new Error('API failed');
+    const data = await res.json();
+
+    // Build chapters from API data
+    const chapterMap = {};
+
+    // Initialize chapters with metadata from API
+    for (const name of CHAPTER_ORDER) {
+      if (data.chapters && data.chapters[name]) {
+        chapterMap[name] = {
+          id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          icon: data.chapters[name].icon,
+          title: name,
+          intro: data.chapters[name].intro,
+          projects: []
+        };
+      }
+    }
+
+    // Ensure "Other" always exists as fallback
+    if (!chapterMap['Other']) {
+      chapterMap['Other'] = { id: 'other', icon: '\uD83D\uDCE6', title: 'Other', intro: 'Projects that don\'t fit neatly into a single sector.', projects: [] };
+    }
+
+    // Sort projects into chapters
+    for (const p of data.projects) {
+      const ch = p.chapter || 'Other';
+      if (!chapterMap[ch]) {
+        chapterMap[ch] = chapterMap['Other'];
+      }
+      chapterMap[ch].projects.push({
+        n: p.name,
+        s: p.symbol || '',
+        t: p.tier || '',
+        type: p.type || '',
+        mc: p.mcap || '',
+        cat: p.category || '',
+        cg: p.coingecko || '',
+        note: p.notes || ''
+      });
+    }
+
+    CHAPTERS = CHAPTER_ORDER
+      .filter(name => chapterMap[name] && chapterMap[name].projects.length > 0)
+      .map(name => chapterMap[name]);
+
+    // Also add any chapters from the API not in CHAPTER_ORDER
+    if (data.chapters) {
+      for (const name of Object.keys(data.chapters)) {
+        if (!CHAPTER_ORDER.includes(name) && chapterMap[name] && chapterMap[name].projects.length > 0) {
+          CHAPTERS.push(chapterMap[name]);
+        }
+      }
+    }
+
+    buildUI();
+    buildChapterNav();
+    updateSyncNote(data);
+
+    // Open first chapter by default
+    if (CHAPTERS.length > 0) {
+      toggleChapter(CHAPTERS[0].id);
+    }
+
+    // Hash-based chapter opening
+    const hash = location.hash.replace('#','');
+    if (hash) {
+      const ch = CHAPTERS.find(c => c.id === hash);
+      if (ch) {
+        document.querySelectorAll('.chapter.open').forEach(c => c.classList.remove('open'));
+        document.querySelectorAll('.cpill.active').forEach(p => p.classList.remove('active'));
+        toggleChapter(ch.id);
+      }
+    }
+  } catch (e) {
+    document.getElementById('chapters').innerHTML = '<div style="text-align:center;padding:4rem;color:var(--text-dim)">Failed to load projects. <button onclick="loadData()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></div>';
+  }
+}
+
+async function refreshData() {
+  const btn = document.getElementById('refresh-btn');
+  btn.disabled = true;
+  btn.textContent = '\u21BB Refreshing\u2026';
+  try {
+    const res = await fetch('/api/crypto/projects?refresh=true');
+    if (!res.ok) throw new Error('Refresh failed');
+    const data = await res.json();
+
+    // Rebuild chapters from fresh data
+    const chapterMap = {};
+    for (const name of CHAPTER_ORDER) {
+      if (data.chapters && data.chapters[name]) {
+        chapterMap[name] = {
+          id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+          icon: data.chapters[name].icon,
+          title: name,
+          intro: data.chapters[name].intro,
+          projects: []
+        };
+      }
+    }
+    if (!chapterMap['Other']) {
+      chapterMap['Other'] = { id: 'other', icon: '\uD83D\uDCE6', title: 'Other', intro: '', projects: [] };
+    }
+    for (const p of data.projects) {
+      const ch = p.chapter || 'Other';
+      if (!chapterMap[ch]) chapterMap[ch] = chapterMap['Other'];
+      chapterMap[ch].projects.push({
+        n: p.name, s: p.symbol || '', t: p.tier || '', type: p.type || '',
+        mc: p.mcap || '', cat: p.category || '', cg: p.coingecko || '', note: p.notes || ''
+      });
+    }
+    CHAPTERS = CHAPTER_ORDER
+      .filter(name => chapterMap[name] && chapterMap[name].projects.length > 0)
+      .map(name => chapterMap[name]);
+
+    buildUI();
+    buildChapterNav();
+    updateSyncNote(data);
+
+    if (CHAPTERS.length > 0) toggleChapter(CHAPTERS[0].id);
+  } catch (e) {
+    document.getElementById('sync-text').textContent = 'Refresh failed \u2014 showing cached data';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '\u21BB Refresh';
+  }
+}
+
+/* ── INIT ───────────────────────────────────────────────────────────── */
+loadData();
 </script>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </body>
