@@ -26,6 +26,33 @@
     <meta name="twitter:description" content="Conversations at the frontier of consciousness, science, and human potential. FRQNCY invites the builders, teachers, researchers, and healers already doing the work.">
     <meta name="twitter:image" content="https://frqncy.network/og-image.png">
     <link rel="icon" type="image/svg+xml" href="favicon.svg">
+    <link rel="alternate" type="application/rss+xml" title="FRQNCY Podcast RSS" href="https://frqncy.network/podcast.rss">
+
+    <!-- JSON-LD PodcastSeries schema -->
+    <script type="application/ld+json">
+    {
+      "@context": "https://schema.org",
+      "@type": "PodcastSeries",
+      "name": "The FRQNCY Podcast",
+      "description": "Long-form interviews and domain deep-dives with the builders, teachers, researchers, healers, and creators at the frontier of consciousness, science, and human potential.",
+      "url": "https://frqncy.network/podcast.html",
+      "image": "https://frqncy.network/og-image.png",
+      "inLanguage": "en",
+      "webFeed": "https://frqncy.network/podcast.rss",
+      "author": [
+        { "@type": "Person", "name": "Orlando Eisenreich" },
+        { "@type": "Person", "name": "Norman Gräter" }
+      ],
+      "publisher": {
+        "@type": "Organization",
+        "name": "FRQNCY",
+        "url": "https://frqncy.network"
+      },
+      "sameAs": [
+        "https://frqncy.substack.com"
+      ]
+    }
+    </script>
     <link rel="preconnect" href="https://fonts.googleapis.com">
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cormorant:wght@300;400;500;600;700&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -292,6 +319,90 @@
             font-style: italic;
         }
 
+        /* Platform Subscribe Links */
+        .platforms-section {
+            padding: 0 2rem 1rem;
+            max-width: 1200px;
+            margin: 0 auto;
+            text-align: center;
+        }
+
+        .platforms-label {
+            font-family: 'Jost', sans-serif;
+            font-size: 0.72rem;
+            letter-spacing: 0.22em;
+            text-transform: uppercase;
+            color: var(--light-mid);
+            margin-bottom: 1.25rem;
+            font-weight: 500;
+        }
+
+        .platforms-grid {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 0.75rem;
+            justify-content: center;
+        }
+
+        .platform-link {
+            display: inline-flex;
+            align-items: center;
+            gap: 0.5rem;
+            padding: 0.75rem 1.25rem;
+            border: 1px solid #DDD;
+            color: var(--dark);
+            text-decoration: none;
+            font-family: 'Jost', sans-serif;
+            font-size: 0.8rem;
+            font-weight: 500;
+            letter-spacing: 0.04em;
+            background: #FFF;
+            transition: all 0.25s ease;
+        }
+
+        .platform-link:hover {
+            border-color: var(--gold);
+            color: var(--gold);
+            transform: translateY(-1px);
+        }
+
+        .platform-link svg {
+            width: 18px;
+            height: 18px;
+            flex-shrink: 0;
+        }
+
+        .platform-link .pl-label-sm {
+            display: block;
+            font-size: 0.58rem;
+            letter-spacing: 0.18em;
+            text-transform: uppercase;
+            color: var(--light-mid);
+            font-weight: 400;
+            line-height: 1;
+            margin-bottom: 3px;
+        }
+
+        .platform-link .pl-label-lg {
+            display: block;
+            line-height: 1;
+            font-weight: 500;
+        }
+
+        .platform-link .pl-text {
+            text-align: left;
+        }
+
+        @media (max-width: 480px) {
+            .platforms-grid {
+                gap: 0.5rem;
+            }
+            .platform-link {
+                padding: 0.6rem 0.9rem;
+                font-size: 0.75rem;
+            }
+        }
+
         /* Subscribe Section */
         .subscribe-section {
             background: linear-gradient(135deg, var(--blue) 0%, var(--mid) 100%);
@@ -494,10 +605,18 @@
           <a href="v2/people/index.html"><span class="dd-label">People</span><span class="dd-sub">Teachers &amp; thinkers</span></a>
         </div>
       </li>
-      <li><a href="v2/crypto/index.html">Crypto</a></li>
-      <li><a href="v2/fund/index.html">Fund</a></li>
+      <li class="nav-dd">
+        <a href="v2/fund/index.html">Capital</a>
+        <div class="nav-dd-menu">
+          <a href="v2/fund/index.html"><span class="dd-label">Fund</span><span class="dd-sub">Vision, Echo, Legion & roadmap</span></a>
+          <a href="v2/crypto/index.html"><span class="dd-label">Crypto</span><span class="dd-sub">Curated projects & thesis</span></a>
+          <a href="v2/crypto/projects.html"><span class="dd-label">Project Ratings</span><span class="dd-sub">630+ projects tiered by conviction</span></a>
+          <a href="v2/crypto/explorer.html"><span class="dd-label">Explore by Sector</span><span class="dd-sub">Learn chapter by chapter</span></a>
+        </div>
+      </li>
       <li><a href="podcast.html" class="active">Podcast</a></li>
       <li><a href="space.html">Space</a></li>
+      <li><a href="/social/">Community</a></li>
       <li><a href="my-frqncy.html" class="nav-cta-gold">My FRQNCY</a></li>
     </ul>
     </nav>
@@ -510,6 +629,29 @@
             <p>Long-form interviews and domain deep-dives with the builders, teachers, researchers, healers, and creators already doing the work worth knowing about.</p>
         </div>
     </section>
+
+    <!-- Platform Subscribe -->
+    <div class="platforms-section" style="margin-top:3rem;">
+        <div class="platforms-label">Subscribe where you listen</div>
+        <div class="platforms-grid">
+            <a href="https://podcasts.apple.com/" target="_blank" rel="noopener" class="platform-link" aria-label="Listen on Apple Podcasts">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12c0 4.41 2.87 8.16 6.84 9.49-.09-.81-.17-2.06.04-2.94.19-.8 1.24-5.08 1.24-5.08s-.32-.64-.32-1.58c0-1.48.86-2.59 1.93-2.59.91 0 1.35.69 1.35 1.51 0 .92-.59 2.3-.89 3.57-.26 1.07.54 1.95 1.59 1.95 1.9 0 3.37-2.01 3.37-4.91 0-2.57-1.85-4.37-4.48-4.37-3.05 0-4.85 2.29-4.85 4.66 0 .92.35 1.91.8 2.45.09.1.1.2.07.3l-.3 1.22c-.05.2-.16.24-.36.15-1.33-.62-2.16-2.57-2.16-4.13 0-3.37 2.45-6.47 7.06-6.47 3.7 0 6.58 2.64 6.58 6.17 0 3.68-2.32 6.64-5.54 6.64-1.08 0-2.1-.56-2.45-1.22l-.67 2.55c-.24.92-.89 2.08-1.33 2.78.99.31 2.04.47 3.14.47 5.52 0 10-4.48 10-10S17.52 2 12 2z"/></svg>
+                <span class="pl-text"><span class="pl-label-sm">Listen on</span><span class="pl-label-lg">Apple Podcasts</span></span>
+            </a>
+            <a href="https://open.spotify.com/" target="_blank" rel="noopener" class="platform-link" aria-label="Listen on Spotify">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M12 2C6.48 2 2 6.48 2 12s4.48 10 10 10 10-4.48 10-10S17.52 2 12 2zm4.59 14.42a.62.62 0 01-.86.21c-2.35-1.44-5.3-1.76-8.78-.97a.62.62 0 11-.28-1.21c3.81-.87 7.08-.5 9.72 1.11.3.18.39.56.2.86zm1.22-2.73a.78.78 0 01-1.07.26c-2.69-1.65-6.78-2.13-9.96-1.17a.78.78 0 01-.45-1.49c3.63-1.1 8.14-.56 11.22 1.33.37.23.49.71.26 1.07zm.11-2.85c-3.22-1.92-8.55-2.1-11.63-1.16a.94.94 0 01-.55-1.8c3.53-1.07 9.41-.86 13.12 1.35a.94.94 0 01-.96 1.6z"/></svg>
+                <span class="pl-text"><span class="pl-label-sm">Listen on</span><span class="pl-label-lg">Spotify</span></span>
+            </a>
+            <a href="https://www.youtube.com/@frqncy" target="_blank" rel="noopener" class="platform-link" aria-label="Watch on YouTube">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M23.5 6.19a3 3 0 00-2.11-2.12C19.49 3.5 12 3.5 12 3.5s-7.49 0-9.39.57A3 3 0 00.5 6.19 31.37 31.37 0 000 12a31.37 31.37 0 00.5 5.81 3 3 0 002.11 2.12c1.9.57 9.39.57 9.39.57s7.49 0 9.39-.57a3 3 0 002.11-2.12A31.37 31.37 0 0024 12a31.37 31.37 0 00-.5-5.81zM9.75 15.5v-7l6.5 3.5-6.5 3.5z"/></svg>
+                <span class="pl-text"><span class="pl-label-sm">Watch on</span><span class="pl-label-lg">YouTube</span></span>
+            </a>
+            <a href="https://frqncy.network/podcast.rss" target="_blank" rel="noopener" class="platform-link" aria-label="Subscribe via RSS">
+                <svg viewBox="0 0 24 24" fill="currentColor" aria-hidden="true"><path d="M6.18 15.64a2.18 2.18 0 012.18 2.18C8.36 19 7.38 20 6.18 20A2.18 2.18 0 014 17.82a2.18 2.18 0 012.18-2.18zM4 4.44A15.56 15.56 0 0119.56 20h-2.83A12.73 12.73 0 004 7.27V4.44zm0 5.66A9.9 9.9 0 0113.9 20h-2.83A7.07 7.07 0 004 12.93V10.1z"/></svg>
+                <span class="pl-text"><span class="pl-label-sm">Subscribe via</span><span class="pl-label-lg">RSS Feed</span></span>
+            </a>
+        </div>
+    </div>
 
     <!-- Your Hosts -->
     <section>

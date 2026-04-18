@@ -342,11 +342,19 @@ nav{
         <a href="v2/people/index.html"><span class="dd-label">People</span><span class="dd-sub">Teachers &amp; thinkers</span></a>
       </div>
     </li>
-    <li><a href="v2/crypto/index.html">Crypto</a></li>
-      <li><a href="v2/fund/index.html">Fund</a></li>
+      <li class="nav-dd">
+        <a href="v2/fund/index.html">Capital</a>
+        <div class="nav-dd-menu">
+          <a href="v2/fund/index.html"><span class="dd-label">Fund</span><span class="dd-sub">Vision, Echo, Legion & roadmap</span></a>
+          <a href="v2/crypto/index.html"><span class="dd-label">Crypto</span><span class="dd-sub">Curated projects & thesis</span></a>
+          <a href="v2/crypto/projects.html"><span class="dd-label">Project Ratings</span><span class="dd-sub">630+ projects tiered by conviction</span></a>
+          <a href="v2/crypto/explorer.html"><span class="dd-label">Explore by Sector</span><span class="dd-sub">Learn chapter by chapter</span></a>
+        </div>
+      </li>
       <li><a href="podcast.html">Podcast</a></li>
     <li><a href="space.html">Space</a></li>
-    <li><a href="my-frqncy.html" class="nav-cta-gold active">My FRQNCY</a></li>
+    <li><a href="/social/">Community</a></li>
+      <li><a href="my-frqncy.html" class="nav-cta-gold active">My FRQNCY</a></li>
   </ul>
 </nav>
 
@@ -780,7 +788,7 @@ function drawConstellation(topics, resources, name) {
   // Nodes group
   const nodeSel = svg.append('g').selectAll('g').data(nodes).join('g')
     .style('cursor', d => d.url ? 'pointer' : 'default')
-    .on('click', (e, d) => { if (d.url) window.open(d.url, '_blank'); });
+    .on('click', (e, d) => { if (d.url) window.open(d.url, '_blank', 'noopener,noreferrer'); });
 
   // Circles
   nodeSel.append('circle')

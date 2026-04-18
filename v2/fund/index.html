@@ -3,20 +3,20 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Fund & Crypto — FRQNCY Network</title>
-<meta name="description" content="Capital allocation and crypto curation — directing resources toward builders, researchers, and protocols working at the frontier of conscious civilisation.">
+<title>Fund — FRQNCY Network</title>
+<meta name="description" content="Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.">
 <meta name="theme-color" content="#0B1C3D">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Fund & Crypto — FRQNCY Network">
-<meta property="og:description" content="Capital allocation and crypto curation — directing resources toward builders, researchers, and protocols working at the frontier of conscious civilisation.">
+<meta property="og:title" content="Fund — FRQNCY Network">
+<meta property="og:description" content="Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.">
 <meta property="og:url" content="https://frqncy.network/v2/fund/">
 <meta property="og:image" content="https://frqncy.network/v2/og/fund.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="FRQNCY">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Fund & Crypto — FRQNCY Network">
-<meta name="twitter:description" content="Capital allocation and crypto curation — directing resources toward builders, researchers, and protocols at the frontier.">
+<meta name="twitter:title" content="Fund — FRQNCY Network">
+<meta name="twitter:description" content="Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.">
 <meta name="twitter:image" content="https://frqncy.network/v2/og/fund.png">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="manifest" href="../../manifest.json">
@@ -32,9 +32,10 @@
   --text:#C8D8F0;--text-dim:#7090B8;
   --card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);
   --accent:#C4973A;--accent-glow:rgba(196,151,58,0.14);
-  --purple:#7B61FF;--purple-glow:rgba(123,97,255,0.12);
+  --purple:#7B61FF;--purple-glow:rgba(123,97,255,0.08);
 }
-html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
 a{color:var(--accent);text-decoration:none}
 a:hover{opacity:0.85}
 
@@ -55,93 +56,70 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28);opacity:1}
 
 /* HERO */
-.hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(2.5rem,5vw,4rem);text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 55%),radial-gradient(ellipse at 30% 60%,var(--purple-glow) 0%,transparent 50%);pointer-events:none}
+.hero{margin-top:56px;padding:clamp(4rem,9vw,7rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 55%),radial-gradient(ellipse at 30% 80%,var(--purple-glow) 0%,transparent 45%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:50px;background:linear-gradient(to bottom,rgba(196,151,58,0.2),transparent)}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
-.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
-.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
-.hero h1 span{color:var(--purple)}
-.hero-desc{max-width:620px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:24px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:300;color:#fff;line-height:1.06;margin-bottom:1.5rem;letter-spacing:-0.01em}
+.hero-desc{max-width:600px;margin:0 auto;font-size:0.92rem;color:var(--text-dim);font-weight:300;line-height:1.8}
 
 /* JUMP NAV */
-.jump-nav{max-width:1080px;margin:0 auto 3rem;padding:0 clamp(1.25rem,5vw,2.5rem);display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center}
+.jump-nav{max-width:1080px;margin:0 auto 3.5rem;padding:0 clamp(1.25rem,5vw,2.5rem);display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center}
 .jump-pill{font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;padding:6px 16px;border:1px solid rgba(255,255,255,0.1);border-radius:20px;color:var(--text-dim);transition:all .2s;font-family:'Jost',sans-serif}
 .jump-pill:hover{border-color:var(--gold);color:var(--gold);opacity:1}
 
 /* MAIN */
 main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
-section{margin-bottom:5rem}
+section{margin-bottom:5.5rem}
 .section-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
-.section-label.purple{color:var(--purple)}
 
 /* VISION BLOCK */
-.vision{position:relative;padding:3rem 2.5rem;border:1px solid rgba(196,151,58,0.15);border-radius:6px;background:linear-gradient(135deg,rgba(196,151,58,0.04),rgba(123,97,255,0.03));margin-bottom:3rem}
-.vision::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--gold),var(--purple));border-radius:2px}
-.vision h2{font-family:'Cormorant',serif;font-size:clamp(1.8rem,4vw,2.6rem);font-weight:300;color:#fff;line-height:1.15;margin-bottom:1.25rem}
-.vision p{font-size:0.88rem;color:var(--text-dim);line-height:1.85;margin-bottom:1rem;max-width:720px}
+.vision{position:relative;padding:3.5rem 3rem;border:1px solid rgba(196,151,58,0.12);border-radius:8px;background:linear-gradient(160deg,rgba(196,151,58,0.03),rgba(123,97,255,0.02),transparent);margin-bottom:3rem}
+.vision::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--gold),var(--purple),transparent);border-radius:2px}
+.vision h2{font-family:'Cormorant',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;color:#fff;line-height:1.15;margin-bottom:1.5rem}
+.vision p{font-size:0.9rem;color:var(--text-dim);line-height:1.9;margin-bottom:1.2rem;max-width:720px}
 .vision p:last-child{margin-bottom:0}
-.vision .highlight{color:var(--gold);font-weight:400}
+.vision .hl{color:var(--gold);font-weight:400}
 
-/* PLATFORM CARDS (Echo, Legion) */
+/* PLATFORM CARDS */
 .platform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(460px,1fr));gap:1.5rem}
-.pcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;overflow:hidden;transition:border-color .25s,transform .25s,background .25s}
-.pcard:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.06)}
+.pcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:8px;overflow:hidden;transition:border-color .25s,transform .25s,background .25s}
+.pcard:hover{border-color:rgba(255,255,255,0.16);transform:translateY(-3px);background:rgba(255,255,255,0.06)}
 .pcard-accent{height:4px;flex-shrink:0}
-.pcard-body{padding:2rem}
+.pcard-body{padding:2.25rem 2rem}
 .pcard-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem}
-.pcard-icon{width:52px;height:52px;border-radius:12px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant',serif;font-size:1.4rem;font-weight:500;color:#fff;flex-shrink:0}
-.pcard-meta h3{font-family:'Cormorant',serif;font-size:1.5rem;font-weight:400;color:#fff;line-height:1.15}
-.pcard-meta .pcard-type{font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-top:0.15rem}
-.pcard-desc{font-size:0.84rem;color:var(--text-dim);line-height:1.7;margin-bottom:1.25rem}
-.pcard-stats{display:flex;gap:2rem;flex-wrap:wrap;margin-bottom:1.5rem}
-.pcard-stat{display:flex;flex-direction:column;gap:0.15rem}
-.pcard-stat-val{font-family:'Cormorant',serif;font-size:1.6rem;font-weight:400;color:#fff;line-height:1}
-.pcard-stat-label{font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+.pcard-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant',serif;font-size:1.5rem;font-weight:500;color:#fff;flex-shrink:0}
+.pcard-meta h3{font-family:'Cormorant',serif;font-size:1.55rem;font-weight:400;color:#fff;line-height:1.15}
+.pcard-meta .pcard-type{font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-top:0.2rem}
+.pcard-desc{font-size:0.86rem;color:var(--text-dim);line-height:1.75;margin-bottom:1.5rem}
+.pcard-stats{display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.pcard-stat{display:flex;flex-direction:column;gap:0.2rem}
+.pcard-stat-val{font-family:'Cormorant',serif;font-size:1.7rem;font-weight:400;color:#fff;line-height:1}
+.pcard-stat-label{font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
 .pcard-tag{display:inline-block;font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;padding:3px 10px;border-radius:2px;border:1px solid;margin-right:0.4rem;margin-bottom:0.4rem}
-.pcard-footer{padding:1rem 2rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between}
+.pcard-footer{padding:1.1rem 2rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between}
 .pcard-link{font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;transition:opacity .2s;white-space:nowrap}
-.pcard-acquired{font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);background:rgba(196,151,58,0.08);border:1px solid rgba(196,151,58,0.2);padding:3px 10px;border-radius:2px}
+.pcard-acquired{font-size:0.54rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);background:rgba(196,151,58,0.08);border:1px solid rgba(196,151,58,0.2);padding:3px 10px;border-radius:2px}
 
 /* DOMAIN GRID */
 .grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border)}
-.ncard{background:var(--navy);padding:1.4rem 1.4rem 1.1rem;text-decoration:none;color:var(--text);display:block;transition:background .2s;position:relative}
+.ncard{background:var(--navy);padding:1.6rem 1.5rem 1.3rem;text-decoration:none;color:var(--text);display:block;transition:background .2s;position:relative}
 .ncard:hover{background:rgba(255,255,255,0.04);color:var(--text)}
 .ncard-type{font-size:0.54rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem;opacity:0.8}
-.ncard h3{font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.4rem;line-height:1.2}
-.ncard p{font-size:0.76rem;color:var(--text-dim);line-height:1.45}
-.ncard-arrow{position:absolute;top:1.2rem;right:1.2rem;font-size:0.7rem;color:var(--accent);opacity:0;transition:opacity .2s}
+.ncard h3{font-family:'Cormorant',serif;font-size:1.3rem;font-weight:400;color:#fff;margin-bottom:0.5rem;line-height:1.2}
+.ncard p{font-size:0.78rem;color:var(--text-dim);line-height:1.5}
+.ncard-arrow{position:absolute;top:1.4rem;right:1.4rem;font-size:0.7rem;color:var(--accent);opacity:0;transition:opacity .2s}
 .ncard:hover .ncard-arrow{opacity:1}
 
-/* CRYPTO HIGHLIGHT */
-.crypto-highlight{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem}
-.ch-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;padding:1.4rem;transition:border-color .25s,transform .25s;display:flex;flex-direction:column;gap:0.5rem}
-.ch-card:hover{border-color:rgba(123,97,255,0.3);transform:translateY(-2px)}
-.ch-header{display:flex;align-items:center;gap:0.7rem}
-.ch-icon{width:36px;height:36px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.9rem;font-weight:500;color:#fff;flex-shrink:0;font-family:'Cormorant',serif}
-.ch-name{font-family:'Cormorant',serif;font-size:1.1rem;font-weight:400;color:#fff;line-height:1.15}
-.ch-ticker{font-size:0.54rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim)}
-.ch-desc{font-size:0.74rem;color:var(--text-dim);line-height:1.55;flex:1}
-.ch-link{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--purple);transition:opacity .2s}
-
-/* EXPLORE BANNER */
-.explore-banner{background:var(--purple-glow);border:1px solid rgba(123,97,255,0.2);border-radius:6px;padding:2rem 2.5rem;display:flex;align-items:center;justify-content:space-between;gap:2rem;flex-wrap:wrap;margin-top:1.5rem}
-.explore-banner h3{font-family:'Cormorant',serif;font-size:1.3rem;font-weight:300;color:#fff;margin-bottom:0.3rem}
-.explore-banner p{font-size:0.78rem;color:var(--text-dim);line-height:1.6}
-.explore-btns{display:flex;gap:0.65rem;flex-wrap:wrap;flex-shrink:0}
-.btn{font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:10px 22px;border-radius:2px;border:1px solid;transition:all .2s;font-family:'Jost',sans-serif;white-space:nowrap}
-.btn-purple{background:var(--purple);border-color:var(--purple);color:#fff}
-.btn-purple:hover{background:rgba(123,97,255,0.8);opacity:1}
-.btn-ghost{border-color:rgba(255,255,255,0.15);color:var(--text-dim)}
-.btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:var(--text);opacity:1}
-
-/* ROADMAP / FUTURE VISION */
+/* ROADMAP */
 .roadmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem}
-.phase{position:relative;background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;padding:1.6rem;transition:border-color .2s}
-.phase:hover{border-color:rgba(196,151,58,0.25)}
-.phase-num{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem}
-.phase h4{font-family:'Cormorant',serif;font-size:1.2rem;font-weight:400;color:#fff;margin-bottom:0.5rem;line-height:1.2}
-.phase p{font-size:0.76rem;color:var(--text-dim);line-height:1.6}
-.phase-status{display:inline-block;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;padding:2px 8px;border-radius:2px;margin-top:0.75rem}
+.phase{position:relative;background:var(--card-bg);border:1px solid var(--card-border);border-radius:8px;padding:1.8rem 1.5rem;transition:border-color .2s}
+.phase:hover{border-color:rgba(196,151,58,0.2)}
+.phase-num{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem}
+.phase h4{font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.6rem;line-height:1.2}
+.phase p{font-size:0.78rem;color:var(--text-dim);line-height:1.65}
+.phase-status{display:inline-block;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-top:0.9rem}
 .phase-active{background:rgba(196,151,58,0.12);border:1px solid rgba(196,151,58,0.3);color:var(--gold)}
 .phase-upcoming{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);color:var(--text-dim)}
 
@@ -157,11 +135,19 @@ section{margin-bottom:5rem}
 .rlink:hover{border-color:var(--accent);opacity:1}
 .rlist{display:flex;flex-direction:column;gap:0.65rem}
 
-/* DISCLAIMER */
-.disclaimer{font-size:0.68rem;color:var(--text-dim);opacity:0.6;line-height:1.6;text-align:center;max-width:640px;margin:0 auto;padding:2rem 1.25rem 0}
+/* CTA to crypto */
+.crypto-cta{background:var(--purple-glow);border:1px solid rgba(123,97,255,0.15);border-radius:8px;padding:2.5rem;text-align:center}
+.crypto-cta h3{font-family:'Cormorant',serif;font-size:1.4rem;font-weight:300;color:#fff;margin-bottom:0.6rem}
+.crypto-cta p{font-size:0.82rem;color:var(--text-dim);margin-bottom:1.5rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+.crypto-cta-btns{display:flex;gap:0.65rem;justify-content:center;flex-wrap:wrap}
+.btn{font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:10px 22px;border-radius:2px;border:1px solid;transition:all .2s;font-family:'Jost',sans-serif;white-space:nowrap}
+.btn-purple{background:#7B61FF;border-color:#7B61FF;color:#fff}
+.btn-purple:hover{background:rgba(123,97,255,0.8);opacity:1}
+.btn-ghost{border-color:rgba(255,255,255,0.15);color:var(--text-dim)}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:var(--text);opacity:1}
 
 /* FOOTER */
-footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center;margin-top:3rem}
+footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center;margin-top:2rem}
 .footer-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
 .footer-logo{font-family:'Cormorant',serif;font-size:1rem;letter-spacing:0.25em;color:rgba(255,255,255,0.3);text-transform:uppercase}
 .footer-links{display:flex;gap:1.5rem}
@@ -169,23 +155,20 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 .footer-links a:hover{color:var(--text);opacity:1}
 
 @media(max-width:640px){
-  .hero{padding:3rem 1.25rem 2rem}
+  .hero{padding:3rem 1.25rem 2.5rem}
   main{padding:0 1.25rem 4rem}
   .platform-grid{grid-template-columns:1fr}
   .roadmap{grid-template-columns:1fr 1fr}
-  .crypto-highlight{grid-template-columns:1fr 1fr}
-  .explore-banner{flex-direction:column;text-align:center;padding:1.5rem}
   .rcard{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
   .rlink{grid-column:2;margin-top:0.5rem}
   .breadcrumb{display:none}
   .footer-inner{flex-direction:column;gap:1rem;text-align:center}
-  .pcard-stats{gap:1.25rem}
+  .pcard-stats{gap:1.5rem}
   .vision{padding:2rem 1.5rem}
   .jump-nav{gap:0.35rem}
 }
 @media(max-width:400px){
   .roadmap{grid-template-columns:1fr}
-  .crypto-highlight{grid-template-columns:1fr}
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
 }
@@ -194,7 +177,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Fund & Crypto — FRQNCY Network","description":"Capital allocation and crypto curation — directing resources toward the builders, researchers, and protocols working at the frontier of conscious civilisation.","url":"https://frqncy.network/v2/fund/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Fund — FRQNCY Network","description":"Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.","url":"https://frqncy.network/v2/fund/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </head>
 <body>
@@ -205,31 +188,26 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb">
       <a href="../explore.html">Network</a>
       <span class="sep">/</span>
-      <span>Fund & Crypto</span>
+      <span>Fund</span>
     </div>
   </div>
   <div class="snav-right">
+    <a href="../crypto/index.html" class="snav-link">Crypto</a>
     <a href="../watch/index.html" class="snav-link">Watch</a>
     <a href="../courses/index.html" class="snav-link">Courses</a>
-    <a href="../../search.html" class="snav-link">Search</a>
     <a href="../../index.html" class="snav-back">← Main Site</a>
   </div>
 </nav>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     HERO
-     ═══════════════════════════════════════════════════════════════════════════ -->
 <section class="hero">
   <div class="hero-eyebrow">Capital & Conviction</div>
-  <h1>Fund <span>&</span> Crypto</h1>
-  <p class="hero-desc">Capital allocation and crypto curation through the lens of sovereignty, decentralisation, and conscious civilisation. Where conviction meets capital.</p>
+  <h1>The FRQNCY Fund</h1>
+  <p class="hero-desc">Directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.</p>
 </section>
 
-<!-- JUMP NAVIGATION -->
 <nav class="jump-nav" aria-label="Page sections">
   <a href="#vision" class="jump-pill">Vision</a>
   <a href="#platforms" class="jump-pill">Echo & Legion</a>
-  <a href="#crypto" class="jump-pill">Crypto</a>
   <a href="#domains" class="jump-pill">Domains</a>
   <a href="#roadmap" class="jump-pill">Future</a>
   <a href="#resources" class="jump-pill">Resources</a>
@@ -237,18 +215,16 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 
 <main>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     THE VISION
-     ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- VISION -->
 <section id="vision">
-  <div class="section-label">The FRQNCY Fund Vision</div>
+  <div class="section-label">The Vision</div>
   <div class="vision">
     <h2>Capital as a force for<br>conscious civilisation</h2>
     <p>
-      The FRQNCY Fund exists to <span class="highlight">redirect capital toward the builders, researchers, and creators</span> working at the frontier of what humanity can become. Not venture capital in the traditional sense — but a living system of resource allocation that prioritises long-term impact over short-term extraction.
+      The FRQNCY Fund exists to <span class="hl">redirect capital toward the builders, researchers, and creators</span> working at the frontier of what humanity can become. Not venture capital in the traditional sense — but a living system of resource allocation that prioritises long-term impact over short-term extraction.
     </p>
     <p>
-      We believe the greatest asymmetric opportunity of our time sits at the intersection of <span class="highlight">decentralised finance, sovereign technology, and regenerative systems</span>. The protocols we back are not just financial instruments — they are coordination tools for a species learning to organise without coercion.
+      We believe the greatest asymmetric opportunity of our time sits at the intersection of <span class="hl">decentralised finance, sovereign technology, and regenerative systems</span>. The protocols we back are not just financial instruments — they are coordination tools for a species learning to organise without coercion.
     </p>
     <p>
       FRQNCY curates with conviction. Every project, protocol, and platform featured here has been evaluated through a framework that weighs philosophical alignment alongside technical merit. We look for teams building infrastructure that expands individual sovereignty, distributes power, and creates value that compounds across generations.
@@ -259,14 +235,11 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     ECHO & LEGION — DECENTRALISED FUNDRAISING PLATFORMS
-     ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- ECHO & LEGION -->
 <section id="platforms">
   <div class="section-label">Decentralised Capital Formation</div>
   <div class="platform-grid">
 
-    <!-- ECHO.XYZ -->
     <div class="pcard">
       <div class="pcard-accent" style="background:linear-gradient(90deg,#7B61FF,#50E2C1)"></div>
       <div class="pcard-body">
@@ -277,36 +250,24 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
             <div class="pcard-type">Onchain Capital Formation</div>
           </div>
         </div>
-        <p class="pcard-desc">
-          Echo pioneered onchain capital formation — enabling communities to co-invest in crypto projects before they launch on public markets. A dealflow platform that replaced gatekept allocation with transparent, community-driven rounds.
-        </p>
+        <p class="pcard-desc">Echo pioneered onchain capital formation — enabling communities to co-invest in crypto projects before they launch on public markets. A dealflow platform that replaced gatekept allocation with transparent, community-driven rounds.</p>
         <div class="pcard-stats">
-          <div class="pcard-stat">
-            <span class="pcard-stat-val">$200M+</span>
-            <span class="pcard-stat-label">Capital Facilitated</span>
-          </div>
-          <div class="pcard-stat">
-            <span class="pcard-stat-val">300+</span>
-            <span class="pcard-stat-label">Deals Completed</span>
-          </div>
-          <div class="pcard-stat">
-            <span class="pcard-stat-val">$375M</span>
-            <span class="pcard-stat-label">Coinbase Acquisition</span>
-          </div>
+          <div class="pcard-stat"><span class="pcard-stat-val">$200M+</span><span class="pcard-stat-label">Capital Facilitated</span></div>
+          <div class="pcard-stat"><span class="pcard-stat-val">300+</span><span class="pcard-stat-label">Deals Completed</span></div>
+          <div class="pcard-stat"><span class="pcard-stat-val">$375M</span><span class="pcard-stat-label">Coinbase Acquisition</span></div>
         </div>
         <div>
-          <span class="pcard-tag" style="border-color:rgba(123,97,255,0.3);color:var(--purple)">Community Rounds</span>
+          <span class="pcard-tag" style="border-color:rgba(123,97,255,0.3);color:#7B61FF">Community Rounds</span>
           <span class="pcard-tag" style="border-color:rgba(80,226,193,0.3);color:#50E2C1">Onchain</span>
-          <span class="pcard-tag" style="border-color:rgba(196,151,58,0.3);color:var(--gold)">Acquired</span>
+          <span class="pcard-tag" style="border-color:rgba(196,151,58,0.3);color:#C4973A">Acquired</span>
         </div>
       </div>
       <div class="pcard-footer">
-        <a href="https://echo.xyz" target="_blank" rel="noopener noreferrer" class="pcard-link" style="color:var(--purple)">echo.xyz →</a>
+        <a href="https://echo.xyz" target="_blank" rel="noopener noreferrer" class="pcard-link" style="color:#7B61FF">echo.xyz →</a>
         <span class="pcard-acquired">Acquired by Coinbase</span>
       </div>
     </div>
 
-    <!-- LEGION -->
     <div class="pcard">
       <div class="pcard-accent" style="background:linear-gradient(90deg,#C4973A,#E0C06A)"></div>
       <div class="pcard-body">
@@ -317,65 +278,28 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
             <div class="pcard-type">Merit-Based ICO Platform</div>
           </div>
         </div>
-        <p class="pcard-desc">
-          Legion is rebuilding the ICO from first principles — merit-based, MiCA-compliant, and designed to reward genuine community participation over whale capital. Their Legion Score reputation system ensures fair allocation based on contribution, not just wallet size.
-        </p>
+        <p class="pcard-desc">Legion is rebuilding the ICO from first principles — merit-based, MiCA-compliant, and designed to reward genuine community participation over whale capital. Their Legion Score reputation system ensures fair allocation based on contribution, not just wallet size.</p>
         <div class="pcard-stats">
-          <div class="pcard-stat">
-            <span class="pcard-stat-val">350K+</span>
-            <span class="pcard-stat-label">Investors</span>
-          </div>
-          <div class="pcard-stat">
-            <span class="pcard-stat-val">MiCA</span>
-            <span class="pcard-stat-label">Compliant</span>
-          </div>
-          <div class="pcard-stat">
-            <span class="pcard-stat-val">Score</span>
-            <span class="pcard-stat-label">Reputation System</span>
-          </div>
+          <div class="pcard-stat"><span class="pcard-stat-val">350K+</span><span class="pcard-stat-label">Investors</span></div>
+          <div class="pcard-stat"><span class="pcard-stat-val">MiCA</span><span class="pcard-stat-label">Compliant</span></div>
+          <div class="pcard-stat"><span class="pcard-stat-val">Score</span><span class="pcard-stat-label">Reputation System</span></div>
         </div>
         <div>
-          <span class="pcard-tag" style="border-color:rgba(196,151,58,0.3);color:var(--gold)">Merit-Based</span>
+          <span class="pcard-tag" style="border-color:rgba(196,151,58,0.3);color:#C4973A">Merit-Based</span>
           <span class="pcard-tag" style="border-color:rgba(46,204,113,0.3);color:#2ecc71">Regulated</span>
-          <span class="pcard-tag" style="border-color:rgba(123,97,255,0.3);color:var(--purple)">Fair Launch</span>
+          <span class="pcard-tag" style="border-color:rgba(123,97,255,0.3);color:#7B61FF">Fair Launch</span>
         </div>
       </div>
       <div class="pcard-footer">
         <a href="https://legion.cc" target="_blank" rel="noopener noreferrer" class="pcard-link">legion.cc →</a>
-        <span style="font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim)">Active Platform</span>
+        <span style="font-size:0.54rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim)">Active Platform</span>
       </div>
     </div>
 
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     CRYPTO HIGHLIGHTS
-     ═══════════════════════════════════════════════════════════════════════════ -->
-<section id="crypto">
-  <div class="section-label purple">Crypto Curation — Highlights</div>
-  <p style="font-size:0.82rem;color:var(--text-dim);margin-bottom:1.75rem;line-height:1.7;max-width:640px">
-    Projects, protocols, and tokens curated through the lens of sovereignty and decentralisation. These are highlights from our full curation of 630+ rated projects.
-  </p>
-
-  <div class="crypto-highlight" id="crypto-grid"></div>
-
-  <div class="explore-banner">
-    <div>
-      <h3>Explore the Full Curation</h3>
-      <p>630+ projects rated by tier, organised by sector. Searchable, filterable, managed via Notion.</p>
-    </div>
-    <div class="explore-btns">
-      <a href="../crypto/explorer.html" class="btn btn-purple">Explore by Sector →</a>
-      <a href="../crypto/projects.html" class="btn btn-ghost">Project Ratings →</a>
-      <a href="../crypto/index.html" class="btn btn-ghost">All Crypto →</a>
-    </div>
-  </div>
-</section>
-
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     DOMAINS
-     ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- DOMAINS -->
 <section id="domains">
   <div class="section-label">Domains within Fund</div>
   <div class="grid">
@@ -400,9 +324,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     FUTURE VISION — ROADMAP
-     ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- FUTURE ROADMAP -->
 <section id="roadmap">
   <div class="section-label">The Future of the Fund</div>
   <div class="roadmap">
@@ -433,13 +355,24 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   </div>
 </section>
 
-<!-- ═══════════════════════════════════════════════════════════════════════════
-     RESOURCES
-     ═══════════════════════════════════════════════════════════════════════════ -->
+<!-- CRYPTO CTA -->
+<section>
+  <div class="crypto-cta">
+    <h3>Explore the Crypto Curation</h3>
+    <p>630+ projects rated by conviction, organised by sector. The research backbone of the fund.</p>
+    <div class="crypto-cta-btns">
+      <a href="../crypto/projects.html" class="btn btn-purple">Project Ratings →</a>
+      <a href="../crypto/explorer.html" class="btn btn-ghost">Explore by Sector →</a>
+      <a href="../crypto/index.html" class="btn btn-ghost">All Crypto →</a>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
 <section id="resources">
   <div class="section-label">Resources & Picks</div>
   <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:1.5rem;line-height:1.6;max-width:600px">
-    Organisations and resources we believe are doing important work in capital allocation and philanthropic infrastructure.
+    Organisations doing important work in capital allocation and philanthropic infrastructure.
   </p>
   <div class="rlist">
     <div class="rcard">
@@ -461,8 +394,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   </div>
 </section>
 
-<p class="disclaimer">This is not financial advice. FRQNCY curates projects we find philosophically aligned — always do your own research before making any investment decisions.</p>
-
 </main>
 
 <footer>
@@ -480,45 +411,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 </footer>
 
 <script>
-// ─── Crypto Highlights (subset of top projects) ─────────────────────────────
-const HIGHLIGHTS = [
-  { name:"Bitcoin", ticker:"BTC", accent:"#F7931A", desc:"The original decentralised currency. Peer-to-peer electronic cash — the foundation of financial sovereignty.", link:"https://bitcoin.org" },
-  { name:"Ethereum", ticker:"ETH", accent:"#627EEA", desc:"Programmable money, DAOs, and the infrastructure for a new internet. The canvas where communities build their own rules.", link:"https://ethereum.org" },
-  { name:"Hyperliquid", ticker:"HYPE", accent:"#50E2C1", desc:"On-chain order book for perpetual futures. CEX-level performance with full self-custody.", link:"https://hyperliquid.xyz" },
-  { name:"Zcash", ticker:"ZEC", accent:"#F4B728", desc:"Privacy-preserving digital currency using zero-knowledge proofs. Financial privacy as a fundamental right.", link:"https://z.cash" },
-  { name:"Aave", ticker:"AAVE", accent:"#B6509E", desc:"The largest decentralised lending protocol. Permissionless lending at scale, no gatekeepers.", link:"https://aave.com" },
-  { name:"Bittensor", ticker:"TAO", accent:"#1FD0A3", desc:"Decentralised AI network. A marketplace of competing and collaborating AI models, owned by no one.", link:"https://bittensor.com" },
-  { name:"Sui", ticker:"SUI", accent:"#4DA2FF", desc:"Move-based Layer 1 designed for speed, low latency, and object-centric data. Built for mass adoption.", link:"https://sui.io" },
-  { name:"Pendle", ticker:"PENDLE", accent:"#26CEAD", desc:"Yield trading protocol — tokenising future yield. Fixed income infrastructure, on-chain.", link:"https://pendle.finance" },
-];
-
-function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
-
-const grid = document.getElementById('crypto-grid');
-for (const p of HIGHLIGHTS) {
-  const init = p.name.slice(0,2).toUpperCase();
-  const card = document.createElement('a');
-  card.href = p.link;
-  card.target = '_blank';
-  card.rel = 'noopener noreferrer';
-  card.className = 'ch-card';
-  card.style.textDecoration = 'none';
-  card.style.color = 'var(--text)';
-  card.innerHTML = `
-    <div class="ch-header">
-      <div class="ch-icon" style="background:linear-gradient(135deg,${p.accent}40,${p.accent}20);border:1px solid ${p.accent}50">${init}</div>
-      <div>
-        <div class="ch-name">${esc(p.name)}</div>
-        <div class="ch-ticker">${esc(p.ticker)}</div>
-      </div>
-    </div>
-    <div class="ch-desc">${esc(p.desc)}</div>
-    <span class="ch-link">View →</span>
-  `;
-  grid.appendChild(card);
-}
-
-// ─── Smooth scroll for jump nav ─────────────────────────────────────────────
 document.querySelectorAll('.jump-pill').forEach(a => {
   a.addEventListener('click', e => {
     e.preventDefault();

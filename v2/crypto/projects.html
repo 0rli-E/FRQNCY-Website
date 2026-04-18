@@ -13,9 +13,6 @@
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:site_name" content="FRQNCY">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Project Curation — FRQNCY Crypto">
-<meta name="twitter:description" content="Curated crypto projects tiered by conviction and philosophy alignment.">
-<meta name="twitter:image" content="https://frqncy.network/og-image.png">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="manifest" href="../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/crypto/projects.html">
@@ -25,11 +22,16 @@
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
-  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
-  --card-border:rgba(255,255,255,0.08);--accent:#7B61FF;
+  --navy:#0B1C3D;--navy-mid:#0D2451;--navy-deep:#081530;
+  --gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;
+  --card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);
+  --accent:#7B61FF;
+  --tier-s:#C4973A;--tier-a:#7B61FF;--tier-b:#4A9AE8;
+  --tier-c:#7090B8;--tier-d:#5A6A7A;--tier-e:#4A5260;--tier-f:#3A3F48;
 }
-html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
 a{text-decoration:none;color:var(--accent)}
 a:hover{opacity:0.85}
 
@@ -49,128 +51,197 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
 
 /* HERO */
-.hero{margin-top:56px;padding:clamp(2.5rem,5vw,4rem) clamp(1.25rem,5vw,2.5rem) clamp(1.5rem,3vw,2.5rem);text-align:center;position:relative;overflow:hidden}
+.hero{margin-top:56px;padding:clamp(2.5rem,5vw,4rem) clamp(1.25rem,5vw,2.5rem) 1.5rem;text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(123,97,255,0.12) 0%,transparent 65%);pointer-events:none}
 .hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:0.8rem}
 .hero-desc{max-width:600px;margin:0 auto;font-size:0.84rem;color:var(--text-dim);font-weight:300;line-height:1.75}
-.hero-stats{display:flex;justify-content:center;gap:2.5rem;margin-top:1.5rem}
-.hero-stat{text-align:center}
-.hero-stat-num{font-family:'Cormorant',serif;font-size:1.8rem;color:#fff;font-weight:400;line-height:1}
-.hero-stat-label{font-size:0.58rem;letter-spacing:0.15em;text-transform:uppercase;color:var(--text-dim);margin-top:0.25rem}
+.disclaimer{max-width:640px;margin:1rem auto 0;text-align:center;font-size:0.66rem;color:var(--text-dim);opacity:0.5;line-height:1.6}
 
-/* DISCLAIMER */
-.disclaimer{max-width:640px;margin:0 auto 1.5rem;text-align:center;font-size:0.68rem;color:var(--text-dim);opacity:0.6;line-height:1.6;padding:0 1.25rem}
+/* ═══════════════════════════════════════════════════════════════
+   TIER STRIP — the main browsing interface
+   ═══════════════════════════════════════════════════════════════ */
+.tier-strip{
+  position:sticky;top:56px;z-index:90;
+  background:rgba(11,28,61,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:0.9rem clamp(1.25rem,4vw,2.5rem);
+}
+.tier-strip-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:0.7rem}
+.tier-tabs{display:flex;gap:0;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,0.08)}
+.tier-tab{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.15rem;
+  padding:0.6rem 0.5rem;cursor:pointer;transition:all .2s;
+  background:transparent;border:none;border-right:1px solid rgba(255,255,255,0.06);
+  font-family:'Jost',sans-serif;position:relative;min-width:0;
+}
+.tier-tab:last-child{border-right:none}
+.tier-tab:hover{background:rgba(255,255,255,0.04)}
+.tier-tab.active{background:rgba(255,255,255,0.06)}
+.tier-tab.active::after{content:'';position:absolute;bottom:0;left:15%;right:15%;height:2px;border-radius:1px}
+.tier-tab[data-tier="all"].active::after{background:var(--accent)}
+.tier-tab[data-tier="S"].active::after{background:var(--tier-s)}
+.tier-tab[data-tier="A"].active::after{background:var(--tier-a)}
+.tier-tab[data-tier="B"].active::after{background:var(--tier-b)}
+.tier-tab[data-tier="C"].active::after{background:var(--tier-c)}
+.tier-tab[data-tier="D"].active::after{background:var(--tier-d)}
+.tier-tab[data-tier="E"].active::after{background:var(--tier-e)}
+.tier-tab[data-tier="F"].active::after{background:var(--tier-f)}
+.tier-tab-letter{font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;line-height:1;color:#fff}
+.tier-tab-label{font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tier-tab-count{font-size:0.56rem;color:var(--text-dim);font-weight:400;line-height:1}
+.tier-tab[data-tier="S"] .tier-tab-letter{color:var(--tier-s)}
+.tier-tab[data-tier="A"] .tier-tab-letter{color:var(--tier-a)}
+.tier-tab[data-tier="B"] .tier-tab-letter{color:var(--tier-b)}
+.tier-tab[data-tier="C"] .tier-tab-letter{color:var(--tier-c)}
+.tier-tab[data-tier="D"] .tier-tab-letter{color:var(--tier-d)}
+.tier-tab[data-tier="E"] .tier-tab-letter{color:var(--tier-e)}
+.tier-tab[data-tier="F"] .tier-tab-letter{color:var(--tier-f)}
 
-/* FILTERS */
-.filters{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 1.5rem}
-.filter-row{display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap;margin-bottom:0.75rem}
-.filter-label{font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);min-width:60px;flex-shrink:0}
-.ftab{font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif}
-.ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
-.ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(123,97,255,0.06)}
-/* Tier-specific active styles */
-.ftab[data-tier="core"].active{border-color:#C4973A;color:#C4973A;background:rgba(196,151,58,0.06)}
-.ftab[data-tier="conviction"].active{border-color:#7B61FF;color:#7B61FF;background:rgba(123,97,255,0.06)}
-.ftab[data-tier="speculative"].active{border-color:#5A6A7A;color:#5A6A7A;background:rgba(90,106,122,0.06)}
-.ftab[data-tier="avoid"].active{border-color:#3A3F48;color:#8A8F98;background:rgba(58,63,72,0.06)}
-.ftab[data-tier="watch"].active{border-color:#7090B8;color:#7090B8;background:rgba(112,144,184,0.06)}
-.ftab[data-tier="unrated"].active{border-color:#4A5568;color:#4A5568;background:rgba(74,85,104,0.06)}
+/* Search + secondary filters */
+.controls-row{display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap}
+.search-box{
+  flex:1;min-width:200px;position:relative;
+}
+.search-box input{
+  width:100%;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);border-radius:4px;
+  padding:0.55rem 0.75rem 0.55rem 2.2rem;
+  font-family:'Jost',sans-serif;font-size:0.78rem;font-weight:300;
+  color:var(--text);outline:none;transition:border-color .2s;
+}
+.search-box input::placeholder{color:var(--text-dim);opacity:0.6}
+.search-box input:focus{border-color:rgba(123,97,255,0.4)}
+.search-box svg{position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--text-dim);pointer-events:none}
+.filter-pills{display:flex;gap:0.3rem;flex-wrap:wrap;flex:1;min-width:0}
+.fpill{
+  font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;
+  padding:4px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;
+  cursor:pointer;color:var(--text-dim);background:none;
+  transition:all .2s;font-family:'Jost',sans-serif;white-space:nowrap;
+}
+.fpill:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.fpill.active{border-color:var(--accent);color:var(--accent);background:rgba(123,97,255,0.06)}
+/* View toggle */
+.view-toggle{display:flex;gap:0;border:1px solid rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;flex-shrink:0}
+.view-btn{background:none;border:none;border-right:1px solid rgba(255,255,255,0.08);color:var(--text-dim);padding:5px 8px;cursor:pointer;transition:all .2s;display:flex;align-items:center}
+.view-btn:last-child{border-right:none}
+.view-btn:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.view-btn.active{background:rgba(123,97,255,0.08);color:var(--accent)}
+.view-btn svg{width:14px;height:14px}
+/* Sort */
+.sort-select{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+  border-radius:3px;color:var(--text-dim);font-family:'Jost',sans-serif;
+  font-size:0.6rem;letter-spacing:0.08em;padding:4px 8px;cursor:pointer;
+  outline:none;flex-shrink:0;
+}
+.sort-select option{background:var(--navy);color:var(--text)}
+.result-count{font-size:0.6rem;color:var(--text-dim);letter-spacing:0.08em;flex-shrink:0;white-space:nowrap}
 
-/* GRID */
-main{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
-.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(340px,1fr));gap:1.25rem}
+/* ═══════════════════════════════════════════════════════════════
+   CONTENT AREA
+   ═══════════════════════════════════════════════════════════════ */
+main{max-width:1200px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5rem}
 
-/* TIER SECTION HEADERS */
-.tier-header{margin:2rem 0 1rem;display:flex;align-items:center;gap:0.75rem}
-.tier-header:first-child{margin-top:0}
-.tier-dot{width:8px;height:8px;border-radius:50%;flex-shrink:0}
+/* GRID VIEW */
+.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+
+/* LIST VIEW */
+.project-list{display:flex;flex-direction:column;gap:0.5rem}
+
+/* TIER SECTION */
+.tier-section{margin-bottom:2rem}
+.tier-section:last-child{margin-bottom:0}
+.tier-header{display:flex;align-items:center;gap:0.65rem;margin-bottom:1rem;padding-bottom:0.6rem;border-bottom:1px solid rgba(255,255,255,0.05)}
+.tier-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
 .tier-header h2{font-family:'Cormorant',serif;font-size:1.35rem;font-weight:300;color:#fff}
-.tier-header .tier-count{font-size:0.6rem;letter-spacing:0.12em;color:var(--text-dim)}
+.tier-header .tier-count{font-size:0.58rem;letter-spacing:0.12em;color:var(--text-dim);margin-left:auto}
 
-/* PROJECT CARD */
+/* ── GRID CARD ──────────────────────────────────────────────── */
 .pcard{
   background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;
   overflow:hidden;display:flex;flex-direction:column;
-  transition:border-color .25s,transform .25s,background .25s;
+  transition:border-color .22s,transform .22s,background .22s;
 }
 .pcard:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.06)}
 .pcard-top{height:3px;flex-shrink:0}
-.pcard-body{padding:1.4rem 1.4rem 1rem;flex:1;display:flex;flex-direction:column;gap:0.45rem}
-
-/* Card header row */
-.pcard-header{display:flex;align-items:center;gap:0.8rem}
-.pcard-icon{width:42px;height:42px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:1rem;font-weight:500;color:#fff;flex-shrink:0;font-family:'Cormorant',serif}
+.pcard-body{padding:1.25rem 1.25rem 1rem;flex:1;display:flex;flex-direction:column;gap:0.4rem}
+.pcard-header{display:flex;align-items:center;gap:0.75rem}
+.pcard-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;font-weight:500;color:#fff;flex-shrink:0;font-family:'Cormorant',serif}
 .pcard-info{flex:1;min-width:0}
-.pcard-name{font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;line-height:1.15;display:flex;align-items:center;gap:0.5rem}
-.pcard-ticker{font-size:0.56rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim)}
-
-/* Tier badge */
-.tier-badge{font-size:0.46rem;letter-spacing:0.16em;text-transform:uppercase;padding:2px 8px;border-radius:2px;font-weight:400;border:1px solid;white-space:nowrap}
-.tier-badge.core{color:#C4973A;border-color:rgba(196,151,58,0.5);background:rgba(196,151,58,0.08)}
-.tier-badge.conviction{color:#7B61FF;border-color:rgba(123,97,255,0.4);background:rgba(123,97,255,0.06)}
-.tier-badge.speculative{color:#5A6A7A;border-color:rgba(90,106,122,0.3);background:rgba(90,106,122,0.05)}
-.tier-badge.avoid{color:#3A3F48;border-color:rgba(58,63,72,0.3);background:rgba(58,63,72,0.05)}
-.tier-badge.watch{color:#7090B8;border-color:rgba(112,144,184,0.3);background:rgba(112,144,184,0.05)}
-.tier-badge.unrated{color:#4A5568;border-color:rgba(74,85,104,0.3);background:rgba(74,85,104,0.05)}
-
-/* Meta row: chain + mcap */
-.pcard-meta{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
-.pcard-chain{font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);display:flex;align-items:center;gap:0.25rem}
-.pcard-chain::before{content:'◆';font-size:0.4rem;opacity:0.4}
-.pcard-mcap{font-size:0.5rem;letter-spacing:0.14em;text-transform:uppercase;padding:1px 7px;border-radius:2px;border:1px solid rgba(255,255,255,0.08);color:var(--text-dim)}
-
-/* Tags */
+.pcard-name{font-family:'Cormorant',serif;font-size:1.2rem;font-weight:400;color:#fff;line-height:1.15;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.pcard-ticker{font-size:0.54rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim)}
+.tier-badge{font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;padding:2px 7px;border-radius:2px;font-weight:400;border:1px solid;white-space:nowrap}
+.tier-badge.S{color:var(--tier-s);border-color:rgba(196,151,58,0.5);background:rgba(196,151,58,0.08)}
+.tier-badge.A{color:var(--tier-a);border-color:rgba(123,97,255,0.4);background:rgba(123,97,255,0.06)}
+.tier-badge.B{color:var(--tier-b);border-color:rgba(74,154,232,0.3);background:rgba(74,154,232,0.05)}
+.tier-badge.C{color:var(--tier-c);border-color:rgba(112,144,184,0.25);background:rgba(112,144,184,0.04)}
+.tier-badge.D{color:var(--tier-d);border-color:rgba(90,106,122,0.3);background:rgba(90,106,122,0.05)}
+.tier-badge.E{color:var(--tier-e);border-color:rgba(74,82,96,0.3);background:rgba(74,82,96,0.05)}
+.tier-badge.F{color:var(--tier-f);border-color:rgba(58,63,72,0.3);background:rgba(58,63,72,0.05)}
+.pcard-meta{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.pcard-chain{font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim)}
+.pcard-mcap{font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;padding:1px 6px;border-radius:2px;border:1px solid rgba(255,255,255,0.08);color:var(--text-dim)}
 .pcard-tags{display:flex;gap:0.25rem;flex-wrap:wrap}
-.ptag{font-size:0.48rem;letter-spacing:0.14em;text-transform:uppercase;padding:2px 7px;border-radius:2px;border:1px solid rgba(123,97,255,0.25);color:var(--accent);background:rgba(123,97,255,0.04)}
-.ptag.infra{border-color:rgba(241,196,15,0.25);color:#f1c40f;background:rgba(241,196,15,0.04)}
-.ptag.defi{border-color:rgba(52,152,219,0.25);color:#3498db;background:rgba(52,152,219,0.04)}
-.ptag.ai{border-color:rgba(231,76,60,0.25);color:#e74c3c;background:rgba(231,76,60,0.04)}
-.ptag.depin{border-color:rgba(46,204,113,0.25);color:#2ecc71;background:rgba(46,204,113,0.04)}
-.ptag.id{border-color:rgba(155,89,182,0.25);color:#9b59b6;background:rgba(155,89,182,0.04)}
-.ptag.fund{border-color:rgba(0,212,170,0.25);color:#00d4aa;background:rgba(0,212,170,0.04)}
-.ptag.privacy{border-color:rgba(244,183,40,0.25);color:#F4B728;background:rgba(244,183,40,0.04)}
-.ptag.meme{border-color:rgba(255,165,0,0.25);color:#FFA500;background:rgba(255,165,0,0.04)}
-.ptag.pay{border-color:rgba(26,188,156,0.25);color:#1abc9c;background:rgba(26,188,156,0.04)}
-.ptag.rwa{border-color:rgba(22,82,240,0.25);color:#6EA0F0;background:rgba(22,82,240,0.04)}
-.ptag.sci{border-color:rgba(0,200,83,0.25);color:#00C853;background:rgba(0,200,83,0.04)}
-.ptag.social{border-color:rgba(43,92,230,0.25);color:#5B8CE6;background:rgba(43,92,230,0.04)}
-.ptag.gaming{border-color:rgba(162,89,255,0.25);color:#A259FF;background:rgba(162,89,255,0.04)}
-.ptag.governance{border-color:rgba(255,183,77,0.25);color:#FFB74D;background:rgba(255,183,77,0.04)}
-.ptag.nft{border-color:rgba(255,107,129,0.25);color:#FF6B81;background:rgba(255,107,129,0.04)}
-.ptag.storage{border-color:rgba(0,191,255,0.25);color:#00BFFF;background:rgba(0,191,255,0.04)}
-.ptag.stablecoin{border-color:rgba(38,222,129,0.25);color:#26DE81;background:rgba(38,222,129,0.04)}
-.ptag.dex{border-color:rgba(69,170,242,0.25);color:#45AAF2;background:rgba(69,170,242,0.04)}
-.ptag.bridge{border-color:rgba(252,161,125,0.25);color:#FCA17D;background:rgba(252,161,125,0.04)}
-.ptag.lending{border-color:rgba(75,207,250,0.25);color:#4BCFFA;background:rgba(75,207,250,0.04)}
-.ptag.l1{border-color:rgba(241,196,15,0.25);color:#f1c40f;background:rgba(241,196,15,0.04)}
-.ptag.l2{border-color:rgba(241,196,15,0.25);color:#f1c40f;background:rgba(241,196,15,0.04)}
-
-/* Description & thesis */
-.pcard-desc{font-size:0.76rem;color:var(--text-dim);line-height:1.6}
-.pcard-thesis{font-size:0.72rem;color:var(--text);line-height:1.55;margin-top:0.15rem}
-.pcard-thesis strong{font-weight:400;color:var(--gold);font-size:0.52rem;letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:0.15rem}
-
-/* Card footer with links */
-.pcard-footer{margin-top:auto;padding:0.75rem 1.4rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:0.75rem;flex-wrap:wrap}
-.pcard-flink{font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);transition:color .2s;display:inline-flex;align-items:center;gap:0.2rem}
+.ptag{font-size:0.46rem;letter-spacing:0.12em;text-transform:uppercase;padding:2px 6px;border-radius:2px;border:1px solid rgba(123,97,255,0.2);color:var(--accent);background:rgba(123,97,255,0.04)}
+.pcard-desc{font-size:0.74rem;color:var(--text-dim);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pcard-thesis{font-size:0.7rem;color:var(--text);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard-thesis strong{font-weight:400;color:var(--gold);font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:0.1rem}
+.pcard-footer{margin-top:auto;padding:0.65rem 1.25rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.pcard-flink{font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);transition:color .2s}
 .pcard-flink:hover{color:var(--accent)}
 .pcard-flink.primary{color:var(--accent)}
 
-/* EMPTY STATE */
+/* ── LIST ROW ───────────────────────────────────────────────── */
+.lrow{
+  display:grid;grid-template-columns:3px 40px 1fr auto auto auto;
+  gap:0.75rem;align-items:center;
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
+  padding:0.65rem 1rem 0.65rem 0;overflow:hidden;
+  transition:border-color .2s,background .2s;
+}
+.lrow:hover{border-color:rgba(255,255,255,0.16);background:rgba(255,255,255,0.05)}
+.lrow-accent{height:100%;border-radius:3px 0 0 3px}
+.lrow-icon{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:500;color:#fff;font-family:'Cormorant',serif}
+.lrow-main{min-width:0}
+.lrow-name{font-family:'Cormorant',serif;font-size:1.05rem;font-weight:400;color:#fff;line-height:1.15;display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap}
+.lrow-sub{font-size:0.58rem;color:var(--text-dim);display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-top:0.1rem}
+.lrow-sub span{white-space:nowrap}
+.lrow-cat{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap}
+.lrow-chain{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap}
+.lrow-link{font-size:0.56rem;letter-spacing:0.08em;color:var(--accent);white-space:nowrap;transition:opacity .2s}
+.lrow-link:hover{opacity:0.8}
+
+/* EMPTY */
 .empty{text-align:center;padding:4rem 2rem;color:var(--text-dim);font-size:0.84rem}
 
-/* LAST SYNC */
-.sync-note{max-width:1200px;margin:1.5rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.58rem;color:var(--text-dim);opacity:0.5;text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:0.5rem}
-.refresh-btn{background:none;border:1px solid rgba(255,255,255,0.1);color:var(--text-dim);font-size:0.58rem;letter-spacing:0.1em;padding:3px 10px;border-radius:2px;cursor:pointer;transition:all .2s;font-family:'Jost',sans-serif;margin-right:0.5rem}
+/* SYNC NOTE */
+.sync-note{max-width:1200px;margin:1.5rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.56rem;color:var(--text-dim);opacity:0.5;text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:0.5rem}
+.refresh-btn{background:none;border:1px solid rgba(255,255,255,0.1);color:var(--text-dim);font-size:0.56rem;letter-spacing:0.08em;padding:3px 10px;border-radius:2px;cursor:pointer;transition:all .2s;font-family:'Jost',sans-serif}
 .refresh-btn:hover{border-color:rgba(255,255,255,0.3);color:var(--text)}
 .refresh-btn:disabled{opacity:0.4;cursor:wait}
 
-@media(max-width:600px){
+/* LOADING */
+.loading-skeleton{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.skel-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;height:180px;position:relative;overflow:hidden}
+.skel-card::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent);animation:shimmer 1.5s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
+@media(max-width:720px){
   .project-grid{grid-template-columns:1fr}
-  .filter-row{gap:0.4rem}
-  .hero-stats{gap:1.5rem}
+  .tier-tabs{flex-wrap:wrap}
+  .tier-tab{min-width:calc(25% - 1px);flex:0 0 auto}
+  .controls-row{gap:0.4rem}
+  .search-box{min-width:100%}
+  .lrow{grid-template-columns:3px 32px 1fr auto;gap:0.5rem}
+  .lrow-cat,.lrow-chain{display:none}
+}
+@media(max-width:400px){
+  .tier-tab{min-width:calc(33.333% - 1px)}
+  .lrow{grid-template-columns:3px 1fr auto}
+  .lrow-icon{display:none}
 }
 </style>
 <script src="../../mobile-nav.js" defer></script>
@@ -194,34 +265,99 @@ main{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
   </div>
   <div class="snav-right">
     <a href="explorer.html" class="snav-link">Explorer</a>
-    <a href="../fund/index.html" class="snav-link">Fund & Crypto</a>
+    <a href="../fund/index.html" class="snav-link">Fund</a>
     <a href="index.html" class="snav-back">← Crypto</a>
   </div>
 </nav>
 
 <section class="hero">
-  <div class="hero-eyebrow">Curated Portfolio</div>
+  <div class="hero-eyebrow">Live from Notion</div>
   <h1>Project Curation</h1>
-  <p class="hero-desc">Every project here has been reviewed through the FRQNCY lens — sovereignty, decentralization, and alignment with conscious building. Tiered by conviction, organized for clarity.</p>
-  <div class="hero-stats" id="hero-stats"></div>
+  <p class="hero-desc">Every project reviewed through the FRQNCY lens — sovereignty, decentralization, and conscious building. Tiered by conviction. Click a tier to browse.</p>
+  <p class="disclaimer">Not financial advice. Always do your own research.</p>
 </section>
 
-<p class="disclaimer">Not financial advice. FRQNCY curates projects we find philosophically and technologically aligned. Always do your own research.</p>
+<!-- ═══════════════════════════════════════════════════════════════
+     STICKY TIER STRIP + CONTROLS
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="tier-strip">
+  <div class="tier-strip-inner">
 
-<div class="filters" id="filters">
-  <div class="filter-row" id="tier-filters">
-    <span class="filter-label">Conviction</span>
-  </div>
-  <div class="filter-row" id="cat-filters">
-    <span class="filter-label">Category</span>
-  </div>
-  <div class="filter-row" id="chain-filters">
-    <span class="filter-label">Chain</span>
+    <!-- Tier tabs — the primary browsing axis -->
+    <div class="tier-tabs" id="tier-tabs" role="tablist">
+      <button class="tier-tab active" data-tier="all" role="tab" aria-selected="true">
+        <span class="tier-tab-letter">All</span>
+        <span class="tier-tab-count" id="count-all">—</span>
+      </button>
+      <button class="tier-tab" data-tier="S" role="tab">
+        <span class="tier-tab-letter">S</span>
+        <span class="tier-tab-label">Diamond</span>
+        <span class="tier-tab-count" id="count-S">—</span>
+      </button>
+      <button class="tier-tab" data-tier="A" role="tab">
+        <span class="tier-tab-letter">A</span>
+        <span class="tier-tab-label">Gold</span>
+        <span class="tier-tab-count" id="count-A">—</span>
+      </button>
+      <button class="tier-tab" data-tier="B" role="tab">
+        <span class="tier-tab-letter">B</span>
+        <span class="tier-tab-label">Silver</span>
+        <span class="tier-tab-count" id="count-B">—</span>
+      </button>
+      <button class="tier-tab" data-tier="C" role="tab">
+        <span class="tier-tab-letter">C</span>
+        <span class="tier-tab-label">Utility</span>
+        <span class="tier-tab-count" id="count-C">—</span>
+      </button>
+      <button class="tier-tab" data-tier="D" role="tab">
+        <span class="tier-tab-letter">D</span>
+        <span class="tier-tab-label">Speculative</span>
+        <span class="tier-tab-count" id="count-D">—</span>
+      </button>
+      <button class="tier-tab" data-tier="E" role="tab">
+        <span class="tier-tab-letter">E</span>
+        <span class="tier-tab-label">Caution</span>
+        <span class="tier-tab-count" id="count-E">—</span>
+      </button>
+      <button class="tier-tab" data-tier="F" role="tab">
+        <span class="tier-tab-letter">F</span>
+        <span class="tier-tab-label">Avoid</span>
+        <span class="tier-tab-count" id="count-F">—</span>
+      </button>
+    </div>
+
+    <!-- Search + category filter + view toggle -->
+    <div class="controls-row">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <input type="text" id="search" placeholder="Search projects, tickers, chains..." autocomplete="off" spellcheck="false">
+      </div>
+      <div class="filter-pills" id="cat-pills"></div>
+      <select class="sort-select" id="sort-select">
+        <option value="tier">Sort: Tier</option>
+        <option value="name">Sort: A → Z</option>
+        <option value="name-desc">Sort: Z → A</option>
+        <option value="category">Sort: Category</option>
+      </select>
+      <div class="view-toggle">
+        <button class="view-btn active" data-view="grid" title="Grid view">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </button>
+        <button class="view-btn" data-view="list" title="List view">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        </button>
+      </div>
+      <span class="result-count" id="result-count"></span>
+    </div>
+
   </div>
 </div>
 
-<main>
-  <div id="content"></div>
+<main id="content">
+  <div class="loading-skeleton">
+    <div class="skel-card"></div><div class="skel-card"></div><div class="skel-card"></div>
+    <div class="skel-card"></div><div class="skel-card"></div><div class="skel-card"></div>
+  </div>
 </main>
 
 <div class="sync-note" id="sync-note">
@@ -230,241 +366,306 @@ main{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
 </div>
 
 <script>
-/* ── DATA ───────────────────────────────────────────────────────────── */
-let DATA = { projects: [], lastSync: '' };
-const TIER_ORDER = ['core','conviction','watch','speculative','avoid','unrated'];
-const TIER_LABELS = { core:'Core Conviction', conviction:'Strong Conviction', watch:'On the Radar', speculative:'Speculative', avoid:'Avoid', unrated:'Uncurated' };
-const TIER_COLORS = { core:'#C4973A', conviction:'#7B61FF', watch:'#7090B8', speculative:'#5A6A7A', avoid:'#3A3F48', unrated:'#4A5568' };
-const MCAP_LABELS = { high:'Large Cap', mid:'Mid Cap', low:'Small Cap', micro:'Micro Cap', 'n/a':'' };
+/* ════════════════════════════════════════════════════════════════
+   DATA & CONFIG
+   ════════════════════════════════════════════════════════════════ */
+let ALL_PROJECTS = [];
+const TIER_ORDER = ['S','A','B','C','D','E','F','NR',''];
+const TIER_COLORS = {S:'#C4973A',A:'#7B61FF',B:'#4A9AE8',C:'#7090B8',D:'#5A6A7A',E:'#4A5260',F:'#3A3F48',NR:'#4A5568','':'#4A5568'};
+const TIER_NAMES = {S:'Diamond',A:'Gold',B:'Silver',C:'Utility',D:'Speculative',E:'Caution',F:'Avoid',NR:'Unrated','':'Unrated'};
 
-/* Tag class mapping — maps category keywords to visual classes */
-function tagClass(cat) {
-  const c = cat.toLowerCase();
-  if (c === 'dex') return 'dex';
-  if (c === 'bridge') return 'bridge';
-  if (c === 'lending') return 'lending';
-  if (c === 'nft') return 'nft';
-  if (c === 'gaming') return 'gaming';
-  if (c === 'governance') return 'governance';
-  if (c === 'stablecoin') return 'stablecoin';
-  if (c === 'storage') return 'storage';
-  if (c === 'l1' || c === 'l2') return 'l1';
-  if (c.includes('infra') || c.includes('oracle') || c.includes('modular') || c.includes('store') || c.includes('enterprise')) return 'infra';
-  if (c.includes('defi') || c.includes('yield') || c.includes('money market') || c.includes('perp')) return 'defi';
-  if (c.includes('ai')) return 'ai';
-  if (c.includes('depin')) return 'depin';
-  if (c.includes('identity')) return 'id';
-  if (c.includes('fund') || c.includes('communit')) return 'fund';
-  if (c.includes('privacy')) return 'privacy';
-  if (c.includes('meme') || c.includes('culture')) return 'meme';
-  if (c.includes('payment')) return 'pay';
-  if (c.includes('rwa') || c.includes('ip')) return 'rwa';
-  if (c.includes('desci') || c.includes('longevity')) return 'sci';
-  if (c.includes('social')) return 'social';
-  return '';
-}
-
-function esc(s){ return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;') }
-
-/* ── STATE ──────────────────────────────────────────────────────────── */
+/* State */
 let activeTier = 'all';
-let activeCat  = 'all';
-let activeChain = 'all';
+let activeCat = 'all';
+let searchQuery = '';
+let sortMode = 'tier';
+let viewMode = 'grid';
 
-/* ── FILTERS ────────────────────────────────────────────────────────── */
-function buildFilters(projects) {
-  const tiers  = [...new Set(projects.map(p => p.tier))].sort((a,b) => TIER_ORDER.indexOf(a) - TIER_ORDER.indexOf(b));
-  const cats   = [...new Set(projects.flatMap(p => p.categories))].sort();
-  const chains = [...new Set(projects.map(p => p.chain))].sort();
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
-  fillRow('tier-filters', tiers, 'tier', t => TIER_LABELS[t] || t);
-  fillRow('cat-filters', cats, 'cat');
-  fillRow('chain-filters', chains, 'chain');
-}
+/* ════════════════════════════════════════════════════════════════
+   TIER TABS — click handler
+   ════════════════════════════════════════════════════════════════ */
+document.getElementById('tier-tabs').addEventListener('click', e => {
+  const tab = e.target.closest('.tier-tab');
+  if (!tab) return;
+  document.querySelectorAll('.tier-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+  tab.classList.add('active');
+  tab.setAttribute('aria-selected','true');
+  activeTier = tab.dataset.tier;
+  render();
+});
 
-function fillRow(rowId, items, type, labelFn) {
-  const row = document.getElementById(rowId);
-  const allBtn = mk('button','ftab active');
-  allBtn.dataset[type] = 'all';
-  allBtn.textContent = 'All';
-  row.appendChild(allBtn);
-  for (const item of items) {
-    const btn = mk('button','ftab');
-    btn.dataset[type] = item;
-    if (type === 'tier') btn.dataset.tier = item; /* for CSS */
-    btn.textContent = labelFn ? labelFn(item) : item;
-    row.appendChild(btn);
+/* ════════════════════════════════════════════════════════════════
+   SEARCH — debounced
+   ════════════════════════════════════════════════════════════════ */
+let searchTimer;
+document.getElementById('search').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => { searchQuery = e.target.value.trim().toLowerCase(); render(); }, 150);
+});
+
+/* ════════════════════════════════════════════════════════════════
+   SORT
+   ════════════════════════════════════════════════════════════════ */
+document.getElementById('sort-select').addEventListener('change', e => {
+  sortMode = e.target.value;
+  render();
+});
+
+/* ════════════════════════════════════════════════════════════════
+   VIEW TOGGLE
+   ════════════════════════════════════════════════════════════════ */
+document.querySelector('.view-toggle').addEventListener('click', e => {
+  const btn = e.target.closest('.view-btn');
+  if (!btn) return;
+  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  viewMode = btn.dataset.view;
+  render();
+});
+
+/* ════════════════════════════════════════════════════════════════
+   CATEGORY PILLS
+   ════════════════════════════════════════════════════════════════ */
+function buildCatPills(projects) {
+  const cats = [...new Set(projects.map(p => p.category).filter(Boolean))].sort();
+  const container = document.getElementById('cat-pills');
+  container.innerHTML = '';
+  const allPill = mk('button','fpill active');
+  allPill.textContent = 'All';
+  allPill.dataset.cat = 'all';
+  container.appendChild(allPill);
+  for (const cat of cats.slice(0, 15)) { // Top 15 categories
+    const pill = mk('button','fpill');
+    pill.textContent = cat;
+    pill.dataset.cat = cat;
+    container.appendChild(pill);
   }
-  row.addEventListener('click', e => {
-    const btn = e.target.closest('.ftab');
-    if (!btn) return;
-    row.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    if (type === 'tier')  activeTier  = btn.dataset.tier;
-    if (type === 'cat')   activeCat   = btn.dataset.cat;
-    if (type === 'chain') activeChain = btn.dataset.chain;
+  container.addEventListener('click', e => {
+    const pill = e.target.closest('.fpill');
+    if (!pill) return;
+    container.querySelectorAll('.fpill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activeCat = pill.dataset.cat;
     render();
   });
 }
 
 function mk(tag, cls) { const el = document.createElement(tag); el.className = cls; return el; }
 
-/* ── RENDER ─────────────────────────────────────────────────────────── */
+/* ════════════════════════════════════════════════════════════════
+   UPDATE TIER COUNTS
+   ════════════════════════════════════════════════════════════════ */
+function updateCounts(projects) {
+  const counts = {};
+  for (const p of projects) {
+    const t = p.tier || '';
+    counts[t] = (counts[t] || 0) + 1;
+  }
+  document.getElementById('count-all').textContent = projects.length;
+  for (const tier of ['S','A','B','C','D','E','F']) {
+    const el = document.getElementById('count-' + tier);
+    if (el) el.textContent = counts[tier] || 0;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   RENDER
+   ════════════════════════════════════════════════════════════════ */
 function render() {
   const container = document.getElementById('content');
-  container.innerHTML = '';
 
-  let filtered = DATA.projects.filter(p => {
-    if (activeTier !== 'all' && p.tier !== activeTier) return false;
-    if (activeCat  !== 'all' && !p.categories.includes(activeCat)) return false;
-    if (activeChain !== 'all' && p.chain !== activeChain) return false;
+  /* Filter */
+  let filtered = ALL_PROJECTS.filter(p => {
+    if (activeTier !== 'all' && (p.tier || '') !== activeTier) return false;
+    if (activeCat !== 'all' && p.category !== activeCat) return false;
+    if (searchQuery) {
+      const hay = (p.name + ' ' + p.ticker + ' ' + p.chain + ' ' + p.category + ' ' + p.desc).toLowerCase();
+      if (!hay.includes(searchQuery)) return false;
+    }
     return true;
   });
 
+  /* Sort */
+  filtered = sortProjects(filtered, sortMode);
+
+  /* Result count */
+  document.getElementById('result-count').textContent = filtered.length + ' project' + (filtered.length !== 1 ? 's' : '');
+
   if (!filtered.length) {
-    container.innerHTML = '<div class="empty">No projects match the current filters.</div>';
+    container.innerHTML = '<div class="empty">No projects match your filters. Try broadening your search.</div>';
     return;
   }
 
-  /* Group by tier */
-  for (const tier of TIER_ORDER) {
-    const group = filtered.filter(p => p.tier === tier);
-    if (!group.length) continue;
+  container.innerHTML = '';
 
-    /* Tier section header */
-    const hdr = mk('div','tier-header');
-    hdr.innerHTML = `<div class="tier-dot" style="background:${TIER_COLORS[tier]}"></div><h2>${esc(TIER_LABELS[tier])}</h2><span class="tier-count">${group.length} project${group.length !== 1 ? 's' : ''}</span>`;
-    container.appendChild(hdr);
+  if (viewMode === 'list') {
+    renderList(container, filtered);
+  } else {
+    renderGrid(container, filtered);
+  }
+}
 
-    /* Grid */
+function sortProjects(arr, mode) {
+  const copy = [...arr];
+  if (mode === 'name') return copy.sort((a,b) => a.name.localeCompare(b.name));
+  if (mode === 'name-desc') return copy.sort((a,b) => b.name.localeCompare(a.name));
+  if (mode === 'category') return copy.sort((a,b) => (a.category||'').localeCompare(b.category||'') || TIER_ORDER.indexOf(a.tier||'') - TIER_ORDER.indexOf(b.tier||''));
+  // Default: tier
+  return copy.sort((a,b) => TIER_ORDER.indexOf(a.tier||'') - TIER_ORDER.indexOf(b.tier||'') || a.name.localeCompare(b.name));
+}
+
+/* ── GRID VIEW ──────────────────────────────────────────────── */
+function renderGrid(container, projects) {
+  /* Group by tier when sorting by tier */
+  if (sortMode === 'tier' && activeTier === 'all') {
+    for (const tier of TIER_ORDER) {
+      const group = projects.filter(p => (p.tier||'') === tier);
+      if (!group.length) continue;
+      const section = mk('div','tier-section');
+      section.innerHTML = `<div class="tier-header"><div class="tier-dot" style="background:${TIER_COLORS[tier]}"></div><h2>${esc(TIER_NAMES[tier])}</h2><span class="tier-count">${group.length}</span></div>`;
+      const grid = mk('div','project-grid');
+      for (const p of group) grid.appendChild(makeGridCard(p));
+      section.appendChild(grid);
+      container.appendChild(section);
+    }
+  } else {
     const grid = mk('div','project-grid');
-    for (const p of group) grid.appendChild(makeCard(p));
+    for (const p of projects) grid.appendChild(makeGridCard(p));
     container.appendChild(grid);
   }
 }
 
-function makeCard(p) {
+function makeGridCard(p) {
   const card = mk('div','pcard');
-  const initials = p.name.slice(0,2).toUpperCase();
-  const tagsHtml = p.categories.map(c => `<span class="ptag ${tagClass(c)}">${esc(c)}</span>`).join('');
-  const mcapHtml = MCAP_LABELS[p.mcap] ? `<span class="pcard-mcap">${esc(MCAP_LABELS[p.mcap])}</span>` : '';
+  const init = p.name.slice(0,2).toUpperCase();
+  const tierColor = TIER_COLORS[p.tier] || TIER_COLORS[''];
+  const accent = p.accent || '#7B61FF';
 
-  /* Build links */
   let linksHtml = '';
-  if (p.links) {
-    if (p.links.website) linksHtml += `<a href="${esc(p.links.website)}" target="_blank" rel="noopener noreferrer" class="pcard-flink primary">Website →</a>`;
-    if (p.links.twitter)  linksHtml += `<a href="${esc(p.links.twitter)}" target="_blank" rel="noopener noreferrer" class="pcard-flink">𝕏</a>`;
-    if (p.links.docs)     linksHtml += `<a href="${esc(p.links.docs)}" target="_blank" rel="noopener noreferrer" class="pcard-flink">Docs</a>`;
-  }
+  if (p.coingecko) linksHtml += `<a href="${esc(p.coingecko)}" target="_blank" rel="noopener noreferrer" class="pcard-flink primary">CoinGecko →</a>`;
 
   card.innerHTML = `
-    <div class="pcard-top" style="background:${p.accent || 'var(--accent)'}"></div>
+    <div class="pcard-top" style="background:${tierColor}"></div>
     <div class="pcard-body">
       <div class="pcard-header">
-        <div class="pcard-icon" style="background:linear-gradient(135deg,${p.accent || '#7B61FF'}40,${p.accent || '#7B61FF'}20);border:1px solid ${p.accent || '#7B61FF'}50">${initials}</div>
+        <div class="pcard-icon" style="background:linear-gradient(135deg,${accent}40,${accent}20);border:1px solid ${accent}50">${init}</div>
         <div class="pcard-info">
-          <div class="pcard-name">${esc(p.name)} <span class="tier-badge ${p.tier}">${esc(TIER_LABELS[p.tier] || p.tier)}</span></div>
-          <div class="pcard-ticker">${esc(p.ticker)}</div>
+          <div class="pcard-name">${esc(p.name)} <span class="tier-badge ${p.tier||''}">${esc(p.tier ? TIER_NAMES[p.tier] : 'Unrated')}</span></div>
+          <div class="pcard-ticker">${esc(p.ticker)}${p.chain ? ' · '+esc(p.chain) : ''}</div>
         </div>
       </div>
-      <div class="pcard-meta">
-        <span class="pcard-chain">${esc(p.chain)}</span>
-        ${mcapHtml}
-      </div>
-      <div class="pcard-tags">${tagsHtml}</div>
-      <div class="pcard-desc">${esc(p.desc)}</div>
-      ${p.thesis ? `<div class="pcard-thesis"><strong>FRQNCY Thesis</strong>${esc(p.thesis)}</div>` : ''}
+      ${p.category ? `<div class="pcard-tags"><span class="ptag">${esc(p.category)}</span></div>` : ''}
+      ${p.desc ? `<div class="pcard-desc">${esc(p.desc)}</div>` : ''}
+      ${p.thesis ? `<div class="pcard-thesis"><strong>Conviction</strong>${esc(p.thesis)}</div>` : ''}
     </div>
-    <div class="pcard-footer">${linksHtml}</div>
+    ${linksHtml ? `<div class="pcard-footer">${linksHtml}</div>` : ''}
   `;
   return card;
 }
 
-/* ── HERO STATS ─────────────────────────────────────────────────────── */
-function updateStats(projects) {
-  const tierCounts = {};
-  for (const p of projects) tierCounts[p.tier] = (tierCounts[p.tier]||0) + 1;
-  const statsEl = document.getElementById('hero-stats');
-  statsEl.innerHTML = `
-    <div class="hero-stat"><div class="hero-stat-num">${projects.length}</div><div class="hero-stat-label">Projects</div></div>
-    <div class="hero-stat"><div class="hero-stat-num">${tierCounts.core||0}</div><div class="hero-stat-label">Core</div></div>
-    <div class="hero-stat"><div class="hero-stat-num">${tierCounts.conviction||0}</div><div class="hero-stat-label">Conviction</div></div>
-    <div class="hero-stat"><div class="hero-stat-num">${tierCounts.watch||0}</div><div class="hero-stat-label">Watch</div></div>
-  `;
+/* ── LIST VIEW ──────────────────────────────────────────────── */
+function renderList(container, projects) {
+  if (sortMode === 'tier' && activeTier === 'all') {
+    for (const tier of TIER_ORDER) {
+      const group = projects.filter(p => (p.tier||'') === tier);
+      if (!group.length) continue;
+      const section = mk('div','tier-section');
+      section.innerHTML = `<div class="tier-header"><div class="tier-dot" style="background:${TIER_COLORS[tier]}"></div><h2>${esc(TIER_NAMES[tier])}</h2><span class="tier-count">${group.length}</span></div>`;
+      const list = mk('div','project-list');
+      for (const p of group) list.appendChild(makeListRow(p));
+      section.appendChild(list);
+      container.appendChild(section);
+    }
+  } else {
+    const list = mk('div','project-list');
+    for (const p of projects) list.appendChild(makeListRow(p));
+    container.appendChild(list);
+  }
 }
 
-/* ── MAP API DATA ──────────────────────────────────────────────────── */
+function makeListRow(p) {
+  const row = mk('div','lrow');
+  const tierColor = TIER_COLORS[p.tier] || TIER_COLORS[''];
+  const accent = p.accent || '#7B61FF';
+  const init = p.name.slice(0,2).toUpperCase();
+
+  row.innerHTML = `
+    <div class="lrow-accent" style="background:${tierColor}"></div>
+    <div class="lrow-icon" style="background:linear-gradient(135deg,${accent}40,${accent}20);border:1px solid ${accent}40">${init}</div>
+    <div class="lrow-main">
+      <div class="lrow-name">${esc(p.name)} ${p.ticker ? `<span style="font-family:Jost;font-size:0.56rem;letter-spacing:0.12em;color:var(--text-dim)">${esc(p.ticker)}</span>` : ''} <span class="tier-badge ${p.tier||''}">${esc(p.tier||'NR')}</span></div>
+      <div class="lrow-sub">${p.chain ? `<span>${esc(p.chain)}</span>` : ''}${p.mcap ? ` <span>· ${esc(p.mcap)}</span>` : ''}</div>
+    </div>
+    <span class="lrow-cat">${esc(p.category||'')}</span>
+    <span class="lrow-chain">${esc(p.chain||'')}</span>
+    ${p.coingecko ? `<a href="${esc(p.coingecko)}" target="_blank" rel="noopener noreferrer" class="lrow-link">CoinGecko →</a>` : '<span></span>'}
+  `;
+  return row;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   DATA LOADING
+   ════════════════════════════════════════════════════════════════ */
 function mapApiProjects(data) {
   return data.projects.map(p => ({
     name: p.name,
     ticker: p.symbol || '',
-    tier: p.tierLabel,
-    categories: [p.category].filter(Boolean),
-    chain: p.type || 'Multi-chain',
-    mcap: p.mcap === 'Large Cap' ? 'high' : p.mcap === 'Mid cap' ? 'mid' : p.mcap === 'small capp' ? 'low' : '',
+    tier: p.tier || '',
+    category: p.category || '',
+    chain: p.type || '',
+    mcap: p.mcap || '',
     desc: p.thesis || '',
     thesis: p.conviction || '',
-    links: p.coingecko ? { coingecko: p.coingecko } : {},
-    accent: p.accent || '#7B61FF'
+    coingecko: p.coingecko || '',
+    accent: p.accent || '#7B61FF',
   }));
 }
 
 function updateSyncNote(data) {
-  const syncText = document.getElementById('sync-text');
+  const el = document.getElementById('sync-text');
   if (data.cached) {
-    syncText.textContent = 'Cached \u00B7 Last sync ' + new Date(data.lastSync).toLocaleString();
+    el.textContent = 'Cached \u00B7 Last sync ' + new Date(data.lastSync).toLocaleString();
   } else {
-    syncText.textContent = 'Live from Notion \u00B7 ' + new Date(data.lastSync).toLocaleString();
+    el.textContent = 'Live from Notion \u00B7 ' + new Date(data.lastSync).toLocaleString();
   }
 }
 
-function updateHeroFromApi(data) {
-  document.getElementById('hero-stats').innerHTML = `
-    <div class="hero-stat"><div class="hero-stat-num">${data.totalProjects}</div><div class="hero-stat-label">Projects</div></div>
-    <div class="hero-stat"><div class="hero-stat-num">${data.projects.filter(p=>p.tier).length}</div><div class="hero-stat-label">Rated</div></div>
-  `;
-}
-
-/* ── INIT ───────────────────────────────────────────────────────────── */
 async function loadData() {
-  document.getElementById('content').innerHTML = '<div class="empty">Loading projects from Notion\u2026</div>';
-
   try {
     const res = await fetch('/api/crypto/projects');
-    if (!res.ok) throw new Error('API failed');
+    if (!res.ok) throw new Error('API ' + res.status);
     const data = await res.json();
-    DATA.projects = mapApiProjects(data);
-    DATA.lastSync = data.lastSync;
-    buildFilters(DATA.projects);
-    updateStats(DATA.projects);
+    ALL_PROJECTS = mapApiProjects(data);
+    updateCounts(ALL_PROJECTS);
+    buildCatPills(ALL_PROJECTS);
     render();
-    updateHeroFromApi(data);
     updateSyncNote(data);
   } catch (e) {
-    // Fallback to static JSON
     try {
       const res = await fetch('crypto-projects.json');
-      if (!res.ok) throw new Error('Static fallback failed');
-      DATA = await res.json();
-      buildFilters(DATA.projects);
-      updateStats(DATA.projects);
+      if (!res.ok) throw new Error('Fallback failed');
+      const data = await res.json();
+      ALL_PROJECTS = data.projects || [];
+      updateCounts(ALL_PROJECTS);
+      buildCatPills(ALL_PROJECTS);
       render();
-      if (DATA.lastSync) {
-        const d = new Date(DATA.lastSync);
-        document.getElementById('sync-text').textContent = 'Offline \u00B7 Last synced: ' + d.toLocaleDateString('en-US', { month: 'short', day: 'numeric', year: 'numeric' });
+      if (data.lastSync) {
+        document.getElementById('sync-text').textContent = 'Offline \u00B7 Last synced: ' + new Date(data.lastSync).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
       }
     } catch {
-      document.getElementById('content').innerHTML = '<div class="empty">Failed to load projects. Please try again.</div>';
-      return;
+      document.getElementById('content').innerHTML = '<div class="empty">Failed to load projects. <button onclick="loadData()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></div>';
     }
   }
 
-  /* Hash-based tier filter */
-  const hash = location.hash.replace('#','');
+  /* URL hash → auto-select tier */
+  const hash = location.hash.replace('#','').toUpperCase();
   if (hash && TIER_ORDER.includes(hash)) {
     activeTier = hash;
-    document.querySelectorAll('#tier-filters .ftab').forEach(b => {
-      b.classList.toggle('active', (b.dataset.tier === hash));
+    document.querySelectorAll('.tier-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tier === hash);
+      t.setAttribute('aria-selected', t.dataset.tier === hash ? 'true' : 'false');
     });
     render();
   }
@@ -478,14 +679,12 @@ async function refreshData() {
     const res = await fetch('/api/crypto/projects?refresh=true');
     if (!res.ok) throw new Error('Refresh failed');
     const data = await res.json();
-    DATA.projects = mapApiProjects(data);
-    DATA.lastSync = data.lastSync;
+    ALL_PROJECTS = mapApiProjects(data);
+    updateCounts(ALL_PROJECTS);
     render();
-    updateStats(DATA.projects);
-    updateHeroFromApi(data);
     updateSyncNote(data);
-  } catch (e) {
-    document.getElementById('sync-text').textContent = 'Refresh failed \u2014 showing cached data';
+  } catch {
+    document.getElementById('sync-text').textContent = 'Refresh failed — showing cached data';
   } finally {
     btn.disabled = false;
     btn.textContent = '\u21BB Refresh';

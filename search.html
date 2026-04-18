@@ -175,6 +175,25 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 /* Highlight matched text */
 mark{background:rgba(74,122,232,0.22);color:#fff;border-radius:2px;padding:0 2px}
 
+/* Keyboard focus state on cards */
+.result-card.kb-focus{background:rgba(74,122,232,0.09);outline:1px solid rgba(74,122,232,0.55);outline-offset:-1px}
+.result-card.kb-focus .rc-arrow{opacity:1}
+
+/* Loading skeletons */
+.skeleton-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;background:var(--card-border);border:1px solid var(--card-border);border-radius:4px;overflow:hidden}
+.skeleton-card{background:var(--navy);padding:1.25rem 1.4rem;min-height:112px;position:relative;overflow:hidden}
+.skeleton-card::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent);transform:translateX(-100%);animation:skeleton-shimmer 1.4s ease-in-out infinite}
+.skeleton-line{height:10px;background:rgba(255,255,255,0.05);border-radius:2px;margin-bottom:10px}
+.skeleton-line.short{width:30%}
+.skeleton-line.med{width:65%;height:14px}
+.skeleton-line.long{width:85%}
+@keyframes skeleton-shimmer{100%{transform:translateX(100%)}}
+
+/* Keyboard hint */
+.kb-hint{font-size:0.56rem;letter-spacing:0.12em;color:var(--text-dim);opacity:0.6}
+.kb-hint kbd{font-family:inherit;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);border-radius:2px;padding:1px 5px;font-size:0.58rem;margin:0 1px}
+@media(max-width:640px){.kb-hint{display:none}}
+
 /* Empty / no results */
 .empty{
   text-align:center;padding:5rem 2rem;
@@ -232,16 +251,24 @@ mark{background:rgba(74,122,232,0.22);color:#fff;border-radius:2px;padding:0 2px
           <a href="v2/people/index.html"><span class="dd-label">People</span><span class="dd-sub">Teachers &amp; thinkers</span></a>
         </div>
       </li>
-      <li><a href="v2/crypto/index.html">Crypto</a></li>
-      <li><a href="v2/fund/index.html">Fund</a></li>
+      <li class="nav-dd">
+        <a href="v2/fund/index.html">Capital</a>
+        <div class="nav-dd-menu">
+          <a href="v2/fund/index.html"><span class="dd-label">Fund</span><span class="dd-sub">Vision, Echo, Legion & roadmap</span></a>
+          <a href="v2/crypto/index.html"><span class="dd-label">Crypto</span><span class="dd-sub">Curated projects & thesis</span></a>
+          <a href="v2/crypto/projects.html"><span class="dd-label">Project Ratings</span><span class="dd-sub">630+ projects tiered by conviction</span></a>
+          <a href="v2/crypto/explorer.html"><span class="dd-label">Explore by Sector</span><span class="dd-sub">Learn chapter by chapter</span></a>
+        </div>
+      </li>
       <li><a href="podcast.html">Podcast</a></li>
       <li><a href="space.html">Space</a></li>
+      <li><a href="/social/">Community</a></li>
       <li><a href="my-frqncy.html" class="nav-cta-gold">My FRQNCY</a></li>
     </ul>
 </nav>
 
 <section class="hero">
-  <div class="hero-eyebrow">135 Topics · 617 Resources</div>
+  <div class="hero-eyebrow" id="hero-count">Searching the network</div>
   <h1>Search the Network</h1>
   <p class="hero-desc">Search topics, people, books, and organisations across the FRQNCY network.</p>
   <a href="my-frqncy.html" class="hero-cta">Build your constellation ✦</a>
@@ -267,6 +294,17 @@ mark{background:rgba(74,122,232,0.22);color:#fff;border-radius:2px;padding:0 2px
   <div id="results-area"></div>
 </main>
 
+<template id="skeleton-tpl">
+  <div class="skeleton-grid" aria-hidden="true">
+    <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div>
+    <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div>
+    <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div>
+    <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div>
+    <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div>
+    <div class="skeleton-card"><div class="skeleton-line short"></div><div class="skeleton-line med"></div><div class="skeleton-line long"></div></div>
+  </div>
+</template>
+
 <script>
 // ── Data ──────────────────────────────────────────────────────────────
 let TOPICS = [];       // from search.json
@@ -288,13 +326,27 @@ const TYPE_LABELS = {
 };
 
 // ── Load ──────────────────────────────────────────────────────────────
+function showLoadingSkeleton() {
+  const area = document.getElementById('results-area');
+  const tpl = document.getElementById('skeleton-tpl');
+  if (tpl && area) {
+    area.innerHTML = '';
+    area.appendChild(tpl.content.cloneNode(true));
+  }
+  const meta = document.getElementById('meta');
+  if (meta) meta.innerHTML = '<span style="opacity:0.6">Loading the network…</span>';
+}
+
 async function loadIndex() {
+  showLoadingSkeleton();
   const [topicsRes, resourcesRes] = await Promise.allSettled([
     fetch('search.json').then(r => r.json()),
     fetch('resources.json').then(r => r.json())
   ]);
   if (topicsRes.status === 'fulfilled') TOPICS = topicsRes.value;
   if (resourcesRes.status === 'fulfilled') RESOURCES = resourcesRes.value;
+  const hero = document.getElementById('hero-count');
+  if (hero) hero.textContent = `${TOPICS.length} Topics · ${RESOURCES.length} Resources`;
   buildTypeFilters();
   buildDomainFilters();
   render();
@@ -361,6 +413,8 @@ function matches(str, q) {
 
 // ── Render ────────────────────────────────────────────────────────────
 function render() {
+  // Reset keyboard focus whenever result set changes
+  if (typeof kbFocusIndex !== 'undefined') kbFocusIndex = -1;
   const area = document.getElementById('results-area');
   const meta = document.getElementById('meta');
   const q = query.toLowerCase().trim();
@@ -388,11 +442,12 @@ function render() {
   const totalResults = filteredTopics.length + filteredResources.length;
 
   // Meta
+  const kbHint = `<span class="kb-hint"><kbd>↑</kbd><kbd>↓</kbd> navigate · <kbd>↵</kbd> open · <kbd>Esc</kbd> clear</span>`;
   if (q || activeDomain !== 'all' || activeType !== 'all') {
     const domainStr = activeDomain !== 'all' ? ` in <strong>${esc(domainMap[activeDomain] || activeDomain)}</strong>` : '';
-    meta.innerHTML = `<span><strong>${totalResults}</strong> result${totalResults !== 1 ? 's' : ''}${q ? ` for "<strong>${esc(query)}</strong>"` : ''}${domainStr}</span>`;
+    meta.innerHTML = `<span><strong>${totalResults}</strong> result${totalResults !== 1 ? 's' : ''}${q ? ` for "<strong>${esc(query)}</strong>"` : ''}${domainStr}</span>${totalResults ? kbHint : ''}`;
   } else {
-    meta.innerHTML = `<span><strong>${TOPICS.length}</strong> topics · <strong>${RESOURCES.length}</strong> resources across the FRQNCY network</span>`;
+    meta.innerHTML = `<span><strong>${TOPICS.length}</strong> topics · <strong>${RESOURCES.length}</strong> resources across the FRQNCY network</span>${kbHint}`;
   }
 
   area.innerHTML = '';
@@ -521,18 +576,82 @@ document.getElementById('q').addEventListener('input', e => {
   timer = setTimeout(() => {
     query = e.target.value;
     document.getElementById('clear-btn').classList.toggle('visible', !!query);
+    kbFocusIndex = -1;
     render();
-  }, 100);
+  }, 140);
 });
 
 document.getElementById('clear-btn').addEventListener('click', clearSearch);
 
-document.addEventListener('keydown', e => {
-  if (e.key === '/' && document.activeElement !== document.getElementById('q')) {
-    e.preventDefault();
-    document.getElementById('q').focus();
+// ── Keyboard navigation ─────────────────────────────────────────────
+let kbFocusIndex = -1;
+
+function getResultCards() {
+  return Array.from(document.querySelectorAll('#results-area .result-card'));
+}
+
+function updateKbFocus(nextIndex) {
+  const cards = getResultCards();
+  if (!cards.length) { kbFocusIndex = -1; return; }
+  if (nextIndex < 0) nextIndex = cards.length - 1;
+  if (nextIndex >= cards.length) nextIndex = 0;
+  cards.forEach(c => c.classList.remove('kb-focus'));
+  const target = cards[nextIndex];
+  target.classList.add('kb-focus');
+  kbFocusIndex = nextIndex;
+  // Keep in view without stealing focus from the input
+  const rect = target.getBoundingClientRect();
+  if (rect.bottom > window.innerHeight - 40 || rect.top < 80) {
+    target.scrollIntoView({ block: 'center', behavior: 'smooth' });
   }
-  if (e.key === 'Escape') clearSearch();
+}
+
+document.addEventListener('keydown', e => {
+  const input = document.getElementById('q');
+
+  // "/" focuses search when not already in it
+  if (e.key === '/' && document.activeElement !== input) {
+    e.preventDefault();
+    input.focus();
+    return;
+  }
+
+  // Escape clears
+  if (e.key === 'Escape') {
+    clearSearch();
+    return;
+  }
+
+  // Arrow navigation works any time (input focused or not)
+  if (e.key === 'ArrowDown') {
+    const cards = getResultCards();
+    if (!cards.length) return;
+    e.preventDefault();
+    updateKbFocus(kbFocusIndex + 1);
+    return;
+  }
+  if (e.key === 'ArrowUp') {
+    const cards = getResultCards();
+    if (!cards.length) return;
+    e.preventDefault();
+    updateKbFocus(kbFocusIndex - 1);
+    return;
+  }
+
+  // Enter opens the focused card
+  if (e.key === 'Enter' && kbFocusIndex >= 0) {
+    const cards = getResultCards();
+    const target = cards[kbFocusIndex];
+    if (target) {
+      e.preventDefault();
+      // Respect target="_blank" on external resource cards
+      if (target.target === '_blank') {
+        window.open(target.href, '_blank', 'noopener');
+      } else {
+        window.location.href = target.href;
+      }
+    }
+  }
 });
 
 loadIndex();
