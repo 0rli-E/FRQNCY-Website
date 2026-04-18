@@ -1,0 +1,120 @@
+import { useState, useEffect, useCallback } from 'preact/hooks';
+import PostCard from './PostCard';
+import { supabase } from '../lib/supabase';
+
+interface PostRow {
+  id: string;
+  content: string;
+  project_tag: string | null;
+  created_at: string;
+  profiles: {
+    username: string;
+    display_name: string;
+    avatar_url: string | null;
+  };
+  likes: { count: number }[];
+  comments: { count: number }[];
+}
+
+function timeAgo(dateStr: string): string {
+  const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
+  if (seconds < 60) return 'just now';
+  const minutes = Math.floor(seconds / 60);
+  if (minutes < 60) return `${minutes}m`;
+  const hours = Math.floor(minutes / 60);
+  if (hours < 24) return `${hours}h`;
+  const days = Math.floor(hours / 24);
+  return `${days}d`;
+}
+
+export default function Feed() {
+  const [posts, setPosts] = useState<PostRow[]>([]);
+  const [loading, setLoading] = useState(true);
+
+  const fetchPosts = useCallback(async () => {
+    const { data, error } = await supabase
+      .from('posts')
+      .select('*, profiles!author_id(username, display_name, avatar_url), likes(count), comments(count)')
+      .order('created_at', { ascending: false })
+      .limit(20);
+
+    if (!error && data) {
+      setPosts(data as unknown as PostRow[]);
+    }
+    setLoading(false);
+  }, []);
+
+  useEffect(() => {
+    fetchPosts();
+
+    // Subscribe to realtime inserts
+    const channel = supabase
+      .channel('posts-feed')
+      .on(
+        'postgres_changes',
+        { event: 'INSERT', schema: 'public', table: 'posts' },
+        () => {
+          // Re-fetch to get joined profile data
+          fetchPosts();
+        }
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [fetchPosts]);
+
+  if (loading) {
+    return (
+      <div class="space-y-4">
+        {[1, 2, 3].map((i) => (
+          <div key={i} class="rounded-xl bg-card-bg border border-card-border p-5 animate-pulse">
+            <div class="flex gap-3">
+              <div class="w-10 h-10 rounded-full bg-navy-mid" />
+              <div class="flex-1 space-y-2">
+                <div class="h-4 bg-navy-mid rounded w-1/3" />
+                <div class="h-3 bg-navy-mid rounded w-full" />
+                <div class="h-3 bg-navy-mid rounded w-2/3" />
+              </div>
+            </div>
+          </div>
+        ))}
+      </div>
+    );
+  }
+
+  if (posts.length === 0) {
+    return (
+      <div class="rounded-xl bg-card-bg border border-card-border p-8 text-center">
+        <p class="text-text-dim text-sm">No posts yet. Be the first to share something!</p>
+      </div>
+    );
+  }
+
+  return (
+    <div class="space-y-4">
+      {posts.map((post) => (
+        <PostCard
+          key={post.id}
+          id={post.id}
+          author={post.profiles?.display_name || 'Anonymous'}
+          username={post.profiles?.username || 'anon'}
+          avatar={post.profiles?.avatar_url || undefined}
+          content={post.content}
+          tags={post.project_tag ? [post.project_tag] : []}
+          likes={post.likes?.[0]?.count || 0}
+          comments={post.comments?.[0]?.count || 0}
+          time={timeAgo(post.created_at)}
+        />
+      ))}
+
+      {/* Load more */}
+      <div class="text-center py-6">
+        <button class="text-sm text-text-dim hover:text-gold transition-colors border border-card-border rounded-full px-6 py-2 hover:border-gold/30">
+          Load more posts
+        </button>
+      </div>
+    </div>
+  );
+}

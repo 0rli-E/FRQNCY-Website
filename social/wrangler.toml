@@ -1,0 +1,16 @@
+name = "frqncy-social"
+compatibility_date = "2024-09-23"
+compatibility_flags = ["nodejs_compat"]
+
+# The Astro Cloudflare adapter outputs to dist/
+# This handles the /social/ sub-path routing
+[site]
+bucket = "./dist/client"
+
+# Environment variables (set via Cloudflare dashboard or wrangler secret)
+# SUPABASE_URL
+# SUPABASE_ANON_KEY
+
+[[routes]]
+pattern = "/social/*"
+zone_name = "frqncy.network"

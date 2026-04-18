@@ -1,0 +1,58 @@
+---
+import SocialLayout from '../../layouts/SocialLayout.astro';
+import ProfileCard from '../../components/ProfileCard';
+import FollowButton from '../../components/FollowButton';
+import Feed from '../../components/Feed';
+
+const { username } = Astro.params;
+---
+
+<SocialLayout title={`@${username}`}>
+  <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
+
+    <!-- Profile sidebar -->
+    <aside class="lg:col-span-4 space-y-4">
+      <ProfileCard client:visible username={username || ''} />
+
+      <div class="rounded-xl bg-card-bg border border-card-border p-5">
+        <FollowButton client:visible username={username || ''} />
+      </div>
+
+      <!-- Stats -->
+      <div class="rounded-xl bg-card-bg border border-card-border p-5">
+        <h3 class="font-heading text-lg text-gold mb-4">Activity</h3>
+        <div class="grid grid-cols-3 gap-4 text-center">
+          <div>
+            <p class="text-xl font-semibold text-text">42</p>
+            <p class="text-xs text-text-dim mt-0.5">Posts</p>
+          </div>
+          <div>
+            <p class="text-xl font-semibold text-text">128</p>
+            <p class="text-xs text-text-dim mt-0.5">Followers</p>
+          </div>
+          <div>
+            <p class="text-xl font-semibold text-text">89</p>
+            <p class="text-xs text-text-dim mt-0.5">Following</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Interests -->
+      <div class="rounded-xl bg-card-bg border border-card-border p-5">
+        <h3 class="font-heading text-lg text-gold mb-3">Interests</h3>
+        <div class="flex flex-wrap gap-2">
+          <span class="text-xs px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim">Meditation</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim">Breathwork</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim">Sacred Geometry</span>
+          <span class="text-xs px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim">Sound Healing</span>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Posts feed -->
+    <section class="lg:col-span-8">
+      <h2 class="font-heading text-2xl text-gold mb-4">Posts by @{username}</h2>
+      <Feed client:visible />
+    </section>
+  </div>
+</SocialLayout>

@@ -1,0 +1,26 @@
+---
+import SocialLayout from '../layouts/SocialLayout.astro';
+import AuthForm from '../components/AuthForm';
+---
+
+<SocialLayout title="Sign In">
+  <div class="max-w-md mx-auto mt-12">
+    <div class="text-center mb-8">
+      <h1 class="font-heading text-4xl text-gold mb-2">Welcome Back</h1>
+      <p class="text-text-dim text-sm">
+        Sign in to connect with the FRQNCY community
+      </p>
+    </div>
+
+    <div class="rounded-xl bg-card-bg border border-card-border p-6">
+      <AuthForm client:visible />
+    </div>
+
+    <p class="text-center text-text-dim text-xs mt-6">
+      By signing in, you agree to our
+      <a href="#" class="text-gold hover:text-gold-light transition-colors">Terms of Service</a>
+      and
+      <a href="#" class="text-gold hover:text-gold-light transition-colors">Privacy Policy</a>.
+    </p>
+  </div>
+</SocialLayout>

@@ -1,0 +1,78 @@
+---
+import SocialLayout from '../layouts/SocialLayout.astro';
+---
+
+<SocialLayout title="Messages">
+  <div class="mt-6">
+    <h1 class="font-heading text-3xl text-gold mb-6">Messages</h1>
+
+    <div class="grid grid-cols-1 md:grid-cols-12 gap-0 rounded-xl border border-card-border overflow-hidden" style="min-height: 60vh;">
+
+      <!-- Conversations list -->
+      <div class="md:col-span-4 bg-card-bg border-r border-card-border">
+        <div class="p-4 border-b border-card-border">
+          <input
+            type="search"
+            placeholder="Search conversations..."
+            class="w-full bg-navy-mid border border-card-border rounded-lg px-3 py-2 text-sm text-text placeholder-text-dim focus:outline-none focus:border-gold/40 transition-colors"
+          />
+        </div>
+
+        <!-- Conversation items -->
+        <ul class="divide-y divide-card-border">
+          <li class="px-4 py-3 hover:bg-navy-mid/50 cursor-pointer transition-colors bg-navy-mid/30">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent text-sm font-semibold shrink-0">E</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-medium text-text truncate">Eckhart Tolle</p>
+                  <span class="text-xs text-text-dim">2h</span>
+                </div>
+                <p class="text-xs text-text-dim truncate">The present moment is all you ever have...</p>
+              </div>
+            </div>
+          </li>
+          <li class="px-4 py-3 hover:bg-navy-mid/50 cursor-pointer transition-colors">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold text-sm font-semibold shrink-0">R</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-medium text-text truncate">Rupert Sheldrake</p>
+                  <span class="text-xs text-text-dim">1d</span>
+                </div>
+                <p class="text-xs text-text-dim truncate">Have you read the latest on morphic resonance?</p>
+              </div>
+            </div>
+          </li>
+          <li class="px-4 py-3 hover:bg-navy-mid/50 cursor-pointer transition-colors">
+            <div class="flex items-center gap-3">
+              <div class="w-10 h-10 rounded-full bg-gold-light/20 flex items-center justify-center text-gold-light text-sm font-semibold shrink-0">M</div>
+              <div class="flex-1 min-w-0">
+                <div class="flex items-center justify-between">
+                  <p class="text-sm font-medium text-text truncate">Manly P. Hall</p>
+                  <span class="text-xs text-text-dim">3d</span>
+                </div>
+                <p class="text-xs text-text-dim truncate">The secret teachings reference you asked about...</p>
+              </div>
+            </div>
+          </li>
+        </ul>
+      </div>
+
+      <!-- Message pane -->
+      <div class="md:col-span-8 bg-navy flex flex-col">
+        <div class="flex-1 flex items-center justify-center">
+          <div class="text-center py-16">
+            <div class="w-16 h-16 rounded-full bg-card-bg border border-card-border flex items-center justify-center mx-auto mb-4">
+              <svg class="w-8 h-8 text-text-dim" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z" />
+              </svg>
+            </div>
+            <p class="text-text-dim text-sm">Select a conversation to start messaging</p>
+            <p class="text-text-dim text-xs mt-1 opacity-60">Your messages are private and encrypted</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</SocialLayout>
