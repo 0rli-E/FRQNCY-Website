@@ -7,7 +7,7 @@
 **Subject line options (test one):**
 - We went quiet. Here's why.
 - Two years later — FRQNCY
-- Something bigger than crypto
+- Bigger than crypto. Built from the core.
 
 ---
 
@@ -17,47 +17,48 @@
 
 Hey,
 
-You signed up a while back — probably for something crypto-focused. Then went quiet on you.
+You signed up a while back. Probably for something crypto-shaped. Then we went quiet on you.
 
-A lot has changed.
+A lot changed in the silence.
 
-We've spent the last two years building something we think is more important than any particular token or chain. FRQNCY is a **conscious living network** — a curated map of the most important ideas, people, tools, and resources across 14 domains of human knowledge and experience.
+FRQNCY is a community becoming an alternative society. You remember what you truly are — love and light — and create a future from that knowingness. Unconditional love. Eternal light. Burning passion. That is the foundation. Everything else is built on it.
 
-Think of it as: if the best parts of Web3 — decentralisation, sovereignty, community, regenerative economics — met science, spirituality, art, food, and everything else that makes life worth living.
+The practice is simple. For every field we touch — science, body, money, technology, art, the lived world — we ask the same question: *what is this at its very core?* Then we answer it. Truth with strong ethics, for the benefit of mankind.
 
-**The six pillars:**
-- **Network State** — sovereign community, both digital and physical
-- **Fund** — conscious capital, DeFi, regenerative business
-- **Research** — science, metaphysics, nature, complexity
-- **Education** — the best teachers and learning systems
-- **Media** — signal over noise, conscious curation
-- **Builder** — tools, products, and experiences worth creating
+**The six pillars form a cycle:**
 
-The crypto rabbit hole you went down? It lives inside FRQNCY — under Fund and Builder. But the map goes much further.
+- **01 / Know — Research.** Ask what a thing is at its core. Answer it. Go beyond where academia will go. Incentivise the work with the FRQNCY token and real funding.
+- **02 / Learn — Education.** What is known, transmitted. Your chart read back to you. Masters pointed to, not mimicked.
+- **03 / Make — Builder.** Products, tools, experiences. Aligned projects supported. FRQNCY native things built.
+- **04 / Broadcast — Media.** A swarm of .frqncies all over social media, super aligned with the good in the world. Podcast. Video. Writing. Your voice carried.
+- **05 / Fuel — Fund.** An actual fund. Money gathered, deployed into aligned people and projects. Sovereign custody. We always give in abundance.
+- **06 / Inhabit — Sanctuary.** A parallel society of people at similar frequency. From the digital into the physical. Coworking first. Then a building. Then land. The network state you are becoming.
 
-**What we've built so far:**
+The crypto rabbit hole you went down? It is still here — living inside Fund and Builder. Only now it sits inside a much larger picture.
 
-A living network map you can explore and click through → [frqncy.network/v2/explore.html]
+**What is built so far:**
 
-Curated resources across 118 topics — vetted, described, with FRQNCY Picks for the ones we think are essential.
+A living network map you can walk through → [frqncy.network/v2/explore.html](https://frqncy.network/v2/explore.html)
 
-A podcast on the way. A physical space in the works. A mailing list for people who want to stay close.
+Curated resources across 118 topics. Each one vetted, written on, with FRQNCY Picks where we have strong conviction.
+
+A podcast on the way. A space in the works. A mailing list for the people who want to stay close.
 
 ---
 
-**If this resonates, stay on the list.** We'll send a proper newsletter once a month — no noise, only signal.
+**If this resonates, stay on the list.** One proper dispatch a month. Written for you. No filler.
 
-**If it doesn't, no hard feelings.** Unsubscribe below and we'll never bother you again.
+**If it does not, no hard feelings.** Unsubscribe below and we will not find you again.
 
-Either way — it was good having you here, even briefly.
+Either way — it was good to have had you here, even briefly.
 
 — The FRQNCY Team
 
-[Explore the network →](https://frqncy.network/v2/explore.html)
+[Walk the network →](https://frqncy.network/v2/explore.html)
 
 ---
 
-*You're receiving this because you subscribed to a previous version of FRQNCY. If you'd like to unsubscribe, click below.*
+*You are receiving this because you subscribed to an earlier version of FRQNCY. If you would rather step off the list, the link is below.*
 
 ---
 
