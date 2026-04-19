@@ -59,6 +59,14 @@ function videosFor(nid)    { return (VIDEOS[nid] || []).filter(v => { const id =
 function mkdirp(dir)       { fs.mkdirSync(dir, { recursive: true }); }
 function esc(s)            { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }
 
+// Defence-in-depth: accent colours are dropped into inline <style>  (--accent:...)
+// so a malformed value could break the stylesheet. Validate as #RGB or #RRGGBB hex,
+// fall back to the brand gold if malformed.
+const DEFAULT_ACCENT = '#C4973A';
+function safeAccent(hex) {
+  return (typeof hex === 'string' && /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(hex)) ? hex : DEFAULT_ACCENT;
+}
+
 // Memoized hex → rgba (only ~14 unique accent colors in the dataset)
 const rgbaCache = new Map();
 function hexToRgba(hex, a) {
@@ -449,7 +457,8 @@ function collectionLd(label, desc, url) {
 
 // ── Head template ────────────────────────────────────────────────
 function head(title, accent, desc = '', canonical = '', jsonLd = null, ogImageSlug = null) {
-  const glow     = hexToRgba(accent, 0.14);
+  const safe     = safeAccent(accent);
+  const glow     = hexToRgba(safe, 0.14);
   const safeTitle = esc(title);
   const metaDesc = esc((desc || `Explore ${title} — curated resources, FRQNCY Picks, and the best thinkers in this space. Part of the FRQNCY conscious living network.`).slice(0, 155));
   const url      = canonical || 'https://frqncy.network/v2/';
@@ -484,7 +493,7 @@ function head(title, accent, desc = '', canonical = '', jsonLd = null, ogImageSl
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--accent:${accent};--accent-glow:${glow}}
+:root{--accent:${safe};--accent-glow:${glow}}
 ${CSS}
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>

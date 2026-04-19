@@ -4,14 +4,34 @@ import { supabase } from '../lib/supabase';
 
 interface FollowButtonProps {
   username: string;
-  targetUserId: string;
 }
 
-export default function FollowButton({ username, targetUserId }: FollowButtonProps) {
+export default function FollowButton({ username }: FollowButtonProps) {
   const { user } = useAuth();
+  const [targetUserId, setTargetUserId] = useState<string | null>(null);
   const [following, setFollowing] = useState(false);
   const [hovering, setHovering] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [resolving, setResolving] = useState(true);
+
+  // Resolve username → user id
+  useEffect(() => {
+    if (!username) return;
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('username', username)
+        .maybeSingle();
+      if (cancelled) return;
+      setTargetUserId(data?.id ?? null);
+      setResolving(false);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [username]);
 
   // Check if current user follows this profile
   useEffect(() => {
@@ -23,7 +43,7 @@ export default function FollowButton({ username, targetUserId }: FollowButtonPro
         .select('id')
         .eq('follower_id', user.id)
         .eq('following_id', targetUserId)
-        .single();
+        .maybeSingle();
 
       if (data) setFollowing(true);
     };
@@ -31,8 +51,8 @@ export default function FollowButton({ username, targetUserId }: FollowButtonPro
     checkFollow();
   }, [user, targetUserId]);
 
-  // Don't show follow button for own profile or if not logged in
-  if (!user || user.id === targetUserId) return null;
+  // Hide while resolving, on own profile, or when signed out
+  if (resolving || !user || !targetUserId || user.id === targetUserId) return null;
 
   const toggle = async () => {
     if (loading) return;

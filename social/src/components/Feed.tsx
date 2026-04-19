@@ -2,6 +2,14 @@ import { useState, useEffect, useCallback } from 'preact/hooks';
 import PostCard from './PostCard';
 import { supabase } from '../lib/supabase';
 
+interface FeedProps {
+  /**
+   * When provided, filter the feed to only posts by this username.
+   * Used on profile pages.
+   */
+  username?: string;
+}
+
 interface PostRow {
   id: string;
   content: string;
@@ -27,34 +35,71 @@ function timeAgo(dateStr: string): string {
   return `${days}d`;
 }
 
-export default function Feed() {
+export default function Feed({ username }: FeedProps = {}) {
   const [posts, setPosts] = useState<PostRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [authorId, setAuthorId] = useState<string | null>(null);
+
+  // If a username is provided, first resolve it to an author_id
+  useEffect(() => {
+    if (!username) {
+      setAuthorId(null);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      const { data } = await supabase
+        .from('profiles')
+        .select('id')
+        .eq('username', username)
+        .maybeSingle();
+      if (!cancelled) setAuthorId(data?.id ?? null);
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [username]);
 
   const fetchPosts = useCallback(async () => {
-    const { data, error } = await supabase
+    let query = supabase
       .from('posts')
       .select('*, profiles!author_id(username, display_name, avatar_url), likes(count), comments(count)')
       .order('created_at', { ascending: false })
       .limit(20);
 
+    if (username) {
+      // If filtering by user, require the authorId to be resolved first
+      if (!authorId) {
+        setPosts([]);
+        setLoading(false);
+        return;
+      }
+      query = query.eq('author_id', authorId);
+    }
+
+    const { data, error } = await query;
+
     if (!error && data) {
       setPosts(data as unknown as PostRow[]);
     }
     setLoading(false);
-  }, []);
+  }, [username, authorId]);
 
   useEffect(() => {
+    // Wait for authorId to resolve before fetching if filtering by user
+    if (username && !authorId) return;
+
     fetchPosts();
 
-    // Subscribe to realtime inserts
+    // Subscribe to realtime inserts. Channel name must be unique per mount
+    // so a global feed + a profile feed on different tabs don't collide.
+    const channelKey = `posts-feed-${username ?? 'global'}-${Math.random().toString(36).slice(2, 8)}`;
     const channel = supabase
-      .channel('posts-feed')
+      .channel(channelKey)
       .on(
         'postgres_changes',
         { event: 'INSERT', schema: 'public', table: 'posts' },
         () => {
-          // Re-fetch to get joined profile data
           fetchPosts();
         }
       )
@@ -63,7 +108,7 @@ export default function Feed() {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [fetchPosts]);
+  }, [fetchPosts, username, authorId]);
 
   if (loading) {
     return (
@@ -87,7 +132,9 @@ export default function Feed() {
   if (posts.length === 0) {
     return (
       <div class="rounded-xl bg-card-bg border border-card-border p-8 text-center">
-        <p class="text-text-dim text-sm">No posts yet. Be the first to share something!</p>
+        <p class="text-text-dim text-sm">
+          {username ? `@${username} hasn't posted yet.` : 'No posts yet. Be the first to share something!'}
+        </p>
       </div>
     );
   }

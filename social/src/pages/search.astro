@@ -1,0 +1,24 @@
+---
+import SocialLayout from '../layouts/SocialLayout.astro';
+import SearchView from '../components/SearchView';
+---
+
+<SocialLayout
+  title="Search"
+  description="Search across FRQNCY Social — posts, people, and the 604-resource project corpus."
+>
+  <article class="max-w-4xl mx-auto mt-8 pb-16 space-y-8">
+
+    <header class="space-y-2">
+      <p class="text-xs uppercase tracking-[0.25em] text-gold/70 font-body">Find</p>
+      <h1 class="font-heading text-3xl md:text-4xl text-gold leading-tight">
+        Search the network
+      </h1>
+      <p class="text-base text-text-dim leading-relaxed max-w-2xl">
+        One search — posts, people, and projects. Results update as you type. The project corpus is the same 604-resource, 133-topic graph that powers the main site.
+      </p>
+    </header>
+
+    <SearchView client:load />
+  </article>
+</SocialLayout>

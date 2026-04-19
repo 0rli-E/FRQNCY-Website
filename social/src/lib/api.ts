@@ -631,6 +631,77 @@ export async function getUnreadCount(userId: string): Promise<number> {
   return count ?? 0;
 }
 
+// ─── Conviction Leaderboard ────────────────────────────────────────────────
+//
+// Removed April 2026. FRQNCY Social is built on cooperation, not competition,
+// so we do not rank people against each other. Conviction tracking on an
+// individual post (as personal stance / journal) remains — that's self-
+// expression, not a scoreboard. See memory/feedback_frqncy_values.md.
+
+// ─── Search ────────────────────────────────────────────────────────────────
+
+export interface SearchResults {
+  posts: Post[];
+  profiles: Profile[];
+  projects: CryptoProject[];
+}
+
+/**
+ * Multi-entity search across posts (content + project_tag), profiles
+ * (username + display_name), and the crypto project corpus (name + symbol).
+ */
+export async function searchAll(query: string): Promise<SearchResults> {
+  const q = query.trim();
+  if (!q) return { posts: [], profiles: [], projects: [] };
+
+  const likeQ = `%${q}%`;
+
+  const [postsRes, profilesRes, projectsRes] = await Promise.all([
+    supabase
+      .from('posts')
+      .select('*, author:profiles!posts_author_id_fkey(*)')
+      .or(`content.ilike.${likeQ},project_tag.ilike.${likeQ}`)
+      .order('created_at', { ascending: false })
+      .limit(30),
+    supabase
+      .from('profiles')
+      .select('*')
+      .or(`username.ilike.${likeQ},display_name.ilike.${likeQ}`)
+      .limit(20),
+    searchProjects(q),
+  ]);
+
+  return {
+    posts: (postsRes.data ?? []) as Post[],
+    profiles: (profilesRes.data ?? []) as Profile[],
+    projects: projectsRes,
+  };
+}
+
+// ─── Bookmarks view ────────────────────────────────────────────────────────
+
+export async function getUserBookmarks(
+  userId: string,
+  limit = 20,
+  offset = 0
+): Promise<Post[]> {
+  const { data, error } = await supabase
+    .from('bookmarks')
+    .select('post_id, created_at, post:posts!bookmarks_post_id_fkey(*, author:profiles!posts_author_id_fkey(*))')
+    .eq('user_id', userId)
+    .order('created_at', { ascending: false })
+    .range(offset, offset + limit - 1);
+
+  if (error) {
+    console.error('getUserBookmarks error:', error.message);
+    return [];
+  }
+
+  return ((data ?? []) as any[])
+    .map((r) => r.post as Post)
+    .filter(Boolean);
+}
+
 // ─── Crypto Projects (from existing API) ────────────────────────────────────
 
 export async function searchProjects(query: string): Promise<CryptoProject[]> {

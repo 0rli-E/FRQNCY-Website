@@ -1,92 +1,11 @@
 ---
 import SocialLayout from '../layouts/SocialLayout.astro';
+import NotificationsList from '../components/NotificationsList';
 ---
 
 <SocialLayout title="Notifications">
   <div class="max-w-2xl mx-auto mt-6">
     <h1 class="font-heading text-3xl text-gold mb-6">Notifications</h1>
-
-    <!-- Filter tabs -->
-    <div class="flex gap-1 mb-6 bg-card-bg rounded-lg p-1 border border-card-border">
-      <button class="flex-1 text-sm py-2 rounded-md bg-navy-mid text-gold font-medium transition-colors">All</button>
-      <button class="flex-1 text-sm py-2 rounded-md text-text-dim hover:text-text transition-colors">Mentions</button>
-      <button class="flex-1 text-sm py-2 rounded-md text-text-dim hover:text-text transition-colors">Follows</button>
-      <button class="flex-1 text-sm py-2 rounded-md text-text-dim hover:text-text transition-colors">Likes</button>
-    </div>
-
-    <!-- Notification items -->
-    <div class="space-y-2">
-      <!-- New follow -->
-      <div class="rounded-xl bg-card-bg border border-card-border p-4 flex items-start gap-3 hover:border-gold/20 transition-colors">
-        <div class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent text-sm font-semibold shrink-0">D</div>
-        <div class="flex-1 min-w-0">
-          <p class="text-sm text-text">
-            <a href="/social/profile/deepak" class="font-medium text-gold hover:text-gold-light transition-colors">Deepak Chopra</a>
-            started following you
-          </p>
-          <p class="text-xs text-text-dim mt-1">2 hours ago</p>
-        </div>
-        <div class="w-2 h-2 rounded-full bg-gold shrink-0 mt-2"></div>
-      </div>
-
-      <!-- Like -->
-      <div class="rounded-xl bg-card-bg border border-card-border p-4 flex items-start gap-3 hover:border-gold/20 transition-colors">
-        <div class="w-10 h-10 rounded-full bg-gold/20 flex items-center justify-center text-gold text-sm font-semibold shrink-0">G</div>
-        <div class="flex-1 min-w-0">
-          <p class="text-sm text-text">
-            <a href="/social/profile/gregg" class="font-medium text-gold hover:text-gold-light transition-colors">Gregg Braden</a>
-            liked your post about "Heart-Brain Coherence"
-          </p>
-          <p class="text-xs text-text-dim mt-1">5 hours ago</p>
-        </div>
-        <div class="w-2 h-2 rounded-full bg-gold shrink-0 mt-2"></div>
-      </div>
-
-      <!-- Mention -->
-      <div class="rounded-xl bg-card-bg border border-card-border p-4 flex items-start gap-3 hover:border-gold/20 transition-colors">
-        <div class="w-10 h-10 rounded-full bg-gold-light/20 flex items-center justify-center text-gold-light text-sm font-semibold shrink-0">J</div>
-        <div class="flex-1 min-w-0">
-          <p class="text-sm text-text">
-            <a href="/social/profile/joe" class="font-medium text-gold hover:text-gold-light transition-colors">Joe Dispenza</a>
-            mentioned you in a post: "Great discussion with @you about pineal activation..."
-          </p>
-          <p class="text-xs text-text-dim mt-1">1 day ago</p>
-        </div>
-      </div>
-
-      <!-- Comment -->
-      <div class="rounded-xl bg-card-bg border border-card-border p-4 flex items-start gap-3 hover:border-gold/20 transition-colors">
-        <div class="w-10 h-10 rounded-full bg-navy-mid flex items-center justify-center text-text-dim text-sm font-semibold shrink-0">B</div>
-        <div class="flex-1 min-w-0">
-          <p class="text-sm text-text">
-            <a href="/social/profile/bruce" class="font-medium text-gold hover:text-gold-light transition-colors">Bruce Lipton</a>
-            commented on your post: "Epigenetics shows us this is exactly right..."
-          </p>
-          <p class="text-xs text-text-dim mt-1">2 days ago</p>
-        </div>
-      </div>
-
-      <!-- System -->
-      <div class="rounded-xl bg-card-bg border border-card-border p-4 flex items-start gap-3 hover:border-gold/20 transition-colors">
-        <div class="w-10 h-10 rounded-full bg-gold/10 flex items-center justify-center shrink-0">
-          <svg class="w-5 h-5 text-gold" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M13 16h-1v-4h-1m1-4h.01M21 12a9 9 0 11-18 0 9 9 0 0118 0z" />
-          </svg>
-        </div>
-        <div class="flex-1 min-w-0">
-          <p class="text-sm text-text">
-            Welcome to <span class="font-medium text-gold">FRQNCY Social</span>! Complete your profile to start connecting.
-          </p>
-          <p class="text-xs text-text-dim mt-1">3 days ago</p>
-        </div>
-      </div>
-    </div>
-
-    <!-- Load more -->
-    <div class="text-center mt-8">
-      <button class="text-sm text-text-dim hover:text-gold transition-colors">
-        Load older notifications
-      </button>
-    </div>
+    <NotificationsList client:load />
   </div>
 </SocialLayout>

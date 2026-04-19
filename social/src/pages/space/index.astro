@@ -1,0 +1,186 @@
+---
+import SocialLayout from '../../layouts/SocialLayout.astro';
+---
+
+<SocialLayout
+  title="Space"
+  description="The FRQNCY Space — principles, roadmap, research, and the open questions driving this network."
+>
+  <article class="max-w-4xl mx-auto mt-8 space-y-12 pb-16">
+
+    <!-- Hero -->
+    <header class="space-y-4">
+      <p class="text-xs uppercase tracking-[0.25em] text-gold/70 font-body">The Space</p>
+      <h1 class="font-heading text-4xl md:text-5xl text-gold leading-tight">
+        A network built on resonance, not extraction.
+      </h1>
+      <p class="text-lg text-text-dim leading-relaxed max-w-3xl">
+        The Space is where FRQNCY Social comes out from behind the feed — the principles, the plan, the research, and the open questions. Think of it as the town hall of the network.
+      </p>
+    </header>
+
+    <!-- Principles -->
+    <section class="space-y-6">
+      <h2 class="font-heading text-2xl text-gold border-b border-card-border pb-3">Principles</h2>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <div class="rounded-xl bg-card-bg border border-card-border p-5 space-y-2">
+          <h3 class="font-heading text-lg text-gold">Portability first</h3>
+          <p class="text-sm text-text-dim leading-relaxed">
+            Your posts, follows, and reputation belong to you. From day one you can export everything. By year two you can take it to another host.
+          </p>
+        </div>
+
+        <div class="rounded-xl bg-card-bg border border-card-border p-5 space-y-2">
+          <h3 class="font-heading text-lg text-gold">No ads, ever</h3>
+          <p class="text-sm text-text-dim leading-relaxed">
+            The business model is you paying us a little — not an advertiser paying us to extract from you. Written into the charter.
+          </p>
+        </div>
+
+        <div class="rounded-xl bg-card-bg border border-card-border p-5 space-y-2">
+          <h3 class="font-heading text-lg text-gold">Calibrated conviction</h3>
+          <p class="text-sm text-text-dim leading-relaxed">
+            Posts tagged to a project get a stance and a horizon. We resolve them. Reputation is earned by being right — scored with a Brier rule, not vibes.
+          </p>
+        </div>
+
+        <div class="rounded-xl bg-card-bg border border-card-border p-5 space-y-2">
+          <h3 class="font-heading text-lg text-gold">Transparent ranking</h3>
+          <p class="text-sm text-text-dim leading-relaxed">
+            The feed formula is public. You can see the weights. Later you'll be able to tune them. Algorithmic choice, not algorithmic lock-in.
+          </p>
+        </div>
+
+        <div class="rounded-xl bg-card-bg border border-card-border p-5 space-y-2">
+          <h3 class="font-heading text-lg text-gold">Moderation as care</h3>
+          <p class="text-sm text-text-dim leading-relaxed">
+            Automated first pass (Llama Guard 3), trust-levels, community mods per channel, blameless post-mortems when things break.
+          </p>
+        </div>
+
+        <div class="rounded-xl bg-card-bg border border-card-border p-5 space-y-2">
+          <h3 class="font-heading text-lg text-gold">Farcaster / Nostr / ATProto</h3>
+          <p class="text-sm text-text-dim leading-relaxed">
+            The destination is a protocol-native network. The route is AT Protocol as primary bridge, Farcaster as a crypto side-channel, Nostr as a read path.
+          </p>
+        </div>
+      </div>
+    </section>
+
+    <!-- Tiles -->
+    <section class="space-y-6">
+      <h2 class="font-heading text-2xl text-gold border-b border-card-border pb-3">Explore the Space</h2>
+
+      <div class="grid md:grid-cols-2 gap-4">
+        <a
+          href="/social/space/roadmap"
+          class="group rounded-2xl bg-gradient-to-br from-gold/5 to-accent/5 border border-gold/20 hover:border-gold/40 p-6 transition-colors"
+        >
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-xs uppercase tracking-[0.2em] text-gold/70">01 · Plan</p>
+              <h3 class="font-heading text-2xl text-gold mt-2 group-hover:text-gold-light transition-colors">Roadmap</h3>
+              <p class="text-sm text-text-dim mt-3 leading-relaxed">
+                The 24-month plan. Three phases. What ships when, and why.
+              </p>
+            </div>
+            <span class="text-gold text-xl group-hover:translate-x-1 transition-transform">→</span>
+          </div>
+        </a>
+
+        <a
+          href="/social/space/research"
+          class="group rounded-2xl bg-card-bg border border-card-border hover:border-gold/40 p-6 transition-colors"
+        >
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-xs uppercase tracking-[0.2em] text-gold/70">02 · Research</p>
+              <h3 class="font-heading text-2xl text-gold mt-2 group-hover:text-gold-light transition-colors">Research Paper</h3>
+              <p class="text-sm text-text-dim mt-3 leading-relaxed">
+                Protocols, feed ranking, monetization — the full ~7,000-word paper behind every decision.
+              </p>
+            </div>
+            <span class="text-gold text-xl group-hover:translate-x-1 transition-transform">→</span>
+          </div>
+        </a>
+
+        <a
+          href="/social"
+          class="group rounded-2xl bg-card-bg border border-card-border hover:border-gold/40 p-6 transition-colors"
+        >
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-xs uppercase tracking-[0.2em] text-gold/70">03 · Network</p>
+              <h3 class="font-heading text-2xl text-gold mt-2 group-hover:text-gold-light transition-colors">Feed</h3>
+              <p class="text-sm text-text-dim mt-3 leading-relaxed">
+                Where conversations live. Project-anchored, chronological, follow-graph primary.
+              </p>
+            </div>
+            <span class="text-gold text-xl group-hover:translate-x-1 transition-transform">→</span>
+          </div>
+        </a>
+
+        <a
+          href="/v2/explore.html"
+          class="group rounded-2xl bg-card-bg border border-card-border hover:border-gold/40 p-6 transition-colors"
+        >
+          <div class="flex items-start justify-between">
+            <div>
+              <p class="text-xs uppercase tracking-[0.2em] text-gold/70">04 · Context</p>
+              <h3 class="font-heading text-2xl text-gold mt-2 group-hover:text-gold-light transition-colors">Network Map</h3>
+              <p class="text-sm text-text-dim mt-3 leading-relaxed">
+                The 133-topic, 604-resource corpus this network is anchored in. Browse the terrain.
+              </p>
+            </div>
+            <span class="text-gold text-xl group-hover:translate-x-1 transition-transform">→</span>
+          </div>
+        </a>
+      </div>
+    </section>
+
+    <!-- Open questions -->
+    <section class="space-y-6">
+      <h2 class="font-heading text-2xl text-gold border-b border-card-border pb-3">Open Questions</h2>
+      <p class="text-text-dim leading-relaxed">
+        A network gets built in conversation. Here are the questions we do not have clean answers to yet — and that the community can help shape.
+      </p>
+      <ol class="space-y-4">
+        <li class="rounded-xl bg-card-bg border border-card-border p-5">
+          <p class="font-heading text-gold">1 · How does personal conviction live without becoming competition?</p>
+          <p class="text-sm text-text-dim mt-2 leading-relaxed">
+            Tagging a post with a stance (bullish / neutral / bearish) is self-expression — it tells people where you stand. We removed the public leaderboard on cooperation-over-competition grounds. Open question: do people want a <em>private</em> journal of their own stances over time, or does any tracking drift back toward scoreboarding?
+          </p>
+        </li>
+        <li class="rounded-xl bg-card-bg border border-card-border p-5">
+          <p class="font-heading text-gold">2 · Should private DMs go to the PDS or stay in Supabase forever?</p>
+          <p class="text-sm text-text-dim mt-2 leading-relaxed">
+            ATProto has no mature DM Lexicon yet. Do we wait, ship a custom encrypted Lexicon, or accept that DMs are the one thing that never federates?
+          </p>
+        </li>
+        <li class="rounded-xl bg-card-bg border border-card-border p-5">
+          <p class="font-heading text-gold">3 · What does a "channel" look like on ATProto?</p>
+          <p class="text-sm text-text-dim mt-2 leading-relaxed">
+            Farcaster has channels. Bluesky has custom feeds and (coming) communities. FRQNCY's project-anchored rooms need a home somewhere in that spectrum.
+          </p>
+        </li>
+        <li class="rounded-xl bg-card-bg border border-card-border p-5">
+          <p class="font-heading text-gold">4 · When (if ever) do we enable staked conviction markets?</p>
+          <p class="text-sm text-text-dim mt-2 leading-relaxed">
+            The research says: only after a crypto-attorney review and likely a regulated intermediary. But the demand signal from users will shape how fast we pursue that review.
+          </p>
+        </li>
+      </ol>
+    </section>
+
+    <!-- Footer -->
+    <footer class="border-t border-card-border pt-8 text-sm text-text-dim">
+      <p>
+        The Space is updated when the network learns something. Have a principle to propose or a question to add?
+        <a href="mailto:hello@frqncy.network?subject=Space%20contribution" class="text-gold hover:text-gold-light underline decoration-gold/40">
+          Send it in
+        </a>.
+      </p>
+    </footer>
+  </article>
+</SocialLayout>

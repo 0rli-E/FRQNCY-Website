@@ -1,0 +1,235 @@
+---
+import SocialLayout from '../../layouts/SocialLayout.astro';
+import { Content as Paper } from '../../content/research-paper.md';
+---
+
+<SocialLayout
+  title="Research Paper"
+  description="The research paper behind FRQNCY Social — protocols, feed ranking, monetization, moderation."
+>
+  <article class="max-w-4xl mx-auto mt-8 pb-16">
+
+    <!-- Breadcrumb back to Space -->
+    <nav class="text-xs text-text-dim font-body mb-6" aria-label="Breadcrumb">
+      <a href="/social/space" class="hover:text-gold transition-colors">Space</a>
+      <span class="mx-1.5 opacity-50">/</span>
+      <span class="text-text">Research Paper</span>
+    </nav>
+
+    <!-- Meta card -->
+    <header class="rounded-2xl bg-gradient-to-br from-gold/5 to-accent/5 border border-gold/20 p-6 md:p-8 mb-10 space-y-4">
+      <p class="text-xs uppercase tracking-[0.25em] text-gold/70 font-body">Founding Thesis · v1</p>
+      <h1 class="font-heading text-3xl md:text-4xl text-gold leading-tight">
+        Building FRQNCY Social
+      </h1>
+      <p class="text-sm md:text-base text-text-dim leading-relaxed max-w-3xl">
+        A research paper on the architecture, ranking, economics, and governance of a social network for a conscious-living and crypto-adjacent community.
+      </p>
+      <div class="flex flex-wrap gap-2 pt-2 text-xs">
+        <span class="px-3 py-1 rounded-full bg-gold/10 border border-gold/30 text-gold">April 2026</span>
+        <span class="px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim">~13,000 words</span>
+        <span class="px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim">3 chapters</span>
+        <span class="px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim">24-month roadmap</span>
+      </div>
+    </header>
+
+    <!-- Jump nav -->
+    <aside class="rounded-xl bg-card-bg border border-card-border p-5 mb-10 text-sm">
+      <p class="font-heading text-gold text-xs uppercase tracking-[0.2em] mb-3">Jump to</p>
+      <ul class="grid md:grid-cols-2 gap-x-6 gap-y-1.5 text-text-dim">
+        <li><a href="#executive-summary" class="hover:text-gold transition-colors">Executive Summary</a></li>
+        <li><a href="#chapter-1--decentralized-protocols" class="hover:text-gold transition-colors">Ch 1 · Decentralized Protocols</a></li>
+        <li><a href="#chapter-2--feed-ranking-social-graph-and-retention" class="hover:text-gold transition-colors">Ch 2 · Feed Ranking &amp; Graph</a></li>
+        <li><a href="#chapter-3--monetization-moderation-community-health" class="hover:text-gold transition-colors">Ch 3 · Monetization &amp; Moderation</a></li>
+        <li><a href="#unified-24-month-roadmap" class="hover:text-gold transition-colors">Unified 24-Month Roadmap</a></li>
+        <li><a href="#appendix-a--glossary" class="hover:text-gold transition-colors">Appendix · Glossary</a></li>
+      </ul>
+    </aside>
+
+    <!-- Rendered paper -->
+    <div class="paper-body font-body text-text leading-relaxed space-y-4">
+      <Paper />
+    </div>
+
+    <!-- Footer -->
+    <footer class="border-t border-card-border pt-8 mt-16 text-sm text-text-dim space-y-4">
+      <p>
+        This paper is a living document. Have a correction, a counterargument, or a reference we missed?
+        <a href="mailto:hello@frqncy.network?subject=Research%20paper%20feedback" class="text-gold hover:text-gold-light underline decoration-gold/40">
+          Send it in
+        </a>.
+      </p>
+      <div class="flex flex-wrap gap-3 pt-2">
+        <a href="/social/space" class="text-xs px-4 py-2 rounded-full bg-navy-mid border border-card-border text-text-dim hover:text-gold hover:border-gold/40 transition-colors">
+          ← Back to Space
+        </a>
+        <a href="/social/space/roadmap" class="text-xs px-4 py-2 rounded-full bg-gold/10 border border-gold/30 text-gold hover:bg-gold/20 transition-colors">
+          See the 24-month roadmap →
+        </a>
+      </div>
+    </footer>
+
+  </article>
+</SocialLayout>
+
+<style is:global>
+  /* Paper body — typographic rhythm in the Space's visual language */
+  .paper-body h1 {
+    font-family: 'Cormorant', serif;
+    color: #d4af37;
+    font-size: 2.5rem;
+    line-height: 1.15;
+    font-weight: 500;
+    margin-top: 4rem;
+    margin-bottom: 1.25rem;
+    padding-bottom: 0.75rem;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.25);
+  }
+  .paper-body h1:first-of-type { margin-top: 0; }
+
+  .paper-body h2 {
+    font-family: 'Cormorant', serif;
+    color: #d4af37;
+    font-size: 1.75rem;
+    line-height: 1.2;
+    font-weight: 500;
+    margin-top: 3rem;
+    margin-bottom: 1rem;
+  }
+
+  .paper-body h3 {
+    font-family: 'Cormorant', serif;
+    color: #d4af37;
+    font-size: 1.35rem;
+    line-height: 1.25;
+    font-weight: 500;
+    margin-top: 2.25rem;
+    margin-bottom: 0.75rem;
+  }
+
+  .paper-body h4 {
+    font-family: 'Jost', sans-serif;
+    color: #e8e4d9;
+    font-size: 1rem;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    font-weight: 500;
+    margin-top: 1.75rem;
+    margin-bottom: 0.5rem;
+  }
+
+  .paper-body p {
+    color: rgba(232, 228, 217, 0.75);
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+    font-size: 1rem;
+  }
+
+  .paper-body strong {
+    color: #e8e4d9;
+    font-weight: 500;
+  }
+
+  .paper-body em {
+    color: rgba(232, 228, 217, 0.85);
+    font-style: italic;
+  }
+
+  .paper-body a {
+    color: #d4af37;
+    text-decoration: underline;
+    text-decoration-color: rgba(212, 175, 55, 0.4);
+    text-underline-offset: 2px;
+    transition: all 0.15s ease;
+  }
+  .paper-body a:hover {
+    color: #e8c876;
+    text-decoration-color: #d4af37;
+  }
+
+  .paper-body ul, .paper-body ol {
+    color: rgba(232, 228, 217, 0.75);
+    line-height: 1.75;
+    margin-bottom: 1.25rem;
+    padding-left: 1.5rem;
+  }
+  .paper-body ul { list-style: none; }
+  .paper-body ul li {
+    position: relative;
+    padding-left: 1.25rem;
+    margin-bottom: 0.4rem;
+  }
+  .paper-body ul li::before {
+    content: '·';
+    color: #d4af37;
+    position: absolute;
+    left: 0;
+    font-size: 1.5rem;
+    line-height: 1;
+    top: 0.1em;
+  }
+  .paper-body ol {
+    list-style: decimal;
+  }
+  .paper-body ol li { margin-bottom: 0.4rem; padding-left: 0.25rem; }
+  .paper-body ol li::marker { color: #d4af37; }
+
+  .paper-body code {
+    font-family: 'JetBrains Mono', 'Courier New', monospace;
+    background: rgba(212, 175, 55, 0.08);
+    color: #e8c876;
+    padding: 0.1rem 0.4rem;
+    border-radius: 0.25rem;
+    font-size: 0.875em;
+  }
+  .paper-body pre {
+    background: rgba(11, 28, 61, 0.5);
+    border: 1px solid rgba(212, 175, 55, 0.15);
+    border-radius: 0.75rem;
+    padding: 1rem 1.25rem;
+    overflow-x: auto;
+    margin: 1.25rem 0;
+    font-size: 0.85rem;
+    line-height: 1.55;
+  }
+  .paper-body pre code {
+    background: none;
+    color: #e8e4d9;
+    padding: 0;
+  }
+
+  .paper-body blockquote {
+    border-left: 2px solid rgba(212, 175, 55, 0.4);
+    padding: 0.5rem 0 0.5rem 1.25rem;
+    margin: 1.25rem 0;
+    color: rgba(232, 228, 217, 0.7);
+    font-style: italic;
+  }
+
+  .paper-body hr {
+    border: none;
+    border-top: 1px solid rgba(212, 175, 55, 0.15);
+    margin: 3rem 0;
+  }
+
+  .paper-body table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 1.5rem 0;
+    font-size: 0.9rem;
+  }
+  .paper-body th, .paper-body td {
+    padding: 0.6rem 0.75rem;
+    text-align: left;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.15);
+  }
+  .paper-body th {
+    color: #d4af37;
+    font-family: 'Jost', sans-serif;
+    font-weight: 500;
+    letter-spacing: 0.03em;
+    border-bottom: 1px solid rgba(212, 175, 55, 0.35);
+    background: rgba(212, 175, 55, 0.03);
+  }
+  .paper-body td { color: rgba(232, 228, 217, 0.75); }
+</style>

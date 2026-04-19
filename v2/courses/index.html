@@ -83,10 +83,24 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 .ccard:hover .cstart-btn{opacity:1}
 .cbadge{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;background:rgba(196,151,58,0.15);border:1px solid rgba(196,151,58,0.4);color:var(--gold);padding:2px 8px;border-radius:2px}
 
+/* FILTERS */
+.filter-bar{max-width:1080px;margin:0 auto 2rem;padding:0 clamp(1.25rem,5vw,2.5rem);display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center}
+.filter-bar .filter-group{display:flex;flex-wrap:wrap;gap:0.4rem;align-items:center}
+.filter-bar .filter-group + .filter-group{margin-left:1rem;padding-left:1rem;border-left:1px solid rgba(255,255,255,0.06)}
+.filter-bar .filter-label{font-size:0.54rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-right:0.3rem;opacity:0.7}
+.ftab{font-size:0.58rem;letter-spacing:0.12em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif;white-space:nowrap}
+.ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.ftab.active{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.07)}
+.filter-count{font-size:0.62rem;letter-spacing:0.06em;color:var(--text-dim);margin-left:auto;opacity:0.75}
+
 /* EMPTY */
 .empty{text-align:center;padding:5rem 2rem;color:var(--text-dim);font-size:0.86rem}
 
-@media(max-width:600px){.courses-grid{grid-template-columns:1fr}}
+@media(max-width:600px){
+  .courses-grid{grid-template-columns:1fr}
+  .filter-bar .filter-group + .filter-group{margin-left:0;padding-left:0;border-left:none;width:100%;margin-top:0.5rem}
+  .filter-count{display:none}
+}
 </style>
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
@@ -116,6 +130,16 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
   <h1>Courses</h1>
   <p class="hero-desc">Structured paths through the ideas, practices, and sciences that matter most. Each course combines video, reflection, and reading.</p>
 </section>
+
+<div class="filter-bar" id="filter-bar" aria-label="Course filters">
+  <div class="filter-group" id="fg-level">
+    <span class="filter-label">Level</span>
+  </div>
+  <div class="filter-group" id="fg-domain">
+    <span class="filter-label">Domain</span>
+  </div>
+  <span class="filter-count" id="filter-count"></span>
+</div>
 
 <main>
   <div class="courses-grid" id="grid"></div>
@@ -177,10 +201,78 @@ function makeCard(c) {
 }
 
 const grid = document.getElementById('grid');
+
+// ── Filters ─────────────────────────────────────────────────────────
+let activeLevel = 'all';
+let activeDomain = 'all';
+
+function buildFilterBtn(id, label, kind) {
+  const btn = document.createElement('button');
+  btn.className = 'ftab';
+  btn.type = 'button';
+  btn.textContent = label;
+  btn.dataset.filter = id;
+  btn.dataset.kind = kind;
+  if (id === 'all') btn.classList.add('active');
+  btn.addEventListener('click', () => {
+    document.querySelectorAll(`.ftab[data-kind="${kind}"]`).forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    if (kind === 'level') activeLevel = id;
+    else if (kind === 'domain') activeDomain = id;
+    renderCourses();
+  });
+  return btn;
+}
+
+function buildFilters() {
+  const levelRow = document.getElementById('fg-level');
+  const domainRow = document.getElementById('fg-domain');
+  const levels = Array.from(new Set(COURSES.map(c => c.level))).filter(Boolean);
+  const domains = Array.from(new Set(COURSES.map(c => c.domain))).filter(Boolean);
+
+  levelRow.appendChild(buildFilterBtn('all', 'All', 'level'));
+  for (const l of levels) levelRow.appendChild(buildFilterBtn(l, l, 'level'));
+
+  domainRow.appendChild(buildFilterBtn('all', 'All', 'domain'));
+  for (const d of domains) domainRow.appendChild(buildFilterBtn(d, DOMAIN_LABELS[d] || d, 'domain'));
+}
+
+function renderCourses() {
+  const filtered = COURSES.filter(c => {
+    if (activeLevel !== 'all' && c.level !== activeLevel) return false;
+    if (activeDomain !== 'all' && c.domain !== activeDomain) return false;
+    return true;
+  });
+
+  grid.innerHTML = '';
+  const count = document.getElementById('filter-count');
+  if (!filtered.length) {
+    grid.innerHTML = '<div class="empty">No courses match these filters yet. <a href="#" style="color:var(--gold);text-decoration:underline;text-underline-offset:3px" onclick="resetCourseFilters();return false">Clear filters</a></div>';
+    if (count) count.textContent = `0 of ${COURSES.length}`;
+    return;
+  }
+  for (const c of filtered) grid.appendChild(makeCard(c));
+  if (count) {
+    count.textContent = (filtered.length === COURSES.length)
+      ? `${COURSES.length} course${COURSES.length !== 1 ? 's' : ''}`
+      : `${filtered.length} of ${COURSES.length} course${COURSES.length !== 1 ? 's' : ''}`;
+  }
+}
+
+function resetCourseFilters() {
+  activeLevel = 'all';
+  activeDomain = 'all';
+  document.querySelectorAll('.ftab').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
+  renderCourses();
+}
+
 if (!COURSES.length) {
   grid.innerHTML = '<div class="empty">No courses available yet.</div>';
+  const bar = document.getElementById('filter-bar');
+  if (bar) bar.style.display = 'none';
 } else {
-  for (const c of COURSES) grid.appendChild(makeCard(c));
+  buildFilters();
+  renderCourses();
 }
 </script>
 </body>

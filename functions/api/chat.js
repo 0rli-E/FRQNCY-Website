@@ -27,7 +27,9 @@ const RATE_MAX       = 20;
 const rateBuckets    = new Map();
 
 function checkRateLimit(ip) {
-  if (!ip) return false;
+  // If we can't identify a caller, treat as rate-limited (fail-closed) to prevent
+  // spoofed/missing IP headers from bypassing the limiter.
+  if (!ip) return true;
   const now = Date.now();
   let bucket = rateBuckets.get(ip);
   if (!bucket || now >= bucket.resetAt) {
@@ -81,33 +83,36 @@ export async function onRequestPost({ request, env }) {
   const CORS_HEADERS = getCorsHeaders(request);
   const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For');
   if (checkRateLimit(ip)) {
-    return jsonError('Too many requests — please wait a moment and try again.', 429);
+    return jsonError('Too many requests — please wait a moment and try again.', 429, CORS_HEADERS);
   }
 
   // Check for Workers AI binding
   if (!env.AI) {
-    return jsonError('Workers AI binding not configured. Add an AI binding in Cloudflare Pages → Settings → Bindings.', 500);
+    return jsonError('Workers AI binding not configured. Add an AI binding in Cloudflare Pages → Settings → Bindings.', 500, CORS_HEADERS);
   }
 
   let body;
   try { body = await request.json(); }
-  catch { return jsonError('Invalid JSON body', 400); }
+  catch { return jsonError('Invalid JSON body', 400, CORS_HEADERS); }
 
   const { messages } = body;
   if (!Array.isArray(messages) || messages.length === 0) {
-    return jsonError('messages array required', 400);
+    return jsonError('messages array required', 400, CORS_HEADERS);
   }
 
-  // Validate, sanitise, and trim history
+  // Validate, sanitise, and trim history. Only allow user/assistant roles —
+  // any other role (including "system") is rejected rather than coerced to user,
+  // to prevent prompt-injection through arbitrary role labels.
   const clean = messages
-    .filter(m => m && typeof m.role === 'string' && typeof m.content === 'string')
+    .filter(m => m && typeof m.role === 'string' && typeof m.content === 'string'
+      && (m.role === 'user' || m.role === 'assistant'))
     .map(m => ({
-      role:    m.role === 'assistant' ? 'assistant' : 'user',
+      role:    m.role,
       content: String(m.content).slice(0, MAX_CONTENT),
     }))
     .slice(-MAX_HISTORY);
 
-  if (clean.length === 0) return jsonError('No valid messages', 400);
+  if (clean.length === 0) return jsonError('No valid messages', 400, CORS_HEADERS);
 
   try {
     const result = await env.AI.run(MODEL, {
@@ -147,13 +152,13 @@ export async function onRequestPost({ request, env }) {
     });
 
   } catch (err) {
-    return jsonError('AI service temporarily unavailable — please try again.', 502);
+    return jsonError('AI service temporarily unavailable — please try again.', 502, CORS_HEADERS);
   }
 }
 
-function jsonError(message, status = 400) {
+function jsonError(message, status = 400, corsHeaders = {}) {
   return new Response(JSON.stringify({ error: message }), {
     status,
-    headers: { 'Content-Type': 'application/json', ...CORS_HEADERS },
+    headers: { 'Content-Type': 'application/json', ...corsHeaders },
   });
 }

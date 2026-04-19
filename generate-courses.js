@@ -32,6 +32,13 @@ function esc(s) {
     .replace(/"/g, '&quot;');
 }
 
+// Validate accent is a hex colour — otherwise a malformed value would break
+// the inline <style>  :root{--accent:...} declaration for the whole page.
+const DEFAULT_COURSE_ACCENT = '#C4973A';
+function safeAccent(hex) {
+  return (typeof hex === 'string' && /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(hex)) ? hex : DEFAULT_COURSE_ACCENT;
+}
+
 function lessonTypeIcon(type) {
   if (type === 'video')      return `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>`;
   if (type === 'reflection') return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg>`;
@@ -150,10 +157,13 @@ function buildPage(c) {
 <title>${esc(c.title)} — FRQNCY Courses</title>
 <meta name="description" content="${esc(c.desc)}">
 <meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="article">
 <meta property="og:title" content="${esc(c.title)} — FRQNCY Courses">
 <meta property="og:description" content="${esc(c.desc)}">
 <meta property="og:url" content="https://frqncy.network/v2/courses/${esc(c.slug)}/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:site_name" content="FRQNCY">
 <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="manifest" href="../../../manifest.json">
@@ -166,7 +176,7 @@ function buildPage(c) {
 :root{
   --navy:#0B1C3D;--navy-dark:#08152e;--gold:#C4973A;--gold-light:#E0C06A;
   --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
-  --card-border:rgba(255,255,255,0.08);--accent:${c.accent};--sidebar-w:290px;
+  --card-border:rgba(255,255,255,0.08);--accent:${safeAccent(c.accent)};--sidebar-w:290px;
 }
 html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
 a{text-decoration:none;color:var(--accent)}
@@ -719,7 +729,7 @@ function buildHubPage(courses) {
     level:    c.level,
     domain:   c.domain,
     duration: c.duration,
-    accent:   c.accent,
+    accent:   safeAccent(c.accent),
     lessons:  c.lessons.map(l => ({ id: l.id, title: l.title, type: l.type }))
   })));
 

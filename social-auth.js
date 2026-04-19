@@ -54,21 +54,27 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
 
   /* ── Helpers ─────────────────────────────────────────────────── */
 
-  /** Extract initials from user metadata or email */
+  /** Extract initials from user metadata or email (safe against null/partial user objects) */
   function getInitials(user) {
+    if (!user) return '?';
     const meta = user.user_metadata || {};
     const name = meta.display_name || meta.full_name || meta.name || '';
     if (name) {
-      const parts = name.trim().split(/\s+/);
-      return (parts[0][0] + (parts.length > 1 ? parts[parts.length - 1][0] : '')).toUpperCase();
+      const parts = name.trim().split(/\s+/).filter(Boolean);
+      if (parts.length === 0) return '?';
+      const first = parts[0][0] || '';
+      const last  = parts.length > 1 ? (parts[parts.length - 1][0] || '') : '';
+      return (first + last).toUpperCase() || '?';
     }
-    return (user.email || '?')[0].toUpperCase();
+    const email = user.email || '';
+    return (email[0] || '?').toUpperCase();
   }
 
-  /** Extract username (fallback to user id) */
+  /** Extract username (fallback to user id, then empty string — never undefined) */
   function getUsername(user) {
+    if (!user) return '';
     const meta = user.user_metadata || {};
-    return meta.username || meta.preferred_username || user.id;
+    return meta.username || meta.preferred_username || user.id || '';
   }
 
   /** Build the bell icon (lightweight SVG) */

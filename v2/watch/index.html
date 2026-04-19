@@ -3,12 +3,12 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Watch — FRQNCY Network</title>
-<meta name="description" content="Curated talks, documentaries, and teachings across consciousness, science, wellbeing, and beyond.">
+<title>The Library — FRQNCY Network</title>
+<meta name="description" content="A spiritual library for the age of seekers. Curated talks, teachings, and guided practices across consciousness, science, healing, and mystery.">
 <meta name="theme-color" content="#0B1C3D">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Watch — FRQNCY Network">
-<meta property="og:description" content="Curated talks, documentaries, and teachings across consciousness, science, wellbeing, and beyond.">
+<meta property="og:title" content="The Library — FRQNCY Network">
+<meta property="og:description" content="A spiritual library for the age of seekers. Curated talks, teachings, and guided practices.">
 <meta property="og:url" content="https://frqncy.network/v2/watch/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:site_name" content="FRQNCY">
@@ -17,28 +17,40 @@
 <link rel="canonical" href="https://frqncy.network/v2/watch/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
-  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
-  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
-  --card-border:rgba(255,255,255,0.08);--accent:#4A7AE8;--accent-glow:rgba(74,122,232,0.12);
+  --navy:#0B1C3D;--navy-mid:#0D2451;--navy-deep:#070F23;
+  --gold:#C4973A;--gold-light:#E0C06A;--gold-glow:rgba(196,151,58,0.14);
+  --parchment:rgba(232,201,125,0.04);
+  --text:#C8D8F0;--text-dim:#7090B8;--text-mute:#4F6A8F;
+  --card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);
+  --accent:#4A7AE8;--accent-glow:rgba(74,122,232,0.12);
+  --indigo:#7C6CEA;--sunrise:#E8A87C;
 }
 html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+body{
+  background:
+    radial-gradient(ellipse 90% 50% at 50% 0%, rgba(196,151,58,0.08) 0%, transparent 55%),
+    radial-gradient(ellipse 70% 60% at 50% 100%, rgba(74,122,232,0.06) 0%, transparent 60%),
+    var(--navy);
+  background-attachment: fixed;
+}
 a{color:var(--accent);text-decoration:none}
 a:hover{opacity:0.8}
+::selection{background:var(--gold);color:var(--navy)}
 
 /* ── NAV ─────────────────────────────────────────────────────────── */
 nav.snav{
   position:fixed;top:0;left:0;right:0;z-index:100;
-  background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  background:rgba(11,28,61,0.94);backdrop-filter:blur(18px);-webkit-backdrop-filter:blur(18px);
   border-bottom:1px solid rgba(255,255,255,0.06);
   padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;
   display:flex;align-items:center;justify-content:space-between;gap:1rem;
 }
 .snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
-.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.15rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.9;transition:opacity .2s}
 .snav-logo:hover{opacity:1}
 .breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .breadcrumb a{color:var(--text-dim);transition:color .2s}
@@ -50,36 +62,347 @@ nav.snav{
 .snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
 .snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28);opacity:1}
 
-/* ── HERO ─────────────────────────────────────────────────────────── */
-.hero{margin-top:56px;padding:clamp(2.5rem,6vw,4.5rem) clamp(1.25rem,5vw,2.5rem) clamp(1.5rem,3vw,2.5rem);text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
-.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
-.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.2rem,5vw,4rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:0.9rem}
-.hero-desc{max-width:480px;margin:0 auto;font-size:0.86rem;color:var(--text-dim);font-weight:300;line-height:1.7}
+/* ── HERO (The Library) ────────────────────────────────────────── */
+.hero{
+  margin-top:56px;
+  padding:clamp(3rem,7vw,5.5rem) clamp(1.25rem,5vw,2.5rem) clamp(2rem,4vw,3rem);
+  position:relative;overflow:hidden;
+  max-width:1200px;margin-left:auto;margin-right:auto;
+  text-align:center;
+}
+.hero::after{
+  content:'';position:absolute;left:50%;bottom:0;transform:translateX(-50%);
+  width:64px;height:1px;background:var(--gold);opacity:0.55;
+}
+.hero-eyebrow{
+  display:inline-flex;align-items:center;gap:0.75rem;
+  font-size:0.58rem;letter-spacing:0.36em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1.4rem;font-weight:400;
+}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'✦';font-size:0.65rem;opacity:0.75;letter-spacing:0}
+.hero h1{
+  font-family:'Cormorant',serif;
+  font-size:clamp(3rem,7vw,5.5rem);
+  font-weight:300;color:#fff;line-height:1.02;
+  margin-bottom:1.2rem;letter-spacing:-0.01em;
+}
+.hero h1 em{font-style:italic;color:var(--gold-light);font-weight:400}
+.hero-desc{
+  max-width:560px;margin:0 auto 0;
+  font-family:'Cormorant',serif;font-style:italic;
+  font-size:clamp(1rem,1.5vw,1.18rem);color:var(--text);
+  font-weight:300;line-height:1.55;
+}
+.hero-meta{
+  margin-top:2rem;display:flex;align-items:center;justify-content:center;
+  gap:2.25rem;flex-wrap:wrap;
+  font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-dim);
+}
+.hero-meta-item{display:flex;align-items:baseline;gap:0.5rem}
+.hero-meta-num{font-family:'Cormorant',serif;font-size:1.4rem;font-style:italic;color:var(--gold-light);letter-spacing:0}
 
-/* ── CONTROLS ─────────────────────────────────────────────────────── */
-.controls{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 1.5rem;display:flex;flex-direction:column;gap:0.9rem}
+/* ── FEATURED CHAPTER ─────────────────────────────────────────── */
+.featured{
+  max-width:1200px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) clamp(2.5rem,5vw,4rem);
+}
+.featured-card{
+  position:relative;
+  background:linear-gradient(135deg, rgba(13,36,81,0.9) 0%, rgba(11,28,61,0.7) 60%, rgba(7,15,35,0.85) 100%);
+  border:1px solid rgba(196,151,58,0.22);
+  border-radius:6px;
+  overflow:hidden;
+  display:grid;grid-template-columns:minmax(0,1.1fr) minmax(0,1fr);
+  min-height:340px;
+  box-shadow:
+    0 1px 0 rgba(196,151,58,0.08) inset,
+    0 12px 48px rgba(0,0,0,0.35);
+}
+.featured-card::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg, var(--gold) 0%, rgba(196,151,58,0.18) 100%);
+  z-index:2;
+}
+.featured-meta{
+  padding:clamp(2rem,3.5vw,3rem) clamp(1.75rem,3vw,2.75rem);
+  display:flex;flex-direction:column;justify-content:center;gap:1rem;
+}
+.featured-label{
+  font-size:0.58rem;letter-spacing:0.34em;text-transform:uppercase;
+  color:var(--gold);font-weight:500;
+  display:inline-flex;align-items:center;gap:0.6rem;
+}
+.featured-label::before{content:'✦';opacity:0.8}
+.featured-title{
+  font-family:'Cormorant',serif;
+  font-size:clamp(1.9rem,3.2vw,2.6rem);
+  font-weight:400;color:#fff;line-height:1.1;letter-spacing:-0.005em;
+}
+.featured-title em{font-style:italic;color:var(--gold-light)}
+.featured-sub{
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.05rem;
+  color:var(--gold-light);opacity:0.9;margin-top:-0.25rem;
+}
+.featured-desc{font-size:0.88rem;color:var(--text-dim);line-height:1.7;max-width:420px}
+.featured-cta{
+  margin-top:0.5rem;display:inline-flex;align-items:center;gap:0.65rem;
+  font-size:0.64rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:var(--gold);align-self:flex-start;
+  padding:9px 18px;border:1px solid rgba(196,151,58,0.35);border-radius:2px;
+  background:transparent;cursor:pointer;font-family:'Jost',sans-serif;font-weight:400;
+  transition:all .22s;
+}
+.featured-cta:hover{background:rgba(196,151,58,0.08);border-color:var(--gold);color:var(--gold-light)}
+.featured-cta svg{transition:transform .22s}
+.featured-cta:hover svg{transform:translateX(3px)}
+.featured-stack{
+  position:relative;display:flex;align-items:center;justify-content:center;
+  padding:clamp(1.5rem,3vw,2.5rem);overflow:hidden;
+}
+.featured-stack::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 50%, rgba(196,151,58,0.12) 0%, transparent 65%);
+}
+.stack-wrap{position:relative;width:100%;max-width:340px;aspect-ratio:16/9}
+.stack-card{
+  position:absolute;inset:0;border-radius:4px;overflow:hidden;
+  box-shadow:0 10px 28px rgba(0,0,0,0.45);
+  border:1px solid rgba(255,255,255,0.08);
+  background:#0a1428;
+}
+.stack-card img{width:100%;height:100%;object-fit:cover;display:block}
+.stack-card:nth-child(1){transform:translate(-30px,-18px) rotate(-4deg);opacity:0.55;z-index:1}
+.stack-card:nth-child(2){transform:translate(-10px,-6px) rotate(-1.5deg);opacity:0.85;z-index:2}
+.stack-card:nth-child(3){transform:translate(0,0) rotate(0deg);opacity:1;z-index:3}
+.stack-badge{
+  position:absolute;top:8px;left:8px;z-index:5;
+  background:rgba(196,151,58,0.95);color:var(--navy);
+  font-size:0.5rem;letter-spacing:0.16em;text-transform:uppercase;font-weight:500;
+  padding:3px 8px;border-radius:2px;
+}
+@media(max-width:820px){
+  .featured-card{grid-template-columns:1fr;min-height:auto}
+  .featured-stack{order:-1;padding:2rem 1.5rem 0}
+  .stack-wrap{max-width:280px}
+}
+
+/* ── CONTROLS ─────────────────────────────────────────────────── */
+.controls-bar{
+  max-width:1200px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) 2rem;
+  display:flex;flex-direction:column;gap:1rem;
+}
 .search-row{display:flex;gap:0.75rem;align-items:center}
 .search-wrap{flex:1;position:relative}
-.search-wrap svg{position:absolute;left:12px;top:50%;transform:translateY(-50%);opacity:0.3;pointer-events:none;flex-shrink:0}
+.search-wrap svg{position:absolute;left:14px;top:50%;transform:translateY(-50%);opacity:0.35;pointer-events:none}
 #search{
   width:100%;
-  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);border-radius:2px;
-  padding:10px 16px 10px 38px;
-  color:#fff;font-family:'Jost',sans-serif;font-size:0.82rem;font-weight:300;letter-spacing:0.05em;
-  outline:none;transition:border-color .2s;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:2px;
+  padding:11px 16px 11px 40px;
+  color:#fff;font-family:'Jost',sans-serif;font-size:0.84rem;font-weight:300;letter-spacing:0.04em;
+  outline:none;transition:border-color .2s,background .2s;
 }
-#search::placeholder{color:rgba(255,255,255,0.25)}
-#search:focus{border-color:rgba(255,255,255,0.22)}
-.result-count{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);white-space:nowrap;min-width:72px;text-align:right}
+#search::placeholder{color:rgba(255,255,255,0.3);font-style:italic}
+#search:focus{border-color:rgba(196,151,58,0.4);background:rgba(255,255,255,0.06)}
+.result-count{font-size:0.68rem;letter-spacing:0.08em;color:var(--text-dim);white-space:nowrap;min-width:72px;text-align:right}
+.view-toggle{
+  display:flex;gap:0;border:1px solid rgba(255,255,255,0.12);border-radius:2px;overflow:hidden;flex-shrink:0;
+}
+.view-toggle button{
+  padding:8px 14px;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--text-dim);background:transparent;border:none;cursor:pointer;
+  font-family:'Jost',sans-serif;font-weight:400;transition:all .2s;
+}
+.view-toggle button:not(:last-child){border-right:1px solid rgba(255,255,255,0.1)}
+.view-toggle button.active{background:rgba(196,151,58,0.1);color:var(--gold)}
+.view-toggle button:hover:not(.active){color:var(--text)}
 
-.filter-row{display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center}
-.filter-label{font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-right:0.25rem;flex-shrink:0}
+/* ── SHELVES (playlist rows) ─────────────────────────────────── */
+.library{max-width:1400px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 4rem}
+.collection{margin-bottom:clamp(2.5rem,4vw,3.75rem)}
+.collection-head{
+  display:flex;align-items:baseline;gap:1rem;
+  margin-bottom:1.3rem;
+  padding-bottom:0.85rem;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+}
+.collection-num{
+  font-family:'Cormorant',serif;font-style:italic;font-size:0.95rem;
+  color:var(--gold);letter-spacing:0.1em;opacity:0.9;
+  font-variant-numeric:oldstyle-nums;min-width:2ch;
+}
+.collection-title{
+  font-family:'Cormorant',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);
+  font-weight:400;color:#fff;letter-spacing:-0.005em;
+}
+.collection-sub{
+  font-family:'Cormorant',serif;font-style:italic;
+  font-size:clamp(0.92rem,1.2vw,1.05rem);color:var(--text-dim);
+  margin-left:auto;text-align:right;max-width:50%;
+}
+.shelf{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));
+  gap:1rem;
+}
+
+/* ── PLAYLIST CARD (tome) ────────────────────────────────────── */
+.pcard{
+  position:relative;
+  background:linear-gradient(145deg, rgba(13,36,81,0.75) 0%, rgba(11,28,61,0.55) 100%);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:4px;
+  padding:0;cursor:pointer;overflow:hidden;
+  transition:all .28s cubic-bezier(0.4,0,0.2,1);
+  display:flex;flex-direction:column;min-height:220px;
+}
+.pcard::before{
+  content:'';position:absolute;left:0;top:0;bottom:0;width:4px;
+  background:var(--gold);opacity:0.8;transition:opacity .22s,width .22s;
+}
+.pcard.accent-indigo::before{background:var(--indigo)}
+.pcard.accent-sunrise::before{background:var(--sunrise)}
+.pcard:hover{border-color:rgba(196,151,58,0.3);transform:translateY(-3px);background:linear-gradient(145deg, rgba(15,42,92,0.9) 0%, rgba(13,32,68,0.7) 100%)}
+.pcard:hover::before{width:6px;opacity:1}
+.pcard.accent-indigo:hover{border-color:rgba(124,108,234,0.35)}
+.pcard.accent-sunrise:hover{border-color:rgba(232,168,124,0.35)}
+
+.pcard-mosaic{
+  position:relative;width:100%;aspect-ratio:16/9;
+  background:#0a1428;overflow:hidden;
+  display:grid;grid-template-columns:1fr 1fr;gap:1px;
+}
+.pcard-mosaic-single{grid-template-columns:1fr}
+.pcard-mosaic img{width:100%;height:100%;object-fit:cover;display:block;opacity:0.72;transition:opacity .25s}
+.pcard:hover .pcard-mosaic img{opacity:0.92}
+.pcard-mosaic::after{
+  content:'';position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(180deg, rgba(7,15,35,0) 45%, rgba(7,15,35,0.55) 100%);
+}
+.pcard-count{
+  position:absolute;bottom:8px;right:10px;z-index:2;
+  font-size:0.55rem;letter-spacing:0.2em;text-transform:uppercase;
+  color:rgba(255,255,255,0.85);
+  background:rgba(0,0,0,0.55);backdrop-filter:blur(8px);
+  padding:4px 9px;border-radius:2px;font-weight:400;
+}
+
+.pcard-body{padding:1rem 1.2rem 1.1rem;flex:1;display:flex;flex-direction:column;gap:0.3rem}
+.pcard-label{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);opacity:0.8;margin-bottom:0.2rem;font-weight:500}
+.pcard.accent-indigo .pcard-label{color:var(--indigo);opacity:0.9}
+.pcard.accent-sunrise .pcard-label{color:var(--sunrise);opacity:0.9}
+.pcard-title{font-family:'Cormorant',serif;font-size:1.3rem;font-weight:500;color:#fff;line-height:1.15;letter-spacing:-0.005em}
+.pcard-sub{font-family:'Cormorant',serif;font-style:italic;font-size:0.88rem;color:var(--gold-light);opacity:0.85;line-height:1.3}
+.pcard.accent-indigo .pcard-sub{color:var(--indigo);opacity:0.9}
+.pcard.accent-sunrise .pcard-sub{color:var(--sunrise);opacity:0.9}
+.pcard-desc{font-size:0.72rem;color:var(--text-dim);line-height:1.55;margin-top:0.3rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard-footer{display:flex;align-items:center;justify-content:space-between;margin-top:auto;padding-top:0.85rem;border-top:1px solid rgba(255,255,255,0.06)}
+.pcard-dur{font-size:0.6rem;letter-spacing:0.1em;color:var(--text-mute);font-variant-numeric:tabular-nums}
+.pcard-open{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);opacity:0.75;display:inline-flex;align-items:center;gap:0.4rem;transition:opacity .2s,gap .2s}
+.pcard:hover .pcard-open{opacity:1;gap:0.6rem}
+
+/* ── PLAYLIST DETAIL PANEL ──────────────────────────────────── */
+.panel-overlay{
+  position:fixed;inset:0;z-index:150;
+  background:rgba(5,12,28,0.85);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.panel-overlay.open{opacity:1;pointer-events:all}
+.panel{
+  position:fixed;top:0;right:0;bottom:0;z-index:160;
+  width:min(620px,100%);
+  background:linear-gradient(180deg, #0D2451 0%, #0B1C3D 100%);
+  border-left:1px solid rgba(196,151,58,0.2);
+  transform:translateX(100%);transition:transform .32s cubic-bezier(0.4,0,0.2,1);
+  overflow-y:auto;
+  display:flex;flex-direction:column;
+}
+.panel.open{transform:translateX(0)}
+.panel-head{
+  padding:1.75rem 2rem 1.5rem;
+  border-bottom:1px solid rgba(255,255,255,0.07);
+  display:flex;align-items:flex-start;justify-content:space-between;gap:1.2rem;
+  flex-shrink:0;
+  position:sticky;top:0;
+  background:linear-gradient(180deg, #0D2451 70%, rgba(13,36,81,0.8) 100%);
+  backdrop-filter:blur(12px);z-index:2;
+}
+.panel-meta{flex:1;min-width:0}
+.panel-label{font-size:0.55rem;letter-spacing:0.26em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem;font-weight:500}
+.panel-title{font-family:'Cormorant',serif;font-size:2rem;font-weight:500;color:#fff;line-height:1.1;margin-bottom:0.3rem}
+.panel-sub{font-family:'Cormorant',serif;font-style:italic;font-size:1.05rem;color:var(--gold-light);opacity:0.9;margin-bottom:0.85rem}
+.panel-desc{font-size:0.86rem;color:var(--text-dim);line-height:1.65;max-width:480px}
+.panel-close{
+  background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.1);
+  cursor:pointer;width:34px;height:34px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);font-size:1.05rem;line-height:1;transition:all .2s;
+}
+.panel-close:hover{color:#fff;background:rgba(255,255,255,0.1);border-color:rgba(196,151,58,0.35)}
+.panel-list{padding:0.75rem 0 2.5rem;flex:1}
+.panel-item{
+  display:flex;gap:1rem;align-items:flex-start;
+  padding:1.1rem 2rem;cursor:pointer;
+  transition:background .2s;border-left:2px solid transparent;
+}
+.panel-item:hover{background:rgba(255,255,255,0.03);border-left-color:var(--gold)}
+.panel-num{
+  flex-shrink:0;width:28px;text-align:right;
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.1rem;
+  color:var(--gold);opacity:0.7;line-height:1.2;padding-top:2px;
+  font-variant-numeric:oldstyle-nums;
+}
+.panel-thumb{
+  flex-shrink:0;width:112px;aspect-ratio:16/9;border-radius:3px;overflow:hidden;
+  background:#0a1428;position:relative;
+}
+.panel-thumb img{width:100%;height:100%;object-fit:cover;display:block}
+.panel-thumb::after{
+  content:'';position:absolute;inset:0;
+  background:rgba(0,0,0,0.2);transition:background .2s;
+}
+.panel-item:hover .panel-thumb::after{background:rgba(0,0,0,0)}
+.panel-thumb-play{
+  position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);
+  width:28px;height:28px;border-radius:50%;
+  background:rgba(255,255,255,0.22);border:1.5px solid rgba(255,255,255,0.4);
+  display:flex;align-items:center;justify-content:center;
+  opacity:0;transition:opacity .2s;z-index:2;
+}
+.panel-thumb-play svg{width:11px;height:11px;fill:#fff;margin-left:2px}
+.panel-item:hover .panel-thumb-play{opacity:1}
+.panel-info{flex:1;min-width:0;padding-top:2px}
+.panel-topic{font-size:0.5rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.35rem;opacity:0.85}
+.panel-vtitle{font-family:'Cormorant',serif;font-size:1.02rem;font-weight:500;color:#fff;line-height:1.25;margin-bottom:0.2rem}
+.panel-vchannel{font-size:0.68rem;color:var(--text-dim);display:flex;align-items:center;gap:0.4rem}
+.panel-vchannel .dur{color:var(--text-mute)}
+@media(max-width:640px){
+  .panel{width:100%;border-left:none}
+  .panel-head{padding:1.5rem 1.25rem 1.25rem}
+  .panel-item{padding:0.9rem 1.25rem;gap:0.75rem}
+  .panel-thumb{width:96px}
+  .panel-title{font-size:1.65rem}
+}
+
+/* ── STACKS (all videos grid) ───────────────────────────────── */
+.stacks-head{
+  max-width:1200px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) 1.3rem;
+  display:flex;align-items:baseline;gap:1rem;justify-content:space-between;
+}
+.stacks-head h2{font-family:'Cormorant',serif;font-size:clamp(1.6rem,2.5vw,2.1rem);font-weight:400;color:#fff;letter-spacing:-0.005em}
+.stacks-head p{font-family:'Cormorant',serif;font-style:italic;font-size:clamp(0.9rem,1.1vw,1rem);color:var(--text-dim)}
+
+.filter-row{
+  max-width:1200px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) 1.5rem;
+  display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center;
+}
+.filter-label{font-size:0.54rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-right:0.25rem;flex-shrink:0}
 .ftab{
   font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;
   padding:4px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;
-  cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif;
+  cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif;font-weight:400;
   white-space:nowrap;
 }
 .ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
@@ -88,52 +411,39 @@ nav.snav{
 .ftab.picks-tab{color:var(--gold);border-color:rgba(196,151,58,0.35)}
 .ftab.picks-tab:hover{border-color:var(--gold);background:rgba(196,151,58,0.05)}
 
-/* ── GRID ─────────────────────────────────────────────────────────── */
-main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
-.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:1.25rem}
+main.stacks{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
+.video-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1rem}
 
-/* ── SKELETON ─────────────────────────────────────────────────────── */
-.skeleton{background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;overflow:hidden;animation:shimmer 1.4s ease infinite}
-.skeleton-thumb{width:100%;aspect-ratio:16/9;background:rgba(255,255,255,0.06)}
-.skeleton-body{padding:0.9rem 1rem}
-.skeleton-line{height:10px;border-radius:4px;background:rgba(255,255,255,0.06);margin-bottom:8px}
-.skeleton-line.short{width:55%}
-.skeleton-line.xshort{width:35%}
-@keyframes shimmer{0%{opacity:1}50%{opacity:0.5}100%{opacity:1}}
-
-/* ── VIDEO CARD ───────────────────────────────────────────────────── */
+/* ── VIDEO CARD ──────────────────────────────────────────────── */
 .vcard{
-  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:3px;
   overflow:hidden;cursor:pointer;
   transition:border-color .22s,transform .22s,background .22s;
   display:flex;flex-direction:column;
 }
-.vcard:hover{border-color:rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);transform:translateY(-2px)}
+.vcard:hover{border-color:rgba(196,151,58,0.25);background:rgba(255,255,255,0.05);transform:translateY(-2px)}
 .vcard:active{transform:translateY(0);transition-duration:.1s}
 .vthumb{position:relative;width:100%;aspect-ratio:16/9;background:#0a1428;overflow:hidden;flex-shrink:0}
 .vthumb img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
 .vcard:hover .vthumb img{transform:scale(1.04)}
-
-/* Play overlay — always dim, button visible; brightens on hover */
 .vplay{
   position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
   background:rgba(0,0,0,0.22);transition:background .2s;
 }
-.vcard:hover .vplay{background:rgba(0,0,0,0.38)}
+.vcard:hover .vplay{background:rgba(0,0,0,0.4)}
 .vplay-btn{
-  width:48px;height:48px;border-radius:50%;
-  background:rgba(255,255,255,0.18);backdrop-filter:blur(4px);
+  width:44px;height:44px;border-radius:50%;
+  background:rgba(255,255,255,0.15);backdrop-filter:blur(4px);
   border:1.5px solid rgba(255,255,255,0.35);
   display:flex;align-items:center;justify-content:center;
   transition:background .2s,transform .2s;
 }
-.vcard:hover .vplay-btn{background:rgba(255,255,255,0.28);transform:scale(1.08)}
-.vplay-btn svg{width:18px;height:18px;fill:#fff;margin-left:3px}
-
+.vcard:hover .vplay-btn{background:rgba(196,151,58,0.3);border-color:var(--gold);transform:scale(1.08)}
+.vplay-btn svg{width:16px;height:16px;fill:#fff;margin-left:3px}
 .vdur{
   position:absolute;bottom:8px;right:8px;
   background:rgba(0,0,0,0.78);color:#fff;
-  font-family:'Jost',sans-serif;font-size:0.6rem;letter-spacing:0.04em;
+  font-family:'Jost',sans-serif;font-size:0.58rem;letter-spacing:0.04em;
   padding:2px 7px;border-radius:2px;
 }
 .vpick{
@@ -142,22 +452,27 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
   font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;
   padding:2px 7px;border-radius:2px;
 }
-.vinfo{padding:0.9rem 1rem 1rem;flex:1;display:flex;flex-direction:column;gap:0.25rem}
-.vtopic{font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent)}
-.vtitle{font-family:'Cormorant',serif;font-size:1.08rem;font-weight:400;color:#fff;line-height:1.25}
-.vchannel{font-size:0.68rem;color:var(--text-dim)}
-.vdesc-card{font-size:0.72rem;color:var(--text-dim);line-height:1.5;margin-top:0.2rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.vprov{position:absolute;bottom:6px;left:6px;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.12em;text-transform:uppercase;padding:2px 6px;border-radius:2px}
-.vthumb-fallback{width:100%;height:100%}
-.vplay-ext{opacity:0.92}
-.vplay-btn-ext{border-style:dashed}
+.vinfo{padding:0.85rem 1rem 1rem;flex:1;display:flex;flex-direction:column;gap:0.22rem}
+.vtopic{font-size:0.52rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);opacity:0.9}
+.vtitle{font-family:'Cormorant',serif;font-size:1.05rem;font-weight:500;color:#fff;line-height:1.22}
+.vchannel{font-size:0.66rem;color:var(--text-dim)}
+.vdesc-card{font-size:0.7rem;color:var(--text-dim);line-height:1.5;margin-top:0.2rem;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
 
-/* ── EMPTY ─────────────────────────────────────────────────────────── */
+/* ── SKELETON ─────────────────────────────────────────────── */
+.skeleton{background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;overflow:hidden;animation:shimmer 1.4s ease infinite}
+.skeleton-thumb{width:100%;aspect-ratio:16/9;background:rgba(255,255,255,0.05)}
+.skeleton-body{padding:0.85rem 1rem}
+.skeleton-line{height:10px;border-radius:4px;background:rgba(255,255,255,0.05);margin-bottom:8px}
+.skeleton-line.short{width:55%}
+.skeleton-line.xshort{width:35%}
+@keyframes shimmer{0%{opacity:1}50%{opacity:0.55}100%{opacity:1}}
+
+/* ── EMPTY ────────────────────────────────────────────────── */
 .empty{text-align:center;padding:5rem 2rem;grid-column:1/-1}
 .empty-icon{font-size:2rem;margin-bottom:1rem;opacity:0.3}
-.empty p{color:var(--text-dim);font-size:0.86rem;line-height:1.75}
+.empty p{color:var(--text-dim);font-size:0.84rem;line-height:1.75;font-family:'Cormorant',serif;font-style:italic}
 
-/* ── MODAL ─────────────────────────────────────────────────────────── */
+/* ── MODAL (video player) ───────────────────────────────────── */
 .modal-overlay{
   position:fixed;inset:0;z-index:200;
   background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
@@ -167,7 +482,7 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 .modal-overlay.open{opacity:1;pointer-events:all}
 .modal-box{
   width:100%;max-width:880px;
-  background:#0c1e42;border:1px solid rgba(255,255,255,0.1);border-radius:6px;
+  background:#0c1e42;border:1px solid rgba(196,151,58,0.2);border-radius:6px;
   overflow:hidden;transform:translateY(12px) scale(0.98);transition:transform .25s;
   display:flex;flex-direction:column;max-height:92vh;
 }
@@ -177,7 +492,7 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 .modal-footer{padding:1.1rem 1.4rem;display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;border-top:1px solid rgba(255,255,255,0.07)}
 .modal-meta{flex:1;min-width:0}
 .modal-topic{font-size:0.53rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:0.3rem}
-.modal-title{font-family:'Cormorant',serif;font-size:1.3rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:0.2rem}
+.modal-title{font-family:'Cormorant',serif;font-size:1.35rem;font-weight:500;color:#fff;line-height:1.2;margin-bottom:0.25rem}
 .modal-channel{font-size:0.7rem;color:var(--text-dim);margin-bottom:0.5rem}
 .modal-desc{font-size:0.78rem;color:var(--text-dim);line-height:1.6}
 .modal-close{
@@ -186,34 +501,31 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
   display:flex;align-items:center;justify-content:center;
   color:var(--text-dim);font-size:1rem;line-height:1;transition:all .2s;
 }
-.modal-close:hover{color:#fff;background:rgba(255,255,255,0.12);border-color:rgba(255,255,255,0.22)}
-/* Embed error fallback (Error 153 / embedding disabled / file://) */
-.modal-embed-error{
-  display:none;width:100%;aspect-ratio:16/9;background:#080f20;
-  flex-direction:column;align-items:center;justify-content:center;gap:1.25rem;
-  text-align:center;padding:2rem;
-}
+.modal-close:hover{color:#fff;background:rgba(255,255,255,0.12);border-color:rgba(196,151,58,0.35)}
+.modal-embed-error{display:none;width:100%;aspect-ratio:16/9;background:#080f20;flex-direction:column;align-items:center;justify-content:center;gap:1.25rem;text-align:center;padding:2rem}
 .modal-embed-error.visible{display:flex}
 .modal-embed-error svg{opacity:0.3}
 .modal-embed-error p{font-size:0.82rem;color:var(--text-dim);line-height:1.6;max-width:340px}
-.modal-embed-error a{
-  display:inline-flex;align-items:center;gap:0.5rem;
-  font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;
-  color:var(--accent);border:1px solid rgba(74,122,232,0.35);
-  padding:9px 20px;border-radius:2px;transition:all .2s;text-decoration:none;
-}
+.modal-embed-error a{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);border:1px solid rgba(74,122,232,0.35);padding:9px 20px;border-radius:2px;transition:all .2s;text-decoration:none}
 .modal-embed-error a:hover{background:rgba(74,122,232,0.12);border-color:var(--accent);opacity:1}
 
-/* ── RESPONSIVE ─────────────────────────────────────────────────────── */
-@media(max-width:640px){
+/* ── RESPONSIVE ──────────────────────────────────────────────── */
+@media(max-width:760px){
+  .hero{padding-top:3.5rem}
+  .hero-meta{gap:1.5rem}
+  .collection-head{flex-wrap:wrap}
+  .collection-sub{width:100%;max-width:none;text-align:left;margin-left:0}
+  .shelf{grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0.85rem}
   .video-grid{grid-template-columns:1fr 1fr;gap:0.75rem}
   .snav-right .snav-link{display:none}
   .result-count{display:none}
   .modal-overlay{padding:0}
   .modal-box{border-radius:0;max-height:100vh;border:none}
+  .view-toggle{display:none}
 }
 @media(max-width:420px){
   .video-grid{grid-template-columns:1fr}
+  .shelf{grid-template-columns:1fr}
 }
 </style>
 <script src="../../mobile-nav.js" defer></script>
@@ -230,7 +542,7 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
     <div class="breadcrumb">
       <a href="../explore.html">Network</a>
       <span class="sep">›</span>
-      <span>Watch</span>
+      <span>The Library</span>
     </div>
   </div>
   <div class="snav-right">
@@ -239,36 +551,74 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
   </div>
 </nav>
 
+<!-- Hero: The Library -->
 <section class="hero">
-  <div class="hero-eyebrow">Video Library</div>
-  <h1>Watch</h1>
-  <p class="hero-desc">Curated talks, documentaries, and teachings across consciousness, science, wellbeing, and beyond.</p>
+  <div class="hero-eyebrow">The Library</div>
+  <h1>A spiritual library<br>for the <em>age of seekers.</em></h1>
+  <p class="hero-desc">Curated talks, teachings, and guided practices — organised into chapters you can walk through, or wander at your own pace.</p>
+  <div class="hero-meta" id="hero-meta" aria-live="polite">
+    <span class="hero-meta-item"><span class="hero-meta-num" id="meta-videos">—</span> volumes</span>
+    <span class="hero-meta-item"><span class="hero-meta-num" id="meta-playlists">—</span> chapters</span>
+    <span class="hero-meta-item"><span class="hero-meta-num" id="meta-teachers">—</span> teachers</span>
+  </div>
 </section>
 
-<div class="controls">
+<!-- Featured chapter -->
+<section class="featured" id="featured-wrap"></section>
+
+<!-- Controls -->
+<section class="controls-bar">
   <div class="search-row">
     <div class="search-wrap">
       <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-      <input id="search" type="search" placeholder="Search videos, topics, teachers…" autocomplete="off" aria-label="Search videos">
+      <input id="search" type="search" placeholder="Search for a teacher, topic, or teaching…" autocomplete="off" aria-label="Search the library">
+    </div>
+    <div class="view-toggle" role="tablist" aria-label="Library view">
+      <button class="active" data-view="chapters" role="tab" aria-selected="true">Chapters</button>
+      <button data-view="stacks" role="tab" aria-selected="false">Stacks</button>
     </div>
     <span class="result-count" id="result-count" aria-live="polite"></span>
+  </div>
+</section>
+
+<!-- Chapters view: collections + playlists -->
+<section class="library" id="library-view"></section>
+
+<!-- Stacks view: all videos grid (hidden by default) -->
+<section id="stacks-view" style="display:none">
+  <div class="stacks-head">
+    <h2>The Stacks</h2>
+    <p>Every volume in the library.</p>
   </div>
   <div class="filter-row" id="filter-row">
     <span class="filter-label">Filter</span>
   </div>
-</div>
+  <main class="stacks">
+    <div class="video-grid" id="grid" role="list"></div>
+  </main>
+</section>
 
-<main>
-  <div class="video-grid" id="grid" role="list"></div>
-</main>
+<!-- Playlist detail panel -->
+<div class="panel-overlay" id="panel-overlay"></div>
+<aside class="panel" id="panel" role="dialog" aria-modal="true" aria-labelledby="panel-title">
+  <header class="panel-head">
+    <div class="panel-meta">
+      <div class="panel-label" id="panel-label">Chapter</div>
+      <h2 class="panel-title" id="panel-title">—</h2>
+      <div class="panel-sub" id="panel-sub"></div>
+      <p class="panel-desc" id="panel-desc"></p>
+    </div>
+    <button class="panel-close" id="panel-close" aria-label="Close chapter">✕</button>
+  </header>
+  <div class="panel-list" id="panel-list"></div>
+</aside>
 
-<!-- Modal -->
+<!-- Modal (video player) -->
 <div class="modal-overlay" id="modal" role="dialog" aria-modal="true" aria-labelledby="modal-title-el">
   <div class="modal-box">
     <div class="modal-player" id="modal-player">
       <iframe id="modal-iframe" src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Video player"></iframe>
     </div>
-    <!-- Shown when YouTube blocks embedding (Error 153) or on file:// -->
     <div class="modal-embed-error" id="modal-embed-error" aria-live="polite">
       <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
       <p>This video can't be embedded here.<br>Watch it directly on YouTube instead.</p>
@@ -290,10 +640,11 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 </div>
 
 <script>
-// ▼▼ INLINE_VIDEOS_START ▼▼
+// ▼▼ INLINE_DATA_START ▼▼
 // Inlined at build time by generate-watch.js — works on file:// and web servers
-const INLINE_VIDEOS = [{"id":"v-med-1","youtube_id":"ZToicYcHIOU","title":"How to Meditate — For Beginners","channel":"Headspace","duration":"10 min","desc":"A simple, practical guide to starting a meditation practice from scratch.","frqncy_pick":true,"topicId":"t-meditation","topicLabel":"Meditation"},{"id":"v-quant-1","youtube_id":"MmqyATpRPMY","title":"Quantum Fields — The Real Building Blocks of the Universe","channel":"Royal Institution","duration":"63 min","desc":"David Tong gives a masterclass on quantum field theory for curious minds.","frqncy_pick":true,"topicId":"t-quantum","topicLabel":"Quantum Physics"},{"id":"v-neuro-1","youtube_id":"5YRlP7CXDXY","title":"How Your Brain Makes Decisions","channel":"Huberman Lab","duration":"22 min","desc":"Andrew Huberman unpacks the neuroscience of decision-making and focus.","frqncy_pick":true,"topicId":"t-neuro","topicLabel":"Neuroscience"},{"id":"v-breath-1","youtube_id":"tybOi4hjZFQ","title":"Wim Hof Breathing Tutorial","channel":"Wim Hof","duration":"11 min","desc":"Step-by-step guide to the Wim Hof Method breathing technique.","frqncy_pick":true,"topicId":"t-breathwork","topicLabel":"Breathwork"},{"id":"v-manif-1","youtube_id":"EFGBVWFyAag","title":"The Science of Getting What You Want","channel":"Joe Dispenza","duration":"30 min","desc":"Dr Joe Dispenza on the neuroscience and quantum physics behind manifestation.","frqncy_pick":true,"topicId":"t-manifestation","topicLabel":"Manifestation"},{"id":"v-plantmed-1","youtube_id":"vK-8lSqFG5I","title":"How Psychedelics Affect the Brain","channel":"Johns Hopkins","duration":"18 min","desc":"Leading researchers explain the therapeutic mechanisms of psychedelic medicine.","frqncy_pick":true,"topicId":"t-plantmed","topicLabel":"Plant Medicine"},{"id":"v-sound-1","youtube_id":"FAbBE7OExNk","title":"How Sound Heals — The Science of Sound Baths","channel":"VICE","duration":"12 min","desc":"An exploration of how resonance, frequency, and vibration affect the body.","frqncy_pick":true,"topicId":"t-soundheal","topicLabel":"Sound Healing"},{"id":"v-ai-1","youtube_id":"aircAruvnKk","title":"But What Is a Neural Network?","channel":"3Blue1Brown","duration":"19 min","desc":"The clearest visual explanation of how neural networks actually work.","frqncy_pick":true,"topicId":"t-ai","topicLabel":"AI & Technology"},{"id":"v-sacgeo-1","youtube_id":"kkGeOWYOFoA","title":"Sacred Geometry — The Language of Light","channel":"Spirit Science","duration":"25 min","desc":"An exploration of the geometric patterns underlying all of nature.","frqncy_pick":true,"topicId":"t-sacredgeo","topicLabel":"Sacred Geometry"},{"id":"v-vib-1","youtube_id":"Q3oItpVa9fs","title":"Cymatics — Bringing Matter to Life with Sound","channel":"Ted-Ed","duration":"5 min","desc":"Watch sound waves made visible through patterns in matter.","frqncy_pick":true,"topicId":"t-vibration","topicLabel":"Vibration"},{"id":"v-med-2","youtube_id":"qyvDE6XTJOQ","title":"The Science Behind Mindfulness Meditation","channel":"Big Think","duration":"14 min","desc":"What neuroscience reveals about how meditation changes the brain.","frqncy_pick":false,"topicId":"t-meditation","topicLabel":"Meditation"},{"id":"v-quant-2","youtube_id":"p-MNSLsjjdo","title":"Quantum Mechanics — The Double Slit Experiment","channel":"Veritasium","duration":"8 min","desc":"The experiment that reveals the strangeness at the heart of quantum reality.","frqncy_pick":false,"topicId":"t-quantum","topicLabel":"Quantum Physics"},{"id":"v-kt-1","youtube_id":"UjNmaPrQdok","title":"Your Purpose is a Lie: The Ancient Truth You're Missing","channel":"The Kevin Trudeau Show: Limitless","duration":"20 min","desc":"Kevin Trudeau challenges conventional ideas about purpose and reveals what ancient traditions actually taught about finding your path.","frqncy_pick":true,"topicId":"t-trudeau","topicLabel":"Kevin Trudeau"},{"id":"v-kt-2","youtube_id":"5yJNUHzdwGA","title":"7 Months of Silence Did This To My Mind","channel":"The Kevin Trudeau Show: Limitless","duration":"18 min","desc":"Kevin shares what happened to his mind after seven months of silence during The Brotherhood Test.","frqncy_pick":false,"topicId":"t-trudeau","topicLabel":"Kevin Trudeau"},{"id":"v-kt-3","youtube_id":"RJF4uaHa0hw","title":"The Brotherhood's Secret Initiation Code (What Jesus & The Masters Knew)","channel":"The Kevin Trudeau Show: Limitless","duration":"22 min","desc":"Exploring the hidden initiation practices shared across ancient mystery schools and secret societies.","frqncy_pick":false,"topicId":"t-trudeau","topicLabel":"Kevin Trudeau"},{"id":"v-kt-4","youtube_id":"n7ieqC_ZbuU","title":"What Your DNA Is Hiding From You (This Changes Everything)","channel":"The Kevin Trudeau Show: Limitless","duration":"28 min","desc":"A deep dive into the hidden information encoded in your DNA and how it shapes your reality.","frqncy_pick":false,"topicId":"t-trudeau","topicLabel":"Kevin Trudeau"},{"id":"v-osho-1","youtube_id":"Tf8PUAG2aYU","title":"There Is No Tomorrow","channel":"OSHO International","duration":"15 min","desc":"Osho speaks on the power of living in the present moment and dissolving the illusion of time.","frqncy_pick":true,"topicId":"t-osho","topicLabel":"Osho"},{"id":"v-osho-2","youtube_id":"xbyOE2_Yssw","title":"Making Love — A Sacred Experience","channel":"OSHO International","duration":"12 min","desc":"Osho explores how intimacy can become a doorway to meditation and transcendence.","frqncy_pick":false,"topicId":"t-osho","topicLabel":"Osho"},{"id":"v-osho-3","youtube_id":"5ocbZhRQS9I","title":"Marriage and Children","channel":"OSHO International","duration":"18 min","desc":"Osho shares his radical perspective on relationships, marriage, and conscious parenting.","frqncy_pick":false,"topicId":"t-osho","topicLabel":"Osho"},{"id":"v-sg-1","youtube_id":"LG_KzBL3Jyg","title":"Once You Sit With Me, There's No Turning Back","channel":"Sadhguru","duration":"25 min","desc":"Sadhguru speaks about the irreversible nature of spiritual transformation and what it means to be in the presence of a master.","frqncy_pick":true,"topicId":"t-sadhguru","topicLabel":"Sadhguru"},{"id":"v-sg-2","youtube_id":"mEYiv0iMQ9g","title":"The Secret to Lasting Bliss","channel":"Sadhguru","duration":"20 min","desc":"Sadhguru reveals the mechanics of lasting inner bliss beyond fleeting pleasure.","frqncy_pick":false,"topicId":"t-sadhguru","topicLabel":"Sadhguru"},{"id":"v-sg-3","youtube_id":"bm7S5sxNPow","title":"The Most Important Chakra","channel":"Sadhguru","duration":"16 min","desc":"Sadhguru explains the significance of the chakra system and which energy center matters most.","frqncy_pick":false,"topicId":"t-sadhguru","topicLabel":"Sadhguru"},{"id":"v-sm-1","youtube_id":"TQ0UlfGdMnU","title":"Guided Meditation for Cellular Healing and Intelligent Body Activation","channel":"Sai Maa","duration":"22 min","desc":"Sai Maa guides a powerful meditation for activating healing intelligence at the cellular level.","frqncy_pick":true,"topicId":"t-saimaa","topicLabel":"Sai Maa"},{"id":"v-sm-2","youtube_id":"7kGYdgpHVCw","title":"10-Minute Meditation to Awaken Your Inner Light","channel":"Sai Maa","duration":"10 min","desc":"A short guided meditation to connect with your inner light and higher consciousness.","frqncy_pick":false,"topicId":"t-saimaa","topicLabel":"Sai Maa"},{"id":"v-sm-3","youtube_id":"FcnMGueZhIE","title":"Quantum Light Meditation","channel":"Sai Maa","duration":"18 min","desc":"Sai Maa leads a meditation working with quantum light frequencies for transformation and awakening.","frqncy_pick":false,"topicId":"t-saimaa","topicLabel":"Sai Maa"},{"id":"v-gs-1","youtube_id":"8FwFVsYbAGE","title":"Psychic Gary Spivey Meditation","channel":"Gary Spivey","duration":"15 min","desc":"Gary Spivey leads a guided meditation combining psychic awareness with spiritual healing.","frqncy_pick":true,"topicId":"t-garyspivey","topicLabel":"Gary Spivey"},{"id":"v-gs-2","youtube_id":"yuH5nyVlQxo","title":"Tapping In with Gary Spivey — Science Meets Spirituality","channel":"Gary Spivey","duration":"45 min","desc":"Episode 16 of Tapping In where Gary Spivey explores the intersection of science and spiritual healing.","frqncy_pick":false,"topicId":"t-garyspivey","topicLabel":"Gary Spivey"},{"id":"v-gs-3","youtube_id":"s1Z0de8Eouw","title":"Gary Spivey Healing Seminar","channel":"Gary Spivey","duration":"30 min","desc":"A live healing seminar with psychic medium Gary Spivey demonstrating spiritual healing techniques.","frqncy_pick":false,"topicId":"t-garyspivey","topicLabel":"Gary Spivey"}];
-// ▲▲ INLINE_VIDEOS_END ▲▲
+const INLINE_VIDEOS = [{"id":"v-med-1","youtube_id":"ZToicYcHIOU","title":"How to Meditate — For Beginners","channel":"Headspace","duration":"10 min","desc":"A simple, practical guide to starting a meditation practice from scratch.","frqncy_pick":true,"topicId":"t-meditation","topicLabel":"Meditation"},{"id":"v-quant-1","youtube_id":"dCrbOmBsTRk","title":"The Quantum Revolution","channel":"Royal Institution","duration":"56 min","desc":"Sean Carroll walks through quantum mechanics — from Einstein and Bohr to the many worlds interpretation.","frqncy_pick":true,"topicId":"t-quantum","topicLabel":"Quantum Physics"},{"id":"v-neuro-1","youtube_id":"4AwyVTHEU3s","title":"How to Focus to Change Your Brain","channel":"Huberman Lab","duration":"36 min","desc":"Andrew Huberman on focus, attention, and neuroplasticity — how the brain actually rewires itself.","frqncy_pick":true,"topicId":"t-neuro","topicLabel":"Neuroscience"},{"id":"v-breath-1","youtube_id":"tybOi4hjZFQ","title":"Wim Hof Breathing Tutorial","channel":"Wim Hof","duration":"11 min","desc":"Step-by-step guide to the Wim Hof Method breathing technique.","frqncy_pick":true,"topicId":"t-breathwork","topicLabel":"Breathwork"},{"id":"v-manif-1","youtube_id":"I4X0psCw0jg","title":"The Only Way to Manifest What You Want","channel":"Dr. Joe Dispenza","duration":"28 min","desc":"Dr Joe Dispenza on becoming the version of yourself that your manifestation requires.","frqncy_pick":true,"topicId":"t-manifestation","topicLabel":"Manifestation"},{"id":"v-plantmed-1","youtube_id":"LcAj1oxMT9U","title":"The Science of Psychedelics","channel":"Royal Institution","duration":"61 min","desc":"Michael Pollan surveys the psychedelic renaissance — from LSD and psilocybin to the therapeutic frontier.","frqncy_pick":true,"topicId":"t-plantmed","topicLabel":"Plant Medicine"},{"id":"v-sound-1","youtube_id":"3z80diu5cjs","title":"How Sound Healing Really Works","channel":"Jonathan Goldman","duration":"15 min","desc":"Sound healing pioneer Jonathan Goldman on frequency, resonance, and the body as an instrument.","frqncy_pick":true,"topicId":"t-soundheal","topicLabel":"Sound Healing"},{"id":"v-ai-1","youtube_id":"aircAruvnKk","title":"But What Is a Neural Network?","channel":"3Blue1Brown","duration":"19 min","desc":"The clearest visual explanation of how neural networks actually work.","frqncy_pick":true,"topicId":"t-ai","topicLabel":"AI & Technology"},{"id":"v-sacgeo-1","youtube_id":"kkGeOWYOFoA","title":"Sacred Geometry — The Language of Light","channel":"Spirit Science","duration":"25 min","desc":"An exploration of the geometric patterns underlying all of nature.","frqncy_pick":true,"topicId":"t-sacredgeo","topicLabel":"Sacred Geometry"},{"id":"v-vib-1","youtube_id":"Q3oItpVa9fs","title":"Cymatics — Bringing Matter to Life with Sound","channel":"Ted-Ed","duration":"5 min","desc":"Watch sound waves made visible through patterns in matter.","frqncy_pick":true,"topicId":"t-vibration","topicLabel":"Vibration"},{"id":"v-kt-1","youtube_id":"UjNmaPrQdok","title":"Your Purpose is a Lie: The Ancient Truth You're Missing","channel":"The Kevin Trudeau Show: Limitless","duration":"20 min","desc":"Kevin Trudeau challenges conventional ideas about purpose and reveals what ancient traditions actually taught about finding your path.","frqncy_pick":true,"topicId":"t-trudeau","topicLabel":"Kevin Trudeau"},{"id":"v-osho-1","youtube_id":"Tf8PUAG2aYU","title":"There Is No Tomorrow","channel":"OSHO International","duration":"15 min","desc":"Osho speaks on the power of living in the present moment and dissolving the illusion of time.","frqncy_pick":true,"topicId":"t-osho","topicLabel":"Osho"},{"id":"v-sg-1","youtube_id":"LG_KzBL3Jyg","title":"Once You Sit With Me, There's No Turning Back","channel":"Sadhguru","duration":"25 min","desc":"Sadhguru speaks about the irreversible nature of spiritual transformation and what it means to be in the presence of a master.","frqncy_pick":true,"topicId":"t-sadhguru","topicLabel":"Sadhguru"},{"id":"v-sm-1","youtube_id":"TQ0UlfGdMnU","title":"Guided Meditation for Cellular Healing and Intelligent Body Activation","channel":"Sai Maa","duration":"22 min","desc":"Sai Maa guides a powerful meditation for activating healing intelligence at the cellular level.","frqncy_pick":true,"topicId":"t-saimaa","topicLabel":"Sai Maa"},{"id":"v-gs-1","youtube_id":"8FwFVsYbAGE","title":"Psychic Gary Spivey Meditation","channel":"Gary Spivey","duration":"15 min","desc":"Gary Spivey leads a guided meditation combining psychic awareness with spiritual healing.","frqncy_pick":true,"topicId":"t-garyspivey","topicLabel":"Gary Spivey"},{"id":"v-med-2","youtube_id":"tw7XBKhZJh4","title":"Mindfulness Meditation — Sam Harris","channel":"Waking Up","duration":"9 min","desc":"A brief, precise, secular guided meditation from neuroscientist Sam Harris.","frqncy_pick":false,"topicId":"t-meditation","topicLabel":"Meditation"},{"id":"v-quant-2","youtube_id":"p-MNSLsjjdo","title":"Quantum Mechanics — The Double Slit Experiment","channel":"Veritasium","duration":"8 min","desc":"The experiment that reveals the strangeness at the heart of quantum reality.","frqncy_pick":false,"topicId":"t-quantum","topicLabel":"Quantum Physics"},{"id":"v-kt-2","youtube_id":"5yJNUHzdwGA","title":"7 Months of Silence Did This To My Mind","channel":"The Kevin Trudeau Show: Limitless","duration":"18 min","desc":"Kevin shares what happened to his mind after seven months of silence during The Brotherhood Test.","frqncy_pick":false,"topicId":"t-trudeau","topicLabel":"Kevin Trudeau"},{"id":"v-kt-3","youtube_id":"RJF4uaHa0hw","title":"The Brotherhood's Secret Initiation Code (What Jesus & The Masters Knew)","channel":"The Kevin Trudeau Show: Limitless","duration":"22 min","desc":"Exploring the hidden initiation practices shared across ancient mystery schools and secret societies.","frqncy_pick":false,"topicId":"t-trudeau","topicLabel":"Kevin Trudeau"},{"id":"v-kt-4","youtube_id":"n7ieqC_ZbuU","title":"What Your DNA Is Hiding From You (This Changes Everything)","channel":"The Kevin Trudeau Show: Limitless","duration":"28 min","desc":"A deep dive into the hidden information encoded in your DNA and how it shapes your reality.","frqncy_pick":false,"topicId":"t-trudeau","topicLabel":"Kevin Trudeau"},{"id":"v-osho-2","youtube_id":"xbyOE2_Yssw","title":"Making Love — A Sacred Experience","channel":"OSHO International","duration":"12 min","desc":"Osho explores how intimacy can become a doorway to meditation and transcendence.","frqncy_pick":false,"topicId":"t-osho","topicLabel":"Osho"},{"id":"v-osho-3","youtube_id":"5ocbZhRQS9I","title":"Marriage and Children","channel":"OSHO International","duration":"18 min","desc":"Osho shares his radical perspective on relationships, marriage, and conscious parenting.","frqncy_pick":false,"topicId":"t-osho","topicLabel":"Osho"},{"id":"v-sg-2","youtube_id":"mEYiv0iMQ9g","title":"The Secret to Lasting Bliss","channel":"Sadhguru","duration":"20 min","desc":"Sadhguru reveals the mechanics of lasting inner bliss beyond fleeting pleasure.","frqncy_pick":false,"topicId":"t-sadhguru","topicLabel":"Sadhguru"},{"id":"v-sg-3","youtube_id":"bm7S5sxNPow","title":"The Most Important Chakra","channel":"Sadhguru","duration":"16 min","desc":"Sadhguru explains the significance of the chakra system and which energy center matters most.","frqncy_pick":false,"topicId":"t-sadhguru","topicLabel":"Sadhguru"},{"id":"v-sm-2","youtube_id":"7kGYdgpHVCw","title":"10-Minute Meditation to Awaken Your Inner Light","channel":"Sai Maa","duration":"10 min","desc":"A short guided meditation to connect with your inner light and higher consciousness.","frqncy_pick":false,"topicId":"t-saimaa","topicLabel":"Sai Maa"},{"id":"v-sm-3","youtube_id":"FcnMGueZhIE","title":"Quantum Light Meditation","channel":"Sai Maa","duration":"18 min","desc":"Sai Maa leads a meditation working with quantum light frequencies for transformation and awakening.","frqncy_pick":false,"topicId":"t-saimaa","topicLabel":"Sai Maa"},{"id":"v-gs-2","youtube_id":"yuH5nyVlQxo","title":"Tapping In with Gary Spivey — Science Meets Spirituality","channel":"Gary Spivey","duration":"45 min","desc":"Episode 16 of Tapping In where Gary Spivey explores the intersection of science and spiritual healing.","frqncy_pick":false,"topicId":"t-garyspivey","topicLabel":"Gary Spivey"},{"id":"v-gs-3","youtube_id":"s1Z0de8Eouw","title":"Gary Spivey Healing Seminar","channel":"Gary Spivey","duration":"30 min","desc":"A live healing seminar with psychic medium Gary Spivey demonstrating spiritual healing techniques.","frqncy_pick":false,"topicId":"t-garyspivey","topicLabel":"Gary Spivey"}];
+const INLINE_PLAYLISTS = {"collections":[{"id":"c-path","title":"The Path","subtitle":"Where to begin, and where to go next.","playlists":[{"id":"pl-start","title":"Start Here","subtitle":"First five volumes","description":"Five short videos to orient you in the field. Watch in order.","accent":"gold","video_ids":["v-med-1","v-breath-1","v-vib-1","v-quant-2","v-osho-1"]},{"id":"pl-deeper","title":"Going Deeper","subtitle":"Second-circle readings","description":"After the basics — the teachers that recontextualise everything.","accent":"gold","video_ids":["v-sg-1","v-manif-1","v-neuro-1","v-kt-1","v-sm-1"]},{"id":"pl-frontier","title":"The Frontier","subtitle":"Edge of the known","description":"For readers ready to sit with the stranger claims.","accent":"gold","video_ids":["v-kt-3","v-kt-4","v-sm-3","v-sacgeo-1","v-plantmed-1"]}]},{"id":"c-teachers","title":"The Teachers","subtitle":"Voices shaping this generation of seekers.","playlists":[{"id":"pl-osho","title":"Osho","subtitle":"The rebel mystic","description":"Radical provocations on love, awareness, and the end of time.","accent":"gold","video_ids":["v-osho-1","v-osho-2","v-osho-3"]},{"id":"pl-sadhguru","title":"Sadhguru","subtitle":"The yogic path","description":"On bliss, chakras, and the mechanics of inner transformation.","accent":"gold","video_ids":["v-sg-1","v-sg-2","v-sg-3"]},{"id":"pl-trudeau","title":"Kevin Trudeau","subtitle":"The Brotherhood lineage","description":"Ancient initiation teachings translated for the modern mind.","accent":"gold","video_ids":["v-kt-1","v-kt-2","v-kt-3","v-kt-4"]},{"id":"pl-saimaa","title":"Sai Maa","subtitle":"Quantum light","description":"Guided meditations for cellular healing and awakening.","accent":"gold","video_ids":["v-sm-1","v-sm-2","v-sm-3"]},{"id":"pl-spivey","title":"Gary Spivey","subtitle":"Science meets spirit","description":"Psychic healing and meditation for practical transformation.","accent":"gold","video_ids":["v-gs-1","v-gs-2","v-gs-3"]}]},{"id":"c-domains","title":"The Domains","subtitle":"By field of inquiry.","playlists":[{"id":"pl-consciousness","title":"Consciousness","subtitle":"The hard problem","description":"What awareness is, and how to expand it.","accent":"indigo","video_ids":["v-osho-1","v-sg-1","v-kt-1","v-med-2"]},{"id":"pl-science","title":"Science","subtitle":"The physical foundations","description":"Quantum, neural, and computational frontiers.","accent":"indigo","video_ids":["v-quant-1","v-quant-2","v-neuro-1","v-ai-1"]},{"id":"pl-healing","title":"Healing","subtitle":"Repair and restore","description":"Sessions, techniques, and the science behind them.","accent":"indigo","video_ids":["v-sm-1","v-gs-3","v-sound-1","v-plantmed-1","v-manif-1"]},{"id":"pl-mystery","title":"Mystery","subtitle":"The unsaid and the encoded","description":"Sacred geometry, initiation, and hidden architectures.","accent":"indigo","video_ids":["v-sacgeo-1","v-kt-3","v-kt-4","v-vib-1","v-sm-3"]}]},{"id":"c-practice","title":"By Practice","subtitle":"When you need it.","playlists":[{"id":"pl-morning","title":"Morning","subtitle":"Start the day clear","description":"Breath, focus, and brief meditations to open the day.","accent":"sunrise","video_ids":["v-breath-1","v-med-1","v-sm-2","v-med-2"]},{"id":"pl-evening","title":"Evening","subtitle":"Release the day","description":"Longer meditations and reflections for winding down.","accent":"sunrise","video_ids":["v-osho-1","v-sm-1","v-gs-1","v-sg-2"]},{"id":"pl-focus","title":"Focus & Flow","subtitle":"For working mind","description":"Neuroscience and protocols for concentration.","accent":"sunrise","video_ids":["v-neuro-1","v-ai-1","v-breath-1"]},{"id":"pl-deep-healing","title":"Deep Healing","subtitle":"Longer sessions","description":"Cellular, psychic, and sonic healing for when you can give time.","accent":"sunrise","video_ids":["v-sm-1","v-gs-3","v-sound-1","v-sm-3"]}]}]};
+// ▲▲ INLINE_DATA_END ▲▲
 
 const TOPIC_LABELS = {
   't-meditation':'Meditation','t-quantum':'Quantum Physics','t-neuro':'Neuroscience',
@@ -303,30 +654,22 @@ const TOPIC_LABELS = {
   't-trudeau':'Kevin Trudeau','t-osho':'Osho','t-sadhguru':'Sadhguru','t-saimaa':'Sai Maa','t-garyspivey':'Gary Spivey'
 };
 
-// ── Provider registry (mirrors providers.json) ──────────────────
 const PROVIDERS = {
   youtube: {
-    embeddable: true,
-    color: '#FF4040',
-    name: 'YouTube',
+    embeddable: true, color: '#FF4040', name: 'YouTube',
     embedUrl:  id => `https://www.youtube.com/embed/${id}?autoplay=1&rel=0&modestbranding=1`,
     thumbUrl:  id => `https://img.youtube.com/vi/${id}/hqdefault.jpg`,
     watchUrl:  id => `https://www.youtube.com/watch?v=${id}`
   },
   vimeo: {
-    embeddable: true,
-    color: '#1AB7EA',
-    name: 'Vimeo',
+    embeddable: true, color: '#1AB7EA', name: 'Vimeo',
     embedUrl:  id => `https://player.vimeo.com/video/${id}?autoplay=1&color=C4973A&title=0&byline=0&portrait=0`,
     thumbUrl:  id => null,
     watchUrl:  id => `https://vimeo.com/${id}`
   },
   gaia: {
-    embeddable: false,
-    color: '#5C9E8E',
-    name: 'Gaia',
-    embedUrl:  id => null,
-    thumbUrl:  id => null,
+    embeddable: false, color: '#5C9E8E', name: 'Gaia',
+    embedUrl:  id => null, thumbUrl: id => null,
     watchUrl:  id => `https://www.gaia.com/video/${id}`
   }
 };
@@ -350,61 +693,266 @@ function getWatchUrl(v) {
 }
 
 let allVideos = [];
+let videoById = new Map();
+let collections = [];
 let activeFilter = 'all';
 let searchQuery = '';
+let activeView = 'chapters';
 
-/* ── Init ── */
-async function init() {
+/* ── INIT ── */
+function init() {
   showSkeletons(8);
 
-  // Use inlined data immediately (works on file:// and as offline fallback).
-  // Then try to refresh from the server in case videos.json was updated
-  // without re-running generate-watch.js.
   const useData = (flat) => {
     allVideos.length = 0;
-    for (const v of flat) allVideos.push(v);
+    videoById.clear();
+    for (const v of flat) {
+      allVideos.push(v);
+      videoById.set(v.id, v);
+    }
     allVideos.sort((a, b) => (b.frqncy_pick ? 1 : 0) - (a.frqncy_pick ? 1 : 0));
   };
 
-  if (typeof INLINE_VIDEOS !== 'undefined' && INLINE_VIDEOS && INLINE_VIDEOS.length) {
+  if (Array.isArray(INLINE_VIDEOS) && INLINE_VIDEOS.length) {
     useData(INLINE_VIDEOS);
-    // Rebuild topic index for filter tabs from inlined data
-    const topicSet = {};
-    for (const v of allVideos) { if (v.topicId) topicSet[v.topicId] = true; }
-    buildFilters(topicSet);
-    render();
+  }
+  if (INLINE_PLAYLISTS && Array.isArray(INLINE_PLAYLISTS.collections)) {
+    collections = INLINE_PLAYLISTS.collections;
   }
 
-  // Attempt live fetch in the background (silently fails on file://)
+  renderHeroMeta();
+  renderFeatured();
+  renderLibrary();
+  buildFilters();
+  renderStacks();
+  wireControls();
+
+  // Try live refresh (ignores errors on file://)
+  refreshFromNetwork();
+}
+
+async function refreshFromNetwork() {
   try {
-    const res = await fetch('../../videos.json');
-    if (!res.ok) return;
-    const raw = await res.json();
-    const fresh = [];
-    for (const [topicId, videos] of Object.entries(raw)) {
-      for (const v of videos) {
-        const id = getVideoId(v);
-        if (id && !id.startsWith('PLACEHOLDER')) {
-          fresh.push({ ...v, topicId, topicLabel: TOPIC_LABELS[topicId] || topicId });
+    const [videosRes, playlistsRes] = await Promise.allSettled([
+      fetch('../../videos.json', { cache: 'no-cache' }),
+      fetch('../../playlists.json', { cache: 'no-cache' })
+    ]);
+
+    if (videosRes.status === 'fulfilled' && videosRes.value?.ok) {
+      const json = await videosRes.value.json();
+      const flat = [];
+      for (const [topicId, videos] of Object.entries(json)) {
+        for (const v of videos) {
+          const id = getVideoId(v);
+          if (!id || String(id).startsWith('PLACEHOLDER')) continue;
+          flat.push({ ...v, topicId, topicLabel: TOPIC_LABELS[topicId] || topicId });
         }
       }
+      allVideos = flat;
+      videoById.clear();
+      for (const v of flat) videoById.set(v.id, v);
+      allVideos.sort((a, b) => (b.frqncy_pick ? 1 : 0) - (a.frqncy_pick ? 1 : 0));
     }
-    if (fresh.length !== allVideos.length) {
-      useData(fresh);
-      buildFilters(raw);
-      render();
+    if (playlistsRes.status === 'fulfilled' && playlistsRes.value?.ok) {
+      const json = await playlistsRes.value.json();
+      if (Array.isArray(json.collections)) collections = json.collections;
     }
-  } catch(e) {
-    // file:// or offline — inline data already rendered, nothing to do
-    if (!allVideos.length) {
-      document.getElementById('grid').innerHTML = '<div class="empty"><div class="empty-icon">⚠</div><p>Could not load videos.<br>Try refreshing the page.</p></div>';
+
+    renderHeroMeta();
+    renderFeatured();
+    renderLibrary();
+    buildFilters();
+    renderStacks();
+  } catch {/* silent on file:// */}
+}
+
+/* ── HERO META ── */
+function renderHeroMeta() {
+  const teachers = new Set(allVideos.map(v => v.channel).filter(Boolean));
+  const playlistCount = collections.reduce((n, c) => n + (c.playlists?.length || 0), 0);
+  setNum('meta-videos', allVideos.length);
+  setNum('meta-playlists', playlistCount);
+  setNum('meta-teachers', teachers.size);
+}
+function setNum(id, n) {
+  const el = document.getElementById(id);
+  if (el) el.textContent = String(n);
+}
+
+/* ── FEATURED CHAPTER ── */
+function renderFeatured() {
+  const wrap = document.getElementById('featured-wrap');
+  if (!wrap) return;
+  // Pick the first playlist of the first collection (usually "Start Here")
+  const first = collections[0]?.playlists?.[0];
+  if (!first) { wrap.innerHTML = ''; return; }
+  const vids = (first.video_ids || []).map(id => videoById.get(id)).filter(Boolean);
+  const previews = vids.slice(0, 3).map(v => getThumbUrl(v)).filter(Boolean);
+  const total = sumDurations(vids);
+
+  wrap.innerHTML = `
+    <div class="featured-card" role="button" tabindex="0" data-pl="${first.id}">
+      <div class="featured-meta">
+        <div class="featured-label">Featured Chapter</div>
+        <h2 class="featured-title">${escapeHtml(first.title)}<em> · ${vids.length} volumes</em></h2>
+        <div class="featured-sub">${escapeHtml(first.subtitle || '')}</div>
+        <p class="featured-desc">${escapeHtml(first.description || '')}</p>
+        <span class="featured-cta">
+          Open chapter
+          <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg>
+        </span>
+      </div>
+      <div class="featured-stack">
+        <div class="stack-wrap">
+          ${previews.map((src, i) => `
+            <div class="stack-card">
+              <img src="${src}" alt="" loading="lazy" onerror="this.style.display='none'">
+            </div>
+          `).join('')}
+          <span class="stack-badge">${total}</span>
+        </div>
+      </div>
+    </div>
+  `;
+  const card = wrap.querySelector('.featured-card');
+  const open = () => openPlaylist(first.id);
+  card.addEventListener('click', open);
+  card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); } });
+}
+
+function sumDurations(vids) {
+  // "10 min" → 10
+  let total = 0;
+  for (const v of vids) {
+    const m = /(\d+)/.exec(v.duration || '');
+    if (m) total += parseInt(m[1], 10);
+  }
+  if (total >= 60) {
+    const h = Math.floor(total / 60);
+    const m = total % 60;
+    return m ? `${h}h ${m}m` : `${h}h`;
+  }
+  return `${total} min`;
+}
+
+/* ── LIBRARY (collections × playlists) ── */
+function renderLibrary() {
+  const view = document.getElementById('library-view');
+  if (!view) return;
+  if (!collections.length) { view.innerHTML = '<div class="empty"><p>No chapters yet.</p></div>'; return; }
+
+  view.innerHTML = collections.map((col, i) => {
+    const num = String(i + 1).padStart(2, '0');
+    return `
+      <section class="collection" aria-labelledby="col-${col.id}">
+        <header class="collection-head">
+          <span class="collection-num">${num}</span>
+          <h3 class="collection-title" id="col-${col.id}">${escapeHtml(col.title)}</h3>
+          ${col.subtitle ? `<span class="collection-sub">${escapeHtml(col.subtitle)}</span>` : ''}
+        </header>
+        <div class="shelf">
+          ${(col.playlists || []).map(pl => renderPlaylistCard(pl)).join('')}
+        </div>
+      </section>
+    `;
+  }).join('');
+
+  view.querySelectorAll('.pcard').forEach(card => {
+    const id = card.getAttribute('data-pl');
+    card.addEventListener('click', () => openPlaylist(id));
+    card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); openPlaylist(id); } });
+  });
+}
+
+function renderPlaylistCard(pl) {
+  const vids = (pl.video_ids || []).map(id => videoById.get(id)).filter(Boolean);
+  const count = vids.length;
+  const total = sumDurations(vids);
+  const thumbs = vids.slice(0, 2).map(v => getThumbUrl(v)).filter(Boolean);
+  const mosaic = thumbs.length >= 2
+    ? `<img src="${thumbs[0]}" alt="" loading="lazy" onerror="this.style.display='none'"><img src="${thumbs[1]}" alt="" loading="lazy" onerror="this.style.display='none'">`
+    : (thumbs[0] ? `<img src="${thumbs[0]}" alt="" loading="lazy" onerror="this.style.display='none'">` : '');
+  const single = thumbs.length < 2 ? 'pcard-mosaic-single' : '';
+  const accent = pl.accent ? `accent-${pl.accent}` : '';
+
+  return `
+    <article class="pcard ${accent}" data-pl="${pl.id}" role="button" tabindex="0" aria-label="Open ${escapeHtml(pl.title)}">
+      <div class="pcard-mosaic ${single}">
+        ${mosaic}
+        <span class="pcard-count">${count} ${count === 1 ? 'volume' : 'volumes'}</span>
+      </div>
+      <div class="pcard-body">
+        <div class="pcard-label">Chapter</div>
+        <h4 class="pcard-title">${escapeHtml(pl.title)}</h4>
+        ${pl.subtitle ? `<div class="pcard-sub">${escapeHtml(pl.subtitle)}</div>` : ''}
+        <p class="pcard-desc">${escapeHtml(pl.description || '')}</p>
+        <div class="pcard-footer">
+          <span class="pcard-dur">${total}</span>
+          <span class="pcard-open">Open <svg width="10" height="10" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><line x1="5" y1="12" x2="19" y2="12"/><polyline points="12 5 19 12 12 19"/></svg></span>
+        </div>
+      </div>
+    </article>
+  `;
+}
+
+/* ── PLAYLIST PANEL ── */
+function openPlaylist(id) {
+  let playlist = null, collection = null;
+  for (const c of collections) {
+    for (const p of (c.playlists || [])) {
+      if (p.id === id) { playlist = p; collection = c; break; }
     }
+    if (playlist) break;
+  }
+  if (!playlist) return;
+
+  document.getElementById('panel-label').textContent = collection ? collection.title : 'Chapter';
+  document.getElementById('panel-title').textContent = playlist.title;
+  document.getElementById('panel-sub').textContent = playlist.subtitle || '';
+  document.getElementById('panel-desc').textContent = playlist.description || '';
+
+  const vids = (playlist.video_ids || []).map(id => videoById.get(id)).filter(Boolean);
+  const list = document.getElementById('panel-list');
+  list.innerHTML = vids.map((v, i) => `
+    <div class="panel-item" data-vid="${v.id}" role="button" tabindex="0">
+      <span class="panel-num">${String(i + 1).padStart(2, '0')}</span>
+      <div class="panel-thumb">
+        <img src="${getThumbUrl(v)}" alt="" loading="lazy" onerror="this.style.display='none'">
+        <span class="panel-thumb-play"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+      </div>
+      <div class="panel-info">
+        <div class="panel-topic">${escapeHtml(v.topicLabel || '')}</div>
+        <div class="panel-vtitle">${escapeHtml(v.title)}</div>
+        <div class="panel-vchannel">${escapeHtml(v.channel || '')}<span class="dur">·</span><span class="dur">${escapeHtml(v.duration || '')}</span></div>
+      </div>
+    </div>
+  `).join('');
+
+  list.querySelectorAll('.panel-item').forEach(el => {
+    const vid = el.getAttribute('data-vid');
+    const fn = () => playVideo(videoById.get(vid));
+    el.addEventListener('click', fn);
+    el.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } });
+  });
+
+  document.getElementById('panel-overlay').classList.add('open');
+  document.getElementById('panel').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+
+function closePanel() {
+  document.getElementById('panel-overlay').classList.remove('open');
+  document.getElementById('panel').classList.remove('open');
+  if (!document.getElementById('modal').classList.contains('open')) {
+    document.body.style.overflow = '';
   }
 }
 
+/* ── STACKS (all videos) ── */
 function showSkeletons(n) {
   const grid = document.getElementById('grid');
-  grid.innerHTML = Array.from({length: n}, () => `
+  if (!grid) return;
+  grid.innerHTML = Array.from({ length: n }, () => `
     <div class="skeleton">
       <div class="skeleton-thumb"></div>
       <div class="skeleton-body">
@@ -412,253 +960,200 @@ function showSkeletons(n) {
         <div class="skeleton-line short"></div>
         <div class="skeleton-line xshort"></div>
       </div>
-    </div>`).join('');
-}
-
-/* ── Filters ── */
-function buildFilters(data) {
-  const row = document.getElementById('filter-row');
-  // Clear existing tabs first (handles re-render after live fetch)
-  row.innerHTML = '<span class="filter-label">Filter</span>';
-
-  const allBtn = makeFilter('all', 'All');
-  allBtn.classList.add('active');
-  row.appendChild(allBtn);
-
-  const picksCount = allVideos.filter(v => v.frqncy_pick).length;
-  if (picksCount > 0) {
-    const picksBtn = makeFilter('picks', '✦ FRQNCY Picks');
-    picksBtn.classList.add('picks-tab');
-    row.appendChild(picksBtn);
-  }
-
-  // Provider filter tabs — only shown when more than one provider is present
-  const providerIds = [...new Set(allVideos.map(v => v.provider || 'youtube'))];
-  if (providerIds.length > 1) {
-    for (const pid of providerIds) {
-      const p = PROVIDERS[pid];
-      if (!p) continue;
-      const btn = makeFilter('provider:' + pid, p.name);
-      btn.style.borderColor = p.color + '55';
-      btn.style.color = p.color;
-      btn.addEventListener('mouseenter', () => { if (!btn.classList.contains('active')) btn.style.borderColor = p.color; });
-      btn.addEventListener('mouseleave', () => { if (!btn.classList.contains('active')) btn.style.borderColor = p.color + '55'; });
-      row.appendChild(btn);
-    }
-  }
-
-  // Topic tabs — data can be a raw videos.json object OR a flat {topicId:true} set
-  const topicIds = Array.isArray(data)
-    ? [...new Set(allVideos.map(v => v.topicId).filter(Boolean))]
-    : Object.keys(data).filter(t => {
-        if (typeof data[t] === 'boolean') return allVideos.some(v => v.topicId === t);
-        return (data[t]||[]).some(v => { const id = getVideoId(v); return id && !id.startsWith('PLACEHOLDER'); });
-      });
-  for (const t of topicIds) {
-    row.appendChild(makeFilter(t, TOPIC_LABELS[t] || t));
-  }
-}
-
-function makeFilter(id, label) {
-  const btn = document.createElement('button');
-  btn.className = 'ftab';
-  btn.textContent = label;
-  btn.dataset.filter = id;
-  btn.addEventListener('click', () => {
-    document.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
-    btn.classList.add('active');
-    activeFilter = id;
-    render();
-  });
-  return btn;
-}
-
-/* ── Render ── */
-function render() {
-  const grid = document.getElementById('grid');
-  const q    = searchQuery.toLowerCase().trim();
-
-  const matchesFilter = v => {
-    if (activeFilter === 'picks') return v.frqncy_pick;
-    if (activeFilter.startsWith('provider:')) return (v.provider || 'youtube') === activeFilter.slice(9);
-    if (activeFilter !== 'all')  return v.topicId === activeFilter;
-    return true;
-  };
-  const matchesSearch = v => {
-    if (!q) return true;
-    return [v.title, v.channel, v.desc, v.topicLabel, getProvider(v).name].some(s => (s||'').toLowerCase().includes(q));
-  };
-  const filtered = allVideos.filter(v => matchesFilter(v) && matchesSearch(v));
-
-  const countEl = document.getElementById('result-count');
-  if (q || activeFilter !== 'all') {
-    countEl.textContent = `${filtered.length} video${filtered.length !== 1 ? 's' : ''}`;
-  } else {
-    countEl.textContent = `${allVideos.length} videos`;
-  }
-
-  grid.innerHTML = '';
-
-  if (!filtered.length) {
-    grid.innerHTML = '<div class="empty"><div class="empty-icon">○</div><p>No videos match your search.<br><button onclick="clearSearch()" style="margin-top:0.75rem;background:none;border:1px solid rgba(255,255,255,0.15);color:var(--text-dim);padding:5px 14px;border-radius:2px;cursor:pointer;font-family:\'Jost\',sans-serif;font-size:0.72rem;letter-spacing:0.1em">Clear filters</button></p></div>';
-    return;
-  }
-
-  const frag = document.createDocumentFragment();
-  for (const v of filtered) frag.appendChild(makeCard(v));
-  grid.appendChild(frag);
-}
-
-function clearSearch() {
-  document.getElementById('search').value = '';
-  searchQuery = '';
-  activeFilter = 'all';
-  document.querySelectorAll('.ftab').forEach(b => b.classList.toggle('active', b.dataset.filter === 'all'));
-  render();
-}
-
-function makeCard(v) {
-  const card     = document.createElement('div');
-  const provider = getProvider(v);
-  const thumb    = getThumbUrl(v);
-  const isExt    = !provider.embeddable;
-
-  card.className = 'vcard';
-  card.setAttribute('role', 'listitem');
-  card.setAttribute('tabindex', '0');
-  card.setAttribute('aria-label', `${isExt ? 'Watch' : 'Play'} ${v.title}${isExt ? ' on '+provider.name : ''}`);
-
-  const playBtnIcon = isExt
-    ? `<svg viewBox="0 0 24 24" fill="none" stroke="#fff" stroke-width="2" width="16" height="16"><path d="M18 13v6a2 2 0 01-2 2H5a2 2 0 01-2-2V8a2 2 0 012-2h6"/><polyline points="15 3 21 3 21 9"/><line x1="10" y1="14" x2="21" y2="3"/></svg>`
-    : `<svg viewBox="0 0 24 24"><polygon points="5,3 19,12 5,21"/></svg>`;
-
-  const provBadge = (v.provider || 'youtube') !== 'youtube'
-    ? `<span class="vprov" style="background:${provider.color}22;color:${provider.color};border:1px solid ${provider.color}55">${esc(provider.name)}</span>`
-    : '';
-
-  card.innerHTML = `
-    <div class="vthumb">
-      ${thumb
-        ? `<img src="${thumb}" alt="" loading="lazy" decoding="async">`
-        : `<div class="vthumb-fallback" style="background:linear-gradient(135deg,${provider.color}18,rgba(196,151,58,0.06))"></div>`}
-      <div class="vplay${isExt ? ' vplay-ext' : ''}">
-        <div class="vplay-btn${isExt ? ' vplay-btn-ext' : ''}">${playBtnIcon}</div>
-      </div>
-      ${v.duration ? `<span class="vdur">${esc(v.duration)}</span>` : ''}
-      ${v.frqncy_pick ? '<span class="vpick">FRQNCY Pick</span>' : ''}
-      ${provBadge}
     </div>
-    <div class="vinfo">
-      ${v.topicLabel ? `<div class="vtopic">${esc(v.topicLabel)}</div>` : ''}
-      <div class="vtitle">${esc(v.title)}</div>
-      ${v.channel ? `<div class="vchannel">${esc(v.channel)}</div>` : ''}
-      ${v.desc ? `<div class="vdesc-card">${esc(v.desc)}</div>` : ''}
-    </div>`;
-
-  const open = () => openModal(v);
-  card.addEventListener('click', open);
-  card.addEventListener('keydown', e => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); open(); }});
-  return card;
+  `).join('');
 }
 
-/* ── Modal ── */
-let _currentWatchUrl = '';
+function buildFilters() {
+  const row = document.getElementById('filter-row');
+  if (!row) return;
+  // Collect unique topicIds from allVideos
+  const topicSet = {};
+  for (const v of allVideos) if (v.topicId) topicSet[v.topicId] = true;
 
-function showEmbedError() {
-  // Hide the iframe, show the fallback error panel
-  document.getElementById('modal-player').style.display = 'none';
-  const err = document.getElementById('modal-embed-error');
-  err.classList.add('visible');
-  document.getElementById('modal-watch-link').href = _currentWatchUrl;
+  const tabs = [
+    `<button class="ftab picks-tab ${activeFilter === 'picks' ? 'active' : ''}" data-filter="picks">✦ FRQNCY Picks</button>`,
+    `<button class="ftab ${activeFilter === 'all' ? 'active' : ''}" data-filter="all">All</button>`,
+    ...Object.keys(topicSet).sort().map(t =>
+      `<button class="ftab ${activeFilter === t ? 'active' : ''}" data-filter="${t}">${escapeHtml(TOPIC_LABELS[t] || t)}</button>`
+    )
+  ];
+  row.innerHTML = `<span class="filter-label">Filter</span>${tabs.join('')}`;
+  row.querySelectorAll('.ftab').forEach(btn => {
+    btn.addEventListener('click', () => {
+      activeFilter = btn.getAttribute('data-filter');
+      renderStacks();
+      buildFilters();
+    });
+  });
 }
 
-function openModal(v) {
-  const embed    = getEmbedUrl(v);
-  const watch    = getWatchUrl(v);
-  const provider = getProvider(v);
+function renderStacks() {
+  const grid = document.getElementById('grid');
+  const count = document.getElementById('result-count');
+  if (!grid) return;
 
-  // Non-embeddable providers (e.g. Gaia) — always open in new tab
-  // file:// — YouTube rejects all embeds with Error 153; open externally
-  if (!provider.embeddable || !embed || location.protocol === 'file:') {
-    window.open(watch, '_blank', 'noopener,noreferrer');
+  let list = allVideos;
+  if (activeFilter === 'picks') list = list.filter(v => v.frqncy_pick);
+  else if (activeFilter !== 'all') list = list.filter(v => v.topicId === activeFilter);
+
+  if (searchQuery) {
+    const q = searchQuery.toLowerCase();
+    list = list.filter(v =>
+      (v.title || '').toLowerCase().includes(q) ||
+      (v.channel || '').toLowerCase().includes(q) ||
+      (v.desc || '').toLowerCase().includes(q) ||
+      (v.topicLabel || '').toLowerCase().includes(q)
+    );
+  }
+
+  if (count) count.textContent = `${list.length} ${list.length === 1 ? 'result' : 'results'}`;
+
+  if (!list.length) {
+    grid.innerHTML = `
+      <div class="empty">
+        <div class="empty-icon">✦</div>
+        <p>No volumes match. Try a different search or filter.</p>
+      </div>
+    `;
     return;
   }
 
-  _currentWatchUrl = watch;
+  grid.innerHTML = list.map(v => {
+    const thumb = getThumbUrl(v);
+    return `
+      <article class="vcard" data-vid="${v.id}" role="button" tabindex="0">
+        <div class="vthumb">
+          ${thumb ? `<img src="${thumb}" alt="" loading="lazy" onerror="this.style.display='none'">` : ''}
+          ${v.frqncy_pick ? `<span class="vpick">✦ FRQNCY Pick</span>` : ''}
+          <span class="vdur">${escapeHtml(v.duration || '')}</span>
+          <div class="vplay">
+            <span class="vplay-btn"><svg viewBox="0 0 24 24"><path d="M8 5v14l11-7z"/></svg></span>
+          </div>
+        </div>
+        <div class="vinfo">
+          <div class="vtopic">${escapeHtml(v.topicLabel || '')}</div>
+          <h3 class="vtitle">${escapeHtml(v.title)}</h3>
+          <div class="vchannel">${escapeHtml(v.channel || '')}</div>
+          <p class="vdesc-card">${escapeHtml(v.desc || '')}</p>
+        </div>
+      </article>
+    `;
+  }).join('');
 
-  // Reset error state
-  document.getElementById('modal-player').style.display = '';
-  document.getElementById('modal-embed-error').classList.remove('visible');
+  grid.querySelectorAll('.vcard').forEach(card => {
+    const id = card.getAttribute('data-vid');
+    const fn = () => playVideo(videoById.get(id));
+    card.addEventListener('click', fn);
+    card.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fn(); } });
+  });
+}
 
-  document.getElementById('modal-topic-el').textContent   = v.topicLabel || '';
-  document.getElementById('modal-title-el').textContent   = v.title;
-  document.getElementById('modal-channel-el').textContent = v.channel ? `— ${v.channel}` : '';
-  document.getElementById('modal-desc-el').textContent    = v.desc || '';
-  // Append enablejsapi=1 so YouTube fires postMessage events we can detect
-  document.getElementById('modal-iframe').src = embed + (embed.includes('?') ? '&' : '?') + 'enablejsapi=1';
+/* ── VIEW TOGGLE ── */
+function setView(view) {
+  activeView = view;
+  document.querySelectorAll('.view-toggle button').forEach(b => {
+    const match = b.getAttribute('data-view') === view;
+    b.classList.toggle('active', match);
+    b.setAttribute('aria-selected', match ? 'true' : 'false');
+  });
+  const lib = document.getElementById('library-view');
+  const stacks = document.getElementById('stacks-view');
+  const featured = document.getElementById('featured-wrap');
+  if (view === 'chapters') {
+    lib.style.display = '';
+    stacks.style.display = 'none';
+    if (featured) featured.style.display = '';
+  } else {
+    lib.style.display = 'none';
+    stacks.style.display = '';
+    if (featured) featured.style.display = 'none';
+  }
+}
+
+/* ── MODAL (video player) ── */
+function playVideo(v) {
+  if (!v) return;
+  const provider = getProvider(v);
+  const embed = getEmbedUrl(v);
+  const watch = getWatchUrl(v);
+
+  const iframe = document.getElementById('modal-iframe');
+  const player = document.getElementById('modal-player');
+  const errBox = document.getElementById('modal-embed-error');
+  const link = document.getElementById('modal-watch-link');
+  const isFile = location.protocol === 'file:';
+
+  document.getElementById('modal-topic-el').textContent = v.topicLabel || '';
+  document.getElementById('modal-title-el').textContent = v.title || '';
+  document.getElementById('modal-channel-el').textContent = [v.channel, v.duration].filter(Boolean).join(' · ');
+  document.getElementById('modal-desc-el').textContent = v.desc || '';
+
+  if (embed && !isFile) {
+    player.style.display = '';
+    errBox.classList.remove('visible');
+    iframe.src = embed;
+  } else {
+    player.style.display = 'none';
+    errBox.classList.add('visible');
+    link.href = watch;
+  }
+
   document.getElementById('modal').classList.add('open');
   document.body.style.overflow = 'hidden';
-  document.getElementById('modal-close').focus();
 }
 
 function closeModal() {
   document.getElementById('modal').classList.remove('open');
   document.getElementById('modal-iframe').src = '';
-  document.body.style.overflow = '';
-}
-
-// YouTube fires postMessage errors when embedding is blocked (e.g. Error 150/151/153)
-window.addEventListener('message', e => {
-  if (!document.getElementById('modal').classList.contains('open')) return;
-  try {
-    const data = JSON.parse(typeof e.data === 'string' ? e.data : '{}');
-    // YouTube IFrame API error event format: {event:'infoDelivery', info:{error:N}}
-    if (data.event === 'infoDelivery' && data.info && data.info.error != null) {
-      showEmbedError();
-    }
-    // Alternative format used by some YouTube embed versions
-    if (data.event === 'onError') {
-      showEmbedError();
-    }
-  } catch { /* non-JSON postMessage from other iframes — ignore */ }
-});
-
-document.getElementById('modal-close').addEventListener('click', closeModal);
-document.getElementById('modal').addEventListener('click', e => {
-  if (e.target === document.getElementById('modal')) closeModal();
-});
-document.addEventListener('keydown', e => { if (e.key === 'Escape') closeModal(); });
-
-/* ── Search ── */
-let searchTimer;
-document.getElementById('search').addEventListener('input', e => {
-  clearTimeout(searchTimer);
-  searchTimer = setTimeout(() => {
-    searchQuery = e.target.value;
-    render();
-  }, 120);
-});
-
-function esc(s) {
-  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-init();
-
-// Support deep-linking via hash (e.g. #t-trudeau from People page)
-function applyHashFilter() {
-  const hash = location.hash.replace('#','');
-  if (hash && TOPIC_LABELS[hash]) {
-    activeFilter = hash;
-    document.querySelectorAll('.ftab').forEach(b => {
-      b.classList.toggle('active', b.dataset.filter === hash);
-    });
-    render();
+  if (!document.getElementById('panel').classList.contains('open')) {
+    document.body.style.overflow = '';
   }
 }
-window.addEventListener('hashchange', applyHashFilter);
-// Also check on load (after init has run)
-setTimeout(applyHashFilter, 100);
+
+/* ── WIRING ── */
+function wireControls() {
+  const search = document.getElementById('search');
+  search.addEventListener('input', (e) => {
+    searchQuery = e.target.value.trim();
+    if (activeView !== 'stacks' && searchQuery) setView('stacks');
+    renderStacks();
+  });
+
+  document.querySelectorAll('.view-toggle button').forEach(b => {
+    b.addEventListener('click', () => setView(b.getAttribute('data-view')));
+  });
+
+  document.getElementById('panel-close').addEventListener('click', closePanel);
+  document.getElementById('panel-overlay').addEventListener('click', closePanel);
+
+  document.getElementById('modal-close').addEventListener('click', closeModal);
+  document.getElementById('modal').addEventListener('click', (e) => {
+    if (e.target.id === 'modal') closeModal();
+  });
+
+  document.addEventListener('keydown', (e) => {
+    if (e.key === 'Escape') {
+      if (document.getElementById('modal').classList.contains('open')) closeModal();
+      else if (document.getElementById('panel').classList.contains('open')) closePanel();
+    }
+  });
+}
+
+/* ── UTIL ── */
+function escapeHtml(s) {
+  return String(s || '')
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+}
+
+// Boot
+if (document.readyState === 'loading') {
+  document.addEventListener('DOMContentLoaded', init);
+} else {
+  init();
+}
 </script>
+
 </body>
 </html>

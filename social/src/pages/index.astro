@@ -36,8 +36,8 @@ import PostComposer from '../components/PostComposer';
 
     <!-- Main feed -->
     <section class="lg:col-span-6 space-y-6">
-      <PostComposer client:visible />
-      <Feed client:visible />
+      <PostComposer client:load />
+      <Feed client:load />
     </section>
 
     <!-- Right sidebar -->
@@ -76,7 +76,7 @@ import PostComposer from '../components/PostComposer';
         <h3 class="font-heading text-lg text-gold mb-3">Explore</h3>
         <div class="flex flex-wrap gap-2">
           <a href="/v2/explore.html" class="text-xs px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim hover:text-gold hover:border-gold/30 transition-colors">Network Map</a>
-          <a href="/search.html" class="text-xs px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim hover:text-gold hover:border-gold/30 transition-colors">Search</a>
+          <a href="/social/search" class="text-xs px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim hover:text-gold hover:border-gold/30 transition-colors">Search</a>
           <a href="/v2/courses/index.html" class="text-xs px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim hover:text-gold hover:border-gold/30 transition-colors">Courses</a>
           <a href="/podcast.html" class="text-xs px-3 py-1 rounded-full bg-navy-mid border border-card-border text-text-dim hover:text-gold hover:border-gold/30 transition-colors">Podcast</a>
         </div>

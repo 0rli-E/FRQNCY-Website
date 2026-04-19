@@ -1,6 +1,7 @@
 #!/usr/bin/env node
-// generate-watch.js — inlines videos.json data into v2/watch/index.html
-// so the watch hub works on file:// protocol without a local server.
+// generate-watch.js — inlines videos.json + playlists.json data into
+// v2/watch/index.html so the watch hub works on file:// protocol without
+// a local server.
 // Run: node generate-watch.js
 // (also called by: npm run build:watch)
 
@@ -9,6 +10,7 @@ const path = require('path');
 
 const ROOT      = __dirname;
 const VIDEOS    = JSON.parse(fs.readFileSync(path.join(ROOT, 'videos.json'),    'utf8'));
+const PLAYLISTS = JSON.parse(fs.readFileSync(path.join(ROOT, 'playlists.json'), 'utf8'));
 const PROVIDERS = JSON.parse(fs.readFileSync(path.join(ROOT, 'providers.json'), 'utf8'));
 
 // ── Build the flat inlined videos array ────────────────────────
@@ -21,7 +23,8 @@ const TOPIC_LABELS = {
   't-meditation':'Meditation','t-quantum':'Quantum Physics','t-neuro':'Neuroscience',
   't-breathwork':'Breathwork','t-manifestation':'Manifestation','t-plantmed':'Plant Medicine',
   't-soundheal':'Sound Healing','t-quantum-grammar':'Quantum Grammar','t-ai':'AI & Technology',
-  't-sacredgeo':'Sacred Geometry','t-vibration':'Vibration','t-saclaw':'Sacred Law'
+  't-sacredgeo':'Sacred Geometry','t-vibration':'Vibration','t-saclaw':'Sacred Law',
+  't-trudeau':'Kevin Trudeau','t-osho':'Osho','t-sadhguru':'Sadhguru','t-saimaa':'Sai Maa','t-garyspivey':'Gary Spivey'
 };
 
 const allVideos = [];
@@ -39,22 +42,29 @@ allVideos.sort((a, b) => (b.frqncy_pick ? 1 : 0) - (a.frqncy_pick ? 1 : 0));
 const TEMPLATE_PATH = path.join(ROOT, 'v2', 'watch', 'index.html');
 let html = fs.readFileSync(TEMPLATE_PATH, 'utf8');
 
-const MARKER_START = '// ▼▼ INLINE_VIDEOS_START ▼▼';
-const MARKER_END   = '// ▲▲ INLINE_VIDEOS_END ▲▲';
+const MARKER_START = '// ▼▼ INLINE_DATA_START ▼▼';
+const MARKER_END   = '// ▲▲ INLINE_DATA_END ▲▲';
 
 const inlineBlock = [
   MARKER_START,
   `// Inlined at build time by generate-watch.js — works on file:// and web servers`,
   `const INLINE_VIDEOS = ${JSON.stringify(allVideos)};`,
+  `const INLINE_PLAYLISTS = ${JSON.stringify(PLAYLISTS)};`,
   MARKER_END
 ].join('\n');
 
+// Support both new and legacy markers for backwards compatibility
+const LEGACY_START = '// ▼▼ INLINE_VIDEOS_START ▼▼';
+const LEGACY_END   = '// ▲▲ INLINE_VIDEOS_END ▲▲';
+
 if (html.includes(MARKER_START)) {
-  // Replace existing block
   const re = new RegExp(`${escapeRegExp(MARKER_START)}[\\s\\S]*?${escapeRegExp(MARKER_END)}`);
   html = html.replace(re, inlineBlock);
+} else if (html.includes(LEGACY_START)) {
+  const re = new RegExp(`${escapeRegExp(LEGACY_START)}[\\s\\S]*?${escapeRegExp(LEGACY_END)}`);
+  html = html.replace(re, inlineBlock);
 } else {
-  // First run: insert after the opening <script> tag (before TOPIC_LABELS)
+  // First run: insert after the opening <script> tag
   html = html.replace(
     '<script>\nconst TOPIC_LABELS',
     `<script>\n${inlineBlock}\n\nconst TOPIC_LABELS`
@@ -62,7 +72,9 @@ if (html.includes(MARKER_START)) {
 }
 
 fs.writeFileSync(TEMPLATE_PATH, html, 'utf8');
-console.log(`✓  v2/watch/index.html (${allVideos.length} videos inlined)`);
+const collectionCount = PLAYLISTS.collections?.length || 0;
+const playlistCount = (PLAYLISTS.collections || []).reduce((n, c) => n + (c.playlists?.length || 0), 0);
+console.log(`✓  v2/watch/index.html (${allVideos.length} videos, ${playlistCount} playlists across ${collectionCount} collections inlined)`);
 
 function escapeRegExp(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

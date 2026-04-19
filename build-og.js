@@ -175,8 +175,10 @@ async function main() {
 
   console.log(`✓ OG images generated: ${count} → v2/og/ + og-image.png`);
   if (errors.length) {
-    console.warn(`  ${errors.length} errors:`);
-    errors.forEach(e => console.warn('   ', e));
+    console.error(`  ${errors.length} errors:`);
+    errors.forEach(e => console.error('   ', e));
+    // Exit non-zero so CI surfaces partial-build failures instead of marking them green.
+    process.exit(1);
   }
 }
 

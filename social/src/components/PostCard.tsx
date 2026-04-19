@@ -3,6 +3,8 @@ import { useAuth } from './AuthProvider';
 import { supabase } from '../lib/supabase';
 
 import ProjectBadge from './ProjectBadge';
+import CommentsThread from './CommentsThread';
+import CommentForm from './CommentForm';
 
 interface PostCardProps {
   id?: string;
@@ -37,6 +39,8 @@ export default function PostCard({
   const [bookmarked, setBookmarked] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
+  const [showComments, setShowComments] = useState(false);
+  const [commentCount, setCommentCount] = useState(comments);
 
   // Check if current user has liked/bookmarked this post
   useEffect(() => {
@@ -49,13 +53,13 @@ export default function PostCard({
           .select('id')
           .eq('user_id', user.id)
           .eq('post_id', id)
-          .single(),
+          .maybeSingle(),
         supabase
           .from('bookmarks')
           .select('id')
           .eq('user_id', user.id)
           .eq('post_id', id)
-          .single(),
+          .maybeSingle(),
       ]);
 
       if (likeResult.data) setLiked(true);
@@ -64,6 +68,11 @@ export default function PostCard({
 
     checkStatus();
   }, [user, id]);
+
+  // Keep comment count in sync with parent's prop
+  useEffect(() => {
+    setCommentCount(comments);
+  }, [comments]);
 
   const toggleLike = async () => {
     if (!user || !id || likeLoading) return;
@@ -202,7 +211,14 @@ export default function PostCard({
           {likeCount > 0 && <span>{likeCount}</span>}
         </button>
 
-        <button class="flex items-center gap-1.5 text-xs text-text-dim hover:text-accent transition-colors">
+        <button
+          onClick={() => id && setShowComments((v) => !v)}
+          disabled={!id}
+          aria-expanded={showComments}
+          class={`flex items-center gap-1.5 text-xs transition-colors ${
+            showComments ? 'text-accent' : 'text-text-dim hover:text-accent'
+          }`}
+        >
           <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
             <path
               stroke-linecap="round"
@@ -211,7 +227,7 @@ export default function PostCard({
               d="M8 12h.01M12 12h.01M16 12h.01M21 12c0 4.418-4.03 8-9 8a9.863 9.863 0 01-4.255-.949L3 20l1.395-3.72C3.512 15.042 3 13.574 3 12c0-4.418 4.03-8 9-8s9 3.582 9 8z"
             />
           </svg>
-          {comments > 0 && <span>{comments}</span>}
+          {commentCount > 0 && <span>{commentCount}</span>}
         </button>
 
         <button class="flex items-center gap-1.5 text-xs text-text-dim hover:text-gold-light transition-colors">
@@ -232,6 +248,22 @@ export default function PostCard({
           </svg>
         </button>
       </div>
+
+      {/* Comments section */}
+      {showComments && id && (
+        <div class="mt-4 ml-13 rounded-lg bg-navy-mid border border-card-border p-3 space-y-3">
+          <CommentForm
+            postId={id}
+            onSubmit={() => setCommentCount((c) => c + 1)}
+          />
+          <div class="pt-2 border-t border-card-border">
+            <CommentsThread
+              postId={id}
+              onCountChange={(n) => setCommentCount(n)}
+            />
+          </div>
+        </div>
+      )}
     </article>
   );
 }

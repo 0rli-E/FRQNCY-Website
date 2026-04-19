@@ -20,6 +20,14 @@ function slugify(name: string): string {
     .replace(/(^-|-$)/g, '');
 }
 
+type Conviction = 'bullish' | 'bearish' | 'neutral';
+
+const CONVICTION_GLYPH: Record<Conviction, string> = {
+  bullish: '▲',
+  bearish: '▼',
+  neutral: '▬',
+};
+
 interface ProjectBadgeProps {
   name: string;
   tier: string;
@@ -27,6 +35,8 @@ interface ProjectBadgeProps {
   linked?: boolean;
   /** Compact mode hides the tier letter (default: false) */
   compact?: boolean;
+  /** Optional author conviction — renders a small indicator at the tail */
+  conviction?: Conviction | null;
 }
 
 export default function ProjectBadge({
@@ -34,9 +44,19 @@ export default function ProjectBadge({
   tier,
   linked = true,
   compact = false,
+  conviction = null,
 }: ProjectBadgeProps) {
   const color = getTierColor(tier);
   const href = `/v2/crypto/projects.html#${slugify(name)}`;
+
+  const convictionGlyph = conviction ? CONVICTION_GLYPH[conviction] : null;
+  // Gold for bullish, muted for bearish/neutral — stays on-palette.
+  const convictionColor =
+    conviction === 'bullish'
+      ? '#C4973A' // gold
+      : conviction === 'bearish'
+      ? '#7090B8' // text-dim
+      : '#C8D8F0'; // text (for neutral)
 
   const badge = (
     <span
@@ -59,6 +79,16 @@ export default function ProjectBadge({
           style={{ color }}
         >
           {tier?.toUpperCase()}
+        </span>
+      )}
+      {convictionGlyph && (
+        <span
+          class="text-[10px] leading-none ml-0.5"
+          style={{ color: convictionColor }}
+          title={`Author is ${conviction}`}
+          aria-label={`Conviction: ${conviction}`}
+        >
+          {convictionGlyph}
         </span>
       )}
     </span>

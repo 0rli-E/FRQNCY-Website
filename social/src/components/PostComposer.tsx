@@ -1,20 +1,43 @@
 import { useState } from 'preact/hooks';
 import { useAuth } from './AuthProvider';
-import { createPost } from '../lib/api';
-import ProjectTagInput from './ProjectTagInput';
+import { supabase } from '../lib/supabase';
+import type { Post } from '../lib/api';
+import ProjectPicker from './ProjectPicker';
+import ConvictionToggle, { type Conviction } from './ConvictionToggle';
+import type { Project } from '../lib/projects';
 
 interface PostComposerProps {
   onPost?: () => void;
 }
 
+// Tracks whether the `conviction` column exists on posts. We optimistically
+// try to insert it; on the first schema error we flip this flag and retry
+// without it. This lets the UI ship before the migration is applied.
+let convictionColumnMissing = false;
+
 export default function PostComposer({ onPost }: PostComposerProps) {
-  const { user, profile } = useAuth();
+  const { user, profile, loading } = useAuth();
   const [content, setContent] = useState('');
   const [tags, setTags] = useState<string[]>([]);
   const [tagInput, setTagInput] = useState('');
-  const [projectTag, setProjectTag] = useState<{ name: string; tier: string } | null>(null);
+  const [project, setProject] = useState<Project | null>(null);
+  const [conviction, setConviction] = useState<Conviction | null>(null);
   const [focused, setFocused] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  if (loading) {
+    return (
+      <div class="rounded-xl bg-card-bg border border-card-border p-5 animate-pulse">
+        <div class="flex gap-3">
+          <div class="w-10 h-10 rounded-full bg-navy-mid shrink-0" />
+          <div class="flex-1 space-y-2">
+            <div class="h-3 bg-navy-mid rounded w-1/3" />
+            <div class="h-3 bg-navy-mid rounded w-2/3" />
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   if (!user) {
     return (
@@ -62,22 +85,67 @@ export default function PostComposer({ onPost }: PostComposerProps) {
 
     setSubmitting(true);
     try {
-      const post = await createPost({
+      const basePayload: Record<string, any> = {
         author_id: user.id,
         content: content.trim(),
-        project_tag: projectTag?.name ?? undefined,
-        project_tier: projectTag?.tier ?? undefined,
-      });
+        media_urls: [],
+        link_url: null,
+        link_preview: null,
+        project_tag: project?.name ?? null,
+        project_tier: project?.tier ?? null,
+      };
 
+      // Only include conviction when a project is tagged. Sending it for
+      // untagged posts is noise.
+      const payload =
+        project && conviction && !convictionColumnMissing
+          ? { ...basePayload, conviction }
+          : basePayload;
+
+      let insert = await supabase
+        .from('posts')
+        .insert(payload)
+        .select('*, author:profiles!posts_author_id_fkey(*)')
+        .single();
+
+      // If the conviction column doesn't exist yet, retry without it.
+      if (
+        insert.error &&
+        !convictionColumnMissing &&
+        /conviction/i.test(insert.error.message || '')
+      ) {
+        console.warn(
+          '[PostComposer] conviction column missing — falling back. ' +
+            'Run supabase/migrations/002_conviction.sql to enable it.',
+        );
+        convictionColumnMissing = true;
+        insert = await supabase
+          .from('posts')
+          .insert(basePayload)
+          .select('*, author:profiles!posts_author_id_fkey(*)')
+          .single();
+      }
+
+      if (insert.error) throw new Error(insert.error.message);
+      const post = insert.data as Post | null;
       if (!post) throw new Error('Post creation returned null');
+
+      // Bump the author's post_count (matches the logic in lib/api.ts).
+      await supabase.rpc('increment_counter', {
+        row_id: user.id,
+        table_name: 'profiles',
+        column_name: 'post_count',
+        amount: 1,
+      });
 
       setContent('');
       setTags([]);
       setTagInput('');
-      setProjectTag(null);
+      setProject(null);
+      setConviction(null);
       onPost?.();
     } catch (err: any) {
-      console.error('Failed to create post:', err.message);
+      console.error('Failed to create post:', err?.message || err);
     } finally {
       setSubmitting(false);
     }
@@ -148,10 +216,21 @@ export default function PostComposer({ onPost }: PostComposerProps) {
         </div>
       </div>
 
-      {/* Project tag input */}
-      {(focused || projectTag || content) && (
-        <div class="mt-2 px-0 ml-13">
-          <ProjectTagInput selected={projectTag} onSelect={setProjectTag} />
+      {/* Project tag + conviction */}
+      {(focused || project || content) && (
+        <div class="mt-3 pl-[52px] space-y-2">
+          <ProjectPicker
+            value={project}
+            onChange={(p) => {
+              setProject(p);
+              // Reset conviction if the project is cleared.
+              if (!p) setConviction(null);
+            }}
+            placeholder="Tag a project (optional)"
+          />
+          {project && (
+            <ConvictionToggle value={conviction} onChange={setConviction} />
+          )}
         </div>
       )}
 
