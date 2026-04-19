@@ -23,10 +23,15 @@ yarn-error.log*
 # Cloudflare
 .wrangler/
 
-# Astro build cache (social/)
-social/.astro/
-social/dist/
-social/node_modules/
+# Astro project source lives in /social-src/; built static output is committed
+# at /social/ (that's what Cloudflare Pages serves at URL /social/*).
+social-src/.astro/
+social-src/dist/
+social-src/node_modules/
+social-src/.wrangler/
+social-app.superseded/
+*.old
+*.old.*
 
 # Auto-generated — committed by GitHub Actions, not manually
 # (DO NOT add v2/ or functions/api/_kb.js here — CI commits them)

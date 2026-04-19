@@ -30,5 +30,25 @@
 /workers/*              /404.html 404
 /versions/*             /404.html 404
 
+# Block Astro source project (built output lives at /social/ directly)
+/social-src/*           /404.html 404
+/social-app*            /404.html 404
+/apps/*                 /404.html 404
+/IDEAS.md               /404.html 404
+/AUDIT-REPORT.md        /404.html 404
+/docs/*                 /404.html 404
+
+# Hide Astro static-build artifacts that are not referenced by any page
+/social/*.mjs           /404.html 404
+/social/pages/*         /404.html 404
+/social/chunks/*        /404.html 404
+
+# Dynamic profile route — serve the same shell for any username
+/social/profile/*       /social/profile/index.html 200
+
+# Legacy leaderboard URL → /social/space (cooperation-over-competition)
+/social/leaderboard     /social/space              301
+/social/leaderboard/    /social/space              301
+
 # 404 fallback — Cloudflare Pages reads this automatically
 /*                /404.html           404
