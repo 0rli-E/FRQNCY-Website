@@ -214,6 +214,14 @@ main{max-width:1200px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
 .lrow-link{font-size:0.56rem;letter-spacing:0.08em;color:var(--accent);white-space:nowrap;transition:opacity .2s}
 .lrow-link:hover{opacity:0.8}
 
+/* PRIORITY SECTION — selected tier shown first */
+.priority-divider{
+  max-width:1200px;margin:2rem 0 1.5rem;padding:0.6rem 0;
+  display:flex;align-items:center;gap:1rem;
+  font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);opacity:0.6;
+}
+.priority-divider::before,.priority-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.06)}
+
 /* EMPTY */
 .empty{text-align:center;padding:4rem 2rem;color:var(--text-dim);font-size:0.84rem}
 
@@ -476,9 +484,8 @@ function updateCounts(projects) {
 function render() {
   const container = document.getElementById('content');
 
-  /* Filter */
+  /* Filter by search + category (NOT tier — tier is handled by priority layout) */
   let filtered = ALL_PROJECTS.filter(p => {
-    if (activeTier !== 'all' && (p.tier || '') !== activeTier) return false;
     if (activeCat !== 'all' && p.category !== activeCat) return false;
     if (searchQuery) {
       const hay = (p.name + ' ' + p.ticker + ' ' + p.chain + ' ' + p.category + ' ' + p.desc).toLowerCase();
@@ -490,10 +497,22 @@ function render() {
   /* Sort */
   filtered = sortProjects(filtered, sortMode);
 
-  /* Result count */
-  document.getElementById('result-count').textContent = filtered.length + ' project' + (filtered.length !== 1 ? 's' : '');
+  /* Split into priority (selected tier) and rest */
+  let priority = [];
+  let rest = [];
+  if (activeTier !== 'all') {
+    priority = filtered.filter(p => (p.tier || '') === activeTier);
+    rest = filtered.filter(p => (p.tier || '') !== activeTier);
+  } else {
+    priority = filtered;
+    rest = [];
+  }
 
-  if (!filtered.length) {
+  /* Result count */
+  const total = priority.length + rest.length;
+  document.getElementById('result-count').textContent = total + ' project' + (total !== 1 ? 's' : '') + (activeTier !== 'all' ? ' · ' + priority.length + ' ' + (TIER_NAMES[activeTier]||activeTier) : '');
+
+  if (!total) {
     container.innerHTML = '<div class="empty">No projects match your filters. Try broadening your search.</div>';
     return;
   }
@@ -501,9 +520,9 @@ function render() {
   container.innerHTML = '';
 
   if (viewMode === 'list') {
-    renderList(container, filtered);
+    renderList(container, priority, rest);
   } else {
-    renderGrid(container, filtered);
+    renderGrid(container, priority, rest);
   }
 }
 
@@ -517,11 +536,17 @@ function sortProjects(arr, mode) {
 }
 
 /* ── GRID VIEW ──────────────────────────────────────────────── */
-function renderGrid(container, projects) {
-  /* Group by tier when sorting by tier */
-  if (sortMode === 'tier' && activeTier === 'all') {
+function renderGrid(container, priority, rest) {
+  /* Render priority projects */
+  if (activeTier !== 'all' && priority.length) {
+    /* Single tier selected — show as flat grid (they're all the same tier) */
+    const grid = mk('div','project-grid');
+    for (const p of priority) grid.appendChild(makeGridCard(p));
+    container.appendChild(grid);
+  } else if (sortMode === 'tier') {
+    /* All tiers, sort by tier — group by tier headers */
     for (const tier of TIER_ORDER) {
-      const group = projects.filter(p => (p.tier||'') === tier);
+      const group = priority.filter(p => (p.tier||'') === tier);
       if (!group.length) continue;
       const section = mk('div','tier-section');
       section.innerHTML = `<div class="tier-header"><div class="tier-dot" style="background:${TIER_COLORS[tier]}"></div><h2>${esc(TIER_NAMES[tier])}</h2><span class="tier-count">${group.length}</span></div>`;
@@ -532,8 +557,32 @@ function renderGrid(container, projects) {
     }
   } else {
     const grid = mk('div','project-grid');
-    for (const p of projects) grid.appendChild(makeGridCard(p));
+    for (const p of priority) grid.appendChild(makeGridCard(p));
     container.appendChild(grid);
+  }
+
+  /* Render remaining projects (other tiers) below a divider */
+  if (rest.length) {
+    const divider = mk('div','priority-divider');
+    divider.textContent = 'Other tiers';
+    container.appendChild(divider);
+
+    if (sortMode === 'tier') {
+      for (const tier of TIER_ORDER) {
+        const group = rest.filter(p => (p.tier||'') === tier);
+        if (!group.length) continue;
+        const section = mk('div','tier-section');
+        section.innerHTML = `<div class="tier-header"><div class="tier-dot" style="background:${TIER_COLORS[tier]}"></div><h2>${esc(TIER_NAMES[tier])}</h2><span class="tier-count">${group.length}</span></div>`;
+        const grid = mk('div','project-grid');
+        for (const p of group) grid.appendChild(makeGridCard(p));
+        section.appendChild(grid);
+        container.appendChild(section);
+      }
+    } else {
+      const grid = mk('div','project-grid');
+      for (const p of rest) grid.appendChild(makeGridCard(p));
+      container.appendChild(grid);
+    }
   }
 }
 
@@ -566,22 +615,33 @@ function makeGridCard(p) {
 }
 
 /* ── LIST VIEW ──────────────────────────────────────────────── */
-function renderList(container, projects) {
-  if (sortMode === 'tier' && activeTier === 'all') {
-    for (const tier of TIER_ORDER) {
-      const group = projects.filter(p => (p.tier||'') === tier);
-      if (!group.length) continue;
-      const section = mk('div','tier-section');
-      section.innerHTML = `<div class="tier-header"><div class="tier-dot" style="background:${TIER_COLORS[tier]}"></div><h2>${esc(TIER_NAMES[tier])}</h2><span class="tier-count">${group.length}</span></div>`;
+function renderList(container, priority, rest) {
+  function renderListGroup(items, parent) {
+    if (sortMode === 'tier' && activeTier === 'all') {
+      for (const tier of TIER_ORDER) {
+        const group = items.filter(p => (p.tier||'') === tier);
+        if (!group.length) continue;
+        const section = mk('div','tier-section');
+        section.innerHTML = `<div class="tier-header"><div class="tier-dot" style="background:${TIER_COLORS[tier]}"></div><h2>${esc(TIER_NAMES[tier])}</h2><span class="tier-count">${group.length}</span></div>`;
+        const list = mk('div','project-list');
+        for (const p of group) list.appendChild(makeListRow(p));
+        section.appendChild(list);
+        parent.appendChild(section);
+      }
+    } else {
       const list = mk('div','project-list');
-      for (const p of group) list.appendChild(makeListRow(p));
-      section.appendChild(list);
-      container.appendChild(section);
+      for (const p of items) list.appendChild(makeListRow(p));
+      parent.appendChild(list);
     }
-  } else {
-    const list = mk('div','project-list');
-    for (const p of projects) list.appendChild(makeListRow(p));
-    container.appendChild(list);
+  }
+
+  renderListGroup(priority, container);
+
+  if (rest.length) {
+    const divider = mk('div','priority-divider');
+    divider.textContent = 'Other tiers';
+    container.appendChild(divider);
+    renderListGroup(rest, container);
   }
 }
 
@@ -606,8 +666,11 @@ function makeListRow(p) {
 }
 
 /* ════════════════════════════════════════════════════════════════
-   DATA LOADING
+   DATA LOADING — Fast: localStorage → static JSON → API upgrade
    ════════════════════════════════════════════════════════════════ */
+const LS_KEY = 'frqncy_crypto_projects';
+const LS_MAX_AGE = 30 * 60 * 1000; // 30 min
+
 function mapApiProjects(data) {
   return data.projects.map(p => ({
     name: p.name,
@@ -623,43 +686,40 @@ function mapApiProjects(data) {
   }));
 }
 
-function updateSyncNote(data) {
-  const el = document.getElementById('sync-text');
-  if (data.cached) {
-    el.textContent = 'Cached \u00B7 Last sync ' + new Date(data.lastSync).toLocaleString();
-  } else {
-    el.textContent = 'Live from Notion \u00B7 ' + new Date(data.lastSync).toLocaleString();
-  }
+function saveToLocal(projects, lastSync, source) {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      ts: Date.now(), lastSync, projects, source
+    }));
+  } catch(_) { /* quota exceeded — ignore */ }
 }
 
-async function loadData() {
+function loadFromLocal() {
   try {
-    const res = await fetch('/api/crypto/projects');
-    if (!res.ok) throw new Error('API ' + res.status);
-    const data = await res.json();
-    ALL_PROJECTS = mapApiProjects(data);
-    updateCounts(ALL_PROJECTS);
-    buildCatPills(ALL_PROJECTS);
-    render();
-    updateSyncNote(data);
-  } catch (e) {
-    try {
-      const res = await fetch('crypto-projects.json');
-      if (!res.ok) throw new Error('Fallback failed');
-      const data = await res.json();
-      ALL_PROJECTS = data.projects || [];
-      updateCounts(ALL_PROJECTS);
-      buildCatPills(ALL_PROJECTS);
-      render();
-      if (data.lastSync) {
-        document.getElementById('sync-text').textContent = 'Offline \u00B7 Last synced: ' + new Date(data.lastSync).toLocaleDateString('en-US',{month:'short',day:'numeric',year:'numeric'});
-      }
-    } catch {
-      document.getElementById('content').innerHTML = '<div class="empty">Failed to load projects. <button onclick="loadData()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></div>';
-    }
-  }
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (Date.now() - data.ts > LS_MAX_AGE) return null;
+    return data;
+  } catch(_) { return null; }
+}
 
-  /* URL hash → auto-select tier */
+function updateSyncNote(source, lastSync) {
+  const el = document.getElementById('sync-text');
+  const label = source === 'api' ? 'Live from Notion' : source === 'cache' ? 'Cached' : 'Offline';
+  el.textContent = label + ' · ' + (lastSync ? new Date(lastSync).toLocaleString() : 'unknown');
+}
+
+function hydrateUI(projects, lastSync, source) {
+  ALL_PROJECTS = projects;
+  updateCounts(ALL_PROJECTS);
+  buildCatPills(ALL_PROJECTS);
+  applyHashTier();
+  render();
+  updateSyncNote(source, lastSync);
+}
+
+function applyHashTier() {
   const hash = location.hash.replace('#','').toUpperCase();
   if (hash && TIER_ORDER.includes(hash)) {
     activeTier = hash;
@@ -667,7 +727,51 @@ async function loadData() {
       t.classList.toggle('active', t.dataset.tier === hash);
       t.setAttribute('aria-selected', t.dataset.tier === hash ? 'true' : 'false');
     });
-    render();
+  }
+}
+
+async function loadData() {
+  let rendered = false;
+
+  /* ── Step 1: Instant paint from localStorage ────────────── */
+  const local = loadFromLocal();
+  if (local && local.projects && local.projects.length) {
+    hydrateUI(local.projects, local.lastSync, 'cache');
+    rendered = true;
+  }
+
+  /* ── Step 2: If no local cache, load static JSON for fast first paint */
+  if (!rendered) {
+    try {
+      const res = await fetch('crypto-projects.json');
+      if (res.ok) {
+        const data = await res.json();
+        const projects = data.projects || [];
+        if (projects.length) {
+          hydrateUI(projects, data.lastSync, 'offline');
+          saveToLocal(projects, data.lastSync, 'offline');
+          rendered = true;
+        }
+      }
+    } catch(_) { /* continue to API */ }
+  }
+
+  /* ── Step 3: Upgrade from live API in background ────────── */
+  try {
+    const res = await fetch('/api/crypto/projects');
+    if (!res.ok) throw new Error('API ' + res.status);
+    const data = await res.json();
+    const projects = mapApiProjects(data);
+    if (projects.length) {
+      hydrateUI(projects, data.lastSync, 'api');
+      saveToLocal(projects, data.lastSync, 'api');
+      rendered = true;
+    }
+  } catch(_) {
+    /* API failed — if we already rendered from cache/JSON, that's fine */
+    if (!rendered) {
+      document.getElementById('content').innerHTML = '<div class="empty">Failed to load projects. <button onclick="loadData()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></div>';
+    }
   }
 }
 
@@ -679,10 +783,9 @@ async function refreshData() {
     const res = await fetch('/api/crypto/projects?refresh=true');
     if (!res.ok) throw new Error('Refresh failed');
     const data = await res.json();
-    ALL_PROJECTS = mapApiProjects(data);
-    updateCounts(ALL_PROJECTS);
-    render();
-    updateSyncNote(data);
+    const projects = mapApiProjects(data);
+    hydrateUI(projects, data.lastSync, 'api');
+    saveToLocal(projects, data.lastSync, 'api');
   } catch {
     document.getElementById('sync-text').textContent = 'Refresh failed — showing cached data';
   } finally {

@@ -46,8 +46,8 @@
   let messages = [];   // { role, content }
   let loading  = false;
 
-  // ── FRQNCY LOGO SVG (radiant wave symbol) ───────────────────────
-  const FRQNCY_LOGO_SVG = `<svg viewBox="0 0 100 100" xmlns="http://www.w3.org/2000/svg" style="width:60%;height:60%"><g stroke="currentColor" stroke-width="3.2" stroke-linecap="round" fill="none"><line x1="50" y1="4" x2="50" y2="24"/><line x1="72" y1="10" x2="62" y2="26"/><line x1="92" y1="30" x2="74" y2="38"/><line x1="92" y1="70" x2="74" y2="62"/><line x1="50" y1="96" x2="50" y2="76"/><line x1="28" y1="90" x2="38" y2="74"/><line x1="8" y1="70" x2="26" y2="62"/><line x1="8" y1="30" x2="26" y2="38"/></g><path d="M8,50 C22,50 32,33 50,33 C68,33 78,50 92,50" stroke="currentColor" stroke-width="3.2" fill="none" stroke-linecap="round"/><path d="M8,50 C22,50 32,67 50,67 C68,67 78,50 92,50" stroke="currentColor" stroke-width="3.2" fill="none" stroke-linecap="round"/><circle cx="38" cy="55" r="3.2" fill="currentColor"/><circle cx="62" cy="55" r="3.2" fill="currentColor"/></svg>`;
+  // ── FRQNCY LOGO SVG (brand asterisk mark) ────────────────────────
+  const FRQNCY_LOGO_SVG = `<svg viewBox="0 0 32 32" xmlns="http://www.w3.org/2000/svg" style="width:60%;height:60%"><line x1="6" y1="16" x2="26" y2="16" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><line x1="16" y1="6" x2="16" y2="26" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><line x1="9" y1="9" x2="23" y2="23" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><line x1="23" y1="9" x2="9" y2="23" stroke="currentColor" stroke-width="2.4" stroke-linecap="round"/><circle cx="16" cy="16" r="2.2" fill="currentColor"/></svg>`;
 
   // ── INJECT STYLES ────────────────────────────────────────────────
   const style = document.createElement('style');

@@ -4,7 +4,7 @@
 const NOTION_DB_ID = "2885f874cee880d9a5fac5f6b89aecba";
 const NOTION_API_VERSION = "2022-06-28";
 const KV_KEY = "crypto_projects_v1";
-const CACHE_TTL = 300; // 5 minutes
+const CACHE_TTL = 1800; // 30 minutes
 
 const ALLOWED_ORIGINS = [
   "https://frqncy.network",
@@ -291,7 +291,7 @@ export async function onRequest(context) {
     headers: {
       ...cors,
       "Content-Type": "application/json",
-      "Cache-Control": "public, max-age=60",
+      "Cache-Control": "public, max-age=300, stale-while-revalidate=1800",
     },
   });
 }
