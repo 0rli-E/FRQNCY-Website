@@ -66,18 +66,19 @@
   }
 
   // ── Find cards on the page ─────────────────────────────
-  // Cards are .ccard with data-cgid attribute (set by generator),
-  // OR inferred from the PROJECTS global if exposed.
+  // Cards may be .ccard (generator output) or .pcard (Notion Explorer/Curation).
+  // Either way, the CoinGecko id lives in data-cgid.
+  // PROJECTS global (window.PROJECTS[].coingeckoId) is a fallback for hand-written pages.
+  const CARD_SELECTOR = ".ccard[data-cgid], .pcard[data-cgid]";
+
   function collectIds() {
     const ids = new Set();
 
-    // 1. From data attributes on cards (preferred)
-    document.querySelectorAll(".ccard[data-cgid]").forEach((el) => {
+    document.querySelectorAll(CARD_SELECTOR).forEach((el) => {
       const id = el.getAttribute("data-cgid");
       if (id) ids.add(id.toLowerCase());
     });
 
-    // 2. From PROJECTS global (fallback)
     if (typeof window.PROJECTS !== "undefined" && Array.isArray(window.PROJECTS)) {
       window.PROJECTS.forEach((p) => {
         if (p && p.coingeckoId) ids.add(String(p.coingeckoId).toLowerCase());
@@ -89,10 +90,8 @@
 
   function paintCard(card, coin) {
     if (!coin) return;
-    // Avoid double-painting
-    if (card.querySelector(".mkt-row")) return;
+    if (card.querySelector(".mkt-row")) return; // avoid double-paint
 
-    const footer = card.querySelector(".ccard-footer");
     const row = document.createElement("div");
     row.className = "mkt-row";
 
@@ -112,12 +111,57 @@
     row.appendChild(change);
     if (mcap.textContent) row.appendChild(mcap);
 
-    if (footer) {
-      footer.parentNode.insertBefore(row, footer);
+    // Insertion point — try in order:
+    //   1. Before .ccard-footer (generator cards)
+    //   2. Before .pcard-footer (projects.html grid cards)
+    //   3. Before .pcard-coingecko link (explorer.html cards)
+    //   4. Append as last child
+    const anchor =
+      card.querySelector(".ccard-footer") ||
+      card.querySelector(".pcard-footer") ||
+      card.querySelector(".pcard-coingecko");
+    if (anchor) {
+      anchor.parentNode.insertBefore(row, anchor);
     } else {
       card.appendChild(row);
     }
   }
+
+  // ── Paint pass — runs once on initial load AND can be re-run after re-render ──
+  let lastCoins = null;
+
+  function paintAll(coins) {
+    if (!coins) return;
+    document.querySelectorAll(CARD_SELECTOR).forEach((card) => {
+      const id = (card.getAttribute("data-cgid") || "").toLowerCase();
+      if (coins[id]) paintCard(card, coins[id]);
+    });
+
+    // Bitcoin/index.html style — match by name from PROJECTS global
+    if (typeof window.PROJECTS !== "undefined" && Array.isArray(window.PROJECTS)) {
+      const byName = {};
+      window.PROJECTS.forEach((p) => {
+        if (p && p.coingeckoId) byName[p.name] = p.coingeckoId.toLowerCase();
+      });
+      document.querySelectorAll(".ccard, .pcard").forEach((card) => {
+        if (card.querySelector(".mkt-row")) return;
+        const nameEl =
+          card.querySelector(".ccard-name") || card.querySelector(".pcard-name");
+        if (!nameEl) return;
+        const cgid = byName[nameEl.textContent.trim()];
+        if (cgid && coins[cgid]) paintCard(card, coins[cgid]);
+      });
+    }
+  }
+
+  // Public API — pages that re-render their cards (Notion Explorer/Curation)
+  // can call window.FRQNCY_MARKET.repaint() after a render to colour fresh cards.
+  window.FRQNCY_MARKET = {
+    repaint() {
+      if (lastCoins) paintAll(lastCoins);
+      else hydrate();
+    },
+  };
 
   // ── Main hydration ─────────────────────────────────────
   async function hydrate() {
@@ -129,28 +173,8 @@
       const res = await fetch(ENDPOINT + "?ids=" + encodeURIComponent(ids.join(",")));
       if (!res.ok) return;
       const data = await res.json();
-      const coins = data.coins || {};
-
-      // Paint by data-cgid
-      document.querySelectorAll(".ccard[data-cgid]").forEach((card) => {
-        const id = (card.getAttribute("data-cgid") || "").toLowerCase();
-        if (coins[id]) paintCard(card, coins[id]);
-      });
-
-      // Also handle bitcoin/index.html style — match by name from PROJECTS global
-      if (typeof window.PROJECTS !== "undefined" && Array.isArray(window.PROJECTS)) {
-        const byName = {};
-        window.PROJECTS.forEach((p) => {
-          if (p && p.coingeckoId) byName[p.name] = p.coingeckoId.toLowerCase();
-        });
-        document.querySelectorAll(".ccard").forEach((card) => {
-          if (card.querySelector(".mkt-row")) return;
-          const nameEl = card.querySelector(".ccard-name");
-          if (!nameEl) return;
-          const cgid = byName[nameEl.textContent.trim()];
-          if (cgid && coins[cgid]) paintCard(card, coins[cgid]);
-        });
-      }
+      lastCoins = data.coins || {};
+      paintAll(lastCoins);
     } catch (_) {
       // Silent — site works fine without prices
     }

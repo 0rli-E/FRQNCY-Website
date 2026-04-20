@@ -25,6 +25,7 @@
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
+<script src="_market.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -128,8 +129,12 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
 .pcard-notes{font-size:0.72rem;color:var(--text-dim);line-height:1.55;margin-top:0.2rem}
 .pcard-coingecko{font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-top:auto;padding-top:0.4rem}
 
-/* DIM for tier filter */
-.pcard.dimmed{opacity:0.12;pointer-events:none;transform:none !important}
+/* TIER FILTER — hide non-matching cards, collapse empty chapters */
+.pcard.filter-hidden{display:none}
+.chapter.filter-hidden{display:none}
+.tier-filter-active .chapter-count{opacity:0.6}
+.tier-filter-active .cpill[data-chapter]{opacity:0.5}
+.tier-filter-active .cpill[data-chapter].has-match{opacity:1}
 
 /* EMPTY */
 .empty-chapter{text-align:center;padding:2rem;font-size:0.8rem;color:var(--text-dim);opacity:0.6}
@@ -222,6 +227,14 @@ const CHAPTER_ORDER = [
 
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
+/* Extract CoinGecko coin id from a CoinGecko URL.
+   e.g. https://www.coingecko.com/en/coins/bitcoin → "bitcoin" */
+function cgIdFromUrl(url) {
+  if (!url) return '';
+  const m = String(url).match(/\/coins\/([^/?#]+)/);
+  return m ? m[1].toLowerCase() : '';
+}
+
 /* ── STATE ──────────────────────────────────────────────────────────── */
 let openChapter = null;
 let activeTierFilter = null;
@@ -229,10 +242,12 @@ let activeTierFilter = null;
 /* ── BUILD NAV ──────────────────────────────────────────────────────── */
 function buildChapterNav() {
   const nav = document.getElementById('chapter-nav');
-  // Clear existing pills (keep label)
-  const label = nav.querySelector('.chapter-nav-label');
   nav.innerHTML = '';
-  if (label) nav.appendChild(label);
+
+  const chLabel = document.createElement('span');
+  chLabel.className = 'chapter-nav-label';
+  chLabel.textContent = 'Chapters';
+  nav.appendChild(chLabel);
 
   for (const ch of CHAPTERS) {
     const pill = document.createElement('button');
@@ -242,10 +257,17 @@ function buildChapterNav() {
     pill.addEventListener('click', () => toggleChapter(ch.id));
     nav.appendChild(pill);
   }
-  // tier filter divider + pills
+
+  // tier filter divider + label + pills
   const divider = document.createElement('div');
   divider.className = 'tier-divider';
   nav.appendChild(divider);
+
+  const tierLabel = document.createElement('span');
+  tierLabel.className = 'chapter-nav-label';
+  tierLabel.textContent = 'Filter by tier';
+  nav.appendChild(tierLabel);
+
   for (const tier of TIER_ORDER) {
     const pill = document.createElement('button');
     pill.className = 'cpill tier-pill';
@@ -297,9 +319,10 @@ function makeCard(p) {
   if (p.type) metaTags.push(p.type);
   if (p.mc) metaTags.push(p.mc);
   if (p.cat) metaTags.push(p.cat);
+  const cgid = cgIdFromUrl(p.cg);
 
   return `
-    <div class="pcard" data-tier="${esc(p.t)}">
+    <div class="pcard" data-tier="${esc(p.t)}"${cgid ? ` data-cgid="${esc(cgid)}"` : ''}>
       <div class="pcard-top">
         <div class="pcard-name">${esc(p.n)}</div>
         <div class="pcard-tier" data-tier="${esc(p.t)}">${esc(tierLabel)}</div>
@@ -343,18 +366,77 @@ function toggleChapter(id) {
 }
 
 function toggleTierFilter(tier) {
-  const pills = document.querySelectorAll('.cpill[data-tierfilter]');
+  const tierPills = document.querySelectorAll('.cpill[data-tierfilter]');
+  const chapterPills = document.querySelectorAll('.cpill[data-chapter]');
+  const body = document.body;
+
   if (activeTierFilter === tier) {
-    // Deactivate
+    // ── DEACTIVATE — restore full view ─────────────────
     activeTierFilter = null;
-    pills.forEach(p => p.classList.remove('tier-active'));
-    document.querySelectorAll('.pcard').forEach(c => c.classList.remove('dimmed'));
-  } else {
-    activeTierFilter = tier;
-    pills.forEach(p => p.classList.toggle('tier-active', p.dataset.tierfilter === tier));
-    document.querySelectorAll('.pcard').forEach(c => {
-      c.classList.toggle('dimmed', c.dataset.tier !== tier);
+    body.classList.remove('tier-filter-active');
+    tierPills.forEach(p => p.classList.remove('tier-active'));
+    chapterPills.forEach(p => p.classList.remove('has-match'));
+    document.querySelectorAll('.pcard.filter-hidden').forEach(c => c.classList.remove('filter-hidden'));
+    document.querySelectorAll('.chapter.filter-hidden').forEach(c => c.classList.remove('filter-hidden'));
+    restoreChapterCounts();
+    // Collapse all, then re-open the original openChapter (or the first one)
+    document.querySelectorAll('.chapter.open').forEach(c => c.classList.remove('open'));
+    chapterPills.forEach(p => p.classList.remove('active'));
+    const reopen = openChapter || (CHAPTERS[0] && CHAPTERS[0].id);
+    if (reopen) {
+      const target = document.getElementById('ch-' + reopen);
+      if (target) target.classList.add('open');
+      const pill = document.querySelector(`.cpill[data-chapter="${reopen}"]`);
+      if (pill) pill.classList.add('active');
+    }
+    return;
+  }
+
+  // ── ACTIVATE — hide non-matching, expand chapters with matches ───
+  activeTierFilter = tier;
+  body.classList.add('tier-filter-active');
+  tierPills.forEach(p => p.classList.toggle('tier-active', p.dataset.tierfilter === tier));
+
+  // For each chapter: hide non-matching cards; if chapter has zero matches, hide it;
+  // otherwise expand it so matches are visible immediately.
+  document.querySelectorAll('.chapter').forEach(ch => {
+    const cards = ch.querySelectorAll('.pcard');
+    let matches = 0;
+    cards.forEach(c => {
+      const match = c.dataset.tier === tier;
+      c.classList.toggle('filter-hidden', !match);
+      if (match) matches++;
     });
+    ch.classList.toggle('filter-hidden', matches === 0);
+    ch.classList.toggle('open', matches > 0);
+    // Update the chapter count badge to reflect filtered count
+    const badge = ch.querySelector('.chapter-count');
+    if (badge) badge.textContent = matches + ' match' + (matches !== 1 ? 'es' : '');
+    // Mark chapter pills that have matches
+    const pill = document.querySelector(`.cpill[data-chapter="${ch.id.replace(/^ch-/,'')}"]`);
+    if (pill) pill.classList.toggle('has-match', matches > 0);
+  });
+
+  // Scroll to first visible chapter so user sees results
+  const firstVisible = document.querySelector('.chapter:not(.filter-hidden)');
+  if (firstVisible) {
+    setTimeout(() => {
+      const rect = firstVisible.getBoundingClientRect();
+      const offset = 140;
+      if (rect.top < offset || rect.top > window.innerHeight * 0.5) {
+        window.scrollTo({top: window.scrollY + rect.top - offset, behavior: 'smooth'});
+      }
+    }, 50);
+  }
+}
+
+/* Restore chapter count badges after deactivating filter */
+function restoreChapterCounts() {
+  for (const ch of CHAPTERS) {
+    const el = document.getElementById('ch-' + ch.id);
+    if (!el) continue;
+    const badge = el.querySelector('.chapter-count');
+    if (badge) badge.textContent = ch.projects.length + ' project' + (ch.projects.length !== 1 ? 's' : '');
   }
 }
 
@@ -368,88 +450,128 @@ function updateSyncNote(data) {
   }
 }
 
-/* ── LOAD DATA FROM API ────────────────────────────────────────────── */
-async function loadData() {
-  document.getElementById('chapters').innerHTML = '<div style="text-align:center;padding:4rem;color:var(--text-dim)">Loading projects from Notion\u2026</div>';
+/* ── PAYLOAD → CHAPTERS ──────────────────────────────────────────── */
+function buildChaptersFromPayload(data) {
+  const chapterMap = {};
 
+  // Initialize chapters with metadata from API
+  for (const name of CHAPTER_ORDER) {
+    if (data.chapters && data.chapters[name]) {
+      chapterMap[name] = {
+        id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        icon: data.chapters[name].icon,
+        title: name,
+        intro: data.chapters[name].intro,
+        projects: []
+      };
+    }
+  }
+
+  // Ensure "Other" always exists as fallback
+  if (!chapterMap['Other']) {
+    chapterMap['Other'] = { id: 'other', icon: '\uD83D\uDCE6', title: 'Other', intro: 'Projects that don\'t fit neatly into a single sector.', projects: [] };
+  }
+
+  // Sort projects into chapters
+  for (const p of data.projects) {
+    const ch = p.chapter || 'Other';
+    if (!chapterMap[ch]) chapterMap[ch] = chapterMap['Other'];
+    chapterMap[ch].projects.push({
+      n: p.name,
+      s: p.symbol || '',
+      t: p.tier || '',
+      type: p.type || '',
+      mc: p.mcap || '',
+      cat: p.category || '',
+      cg: p.coingecko || '',
+      note: p.notes || ''
+    });
+  }
+
+  const chapters = CHAPTER_ORDER
+    .filter(name => chapterMap[name] && chapterMap[name].projects.length > 0)
+    .map(name => chapterMap[name]);
+
+  // Also add any chapters from the API not in CHAPTER_ORDER
+  if (data.chapters) {
+    for (const name of Object.keys(data.chapters)) {
+      if (!CHAPTER_ORDER.includes(name) && chapterMap[name] && chapterMap[name].projects.length > 0) {
+        chapters.push(chapterMap[name]);
+      }
+    }
+  }
+  return chapters;
+}
+
+function hydrate(data, source) {
+  CHAPTERS = buildChaptersFromPayload(data);
+  buildUI();
+  buildChapterNav();
+  updateSyncNote({ ...data, cached: source !== 'api' });
+
+  // Open first chapter by default (or hash-targeted)
+  const hash = location.hash.replace('#','');
+  const target = hash && CHAPTERS.find(c => c.id === hash);
+  if (target) {
+    toggleChapter(target.id);
+  } else if (CHAPTERS.length > 0) {
+    toggleChapter(CHAPTERS[0].id);
+  }
+
+  // If the market script has already fetched prices, repaint fresh cards.
+  if (window.FRQNCY_MARKET && typeof window.FRQNCY_MARKET.repaint === 'function') {
+    window.FRQNCY_MARKET.repaint();
+  }
+}
+
+/* ── LOCAL CACHE ─────────────────────────────────────────────────── */
+const LS_KEY = 'frqncy_crypto_explorer_v1';
+const LS_MAX_AGE = 30 * 60 * 1000; // 30 min
+
+function saveLocal(data) {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      ts: Date.now(),
+      data: { projects: data.projects, chapters: data.chapters, lastSync: data.lastSync }
+    }));
+  } catch(_) { /* quota — ignore */ }
+}
+
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (!data || !data.projects) return null;
+    if (Date.now() - ts > LS_MAX_AGE) return { data, stale: true };
+    return { data, stale: false };
+  } catch(_) { return null; }
+}
+
+/* ── LOAD DATA — cache-first, then live upgrade ──────────────────── */
+async function loadData() {
+  // 1. Instant paint from localStorage if we have it
+  const cached = loadLocal();
+  let painted = false;
+  if (cached && cached.data.projects && cached.data.projects.length) {
+    hydrate(cached.data, 'cache');
+    painted = true;
+  } else {
+    document.getElementById('chapters').innerHTML = '<div style="text-align:center;padding:4rem;color:var(--text-dim)">Loading projects\u2026</div>';
+  }
+
+  // 2. Live upgrade from API in the background
   try {
     const res = await fetch('/api/crypto/projects');
     if (!res.ok) throw new Error('API failed');
     const data = await res.json();
-
-    // Build chapters from API data
-    const chapterMap = {};
-
-    // Initialize chapters with metadata from API
-    for (const name of CHAPTER_ORDER) {
-      if (data.chapters && data.chapters[name]) {
-        chapterMap[name] = {
-          id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-          icon: data.chapters[name].icon,
-          title: name,
-          intro: data.chapters[name].intro,
-          projects: []
-        };
-      }
-    }
-
-    // Ensure "Other" always exists as fallback
-    if (!chapterMap['Other']) {
-      chapterMap['Other'] = { id: 'other', icon: '\uD83D\uDCE6', title: 'Other', intro: 'Projects that don\'t fit neatly into a single sector.', projects: [] };
-    }
-
-    // Sort projects into chapters
-    for (const p of data.projects) {
-      const ch = p.chapter || 'Other';
-      if (!chapterMap[ch]) {
-        chapterMap[ch] = chapterMap['Other'];
-      }
-      chapterMap[ch].projects.push({
-        n: p.name,
-        s: p.symbol || '',
-        t: p.tier || '',
-        type: p.type || '',
-        mc: p.mcap || '',
-        cat: p.category || '',
-        cg: p.coingecko || '',
-        note: p.notes || ''
-      });
-    }
-
-    CHAPTERS = CHAPTER_ORDER
-      .filter(name => chapterMap[name] && chapterMap[name].projects.length > 0)
-      .map(name => chapterMap[name]);
-
-    // Also add any chapters from the API not in CHAPTER_ORDER
-    if (data.chapters) {
-      for (const name of Object.keys(data.chapters)) {
-        if (!CHAPTER_ORDER.includes(name) && chapterMap[name] && chapterMap[name].projects.length > 0) {
-          CHAPTERS.push(chapterMap[name]);
-        }
-      }
-    }
-
-    buildUI();
-    buildChapterNav();
-    updateSyncNote(data);
-
-    // Open first chapter by default
-    if (CHAPTERS.length > 0) {
-      toggleChapter(CHAPTERS[0].id);
-    }
-
-    // Hash-based chapter opening
-    const hash = location.hash.replace('#','');
-    if (hash) {
-      const ch = CHAPTERS.find(c => c.id === hash);
-      if (ch) {
-        document.querySelectorAll('.chapter.open').forEach(c => c.classList.remove('open'));
-        document.querySelectorAll('.cpill.active').forEach(p => p.classList.remove('active'));
-        toggleChapter(ch.id);
-      }
-    }
+    hydrate(data, 'api');
+    saveLocal(data);
   } catch (e) {
-    document.getElementById('chapters').innerHTML = '<div style="text-align:center;padding:4rem;color:var(--text-dim)">Failed to load projects. <button onclick="loadData()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></div>';
+    if (!painted) {
+      document.getElementById('chapters').innerHTML = '<div style="text-align:center;padding:4rem;color:var(--text-dim)">Failed to load projects. <button onclick="loadData()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></div>';
+    }
+    // if we already have a cached paint, silently keep it
   }
 }
 
@@ -461,40 +583,8 @@ async function refreshData() {
     const res = await fetch('/api/crypto/projects?refresh=true');
     if (!res.ok) throw new Error('Refresh failed');
     const data = await res.json();
-
-    // Rebuild chapters from fresh data
-    const chapterMap = {};
-    for (const name of CHAPTER_ORDER) {
-      if (data.chapters && data.chapters[name]) {
-        chapterMap[name] = {
-          id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
-          icon: data.chapters[name].icon,
-          title: name,
-          intro: data.chapters[name].intro,
-          projects: []
-        };
-      }
-    }
-    if (!chapterMap['Other']) {
-      chapterMap['Other'] = { id: 'other', icon: '\uD83D\uDCE6', title: 'Other', intro: '', projects: [] };
-    }
-    for (const p of data.projects) {
-      const ch = p.chapter || 'Other';
-      if (!chapterMap[ch]) chapterMap[ch] = chapterMap['Other'];
-      chapterMap[ch].projects.push({
-        n: p.name, s: p.symbol || '', t: p.tier || '', type: p.type || '',
-        mc: p.mcap || '', cat: p.category || '', cg: p.coingecko || '', note: p.notes || ''
-      });
-    }
-    CHAPTERS = CHAPTER_ORDER
-      .filter(name => chapterMap[name] && chapterMap[name].projects.length > 0)
-      .map(name => chapterMap[name]);
-
-    buildUI();
-    buildChapterNav();
-    updateSyncNote(data);
-
-    if (CHAPTERS.length > 0) toggleChapter(CHAPTERS[0].id);
+    hydrate(data, 'api');
+    saveLocal(data);
   } catch (e) {
     document.getElementById('sync-text').textContent = 'Refresh failed \u2014 showing cached data';
   } finally {

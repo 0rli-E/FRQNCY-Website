@@ -19,6 +19,7 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script src="_market.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
@@ -391,6 +392,14 @@ let viewMode = 'grid';
 
 function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
 
+/* Extract CoinGecko coin id from a CoinGecko URL.
+   e.g. https://www.coingecko.com/en/coins/bitcoin → "bitcoin" */
+function cgIdFromUrl(url) {
+  if (!url) return '';
+  const m = String(url).match(/\/coins\/([^/?#]+)/);
+  return m ? m[1].toLowerCase() : '';
+}
+
 /* ════════════════════════════════════════════════════════════════
    TIER TABS — click handler
    ════════════════════════════════════════════════════════════════ */
@@ -524,6 +533,11 @@ function render() {
   } else {
     renderGrid(container, priority, rest);
   }
+
+  // Repaint any live market prices onto newly-rendered cards
+  if (window.FRQNCY_MARKET && typeof window.FRQNCY_MARKET.repaint === 'function') {
+    window.FRQNCY_MARKET.repaint();
+  }
 }
 
 function sortProjects(arr, mode) {
@@ -592,6 +606,9 @@ function makeGridCard(p) {
   const tierColor = TIER_COLORS[p.tier] || TIER_COLORS[''];
   const accent = p.accent || '#7B61FF';
 
+  const cgid = cgIdFromUrl(p.coingecko);
+  if (cgid) card.setAttribute('data-cgid', cgid);
+
   let linksHtml = '';
   if (p.coingecko) linksHtml += `<a href="${esc(p.coingecko)}" target="_blank" rel="noopener noreferrer" class="pcard-flink primary">CoinGecko →</a>`;
 
@@ -650,6 +667,9 @@ function makeListRow(p) {
   const tierColor = TIER_COLORS[p.tier] || TIER_COLORS[''];
   const accent = p.accent || '#7B61FF';
   const init = p.name.slice(0,2).toUpperCase();
+  // Note: live prices are only painted on grid cards (.pcard). The list row's
+  // fixed 6-column grid makes inline price insertion tricky — keeping list view
+  // text-only so the grid layout stays stable.
 
   row.innerHTML = `
     <div class="lrow-accent" style="background:${tierColor}"></div>
