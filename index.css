@@ -290,6 +290,8 @@
       font-weight: 300;
       font-size: clamp(44px, 7vw, 88px);
       letter-spacing: 0.45em;
+      /* Balance trailing letter-spacing so visible letters are truly centered */
+      padding-left: 0.45em;
       color: var(--dark);
       text-transform: uppercase;
       opacity: 0;
@@ -316,6 +318,8 @@
     .scroll-hint span {
       font-size: 10px;
       letter-spacing: 0.35em;
+      /* Balance trailing letter-spacing so visible letters are truly centered */
+      padding-left: 0.35em;
       text-transform: uppercase;
       color: var(--light-mid);
     }
@@ -759,6 +763,7 @@
       .intro-wordmark {
         font-size: clamp(32px, 5vw, 56px);
         letter-spacing: 0.3em;
+        padding-left: 0.3em;
       }
 
       /* SCROLL HINT: Reduce size on mobile */
@@ -768,6 +773,7 @@
       .scroll-hint span {
         font-size: 8px;
         letter-spacing: 0.3em;
+        padding-left: 0.3em;
       }
       .scroll-line {
         height: 24px;
@@ -883,6 +889,7 @@
       .intro-wordmark {
         font-size: clamp(28px, 9vw, 48px);
         letter-spacing: 0.25em;
+        padding-left: 0.25em;
       }
 
       /* SECTION PADDING: Tighter on very small screens */
