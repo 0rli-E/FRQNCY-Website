@@ -103,6 +103,22 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 .section-break h2{font-family:'Cormorant',serif;font-size:1.6rem;font-weight:300;color:#fff;margin-bottom:0.4rem}
 .section-break p{font-size:0.8rem;color:var(--text-dim);max-width:600px}
 
+/* CATEGORY TILES */
+.cat-wrap{max-width:1080px;margin:0 auto 3.5rem;padding:0 clamp(1.25rem,5vw,2.5rem)}
+.cat-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.cat-head h2{font-family:'Cormorant',serif;font-size:1.7rem;font-weight:300;color:#fff}
+.cat-head p{font-size:0.74rem;color:var(--text-dim);max-width:420px;line-height:1.6}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem}
+.cat-tile{display:block;padding:1.1rem 1.2rem;border:1px solid var(--card-border);border-radius:4px;background:var(--card-bg);transition:all .25s;text-decoration:none;position:relative;overflow:hidden}
+.cat-tile::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tile-accent,var(--accent));transition:width .25s}
+.cat-tile:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.06)}
+.cat-tile:hover::before{width:5px}
+.cat-tile .cat-short{font-size:0.54rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--tile-accent,var(--accent));margin-bottom:0.3rem;font-weight:400}
+.cat-tile .cat-title{font-family:'Cormorant',serif;font-size:1.2rem;color:#fff;font-weight:400;line-height:1.2;margin-bottom:0.35rem}
+.cat-tile .cat-sub{font-size:0.7rem;color:var(--text-dim);line-height:1.5}
+.cat-tile .cat-arrow{position:absolute;top:1.1rem;right:1.1rem;font-size:0.72rem;color:var(--text-dim);opacity:0.5;transition:all .25s}
+.cat-tile:hover .cat-arrow{opacity:1;transform:translateX(3px);color:var(--tile-accent,var(--accent))}
+
 /* CTA BANNER */
 .cta-banner{max-width:1080px;margin:4rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem)}
 .cta-inner{background:rgba(123,97,255,0.06);border:1px solid rgba(123,97,255,0.2);border-radius:6px;padding:2.5rem;text-align:center}
@@ -157,6 +173,147 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 <p style="font-size:0.68rem;color:var(--text-dim);margin-top:-0.8rem;margin-bottom:1.5rem;opacity:0.7;text-align:center">Learn by chapter · Tiered by conviction · Stated plainly</p>
 
 <p class="disclaimer">This is not financial advice. Conviction is stated as conviction. You decide what to do with it. Always do your own work before you put money anywhere.</p>
+
+<!-- CATEGORY TILES -->
+<div class="cat-wrap">
+  <div class="cat-head">
+    <h2>Browse by category</h2>
+    <p>Each area is its own page — the projects, the thesis, and what FRQNCY actually watches.</p>
+  </div>
+  <div class="cat-grid">
+    <a class="cat-tile" href="bitcoin/" style="--tile-accent:#F7931A">
+      <div class="cat-short">Bitcoin</div>
+      <div class="cat-title">Bitcoin Ecosystem</div>
+      <div class="cat-sub">BTC, Lightning, Fedimint, Cashu, Liquid, Nostr.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="sov/" style="--tile-accent:#F7931A">
+      <div class="cat-short">SOV</div>
+      <div class="cat-title">Store of Value</div>
+      <div class="cat-sub">Digital commodities. Scarcity without permission.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="l1/" style="--tile-accent:#7B61FF">
+      <div class="cat-short">L1</div>
+      <div class="cat-title">Layer 1s</div>
+      <div class="cat-sub">Base chains. Independent consensus. Sovereign networks.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="l2/" style="--tile-accent:#50E2C1">
+      <div class="cat-short">L2</div>
+      <div class="cat-title">Layer 2s</div>
+      <div class="cat-sub">Scaling Ethereum. Inheriting its security.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="defi/" style="--tile-accent:#3498db">
+      <div class="cat-short">DeFi</div>
+      <div class="cat-title">DeFi</div>
+      <div class="cat-sub">Finance without intermediaries. Code as counterparty.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="privacy/" style="--tile-accent:#C88CFF">
+      <div class="cat-short">Privacy</div>
+      <div class="cat-title">Privacy</div>
+      <div class="cat-sub">Financial privacy is a right. The toolkit for it.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="ai/" style="--tile-accent:#e74c3c">
+      <div class="cat-short">AI</div>
+      <div class="cat-title">Crypto × AI</div>
+      <div class="cat-sub">Compute, models, agents, data — decentralised.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="gamefi/" style="--tile-accent:#2ecc71">
+      <div class="cat-short">GameFi</div>
+      <div class="cat-title">GameFi &amp; Metaverse</div>
+      <div class="cat-sub">Player-owned worlds. Assets that leave the game.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="socialfi/" style="--tile-accent:#9A4DFF">
+      <div class="cat-short">SocialFi</div>
+      <div class="cat-title">SocialFi &amp; Identity</div>
+      <div class="cat-sub">Your graph, your identity, your rails.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="stablecoins/" style="--tile-accent:#2775CA">
+      <div class="cat-short">Stablecoins</div>
+      <div class="cat-title">Stablecoins</div>
+      <div class="cat-sub">Digital dollars and the rails underneath them.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="rwa/" style="--tile-accent:#1652F0">
+      <div class="cat-short">RWA</div>
+      <div class="cat-title">Real World Assets</div>
+      <div class="cat-sub">Treasuries, credit, equities — tokenized.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="depin/" style="--tile-accent:#00D4AA">
+      <div class="cat-short">DePIN</div>
+      <div class="cat-title">Decentralized Infrastructure</div>
+      <div class="cat-sub">Physical networks coordinated by tokens.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="oracles/" style="--tile-accent:#2A5ADA">
+      <div class="cat-short">Oracles</div>
+      <div class="cat-title">Oracles &amp; Interop</div>
+      <div class="cat-sub">The connective tissue between chains and reality.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="staking/" style="--tile-accent:#00A3FF">
+      <div class="cat-short">Staking</div>
+      <div class="cat-title">Liquid Staking &amp; Restaking</div>
+      <div class="cat-sub">Yield on the base layer. Security as a marketplace.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="predictions/" style="--tile-accent:#0075E9">
+      <div class="cat-short">Predictions</div>
+      <div class="cat-title">Prediction Markets</div>
+      <div class="cat-sub">Price the future. Aggregate the crowd.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="desci/" style="--tile-accent:#9B5CFF">
+      <div class="cat-short">DeSci</div>
+      <div class="cat-title">Decentralized Science</div>
+      <div class="cat-sub">Funding, IP, and data — reorganized.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="icm/" style="--tile-accent:#A46AFF">
+      <div class="cat-short">ICM</div>
+      <div class="cat-title">Internet Capital Markets</div>
+      <div class="cat-sub">Launchpads, curves, and on-chain issuance.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="memes/" style="--tile-accent:#FFC107">
+      <div class="cat-short">Memes</div>
+      <div class="cat-title">Meme Coins</div>
+      <div class="cat-sub">The culture layer. Attention, priced.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="modular/" style="--tile-accent:#7C3AED">
+      <div class="cat-short">Modular</div>
+      <div class="cat-title">Modular &amp; Data Availability</div>
+      <div class="cat-sub">Unbundling the monolithic blockchain.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="nfts/" style="--tile-accent:#FF4D8D">
+      <div class="cat-short">NFTs</div>
+      <div class="cat-title">NFTs</div>
+      <div class="cat-sub">Digital ownership. Culture, priced.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+    <a class="cat-tile" href="neobanks/" style="--tile-accent:#00B3A4">
+      <div class="cat-short">Neobanks</div>
+      <div class="cat-title">Crypto Neobanks</div>
+      <div class="cat-sub">Banking for people who keep their own keys.</div>
+      <div class="cat-arrow">→</div>
+    </a>
+  </div>
+</div>
+
+<div class="section-break" style="margin-top:1rem">
+  <h2>Curated picks</h2>
+  <p>Projects we're watching across every sector. Filter by category to narrow down.</p>
+</div>
 
 <div class="filter-bar" id="filter-bar"></div>
 
