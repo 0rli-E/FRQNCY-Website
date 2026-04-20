@@ -44,6 +44,26 @@ Let users wake up to FRQNCY audio content instead of a standard alarm.
   - Cross-promote eligible users into Legion Fund offerings
 - Next step: confirm partnership scope, API availability, and compliance requirements (KYC, regional restrictions).
 
+### NRG Integration
+- Integrate with **NRG** for [capability — clarify scope and partnership model].
+- Potential context:
+  - Could complement FRQNCY Fund feature (alongside Echo, Legion)
+  - Could enhance Social Platform with NRG-specific features or wallet integration
+  - Could support FRQNCY Space partnerships or creator payouts
+- Use cases to explore:
+  - [Define integration points and user value]
+- Next step: confirm partnership scope and API availability.
+
+### VBRTN Integration
+- Integrate with **VBRTN** for [capability — clarify scope and partnership model].
+- Potential context:
+  - Could complement FRQNCY Fund feature (alongside Echo, Legion)
+  - Could enhance Social Platform with VBRTN-specific features or wallet integration
+  - Could support FRQNCY Space partnerships or creator payouts
+- Use cases to explore:
+  - [Define integration points and user value]
+- Next step: confirm partnership scope and API availability.
+
 ---
 
 ## Open Questions

@@ -417,6 +417,7 @@ const NODES = [
   {id:"t-web3",       label:"Web3",                     type:"topic", r:15},
   {id:"t-quantcomp",  label:"Quantum Computing",        type:"topic", r:14},
   {id:"t-cybersec",   label:"Cybersecurity",            type:"topic", r:13},
+  {id:"t-filestorage",label:"File Storage",             type:"topic", r:14},
   {id:"t-music",      label:"Music",                    type:"topic", r:16},
   {id:"t-visual",     label:"Visual Art",               type:"topic", r:14},
   {id:"t-film",       label:"Film",                     type:"topic", r:13},
@@ -537,6 +538,9 @@ const NODES = [
   {id:"t-decentral-ai",  label:"Decentralised AI",       type:"topic", r:14},
   {id:"t-quantum-grammar",label:"Quantum Grammar",       type:"topic", r:13},
   {id:"t-robert-gould",  label:"Robert Jay Gould",       type:"topic", r:13},
+
+  // Places in the physical network — retreat centres, sanctuaries, aligned venues
+  {id:"p-intaaya",       label:"Intaaya",                 type:"topic", r:14, desc:"Regenerative retreat sanctuary on Nusa Penida, near Bali — off-grid, farm-to-table, wellness to the rhythm of nature"},
 ];
 
 /* ── Links ── */
@@ -556,7 +560,8 @@ const RAW=[
   ["d-sciences","t-quantum-grammar"],["d-sciences","t-robert-gould"],
   ["d-tech","t-ai"],["d-tech","t-blockchain"],["d-tech","t-decentral"],["d-tech","t-arvr"],
   ["d-tech","t-biotech"],["d-tech","t-robotics"],["d-tech","t-web3"],["d-tech","t-quantcomp"],["d-tech","t-cybersec"],
-  ["d-tech","t-decentral-ai"],
+  ["d-tech","t-decentral-ai"],["d-tech","t-filestorage"],
+  ["t-filestorage","t-decentral"],["t-filestorage","t-web3"],["t-filestorage","t-blockchain"],
   ["d-arts","t-music"],["d-arts","t-visual"],["d-arts","t-film"],["d-arts","t-poetry"],["d-arts","t-dance"],
   ["d-arts","t-archit"],["d-arts","t-fashion"],["d-arts","t-story"],["d-arts","t-photo"],["d-arts","t-theater"],
   ["d-nature","t-sacredgeo"],["d-nature","t-astrology"],["d-nature","t-climate"],["d-nature","t-biodivers"],
@@ -631,6 +636,11 @@ const RAW=[
   ["t-sports","t-movement"],["t-festivals","t-community"],["t-gaming","t-ai"],
   ["t-esports","t-gaming"],["t-playcreat","t-cocreate"],["t-outdoor","t-ecology"],
   ["t-leisure","t-mentalhlth"],["t-humor","t-story"],
+  // Places — Intaaya (Nusa Penida, Bali)
+  ["network-state","p-intaaya"],["d-wellbeing","p-intaaya"],["d-lifestyle","p-intaaya"],
+  ["p-intaaya","t-meditation"],["p-intaaya","t-yoga"],["p-intaaya","t-soundheal"],
+  ["p-intaaya","t-breathwork"],["p-intaaya","t-sustliving"],["p-intaaya","t-permaculture"],
+  ["p-intaaya","t-regenbiz"],["p-intaaya","t-community"],
 ];
 const LINKS=RAW.map(([s,t])=>({source:s,target:t}));
 
@@ -682,6 +692,7 @@ const NODE_URL = {
   "t-web3":       "web3/index.html",
   "t-quantcomp":  "quantum-computing/index.html",
   "t-cybersec":   "cybersecurity/index.html",
+  "t-filestorage":"file-storage/index.html",
   // Topics — Arts
   "t-music":      "music/index.html",
   "t-visual":     "visual-art/index.html",
@@ -809,6 +820,8 @@ const NODE_URL = {
   "t-decentral-ai":    "decentralised-ai/index.html",
   "t-quantum-grammar": "quantum-grammar/index.html",
   "t-robert-gould":    "robert-jay-gould/index.html",
+  // Places
+  "p-intaaya":         "https://intaaya.com",
 };
 
 /* ── Embedded mode: hide standalone UI chrome when inside an iframe ── */
