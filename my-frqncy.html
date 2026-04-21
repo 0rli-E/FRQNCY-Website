@@ -784,7 +784,7 @@ function renderResult({ topicNodes, resourceNodes, teachers, startPick }, name) 
   updateSaveCtaNext();
 }
 
-// ── D3 Constellation (Merkle-tree / dendrogram, guided) ────────────────
+// ── D3 Constellation (Merkle-tree / dendrogram, bottom-up) ─────────────
 function drawConstellation(topics, resources, name) {
   if (typeof d3 === 'undefined') {
     const wrap = document.getElementById('constellation-wrap');
@@ -840,14 +840,17 @@ function drawConstellation(topics, resources, name) {
 
   const root = d3.hierarchy(data);
 
-  // Top-down dendrogram. Leaves at bottom, root at top.
-  const margin = { top: 44, right: 24, bottom: 62, left: 24 };
+  // Bottom-up dendrogram. Root (YOU) anchors at the bottom; branches grow upward
+  // toward leaves. Invert y-coordinates after layout so the whole tree flips.
+  const margin = { top: 52, right: 24, bottom: 68, left: 24 };
   const innerW = W - margin.left - margin.right;
   const innerH = H - margin.top - margin.bottom;
   const treeLayout = d3.tree()
     .size([innerW, innerH])
     .separation((a, b) => (a.parent === b.parent ? 1 : 1.5));
   treeLayout(root);
+  // Flip vertically — root drops to bottom, leaves float at top
+  root.descendants().forEach(d => { d.y = innerH - d.y; });
 
   const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
 
@@ -900,28 +903,28 @@ function drawConstellation(topics, resources, name) {
     .append('animate').attr('attributeName', 'r')
     .attr('values', '11;13;11').attr('dur', '3.6s').attr('repeatCount', 'indefinite');
 
-  // Labels — root (above circle, serif uppercase)
+  // Labels — root (below circle, serif uppercase) — root sits at the bottom now
   nodeG.filter(d => d.data.type === 'root').append('text')
-    .attr('text-anchor', 'middle').attr('dy', '-1.4em')
+    .attr('text-anchor', 'middle').attr('dy', '2.0em')
     .attr('fill', '#E0C06A')
     .attr('font-family', 'Cormorant, serif')
     .attr('font-size', '15px').attr('font-weight', '400')
     .attr('letter-spacing', '0.22em')
     .text(d => (d.data.name || 'YOU').toUpperCase().slice(0, 22));
 
-  // Labels — domain (above circle, gold small-caps)
+  // Labels — domain (below circle, gold small-caps) — between domain and root
   nodeG.filter(d => d.data.type === 'domain').append('text')
-    .attr('text-anchor', 'middle').attr('dy', '-1.1em')
+    .attr('text-anchor', 'middle').attr('dy', '1.8em')
     .attr('fill', 'var(--gold)').attr('font-family', 'Jost, sans-serif')
     .attr('font-size', '9.5px').attr('font-weight', '400')
     .attr('letter-spacing', '0.2em').attr('text-transform', 'uppercase')
     .text(d => (d.data.name || '').toUpperCase());
 
-  // Labels — topic (below circle, near-white)
+  // Labels — topic (above circle, near-white) — topics sit in the upper half
   nodeG.filter(d => d.data.type === 'topic').each(function(d) {
     const sel = d3.select(this);
     const label = (d.data.name || '').trim();
-    // Allow up to two lines
+    // Allow up to two lines, stacked so reading order is top → bottom
     const words = label.split(/\s+/);
     const mid = Math.ceil(words.length / 2);
     const line1 = words.slice(0, mid).join(' ');
@@ -931,18 +934,18 @@ function drawConstellation(topics, resources, name) {
       .attr('fill', '#C8D8F0').attr('font-family', 'Jost, sans-serif')
       .attr('font-size', '9.5px').attr('font-weight', '300');
     if (!line2 || words.length <= 2) {
-      common(sel.append('text').attr('dy', '1.6em').text(label));
+      common(sel.append('text').attr('dy', '-1.1em').text(label));
     } else {
-      common(sel.append('text').attr('dy', '1.5em').text(line1));
-      common(sel.append('text').attr('dy', '2.7em').text(line2));
+      common(sel.append('text').attr('dy', '-2.3em').text(line1));
+      common(sel.append('text').attr('dy', '-1.1em').text(line2));
     }
   });
 
-  // Labels — resource/leaf (below circle, muted)
+  // Labels — resource/leaf (above circle, muted) — leaves are at the top
   nodeG.filter(d =>
       d.data.type !== 'root' && d.data.type !== 'domain' && d.data.type !== 'topic')
     .append('text')
-    .attr('text-anchor', 'middle').attr('dy', '1.8em')
+    .attr('text-anchor', 'middle').attr('dy', '-1.3em')
     .attr('fill', 'rgba(200,216,240,0.7)')
     .attr('font-family', 'Jost, sans-serif')
     .attr('font-size', '8.5px').attr('font-weight', '300')

@@ -83,6 +83,32 @@ nav{
 .btn-gold:hover{background:rgba(196,151,58,0.08);color:var(--gold-light)}
 .btn-tiny{font-size:0.62rem;padding:0.3rem 0.6rem;letter-spacing:0.1em;text-indent:0.1em}
 
+/* ── ILLUMINATOR ── */
+.illuminator-card{
+  display:flex;gap:1.4rem;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;
+  padding:1.4rem 1.6rem;
+  border:1px solid rgba(196,151,58,0.32);
+  border-radius:4px;
+  background:linear-gradient(135deg,rgba(196,151,58,0.06) 0%,rgba(11,16,32,0.4) 60%);
+  position:relative;overflow:hidden;
+}
+.illuminator-card::before{
+  content:"";position:absolute;top:0;right:0;width:180px;height:100%;
+  background:radial-gradient(ellipse at top right,rgba(224,192,106,0.12),transparent 70%);
+  pointer-events:none;
+}
+.illuminator-copy{flex:1;min-width:260px;position:relative;z-index:1}
+.illuminator-title{
+  font-family:Cormorant,serif;font-size:1.15rem;color:var(--gold-light);
+  margin-bottom:0.4rem;letter-spacing:0.01em;
+}
+.illuminator-copy p{
+  font-size:0.82rem;color:var(--text-dim);line-height:1.55;margin:0;
+  max-width:54ch;
+}
+.illuminator-card .btn{position:relative;z-index:1;flex-shrink:0}
+
 /* ── SECTION ── */
 .section{margin:3.5rem 0}
 .section-head{
@@ -517,6 +543,140 @@ nav{
   .tabs{-webkit-overflow-scrolling:touch;scrollbar-width:none}
   .tabs::-webkit-scrollbar{display:none}
 }
+/* ── ILLUMINATOR CHAT PANEL ── */
+.illum-backdrop{
+  position:fixed;inset:0;background:rgba(4,7,16,0.55);
+  backdrop-filter:blur(2px);-webkit-backdrop-filter:blur(2px);
+  opacity:0;pointer-events:none;transition:opacity .2s ease;
+  z-index:998;
+}
+.illum-backdrop.open{opacity:1;pointer-events:auto}
+.illum-panel{
+  position:fixed;top:0;right:0;bottom:0;width:min(460px,100%);
+  background:linear-gradient(180deg,#0b1020 0%,#07091a 100%);
+  border-left:1px solid rgba(196,151,58,0.32);
+  box-shadow:-20px 0 60px rgba(0,0,0,0.5);
+  transform:translateX(105%);transition:transform .28s cubic-bezier(.2,.7,.2,1);
+  display:flex;flex-direction:column;z-index:999;
+}
+.illum-panel.open{transform:translateX(0)}
+.illum-head{
+  display:flex;align-items:center;justify-content:space-between;
+  padding:1rem 1.1rem;border-bottom:1px solid var(--card-border);
+  flex-shrink:0;
+}
+.illum-head h3{
+  font-family:'Cormorant',serif;font-weight:400;font-size:1.3rem;
+  color:#fff;letter-spacing:0.04em;display:flex;align-items:center;gap:0.5rem;
+  margin:0;
+}
+.illum-head h3 .glyph{color:var(--gold);font-size:1rem;opacity:0.9}
+.illum-head-actions{display:flex;gap:0.3rem}
+.illum-icon-btn{
+  width:32px;height:32px;border:1px solid transparent;border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);font-size:1rem;transition:all .15s;
+}
+.illum-icon-btn:hover{color:var(--gold);border-color:var(--card-border);background:rgba(196,151,58,0.05)}
+.illum-messages{
+  flex:1;overflow-y:auto;padding:1rem 1.1rem;
+  display:flex;flex-direction:column;gap:0.9rem;
+  scroll-behavior:smooth;
+}
+.illum-messages::-webkit-scrollbar{width:6px}
+.illum-messages::-webkit-scrollbar-thumb{background:rgba(196,151,58,0.2);border-radius:3px}
+.illum-msg{
+  font-size:0.82rem;line-height:1.6;
+  padding:0.7rem 0.9rem;border-radius:3px;
+  max-width:92%;word-wrap:break-word;
+}
+.illum-msg.user{
+  align-self:flex-end;
+  background:rgba(196,151,58,0.08);
+  border:1px solid rgba(196,151,58,0.2);
+  color:var(--text);
+}
+.illum-msg.assistant{
+  align-self:flex-start;
+  background:rgba(255,255,255,0.02);
+  border:1px solid var(--card-border);
+  color:var(--text);
+  max-width:100%;
+}
+.illum-msg.empty{
+  align-self:center;color:var(--text-faint);font-style:italic;
+  text-align:center;padding:2rem 1rem;background:none;border:none;max-width:100%;
+}
+.illum-msg.empty .glyph{display:block;font-size:1.6rem;color:var(--gold);margin-bottom:0.6rem;font-style:normal}
+.illum-msg p{margin:0 0 0.6rem 0}
+.illum-msg p:last-child{margin-bottom:0}
+.illum-msg strong{color:var(--gold-light);font-weight:500}
+.illum-msg em{color:var(--text);font-style:italic;opacity:0.9}
+.illum-msg ul,.illum-msg ol{margin:0.4rem 0 0.6rem 1rem;padding:0}
+.illum-msg li{margin:0.2rem 0}
+.illum-msg blockquote{
+  border-left:2px solid var(--gold-dim);padding:0.1rem 0.8rem;
+  margin:0.5rem 0;color:var(--gold-light);font-family:'Cormorant',serif;font-size:0.95rem;
+  font-style:italic;
+}
+.illum-msg code{background:rgba(255,255,255,0.05);padding:0.05rem 0.3rem;border-radius:2px;font-size:0.76rem}
+.illum-msg h1,.illum-msg h2,.illum-msg h3,.illum-msg h4{
+  font-family:'Cormorant',serif;font-weight:400;color:#fff;
+  margin:0.8rem 0 0.3rem 0;line-height:1.25;
+}
+.illum-msg h1{font-size:1.25rem;color:var(--gold)}
+.illum-msg h2{font-size:1.1rem}
+.illum-msg h3{font-size:1rem}
+.illum-msg h4{font-size:0.9rem;letter-spacing:0.04em;text-transform:uppercase;color:var(--gold-dim)}
+.illum-msg .title-glyph{
+  display:block;text-align:center;font-family:'Cormorant',serif;
+  font-size:1.4rem;color:var(--gold);letter-spacing:0.15em;
+  margin:0.6rem 0 0.8rem 0;font-weight:400;
+}
+.illum-typing{
+  align-self:flex-start;display:flex;gap:0.25rem;padding:0.6rem 0.9rem;
+  color:var(--gold);
+}
+.illum-typing span{
+  width:6px;height:6px;border-radius:50%;background:currentColor;opacity:0.35;
+  animation:illum-blink 1.2s infinite both;
+}
+.illum-typing span:nth-child(2){animation-delay:0.18s}
+.illum-typing span:nth-child(3){animation-delay:0.36s}
+@keyframes illum-blink{0%,80%,100%{opacity:0.25;transform:translateY(0)}40%{opacity:1;transform:translateY(-2px)}}
+.illum-compose{
+  border-top:1px solid var(--card-border);padding:0.8rem 1.1rem 1rem;
+  display:flex;flex-direction:column;gap:0.5rem;flex-shrink:0;
+  background:rgba(7,9,26,0.6);
+}
+.illum-compose textarea{
+  width:100%;min-height:54px;max-height:160px;resize:none;
+  background:rgba(255,255,255,0.03);border:1px solid var(--card-border);
+  border-radius:3px;padding:0.65rem 0.8rem;color:var(--text);
+  font-family:inherit;font-size:0.82rem;line-height:1.5;
+  transition:border-color .15s;
+}
+.illum-compose textarea:focus{outline:none;border-color:var(--gold-dim)}
+.illum-compose textarea::placeholder{color:var(--text-faint)}
+.illum-compose-row{display:flex;align-items:center;justify-content:space-between;gap:0.5rem}
+.illum-hint{font-size:0.68rem;color:var(--text-faint);letter-spacing:0.04em}
+.illum-send{
+  background:var(--gold);color:#0b1020;border:none;border-radius:3px;
+  padding:0.5rem 1rem;font-size:0.72rem;letter-spacing:0.12em;text-transform:uppercase;
+  font-weight:500;cursor:pointer;transition:all .15s;flex-shrink:0;
+}
+.illum-send:hover:not(:disabled){background:var(--gold-light)}
+.illum-send:disabled{opacity:0.4;cursor:not-allowed}
+.illum-error{
+  font-size:0.76rem;color:var(--bad);padding:0 1.1rem 0.6rem;
+}
+@media (max-width:640px){
+  .illum-panel{width:100%;border-left:none}
+  .illum-head{padding:0.8rem 1rem}
+  .illum-messages{padding:0.8rem 1rem}
+  .illum-compose{padding:0.7rem 1rem 0.9rem}
+}
+
 /* Focus rings for keyboard users */
 button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{
   outline:2px solid var(--gold);outline-offset:2px;border-radius:2px;
@@ -550,6 +710,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:
       <div class="sub">Dream · chief aim · objectives · goals · daily practice — held in one place</div>
     </div>
     <div class="hero-actions">
+      <button type="button" class="btn btn-gold" id="btn-illuminator" title="Ask about any word, name, or concept — opens in your Sanctuary" aria-label="Open the Word Illuminator">✧&nbsp;Illuminator</button>
       <button type="button" class="btn" id="btn-export" title="Download a JSON backup of all your data" aria-label="Export your Sanctuary data as JSON">Export</button>
       <button type="button" class="btn" id="btn-import" title="Restore from a JSON backup" aria-label="Import Sanctuary data from JSON backup">Import</button>
       <input type="file" id="import-file" accept="application/json" style="display:none" aria-label="Choose backup file to import">
@@ -594,6 +755,20 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:
         <div class="meta">Dream · chief aim · objectives · this month's goals</div>
       </div>
       <div class="pyramid" id="pyramid-mini"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="glyph">✧</span> Word Illuminator</h2>
+        <div class="meta">Companion · lives inside your Sanctuary</div>
+      </div>
+      <div class="illuminator-card">
+        <div class="illuminator-copy">
+          <div class="illuminator-title">Ask about any word, name, or concept.</div>
+          <p>A contemplative companion that reveals the full depth of any word you offer — definitions, etymology, deeper illumination. Paste a word from your constellation, the name of a teacher, or any idea you're sitting with. Your conversation stays on your device.</p>
+        </div>
+        <button type="button" class="btn btn-gold" id="open-illuminator">Open Illuminator&nbsp;→</button>
+      </div>
     </section>
 
   </div>
@@ -1655,6 +1830,250 @@ document.querySelectorAll('.tab').forEach(t => {
 /* ════════════════════════════════════════════════════════════════
    EXPORT / IMPORT
    ════════════════════════════════════════════════════════════════ */
+/* ════════════════════════════════════════════════════════════════
+   WORD ILLUMINATOR — inline chat panel
+   Slides in from the right. Chats with /illuminator/chat (Cloudflare
+   Pages Function, Workers AI, Qwen3 30B). Conversation is persisted
+   per device in localStorage so the Illuminator remembers context
+   across reloads but nothing leaves the device except the POST body.
+   ════════════════════════════════════════════════════════════════ */
+const ILLUM_ENDPOINT = '/illuminator/chat';
+const ILLUM_STORE_KEY = 'frqncy.illuminator.conv.v1';
+const ILLUM_MAX_HISTORY = 20;   // total turns stored (user+assistant combined)
+
+const illumEls = {
+  panel:    document.getElementById('illum-panel'),
+  backdrop: document.getElementById('illum-backdrop'),
+  close:    document.getElementById('illum-close'),
+  clear:    document.getElementById('illum-clear'),
+  messages: document.getElementById('illum-messages'),
+  error:    document.getElementById('illum-error'),
+  form:     document.getElementById('illum-compose'),
+  input:    document.getElementById('illum-input'),
+  send:     document.getElementById('illum-send'),
+};
+
+let illumConv = loadIllumConv();     // [{role, content}]
+let illumPending = false;
+
+function loadIllumConv() {
+  try {
+    const raw = localStorage.getItem(ILLUM_STORE_KEY);
+    if (!raw) return [];
+    const parsed = JSON.parse(raw);
+    return Array.isArray(parsed) ? parsed : [];
+  } catch (_) { return []; }
+}
+function saveIllumConv() {
+  try {
+    const trimmed = illumConv.slice(-ILLUM_MAX_HISTORY);
+    localStorage.setItem(ILLUM_STORE_KEY, JSON.stringify(trimmed));
+  } catch (_) {}
+}
+
+/* Minimal, safe markdown → HTML for the Illuminator's structured output.
+   Escapes HTML first, then applies a small allowlist of patterns. */
+function illumRenderMarkdown(src) {
+  // 1. escape
+  let s = String(src).replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
+
+  // 2. the sacred title line: **✧ WORD ✧**  →  styled block
+  s = s.replace(/^\*\*(✧[^*\n]+✧)\*\*$/gm, '<span class="title-glyph">$1</span>');
+
+  // 3. headers (## Heading)
+  s = s.replace(/^#### (.+)$/gm, '<h4>$1</h4>');
+  s = s.replace(/^### (.+)$/gm,  '<h3>$1</h3>');
+  s = s.replace(/^## (.+)$/gm,   '<h2>$1</h2>');
+  s = s.replace(/^# (.+)$/gm,    '<h1>$1</h1>');
+
+  // 4. blockquotes (> text) — join consecutive lines
+  s = s.replace(/(^> .+(\n> .+)*)/gm, m => {
+    const inner = m.replace(/^> ?/gm, '').trim();
+    return `<blockquote>${inner.replace(/\n/g, '<br>')}</blockquote>`;
+  });
+
+  // 5. inline code
+  s = s.replace(/`([^`\n]+)`/g, '<code>$1</code>');
+
+  // 6. bold + italic (order matters — bold first)
+  s = s.replace(/\*\*([^*\n]+)\*\*/g, '<strong>$1</strong>');
+  s = s.replace(/(^|[^*])\*([^*\n]+)\*/g, '$1<em>$2</em>');
+
+  // 7. lists
+  const lines = s.split('\n');
+  const out = [];
+  let inUl = false, inOl = false;
+  for (const line of lines) {
+    const ulMatch = /^[-*] (.+)$/.exec(line);
+    const olMatch = /^\d+\. (.+)$/.exec(line);
+    if (ulMatch) {
+      if (!inUl) { if (inOl) { out.push('</ol>'); inOl=false; } out.push('<ul>'); inUl=true; }
+      out.push('<li>' + ulMatch[1] + '</li>');
+    } else if (olMatch) {
+      if (!inOl) { if (inUl) { out.push('</ul>'); inUl=false; } out.push('<ol>'); inOl=true; }
+      out.push('<li>' + olMatch[1] + '</li>');
+    } else {
+      if (inUl) { out.push('</ul>'); inUl=false; }
+      if (inOl) { out.push('</ol>'); inOl=false; }
+      out.push(line);
+    }
+  }
+  if (inUl) out.push('</ul>');
+  if (inOl) out.push('</ol>');
+  s = out.join('\n');
+
+  // 8. paragraphs: double newlines → </p><p>, single newlines within a paragraph → <br>
+  s = s.split(/\n{2,}/).map(block => {
+    if (/^\s*<(ul|ol|blockquote|h\d|span class="title-glyph")/.test(block)) return block;
+    const t = block.trim();
+    if (!t) return '';
+    return '<p>' + t.replace(/\n/g, '<br>') + '</p>';
+  }).join('\n');
+
+  return s;
+}
+
+function renderIllumMessages() {
+  illumEls.messages.innerHTML = '';
+  if (illumConv.length === 0) {
+    const hint = document.createElement('div');
+    hint.className = 'illum-msg empty';
+    hint.innerHTML = '<span class="glyph">✧</span>A single word opens a doorway.<br>Offer one below, and it will be illuminated — definitions, etymology, deeper meaning.';
+    illumEls.messages.appendChild(hint);
+    return;
+  }
+  for (const m of illumConv) {
+    const div = document.createElement('div');
+    div.className = 'illum-msg ' + (m.role === 'user' ? 'user' : 'assistant');
+    if (m.role === 'user') {
+      div.textContent = m.content;
+    } else {
+      div.innerHTML = illumRenderMarkdown(m.content);
+    }
+    illumEls.messages.appendChild(div);
+  }
+  // scroll to bottom on next paint
+  requestAnimationFrame(() => { illumEls.messages.scrollTop = illumEls.messages.scrollHeight; });
+}
+
+function addTypingIndicator() {
+  const t = document.createElement('div');
+  t.className = 'illum-typing';
+  t.id = 'illum-typing';
+  t.innerHTML = '<span></span><span></span><span></span>';
+  illumEls.messages.appendChild(t);
+  illumEls.messages.scrollTop = illumEls.messages.scrollHeight;
+}
+function removeTypingIndicator() {
+  document.getElementById('illum-typing')?.remove();
+}
+
+function illumSetError(msg) {
+  if (!msg) { illumEls.error.hidden = true; illumEls.error.textContent = ''; return; }
+  illumEls.error.textContent = msg;
+  illumEls.error.hidden = false;
+}
+
+function openChatPanel() {
+  illumEls.panel.classList.add('open');
+  illumEls.backdrop.classList.add('open');
+  illumEls.panel.setAttribute('aria-hidden', 'false');
+  illumEls.backdrop.setAttribute('aria-hidden', 'false');
+  renderIllumMessages();
+  // focus input after the transition
+  setTimeout(() => illumEls.input.focus(), 280);
+}
+function closeChatPanel() {
+  illumEls.panel.classList.remove('open');
+  illumEls.backdrop.classList.remove('open');
+  illumEls.panel.setAttribute('aria-hidden', 'true');
+  illumEls.backdrop.setAttribute('aria-hidden', 'true');
+}
+
+async function sendIllumMessage(text) {
+  if (illumPending) return;
+  const trimmed = text.trim();
+  if (!trimmed) return;
+
+  illumSetError('');
+  illumConv.push({ role: 'user', content: trimmed });
+  saveIllumConv();
+  renderIllumMessages();
+
+  illumPending = true;
+  illumEls.send.disabled = true;
+  addTypingIndicator();
+
+  try {
+    const res = await fetch(ILLUM_ENDPOINT, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ messages: illumConv.slice(-ILLUM_MAX_HISTORY) }),
+    });
+    const data = await res.json().catch(() => ({}));
+    removeTypingIndicator();
+    if (!res.ok) {
+      illumSetError(data.error || 'The Illuminator is resting. Please try again in a moment.');
+      return;
+    }
+    const reply = (data.response || '').trim();
+    if (!reply) {
+      illumSetError('No reply was offered. Please try again.');
+      return;
+    }
+    illumConv.push({ role: 'assistant', content: reply });
+    saveIllumConv();
+    renderIllumMessages();
+  } catch (err) {
+    removeTypingIndicator();
+    illumSetError('Connection lost. Please try again.');
+  } finally {
+    illumPending = false;
+    illumEls.send.disabled = false;
+  }
+}
+
+/* wire up */
+document.getElementById('btn-illuminator')?.addEventListener('click', openChatPanel);
+document.getElementById('open-illuminator')?.addEventListener('click', openChatPanel);
+illumEls.close?.addEventListener('click', closeChatPanel);
+illumEls.backdrop?.addEventListener('click', closeChatPanel);
+illumEls.clear?.addEventListener('click', () => {
+  if (illumConv.length === 0) return;
+  if (!confirm('Clear this Illuminator conversation? This cannot be undone.')) return;
+  illumConv = [];
+  saveIllumConv();
+  illumSetError('');
+  renderIllumMessages();
+});
+
+illumEls.form?.addEventListener('submit', e => {
+  e.preventDefault();
+  const val = illumEls.input.value;
+  illumEls.input.value = '';
+  illumEls.input.style.height = '';
+  sendIllumMessage(val);
+});
+
+// Enter to send, Shift+Enter for newline
+illumEls.input?.addEventListener('keydown', e => {
+  if (e.key === 'Enter' && !e.shiftKey) {
+    e.preventDefault();
+    illumEls.form.requestSubmit();
+  }
+});
+
+// Auto-grow textarea
+illumEls.input?.addEventListener('input', () => {
+  illumEls.input.style.height = 'auto';
+  illumEls.input.style.height = Math.min(160, illumEls.input.scrollHeight) + 'px';
+});
+
+// Esc closes the panel
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape' && illumEls.panel.classList.contains('open')) closeChatPanel();
+});
+
 document.getElementById('btn-export').addEventListener('click', async () => {
   const imgs = await store.getImages();
   const blob = new Blob([JSON.stringify({ state, images: imgs, exportedAt: new Date().toISOString() }, null, 2)], { type:'application/json' });
@@ -1734,5 +2153,27 @@ function renderAll() {
 
 window.closeModal = closeModal;
 </script>
+
+<!-- ─────────────── ILLUMINATOR CHAT PANEL ─────────────── -->
+<div class="illum-backdrop" id="illum-backdrop" aria-hidden="true"></div>
+<aside class="illum-panel" id="illum-panel" role="dialog" aria-modal="true" aria-labelledby="illum-title" aria-hidden="true">
+  <header class="illum-head">
+    <h3 id="illum-title"><span class="glyph">✧</span> Word Illuminator</h3>
+    <div class="illum-head-actions">
+      <button type="button" class="illum-icon-btn" id="illum-clear" title="Clear this conversation" aria-label="Clear conversation">↻</button>
+      <button type="button" class="illum-icon-btn" id="illum-close" title="Close" aria-label="Close Illuminator">×</button>
+    </div>
+  </header>
+  <div class="illum-messages" id="illum-messages" aria-live="polite" aria-atomic="false"></div>
+  <div class="illum-error" id="illum-error" hidden></div>
+  <form class="illum-compose" id="illum-compose" autocomplete="off">
+    <textarea id="illum-input" rows="2" placeholder="Offer a word, a name, or a concept…" aria-label="Your word"></textarea>
+    <div class="illum-compose-row">
+      <span class="illum-hint">Enter to send · Shift+Enter for new line</span>
+      <button type="submit" class="illum-send" id="illum-send">Illuminate</button>
+    </div>
+  </form>
+</aside>
+
 </body>
 </html>
