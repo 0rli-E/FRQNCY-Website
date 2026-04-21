@@ -32,60 +32,228 @@ async function downloadChartPDF(){
   const original = btn.innerHTML;
   btn.disabled = true;
   btn.innerHTML = '<span style="font-size:0.66rem;letter-spacing:0.16em">Preparing…</span>';
+
+  let renderRoot = null;
   try {
     await _loadPdfLibs();
-    const target = document.getElementById('result-area');
-    // Capture with navy background so the PDF matches the on-screen design
-    const canvas = await html2canvas(target, {
+
+    const src = document.getElementById('result-area');
+    if (!src) throw new Error('No result area');
+
+    // ── Build an off-screen clone at a fixed width ────────────────────
+    // Rendering at a fixed desktop-ish width means the PDF looks the
+    // same whether the user is on mobile or desktop, and the final
+    // layout is predictable (no tiny mobile text scaled up to A4).
+    const RENDER_WIDTH = 760; // px — close to printable A4 at ~150 DPI
+    renderRoot = document.createElement('div');
+    renderRoot.setAttribute('aria-hidden', 'true');
+    Object.assign(renderRoot.style, {
+      position: 'fixed',
+      left: '-10000px',
+      top: '0',
+      width: RENDER_WIDTH + 'px',
+      background: '#0B1C3D',
+      padding: '28px 32px 24px',
+      color: '#C8D8F0',
+      fontFamily: "'Jost', sans-serif",
+      fontWeight: '300',
+      lineHeight: '1.6',
+      zIndex: '-1',
+      pointerEvents: 'none',
+    });
+
+    // PDF header: FRQNCY brand + date
+    const resTitleText = (document.getElementById('res-title')?.textContent || 'Your Chart').trim();
+    const resSubText   = (document.getElementById('res-sub')?.textContent || '').trim();
+    const eyebrowText  = (document.getElementById('res-eyebrow')?.textContent || 'Chart').trim();
+    const dob = document.getElementById('dob')?.value || '';
+    const today = new Date().toISOString().slice(0,10);
+
+    const header = document.createElement('div');
+    header.style.cssText =
+      'display:flex;justify-content:space-between;align-items:baseline;' +
+      'padding-bottom:14px;margin-bottom:22px;' +
+      'border-bottom:1px solid rgba(255,255,255,0.08);';
+    header.innerHTML =
+      '<div>' +
+        '<div style="font-family:\'Cormorant\',serif;font-size:20px;letter-spacing:0.3em;color:#fff;opacity:0.9;text-transform:uppercase">FRQNCY</div>' +
+        '<div style="font-size:9.5px;letter-spacing:0.28em;color:#7B4AE8;margin-top:4px;text-transform:uppercase">' +
+          eyebrowText +
+        '</div>' +
+      '</div>' +
+      '<div style="text-align:right">' +
+        '<div style="font-size:9.5px;letter-spacing:0.16em;color:#7090B8;text-transform:uppercase">Generated ' + today + '</div>' +
+        '<div style="font-size:9px;letter-spacing:0.14em;color:rgba(112,144,184,0.65);margin-top:3px">frqncy.network/chart</div>' +
+      '</div>';
+    renderRoot.appendChild(header);
+
+    // Clone the result DOM. The clone preserves the same class-based
+    // styling because it lives inside the live document.
+    const clone = src.cloneNode(true);
+    clone.style.display = 'block';
+    clone.style.margin = '0';
+    clone.removeAttribute('id'); // avoid duplicate id in DOM
+    // Strip descendant IDs too so we don't duplicate any live IDs
+    clone.querySelectorAll('[id]').forEach(el => el.removeAttribute('id'));
+
+    // Strip elements that shouldn't appear in the PDF
+    clone.querySelectorAll(
+      '.btn-download, .ai-reading-cta, .ai-reading-loading, [data-frq-auth]'
+    ).forEach(el => el.remove());
+
+    // Disable any links (they'll be non-interactive anyway)
+    clone.querySelectorAll('a').forEach(a => a.removeAttribute('target'));
+
+    renderRoot.appendChild(clone);
+
+    // PDF footer
+    const footer = document.createElement('div');
+    footer.style.cssText =
+      'margin-top:24px;padding-top:14px;' +
+      'border-top:1px solid rgba(255,255,255,0.06);' +
+      'display:flex;justify-content:space-between;align-items:center;' +
+      'font-size:9px;letter-spacing:0.14em;color:#7090B8;text-transform:uppercase';
+    footer.innerHTML =
+      '<span>' + (resTitleText || 'Chart') + (dob ? ' · ' + dob : '') + '</span>' +
+      '<span>frqncy.network</span>';
+    renderRoot.appendChild(footer);
+
+    document.body.appendChild(renderRoot);
+
+    // Let fonts + layout settle
+    if (document.fonts && document.fonts.ready) {
+      try { await document.fonts.ready; } catch(_) {}
+    }
+    await new Promise(r => requestAnimationFrame(() => requestAnimationFrame(r)));
+
+    // ── Collect safe page-break Y coordinates (in CSS px, relative to renderRoot) ──
+    // We'll snap each page break to one of these boundaries so cards,
+    // paragraphs, and table rows don't get sliced in half.
+    const rootRect = renderRoot.getBoundingClientRect();
+    const breakSet = new Set([0]);
+    const breakSelectors = [
+      // our added chrome
+      ':scope > div',
+      // result-area structural pieces
+      '.result-header',
+      '.hd-grid',
+      '.hd-card',
+      '.gk-row',
+      '.gk-card',
+      '.ai-reading-panel',
+      '.ai-reading-header',
+      '.ai-reading-body',
+      '.ai-reading-footer',
+      '.ext-links',
+      '.ext-link',
+      // any direct child divs/sections in the rendered content
+      '#res-content > *',
+      '.ai-reading-body > *',
+      'table tr',
+      'p',
+      'h2', 'h3', 'h4',
+      'svg',
+    ];
+    const sel = breakSelectors.join(',');
+    renderRoot.querySelectorAll(sel).forEach(el => {
+      const r = el.getBoundingClientRect();
+      // Top-of-element as a break candidate
+      breakSet.add(Math.round(r.top - rootRect.top));
+    });
+
+    const totalHeightCss = renderRoot.scrollHeight;
+    breakSet.add(totalHeightCss);
+
+    const sortedBreaksCss = Array.from(breakSet)
+      .filter(y => y >= 0 && y <= totalHeightCss)
+      .sort((a,b) => a - b);
+
+    // ── Capture ─────────────────────────────────────────────────────
+    const scale = 2;
+    const canvas = await html2canvas(renderRoot, {
       backgroundColor: '#0B1C3D',
-      scale: 2,
+      scale,
       useCORS: true,
       logging: false,
-      windowWidth: document.documentElement.scrollWidth
+      windowWidth: RENDER_WIDTH,
+      width: RENDER_WIDTH,
+      height: totalHeightCss,
+      scrollX: 0,
+      scrollY: 0,
     });
+
+    // ── PDF setup ────────────────────────────────────────────────────
     const { jsPDF } = window.jspdf;
-    // A4 portrait in mm
-    const pdf = new jsPDF({ unit:'mm', format:'a4', orientation:'portrait' });
+    const pdf = new jsPDF({ unit:'mm', format:'a4', orientation:'portrait', compress: true });
     const pageW = pdf.internal.pageSize.getWidth();
     const pageH = pdf.internal.pageSize.getHeight();
     const margin = 8;
-    const imgW = pageW - margin*2;
-    const imgH = canvas.height * imgW / canvas.width;
-    const imgData = canvas.toDataURL('image/jpeg', 0.92);
+    const imgW = pageW - margin * 2;
+    const pxPerMm = canvas.width / imgW;
+    const pageContentHpx = Math.floor((pageH - margin * 2) * pxPerMm);
 
-    if (imgH <= pageH - margin*2) {
-      // Fits on one page — fill navy behind
-      pdf.setFillColor(11,28,61); pdf.rect(0,0,pageW,pageH,'F');
-      pdf.addImage(imgData, 'JPEG', margin, margin, imgW, imgH);
+    // Convert break points from CSS px to canvas px
+    const breaksCanvasPx = sortedBreaksCss.map(y => Math.round(y * scale));
+
+    // Fits on one page — no slicing needed
+    if (canvas.height <= pageContentHpx) {
+      pdf.setFillColor(11, 28, 61);
+      pdf.rect(0, 0, pageW, pageH, 'F');
+      const dataUrl = canvas.toDataURL('image/png');
+      pdf.addImage(dataUrl, 'PNG', margin, margin, imgW, canvas.height / pxPerMm, undefined, 'FAST');
     } else {
-      // Multi-page: slice the canvas into page-sized chunks
-      const pageContentH = pageH - margin*2;
-      const pxPerMm = canvas.width / imgW;
-      const sliceHpx = pageContentH * pxPerMm;
-      let y = 0;
+      // Multi-page with element-aware page breaks
       const tmp = document.createElement('canvas');
       tmp.width = canvas.width;
       const ctx = tmp.getContext('2d');
+
+      let y = 0;
       let first = true;
-      while (y < canvas.height) {
-        const h = Math.min(sliceHpx, canvas.height - y);
+      let safety = 0;
+      while (y < canvas.height && safety++ < 60) {
+        const idealEnd = y + pageContentHpx;
+        let pageEnd;
+        if (idealEnd >= canvas.height) {
+          pageEnd = canvas.height;
+        } else {
+          // Latest break point strictly greater than y and ≤ idealEnd
+          pageEnd = -1;
+          for (let i = 0; i < breaksCanvasPx.length; i++) {
+            const by = breaksCanvasPx[i];
+            if (by <= y) continue;
+            if (by > idealEnd) break;
+            pageEnd = by;
+          }
+          // No safe break in range — fall back to hard cut so a single
+          // giant element can't stall the loop
+          if (pageEnd === -1) pageEnd = idealEnd;
+        }
+
+        const h = Math.max(1, pageEnd - y);
         tmp.height = h;
-        ctx.fillStyle = '#0B1C3D'; ctx.fillRect(0,0,tmp.width,h);
+        ctx.fillStyle = '#0B1C3D';
+        ctx.fillRect(0, 0, tmp.width, h);
         ctx.drawImage(canvas, 0, y, canvas.width, h, 0, 0, canvas.width, h);
-        const slice = tmp.toDataURL('image/jpeg', 0.92);
+        const slice = tmp.toDataURL('image/png');
+
         if (!first) pdf.addPage();
-        pdf.setFillColor(11,28,61); pdf.rect(0,0,pageW,pageH,'F');
-        pdf.addImage(slice, 'JPEG', margin, margin, imgW, h / pxPerMm);
-        y += h; first = false;
+        pdf.setFillColor(11, 28, 61);
+        pdf.rect(0, 0, pageW, pageH, 'F');
+        pdf.addImage(slice, 'PNG', margin, margin, imgW, h / pxPerMm, undefined, 'FAST');
+
+        y = pageEnd;
+        first = false;
       }
     }
 
-    const title = (document.getElementById('res-title').textContent || 'chart').replace(/[^a-z0-9]+/gi,'-').toLowerCase();
-    const dob = document.getElementById('dob').value || '';
-    pdf.save(`frqncy-human-design-${title}${dob?'-'+dob:''}.pdf`);
+    const titleSlug = resTitleText.replace(/[^a-z0-9]+/gi, '-').replace(/^-|-$/g, '').toLowerCase() || 'chart';
+    const prefix = activeChart === 'gk' ? 'gene-keys' : activeChart === 'natal' ? 'birth-chart' : 'human-design';
+    pdf.save('frqncy-' + prefix + '-' + titleSlug + (dob ? '-' + dob : '') + '.pdf');
   } catch (e) {
+    console.error('PDF generation failed:', e);
     alert('Sorry, the PDF could not be generated. Please check your connection and try again.');
   } finally {
+    if (renderRoot && renderRoot.parentNode) renderRoot.parentNode.removeChild(renderRoot);
     btn.disabled = false;
     btn.innerHTML = original;
   }
