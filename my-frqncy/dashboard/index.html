@@ -56,8 +56,8 @@ nav{
 .wrap{max-width:1240px;margin:0 auto;padding:2rem clamp(1rem,3vw,2rem)}
 
 .hero{
-  display:flex;align-items:flex-end;justify-content:space-between;
-  flex-wrap:wrap;gap:1rem;margin:1rem 0 2.5rem;
+  display:flex;align-items:center;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem 1.5rem;margin:1rem 0 2.5rem;
   padding-bottom:1.5rem;border-bottom:1px solid var(--card-border);
 }
 .hero h1{
@@ -69,17 +69,19 @@ nav{
 .hero .sub{
   color:var(--text-dim);font-size:0.85rem;margin-top:0.5rem;letter-spacing:0.04em;
 }
-.hero-actions{display:flex;gap:0.6rem;flex-wrap:wrap}
+.hero-actions{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
 .btn{
+  display:inline-flex;align-items:center;justify-content:center;
   font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;
   padding:0.55rem 1rem;border-radius:2px;
   border:1px solid var(--card-border);color:var(--text-dim);
-  transition:all .2s;
+  transition:all .2s;line-height:1;
+  text-indent:0.16em;
 }
 .btn:hover{border-color:var(--gold-dim);color:var(--gold-light);background:rgba(196,151,58,0.04)}
 .btn-gold{border-color:var(--gold);color:var(--gold)}
 .btn-gold:hover{background:rgba(196,151,58,0.08);color:var(--gold-light)}
-.btn-tiny{font-size:0.62rem;padding:0.3rem 0.6rem;letter-spacing:0.1em}
+.btn-tiny{font-size:0.62rem;padding:0.3rem 0.6rem;letter-spacing:0.1em;text-indent:0.1em}
 
 /* ── SECTION ── */
 .section{margin:3.5rem 0}
@@ -491,6 +493,7 @@ nav{
   padding:0.8rem 1.4rem;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;
   color:var(--text-dim);border-bottom:2px solid transparent;
   cursor:pointer;transition:all .2s;white-space:nowrap;
+  text-indent:0.16em;
 }
 .tab:hover{color:var(--text)}
 .tab.active{color:var(--gold);border-bottom-color:var(--gold)}
@@ -526,10 +529,10 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:
   <a href="../../index.html" class="nav-logo">FRQNCY</a>
   <ul class="nav-links">
     <li><a href="../../v2/explore.html">Discover</a></li>
-    <li><a href="../../podcast.html">Podcast</a></li>
     <li class="nav-dd">
       <a href="/social/">Community</a>
       <div class="nav-dd-menu">
+        <a href="../../podcast.html"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
         <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">The social layer</span></a>
         <a href="../../space.html"><span class="dd-label">Community Space</span><span class="dd-sub">Coworking &amp; retreat</span></a>
         <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
