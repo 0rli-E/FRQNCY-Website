@@ -24,7 +24,8 @@ const TOPIC_LABELS = {
   't-breathwork':'Breathwork','t-manifestation':'Manifestation','t-plantmed':'Plant Medicine',
   't-soundheal':'Sound Healing','t-quantum-grammar':'Quantum Grammar','t-ai':'AI & Technology',
   't-sacredgeo':'Sacred Geometry','t-vibration':'Vibration','t-saclaw':'Sacred Law',
-  't-trudeau':'Kevin Trudeau','t-osho':'Osho','t-sadhguru':'Sadhguru','t-saimaa':'Sai Maa','t-garyspivey':'Gary Spivey'
+  't-trudeau':'Kevin Trudeau','t-osho':'Osho','t-sadhguru':'Sadhguru','t-saimaa':'Sai Maa','t-garyspivey':'Gary Spivey',
+  't-movies':'Films'
 };
 
 const allVideos = [];
