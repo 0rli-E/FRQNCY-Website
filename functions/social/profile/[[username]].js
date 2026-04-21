@@ -13,16 +13,31 @@ export async function onRequest(context) {
   }
 
   // Dynamic username path: fetch the static shell HTML via the ASSETS binding.
-  const shellUrl = new URL('/social/profile/index.html', url.origin).toString();
-  const res = await env.ASSETS.fetch(new Request(shellUrl, { method: 'GET' }));
+  // Fail gracefully if ASSETS binding is missing or the fetch throws.
+  if (!env.ASSETS || typeof env.ASSETS.fetch !== 'function') {
+    return new Response('Profile shell unavailable', {
+      status: 500,
+      headers: { 'content-type': 'text/plain; charset=utf-8' },
+    });
+  }
 
-  // Re-wrap so the response status is 200 (ASSETS can return 404 for missing dir variant).
-  const body = await res.arrayBuffer();
-  return new Response(body, {
-    status: res.status === 200 ? 200 : 200,
-    headers: {
-      'content-type': 'text/html; charset=utf-8',
-      'cache-control': 'public, max-age=0, must-revalidate',
-    },
-  });
+  try {
+    const shellUrl = new URL('/social/profile/index.html', url.origin).toString();
+    const res = await env.ASSETS.fetch(new Request(shellUrl, { method: 'GET' }));
+    const body = await res.arrayBuffer();
+    // Always return 200 so the client-side router on the shell can render
+    // the dynamic username path (ASSETS sometimes 404s for dir variants).
+    return new Response(body, {
+      status: 200,
+      headers: {
+        'content-type': 'text/html; charset=utf-8',
+        'cache-control': 'public, max-age=0, must-revalidate',
+      },
+    });
+  } catch (err) {
+    return new Response('Profile shell fetch failed', {
+      status: 502,
+      headers: { 'content-type': 'text/plain; charset=utf-8' },
+    });
+  }
 }

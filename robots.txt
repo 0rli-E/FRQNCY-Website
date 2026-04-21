@@ -1,7 +1,17 @@
 User-agent: *
 Allow: /
 
-# Don't index archived versions
+# Private / app routes — don't index
+Disallow: /my-frqncy/dashboard/
+Disallow: /social/login/
+Disallow: /social/messages/
+Disallow: /social/notifications/
+Disallow: /social/bookmarks/
+
+# Archived / internal
 Disallow: /versions/
+Disallow: /chart-v2/
+Disallow: /social-app.superseded/
+Disallow: /social-src/
 
 Sitemap: https://frqncy.network/sitemap.xml

@@ -91,7 +91,7 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
 .cta-btn.secondary{border-color:rgba(255,255,255,0.15);color:var(--text-dim);background:none}
 .cta-btn.secondary:hover{border-color:rgba(255,255,255,0.3);color:var(--text)}
 .disclaimer{max-width:640px;margin:0 auto 2rem;text-align:center;font-size:0.7rem;color:var(--text-dim);opacity:0.7;line-height:1.6;padding:0 1.25rem}
-@media(max-width:600px){.crypto-grid{grid-template-columns:1fr}}
+a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:2px}.ccard:focus-within{border-color:rgba(196,151,58,0.4)}@media(hover:none) and (pointer:coarse){.snav-back{min-height:44px;display:inline-flex;align-items:center;padding:8px 14px}.snav-link{min-height:44px;display:inline-flex;align-items:center}.ccard-link{min-height:44px;display:inline-flex;align-items:center}.cta-btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center}}@media(max-width:600px){.crypto-grid{grid-template-columns:1fr;gap:1rem}.ccard-body{padding:1.3rem 1.3rem 1rem}.ccard-footer{padding:0.8rem 1.3rem}.snav-right .snav-link{display:none}}@media(max-width:360px){.hero h1{font-size:2rem}.breadcrumb a:first-child{display:none}.breadcrumb .sep:first-of-type{display:none}}
 </style>
 <script src="../../../mobile-nav.js" defer></script>
 <script src="../../../chat-widget.js" defer></script>
@@ -135,12 +135,12 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
 <p class="disclaimer">This is not financial advice. Conviction is stated as conviction. You decide what to do with it. Always do your own work before you put money anywhere.</p>
 
 <div class="section-label">
-  <span class="section-label-text">Projects we watch</span>
+  <h2 class="section-label-text" style="font-weight:400;margin:0">Projects we watch</h2>
   <div class="section-label-line"></div>
 </div>
 
 <main>
-  <div class="crypto-grid" id="grid"></div>
+  <div class="crypto-grid" id="grid" role="list" aria-label="Curated projects"></div>
 </main>
 
 <div class="cta-banner">
@@ -300,6 +300,7 @@ const grid = document.getElementById('grid');
 for (const p of PROJECTS) {
   const card = document.createElement('div');
   card.className = 'ccard';
+  card.setAttribute('role','listitem');
   if (p.coingeckoId) card.setAttribute('data-cgid', p.coingeckoId);
   const tagsHtml = p.categories.map(c => `<span class="ctag">${esc(c)}</span>`).join('');
   const initials = p.name.replace(/[^A-Za-z]/g,'').slice(0,2).toUpperCase() || p.name.slice(0,2).toUpperCase();
@@ -321,7 +322,7 @@ for (const p of PROJECTS) {
       </div>
     </div>
     <div class="ccard-footer">
-      <a href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" class="ccard-link">${esc(p.linkLabel)} →</a>
+      <a href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" class="ccard-link" aria-label="Visit ${esc(p.name)} — ${esc(p.linkLabel)} (opens in new tab)">${esc(p.linkLabel)} →</a>
       <span class="ccard-type">${esc(p.type)}</span>
     </div>
   `;

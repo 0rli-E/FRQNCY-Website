@@ -4,7 +4,7 @@
  * Provides offline fallback for the shell and fonts.
  */
 
-const CACHE = 'frqncy-v21';
+const CACHE = 'frqncy-v22';
 
 // Assets that should be pre-cached on install (the app shell)
 const PRECACHE = [
@@ -59,8 +59,11 @@ self.addEventListener('fetch', e => {
     e.respondWith(
       fetch(request)
         .then(res => {
-          const copy = res.clone();
-          caches.open(CACHE).then(c => c.put(request, copy));
+          // Only cache successful responses — don't poison cache with 404/500
+          if (res && res.status === 200 && res.type === 'basic') {
+            const copy = res.clone();
+            caches.open(CACHE).then(c => c.put(request, copy));
+          }
           return res;
         })
         .catch(() => caches.match(request).then(r => r || caches.match('/index.html')))

@@ -1,0 +1,1729 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0B1C3D">
+<meta name="robots" content="noindex">
+<title>Your Sanctuary — FRQNCY</title>
+<meta name="description" content="A private space to hold your dream, chief aims, objectives, goals, daily practice, and the images you build your life around.">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<!-- Chart.js loaded lazily when Progress tab is first opened (see switchTab) -->
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--navy-light:#112860;--navy-deep:#08152F;
+  --gold:#C4973A;--gold-light:#E0C06A;--gold-dim:rgba(196,151,58,0.35);
+  --text:#C8D8F0;--text-dim:#7090B8;--text-faint:#4A6280;
+  --accent:#4A7AE8;--accent-glow:rgba(74,122,232,0.12);
+  --good:#5BC79A;--warn:#E8B04A;--bad:#E47878;
+  --card:rgba(255,255,255,0.025);--card-hover:rgba(255,255,255,0.05);
+  --card-border:rgba(255,255,255,0.08);--card-border-hover:rgba(255,255,255,0.15);
+}
+html,body{
+  background:var(--navy);color:var(--text);
+  font-family:'Jost',sans-serif;font-weight:300;
+  min-height:100vh;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+body{padding-top:56px;padding-bottom:80px}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;background:none;border:none;color:inherit;cursor:pointer}
+input,textarea{font-family:inherit;color:inherit;background:none;border:none;outline:none;width:100%}
+::selection{background:var(--gold);color:var(--navy)}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--card-border);
+  padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;opacity:0.85}
+.nav-logo:hover{opacity:1}
+.nav-links{list-style:none;display:flex;align-items:center;gap:1.75rem}
+.nav-links a{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-cta-gold{color:var(--gold) !important;border:1px solid rgba(196,151,58,0.35);padding:5px 14px;border-radius:2px}
+.nav-cta-gold:hover{background:rgba(196,151,58,0.08)}
+@media(max-width:900px){.nav-links{display:none}}
+
+/* ── LAYOUT ── */
+.wrap{max-width:1240px;margin:0 auto;padding:2rem clamp(1rem,3vw,2rem)}
+
+.hero{
+  display:flex;align-items:flex-end;justify-content:space-between;
+  flex-wrap:wrap;gap:1rem;margin:1rem 0 2.5rem;
+  padding-bottom:1.5rem;border-bottom:1px solid var(--card-border);
+}
+.hero h1{
+  font-family:'Cormorant',serif;font-weight:300;
+  font-size:clamp(2rem,4.5vw,3rem);color:#fff;letter-spacing:0.02em;
+  line-height:1.1;
+}
+.hero h1 em{font-style:italic;color:var(--gold-light);font-weight:400}
+.hero .sub{
+  color:var(--text-dim);font-size:0.85rem;margin-top:0.5rem;letter-spacing:0.04em;
+}
+.hero-actions{display:flex;gap:0.6rem;flex-wrap:wrap}
+.btn{
+  font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;
+  padding:0.55rem 1rem;border-radius:2px;
+  border:1px solid var(--card-border);color:var(--text-dim);
+  transition:all .2s;
+}
+.btn:hover{border-color:var(--gold-dim);color:var(--gold-light);background:rgba(196,151,58,0.04)}
+.btn-gold{border-color:var(--gold);color:var(--gold)}
+.btn-gold:hover{background:rgba(196,151,58,0.08);color:var(--gold-light)}
+.btn-tiny{font-size:0.62rem;padding:0.3rem 0.6rem;letter-spacing:0.1em}
+
+/* ── SECTION ── */
+.section{margin:3.5rem 0}
+.section-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1.25rem;gap:1rem;flex-wrap:wrap;
+}
+.section-head h2{
+  font-family:'Cormorant',serif;font-weight:400;font-size:1.6rem;
+  color:#fff;letter-spacing:0.04em;
+  display:flex;align-items:baseline;gap:0.7rem;
+}
+.section-head h2 .glyph{color:var(--gold);font-size:1.1rem;opacity:0.7}
+.section-head .meta{color:var(--text-faint);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase}
+
+/* ── PRIVACY BANNER ── */
+.privacy-banner{
+  display:flex;align-items:center;gap:0.7rem;
+  padding:0.7rem 1rem;border:1px solid var(--card-border);border-radius:3px;
+  background:var(--card);color:var(--text-dim);font-size:0.78rem;
+  margin-bottom:0.5rem;
+}
+.privacy-banner .lock{color:var(--gold);font-size:1rem}
+
+/* ── SCOREBOARD ── */
+.scoreboard{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
+  gap:1rem;
+}
+.score-card{
+  position:relative;
+  background:linear-gradient(160deg,var(--navy-light) 0%,var(--navy-mid) 100%);
+  border:1px solid var(--card-border);border-radius:4px;
+  padding:1.5rem;display:flex;flex-direction:column;gap:0.7rem;
+  transition:all .25s;min-height:200px;
+}
+.score-card:hover{border-color:var(--gold-dim);transform:translateY(-2px)}
+.score-card .score-label{
+  font-size:0.65rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gold);font-weight:400;
+}
+.score-card .score-name{
+  font-family:'Cormorant',serif;font-size:1.4rem;color:#fff;font-weight:400;
+  border:none;line-height:1.2;
+}
+.score-card .score-name:focus{outline:none;border-bottom:1px dashed var(--gold-dim)}
+.score-card .score-display{
+  display:flex;align-items:baseline;gap:0.5rem;margin-top:auto;
+}
+.score-card .score-current{
+  font-family:'Cormorant',serif;font-size:3.5rem;color:#fff;font-weight:300;line-height:1;
+  letter-spacing:-0.02em;
+}
+.score-card .score-of{color:var(--text-faint);font-size:1.5rem;font-weight:300}
+.score-card .score-target{
+  font-family:'Cormorant',serif;font-size:1.7rem;color:var(--gold-light);font-weight:300;
+}
+.score-card .score-controls{
+  display:flex;align-items:center;gap:0.4rem;margin-top:0.5rem;
+}
+.score-btn{
+  width:30px;height:30px;border:1px solid var(--card-border);border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);transition:all .15s;font-size:1rem;
+}
+.score-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.08)}
+.score-trend{
+  display:flex;align-items:center;gap:0.3rem;
+  font-size:0.7rem;color:var(--text-faint);margin-left:auto;
+}
+.score-trend.up{color:var(--good)}
+.score-trend.down{color:var(--bad)}
+.score-card.add-card{
+  border-style:dashed;background:transparent;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-faint);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;
+  cursor:pointer;
+}
+.score-card.add-card:hover{border-color:var(--gold);color:var(--gold)}
+.score-delete{
+  position:absolute;top:0.7rem;right:0.7rem;
+  width:24px;height:24px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-faint);opacity:0;transition:all .15s;
+  font-size:0.9rem;
+}
+.score-card:hover .score-delete{opacity:1}
+.score-delete:hover{color:var(--bad)}
+
+/* ── PYRAMID ── */
+.pyramid{display:flex;flex-direction:column;gap:1.5rem}
+.tier{
+  background:var(--card);border:1px solid var(--card-border);border-radius:4px;
+  padding:1.5rem;
+}
+.tier-head{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-bottom:1rem;gap:1rem;
+}
+.tier-title{
+  font-family:'Cormorant',serif;font-size:1.15rem;color:var(--gold-light);font-weight:400;
+  letter-spacing:0.06em;
+  display:flex;align-items:baseline;gap:0.6rem;
+}
+.tier-title .horizon{
+  font-family:'Jost',sans-serif;font-size:0.62rem;color:var(--text-faint);
+  letter-spacing:0.16em;text-transform:uppercase;
+}
+
+/* Dream tier */
+.dream-card{
+  background:linear-gradient(160deg,rgba(196,151,58,0.05) 0%,rgba(11,28,61,0.3) 100%);
+  border:1px solid var(--gold-dim);border-radius:4px;
+  padding:1.5rem;min-height:140px;
+}
+.dream-text{
+  font-family:'Cormorant',serif;font-size:1.4rem;color:#fff;font-weight:300;
+  line-height:1.5;font-style:italic;
+  width:100%;background:none;border:none;outline:none;resize:vertical;min-height:100px;
+}
+.dream-text::placeholder{color:var(--text-faint);font-style:italic}
+
+/* Chief aim within pyramid (collapsed view) */
+.aim-list{display:flex;flex-direction:column;gap:0.7rem}
+.aim-row{
+  display:flex;align-items:center;gap:0.8rem;
+  padding:0.8rem 1rem;background:var(--navy-mid);
+  border:1px solid var(--card-border);border-radius:3px;
+  transition:all .2s;
+}
+.aim-row:hover{border-color:var(--card-border-hover);background:var(--navy-light)}
+.aim-bullet{
+  width:8px;height:8px;border-radius:50%;background:var(--gold);
+  box-shadow:0 0 8px rgba(196,151,58,0.5);flex-shrink:0;
+}
+.aim-name{flex:1;font-size:0.95rem;color:#fff;border:none}
+.aim-mini-score{
+  color:var(--gold-light);font-family:'Cormorant',serif;font-size:1.1rem;
+  letter-spacing:0.05em;
+}
+
+/* Objectives grouped by chief aim */
+.aim-group{margin-bottom:1.5rem}
+.aim-group:last-child{margin-bottom:0}
+.aim-group-head{
+  display:flex;align-items:center;gap:0.6rem;
+  padding-bottom:0.5rem;margin-bottom:0.7rem;
+  border-bottom:1px dashed var(--card-border);
+}
+.aim-group-head .dot{width:6px;height:6px;border-radius:50%;background:var(--gold)}
+.aim-group-head .label{
+  font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--text-dim);
+}
+.aim-group-head .label strong{color:var(--text);font-weight:400;letter-spacing:0.05em;text-transform:none;font-size:0.95rem}
+
+.obj-grid{
+  display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:0.7rem;
+}
+.obj-card{
+  background:var(--navy-mid);border:1px solid var(--card-border);border-radius:3px;
+  padding:0.85rem 1rem;min-height:90px;
+  display:flex;flex-direction:column;gap:0.4rem;
+  transition:all .15s;position:relative;
+}
+.obj-card:hover{border-color:var(--card-border-hover)}
+.obj-title{
+  font-size:0.92rem;color:#fff;border:none;width:100%;
+  font-weight:400;
+}
+.obj-meta{
+  display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
+  font-size:0.65rem;color:var(--text-faint);letter-spacing:0.08em;
+  margin-top:auto;
+}
+.obj-duration{
+  background:rgba(196,151,58,0.08);color:var(--gold-light);
+  padding:0.15rem 0.5rem;border-radius:2px;text-transform:uppercase;letter-spacing:0.12em;
+  font-size:0.6rem;cursor:pointer;
+}
+.obj-duration:hover{background:rgba(196,151,58,0.15)}
+.obj-goals-count{font-size:0.65rem;color:var(--text-dim)}
+.obj-goals-count a{color:var(--gold-light);text-decoration:underline;text-decoration-color:var(--gold-dim)}
+.obj-add{
+  border:1px dashed var(--card-border);color:var(--text-faint);
+  display:flex;align-items:center;justify-content:center;
+  font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;
+  cursor:pointer;
+}
+.obj-add:hover{border-color:var(--gold);color:var(--gold)}
+
+/* Goals (under each objective) */
+.goals-block{margin-top:0.5rem;padding-left:1.2rem;border-left:2px solid var(--card-border)}
+.goals-block .goal-row{
+  display:flex;align-items:center;gap:0.6rem;
+  padding:0.4rem 0;font-size:0.85rem;
+}
+.goal-check{
+  width:18px;height:18px;border:1px solid var(--gold-dim);border-radius:3px;
+  display:flex;align-items:center;justify-content:center;
+  cursor:pointer;flex-shrink:0;transition:all .15s;
+}
+.goal-check.done{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.goal-check.done::before{content:"✓";font-size:0.8rem;font-weight:600}
+.goal-text{flex:1;border:none;font-size:0.88rem}
+.goal-text.done{color:var(--text-faint);text-decoration:line-through}
+.goal-month{font-size:0.65rem;color:var(--text-faint);letter-spacing:0.1em;text-transform:uppercase}
+.goal-del{color:var(--text-faint);opacity:0;font-size:0.85rem}
+.goal-row:hover .goal-del{opacity:0.7}
+.goal-del:hover{color:var(--bad);opacity:1!important}
+.goal-add{
+  display:flex;align-items:center;gap:0.5rem;
+  padding:0.4rem 0;color:var(--text-faint);font-size:0.78rem;
+  cursor:pointer;
+}
+.goal-add:hover{color:var(--gold)}
+
+/* ── HABITS ── */
+.habits-bar{
+  display:flex;flex-wrap:wrap;gap:0.6rem;
+  padding:1rem;background:var(--card);border:1px solid var(--card-border);
+  border-radius:4px;
+}
+.habit-chip{
+  display:flex;align-items:center;gap:0.6rem;
+  padding:0.6rem 1rem;background:var(--navy-mid);
+  border:1px solid var(--card-border);border-radius:3px;
+  cursor:pointer;transition:all .15s;
+  position:relative;
+}
+.habit-chip:hover{border-color:var(--card-border-hover)}
+.habit-chip.done{background:rgba(91,199,154,0.08);border-color:rgba(91,199,154,0.4)}
+.habit-icon{font-size:1.1rem}
+.habit-name{font-size:0.85rem;color:#fff}
+.habit-streak{
+  font-size:0.65rem;color:var(--gold-light);letter-spacing:0.05em;
+  margin-left:0.3rem;
+}
+.habit-del-btn{
+  position:absolute;top:-6px;right:-6px;width:18px;height:18px;
+  background:var(--navy);border:1px solid var(--card-border);border-radius:50%;
+  display:none;align-items:center;justify-content:center;font-size:0.7rem;
+  color:var(--text-dim);
+}
+.habit-chip:hover .habit-del-btn{display:flex}
+.habit-del-btn:hover{color:var(--bad);border-color:var(--bad)}
+.habit-add-chip{
+  display:flex;align-items:center;gap:0.4rem;
+  padding:0.6rem 1rem;border:1px dashed var(--card-border);
+  color:var(--text-faint);font-size:0.78rem;border-radius:3px;cursor:pointer;
+}
+.habit-add-chip:hover{color:var(--gold);border-color:var(--gold)}
+.habit-add-input{
+  display:flex;align-items:center;gap:0.4rem;padding:0.6rem 1rem;
+  border:1px solid var(--gold);border-radius:3px;background:var(--navy-mid);
+}
+.habit-add-input input{font-size:0.85rem;width:140px}
+
+/* ── GRAPHS ── */
+.graphs-grid{
+  display:grid;grid-template-columns:1fr;gap:1rem;
+}
+@media(min-width:900px){
+  .graphs-grid{grid-template-columns:1.4fr 1fr}
+  .graph-line-card{grid-column:1/-1}
+}
+.graph-card{
+  background:var(--card);border:1px solid var(--card-border);border-radius:4px;
+  padding:1.25rem;
+}
+.graph-card .gh{
+  font-family:'Cormorant',serif;font-size:1.05rem;color:#fff;font-weight:400;
+  margin-bottom:0.4rem;
+}
+.graph-card .gsub{
+  font-size:0.7rem;color:var(--text-faint);letter-spacing:0.1em;
+  text-transform:uppercase;margin-bottom:1rem;
+}
+.chart-canvas-wrap{position:relative;height:260px}
+
+/* Heatmap */
+.heatmap{
+  display:grid;grid-template-columns:repeat(53,1fr);gap:2px;
+}
+.hm-cell{
+  aspect-ratio:1;border-radius:2px;background:rgba(255,255,255,0.04);
+  position:relative;
+}
+.hm-cell[data-level="1"]{background:rgba(196,151,58,0.18)}
+.hm-cell[data-level="2"]{background:rgba(196,151,58,0.4)}
+.hm-cell[data-level="3"]{background:rgba(196,151,58,0.65)}
+.hm-cell[data-level="4"]{background:var(--gold)}
+.hm-legend{display:flex;align-items:center;gap:0.4rem;font-size:0.65rem;color:var(--text-faint);margin-top:0.7rem;justify-content:flex-end}
+.hm-legend .swatch{width:10px;height:10px;border-radius:2px}
+
+/* Goal hit rate */
+.hit-rate-grid{
+  display:grid;grid-template-columns:repeat(6,1fr);gap:0.5rem;
+}
+.hit-month{
+  text-align:center;padding:0.7rem 0.4rem;
+  border:1px solid var(--card-border);border-radius:3px;
+  background:var(--navy-mid);
+}
+.hit-month .pct{
+  font-family:'Cormorant',serif;font-size:1.2rem;color:var(--gold-light);
+}
+.hit-month .lab{font-size:0.6rem;color:var(--text-faint);letter-spacing:0.1em;text-transform:uppercase;margin-top:0.2rem}
+.hit-month .frac{font-size:0.65rem;color:var(--text-dim);margin-top:0.1rem}
+
+/* ── VISION BOARD ── */
+.dropzone{
+  border:2px dashed var(--card-border);border-radius:4px;
+  padding:1.5rem;text-align:center;color:var(--text-faint);
+  font-size:0.8rem;letter-spacing:0.1em;cursor:pointer;
+  transition:all .2s;margin-bottom:1rem;
+}
+.dropzone:hover,.dropzone.drag{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.04)}
+.dropzone .upload-icon{font-size:1.6rem;color:var(--gold);margin-bottom:0.4rem}
+.dropzone small{display:block;margin-top:0.4rem;font-size:0.65rem;color:var(--text-faint);letter-spacing:0.05em;text-transform:none}
+
+.vision-grid{
+  column-count:1;column-gap:0.7rem;
+}
+@media(min-width:600px){.vision-grid{column-count:2}}
+@media(min-width:900px){.vision-grid{column-count:3}}
+@media(min-width:1200px){.vision-grid{column-count:4}}
+.vision-tile{
+  break-inside:avoid;margin-bottom:0.7rem;
+  position:relative;border-radius:3px;overflow:hidden;
+  border:1px solid var(--card-border);
+  background:var(--navy-mid);
+}
+.vision-tile img{width:100%;display:block}
+.vision-overlay{
+  position:absolute;inset:0;background:linear-gradient(0deg,rgba(0,0,0,0.7) 0%,transparent 50%);
+  opacity:0;transition:opacity .15s;
+  display:flex;flex-direction:column;justify-content:flex-end;padding:0.6rem;
+}
+.vision-tile:hover .vision-overlay{opacity:1}
+.vision-caption{
+  font-size:0.78rem;color:#fff;width:100%;background:none;border:none;
+  margin-bottom:0.4rem;
+}
+.vision-caption::placeholder{color:rgba(255,255,255,0.5)}
+.vision-tile-actions{display:flex;justify-content:space-between;align-items:center;gap:0.3rem}
+.vision-link{
+  font-size:0.6rem;letter-spacing:0.08em;text-transform:uppercase;
+  color:var(--gold-light);background:rgba(0,0,0,0.4);
+  padding:0.2rem 0.4rem;border-radius:2px;border:none;cursor:pointer;
+}
+.vision-del{
+  font-size:0.7rem;color:#fff;background:rgba(228,120,120,0.6);
+  width:22px;height:22px;border-radius:50%;
+  display:flex;align-items:center;justify-content:center;cursor:pointer;
+}
+.vision-del:hover{background:var(--bad)}
+.vision-empty{
+  text-align:center;color:var(--text-faint);font-style:italic;
+  padding:2rem;font-size:0.85rem;
+}
+
+/* Modal */
+.modal-bg{
+  position:fixed;inset:0;background:rgba(8,21,47,0.85);
+  display:none;align-items:center;justify-content:center;z-index:200;
+  backdrop-filter:blur(8px);
+}
+.modal-bg.open{display:flex}
+.modal{
+  background:var(--navy-mid);border:1px solid var(--card-border);border-radius:4px;
+  padding:1.5rem;max-width:420px;width:90%;
+}
+.modal h3{
+  font-family:'Cormorant',serif;font-weight:400;font-size:1.4rem;color:#fff;
+  margin-bottom:0.7rem;
+}
+.modal p{color:var(--text-dim);font-size:0.85rem;margin-bottom:1rem}
+.modal input,.modal select{
+  background:var(--navy-deep);border:1px solid var(--card-border);
+  padding:0.6rem 0.8rem;border-radius:3px;font-size:0.9rem;
+  margin-bottom:0.7rem;
+}
+.modal-actions{display:flex;gap:0.6rem;justify-content:flex-end;margin-top:1rem}
+
+/* Empty states */
+.empty-row{
+  text-align:center;color:var(--text-faint);font-style:italic;
+  padding:1rem;font-size:0.85rem;
+}
+
+/* Toast */
+.toast{
+  position:fixed;bottom:2rem;left:50%;transform:translateX(-50%);
+  background:var(--navy-light);border:1px solid var(--gold-dim);
+  padding:0.7rem 1.2rem;border-radius:3px;
+  font-size:0.85rem;color:var(--gold-light);letter-spacing:0.05em;
+  z-index:300;opacity:0;transition:opacity .25s,transform .25s;
+  pointer-events:none;
+}
+.toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
+
+/* Tabs */
+.tabs{
+  display:flex;gap:0;border-bottom:1px solid var(--card-border);
+  margin-bottom:2rem;overflow-x:auto;
+}
+.tab{
+  padding:0.8rem 1.4rem;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--text-dim);border-bottom:2px solid transparent;
+  cursor:pointer;transition:all .2s;white-space:nowrap;
+}
+.tab:hover{color:var(--text)}
+.tab.active{color:var(--gold);border-bottom-color:var(--gold)}
+
+.view{display:none}
+.view.active{display:block}
+
+/* Footer */
+.foot{text-align:center;color:var(--text-faint);font-size:0.7rem;letter-spacing:0.08em;margin-top:4rem;padding:2rem 0;border-top:1px solid var(--card-border)}
+.foot a{color:var(--gold-light);text-decoration:underline;text-decoration-color:var(--gold-dim)}
+
+/* Mobile touch targets & layout fixes */
+@media(max-width:640px){
+  .score-btn{width:44px;height:44px;font-size:1.15rem}
+  .goal-check{width:24px;height:24px}
+  .goal-row{padding:0.6rem 0;gap:0.7rem}
+  .habit-chip{padding:0.75rem 1rem;min-height:44px}
+  .habit-chip .habit-del-btn{width:24px;height:24px;top:-8px;right:-8px}
+  .tab{padding:0.75rem 1.1rem;min-height:44px}
+  .scoreboard{grid-template-columns:1fr}
+  .tabs{-webkit-overflow-scrolling:touch;scrollbar-width:none}
+  .tabs::-webkit-scrollbar{display:none}
+}
+/* Focus rings for keyboard users */
+button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:focus-visible,select:focus-visible,a:focus-visible{
+  outline:2px solid var(--gold);outline-offset:2px;border-radius:2px;
+}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="../../index.html" class="nav-logo">FRQNCY</a>
+  <ul class="nav-links">
+    <li><a href="../../v2/explore.html">Discover</a></li>
+    <li><a href="../../podcast.html">Podcast</a></li>
+    <li><a href="../../space.html">Space</a></li>
+    <li><a href="/social/">Community</a></li>
+    <li><a href="../../my-frqncy.html" class="nav-cta-gold active">My FRQNCY</a></li>
+  </ul>
+</nav>
+
+<main class="wrap">
+
+  <header class="hero">
+    <div>
+      <h1>Your <em>Sanctuary</em></h1>
+      <div class="sub">Dream · chief aim · objectives · goals · daily practice — held in one place</div>
+    </div>
+    <div class="hero-actions">
+      <button type="button" class="btn" id="btn-export" title="Download a JSON backup of all your data" aria-label="Export your Sanctuary data as JSON">Export</button>
+      <button type="button" class="btn" id="btn-import" title="Restore from a JSON backup" aria-label="Import Sanctuary data from JSON backup">Import</button>
+      <input type="file" id="import-file" accept="application/json" style="display:none" aria-label="Choose backup file to import">
+    </div>
+  </header>
+
+  <div class="privacy-banner">
+    <span class="lock">🔒</span>
+    <span>Everything here lives privately on this device. Nothing is shared. Sync &amp; selective sharing are coming next.</span>
+  </div>
+
+  <div class="tabs" role="tablist" aria-label="Sanctuary sections">
+    <button type="button" class="tab active" data-tab="dashboard" role="tab" aria-selected="true">Dashboard</button>
+    <button type="button" class="tab" data-tab="pyramid" role="tab" aria-selected="false">Goal Pyramid</button>
+    <button type="button" class="tab" data-tab="practice" role="tab" aria-selected="false">Daily Practice</button>
+    <button type="button" class="tab" data-tab="progress" role="tab" aria-selected="false">Progress</button>
+    <button type="button" class="tab" data-tab="vision" role="tab" aria-selected="false">Vision Board</button>
+  </div>
+
+  <!-- ─────────────── DASHBOARD VIEW (overview) ─────────────── -->
+  <div class="view active" id="view-dashboard">
+
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="glyph">✦</span> Scoreboard</h2>
+        <div class="meta">Up to 3 chief-aim scores</div>
+      </div>
+      <div class="scoreboard" id="scoreboard"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="glyph">◇</span> Today's Practice</h2>
+        <div class="meta" id="today-date"></div>
+      </div>
+      <div class="habits-bar" id="habits-quick"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="glyph">▲</span> Where You're Headed</h2>
+        <div class="meta">Dream · chief aim · objectives · this month's goals</div>
+      </div>
+      <div class="pyramid" id="pyramid-mini"></div>
+    </section>
+
+  </div>
+
+  <!-- ─────────────── PYRAMID VIEW (full editor) ─────────────── -->
+  <div class="view" id="view-pyramid">
+    <section class="section" style="margin-top:0">
+      <div class="section-head">
+        <h2><span class="glyph">✦</span> Dream</h2>
+        <div class="meta">Beyond this lifetime — the north star</div>
+      </div>
+      <div class="dream-card">
+        <textarea class="dream-text" id="dream-input" placeholder="What is the world you are here to bring into being? Write the version that's bigger than you — the one that survives lifetimes."></textarea>
+      </div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="glyph">◆</span> Chief Aims</h2>
+        <div class="meta">1–2 years · what is possible · max 3</div>
+      </div>
+      <div class="aim-list" id="chief-aims-edit"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="glyph">◇</span> Objectives</h2>
+        <div class="meta">1–6 months · what is probable · max 6 per chief aim</div>
+      </div>
+      <div id="objectives-by-aim"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="glyph">·</span> Goals</h2>
+        <div class="meta">This month · 100% commitments · attached to objectives above</div>
+      </div>
+      <div id="goals-by-objective"></div>
+    </section>
+  </div>
+
+  <!-- ─────────────── PRACTICE VIEW ─────────────── -->
+  <div class="view" id="view-practice">
+    <section class="section" style="margin-top:0">
+      <div class="section-head">
+        <h2><span class="glyph">◇</span> Daily Practice</h2>
+        <div class="meta">The small things that compound</div>
+      </div>
+      <div class="habits-bar" id="habits-full"></div>
+    </section>
+
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="glyph">·</span> History</h2>
+        <div class="meta">Last 365 days</div>
+      </div>
+      <div id="habit-history"></div>
+    </section>
+  </div>
+
+  <!-- ─────────────── PROGRESS VIEW ─────────────── -->
+  <div class="view" id="view-progress">
+    <div class="graphs-grid">
+      <div class="graph-card graph-line-card">
+        <div class="gh">Chief-aim scores over time</div>
+        <div class="gsub">Each tick is a moment you logged where you stood</div>
+        <div class="chart-canvas-wrap"><canvas id="chart-scores"></canvas></div>
+      </div>
+      <div class="graph-card">
+        <div class="gh">Practice consistency</div>
+        <div class="gsub">All habits combined · last 53 weeks</div>
+        <div class="heatmap" id="heatmap"></div>
+        <div class="hm-legend">
+          Less <span class="swatch" data-level="0" style="background:rgba(255,255,255,0.04)"></span>
+          <span class="swatch" data-level="1" style="background:rgba(196,151,58,0.18)"></span>
+          <span class="swatch" data-level="2" style="background:rgba(196,151,58,0.4)"></span>
+          <span class="swatch" data-level="3" style="background:rgba(196,151,58,0.65)"></span>
+          <span class="swatch" data-level="4" style="background:var(--gold)"></span>
+          More
+        </div>
+      </div>
+      <div class="graph-card">
+        <div class="gh">Monthly goal hit rate</div>
+        <div class="gsub">Last 6 months</div>
+        <div class="hit-rate-grid" id="hit-rate"></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- ─────────────── VISION VIEW ─────────────── -->
+  <div class="view" id="view-vision">
+    <section class="section" style="margin-top:0">
+      <div class="section-head">
+        <h2><span class="glyph">✦</span> Vision Board</h2>
+        <div class="meta">Images stay on this device. You choose what gets shared.</div>
+      </div>
+      <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Upload images to vision board — drop files here, or press Enter to choose files">
+        <div class="upload-icon" aria-hidden="true">⤴</div>
+        Drop images here, or click to upload
+        <small>JPG / PNG / WebP · stored privately in your browser</small>
+        <input type="file" id="file-input" accept="image/*" multiple style="display:none" aria-label="Choose images to upload">
+      </div>
+      <div class="vision-grid" id="vision-grid"></div>
+    </section>
+  </div>
+
+  <div class="foot">
+    <p>Held privately. Built for the long game.</p>
+    <p style="margin-top:0.4rem">Future: cloud sync &amp; selective sharing via your <a href="/social/">FRQNCY account</a></p>
+  </div>
+</main>
+
+<!-- Modals -->
+<div class="modal-bg" id="modal-bg">
+  <div class="modal" id="modal-body"></div>
+</div>
+
+<div class="toast" id="toast"></div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   STORAGE ADAPTER — localStorage + IndexedDB now,
+   Supabase plugs in later behind the same interface.
+   ════════════════════════════════════════════════════════════════ */
+const STORE_KEY = 'frqncy.sanctuary.v1';
+const IDB_NAME  = 'frqncy_sanctuary';
+const IDB_STORE = 'images';
+
+class LocalStore {
+  constructor() {
+    this.idbReady = this._openIdb();
+  }
+  _openIdb() {
+    return new Promise((res, rej) => {
+      const req = indexedDB.open(IDB_NAME, 1);
+      req.onupgradeneeded = e => {
+        const db = e.target.result;
+        if (!db.objectStoreNames.contains(IDB_STORE))
+          db.createObjectStore(IDB_STORE, { keyPath: 'id' });
+      };
+      req.onsuccess = () => res(req.result);
+      req.onerror = () => rej(req.error);
+    });
+  }
+  async getState() {
+    const raw = localStorage.getItem(STORE_KEY);
+    return raw ? JSON.parse(raw) : null;
+  }
+  async setState(state) {
+    localStorage.setItem(STORE_KEY, JSON.stringify(state));
+  }
+  async getImages() {
+    const db = await this.idbReady;
+    return new Promise((res, rej) => {
+      const tx = db.transaction(IDB_STORE, 'readonly');
+      const req = tx.objectStore(IDB_STORE).getAll();
+      req.onsuccess = () => res(req.result.sort((a,b) => (a.position||0) - (b.position||0)));
+      req.onerror = () => rej(req.error);
+    });
+  }
+  async putImage(img) {
+    const db = await this.idbReady;
+    return new Promise((res, rej) => {
+      const tx = db.transaction(IDB_STORE, 'readwrite');
+      tx.objectStore(IDB_STORE).put(img);
+      tx.oncomplete = () => res();
+      tx.onerror = () => rej(tx.error);
+    });
+  }
+  async deleteImage(id) {
+    const db = await this.idbReady;
+    return new Promise((res, rej) => {
+      const tx = db.transaction(IDB_STORE, 'readwrite');
+      tx.objectStore(IDB_STORE).delete(id);
+      tx.oncomplete = () => res();
+      tx.onerror = () => rej(tx.error);
+    });
+  }
+  async clearImages() {
+    const db = await this.idbReady;
+    return new Promise((res, rej) => {
+      const tx = db.transaction(IDB_STORE, 'readwrite');
+      tx.objectStore(IDB_STORE).clear();
+      tx.oncomplete = () => res();
+      tx.onerror = () => rej(tx.error);
+    });
+  }
+}
+
+const store = new LocalStore();
+
+/* ════════════════════════════════════════════════════════════════
+   STATE
+   ════════════════════════════════════════════════════════════════ */
+const DEFAULT_STATE = {
+  dream: '',
+  chiefAims: [],     // { id, name, score:{current,target,history:[{date,value}]}, position }
+  objectives: [],    // { id, chiefAimId, title, durationMonths, position }
+  goals: [],         // { id, objectiveId, title, month:"YYYY-MM", completed, completedDate }
+  habits: [],        // { id, name, icon, createdAt, archived }
+  habitLogs: {},     // { "YYYY-MM-DD": { habitId: true } }
+  settings: { name: '' }
+};
+
+let state = structuredClone(DEFAULT_STATE);
+
+const uid = (p='id') => p + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+// Local-date ISO (YYYY-MM-DD) — avoids UTC shift making "today" wrong for non-UTC users.
+const dateISO = (d=new Date()) => {
+  const y = d.getFullYear();
+  const m = String(d.getMonth()+1).padStart(2,'0');
+  const dd = String(d.getDate()).padStart(2,'0');
+  return `${y}-${m}-${dd}`;
+};
+const todayISO = () => dateISO();
+const monthISO = (d=new Date()) => dateISO(d).slice(0,7);
+const formatDate = d => (d instanceof Date ? d : new Date(d)).toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
+
+async function persist() { await store.setState(state); }
+
+async function loadState() {
+  const saved = await store.getState();
+  if (saved) state = { ...DEFAULT_STATE, ...saved };
+  else state = structuredClone(DEFAULT_STATE);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   UTILITIES
+   ════════════════════════════════════════════════════════════════ */
+function toast(msg) {
+  const t = document.getElementById('toast');
+  t.textContent = msg; t.classList.add('show');
+  clearTimeout(toast._h); toast._h = setTimeout(() => t.classList.remove('show'), 1800);
+}
+function escape(s) { return String(s||'').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+function trendArrow(history) {
+  if (!history || history.length < 2) return { sym:'·', dir:'flat', delta:0 };
+  const last = history[history.length-1].value;
+  const prev = history[history.length-2].value;
+  const delta = last - prev;
+  if (delta > 0) return { sym:'▲', dir:'up', delta };
+  if (delta < 0) return { sym:'▼', dir:'down', delta };
+  return { sym:'·', dir:'flat', delta:0 };
+}
+
+/* ════════════════════════════════════════════════════════════════
+   MODAL
+   ════════════════════════════════════════════════════════════════ */
+function openModal(html) {
+  document.getElementById('modal-body').innerHTML = html;
+  document.getElementById('modal-bg').classList.add('open');
+}
+function closeModal() { document.getElementById('modal-bg').classList.remove('open'); }
+document.getElementById('modal-bg').addEventListener('click', e => {
+  if (e.target.id === 'modal-bg') closeModal();
+});
+
+/* ════════════════════════════════════════════════════════════════
+   SCOREBOARD (chief aim scores — the soccer-game scores)
+   ════════════════════════════════════════════════════════════════ */
+function renderScoreboard() {
+  const el = document.getElementById('scoreboard');
+  if (!el) return;
+  el.innerHTML = '';
+
+  state.chiefAims.forEach(aim => {
+    const trend = trendArrow(aim.score.history);
+    const card = document.createElement('div');
+    card.className = 'score-card';
+    card.innerHTML = `
+      <button type="button" class="score-delete" data-action="delete-aim" data-id="${aim.id}" title="Remove chief aim" aria-label="Remove chief aim">✕</button>
+      <div class="score-label">Chief Aim</div>
+      <input class="score-name" data-action="rename-aim" data-id="${aim.id}" value="${escape(aim.name)}" placeholder="Name this aim…" aria-label="Chief aim name">
+      <div class="score-display">
+        <span class="score-current" aria-label="Current score">${aim.score.current}</span>
+        <span class="score-of" aria-hidden="true">/</span>
+        <input class="score-target" data-action="target-aim" data-id="${aim.id}" type="number" min="1" value="${aim.score.target}" style="width:60px" aria-label="Target score">
+      </div>
+      <div class="score-controls">
+        <button type="button" class="score-btn" data-action="dec-score" data-id="${aim.id}" title="Score went down" aria-label="Decrease score">−</button>
+        <button type="button" class="score-btn" data-action="inc-score" data-id="${aim.id}" title="Score went up" aria-label="Increase score">+</button>
+        <span class="score-trend ${trend.dir}">${trend.sym} ${trend.delta !== 0 ? (trend.delta > 0 ? '+' : '') + trend.delta : 'no change yet'}</span>
+      </div>`;
+    el.appendChild(card);
+  });
+
+  if (state.chiefAims.length < 3) {
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'score-card add-card';
+    add.setAttribute('aria-label', 'Add chief aim');
+    add.innerHTML = `+ Add chief aim`;
+    add.addEventListener('click', addChiefAim);
+    el.appendChild(add);
+  }
+
+  el.querySelectorAll('[data-action]').forEach(b => {
+    if (b.tagName === 'INPUT') {
+      b.addEventListener('change', handleScoreboardAction);
+    } else {
+      b.addEventListener('click', handleScoreboardAction);
+    }
+  });
+}
+
+async function handleScoreboardAction(e) {
+  const action = e.currentTarget.dataset.action;
+  const id = e.currentTarget.dataset.id;
+  const aim = state.chiefAims.find(a => a.id === id);
+  if (!aim) return;
+
+  if (action === 'inc-score') {
+    const next = Math.min(aim.score.target, aim.score.current + 1);
+    if (next === aim.score.current) return; // already at max, skip history spam
+    aim.score.current = next;
+    aim.score.history.push({ date: todayISO(), value: aim.score.current });
+  } else if (action === 'dec-score') {
+    const next = Math.max(0, aim.score.current - 1);
+    if (next === aim.score.current) return; // already at 0
+    aim.score.current = next;
+    aim.score.history.push({ date: todayISO(), value: aim.score.current });
+  } else if (action === 'rename-aim') {
+    aim.name = e.currentTarget.value;
+  } else if (action === 'target-aim') {
+    aim.score.target = Math.max(1, parseInt(e.currentTarget.value) || 10);
+  } else if (action === 'delete-aim') {
+    if (!confirm(`Remove "${aim.name || 'this chief aim'}"? Its objectives and goals stay but lose their parent.`)) return;
+    state.chiefAims = state.chiefAims.filter(a => a.id !== id);
+  }
+  await persist();
+  renderAll();
+}
+
+function addChiefAim() {
+  const aim = {
+    id: uid('aim'),
+    name: '',
+    score: { current: 0, target: 10, history: [] },
+    position: state.chiefAims.length
+  };
+  state.chiefAims.push(aim);
+  persist().then(renderAll);
+  setTimeout(() => {
+    const inputs = document.querySelectorAll('#scoreboard .score-name');
+    inputs[inputs.length - 1]?.focus();
+  }, 50);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   DREAM
+   ════════════════════════════════════════════════════════════════ */
+function renderDream() {
+  const ta = document.getElementById('dream-input');
+  if (!ta) return;
+  if (ta.value !== state.dream) ta.value = state.dream;
+}
+function bindDream() {
+  const ta = document.getElementById('dream-input');
+  if (!ta) return;
+  let h;
+  ta.addEventListener('input', () => {
+    state.dream = ta.value;
+    clearTimeout(h); h = setTimeout(persist, 300);
+  });
+}
+
+/* ════════════════════════════════════════════════════════════════
+   CHIEF AIMS (in pyramid editor)
+   ════════════════════════════════════════════════════════════════ */
+function renderChiefAimsEdit() {
+  const el = document.getElementById('chief-aims-edit');
+  if (!el) return;
+  el.innerHTML = '';
+  if (state.chiefAims.length === 0) {
+    el.innerHTML = `<div class="empty-row">No chief aims yet. <a href="#" id="seed-aim" style="color:var(--gold)">Add your first one →</a></div>`;
+    document.getElementById('seed-aim').addEventListener('click', e => { e.preventDefault(); addChiefAim(); });
+    return;
+  }
+  state.chiefAims.forEach(aim => {
+    const row = document.createElement('div');
+    row.className = 'aim-row';
+    row.innerHTML = `
+      <span class="aim-bullet"></span>
+      <input class="aim-name" data-aim-id="${aim.id}" value="${escape(aim.name)}" placeholder="Name this chief aim…">
+      <span class="aim-mini-score">${aim.score.current}/${aim.score.target}</span>
+      <button class="btn btn-tiny" data-action="del-aim-edit" data-id="${aim.id}">remove</button>
+    `;
+    el.appendChild(row);
+  });
+  el.querySelectorAll('input.aim-name').forEach(inp => {
+    inp.addEventListener('input', e => {
+      const aim = state.chiefAims.find(a => a.id === e.target.dataset.aimId);
+      if (aim) { aim.name = e.target.value; persist(); }
+    });
+    inp.addEventListener('blur', () => { renderScoreboard(); renderObjectives(); });
+  });
+  el.querySelectorAll('[data-action="del-aim-edit"]').forEach(b => {
+    b.addEventListener('click', () => {
+      const aim = state.chiefAims.find(a => a.id === b.dataset.id);
+      if (!aim) return;
+      if (!confirm(`Remove "${aim.name || 'this chief aim'}"?`)) return;
+      state.chiefAims = state.chiefAims.filter(a => a.id !== b.dataset.id);
+      persist().then(renderAll);
+    });
+  });
+  // add btn
+  const add = document.createElement('button');
+  add.className = 'btn';
+  add.style.marginTop = '0.7rem';
+  add.textContent = state.chiefAims.length < 3 ? '+ Add chief aim' : 'Max 3 chief aims';
+  if (state.chiefAims.length < 3) add.addEventListener('click', addChiefAim);
+  else add.disabled = true;
+  el.appendChild(add);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   OBJECTIVES
+   ════════════════════════════════════════════════════════════════ */
+function renderObjectives() {
+  const el = document.getElementById('objectives-by-aim');
+  if (!el) return;
+  el.innerHTML = '';
+  if (state.chiefAims.length === 0) {
+    el.innerHTML = `<div class="empty-row">Add a chief aim first.</div>`;
+    return;
+  }
+  state.chiefAims.forEach(aim => {
+    const objs = state.objectives.filter(o => o.chiefAimId === aim.id);
+    const group = document.createElement('div');
+    group.className = 'aim-group';
+    group.innerHTML = `
+      <div class="aim-group-head">
+        <span class="dot"></span>
+        <span class="label"><strong>${escape(aim.name) || 'Unnamed chief aim'}</strong> · ${objs.length}/6 objectives</span>
+      </div>
+      <div class="obj-grid"></div>
+    `;
+    const grid = group.querySelector('.obj-grid');
+    objs.forEach(o => {
+      const c = document.createElement('div');
+      c.className = 'obj-card';
+      const goalCount = state.goals.filter(g => g.objectiveId === o.id).length;
+      c.innerHTML = `
+        <input class="obj-title" data-obj-id="${o.id}" value="${escape(o.title)}" placeholder="What's the objective?">
+        <div class="obj-meta">
+          <span class="obj-duration" data-action="cycle-duration" data-id="${o.id}" title="Click to cycle 1→6 months">${o.durationMonths}mo</span>
+          <span class="obj-goals-count">${goalCount} goal${goalCount===1?'':'s'}</span>
+          <button class="btn btn-tiny" data-action="del-obj" data-id="${o.id}" style="font-size:0.55rem;padding:0.2rem 0.4rem">×</button>
+        </div>
+      `;
+      grid.appendChild(c);
+    });
+    if (objs.length < 6) {
+      const add = document.createElement('div');
+      add.className = 'obj-card obj-add';
+      add.textContent = '+ Add objective';
+      add.addEventListener('click', () => addObjective(aim.id));
+      grid.appendChild(add);
+    }
+    el.appendChild(group);
+  });
+  el.querySelectorAll('input.obj-title').forEach(i => {
+    i.addEventListener('input', e => {
+      const o = state.objectives.find(x => x.id === e.target.dataset.objId);
+      if (o) { o.title = e.target.value; persist(); }
+    });
+    i.addEventListener('blur', renderGoalsByObj);
+  });
+  el.querySelectorAll('[data-action="cycle-duration"]').forEach(b => {
+    b.addEventListener('click', () => {
+      const o = state.objectives.find(x => x.id === b.dataset.id);
+      if (!o) return;
+      o.durationMonths = ((o.durationMonths || 1) % 6) + 1;
+      persist().then(renderObjectives);
+    });
+  });
+  el.querySelectorAll('[data-action="del-obj"]').forEach(b => {
+    b.addEventListener('click', () => {
+      const o = state.objectives.find(x => x.id === b.dataset.id);
+      if (!o) return;
+      if (!confirm(`Remove "${o.title || 'this objective'}"? Its goals stay.`)) return;
+      state.objectives = state.objectives.filter(x => x.id !== b.dataset.id);
+      persist().then(() => { renderObjectives(); renderGoalsByObj(); });
+    });
+  });
+}
+
+function addObjective(chiefAimId) {
+  state.objectives.push({
+    id: uid('obj'), chiefAimId,
+    title: '', durationMonths: 3,
+    position: state.objectives.filter(o => o.chiefAimId === chiefAimId).length
+  });
+  persist().then(() => { renderObjectives(); renderGoalsByObj(); });
+}
+
+/* ════════════════════════════════════════════════════════════════
+   GOALS (monthly, 100% commit)
+   ════════════════════════════════════════════════════════════════ */
+function renderGoalsByObj() {
+  const el = document.getElementById('goals-by-objective');
+  if (!el) return;
+  el.innerHTML = '';
+  const objs = state.objectives;
+  if (objs.length === 0) {
+    el.innerHTML = `<div class="empty-row">Add an objective first.</div>`;
+    return;
+  }
+  objs.forEach(o => {
+    const goals = state.goals.filter(g => g.objectiveId === o.id);
+    const block = document.createElement('div');
+    block.className = 'aim-group';
+    const aim = state.chiefAims.find(a => a.id === o.chiefAimId);
+    block.innerHTML = `
+      <div class="aim-group-head">
+        <span class="dot"></span>
+        <span class="label">
+          <strong>${escape(o.title) || 'Unnamed objective'}</strong>
+          ${aim ? `<span style="color:var(--text-faint);margin-left:0.4rem;font-size:0.7rem">(${escape(aim.name) || 'no aim'})</span>` : ''}
+        </span>
+      </div>
+      <div class="goals-block"></div>
+    `;
+    const gb = block.querySelector('.goals-block');
+    goals.forEach(g => {
+      const row = document.createElement('div');
+      row.className = 'goal-row';
+      row.innerHTML = `
+        <button type="button" class="goal-check ${g.completed ? 'done' : ''}" data-action="toggle-goal" data-id="${g.id}" aria-label="${g.completed ? 'Mark goal incomplete' : 'Mark goal complete'}" aria-pressed="${g.completed ? 'true' : 'false'}"></button>
+        <input class="goal-text ${g.completed ? 'done' : ''}" data-goal-id="${g.id}" value="${escape(g.title)}" placeholder="What is the 100% commitment?" aria-label="Goal title">
+        <span class="goal-month">${g.month}</span>
+        <button type="button" class="goal-del" data-action="del-goal" data-id="${g.id}" aria-label="Delete goal">✕</button>
+      `;
+      gb.appendChild(row);
+    });
+    const add = document.createElement('div');
+    add.className = 'goal-add';
+    add.innerHTML = `+ Add goal for this month`;
+    add.addEventListener('click', () => addGoal(o.id));
+    gb.appendChild(add);
+    el.appendChild(block);
+  });
+  el.querySelectorAll('input.goal-text').forEach(i => {
+    i.addEventListener('input', e => {
+      const g = state.goals.find(x => x.id === e.target.dataset.goalId);
+      if (g) { g.title = e.target.value; persist(); }
+    });
+  });
+  el.querySelectorAll('[data-action="toggle-goal"]').forEach(b => {
+    b.addEventListener('click', () => {
+      const g = state.goals.find(x => x.id === b.dataset.id);
+      if (!g) return;
+      g.completed = !g.completed;
+      g.completedDate = g.completed ? todayISO() : null;
+      persist().then(renderAll);
+      if (g.completed) toast('Goal hit. ✦');
+    });
+  });
+  el.querySelectorAll('[data-action="del-goal"]').forEach(b => {
+    b.addEventListener('click', () => {
+      state.goals = state.goals.filter(x => x.id !== b.dataset.id);
+      persist().then(renderAll);
+    });
+  });
+}
+
+function addGoal(objectiveId) {
+  state.goals.push({
+    id: uid('goal'), objectiveId,
+    title: '', month: monthISO(),
+    completed: false, completedDate: null
+  });
+  persist().then(renderGoalsByObj);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   PYRAMID MINI (dashboard overview)
+   ════════════════════════════════════════════════════════════════ */
+function renderPyramidMini() {
+  const el = document.getElementById('pyramid-mini');
+  if (!el) return;
+  el.innerHTML = '';
+
+  // dream
+  const dreamCard = document.createElement('div');
+  dreamCard.className = 'tier';
+  dreamCard.innerHTML = `
+    <div class="tier-head">
+      <div class="tier-title">Dream <span class="horizon">Beyond this lifetime</span></div>
+      <a href="#" class="btn btn-tiny" data-jump="pyramid">Edit</a>
+    </div>
+    <div class="dream-card" style="min-height:auto;padding:1rem">
+      <div style="font-family:Cormorant,serif;font-size:1.15rem;color:#fff;font-style:italic;line-height:1.5">
+        ${state.dream ? escape(state.dream).replace(/\n/g,'<br>') : '<span style="color:var(--text-faint)">No dream written yet — open the Goal Pyramid to begin.</span>'}
+      </div>
+    </div>
+  `;
+  el.appendChild(dreamCard);
+
+  // chief aims summary
+  if (state.chiefAims.length > 0) {
+    const aimTier = document.createElement('div');
+    aimTier.className = 'tier';
+    aimTier.innerHTML = `
+      <div class="tier-head">
+        <div class="tier-title">Chief Aims <span class="horizon">1–2 years · possible</span></div>
+        <a href="#" class="btn btn-tiny" data-jump="pyramid">Edit</a>
+      </div>
+      <div class="aim-list"></div>
+    `;
+    const list = aimTier.querySelector('.aim-list');
+    state.chiefAims.forEach(aim => {
+      const objCount = state.objectives.filter(o => o.chiefAimId === aim.id).length;
+      const r = document.createElement('div');
+      r.className = 'aim-row';
+      r.innerHTML = `
+        <span class="aim-bullet"></span>
+        <span style="flex:1;color:#fff">${escape(aim.name) || '<em style="color:var(--text-faint)">unnamed</em>'}</span>
+        <span style="font-size:0.7rem;color:var(--text-dim)">${objCount} objectives</span>
+        <span class="aim-mini-score">${aim.score.current}/${aim.score.target}</span>
+      `;
+      list.appendChild(r);
+    });
+    el.appendChild(aimTier);
+  }
+
+  // this month's goals
+  const thisMonth = monthISO();
+  const monthGoals = state.goals.filter(g => g.month === thisMonth);
+  if (monthGoals.length > 0) {
+    const goalTier = document.createElement('div');
+    goalTier.className = 'tier';
+    goalTier.innerHTML = `
+      <div class="tier-head">
+        <div class="tier-title">This Month's Goals <span class="horizon">${thisMonth} · 100% commits</span></div>
+        <a href="#" class="btn btn-tiny" data-jump="pyramid">Edit</a>
+      </div>
+      <div class="goals-block" style="padding-left:0;border-left:none"></div>
+    `;
+    const gb = goalTier.querySelector('.goals-block');
+    monthGoals.forEach(g => {
+      const obj = state.objectives.find(o => o.id === g.objectiveId);
+      const row = document.createElement('div');
+      row.className = 'goal-row';
+      row.innerHTML = `
+        <button type="button" class="goal-check ${g.completed ? 'done' : ''}" data-action="toggle-goal-mini" data-id="${g.id}" aria-label="${g.completed ? 'Mark goal incomplete' : 'Mark goal complete'}" aria-pressed="${g.completed ? 'true' : 'false'}"></button>
+        <span class="goal-text ${g.completed ? 'done' : ''}">${escape(g.title) || '<em style="color:var(--text-faint)">unnamed goal</em>'}</span>
+        <span class="goal-month">${escape((obj && obj.title) || '')}</span>
+      `;
+      gb.appendChild(row);
+    });
+    el.appendChild(goalTier);
+    gb.querySelectorAll('[data-action="toggle-goal-mini"]').forEach(b => {
+      b.addEventListener('click', () => {
+        const g = state.goals.find(x => x.id === b.dataset.id);
+        if (!g) return;
+        g.completed = !g.completed;
+        g.completedDate = g.completed ? todayISO() : null;
+        persist().then(renderAll);
+        if (g.completed) toast('Goal hit. ✦');
+      });
+    });
+  }
+
+  el.querySelectorAll('[data-jump]').forEach(a => {
+    a.addEventListener('click', e => { e.preventDefault(); switchTab(a.dataset.jump); });
+  });
+}
+
+/* ════════════════════════════════════════════════════════════════
+   HABITS
+   ════════════════════════════════════════════════════════════════ */
+function streakFor(habitId) {
+  let streak = 0;
+  for (let i = 0; i < 365; i++) {
+    const d = new Date(); d.setDate(d.getDate() - i);
+    const key = dateISO(d);
+    if (state.habitLogs[key]?.[habitId]) streak++;
+    else break;
+  }
+  return streak;
+}
+function renderHabits(targetId='habits-quick') {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  el.innerHTML = '';
+  const today = todayISO();
+  // Read-only during render — don't mutate state (was creating empty {} on every render).
+  const todayLog = state.habitLogs[today] || {};
+
+  const active = state.habits.filter(h => !h.archived);
+  if (active.length === 0) {
+    const empty = document.createElement('div');
+    empty.style.cssText = 'color:var(--text-faint);font-size:0.85rem;font-style:italic;flex:1;text-align:center;padding:0.5rem';
+    empty.textContent = 'Add what you want to do every day — wake at 6, gym, read, meditate.';
+    el.appendChild(empty);
+  }
+
+  active.forEach(h => {
+    const done = !!todayLog[h.id];
+    const streak = streakFor(h.id);
+    const chip = document.createElement('div');
+    chip.className = 'habit-chip' + (done ? ' done' : '');
+    chip.setAttribute('role', 'button');
+    chip.setAttribute('tabindex', '0');
+    chip.setAttribute('aria-pressed', done ? 'true' : 'false');
+    chip.setAttribute('aria-label', `${h.name}${done ? ', completed today' : ', tap to mark done'}${streak > 0 ? `, ${streak} day streak` : ''}`);
+    chip.innerHTML = `
+      <span class="habit-icon" aria-hidden="true">${escape(h.icon || '◇')}</span>
+      <span class="habit-name">${escape(h.name)}</span>
+      ${streak > 0 ? `<span class="habit-streak" aria-hidden="true">🔥${streak}</span>` : ''}
+      <button type="button" class="habit-del-btn" data-action="del-habit" data-id="${h.id}" title="Remove habit" aria-label="Remove habit ${escape(h.name)}">✕</button>
+    `;
+    chip.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
+    });
+    chip.addEventListener('click', e => {
+      if (e.target.closest('.habit-del-btn')) return;
+      if (!state.habitLogs[today]) state.habitLogs[today] = {};
+      state.habitLogs[today][h.id] = !done;
+      persist().then(() => { renderHabits('habits-quick'); renderHabits('habits-full'); renderHabitHistory(); });
+    });
+    el.appendChild(chip);
+  });
+
+  const add = document.createElement('div');
+  add.className = 'habit-add-chip';
+  add.innerHTML = `+ Add habit`;
+  add.addEventListener('click', () => promptAddHabit(targetId));
+  el.appendChild(add);
+
+  el.querySelectorAll('[data-action="del-habit"]').forEach(b => {
+    b.addEventListener('click', e => {
+      e.stopPropagation();
+      const h = state.habits.find(x => x.id === b.dataset.id);
+      if (!h) return;
+      if (!confirm(`Remove "${h.name}"? Past check-ins are kept.`)) return;
+      h.archived = true;
+      persist().then(() => { renderHabits('habits-quick'); renderHabits('habits-full'); renderHabitHistory(); });
+    });
+  });
+}
+
+function promptAddHabit() {
+  openModal(`
+    <h3>New habit</h3>
+    <p>One thing you want to do consistently. Examples: <em>Wake at 6</em>, <em>Gym</em>, <em>Read 30 min</em>, <em>Meditate</em>.</p>
+    <input id="h-name" placeholder="Name your habit…" autofocus>
+    <input id="h-icon" placeholder="Emoji or symbol (optional, e.g. 🏋️ ☀️ 📖 ◇)" maxlength="2">
+    <div class="modal-actions">
+      <button class="btn" onclick="closeModal()">Cancel</button>
+      <button class="btn btn-gold" id="h-save">Add habit</button>
+    </div>
+  `);
+  document.getElementById('h-save').addEventListener('click', async () => {
+    const name = document.getElementById('h-name').value.trim();
+    if (!name) { toast('Give it a name'); return; }
+    const icon = document.getElementById('h-icon').value.trim() || '◇';
+    state.habits.push({ id: uid('hab'), name, icon, createdAt: todayISO(), archived: false });
+    await persist();
+    closeModal();
+    renderHabits('habits-quick'); renderHabits('habits-full'); renderHabitHistory();
+  });
+  document.getElementById('h-name').addEventListener('keydown', e => {
+    if (e.key === 'Enter') document.getElementById('h-save').click();
+  });
+}
+
+function renderHabitHistory() {
+  const el = document.getElementById('habit-history');
+  if (!el) return;
+  const active = state.habits.filter(h => !h.archived);
+  el.innerHTML = '';
+  if (active.length === 0) {
+    el.innerHTML = `<div class="empty-row">No habits yet.</div>`;
+    return;
+  }
+  active.forEach(h => {
+    const row = document.createElement('div');
+    row.className = 'graph-card';
+    row.style.marginBottom = '1rem';
+    const last30 = [];
+    for (let i = 29; i >= 0; i--) {
+      const d = new Date(); d.setDate(d.getDate() - i);
+      const key = dateISO(d);
+      last30.push({ date: key, done: !!state.habitLogs[key]?.[h.id], short: d.getDate() });
+    }
+    const hits = last30.filter(d => d.done).length;
+    row.innerHTML = `
+      <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.7rem">
+        <div class="gh">${escape(h.icon)} ${escape(h.name)}</div>
+        <div style="font-size:0.75rem;color:var(--gold-light)">${hits}/30 days · streak ${streakFor(h.id)}</div>
+      </div>
+      <div style="display:grid;grid-template-columns:repeat(30,1fr);gap:3px">
+        ${last30.map(d => `<div title="${d.date}" style="aspect-ratio:1;background:${d.done ? 'var(--gold)' : 'rgba(255,255,255,0.04)'};border-radius:2px"></div>`).join('')}
+      </div>
+    `;
+    el.appendChild(row);
+  });
+}
+
+/* ════════════════════════════════════════════════════════════════
+   GRAPHS
+   ════════════════════════════════════════════════════════════════ */
+let scoreChart;
+let chartJsLoader;
+function loadChartJs() {
+  if (typeof Chart !== 'undefined') return Promise.resolve();
+  if (chartJsLoader) return chartJsLoader;
+  chartJsLoader = new Promise((res, rej) => {
+    const s = document.createElement('script');
+    s.src = 'https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js';
+    s.async = true;
+    s.onload = () => res();
+    s.onerror = () => rej(new Error('Chart.js failed to load'));
+    document.head.appendChild(s);
+  });
+  return chartJsLoader;
+}
+function showChartMessage(canvas, msg) {
+  // Show an empty-state message without destroying the canvas element,
+  // so future renders can reuse it.
+  const wrap = canvas.parentElement;
+  if (!wrap) return;
+  canvas.style.display = 'none';
+  let overlay = wrap.querySelector('.chart-empty');
+  if (!overlay) {
+    overlay = document.createElement('div');
+    overlay.className = 'chart-empty';
+    overlay.style.cssText = 'display:flex;align-items:center;justify-content:center;height:100%;color:var(--text-faint);font-style:italic;font-size:0.85rem;text-align:center;padding:1rem';
+    wrap.appendChild(overlay);
+  }
+  overlay.textContent = msg;
+}
+function hideChartMessage(canvas) {
+  const wrap = canvas.parentElement;
+  if (!wrap) return;
+  canvas.style.display = '';
+  const overlay = wrap.querySelector('.chart-empty');
+  if (overlay) overlay.remove();
+}
+async function renderScoreChart() {
+  const c = document.getElementById('chart-scores');
+  if (!c) return;
+  try { await loadChartJs(); } catch (e) {
+    showChartMessage(c, 'Chart library could not load. Check your connection and refresh.');
+    return;
+  }
+  const aims = state.chiefAims;
+  const palette = ['#C4973A', '#4A7AE8', '#5BC79A'];
+  const datasets = aims.map((a, i) => ({
+    label: a.name || 'Unnamed',
+    data: (a.score && Array.isArray(a.score.history) ? a.score.history : []).map(h => ({ x: h.date, y: h.value })),
+    borderColor: palette[i % palette.length],
+    backgroundColor: palette[i % palette.length] + '20',
+    tension: 0.3, pointRadius: 3, pointHoverRadius: 5, fill: false,
+  }));
+  if (scoreChart) { scoreChart.destroy(); scoreChart = null; }
+  if (datasets.every(d => d.data.length === 0)) {
+    showChartMessage(c, 'No score history yet — log your scores from the Dashboard tab.');
+    return;
+  }
+  hideChartMessage(c);
+  scoreChart = new Chart(c, {
+    type: 'line',
+    data: { datasets },
+    options: {
+      responsive: true, maintainAspectRatio: false,
+      scales: {
+        x: { type: 'category', ticks: { color: '#7090B8' }, grid: { color: 'rgba(255,255,255,0.04)' } },
+        y: { beginAtZero: true, ticks: { color: '#7090B8' }, grid: { color: 'rgba(255,255,255,0.04)' } }
+      },
+      plugins: {
+        legend: { labels: { color: '#C8D8F0', font: { family: 'Jost' } } },
+        tooltip: { backgroundColor: '#0D2451', borderColor: '#C4973A', borderWidth: 1 }
+      }
+    }
+  });
+}
+
+function renderHeatmap() {
+  const el = document.getElementById('heatmap');
+  if (!el) return;
+  const today = new Date(); today.setHours(0,0,0,0);
+  const cells = [];
+  for (let i = 53*7 - 1; i >= 0; i--) {
+    const d = new Date(today); d.setDate(d.getDate() - i);
+    const key = dateISO(d);
+    const log = state.habitLogs[key] || {};
+    const active = state.habits.filter(h => !h.archived).length || 1;
+    const done = Object.values(log).filter(Boolean).length;
+    const ratio = done / active;
+    let level = 0;
+    if (ratio > 0 && ratio <= 0.25) level = 1;
+    else if (ratio <= 0.5) level = 2;
+    else if (ratio <= 0.75) level = 3;
+    else if (ratio > 0.75) level = 4;
+    cells.push({ date: key, level, done, active });
+  }
+  el.innerHTML = cells.map(c =>
+    `<div class="hm-cell" data-level="${c.level}" title="${c.date} — ${c.done}/${c.active}"></div>`
+  ).join('');
+}
+
+function renderHitRate() {
+  const el = document.getElementById('hit-rate');
+  if (!el) return;
+  el.innerHTML = '';
+  const months = [];
+  for (let i = 5; i >= 0; i--) {
+    const d = new Date(); d.setDate(1); d.setMonth(d.getMonth() - i);
+    months.push(monthISO(d));
+  }
+  months.forEach(m => {
+    const goals = state.goals.filter(g => g.month === m);
+    const hits = goals.filter(g => g.completed).length;
+    const pct = goals.length === 0 ? '—' : Math.round((hits/goals.length)*100) + '%';
+    const cell = document.createElement('div');
+    cell.className = 'hit-month';
+    const monthLabel = new Date(m + '-01').toLocaleDateString(undefined, { month: 'short' });
+    cell.innerHTML = `
+      <div class="pct">${pct}</div>
+      <div class="frac">${hits}/${goals.length}</div>
+      <div class="lab">${monthLabel}</div>
+    `;
+    el.appendChild(cell);
+  });
+}
+
+/* ════════════════════════════════════════════════════════════════
+   VISION BOARD (IndexedDB)
+   ════════════════════════════════════════════════════════════════ */
+async function renderVision() {
+  const el = document.getElementById('vision-grid');
+  if (!el) return;
+  const imgs = await store.getImages();
+  el.innerHTML = '';
+  if (imgs.length === 0) {
+    el.innerHTML = `<div class="vision-empty" style="grid-column:1/-1;column-span:all">Nothing pinned yet. Drop in the images that hold your future.</div>`;
+    return;
+  }
+  imgs.forEach(img => {
+    const tile = document.createElement('div');
+    tile.className = 'vision-tile';
+    const aim = img.chiefAimId ? state.chiefAims.find(a => a.id === img.chiefAimId) : null;
+    tile.innerHTML = `
+      <img src="${img.dataUrl}" alt="${escape(img.caption || 'vision')}">
+      <div class="vision-overlay">
+        <input class="vision-caption" data-img-id="${img.id}" value="${escape(img.caption || '')}" placeholder="Caption…">
+        <div class="vision-tile-actions">
+          <button class="vision-link" data-action="link-aim" data-id="${img.id}">${aim ? escape(aim.name).slice(0,18) : '+ link to aim'}</button>
+          <span class="vision-del" data-action="del-img" data-id="${img.id}" title="Remove">✕</span>
+        </div>
+      </div>
+    `;
+    el.appendChild(tile);
+  });
+  el.querySelectorAll('input.vision-caption').forEach(i => {
+    i.addEventListener('change', async e => {
+      const imgs = await store.getImages();
+      const img = imgs.find(x => x.id === e.target.dataset.imgId);
+      if (img) { img.caption = e.target.value; await store.putImage(img); }
+    });
+  });
+  el.querySelectorAll('[data-action="del-img"]').forEach(b => {
+    b.addEventListener('click', async () => {
+      if (!confirm('Remove this image?')) return;
+      await store.deleteImage(b.dataset.id);
+      renderVision();
+    });
+  });
+  el.querySelectorAll('[data-action="link-aim"]').forEach(b => {
+    b.addEventListener('click', async () => {
+      const id = b.dataset.id;
+      const opts = state.chiefAims.map(a => `<option value="${a.id}">${escape(a.name) || 'Unnamed'}</option>`).join('');
+      openModal(`
+        <h3>Link to a chief aim</h3>
+        <p>Tag this image to one of your chief aims so it shows up in context.</p>
+        <select id="link-sel">
+          <option value="">— None —</option>
+          ${opts}
+        </select>
+        <div class="modal-actions">
+          <button class="btn" onclick="closeModal()">Cancel</button>
+          <button class="btn btn-gold" id="link-save">Save</button>
+        </div>
+      `);
+      document.getElementById('link-save').addEventListener('click', async () => {
+        const v = document.getElementById('link-sel').value;
+        const imgs = await store.getImages();
+        const img = imgs.find(x => x.id === id);
+        if (img) { img.chiefAimId = v || null; await store.putImage(img); }
+        closeModal(); renderVision();
+      });
+    });
+  });
+}
+
+function bindUploads() {
+  const dz = document.getElementById('dropzone');
+  const inp = document.getElementById('file-input');
+  if (!dz || !inp) return;
+  dz.addEventListener('click', () => inp.click());
+  dz.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); inp.click(); }
+  });
+  inp.addEventListener('change', e => handleFiles(e.target.files));
+  ['dragenter','dragover'].forEach(ev =>
+    dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.add('drag'); }));
+  ['dragleave','drop'].forEach(ev =>
+    dz.addEventListener(ev, e => { e.preventDefault(); dz.classList.remove('drag'); }));
+  dz.addEventListener('drop', e => handleFiles(e.dataTransfer.files));
+}
+
+async function handleFiles(files) {
+  const list = Array.from(files).filter(f => f.type.startsWith('image/'));
+  if (list.length === 0) { toast('Only image files'); return; }
+  const existing = await store.getImages();
+  let pos = existing.length;
+  for (const file of list) {
+    if (file.size > 8 * 1024 * 1024) {
+      toast(`${file.name} is over 8MB — skipping`);
+      continue;
+    }
+    const dataUrl = await new Promise(res => {
+      const r = new FileReader();
+      r.onload = e => res(e.target.result);
+      r.readAsDataURL(file);
+    });
+    await store.putImage({
+      id: uid('img'), dataUrl, caption: '', chiefAimId: null,
+      position: pos++, createdAt: todayISO()
+    });
+  }
+  toast(`${list.length} added to your vision board`);
+  renderVision();
+}
+
+/* ════════════════════════════════════════════════════════════════
+   TABS
+   ════════════════════════════════════════════════════════════════ */
+function switchTab(name) {
+  document.querySelectorAll('.tab').forEach(t => {
+    const on = t.dataset.tab === name;
+    t.classList.toggle('active', on);
+    t.setAttribute('aria-selected', on ? 'true' : 'false');
+  });
+  document.querySelectorAll('.view').forEach(v => v.classList.toggle('active', v.id === 'view-' + name));
+  if (name === 'progress') {
+    setTimeout(() => { renderScoreChart(); renderHeatmap(); renderHitRate(); }, 50);
+  }
+  if (name === 'vision') renderVision();
+  history.replaceState(null, '', '#' + name);
+}
+document.querySelectorAll('.tab').forEach(t => {
+  t.addEventListener('click', () => switchTab(t.dataset.tab));
+});
+
+/* ════════════════════════════════════════════════════════════════
+   EXPORT / IMPORT
+   ════════════════════════════════════════════════════════════════ */
+document.getElementById('btn-export').addEventListener('click', async () => {
+  const imgs = await store.getImages();
+  const blob = new Blob([JSON.stringify({ state, images: imgs, exportedAt: new Date().toISOString() }, null, 2)], { type:'application/json' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url; a.download = `frqncy-sanctuary-${todayISO()}.json`; a.click();
+  URL.revokeObjectURL(url);
+  toast('Backup downloaded');
+});
+document.getElementById('btn-import').addEventListener('click', () => {
+  document.getElementById('import-file').click();
+});
+document.getElementById('import-file').addEventListener('change', async e => {
+  const file = e.target.files[0];
+  // Reset so selecting the same file again re-triggers change.
+  e.target.value = '';
+  if (!file) return;
+  if (!confirm('Importing will replace everything currently here. Continue?')) return;
+  try {
+    const txt = await file.text();
+    const data = JSON.parse(txt);
+    if (data && typeof data === 'object' && data.state && typeof data.state === 'object') {
+      const s = data.state;
+      const merged = { ...DEFAULT_STATE, ...s };
+      // Coerce top-level arrays/objects so a malformed backup can't brick the app.
+      merged.chiefAims  = Array.isArray(s.chiefAims)  ? s.chiefAims  : [];
+      merged.objectives = Array.isArray(s.objectives) ? s.objectives : [];
+      merged.goals      = Array.isArray(s.goals)      ? s.goals      : [];
+      merged.habits     = Array.isArray(s.habits)     ? s.habits     : [];
+      merged.habitLogs  = (s.habitLogs && typeof s.habitLogs === 'object' && !Array.isArray(s.habitLogs)) ? s.habitLogs : {};
+      merged.settings   = (s.settings && typeof s.settings === 'object') ? s.settings : { name: '' };
+      merged.dream      = typeof s.dream === 'string' ? s.dream : '';
+      state = merged;
+      await persist();
+    }
+    if (Array.isArray(data.images)) {
+      await store.clearImages();
+      for (const img of data.images) {
+        if (img && img.id && typeof img.dataUrl === 'string') await store.putImage(img);
+      }
+    }
+    renderAll(); toast('Restored');
+  } catch (err) {
+    alert('Could not read that file: ' + err.message);
+  }
+});
+
+/* ════════════════════════════════════════════════════════════════
+   INIT
+   ════════════════════════════════════════════════════════════════ */
+function renderAll() {
+  document.getElementById('today-date').textContent = formatDate(new Date());
+  renderScoreboard();
+  renderDream();
+  renderChiefAimsEdit();
+  renderObjectives();
+  renderGoalsByObj();
+  renderPyramidMini();
+  renderHabits('habits-quick');
+  renderHabits('habits-full');
+  renderHabitHistory();
+  // graphs only when on progress tab
+  if (document.querySelector('.view#view-progress.active')) {
+    renderScoreChart(); renderHeatmap(); renderHitRate();
+  }
+}
+
+(async function init() {
+  await loadState();
+  renderAll();
+  bindDream();
+  bindUploads();
+  // tab from hash
+  const h = location.hash.replace('#','');
+  if (h && ['dashboard','pyramid','practice','progress','vision'].includes(h)) switchTab(h);
+})();
+
+window.closeModal = closeModal;
+</script>
+</body>
+</html>

@@ -10,7 +10,13 @@
 <meta property="og:description" content="Explore the hidden structure of language, law, and contracts through Quantum Grammar — how syntax and sentence construction shape reality, commerce, and sovereignty.">
 <meta property="og:url" content="https://frqncy.network/v2/courses/quantum-grammar/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:image:alt" content="Quantum Grammar — the hidden structure of language and law from FRQNCY Network.">
 <meta property="og:site_name" content="FRQNCY">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Quantum Grammar — FRQNCY Courses">
+<meta name="twitter:description" content="How syntax and sentence construction shape reality, commerce, and sovereignty.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
 <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="manifest" href="../../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/courses/quantum-grammar/">
@@ -79,12 +85,12 @@ nav.snav{
 .lesson-list{padding:0.4rem 0;flex:1}
 
 .lesson-btn{
-  width:100%;display:flex;align-items:center;gap:0.7rem;
-  padding:0.7rem 1.1rem 0.7rem 1rem;
+  width:100%;min-height:44px;display:flex;align-items:center;gap:0.7rem;
+  padding:0.85rem 1.1rem 0.85rem 1rem;
   border:none;background:none;color:var(--text);
   text-align:left;transition:background .15s;
   border-left:2px solid transparent;
-  position:relative;
+  position:relative;cursor:pointer;
 }
 .lesson-btn:hover{background:rgba(255,255,255,0.04)}
 .lesson-btn.active{background:rgba(255,255,255,0.06);border-left-color:var(--accent)}
@@ -202,7 +208,7 @@ nav.snav{
   flex-wrap:wrap;
 }
 .btn-complete{
-  padding:10px 26px;border-radius:2px;
+  padding:13px 28px;min-height:44px;border-radius:2px;
   font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;border:none;
   background:var(--accent);color:#fff;transition:opacity .2s,background .2s,transform .15s;
 }
@@ -214,7 +220,7 @@ nav.snav{
 }
 .lesson-nav-btns{display:flex;gap:0.6rem}
 .btn-nav{
-  padding:9px 18px;border-radius:2px;
+  padding:12px 20px;min-height:44px;border-radius:2px;
   font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;
   border:1px solid rgba(255,255,255,0.12);background:none;color:var(--text-dim);
   transition:all .2s;
@@ -267,8 +273,8 @@ nav.snav{
 .mobile-lesson-title{flex:1;min-width:0;font-size:0.78rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mobile-lessons-btn{
   background:var(--accent);color:#fff;border:none;
-  padding:7px 14px;border-radius:2px;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
-  flex-shrink:0;white-space:nowrap;
+  padding:12px 16px;min-height:44px;border-radius:2px;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
+  flex-shrink:0;white-space:nowrap;cursor:pointer;
 }
 .mobile-sidebar{
   display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;
@@ -297,12 +303,18 @@ nav.snav{
   .video-wrap{max-width:100%}
   .reflection-box,.reading-card{max-width:100%}
 }
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important}
+}
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script src="../../../mobile-nav.js" defer></script>
 <script src="../../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Course","name":"Quantum Grammar","description":"Explore how syntax and sentence construction shape reality, commerce, and sovereignty. Discover the mathematical structure behind contracts, statutes, and the language that binds.","url":"https://frqncy.network/v2/courses/quantum-grammar/","provider":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/"},"educationalLevel":"Intermediate","inLanguage":"en","about":"Language, law, sovereignty, syntax, quantum grammar"}
+</script>
 </head>
 <body>
 
@@ -382,7 +394,7 @@ nav.snav{
   </aside>
 
   <!-- MAIN -->
-  <div class="main-content" id="main-content">
+  <main class="main-content" id="main-content">
 
   <div class="lesson-panel" id="panel-0" role="tabpanel" aria-labelledby="nav-0">
     <div class="lesson-header">
@@ -392,7 +404,7 @@ nav.snav{
     </div>
     <div class="video-wrap">
         <iframe data-src="https://www.youtube.com/embed/lJXEJBgfDqQ?rel=0&modestbranding=1"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="What Is Quantum Grammar?"></iframe>
+          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="What Is Quantum Grammar?"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-0" onclick="markComplete(0)">Mark Complete</button>
@@ -411,7 +423,7 @@ nav.snav{
     </div>
     <div class="video-wrap">
         <iframe data-src="https://www.youtube.com/embed/VjHi8LT6plo?rel=0&modestbranding=1"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="The Syntax of Control"></iframe>
+          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="The Syntax of Control"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-1" onclick="markComplete(1)">Mark Complete</button>
@@ -430,7 +442,7 @@ nav.snav{
     </div>
     <div class="video-wrap">
         <iframe data-src="https://www.youtube.com/embed/e_BUuho4b_8?rel=0&modestbranding=1"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Correct Sentence Structure Communication Parse Syntax"></iframe>
+          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Correct Sentence Structure Communication Parse Syntax"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-2" onclick="markComplete(2)">Mark Complete</button>
@@ -491,7 +503,7 @@ nav.snav{
       </div>
     </div>
   </div>
-  </div>
+  </main>
 </div>
 
 <!-- MOBILE BOTTOM BAR -->

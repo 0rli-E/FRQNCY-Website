@@ -22,6 +22,11 @@
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="fetch" href="/api/crypto/projects" crossorigin>
+<link rel="preload" as="fetch" href="/api/crypto/market" crossorigin>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Explore by Sector — FRQNCY Crypto","description":"The crypto map, chapter by chapter. Learn what each sector does, then meet the projects inside it.","url":"https://frqncy.network/v2/crypto/explorer.html","isPartOf":{"@type":"WebSite","name":"FRQNCY","url":"https://frqncy.network/"}}
+</script>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
@@ -206,8 +211,8 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
 </main>
 
 <div class="sync-note" id="sync-note">
-  <button id="refresh-btn" class="refresh-btn" onclick="refreshData()" title="Refresh from Notion">&#8635; Refresh</button>
-  <span id="sync-text"></span>
+  <button id="refresh-btn" class="refresh-btn" onclick="refreshData()" title="Refresh from Notion" aria-label="Refresh project data from Notion">&#8635; Refresh</button>
+  <span id="sync-text" aria-live="polite"></span>
 </div>
 
 <script>

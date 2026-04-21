@@ -10,7 +10,13 @@
 <meta property="og:description" content="Understand blockchain, Bitcoin, Ethereum, DeFi, and Web3 from first principles. Learn why decentralization matters — for money, for identity, and for building a more sovereign world.">
 <meta property="og:url" content="https://frqncy.network/v2/courses/crypto-fundamentals/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:image:alt" content="Crypto Fundamentals — sovereignty through decentralization from FRQNCY Network.">
 <meta property="og:site_name" content="FRQNCY">
+<meta property="og:type" content="article">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crypto Fundamentals — FRQNCY Courses">
+<meta name="twitter:description" content="Blockchain, Bitcoin, Ethereum, DeFi, and Web3 from first principles.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
 <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="manifest" href="../../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/courses/crypto-fundamentals/">
@@ -80,12 +86,12 @@ nav.snav{
 .lesson-list{padding:0.4rem 0;flex:1}
 
 .lesson-btn{
-  width:100%;display:flex;align-items:center;gap:0.7rem;
-  padding:0.7rem 1.1rem 0.7rem 1rem;
+  width:100%;min-height:44px;display:flex;align-items:center;gap:0.7rem;
+  padding:0.85rem 1.1rem 0.85rem 1rem;
   border:none;background:none;color:var(--text);
   text-align:left;transition:background .15s;
   border-left:2px solid transparent;
-  position:relative;
+  position:relative;cursor:pointer;
 }
 .lesson-btn:hover{background:rgba(255,255,255,0.04)}
 .lesson-btn.active{background:rgba(255,255,255,0.06);border-left-color:var(--accent)}
@@ -203,7 +209,7 @@ nav.snav{
   flex-wrap:wrap;
 }
 .btn-complete{
-  padding:10px 26px;border-radius:2px;
+  padding:13px 28px;min-height:44px;border-radius:2px;
   font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;border:none;
   background:var(--accent);color:#fff;transition:opacity .2s,background .2s,transform .15s;
 }
@@ -215,7 +221,7 @@ nav.snav{
 }
 .lesson-nav-btns{display:flex;gap:0.6rem}
 .btn-nav{
-  padding:9px 18px;border-radius:2px;
+  padding:12px 20px;min-height:44px;border-radius:2px;
   font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;
   border:1px solid rgba(255,255,255,0.12);background:none;color:var(--text-dim);
   transition:all .2s;
@@ -268,8 +274,8 @@ nav.snav{
 .mobile-lesson-title{flex:1;min-width:0;font-size:0.78rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mobile-lessons-btn{
   background:var(--accent);color:#fff;border:none;
-  padding:7px 14px;border-radius:2px;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
-  flex-shrink:0;white-space:nowrap;
+  padding:12px 16px;min-height:44px;border-radius:2px;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
+  flex-shrink:0;white-space:nowrap;cursor:pointer;
 }
 .mobile-sidebar{
   display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;
@@ -298,11 +304,17 @@ nav.snav{
   .video-wrap{max-width:100%}
   .reflection-box,.reading-card{max-width:100%}
 }
+@media(prefers-reduced-motion:reduce){
+  *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important}
+}
 </style>
 <script src="../../../mobile-nav.js" defer></script>
 <script src="../../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"Course","name":"Crypto Fundamentals","description":"Understand blockchain, Bitcoin, Ethereum, DeFi, and Web3 from first principles. Learn why decentralization matters — for money, for identity, and for building a more sovereign world.","url":"https://frqncy.network/v2/courses/crypto-fundamentals/","provider":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/"},"educationalLevel":"Beginner","inLanguage":"en","about":"Blockchain, Bitcoin, Ethereum, DeFi, Web3, decentralization"}
+</script>
 </head>
 <body>
 
@@ -390,7 +402,7 @@ nav.snav{
   </aside>
 
   <!-- MAIN -->
-  <div class="main-content" id="main-content">
+  <main class="main-content" id="main-content">
 
   <div class="lesson-panel" id="panel-0" role="tabpanel" aria-labelledby="nav-0">
     <div class="lesson-header">
@@ -400,7 +412,7 @@ nav.snav{
     </div>
     <div class="video-wrap">
         <iframe data-src="https://www.youtube.com/embed/SSo_EIwHSd4?rel=0&modestbranding=1"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="What Is a Blockchain?"></iframe>
+          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="What Is a Blockchain?"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-0" onclick="markComplete(0)">Mark Complete</button>
@@ -419,7 +431,7 @@ nav.snav{
     </div>
     <div class="video-wrap">
         <iframe data-src="https://www.youtube.com/embed/41JCpzvnn_0?rel=0&modestbranding=1"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Bitcoin — Digital Sovereignty"></iframe>
+          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Bitcoin — Digital Sovereignty"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-1" onclick="markComplete(1)">Mark Complete</button>
@@ -438,7 +450,7 @@ nav.snav{
     </div>
     <div class="video-wrap">
         <iframe data-src="https://www.youtube.com/embed/jxLkbJozKbY?rel=0&modestbranding=1"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Ethereum & Smart Contracts"></iframe>
+          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Ethereum & Smart Contracts"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-2" onclick="markComplete(2)">Mark Complete</button>
@@ -457,7 +469,7 @@ nav.snav{
     </div>
     <div class="video-wrap">
         <iframe data-src="https://www.youtube.com/embed/DecVh-CyKQA?rel=0&modestbranding=1"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="DeFi, DAOs & the New Economy"></iframe>
+          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="DeFi, DAOs & the New Economy"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-3" onclick="markComplete(3)">Mark Complete</button>
@@ -501,11 +513,11 @@ nav.snav{
       <h1 class="lesson-h1">Getting Started — Wallets, Security &amp; Your First Steps</h1>
       <p class="lesson-subdesc">A practical guide to taking your first steps in crypto — setting up a wallet, understanding seed phrases and private keys, basic security practices, and how to navigate the ecosystem safely.</p>
     </div>
-    <a class="reading-card" href="#" target="_blank" rel="noopener">
+    <a class="reading-card" href="https://ethereum.org/en/wallets/" target="_blank" rel="noopener">
       <span class="reading-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
       <span class="reading-body">
         <span class="reading-title">Getting Started — Wallets, Security &amp; Your First Steps</span>
-        <span class="reading-domain">Practical guide</span>
+        <span class="reading-domain">ethereum.org</span>
         <span class="reading-dur">15 min read</span>
       </span>
       <span class="reading-arrow">&rarr;</span>
@@ -518,7 +530,7 @@ nav.snav{
       </div>
     </div>
   </div>
-  </div>
+  </main>
 </div>
 
 <!-- MOBILE BOTTOM BAR -->
@@ -604,7 +616,7 @@ nav.snav{
 
 <script>
 const SLUG      = 'crypto-fundamentals';
-const LESSONS   = [{"id":"l1","title":"What Is a Blockchain?","type":"video","video_id":"SSo_EIwHSd4","duration":"20 min","desc":"An overview of distributed ledger technology — what blockchains are, how they work, and why they represent a fundamental shift in how we store, verify, and transfer information without intermediaries."},{"id":"l2","title":"Bitcoin — Digital Sovereignty","type":"video","video_id":"41JCpzvnn_0","duration":"25 min","desc":"How Bitcoin works under the hood — mining, proof of work, the halving cycle, and why Bitcoin represents the first truly scarce digital asset."},{"id":"l3","title":"Ethereum & Smart Contracts","type":"video","video_id":"jxLkbJozKbY","duration":"25 min","desc":"Programmable money and decentralized applications — how Ethereum extended the blockchain concept beyond currency into a world computer."},{"id":"l4","title":"DeFi, DAOs & the New Economy","type":"video","video_id":"DecVh-CyKQA","duration":"25 min","desc":"Decentralized finance and governance — how lending, borrowing, and trading work without banks, and how DAOs rewrite the rules of collective decision-making."},{"id":"l5","title":"Reflection — What Does Decentralization Mean for You?","type":"reflection","duration":"15 min","content":"Think about the systems you interact with daily — banking, social media, identity verification, communication. Which of these rely on centralized authorities? How would your life change if some of these systems were decentralized? What does sovereignty over your own money, data, and identity mean to you personally?"},{"id":"l6","title":"Getting Started — Wallets, Security & Your First Steps","type":"reading","url":"#","duration":"15 min","desc":"A practical guide to taking your first steps in crypto — setting up a wallet, understanding seed phrases and private keys, basic security practices, and how to navigate the ecosystem safely."}];
+const LESSONS   = [{"id":"l1","title":"What Is a Blockchain?","type":"video","video_id":"SSo_EIwHSd4","duration":"20 min","desc":"An overview of distributed ledger technology — what blockchains are, how they work, and why they represent a fundamental shift in how we store, verify, and transfer information without intermediaries."},{"id":"l2","title":"Bitcoin — Digital Sovereignty","type":"video","video_id":"41JCpzvnn_0","duration":"25 min","desc":"How Bitcoin works under the hood — mining, proof of work, the halving cycle, and why Bitcoin represents the first truly scarce digital asset."},{"id":"l3","title":"Ethereum & Smart Contracts","type":"video","video_id":"jxLkbJozKbY","duration":"25 min","desc":"Programmable money and decentralized applications — how Ethereum extended the blockchain concept beyond currency into a world computer."},{"id":"l4","title":"DeFi, DAOs & the New Economy","type":"video","video_id":"DecVh-CyKQA","duration":"25 min","desc":"Decentralized finance and governance — how lending, borrowing, and trading work without banks, and how DAOs rewrite the rules of collective decision-making."},{"id":"l5","title":"Reflection — What Does Decentralization Mean for You?","type":"reflection","duration":"15 min","content":"Think about the systems you interact with daily — banking, social media, identity verification, communication. Which of these rely on centralized authorities? How would your life change if some of these systems were decentralized? What does sovereignty over your own money, data, and identity mean to you personally?"},{"id":"l6","title":"Getting Started — Wallets, Security & Your First Steps","type":"reading","url":"https://ethereum.org/en/wallets/","duration":"15 min","desc":"A practical guide to taking your first steps in crypto — setting up a wallet, understanding seed phrases and private keys, basic security practices, and how to navigate the ecosystem safely."}];
 const TOTAL     = LESSONS.length;
 const STORE_KEY = 'frqncy-course-' + SLUG;
 const REFLECT_IDS = ["l5"];

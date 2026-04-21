@@ -25,9 +25,10 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Explore the Network — FRQNCY","description":"Navigate 130 topics across 6 pillars of conscious living. An interactive map of the FRQNCY Network.","url":"https://frqncy.network/v2/explore.html","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
-    :root { --gold:#C4973A; --gold-light:#E8C97D; --font-display:'Cormorant',Georgia,serif; --font-body:'Jost',sans-serif; }
+    :root { --navy:#0B1C3D; --navy-mid:#0D2451; --gold:#C4973A; --gold-light:#E8C97D; --font-display:'Cormorant',Georgia,serif; --font-body:'Jost',sans-serif; }
     html, body { width:100%; height:100%; background:linear-gradient(160deg,#0B1C3D 0%,#0D2451 60%,#0A1830 100%); overflow:hidden; font-family:var(--font-body); }
     #fx  { position:fixed; inset:0; z-index:0; pointer-events:none; }
     #map-svg { position:fixed; inset:0; width:100%; height:100%; z-index:1; background:transparent; cursor:grab; touch-action:none; user-select:none; }
@@ -346,7 +347,7 @@
 </nav>
 
 <canvas id="fx"></canvas>
-<svg id="map-svg"><defs id="svg-defs"></defs></svg>
+<svg id="map-svg" role="img" aria-label="Interactive network map of FRQNCY — drag, zoom, and tap nodes to explore"><title>FRQNCY Network Map</title><defs id="svg-defs"></defs></svg>
 <div id="tooltip"><div class="tip-title"></div><div class="tip-type"></div></div>
 
 <div id="ui-overlay">
@@ -355,7 +356,7 @@
   <p class="ui-hint-mobile" style="display:none;">PINCH TO ZOOM · TAP TO EXPLORE</p>
 </div>
 <div id="search-container">
-  <input type="text" id="search-bar" placeholder="SEARCH THE NETWORK...">
+  <input type="search" id="search-bar" placeholder="SEARCH THE NETWORK..." aria-label="Search the FRQNCY network" autocomplete="off">
   <div id="search-count"></div>
 </div>
 <div id="search-results"></div>
@@ -1130,10 +1131,15 @@ const particles=[];
 let dashOff=0, lastMajor=0, lastDotPulse=0;
 
 const regLinks=LINKS;
-const majorLinks=LINKS.filter(l=>{
-  const s=typeof l.source==='object'?l.source.type:null;
-  return s==='core'||s==='main';
-});
+/* majorLinks filter runs lazily at render time: d3.forceLink resolves l.source/target
+   from string IDs into node objects on first tick — if we filter now, source is still a string. */
+function getMajorLinks(){
+  return LINKS.filter(l=>{
+    const s=typeof l.source==='object'?l.source.type:null;
+    const t=typeof l.target==='object'?l.target.type:null;
+    return s==='core'||s==='main'||t==='core'||t==='main';
+  });
+}
 
 function spawnParticle(fromDot){
   if(fromDot){
@@ -1146,9 +1152,11 @@ function spawnParticle(fromDot){
     particles.push({x1:fwd?hx:a.x, y1:fwd?hy:a.y, x2:fwd?a.x:hx, y2:fwd?a.y:hy,
       prog:0, speed:0.013+Math.random()*0.01, isDot:true});
   } else {
-    const l=majorLinks[Math.floor(Math.random()*majorLinks.length)];
+    const ml=getMajorLinks();
+    if(!ml.length) return;
+    const l=ml[Math.floor(Math.random()*ml.length)];
     const s=l.source,t=l.target;
-    if(!s||!t||s.x===undefined) return;
+    if(!s||!t||typeof s!=='object'||s.x===undefined) return;
     particles.push({x1:s.x,y1:s.y,x2:t.x,y2:t.y,
       prog:0, speed:0.009+Math.random()*0.006, isDot:false});
   }

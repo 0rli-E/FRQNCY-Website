@@ -25,6 +25,23 @@
   <meta name="twitter:title" content="FRQNCY — Built on the Foundations of Oneness">
   <meta name="twitter:description" content="FRQNCY is a community becoming an alternative society. You remember what you truly are — love and light — and create a future from that knowingness.">
   <meta name="twitter:image" content="https://frqncy.network/og-image.png">
+
+  <!-- JSON-LD structured data -->
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "WebSite",
+    "name": "FRQNCY",
+    "url": "https://frqncy.network/",
+    "description": "FRQNCY is a community becoming an alternative society. You remember what you truly are — love and light — and create a future from that knowingness.",
+    "potentialAction": {
+      "@type": "SearchAction",
+      "target": "https://frqncy.network/search.html?q={search_term_string}",
+      "query-input": "required name=search_term_string"
+    }
+  }
+  </script>
+
   <link rel="icon" type="image/svg+xml" href="favicon.svg">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -84,6 +101,7 @@
       <li><a href="podcast.html">Podcast</a></li>
       <li><a href="space.html">Space</a></li>
       <li><a href="/social/">Community</a></li>
+      <li><a href="/my-frqncy/dashboard/">Sanctuary</a></li>
       <li><a href="my-frqncy.html" class="nav-cta-gold">My FRQNCY</a></li>
     </ul>
   </nav>
@@ -230,10 +248,10 @@
 
 
   </main>
-  <script src="mobile-nav.js"></script>
-  <script src="index.js"></script>
+  <script src="mobile-nav.js" defer></script>
+  <script src="index.js" defer></script>
   <!-- Social auth awareness (Supabase) -->
-  <script src="/social-config.js"></script>
+  <script src="/social-config.js" defer></script>
   <script type="module" src="/social-auth.js"></script>
 </body>
 </html>

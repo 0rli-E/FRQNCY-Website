@@ -3,7 +3,7 @@
   X-Frame-Options: DENY
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
-  Permissions-Policy: camera=(), microphone=(), geolocation=()
+  Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io https://cdnjs.cloudflare.com https://cdn.jsdelivr.net; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://plausible.io https://*.workers.dev https://*.supabase.co wss://*.supabase.co; frame-src https://www.youtube.com https://player.vimeo.com https://www.gaia.com; frame-ancestors 'none'
 
 # Favicon + manifest — cache forever (immutable per deploy)
@@ -53,3 +53,29 @@
 # Cloudflare Pages Functions — never cache
 /api/*
   Cache-Control: no-store
+
+# Static images — long cache (content-addressed via filename when updated)
+/*.png
+  Cache-Control: public, max-age=2592000
+/*.jpg
+  Cache-Control: public, max-age=2592000
+/*.jpeg
+  Cache-Control: public, max-age=2592000
+/*.webp
+  Cache-Control: public, max-age=2592000
+/*.svg
+  Cache-Control: public, max-age=2592000
+/*.ico
+  Cache-Control: public, max-age=2592000
+
+# Fonts (if any are ever self-hosted) — immutable, cache 1 year
+/*.woff
+  Cache-Control: public, max-age=31536000, immutable
+/*.woff2
+  Cache-Control: public, max-age=31536000, immutable
+/*.ttf
+  Cache-Control: public, max-age=31536000, immutable
+
+# /assets/* — shared design-system CSS/JS, cache 1 day with revalidation
+/assets/*
+  Cache-Control: public, max-age=86400, stale-while-revalidate=3600

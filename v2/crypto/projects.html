@@ -13,12 +13,20 @@
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:site_name" content="FRQNCY">
 <meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Project Ratings — FRQNCY Crypto">
+<meta name="twitter:description" content="630+ projects rated by conviction. Diamond, Gold, Silver, Utility. Stated plainly.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="manifest" href="../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/crypto/projects.html">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="fetch" href="/api/crypto/projects" crossorigin>
+<link rel="preload" as="fetch" href="/api/crypto/market" crossorigin>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Project Ratings — FRQNCY Crypto","description":"630+ projects rated by conviction. Diamond, Gold, Silver, Utility. Stated plainly.","url":"https://frqncy.network/v2/crypto/projects.html","isPartOf":{"@type":"WebSite","name":"FRQNCY","url":"https://frqncy.network/"}}
+</script>
 <script src="_market.js" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -241,9 +249,11 @@ main{max-width:1200px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
 @media(max-width:720px){
   .project-grid{grid-template-columns:1fr}
   .tier-tabs{flex-wrap:wrap}
-  .tier-tab{min-width:calc(25% - 1px);flex:0 0 auto}
+  .tier-tab{min-width:calc(25% - 1px);flex:0 0 auto;min-height:44px}
   .controls-row{gap:0.4rem}
   .search-box{min-width:100%}
+  .filter-pills{order:3;width:100%}
+  .fpill{min-height:28px;padding:5px 10px}
   .lrow{grid-template-columns:3px 32px 1fr auto;gap:0.5rem}
   .lrow-cat,.lrow-chain{display:none}
 }
@@ -338,22 +348,23 @@ main{max-width:1200px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
     <!-- Search + category filter + view toggle -->
     <div class="controls-row">
       <div class="search-box">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
-        <input type="text" id="search" placeholder="Search projects, tickers, chains..." autocomplete="off" spellcheck="false">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <label for="search" class="sr-only" style="position:absolute;left:-9999px">Search projects</label>
+        <input type="text" id="search" placeholder="Search projects, tickers, chains..." autocomplete="off" spellcheck="false" aria-label="Search projects, tickers, chains">
       </div>
       <div class="filter-pills" id="cat-pills"></div>
-      <select class="sort-select" id="sort-select">
+      <select class="sort-select" id="sort-select" aria-label="Sort projects">
         <option value="tier">Sort: Tier</option>
         <option value="name">Sort: A → Z</option>
         <option value="name-desc">Sort: Z → A</option>
         <option value="category">Sort: Category</option>
       </select>
-      <div class="view-toggle">
-        <button class="view-btn active" data-view="grid" title="Grid view">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+      <div class="view-toggle" role="group" aria-label="View mode">
+        <button class="view-btn active" data-view="grid" title="Grid view" aria-label="Grid view" aria-pressed="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
         </button>
-        <button class="view-btn" data-view="list" title="List view">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        <button class="view-btn" data-view="list" title="List view" aria-label="List view" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
         </button>
       </div>
       <span class="result-count" id="result-count"></span>
@@ -370,8 +381,8 @@ main{max-width:1200px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
 </main>
 
 <div class="sync-note" id="sync-note">
-  <button id="refresh-btn" class="refresh-btn" onclick="refreshData()" title="Refresh from Notion">&#8635; Refresh</button>
-  <span id="sync-text"></span>
+  <button id="refresh-btn" class="refresh-btn" onclick="refreshData()" title="Refresh from Notion" aria-label="Refresh project data from Notion">&#8635; Refresh</button>
+  <span id="sync-text" aria-live="polite"></span>
 </div>
 
 <script>
@@ -436,8 +447,9 @@ document.getElementById('sort-select').addEventListener('change', e => {
 document.querySelector('.view-toggle').addEventListener('click', e => {
   const btn = e.target.closest('.view-btn');
   if (!btn) return;
-  document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+  document.querySelectorAll('.view-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
   btn.classList.add('active');
+  btn.setAttribute('aria-pressed','true');
   viewMode = btn.dataset.view;
   render();
 });

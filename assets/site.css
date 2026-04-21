@@ -1,0 +1,289 @@
+/* ============================================================
+   FRQNCY — Shared Design System (site.css)
+   ------------------------------------------------------------
+   Canonical design tokens and utility classes for FRQNCY.
+
+   PURPOSE
+     Future-facing, opt-in stylesheet. Pages do NOT need to link
+     this file today — existing page-scoped CSS continues to work
+     unchanged. When new pages or components are built, they can
+     include this file as a shared source of truth for tokens and
+     a small set of reusable utility classes.
+
+   SAFE TO INCLUDE ALONGSIDE EXISTING CSS
+     - Tokens live on :root as CSS custom properties and will not
+       override anything a page already defines locally.
+     - All utility classes are namespaced with the `fq-` prefix
+       (e.g. .fq-btn, .fq-card, .fq-nav) so they cannot collide
+       with class names used by existing pages.
+
+   USAGE
+     <link rel="stylesheet" href="/assets/site.css">
+
+   DESIGN SYSTEM REFERENCE
+     Navy:  #0B1C3D   — primary background / brand
+     Gold:  #C4973A   — accent, eyebrow, CTA highlight
+     Type:  Cormorant (display, serif) + Jost (body, sans)
+   ============================================================ */
+
+/* ----------------------------------------------------------
+   TOKENS
+   ---------------------------------------------------------- */
+:root {
+  /* Brand color */
+  --fq-navy: #0B1C3D;
+  --fq-navy-700: #13264f;
+  --fq-navy-500: #1e345f;
+  --fq-gold: #C4973A;
+  --fq-gold-bright: #E0B058;
+
+  /* Neutrals */
+  --fq-white: #ffffff;
+  --fq-mist: rgba(255, 255, 255, 0.9);
+  --fq-mist-soft: rgba(255, 255, 255, 0.6);
+  --fq-mist-faint: rgba(255, 255, 255, 0.12);
+  --fq-line: rgba(255, 255, 255, 0.15);
+
+  /* Aliases (legacy-compatible names in case page CSS references them) */
+  --navy: #0B1C3D;
+  --gold: #C4973A;
+
+  /* Accent blues used on 404 and a few features */
+  --fq-blue-mid: #2952B3;
+  --fq-light-mid: #8A9AB8;
+
+  /* Type */
+  --fq-font-display: 'Cormorant', Georgia, 'Times New Roman', serif;
+  --fq-font-body: 'Jost', -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+
+  /* Scale */
+  --fq-radius-sm: 2px;
+  --fq-radius-md: 4px;
+  --fq-radius-lg: 12px;
+
+  /* Spacing step (8px grid) */
+  --fq-space-1: 4px;
+  --fq-space-2: 8px;
+  --fq-space-3: 16px;
+  --fq-space-4: 24px;
+  --fq-space-5: 32px;
+  --fq-space-6: 48px;
+  --fq-space-7: 64px;
+  --fq-space-8: 96px;
+
+  /* Motion */
+  --fq-ease: cubic-bezier(0.4, 0, 0.2, 1);
+  --fq-dur-fast: 150ms;
+  --fq-dur: 250ms;
+  --fq-dur-slow: 400ms;
+
+  /* Elevation */
+  --fq-shadow-sm: 0 1px 2px rgba(0, 0, 0, 0.18);
+  --fq-shadow-md: 0 8px 24px rgba(0, 0, 0, 0.28);
+  --fq-shadow-glow: 0 0 0 1px rgba(196, 151, 58, 0.5), 0 12px 32px rgba(196, 151, 58, 0.18);
+}
+
+/* Respect user motion preferences */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --fq-dur-fast: 0ms;
+    --fq-dur: 0ms;
+    --fq-dur-slow: 0ms;
+  }
+}
+
+/* ----------------------------------------------------------
+   UTILITY — BUTTONS
+   ---------------------------------------------------------- */
+.fq-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: 8px;
+  font-family: var(--fq-font-body);
+  font-size: 11px;
+  font-weight: 500;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  text-decoration: none;
+  padding: 14px 30px;
+  border-radius: var(--fq-radius-sm);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition:
+    background var(--fq-dur) var(--fq-ease),
+    border-color var(--fq-dur) var(--fq-ease),
+    color var(--fq-dur) var(--fq-ease),
+    transform var(--fq-dur-fast) var(--fq-ease);
+  user-select: none;
+}
+
+.fq-btn:focus-visible {
+  outline: 2px solid var(--fq-gold);
+  outline-offset: 2px;
+}
+
+.fq-btn-primary {
+  background: var(--fq-gold);
+  color: var(--fq-navy);
+  border-color: var(--fq-gold);
+}
+.fq-btn-primary:hover {
+  background: var(--fq-gold-bright);
+  border-color: var(--fq-gold-bright);
+}
+
+.fq-btn-ghost {
+  background: transparent;
+  color: var(--fq-mist-soft);
+  border-color: var(--fq-line);
+}
+.fq-btn-ghost:hover {
+  color: var(--fq-white);
+  border-color: rgba(255, 255, 255, 0.4);
+}
+
+.fq-btn-navy {
+  background: var(--fq-navy);
+  color: var(--fq-white);
+  border-color: var(--fq-navy);
+}
+.fq-btn-navy:hover {
+  background: var(--fq-navy-700);
+  border-color: var(--fq-navy-700);
+}
+
+/* ----------------------------------------------------------
+   UTILITY — CARDS
+   ---------------------------------------------------------- */
+.fq-card {
+  background: rgba(255, 255, 255, 0.03);
+  border: 1px solid var(--fq-line);
+  border-radius: var(--fq-radius-lg);
+  padding: var(--fq-space-4);
+  transition:
+    border-color var(--fq-dur) var(--fq-ease),
+    background var(--fq-dur) var(--fq-ease);
+}
+.fq-card:hover {
+  border-color: rgba(196, 151, 58, 0.35);
+  background: rgba(255, 255, 255, 0.05);
+}
+
+.fq-card-title {
+  font-family: var(--fq-font-display);
+  font-size: 22px;
+  font-weight: 400;
+  line-height: 1.2;
+  color: var(--fq-white);
+  margin: 0 0 var(--fq-space-2);
+}
+.fq-card-body {
+  font-family: var(--fq-font-body);
+  font-size: 14px;
+  line-height: 1.7;
+  color: var(--fq-mist-soft);
+  margin: 0;
+}
+
+/* ----------------------------------------------------------
+   UTILITY — EYEBROW / SECTION LABEL
+   ---------------------------------------------------------- */
+.fq-eyebrow {
+  font-family: var(--fq-font-body);
+  font-size: 10px;
+  font-weight: 500;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: var(--fq-gold);
+  margin: 0 0 var(--fq-space-3);
+}
+
+/* ----------------------------------------------------------
+   UTILITY — NAV (top bar, hub/topic pages)
+   ---------------------------------------------------------- */
+.fq-nav {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 20px clamp(24px, 5vw, 80px);
+  background: var(--fq-navy);
+  color: var(--fq-white);
+}
+.fq-nav-brand {
+  font-family: var(--fq-font-display);
+  font-weight: 300;
+  font-size: 20px;
+  letter-spacing: 0.38em;
+  text-transform: uppercase;
+  color: var(--fq-mist);
+  text-decoration: none;
+}
+.fq-nav-brand:hover { color: var(--fq-white); }
+
+.fq-nav-links {
+  display: flex;
+  gap: var(--fq-space-4);
+  list-style: none;
+  margin: 0;
+  padding: 0;
+}
+.fq-nav-link {
+  font-family: var(--fq-font-body);
+  font-size: 12px;
+  letter-spacing: 0.15em;
+  text-transform: uppercase;
+  color: var(--fq-mist-soft);
+  text-decoration: none;
+  transition: color var(--fq-dur) var(--fq-ease);
+}
+.fq-nav-link:hover,
+.fq-nav-link[aria-current="page"] {
+  color: var(--fq-white);
+}
+
+/* ----------------------------------------------------------
+   UTILITY — CONTAINERS / LAYOUT
+   ---------------------------------------------------------- */
+.fq-container {
+  max-width: 1200px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 80px);
+}
+.fq-container-narrow {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: 0 clamp(24px, 5vw, 40px);
+}
+
+.fq-stack-sm > * + * { margin-top: var(--fq-space-2); }
+.fq-stack    > * + * { margin-top: var(--fq-space-3); }
+.fq-stack-lg > * + * { margin-top: var(--fq-space-5); }
+
+/* ----------------------------------------------------------
+   ACCESSIBILITY HELPERS
+   ---------------------------------------------------------- */
+.fq-visually-hidden {
+  position: absolute !important;
+  width: 1px; height: 1px;
+  padding: 0; margin: -1px;
+  overflow: hidden; clip: rect(0, 0, 0, 0);
+  white-space: nowrap; border: 0;
+}
+
+.fq-skip-link {
+  position: absolute;
+  top: -40px;
+  left: 8px;
+  background: var(--fq-gold);
+  color: var(--fq-navy);
+  padding: 8px 16px;
+  font-family: var(--fq-font-body);
+  font-size: 13px;
+  font-weight: 500;
+  text-decoration: none;
+  border-radius: var(--fq-radius-sm);
+  z-index: 9999;
+  transition: top var(--fq-dur-fast) var(--fq-ease);
+}
+.fq-skip-link:focus { top: 8px; }

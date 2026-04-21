@@ -11,7 +11,13 @@
 <meta property="og:description" content="The voices inside the network. Teachers, thinkers, healers, builders — curated with taste, pointed to in plain language.">
 <meta property="og:url" content="https://frqncy.network/v2/people/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="People — FRQNCY">
+<meta name="twitter:description" content="The voices inside the network. Teachers, thinkers, healers, builders — curated with taste.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="manifest" href="../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/people/">
@@ -123,6 +129,12 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .pcard-tags{justify-content:center}
   .filter-bar{justify-content:center}
   .footer-inner{flex-direction:column;text-align:center}
+  /* Touch targets on mobile — min 40px tap area */
+  .ftab{padding:10px 14px;min-height:40px;font-size:0.62rem}
+  .pcard-link,.pcard-yt,.pcard-watch{padding:8px 12px}
+}
+@media(max-width:400px){
+  body{overflow-x:hidden}
 }
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
@@ -130,6 +142,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"People — FRQNCY","description":"The voices inside the network. Teachers, thinkers, healers, builders — curated with taste, pointed to in plain language.","url":"https://frqncy.network/v2/people/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"mainEntity":{"@type":"ItemList","itemListElement":[{"@type":"Person","name":"Osho","alternateName":"Bhagwan Shree Rajneesh","sameAs":"https://www.osho.com"},{"@type":"Person","name":"Sadhguru","alternateName":"Jaggi Vasudev","sameAs":"https://isha.sadhguru.org"},{"@type":"Person","name":"Kevin Trudeau","sameAs":"https://kevintrudeau.com"},{"@type":"Person","name":"Sai Maa","alternateName":"Her Holiness Sai Maa Lakshmi Devi","sameAs":"https://www.saimaa.com"},{"@type":"Person","name":"Gary Spivey","sameAs":"https://www.garyspivey.com"}]}}</script>
 </head>
 <body>
 
@@ -292,8 +305,8 @@ for (const p of PEOPLE) {
 
   card.innerHTML = `
     <div class="pcard-top">
-      <div class="pcard-avatar" style="border-color:${p.accent}60;background:linear-gradient(135deg,${p.accent}30,${p.accent}15)">
-        <span>${esc(p.initials)}</span>
+      <div class="pcard-avatar" role="img" aria-label="${esc(p.name)} avatar" style="border-color:${p.accent}60;background:linear-gradient(135deg,${p.accent}30,${p.accent}15)">
+        <span aria-hidden="true">${esc(p.initials)}</span>
       </div>
       <div class="pcard-identity">
         <div class="pcard-name">${esc(p.name)}</div>

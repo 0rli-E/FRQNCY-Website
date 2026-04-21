@@ -310,6 +310,16 @@ nav{
 }
 .loading-text{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-dim)}
 @keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+
+/* Focus rings for keyboard navigation */
+button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visible,.choice-tile:focus-visible{
+  outline:2px solid var(--gold);outline-offset:2px;
+}
+/* Ensure mobile touch targets on tiles */
+@media(max-width:520px){
+  .domain-tile,.choice-tile{min-height:56px}
+  .btn-primary,.btn-ghost{min-height:44px;padding:13px 22px}
+}
 </style>
 <script src="mobile-nav.js" defer></script>
 <script src="chat-widget.js" defer></script>
@@ -355,18 +365,20 @@ nav{
       <li><a href="podcast.html">Podcast</a></li>
     <li><a href="space.html">Space</a></li>
     <li><a href="/social/">Community</a></li>
+      <li><a href="/my-frqncy/dashboard/">Sanctuary</a></li>
       <li><a href="my-frqncy.html" class="nav-cta-gold active">My FRQNCY</a></li>
   </ul>
 </nav>
 
 <!-- Loading overlay -->
-<div id="loading">
-  <div class="loading-glyph">✦</div>
+<div id="loading" role="status" aria-live="polite">
+  <div class="loading-glyph" aria-hidden="true">✦</div>
   <div class="loading-text">Building your constellation</div>
 </div>
 
+<main>
 <!-- ── FORM VIEW ── -->
-<div id="form-view">
+<section id="form-view" aria-labelledby="form-heading">
   <div class="form-inner">
 
     <div class="step-bar">
@@ -385,14 +397,24 @@ nav{
       <div class="chart-cta-arrow">→</div>
     </a>
 
+    <!-- Sanctuary / Dashboard CTA -->
+    <a href="my-frqncy/dashboard/" class="chart-cta" id="sanctuary-cta" style="margin-top:-1.2rem">
+      <div class="chart-cta-glyph">◈</div>
+      <div class="chart-cta-text">
+        <div class="chart-cta-title">Your Sanctuary</div>
+        <div class="chart-cta-sub">Private space — dream, chief aims, objectives, goals, daily practice, vision board. Yours, on this device.</div>
+      </div>
+      <div class="chart-cta-arrow">→</div>
+    </a>
+
     <!-- Step 1: Domains -->
     <div class="form-step visible" id="step-1">
       <div class="form-eyebrow">Step 1 of 3</div>
-      <h1 class="form-q">What calls to you?</h1>
+      <h1 class="form-q" id="form-heading">What calls to you?</h1>
       <p class="form-hint">Pick up to three. The constellation draws itself around what you choose.</p>
-      <div class="domain-grid" id="domain-grid"></div>
+      <div class="domain-grid" id="domain-grid" role="group" aria-label="Domains — pick up to three"></div>
       <div class="btn-row">
-        <button class="btn-primary" id="btn-s1" onclick="goStep(2)" disabled>Continue →</button>
+        <button type="button" class="btn-primary" id="btn-s1" onclick="goStep(2)" disabled>Continue →</button>
       </div>
     </div>
 
@@ -404,7 +426,7 @@ nav{
 
       <div style="margin-bottom:1rem">
         <div class="form-hint" style="margin-bottom:0.6rem">My intention is to —</div>
-        <div class="intent-grid" id="intent-grid">
+        <div class="intent-grid" id="intent-grid" role="radiogroup" aria-label="Intention">
           <div class="choice-tile" data-val="understand" onclick="selectIntent(this)">
             <div class="ct-name">Understand deeply</div>
             <div class="ct-desc">Books, papers, core texts</div>
@@ -426,7 +448,7 @@ nav{
 
       <div style="margin-bottom:2rem">
         <div class="form-hint" style="margin-bottom:0.6rem">I am —</div>
-        <div class="depth-grid" id="depth-grid">
+        <div class="depth-grid" id="depth-grid" role="radiogroup" aria-label="Current depth">
           <div class="choice-tile" data-val="beginning" onclick="selectDepth(this)" style="flex:1;min-width:140px">
             <div class="ct-name">Just beginning</div>
             <div class="ct-desc">New to this territory</div>
@@ -443,8 +465,8 @@ nav{
       </div>
 
       <div class="btn-row">
-        <button class="btn-primary" id="btn-s2" onclick="goStep(3)" disabled>Continue →</button>
-        <button class="btn-ghost" onclick="goStep(1)">← Back</button>
+        <button type="button" class="btn-primary" id="btn-s2" onclick="goStep(3)" disabled>Continue →</button>
+        <button type="button" class="btn-ghost" onclick="goStep(1)">← Back</button>
       </div>
     </div>
 
@@ -458,16 +480,16 @@ nav{
         <input id="name-input" type="text" placeholder="e.g. Orli" autocomplete="off" maxlength="40">
       </div>
       <div class="btn-row">
-        <button class="btn-primary" onclick="generate()">Build my FRQNCY →</button>
-        <button class="btn-ghost" onclick="goStep(2)">← Back</button>
+        <button type="button" class="btn-primary" onclick="generate()">Build my FRQNCY →</button>
+        <button type="button" class="btn-ghost" onclick="goStep(2)">← Back</button>
       </div>
     </div>
 
   </div>
-</div>
+</section>
 
 <!-- ── RESULT VIEW ── -->
-<div id="result-view">
+<section id="result-view" aria-labelledby="result-title">
 
   <div class="result-hero">
     <div class="result-eyebrow" id="result-eyebrow">Your FRQNCY</div>
@@ -493,6 +515,34 @@ nav{
       </div>
     </a>
 
+    <!-- Carry this forward -->
+    <div class="section-label" style="margin-top:2.5rem">Carry this forward</div>
+
+    <!-- Save your constellation — routes to /social/login (Supabase auth) -->
+    <a href="/social/login?next=/my-frqncy.html" class="chart-result-card" id="save-constellation-cta">
+      <div class="chart-rc-left">
+        <div class="chart-rc-glyph">◈</div>
+        <div>
+          <div class="chart-rc-title">Save your constellation</div>
+          <div class="chart-rc-sub">Sign in to keep this on your FRQNCY profile. Your teachers, your topics, the map of you — tied to your handle.</div>
+        </div>
+      </div>
+      <div class="chart-rc-arrow">→</div>
+    </a>
+
+    <!-- Word Illuminator — external ChatGPT custom GPT, opens in new tab -->
+    <a href="https://chatgpt.com/g/g-68932c02fd308191b3ad26174d0a332c-word-illuminator"
+       id="word-illuminator-cta" class="chart-result-card" target="_blank" rel="noopener noreferrer">
+      <div class="chart-rc-left">
+        <div class="chart-rc-glyph">✧</div>
+        <div>
+          <div class="chart-rc-title">The Word Illuminator</div>
+          <div class="chart-rc-sub">Ask about any word, name, or concept in your constellation. A ChatGPT companion that opens in a new tab.</div>
+        </div>
+      </div>
+      <div class="chart-rc-arrow">→</div>
+    </a>
+
     <!-- Chart Generator featured card -->
     <div class="section-label" style="margin-top:2.5rem">Go deeper</div>
     <a href="chart.html" class="chart-result-card">
@@ -507,12 +557,13 @@ nav{
     </a>
 
     <div class="action-row">
-      <button class="btn-primary" onclick="restartForm()">Build another →</button>
-      <button class="share-url" id="share-btn" onclick="shareConstellation()">Copy shareable link</button>
+      <button type="button" class="btn-primary" onclick="restartForm()">Build another →</button>
+      <button type="button" class="share-url" id="share-btn" onclick="shareConstellation()" aria-label="Copy shareable link to clipboard">Copy shareable link</button>
     </div>
 
   </div>
-</div>
+</section>
+</main>
 
 <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" defer></script>
 <script>
@@ -557,10 +608,18 @@ function buildDomainGrid() {
     const div = document.createElement('div');
     div.className = 'domain-tile';
     div.dataset.key = d.key;
-    div.innerHTML = `<div class="dt-glyph">${d.glyph}</div>
+    div.setAttribute('role', 'checkbox');
+    div.setAttribute('tabindex', '0');
+    div.setAttribute('aria-checked', 'false');
+    div.setAttribute('aria-label', `${d.name}: ${d.sub}`);
+    div.innerHTML = `<div class="dt-glyph" aria-hidden="true">${d.glyph}</div>
       <div class="dt-name">${d.name}</div>
       <div class="dt-sub">${d.sub}</div>`;
-    div.addEventListener('click', () => toggleDomain(d.key, div));
+    const activate = () => toggleDomain(d.key, div);
+    div.addEventListener('click', activate);
+    div.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
     grid.appendChild(div);
   }
 }
@@ -569,24 +628,28 @@ function toggleDomain(key, el) {
   if (selectedDomains.includes(key)) {
     selectedDomains = selectedDomains.filter(d => d !== key);
     el.classList.remove('selected');
+    el.setAttribute('aria-checked', 'false');
   } else {
     if (selectedDomains.length >= 3) return;
     selectedDomains.push(key);
     el.classList.add('selected');
+    el.setAttribute('aria-checked', 'true');
   }
   document.getElementById('btn-s1').disabled = selectedDomains.length === 0;
 }
 
 // ── Intent / depth ─────────────────────────────────────────────────────
 function selectIntent(el) {
-  document.querySelectorAll('#intent-grid .choice-tile').forEach(t => t.classList.remove('selected'));
+  document.querySelectorAll('#intent-grid .choice-tile').forEach(t => { t.classList.remove('selected'); t.setAttribute('aria-checked','false'); });
   el.classList.add('selected');
+  el.setAttribute('aria-checked','true');
   selectedIntent = el.dataset.val;
   updateStep2Btn();
 }
 function selectDepth(el) {
-  document.querySelectorAll('#depth-grid .choice-tile').forEach(t => t.classList.remove('selected'));
+  document.querySelectorAll('#depth-grid .choice-tile').forEach(t => { t.classList.remove('selected'); t.setAttribute('aria-checked','false'); });
   el.classList.add('selected');
+  el.setAttribute('aria-checked','true');
   selectedDepth = el.dataset.val;
   updateStep2Btn();
 }
@@ -713,9 +776,10 @@ function renderResult({ topicNodes, resourceNodes, teachers, startPick }, name) 
   drawConstellation(topicNodes, resourceNodes, name);
   renderTeachers(teachers);
   renderStartHere(startPick);
+  updateSaveCtaNext();
 }
 
-// ── D3 Constellation ──────────────────────────────────────────────────
+// ── D3 Constellation (Merkle-tree / dendrogram, guided) ────────────────
 function drawConstellation(topics, resources, name) {
   if (typeof d3 === 'undefined') {
     const wrap = document.getElementById('constellation-wrap');
@@ -723,136 +787,203 @@ function drawConstellation(topics, resources, name) {
     return;
   }
   const wrap = document.getElementById('constellation-wrap');
-  const W = wrap.clientWidth;
-  const H = Math.min(W * 0.72, 500);
-  const cx = W / 2, cy = H / 2;
+  const W = Math.max(wrap.clientWidth, 320);
+  const H = Math.min(Math.max(W * 0.78, 440), 600);
 
   const svg = d3.select('#constellation-svg')
     .attr('viewBox', `0 0 ${W} ${H}`)
-    .attr('height', H);
+    .attr('height', H)
+    .attr('role', 'img')
+    .attr('aria-label', `Hierarchical constellation for ${name || 'you'}`);
 
   svg.selectAll('*').remove();
 
-  // Defs — glow filter
+  // Defs — glow filter + subtle gradient
   const defs = svg.append('defs');
-  const glow = defs.append('filter').attr('id', 'glow');
-  glow.append('feGaussianBlur').attr('stdDeviation', '4').attr('result', 'blur');
+  const glow = defs.append('filter').attr('id', 'glow').attr('x','-50%').attr('y','-50%').attr('width','200%').attr('height','200%');
+  glow.append('feGaussianBlur').attr('stdDeviation', '3.5').attr('result', 'blur');
   const merge = glow.append('feMerge');
   merge.append('feMergeNode').attr('in', 'blur');
   merge.append('feMergeNode').attr('in', 'SourceGraphic');
 
-  // Build nodes array
-  const R_TOPIC = Math.min(W * 0.28, 170);
-  const R_RES   = Math.min(W * 0.42, 250);
-
-  const nodes = [{ id: 'center', label: name || 'YOU', type: 'center', x: cx, y: cy, fx: cx, fy: cy }];
-  const links = [];
-
-  const n = topics.length;
-  topics.forEach((t, i) => {
-    const angle = (i / n) * 2 * Math.PI - Math.PI / 2;
-    nodes.push({
-      id: t.slug, label: t.label, type: 'topic', url: t.url,
-      x: cx + R_TOPIC * Math.cos(angle),
-      y: cy + R_TOPIC * Math.sin(angle),
-    });
-    links.push({ source: 'center', target: t.slug });
+  // Build hierarchical (merkle-tree) data: root → domains → topics → resource
+  const domainMap = {};
+  selectedDomains.forEach(key => {
+    const dLabel = (DOMAINS.find(x => x.key === key) || {}).label || key;
+    domainMap[key] = { name: dLabel, key, type: 'domain', children: [] };
   });
-
-  resources.forEach((r, i) => {
-    const parent = nodes.find(n => n.id === r.parentSlug);
-    if (!parent) return;
-    const pAngle = Math.atan2(parent.y - cy, parent.x - cx);
-    const spread = 0.4;
-    const angle = pAngle + (i % 2 === 0 ? spread : -spread) * 0.5;
-    nodes.push({
-      id: `r-${i}`, label: r.name.split(' — ')[0], type: r.type || 'resource',
-      url: r.url, x: cx + R_RES * Math.cos(angle), y: cy + R_RES * Math.sin(angle),
-    });
-    links.push({ source: r.parentSlug, target: `r-${i}` });
+  topics.forEach(t => {
+    if (!domainMap[t.domain]) return;
+    const res = resources.find(r => r.parentSlug === t.slug);
+    const node = {
+      name: t.label, url: t.url, slug: t.slug, type: 'topic',
+      children: res ? [{
+        name: (res.name || '').split(' — ')[0],
+        url: res.url, type: res.type || 'resource'
+      }] : []
+    };
+    domainMap[t.domain].children.push(node);
   });
+  // Fold empty domains (so they don't render as dead branches)
+  const domainChildren = Object.values(domainMap).filter(d => d.children.length > 0);
 
-  // Simulation
-  const sim = d3.forceSimulation(nodes)
-    .force('link', d3.forceLink(links).id(d => d.id).distance(d =>
-      d.source.id === 'center' ? R_TOPIC : 65).strength(0.6))
-    .force('charge', d3.forceManyBody().strength(-60))
-    .force('collide', d3.forceCollide().radius(d =>
-      d.type === 'center' ? 50 : d.type === 'topic' ? 34 : 22))
-    .alpha(0.8).alphaDecay(0.025);
+  const data = {
+    name: name || 'Your FRQNCY',
+    type: 'root',
+    children: domainChildren
+  };
 
-  // Links
-  const linkSel = svg.append('g').selectAll('line').data(links).join('line')
-    .attr('stroke', d => d.source.id === 'center' ? 'rgba(196,151,58,0.18)' : 'rgba(74,122,232,0.15)')
-    .attr('stroke-width', d => d.source.id === 'center' ? 1 : 0.8);
+  const root = d3.hierarchy(data);
 
-  // Nodes group
-  const nodeSel = svg.append('g').selectAll('g').data(nodes).join('g')
-    .style('cursor', d => d.url ? 'pointer' : 'default')
-    .on('click', (e, d) => { if (d.url) window.open(d.url, '_blank', 'noopener,noreferrer'); });
+  // Top-down dendrogram. Leaves at bottom, root at top.
+  const margin = { top: 44, right: 24, bottom: 62, left: 24 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+  const treeLayout = d3.tree()
+    .size([innerW, innerH])
+    .separation((a, b) => (a.parent === b.parent ? 1 : 1.5));
+  treeLayout(root);
+
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  // Links — smooth curved paths, gold for root→domain, muted-blue deeper
+  g.append('g').attr('fill', 'none')
+    .selectAll('path').data(root.links()).join('path')
+    .attr('d', d3.linkVertical().x(d => d.x).y(d => d.y))
+    .attr('stroke', d =>
+      d.source.data.type === 'root'   ? 'rgba(196,151,58,0.55)' :
+      d.source.data.type === 'domain' ? 'rgba(74,122,232,0.42)' :
+                                        'rgba(255,255,255,0.22)')
+    .attr('stroke-width', d => d.source.data.type === 'root' ? 1.4 : 1)
+    .attr('stroke-linecap', 'round')
+    .attr('class', d => 'link-' + d.source.data.type)
+    .style('opacity', 0)
+    .transition().duration(650).delay(d => d.source.depth * 180)
+    .style('opacity', 1);
+
+  // Nodes
+  const nodeG = g.append('g')
+    .selectAll('g').data(root.descendants()).join('g')
+    .attr('transform', d => `translate(${d.x},${d.y})`)
+    .style('cursor', d => d.data.url ? 'pointer' : 'default')
+    .on('click', (e, d) => { if (d.data.url) window.open(d.data.url, '_blank', 'noopener,noreferrer'); })
+    .style('opacity', 0);
+
+  nodeG.transition().duration(500).delay(d => 180 + d.depth * 180).style('opacity', 1);
 
   // Circles
-  nodeSel.append('circle')
-    .attr('r', d => d.type === 'center' ? 38 : d.type === 'topic' ? 22 : 13)
+  nodeG.append('circle')
+    .attr('r', d =>
+      d.data.type === 'root'   ? 11 :
+      d.data.type === 'domain' ? 7  :
+      d.data.type === 'topic'  ? 5.5 : 4)
     .attr('fill', d =>
-      d.type === 'center' ? 'rgba(196,151,58,0.15)' :
-      d.type === 'topic'  ? 'rgba(74,122,232,0.12)'  :
-      'rgba(255,255,255,0.04)')
+      d.data.type === 'root'   ? 'rgba(196,151,58,0.22)' :
+      d.data.type === 'domain' ? 'rgba(196,151,58,0.14)' :
+      d.data.type === 'topic'  ? 'rgba(74,122,232,0.22)' :
+                                 'rgba(255,255,255,0.1)')
     .attr('stroke', d =>
-      d.type === 'center' ? 'rgba(196,151,58,0.7)' :
-      d.type === 'topic'  ? 'rgba(74,122,232,0.55)' :
-      'rgba(255,255,255,0.18)')
-    .attr('stroke-width', d => d.type === 'center' ? 1.5 : 1)
-    .attr('filter', d => d.type === 'center' ? 'url(#glow)' : null);
+      d.data.type === 'root'   ? 'rgba(224,192,106,0.95)' :
+      d.data.type === 'domain' ? 'rgba(196,151,58,0.7)'   :
+      d.data.type === 'topic'  ? 'rgba(74,122,232,0.65)'  :
+                                 'rgba(255,255,255,0.38)')
+    .attr('stroke-width', d => d.data.type === 'root' ? 1.5 : 1)
+    .attr('filter', d => d.data.type === 'root' ? 'url(#glow)' : null);
 
-  // Labels — center
-  nodeSel.filter(d => d.type === 'center').append('text')
-    .attr('text-anchor', 'middle').attr('dy', '0.35em')
-    .attr('fill', 'rgba(196,151,58,0.9)')
-    .attr('font-family', 'Jost, sans-serif')
-    .attr('font-size', d => Math.min(11, 80 / Math.max(1, (d.label || '').length)) + 'px')
-    .attr('font-weight', '400').attr('letter-spacing', '0.12em')
-    .text(d => (d.label || '').toUpperCase().substring(0, 10));
+  // Slow pulse on root node
+  nodeG.filter(d => d.data.type === 'root').select('circle')
+    .append('animate').attr('attributeName', 'r')
+    .attr('values', '11;13;11').attr('dur', '3.6s').attr('repeatCount', 'indefinite');
 
-  // Labels — topics
-  nodeSel.filter(d => d.type === 'topic').each(function(d) {
-    const g = d3.select(this);
-    const words = (d.label || '').split(' ');
-    if (words.length === 1) {
-      g.append('text').attr('text-anchor', 'middle').attr('dy', '0.35em')
-        .attr('fill', '#C8D8F0').attr('font-family', 'Jost, sans-serif')
-        .attr('font-size', '8.5px').attr('font-weight', '300')
-        .text(d.label);
+  // Labels — root (above circle, serif uppercase)
+  nodeG.filter(d => d.data.type === 'root').append('text')
+    .attr('text-anchor', 'middle').attr('dy', '-1.4em')
+    .attr('fill', '#E0C06A')
+    .attr('font-family', 'Cormorant, serif')
+    .attr('font-size', '15px').attr('font-weight', '400')
+    .attr('letter-spacing', '0.22em')
+    .text(d => (d.data.name || 'YOU').toUpperCase().slice(0, 22));
+
+  // Labels — domain (above circle, gold small-caps)
+  nodeG.filter(d => d.data.type === 'domain').append('text')
+    .attr('text-anchor', 'middle').attr('dy', '-1.1em')
+    .attr('fill', 'var(--gold)').attr('font-family', 'Jost, sans-serif')
+    .attr('font-size', '9.5px').attr('font-weight', '400')
+    .attr('letter-spacing', '0.2em').attr('text-transform', 'uppercase')
+    .text(d => (d.data.name || '').toUpperCase());
+
+  // Labels — topic (below circle, near-white)
+  nodeG.filter(d => d.data.type === 'topic').each(function(d) {
+    const sel = d3.select(this);
+    const label = (d.data.name || '').trim();
+    // Allow up to two lines
+    const words = label.split(/\s+/);
+    const mid = Math.ceil(words.length / 2);
+    const line1 = words.slice(0, mid).join(' ');
+    const line2 = words.slice(mid).join(' ');
+    const common = sel => sel
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#C8D8F0').attr('font-family', 'Jost, sans-serif')
+      .attr('font-size', '9.5px').attr('font-weight', '300');
+    if (!line2 || words.length <= 2) {
+      common(sel.append('text').attr('dy', '1.6em').text(label));
     } else {
-      g.append('text').attr('text-anchor', 'middle').attr('dy', '-0.2em')
-        .attr('fill', '#C8D8F0').attr('font-family', 'Jost, sans-serif')
-        .attr('font-size', '8px').attr('font-weight', '300')
-        .text(words[0]);
-      g.append('text').attr('text-anchor', 'middle').attr('dy', '1em')
-        .attr('fill', '#C8D8F0').attr('font-family', 'Jost, sans-serif')
-        .attr('font-size', '8px').attr('font-weight', '300')
-        .text(words.slice(1).join(' '));
+      common(sel.append('text').attr('dy', '1.5em').text(line1));
+      common(sel.append('text').attr('dy', '2.7em').text(line2));
     }
   });
 
-  // Labels — resources (outside circle, small)
-  nodeSel.filter(d => d.type !== 'center' && d.type !== 'topic').append('text')
-    .attr('text-anchor', 'middle').attr('dy', '2.2em')
-    .attr('fill', 'rgba(200,216,240,0.55)')
+  // Labels — resource/leaf (below circle, muted)
+  nodeG.filter(d =>
+      d.data.type !== 'root' && d.data.type !== 'domain' && d.data.type !== 'topic')
+    .append('text')
+    .attr('text-anchor', 'middle').attr('dy', '1.8em')
+    .attr('fill', 'rgba(200,216,240,0.7)')
     .attr('font-family', 'Jost, sans-serif')
-    .attr('font-size', '7px').attr('font-weight', '300')
-    .text(d => (d.label || '').substring(0, 18));
+    .attr('font-size', '8.5px').attr('font-weight', '300')
+    .attr('font-style', 'italic')
+    .text(d => {
+      const n = (d.data.name || '').slice(0, 22);
+      return n + (d.data.name && d.data.name.length > 22 ? '…' : '');
+    });
 
-  // Tick
-  sim.on('tick', () => {
-    linkSel
-      .attr('x1', d => d.source.x).attr('y1', d => d.source.y)
-      .attr('x2', d => d.target.x).attr('y2', d => d.target.y);
-    nodeSel.attr('transform', d => `translate(${d.x},${d.y})`);
-  });
+  // Gold traveling particles along root→domain links (like explore.html)
+  const rootLinks = root.links().filter(l => l.source.data.type === 'root');
+  if (rootLinks.length) {
+    const pg = g.append('g').attr('class', 'particles');
+    const spawn = () => {
+      const link = rootLinks[Math.floor(Math.random() * rootLinks.length)];
+      const pathStr = d3.linkVertical().x(d => d.x).y(d => d.y)(link);
+      const p = pg.append('path').attr('d', pathStr).attr('fill', 'none').attr('stroke', 'none');
+      const total = p.node().getTotalLength();
+      const dot = pg.append('circle').attr('r', 1.8).attr('fill', '#E0C06A').attr('filter', 'url(#glow)').style('opacity', 0.85);
+      dot.transition().duration(1400).ease(d3.easeSinInOut)
+        .tween('pos', function() {
+          return t => {
+            const pt = p.node().getPointAtLength(t * total);
+            d3.select(this).attr('cx', pt.x).attr('cy', pt.y);
+          };
+        })
+        .style('opacity', 0)
+        .on('end', () => { dot.remove(); p.remove(); });
+    };
+    const particleInt = setInterval(spawn, 520);
+    // Clean up if re-rendered
+    svg.node().__particleInt = particleInt;
+    const prev = svg.node().__prevParticleInt;
+    if (prev) clearInterval(prev);
+    svg.node().__prevParticleInt = particleInt;
+  }
+}
 
-  // Stop after settling
-  setTimeout(() => sim.stop(), 4000);
+// Keep the Save CTA's `next=` param pointed at the current constellation hash,
+// so after sign-in the user lands back on *their* constellation.
+function updateSaveCtaNext() {
+  const cta = document.getElementById('save-constellation-cta');
+  if (!cta) return;
+  const hash = window.location.hash || '';
+  const next = encodeURIComponent('/my-frqncy.html' + hash);
+  cta.setAttribute('href', '/social/login?next=' + next);
 }
 
 // ── Render teachers ────────────────────────────────────────────────────
@@ -892,15 +1023,32 @@ function renderStartHere(pick) {
 // ── Share ──────────────────────────────────────────────────────────────
 function shareConstellation() {
   const url = location.href;
-  navigator.clipboard.writeText(url).then(() => {
-    const btn = document.getElementById('share-btn');
+  const btn = document.getElementById('share-btn');
+  const done = () => {
     btn.textContent = '✓ Link copied';
     btn.classList.add('share-copied');
     setTimeout(() => {
       btn.textContent = 'Copy shareable link';
       btn.classList.remove('share-copied');
     }, 2500);
-  });
+  };
+  const fail = () => {
+    btn.textContent = 'Copy failed — long-press to copy URL';
+    setTimeout(() => { btn.textContent = 'Copy shareable link'; }, 3500);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(done).catch(fail);
+  } else {
+    // Fallback for insecure contexts / old browsers
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      done();
+    } catch (e) { fail(); }
+  }
 }
 
 function restartForm() {
@@ -950,8 +1098,23 @@ function esc(s) {
 }
 
 // ── Init ──────────────────────────────────────────────────────────────
+function enhanceChoiceTiles() {
+  // Make the hand-coded choice-tile divs keyboard accessible
+  document.querySelectorAll('.choice-tile').forEach(el => {
+    el.setAttribute('role', 'radio');
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('aria-checked', 'false');
+    const name = el.querySelector('.ct-name')?.textContent || '';
+    const desc = el.querySelector('.ct-desc')?.textContent || '';
+    el.setAttribute('aria-label', `${name}: ${desc}`);
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+    });
+  });
+}
 (async function init() {
   buildDomainGrid();
+  enhanceChoiceTiles();
   await loadData();
   const restored = await restoreFromURL();
   if (!restored) {

@@ -23,15 +23,17 @@
 <link rel="manifest" href="manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preload" as="style" href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{
   --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
-  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
+  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.025);
   --card-border:rgba(255,255,255,0.08);--accent:#4A7AE8;--accent-glow:rgba(74,122,232,0.12);
 }
-html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6;overflow-x:hidden}
+body{max-width:100vw}
 a{color:inherit;text-decoration:none}
 
 /* ── NAV ── */
@@ -49,12 +51,12 @@ nav{
 .nav-links{display:flex;align-items:center;gap:clamp(1rem,2vw,2rem);list-style:none}
 .nav-links a{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);transition:color .2s}
 .nav-links a:hover{color:var(--text)}
-.nav-cta{
+.nav-cta,.nav-cta-gold{
   border:1px solid rgba(196,151,58,0.35)!important;border-radius:2px;
   padding:5px 12px;color:var(--gold)!important;
   transition:all .2s!important;
 }
-.nav-cta:hover{background:rgba(196,151,58,0.08)!important;border-color:var(--gold)!important}
+.nav-cta:hover,.nav-cta-gold:hover{background:rgba(196,151,58,0.08)!important;border-color:var(--gold)!important}
 @media(max-width:700px){.nav-links{display:none}}
 
 /* ── HERO ── */
@@ -86,21 +88,22 @@ nav{
 .search-input-row{position:relative}
 .search-input-row svg{position:absolute;left:16px;top:50%;transform:translateY(-50%);opacity:0.35;pointer-events:none}
 #q{
-  width:100%;
+  width:100%;min-height:48px;
   background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.14);border-radius:3px;
   padding:14px 48px 14px 46px;
-  color:#fff;font-family:'Jost',sans-serif;font-size:1rem;font-weight:300;letter-spacing:0.04em;
+  color:#fff;font-family:'Jost',sans-serif;font-size:16px;font-weight:300;letter-spacing:0.04em;
   outline:none;transition:border-color .2s,background .2s;
 }
 #q::placeholder{color:rgba(255,255,255,0.25)}
 #q:focus{border-color:rgba(74,122,232,0.55);background:rgba(255,255,255,0.08)}
 .clear-btn{
-  position:absolute;right:12px;top:50%;transform:translateY(-50%);
+  position:absolute;right:8px;top:50%;transform:translateY(-50%);
   background:none;border:none;color:var(--text-dim);cursor:pointer;
-  font-size:1.1rem;line-height:1;padding:4px;display:none;transition:color .2s;
+  font-size:1.1rem;line-height:1;padding:10px;min-width:36px;min-height:36px;display:none;transition:color .2s;
+  align-items:center;justify-content:center;
 }
 .clear-btn:hover{color:var(--text)}
-.clear-btn.visible{display:block}
+.clear-btn.visible{display:flex}
 
 /* ── FILTERS ── */
 .filters{
@@ -111,10 +114,11 @@ nav{
 .filter-label{font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-right:0.25rem}
 .ftab{
   font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;
-  padding:4px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;
+  padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;
   cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;
-  font-family:'Jost',sans-serif;white-space:nowrap;
+  font-family:'Jost',sans-serif;white-space:nowrap;min-height:32px;
 }
+@media(max-width:640px){.ftab{padding:8px 14px;min-height:36px;font-size:0.64rem}}
 .ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
 .ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(74,122,232,0.07)}
 
@@ -208,17 +212,22 @@ mark{background:rgba(74,122,232,0.22);color:#fff;border-radius:2px;padding:0 2px
 .popular-heading{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;opacity:0.8}
 .popular-pills{display:flex;flex-wrap:wrap;gap:0.5rem}
 .pill{
-  font-size:0.68rem;letter-spacing:0.08em;
-  padding:5px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:20px;
+  font-size:0.72rem;letter-spacing:0.08em;
+  padding:8px 16px;border:1px solid rgba(255,255,255,0.1);border-radius:20px;
   color:var(--text-dim);transition:all .2s;cursor:pointer;background:none;
-  font-family:'Jost',sans-serif;
+  font-family:'Jost',sans-serif;min-height:36px;
 }
 .pill:hover{border-color:var(--accent);color:var(--accent);background:rgba(74,122,232,0.06)}
 
 /* ── RESPONSIVE ── */
 @media(max-width:640px){
   .results-grid{grid-template-columns:1fr}
-  .filters{gap:0.3rem}
+  .filters{gap:0.35rem}
+  .hero h1{line-height:1.12}
+}
+@media(max-width:360px){
+  #q{padding:14px 42px 14px 42px;font-size:16px}
+  .search-input-row svg{left:12px}
 }
 </style>
 <script src="mobile-nav.js" defer></script>
@@ -264,6 +273,7 @@ mark{background:rgba(74,122,232,0.22);color:#fff;border-radius:2px;padding:0 2px
       <li><a href="podcast.html">Podcast</a></li>
       <li><a href="space.html">Space</a></li>
       <li><a href="/social/">Community</a></li>
+      <li><a href="/my-frqncy/dashboard/">Sanctuary</a></li>
       <li><a href="my-frqncy.html" class="nav-cta-gold">My FRQNCY</a></li>
     </ul>
 </nav>
@@ -275,18 +285,19 @@ mark{background:rgba(74,122,232,0.22);color:#fff;border-radius:2px;padding:0 2px
   <a href="my-frqncy.html" class="hero-cta">Build your constellation ✦</a>
 </section>
 
-<div class="search-wrap">
+<form class="search-wrap" role="search" onsubmit="return false" aria-label="FRQNCY network search">
   <div class="search-input-row">
-    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-    <input id="q" type="search" placeholder="Search topics, domains, descriptions…" autocomplete="off" aria-label="Search topics" autofocus>
-    <button class="clear-btn" id="clear-btn" aria-label="Clear search">✕</button>
+    <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true" focusable="false"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+    <label for="q" class="visually-hidden" style="position:absolute;width:1px;height:1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0;padding:0;margin:-1px">Search the FRQNCY network</label>
+    <input id="q" type="search" placeholder="Search topics, domains, descriptions…" autocomplete="off" aria-label="Search topics, domains, and descriptions" autofocus>
+    <button type="button" class="clear-btn" id="clear-btn" aria-label="Clear search">✕</button>
   </div>
-</div>
+</form>
 
-<div class="filters" id="type-row">
+<div class="filters" id="type-row" role="group" aria-label="Filter by type">
   <span class="filter-label">Type</span>
 </div>
-<div class="filters" id="filter-row">
+<div class="filters" id="filter-row" role="group" aria-label="Filter by domain">
   <span class="filter-label">Domain</span>
 </div>
 
@@ -432,10 +443,13 @@ function render() {
   }) : [];
 
   // Filter resources
+  const typeFiltered = activeType !== 'all' && activeType !== 'topics';
   const filteredResources = showResources ? RESOURCES.filter(item => {
-    if (activeType !== 'all' && activeType !== 'topics' && item.type !== activeType) return false;
+    if (typeFiltered && item.type !== activeType) return false;
     if (activeDomain !== 'all' && item.domain !== activeDomain) return false;
-    if (!q) return false;  // only show resources when there's a query
+    // Show resources when there's a query OR when a specific type/domain filter is active
+    if (!q && !typeFiltered && activeDomain === 'all') return false;
+    if (!q) return true;
     return matches(item.name, q) || matches(item.desc, q) ||
            matches(item.topicLabel, q) || matches(item.type, q);
   }) : [];
@@ -470,12 +484,15 @@ function render() {
   }
 
   const nothingFound = filteredTopics.length === 0 && filteredResources.length === 0;
-  if (nothingFound && q) {
+  if (nothingFound && (q || activeType !== 'all' || activeDomain !== 'all')) {
     const emptyGrid = makeGrid();
+    const reason = q
+      ? `Nothing matched "<strong>${esc(query)}</strong>".`
+      : `No results with the current filters.`;
     emptyGrid.innerHTML = `<div class="empty">
       <div class="empty-icon">○</div>
-      <p>Nothing matched "<strong>${esc(query)}</strong>".<br>
-      Try a broader term, or <a href="#" onclick="clearSearch();return false">clear the search</a>.</p>
+      <p>${reason}<br>
+      Try a broader term, or <a href="#" onclick="clearSearch();return false">clear filters</a>.</p>
     </div>`;
     area.appendChild(emptyGrid);
     return;

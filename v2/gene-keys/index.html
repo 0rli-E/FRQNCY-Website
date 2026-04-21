@@ -17,6 +17,7 @@
 <link rel="canonical" href="https://frqncy.network/v2/gene-keys/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://plausible.io">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script src="../../mobile-nav.js" defer></script>
@@ -58,7 +59,7 @@ section{margin-bottom:4.5rem}
 .rcard:hover{border-color:rgba(255,255,255,0.14);background:rgba(255,255,255,0.05)}
 .rtype{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--navy);background:var(--accent);padding:3px 9px;border-radius:2px;font-weight:500;white-space:nowrap;line-height:1.6;margin-top:2px}
 .rinfo{min-width:0}
-.rinfo h4{font-size:0.9rem;font-weight:400;color:#fff;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;line-height:1.35}
+.rinfo h4{font-size:0.9rem;font-weight:400;color:#fff;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;line-height:1.35;word-break:break-word;overflow-wrap:anywhere}
 .rinfo p{font-size:0.76rem;color:var(--text-dim);line-height:1.55}
 .fpick{font-size:0.48rem;letter-spacing:0.15em;color:var(--gold);border:1px solid rgba(196,151,58,0.5);padding:1px 6px;border-radius:2px;flex-shrink:0;font-weight:400}
 .rlink{font-size:0.66rem;letter-spacing:0.1em;color:var(--accent);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:2px;white-space:nowrap;transition:all .2s;text-decoration:none;margin-top:1px}
@@ -110,7 +111,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .hero{padding:3rem 1.25rem 2.5rem}
   main{padding:2rem 1.25rem 5rem}
   .rcard{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
-  .rlink{grid-column:2;margin-top:0.5rem}
+  .rlink{grid-column:2;margin-top:0.5rem;min-height:44px;display:inline-flex;align-items:center;justify-content:center}
   .breadcrumb{display:none}
   .triad-grid{grid-template-columns:1fr}
 }
