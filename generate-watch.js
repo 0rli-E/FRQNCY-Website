@@ -25,7 +25,7 @@ const TOPIC_LABELS = {
   't-soundheal':'Sound Healing','t-quantum-grammar':'Quantum Grammar','t-ai':'AI & Technology',
   't-sacredgeo':'Sacred Geometry','t-vibration':'Vibration','t-saclaw':'Sacred Law',
   't-trudeau':'Kevin Trudeau','t-osho':'Osho','t-sadhguru':'Sadhguru','t-saimaa':'Sai Maa','t-garyspivey':'Gary Spivey',
-  't-history':'History','t-movies':'Films'
+  't-history':'History','t-design':'Design','t-movies':'Films'
 };
 
 const allVideos = [];
