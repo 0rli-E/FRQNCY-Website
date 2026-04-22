@@ -69,19 +69,34 @@ nav{
 .hero .sub{
   color:var(--text-dim);font-size:0.85rem;margin-top:0.5rem;letter-spacing:0.04em;
 }
-.hero-actions{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.hero-actions{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+/* Button system — letter-spacing compensation via asymmetric padding
+   so uppercase labels render visually centered inside the border.
+   padding-left = padding-right + letter-spacing. */
 .btn{
   display:inline-flex;align-items:center;justify-content:center;
-  font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;
-  padding:0.55rem 1rem;border-radius:2px;
-  border:1px solid var(--card-border);color:var(--text-dim);
-  transition:all .2s;line-height:1;
-  text-indent:0.16em;
+  font-family:'Jost',sans-serif;font-weight:400;
+  font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;
+  padding:0.6rem 1rem 0.6rem 1.16rem;
+  border-radius:3px;line-height:1;white-space:nowrap;
+  border:1px solid rgba(196,151,58,0.22);color:var(--gold-light);
+  background:rgba(196,151,58,0.04);
+  cursor:pointer;transition:border-color .18s,background .18s,color .18s,transform .12s;
 }
-.btn:hover{border-color:var(--gold-dim);color:var(--gold-light);background:rgba(196,151,58,0.04)}
-.btn-gold{border-color:var(--gold);color:var(--gold)}
-.btn-gold:hover{background:rgba(196,151,58,0.08);color:var(--gold-light)}
-.btn-tiny{font-size:0.62rem;padding:0.3rem 0.6rem;letter-spacing:0.1em;text-indent:0.1em}
+.btn:hover{
+  border-color:var(--gold);color:#fff;
+  background:rgba(196,151,58,0.12);
+}
+.btn:active{transform:translateY(1px)}
+.btn:disabled{opacity:0.45;cursor:not-allowed}
+.btn:disabled:hover{border-color:rgba(196,151,58,0.22);color:var(--gold-light);background:rgba(196,151,58,0.04)}
+.btn-gold{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.08)}
+.btn-gold:hover{background:rgba(196,151,58,0.18);color:#fff;border-color:var(--gold-light)}
+.btn-tiny{
+  font-size:0.58rem;letter-spacing:0.12em;
+  padding:0.35rem 0.6rem 0.35rem 0.72rem;
+  border-radius:2px;
+}
 
 /* ── ILLUMINATOR ── */
 .illuminator-card{
@@ -169,11 +184,14 @@ nav{
   display:flex;align-items:center;gap:0.4rem;margin-top:0.5rem;
 }
 .score-btn{
-  width:30px;height:30px;border:1px solid var(--card-border);border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--text-dim);transition:all .15s;font-size:1rem;
+  width:32px;height:32px;border:1px solid var(--card-border);border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--text-dim);transition:border-color .15s,color .15s,background .15s,transform .1s;
+  font-size:1rem;line-height:1;font-family:'Jost',sans-serif;
+  background:transparent;cursor:pointer;padding:0;
 }
 .score-btn:hover{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.08)}
+.score-btn:active{transform:scale(0.92)}
 .score-trend{
   display:flex;align-items:center;gap:0.3rem;
   font-size:0.7rem;color:var(--text-faint);margin-left:auto;
@@ -183,16 +201,18 @@ nav{
 .score-card.add-card{
   border-style:dashed;background:transparent;
   display:flex;align-items:center;justify-content:center;
-  color:var(--text-faint);font-size:0.8rem;letter-spacing:0.1em;text-transform:uppercase;
-  cursor:pointer;
+  color:var(--text-faint);font-family:'Jost',sans-serif;
+  font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;
+  text-indent:0.16em;
+  cursor:pointer;transition:border-color .18s,color .18s,background .18s;
 }
-.score-card.add-card:hover{border-color:var(--gold);color:var(--gold)}
+.score-card.add-card:hover{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.03)}
 .score-delete{
   position:absolute;top:0.7rem;right:0.7rem;
-  width:24px;height:24px;border-radius:50%;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--text-faint);opacity:0;transition:all .15s;
-  font-size:0.9rem;
+  width:26px;height:26px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--text-faint);opacity:0;transition:opacity .15s,color .15s,background .15s;
+  font-size:0.9rem;line-height:1;cursor:pointer;background:transparent;
 }
 .score-card:hover .score-delete{opacity:1}
 .score-delete:hover{color:var(--bad)}
@@ -294,10 +314,13 @@ nav{
 .obj-add{
   border:1px dashed var(--card-border);color:var(--text-faint);
   display:flex;align-items:center;justify-content:center;
-  font-size:0.75rem;letter-spacing:0.14em;text-transform:uppercase;
-  cursor:pointer;
+  font-family:'Jost',sans-serif;
+  font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;
+  text-indent:0.14em;
+  cursor:pointer;transition:border-color .18s,color .18s,background .18s;
+  background:transparent;
 }
-.obj-add:hover{border-color:var(--gold);color:var(--gold)}
+.obj-add:hover{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.03)}
 
 /* Goals (under each objective) */
 .goals-block{margin-top:0.5rem;padding-left:1.2rem;border-left:2px solid var(--card-border)}
@@ -307,8 +330,9 @@ nav{
 }
 .goal-check{
   width:18px;height:18px;border:1px solid var(--gold-dim);border-radius:3px;
-  display:flex;align-items:center;justify-content:center;
+  display:inline-flex;align-items:center;justify-content:center;
   cursor:pointer;flex-shrink:0;transition:all .15s;
+  background:transparent;padding:0;color:inherit;
 }
 .goal-check.done{background:var(--gold);border-color:var(--gold);color:var(--navy)}
 .goal-check.done::before{content:"✓";font-size:0.8rem;font-weight:600}
@@ -350,16 +374,19 @@ nav{
   position:absolute;top:-6px;right:-6px;width:18px;height:18px;
   background:var(--navy);border:1px solid var(--card-border);border-radius:50%;
   display:none;align-items:center;justify-content:center;font-size:0.7rem;
-  color:var(--text-dim);
+  color:var(--text-dim);line-height:1;padding:0;cursor:pointer;
+  transition:color .15s,border-color .15s;
 }
 .habit-chip:hover .habit-del-btn{display:flex}
 .habit-del-btn:hover{color:var(--bad);border-color:var(--bad)}
 .habit-add-chip{
-  display:flex;align-items:center;gap:0.4rem;
+  display:inline-flex;align-items:center;gap:0.4rem;
   padding:0.6rem 1rem;border:1px dashed var(--card-border);
   color:var(--text-faint);font-size:0.78rem;border-radius:3px;cursor:pointer;
+  background:transparent;font-family:inherit;line-height:1;
+  transition:border-color .18s,color .18s,background .18s;
 }
-.habit-add-chip:hover{color:var(--gold);border-color:var(--gold)}
+.habit-add-chip:hover{color:var(--gold);border-color:var(--gold);background:rgba(196,151,58,0.03)}
 .habit-add-input{
   display:flex;align-items:center;gap:0.4rem;padding:0.6rem 1rem;
   border:1px solid var(--gold);border-radius:3px;background:var(--navy-mid);
@@ -516,12 +543,14 @@ nav{
   margin-bottom:2rem;overflow-x:auto;
 }
 .tab{
-  padding:0.8rem 1.4rem;font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;
+  font-family:'Jost',sans-serif;
+  padding:0.85rem 1.4rem 0.85rem 1.56rem;
+  font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;
   color:var(--text-dim);border-bottom:2px solid transparent;
-  cursor:pointer;transition:all .2s;white-space:nowrap;
-  text-indent:0.16em;
+  cursor:pointer;transition:color .18s,border-color .18s,background .18s;
+  white-space:nowrap;background:transparent;
 }
-.tab:hover{color:var(--text)}
+.tab:hover{color:#fff;background:rgba(255,255,255,0.02)}
 .tab.active{color:var(--gold);border-bottom-color:var(--gold)}
 
 .view{display:none}
@@ -887,6 +916,29 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:
 </div>
 
 <div class="toast" id="toast"></div>
+
+<!-- ─────────────── ILLUMINATOR CHAT PANEL ───────────────
+     Must appear in the DOM BEFORE the inline script below,
+     because that script binds these elements at parse time. -->
+<div class="illum-backdrop" id="illum-backdrop" aria-hidden="true"></div>
+<aside class="illum-panel" id="illum-panel" role="dialog" aria-modal="true" aria-labelledby="illum-title" aria-hidden="true">
+  <header class="illum-head">
+    <h3 id="illum-title"><span class="glyph">✧</span> Word Illuminator</h3>
+    <div class="illum-head-actions">
+      <button type="button" class="illum-icon-btn" id="illum-clear" title="Clear this conversation" aria-label="Clear conversation">↻</button>
+      <button type="button" class="illum-icon-btn" id="illum-close" title="Close" aria-label="Close Illuminator">×</button>
+    </div>
+  </header>
+  <div class="illum-messages" id="illum-messages" aria-live="polite" aria-atomic="false"></div>
+  <div class="illum-error" id="illum-error" hidden></div>
+  <form class="illum-compose" id="illum-compose" autocomplete="off">
+    <textarea id="illum-input" rows="2" placeholder="Offer a word, a name, or a concept…" aria-label="Your word"></textarea>
+    <div class="illum-compose-row">
+      <span class="illum-hint">Enter to send · Shift+Enter for new line</span>
+      <button type="submit" class="illum-send" id="illum-send">Illuminate</button>
+    </div>
+  </form>
+</aside>
 
 <script>
 /* ════════════════════════════════════════════════════════════════
@@ -2149,31 +2201,12 @@ function renderAll() {
   // tab from hash
   const h = location.hash.replace('#','');
   if (h && ['dashboard','pyramid','practice','progress','vision'].includes(h)) switchTab(h);
+  // deep-link: /my-frqncy/dashboard/#illuminate auto-opens the Word Illuminator
+  if (h === 'illuminate') openChatPanel();
 })();
 
 window.closeModal = closeModal;
 </script>
-
-<!-- ─────────────── ILLUMINATOR CHAT PANEL ─────────────── -->
-<div class="illum-backdrop" id="illum-backdrop" aria-hidden="true"></div>
-<aside class="illum-panel" id="illum-panel" role="dialog" aria-modal="true" aria-labelledby="illum-title" aria-hidden="true">
-  <header class="illum-head">
-    <h3 id="illum-title"><span class="glyph">✧</span> Word Illuminator</h3>
-    <div class="illum-head-actions">
-      <button type="button" class="illum-icon-btn" id="illum-clear" title="Clear this conversation" aria-label="Clear conversation">↻</button>
-      <button type="button" class="illum-icon-btn" id="illum-close" title="Close" aria-label="Close Illuminator">×</button>
-    </div>
-  </header>
-  <div class="illum-messages" id="illum-messages" aria-live="polite" aria-atomic="false"></div>
-  <div class="illum-error" id="illum-error" hidden></div>
-  <form class="illum-compose" id="illum-compose" autocomplete="off">
-    <textarea id="illum-input" rows="2" placeholder="Offer a word, a name, or a concept…" aria-label="Your word"></textarea>
-    <div class="illum-compose-row">
-      <span class="illum-hint">Enter to send · Shift+Enter for new line</span>
-      <button type="submit" class="illum-send" id="illum-send">Illuminate</button>
-    </div>
-  </form>
-</aside>
 
 </body>
 </html>
