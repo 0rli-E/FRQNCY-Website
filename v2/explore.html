@@ -1030,9 +1030,11 @@ const searchBar=document.getElementById('search-bar');
 const searchCount=document.getElementById('search-count');
 const searchResults=document.getElementById('search-results');
 
-// Load rich search index from search.json
+// Load rich search indexes (topics + resources)
 let SEARCH_INDEX=[];
+let RESOURCE_INDEX=[];
 fetch('../search.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(data=>{ SEARCH_INDEX=data; }).catch(()=>{ /* search will use graph-only fallback */ });
+fetch('../resources.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(data=>{ RESOURCE_INDEX=data; }).catch(()=>{});
 
 function scoreMatch(item, q){
   let score=0;
@@ -1049,13 +1051,29 @@ function scoreMatch(item, q){
   return score;
 }
 
-function renderResultsPanel(matches){
-  if(!matches.length){
-    searchResults.innerHTML='<div class="sr-empty">NO TOPICS FOUND</div>';
+function scoreResource(r, q){
+  let score=0;
+  const name=(r.name||'').toLowerCase();
+  const desc=(r.desc||'').toLowerCase();
+  const topic=(r.topicLabel||'').toLowerCase();
+  const type=(r.type||'').toLowerCase();
+  // Weight resources slightly below topics so topic matches surface on top.
+  if(name===q) score+=90;
+  else if(name.startsWith(q)) score+=55;
+  else if(name.includes(q)) score+=35;
+  if(desc.includes(q)) score+=15;
+  if(topic.includes(q)) score+=8;
+  if(type===q) score+=8;
+  return score;
+}
+
+function renderResultsPanel(topicMatches, resourceMatches){
+  if(!topicMatches.length && !resourceMatches.length){
+    searchResults.innerHTML='<div class="sr-empty">NO MATCHES FOUND</div>';
     searchResults.classList.add('visible');
     return;
   }
-  searchResults.innerHTML=matches.map(item=>`
+  const topicHtml=topicMatches.map(item=>`
     <a class="sr-item" href="${item.url}">
       <div class="sr-dot" style="background:${item.accent}"></div>
       <div class="sr-body">
@@ -1065,6 +1083,19 @@ function renderResultsPanel(matches){
         ${item.picks.length?`<div class="sr-picks">✦ ${item.picks.slice(0,3).join('  ·  ')}</div>`:''}
       </div>
     </a>`).join('');
+  const resHtml=resourceMatches.map(r=>`
+    <a class="sr-item" href="${r.url}" target="_blank" rel="noopener noreferrer">
+      <div class="sr-dot" style="background:#888"></div>
+      <div class="sr-body">
+        <div class="sr-label">${r.name}</div>
+        <div class="sr-meta">${(r.type||'resource')} &nbsp;·&nbsp; ${r.topicLabel||''}</div>
+        ${r.desc?`<div class="sr-desc">${r.desc}</div>`:''}
+      </div>
+    </a>`).join('');
+  const sep=(topicMatches.length && resourceMatches.length)
+    ? '<div class="sr-empty" style="opacity:0.5;font-size:0.6rem;padding:0.5rem 1rem">RESOURCES</div>'
+    : '';
+  searchResults.innerHTML=topicHtml + sep + resHtml;
   searchResults.classList.add('visible');
 }
 
@@ -1088,6 +1119,13 @@ function updateSearchFilter(){
     .sort((a,b)=>b.score-a.score)
     .map(({item})=>item);
 
+  // Resource search over resources.json
+  const resourceMatches=RESOURCE_INDEX
+    .map(r=>({ r, score:scoreResource(r,query) }))
+    .filter(({score})=>score>0)
+    .sort((a,b)=>b.score-a.score)
+    .map(({r})=>r);
+
   // Sync graph node highlighting (by label only for graph nodes)
   searchMatches.clear();
   NODES.forEach(n=>{
@@ -1097,16 +1135,29 @@ function updateSearchFilter(){
   richMatches.forEach(item=>{
     NODES.forEach(n=>{ if(n.id===item.id||n.id===item.slug) searchMatches.add(n.id); });
   });
+  // And graph nodes corresponding to topics of matched resources
+  const topicSlugsHit=new Set(resourceMatches.map(r=>r.topicSlug).filter(Boolean));
+  if(topicSlugsHit.size){
+    SEARCH_INDEX.forEach(item=>{
+      if(topicSlugsHit.has(item.slug)){
+        NODES.forEach(n=>{ if(n.id===item.id) searchMatches.add(n.id); });
+      }
+    });
+  }
 
   nodeSel.style('opacity',n=>searchMatches.has(n.id)?1:0.05);
   nodeSel.style('filter',n=>searchMatches.has(n.id)?'drop-shadow(0 0 8px rgba(196,151,58,0.4))':'none');
 
-  const topicCount=richMatches.length||searchMatches.size;
-  searchCount.textContent=`${topicCount} topic${topicCount!==1?'s':''} found`;
+  const tCount=richMatches.length;
+  const rCount=resourceMatches.length;
+  const parts=[];
+  if(tCount) parts.push(`${tCount} topic${tCount!==1?'s':''}`);
+  if(rCount) parts.push(`${rCount} resource${rCount!==1?'s':''}`);
+  searchCount.textContent=parts.join(' · ') || 'no matches';
   searchCount.classList.add('active');
 
-  // Show results panel with top 12 matches
-  renderResultsPanel(richMatches.slice(0,12));
+  // Show results panel — top 8 of each
+  renderResultsPanel(richMatches.slice(0,8), resourceMatches.slice(0,8));
 }
 
 searchBar.addEventListener('input',updateSearchFilter);
