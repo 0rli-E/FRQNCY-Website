@@ -28,7 +28,7 @@
 :root{--accent:#00BCD4;--accent-glow:rgba(0,188,212,0.14)}
 
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08)}
+:root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#8FA8CC;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08)}
 html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
 a{color:var(--accent);text-decoration:none}
 a:hover{opacity:0.8}
@@ -205,7 +205,11 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  .snav-back:not(:last-child){display:none}
+  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
+     remain reachable from every deep page on narrow phones. Wrapping handled
+     by flex-wrap on the container. */
+  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
 </style>
