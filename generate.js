@@ -784,49 +784,25 @@ function topicPage(t) {
   const pillar = pillarMap.get(domain.pillar);
 
   // Related topics in same domain (exclude current, max 6)
-  // ── Related teachers — people who teach this topic, ranked by breadth ──
-  const teachers = relatedTeachersForTopic(t.id).slice(0, 6);
-  const teachersSection = teachers.length ? `<section>
-    <div class="section-label">Teachers on this topic</div>
-    <div class="grid grid-sm">
-      ${teachers.map(({person: p, breadth}) => {
-        const pslug = personSlug(p);
-        const other = breadth - 1;
-        const meta = other > 0 ? `Person &nbsp;·&nbsp; also teaches ${other} other topic${other === 1 ? '' : 's'}` : 'Person';
-        return `<a href="/people/${esc(pslug)}/" class="ncard">
-  <div class="ncard-type">${meta}</div>
-  <h3>${esc(p.name)}</h3>
-  ${p.bio ? `<p>${esc(p.bio.slice(0, 80))}${p.bio.length > 80 ? '…' : ''}</p>` : ''}
-  <span class="ncard-arrow">→</span>
-</a>`;
-      }).join('\n')}
-    </div>
-  </section>` : '';
-
-  // ── Connected through the network — topics linked by shared bed entities ──
+  // ── Explore section — one place for all onward navigation.
+  //    Merges "Connected through the network" (shared entities) with
+  //    "More in [Domain]" (same-domain siblings), deduped. The previous
+  //    standalone "Teachers on this topic" section is gone — teachers
+  //    already render as clickable person cards inside Curated Resources.
   const connected = relatedTopicsByEntities(t.id).slice(0, 6);
   const connectedIds = new Set(connected.map(x => x.topic.id));
-  const connectedSection = connected.length ? `<section>
-    <div class="section-label">Connected through the network</div>
-    <div class="grid grid-sm">
-      ${connected.map(({topic: r, count}) => `<a href="../${r.slug}/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; ${count} shared</div>
-  <h3>${esc(r.label)}</h3>
-  ${r.desc ? `<p>${esc(r.desc.slice(0, 70))}…</p>` : ''}
-  <span class="ncard-arrow">→</span>
-</a>`).join('\n')}
-    </div>
-  </section>` : '';
-
-  // ── More in [Domain] — same-domain topics, excluding any already shown in "Connected" ──
-  const related = (topicsByDomain.get(t.domain) || [])
+  const sameDomain = (topicsByDomain.get(t.domain) || [])
     .filter(r => r.id !== t.id && !connectedIds.has(r.id))
     .slice(0, 6);
-  const relatedCards = related.length ? `<section>
-    <div class="section-label">More in ${esc(domain.label)}</div>
+  const exploreCards = [
+    ...connected.map(({topic: r, count}) => ({ r, meta: `${count} shared`, slug: r.slug })),
+    ...sameDomain.map(r => ({ r, meta: domain.label, slug: r.slug })),
+  ];
+  const exploreSection = exploreCards.length ? `<section>
+    <div class="section-label">Explore</div>
     <div class="grid grid-sm">
-      ${related.map(r => `<a href="../${r.slug}/index.html" class="ncard">
-  <div class="ncard-type">Topic</div>
+      ${exploreCards.map(({r, meta}) => `<a href="../${r.slug}/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; ${esc(meta)}</div>
   <h3>${esc(r.label)}</h3>
   ${r.desc ? `<p>${esc(r.desc.slice(0, 70))}…</p>` : ''}
   <span class="ncard-arrow">→</span>
@@ -880,9 +856,7 @@ nav(crumb) +
   ${vidSection}
   ${courseCallout}
   ${resourceSection(t.id, 'Curated Resources', res)}
-  ${teachersSection}
-  ${connectedSection}
-  ${relatedCards}
+  ${exploreSection}
 </main>
 ${FOOTER}
 </body></html>`;
@@ -1500,7 +1474,7 @@ for (const t of DATA.topics) {
 }
 
 // ── Helper: entity index page builder (one alphabetical grid of cards) ──
-function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intro }) {
+function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intro, showFilters = true }) {
   // For each entity, derive the set of pillars it touches. A person teaching
   // topics across Well-being and Metaphysics shows under BOTH Education and
   // Research filters. Appears_in can contain topic, domain, or pillar ids —
@@ -1538,7 +1512,11 @@ function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intr
 
   const pickCount = enriched.filter(x => x.picked).length;
 
-  const cards = enriched.map(({ e, appCount, picked, pillars }) => {
+  // Progressive disclosure: cap visible cards at 12 initially. A "Show all N"
+  // button at the bottom reveals the rest. Reduces first-contact overwhelm
+  // without hiding data.
+  const INITIAL_CAP = 12;
+  const cards = enriched.map(({ e, appCount, picked, pillars }, i) => {
     const slug = slugFn(e);
     const display = e.name || e.title;
     const desc = e.bio || '';
@@ -1547,15 +1525,18 @@ function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intr
     meta.push(eyebrow);
     if (appCount) meta.push(`${appCount} appearance${appCount === 1 ? '' : 's'}`);
     const pickBadge = picked ? ' <span style="color:var(--gold);font-size:0.54rem;letter-spacing:0.15em;border:1px solid rgba(196,151,58,0.5);padding:1px 5px;border-radius:2px;margin-left:0.35rem;vertical-align:middle">✦ PICK</span>' : '';
-    // data-pillars attribute enables in-page filter JS at bottom of this page.
     const pillarAttr = pillars.length ? ` data-pillars="${esc(pillars.join(' '))}"` : '';
-    return `<a href="./${slug}/index.html" class="ncard entity-card"${pillarAttr}>
+    // Cards past the initial cap are hidden until "Show all" is clicked.
+    const hiddenClass = i >= INITIAL_CAP ? ' entity-card-hidden' : '';
+    return `<a href="./${slug}/index.html" class="ncard entity-card${hiddenClass}"${pillarAttr}${i >= INITIAL_CAP ? ' style="display:none"' : ''}>
   <div class="ncard-type">${esc(meta.join(' · '))}</div>
   <h3>${esc(display)}${pickBadge}</h3>
   ${snippet ? `<p>${esc(snippet)}${desc.length > 90 ? '…' : ''}</p>` : ''}
   <span class="ncard-arrow">→</span>
 </a>`;
   }).join('\n');
+  const hasMore = enriched.length > INITIAL_CAP;
+  const showAllBtn = hasMore ? `<div style="text-align:center;margin-top:2rem"><button id="show-all-btn" class="ftab" style="padding:10px 22px;font-size:0.72rem">Show all ${enriched.length} →</button></div>` : '';
 
   // Build pillar filter chips. Counts are visible up front; clicking filters
   // to entities that touch that pillar.
@@ -1592,10 +1573,11 @@ nav(`<a href="../index.html">FRQNCY</a><span class="sep">/</span><span>${esc(lab
   <p class="hero-desc">${esc(heroDesc)}</p>
 </div>
 <main>
-  ${filterChipsHtml || pickChip ? `<div class="ftabs" style="margin-bottom:1.75rem;flex-wrap:wrap">${allChip}${pickChip}${filterChipsHtml}</div>` : ''}
+  ${showFilters && (filterChipsHtml || pickChip) ? `<div class="ftabs" style="margin-bottom:1.75rem;flex-wrap:wrap">${allChip}${pickChip}${filterChipsHtml}</div>` : ''}
   <div id="filter-empty" style="display:none;padding:3rem 1rem;text-align:center;color:var(--text-dim);font-size:0.85rem">No entities match this filter.</div>
   <section>
     <div class="grid grid-sm" id="entity-grid">${cards}</div>
+    ${showAllBtn}
   </section>
 </main>
 <script>
@@ -1603,11 +1585,34 @@ nav(`<a href="../index.html">FRQNCY</a><span class="sep">/</span><span>${esc(lab
   const chips = document.querySelectorAll('[data-pillar-filter]');
   const cards = document.querySelectorAll('.entity-card');
   const emptyMsg = document.getElementById('filter-empty');
+  const showAllBtn = document.getElementById('show-all-btn');
+  let allRevealed = false;
+
+  // "Show all N" — reveals the cards past the initial cap.
+  if (showAllBtn) {
+    showAllBtn.addEventListener('click', () => {
+      cards.forEach(c => {
+        c.classList.remove('entity-card-hidden');
+        c.style.display = '';
+      });
+      allRevealed = true;
+      showAllBtn.style.display = 'none';
+    });
+  }
+
+  // Pillar / picks filter — auto-reveals all cards when the user starts filtering,
+  // because hiding past-cap cards during a filter query would lie about the match count.
   chips.forEach(chip => {
     chip.addEventListener('click', () => {
       chips.forEach(c => c.classList.remove('active'));
       chip.classList.add('active');
       const filter = chip.dataset.pillarFilter;
+      // When filtering, reveal all cards so the filter operates on the full set.
+      if (!allRevealed) {
+        cards.forEach(c => c.classList.remove('entity-card-hidden'));
+        allRevealed = true;
+        if (showAllBtn) showAllBtn.style.display = 'none';
+      }
       let visible = 0;
       cards.forEach(card => {
         const pillars = (card.dataset.pillars || '').split(' ');
@@ -1683,7 +1688,7 @@ if (ORGS) {
     orgCount++;
   }
   fs.writeFileSync(path.join(ORGS_OUT, 'index.html'),
-    entityIndexPage({ label: 'Orgs', eyebrow: 'Org', entities: ORGS.orgs, slugFn: orgSlug, canonicalPath: '/orgs/', outPath: ORGS_OUT }));
+    entityIndexPage({ label: 'Orgs', eyebrow: 'Org', entities: ORGS.orgs, slugFn: orgSlug, canonicalPath: '/orgs/', showFilters: false }));
   console.log(`  orgs:   ${orgCount} profiles + 1 index → ./orgs/`);
 }
 
@@ -1700,7 +1705,7 @@ if (MEDIA) {
     mediaCount++;
   }
   fs.writeFileSync(path.join(MEDIA_OUT, 'index.html'),
-    entityIndexPage({ label: 'Media', eyebrow: 'Media', entities: MEDIA.media, slugFn: mediaSlug, canonicalPath: '/media/', outPath: MEDIA_OUT }));
+    entityIndexPage({ label: 'Media', eyebrow: 'Media', entities: MEDIA.media, slugFn: mediaSlug, canonicalPath: '/media/', showFilters: false }));
   console.log(`  media:  ${mediaCount} profiles + 1 index → ./media/`);
 }
 
@@ -1717,7 +1722,7 @@ if (PLACES) {
     placeCount++;
   }
   fs.writeFileSync(path.join(PLACES_OUT, 'index.html'),
-    entityIndexPage({ label: 'Places', eyebrow: 'Place', entities: PLACES.places, slugFn: placeSlug, canonicalPath: '/places/', outPath: PLACES_OUT }));
+    entityIndexPage({ label: 'Places', eyebrow: 'Place', entities: PLACES.places, slugFn: placeSlug, canonicalPath: '/places/', showFilters: false }));
   console.log(`  places: ${placeCount} profiles + 1 index → ./places/`);
 }
 
