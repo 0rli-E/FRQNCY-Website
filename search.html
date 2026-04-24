@@ -558,8 +558,11 @@ function resourceCard(item, q) {
   const a = document.createElement('a');
   a.className = 'result-card';
   a.href = item.url || item.topicUrl || '#';
-  a.target = item.url ? '_blank' : '_self';
-  a.rel = item.url ? 'noopener noreferrer' : '';
+  // Internal FRQNCY URLs (profile pages for people/books/places) open in same tab;
+  // external URLs open in a new tab.
+  const isInternal = item.url && item.url.startsWith('/');
+  a.target = (item.url && !isInternal) ? '_blank' : '_self';
+  a.rel = (item.url && !isInternal) ? 'noopener noreferrer' : '';
   a.setAttribute('role', 'listitem');
   a.setAttribute('aria-label', item.name);
   const typeClass = item.type || 'org';

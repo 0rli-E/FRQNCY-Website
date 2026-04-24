@@ -1,0 +1,1859 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Books — FRQNCY Network</title>
+<meta name="description" content="268 books on the FRQNCY network.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Books — FRQNCY Network">
+<meta property="og:description" content="268 books on the FRQNCY network.">
+<meta property="og:url" content="https://frqncy.network/books/">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Books — FRQNCY Network">
+<meta name="twitter:description" content="268 books on the FRQNCY network.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/books/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--accent:#C4973A;--accent-glow:rgba(196,151,58,0.14)}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08)}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+a:hover{opacity:0.8}
+
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.snav-badge{font-size:0.55rem;letter-spacing:0.18em;color:var(--accent);border:1px solid currentColor;padding:1px 6px;border-radius:2px;vertical-align:middle;margin-left:4px;opacity:0.8}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text);opacity:1}
+.breadcrumb .sep{opacity:0.25;font-size:0.65rem}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28);opacity:1}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
+.hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+
+/* MAIN */
+main{max-width:1080px;margin:0 auto;padding:3rem clamp(1.25rem,5vw,2.5rem) 7rem}
+section{margin-bottom:4.5rem}
+.section-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border)}
+.grid-sm{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+
+/* NODE CARD */
+.ncard{background:var(--navy);padding:1.4rem 1.4rem 1.1rem;text-decoration:none;color:var(--text);display:block;transition:background .2s;position:relative}
+.ncard:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.ncard-type{font-size:0.54rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem;opacity:0.8}
+.ncard h3{font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.4rem;line-height:1.2}
+.ncard p{font-size:0.76rem;color:var(--text-dim);line-height:1.45}
+.ncard-arrow{position:absolute;top:1.2rem;right:1.2rem;font-size:0.7rem;color:var(--accent);opacity:0;transition:opacity .2s}
+.ncard:hover .ncard-arrow{opacity:1}
+
+/* RESOURCE CARD */
+.rcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1.25rem 1.4rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:border-color .2s,background .2s}
+.rcard:hover{border-color:rgba(255,255,255,0.14);background:rgba(255,255,255,0.05)}
+.rtype{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--navy);background:var(--accent);padding:3px 9px;border-radius:2px;font-weight:500;white-space:nowrap;line-height:1.6;margin-top:2px}
+.rinfo{min-width:0}
+.rinfo h4{font-size:0.9rem;font-weight:400;color:#fff;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;line-height:1.35}
+.rinfo p{font-size:0.76rem;color:var(--text-dim);line-height:1.55}
+.fpick{font-size:0.48rem;letter-spacing:0.15em;color:var(--gold);border:1px solid rgba(196,151,58,0.5);padding:1px 6px;border-radius:2px;flex-shrink:0;font-weight:400}
+.rlink{font-size:0.66rem;letter-spacing:0.1em;color:var(--accent);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:2px;white-space:nowrap;transition:all .2s;text-decoration:none;margin-top:1px}
+.rlink:hover{border-color:var(--accent);opacity:1}
+
+/* EMPTY */
+.empty{text-align:center;padding:3.5rem 2rem;border:1px dashed rgba(255,255,255,0.08);border-radius:4px}
+.empty p{color:var(--text-dim);font-size:0.82rem;line-height:1.7}
+
+/* FILTER TABS */
+.ftabs{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1.75rem}
+.ftab{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;padding:5px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif}
+.ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(255,255,255,0.03)}
+
+/* RLIST */
+.rlist{display:flex;flex-direction:column;gap:0.65rem}
+
+/* PICKS CALLOUT */
+.picks-intro{font-size:0.78rem;color:var(--text-dim);margin-bottom:1.5rem;line-height:1.6;max-width:600px}
+.picks-intro strong{color:var(--gold);font-weight:400}
+
+/* VIDEO SECTION */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-top:0}
+.vcard-t{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
+  overflow:hidden;cursor:pointer;transition:border-color .22s,transform .22s,background .22s;
+  display:flex;flex-direction:column;
+}
+.vcard-t:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.05)}
+.vcard-t:active{transform:translateY(0);transition-duration:.1s}
+.vthumb-t{position:relative;width:100%;aspect-ratio:16/9;background:#0a1428;overflow:hidden;flex-shrink:0}
+.vthumb-t img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.vcard-t:hover .vthumb-t img{transform:scale(1.04)}
+.vplay-t{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);transition:background .2s}
+.vcard-t:hover .vplay-t{background:rgba(0,0,0,0.38)}
+.vplay-btn-t{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,0.18);backdrop-filter:blur(4px);
+  border:1.5px solid rgba(255,255,255,0.35);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,transform .2s;
+}
+.vcard-t:hover .vplay-btn-t{background:rgba(255,255,255,0.28);transform:scale(1.1)}
+.vdur-t{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.78);color:#fff;font-family:'Jost',sans-serif;font-size:0.6rem;padding:1px 6px;border-radius:2px;letter-spacing:0.02em}
+.vpick-t{position:absolute;top:6px;left:6px;background:rgba(196,151,58,0.92);color:#0B1C3D;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;padding:2px 6px;border-radius:2px}
+.vprov-t{position:absolute;bottom:6px;left:6px;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.12em;text-transform:uppercase;padding:2px 6px;border-radius:2px}
+.vthumb-fallback-t{width:100%;height:100%;background:linear-gradient(135deg,rgba(74,122,232,0.12),rgba(196,151,58,0.08))}
+.vplay-ext-t{border-style:dashed}
+.vinfo-t{padding:0.8rem 1rem 0.9rem;flex:1;display:flex;flex-direction:column;gap:0.2rem}
+.vtitle-t{font-family:'Cormorant',serif;font-size:1rem;font-weight:400;color:#fff;line-height:1.25}
+.vchan-t{font-size:0.66rem;color:var(--text-dim)}
+/* VIDEO MODAL */
+.vmodal{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;padding:1.25rem;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.vmodal.open{opacity:1;pointer-events:all}
+.vmodal-box{
+  width:100%;max-width:860px;background:#0c1e42;
+  border:1px solid rgba(255,255,255,0.1);border-radius:6px;overflow:hidden;
+  transform:translateY(10px) scale(0.98);transition:transform .25s;
+}
+.vmodal.open .vmodal-box{transform:translateY(0) scale(1)}
+.vmodal-player{width:100%;aspect-ratio:16/9}
+.vmodal-player iframe{width:100%;height:100%;border:none;display:block}
+.vmodal-footer{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07)}
+.vmodal-title{font-family:'Cormorant',serif;font-size:1.2rem;color:#fff;line-height:1.2;margin-bottom:0.15rem}
+.vmodal-chan{font-size:0.68rem;color:var(--text-dim)}
+.vmodal-close{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  cursor:pointer;width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);font-size:0.95rem;transition:all .2s;
+}
+.vmodal-close:hover{color:#fff;background:rgba(255,255,255,0.12)}
+.watch-link{
+  display:inline-flex;align-items:center;gap:0.4rem;margin-top:1.1rem;
+  font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--accent);border:1px solid rgba(255,255,255,0.1);
+  padding:6px 14px;border-radius:2px;transition:border-color .2s;text-decoration:none;
+}
+.watch-link:hover{border-color:var(--accent);opacity:1}
+
+/* COURSE CALLOUT */
+.course-callout{
+  display:flex;align-items:center;gap:1.25rem;
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
+  padding:1.25rem 1.4rem;margin-bottom:0.75rem;
+  text-decoration:none;color:var(--text);transition:background .2s,border-color .2s;
+  position:relative;overflow:hidden;
+}
+.course-callout::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--course-accent,var(--accent))}
+.course-callout:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.14);opacity:1}
+.cc-level{font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid currentColor;flex-shrink:0;white-space:nowrap}
+.cc-body{flex:1;min-width:0}
+.cc-title{font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:0.25rem}
+.cc-meta{font-size:0.68rem;color:var(--text-dim)}
+.cc-arrow{font-size:1rem;color:var(--accent);flex-shrink:0;transition:transform .2s}
+.course-callout:hover .cc-arrow{transform:translateX(3px)}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center}
+.footer-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.footer-logo{font-family:'Cormorant',serif;font-size:1rem;letter-spacing:0.25em;color:rgba(255,255,255,0.3);text-transform:uppercase}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;transition:color .2s}
+.footer-links a:hover{color:var(--text);opacity:1}
+
+@media(max-width:640px){
+  .hero{padding:3rem 1.25rem 2.5rem}
+  main{padding:2rem 1.25rem 5rem}
+  .rcard{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+  .rlink{grid-column:2;margin-top:0.5rem}
+  .breadcrumb{display:none}
+  .footer-inner{flex-direction:column;gap:1rem;text-align:center}
+  .vgrid{grid-template-columns:1fr 1fr;gap:0.75rem}
+  .snav-back{font-size:0.6rem;padding:4px 10px}
+}
+@media(max-width:400px){
+  .vgrid{grid-template-columns:1fr}
+  .rcard{grid-template-columns:1fr}
+  .rlink{grid-column:1}
+  .section-label{font-size:0.6rem}
+  .snav-back:not(:last-child){display:none}
+}
+
+</style>
+<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Books — FRQNCY Network","description":"268 books on the FRQNCY network.","url":"https://frqncy.network/books/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
+</head>
+<body><nav class="snav">
+  <div class="snav-left">
+    <a href="../explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
+    <div class="breadcrumb"><a href="../index.html">FRQNCY</a><span class="sep">/</span><span>Books</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
+    <a href="../watch/index.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Watch</a>
+    <a href="../courses/index.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Courses</a>
+    <a href="../../search.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
+    <a href="../../index.html" class="snav-back">← Main Site</a>
+  </div>
+</nav><div class="hero">
+  <div class="hero-eyebrow">Network</div>
+  <h1>Books</h1>
+  <p class="hero-desc">268 books on the FRQNCY network.</p>
+</div>
+<main>
+  <section>
+    <div class="grid grid-sm"><a href="./a-course-in-miracles/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>A Course in Miracles</h3>
+  <p>A complete spiritual thought system channelled over seven years. Polarising, profound.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./a-happy-pocket-full-of-money/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>A Happy Pocket Full of Money</h3>
+  <p>Wealth consciousness from first principles — money as energy, abundance as a state of bein…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./a-pattern-language/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>A Pattern Language</h3>
+  <p>253 patterns for designing buildings, towns, and cities that make human life flourish. A d…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./a-sand-county-almanac/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>A Sand County Almanac</h3>
+  <p>The founding text of modern ecology and land ethics. Lyrical and essential.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./acres-of-diamonds/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Acres of Diamonds</h3>
+  <p>The famous lecture given 6,000 times — the opportunity you seek is already in the field yo…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./aliens-and-the-bible/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Aliens and the Bible</h3>
+  <p>The biblical scholar&#39;s rigorous examination of ancient texts — are the Elohim, Nephilim, a…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./alive-in-shape-and-color/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Alive in Shape and Color</h3>
+  <p>Writers respond to great works of art. Where literature and visual culture meet.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./america-before/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>America Before</h3>
+  <p>The case for a forgotten civilisation in the Americas — geological evidence, ancient maps,…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./americanah/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Americanah</h3>
+  <p>A novel about identity, race, and belonging across continents. The most vital voice on the…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./artificial-intelligence-a-guide-for-thinking-humans/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Artificial Intelligence: A Guide for Thinking Humans</h3>
+  <p>The most honest, clear-eyed overview of what AI can and cannot do. Required reading before…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./as-a-man-thinketh/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>As a Man Thinketh</h3>
+  <p>The 1903 masterpiece — mind is the master weaver, creating the inner garment of character …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./ask-and-it-is-given/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Ask and It Is Given</h3>
+  <p>22 processes for applying the Law of Attraction — the most practical Abraham book for work…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./autobiography-of-a-yogi/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Autobiography of a Yogi</h3>
+  <p>One of the most influential spiritual autobiographies ever written — Yogananda&#39;s account o…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./becoming-a-supple-leopard/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Becoming a Supple Leopard</h3>
+  <p>The definitive guide to resolving movement problems and building a body that lasts.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./becoming-rich/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Becoming Rich</h3>
+  <p>Eleven principles of the millionaire mindset — drawn from interviews with self-made men an…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./becoming-supernatural/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Becoming Supernatural</h3>
+  <p>How ordinary people are doing the extraordinary — Dispenza&#39;s synthesis of neuroscience, ep…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./biomimicry/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Biomimicry</h3>
+  <p>The book that launched the field. Nature as mentor, measure, and model for human design.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./bitcoin-whitepaper/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Bitcoin Whitepaper</h3>
+  <p>Nine pages that changed money forever. The original 2008 paper describing a peer-to-peer e…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./blink/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Blink</h3>
+  <p>The power of thinking without thinking — how expert intuition works and when to trust it.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./bowling-alone/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Bowling Alone</h3>
+  <p>The data-driven account of America&#39;s collapse in social capital — and why it matters for d…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./braiding-sweetgrass/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Braiding Sweetgrass</h3>
+  <p>A Potawatomi botanist weaves indigenous wisdom with Western botany and ecological science …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./breaking-the-habit-of-being-yourself/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Breaking the Habit of Being Yourself</h3>
+  <p>How quantum physics and neuroscience explain why changing your mind can change your biolog…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./breath/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Breath</h3>
+  <p>The most comprehensive investigation into how we breathe — and how most of us are doing it…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./care-of-the-soul/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Care of the Soul</h3>
+  <p>Depth psychology meets spirituality. How to tend to the soul through everyday life rather …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./clean/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Clean</h3>
+  <p>A physician&#39;s programme for reducing toxic load on the body — practical, grounded, and med…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./complexity/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Complexity</h3>
+  <p>The story of the Santa Fe Institute and the birth of complexity science.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./conversations-with-god/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Conversations with God</h3>
+  <p>The unexpected channeled conversation that changed millions of lives — direct dialogue wit…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./cosmos/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Cosmos</h3>
+  <p>The book and series that made astrophysics feel like philosophy. Still the best gateway in…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./cradle-to-cradle/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Cradle to Cradle</h3>
+  <p>The manifesto for designing waste out of the system entirely. Industrial ecology at its mo…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./creative-mind-and-success/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Creative Mind and Success</h3>
+  <p>The founder of Science of Mind on using mental law to create success — clear, practical, a…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./cydonia-the-secret-chronicles-of-mars/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Cydonia: The Secret Chronicles of Mars</h3>
+  <p>David Flynn&#39;s investigation into the 33rd parallel, Cydonia&#39;s geometry, and the encoded co…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./death-on-mars/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Death on Mars</h3>
+  <p>The plasma physicist&#39;s case that Mars was destroyed by a nuclear cataclysm — isotopic evid…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./deschooling-society/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Deschooling Society</h3>
+  <p>A radical critique of compulsory schooling and a vision for self-directed learning communi…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./designing-your-life/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Designing Your Life</h3>
+  <p>Stanford&#39;s design-thinking approach to building a well-lived life — treating your life as …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./dmt-the-spirit-molecule/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>DMT: The Spirit Molecule</h3>
+  <p>Clinical research on DMT and its apparent role in opening perception of non-ordinary dimen…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./doughnut-economics/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Doughnut Economics</h3>
+  <p>A new economic compass for the 21st century — thriving within planetary boundaries. The fo…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./drawdown/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Drawdown</h3>
+  <p>The most comprehensive plan to reverse global warming ever assembled — 100 solutions ranke…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./dying-to-be-me/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Dying to Be Me</h3>
+  <p>Anita Moorjani&#39;s miraculous recovery from end-stage cancer after a profound near-death exp…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./e-squared/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>E-Squared</h3>
+  <p>Nine do-it-yourself energy experiments that prove your thoughts create your reality — maki…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./edgar-cayces-story-of-the-origin-and-destiny-of-man/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Edgar Cayce&#39;s Story of the Origin and Destiny of Man</h3>
+  <p>The sleeping prophet&#39;s readings on the Akashic field — extraordinary and still debated.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./emergence/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Emergence</h3>
+  <p>How cities, ant colonies, and the internet self-organise without central control. A joyful…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./emergent-strategy/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Emergent Strategy</h3>
+  <p>Principles of change drawn from nature and complexity science — organising as if the world…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./energy-medicine/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Energy Medicine</h3>
+  <p>The most comprehensive guide to working with the body&#39;s energy systems for health and vita…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./entangled-life/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Entangled Life</h3>
+  <p>How fungi make our worlds — and why mycelium networks challenge everything we think we kno…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./enthusiasm/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Enthusiasm</h3>
+  <p>Gurumayi&#39;s teaching on enthusiasm as the fuel of spiritual life — the divine energy that m…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./ethereum-whitepaper/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Ethereum Whitepaper</h3>
+  <p>Vitalik Buterin&#39;s 2014 vision for a world computer — extending Bitcoin with Turing-complet…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./fingerprints-of-the-gods/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Fingerprints of the Gods</h3>
+  <p>The investigation into a lost civilisation predating recorded history — the book that laun…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./finite-and-infinite-games/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Finite and Infinite Games</h3>
+  <p>Two kinds of games. Finite games are played to win. Infinite games are played to keep play…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./flatland/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Flatland</h3>
+  <p>A Victorian satire that remains the best introduction to thinking about higher dimensions.…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./food-sovereignty/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Food Sovereignty</h3>
+  <p>A global reconnection of people and place — the concept and movement.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./four-fish/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Four Fish</h3>
+  <p>The future of the last wild food. Four fish tell the story of the ocean&#39;s collapse and pot…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./four-thousand-weeks/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Four Thousand Weeks</h3>
+  <p>Time management for mortals. Why productivity culture fails — and what to do instead.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./from-the-finite-to-the-infinite/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>From the Finite to the Infinite</h3>
+  <p>Muktananda answers seekers&#39; deepest questions on the nature of the self, the guru, and the…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./gödel-escher-bach/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Gödel, Escher, Bach</h3>
+  <p>A Pulitzer Prize-winning journey through logic, self-reference, and consciousness. A cult …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./growing-a-revolution/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Growing a Revolution</h3>
+  <p>The science and practice of regenerative agriculture — how soil health drives farm profita…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./hamlet/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Hamlet</h3>
+  <p>Still the greatest drama ever written. The Folger edition is the best free annotated versi…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./how-not-to-die/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>How Not to Die</h3>
+  <p>A physician reviews every major cause of death and the dietary changes that prevent them. …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./how-to-be-rich/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>How to Be Rich</h3>
+  <p>Practical counsel from one of the 20th century&#39;s richest men — attitudes, habits, and prin…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./how-to-change-your-mind/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>How to Change Your Mind</h3>
+  <p>The book that opened the mainstream conversation about psychedelic medicine and therapeuti…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./how-to-create-a-mind/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>How to Create a Mind</h3>
+  <p>A leading AI researcher&#39;s theory of how the brain works — and how to reverse-engineer it.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./how-to-have-confidence-and-power/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>How to Have Confidence and Power</h3>
+  <p>The classic guide to building genuine confidence and influence in all your dealings with p…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./how-to-win-friends-and-influence-people/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>How to Win Friends and Influence People</h3>
+  <p>The founding text of interpersonal intelligence — 30 million copies sold, still the most u…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./human-design-understanding-the-mechanics-of-your-inner-universe/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Human Design — Understanding the Mechanics of Your Inner Universe</h3>
+  <p>The most accessible entry point into Human Design. Parkyn writes for beginners with warmth…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./i-am-that/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>I Am That</h3>
+  <p>Conversations with a Mumbai shopkeeper who happened to be fully awakened. One of the most …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./i-am-the-word/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>I Am the Word</h3>
+  <p>The first in Selig&#39;s extraordinary channeled series — transmissions from a team of guides …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./ikigai/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Ikigai</h3>
+  <p>The Japanese concept of a life worth living — finding the intersection of what you love, w…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./in-praise-of-idleness/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>In Praise of Idleness</h3>
+  <p>A philosopher&#39;s defence of leisure, rest, and the right to do nothing. Radical in 1932, mo…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./in-tune-with-the-infinite/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>In Tune with the Infinite</h3>
+  <p>The 1897 New Thought classic on aligning with the infinite supply of the universe — one of…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./inside-jokes/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Inside Jokes</h3>
+  <p>Why things are funny — a cognitive science account of humour. Rigorous and actually amusin…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./introduction-to-kashmir-shaivism/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Introduction to Kashmir Shaivism</h3>
+  <p>The philosophical foundation of Siddha Yoga — the non-dual philosophy of Shiva consciousne…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./it-works/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>It Works!</h3>
+  <p>The famous little red book — three simple steps to making your dreams come true. 60 pages.…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./jonathan-livingston-seagull/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Jonathan Livingston Seagull</h3>
+  <p>The beloved fable of a seagull who dares to pursue perfection over convention — a parable …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./karmic-management/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Karmic Management</h3>
+  <p>Ancient Tibetan business wisdom — how the seeds you plant in others&#39; minds determine every…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./let-my-people-go-surfing/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Let My People Go Surfing</h3>
+  <p>The philosophy behind Patagonia. The blueprint for building a company with genuine values.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./letting-go/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Letting Go</h3>
+  <p>The mechanism of surrender — releasing the emotional energy behind every problem. The most…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./life-after-life/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Life After Life</h3>
+  <p>The 1975 book that created the field — Moody&#39;s collection of NDE accounts that gave the mo…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./light-on-yoga/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Light on Yoga</h3>
+  <p>The definitive guide to yoga asana. Every posture, described and photographed by the maste…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./limitless-mind/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Limitless Mind</h3>
+  <p>The Stanford Research Institute physicist who co-founded the US government&#39;s remote viewin…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./living-architecture/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Living Architecture</h3>
+  <p>How the principles of sacred proportion manifest in ancient and modern buildings.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./lost-connections/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Lost Connections</h3>
+  <p>Why depression and anxiety really happen — and the nine real solutions. A challenge to pha…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./mans-search-for-meaning/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Man&#39;s Search for Meaning</h3>
+  <p>One of the most important books ever written. Meaning as the root of psychological surviva…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./many-lives-many-masters/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Many Lives, Many Masters</h3>
+  <p>A Yale-trained psychiatrist&#39;s account of past-life regression and what it suggests about t…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./masters-of-doom/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Masters of Doom</h3>
+  <p>The story of id Software and the birth of the first-person shooter. The book that explaine…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./meditate-happiness-lies-within-you/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Meditate: Happiness Lies Within You</h3>
+  <p>The Master&#39;s most direct and accessible teaching on meditation — where to look, what to ex…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./meditations/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Meditations</h3>
+  <p>The Roman emperor&#39;s private journal — Stoic philosophy at its most intimate and enduring. …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./merriam-websters-collegiate-cook/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Merriam-Webster&#39;s Collegiate Cook</h3>
+  <p>The science of cooking explained as engineering. Understanding why recipes work.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./mind-trek/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Mind Trek</h3>
+  <p>The memoir of the US Army&#39;s most decorated remote viewer — Stargate Project veteran Joe Mc…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./molecules/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Molecules</h3>
+  <p>A stunning visual journey through the molecules that make up our world. Chemistry as art.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./more-natural-cures-revealed/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>More Natural Cures Revealed</h3>
+  <p>The follow-up to Natural Cures — additional suppressed remedies and health information Tru…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./my-lord-loves-a-pure-heart/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>My Lord Loves a Pure Heart</h3>
+  <p>The yoga of divine virtues — courage, contentment, and compassion as spiritual practices i…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./natural-cures-they-dont-want-you-to-know-about/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Natural Cures They Don&#39;t Want You to Know About</h3>
+  <p>The controversial bestseller on suppressed natural health remedies — a polarising but wide…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./never-split-the-difference/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Never Split the Difference</h3>
+  <p>FBI hostage negotiation tactics applied to everyday negotiations — empathy and emotional i…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./neville-goddard-the-complete-reader/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Neville Goddard: The Complete Reader</h3>
+  <p>The most direct and radical manifestation teacher of the 20th century — imagination as the…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./no-impact-man/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>No Impact Man</h3>
+  <p>One man&#39;s year of living without environmental impact in New York City. Funny, honest, and…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./noma-guide-to-fermentation/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Noma Guide to Fermentation</h3>
+  <p>The world&#39;s best restaurant shares its fermentation techniques. Demanding, beautiful, and …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./nonviolent-communication/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Nonviolent Communication</h3>
+  <p>The complete framework for compassionate connection — observation, feeling, need, request.…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./omnivores-dilemma/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Omnivore&#39;s Dilemma</h3>
+  <p>Four meals, traced from field to plate. The book that made a generation think about where …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./on-dialogue/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>On Dialogue</h3>
+  <p>The physicist David Bohm on creating conditions for genuine collective thinking through su…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./on-photography/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>On Photography</h3>
+  <p>A philosophical inquiry into what photographs do to us — how they shape memory, morality, …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./opening-doors-within/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Opening Doors Within</h3>
+  <p>Daily guidance channeled by one of the founders of Findhorn — a year of transmissions on l…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./pale-blue-dot/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Pale Blue Dot</h3>
+  <p>A vision of the human future in space. The famous passage about Earth as a mote of dust is…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./passport-to-magonia/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Passport to Magonia</h3>
+  <p>The scientific case for a non-physical or interdimensional origin of UFO phenomena — Vallé…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./patagonia/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Patagonia</h3>
+  <p>How Patagonia reimagined business — a blueprint for fashion that doesn&#39;t destroy the plane…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./permaculture-a-designers-manual/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Permaculture: A Designers&#39; Manual</h3>
+  <p>The original, comprehensive permaculture bible. Everything you need to design a regenerati…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./plants-of-the-gods/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Plants of the Gods</h3>
+  <p>The classic ethnobotanical guide to psychoactive plants used in ritual and healing worldwi…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./play/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Play</h3>
+  <p>A psychiatrist&#39;s scientific case for play as essential to human health and creativity thro…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./play-of-consciousness/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Play of Consciousness</h3>
+  <p>Muktananda&#39;s spiritual autobiography — the direct account of his 9-year journey through th…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./power-vs-force/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Power vs. Force</h3>
+  <p>The map of human consciousness — kinesiology research revealing that love and truth calibr…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./proof-of-heaven/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Proof of Heaven</h3>
+  <p>The Harvard neurosurgeon who experienced a vivid near-death journey while his cortex was c…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./prosperity/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Prosperity</h3>
+  <p>The Unity co-founder on omnipresent, omnipotent, omniscient supply — prosperity as a spiri…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./psychiatry-the-ultimate-betrayal/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Psychiatry, the Ultimate Betrayal</h3>
+  <p>A critical investigation into the history and practices of psychiatry — from a Citizens Co…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./psycho-cybernetics/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Psycho-Cybernetics</h3>
+  <p>The 1960 plastic surgeon&#39;s discovery that changing inner self-image transformed lives more…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./quantum-computing-an-applied-approach/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Quantum Computing: An Applied Approach</h3>
+  <p>A practical, code-first introduction to quantum algorithms. Less physics, more engineering…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./reality-is-broken/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Reality Is Broken</h3>
+  <p>Why games are making us better and how they can change the world. The case for games as se…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./reality-media/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Reality Media</h3>
+  <p>A scholarly but accessible look at how AR and VR are reshaping representation and experien…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./reinventing-organizations/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Reinventing Organizations</h3>
+  <p>A new paradigm for organizing human enterprise — from pyramids to living systems. Genuinel…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./rest/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Rest</h3>
+  <p>The science of rest and why the best thinkers in history worked far less than we think.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./rich-dad-poor-dad/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Rich Dad Poor Dad</h3>
+  <p>The financial education the school system never gave you — assets vs liabilities, and why …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./richard-hittlemans-yoga-28-day-exercise-plan/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Richard Hittleman&#39;s Yoga: 28 Day Exercise Plan</h3>
+  <p>The bestselling yoga book that brought hatha yoga into Western living rooms — gentle, prog…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./sacred-geometry/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Sacred Geometry</h3>
+  <p>The essential introduction to the mathematics of beauty and proportion that underlies all …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./salt-fat-acid-heat/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Salt, Fat, Acid, Heat</h3>
+  <p>The four elements of good cooking. Once you understand them, every dish improves instantly…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./see-you-at-the-top/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>See You at The Top</h3>
+  <p>Ziglar&#39;s foundational work on attitude, relationships, goals, and the character qualities …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./seven-brief-lessons-on-physics/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Seven Brief Lessons on Physics</h3>
+  <p>The most beautiful introduction to modern physics ever written. 79 pages. Read it in an af…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./something-deeply-hidden/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Something Deeply Hidden</h3>
+  <p>A leading physicist makes the case for Many Worlds — and explains what quantum mechanics a…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./sprint/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Sprint</h3>
+  <p>Google Ventures&#39; 5-day method for testing ideas with a prototype before spending months bu…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./starseeds/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Starseeds</h3>
+  <p>The SPIEGEL bestseller that introduced German-speaking audiences to Starseed consciousness…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./starseeds-contact/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Starseeds-Contact</h3>
+  <p>Supernatural phenomena, portals to higher dimensions, and the galactic origin of Starseed …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./story/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Story</h3>
+  <p>The definitive guide to narrative structure used by filmmakers, novelists, and screenwrite…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./strength-in-stillness/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Strength in Stillness</h3>
+  <p>The most accessible introduction to Transcendental Meditation — what TM is, what it does, …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./strengthsfinder-20/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>StrengthsFinder 2.0</h3>
+  <p>Build on your natural talents rather than fixing weaknesses — the Gallup strengths framewo…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./success-is-for-you/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Success Is For You</h3>
+  <p>The consciousness researcher&#39;s guide to creating success through inner alignment — calibra…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./success-through-a-positive-mental-attitude/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Success Through A Positive Mental Attitude</h3>
+  <p>The PMA principles — how a positive mental attitude is the single most important success f…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./super-rich/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Super Rich</h3>
+  <p>The Def Jam founder on the meditation, giving, and spiritual principles that created his w…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./synchronicity/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Synchronicity</h3>
+  <p>Jung&#39;s original treatise on meaningful coincidence. Dense, rich, and foundational.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./talk-like-ted/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Talk Like TED</h3>
+  <p>The nine secrets of the world&#39;s greatest communicators, reverse-engineered from thousands …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./tao-te-ching/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Tao Te Ching</h3>
+  <p>81 short verses written 2,500 years ago that say more about the nature of existence than m…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./ten-arguments-for-deleting-your-social-media-accounts/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Ten Arguments for Deleting Your Social Media Accounts</h3>
+  <p>The most personal and persuasive case for leaving the attention economy. From a tech insid…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-4-hour-workweek/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The 4-Hour Workweek</h3>
+  <p>Escape the 9-5, live anywhere, and join the new rich — Ferriss&#39;s blueprint for lifestyle d…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-7-habits-of-highly-effective-people/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The 7 Habits of Highly Effective People</h3>
+  <p>Character-based effectiveness — the framework of proactivity, purpose, and interdependence…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-akashic-experience/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Akashic Experience</h3>
+  <p>Scientists, artists, and mystics report their direct experiences of the Akashic field.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-alchemist/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Alchemist</h3>
+  <p>The beloved fable of Santiago&#39;s journey to the Pyramids — on following your Personal Legen…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-ancient-secret-of-the-flower-of-life/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Ancient Secret of the Flower of Life</h3>
+  <p>The most comprehensive exploration of the Merkaba field and sacred geometry as a living sy…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-architecture-of-happiness/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Architecture of Happiness</h3>
+  <p>Why buildings matter. How the spaces we inhabit shape who we become.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-art-of-fermentation/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Art of Fermentation</h3>
+  <p>The definitive guide to fermented foods and drinks from around the world. Comprehensive an…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-art-of-gathering/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Art of Gathering</h3>
+  <p>Why most gatherings fail and how to design ones that matter. Practical, human, and profoun…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-art-of-invisibility/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Art of Invisibility</h3>
+  <p>The world&#39;s most famous hacker teaches you how to protect your privacy in the surveillance…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-art-of-money-getting/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Art of Money Getting</h3>
+  <p>The showman&#39;s 1880 rules for acquiring money — surprisingly timeless advice on frugality, …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-art-of-possibility/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Art of Possibility</h3>
+  <p>A conductor and a therapist on creating possibility in collaboration, leadership, and art.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-art-of-public-speaking/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Art of Public Speaking</h3>
+  <p>Carnegie&#39;s foundational course on confident, persuasive speaking — the techniques that bui…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-art-of-war/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Art of War</h3>
+  <p>The ancient Chinese strategy classic — still the most quoted text on competition, adaptabi…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-biggest-ideas-in-the-universe/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Biggest Ideas in the Universe</h3>
+  <p>Modern physics explained through the actual equations — but made human and accessible.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-biogas-handbook/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Biogas Handbook</h3>
+  <p>Comprehensive technical guide to biogas production, upgrading, and utilisation.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-bittensor-whitepaper/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Bittensor Whitepaper</h3>
+  <p>Yuma Rao&#39;s original technical paper on decentralised machine learning — how subnets, miner…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-body-keeps-the-score/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Body Keeps the Score</h3>
+  <p>The definitive book on trauma — how it reshapes body, brain, and mind, and what actually h…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-book-of-mastery/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Book of Mastery</h3>
+  <p>Volume four of the Selig transmissions — the most advanced teachings on embodying mastery …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-brain-that-changes-itself/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Brain That Changes Itself</h3>
+  <p>The book that made neuroplasticity a household word. Stories of real transformation throug…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-cathedral-and-the-bazaar/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Cathedral and the Bazaar</h3>
+  <p>The essay that explained open source to the world. How decentralised collaboration beats c…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-celestine-prophecy/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Celestine Prophecy</h3>
+  <p>A novel that popularised synchronicity as a guide to spiritual growth. Millions read it fo…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-code-breaker/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Code Breaker</h3>
+  <p>Jennifer Doudna, CRISPR, and the race to rewrite the code of life. Reads like a thriller.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-dawn-of-everything/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Dawn of Everything</h3>
+  <p>A radical retelling of human history — evidence that societies have always been far more d…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-death-and-life-of-great-american-cities/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Death and Life of Great American Cities</h3>
+  <p>The book that saved cities from urban planners. Still the most important critique of top-d…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-definitive-book-of-human-design/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Definitive Book of Human Design</h3>
+  <p>The comprehensive reference text. Covers all Types, Strategies, Authorities, Centers, Gate…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-design-of-everyday-things/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Design of Everyday Things</h3>
+  <p>The foundational text of human-centred design — why everyday things fail, and how to make …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-diamond-cutter/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Diamond Cutter</h3>
+  <p>Ancient Tibetan Buddhist wisdom applied to building a diamond business — the karmic mechan…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-effective-executive/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Effective Executive</h3>
+  <p>The classic on doing the right things — Drucker&#39;s five practices of effectiveness that sep…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-elements-of-journalism/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Elements of Journalism</h3>
+  <p>What journalism is for, and what it must do to fulfil its purpose. The field&#39;s ethical fou…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-emerald-tablet/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Emerald Tablet</h3>
+  <p>The oldest known alchemical text. As above, so below. As within, so without.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-empty-space/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Empty Space</h3>
+  <p>The most important book about theatre ever written. 128 pages. Every word counts.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-essential-drucker/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Essential Drucker</h3>
+  <p>The distilled wisdom of the father of modern management — strategy, performance, society, …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-essential-rumi/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Essential Rumi</h3>
+  <p>The translations that brought Rumi to the Western world. Sacred, sensual, and timeless.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-everything-candida-diet-book/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Everything Candida Diet Book</h3>
+  <p>A comprehensive protocol for addressing systemic candida overgrowth — diet, antifungals, a…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-eye-of-the-i/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Eye of the I</h3>
+  <p>From which nothing is hidden — the advanced calibration of spiritual reality and the natur…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-fabric-of-reality/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Fabric of Reality</h3>
+  <p>A unified theory of knowledge, computation, and quantum physics. Dense and rewarding.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-festivalisation-of-society/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Festivalisation of Society</h3>
+  <p>Academic study of how festivals create temporary communities and what they reveal about hu…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-field/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Field</h3>
+  <p>An investigation into the scientific evidence for a connected universe — the zero-point fi…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-fifth-discipline/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Fifth Discipline</h3>
+  <p>How organisations learn and why most of them don&#39;t. Systems thinking applied to human ente…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-game-of-life-and-how-to-play-it/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Game of Life and How to Play It</h3>
+  <p>The 1925 spiritual classic on using the spoken word, faith, and imagination to command lif…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-gene/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Gene</h3>
+  <p>An intimate history of genetics — from Mendel to CRISPR. The best overview of the field in…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-gene-keys/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Gene Keys</h3>
+  <p>A contemplative evolution of the 64 Gates from Human Design into a poetic, meditative syst…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-go-getter/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Go-Getter</h3>
+  <p>The classic 1921 business parable — the spirit that makes men succeed in the face of every…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-go-giver/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Go-Giver</h3>
+  <p>A story about the surprising secret of getting more by giving more — the Five Laws of Stra…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-greatest-salesman-in-the-world/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Greatest Salesman in the World</h3>
+  <p>Ten scrolls for living — not really a sales book at all, but a manual for living with love…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-grid/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Grid</h3>
+  <p>The story of America&#39;s electrical grid — fragile, ancient, and the battlefield where the e…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-guru-gita/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Guru Gita</h3>
+  <p>The scripture on the relationship between student and teacher — chanted in the Siddha Yoga…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-healing-power-of-sound/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Healing Power of Sound</h3>
+  <p>An oncologist&#39;s use of sound therapy and Tibetan singing bowls in cancer treatment.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-hidden-life-of-trees/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Hidden Life of Trees</h3>
+  <p>The book that revealed trees communicate, support each other, and form communities — the s…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-hidden-messages-in-water/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Hidden Messages in Water</h3>
+  <p>Emoto&#39;s research on how intention and words affect water crystal formation. Polarising and…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-holographic-universe/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Holographic Universe</h3>
+  <p>The case that reality is a hologram — weaving together quantum physics, neuroscience, and …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-impact-investor/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Impact Investor</h3>
+  <p>A rigorous look at what impact investing actually achieves — and where it falls short.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-infinite-machine/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Infinite Machine</h3>
+  <p>The definitive story of Ethereum&#39;s creation — Vitalik Buterin, the early contributors, and…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-inner-game-of-tennis/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Inner Game of Tennis</h3>
+  <p>Learning and performance through quieting the inner critic. One of the great books on mast…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-inner-sky/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Inner Sky</h3>
+  <p>The most psychologically sophisticated introduction to astrology. A serious and humane app…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-inside-track/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Inside Track</h3>
+  <p>The self-made entrepreneur and philosopher on the inner game of extraordinary living — pra…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-internet-of-money/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Internet of Money</h3>
+  <p>The most articulate case for why Bitcoin matters — not as a speculative asset, but as a po…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-kybalion/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Kybalion</h3>
+  <p>The seven Hermetic principles underlying all of reality — the foundation of esoteric philo…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-language-instinct/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Language Instinct</h3>
+  <p>Language as a biological adaptation — how we all come pre-wired to speak. The definitive p…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-last-child-in-the-woods/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Last Child in the Woods</h3>
+  <p>How nature-deficit disorder is affecting children — and what outdoor adventure does for hu…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-law-of-attraction/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Law of Attraction</h3>
+  <p>The foundational Abraham text — teachings on how consciousness creates reality, channeled …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-law-of-success-in-16-lessons/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Law of Success in 16 Lessons</h3>
+  <p>Hill&#39;s complete original 1925/27 masterwork — the unexpurgated foundation from which Think…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-life-changing-magic-of-tidying-up/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Life-Changing Magic of Tidying Up</h3>
+  <p>More than a cleaning method — a philosophy for surrounding yourself only with what brings …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-living-gita/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Living Gita</h3>
+  <p>The Bhagavad Gita with plain-English commentary — Satchidananda makes the ancient battlefi…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-magic/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Magic</h3>
+  <p>28 days of gratitude practices that transform every area of life — the applied practice at…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-magic-of-believing/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Magic of Believing</h3>
+  <p>The mirror technique and subconscious imprinting — one of the most practical books ever wr…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-magic-of-thinking-big/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Magic of Thinking Big</h3>
+  <p>Proven methods for achieving everything you want from life by thinking bigger than you cur…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-master-key-system/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Master Key System</h3>
+  <p>24-week correspondence course in mental science — the book that reportedly inspired Bill G…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-miracle-of-mindfulness/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Miracle of Mindfulness</h3>
+  <p>The most accessible introduction to meditation ever written. 140 pages of pure clarity.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-miracle-of-rebound-exercise/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Miracle of Rebound Exercise</h3>
+  <p>The definitive guide to rebounding on a mini-trampoline — lymphatic drainage, cellular exe…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-monuments-of-mars/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Monuments of Mars</h3>
+  <p>Hoagland&#39;s investigation into the Face on Mars and the Cydonia complex — the case that Mar…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-network-state/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Network State</h3>
+  <p>The foundational text on network states — how to start a new kind of country online and bu…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-new-fire/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The New Fire</h3>
+  <p>The honest case for nuclear alongside renewables in the energy transition.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-obstacle-is-the-way/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Obstacle Is the Way</h3>
+  <p>Stoic philosophy as a practical toolkit — turning adversity into advantage using the wisdo…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-omnivores-dilemma/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Omnivore&#39;s Dilemma</h3>
+  <p>A natural history of four meals — the most important book on food and agriculture of the p…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-order-of-time/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Order of Time</h3>
+  <p>A physicist&#39;s meditation on why time flows, what cycles mean, and whether the present exis…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-podcast-handbook/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Podcast Handbook</h3>
+  <p>A practical, concise guide to making a podcast that actually gets made — and heard.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-power/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Power</h3>
+  <p>Love as the ultimate force of creation — Byrne&#39;s deeper exploration of the creative power …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-power-of-now/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Power of Now</h3>
+  <p>The book that introduced millions to presence as a spiritual practice. Deceptively simple.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-power-of-positive-thinking/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Power of Positive Thinking</h3>
+  <p>The 1952 classic that launched the positive thinking movement — practical techniques for f…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-precipice/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Precipice</h3>
+  <p>An Oxford philosopher&#39;s assessment of existential risks and how to navigate them. Rigorous…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-purpose-economy/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Purpose Economy</h3>
+  <p>How purpose has become the driver of economic value in a post-scarcity world.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-reconnection/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Reconnection</h3>
+  <p>A chiropractor&#39;s accidental discovery of a new healing frequency — and what it suggests ab…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-regenerative-business/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Regenerative Business</h3>
+  <p>Moving beyond sustainability to business models that actively restore living systems.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-rest-is-noise/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Rest Is Noise</h3>
+  <p>A history of 20th century classical music that reads like a novel. One of the great music …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-richest-man-in-babylon/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Richest Man in Babylon</h3>
+  <p>Timeless financial wisdom through Babylonian parables — pay yourself first, make your mone…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-science-of-getting-rich/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Science of Getting Rich</h3>
+  <p>The 1910 classic that inspired The Secret — a precise, systematic account of how thought c…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-sea-around-us/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Sea Around Us</h3>
+  <p>The book that made a generation care about the ocean. Rachel Carson at her lyrical best.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-seat-of-the-soul/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Seat of the Soul</h3>
+  <p>A map of spiritual growth for the age of authentic power — where intention, consciousness,…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-second-coming-of-christ/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Second Coming of Christ</h3>
+  <p>Yogananda&#39;s interpretation of the Gospels through the lens of Kriya Yoga and universal mys…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-secret/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Secret</h3>
+  <p>The book and film that brought the Law of Attraction to 500 million people. The modern gat…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-secret-of-ages/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Secret of Ages</h3>
+  <p>The 1926 compendium of mental science — how to use the subconscious mind to bring every de…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-sedona-method/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Sedona Method</h3>
+  <p>The release technique — four simple questions that let you dissolve any feeling or emotion…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-selfish-gene/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Selfish Gene</h3>
+  <p>The gene&#39;s-eye view of evolution that reshaped how we think about life, cooperation, and a…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-seven-spiritual-laws-of-success/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Seven Spiritual Laws of Success</h3>
+  <p>Laws of pure potentiality, karma, least effort, intention — success understood as a spirit…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-shallows/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Shallows</h3>
+  <p>What the internet is doing to our brains — a deeply researched case for protecting depth o…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-shaolin-workout/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Shaolin Workout</h3>
+  <p>28 days to a stronger body and a calmer mind — authentic Shaolin kung fu training from a 3…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-sixth-extinction/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Sixth Extinction</h3>
+  <p>A Pulitzer Prize winner on the species humans are currently driving to extinction. Essenti…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-sovereign-individual/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Sovereign Individual</h3>
+  <p>Written in 1997, it predicted crypto, digital sovereignty, and the collapse of nation-stat…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-spirit-level/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Spirit Level</h3>
+  <p>Why more equal societies almost always do better. The data that changed the governance con…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-surrender-experiment/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Surrender Experiment</h3>
+  <p>What happens when you stop resisting life — Singer&#39;s extraordinary memoir of 40 years of s…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-switch/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Switch</h3>
+  <p>Why the world will run on clean electricity within decades — and how it will happen.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-tao-te-ching/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Tao Te Ching</h3>
+  <p>81 short poems about the nature of reality, power, and returning to the source. Free onlin…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-tapping-solution/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Tapping Solution</h3>
+  <p>The most accessible introduction to Emotional Freedom Techniques — how tapping on acupress…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-three-waves-of-volunteers-and-the-new-earth/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Three Waves of Volunteers and the New Earth</h3>
+  <p>Her thesis: three generational waves of advanced souls incarnated on Earth — volunteers fr…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-translators-invisibility/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Translator&#39;s Invisibility</h3>
+  <p>The politics and ethics of translation. Who decides how foreign texts enter a culture.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-uninhabitable-earth/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Uninhabitable Earth</h3>
+  <p>What climate change will actually do to the planet if we fail. Confronting and necessary.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-untethered-soul/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Untethered Soul</h3>
+  <p>The journey beyond yourself — who are you behind the voice in your head? Singer&#39;s most luc…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-urban-farmer/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Urban Farmer</h3>
+  <p>How to grow food for profit on small urban plots. The business model for urban food produc…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-war-of-art/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The War of Art</h3>
+  <p>Breaking through the blocks and winning your inner creative battles — the most honest book…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-web-of-life/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Web of Life</h3>
+  <p>A synthesis of systems thinking and ecology — how living systems organise and why everythi…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-wisdom-of-crowds/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Wisdom of Crowds</h3>
+  <p>Under the right conditions, crowds make better decisions than experts. The evidence and th…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-yoga-of-discipline/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Yoga of Discipline</h3>
+  <p>Tapas, sadhana, and the transformative power of self-discipline in the spiritual life.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./the-yoga-sutras-of-patanjali/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>The Yoga Sutras of Patanjali</h3>
+  <p>The most widely used commentary on Patanjali&#39;s root text — clear, practical, and steeped i…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./think-and-grow-rich/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Think and Grow Rich</h3>
+  <p>The most-read success book in history — 13 principles of achievement distilled from Napole…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./thinking-in-systems/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Thinking in Systems</h3>
+  <p>The best introduction to systems thinking ever written. Short, clear, and immediately appl…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./this-is-an-uprising/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>This Is An Uprising</h3>
+  <p>How nonviolent revolt is shaping the 21st century. The strategic logic of social movements…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./this-is-your-brain-on-music/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>This Is Your Brain on Music</h3>
+  <p>A neuroscientist and former record producer explains what music does to us — and why.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./transcending-the-levels-of-consciousness/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Transcending the Levels of Consciousness</h3>
+  <p>A complete map of the inner journey — how each level of consciousness feels, what blocks i…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./ufos-and-the-national-security-state/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>UFOs and the National Security State</h3>
+  <p>The most authoritative history of the US government&#39;s relationship with the UFO phenomenon…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./waking-the-tiger/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Waking the Tiger</h3>
+  <p>How animals release trauma instinctively — and how humans can too. The origin of Somatic E…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./ways-of-seeing/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Ways of Seeing</h3>
+  <p>The most important book about how we look at art, images, and each other — perception, pow…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./what-it-takes/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>What It Takes</h3>
+  <p>The Blackstone co-founder on the lessons of a life at the frontier of high finance — ambit…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./what-to-say-when-you-talk-to-yourself/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>What to Say When You Talk to Yourself</h3>
+  <p>The science of self-talk — why the words you say to yourself determine everything, and how…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./wheels-of-life/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Wheels of Life</h3>
+  <p>The definitive guide to chakras as a map of the developmental cycles of the human psyche.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./when-the-body-says-no/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>When the Body Says No</h3>
+  <p>The hidden cost of stress and suppressed emotion — Maté&#39;s compassionate investigation into…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./why-we-sleep/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Why We Sleep</h3>
+  <p>The book that made millions take sleep seriously. Alarming, comprehensive, and life-changi…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./wind-energy-fundamentals-resource-analysis/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Wind Energy — Fundamentals, Resource Analysis</h3>
+  <p>The standard textbook on wind energy engineering. Thorough and accessible.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./wishes-fulfilled/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Wishes Fulfilled</h3>
+  <p>Mastering the art of manifesting — Dyer&#39;s synthesis of Neville Goddard, mysticism, and pra…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./worn-stories/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Worn Stories</h3>
+  <p>The stories behind the clothes we keep. Fashion as autobiography.</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="./your-money-or-your-life/index.html" class="ncard">
+  <div class="ncard-type">Book</div>
+  <h3>Your Money or Your Life</h3>
+  <p>The personal finance book that made frugality a spiritual practice and money a form of lif…</p>
+  <span class="ncard-arrow">→</span>
+</a></div>
+  </section>
+</main>
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">FRQNCY</span>
+    <div class="footer-links">
+      <a href="../explore.html">Explore</a>
+      <a href="../watch/index.html">Watch</a>
+      <a href="../courses/index.html">Courses</a>
+      <a href="../../index.html">Main site</a>
+      <a href="../../about.html">Vision</a>
+    </div>
+  </div>
+</footer>
+</body></html>

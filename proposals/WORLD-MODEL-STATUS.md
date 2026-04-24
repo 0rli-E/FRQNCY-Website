@@ -55,19 +55,32 @@ Every `node generate.js` run scans all bios (across the five beds) and all descr
 
 **Current state: `voice: clean — no banished words across beds or content.json descs`.**
 
-### Person pages — `/people/[slug]/`
+### Entity pages — every first-class entity has a profile
 
-Every human in the people bed now has a dedicated profile page. **82 person pages + 1 index at `/people/`.** Each profile shows:
+- **`/people/[slug]/`** — 82 profiles + index. Hero, Works (books/orgs/media), Channels, Teaches across. schema.org `Person`.
+- **`/books/[slug]/`** — 268 profiles + index. Hero, linked author, Appears on. schema.org `Book`.
+- **`/orgs/[slug]/`** — 102 profiles + index. Hero, linked founder (if any), Appears on. schema.org `Organization`.
+- **`/media/[slug]/`** — 74 profiles + index. Hero, linked creator (if any), Appears on. schema.org `CreativeWork`.
+- **`/places/[slug]/`** — 1 profile + index (Intaaya). Hero with location, Teachers in residence, Practices hosted here. schema.org `Place`.
 
-- Hero: name, bio, link to their external site
-- **Works** — their books, orgs, and media rendered as cards (from the beds via `author_is_person_ref` / `founder_is_person_ref` / `creator_is_person_ref`)
-- **Channels** — the named entities they channel (for humans who do — Barbara Marciniak → Pleiadians, Darryl Anka → Bashar)
-- **Teaches across** — every topic they appear on, as navigable cards
-- schema.org Person JSON-LD markup with sameAs link to their external URL
+**Every entity name on every topic page now links to its profile.** The world model is fully navigable — click a book on a topic, land on the book's profile, click its author, land on the person, click their media, land on the media, click back to a related topic, and so on. Each node in the graph has a home you can visit.
 
-**The world model is now visibly navigable.** When you see Osho on the Meditation topic page, his name is a link to `/people/osho/` where you see his whole footprint in the network. Same for all 82 humans.
+### Search integration
 
-Sitemap updated to include the people index and all 82 profile pages.
+`resources.json` is now **regenerated from the beds on every build** (631 rows, one per entity-topic pair) — so search.html always reflects the current world model. Entity types (person/book/place) use the internal profile URL as their `url` so search results route users to the rich profile first; external URLs preserved as `external` for anyone needing them. Search opens internal links in the same tab and external links in a new tab.
+
+Also emitted: **`entities.json`** — a slim unified index of all 527 first-class entities (across the five beds) with type, topics, and pick status. Available for any future search or discovery feature that wants to query the world model without loading the full bed files.
+
+### Sitemap + discoverability
+
+**695 URLs now in the sitemap** (up from 163):
+- 155 topic/domain/pillar pages
+- 82 person profiles + index
+- 268 book profiles + index
+- 102 org profiles + index
+- 74 media profiles + index
+- 1 place profile + index
+- Site-level pages (about, platform, podcast, etc.)
 
 ### `generate.js` now reads the beds
 

@@ -92,18 +92,50 @@ function bookToCard(b, nid) {
   const pid = b.author_is_person_ref ? b.author : null;
   const authorName = pid ? ((PEOPLE?.people.find(p => p.id === pid)||{}).name || b.author) : b.author;
   const title = authorName ? `${b.title} — ${authorName}` : b.title;
-  return { type: 'book', title, url: b.url, desc: b.bio, frqncy_pick: (b.picked_in||[]).includes(nid) };
+  const slug = (b.id || '').replace(/^b-/, '');
+  return {
+    type: 'book',
+    title,
+    url: b.url,
+    desc: b.bio,
+    frqncy_pick: (b.picked_in||[]).includes(nid),
+    internal_url: slug ? `/books/${slug}/` : null,
+  };
 }
 function orgToCard(o, nid) {
-  return { type: 'org', title: o.name, url: o.url, desc: o.bio, frqncy_pick: (o.picked_in||[]).includes(nid) };
+  const slug = (o.id || '').replace(/^o-/, '');
+  return {
+    type: 'org',
+    title: o.name,
+    url: o.url,
+    desc: o.bio,
+    frqncy_pick: (o.picked_in||[]).includes(nid),
+    internal_url: slug ? `/orgs/${slug}/` : null,
+  };
 }
 function mediaToCard(m, nid) {
-  return { type: 'media', title: m.name, url: m.url, desc: m.bio, frqncy_pick: (m.picked_in||[]).includes(nid) };
+  const slug = (m.id || '').replace(/^m-/, '');
+  return {
+    type: 'media',
+    title: m.name,
+    url: m.url,
+    desc: m.bio,
+    frqncy_pick: (m.picked_in||[]).includes(nid),
+    internal_url: slug ? `/media/${slug}/` : null,
+  };
 }
 function placeToCard(pl, nid) {
   // Place cards include location in the description for context.
   const locPrefix = pl.location ? `${pl.location} — ` : '';
-  return { type: 'place', title: pl.name, url: pl.url, desc: locPrefix + pl.bio, frqncy_pick: (pl.picked_in||[]).includes(nid) };
+  const slug = (pl.id || '').replace(/^pl-/, '');
+  return {
+    type: 'place',
+    title: pl.name,
+    url: pl.url,
+    desc: locPrefix + pl.bio,
+    frqncy_pick: (pl.picked_in||[]).includes(nid),
+    internal_url: slug ? `/places/${slug}/` : null,
+  };
 }
 
 // ── Related topics computed from shared entities across the beds ──
@@ -894,6 +926,259 @@ ${FOOTER}
 </body></html>`;
 }
 
+// ── BOOK PAGE — /books/[slug]/ ───────────────────────────────────
+function bookSlug(book) { return (book.id || '').replace(/^b-/, ''); }
+
+function topicsForBucketList(bucketIds) {
+  const s = new Set(bucketIds || []);
+  return DATA.topics.filter(t => s.has(t.id));
+}
+
+function bookPage(book) {
+  const slug = bookSlug(book);
+  const canonical = `https://frqncy.network/books/${slug}/`;
+
+  // Resolve author — if p-id link, grab the Person for display + link
+  let authorHtml = '';
+  if (book.author_is_person_ref && PEOPLE) {
+    const person = PEOPLE.people.find(p => p.id === book.author);
+    if (person) {
+      const pslug = personSlug(person);
+      authorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By <a href="/people/${esc(pslug)}/" style="color:var(--accent);border-bottom:1px solid rgba(255,255,255,0.18);text-decoration:none">${esc(person.name)}</a></div>`;
+    }
+  } else if (typeof book.author === 'string') {
+    authorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By ${esc(book.author)}</div>`;
+  }
+
+  const topics = topicsForBucketList(book.appears_in);
+  const topicsSection = topics.length ? `<section>
+  <div class="section-label">Appears on</div>
+  <div class="grid grid-sm">
+    ${topics.map(t => `<a href="/v2/${t.slug}/index.html" class="ncard">
+  <div class="ncard-type">Topic${(book.picked_in||[]).includes(t.id) ? ' &nbsp;·&nbsp; ✦ PICK' : ''}</div>
+  <h3>${esc(t.label)}</h3>
+  ${t.desc ? `<p>${esc(t.desc.slice(0, 70))}…</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`).join('\n')}
+  </div>
+</section>` : '';
+
+  const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Books</a><span class="sep">/</span><span>${esc(book.title)}</span>`;
+  const externalLink = book.url ? `<a href="${esc(book.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>` : '';
+
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'Book',
+    name: book.title,
+    description: book.bio,
+    url: canonical,
+    sameAs: book.url ? [book.url] : undefined,
+    isPartOf: SITE_REF,
+  };
+
+  return head(book.title, null, book.bio, canonical, ld, null) +
+nav(crumb) +
+`<div class="hero">
+  <div class="hero-eyebrow">Book</div>
+  <h1>${esc(book.title)}</h1>
+  ${authorHtml}
+  ${book.bio ? `<p class="hero-desc">${esc(book.bio)}</p>` : ''}
+  ${externalLink}
+</div>
+<main>
+  ${topicsSection}
+</main>
+${FOOTER}
+</body></html>`;
+}
+
+// ── ORG PAGE — /orgs/[slug]/ ─────────────────────────────────────
+function orgSlug(org) { return (org.id || '').replace(/^o-/, ''); }
+
+function orgPage(org) {
+  const slug = orgSlug(org);
+  const canonical = `https://frqncy.network/orgs/${slug}/`;
+
+  // Founder attribution — link to person page if p-id, otherwise plain string
+  let founderHtml = '';
+  if (org.founder_is_person_ref && PEOPLE) {
+    const person = PEOPLE.people.find(p => p.id === org.founder);
+    if (person) {
+      const pslug = personSlug(person);
+      founderHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">Founded by <a href="/people/${esc(pslug)}/" style="color:var(--accent);border-bottom:1px solid rgba(255,255,255,0.18);text-decoration:none">${esc(person.name)}</a></div>`;
+    }
+  } else if (typeof org.founder === 'string' && org.founder) {
+    founderHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">Founded by ${esc(org.founder)}</div>`;
+  }
+
+  const topics = topicsForBucketList(org.appears_in);
+  const topicsSection = topics.length ? `<section>
+  <div class="section-label">Appears on</div>
+  <div class="grid grid-sm">
+    ${topics.map(t => `<a href="/v2/${t.slug}/index.html" class="ncard">
+  <div class="ncard-type">Topic${(org.picked_in||[]).includes(t.id) ? ' &nbsp;·&nbsp; ✦ PICK' : ''}</div>
+  <h3>${esc(t.label)}</h3>
+  ${t.desc ? `<p>${esc(t.desc.slice(0, 70))}…</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`).join('\n')}
+  </div>
+</section>` : '';
+
+  const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Orgs</a><span class="sep">/</span><span>${esc(org.name)}</span>`;
+  const externalLink = org.url ? `<a href="${esc(org.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>` : '';
+
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'Organization',
+    name: org.name,
+    description: org.bio,
+    url: canonical,
+    sameAs: org.url ? [org.url] : undefined,
+    isPartOf: SITE_REF,
+  };
+
+  return head(org.name, null, org.bio, canonical, ld, null) +
+nav(crumb) +
+`<div class="hero">
+  <div class="hero-eyebrow">Organisation</div>
+  <h1>${esc(org.name)}</h1>
+  ${founderHtml}
+  ${org.bio ? `<p class="hero-desc">${esc(org.bio)}</p>` : ''}
+  ${externalLink}
+</div>
+<main>
+  ${topicsSection}
+</main>
+${FOOTER}
+</body></html>`;
+}
+
+// ── MEDIA PAGE — /media/[slug]/ ──────────────────────────────────
+function mediaSlug(media) { return (media.id || '').replace(/^m-/, ''); }
+
+function mediaPage(media) {
+  const slug = mediaSlug(media);
+  const canonical = `https://frqncy.network/media/${slug}/`;
+
+  let creatorHtml = '';
+  if (media.creator_is_person_ref && PEOPLE) {
+    const person = PEOPLE.people.find(p => p.id === media.creator);
+    if (person) {
+      const pslug = personSlug(person);
+      creatorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By <a href="/people/${esc(pslug)}/" style="color:var(--accent);border-bottom:1px solid rgba(255,255,255,0.18);text-decoration:none">${esc(person.name)}</a></div>`;
+    }
+  } else if (typeof media.creator === 'string' && media.creator) {
+    creatorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By ${esc(media.creator)}</div>`;
+  }
+
+  const topics = topicsForBucketList(media.appears_in);
+  const topicsSection = topics.length ? `<section>
+  <div class="section-label">Appears on</div>
+  <div class="grid grid-sm">
+    ${topics.map(t => `<a href="/v2/${t.slug}/index.html" class="ncard">
+  <div class="ncard-type">Topic${(media.picked_in||[]).includes(t.id) ? ' &nbsp;·&nbsp; ✦ PICK' : ''}</div>
+  <h3>${esc(t.label)}</h3>
+  ${t.desc ? `<p>${esc(t.desc.slice(0, 70))}…</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`).join('\n')}
+  </div>
+</section>` : '';
+
+  const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Media</a><span class="sep">/</span><span>${esc(media.name)}</span>`;
+  const externalLink = media.url ? `<a href="${esc(media.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>` : '';
+
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'CreativeWork',
+    name: media.name,
+    description: media.bio,
+    url: canonical,
+    sameAs: media.url ? [media.url] : undefined,
+    isPartOf: SITE_REF,
+  };
+
+  return head(media.name, null, media.bio, canonical, ld, null) +
+nav(crumb) +
+`<div class="hero">
+  <div class="hero-eyebrow">Media</div>
+  <h1>${esc(media.name)}</h1>
+  ${creatorHtml}
+  ${media.bio ? `<p class="hero-desc">${esc(media.bio)}</p>` : ''}
+  ${externalLink}
+</div>
+<main>
+  ${topicsSection}
+</main>
+${FOOTER}
+</body></html>`;
+}
+
+// ── PLACE PAGE — /places/[slug]/ ─────────────────────────────────
+function placeSlug(place) { return (place.id || '').replace(/^pl-/, ''); }
+
+function placePage(place) {
+  const slug = placeSlug(place);
+  const canonical = `https://frqncy.network/places/${slug}/`;
+  const topics = topicsForBucketList(place.appears_in);
+
+  // Teachers in residence — if any p-ids are set, render as person cards
+  let teachersSection = '';
+  if (place.teachers_in_residence && place.teachers_in_residence.length && PEOPLE) {
+    const teachers = place.teachers_in_residence
+      .map(pid => PEOPLE.people.find(p => p.id === pid))
+      .filter(Boolean);
+    if (teachers.length) {
+      teachersSection = `<section>
+  <div class="section-label">Teachers in residence</div>
+  <div class="rlist">${teachers.map(t => rcard(peopleToCard(t, place.id))).join('\n')}</div>
+</section>`;
+    }
+  }
+
+  const topicsSection = topics.length ? `<section>
+  <div class="section-label">Practices hosted here</div>
+  <div class="grid grid-sm">
+    ${topics.map(t => `<a href="/v2/${t.slug}/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>${esc(t.label)}</h3>
+  ${t.desc ? `<p>${esc(t.desc.slice(0, 70))}…</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`).join('\n')}
+  </div>
+</section>` : '';
+
+  const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Places</a><span class="sep">/</span><span>${esc(place.name)}</span>`;
+  const externalLink = place.url ? `<a href="${esc(place.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>` : '';
+  const locationHtml = place.location ? `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">${esc(place.location)}</div>` : '';
+
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'Place',
+    name: place.name,
+    description: place.bio,
+    url: canonical,
+    sameAs: place.url ? [place.url] : undefined,
+    address: place.location || undefined,
+    isPartOf: SITE_REF,
+  };
+
+  return head(place.name, null, place.bio, canonical, ld, null) +
+nav(crumb) +
+`<div class="hero">
+  <div class="hero-eyebrow">Place</div>
+  <h1>${esc(place.name)}</h1>
+  ${locationHtml}
+  ${place.bio ? `<p class="hero-desc">${esc(place.bio)}</p>` : ''}
+  ${externalLink}
+</div>
+<main>
+  ${teachersSection}
+  ${topicsSection}
+</main>
+${FOOTER}
+</body></html>`;
+}
+
 // ── EXPLORE-DATA SYNC ────────────────────────────────────────────
 // Keep v2/explore-data.json in sync with content.json + places.json.
 // Preserves hand-curated map topology (cross-pillar links, map-specific
@@ -1117,6 +1402,48 @@ for (const t of DATA.topics) {
   count++;
 }
 
+// ── Helper: entity index page builder (one alphabetical grid of cards) ──
+function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, outPath }) {
+  const sorted = [...entities].sort((a, b) => (a.name || a.title).toLowerCase().localeCompare((b.name || b.title).toLowerCase()));
+  const cards = sorted.map(e => {
+    const slug = slugFn(e);
+    const display = e.name || e.title;
+    const desc = e.bio || '';
+    const snippet = desc.slice(0, 90);
+    return `<a href="./${slug}/index.html" class="ncard">
+  <div class="ncard-type">${esc(eyebrow)}</div>
+  <h3>${esc(display)}</h3>
+  ${snippet ? `<p>${esc(snippet)}${desc.length > 90 ? '…' : ''}</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`;
+  }).join('\n');
+
+  const canonical = `https://frqncy.network${canonicalPath}`;
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: `${label} — FRQNCY Network`,
+    description: `${entities.length} ${label.toLowerCase()} on the FRQNCY network.`,
+    url: canonical,
+    isPartOf: SITE_REF,
+  };
+
+  return head(label, null, `${entities.length} ${label.toLowerCase()} on the FRQNCY network.`, canonical, ld, null) +
+nav(`<a href="../index.html">FRQNCY</a><span class="sep">/</span><span>${esc(label)}</span>`) +
+`<div class="hero">
+  <div class="hero-eyebrow">Network</div>
+  <h1>${esc(label)}</h1>
+  <p class="hero-desc">${entities.length} ${esc(label.toLowerCase())} on the FRQNCY network.</p>
+</div>
+<main>
+  <section>
+    <div class="grid grid-sm">${cards}</div>
+  </section>
+</main>
+${FOOTER}
+</body></html>`;
+}
+
 // ── PERSON PAGES — /people/[slug]/ + /people/index.html ──────────
 const PEOPLE_OUT = path.join(ROOT, 'people');
 let personCount = 0;
@@ -1170,6 +1497,74 @@ ${FOOTER}
   console.log(`  people: ${personCount} profiles + 1 index → ./people/`);
 }
 
+// ── BOOK PAGES — /books/[slug]/ + /books/index.html ──────────────
+const BOOKS_OUT = path.join(ROOT, 'books');
+let bookCount = 0;
+if (BOOKS) {
+  mkdirp(BOOKS_OUT);
+  for (const b of BOOKS.books) {
+    const slug = bookSlug(b);
+    if (!slug) continue;
+    mkdirp(path.join(BOOKS_OUT, slug));
+    fs.writeFileSync(path.join(BOOKS_OUT, slug, 'index.html'), bookPage(b));
+    bookCount++;
+  }
+  fs.writeFileSync(path.join(BOOKS_OUT, 'index.html'),
+    entityIndexPage({ label: 'Books', eyebrow: 'Book', entities: BOOKS.books, slugFn: bookSlug, canonicalPath: '/books/', outPath: BOOKS_OUT }));
+  console.log(`  books:  ${bookCount} profiles + 1 index → ./books/`);
+}
+
+// ── ORG PAGES — /orgs/[slug]/ + /orgs/index.html ─────────────────
+const ORGS_OUT = path.join(ROOT, 'orgs');
+let orgCount = 0;
+if (ORGS) {
+  mkdirp(ORGS_OUT);
+  for (const o of ORGS.orgs) {
+    const slug = orgSlug(o);
+    if (!slug) continue;
+    mkdirp(path.join(ORGS_OUT, slug));
+    fs.writeFileSync(path.join(ORGS_OUT, slug, 'index.html'), orgPage(o));
+    orgCount++;
+  }
+  fs.writeFileSync(path.join(ORGS_OUT, 'index.html'),
+    entityIndexPage({ label: 'Orgs', eyebrow: 'Org', entities: ORGS.orgs, slugFn: orgSlug, canonicalPath: '/orgs/', outPath: ORGS_OUT }));
+  console.log(`  orgs:   ${orgCount} profiles + 1 index → ./orgs/`);
+}
+
+// ── MEDIA PAGES — /media/[slug]/ + /media/index.html ─────────────
+const MEDIA_OUT = path.join(ROOT, 'media');
+let mediaCount = 0;
+if (MEDIA) {
+  mkdirp(MEDIA_OUT);
+  for (const m of MEDIA.media) {
+    const slug = mediaSlug(m);
+    if (!slug) continue;
+    mkdirp(path.join(MEDIA_OUT, slug));
+    fs.writeFileSync(path.join(MEDIA_OUT, slug, 'index.html'), mediaPage(m));
+    mediaCount++;
+  }
+  fs.writeFileSync(path.join(MEDIA_OUT, 'index.html'),
+    entityIndexPage({ label: 'Media', eyebrow: 'Media', entities: MEDIA.media, slugFn: mediaSlug, canonicalPath: '/media/', outPath: MEDIA_OUT }));
+  console.log(`  media:  ${mediaCount} profiles + 1 index → ./media/`);
+}
+
+// ── PLACE PAGES — /places/[slug]/ + /places/index.html ───────────
+const PLACES_OUT = path.join(ROOT, 'places');
+let placeCount = 0;
+if (PLACES) {
+  mkdirp(PLACES_OUT);
+  for (const pl of PLACES.places) {
+    const slug = placeSlug(pl);
+    if (!slug) continue;
+    mkdirp(path.join(PLACES_OUT, slug));
+    fs.writeFileSync(path.join(PLACES_OUT, slug, 'index.html'), placePage(pl));
+    placeCount++;
+  }
+  fs.writeFileSync(path.join(PLACES_OUT, 'index.html'),
+    entityIndexPage({ label: 'Places', eyebrow: 'Place', entities: PLACES.places, slugFn: placeSlug, canonicalPath: '/places/', outPath: PLACES_OUT }));
+  console.log(`  places: ${placeCount} profiles + 1 index → ./places/`);
+}
+
 // ── SITEMAP ──────────────────────────────────────────────────────
 const today = new Date().toISOString().slice(0, 10);
 
@@ -1187,6 +1582,14 @@ const sitemapEntries = [
   ...DATA.topics.map(t  => ({ loc: `https://frqncy.network/v2/${t.slug}/`, priority: '0.6', freq: 'monthly' })),
   ...(PEOPLE ? [{ loc: 'https://frqncy.network/people/', priority: '0.7', freq: 'weekly' }] : []),
   ...(PEOPLE ? PEOPLE.people.map(p => ({ loc: `https://frqncy.network/people/${personSlug(p)}/`, priority: '0.5', freq: 'monthly' })) : []),
+  ...(BOOKS  ? [{ loc: 'https://frqncy.network/books/',  priority: '0.7', freq: 'weekly' }]  : []),
+  ...(BOOKS  ? BOOKS.books.map(b => ({ loc: `https://frqncy.network/books/${bookSlug(b)}/`, priority: '0.5', freq: 'monthly' })) : []),
+  ...(ORGS   ? [{ loc: 'https://frqncy.network/orgs/',   priority: '0.7', freq: 'weekly' }]  : []),
+  ...(ORGS   ? ORGS.orgs.map(o => ({ loc: `https://frqncy.network/orgs/${orgSlug(o)}/`, priority: '0.5', freq: 'monthly' })) : []),
+  ...(MEDIA  ? [{ loc: 'https://frqncy.network/media/',  priority: '0.7', freq: 'weekly' }]  : []),
+  ...(MEDIA  ? MEDIA.media.map(m => ({ loc: `https://frqncy.network/media/${mediaSlug(m)}/`, priority: '0.5', freq: 'monthly' })) : []),
+  ...(PLACES ? [{ loc: 'https://frqncy.network/places/', priority: '0.7', freq: 'weekly' }] : []),
+  ...(PLACES ? PLACES.places.map(pl => ({ loc: `https://frqncy.network/places/${placeSlug(pl)}/`, priority: '0.5', freq: 'monthly' })) : []),
 ];
 
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
@@ -1224,10 +1627,160 @@ const searchIndex = DATA.topics.map(t => {
 
 fs.writeFileSync(path.join(ROOT, 'search.json'), JSON.stringify(searchIndex), 'utf8');
 
+// ── ENTITIES INDEX (search across the beds) ─────────────────────
+// Unified slim index of every first-class entity — people, books, orgs,
+// media, places. Consumed by search.html for real search across the world
+// model. Small enough to ship as one JSON fetched on page load.
+const entitiesIndex = [];
+if (PEOPLE) for (const p of PEOPLE.people) {
+  entitiesIndex.push({
+    type: 'person',
+    id: p.id,
+    name: p.name,
+    desc: (p.bio || '').slice(0, 200),
+    url: `/people/${personSlug(p)}/`,
+    external: p.url || '',
+    topics: (p.appears_in || []).filter(x => x.startsWith('t-')),
+    pick: (p.picked_in || []).length > 0,
+  });
+}
+if (BOOKS) for (const b of BOOKS.books) {
+  // Resolve author name for searchability (query "huberman" should find his book)
+  let authorName = '';
+  if (b.author_is_person_ref && PEOPLE) {
+    const person = PEOPLE.people.find(pp => pp.id === b.author);
+    authorName = person ? person.name : '';
+  } else if (typeof b.author === 'string') {
+    authorName = b.author;
+  }
+  entitiesIndex.push({
+    type: 'book',
+    id: b.id,
+    name: b.title,
+    author: authorName,
+    desc: (b.bio || '').slice(0, 200),
+    url: `/books/${bookSlug(b)}/`,
+    external: b.url || '',
+    topics: (b.appears_in || []).filter(x => x.startsWith('t-')),
+    pick: (b.picked_in || []).length > 0,
+  });
+}
+if (ORGS) for (const o of ORGS.orgs) {
+  entitiesIndex.push({
+    type: 'org',
+    id: o.id,
+    name: o.name,
+    desc: (o.bio || '').slice(0, 200),
+    url: `/orgs/${orgSlug(o)}/`,
+    external: o.url || '',
+    topics: (o.appears_in || []).filter(x => x.startsWith('t-')),
+    pick: (o.picked_in || []).length > 0,
+  });
+}
+if (MEDIA) for (const m of MEDIA.media) {
+  entitiesIndex.push({
+    type: 'media',
+    id: m.id,
+    name: m.name,
+    desc: (m.bio || '').slice(0, 200),
+    url: `/media/${mediaSlug(m)}/`,
+    external: m.url || '',
+    topics: (m.appears_in || []).filter(x => x.startsWith('t-')),
+    pick: (m.picked_in || []).length > 0,
+  });
+}
+if (PLACES) for (const pl of PLACES.places) {
+  entitiesIndex.push({
+    type: 'place',
+    id: pl.id,
+    name: pl.name,
+    location: pl.location || '',
+    desc: (pl.bio || '').slice(0, 200),
+    url: `/places/${placeSlug(pl)}/`,
+    external: pl.url || '',
+    topics: (pl.appears_in || []).filter(x => x.startsWith('t-')),
+    pick: (pl.picked_in || []).length > 0,
+  });
+}
+fs.writeFileSync(path.join(ROOT, 'entities.json'), JSON.stringify(entitiesIndex), 'utf8');
+
+// ── RESOURCES INDEX (regenerated from beds + non-bed types) ────
+// search.html and my-frqncy.html currently consume resources.json — a flat
+// list of resources pinned to a specific topic. Regenerating from the beds
+// keeps it authoritative and in sync with content.json.
+const resourcesIndex = [];
+const topicById = new Map(DATA.topics.map(t => [t.id, t]));
+const domainByTopic = (t) => domainMap.get(t.domain);
+
+function emitResource(entity, typeLabel, topicId, overrides = {}) {
+  const t = topicById.get(topicId);
+  if (!t) return; // only emit for topic-level appearances
+  const dom = domainByTopic(t);
+  resourcesIndex.push({
+    type: typeLabel,
+    name: entity.name || entity.title,
+    desc: entity.bio || entity.desc || '',
+    url: entity.url || '',
+    topicSlug: t.slug,
+    topicLabel: t.label,
+    topicUrl: `/v2/${t.slug}/`,
+    domain: dom ? dom.label : '',
+    domainSlug: dom ? dom.slug : '',
+    ...overrides,
+  });
+}
+
+if (PEOPLE) for (const p of PEOPLE.people) {
+  const internalUrl = `/people/${personSlug(p)}/`;
+  for (const tid of (p.appears_in || [])) emitResource(p, 'person', tid, { url: internalUrl, external: p.url || '' });
+}
+if (BOOKS) for (const b of BOOKS.books) {
+  let authorName = '';
+  if (b.author_is_person_ref && PEOPLE) {
+    const person = PEOPLE.people.find(pp => pp.id === b.author);
+    authorName = person ? person.name : '';
+  } else if (typeof b.author === 'string') {
+    authorName = b.author;
+  }
+  const displayName = authorName ? `${b.title} — ${authorName}` : b.title;
+  const internalUrl = `/books/${bookSlug(b)}/`;
+  for (const tid of (b.appears_in || [])) emitResource({ ...b, name: displayName }, 'book', tid, { url: internalUrl, external: b.url || '' });
+}
+if (ORGS) for (const o of ORGS.orgs) {
+  const internalUrl = `/orgs/${orgSlug(o)}/`;
+  for (const tid of (o.appears_in || [])) emitResource(o, 'org', tid, { url: internalUrl, external: o.url || '' });
+}
+if (MEDIA) for (const m of MEDIA.media) {
+  const internalUrl = `/media/${mediaSlug(m)}/`;
+  for (const tid of (m.appears_in || [])) emitResource(m, 'media', tid, { url: internalUrl, external: m.url || '' });
+}
+if (PLACES) for (const pl of PLACES.places) {
+  const internalUrl = `/places/${placeSlug(pl)}/`;
+  for (const tid of (pl.appears_in || [])) emitResource(pl, 'place', tid, { url: internalUrl, external: pl.url || '' });
+}
+// Non-bed types (tools, courses, platforms, apps, websites, references, articles)
+// from content.json's original topic resource arrays
+const leftoverTypes = new Set(['tool', 'course', 'platform', 'app', 'website', 'reference', 'article']);
+for (const [bucketId, items] of Object.entries(DATA.resources)) {
+  if (!bucketId.startsWith('t-')) continue; // topic-level only
+  for (const r of items || []) {
+    if (!leftoverTypes.has(r.type)) continue;
+    emitResource({ name: r.title, desc: r.desc, url: r.url }, r.type, bucketId);
+  }
+}
+fs.writeFileSync(path.join(ROOT, 'resources.json'), JSON.stringify(resourcesIndex), 'utf8');
+
 console.log(`\n✓ FRQNCY Network v2 generated`);
 console.log(`  Pillars : ${DATA.pillars.length}`);
 console.log(`  Domains : ${DATA.domains.length}`);
 console.log(`  Topics  : ${DATA.topics.length}`);
 console.log(`  Total   : ${count} pages → ./v2/`);
+console.log(`  People  : ${personCount} profiles → ./people/`);
+console.log(`  Books   : ${bookCount} profiles → ./books/`);
+console.log(`  Orgs    : ${orgCount} profiles → ./orgs/`);
+console.log(`  Media   : ${mediaCount} profiles → ./media/`);
+console.log(`  Places  : ${placeCount} profiles → ./places/`);
 console.log(`  Sitemap : ${sitemapEntries.length} URLs → sitemap.xml`);
-console.log(`  Search  : ${searchIndex.length} topics → search.json\n`);
+console.log(`  Search  : ${searchIndex.length} topics → search.json`);
+console.log(`  Entities: ${entitiesIndex.length} entities → entities.json`);
+console.log(`  Resources: ${resourcesIndex.length} rows → resources.json (regenerated from beds)\n`);
