@@ -6,9 +6,18 @@ on:
     branches: [main]
     paths:
       - 'content.json'
+      - 'people.json'
+      - 'books.json'
+      - 'orgs.json'
+      - 'media.json'
+      - 'places.json'
       - 'generate.js'
       - 'build-kb.js'
       - 'build-og.js'
+
+# Needed so the bot commit + push step can write back to the repo.
+permissions:
+  contents: write
 
 jobs:
   build:
@@ -16,6 +25,11 @@ jobs:
     steps:
       - name: Checkout repo
         uses: actions/checkout@v4
+        with:
+          # Full-depth checkout so the bot can commit + push without shallow-clone issues
+          fetch-depth: 0
+          # Use the built-in token (now with write permissions from the block above)
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
@@ -38,6 +52,10 @@ jobs:
         run: |
           git config user.name  "github-actions[bot]"
           git config user.email "github-actions[bot]@users.noreply.github.com"
-          git add v2/ functions/api/_kb.js sitemap.xml search.json og-image.png
+          # Include everything generate.js regenerates from the beds so the
+          # committed tree matches what the generator produces.
+          git add v2/ people/ books/ orgs/ media/ places/ \
+                  functions/api/_kb.js sitemap.xml search.json og-image.png \
+                  entities.json resources.json
           git diff --staged --quiet || git commit -m "chore: rebuild site assets from content.json [skip ci]"
           git push
