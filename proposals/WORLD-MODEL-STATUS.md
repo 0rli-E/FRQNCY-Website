@@ -55,6 +55,20 @@ Every `node generate.js` run scans all bios (across the five beds) and all descr
 
 **Current state: `voice: clean — no banished words across beds or content.json descs`.**
 
+### Person pages — `/people/[slug]/`
+
+Every human in the people bed now has a dedicated profile page. **82 person pages + 1 index at `/people/`.** Each profile shows:
+
+- Hero: name, bio, link to their external site
+- **Works** — their books, orgs, and media rendered as cards (from the beds via `author_is_person_ref` / `founder_is_person_ref` / `creator_is_person_ref`)
+- **Channels** — the named entities they channel (for humans who do — Barbara Marciniak → Pleiadians, Darryl Anka → Bashar)
+- **Teaches across** — every topic they appear on, as navigable cards
+- schema.org Person JSON-LD markup with sameAs link to their external URL
+
+**The world model is now visibly navigable.** When you see Osho on the Meditation topic page, his name is a link to `/people/osho/` where you see his whole footprint in the network. Same for all 82 humans.
+
+Sitemap updated to include the people index and all 82 profile pages.
+
 ### `generate.js` now reads the beds
 
 At build time, for each topic, the generator merges bed-sourced entities with leftover content.json resources (tools, courses, platforms, apps, websites, references, articles). Output HTML is byte-identical to what was there before, with the approved cleanups (Erin Claire Jones, Lyn Alden, Jovian Archive, etc.).

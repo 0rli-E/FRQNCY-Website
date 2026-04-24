@@ -78,7 +78,15 @@ const fixTypos = (u) => (u||'').replace('erinclairehjones', 'erinclairejones');
 const normU = (u) => fixTypos((u||'').replace('https://www.', 'https://').replace(/\/$/, ''));
 
 function peopleToCard(p, nid) {
-  return { type: 'person', title: p.name, url: p.url, desc: p.bio, frqncy_pick: (p.picked_in||[]).includes(nid) };
+  const slug = (p.id || '').replace(/^p-/, '');
+  return {
+    type: 'person',
+    title: p.name,
+    url: p.url,
+    desc: p.bio,
+    frqncy_pick: (p.picked_in||[]).includes(nid),
+    internal_url: slug ? `/people/${slug}/` : null,
+  };
 }
 function bookToCard(b, nid) {
   const pid = b.author_is_person_ref ? b.author : null;
@@ -431,10 +439,17 @@ function rcard(r) {
   const link = r.url
     ? `<a href="${esc(r.url)}" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>`
     : '';
+  // If the resource has a dedicated page on FRQNCY (e.g. a person profile),
+  // make the title a link to that page so clicking the name navigates internally.
+  // External "Visit →" button stays as-is.
+  const titleInner = esc(r.title);
+  const titleHtml = r.internal_url
+    ? `<a href="${esc(r.internal_url)}" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">${titleInner}</a>`
+    : titleInner;
   return `<div class="rcard" data-type="${esc(r.type)}">
   <span class="rtype">${esc(r.type)}</span>
   <div class="rinfo">
-    <h4>${esc(r.title)}${r.frqncy_pick ? ' <span class="fpick">✦ FRQNCY PICK</span>' : ''}</h4>
+    <h4>${titleHtml}${r.frqncy_pick ? ' <span class="fpick">✦ FRQNCY PICK</span>' : ''}</h4>
     ${r.desc ? `<p>${esc(r.desc)}</p>` : ''}
   </div>
   ${link}
@@ -777,6 +792,108 @@ ${FOOTER}
 </body></html>`;
 }
 
+// ── PERSON PAGE ──────────────────────────────────────────────────
+// Renders a dedicated page for each person in the people bed.
+// URL: /people/[slug]/ — two levels deep like v2/[topic]/, same asset paths.
+// Page shows: hero (name + bio + external link), their works (books, orgs,
+// media), any channels, and the topics they appear on.
+function personSlug(person) {
+  return (person.id || '').replace(/^p-/, '');
+}
+
+function worksForPerson(personId) {
+  const out = [];
+  if (BOOKS) for (const b of BOOKS.books) {
+    if (b.author_is_person_ref && b.author === personId) {
+      const title = b.title; // bare title; author is the current page's subject
+      out.push({ type: 'book', title, url: b.url, desc: b.bio, frqncy_pick: false });
+    }
+  }
+  if (ORGS) for (const o of ORGS.orgs) {
+    if (o.founder_is_person_ref && o.founder === personId) {
+      out.push({ type: 'org', title: o.name, url: o.url, desc: o.bio, frqncy_pick: false });
+    }
+  }
+  if (MEDIA) for (const m of MEDIA.media) {
+    if (m.creator_is_person_ref && m.creator === personId) {
+      out.push({ type: 'media', title: m.name, url: m.url, desc: m.bio, frqncy_pick: false });
+    }
+  }
+  return out;
+}
+
+function topicsForPerson(person) {
+  const ids = new Set(person.appears_in || []);
+  return DATA.topics.filter(t => ids.has(t.id));
+}
+
+function personPage(person) {
+  const slug = personSlug(person);
+  const canonical = `https://frqncy.network/people/${slug}/`;
+  const works = worksForPerson(person.id);
+  const topics = topicsForPerson(person);
+
+  // Works section — reuse the rcard/resourceSection look
+  const worksSection = works.length ? `<section>
+  <div class="section-label">Works</div>
+  <div class="rlist">${works.map(rcard).join('\n')}</div>
+</section>` : '';
+
+  // Channels section (for humans who channel named entities)
+  const channelsSection = (person.channels && person.channels.length) ? `<section>
+  <div class="section-label">Channels</div>
+  <div class="rlist">${person.channels.map(c => `<div class="rcard" data-type="channel">
+  <span class="rtype">channel</span>
+  <div class="rinfo">
+    <h4>${esc(c.name)}</h4>
+    ${c.description ? `<p>${esc(c.description)}</p>` : ''}
+  </div>
+</div>`).join('\n')}</div>
+</section>` : '';
+
+  // Topics they appear on
+  const topicsSection = topics.length ? `<section>
+  <div class="section-label">Teaches across</div>
+  <div class="grid grid-sm">
+    ${topics.map(t => `<a href="../../v2/${t.slug}/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>${esc(t.label)}</h3>
+  ${t.desc ? `<p>${esc(t.desc.slice(0, 70))}…</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`).join('\n')}
+  </div>
+</section>` : '';
+
+  const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><span>People</span><span class="sep">/</span><span>${esc(person.name)}</span>`;
+  const externalLink = person.url ? `<a href="${esc(person.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit ${esc((person.url||'').replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,''))} →</a>` : '';
+
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'Person',
+    name: person.name,
+    description: person.bio,
+    url: canonical,
+    sameAs: person.url ? [person.url] : undefined,
+    isPartOf: SITE_REF,
+  };
+
+  return head(person.name, null, person.bio, canonical, ld, null) +
+nav(crumb) +
+`<div class="hero">
+  <div class="hero-eyebrow">Person</div>
+  <h1>${esc(person.name)}</h1>
+  ${person.bio ? `<p class="hero-desc">${esc(person.bio)}</p>` : ''}
+  ${externalLink}
+</div>
+<main>
+  ${worksSection}
+  ${channelsSection}
+  ${topicsSection}
+</main>
+${FOOTER}
+</body></html>`;
+}
+
 // ── EXPLORE-DATA SYNC ────────────────────────────────────────────
 // Keep v2/explore-data.json in sync with content.json + places.json.
 // Preserves hand-curated map topology (cross-pillar links, map-specific
@@ -1000,6 +1117,59 @@ for (const t of DATA.topics) {
   count++;
 }
 
+// ── PERSON PAGES — /people/[slug]/ + /people/index.html ──────────
+const PEOPLE_OUT = path.join(ROOT, 'people');
+let personCount = 0;
+if (PEOPLE) {
+  mkdirp(PEOPLE_OUT);
+  // Individual person pages
+  for (const p of PEOPLE.people) {
+    const slug = personSlug(p);
+    if (!slug) continue;
+    mkdirp(path.join(PEOPLE_OUT, slug));
+    fs.writeFileSync(path.join(PEOPLE_OUT, slug, 'index.html'), personPage(p));
+    personCount++;
+  }
+  // People index — alphabetical grid of all profiles
+  const peopleSorted = [...PEOPLE.people].sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
+  const cards = peopleSorted.map(p => {
+    const slug = personSlug(p);
+    const snippet = (p.bio || '').slice(0, 90);
+    return `<a href="./${slug}/index.html" class="ncard">
+  <div class="ncard-type">Person</div>
+  <h3>${esc(p.name)}</h3>
+  ${snippet ? `<p>${esc(snippet)}${p.bio && p.bio.length > 90 ? '…' : ''}</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`;
+  }).join('\n');
+
+  const indexCanonical = 'https://frqncy.network/people/';
+  const indexLd = {
+    '@context': 'https://schema.org',
+    '@type': 'CollectionPage',
+    name: 'People — FRQNCY Network',
+    description: `The people FRQNCY points to — ${PEOPLE.people.length} teachers, founders, creators, and thinkers.`,
+    url: indexCanonical,
+    isPartOf: SITE_REF,
+  };
+  const indexHtml = head('People', null, `The people FRQNCY points to — ${PEOPLE.people.length} teachers, founders, creators, and thinkers across the network.`, indexCanonical, indexLd, null) +
+nav(`<a href="../index.html">FRQNCY</a><span class="sep">/</span><span>People</span>`) +
+`<div class="hero">
+  <div class="hero-eyebrow">Network</div>
+  <h1>People</h1>
+  <p class="hero-desc">The humans FRQNCY points to — ${PEOPLE.people.length} teachers, founders, creators, and thinkers across the network.</p>
+</div>
+<main>
+  <section>
+    <div class="grid grid-sm">${cards}</div>
+  </section>
+</main>
+${FOOTER}
+</body></html>`;
+  fs.writeFileSync(path.join(PEOPLE_OUT, 'index.html'), indexHtml);
+  console.log(`  people: ${personCount} profiles + 1 index → ./people/`);
+}
+
 // ── SITEMAP ──────────────────────────────────────────────────────
 const today = new Date().toISOString().slice(0, 10);
 
@@ -1015,6 +1185,8 @@ const sitemapEntries = [
   ...DATA.pillars.map(p => ({ loc: `https://frqncy.network/v2/${p.slug}/`, priority: '0.8', freq: 'weekly'  })),
   ...DATA.domains.map(d => ({ loc: `https://frqncy.network/v2/${d.slug}/`, priority: '0.7', freq: 'weekly'  })),
   ...DATA.topics.map(t  => ({ loc: `https://frqncy.network/v2/${t.slug}/`, priority: '0.6', freq: 'monthly' })),
+  ...(PEOPLE ? [{ loc: 'https://frqncy.network/people/', priority: '0.7', freq: 'weekly' }] : []),
+  ...(PEOPLE ? PEOPLE.people.map(p => ({ loc: `https://frqncy.network/people/${personSlug(p)}/`, priority: '0.5', freq: 'monthly' })) : []),
 ];
 
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>
