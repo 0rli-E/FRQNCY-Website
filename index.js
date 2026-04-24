@@ -197,9 +197,11 @@
       }
     });
 
-    // Trigger overlay on scroll past intro
+    // Trigger overlay after the user has actually engaged — one full viewport
+    // of scroll (was 55%, which fired on a single phone thumb swipe before
+    // the visitor had read anything).
     window.addEventListener('scroll', function () {
-      if (!subscribeShown && window.scrollY > window.innerHeight * 0.55) {
+      if (!subscribeShown && window.scrollY > window.innerHeight * 1.0) {
         showSubscribe();
         subscribeShown = true;
       }

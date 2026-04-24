@@ -474,23 +474,16 @@ function nav(crumbHtml) {
     <a href="/orgs/"   class="snav-back" style="${hubLinkStyle}">Orgs</a>
     <a href="/media/"  class="snav-back" style="${hubLinkStyle}">Media</a>
     <a href="/places/" class="snav-back" style="${hubLinkStyle}">Places</a>
-    <a href="/search.html" class="snav-back" style="${hubLinkStyle}">Search</a>
+    <a href="/search" class="snav-back" style="${hubLinkStyle}">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
 </nav>`;
 }
 
-const FOOTER = `<footer>
-  <div class="footer-inner">
-    <span class="footer-logo">FRQNCY</span>
-    <div class="footer-links">
-      <a href="../explore.html">Explore</a>
-      <a href="../watch/index.html">Watch</a>
-      <a href="../courses/index.html">Courses</a>
-      <a href="../../index.html">Main site</a>
-      <a href="../../about.html">Vision</a>
-    </div>
-  </div>
+const FOOTER = `<footer style="border-top:1px solid rgba(255,255,255,0.06);padding:32px clamp(1.25rem,6vw,2.5rem);text-align:center;margin-top:3rem">
+  <span style="font-family:'Cormorant',serif;font-weight:300;font-size:16px;letter-spacing:0.3em;color:rgba(255,255,255,0.5);text-transform:uppercase">FRQNCY</span>
+  <br>
+  <span style="font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-top:6px;display:inline-block">&copy; 2026 FRQNCY &middot; All frequencies reserved</span>
 </footer>`;
 
 // ── Resource cards ───────────────────────────────────────────────
@@ -966,6 +959,18 @@ function personPage(person) {
   <div class="rlist">${works.map(rcard).join('\n')}</div>
 </section>` : '';
 
+  // Life section — longer-form biography when available. Accepts either a
+  // single string (rendered as one paragraph) or an array of paragraphs.
+  const lifeParas = Array.isArray(person.life_story)
+    ? person.life_story
+    : (person.life_story ? [person.life_story] : []);
+  const lifeSection = lifeParas.length ? `<section>
+  <div class="section-label">Life</div>
+  <div class="life-prose" style="max-width:720px">
+    ${lifeParas.map(p => `<p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">${esc(p)}</p>`).join('\n    ')}
+  </div>
+</section>` : '';
+
   // Channels section (for humans who channel named entities)
   const channelsSection = (person.channels && person.channels.length) ? `<section>
   <div class="section-label">Channels</div>
@@ -1015,6 +1020,7 @@ nav(crumb) +
   ${externalLink}
 </div>
 <main>
+  ${lifeSection}
   ${worksSection}
   ${channelsSection}
   ${topicsSection}

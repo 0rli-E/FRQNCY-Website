@@ -4,8 +4,18 @@
 /map              /v2/explore.html    301
 /network          /v2/explore.html    301
 
+# Canonical clean URLs — drop .html
+/about.html       /about              301
+/platform.html    /platform           301
+/podcast.html     /podcast            301
+/space.html       /space              301
+/chart.html       /chart              301
+/search.html      /search             301
+/my-frqncy.html   /my-frqncy          301
+/start-here.html  /start-here         301
+
 # Redirect /vision → about
-/vision           /about.html         301
+/vision           /about              301
 
 # Redirect old /v2 root to explore
 /v2               /v2/explore.html    301

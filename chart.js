@@ -260,30 +260,113 @@ async function downloadChartPDF(){
 }
 
 // ── Form validation ────────────────────────────────────────────────────
+// Returns { ok, errors[] } where errors carry a field + user-facing message.
+function validateFields() {
+  const dob = document.getElementById('dob').value;
+  const tob = document.getElementById('tob').value;
+  const tz  = document.getElementById('tz').value;
+  const lat = document.getElementById('lat').value;
+  const lng = document.getElementById('lng').value;
+  const needsTime = activeChart !== 'natal';
+  const errors = [];
+
+  // DOB sanity: must exist, not in the future, not before 1900 (astronomy tables don't reach that far)
+  if (!dob) {
+    errors.push({ field: 'dob', msg: 'Date of birth is required.' });
+  } else {
+    const [y] = dob.split('-').map(Number);
+    const today = new Date(); today.setHours(0,0,0,0);
+    const parsed = new Date(dob);
+    if (parsed > today) errors.push({ field: 'dob', msg: 'Date of birth cannot be in the future.' });
+    else if (y < 1900) errors.push({ field: 'dob', msg: 'Please enter a year from 1900 onwards.' });
+  }
+
+  // TOB required for HD and Gene Keys (not for natal)
+  if (needsTime && !tob) errors.push({ field: 'tob', msg: 'Birth time is required for Human Design and Gene Keys.' });
+
+  if (!tz) errors.push({ field: 'tz', msg: 'Please pick the timezone where you were born.' });
+
+  // Lat/Lng optional, but if one is provided both should be, and both must be in range
+  const latNum = lat === '' ? null : Number(lat);
+  const lngNum = lng === '' ? null : Number(lng);
+  if ((lat === '') !== (lng === '')) {
+    errors.push({ field: 'loc', msg: 'Latitude and longitude must be provided together.' });
+  }
+  if (latNum !== null && (!Number.isFinite(latNum) || latNum < -90 || latNum > 90)) {
+    errors.push({ field: 'lat', msg: 'Latitude must be between −90 and 90.' });
+  }
+  if (lngNum !== null && (!Number.isFinite(lngNum) || lngNum < -180 || lngNum > 180)) {
+    errors.push({ field: 'lng', msg: 'Longitude must be between −180 and 180.' });
+  }
+
+  return { ok: errors.length === 0, errors };
+}
+
+// Paint error states on fields + surface the first error in the hint line.
+function paintErrors(errors) {
+  ['dob','tob','tz','lat','lng'].forEach(id => {
+    const el = document.getElementById(id);
+    if (el) el.style.borderColor = '';
+  });
+  const hint = document.getElementById('btn-hint');
+  if (!errors || !errors.length) {
+    hint.style.opacity = '0.6';
+    hint.style.color = 'var(--text-dim)';
+    return;
+  }
+  errors.forEach(e => {
+    if (e.field === 'loc') {
+      const la = document.getElementById('lat'), ln = document.getElementById('lng');
+      if (la) la.style.borderColor = '#E87A4A';
+      if (ln) ln.style.borderColor = '#E87A4A';
+    } else {
+      const el = document.getElementById(e.field);
+      if (el) el.style.borderColor = '#E87A4A';
+    }
+  });
+  hint.textContent = errors[0].msg;
+  hint.style.display = 'block';
+  hint.style.opacity = '1';
+  hint.style.color = '#E87A4A';
+}
+
 function updateBtn() {
   const dob = document.getElementById('dob').value;
   const tob = document.getElementById('tob').value;
   const tz  = document.getElementById('tz').value;
   const needsTime = activeChart !== 'natal';
-  const ok = dob && tz && (!needsTime || tob);
+  const { ok, errors } = validateFields();
   document.getElementById('btn-generate').disabled = !ok;
   document.getElementById('time-note').style.opacity = tob ? '0.5' : '1';
-  // Update hint text
+
   const hint = document.getElementById('btn-hint');
   if (ok) {
     hint.style.display = 'none';
-  } else {
-    const missing = [];
-    if (!dob) missing.push('date of birth');
-    if (needsTime && !tob) missing.push('time of birth');
-    if (!tz) missing.push('timezone');
+    paintErrors([]);
+    return;
+  }
+  // If user hasn't filled basics yet, show neutral "enter X to continue" copy.
+  const missing = [];
+  if (!dob) missing.push('date of birth');
+  if (needsTime && !tob) missing.push('time of birth');
+  if (!tz) missing.push('timezone');
+  if (missing.length) {
     hint.textContent = 'Enter ' + missing.join(', ') + ' to continue';
     hint.style.display = 'block';
+    hint.style.opacity = '0.6';
+    hint.style.color = 'var(--text-dim)';
+  } else {
+    // Basics filled but something else failed — surface the specific error.
+    paintErrors(errors);
   }
 }
 document.getElementById('dob').addEventListener('input', updateBtn);
 document.getElementById('tob').addEventListener('input', updateBtn);
 document.getElementById('tz').addEventListener('change', updateBtn);
+['lat','lng'].forEach(id => {
+  const el = document.getElementById(id);
+  if (el) el.addEventListener('input', updateBtn);
+});
 
 // ── Human Design data ──────────────────────────────────────────────────
 const HD_TYPES = {
@@ -639,10 +722,13 @@ function deriveGK(chart) {
 
 // ── Generate ──────────────────────────────────────────────────────────
 function generate() {
+  // Gate on full validation, not just required-ness — surfaces range errors
+  // (bad lat/lng, pre-1900 date, future date) instead of silently failing.
+  const v = validateFields();
+  if (!v.ok) { paintErrors(v.errors); return; }
   const dob = document.getElementById('dob').value;
   const tob = document.getElementById('tob').value || '12:00';
   const zone = document.getElementById('tz').value || '';
-  if (!dob || !zone) return;
   window._FRQ_ZONE = zone;
   // Human-readable timezone label for display (e.g. "Berlin / Munich / Paris…")
   const tzSel = document.getElementById('tz');
