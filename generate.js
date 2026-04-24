@@ -138,6 +138,21 @@ function placeToCard(pl, nid) {
   };
 }
 
+// ── Related teachers for a topic ─────────────────────────────────
+// Finds people who appear on this topic and ranks them by how many OTHER
+// topics they also teach (breadth of coverage). A person teaching just
+// this topic ranks low; one teaching this + 5 others ranks high.
+function relatedTeachersForTopic(topicId) {
+  if (!PEOPLE) return [];
+  const scored = [];
+  for (const p of PEOPLE.people) {
+    if (!(p.appears_in||[]).includes(topicId)) continue;
+    const breadth = (p.appears_in||[]).filter(x => x.startsWith('t-')).length;
+    scored.push({ person: p, breadth });
+  }
+  return scored.sort((a,b) => b.breadth - a.breadth || a.person.name.localeCompare(b.person.name));
+}
+
 // ── Related topics computed from shared entities across the beds ──
 // For a given topic, finds other topics that share people, books, orgs, media,
 // or places with it. Returns topics sorted by overlap count (most shared first).
@@ -748,6 +763,25 @@ function topicPage(t) {
   const pillar = pillarMap.get(domain.pillar);
 
   // Related topics in same domain (exclude current, max 6)
+  // ── Related teachers — people who teach this topic, ranked by breadth ──
+  const teachers = relatedTeachersForTopic(t.id).slice(0, 6);
+  const teachersSection = teachers.length ? `<section>
+    <div class="section-label">Teachers on this topic</div>
+    <div class="grid grid-sm">
+      ${teachers.map(({person: p, breadth}) => {
+        const pslug = personSlug(p);
+        const other = breadth - 1;
+        const meta = other > 0 ? `Person &nbsp;·&nbsp; also teaches ${other} other topic${other === 1 ? '' : 's'}` : 'Person';
+        return `<a href="/people/${esc(pslug)}/" class="ncard">
+  <div class="ncard-type">${meta}</div>
+  <h3>${esc(p.name)}</h3>
+  ${p.bio ? `<p>${esc(p.bio.slice(0, 80))}${p.bio.length > 80 ? '…' : ''}</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`;
+      }).join('\n')}
+    </div>
+  </section>` : '';
+
   // ── Connected through the network — topics linked by shared bed entities ──
   const connected = relatedTopicsByEntities(t.id).slice(0, 6);
   const connectedIds = new Set(connected.map(x => x.topic.id));
@@ -825,6 +859,7 @@ nav(crumb) +
   ${vidSection}
   ${courseCallout}
   ${resourceSection(t.id, 'Curated Resources', res)}
+  ${teachersSection}
   ${connectedSection}
   ${relatedCards}
 </main>
@@ -855,7 +890,9 @@ function worksForPerson(personId) {
     }
   }
   if (MEDIA) for (const m of MEDIA.media) {
-    if (m.creator_is_person_ref && m.creator === personId) {
+    const isPrimary = m.creator_is_person_ref && m.creator === personId;
+    const isCoCreator = (m.co_creators || []).includes(personId);
+    if (isPrimary || isCoCreator) {
       out.push({ type: 'media', title: m.name, url: m.url, desc: m.bio, frqncy_pick: false });
     }
   }
@@ -1104,7 +1141,17 @@ function mediaPage(media) {
     const person = PEOPLE.people.find(p => p.id === media.creator);
     if (person) {
       const pslug = personSlug(person);
-      creatorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By <a href="/people/${esc(pslug)}/" style="color:var(--accent);border-bottom:1px solid rgba(255,255,255,0.18);text-decoration:none">${esc(person.name)}</a></div>`;
+      // Build array of all creators (primary + any co_creators) with links.
+      const creators = [`<a href="/people/${esc(pslug)}/" style="color:var(--accent);border-bottom:1px solid rgba(255,255,255,0.18);text-decoration:none">${esc(person.name)}</a>`];
+      for (const coId of (media.co_creators || [])) {
+        const co = PEOPLE.people.find(p => p.id === coId);
+        if (co) {
+          const cslug = personSlug(co);
+          creators.push(`<a href="/people/${esc(cslug)}/" style="color:var(--accent);border-bottom:1px solid rgba(255,255,255,0.18);text-decoration:none">${esc(co.name)}</a>`);
+        }
+      }
+      const joined = creators.length === 1 ? creators[0] : creators.slice(0, -1).join(', ') + ' & ' + creators[creators.length - 1];
+      creatorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By ${joined}</div>`;
     }
   } else if (typeof media.creator === 'string' && media.creator) {
     creatorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By ${esc(media.creator)}</div>`;

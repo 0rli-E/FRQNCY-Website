@@ -1,8 +1,8 @@
 {
-  "$schema_version": 5,
+  "$schema_version": 6,
   "$purpose": "Draft first-class people list for FRQNCY. This is a PROPOSAL — not wired into the live site. Review, push back on anything wrong, and we refine.",
   "$generated": "2026-04-24",
-  "$updated": "2026-04-24 — wave 3: added 20 culturally significant single-book authors. Total: 82.",
+  "$updated": "2026-04-24 — wave 4: added 6 people (Abraham-Hicks channels + 4 partnership creators). Total: 88.",
   "$source": "Extracted from content.json — every resource with type:'person' (25 rows, 23 unique people after deduping Rupert Spira and Osho who each appeared twice).",
   "$reconciliation_notes": "Channeling humans now carry a 'channels' array listing the entities they channel, each with name and description. This keeps the human as the canonical person while giving the channeled entity its own structure — easy to migrate to a standalone channels.json later if we want.",
   "people": [
@@ -204,6 +204,17 @@
       ]
     },
     {
+      "id": "p-david-hoffman",
+      "name": "David Hoffman",
+      "url": "https://www.bankless.com",
+      "bio": "Co-founder of Bankless with Ryan Sean Adams. His clear explanations of Ethereum's economic architecture and long-term thesis have made Bankless the primary education source for the bankless generation.",
+      "appears_in": [
+        "t-blockchain",
+        "t-crypto"
+      ],
+      "picked_in": []
+    },
+    {
       "id": "p-deepak-chopra",
       "name": "Deepak Chopra",
       "url": "https://www.deepakchopra.com",
@@ -304,6 +315,24 @@
         "t-humandesign"
       ],
       "picked_in": []
+    },
+    {
+      "id": "p-esther-hicks",
+      "name": "Esther Hicks",
+      "url": "https://www.abraham-hicks.com",
+      "bio": "Channels the non-physical collective known as Abraham since 1985. With her late husband Jerry Hicks she transmitted the teachings to millions — the core source of the modern Law of Attraction tradition. Part of the FRQNCY voice lineage.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": [
+        "t-channeling"
+      ],
+      "channels": [
+        {
+          "name": "Abraham",
+          "description": "A collective of non-physical intelligence channeled through Esther Hicks. The most-published voice in the contemporary Law of Attraction tradition — transmissions on alignment, emotional guidance, and deliberate creation."
+        }
+      ]
     },
     {
       "id": "p-fritjof-capra",
@@ -423,6 +452,14 @@
       ]
     },
     {
+      "id": "p-jerry-hicks",
+      "name": "Jerry Hicks",
+      "url": "https://www.abraham-hicks.com",
+      "bio": "Businessman and Dale Carnegie teacher who, with his wife Esther, brought the Abraham material into the world. Co-author of Ask and It Is Given and the central works of the Abraham-Hicks canon. He passed in 2011; Esther continues the work.",
+      "appears_in": [],
+      "picked_in": []
+    },
+    {
       "id": "p-joe-mcmoneagle",
       "name": "Joe McMoneagle",
       "url": "https://www.mceagle.com",
@@ -431,6 +468,18 @@
         "t-remote-view"
       ],
       "picked_in": []
+    },
+    {
+      "id": "p-joshua-fields-millburn",
+      "name": "Joshua Fields Millburn",
+      "url": "https://www.theminimalists.com",
+      "bio": "Writer and co-founder of The Minimalists with Ryan Nicodemus. Their books, podcast, and Netflix documentaries have shaped how a generation thinks about owning less and living more meaningfully.",
+      "appears_in": [
+        "t-minimalism"
+      ],
+      "picked_in": [
+        "t-minimalism"
+      ]
     },
     {
       "id": "p-karen-curry-parker",
@@ -756,6 +805,29 @@
       "bio": "Modern populariser of Stoic philosophy whose books (The Obstacle Is the Way, Ego Is the Enemy) and Daily Stoic newsletter have brought Marcus Aurelius and Epictetus into the hands of athletes, executives, and seekers.",
       "appears_in": [
         "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-ryan-nicodemus",
+      "name": "Ryan Nicodemus",
+      "url": "https://www.theminimalists.com",
+      "bio": "Co-founder of The Minimalists with Joshua Fields Millburn. His 'packing party' experiment — boxing up everything he owned to rediscover what mattered — became a foundational story in the minimalism movement.",
+      "appears_in": [
+        "t-minimalism"
+      ],
+      "picked_in": [
+        "t-minimalism"
+      ]
+    },
+    {
+      "id": "p-ryan-sean-adams",
+      "name": "Ryan Sean Adams",
+      "url": "https://www.bankless.com",
+      "bio": "Co-founder of Bankless with David Hoffman. An ex-banker turned Ethereum advocate, he hosts the leading daily podcast and newsletter on decentralised finance. His conviction-driven long-form interviews shape how a generation thinks about money.",
+      "appears_in": [
+        "t-blockchain",
+        "t-crypto"
       ],
       "picked_in": []
     },

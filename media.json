@@ -88,15 +88,18 @@
     {
       "id": "m-bankless",
       "name": "Bankless",
-      "creator": "Ryan Sean Adams & David Hoffman",
-      "creator_is_person_ref": false,
+      "creator": "p-ryan-sean-adams",
+      "creator_is_person_ref": true,
       "url": "https://www.bankless.com",
       "bio": "The leading crypto media and podcast network — covering Ethereum, DeFi, and the broader move toward a bankless financial system.",
       "appears_in": [
         "t-blockchain",
         "t-crypto"
       ],
-      "picked_in": []
+      "picked_in": [],
+      "co_creators": [
+        "p-david-hoffman"
+      ]
     },
     {
       "id": "m-bioenergy-international",
@@ -736,8 +739,8 @@
     {
       "id": "m-the-minimalists",
       "name": "The Minimalists",
-      "creator": "Joshua Fields Millburn & Ryan Nicodemus",
-      "creator_is_person_ref": false,
+      "creator": "p-joshua-fields-millburn",
+      "creator_is_person_ref": true,
       "url": "https://www.theminimalists.com",
       "bio": "Joshua Fields Millburn and Ryan Nicodemus on living meaningfully with less. Podcast, essays, documentary.",
       "appears_in": [
@@ -745,6 +748,9 @@
       ],
       "picked_in": [
         "t-minimalism"
+      ],
+      "co_creators": [
+        "p-ryan-nicodemus"
       ]
     },
     {
@@ -934,5 +940,5 @@
       "picked_in": []
     }
   ],
-  "$updated": "2026-04-24 — wave 2: 5 more media relinked to p-ids."
+  "$updated": "2026-04-24 — wave 4: partnership media primary creators linked to p-ids + co_creators field added (2 media)."
 }
