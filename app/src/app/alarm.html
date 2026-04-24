@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#000000" />
+    <title>FRQNCY · Waking</title>
+    <style>
+      /* This screen is launched by FrqncyAlarm when the alarm fires.
+         It immediately redirects to wake.html — kept as a separate
+         entry point because Android's AlarmActivity launches a specific
+         URL via a native intent. */
+      body {
+        margin: 0;
+        background: #000;
+        color: #e8c547;
+        font-family: system-ui, -apple-system, sans-serif;
+        height: 100vh;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 12px;
+        letter-spacing: 3px;
+      }
+    </style>
+  </head>
+  <body>
+    <div>tuning in</div>
+    <script>window.location.replace('./wake.html');</script>
+  </body>
+</html>

@@ -372,8 +372,19 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
         </div>
       </li>
       <li><a href="my-frqncy.html" class="nav-cta-gold active">My FRQNCY</a></li>
+      <li id="frqncy-auth-pill" style="margin-left:6px;"></li>
   </ul>
 </nav>
+<script src="assets/frqncy-supabase.js" defer></script>
+<script>
+  // Mount the auth pill once the SDK is ready.
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.frqncy) return;
+    window.frqncy.ready.then(() => {
+      window.frqncy.mountAuthPill(document.getElementById('frqncy-auth-pill'));
+    });
+  });
+</script>
 
 <!-- Loading overlay -->
 <div id="loading" role="status" aria-live="polite">

@@ -1,0 +1,348 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Bitcoin Ecosystem — FRQNCY Crypto</title>
+<meta name="description" content="Bitcoin and the protocols built on top of it. Lightning, Fedimint, Cashu, Liquid, Nostr — the tools that turn sound money into a usable layer.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Bitcoin Ecosystem — FRQNCY Crypto">
+<meta property="og:description" content="Bitcoin and the protocols built on top of it. Lightning, Fedimint, Cashu, Liquid, Nostr.">
+<meta property="og:url" content="https://frqncy.network/v2/crypto/bitcoin/">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Bitcoin Ecosystem — FRQNCY Crypto">
+<meta name="twitter:description" content="Bitcoin and the protocols built on top of it.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
+<link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="manifest" href="../../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/v2/crypto/bitcoin/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="fetch" href="/api/crypto/market" crossorigin>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Bitcoin Ecosystem — FRQNCY Crypto","description":"Bitcoin and the protocols built on top of it. Lightning, Fedimint, Cashu, Liquid, Nostr.","url":"https://frqncy.network/v2/crypto/bitcoin/","isPartOf":{"@type":"WebSite","name":"FRQNCY","url":"https://frqncy.network/"}}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
+  --card-border:rgba(255,255,255,0.08);--accent:#7B61FF;--btc:#F7931A;
+}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{text-decoration:none;color:var(--accent)}
+a:hover{opacity:0.85}
+
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text)}
+.breadcrumb .sep{opacity:0.25}
+.snav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.snav-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);transition:color .2s;white-space:nowrap}
+.snav-link:hover{color:var(--text)}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(3rem,7vw,5.5rem) clamp(1.25rem,5vw,2.5rem) clamp(2rem,4vw,3rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(247,147,26,0.12) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--btc);margin-bottom:1.25rem;position:relative}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.5}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.2rem;position:relative}
+.hero-desc{max-width:620px;margin:0 auto;font-size:0.88rem;color:var(--text-dim);font-weight:300;line-height:1.75;position:relative}
+
+/* INTRO CARD */
+.intro{max-width:780px;margin:0 auto 2.5rem;padding:0 clamp(1.25rem,5vw,2.5rem)}
+.intro-inner{background:rgba(247,147,26,0.04);border:1px solid rgba(247,147,26,0.14);border-radius:6px;padding:1.5rem 1.75rem}
+.intro-inner p{font-size:0.8rem;color:var(--text);line-height:1.75;margin:0}
+.intro-inner p + p{margin-top:0.75rem}
+.intro-inner em{color:var(--btc);font-style:normal;font-weight:400}
+
+/* GRID */
+main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
+.crypto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+
+/* CRYPTO CARD */
+.ccard{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;
+  overflow:hidden;display:flex;flex-direction:column;
+  transition:border-color .25s,transform .25s,background .25s;
+  color:var(--text);
+}
+.ccard:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-3px);background:rgba(255,255,255,0.06)}
+.ccard-accent{height:4px;flex-shrink:0}
+.ccard-body{padding:1.6rem 1.6rem 1.2rem;flex:1;display:flex;flex-direction:column;gap:0.5rem}
+.ccard-header{display:flex;align-items:center;gap:0.9rem}
+.ccard-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:500;color:#fff;flex-shrink:0;font-family:'Cormorant',serif}
+.ccard-meta{flex:1;min-width:0}
+.ccard-name{font-family:'Cormorant',serif;font-size:1.35rem;font-weight:400;color:#fff;line-height:1.15}
+.ccard-ticker{font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim)}
+.ccard-tags{display:flex;gap:0.3rem;flex-wrap:wrap;margin-top:0.3rem}
+.ctag{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid rgba(247,147,26,0.3);color:var(--btc);background:rgba(247,147,26,0.05)}
+.ctag.layer2{border-color:rgba(255,204,102,0.3);color:#FFCC66;background:rgba(255,204,102,0.05)}
+.ctag.privacy{border-color:rgba(200,140,255,0.3);color:#C88CFF;background:rgba(200,140,255,0.05)}
+.ctag.social{border-color:rgba(123,97,255,0.3);color:var(--accent);background:rgba(123,97,255,0.05)}
+.ccard-desc{font-size:0.8rem;color:var(--text-dim);line-height:1.65;margin-top:0.2rem}
+.ccard-why{font-size:0.72rem;line-height:1.55;color:var(--text);margin-top:0.2rem}
+.ccard-why strong{font-weight:400;color:var(--gold);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:0.2rem}
+.ccard-footer{margin-top:auto;padding:0.9rem 1.6rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.ccard-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--btc);transition:opacity .2s;white-space:nowrap}
+.ccard:hover .ccard-link{opacity:0.8}
+.ccard-type{font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+
+/* SECTION LABEL */
+.section-label{max-width:1080px;margin:2.5rem auto 1.25rem;padding:0 clamp(1.25rem,5vw,2.5rem);display:flex;align-items:center;gap:0.75rem}
+.section-label-line{flex:1;height:1px;background:rgba(255,255,255,0.08)}
+.section-label-text{font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim)}
+
+/* CTA BANNER */
+.cta-banner{max-width:1080px;margin:3.5rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem)}
+.cta-inner{background:rgba(247,147,26,0.05);border:1px solid rgba(247,147,26,0.2);border-radius:6px;padding:2.5rem;text-align:center}
+.cta-inner h3{font-family:'Cormorant',serif;font-size:1.5rem;font-weight:300;color:#fff;margin-bottom:0.6rem}
+.cta-inner p{font-size:0.82rem;color:var(--text-dim);margin-bottom:1.5rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+.cta-buttons{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap}
+.cta-btn{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:10px 24px;border-radius:2px;border:1px solid;transition:all .2s;font-family:'Jost',sans-serif;text-decoration:none}
+.cta-btn.primary{background:var(--btc);border-color:var(--btc);color:#1a0f00}
+.cta-btn.primary:hover{background:rgba(247,147,26,0.85)}
+.cta-btn.secondary{border-color:rgba(255,255,255,0.15);color:var(--text-dim);background:none}
+.cta-btn.secondary:hover{border-color:rgba(255,255,255,0.3);color:var(--text)}
+
+.disclaimer{max-width:640px;margin:0 auto 2rem;text-align:center;font-size:0.7rem;color:var(--text-dim);opacity:0.7;line-height:1.6;padding:0 1.25rem}
+
+@media(max-width:600px){
+  .crypto-grid{grid-template-columns:1fr}
+}
+</style>
+<script src="../../../mobile-nav.js" defer></script>
+<script src="../../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../../nav-dropdown.css">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+<nav class="snav" aria-label="Main navigation">
+  <div class="snav-left">
+    <a href="../../../" class="snav-logo" aria-label="FRQNCY Home">FRQNCY</a>
+    <div class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../../explore.html">Network</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <a href="../">Crypto</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <span aria-current="page">Bitcoin</span>
+    </div>
+  </div>
+  <div class="snav-right">
+    <a href="../explorer.html" class="snav-link">All Sectors</a>
+    <a href="../" class="snav-back">← Crypto</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">bitcoin.crypto.frqncy</div>
+  <h1>Bitcoin</h1>
+  <p class="hero-desc">The base layer, and the protocols that extend it. Bitcoin solved sound money. Everything here is about making that money usable — fast, private, everyday.</p>
+</section>
+
+<div class="intro">
+  <div class="intro-inner">
+    <p>Bitcoin is the settlement layer. It is deliberately slow, deliberately conservative, deliberately boring — because it is meant to last. <em>That is the feature, not the bug.</em></p>
+    <p>The interesting work happens on top. Lightning makes payments instant. Fedimint and Cashu add privacy and community custody. Liquid gives traders faster settlement. Nostr wires identity and speech to bitcoin keys. Together they turn the base layer into something people can actually use.</p>
+  </div>
+</div>
+
+<p class="disclaimer">This is not financial advice. Conviction is stated as conviction. You decide what to do with it. Always do your own work before you put money anywhere.</p>
+
+<div class="section-label">
+  <span class="section-label-text">The Base Layer</span>
+  <div class="section-label-line"></div>
+</div>
+
+<main>
+  <div class="crypto-grid" id="grid"></div>
+</main>
+
+<div class="cta-banner">
+  <div class="cta-inner">
+    <h3>Keep Exploring</h3>
+    <p>Bitcoin is one channel in the broader crypto network. See the full sector map, or go deeper with the Crypto course.</p>
+    <div class="cta-buttons">
+      <a href="../explorer.html" class="cta-btn primary">Explore by Sector →</a>
+      <a href="../../courses/index.html" class="cta-btn secondary">Crypto Course</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROJECTS = [
+  {
+    name: "Bitcoin",
+    ticker: "BTC",
+    coingeckoId: "bitcoin",
+    categories: ["Base Layer", "Store of Value"],
+    tagClass: "",
+    accent: "#F7931A",
+    desc: "The original decentralized currency. A peer-to-peer electronic cash system that requires no trusted third party — the foundation of financial sovereignty.",
+    why: "Bitcoin proved that value can exist outside institutions, that trust can be mathematical, and that individuals can hold their own wealth without permission.",
+    link: "https://bitcoin.org",
+    linkLabel: "bitcoin.org",
+    type: "Base Layer"
+  },
+  {
+    name: "Lightning Network",
+    ticker: "L2",
+    categories: ["Layer 2", "Payments"],
+    tagClass: "layer2",
+    accent: "#FFCC66",
+    desc: "A payment network built on top of Bitcoin. Opens channels between parties so transactions settle instantly and for near-zero fees, with the base layer as the final arbiter.",
+    why: "Lightning is the bridge between store-of-value bitcoin and everyday money. It is what makes a coffee, a tip, or a remittance feel native to the protocol.",
+    link: "https://lightning.network",
+    linkLabel: "lightning.network",
+    type: "Layer 2"
+  },
+  {
+    name: "Fedimint",
+    ticker: "ECASH",
+    categories: ["Community Custody", "Privacy"],
+    tagClass: "privacy",
+    accent: "#C88CFF",
+    desc: "A federated Chaumian e-cash mint for Bitcoin. A group of trusted guardians custody bitcoin collectively and issue private ecash notes — users transact like cash, redeem back to bitcoin anytime.",
+    why: "Fedimint answers a question the rest of crypto avoids: how do people who don't want to run their own node still hold bitcoin safely? The answer is federations — small, local, accountable — instead of banks. Chaumian ecash makes the transactions themselves private by default.",
+    link: "https://fedimint.org",
+    linkLabel: "fedimint.org",
+    type: "Community Custody"
+  },
+  {
+    name: "Cashu",
+    ticker: "ECASH",
+    categories: ["E-cash", "Privacy"],
+    tagClass: "privacy",
+    accent: "#E88CBD",
+    desc: "An open protocol for Chaumian ecash over Bitcoin and Lightning. Single-mint rather than federated — simple, fast, built for instant private payments in apps and communities.",
+    why: "Cashu is the minimalist cousin of Fedimint. Same old cryptography (David Chaum, 1983), now wired to Bitcoin and Lightning. Private by construction, no accounts, no history.",
+    link: "https://cashu.space",
+    linkLabel: "cashu.space",
+    type: "E-cash"
+  },
+  {
+    name: "Liquid Network",
+    ticker: "L-BTC",
+    categories: ["Sidechain", "Payments"],
+    tagClass: "layer2",
+    accent: "#00C8B4",
+    desc: "A Bitcoin sidechain run by a federation of exchanges and institutions. Faster blocks, confidential transactions, and tokenized assets — useful for trading desks and stablecoin issuers.",
+    why: "Liquid is the institutional rail on top of Bitcoin. Not as trustless as the base layer, but a legitimate middle ground for parties that already trust each other and want Bitcoin settlement.",
+    link: "https://liquid.net",
+    linkLabel: "liquid.net",
+    type: "Sidechain"
+  },
+  {
+    name: "Nostr",
+    ticker: "—",
+    categories: ["Identity", "Social"],
+    tagClass: "social",
+    accent: "#9A4DFF",
+    desc: "An open protocol for social identity and publishing, built around simple keypairs. Messages are signed by your keys and relayed through independent servers — no platform, no gatekeeper, no ban button.",
+    why: "Nostr pairs naturally with Bitcoin: the same keys that hold your money can hold your identity and your speech. Lightning tips are native. It is the closest thing to a free, cash-like social layer we have.",
+    link: "https://nostr.com",
+    linkLabel: "nostr.com",
+    type: "Identity"
+  },
+  {
+    name: "Ordinals",
+    ticker: "ORDI",
+    coingeckoId: "ordi",
+    categories: ["Inscriptions", "Bitcoin-Native"],
+    tagClass: "",
+    accent: "#FF7A00",
+    desc: "A protocol for inscribing arbitrary data — images, text, code — onto individual satoshis. Turns every sat into a uniquely identifiable, tradeable artifact on Bitcoin itself.",
+    why: "Ordinals reopened the question of what Bitcoin is for. Some call it spam, some call it the most interesting thing to happen to Bitcoin in a decade. Either way, it forced the protocol to evolve.",
+    link: "https://docs.ordinals.com",
+    linkLabel: "ordinals.com",
+    type: "Inscription Protocol"
+  },
+  {
+    name: "BRC-20",
+    ticker: "BRC20",
+    coingeckoId: "ordi",
+    categories: ["Tokens", "Bitcoin-Native"],
+    tagClass: "",
+    accent: "#FFB000",
+    desc: "A fungible token standard built on top of Ordinals. Tokens like ORDI and SATS live entirely on Bitcoin — no smart contracts, just JSON inscriptions interpreted off-chain by indexers.",
+    why: "BRC-20 is duct-tape and string compared to ERC-20 — and that is the point. It proved a meaningful token economy could emerge on Bitcoin without changing Bitcoin. The constraint is the feature.",
+    link: "https://domo-2.gitbook.io/brc-20-experiment",
+    linkLabel: "BRC-20 spec",
+    type: "Token Standard"
+  },
+  {
+    name: "Runes",
+    ticker: "DOG",
+    coingeckoId: "dog-go-to-the-moon-rune",
+    categories: ["Tokens", "Bitcoin-Native"],
+    tagClass: "",
+    accent: "#FF4500",
+    desc: "Casey Rodarmor's UTXO-native fungible token protocol on Bitcoin, launched at the 2024 halving. More efficient than BRC-20 — uses Bitcoin's native UTXO model instead of inscriptions.",
+    why: "Runes is the technically-correct answer to 'how should fungible tokens work on Bitcoin?' Whether the demand follows the elegance is the open question. It is the cleanest design in the space.",
+    link: "https://docs.ordinals.com/runes.html",
+    linkLabel: "runes spec",
+    type: "Token Standard"
+  }
+];
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+const grid = document.getElementById('grid');
+for (const p of PROJECTS) {
+  const card = document.createElement('div');
+  card.className = 'ccard';
+  if (p.coingeckoId) card.setAttribute('data-cgid', p.coingeckoId);
+
+  const tagsHtml = p.categories.map(c => {
+    const cls = p.tagClass || '';
+    return `<span class="ctag ${cls}">${esc(c)}</span>`;
+  }).join('');
+
+  const initials = p.name.slice(0,2).toUpperCase();
+
+  card.innerHTML = `
+    <div class="ccard-accent" style="background:${p.accent}"></div>
+    <div class="ccard-body">
+      <div class="ccard-header">
+        <div class="ccard-icon" style="background:linear-gradient(135deg,${p.accent}40,${p.accent}20);border:1px solid ${p.accent}50">${initials}</div>
+        <div class="ccard-meta">
+          <div class="ccard-name">${esc(p.name)}</div>
+          <div class="ccard-ticker">${esc(p.ticker)}</div>
+        </div>
+      </div>
+      <div class="ccard-tags">${tagsHtml}</div>
+      <div class="ccard-desc">${esc(p.desc)}</div>
+      <div class="ccard-why">
+        <strong>Why FRQNCY watches this</strong>
+        ${esc(p.why)}
+      </div>
+    </div>
+    <div class="ccard-footer">
+      <a href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" class="ccard-link">${esc(p.linkLabel)} →</a>
+      <span class="ccard-type">${esc(p.type)}</span>
+    </div>
+  `;
+  grid.appendChild(card);
+}
+</script>
+<script src="../_market.js" defer></script>
+  <!-- Social auth awareness (Supabase) -->
+  <script src="/social-config.js"></script>
+  <script type="module" src="/social-auth.js"></script>
+</body>
+</html>

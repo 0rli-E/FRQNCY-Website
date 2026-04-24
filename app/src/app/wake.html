@@ -1,0 +1,228 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <meta name="theme-color" content="#000000" />
+    <title>FRQNCY · Wake</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: 100%; height: 100%;
+        background: #000;
+        color: #f5f5f5;
+        font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        overflow: hidden;
+        overscroll-behavior: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+      }
+      #stage {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      #field {
+        position: absolute;
+        inset: 0;
+        background: radial-gradient(circle at 50% 45%, rgba(232, 197, 71, 0.18) 0%, rgba(0,0,0,0.95) 60%);
+        opacity: 0;
+        transition: opacity 90s linear;  /* 90s fade-in per spec */
+        pointer-events: none;
+      }
+      #field.active { opacity: 1; }
+      #ring {
+        width: 260px;
+        height: 260px;
+        border-radius: 50%;
+        border: 1px solid rgba(245, 245, 245, 0.14);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+        z-index: 2;
+      }
+      #ring::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: 50%;
+        border: 1px solid rgba(232, 197, 71, 0.0);
+        transition: border-color 400ms ease, transform 400ms ease;
+        transform: scale(1);
+      }
+      #ring.holding::before {
+        border-color: rgba(232, 197, 71, 0.9);
+        transform: scale(1.08);
+      }
+      #progress {
+        position: absolute;
+        inset: -6px;
+        border-radius: 50%;
+        pointer-events: none;
+      }
+      #progress circle {
+        fill: none;
+        stroke: rgba(232, 197, 71, 0.85);
+        stroke-width: 1.5;
+        transform: rotate(-90deg);
+        transform-origin: center;
+        stroke-dasharray: 832;
+        stroke-dashoffset: 832;
+        transition: stroke-dashoffset 6000ms linear;
+      }
+      #ring.holding #progress circle { stroke-dashoffset: 0; }
+      .inner {
+        text-align: center;
+        font-weight: 200;
+        letter-spacing: 2.4px;
+        font-size: 13px;
+        color: rgba(245, 245, 245, 0.64);
+        line-height: 1.8;
+      }
+      .hint {
+        position: fixed;
+        bottom: calc(80px + env(safe-area-inset-bottom));
+        left: 0; right: 0;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 200;
+        letter-spacing: 1.2px;
+        color: rgba(245, 245, 245, 0.35);
+        opacity: 0;
+        transition: opacity 1800ms ease 2000ms;  /* hint appears after 2s */
+      }
+      .hint.visible { opacity: 1; }
+      .prompt-screen {
+        position: fixed; inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #000;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1200ms ease;
+      }
+      .prompt-screen.visible { opacity: 1; pointer-events: auto; }
+      .prompt {
+        font-size: 22px;
+        font-weight: 200;
+        letter-spacing: 0.8px;
+        line-height: 1.5;
+        text-align: center;
+        padding: 0 36px;
+        max-width: 480px;
+      }
+      .next {
+        position: fixed;
+        bottom: calc(60px + env(safe-area-inset-bottom));
+        left: 50%;
+        transform: translateX(-50%);
+        display: flex;
+        gap: 24px;
+      }
+      .next button {
+        background: none;
+        border: 1px solid rgba(245, 245, 245, 0.18);
+        color: rgba(245, 245, 245, 0.8);
+        padding: 10px 18px;
+        border-radius: 999px;
+        font-size: 13px;
+        letter-spacing: 0.6px;
+        -webkit-tap-highlight-color: transparent;
+      }
+    </style>
+  </head>
+  <body>
+    <div id="stage">
+      <div id="field"></div>
+      <div id="ring" aria-label="Hold to arrive">
+        <svg id="progress" viewBox="0 0 268 268">
+          <circle cx="134" cy="134" r="132"></circle>
+        </svg>
+        <div class="inner">
+          arrive
+        </div>
+      </div>
+      <div class="hint" id="hint">hold for one breath</div>
+    </div>
+
+    <div class="prompt-screen" id="prompt-screen" aria-hidden="true">
+      <div class="prompt" id="prompt-text">what wants your attention today?</div>
+      <div class="next">
+        <button id="movement">move with me (3 min)</button>
+        <button id="close">close</button>
+      </div>
+    </div>
+
+    <script type="module">
+      // Note: in production this would import from '../native/frqncy-alarm.ts' through
+      // the compiled bundle. For the skeleton we keep the gesture logic pure.
+
+      const field = document.getElementById('field');
+      const ring = document.getElementById('ring');
+      const hint = document.getElementById('hint');
+      const promptScreen = document.getElementById('prompt-screen');
+      const promptText = document.getElementById('prompt-text');
+      const movementBtn = document.getElementById('movement');
+      const closeBtn = document.getElementById('close');
+
+      const REFLECTIONS = [
+        'what wants your attention today?',
+        'who might you become today?',
+        'what quality are you bringing in?',
+        'what are you grateful to meet again?',
+        'where is your softness?',
+      ];
+
+      // Fade the frequency field in over 90 seconds.
+      requestAnimationFrame(() => field.classList.add('active'));
+
+      // Show hint after 2s.
+      setTimeout(() => hint.classList.add('visible'), 2000);
+
+      // Breath-hold dismiss: one full breath = ~6 seconds.
+      let holdStart = null;
+      let holdTimer = null;
+
+      function onStart(e) {
+        e.preventDefault();
+        holdStart = Date.now();
+        ring.classList.add('holding');
+        if (navigator.vibrate) navigator.vibrate(8);
+        holdTimer = setTimeout(arrive, 6000);
+      }
+      function onEnd() {
+        if (!holdStart) return;
+        const held = Date.now() - holdStart;
+        ring.classList.remove('holding');
+        clearTimeout(holdTimer);
+        holdStart = null;
+        // If released early, don't punish — just fade back. The gesture is invitation.
+      }
+
+      ring.addEventListener('pointerdown', onStart);
+      ring.addEventListener('pointerup', onEnd);
+      ring.addEventListener('pointercancel', onEnd);
+      ring.addEventListener('pointerleave', onEnd);
+
+      function arrive() {
+        ring.classList.remove('holding');
+        if (navigator.vibrate) navigator.vibrate([30, 60, 30]);
+        promptText.textContent = REFLECTIONS[Math.floor(Math.random() * REFLECTIONS.length)];
+        promptScreen.classList.add('visible');
+      }
+
+      movementBtn.addEventListener('click', () => {
+        // TODO: route to a 3-min movement session from the morning-tagged resources.
+        window.location.href = '../index.html';
+      });
+      closeBtn.addEventListener('click', () => {
+        window.location.href = '../index.html';
+      });
+    </script>
+  </body>
+</html>

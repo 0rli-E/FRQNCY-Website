@@ -1,0 +1,3480 @@
+{
+  "$schema_version": 2,
+  "$purpose": "Draft first-class books list for FRQNCY. Not wired into the live site yet. Review and push back.",
+  "$generated": "2026-04-24",
+  "$source": "Extracted from content.json — 299 book entries across 272 unique titles.",
+  "$author_linking": {
+    "matched_to_people_bed": 8,
+    "unmatched_string_fallback": 260,
+    "no_author_parseable": 0,
+    "notes": "Authors matched to the people bed carry their p- id in the 'author' field with 'author_is_person_ref':true. Unmatched authors are kept as plain strings — these are candidates for future expansion of the people bed."
+  },
+  "$reconciliation_notes": "Each book has ONE canonical bio that makes sense across all topics where it appears. bio_overrides removed — no per-topic bio variation. URLs prefer the author/creator's own site over publisher or retailer URLs.",
+  "books": [
+    {
+      "id": "b-a-course-in-miracles",
+      "title": "A Course in Miracles",
+      "author": "Helen Schucman",
+      "author_is_person_ref": false,
+      "url": "https://acim.org",
+      "bio": "A complete spiritual thought system channelled over seven years. Polarising, profound.",
+      "appears_in": [
+        "t-source"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-a-happy-pocket-full-of-money",
+      "title": "A Happy Pocket Full of Money",
+      "author": "David Cameron Gikandi",
+      "author_is_person_ref": false,
+      "url": "https://davidgikandi.com/books/",
+      "bio": "Wealth consciousness from first principles — money as energy, abundance as a state of being before it is a state of having. Applies equally to the science of wealth and the practice of manifestation.",
+      "appears_in": [
+        "t-manifestation",
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-a-pattern-language",
+      "title": "A Pattern Language",
+      "author": "Christopher Alexander",
+      "author_is_person_ref": false,
+      "url": "https://www.patternlanguage.com",
+      "bio": "253 patterns for designing buildings, towns, and cities that make human life flourish. A design classic.",
+      "appears_in": [
+        "t-archit"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-a-sand-county-almanac",
+      "title": "A Sand County Almanac",
+      "author": "Aldo Leopold",
+      "author_is_person_ref": false,
+      "url": "https://www.aldoleopold.org/about/aldo-leopold/books/",
+      "bio": "The founding text of modern ecology and land ethics. Lyrical and essential.",
+      "appears_in": [
+        "t-ecology"
+      ],
+      "picked_in": [
+        "t-ecology"
+      ]
+    },
+    {
+      "id": "b-acres-of-diamonds",
+      "title": "Acres of Diamonds",
+      "author": "Russell H. Conwell",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/368",
+      "bio": "The famous lecture given 6,000 times — the opportunity you seek is already in the field you stand on.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-aliens-and-the-bible",
+      "title": "Aliens and the Bible",
+      "author": "Michael S. Heiser",
+      "author_is_person_ref": false,
+      "url": "https://www.drmsh.com",
+      "bio": "The biblical scholar's rigorous examination of ancient texts — are the Elohim, Nephilim, and Watchers a record of extraterrestrial contact?",
+      "appears_in": [
+        "t-aliens"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-alive-in-shape-and-color",
+      "title": "Alive in Shape and Color",
+      "author": "Lawrence Block (ed.)",
+      "author_is_person_ref": false,
+      "url": "https://store.penguinrandomhouse.com/products/9781524760007",
+      "bio": "Writers respond to great works of art. Where literature and visual culture meet.",
+      "appears_in": [
+        "t-dance"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-america-before",
+      "title": "America Before",
+      "author": "p-graham-hancock",
+      "author_is_person_ref": true,
+      "url": "https://grahamhancock.com/america-before/",
+      "bio": "The case for a forgotten civilisation in the Americas — geological evidence, ancient maps, and a pre-Columbian mystery.",
+      "appears_in": [
+        "t-history"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-americanah",
+      "title": "Americanah",
+      "author": "Chimamanda Ngozi Adichie",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/310321/americanah-by-chimamanda-ngozi-adichie/",
+      "bio": "A novel about identity, race, and belonging across continents. The most vital voice on the diasporic experience.",
+      "appears_in": [
+        "t-diaspora"
+      ],
+      "picked_in": [
+        "t-diaspora"
+      ]
+    },
+    {
+      "id": "b-artificial-intelligence-a-guide-for-thinking-humans",
+      "title": "Artificial Intelligence: A Guide for Thinking Humans",
+      "author": "Melanie Mitchell",
+      "author_is_person_ref": false,
+      "url": "https://melaniemitchell.me/aibook/",
+      "bio": "The most honest, clear-eyed overview of what AI can and cannot do. Required reading before forming strong opinions.",
+      "appears_in": [
+        "t-ai"
+      ],
+      "picked_in": [
+        "t-ai"
+      ]
+    },
+    {
+      "id": "b-as-a-man-thinketh",
+      "title": "As a Man Thinketh",
+      "author": "James Allen",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/4507",
+      "bio": "The 1903 masterpiece — mind is the master weaver, creating the inner garment of character and the outer garment of circumstance.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-ask-and-it-is-given",
+      "title": "Ask and It Is Given",
+      "author": "Esther & Jerry Hicks",
+      "author_is_person_ref": false,
+      "url": "https://www.abrahamhicks.com/books/ask-and-it-is-given/",
+      "bio": "22 processes for applying the Law of Attraction — the most practical Abraham book for working with the creative power of desire.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-autobiography-of-a-yogi",
+      "title": "Autobiography of a Yogi",
+      "author": "p-paramhansa-yogananda",
+      "author_is_person_ref": true,
+      "url": "https://www.yogananda.org/autobiography-of-a-yogi",
+      "bio": "One of the most influential spiritual autobiographies ever written — Yogananda's account of his life and the masters of India, the transmission of Kriya Yoga, and a master who lived in continuous communion with the Source. Steve Jobs requested it be distributed at his memorial. Required reading.",
+      "appears_in": [
+        "t-kriya",
+        "t-source",
+        "t-yoga"
+      ],
+      "picked_in": [
+        "t-kriya"
+      ]
+    },
+    {
+      "id": "b-becoming-rich",
+      "title": "Becoming Rich",
+      "author": "Doug Wead & Dexter Yager",
+      "author_is_person_ref": false,
+      "url": "https://www.amazon.com/Becoming-Rich-Eleven-Principles-Millionaires/dp/0884860345",
+      "bio": "Eleven principles of the millionaire mindset — drawn from interviews with self-made men and women across industries.",
+      "appears_in": [
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-becoming-supernatural",
+      "title": "Becoming Supernatural",
+      "author": "p-joe-dispenza",
+      "author_is_person_ref": true,
+      "url": "https://drjoedispenza.com/books/becoming-supernatural",
+      "bio": "How ordinary people are doing the extraordinary — Dispenza's synthesis of neuroscience, epigenetics, and meditation for healing and transformation.",
+      "appears_in": [
+        "t-meditation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-becoming-a-supple-leopard",
+      "title": "Becoming a Supple Leopard",
+      "author": "Kelly Starrett",
+      "author_is_person_ref": false,
+      "url": "https://www.thereadystate.com/products/becoming-a-supple-leopard-2nd-edition",
+      "bio": "The definitive guide to resolving movement problems and building a body that lasts.",
+      "appears_in": [
+        "t-movement"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-biomimicry",
+      "title": "Biomimicry",
+      "author": "Janine Benyus",
+      "author_is_person_ref": false,
+      "url": "https://biomimicry.net/the-book/",
+      "bio": "The book that launched the field. Nature as mentor, measure, and model for human design.",
+      "appears_in": [
+        "t-biomimicry"
+      ],
+      "picked_in": [
+        "t-biomimicry"
+      ]
+    },
+    {
+      "id": "b-bitcoin-whitepaper",
+      "title": "Bitcoin Whitepaper",
+      "author": "Satoshi Nakamoto",
+      "author_is_person_ref": false,
+      "url": "https://bitcoin.org/bitcoin.pdf",
+      "bio": "Nine pages that changed money forever. The original 2008 paper describing a peer-to-peer electronic cash system — still the clearest, most radical thing written about what Bitcoin actually does.",
+      "appears_in": [
+        "t-blockchain",
+        "t-crypto"
+      ],
+      "picked_in": [
+        "t-blockchain",
+        "t-crypto"
+      ]
+    },
+    {
+      "id": "b-blink",
+      "title": "Blink",
+      "author": "Malcolm Gladwell",
+      "author_is_person_ref": false,
+      "url": "https://www.gladwellbooks.com/titles/malcolm-gladwell/blink/9780316010665/",
+      "bio": "The power of thinking without thinking — how expert intuition works and when to trust it.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-bowling-alone",
+      "title": "Bowling Alone",
+      "author": "Robert Putnam",
+      "author_is_person_ref": false,
+      "url": "https://bowlingalone.com",
+      "bio": "The data-driven account of America's collapse in social capital — and why it matters for democracy and health.",
+      "appears_in": [
+        "t-community"
+      ],
+      "picked_in": [
+        "t-community"
+      ]
+    },
+    {
+      "id": "b-braiding-sweetgrass",
+      "title": "Braiding Sweetgrass",
+      "author": "Robin Wall Kimmerer",
+      "author_is_person_ref": false,
+      "url": "https://www.robinwallkimmerer.com/books",
+      "bio": "A Potawatomi botanist weaves indigenous wisdom with Western botany and ecological science — a meditation on gratitude, reciprocity, plant intelligence, and what it means to be in right relationship with land and food. One of the most beloved ecological books of our time.",
+      "appears_in": [
+        "d-food",
+        "d-nature",
+        "t-ecology",
+        "t-indigenous"
+      ],
+      "picked_in": [
+        "d-nature",
+        "t-indigenous"
+      ]
+    },
+    {
+      "id": "b-breaking-the-habit-of-being-yourself",
+      "title": "Breaking the Habit of Being Yourself",
+      "author": "p-joe-dispenza",
+      "author_is_person_ref": true,
+      "url": "https://drjoedispenza.com/books/breaking-the-habit-of-being-yourself",
+      "bio": "How quantum physics and neuroscience explain why changing your mind can change your biology — Dispenza's most accessible introduction.",
+      "appears_in": [
+        "t-med"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-breath",
+      "title": "Breath",
+      "author": "James Nestor",
+      "author_is_person_ref": false,
+      "url": "https://www.mrjamesnestor.com/breath",
+      "bio": "The most comprehensive investigation into how we breathe — and how most of us are doing it wrong.",
+      "appears_in": [
+        "t-breathwork"
+      ],
+      "picked_in": [
+        "t-breathwork"
+      ]
+    },
+    {
+      "id": "b-care-of-the-soul",
+      "title": "Care of the Soul",
+      "author": "Thomas Moore",
+      "author_is_person_ref": false,
+      "url": "https://www.thomasmoore.com/care-of-the-soul",
+      "bio": "Depth psychology meets spirituality. How to tend to the soul through everyday life rather than transcendence.",
+      "appears_in": [
+        "t-soul"
+      ],
+      "picked_in": [
+        "t-soul"
+      ]
+    },
+    {
+      "id": "b-clean",
+      "title": "Clean",
+      "author": "Dr. Alejandro Junger",
+      "author_is_person_ref": false,
+      "url": "https://www.cleanprogram.com",
+      "bio": "A physician's programme for reducing toxic load on the body — practical, grounded, and medically informed.",
+      "appears_in": [
+        "t-detox"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-complexity",
+      "title": "Complexity",
+      "author": "M. Mitchell Waldrop",
+      "author_is_person_ref": false,
+      "url": "https://www.simonandschuster.com/books/Complexity/M-Mitchell-Waldrop/9780671872342",
+      "bio": "The story of the Santa Fe Institute and the birth of complexity science.",
+      "appears_in": [
+        "t-emergence"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-conversations-with-god",
+      "title": "Conversations with God",
+      "author": "Neale Donald Walsch",
+      "author_is_person_ref": false,
+      "url": "https://www.nealedonaldwalsch.com/books/",
+      "bio": "The unexpected channeled conversation that changed millions of lives — direct dialogue with a presence that reframes everything about love, death, purpose, and the nature of reality.",
+      "appears_in": [
+        "t-channeling",
+        "t-nde"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-cosmos",
+      "title": "Cosmos",
+      "author": "Carl Sagan",
+      "author_is_person_ref": false,
+      "url": "https://www.simonandschuster.com/books/Cosmos/Carl-Sagan/9780345539434",
+      "bio": "The book and series that made astrophysics feel like philosophy. Still the best gateway into the subject.",
+      "appears_in": [
+        "t-astrophys"
+      ],
+      "picked_in": [
+        "t-astrophys"
+      ]
+    },
+    {
+      "id": "b-cradle-to-cradle",
+      "title": "Cradle to Cradle",
+      "author": "McDonough & Braungart",
+      "author_is_person_ref": false,
+      "url": "https://mcdonough.com/writings/cradle-to-cradle/",
+      "bio": "The manifesto for designing waste out of the system entirely. Industrial ecology at its most visionary.",
+      "appears_in": [
+        "t-circular"
+      ],
+      "picked_in": [
+        "t-circular"
+      ]
+    },
+    {
+      "id": "b-creative-mind-and-success",
+      "title": "Creative Mind and Success",
+      "author": "Ernest Holmes",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/12476",
+      "bio": "The founder of Science of Mind on using mental law to create success — clear, practical, and spiritually grounded.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-cydonia-the-secret-chronicles-of-mars",
+      "title": "Cydonia: The Secret Chronicles of Mars",
+      "author": "David Flynn",
+      "author_is_person_ref": false,
+      "url": "https://www.watcher.website",
+      "bio": "David Flynn's investigation into the 33rd parallel, Cydonia's geometry, and the encoded connection between Mars, sacred sites, and the Watchers tradition.",
+      "appears_in": [
+        "t-aliens"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-dmt-the-spirit-molecule",
+      "title": "DMT: The Spirit Molecule",
+      "author": "Rick Strassman",
+      "author_is_person_ref": false,
+      "url": "https://www.rickstrassman.com",
+      "bio": "Clinical research on DMT and its apparent role in opening perception of non-ordinary dimensions.",
+      "appears_in": [
+        "t-dims"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-death-on-mars",
+      "title": "Death on Mars",
+      "author": "John E. Brandenburg",
+      "author_is_person_ref": false,
+      "url": "https://www.johnbrandenburg.net",
+      "bio": "The plasma physicist's case that Mars was destroyed by a nuclear cataclysm — isotopic evidence for a thermonuclear event on a once-inhabited planet.",
+      "appears_in": [
+        "t-aliens"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-deschooling-society",
+      "title": "Deschooling Society",
+      "author": "Ivan Illich",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/86058/",
+      "bio": "A radical critique of compulsory schooling and a vision for self-directed learning communities.",
+      "appears_in": [
+        "t-edusystem"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-designing-your-life",
+      "title": "Designing Your Life",
+      "author": "Bill Burnett & Dave Evans",
+      "author_is_person_ref": false,
+      "url": "https://designingyour.life",
+      "bio": "Stanford's design-thinking approach to building a well-lived life — treating your life as a prototype, not a plan.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-doughnut-economics",
+      "title": "Doughnut Economics",
+      "author": "Kate Raworth",
+      "author_is_person_ref": false,
+      "url": "https://www.kateraworth.com/doughnut",
+      "bio": "A new economic compass for the 21st century — thriving within planetary boundaries. The foundational text for regenerative business. Essential and readable.",
+      "appears_in": [
+        "d-business",
+        "t-regenbiz"
+      ],
+      "picked_in": [
+        "d-business"
+      ]
+    },
+    {
+      "id": "b-drawdown",
+      "title": "Drawdown",
+      "author": "Paul Hawken (ed.)",
+      "author_is_person_ref": false,
+      "url": "https://www.drawdown.org",
+      "bio": "The most comprehensive plan to reverse global warming ever assembled — 100 solutions ranked by impact.",
+      "appears_in": [
+        "d-energy",
+        "t-climate"
+      ],
+      "picked_in": [
+        "t-climate"
+      ]
+    },
+    {
+      "id": "b-dying-to-be-me",
+      "title": "Dying to Be Me",
+      "author": "Anita Moorjani",
+      "author_is_person_ref": false,
+      "url": "https://www.anitamoorjani.com/dying-to-be-me/",
+      "bio": "Anita Moorjani's miraculous recovery from end-stage cancer after a profound near-death experience — the most powerful first-person account of how love and self-acceptance are the deepest medicine.",
+      "appears_in": [
+        "t-med",
+        "t-nde"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-e-squared",
+      "title": "E-Squared",
+      "author": "Pam Grout",
+      "author_is_person_ref": false,
+      "url": "https://pamgrout.com/e-squared/",
+      "bio": "Nine do-it-yourself energy experiments that prove your thoughts create your reality — making the law of attraction testable.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-edgar-cayces-story-of-the-origin-and-destiny-of-man",
+      "title": "Edgar Cayce's Story of the Origin and Destiny of Man",
+      "author": "Edgar Cayce",
+      "author_is_person_ref": false,
+      "url": "https://www.edgarcayce.org",
+      "bio": "The sleeping prophet's readings on the Akashic field — extraordinary and still debated.",
+      "appears_in": [
+        "t-akashic"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-emergence",
+      "title": "Emergence",
+      "author": "Steven Johnson",
+      "author_is_person_ref": false,
+      "url": "https://www.stevenjohnson.com/emergence/",
+      "bio": "How cities, ant colonies, and the internet self-organise without central control. A joyful book about complexity.",
+      "appears_in": [
+        "t-emergence"
+      ],
+      "picked_in": [
+        "t-emergence"
+      ]
+    },
+    {
+      "id": "b-emergent-strategy",
+      "title": "Emergent Strategy",
+      "author": "adrienne maree brown",
+      "author_is_person_ref": false,
+      "url": "https://www.akpress.org/emergentstrategy.html",
+      "bio": "Principles of change drawn from nature and complexity science — organising as if the world depends on it.",
+      "appears_in": [
+        "d-society"
+      ],
+      "picked_in": [
+        "d-society"
+      ]
+    },
+    {
+      "id": "b-energy-medicine",
+      "title": "Energy Medicine",
+      "author": "Donna Eden",
+      "author_is_person_ref": false,
+      "url": "https://www.innersource.net/em/",
+      "bio": "The most comprehensive guide to working with the body's energy systems for health and vitality.",
+      "appears_in": [
+        "t-energyheal"
+      ],
+      "picked_in": [
+        "t-energyheal"
+      ]
+    },
+    {
+      "id": "b-entangled-life",
+      "title": "Entangled Life",
+      "author": "Merlin Sheldrake",
+      "author_is_person_ref": false,
+      "url": "https://www.merlinsheldrake.com/entangled-life",
+      "bio": "How fungi make our worlds — and why mycelium networks challenge everything we think we know about intelligence.",
+      "appears_in": [
+        "t-bio"
+      ],
+      "picked_in": [
+        "t-bio"
+      ]
+    },
+    {
+      "id": "b-enthusiasm",
+      "title": "Enthusiasm",
+      "author": "Gurumayi Chidvilasananda",
+      "author_is_person_ref": false,
+      "url": "https://www.siddhayoga.org/teachings/books/enthusiasm",
+      "bio": "Gurumayi's teaching on enthusiasm as the fuel of spiritual life — the divine energy that makes every action an act of worship.",
+      "appears_in": [
+        "t-siddha-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-ethereum-whitepaper",
+      "title": "Ethereum Whitepaper",
+      "author": "p-vitalik-buterin",
+      "author_is_person_ref": true,
+      "url": "https://ethereum.org/en/whitepaper/",
+      "bio": "Vitalik Buterin's 2014 vision for a world computer — extending Bitcoin with Turing-complete scripting to enable any decentralised application.",
+      "appears_in": [
+        "t-blockchain"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-fingerprints-of-the-gods",
+      "title": "Fingerprints of the Gods",
+      "author": "p-graham-hancock",
+      "author_is_person_ref": true,
+      "url": "https://grahamhancock.com/fingerprints-of-the-gods/",
+      "bio": "The investigation into a lost civilisation predating recorded history — the book that launched a global movement of alternative archaeology.",
+      "appears_in": [
+        "t-history"
+      ],
+      "picked_in": [
+        "t-history"
+      ]
+    },
+    {
+      "id": "b-finite-and-infinite-games",
+      "title": "Finite and Infinite Games",
+      "author": "James Carse",
+      "author_is_person_ref": false,
+      "url": "https://www.simonandschuster.com/books/Finite-and-Infinite-Games",
+      "bio": "Two kinds of games. Finite games are played to win. Infinite games are played to keep playing. A philosophy of play so sharp it applies to creation, business, relationships, and life itself. A tiny, profound book.",
+      "appears_in": [
+        "d-creation",
+        "d-play"
+      ],
+      "picked_in": [
+        "d-play"
+      ]
+    },
+    {
+      "id": "b-flatland",
+      "title": "Flatland",
+      "author": "Edwin Abbott",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/201",
+      "bio": "A Victorian satire that remains the best introduction to thinking about higher dimensions. Free online.",
+      "appears_in": [
+        "t-dims"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-food-sovereignty",
+      "title": "Food Sovereignty",
+      "author": "Hannah Wittman et al.",
+      "author_is_person_ref": false,
+      "url": "https://www.fernwoodpublishing.ca/book/food-sovereignty",
+      "bio": "A global reconnection of people and place — the concept and movement.",
+      "appears_in": [
+        "t-foodsov"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-four-fish",
+      "title": "Four Fish",
+      "author": "Paul Greenberg",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/305086/four-fish-by-paul-greenberg/",
+      "bio": "The future of the last wild food. Four fish tell the story of the ocean's collapse and potential recovery.",
+      "appears_in": [
+        "t-aquaculture"
+      ],
+      "picked_in": [
+        "t-aquaculture"
+      ]
+    },
+    {
+      "id": "b-four-thousand-weeks",
+      "title": "Four Thousand Weeks",
+      "author": "Oliver Burkeman",
+      "author_is_person_ref": false,
+      "url": "https://www.oliverburkeman.com/fourthousandweeks",
+      "bio": "Time management for mortals. Why productivity culture fails — and what to do instead.",
+      "appears_in": [
+        "t-leisure"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-from-the-finite-to-the-infinite",
+      "title": "From the Finite to the Infinite",
+      "author": "Swami Muktananda",
+      "author_is_person_ref": false,
+      "url": "https://www.siddhayoga.org/teachings/books/from-the-finite-to-the-infinite",
+      "bio": "Muktananda answers seekers' deepest questions on the nature of the self, the guru, and the path of Kashmir Shaivism.",
+      "appears_in": [
+        "t-siddha-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-growing-a-revolution",
+      "title": "Growing a Revolution",
+      "author": "David Montgomery",
+      "author_is_person_ref": false,
+      "url": "https://wwnorton.com/books/9780393356090",
+      "bio": "The science and practice of regenerative agriculture — how soil health drives farm profitability and climate healing.",
+      "appears_in": [
+        "t-regenfarm"
+      ],
+      "picked_in": [
+        "t-regenfarm"
+      ]
+    },
+    {
+      "id": "b-gödel-escher-bach",
+      "title": "Gödel, Escher, Bach",
+      "author": "Douglas Hofstadter",
+      "author_is_person_ref": false,
+      "url": "https://www.basicbooks.com/titles/douglas-r-hofstadter/godel-escher-bach/9780465026562/",
+      "bio": "A Pulitzer Prize-winning journey through logic, self-reference, and consciousness. A cult classic for good reason.",
+      "appears_in": [
+        "t-math"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-hamlet",
+      "title": "Hamlet",
+      "author": "William Shakespeare",
+      "author_is_person_ref": false,
+      "url": "https://www.folger.edu/explore/shakespeares-works/hamlet/",
+      "bio": "Still the greatest drama ever written. The Folger edition is the best free annotated version online.",
+      "appears_in": [
+        "t-theater"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-how-not-to-die",
+      "title": "How Not to Die",
+      "author": "Michael Greger",
+      "author_is_person_ref": false,
+      "url": "https://nutritionfacts.org/book/how-not-to-die/",
+      "bio": "A physician reviews every major cause of death and the dietary changes that prevent them. Evidence-based and accessible.",
+      "appears_in": [
+        "t-nutrition"
+      ],
+      "picked_in": [
+        "t-nutrition"
+      ]
+    },
+    {
+      "id": "b-how-to-be-rich",
+      "title": "How to Be Rich",
+      "author": "J. Paul Getty",
+      "author_is_person_ref": false,
+      "url": "https://www.amazon.com/How-Be-Rich-J-Paul-Getty/dp/0451167341",
+      "bio": "Practical counsel from one of the 20th century's richest men — attitudes, habits, and principles of building lasting wealth.",
+      "appears_in": [
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-how-to-change-your-mind",
+      "title": "How to Change Your Mind",
+      "author": "p-michael-pollan",
+      "author_is_person_ref": true,
+      "url": "https://michaelpollan.com/books/how-to-change-your-mind/",
+      "bio": "The book that opened the mainstream conversation about psychedelic medicine and therapeutic potential.",
+      "appears_in": [
+        "t-med"
+      ],
+      "picked_in": [
+        "t-med"
+      ]
+    },
+    {
+      "id": "b-how-to-create-a-mind",
+      "title": "How to Create a Mind",
+      "author": "Ray Kurzweil",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/314942/how-to-create-a-mind-by-ray-kurzweil/",
+      "bio": "A leading AI researcher's theory of how the brain works — and how to reverse-engineer it.",
+      "appears_in": [
+        "t-robotics"
+      ],
+      "picked_in": [
+        "t-robotics"
+      ]
+    },
+    {
+      "id": "b-how-to-have-confidence-and-power",
+      "title": "How to Have Confidence and Power",
+      "author": "Les Giblin",
+      "author_is_person_ref": false,
+      "url": "https://www.amazon.com/Confidence-Power-Dealing-People-Revised/dp/0988727536",
+      "bio": "The classic guide to building genuine confidence and influence in all your dealings with people.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-how-to-win-friends-and-influence-people",
+      "title": "How to Win Friends and Influence People",
+      "author": "Dale Carnegie",
+      "author_is_person_ref": false,
+      "url": "https://www.dalecarnegie.com/en/courses/book-how-to-win-friends-and-influence-people",
+      "bio": "The founding text of interpersonal intelligence — 30 million copies sold, still the most useful book on human relations ever written.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-human-design-understanding-the-mechanics-of-your-inner-universe",
+      "title": "Human Design — Understanding the Mechanics of Your Inner Universe",
+      "author": "Chetan Parkyn",
+      "author_is_person_ref": false,
+      "url": "https://www.chetanparkyn.com",
+      "bio": "The most accessible entry point into Human Design. Parkyn writes for beginners with warmth and clarity — covers Types, Centers, and practical application without overwhelming.",
+      "appears_in": [
+        "t-humandesign"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-i-am-that",
+      "title": "I Am That",
+      "author": "Nisargadatta Maharaj",
+      "author_is_person_ref": false,
+      "url": "https://www.acorn.in/Titles/9788185395098",
+      "bio": "Conversations with a Mumbai shopkeeper who happened to be fully awakened. One of the most radical spiritual texts.",
+      "appears_in": [
+        "t-oneness"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-i-am-the-word",
+      "title": "I Am the Word",
+      "author": "Paul Selig",
+      "author_is_person_ref": false,
+      "url": "https://www.paulselig.com/books/",
+      "bio": "The first in Selig's extraordinary channeled series — transmissions from a team of guides on claiming your divine identity. Read the series in order.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-ikigai",
+      "title": "Ikigai",
+      "author": "Héctor García & Francesc Miralles",
+      "author_is_person_ref": false,
+      "url": "https://www.ikigai-live.com",
+      "bio": "The Japanese concept of a life worth living — finding the intersection of what you love, what you're good at, and what the world needs.",
+      "appears_in": [
+        "d-lifestyle"
+      ],
+      "picked_in": [
+        "d-lifestyle"
+      ]
+    },
+    {
+      "id": "b-in-praise-of-idleness",
+      "title": "In Praise of Idleness",
+      "author": "Bertrand Russell",
+      "author_is_person_ref": false,
+      "url": "https://www.routledge.com",
+      "bio": "A philosopher's defence of leisure, rest, and the right to do nothing. Radical in 1932, more radical now.",
+      "appears_in": [
+        "t-leisure"
+      ],
+      "picked_in": [
+        "t-leisure"
+      ]
+    },
+    {
+      "id": "b-in-tune-with-the-infinite",
+      "title": "In Tune with the Infinite",
+      "author": "Ralph Waldo Trine",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/4947",
+      "bio": "The 1897 New Thought classic on aligning with the infinite supply of the universe — one of the best-selling spiritual books of its era.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-inside-jokes",
+      "title": "Inside Jokes",
+      "author": "Matthew Hurley et al.",
+      "author_is_person_ref": false,
+      "url": "https://mitpress.mit.edu/9780262518659/inside-jokes/",
+      "bio": "Why things are funny — a cognitive science account of humour. Rigorous and actually amusing.",
+      "appears_in": [
+        "t-humor"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-introduction-to-kashmir-shaivism",
+      "title": "Introduction to Kashmir Shaivism",
+      "author": "SYDA Foundation",
+      "author_is_person_ref": false,
+      "url": "https://www.siddhayoga.org/teachings/kashmir-shaivism",
+      "bio": "The philosophical foundation of Siddha Yoga — the non-dual philosophy of Shiva consciousness that underpins the entire tradition.",
+      "appears_in": [
+        "t-siddha-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-it-works",
+      "title": "It Works!",
+      "author": "R.H. Jarrett",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/28732",
+      "bio": "The famous little red book — three simple steps to making your dreams come true. 60 pages. Wildly effective.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-jonathan-livingston-seagull",
+      "title": "Jonathan Livingston Seagull",
+      "author": "Richard Bach",
+      "author_is_person_ref": false,
+      "url": "https://www.richardbach.com",
+      "bio": "The beloved fable of a seagull who dares to pursue perfection over convention — a parable of spiritual aspiration and self-belief.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-karmic-management",
+      "title": "Karmic Management",
+      "author": "Geshe Michael Roach",
+      "author_is_person_ref": false,
+      "url": "https://www.karmic-management.com",
+      "bio": "Ancient Tibetan business wisdom — how the seeds you plant in others' minds determine every outcome in your own life.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-let-my-people-go-surfing",
+      "title": "Let My People Go Surfing",
+      "author": "Yvon Chouinard",
+      "author_is_person_ref": false,
+      "url": "https://www.patagonia.com/stories/let-my-people-go-surfing",
+      "bio": "The philosophy behind Patagonia. The blueprint for building a company with genuine values.",
+      "appears_in": [
+        "t-socialent"
+      ],
+      "picked_in": [
+        "t-socialent"
+      ]
+    },
+    {
+      "id": "b-letting-go",
+      "title": "Letting Go",
+      "author": "p-david-r-hawkins",
+      "author_is_person_ref": true,
+      "url": "https://veritaspub.com/product/letting-go-the-pathway-to-surrender/",
+      "bio": "The mechanism of surrender — releasing the emotional energy behind every problem. The most powerful inner technology Dr. Hawkins ever taught.",
+      "appears_in": [
+        "t-eft"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-life-after-life",
+      "title": "Life After Life",
+      "author": "Raymond Moody",
+      "author_is_person_ref": false,
+      "url": "https://www.lifeafterlife.com",
+      "bio": "The 1975 book that created the field — Moody's collection of NDE accounts that gave the modern world its first systematic look at what happens when we die.",
+      "appears_in": [
+        "t-nde"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-light-on-yoga",
+      "title": "Light on Yoga",
+      "author": "B.K.S. Iyengar",
+      "author_is_person_ref": false,
+      "url": "https://www.bksiyengar.com/modules/Book/book.htm",
+      "bio": "The definitive guide to yoga asana. Every posture, described and photographed by the master.",
+      "appears_in": [
+        "t-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-limitless-mind",
+      "title": "Limitless Mind",
+      "author": "Russell Targ",
+      "author_is_person_ref": false,
+      "url": "https://www.russeltarg.com",
+      "bio": "The Stanford Research Institute physicist who co-founded the US government's remote viewing programme explains the science of non-local consciousness.",
+      "appears_in": [
+        "t-remote-view"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-living-architecture",
+      "title": "Living Architecture",
+      "author": "Lawlor",
+      "author_is_person_ref": false,
+      "url": "https://www.innertraditions.com",
+      "bio": "How the principles of sacred proportion manifest in ancient and modern buildings.",
+      "appears_in": [
+        "t-sacredgeo"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-lost-connections",
+      "title": "Lost Connections",
+      "author": "Johann Hari",
+      "author_is_person_ref": false,
+      "url": "https://thelostconnections.com",
+      "bio": "Why depression and anxiety really happen — and the nine real solutions. A challenge to pharmaceutical orthodoxy.",
+      "appears_in": [
+        "t-mentalhlth"
+      ],
+      "picked_in": [
+        "t-mentalhlth"
+      ]
+    },
+    {
+      "id": "b-mans-search-for-meaning",
+      "title": "Man's Search for Meaning",
+      "author": "Viktor Frankl",
+      "author_is_person_ref": false,
+      "url": "https://www.beacon.org/Mans-Search-for-Meaning-P631.aspx",
+      "bio": "One of the most important books ever written. Meaning as the root of psychological survival.",
+      "appears_in": [
+        "t-psych"
+      ],
+      "picked_in": [
+        "t-psych"
+      ]
+    },
+    {
+      "id": "b-many-lives-many-masters",
+      "title": "Many Lives, Many Masters",
+      "author": "Brian Weiss",
+      "author_is_person_ref": false,
+      "url": "https://www.brianweiss.com/books-cds-dvds/many-lives-many-masters/",
+      "bio": "A Yale-trained psychiatrist's account of past-life regression and what it suggests about the soul's journey.",
+      "appears_in": [
+        "t-soul"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-masters-of-doom",
+      "title": "Masters of Doom",
+      "author": "David Kushner",
+      "author_is_person_ref": false,
+      "url": "https://www.randomhousebooks.com/books/105454/",
+      "bio": "The story of id Software and the birth of the first-person shooter. The book that explained gaming culture.",
+      "appears_in": [
+        "t-esports"
+      ],
+      "picked_in": [
+        "t-esports"
+      ]
+    },
+    {
+      "id": "b-meditate-happiness-lies-within-you",
+      "title": "Meditate: Happiness Lies Within You",
+      "author": "Swami Muktananda",
+      "author_is_person_ref": false,
+      "url": "https://www.siddhayoga.org/teachings/books/meditate",
+      "bio": "The Master's most direct and accessible teaching on meditation — where to look, what to expect, and how to sustain the journey inward.",
+      "appears_in": [
+        "t-siddha-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-meditations",
+      "title": "Meditations",
+      "author": "Marcus Aurelius",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/2680",
+      "bio": "The Roman emperor's private journal — Stoic philosophy at its most intimate and enduring. A daily companion for 2,000 years.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-merriam-websters-collegiate-cook",
+      "title": "Merriam-Webster's Collegiate Cook",
+      "author": "Alton Brown",
+      "author_is_person_ref": false,
+      "url": "https://www.altonbrown.com/pages/books",
+      "bio": "The science of cooking explained as engineering. Understanding why recipes work.",
+      "appears_in": [
+        "t-cuisine"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-mind-trek",
+      "title": "Mind Trek",
+      "author": "Joseph McMoneagle",
+      "author_is_person_ref": false,
+      "url": "https://www.mceagle.com/books/mind-trek/",
+      "bio": "The memoir of the US Army's most decorated remote viewer — Stargate Project veteran Joe McMoneagle on what remote viewing can and cannot do.",
+      "appears_in": [
+        "t-remote-view"
+      ],
+      "picked_in": [
+        "t-remote-view"
+      ]
+    },
+    {
+      "id": "b-molecules",
+      "title": "Molecules",
+      "author": "Theodore Gray",
+      "author_is_person_ref": false,
+      "url": "https://www.theodoregray.com/periodictable/",
+      "bio": "A stunning visual journey through the molecules that make up our world. Chemistry as art.",
+      "appears_in": [
+        "t-chemistry"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-more-natural-cures-revealed",
+      "title": "More Natural Cures Revealed",
+      "author": "Kevin Trudeau",
+      "author_is_person_ref": false,
+      "url": "https://www.naturalcures.com",
+      "bio": "The follow-up to Natural Cures — additional suppressed remedies and health information Trudeau argues the medical establishment actively conceals.",
+      "appears_in": [
+        "t-med"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-my-lord-loves-a-pure-heart",
+      "title": "My Lord Loves a Pure Heart",
+      "author": "Gurumayi Chidvilasananda",
+      "author_is_person_ref": false,
+      "url": "https://www.siddhayoga.org/teachings/books/my-lord-loves-a-pure-heart",
+      "bio": "The yoga of divine virtues — courage, contentment, and compassion as spiritual practices in the Siddha tradition.",
+      "appears_in": [
+        "t-siddha-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-natural-cures-they-dont-want-you-to-know-about",
+      "title": "Natural Cures They Don't Want You to Know About",
+      "author": "Kevin Trudeau",
+      "author_is_person_ref": false,
+      "url": "https://www.naturalcures.com",
+      "bio": "The controversial bestseller on suppressed natural health remedies — a polarising but widely read entry point into questioning conventional medicine.",
+      "appears_in": [
+        "t-med"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-never-split-the-difference",
+      "title": "Never Split the Difference",
+      "author": "Chris Voss",
+      "author_is_person_ref": false,
+      "url": "https://www.blackswanltd.com/never-split-the-difference",
+      "bio": "FBI hostage negotiation tactics applied to everyday negotiations — empathy and emotional intelligence as the ultimate leverage.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-neville-goddard-the-complete-reader",
+      "title": "Neville Goddard: The Complete Reader",
+      "author": "Neville Goddard",
+      "author_is_person_ref": false,
+      "url": "https://www.amazon.com/Neville-Goddard-Complete-Reader/dp/1722502142",
+      "bio": "The most direct and radical manifestation teacher of the 20th century — imagination as the only reality, desire as prayer.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-no-impact-man",
+      "title": "No Impact Man",
+      "author": "Colin Beavan",
+      "author_is_person_ref": false,
+      "url": "https://colinbeavan.com/no-impact-man/",
+      "bio": "One man's year of living without environmental impact in New York City. Funny, honest, and instructive.",
+      "appears_in": [
+        "t-sustliving"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-noma-guide-to-fermentation",
+      "title": "Noma Guide to Fermentation",
+      "author": "René Redzepi & David Zilber",
+      "author_is_person_ref": false,
+      "url": "https://www.artisanbooks.com/noma-fermentation",
+      "bio": "The world's best restaurant shares its fermentation techniques. Demanding, beautiful, and extraordinary.",
+      "appears_in": [
+        "t-fermentation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-nonviolent-communication",
+      "title": "Nonviolent Communication",
+      "author": "p-marshall-rosenberg",
+      "author_is_person_ref": true,
+      "url": "https://www.nonviolentcommunication.com",
+      "bio": "The complete framework for compassionate connection — observation, feeling, need, request. Learning to speak from needs rather than judgements. Simple, profound, and one of the most transformative communication texts ever written.",
+      "appears_in": [
+        "d-communication",
+        "t-nvc"
+      ],
+      "picked_in": [
+        "d-communication",
+        "t-nvc"
+      ]
+    },
+    {
+      "id": "b-omnivores-dilemma",
+      "title": "Omnivore's Dilemma",
+      "author": "p-michael-pollan",
+      "author_is_person_ref": true,
+      "url": "https://michaelpollan.com/books/the-omnivores-dilemma/",
+      "bio": "Four meals, traced from field to plate. The book that made a generation think about where food comes from.",
+      "appears_in": [
+        "t-foodsystems"
+      ],
+      "picked_in": [
+        "t-foodsystems"
+      ]
+    },
+    {
+      "id": "b-on-dialogue",
+      "title": "On Dialogue",
+      "author": "David Bohm",
+      "author_is_person_ref": false,
+      "url": "https://www.routledge.com/On-Dialogue/Bohm/p/book/9780415336413",
+      "bio": "The physicist David Bohm on creating conditions for genuine collective thinking through suspension of assumption. Foundational for facilitation and dialogue practice. More relevant than ever.",
+      "appears_in": [
+        "d-communication",
+        "t-dialogue"
+      ],
+      "picked_in": [
+        "t-dialogue"
+      ]
+    },
+    {
+      "id": "b-on-photography",
+      "title": "On Photography",
+      "author": "Susan Sontag",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/292301/on-photography-by-susan-sontag/",
+      "bio": "A philosophical inquiry into what photographs do to us — how they shape memory, morality, and beauty.",
+      "appears_in": [
+        "t-photo"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-opening-doors-within",
+      "title": "Opening Doors Within",
+      "author": "Eileen Caddy",
+      "author_is_person_ref": false,
+      "url": "https://www.findhorn.org/books/opening-doors-within/",
+      "bio": "Daily guidance channeled by one of the founders of Findhorn — a year of transmissions on listening to inner wisdom.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-pale-blue-dot",
+      "title": "Pale Blue Dot",
+      "author": "Carl Sagan",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/147426/pale-blue-dot-by-carl-sagan/",
+      "bio": "A vision of the human future in space. The famous passage about Earth as a mote of dust is worth everything.",
+      "appears_in": [
+        "t-cosmos"
+      ],
+      "picked_in": [
+        "t-cosmos"
+      ]
+    },
+    {
+      "id": "b-passport-to-magonia",
+      "title": "Passport to Magonia",
+      "author": "Jacques Vallée",
+      "author_is_person_ref": false,
+      "url": "https://www.anomalistbooks.com/book.cfm?id=28",
+      "bio": "The scientific case for a non-physical or interdimensional origin of UFO phenomena — Vallée's classic reframe of the question.",
+      "appears_in": [
+        "t-aliens"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-patagonia",
+      "title": "Patagonia",
+      "author": "The Responsible Company",
+      "author_is_person_ref": false,
+      "url": "https://www.patagonia.com/stories/the-responsible-company",
+      "bio": "How Patagonia reimagined business — a blueprint for fashion that doesn't destroy the planet.",
+      "appears_in": [
+        "t-fashion"
+      ],
+      "picked_in": [
+        "t-fashion"
+      ]
+    },
+    {
+      "id": "b-permaculture-a-designers-manual",
+      "title": "Permaculture: A Designers' Manual",
+      "author": "Bill Mollison",
+      "author_is_person_ref": false,
+      "url": "https://www.tagari.com/books",
+      "bio": "The original, comprehensive permaculture bible. Everything you need to design a regenerative system.",
+      "appears_in": [
+        "t-permaculture"
+      ],
+      "picked_in": [
+        "t-permaculture"
+      ]
+    },
+    {
+      "id": "b-plants-of-the-gods",
+      "title": "Plants of the Gods",
+      "author": "Schultes & Hofmann",
+      "author_is_person_ref": false,
+      "url": "https://www.innertraditions.com/books/plants-of-the-gods",
+      "bio": "The classic ethnobotanical guide to psychoactive plants used in ritual and healing worldwide.",
+      "appears_in": [
+        "t-plantmed"
+      ],
+      "picked_in": [
+        "t-plantmed"
+      ]
+    },
+    {
+      "id": "b-play-of-consciousness",
+      "title": "Play of Consciousness",
+      "author": "Swami Muktananda",
+      "author_is_person_ref": false,
+      "url": "https://www.siddhayoga.org/teachings/books/play-of-consciousness",
+      "bio": "Muktananda's spiritual autobiography — the direct account of his 9-year journey through the inner worlds following shaktipat initiation by Bhagawan Nityananda.",
+      "appears_in": [
+        "t-siddha-yoga"
+      ],
+      "picked_in": [
+        "t-siddha-yoga"
+      ]
+    },
+    {
+      "id": "b-play",
+      "title": "Play",
+      "author": "Stuart Brown",
+      "author_is_person_ref": false,
+      "url": "https://www.stuartbrownmd.com/play",
+      "bio": "A psychiatrist's scientific case for play as essential to human health and creativity throughout life. Why play is not frivolous — at every age, for health and for creative aliveness.",
+      "appears_in": [
+        "d-play",
+        "t-playcreat"
+      ],
+      "picked_in": [
+        "t-playcreat"
+      ]
+    },
+    {
+      "id": "b-power-vs-force",
+      "title": "Power vs. Force",
+      "author": "p-david-r-hawkins",
+      "author_is_person_ref": true,
+      "url": "https://veritaspub.com/product/power-vs-force/",
+      "bio": "The map of human consciousness — kinesiology research revealing that love and truth calibrate exponentially higher than fear and force.",
+      "appears_in": [
+        "t-meditation",
+        "t-vibration"
+      ],
+      "picked_in": [
+        "t-vibration"
+      ]
+    },
+    {
+      "id": "b-proof-of-heaven",
+      "title": "Proof of Heaven",
+      "author": "Eben Alexander",
+      "author_is_person_ref": false,
+      "url": "https://ebenalexander.com/books/proof-of-heaven/",
+      "bio": "The Harvard neurosurgeon who experienced a vivid near-death journey while his cortex was completely inactive. Rigorous, personal, and transformative proof that consciousness survives death.",
+      "appears_in": [
+        "t-med",
+        "t-nde"
+      ],
+      "picked_in": [
+        "t-nde"
+      ]
+    },
+    {
+      "id": "b-prosperity",
+      "title": "Prosperity",
+      "author": "Charles Fillmore",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/11630",
+      "bio": "The Unity co-founder on omnipresent, omnipotent, omniscient supply — prosperity as a spiritual truth, not just a financial goal.",
+      "appears_in": [
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-psychiatry-the-ultimate-betrayal",
+      "title": "Psychiatry, the Ultimate Betrayal",
+      "author": "Bruce Wiseman",
+      "author_is_person_ref": false,
+      "url": "https://www.cchr.org",
+      "bio": "A critical investigation into the history and practices of psychiatry — from a Citizens Commission on Human Rights perspective.",
+      "appears_in": [
+        "t-med"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-psycho-cybernetics",
+      "title": "Psycho-Cybernetics",
+      "author": "Maxwell Maltz",
+      "author_is_person_ref": false,
+      "url": "https://www.psycho-cybernetics.com",
+      "bio": "The 1960 plastic surgeon's discovery that changing inner self-image transformed lives more than changing faces — the original self-image psychology and the master key to performance.",
+      "appears_in": [
+        "t-personal-dev",
+        "t-psych"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-quantum-computing-an-applied-approach",
+      "title": "Quantum Computing: An Applied Approach",
+      "author": "Hidary",
+      "author_is_person_ref": false,
+      "url": "https://link.springer.com/book/10.1007/978-3-030-83274-2",
+      "bio": "A practical, code-first introduction to quantum algorithms. Less physics, more engineering.",
+      "appears_in": [
+        "t-quantcomp"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-reality-is-broken",
+      "title": "Reality Is Broken",
+      "author": "Jane McGonigal",
+      "author_is_person_ref": false,
+      "url": "https://janemcgonigal.com/my-books/",
+      "bio": "Why games are making us better and how they can change the world. The case for games as serious culture.",
+      "appears_in": [
+        "t-gaming"
+      ],
+      "picked_in": [
+        "t-gaming"
+      ]
+    },
+    {
+      "id": "b-reality-media",
+      "title": "Reality Media",
+      "author": "Jay David Bolter & Maria Engberg",
+      "author_is_person_ref": false,
+      "url": "https://mitpress.mit.edu/9780262046152/reality-media/",
+      "bio": "A scholarly but accessible look at how AR and VR are reshaping representation and experience.",
+      "appears_in": [
+        "t-arvr"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-reinventing-organizations",
+      "title": "Reinventing Organizations",
+      "author": "Frederic Laloux",
+      "author_is_person_ref": false,
+      "url": "https://www.reinventingorganizations.com",
+      "bio": "A new paradigm for organizing human enterprise — from pyramids to living systems. Genuinely transformative.",
+      "appears_in": [
+        "t-conscap"
+      ],
+      "picked_in": [
+        "t-conscap"
+      ]
+    },
+    {
+      "id": "b-rest",
+      "title": "Rest",
+      "author": "Alex Soojung-Kim Pang",
+      "author_is_person_ref": false,
+      "url": "https://www.alexsoojungkimpang.com/rest",
+      "bio": "The science of rest and why the best thinkers in history worked far less than we think.",
+      "appears_in": [
+        "t-leisure"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-rich-dad-poor-dad",
+      "title": "Rich Dad Poor Dad",
+      "author": "Robert T. Kiyosaki",
+      "author_is_person_ref": false,
+      "url": "https://www.richdad.com/products/rich-dad-poor-dad",
+      "bio": "The financial education the school system never gave you — assets vs liabilities, and why the rich don't work for money.",
+      "appears_in": [
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-richard-hittlemans-yoga-28-day-exercise-plan",
+      "title": "Richard Hittleman's Yoga: 28 Day Exercise Plan",
+      "author": "Richard Hittleman",
+      "author_is_person_ref": false,
+      "url": "https://www.amazon.com/Richard-Hittlemans-Yoga-28-Exercise/dp/0553263994",
+      "bio": "The bestselling yoga book that brought hatha yoga into Western living rooms — gentle, progressive, and beautifully illustrated.",
+      "appears_in": [
+        "t-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-sacred-geometry",
+      "title": "Sacred Geometry",
+      "author": "Robert Lawlor",
+      "author_is_person_ref": false,
+      "url": "https://www.innertraditions.com/books/sacred-geometry",
+      "bio": "The essential introduction to the mathematics of beauty and proportion that underlies all living forms.",
+      "appears_in": [
+        "t-sacredgeo"
+      ],
+      "picked_in": [
+        "t-sacredgeo"
+      ]
+    },
+    {
+      "id": "b-salt-fat-acid-heat",
+      "title": "Salt, Fat, Acid, Heat",
+      "author": "Samin Nosrat",
+      "author_is_person_ref": false,
+      "url": "https://www.simonandschuster.com/books/Salt-Fat-Acid-Heat/Samin-Nosrat/9781476753836",
+      "bio": "The four elements of good cooking. Once you understand them, every dish improves instantly.",
+      "appears_in": [
+        "t-cuisine"
+      ],
+      "picked_in": [
+        "t-cuisine"
+      ]
+    },
+    {
+      "id": "b-see-you-at-the-top",
+      "title": "See You at The Top",
+      "author": "Zig Ziglar",
+      "author_is_person_ref": false,
+      "url": "https://www.ziglar.com/product/see-you-at-the-top/",
+      "bio": "Ziglar's foundational work on attitude, relationships, goals, and the character qualities that produce lasting success.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-seven-brief-lessons-on-physics",
+      "title": "Seven Brief Lessons on Physics",
+      "author": "Carlo Rovelli",
+      "author_is_person_ref": false,
+      "url": "https://www.penguin.co.uk/books/192/192236/seven-brief-lessons-on-physics",
+      "bio": "The most beautiful introduction to modern physics ever written. 79 pages. Read it in an afternoon.",
+      "appears_in": [
+        "d-sciences"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-something-deeply-hidden",
+      "title": "Something Deeply Hidden",
+      "author": "Sean Carroll",
+      "author_is_person_ref": false,
+      "url": "https://www.seancarroll.com/books/something-deeply-hidden/",
+      "bio": "A leading physicist makes the case for Many Worlds — and explains what quantum mechanics actually says about reality.",
+      "appears_in": [
+        "t-quantum"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-sprint",
+      "title": "Sprint",
+      "author": "Jake Knapp",
+      "author_is_person_ref": false,
+      "url": "https://www.thesprintbook.com",
+      "bio": "Google Ventures' 5-day method for testing ideas with a prototype before spending months building.",
+      "appears_in": [
+        "t-proto"
+      ],
+      "picked_in": [
+        "t-proto"
+      ]
+    },
+    {
+      "id": "b-starseeds",
+      "title": "Starseeds",
+      "author": "p-birgit-fischer",
+      "author_is_person_ref": true,
+      "url": "https://www.amazon.de/Starseeds-gehen-Transformierende-Botschaften-Galaxien/dp/3778775804",
+      "bio": "The SPIEGEL bestseller that introduced German-speaking audiences to Starseed consciousness — channeled messages from galactic intelligences on why we are here and where we are going.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-starseeds-contact",
+      "title": "Starseeds-Contact",
+      "author": "p-birgit-fischer",
+      "author_is_person_ref": true,
+      "url": "https://www.amazon.de/Starseeds-Contact-%C3%9Cbersinnliche-Ph%C3%A4nomene-Dimensionen-galaktischen/dp/3778776096",
+      "bio": "Supernatural phenomena, portals to higher dimensions, and the galactic origin of Starseed souls — Fischer's most direct investigation into extraterrestrial contact.",
+      "appears_in": [
+        "t-aliens"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-story",
+      "title": "Story",
+      "author": "Robert McKee",
+      "author_is_person_ref": false,
+      "url": "https://mckeestory.com/books/story/",
+      "bio": "The definitive guide to narrative structure used by filmmakers, novelists, and screenwriters worldwide.",
+      "appears_in": [
+        "t-story"
+      ],
+      "picked_in": [
+        "t-story"
+      ]
+    },
+    {
+      "id": "b-strength-in-stillness",
+      "title": "Strength in Stillness",
+      "author": "Bob Roth",
+      "author_is_person_ref": false,
+      "url": "https://www.bobrothtm.com/book",
+      "bio": "The most accessible introduction to Transcendental Meditation — what TM is, what it does, and why CEOs, athletes, and artists swear by it.",
+      "appears_in": [
+        "t-meditation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-strengthsfinder-20",
+      "title": "StrengthsFinder 2.0",
+      "author": "Tom Rath",
+      "author_is_person_ref": false,
+      "url": "https://www.gallup.com/cliftonstrengths/en/strengthsfinder.aspx",
+      "bio": "Build on your natural talents rather than fixing weaknesses — the Gallup strengths framework used by millions.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-success-is-for-you",
+      "title": "Success Is For You",
+      "author": "p-david-r-hawkins",
+      "author_is_person_ref": true,
+      "url": "https://veritaspub.com/product/success-is-for-you/",
+      "bio": "The consciousness researcher's guide to creating success through inner alignment — calibrating the energy of your desires.",
+      "appears_in": [
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-success-through-a-positive-mental-attitude",
+      "title": "Success Through A Positive Mental Attitude",
+      "author": "Napoleon Hill & W. Clement Stone",
+      "author_is_person_ref": false,
+      "url": "https://www.naphill.org",
+      "bio": "The PMA principles — how a positive mental attitude is the single most important success factor and how to cultivate it.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-super-rich",
+      "title": "Super Rich",
+      "author": "Russell Simmons",
+      "author_is_person_ref": false,
+      "url": "https://www.russellsimmons.com/super-rich/",
+      "bio": "The Def Jam founder on the meditation, giving, and spiritual principles that created his wealth — and his peace.",
+      "appears_in": [
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-synchronicity",
+      "title": "Synchronicity",
+      "author": "Carl Jung",
+      "author_is_person_ref": false,
+      "url": "https://www.routledge.com/Synchronicity-An-Acausal-Connecting-Principle/Jung/p/book/9780691150505",
+      "bio": "Jung's original treatise on meaningful coincidence. Dense, rich, and foundational.",
+      "appears_in": [
+        "t-sync"
+      ],
+      "picked_in": [
+        "t-sync"
+      ]
+    },
+    {
+      "id": "b-talk-like-ted",
+      "title": "Talk Like TED",
+      "author": "Carmine Gallo",
+      "author_is_person_ref": false,
+      "url": "https://www.carminegallo.com/books/talk-like-ted/",
+      "bio": "The nine secrets of the world's greatest communicators, reverse-engineered from thousands of TED talks.",
+      "appears_in": [
+        "t-speaking"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-tao-te-ching",
+      "title": "Tao Te Ching",
+      "author": "Lao Tzu",
+      "author_is_person_ref": false,
+      "url": "https://www.sacred-texts.com/tao/taote.htm",
+      "bio": "81 short verses written 2,500 years ago that say more about the nature of existence than most libraries. Read it slowly.",
+      "appears_in": [
+        "d-meta"
+      ],
+      "picked_in": [
+        "d-meta"
+      ]
+    },
+    {
+      "id": "b-ten-arguments-for-deleting-your-social-media-accounts",
+      "title": "Ten Arguments for Deleting Your Social Media Accounts",
+      "author": "Jaron Lanier",
+      "author_is_person_ref": false,
+      "url": "https://www.jaronlanier.com/tenarguments.html",
+      "bio": "The most personal and persuasive case for leaving the attention economy. From a tech insider.",
+      "appears_in": [
+        "t-socialmedia"
+      ],
+      "picked_in": [
+        "t-socialmedia"
+      ]
+    },
+    {
+      "id": "b-the-4-hour-workweek",
+      "title": "The 4-Hour Workweek",
+      "author": "Timothy Ferriss",
+      "author_is_person_ref": false,
+      "url": "https://www.fourhourworkweek.com",
+      "bio": "Escape the 9-5, live anywhere, and join the new rich — Ferriss's blueprint for lifestyle design over conventional career.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-7-habits-of-highly-effective-people",
+      "title": "The 7 Habits of Highly Effective People",
+      "author": "Stephen R. Covey",
+      "author_is_person_ref": false,
+      "url": "https://www.stephencovey.com/7habits/7habits.php",
+      "bio": "Character-based effectiveness — the framework of proactivity, purpose, and interdependence that has shaped a generation of leaders.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-akashic-experience",
+      "title": "The Akashic Experience",
+      "author": "Ervin Laszlo",
+      "author_is_person_ref": false,
+      "url": "https://www.innertraditions.com/books/the-akashic-experience",
+      "bio": "Scientists, artists, and mystics report their direct experiences of the Akashic field.",
+      "appears_in": [
+        "t-akashic"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-alchemist",
+      "title": "The Alchemist",
+      "author": "Paulo Coelho",
+      "author_is_person_ref": false,
+      "url": "https://www.paulocoelho.com/en/books/the-alchemist/",
+      "bio": "The beloved fable of Santiago's journey to the Pyramids — on following your Personal Legend no matter what the world says.",
+      "appears_in": [
+        "t-story"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-ancient-secret-of-the-flower-of-life",
+      "title": "The Ancient Secret of the Flower of Life",
+      "author": "Drunvalo Melchizedek",
+      "author_is_person_ref": false,
+      "url": "https://www.drunvalo.net",
+      "bio": "The most comprehensive exploration of the Merkaba field and sacred geometry as a living system.",
+      "appears_in": [
+        "t-merkaba"
+      ],
+      "picked_in": [
+        "t-merkaba"
+      ]
+    },
+    {
+      "id": "b-the-architecture-of-happiness",
+      "title": "The Architecture of Happiness",
+      "author": "Alain de Botton",
+      "author_is_person_ref": false,
+      "url": "https://www.alaindebotton.com/architecture/",
+      "bio": "Why buildings matter. How the spaces we inhabit shape who we become.",
+      "appears_in": [
+        "t-archit"
+      ],
+      "picked_in": [
+        "t-archit"
+      ]
+    },
+    {
+      "id": "b-the-art-of-fermentation",
+      "title": "The Art of Fermentation",
+      "author": "Sandor Katz",
+      "author_is_person_ref": false,
+      "url": "https://www.chelseagreen.com/product/the-art-of-fermentation/",
+      "bio": "The definitive guide to fermented foods and drinks from around the world. Comprehensive and joyful.",
+      "appears_in": [
+        "t-fermentation"
+      ],
+      "picked_in": [
+        "t-fermentation"
+      ]
+    },
+    {
+      "id": "b-the-art-of-gathering",
+      "title": "The Art of Gathering",
+      "author": "Priya Parker",
+      "author_is_person_ref": false,
+      "url": "https://www.priyaparker.com/book-art-of-gathering",
+      "bio": "Why most gatherings fail and how to design ones that matter. Practical, human, and profound.",
+      "appears_in": [
+        "t-community"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-art-of-invisibility",
+      "title": "The Art of Invisibility",
+      "author": "Kevin Mitnick",
+      "author_is_person_ref": false,
+      "url": "https://www.hachettebookgroup.com/titles/kevin-d-mitnick/the-art-of-invisibility/9780316380508/",
+      "bio": "The world's most famous hacker teaches you how to protect your privacy in the surveillance age.",
+      "appears_in": [
+        "t-cybersec"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-art-of-money-getting",
+      "title": "The Art of Money Getting",
+      "author": "P.T. Barnum",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/1543",
+      "bio": "The showman's 1880 rules for acquiring money — surprisingly timeless advice on frugality, value, and opportunity.",
+      "appears_in": [
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-art-of-possibility",
+      "title": "The Art of Possibility",
+      "author": "Zander & Zander",
+      "author_is_person_ref": false,
+      "url": "https://www.benjaminzander.org/book",
+      "bio": "A conductor and a therapist on creating possibility in collaboration, leadership, and art.",
+      "appears_in": [
+        "t-cocreate"
+      ],
+      "picked_in": [
+        "t-cocreate"
+      ]
+    },
+    {
+      "id": "b-the-art-of-public-speaking",
+      "title": "The Art of Public Speaking",
+      "author": "Dale Carnegie",
+      "author_is_person_ref": false,
+      "url": "https://www.dalecarnegie.com",
+      "bio": "Carnegie's foundational course on confident, persuasive speaking — the techniques that built his legendary training empire.",
+      "appears_in": [
+        "t-speaking"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-art-of-war",
+      "title": "The Art of War",
+      "author": "Sun Tzu",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/132",
+      "bio": "The ancient Chinese strategy classic — still the most quoted text on competition, adaptability, and winning without fighting.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-biggest-ideas-in-the-universe",
+      "title": "The Biggest Ideas in the Universe",
+      "author": "Sean Carroll",
+      "author_is_person_ref": false,
+      "url": "https://www.seancarroll.com/books/the-biggest-ideas-in-the-universe/",
+      "bio": "Modern physics explained through the actual equations — but made human and accessible.",
+      "appears_in": [
+        "t-cosmos"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-biogas-handbook",
+      "title": "The Biogas Handbook",
+      "author": "Wellinger, Murphy & Baxter",
+      "author_is_person_ref": false,
+      "url": "https://www.woodhead-publishing.com",
+      "bio": "Comprehensive technical guide to biogas production, upgrading, and utilisation.",
+      "appears_in": [
+        "t-bioenergy"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-bittensor-whitepaper",
+      "title": "The Bittensor Whitepaper",
+      "author": "Opentensor Foundation",
+      "author_is_person_ref": false,
+      "url": "https://bittensor.com/whitepaper",
+      "bio": "Yuma Rao's original technical paper on decentralised machine learning — how subnets, miners, and validators create a self-organising AI economy.",
+      "appears_in": [
+        "t-decentral-ai"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-body-keeps-the-score",
+      "title": "The Body Keeps the Score",
+      "author": "Bessel van der Kolk",
+      "author_is_person_ref": false,
+      "url": "https://www.besselvanderkolk.com/resources/the-body-keeps-the-score",
+      "bio": "The definitive book on trauma — how it reshapes body, brain, and mind, and what actually heals it. The most important book about trauma ever written. Essential reading.",
+      "appears_in": [
+        "d-wellbeing",
+        "t-psych",
+        "t-trauma"
+      ],
+      "picked_in": [
+        "t-trauma"
+      ]
+    },
+    {
+      "id": "b-the-book-of-mastery",
+      "title": "The Book of Mastery",
+      "author": "Paul Selig",
+      "author_is_person_ref": false,
+      "url": "https://www.paulselig.com/books/",
+      "bio": "Volume four of the Selig transmissions — the most advanced teachings on embodying mastery as a lived reality.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-brain-that-changes-itself",
+      "title": "The Brain That Changes Itself",
+      "author": "Norman Doidge",
+      "author_is_person_ref": false,
+      "url": "https://www.normandoidge.com",
+      "bio": "The book that made neuroplasticity a household word. Stories of real transformation through brain rewiring.",
+      "appears_in": [
+        "t-neuro"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-cathedral-and-the-bazaar",
+      "title": "The Cathedral and the Bazaar",
+      "author": "Eric Raymond",
+      "author_is_person_ref": false,
+      "url": "http://www.catb.org/~esr/writings/cathedral-bazaar/",
+      "bio": "The essay that explained open source to the world. How decentralised collaboration beats centralised design.",
+      "appears_in": [
+        "t-opensource"
+      ],
+      "picked_in": [
+        "t-opensource"
+      ]
+    },
+    {
+      "id": "b-the-celestine-prophecy",
+      "title": "The Celestine Prophecy",
+      "author": "James Redfield",
+      "author_is_person_ref": false,
+      "url": "https://www.jamesredfield.com",
+      "bio": "A novel that popularised synchronicity as a guide to spiritual growth. Millions read it for a reason.",
+      "appears_in": [
+        "t-sync"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-code-breaker",
+      "title": "The Code Breaker",
+      "author": "Walter Isaacson",
+      "author_is_person_ref": false,
+      "url": "https://www.simonandschuster.com/books/The-Code-Breaker/Walter-Isaacson/9781982115852",
+      "bio": "Jennifer Doudna, CRISPR, and the race to rewrite the code of life. Reads like a thriller.",
+      "appears_in": [
+        "t-biotech"
+      ],
+      "picked_in": [
+        "t-biotech"
+      ]
+    },
+    {
+      "id": "b-the-dawn-of-everything",
+      "title": "The Dawn of Everything",
+      "author": "Graeber & Wengrow",
+      "author_is_person_ref": false,
+      "url": "https://us.macmillan.com/books/9780374157357/thedawnofeverything",
+      "bio": "A radical retelling of human history — evidence that societies have always been far more diverse, experimental, and free than we assumed.",
+      "appears_in": [
+        "d-society"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-death-and-life-of-great-american-cities",
+      "title": "The Death and Life of Great American Cities",
+      "author": "Jane Jacobs",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/86058/the-death-and-life-of-great-american-cities-by-jane-jacobs/",
+      "bio": "The book that saved cities from urban planners. Still the most important critique of top-down city design.",
+      "appears_in": [
+        "t-futurecity"
+      ],
+      "picked_in": [
+        "t-futurecity"
+      ]
+    },
+    {
+      "id": "b-the-definitive-book-of-human-design",
+      "title": "The Definitive Book of Human Design",
+      "author": "Lynda Bunnell & Ra Uru Hu",
+      "author_is_person_ref": false,
+      "url": "https://www.amazon.com/Definitive-Book-Human-Design-Science/dp/0615552145",
+      "bio": "The comprehensive reference text. Covers all Types, Strategies, Authorities, Centers, Gates, Channels, and Profiles in rigorous detail. The book you graduate to after your first chart reading.",
+      "appears_in": [
+        "t-humandesign"
+      ],
+      "picked_in": [
+        "t-humandesign"
+      ]
+    },
+    {
+      "id": "b-the-design-of-everyday-things",
+      "title": "The Design of Everyday Things",
+      "author": "Don Norman",
+      "author_is_person_ref": false,
+      "url": "https://www.nngroup.com/books/design-everyday-things-revised/",
+      "bio": "The foundational text of human-centred design — why everyday things fail, and how to make them work for people. Gave designers a language still used today.",
+      "appears_in": [
+        "d-creation",
+        "t-proddesign"
+      ],
+      "picked_in": [
+        "d-creation",
+        "t-proddesign"
+      ]
+    },
+    {
+      "id": "b-the-diamond-cutter",
+      "title": "The Diamond Cutter",
+      "author": "Geshe Michael Roach & Lama Christie McNally",
+      "author_is_person_ref": false,
+      "url": "https://www.diamondcutterpress.com",
+      "bio": "Ancient Tibetan Buddhist wisdom applied to building a diamond business — the karmic mechanics of sustainable wealth.",
+      "appears_in": [
+        "t-saclaw",
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-effective-executive",
+      "title": "The Effective Executive",
+      "author": "Peter Drucker",
+      "author_is_person_ref": false,
+      "url": "https://www.harpercollins.com/products/the-effective-executive-peter-f-drucker",
+      "bio": "The classic on doing the right things — Drucker's five practices of effectiveness that separate great executives from busy ones.",
+      "appears_in": [
+        "t-conscap"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-elements-of-journalism",
+      "title": "The Elements of Journalism",
+      "author": "Kovach & Rosenstiel",
+      "author_is_person_ref": false,
+      "url": "https://www.americanpressinstitute.org/journalism-essentials/what-is-journalism/elements-journalism/",
+      "bio": "What journalism is for, and what it must do to fulfil its purpose. The field's ethical foundation.",
+      "appears_in": [
+        "t-journalism"
+      ],
+      "picked_in": [
+        "t-journalism"
+      ]
+    },
+    {
+      "id": "b-the-emerald-tablet",
+      "title": "The Emerald Tablet",
+      "author": "Hermes Trismegistus",
+      "author_is_person_ref": false,
+      "url": "https://www.alchemywebsite.com/emerald.html",
+      "bio": "The oldest known alchemical text. As above, so below. As within, so without.",
+      "appears_in": [
+        "t-saclaw"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-empty-space",
+      "title": "The Empty Space",
+      "author": "Peter Brook",
+      "author_is_person_ref": false,
+      "url": "https://www.penguin.co.uk/books/58/58819/the-empty-space/9780141189093.html",
+      "bio": "The most important book about theatre ever written. 128 pages. Every word counts.",
+      "appears_in": [
+        "t-theater"
+      ],
+      "picked_in": [
+        "t-theater"
+      ]
+    },
+    {
+      "id": "b-the-essential-drucker",
+      "title": "The Essential Drucker",
+      "author": "Peter Drucker",
+      "author_is_person_ref": false,
+      "url": "https://www.harpercollins.com/products/the-essential-drucker-peter-f-drucker",
+      "bio": "The distilled wisdom of the father of modern management — strategy, performance, society, and the purpose of business.",
+      "appears_in": [
+        "t-conscap"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-essential-rumi",
+      "title": "The Essential Rumi",
+      "author": "Coleman Barks",
+      "author_is_person_ref": false,
+      "url": "https://harpercollins.com/products/the-essential-rumi-new-expanded-edition-jalal-al-din-rumi",
+      "bio": "The translations that brought Rumi to the Western world. Sacred, sensual, and timeless.",
+      "appears_in": [
+        "t-poetry"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-everything-candida-diet-book",
+      "title": "The Everything Candida Diet Book",
+      "author": "Jeff McCombs",
+      "author_is_person_ref": false,
+      "url": "https://www.candidaplan.com",
+      "bio": "A comprehensive protocol for addressing systemic candida overgrowth — diet, antifungals, and gut restoration.",
+      "appears_in": [
+        "t-med"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-eye-of-the-i",
+      "title": "The Eye of the I",
+      "author": "p-david-r-hawkins",
+      "author_is_person_ref": true,
+      "url": "https://veritaspub.com/product/the-eye-of-the-i/",
+      "bio": "From which nothing is hidden — the advanced calibration of spiritual reality and the nature of the absolute.",
+      "appears_in": [
+        "t-source"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-fabric-of-reality",
+      "title": "The Fabric of Reality",
+      "author": "David Deutsch",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/286009/the-fabric-of-reality-by-david-deutsch/",
+      "bio": "A unified theory of knowledge, computation, and quantum physics. Dense and rewarding.",
+      "appears_in": [
+        "t-quantum"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-festivalisation-of-society",
+      "title": "The Festivalisation of Society",
+      "author": "Chris Anderton",
+      "author_is_person_ref": false,
+      "url": "https://www.taylorfrancis.com",
+      "bio": "Academic study of how festivals create temporary communities and what they reveal about human social need.",
+      "appears_in": [
+        "t-festivals"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-field",
+      "title": "The Field",
+      "author": "Lynne McTaggart",
+      "author_is_person_ref": false,
+      "url": "https://lynnemctaggart.com/the-field/",
+      "bio": "An investigation into the scientific evidence for a connected universe — the zero-point field and beyond.",
+      "appears_in": [
+        "t-efields"
+      ],
+      "picked_in": [
+        "t-efields"
+      ]
+    },
+    {
+      "id": "b-the-fifth-discipline",
+      "title": "The Fifth Discipline",
+      "author": "Peter Senge",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/573952/the-fifth-discipline-by-peter-m-senge/",
+      "bio": "How organisations learn and why most of them don't. Systems thinking applied to human enterprise.",
+      "appears_in": [
+        "t-systems"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-game-of-life-and-how-to-play-it",
+      "title": "The Game of Life and How to Play It",
+      "author": "Florence Scovel Shinn",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/33948",
+      "bio": "The 1925 spiritual classic on using the spoken word, faith, and imagination to command life's circumstances.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-gene-keys",
+      "title": "The Gene Keys",
+      "author": "Richard Rudd",
+      "author_is_person_ref": false,
+      "url": "https://genekeys.com",
+      "bio": "A contemplative evolution of the 64 Gates from Human Design into a poetic, meditative system. Not technically HD, but deeply intertwined — many practitioners study both. A beautiful companion text.",
+      "appears_in": [
+        "t-humandesign"
+      ],
+      "picked_in": [
+        "t-humandesign"
+      ]
+    },
+    {
+      "id": "b-the-gene",
+      "title": "The Gene",
+      "author": "Siddhartha Mukherjee",
+      "author_is_person_ref": false,
+      "url": "https://www.simonandschuster.com/books/The-Gene/Siddhartha-Mukherjee/9781476733500",
+      "bio": "An intimate history of genetics — from Mendel to CRISPR. The best overview of the field in one book.",
+      "appears_in": [
+        "t-genetics"
+      ],
+      "picked_in": [
+        "t-genetics"
+      ]
+    },
+    {
+      "id": "b-the-go-getter",
+      "title": "The Go-Getter",
+      "author": "Peter B. Kyne",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/21964",
+      "bio": "The classic 1921 business parable — the spirit that makes men succeed in the face of every obstacle.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-go-giver",
+      "title": "The Go-Giver",
+      "author": "Bob Burg",
+      "author_is_person_ref": false,
+      "url": "https://www.thegogiver.com",
+      "bio": "A story about the surprising secret of getting more by giving more — the Five Laws of Stratospheric Success.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-greatest-salesman-in-the-world",
+      "title": "The Greatest Salesman in the World",
+      "author": "Og Mandino",
+      "author_is_person_ref": false,
+      "url": "https://www.ogmandino.com",
+      "bio": "Ten scrolls for living — not really a sales book at all, but a manual for living with love, persistence, and purpose.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-grid",
+      "title": "The Grid",
+      "author": "Gretchen Bakke",
+      "author_is_person_ref": false,
+      "url": "https://bloomsbury.com/us/the-grid-9781608196104/",
+      "bio": "The story of America's electrical grid — fragile, ancient, and the battlefield where the energy transition will be won or lost.",
+      "appears_in": [
+        "t-gridtech"
+      ],
+      "picked_in": [
+        "t-gridtech"
+      ]
+    },
+    {
+      "id": "b-the-guru-gita",
+      "title": "The Guru Gita",
+      "author": "anonymous (traditional Sanskrit)",
+      "author_is_person_ref": false,
+      "url": "https://www.siddhayoga.org/practices/chanting/guru-gita",
+      "bio": "The scripture on the relationship between student and teacher — chanted in the Siddha Yoga tradition as a daily morning practice.",
+      "appears_in": [
+        "t-kriya"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-healing-power-of-sound",
+      "title": "The Healing Power of Sound",
+      "author": "Mitchell Gaynor",
+      "author_is_person_ref": false,
+      "url": "https://www.shambhala.com/the-healing-power-of-sound.html",
+      "bio": "An oncologist's use of sound therapy and Tibetan singing bowls in cancer treatment.",
+      "appears_in": [
+        "t-soundheal"
+      ],
+      "picked_in": [
+        "t-soundheal"
+      ]
+    },
+    {
+      "id": "b-the-hidden-life-of-trees",
+      "title": "The Hidden Life of Trees",
+      "author": "Peter Wohlleben",
+      "author_is_person_ref": false,
+      "url": "https://www.whataboutrees.com",
+      "bio": "The book that revealed trees communicate, support each other, and form communities — the science of forest intelligence, accessibly told. Changed how millions see forests.",
+      "appears_in": [
+        "d-nature",
+        "t-forests"
+      ],
+      "picked_in": [
+        "t-forests"
+      ]
+    },
+    {
+      "id": "b-the-hidden-messages-in-water",
+      "title": "The Hidden Messages in Water",
+      "author": "p-masaru-emoto",
+      "author_is_person_ref": true,
+      "url": "https://hado.com/ihm/",
+      "bio": "Emoto's research on how intention and words affect water crystal formation. Polarising and fascinating.",
+      "appears_in": [
+        "t-vibration"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-holographic-universe",
+      "title": "The Holographic Universe",
+      "author": "Michael Talbot",
+      "author_is_person_ref": false,
+      "url": "https://www.harpercollins.com/products/the-holographic-universe-michael-talbot",
+      "bio": "The case that reality is a hologram — weaving together quantum physics, neuroscience, and mysticism.",
+      "appears_in": [
+        "t-dims"
+      ],
+      "picked_in": [
+        "t-dims"
+      ]
+    },
+    {
+      "id": "b-the-impact-investor",
+      "title": "The Impact Investor",
+      "author": "Georg Kell",
+      "author_is_person_ref": false,
+      "url": "https://www.routledge.com",
+      "bio": "A rigorous look at what impact investing actually achieves — and where it falls short.",
+      "appears_in": [
+        "t-impact"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-infinite-machine",
+      "title": "The Infinite Machine",
+      "author": "Camila Russo",
+      "author_is_person_ref": false,
+      "url": "https://www.harpercollins.com/products/the-infinite-machine-camila-russo",
+      "bio": "The definitive story of Ethereum's creation — Vitalik Buterin, the early contributors, and how a teenager's white paper became programmable money. The most human account of how a world-changing protocol was born.",
+      "appears_in": [
+        "t-crypto",
+        "t-defi"
+      ],
+      "picked_in": [
+        "t-defi"
+      ]
+    },
+    {
+      "id": "b-the-inner-game-of-tennis",
+      "title": "The Inner Game of Tennis",
+      "author": "W. Timothy Gallwey",
+      "author_is_person_ref": false,
+      "url": "https://www.randomhousebooks.com/books/7412/",
+      "bio": "Learning and performance through quieting the inner critic. One of the great books on mastery.",
+      "appears_in": [
+        "t-sports"
+      ],
+      "picked_in": [
+        "t-sports"
+      ]
+    },
+    {
+      "id": "b-the-inner-sky",
+      "title": "The Inner Sky",
+      "author": "Steven Forrest",
+      "author_is_person_ref": false,
+      "url": "https://www.stevenforresterastrology.com/the-inner-sky/",
+      "bio": "The most psychologically sophisticated introduction to astrology. A serious and humane approach to the craft.",
+      "appears_in": [
+        "t-astrology"
+      ],
+      "picked_in": [
+        "t-astrology"
+      ]
+    },
+    {
+      "id": "b-the-inside-track",
+      "title": "The Inside Track",
+      "author": "Peter Sage",
+      "author_is_person_ref": false,
+      "url": "https://www.petersage.com/the-inside-track/",
+      "bio": "The self-made entrepreneur and philosopher on the inner game of extraordinary living — practical philosophy for the serious seeker.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-internet-of-money",
+      "title": "The Internet of Money",
+      "author": "Andreas Antonopoulos",
+      "author_is_person_ref": false,
+      "url": "https://aantonop.com/books/",
+      "bio": "The most articulate case for why Bitcoin matters — not as a speculative asset, but as a political and monetary revolution. Required reading.",
+      "appears_in": [
+        "t-crypto"
+      ],
+      "picked_in": [
+        "t-crypto"
+      ]
+    },
+    {
+      "id": "b-the-kybalion",
+      "title": "The Kybalion",
+      "author": "Three Initiates",
+      "author_is_person_ref": false,
+      "url": "https://www.sacred-texts.com/eso/kyb/",
+      "bio": "The seven Hermetic principles underlying all of reality — the foundation of esoteric philosophy. Free online.",
+      "appears_in": [
+        "d-meta",
+        "t-saclaw"
+      ],
+      "picked_in": [
+        "t-saclaw"
+      ]
+    },
+    {
+      "id": "b-the-language-instinct",
+      "title": "The Language Instinct",
+      "author": "Steven Pinker",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/178755/the-language-instinct-by-steven-pinker/",
+      "bio": "Language as a biological adaptation — how we all come pre-wired to speak. The definitive popular account.",
+      "appears_in": [
+        "t-language"
+      ],
+      "picked_in": [
+        "t-language"
+      ]
+    },
+    {
+      "id": "b-the-last-child-in-the-woods",
+      "title": "The Last Child in the Woods",
+      "author": "Richard Louv",
+      "author_is_person_ref": false,
+      "url": "https://richardlouv.com/books/last-child/",
+      "bio": "How nature-deficit disorder is affecting children — and what outdoor adventure does for human development.",
+      "appears_in": [
+        "t-outdoor"
+      ],
+      "picked_in": [
+        "t-outdoor"
+      ]
+    },
+    {
+      "id": "b-the-law-of-attraction",
+      "title": "The Law of Attraction",
+      "author": "Esther & Jerry Hicks (Abraham)",
+      "author_is_person_ref": false,
+      "url": "https://www.abrahamhicks.com/books/the-law-of-attraction/",
+      "bio": "The foundational Abraham text — teachings on how consciousness creates reality, channeled through Esther Hicks over 30 years.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": [
+        "t-channeling"
+      ]
+    },
+    {
+      "id": "b-the-law-of-success-in-16-lessons",
+      "title": "The Law of Success in 16 Lessons",
+      "author": "Napoleon Hill",
+      "author_is_person_ref": false,
+      "url": "https://www.naphill.org",
+      "bio": "Hill's complete original 1925/27 masterwork — the unexpurgated foundation from which Think and Grow Rich was distilled.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-life-changing-magic-of-tidying-up",
+      "title": "The Life-Changing Magic of Tidying Up",
+      "author": "Marie Kondo",
+      "author_is_person_ref": false,
+      "url": "https://konmari.com/book-magic-of-tidying-up/",
+      "bio": "More than a cleaning method — a philosophy for surrounding yourself only with what brings joy.",
+      "appears_in": [
+        "t-minimalism"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-living-gita",
+      "title": "The Living Gita",
+      "author": "Sri Swami Satchidananda",
+      "author_is_person_ref": false,
+      "url": "https://www.integralyoga.org/bookstore/",
+      "bio": "The Bhagavad Gita with plain-English commentary — Satchidananda makes the ancient battlefield conversation immediately applicable to daily life.",
+      "appears_in": [
+        "t-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-magic-of-believing",
+      "title": "The Magic of Believing",
+      "author": "Claude M. Bristol",
+      "author_is_person_ref": false,
+      "url": "https://www.amazon.com/Magic-Believing-Claude-M-Bristol/dp/0671762990",
+      "bio": "The mirror technique and subconscious imprinting — one of the most practical books ever written on belief and manifestation.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-magic-of-thinking-big",
+      "title": "The Magic of Thinking Big",
+      "author": "David J. Schwartz",
+      "author_is_person_ref": false,
+      "url": "https://www.simonandschuster.com/books/The-Magic-of-Thinking-Big/David-J-Schwartz/9780671646783",
+      "bio": "Proven methods for achieving everything you want from life by thinking bigger than you currently dare.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-magic",
+      "title": "The Magic",
+      "author": "Rhonda Byrne",
+      "author_is_person_ref": false,
+      "url": "https://www.thesecret.tv/products/the-magic-book/",
+      "bio": "28 days of gratitude practices that transform every area of life — the applied practice at the heart of The Secret.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-master-key-system",
+      "title": "The Master Key System",
+      "author": "Charles F. Haanel",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/18545",
+      "bio": "24-week correspondence course in mental science — the book that reportedly inspired Bill Gates to drop out of Harvard.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-miracle-of-mindfulness",
+      "title": "The Miracle of Mindfulness",
+      "author": "p-thich-nhat-hanh",
+      "author_is_person_ref": true,
+      "url": "https://www.parallax.org/product/the-miracle-of-mindfulness/",
+      "bio": "The most accessible introduction to meditation ever written. 140 pages of pure clarity.",
+      "appears_in": [
+        "t-meditation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-miracle-of-rebound-exercise",
+      "title": "The Miracle of Rebound Exercise",
+      "author": "Al Carter",
+      "author_is_person_ref": false,
+      "url": "https://www.amazon.com/Miracle-Rebound-Exercise-Al-Carter/dp/0917551079",
+      "bio": "The definitive guide to rebounding on a mini-trampoline — lymphatic drainage, cellular exercise, and NASA-validated benefits.",
+      "appears_in": [
+        "t-movement"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-monuments-of-mars",
+      "title": "The Monuments of Mars",
+      "author": "Richard C. Hoagland",
+      "author_is_person_ref": false,
+      "url": "https://www.enterprisemission.com",
+      "bio": "Hoagland's investigation into the Face on Mars and the Cydonia complex — the case that Mars harboured an ancient civilisation.",
+      "appears_in": [
+        "t-aliens"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-network-state",
+      "title": "The Network State",
+      "author": "Balaji Srinivasan",
+      "author_is_person_ref": false,
+      "url": "https://thenetworkstate.com",
+      "bio": "The foundational text on network states — how to start a new kind of country online and build a physical presence over time. The intellectual ground for DAOs as governance structures. Free to read.",
+      "appears_in": [
+        "network-state",
+        "t-dao"
+      ],
+      "picked_in": [
+        "network-state",
+        "t-dao"
+      ]
+    },
+    {
+      "id": "b-the-new-fire",
+      "title": "The New Fire",
+      "author": "Joshua Goldstein & Staffan Qvist",
+      "author_is_person_ref": false,
+      "url": "https://mitpress.mit.edu/9780262044288/a-bright-future/",
+      "bio": "The honest case for nuclear alongside renewables in the energy transition.",
+      "appears_in": [
+        "t-storage"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-obstacle-is-the-way",
+      "title": "The Obstacle Is the Way",
+      "author": "Ryan Holiday",
+      "author_is_person_ref": false,
+      "url": "https://www.amazon.com/Obstacle-Way-Timeless-Turning-Triumph/dp/1591846358",
+      "bio": "Stoic philosophy as a practical toolkit — turning adversity into advantage using the wisdom of Marcus Aurelius.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-omnivores-dilemma",
+      "title": "The Omnivore's Dilemma",
+      "author": "p-michael-pollan",
+      "author_is_person_ref": true,
+      "url": "https://www.michaelpollan.com/books/the-omnivores-dilemma",
+      "bio": "A natural history of four meals — the most important book on food and agriculture of the past 20 years.",
+      "appears_in": [
+        "d-food"
+      ],
+      "picked_in": [
+        "d-food"
+      ]
+    },
+    {
+      "id": "b-the-order-of-time",
+      "title": "The Order of Time",
+      "author": "Carlo Rovelli",
+      "author_is_person_ref": false,
+      "url": "https://www.penguin.co.uk/books/299409/the-order-of-time-by-rovelli-carlo",
+      "bio": "A physicist's meditation on why time flows, what cycles mean, and whether the present exists at all.",
+      "appears_in": [
+        "t-cycles"
+      ],
+      "picked_in": [
+        "t-cycles"
+      ]
+    },
+    {
+      "id": "b-the-podcast-handbook",
+      "title": "The Podcast Handbook",
+      "author": "Matt Debenham",
+      "author_is_person_ref": false,
+      "url": "https://www.podcasthandbook.co",
+      "bio": "A practical, concise guide to making a podcast that actually gets made — and heard.",
+      "appears_in": [
+        "t-broadcasting"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-power-of-now",
+      "title": "The Power of Now",
+      "author": "Eckhart Tolle",
+      "author_is_person_ref": false,
+      "url": "https://www.eckharttolle.com/power-of-now-excerpt/",
+      "bio": "The book that introduced millions to presence as a spiritual practice. Deceptively simple.",
+      "appears_in": [
+        "t-oneness"
+      ],
+      "picked_in": [
+        "t-oneness"
+      ]
+    },
+    {
+      "id": "b-the-power-of-positive-thinking",
+      "title": "The Power of Positive Thinking",
+      "author": "Norman Vincent Peale",
+      "author_is_person_ref": false,
+      "url": "https://www.normanvincentpeale.com",
+      "bio": "The 1952 classic that launched the positive thinking movement — practical techniques for faith, confidence, and serenity.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-power",
+      "title": "The Power",
+      "author": "Rhonda Byrne",
+      "author_is_person_ref": false,
+      "url": "https://www.thesecret.tv/products/the-power-book/",
+      "bio": "Love as the ultimate force of creation — Byrne's deeper exploration of the creative power behind the Law of Attraction.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-precipice",
+      "title": "The Precipice",
+      "author": "Toby Ord",
+      "author_is_person_ref": false,
+      "url": "https://theprecipice.com",
+      "bio": "An Oxford philosopher's assessment of existential risks and how to navigate them. Rigorous and urgent.",
+      "appears_in": [
+        "t-futuretech"
+      ],
+      "picked_in": [
+        "t-futuretech"
+      ]
+    },
+    {
+      "id": "b-the-purpose-economy",
+      "title": "The Purpose Economy",
+      "author": "Aaron Hurst",
+      "author_is_person_ref": false,
+      "url": "https://www.purposeeconomy.com",
+      "bio": "How purpose has become the driver of economic value in a post-scarcity world.",
+      "appears_in": [
+        "t-conscap"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-reconnection",
+      "title": "The Reconnection",
+      "author": "Eric Pearl",
+      "author_is_person_ref": false,
+      "url": "https://www.thereconnection.com",
+      "bio": "A chiropractor's accidental discovery of a new healing frequency — and what it suggests about energy and consciousness.",
+      "appears_in": [
+        "t-energyheal"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-regenerative-business",
+      "title": "The Regenerative Business",
+      "author": "Carol Sanford",
+      "author_is_person_ref": false,
+      "url": "https://carolsanford.com/book-the-regenerative-business/",
+      "bio": "Moving beyond sustainability to business models that actively restore living systems.",
+      "appears_in": [
+        "t-regenbiz"
+      ],
+      "picked_in": [
+        "t-regenbiz"
+      ]
+    },
+    {
+      "id": "b-the-rest-is-noise",
+      "title": "The Rest Is Noise",
+      "author": "Alex Ross",
+      "author_is_person_ref": false,
+      "url": "https://www.therestisnoise.com",
+      "bio": "A history of 20th century classical music that reads like a novel. One of the great music books.",
+      "appears_in": [
+        "t-music"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-richest-man-in-babylon",
+      "title": "The Richest Man in Babylon",
+      "author": "George S. Clason",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/124533/the-richest-man-in-babylon-by-george-s-clason/",
+      "bio": "Timeless financial wisdom through Babylonian parables — pay yourself first, make your money work for you, guard against loss.",
+      "appears_in": [
+        "t-wealth-mind"
+      ],
+      "picked_in": [
+        "t-wealth-mind"
+      ]
+    },
+    {
+      "id": "b-the-science-of-getting-rich",
+      "title": "The Science of Getting Rich",
+      "author": "Wallace D. Wattles",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/44897",
+      "bio": "The 1910 classic that inspired The Secret — a precise, systematic account of how thought creates material reality. Certain laws, as definite as the laws of algebra, that anyone can apply.",
+      "appears_in": [
+        "t-manifestation",
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-sea-around-us",
+      "title": "The Sea Around Us",
+      "author": "Rachel Carson",
+      "author_is_person_ref": false,
+      "url": "https://www.oxfordacademic.com/oso/9780195066944/book",
+      "bio": "The book that made a generation care about the ocean. Rachel Carson at her lyrical best.",
+      "appears_in": [
+        "t-oceans"
+      ],
+      "picked_in": [
+        "t-oceans"
+      ]
+    },
+    {
+      "id": "b-the-seat-of-the-soul",
+      "title": "The Seat of the Soul",
+      "author": "Gary Zukav",
+      "author_is_person_ref": false,
+      "url": "https://www.seatofthesoul.com",
+      "bio": "A map of spiritual growth for the age of authentic power — where intention, consciousness, and soul converge.",
+      "appears_in": [
+        "t-soul"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-second-coming-of-christ",
+      "title": "The Second Coming of Christ",
+      "author": "p-paramhansa-yogananda",
+      "author_is_person_ref": true,
+      "url": "https://www.yogananda.org/the-second-coming-of-christ",
+      "bio": "Yogananda's interpretation of the Gospels through the lens of Kriya Yoga and universal mystical principles.",
+      "appears_in": [
+        "t-kriya"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-secret-of-ages",
+      "title": "The Secret of Ages",
+      "author": "Robert Collier",
+      "author_is_person_ref": false,
+      "url": "https://www.gutenberg.org/ebooks/54523",
+      "bio": "The 1926 compendium of mental science — how to use the subconscious mind to bring every desire into reality.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-secret",
+      "title": "The Secret",
+      "author": "Rhonda Byrne",
+      "author_is_person_ref": false,
+      "url": "https://www.thesecret.tv",
+      "bio": "The book and film that brought the Law of Attraction to 500 million people. The modern gateway to manifestation thinking.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": [
+        "t-manifestation"
+      ]
+    },
+    {
+      "id": "b-the-sedona-method",
+      "title": "The Sedona Method",
+      "author": "Hale Dwoskin",
+      "author_is_person_ref": false,
+      "url": "https://www.sedona.com/The-Sedona-Method.asp",
+      "bio": "The release technique — four simple questions that let you dissolve any feeling or emotional charge in the moment. Immediate, profound, and practical.",
+      "appears_in": [
+        "t-eft",
+        "t-mentalhlth"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-selfish-gene",
+      "title": "The Selfish Gene",
+      "author": "Richard Dawkins",
+      "author_is_person_ref": false,
+      "url": "https://www.penguin.co.uk/books/35/35696/the-selfish-gene",
+      "bio": "The gene's-eye view of evolution that reshaped how we think about life, cooperation, and altruism.",
+      "appears_in": [
+        "t-bio"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-seven-spiritual-laws-of-success",
+      "title": "The Seven Spiritual Laws of Success",
+      "author": "Deepak Chopra",
+      "author_is_person_ref": false,
+      "url": "https://www.deepakchopra.com/books/the-seven-spiritual-laws-of-success/",
+      "bio": "Laws of pure potentiality, karma, least effort, intention — success understood as a spiritual phenomenon, not just an economic one.",
+      "appears_in": [
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-shallows",
+      "title": "The Shallows",
+      "author": "Nicholas Carr",
+      "author_is_person_ref": false,
+      "url": "https://www.nicholascarr.com/?page_id=16",
+      "bio": "What the internet is doing to our brains — a deeply researched case for protecting depth of thought.",
+      "appears_in": [
+        "d-tech"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-shaolin-workout",
+      "title": "The Shaolin Workout",
+      "author": "Shi Yan Ming",
+      "author_is_person_ref": false,
+      "url": "https://www.shaolininstitute.com",
+      "bio": "28 days to a stronger body and a calmer mind — authentic Shaolin kung fu training from a 34th-generation Shaolin monk.",
+      "appears_in": [
+        "t-movement"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-sixth-extinction",
+      "title": "The Sixth Extinction",
+      "author": "Elizabeth Kolbert",
+      "author_is_person_ref": false,
+      "url": "https://us.macmillan.com/books/9780805092998/thesixthextinction",
+      "bio": "A Pulitzer Prize winner on the species humans are currently driving to extinction. Essential and devastating.",
+      "appears_in": [
+        "t-biodivers"
+      ],
+      "picked_in": [
+        "t-biodivers"
+      ]
+    },
+    {
+      "id": "b-the-sovereign-individual",
+      "title": "The Sovereign Individual",
+      "author": "Davidson & Rees-Mogg",
+      "author_is_person_ref": false,
+      "url": "https://www.simonandschuster.com/books/The-Sovereign-Individual/James-Dale-Davidson/9780684832722",
+      "bio": "Written in 1997, it predicted crypto, digital sovereignty, and the collapse of nation-state control with eerie accuracy.",
+      "appears_in": [
+        "t-decentral"
+      ],
+      "picked_in": [
+        "t-decentral"
+      ]
+    },
+    {
+      "id": "b-the-spirit-level",
+      "title": "The Spirit Level",
+      "author": "Wilkinson & Pickett",
+      "author_is_person_ref": false,
+      "url": "https://www.equalitytrust.org.uk/resources/the-spirit-level",
+      "bio": "Why more equal societies almost always do better. The data that changed the governance conversation.",
+      "appears_in": [
+        "t-governance"
+      ],
+      "picked_in": [
+        "t-governance"
+      ]
+    },
+    {
+      "id": "b-the-surrender-experiment",
+      "title": "The Surrender Experiment",
+      "author": "Michael A. Singer",
+      "author_is_person_ref": false,
+      "url": "https://untetheredsoul.com/surrender-experiment",
+      "bio": "What happens when you stop resisting life — Singer's extraordinary memoir of 40 years of surrendering to the flow.",
+      "appears_in": [
+        "t-source"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-switch",
+      "title": "The Switch",
+      "author": "Chris Goodall",
+      "author_is_person_ref": false,
+      "url": "https://www.profilebooks.com/work/the-switch/",
+      "bio": "Why the world will run on clean electricity within decades — and how it will happen.",
+      "appears_in": [
+        "t-renewable"
+      ],
+      "picked_in": [
+        "t-renewable"
+      ]
+    },
+    {
+      "id": "b-the-tao-te-ching",
+      "title": "The Tao Te Ching",
+      "author": "Lao Tzu",
+      "author_is_person_ref": false,
+      "url": "https://www.sacred-texts.com/tao/taote.htm",
+      "bio": "81 short poems about the nature of reality, power, and returning to the source. Free online.",
+      "appears_in": [
+        "t-source"
+      ],
+      "picked_in": [
+        "t-source"
+      ]
+    },
+    {
+      "id": "b-the-tapping-solution",
+      "title": "The Tapping Solution",
+      "author": "Nick Ortner",
+      "author_is_person_ref": false,
+      "url": "https://www.thetappingsolution.com/book/",
+      "bio": "The most accessible introduction to Emotional Freedom Techniques — how tapping on acupressure points while voicing feelings can dissolve anxiety, pain, and limiting beliefs.",
+      "appears_in": [
+        "t-eft"
+      ],
+      "picked_in": [
+        "t-eft"
+      ]
+    },
+    {
+      "id": "b-the-three-waves-of-volunteers-and-the-new-earth",
+      "title": "The Three Waves of Volunteers and the New Earth",
+      "author": "p-dolores-cannon",
+      "author_is_person_ref": true,
+      "url": "https://www.ozarkmt.com/the-three-waves-of-volunteers-and-the-new-earth/",
+      "bio": "Her thesis: three generational waves of advanced souls incarnated on Earth — volunteers from elsewhere — to help humanity through the dimensional shift. Compiled from thousands of QHHT sessions with strangers who independently told the same story. The foundational text on the starseed phenomenon.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": [
+        "t-channeling"
+      ]
+    },
+    {
+      "id": "b-the-translators-invisibility",
+      "title": "The Translator's Invisibility",
+      "author": "Lawrence Venuti",
+      "author_is_person_ref": false,
+      "url": "https://www.routledge.com/The-Translators-Invisibility/Venuti/p/book/9780415508964",
+      "bio": "The politics and ethics of translation. Who decides how foreign texts enter a culture.",
+      "appears_in": [
+        "t-translation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-uninhabitable-earth",
+      "title": "The Uninhabitable Earth",
+      "author": "David Wallace-Wells",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/586541/the-uninhabitable-earth-by-david-wallace-wells/",
+      "bio": "What climate change will actually do to the planet if we fail. Confronting and necessary.",
+      "appears_in": [
+        "t-energypolicy"
+      ],
+      "picked_in": [
+        "t-energypolicy"
+      ]
+    },
+    {
+      "id": "b-the-untethered-soul",
+      "title": "The Untethered Soul",
+      "author": "Michael A. Singer",
+      "author_is_person_ref": false,
+      "url": "https://untetheredsoul.com",
+      "bio": "The journey beyond yourself — who are you behind the voice in your head? Singer's most lucid pointer to the unchanging witness.",
+      "appears_in": [
+        "t-source"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-urban-farmer",
+      "title": "The Urban Farmer",
+      "author": "Curtis Stone",
+      "author_is_person_ref": false,
+      "url": "https://www.greenurbanbiz.com/the-urban-farmer-book",
+      "bio": "How to grow food for profit on small urban plots. The business model for urban food production.",
+      "appears_in": [
+        "t-urbanfarm"
+      ],
+      "picked_in": [
+        "t-urbanfarm"
+      ]
+    },
+    {
+      "id": "b-the-war-of-art",
+      "title": "The War of Art",
+      "author": "Steven Pressfield",
+      "author_is_person_ref": false,
+      "url": "https://www.stevenpressfield.com/books/the-war-of-art/",
+      "bio": "Breaking through the blocks and winning your inner creative battles — the most honest book on Resistance ever written.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-web-of-life",
+      "title": "The Web of Life",
+      "author": "Fritjof Capra",
+      "author_is_person_ref": false,
+      "url": "https://www.fritjofcapra.net/the-web-of-life",
+      "bio": "A synthesis of systems thinking and ecology — how living systems organise and why everything is connected.",
+      "appears_in": [
+        "d-sciences"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-wisdom-of-crowds",
+      "title": "The Wisdom of Crowds",
+      "author": "James Surowiecki",
+      "author_is_person_ref": false,
+      "url": "https://www.penguinrandomhouse.com/books/175380/the-wisdom-of-crowds-by-james-surowiecki/",
+      "bio": "Under the right conditions, crowds make better decisions than experts. The evidence and the conditions.",
+      "appears_in": [
+        "t-collective"
+      ],
+      "picked_in": [
+        "t-collective"
+      ]
+    },
+    {
+      "id": "b-the-yoga-sutras-of-patanjali",
+      "title": "The Yoga Sutras of Patanjali",
+      "author": "Sri Swami Satchidananda",
+      "author_is_person_ref": false,
+      "url": "https://www.integralyoga.org/bookstore/",
+      "bio": "The most widely used commentary on Patanjali's root text — clear, practical, and steeped in living practice.",
+      "appears_in": [
+        "t-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-the-yoga-of-discipline",
+      "title": "The Yoga of Discipline",
+      "author": "Gurumayi Chidvilasananda",
+      "author_is_person_ref": false,
+      "url": "https://www.siddhayoga.org/teachings/books/the-yoga-of-discipline",
+      "bio": "Tapas, sadhana, and the transformative power of self-discipline in the spiritual life.",
+      "appears_in": [
+        "t-siddha-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-think-and-grow-rich",
+      "title": "Think and Grow Rich",
+      "author": "Napoleon Hill",
+      "author_is_person_ref": false,
+      "url": "https://www.naphill.org/shop/books/think-and-grow-rich/",
+      "bio": "The most-read success book in history — 13 principles of achievement distilled from Napoleon Hill's interviews with 500 of America's most successful people. Desire, faith, and the mastermind principle, as true today as in 1937.",
+      "appears_in": [
+        "t-personal-dev",
+        "t-wealth-mind"
+      ],
+      "picked_in": [
+        "t-personal-dev"
+      ]
+    },
+    {
+      "id": "b-thinking-in-systems",
+      "title": "Thinking in Systems",
+      "author": "Donella Meadows",
+      "author_is_person_ref": false,
+      "url": "https://www.chelseagreen.com/product/thinking-in-systems/",
+      "bio": "The best introduction to systems thinking ever written. Short, clear, and immediately applicable.",
+      "appears_in": [
+        "t-systems"
+      ],
+      "picked_in": [
+        "t-systems"
+      ]
+    },
+    {
+      "id": "b-this-is-an-uprising",
+      "title": "This Is An Uprising",
+      "author": "Engler & Engler",
+      "author_is_person_ref": false,
+      "url": "https://www.publicaffairsbooks.com/titles/mark-engler/this-is-an-uprising/9781568585024/",
+      "bio": "How nonviolent revolt is shaping the 21st century. The strategic logic of social movements.",
+      "appears_in": [
+        "t-socialmov"
+      ],
+      "picked_in": [
+        "t-socialmov"
+      ]
+    },
+    {
+      "id": "b-this-is-your-brain-on-music",
+      "title": "This Is Your Brain on Music",
+      "author": "Daniel Levitin",
+      "author_is_person_ref": false,
+      "url": "https://www.daniellevitin.com/publicpage/books/this-is-your-brain-on-music/",
+      "bio": "A neuroscientist and former record producer explains what music does to us — and why.",
+      "appears_in": [
+        "t-music"
+      ],
+      "picked_in": [
+        "t-music"
+      ]
+    },
+    {
+      "id": "b-transcending-the-levels-of-consciousness",
+      "title": "Transcending the Levels of Consciousness",
+      "author": "p-david-r-hawkins",
+      "author_is_person_ref": true,
+      "url": "https://veritaspub.com/product/transcending-the-levels-of-consciousness/",
+      "bio": "A complete map of the inner journey — how each level of consciousness feels, what blocks it, and how to transcend it.",
+      "appears_in": [
+        "t-source"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-ufos-and-the-national-security-state",
+      "title": "UFOs and the National Security State",
+      "author": "Richard Dolan",
+      "author_is_person_ref": false,
+      "url": "https://richarddolanpress.com/ufo-s-and-the-national-security-state/",
+      "bio": "The most authoritative history of the US government's relationship with the UFO phenomenon — deeply researched and unflinching.",
+      "appears_in": [
+        "t-aliens"
+      ],
+      "picked_in": [
+        "t-aliens"
+      ]
+    },
+    {
+      "id": "b-waking-the-tiger",
+      "title": "Waking the Tiger",
+      "author": "Peter Levine",
+      "author_is_person_ref": false,
+      "url": "https://www.somaticexperiencing.com/book-waking-tiger",
+      "bio": "How animals release trauma instinctively — and how humans can too. The origin of Somatic Experiencing.",
+      "appears_in": [
+        "t-somatic"
+      ],
+      "picked_in": [
+        "t-somatic"
+      ]
+    },
+    {
+      "id": "b-ways-of-seeing",
+      "title": "Ways of Seeing",
+      "author": "John Berger",
+      "author_is_person_ref": false,
+      "url": "https://www.penguin.co.uk/books/56488/ways-of-seeing",
+      "bio": "The most important book about how we look at art, images, and each other — perception, power, and visual literacy in two hours. Permanently changes what you see.",
+      "appears_in": [
+        "d-arts",
+        "t-visual"
+      ],
+      "picked_in": [
+        "d-arts",
+        "t-visual"
+      ]
+    },
+    {
+      "id": "b-what-it-takes",
+      "title": "What It Takes",
+      "author": "Stephen Schwarzman",
+      "author_is_person_ref": false,
+      "url": "https://www.schwarzman.com/what-it-takes/",
+      "bio": "The Blackstone co-founder on the lessons of a life at the frontier of high finance — ambition, character, and execution.",
+      "appears_in": [
+        "t-wealth-mind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-what-to-say-when-you-talk-to-yourself",
+      "title": "What to Say When You Talk to Yourself",
+      "author": "Shad Helmstetter",
+      "author_is_person_ref": false,
+      "url": "https://www.shadhelmstetter.com",
+      "bio": "The science of self-talk — why the words you say to yourself determine everything, and how to change the programming.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-wheels-of-life",
+      "title": "Wheels of Life",
+      "author": "Anodea Judith",
+      "author_is_person_ref": false,
+      "url": "https://www.llewellyn.com/product.php?ean=9780875423203",
+      "bio": "The definitive guide to chakras as a map of the developmental cycles of the human psyche.",
+      "appears_in": [
+        "t-cycles"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-when-the-body-says-no",
+      "title": "When the Body Says No",
+      "author": "Gabor Maté",
+      "author_is_person_ref": false,
+      "url": "https://drgabormate.com/book/when-the-body-says-no",
+      "bio": "The hidden cost of stress and suppressed emotion — Maté's compassionate investigation into how the mind-body connection shapes illness.",
+      "appears_in": [
+        "d-wellbeing"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-why-we-sleep",
+      "title": "Why We Sleep",
+      "author": "Matthew Walker",
+      "author_is_person_ref": false,
+      "url": "https://www.sleepdiplomat.com",
+      "bio": "The book that made millions take sleep seriously. Alarming, comprehensive, and life-changing.",
+      "appears_in": [
+        "t-sleep"
+      ],
+      "picked_in": [
+        "t-sleep"
+      ]
+    },
+    {
+      "id": "b-wind-energy-fundamentals-resource-analysis",
+      "title": "Wind Energy — Fundamentals, Resource Analysis",
+      "author": "Manwell",
+      "author_is_person_ref": false,
+      "url": "https://www.wiley.com/en-us/Wind+Energy+Explained%2C+2nd+Edition-p-9780470015001",
+      "bio": "The standard textbook on wind energy engineering. Thorough and accessible.",
+      "appears_in": [
+        "t-wind"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-wishes-fulfilled",
+      "title": "Wishes Fulfilled",
+      "author": "Wayne W. Dyer",
+      "author_is_person_ref": false,
+      "url": "https://www.drwaynedyer.com/books/wishes-fulfilled/",
+      "bio": "Mastering the art of manifesting — Dyer's synthesis of Neville Goddard, mysticism, and practical imagination techniques.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-worn-stories",
+      "title": "Worn Stories",
+      "author": "Emily Spivack",
+      "author_is_person_ref": false,
+      "url": "https://www.chroniclebooks.com/products/worn-stories",
+      "bio": "The stories behind the clothes we keep. Fashion as autobiography.",
+      "appears_in": [
+        "t-fashion"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "b-your-money-or-your-life",
+      "title": "Your Money or Your Life",
+      "author": "Vicki Robin",
+      "author_is_person_ref": false,
+      "url": "https://www.vickirobin.com/books/",
+      "bio": "The personal finance book that made frugality a spiritual practice and money a form of life energy.",
+      "appears_in": [
+        "t-minimalism"
+      ],
+      "picked_in": []
+    }
+  ],
+  "$updated": "2026-04-24 — relinked 13 book authors to p-ids in the expanded people bed."
+}

@@ -127,7 +127,7 @@
       const successEl = document.getElementById(isOverlay ? 'subscribe-success-overlay' : 'subscribe-success-contact');
       const errorEl   = document.getElementById(isOverlay ? 'subscribe-error-overlay'   : 'subscribe-error-contact');
 
-      // Client-side email validation (we can't read Substack's response due to no-cors)
+      // Client-side email validation
       if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
         errorEl.textContent = 'Please enter a valid email address.';
         errorEl.style.display = 'block';
@@ -142,26 +142,40 @@
       errorEl.style.display = 'none';
 
       try {
-        // Submit to Substack — fire-and-forget (no-cors).
-        // Substack receives the email and sends its confirmation email to the user.
-        await fetch('https://frqncy.substack.com/api/v1/free', {
+        // POST to /api/subscribe — Cloudflare Pages Function that:
+        //  1. Saves the email to the Supabase `subscribers` table (source of truth)
+        //  2. Sends a welcome email via Resend (if RESEND_API_KEY is configured)
+        // See functions/api/subscribe.js + EMAIL-SETUP.md for env-var requirements.
+        const resp = await fetch('/api/subscribe', {
           method: 'POST',
-          mode: 'no-cors',
           headers: { 'Content-Type': 'application/json' },
           body: JSON.stringify({
             email,
-            first_url: window.location.href,
-            first_referrer: document.referrer || '',
-            current_url: window.location.href,
-            current_referrer: document.referrer || '',
-            referral_code: '',
-            source: 'frqncy.network',
-            domain: 'frqncy.substack.com'
+            source: isOverlay ? 'frqncy_website_overlay' : 'frqncy_website_contact',
           }),
         });
 
+        // Try to parse JSON; tolerate non-JSON failures
+        let data = null;
+        try { data = await resp.json(); } catch (_) { /* non-JSON */ }
+
+        if (!resp.ok || !data || data.ok !== true) {
+          const msg = (data && data.error) || (resp.status === 429
+            ? 'Too many attempts — please wait a minute and try again.'
+            : 'Connection error. Please try again.');
+          errorEl.textContent = msg;
+          errorEl.style.display = 'block';
+          btn.textContent = origText;
+          btn.disabled = false;
+          return;
+        }
+
         form.style.display = 'none';
         successEl.style.display = 'block';
+        // Tweak the success copy depending on whether they were already on the list
+        if (data.isNew === false) {
+          successEl.textContent = '✦ Already on the list. Thank you for being here.';
+        }
         markPopupSeen('subscribed'); // suppress permanently after subscribing
         // Auto-dismiss overlay after 2s
         if (isOverlay) setTimeout(dismissSubscribe, 2000);

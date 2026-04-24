@@ -293,8 +293,18 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2rem clamp(1.25rem,5v
         </div>
       </li>
       <li><a href="my-frqncy.html" class="nav-cta-gold">My FRQNCY</a></li>
+      <li id="frqncy-auth-pill" style="margin-left:6px;"></li>
   </ul>
 </nav>
+<script src="assets/frqncy-supabase.js" defer></script>
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    if (!window.frqncy) return;
+    window.frqncy.ready.then(() => {
+      window.frqncy.mountAuthPill(document.getElementById('frqncy-auth-pill'));
+    });
+  });
+</script>
 
 <div class="hero">
   <div class="hero-eyebrow">Education · The On-Ramp</div>

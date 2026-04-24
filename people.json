@@ -1,0 +1,416 @@
+{
+  "$schema_version": 3,
+  "$purpose": "Draft first-class people list for FRQNCY. This is a PROPOSAL — not wired into the live site. Review, push back on anything wrong, and we refine.",
+  "$generated": "2026-04-24",
+  "$updated": "2026-04-24 — added 12 priority people (Huberman, Sadhguru, Hawkins, Buterin, Ravikant, Graham, Schneier, Thich Nhat Hanh, Sheldrake, Emoto, Pollan, Yogananda). Total: 35.",
+  "$source": "Extracted from content.json — every resource with type:'person' (25 rows, 23 unique people after deduping Rupert Spira and Osho who each appeared twice).",
+  "$reconciliation_notes": "Channeling humans now carry a 'channels' array listing the entities they channel, each with name and description. This keeps the human as the canonical person while giving the channeled entity its own structure — easy to migrate to a standalone channels.json later if we want.",
+  "people": [
+    {
+      "id": "p-alan-watts",
+      "name": "Alan Watts",
+      "url": "https://www.alanwatts.org",
+      "bio": "The philosopher who brought Eastern wisdom to the West. Thousands of lectures freely available — start anywhere.",
+      "appears_in": [
+        "d-meta"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-andrew-huberman",
+      "name": "Andrew Huberman",
+      "url": "https://www.hubermanlab.com",
+      "bio": "Stanford neuroscientist whose Huberman Lab podcast translates research into practical tools for focus, sleep, and performance. The clearest bridge between the lab and the body in contemporary neuroscience media.",
+      "appears_in": [
+        "t-neuro"
+      ],
+      "picked_in": [
+        "t-neuro"
+      ]
+    },
+    {
+      "id": "p-arizona-wilder",
+      "name": "Arizona Wilder",
+      "url": "https://podcasts.apple.com/si/podcast/redesigning-destiny/id1383945584",
+      "bio": "Former high priestess and MK-Ultra survivor who conducted Illuminati rituals at the highest levels of global power. Her testimony — first recorded with David Icke in Revelations of a Mother Goddess (1999) — covers shapeshifting bloodlines, Satanic ceremony, and the hidden architecture of control. Unfiltered and unflinching.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": [],
+      "needs_review": "URL is her podcast feed, not a personal site. A canonical URL would be better if available."
+    },
+    {
+      "id": "p-barbara-marciniak",
+      "name": "Barbara Marciniak",
+      "url": "https://www.pleiadians.com",
+      "bio": "Barbara Marciniak has channeled a collective of multidimensional beings from the Pleiades star system since 1988. Her book Bringers of the Dawn is one of the most widely read channeled texts ever published — a dense, demanding transmission on DNA activation, timelines, and the game being played on Earth.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": [
+        "t-channeling"
+      ],
+      "channels": [
+        {
+          "name": "The Pleiadians",
+          "description": "A collective of multidimensional beings from the Pleiades star system. Their transmissions through Barbara Marciniak since 1988 cover DNA activation, timelines, planetary awakening, and the deeper game being played on Earth — demanding, dense, and among the most widely read channeled material published."
+        }
+      ]
+    },
+    {
+      "id": "p-birgit-fischer",
+      "name": "Birgit Fischer",
+      "url": "https://www.youtube.com/channel/UCos6qHmzlIgRQvnZ0e0trSg",
+      "bio": "Austrian medium, healer, and four-time SPIEGEL bestselling author — channels Starseed messages and galactic intelligences. One of the most prominent voices in German-language spiritual media.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": [],
+      "needs_review": "Birgit's source material describes her channels as general ('Starseed messages, galactic intelligences') rather than a single named entity. Left the 'channels' array off for now. If you want to add one or more named channels, I'll add them."
+    },
+    {
+      "id": "p-bob-lazar",
+      "name": "Bob Lazar",
+      "url": "https://www.boblazar.com",
+      "bio": "The man who brought Area 51 and element 115 (moscovium) to public consciousness decades before its scientific confirmation. Official site.",
+      "appears_in": [
+        "t-aliens"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-bruce-schneier",
+      "name": "Bruce Schneier",
+      "url": "https://www.schneier.com",
+      "bio": "The world's most respected security technologist. His cryptography work, books, and blog form the clearest voice in the field on how systems fail and how to secure them.",
+      "appears_in": [
+        "t-cybersec"
+      ],
+      "picked_in": [
+        "t-cybersec"
+      ]
+    },
+    {
+      "id": "p-darryl-anka",
+      "name": "Darryl Anka",
+      "url": "https://www.bashar.org",
+      "bio": "Darryl Anka has channeled Bashar since 1983 — teachings on parallel realities, permission slips, and following your highest excitement.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": [],
+      "channels": [
+        {
+          "name": "Bashar",
+          "description": "A multi-dimensional being from a future Earth timeline, channeled by Darryl Anka since 1983. Bashar's teachings center on parallel realities, permission slips, and the practice of following your highest excitement in every moment — one of the most accessible and pragmatic transmissions in contemporary channeling."
+        }
+      ]
+    },
+    {
+      "id": "p-dolores-cannon",
+      "name": "Dolores Cannon",
+      "url": "https://dolorescannon.com",
+      "bio": "Hypnotherapist, past-life regressionist, and founder of Quantum Healing Hypnosis Technique (QHHT). Across 50 years and tens of thousands of sessions she assembled one of the most coherent bodies of channeled material on Earth — Nostradamus, Jesus, starseeds, the volunteer souls, and the shift into the New Earth. Read her or don't, but you can't study this field without her.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": [
+        "t-channeling"
+      ]
+    },
+    {
+      "id": "p-david-r-hawkins",
+      "name": "Dr. David R. Hawkins",
+      "url": "https://veritaspub.com",
+      "bio": "Psychiatrist and spiritual teacher who mapped the calibrated levels of human consciousness — from shame at the bottom to enlightenment at the top. His kinesiology research revealed that love and truth calibrate exponentially higher than fear and force. Essential for anyone serious about the mechanics of vibration.",
+      "appears_in": [
+        "t-eft",
+        "t-meditation",
+        "t-source",
+        "t-vibration",
+        "t-wealth-mind"
+      ],
+      "picked_in": [
+        "t-vibration"
+      ]
+    },
+    {
+      "id": "p-joe-dispenza",
+      "name": "Dr. Joe Dispenza",
+      "url": "https://drjoedispenza.com",
+      "bio": "Neuroscientist and meditation teacher whose progressive workshops document measurable physiological and psychological transformation through meditation.",
+      "appears_in": [
+        "t-meditation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-emma-grede",
+      "name": "Emma Grede",
+      "url": "https://www.emmagrede.com",
+      "bio": "Co-founder and CEO of Good American, co-founder of SKIMS, founding partner of Savage X Fenty. First Black woman guest Shark on Shark Tank. Her bet: inclusivity — across sizing, race, and access — is a billion-dollar market, not a compromise. Proof that conscious business and category-leading scale aren't opposed.",
+      "appears_in": [
+        "t-socialent"
+      ],
+      "picked_in": [
+        "t-socialent"
+      ]
+    },
+    {
+      "id": "p-erin-claire-jones",
+      "name": "Erin Claire Jones",
+      "url": "https://www.erinclairejones.com",
+      "bio": "Brings Human Design into business, leadership, and teams. Known for making HD practical and applicable to work and relationships. Her newsletter is one of the most-read in the HD space.",
+      "appears_in": [
+        "t-humandesign"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-george-green",
+      "name": "George Green",
+      "url": "https://projectcamelotportal.com/2008/04/17/project-camelot-interviews-george-green-part-1-of-2/",
+      "bio": "Former investment banker and USAF veteran who published the Pleiadian-channeled Handbook for the New Paradigm trilogy — available free online and read by millions. His Project Camelot interviews are essential: a man who moved money at the highest levels, who walked away, and who spent his final decades broadcasting what he knew.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": [],
+      "needs_review": "URL points to a specific interview, not a canonical personal site. Consider replacing if one exists."
+    },
+    {
+      "id": "p-graham-hancock",
+      "name": "Graham Hancock",
+      "url": "https://grahamhancock.com",
+      "bio": "The author and researcher whose work spans lost civilisations, ancient monuments, consciousness, and the hidden history of humanity.",
+      "appears_in": [
+        "t-history"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-jenna-zoe",
+      "name": "Jenna Zoe",
+      "url": "https://www.myhumandesign.com",
+      "bio": "The most popular contemporary Human Design educator. Her platform makes the system approachable for a modern audience — courses, readings, and a large community. The gateway for most newcomers.",
+      "appears_in": [
+        "t-humandesign"
+      ],
+      "picked_in": [
+        "t-humandesign"
+      ]
+    },
+    {
+      "id": "p-joe-mcmoneagle",
+      "name": "Joe McMoneagle",
+      "url": "https://www.mceagle.com",
+      "bio": "The most scientifically tested remote viewer in history — over 450 operational intelligence missions for the US government.",
+      "appears_in": [
+        "t-remote-view"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-karen-curry-parker",
+      "name": "Karen Curry Parker",
+      "url": "https://www.quantumhumandesign.com",
+      "bio": "Reimagined the language of Human Design to be more empowering and less mechanical. Her Quantum Human Design reframes traditional HD language — 'Manifestor' becomes 'Initiator,' etc. Prolific author and teacher.",
+      "appears_in": [
+        "t-humandesign"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-lyn-alden",
+      "name": "Lyn Alden",
+      "url": "https://www.lynalden.com",
+      "bio": "The clearest macro analyst covering Bitcoin as an emerging monetary network. Her long-form research bridges traditional finance and the new monetary paradigm.",
+      "appears_in": [
+        "t-crypto"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-marshall-rosenberg",
+      "name": "Marshall Rosenberg",
+      "url": "https://www.cnvc.org",
+      "bio": "The creator of Nonviolent Communication. His work underpins almost all modern conflict resolution.",
+      "appears_in": [
+        "t-peace"
+      ],
+      "picked_in": [
+        "t-peace"
+      ]
+    },
+    {
+      "id": "p-masaru-emoto",
+      "name": "Masaru Emoto",
+      "url": "https://www.masaru-emoto.net/en/",
+      "bio": "Japanese researcher whose work with water crystals demonstrated the responsiveness of water to thought, word, and intention. His photographic records changed how millions understand the relationship between consciousness and matter.",
+      "appears_in": [
+        "t-manifestation",
+        "t-vibration"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-michael-pollan",
+      "name": "Michael Pollan",
+      "url": "https://michaelpollan.com",
+      "bio": "The writer who reshaped public conversation around food, agriculture, and — with How to Change Your Mind — psychedelic medicine. Rigorous, readable, and relentlessly curious across every domain he enters.",
+      "appears_in": [
+        "d-food",
+        "t-foodsystems",
+        "t-med"
+      ],
+      "picked_in": [
+        "d-food",
+        "t-foodsystems",
+        "t-med"
+      ]
+    },
+    {
+      "id": "p-naval-ravikant",
+      "name": "Naval Ravikant",
+      "url": "https://nav.al",
+      "bio": "Founder of AngelList and a philosopher of wealth, happiness, and leverage. His body of aphorisms and long-form conversations is one of the most-quoted bodies of contemporary thought on building a life of sovereignty and meaning.",
+      "appears_in": [
+        "d-lifestyle"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-osho",
+      "name": "Osho",
+      "url": "https://www.osho.com",
+      "bio": "One of the most prolific and radical spiritual teachers of the 20th century. Created hundreds of meditation techniques — including Dynamic Meditation — designed specifically for the modern mind. His 600+ books distil everything from Zen and Tantra to Taoism and Sufism into a single voice of absolute freedom.",
+      "appears_in": [
+        "t-meditation",
+        "d-meta"
+      ],
+      "picked_in": [
+        "t-meditation"
+      ]
+    },
+    {
+      "id": "p-paramhansa-yogananda",
+      "name": "Paramhansa Yogananda",
+      "url": "https://yogananda.org",
+      "bio": "The master who brought Kriya Yoga to the West, and whose Autobiography of a Yogi remains one of the most influential spiritual autobiographies ever written. Steve Jobs requested it be distributed at his memorial. A living transmission of communion with the Source.",
+      "appears_in": [
+        "t-kriya",
+        "t-source",
+        "t-yoga"
+      ],
+      "picked_in": [
+        "t-kriya"
+      ]
+    },
+    {
+      "id": "p-paul-graham",
+      "name": "Paul Graham",
+      "url": "https://paulgraham.com",
+      "bio": "Co-founder of Y Combinator and the essayist whose writings shaped a generation of builders. Clarity of thought in service of making things that matter. Start with any essay — they all lead back to each other.",
+      "appears_in": [
+        "builder"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-ra-uru-hu",
+      "name": "Ra Uru Hu",
+      "url": "https://www.jovianarchive.com",
+      "bio": "Born Alan Robert Krakower, Ra Uru Hu received the Human Design transmission in 1987 on Ibiza. He spent the rest of his life codifying and teaching the system — the founder and original voice of Human Design.",
+      "appears_in": [
+        "t-humandesign"
+      ],
+      "picked_in": [
+        "t-humandesign"
+      ]
+    },
+    {
+      "id": "p-randall-carlson",
+      "name": "Randall Carlson",
+      "url": "https://sacredgeometryinternational.com",
+      "bio": "Researcher and geometrician mapping the cosmic catastrophes that shaped human history — Hancock's key collaborator.",
+      "appears_in": [
+        "t-history"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-rupert-sheldrake",
+      "name": "Rupert Sheldrake",
+      "url": "https://www.sheldrake.org",
+      "bio": "Cambridge-trained biologist whose theory of morphic resonance proposes that nature has memory — fields through which pattern and habit propagate. A serious scientist who followed the evidence past the edge of what materialism allows.",
+      "appears_in": [
+        "t-efields"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-rupert-spira",
+      "name": "Rupert Spira",
+      "url": "https://rupertspira.com",
+      "bio": "One of the clearest contemporary teachers of non-dual awareness — his books, videos, and retreats are exceptional.",
+      "appears_in": [
+        "d-meta",
+        "t-source"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-sadhguru",
+      "name": "Sadhguru",
+      "url": "https://www.sadhguru.org",
+      "bio": "Yogi, mystic, and founder of the Isha Foundation. His Inner Engineering programme has transmitted classical yoga to millions — direct, uncompromising, and always pointing beyond concept. Part of the living lineage FRQNCY draws from.",
+      "appears_in": [
+        "t-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-sai-maa",
+      "name": "Sai Maa",
+      "url": "https://www.sai-maa.com",
+      "bio": "H.H. Sai Maa — spiritual master, humanitarian, and initiator of Shaktipat transmission. Her work bridges Eastern wisdom and Western neuroscience in transformational retreats worldwide.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-sarah-medical-intuitive",
+      "name": "Sarah (Medical Intuitive)",
+      "url": "https://www.youtube.com/watch?v=OrNkpOZYoKU",
+      "bio": "Certified Medical Intuitive and Quantum Healer with over 20 years of practice. Sarah reads the energetic and soul-level patterns underlying physical illness — tracking the unconscious distortions, unresolved trauma, and soul lessons that manifest in the body. Available on YouTube and @medicalintuitive.sarah on Instagram.",
+      "appears_in": [
+        "t-energyheal"
+      ],
+      "picked_in": [],
+      "needs_review": "No last name in source data. Kept 'Sarah (Medical Intuitive)' as the display name for now. Revisit when/if a fuller name surfaces."
+    },
+    {
+      "id": "p-thich-nhat-hanh",
+      "name": "Thich Nhat Hanh",
+      "url": "https://plumvillage.org",
+      "bio": "Zen master, peace activist, and the teacher who gave the West its most accessible entry into mindfulness. His presence in a single sentence is a whole practice. One of the definitive voices of the 20th century.",
+      "appears_in": [
+        "t-meditation"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-vitalik-buterin",
+      "name": "Vitalik Buterin",
+      "url": "https://vitalik.eth.limo",
+      "bio": "Co-founder of Ethereum and one of the clearest thinkers writing at the intersection of cryptography, economics, and governance. His essays are the primary source for understanding where programmable money is headed.",
+      "appears_in": [
+        "t-blockchain",
+        "t-web3"
+      ],
+      "picked_in": [
+        "t-web3"
+      ]
+    }
+  ]
+}

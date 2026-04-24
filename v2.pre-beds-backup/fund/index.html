@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Fund — FRQNCY Network</title>
+<meta name="description" content="Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Fund — FRQNCY Network">
+<meta property="og:description" content="Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.">
+<meta property="og:url" content="https://frqncy.network/v2/fund/">
+<meta property="og:image" content="https://frqncy.network/v2/og/fund.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Fund — FRQNCY Network">
+<meta name="twitter:description" content="Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.">
+<meta name="twitter:image" content="https://frqncy.network/v2/og/fund.png">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/v2/fund/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--navy-deep:#081530;
+  --gold:#C4973A;--gold-light:#E0C06A;--gold-dim:rgba(196,151,58,0.14);
+  --text:#C8D8F0;--text-dim:#7090B8;
+  --card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);
+  --accent:#C4973A;--accent-glow:rgba(196,151,58,0.14);
+  --purple:#7B61FF;--purple-glow:rgba(123,97,255,0.08);
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+a:hover{opacity:0.85}
+
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.snav-badge{font-size:0.55rem;letter-spacing:0.18em;color:var(--accent);border:1px solid currentColor;padding:1px 6px;border-radius:2px;vertical-align:middle;margin-left:4px;opacity:0.8}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text);opacity:1}
+.breadcrumb .sep{opacity:0.25;font-size:0.65rem}
+.snav-right{display:flex;align-items:center;gap:0.75rem;flex-shrink:0}
+.snav-link{font-size:0.64rem;letter-spacing:0.12em;color:var(--text-dim);transition:color .2s;white-space:nowrap}
+.snav-link:hover{color:var(--text)}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28);opacity:1}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(4rem,9vw,7rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 55%),radial-gradient(ellipse at 30% 80%,var(--purple-glow) 0%,transparent 45%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:50px;background:linear-gradient(to bottom,rgba(196,151,58,0.2),transparent)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:24px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:300;color:#fff;line-height:1.06;margin-bottom:1.5rem;letter-spacing:-0.01em}
+.hero-desc{max-width:600px;margin:0 auto;font-size:0.92rem;color:var(--text-dim);font-weight:300;line-height:1.8}
+
+/* JUMP NAV */
+.jump-nav{max-width:1080px;margin:0 auto 3.5rem;padding:0 clamp(1.25rem,5vw,2.5rem);display:flex;gap:0.5rem;flex-wrap:wrap;justify-content:center}
+.jump-pill{font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;padding:6px 16px;border:1px solid rgba(255,255,255,0.1);border-radius:20px;color:var(--text-dim);transition:all .2s;font-family:'Jost',sans-serif}
+.jump-pill:hover{border-color:var(--gold);color:var(--gold);opacity:1}
+
+/* MAIN */
+main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
+section{margin-bottom:5.5rem}
+.section-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
+
+/* VISION BLOCK */
+.vision{position:relative;padding:3.5rem 3rem;border:1px solid rgba(196,151,58,0.12);border-radius:8px;background:linear-gradient(160deg,rgba(196,151,58,0.03),rgba(123,97,255,0.02),transparent);margin-bottom:3rem}
+.vision::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:linear-gradient(to bottom,var(--gold),var(--purple),transparent);border-radius:2px}
+.vision h2{font-family:'Cormorant',serif;font-size:clamp(1.8rem,4vw,2.8rem);font-weight:300;color:#fff;line-height:1.15;margin-bottom:1.5rem}
+.vision p{font-size:0.9rem;color:var(--text-dim);line-height:1.9;margin-bottom:1.2rem;max-width:720px}
+.vision p:last-child{margin-bottom:0}
+.vision .hl{color:var(--gold);font-weight:400}
+
+/* PLATFORM CARDS */
+.platform-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(460px,1fr));gap:1.5rem}
+.pcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:8px;overflow:hidden;transition:border-color .25s,transform .25s,background .25s}
+.pcard:hover{border-color:rgba(255,255,255,0.16);transform:translateY(-3px);background:rgba(255,255,255,0.06)}
+.pcard-accent{height:4px;flex-shrink:0}
+.pcard-body{padding:2.25rem 2rem}
+.pcard-header{display:flex;align-items:center;gap:1rem;margin-bottom:1.25rem}
+.pcard-icon{width:56px;height:56px;border-radius:14px;display:flex;align-items:center;justify-content:center;font-family:'Cormorant',serif;font-size:1.5rem;font-weight:500;color:#fff;flex-shrink:0}
+.pcard-meta h3{font-family:'Cormorant',serif;font-size:1.55rem;font-weight:400;color:#fff;line-height:1.15}
+.pcard-meta .pcard-type{font-size:0.52rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-top:0.2rem}
+.pcard-desc{font-size:0.86rem;color:var(--text-dim);line-height:1.75;margin-bottom:1.5rem}
+.pcard-stats{display:flex;gap:2.5rem;flex-wrap:wrap;margin-bottom:1.5rem}
+.pcard-stat{display:flex;flex-direction:column;gap:0.2rem}
+.pcard-stat-val{font-family:'Cormorant',serif;font-size:1.7rem;font-weight:400;color:#fff;line-height:1}
+.pcard-stat-label{font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+.pcard-tag{display:inline-block;font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;padding:3px 10px;border-radius:2px;border:1px solid;margin-right:0.4rem;margin-bottom:0.4rem}
+.pcard-footer{padding:1.1rem 2rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between}
+.pcard-link{font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;transition:opacity .2s;white-space:nowrap}
+.pcard-acquired{font-size:0.54rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--gold);background:rgba(196,151,58,0.08);border:1px solid rgba(196,151,58,0.2);padding:3px 10px;border-radius:2px}
+
+/* DOMAIN GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border)}
+.ncard{background:var(--navy);padding:1.6rem 1.5rem 1.3rem;text-decoration:none;color:var(--text);display:block;transition:background .2s;position:relative}
+.ncard:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.ncard-type{font-size:0.54rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem;opacity:0.8}
+.ncard h3{font-family:'Cormorant',serif;font-size:1.3rem;font-weight:400;color:#fff;margin-bottom:0.5rem;line-height:1.2}
+.ncard p{font-size:0.78rem;color:var(--text-dim);line-height:1.5}
+.ncard-arrow{position:absolute;top:1.4rem;right:1.4rem;font-size:0.7rem;color:var(--accent);opacity:0;transition:opacity .2s}
+.ncard:hover .ncard-arrow{opacity:1}
+
+/* ROADMAP */
+.roadmap{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem}
+.phase{position:relative;background:var(--card-bg);border:1px solid var(--card-border);border-radius:8px;padding:1.8rem 1.5rem;transition:border-color .2s}
+.phase:hover{border-color:rgba(196,151,58,0.2)}
+.phase-num{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem}
+.phase h4{font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.6rem;line-height:1.2}
+.phase p{font-size:0.78rem;color:var(--text-dim);line-height:1.65}
+.phase-status{display:inline-block;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;padding:3px 10px;border-radius:2px;margin-top:0.9rem}
+.phase-active{background:rgba(196,151,58,0.12);border:1px solid rgba(196,151,58,0.3);color:var(--gold)}
+.phase-upcoming{background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.08);color:var(--text-dim)}
+
+/* RESOURCE CARDS */
+.rcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1.25rem 1.4rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:border-color .2s,background .2s}
+.rcard:hover{border-color:rgba(255,255,255,0.14);background:rgba(255,255,255,0.05)}
+.rtype{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--navy);background:var(--accent);padding:3px 9px;border-radius:2px;font-weight:500;white-space:nowrap;line-height:1.6;margin-top:2px}
+.rinfo{min-width:0}
+.rinfo h4{font-size:0.9rem;font-weight:400;color:#fff;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;line-height:1.35}
+.rinfo p{font-size:0.76rem;color:var(--text-dim);line-height:1.55}
+.fpick{font-size:0.48rem;letter-spacing:0.15em;color:var(--gold);border:1px solid rgba(196,151,58,0.5);padding:1px 6px;border-radius:2px;flex-shrink:0;font-weight:400}
+.rlink{font-size:0.66rem;letter-spacing:0.1em;color:var(--accent);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:2px;white-space:nowrap;transition:all .2s;text-decoration:none;margin-top:1px}
+.rlink:hover{border-color:var(--accent);opacity:1}
+.rlist{display:flex;flex-direction:column;gap:0.65rem}
+
+/* CTA to crypto */
+.crypto-cta{background:var(--purple-glow);border:1px solid rgba(123,97,255,0.15);border-radius:8px;padding:2.5rem;text-align:center}
+.crypto-cta h3{font-family:'Cormorant',serif;font-size:1.4rem;font-weight:300;color:#fff;margin-bottom:0.6rem}
+.crypto-cta p{font-size:0.82rem;color:var(--text-dim);margin-bottom:1.5rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+.crypto-cta-btns{display:flex;gap:0.65rem;justify-content:center;flex-wrap:wrap}
+.btn{font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;padding:10px 22px;border-radius:2px;border:1px solid;transition:all .2s;font-family:'Jost',sans-serif;white-space:nowrap}
+.btn-purple{background:#7B61FF;border-color:#7B61FF;color:#fff}
+.btn-purple:hover{background:rgba(123,97,255,0.8);opacity:1}
+.btn-ghost{border-color:rgba(255,255,255,0.15);color:var(--text-dim)}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:var(--text);opacity:1}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center;margin-top:2rem}
+.footer-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.footer-logo{font-family:'Cormorant',serif;font-size:1rem;letter-spacing:0.25em;color:rgba(255,255,255,0.3);text-transform:uppercase}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;transition:color .2s}
+.footer-links a:hover{color:var(--text);opacity:1}
+
+@media(max-width:640px){
+  .hero{padding:3rem 1.25rem 2.5rem}
+  main{padding:0 1.25rem 4rem}
+  .platform-grid{grid-template-columns:1fr}
+  .roadmap{grid-template-columns:1fr 1fr}
+  .rcard{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+  .rlink{grid-column:2;margin-top:0.5rem}
+  .breadcrumb{display:none}
+  .footer-inner{flex-direction:column;gap:1rem;text-align:center}
+  .pcard-stats{gap:1.5rem}
+  .vision{padding:2rem 1.5rem}
+  .jump-nav{gap:0.35rem}
+}
+@media(max-width:400px){
+  .roadmap{grid-template-columns:1fr}
+  .rcard{grid-template-columns:1fr}
+  .rlink{grid-column:1}
+}
+</style>
+<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Fund — FRQNCY Network","description":"Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.","url":"https://frqncy.network/v2/fund/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+</head>
+<body>
+
+<nav class="snav">
+  <div class="snav-left">
+    <a href="../../" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
+    <div class="breadcrumb">
+      <a href="../explore.html">Network</a>
+      <span class="sep">/</span>
+      <span>Fund</span>
+    </div>
+  </div>
+  <div class="snav-right">
+    <a href="../crypto/index.html" class="snav-link">Crypto</a>
+    <a href="../watch/index.html" class="snav-link">Watch</a>
+    <a href="../courses/index.html" class="snav-link">Courses</a>
+    <a href="../../index.html" class="snav-back">← Main Site</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">Capital & Conviction</div>
+  <h1>The FRQNCY Fund</h1>
+  <p class="hero-desc">Directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.</p>
+</section>
+
+<nav class="jump-nav" aria-label="Page sections">
+  <a href="#vision" class="jump-pill">Vision</a>
+  <a href="#platforms" class="jump-pill">Echo & Legion</a>
+  <a href="#domains" class="jump-pill">Domains</a>
+  <a href="#roadmap" class="jump-pill">Future</a>
+  <a href="#resources" class="jump-pill">Resources</a>
+</nav>
+
+<main>
+
+<!-- VISION -->
+<section id="vision">
+  <div class="section-label">The Vision</div>
+  <div class="vision">
+    <h2>Capital as a force for<br>conscious civilisation</h2>
+    <p>
+      The FRQNCY Fund exists to <span class="hl">redirect capital toward the builders, researchers, and creators</span> working at the frontier of what humanity can become. Not venture capital in the traditional sense — but a living system of resource allocation that prioritises long-term impact over short-term extraction.
+    </p>
+    <p>
+      We believe the greatest asymmetric opportunity of our time sits at the intersection of <span class="hl">decentralised finance, sovereign technology, and regenerative systems</span>. The protocols we back are not just financial instruments — they are coordination tools for a species learning to organise without coercion.
+    </p>
+    <p>
+      FRQNCY curates with conviction. Every project, protocol, and platform featured here has been evaluated through a framework that weighs philosophical alignment alongside technical merit. We look for teams building infrastructure that expands individual sovereignty, distributes power, and creates value that compounds across generations.
+    </p>
+    <p>
+      This is not financial advice. This is a map of where we see the world going — and which builders we believe are taking us there.
+    </p>
+  </div>
+</section>
+
+<!-- ECHO & LEGION -->
+<section id="platforms">
+  <div class="section-label">Decentralised Capital Formation</div>
+  <div class="platform-grid">
+
+    <div class="pcard">
+      <div class="pcard-accent" style="background:linear-gradient(90deg,#7B61FF,#50E2C1)"></div>
+      <div class="pcard-body">
+        <div class="pcard-header">
+          <div class="pcard-icon" style="background:linear-gradient(135deg,rgba(123,97,255,0.25),rgba(80,226,193,0.15));border:1px solid rgba(123,97,255,0.35)">E</div>
+          <div class="pcard-meta">
+            <h3>Echo.xyz</h3>
+            <div class="pcard-type">Onchain Capital Formation</div>
+          </div>
+        </div>
+        <p class="pcard-desc">Echo pioneered onchain capital formation — enabling communities to co-invest in crypto projects before they launch on public markets. A dealflow platform that replaced gatekept allocation with transparent, community-driven rounds.</p>
+        <div class="pcard-stats">
+          <div class="pcard-stat"><span class="pcard-stat-val">$200M+</span><span class="pcard-stat-label">Capital Facilitated</span></div>
+          <div class="pcard-stat"><span class="pcard-stat-val">300+</span><span class="pcard-stat-label">Deals Completed</span></div>
+          <div class="pcard-stat"><span class="pcard-stat-val">$375M</span><span class="pcard-stat-label">Coinbase Acquisition</span></div>
+        </div>
+        <div>
+          <span class="pcard-tag" style="border-color:rgba(123,97,255,0.3);color:#7B61FF">Community Rounds</span>
+          <span class="pcard-tag" style="border-color:rgba(80,226,193,0.3);color:#50E2C1">Onchain</span>
+          <span class="pcard-tag" style="border-color:rgba(196,151,58,0.3);color:#C4973A">Acquired</span>
+        </div>
+      </div>
+      <div class="pcard-footer">
+        <a href="https://echo.xyz" target="_blank" rel="noopener noreferrer" class="pcard-link" style="color:#7B61FF">echo.xyz →</a>
+        <span class="pcard-acquired">Acquired by Coinbase</span>
+      </div>
+    </div>
+
+    <div class="pcard">
+      <div class="pcard-accent" style="background:linear-gradient(90deg,#C4973A,#E0C06A)"></div>
+      <div class="pcard-body">
+        <div class="pcard-header">
+          <div class="pcard-icon" style="background:linear-gradient(135deg,rgba(196,151,58,0.25),rgba(224,192,106,0.15));border:1px solid rgba(196,151,58,0.35)">L</div>
+          <div class="pcard-meta">
+            <h3>Legion</h3>
+            <div class="pcard-type">Merit-Based ICO Platform</div>
+          </div>
+        </div>
+        <p class="pcard-desc">Legion is rebuilding the ICO from first principles — merit-based, MiCA-compliant, and designed to reward genuine community participation over whale capital. Their Legion Score reputation system ensures fair allocation based on contribution, not just wallet size.</p>
+        <div class="pcard-stats">
+          <div class="pcard-stat"><span class="pcard-stat-val">350K+</span><span class="pcard-stat-label">Investors</span></div>
+          <div class="pcard-stat"><span class="pcard-stat-val">MiCA</span><span class="pcard-stat-label">Compliant</span></div>
+          <div class="pcard-stat"><span class="pcard-stat-val">Score</span><span class="pcard-stat-label">Reputation System</span></div>
+        </div>
+        <div>
+          <span class="pcard-tag" style="border-color:rgba(196,151,58,0.3);color:#C4973A">Merit-Based</span>
+          <span class="pcard-tag" style="border-color:rgba(46,204,113,0.3);color:#2ecc71">Regulated</span>
+          <span class="pcard-tag" style="border-color:rgba(123,97,255,0.3);color:#7B61FF">Fair Launch</span>
+        </div>
+      </div>
+      <div class="pcard-footer">
+        <a href="https://legion.cc" target="_blank" rel="noopener noreferrer" class="pcard-link">legion.cc →</a>
+        <span style="font-size:0.54rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim)">Active Platform</span>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- DOMAINS -->
+<section id="domains">
+  <div class="section-label">Domains within Fund</div>
+  <div class="grid">
+    <a href="../business/index.html" class="ncard">
+      <div class="ncard-type">Domain</div>
+      <h3>Business</h3>
+      <p>How enterprises are built, run, and scaled — regenerative models, social enterprise, and the organisations creating real-world impact.</p>
+      <span class="ncard-arrow">→</span>
+    </a>
+    <a href="../money/index.html" class="ncard">
+      <div class="ncard-type">Domain</div>
+      <h3>Money</h3>
+      <p>Capital, finance, and the new monetary systems — from conscious capital and impact investing to crypto, DeFi, and the sovereign individual.</p>
+      <span class="ncard-arrow">→</span>
+    </a>
+    <a href="../energy/index.html" class="ncard">
+      <div class="ncard-type">Domain</div>
+      <h3>Energy</h3>
+      <p>The forces and resources that power existence — from solar and wind to the subtle energies that move through all living systems.</p>
+      <span class="ncard-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<!-- FUTURE ROADMAP -->
+<section id="roadmap">
+  <div class="section-label">The Future of the Fund</div>
+  <div class="roadmap">
+    <div class="phase">
+      <div class="phase-num">Phase I — Vision</div>
+      <h4>Curation & Conviction</h4>
+      <p>Build the knowledge base. Rate 630+ crypto projects. Publish thesis and methodology. Establish FRQNCY as a trusted voice in conscious capital.</p>
+      <span class="phase-status phase-active">Active</span>
+    </div>
+    <div class="phase">
+      <div class="phase-num">Phase II — Foundation</div>
+      <h4>Social & Community</h4>
+      <p>Launch the FRQNCY social layer. Enable conviction tracking, project-anchored posts, and community debate. Build reputation through transparent track records.</p>
+      <span class="phase-status phase-active">Building</span>
+    </div>
+    <div class="phase">
+      <div class="phase-num">Phase III — Launch</div>
+      <h4>Capital Deployment</h4>
+      <p>Formal fund structure. Community-influenced allocation. Integration with platforms like Echo and Legion for deal access. Transparent portfolio and performance.</p>
+      <span class="phase-status phase-upcoming">Planned</span>
+    </div>
+    <div class="phase">
+      <div class="phase-num">Phase IV — Sovereignty</div>
+      <h4>DAO Governance</h4>
+      <p>Progressive decentralisation. Token-governed allocation decisions. Community treasury. The fund becomes owned by the people it serves.</p>
+      <span class="phase-status phase-upcoming">Future</span>
+    </div>
+  </div>
+</section>
+
+<!-- CRYPTO CTA -->
+<section>
+  <div class="crypto-cta">
+    <h3>Explore the Crypto Curation</h3>
+    <p>630+ projects rated by conviction, organised by sector. The research backbone of the fund.</p>
+    <div class="crypto-cta-btns">
+      <a href="../crypto/projects.html" class="btn btn-purple">Project Ratings →</a>
+      <a href="../crypto/explorer.html" class="btn btn-ghost">Explore by Sector →</a>
+      <a href="../crypto/index.html" class="btn btn-ghost">All Crypto →</a>
+    </div>
+  </div>
+</section>
+
+<!-- RESOURCES -->
+<section id="resources">
+  <div class="section-label">Resources & Picks</div>
+  <p style="font-size:0.78rem;color:var(--text-dim);margin-bottom:1.5rem;line-height:1.6;max-width:600px">
+    Organisations doing important work in capital allocation and philanthropic infrastructure.
+  </p>
+  <div class="rlist">
+    <div class="rcard">
+      <span class="rtype">org</span>
+      <div class="rinfo">
+        <h4>Grantmakers for Effective Organisations</h4>
+        <p>A network of funders committed to improving philanthropic practice — useful for understanding how capital flows.</p>
+      </div>
+      <a href="https://www.geofunders.org" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+    </div>
+    <div class="rcard">
+      <span class="rtype">org</span>
+      <div class="rinfo">
+        <h4>Open Philanthropy <span class="fpick">✦ FRQNCY PICK</span></h4>
+        <p>One of the most rigorous approaches to large-scale giving — transparent, evidence-based, and willing to take risks.</p>
+      </div>
+      <a href="https://www.openphilanthropy.org" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">FRQNCY</span>
+    <div class="footer-links">
+      <a href="../explore.html">Explore</a>
+      <a href="../crypto/index.html">Crypto</a>
+      <a href="../watch/index.html">Watch</a>
+      <a href="../courses/index.html">Courses</a>
+      <a href="../../index.html">Main site</a>
+      <a href="../../about.html">Vision</a>
+    </div>
+  </div>
+</footer>
+
+<script>
+document.querySelectorAll('.jump-pill').forEach(a => {
+  a.addEventListener('click', e => {
+    e.preventDefault();
+    const target = document.querySelector(a.getAttribute('href'));
+    if (target) target.scrollIntoView({ behavior:'smooth', block:'start' });
+  });
+});
+</script>
+
+</body>
+</html>

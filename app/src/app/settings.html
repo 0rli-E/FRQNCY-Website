@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
+    <meta name="theme-color" content="#0a0a0a" />
+    <title>FRQNCY · You</title>
+    <style>
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        background: #0a0a0a;
+        color: #f5f5f5;
+        font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        min-height: 100%;
+      }
+      .wrap {
+        padding: calc(24px + env(safe-area-inset-top)) 24px calc(80px + env(safe-area-inset-bottom));
+        max-width: 520px;
+        margin: 0 auto;
+      }
+      h1 {
+        font-size: 13px;
+        font-weight: 300;
+        letter-spacing: 2.4px;
+        color: rgba(245, 245, 245, 0.4);
+        text-transform: lowercase;
+        margin-bottom: 18px;
+      }
+      .section {
+        margin-top: 24px;
+        padding: 16px 18px;
+        background: rgba(245, 245, 245, 0.04);
+        border-radius: 14px;
+      }
+      .section-title {
+        font-size: 12.5px;
+        letter-spacing: 1.6px;
+        color: rgba(245, 245, 245, 0.44);
+        text-transform: lowercase;
+        margin-bottom: 12px;
+      }
+      .row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 10px 0;
+        border-top: 1px solid rgba(245, 245, 245, 0.06);
+        font-size: 14px;
+      }
+      .row:first-of-type { border-top: 0; }
+      .row-value {
+        color: rgba(245, 245, 245, 0.5);
+        font-size: 13px;
+      }
+      .link-row {
+        color: rgba(232, 197, 71, 0.9);
+        text-decoration: none;
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <h1>you</h1>
+
+      <div class="section">
+        <div class="section-title">content</div>
+        <div class="row"><span>last synced</span><span class="row-value" id="last-synced">—</span></div>
+        <div class="row"><span>downloads</span><span class="row-value" id="downloads">0 MB</span></div>
+        <div class="row"><span>storage limit</span><span class="row-value">2 GB</span></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">wake & sleep</div>
+        <div class="row"><span>health integration</span><span class="row-value">not connected</span></div>
+        <div class="row"><span>permissions</span><span class="row-value">review</span></div>
+      </div>
+
+      <div class="section">
+        <div class="section-title">about</div>
+        <div class="row"><a href="https://frqncy.network/v2/about.html" class="link-row">about frqncy</a></div>
+        <div class="row"><a href="https://frqncy.network/v2/privacy.html" class="link-row">privacy</a></div>
+        <div class="row"><span>version</span><span class="row-value">0.1.0</span></div>
+      </div>
+    </div>
+
+    <script type="module">
+      // TODO: wire to Preferences to show real last-sync timestamp + download bytes
+    </script>
+  </body>
+</html>

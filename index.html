@@ -108,8 +108,18 @@
         </div>
       </li>
       <li><a href="my-frqncy.html" class="nav-cta-gold">My FRQNCY</a></li>
+      <li id="frqncy-auth-pill" style="margin-left:6px;"></li>
     </ul>
   </nav>
+  <script src="assets/frqncy-supabase.js" defer></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      if (!window.frqncy) return;
+      window.frqncy.ready.then(() => {
+        window.frqncy.mountAuthPill(document.getElementById('frqncy-auth-pill'));
+      });
+    });
+  </script>
 
   <!-- =====================
        SECTION 1: LIGHT INTRO
@@ -137,7 +147,7 @@
         <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address" autocomplete="email">
         <button type="submit" id="subscribe-btn-overlay">Join</button>
       </form>
-      <p class="subscribe-success" id="subscribe-success-overlay" style="display:none;color:var(--blue-mid);font-size:13px;letter-spacing:0.08em;margin-top:12px;">✦ You're in. Check your inbox to confirm.</p>
+      <p class="subscribe-success" id="subscribe-success-overlay" style="display:none;color:var(--blue-mid);font-size:13px;letter-spacing:0.08em;margin-top:12px;">✦ You're in. A welcome note is on its way.</p>
       <p class="subscribe-error" id="subscribe-error-overlay" style="display:none;color:#E87A4A;font-size:12px;margin-top:10px;"></p>
       <button class="subscribe-dismiss" onclick="dismissSubscribe()">Continue to site</button>
     </div>
@@ -237,7 +247,7 @@
         <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address" autocomplete="email">
         <button type="submit" id="subscribe-btn-contact">Subscribe</button>
       </form>
-      <p class="subscribe-success" id="subscribe-success-contact" style="display:none;color:var(--gold-light);font-size:13px;letter-spacing:0.08em;margin-top:14px;text-align:center;">✦ You're in. Check your inbox to confirm.</p>
+      <p class="subscribe-success" id="subscribe-success-contact" style="display:none;color:var(--gold-light);font-size:13px;letter-spacing:0.08em;margin-top:14px;text-align:center;">✦ You're in. A welcome note is on its way.</p>
       <p class="subscribe-error" id="subscribe-error-contact" style="display:none;color:#F09070;font-size:12px;margin-top:10px;text-align:center;"></p>
 
       <div class="contact-links reveal reveal-delay-3" style="margin-top:28px;">

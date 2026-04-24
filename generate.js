@@ -15,6 +15,20 @@ const COURSES   = JSON.parse(fs.readFileSync(path.join(ROOT, 'courses.json'),   
 const PROVIDERS = JSON.parse(fs.readFileSync(path.join(ROOT, 'providers.json'), 'utf8'));
 const OUT       = path.join(ROOT, 'v2');
 
+// ── Entity beds (world model, v1) ────────────────────────────────
+// First-class lists of people, books, orgs, and media. Each entity declares
+// `appears_in` (topic/domain/pillar ids) and `picked_in` (FRQNCY PICK buckets).
+// When rendering a topic, resourcesFor() merges these into the resource list.
+// A bed file being absent falls back to content.json-only behaviour (safe default).
+function loadBed(filename) {
+  const p = path.join(ROOT, filename);
+  return fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : null;
+}
+const PEOPLE = loadBed('people.json');
+const BOOKS  = loadBed('books.json');
+const ORGS   = loadBed('orgs.json');
+const MEDIA  = loadBed('media.json');
+
 // ── Provider helpers ─────────────────────────────────────────────
 const providerMap = new Map(PROVIDERS.map(p => [p.id, p]));
 function getProvider(v) { return providerMap.get(v.provider || 'youtube') || providerMap.get('youtube'); }
@@ -54,7 +68,62 @@ const topicsByDomain  = new Map(DATA.domains.map(d => [d.id, []]));
 for (const d of DATA.domains) domainsByPillar.get(d.pillar)?.push(d);
 for (const t of DATA.topics)  topicsByDomain.get(t.domain)?.push(t);
 
-function resourcesFor(nid) { return DATA.resources[nid] || []; }
+// resourcesFor(nid) — merges bed-sourced entities (people, books, orgs, media)
+// with content.json's remaining resources (tools, courses, platforms, apps, etc.).
+// Preserves the original content.json ordering. Falls back to pure content.json
+// if the beds aren't present.
+const BED_TYPES = new Set(['person', 'book', 'org', 'media']);
+const fixTypos = (u) => (u||'').replace('erinclairehjones', 'erinclairejones');
+const normU = (u) => fixTypos((u||'').replace('https://www.', 'https://').replace(/\/$/, ''));
+
+function peopleToCard(p, nid) {
+  return { type: 'person', title: p.name, url: p.url, desc: p.bio, frqncy_pick: (p.picked_in||[]).includes(nid) };
+}
+function bookToCard(b, nid) {
+  const pid = b.author_is_person_ref ? b.author : null;
+  const authorName = pid ? ((PEOPLE?.people.find(p => p.id === pid)||{}).name || b.author) : b.author;
+  const title = authorName ? `${b.title} — ${authorName}` : b.title;
+  return { type: 'book', title, url: b.url, desc: b.bio, frqncy_pick: (b.picked_in||[]).includes(nid) };
+}
+function orgToCard(o, nid) {
+  return { type: 'org', title: o.name, url: o.url, desc: o.bio, frqncy_pick: (o.picked_in||[]).includes(nid) };
+}
+function mediaToCard(m, nid) {
+  return { type: 'media', title: m.name, url: m.url, desc: m.bio, frqncy_pick: (m.picked_in||[]).includes(nid) };
+}
+
+function resourcesFor(nid) {
+  const raw = DATA.resources[nid] || [];
+  if (!PEOPLE && !BOOKS && !ORGS && !MEDIA) return raw; // beds not loaded, passthrough
+
+  const out = [];
+  const seen = new Set();
+  for (const r of raw) {
+    const key = `${r.type}|${normU(r.url)}`;
+    if (r.type === 'person' && PEOPLE) {
+      const p = PEOPLE.people.find(x => normU(x.url) === normU(r.url) && (x.appears_in||[]).includes(nid));
+      const k = `person|${normU(p?.url)}`;
+      if (p && !seen.has(k)) { out.push(peopleToCard(p, nid)); seen.add(k); }
+    } else if (r.type === 'book' && BOOKS) {
+      const b = BOOKS.books.find(x => normU(x.url) === normU(r.url) && (x.appears_in||[]).includes(nid));
+      const k = `book|${normU(b?.url)}`;
+      if (b && !seen.has(k)) { out.push(bookToCard(b, nid)); seen.add(k); }
+    } else if (r.type === 'org' && ORGS) {
+      const o = ORGS.orgs.find(x => normU(x.url) === normU(r.url) && (x.appears_in||[]).includes(nid));
+      const k = `org|${normU(o?.url)}`;
+      if (o && !seen.has(k)) { out.push(orgToCard(o, nid)); seen.add(k); }
+    } else if (r.type === 'media' && MEDIA) {
+      const m = MEDIA.media.find(x => normU(x.url) === normU(r.url) && (x.appears_in||[]).includes(nid));
+      const k = `media|${normU(m?.url)}`;
+      if (m && !seen.has(k)) { out.push(mediaToCard(m, nid)); seen.add(k); }
+    } else if (!BED_TYPES.has(r.type)) {
+      // Non-bed types (tools, courses, platforms, apps, websites, references, articles) pass through
+      if (!seen.has(key)) { out.push(r); seen.add(key); }
+    }
+    // Bed types where the bed match failed silently drop — the bed is authoritative.
+  }
+  return out;
+}
 function videosFor(nid)    { return (VIDEOS[nid] || []).filter(v => { const id = videoId(v); return id && !id.startsWith('PLACEHOLDER'); }); }
 function mkdirp(dir)       { fs.mkdirSync(dir, { recursive: true }); }
 function esc(s)            { return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;').replace(/'/g,'&#39;'); }

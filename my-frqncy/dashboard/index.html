@@ -765,8 +765,12 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:
       </div>
     </li>
     <li><a href="../../my-frqncy.html" class="nav-cta-gold active">My FRQNCY</a></li>
+    <li id="frqncy-auth-pill" style="margin-left:6px;"></li>
   </ul>
 </nav>
+
+<!-- Supabase auth + cloud sync (loads SDK from CDN, sets up window.frqncy) -->
+<script src="../../assets/frqncy-supabase.js" defer></script>
 
 <main class="wrap">
 
@@ -1098,7 +1102,63 @@ class LocalStore {
   }
 }
 
-const store = new LocalStore();
+// `store` starts as LocalStore so the page works instantly for anonymous
+// visitors. If the user is logged in (window.frqncy + Supabase session),
+// we swap in a SanctuaryCloudStore wrapper that mirrors writes to Supabase
+// and pulls fresh state on load. Migration of existing local data happens
+// once on first cloud-attach (LocalStore → SanctuaryCloudStore).
+let store = new LocalStore();
+let cloudStore = null;     // active SanctuaryCloudStore when logged in
+let cloudReady = false;    // true once the swap (and any migration) finishes
+const cloudReadyListeners = [];
+function onCloudReady(fn){ cloudReadyListeners.push(fn); if (cloudReady) fn(); }
+
+async function attachCloudStore(user) {
+  try {
+    if (!window.frqncy) return;                         // SDK not loaded yet
+    await window.frqncy.ready;
+    const cloud = window.frqncy.sanctuaryStore(user);
+    // One-time migration: if cloud is empty and local has data, push local up.
+    const cloudState = await cloud.getState();
+    if (!cloudState || Object.keys(cloudState).length === 0) {
+      const localState = await new LocalStore().getState();
+      if (localState && Object.keys(localState).length > 0) {
+        await cloud.setState(localState);
+        toast('Synced your local Sanctuary to your account');
+      }
+    } else {
+      // Cloud has authoritative data — adopt it
+      state = { ...DEFAULT_STATE, ...cloudState };
+      renderAll();
+    }
+    cloudStore = cloud;
+    store = cloud;
+    cloudReady = true;
+    cloudReadyListeners.forEach(fn => { try { fn(); } catch (_){} });
+  } catch (err) {
+    console.warn('[sanctuary] cloud attach failed, staying on local store', err);
+  }
+}
+
+// Mount the auth pill + listen for login/logout
+document.addEventListener('DOMContentLoaded', () => {
+  if (!window.frqncy) return; // page might be opened with JS disabled — just bail
+  window.frqncy.ready.then(() => {
+    window.frqncy.mountAuthPill(document.getElementById('frqncy-auth-pill'));
+    window.frqncy.onAuth(async (user) => {
+      if (user) {
+        await attachCloudStore(user);
+      } else if (cloudStore) {
+        // Logged out — drop back to LocalStore so the page keeps working
+        cloudStore = null;
+        store = new LocalStore();
+        cloudReady = false;
+        await loadState();
+        renderAll();
+      }
+    });
+  });
+});
 
 /* ════════════════════════════════════════════════════════════════
    STATE

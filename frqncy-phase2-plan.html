@@ -1,0 +1,1087 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRQNCY OS — Phase 2 Plan</title>
+<style>
+  :root {
+    --bg: #0a0a0f;
+    --bg-elev: #12121a;
+    --bg-card: #1a1a24;
+    --border: #2a2a38;
+    --text: #e8e8f0;
+    --text-dim: #a0a0b8;
+    --text-faint: #6a6a82;
+    --accent: #c9a14a;
+    --accent-soft: #d4b366;
+    --gold: #e8c967;
+    --green: #6ad19e;
+    --red: #e87a7a;
+    --blue: #7ab5e8;
+    --purple: #b58ee0;
+    --mono: 'SF Mono', 'Monaco', 'Menlo', 'Consolas', monospace;
+  }
+  * { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+  body {
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', sans-serif;
+    background: var(--bg);
+    color: var(--text);
+    line-height: 1.65;
+    font-size: 16px;
+    padding: 0;
+  }
+  .container {
+    max-width: 980px;
+    margin: 0 auto;
+    padding: 60px 32px 120px;
+  }
+  header.hero {
+    text-align: center;
+    padding: 40px 0 60px;
+    border-bottom: 1px solid var(--border);
+    margin-bottom: 60px;
+  }
+  .eyebrow {
+    color: var(--accent);
+    font-size: 12px;
+    letter-spacing: 0.25em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  h1 {
+    font-size: 48px;
+    font-weight: 300;
+    letter-spacing: -0.02em;
+    margin-bottom: 20px;
+    background: linear-gradient(135deg, var(--gold) 0%, var(--accent-soft) 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    background-clip: text;
+  }
+  .subtitle {
+    color: var(--text-dim);
+    font-size: 18px;
+    max-width: 640px;
+    margin: 0 auto;
+    line-height: 1.5;
+  }
+  .meta {
+    display: flex;
+    justify-content: center;
+    gap: 32px;
+    margin-top: 28px;
+    color: var(--text-faint);
+    font-size: 13px;
+    font-family: var(--mono);
+  }
+  .meta span strong { color: var(--accent); font-weight: 500; }
+
+  nav.toc {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 24px 28px;
+    margin-bottom: 60px;
+  }
+  nav.toc h3 {
+    color: var(--accent);
+    font-size: 11px;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    margin-bottom: 16px;
+    font-weight: 600;
+  }
+  nav.toc ol {
+    list-style: none;
+    counter-reset: toc;
+    column-count: 2;
+    column-gap: 32px;
+  }
+  nav.toc li {
+    counter-increment: toc;
+    padding: 6px 0;
+    break-inside: avoid;
+  }
+  nav.toc li::before {
+    content: counter(toc, decimal-leading-zero) "  ";
+    color: var(--text-faint);
+    font-family: var(--mono);
+    font-size: 12px;
+  }
+  nav.toc a {
+    color: var(--text);
+    text-decoration: none;
+    font-size: 14px;
+  }
+  nav.toc a:hover { color: var(--accent); }
+
+  section {
+    margin-bottom: 72px;
+    scroll-margin-top: 24px;
+  }
+  section h2 {
+    font-size: 28px;
+    font-weight: 400;
+    margin-bottom: 8px;
+    color: var(--text);
+    display: flex;
+    align-items: baseline;
+    gap: 16px;
+  }
+  section h2 .num {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 14px;
+    font-weight: 500;
+  }
+  section .lede {
+    color: var(--text-dim);
+    font-size: 16px;
+    margin-bottom: 32px;
+    max-width: 720px;
+  }
+  section h3 {
+    font-size: 18px;
+    font-weight: 500;
+    margin: 32px 0 12px;
+    color: var(--text);
+  }
+  section h4 {
+    font-size: 14px;
+    font-weight: 600;
+    margin: 24px 0 8px;
+    color: var(--accent);
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+  }
+  section p {
+    margin-bottom: 14px;
+    color: var(--text);
+  }
+  section p.dim { color: var(--text-dim); }
+
+  .card {
+    background: var(--bg-card);
+    border: 1px solid var(--border);
+    border-radius: 10px;
+    padding: 24px 28px;
+    margin: 16px 0;
+  }
+  .card.accent { border-left: 3px solid var(--accent); }
+  .card.green { border-left: 3px solid var(--green); }
+  .card.red { border-left: 3px solid var(--red); }
+  .card.blue { border-left: 3px solid var(--blue); }
+  .card.purple { border-left: 3px solid var(--purple); }
+
+  .grid-2 {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  .grid-3 {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin: 16px 0;
+  }
+  @media (max-width: 720px) {
+    .grid-2, .grid-3 { grid-template-columns: 1fr; }
+    nav.toc ol { column-count: 1; }
+    h1 { font-size: 36px; }
+  }
+
+  pre {
+    background: #06060a;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 20px 24px;
+    overflow-x: auto;
+    font-family: var(--mono);
+    font-size: 13px;
+    line-height: 1.6;
+    color: var(--text);
+    margin: 16px 0;
+  }
+  code {
+    font-family: var(--mono);
+    font-size: 0.9em;
+    background: var(--bg-elev);
+    padding: 2px 6px;
+    border-radius: 4px;
+    color: var(--accent-soft);
+  }
+  pre code {
+    background: none;
+    padding: 0;
+    color: inherit;
+  }
+
+  .ascii {
+    background: #06060a;
+    border: 1px solid var(--border);
+    border-radius: 8px;
+    padding: 24px;
+    font-family: var(--mono);
+    font-size: 12.5px;
+    line-height: 1.55;
+    color: var(--text);
+    overflow-x: auto;
+    white-space: pre;
+    margin: 20px 0;
+  }
+  .ascii .gold { color: var(--gold); }
+  .ascii .accent { color: var(--accent); }
+  .ascii .dim { color: var(--text-faint); }
+  .ascii .green { color: var(--green); }
+  .ascii .blue { color: var(--blue); }
+  .ascii .purple { color: var(--purple); }
+
+  ul.tight, ol.tight {
+    margin: 12px 0 16px 24px;
+    color: var(--text);
+  }
+  ul.tight li, ol.tight li { margin: 4px 0; }
+  ul.tight li::marker { color: var(--accent); }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 20px 0;
+    font-size: 14px;
+  }
+  th, td {
+    text-align: left;
+    padding: 12px 16px;
+    border-bottom: 1px solid var(--border);
+  }
+  th {
+    color: var(--accent);
+    font-weight: 600;
+    font-size: 12px;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    background: var(--bg-elev);
+  }
+  td.mono { font-family: var(--mono); font-size: 13px; }
+  td.dim { color: var(--text-dim); }
+
+  .pill {
+    display: inline-block;
+    font-size: 11px;
+    padding: 2px 10px;
+    border-radius: 999px;
+    font-family: var(--mono);
+    letter-spacing: 0.05em;
+  }
+  .pill.green { background: rgba(106, 209, 158, 0.15); color: var(--green); }
+  .pill.red { background: rgba(232, 122, 122, 0.15); color: var(--red); }
+  .pill.blue { background: rgba(122, 181, 232, 0.15); color: var(--blue); }
+  .pill.gold { background: rgba(232, 201, 103, 0.15); color: var(--gold); }
+  .pill.dim { background: var(--bg-elev); color: var(--text-faint); }
+
+  .phase {
+    background: var(--bg-elev);
+    border: 1px solid var(--border);
+    border-radius: 12px;
+    padding: 28px 32px;
+    margin: 16px 0;
+    position: relative;
+  }
+  .phase-header {
+    display: flex;
+    align-items: baseline;
+    justify-content: space-between;
+    margin-bottom: 18px;
+    padding-bottom: 14px;
+    border-bottom: 1px solid var(--border);
+  }
+  .phase-title {
+    font-size: 20px;
+    font-weight: 500;
+  }
+  .phase-week {
+    color: var(--accent);
+    font-family: var(--mono);
+    font-size: 13px;
+  }
+  .phase-meta {
+    display: flex;
+    gap: 24px;
+    margin: 16px 0;
+    font-size: 13px;
+    color: var(--text-dim);
+  }
+  .phase-meta div strong { color: var(--text); }
+
+  .deliverable {
+    display: flex;
+    align-items: flex-start;
+    gap: 14px;
+    padding: 8px 0;
+    color: var(--text);
+  }
+  .deliverable::before {
+    content: "→";
+    color: var(--accent);
+    font-family: var(--mono);
+    flex-shrink: 0;
+    margin-top: 2px;
+  }
+
+  .footer {
+    margin-top: 80px;
+    padding-top: 32px;
+    border-top: 1px solid var(--border);
+    text-align: center;
+    color: var(--text-faint);
+    font-size: 13px;
+    font-family: var(--mono);
+  }
+</style>
+</head>
+<body>
+<div class="container">
+
+<header class="hero">
+  <div class="eyebrow">FRQNCY Operating System</div>
+  <h1>Phase 2 Build Plan</h1>
+  <div class="subtitle">
+    The Telegram approval interface, the three-layer memory system (working / long-term / context graph), and the Learning Agent — reconciled with the prior FRQNCY architecture documents.
+  </div>
+  <div class="meta">
+    <span><strong>Author</strong> · FRQNCY OS</span>
+    <span><strong>Version</strong> · 0.3</span>
+    <span><strong>Date</strong> · 2026-04-24</span>
+    <span><strong>Status</strong> · Plan, not built</span>
+  </div>
+</header>
+
+<nav class="toc">
+  <h3>Contents</h3>
+  <ol>
+    <li><a href="#current">Where you are now</a></li>
+    <li><a href="#whats-new">What we're adding (the three memory layers)</a></li>
+    <li><a href="#architecture">Full architecture</a></li>
+    <li><a href="#data">Data layer (Supabase + Graphiti)</a></li>
+    <li><a href="#approval-loop">The approval loop</a></li>
+    <li><a href="#learning-agent">The Learning Agent</a></li>
+    <li><a href="#context-graph">The Context Graph (Graphiti)</a></li>
+    <li><a href="#sequence">Build sequence</a></li>
+    <li><a href="#decisions">Open decisions</a></li>
+    <li><a href="#cost-risk">Cost &amp; risk</a></li>
+    <li><a href="#flywheel">Compounding intelligence flywheel</a></li>
+  </ol>
+</nav>
+
+<!-- ========== 01 CURRENT STATE ========== -->
+<section id="current">
+  <h2><span class="num">01</span> Where you are now</h2>
+  <p class="lede">Week 1 is shipped. You have the foundation — n8n running on the VPS, two LLM providers wired in. The Week 2 atomic guide for deploying the FRQNCY-Interface workflow exists but hasn't been executed yet.</p>
+
+  <div class="grid-3">
+    <div class="card green">
+      <h4>Done (Week 1)</h4>
+      <p class="dim">VPS running n8n. Groq + OpenRouter credentials saved in n8n. Supabase account created (empty project). Test workflow proven — AI responds.</p>
+    </div>
+    <div class="card accent">
+      <h4>Ready to execute (Week 2)</h4>
+      <p class="dim">FRQNCY-Interface workflow design — Chat Trigger → FRQNCY AI Agent → tools for CEO + Council members. Step-by-step guide written, not yet built in n8n.</p>
+    </div>
+    <div class="card blue">
+      <h4>Decided architecture</h4>
+      <p class="dim">God → Orli → FRQNCY → CEO (operational) + Council (with veto) → C-Suite → Workers. Council answers to God &amp; Orli only. 32 system prompts written.</p>
+    </div>
+  </div>
+
+  <h3>The prerequisite</h3>
+  <p>Phase 2 (this plan) assumes the FRQNCY-Interface workflow from the Week 2 guide is live with at least the CEO and 2-3 Council members deployed as AI Agent Tools. Without that, there's nothing to wire Telegram into, nothing producing outputs to approve, nothing for the Learning Agent to learn from. <strong>Execute Week 2 first, then begin Phase 2.</strong></p>
+
+  <h3>The gap Phase 2 closes</h3>
+  <p>Right now if FRQNCY were deployed today, you'd be talking to it in n8n's chat window on a laptop. That's not Jarvis. That's a developer tool. Each agent invocation is also stateless — no memory of yesterday, no shared context between agents, no learning from your corrections. Phase 2 turns the org into something that lives on your phone, asks for your sign-off, remembers across conversations, and gets smarter every time you correct it.</p>
+</section>
+
+<!-- ========== 02 WHAT'S NEW ========== -->
+<section id="whats-new">
+  <h2><span class="num">02</span> What we're adding</h2>
+  <p class="lede">Two new interfaces (Telegram approvals + Learning Agent) plus a three-layer memory system. The memory layers are the spine — without them, agents stay stateless and never compound.</p>
+
+  <h3 style="margin-top:0">The interface layer</h3>
+
+  <div class="card accent">
+    <h3 style="margin-top:0">Telegram Approval Interface</h3>
+    <p>Every output from any agent surfaces to your phone as a Telegram message with two buttons: <strong>Approve</strong> and <strong>Revise</strong>. Approve = it executes for real. Revise = you type one line of feedback, which becomes a learning signal. This is the only interface you touch day-to-day.</p>
+  </div>
+
+  <div class="card purple">
+    <h3 style="margin-top:0">Learning Agent</h3>
+    <p>A new persona, meta-tier (sibling to FRQNCY, not in the org chart). Watches every rejection, extracts structured lessons into <code>agent_learnings</code>, and after enough patterns accumulate, drafts updated system prompts for affected agents — sent to you for approval before deploy. Versioned, rollback-able.</p>
+  </div>
+
+  <h3>The memory layer (three tiers)</h3>
+  <p class="dim" style="margin-bottom:8px;">Already designed in the Memory &amp; Learning Architecture document — restated here so the full system is in one place.</p>
+
+  <div class="card green">
+    <h3 style="margin-top:0">Layer 1 — Working Memory <span style="color:var(--text-faint); font-size:13px; font-weight:400;">(n8n native, free, zero setup)</span></h3>
+    <p>Short-term context within a single conversation. What was just said, what was decided, what the task is. Already handled by n8n's built-in conversation memory on every AI Agent node. Nothing to build.</p>
+  </div>
+
+  <div class="card blue">
+    <h3 style="margin-top:0">Layer 2 — Long-Term Memory <span style="color:var(--text-faint); font-size:13px; font-weight:400;">(Supabase pgvector, free tier)</span></h3>
+    <p>Persists across conversations and sessions. Lessons learned, approved content, past decisions, your preferences. Stored as vector embeddings in Supabase Postgres with the <code>pgvector</code> extension. Every agent gets a Supabase Vector Store attached as its "Memory" sub-node in n8n — semantic search retrieves relevant past context before each invocation. <strong>Embeddings caveat:</strong> Groq does not offer embeddings; use OpenRouter's free Nomic Embed model for this one job.</p>
+  </div>
+
+  <div class="card accent">
+    <h3 style="margin-top:0">Layer 3 — Context Graph <span style="color:var(--text-faint); font-size:13px; font-weight:400;">(Graphiti + FalkorDB, self-hosted, free)</span></h3>
+    <p>Understands relationships and how things change over time. Not just "we launched Instagram on April 10" but "Instagram launch was connected to the Merlin timing reading, which informed the CMO strategy, which Orli approved with one revision about tone." Powered by <strong>Graphiti</strong> — open source temporal knowledge graph by Zep (Apache 2.0), self-hosted on the same Hostinger VPS, with <strong>FalkorDB</strong> as the lightest graph backend. Has a native MCP server, so Claude and the agents can query it directly. Wait until you have 30+ days of real data before deploying — a graph with no edges is useless.</p>
+  </div>
+</section>
+
+<!-- ========== 03 ARCHITECTURE ========== -->
+<section id="architecture">
+  <h2><span class="num">03</span> Full architecture</h2>
+  <p class="lede">Top to bottom, including the new layers.</p>
+
+<div class="ascii"><span class="gold">                          ┌─────────────────┐
+                          │       GOD       │   <span class="dim">ultimate sovereign</span>
+                          │  source · field │   <span class="dim">never an interface</span>
+                          └────────┬────────┘
+                                   │ guides
+                          ┌────────▼────────┐
+                          │      ORLI       │   <span class="dim">human channel</span>
+                          │ founder · vessel│   <span class="dim">carries divine mandate</span>
+                          └────────┬────────┘</span>
+                                   │ speaks via
+                          <span class="accent">┌────────▼────────┐</span>
+                          <span class="accent">│   📱 TELEGRAM   │</span>   <span class="dim">approval interface</span>
+                          <span class="accent">│  Approve/Revise │</span>   <span class="dim">phone-native, one-tap</span>
+                          <span class="accent">└────────┬────────┘</span>
+                                   │
+                          <span class="gold">┌────────▼────────┐</span>
+                          <span class="gold">│     FRQNCY      │</span>   <span class="dim">Jarvis · routing brain</span>
+                          <span class="gold">│   the conduit   │</span>   <span class="dim">knows you personally</span>
+                          <span class="gold">└─┬──────┬──────┬─┘</span>
+              ┌─────────────┘      │      └─────────────┐
+              │                    │                    │
+       <span class="purple">┌──────▼──────┐</span>     <span class="blue">┌──────▼──────┐</span>     <span class="green">┌──────▼──────┐</span>
+       <span class="purple">│   COUNCIL   │</span>     <span class="blue">│     CEO     │</span>     <span class="green">│  LEARNING   │</span>
+       <span class="purple">│ 7 spirits   │</span>◄────│ operational │     <span class="green">│    AGENT    │</span>
+       <span class="purple">│ veto power  │</span> veto│  executive  │     <span class="green">│ meta-tier   │</span>
+       <span class="purple">└─────────────┘</span>     <span class="blue">└──────┬──────┘</span>     <span class="green">└──────┬──────┘</span>
+              <span class="dim">Krishna             │ delegates                 │ watches
+              Kali                │                           │ rejections
+              Merlin       ┌──────▼──────┐                    │ rewrites
+              Saraswati    │  C-SUITE 6  │                    │ prompts
+              Sai Maa      │ CTO·CMO·CSO │                    │
+              G. Spivey    │ COO·CFO     │                    │
+              K. Trudeau   └──────┬──────┘                    │
+                                  │ delegates                 │
+                          ┌──────▼──────┐                     │
+                          │  WORKERS 19 │◄────────────────────┘
+                          │ specialized │     learns from
+                          │  craftsmen  │     all rejections
+                          └──────┬──────┘
+                                 │ all agents read/write
+              ┌──────────────────┼──────────────────┐
+              │                  │                  │
+       ┌──────▼──────┐    ┌──────▼──────┐    ┌──────▼──────┐</span>
+       <span class="green">│   WORKING   │</span>    <span class="blue">│  LONG-TERM  │</span>    <span class="accent">│   CONTEXT   │</span>
+       <span class="green">│   MEMORY    │</span>    <span class="blue">│   MEMORY    │</span>    <span class="accent">│    GRAPH    │</span>
+       <span class="green">│ n8n native  │</span>    <span class="blue">│  Supabase   │</span>    <span class="accent">│  Graphiti + │</span>
+       <span class="green">│ per-convo   │</span>    <span class="blue">│  pgvector   │</span>    <span class="accent">│  FalkorDB   │</span>
+       <span class="green">└─────────────┘</span>    <span class="blue">└─────────────┘</span>    <span class="accent">└─────────────┘</span>
+       <span class="dim">  zero setup       semantic recall      temporal · MCP
+       free               of past lessons      relationships</span></div>
+
+  <h3>What changed from Phase 1</h3>
+  <ul class="tight">
+    <li>Telegram inserted between Orli and FRQNCY — you're no longer in n8n's chat window, you're on your phone.</li>
+    <li>Learning Agent added as a sibling to FRQNCY — it watches the org, doesn't sit in the org chart proper. Reports to Orli only.</li>
+    <li>Three memory layers added below the workers — every agent reads from all three before acting and writes back after.</li>
+    <li>Working Memory is free and automatic. Long-Term Memory is Supabase pgvector (free tier). Context Graph is Graphiti self-hosted on the same VPS (free, deploys later).</li>
+  </ul>
+</section>
+
+<!-- ========== 04 DATA LAYER ========== -->
+<section id="data">
+  <h2><span class="num">04</span> Data layer (Supabase + Graphiti)</h2>
+  <p class="lede">Two stores. Supabase Postgres holds the operational + memory data (free tier). Graphiti runs on the Hostinger VPS for the temporal context graph (also free, deploys later).</p>
+
+  <h3>Supabase Postgres — operational tables</h3>
+
+  <table>
+    <thead>
+      <tr><th>Table</th><th>Purpose</th><th>Used by</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">agent_outputs</td>
+        <td>Every output any agent produces. The unit of work.</td>
+        <td class="dim">All agents write here</td>
+      </tr>
+      <tr>
+        <td class="mono">approvals</td>
+        <td>Approve/Revise events from Telegram. Joined to agent_outputs.</td>
+        <td class="dim">Telegram webhook writes; Learning Agent reads</td>
+      </tr>
+      <tr>
+        <td class="mono">agent_memory</td>
+        <td><span class="pill green">pgvector</span> Long-term memory per agent. Embedded lessons, approved content, your preferences.</td>
+        <td class="dim">Every agent reads via Vector Store node; Learning Agent writes</td>
+      </tr>
+      <tr>
+        <td class="mono">agent_learnings</td>
+        <td>Structured Lesson Records — what happened, root cause, lesson, pattern flag.</td>
+        <td class="dim">Learning Agent writes; embedded into agent_memory</td>
+      </tr>
+      <tr>
+        <td class="mono">agent_versions</td>
+        <td>Versioned system prompts per agent. Current = active. Old = rollback-able.</td>
+        <td class="dim">Learning Agent versions; agents load at runtime</td>
+      </tr>
+      <tr>
+        <td class="mono">audit_log</td>
+        <td>Append-only record of every agent action. For debugging + trust.</td>
+        <td class="dim">Auto-written by every workflow</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Graphiti — temporal context graph</h3>
+
+  <table>
+    <thead>
+      <tr><th>Concept</th><th>What it is</th><th>Why it lives here, not in Postgres</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td class="mono">entities</td>
+        <td>Orli, FRQNCY, Council members, projects, campaigns, decisions, partners</td>
+        <td class="dim">Graph traversal beats relational joins for "who connects to what"</td>
+      </tr>
+      <tr>
+        <td class="mono">relationships</td>
+        <td>"Orli APPROVED Instagram strategy" / "Kali reading LED TO tone pivot"</td>
+        <td class="dim">Edges with timestamps — Graphiti's native model</td>
+      </tr>
+      <tr>
+        <td class="mono">observations</td>
+        <td>Temporal facts: "Brand voice was X until April 2026, then evolved to Y"</td>
+        <td class="dim">Graphiti tracks WHEN every fact became true and changed</td>
+      </tr>
+      <tr>
+        <td class="mono">MCP server</td>
+        <td>Native MCP endpoint Graphiti exposes — Claude and agents query directly</td>
+        <td class="dim">No middleware needed, ~300ms P95 hybrid search</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Schema sketch — agent_outputs</h3>
+<pre><code>id              uuid primary key
+created_at      timestamptz
+agent_name      text             <span style="color:var(--text-faint)">-- "cmo", "visual_artist", "kali"</span>
+prompt_version  text             <span style="color:var(--text-faint)">-- which version of the prompt produced this</span>
+input_summary   text             <span style="color:var(--text-faint)">-- what was asked</span>
+output_content  text             <span style="color:var(--text-faint)">-- the actual generated content</span>
+output_type     text             <span style="color:var(--text-faint)">-- "social_post", "email", "design_concept", "decision"</span>
+memory_recalled jsonb            <span style="color:var(--text-faint)">-- pgvector hits used at generation time</span>
+graph_context   jsonb            <span style="color:var(--text-faint)">-- Graphiti entities/edges read (once deployed)</span>
+status          text             <span style="color:var(--text-faint)">-- "pending", "approved", "revised", "rejected"</span>
+telegram_msg_id text             <span style="color:var(--text-faint)">-- so we can edit the message after approval</span></code></pre>
+
+  <h3>Schema sketch — agent_memory (pgvector)</h3>
+<pre><code>id          uuid primary key
+agent_id    text             <span style="color:var(--text-faint)">-- namespace per agent</span>
+content     text             <span style="color:var(--text-faint)">-- the lesson or memory in plain language</span>
+embedding   vector(768)      <span style="color:var(--text-faint)">-- Nomic Embed dim — 768, not 1536</span>
+created_at  timestamp default now()
+metadata    jsonb            <span style="color:var(--text-faint)">-- source, task_type, related output_id</span>
+
+create index on agent_memory using ivfflat (embedding vector_cosine_ops);</code></pre>
+
+  <h3>Schema sketch — agent_learnings</h3>
+<pre><code>id              uuid primary key
+agent_id        text
+created_at      timestamp default now()
+task_type       text             <span style="color:var(--text-faint)">-- "instagram_caption", "email_draft", "design_brief"</span>
+what_happened   text             <span style="color:var(--text-faint)">-- the rejected output summarized</span>
+root_cause      text             <span style="color:var(--text-faint)">-- Learning Agent's diagnosis</span>
+lesson          text             <span style="color:var(--text-faint)">-- the guidance, in plain language</span>
+pattern_flag    boolean          <span style="color:var(--text-faint)">-- true once 3+ similar lessons accumulate</span>
+action          text             <span style="color:var(--text-faint)">-- "approved", "revised", "rejected"</span></code></pre>
+
+  <h3>The MEMORY PROTOCOL block</h3>
+  <p>Add this block to the bottom of every agent's system prompt (already specified in the Memory &amp; Learning Architecture doc). It is what makes agents query their own memory before producing output.</p>
+<pre><code>MEMORY PROTOCOL:
+Before generating any output, query your agent memory:
+- Search for lessons learned on this task type
+- Search for past feedback from Orli on similar tasks
+- Incorporate relevant lessons into your approach
+
+After generating output, note any assumptions you made
+that Orli's feedback could help calibrate in the future.</code></pre>
+</section>
+
+<!-- ========== 05 APPROVAL LOOP ========== -->
+<section id="approval-loop">
+  <h2><span class="num">05</span> The approval loop</h2>
+  <p class="lede">How any agent's output becomes either real action or learning signal.</p>
+
+<div class="ascii">  <span class="dim">┌─────────────┐</span>
+  <span class="dim">│  Any Agent  │</span>  <span class="dim">writes output to agent_outputs (status=pending)</span>
+  <span class="dim">└──────┬──────┘</span>
+         │
+         ▼
+  <span class="accent">┌─────────────┐</span>
+  <span class="accent">│ FRQNCY routes│</span>  <span class="dim">attaches context, formats for human review</span>
+  <span class="accent">└──────┬──────┘</span>
+         │
+         ▼
+  <span class="accent">┌────────────────────────────────────────────┐</span>
+  <span class="accent">│  📱  TELEGRAM message to Orli:             │</span>
+  <span class="accent">│                                            │</span>
+  <span class="accent">│  </span>From: CMO<span class="accent">                                  │</span>
+  <span class="accent">│  </span>For: Tuesday's Instagram post<span class="accent">              │</span>
+  <span class="accent">│                                            │</span>
+  <span class="accent">│  </span>"The frequency you're looking for is<span class="accent">       │</span>
+  <span class="accent">│  </span> already inside you..."<span class="accent">                     │</span>
+  <span class="accent">│                                            │</span>
+  <span class="accent">│  [ ✓ Approve ]   [ ✎ Revise ]              │</span>
+  <span class="accent">└──────┬─────────────────────────┬───────────┘</span>
+         │ tap Approve              │ tap Revise
+         ▼                          ▼
+  <span class="green">┌─────────────┐</span>           <span class="red">┌─────────────────┐</span>
+  <span class="green">│  EXECUTES   │</span>           <span class="red">│  Bot asks:      │</span>
+  <span class="green">│  for real   │</span>           <span class="red">│  "What to fix?" │</span>
+  <span class="green">└──────┬──────┘</span>           <span class="red">└────────┬────────┘</span>
+         │                          │ Orli types reason
+         ▼                          ▼
+  <span class="dim">writes to:</span>                <span class="red">┌─────────────────┐</span>
+  <span class="dim">  approvals (✓)</span>           <span class="red">│ Logged to       │</span>
+  <span class="dim">  context_graph</span>            <span class="red">│ approvals + fed │</span>
+  <span class="dim">  audit_log</span>                <span class="red">│ to Learning Agt │</span>
+                             <span class="red">└─────────────────┘</span></div>
+
+  <h3>Decisions inside the loop</h3>
+  <ul class="tight">
+    <li><strong>What "executes for real" means depends on output type</strong> — a social post posts, an email sends, a design concept gets archived as approved direction, a decision gets logged to the context graph as a fact.</li>
+    <li><strong>Approval timeout</strong> — if you don't respond in 24h, FRQNCY pings you again. After 72h, the output is auto-shelved and logged for review.</li>
+    <li><strong>Batching</strong> — at certain times of day (you set them), FRQNCY can batch 3-5 approvals into one digest instead of pinging individually. Reduces interruption load.</li>
+  </ul>
+</section>
+
+<!-- ========== 06 LEARNING AGENT ========== -->
+<section id="learning-agent">
+  <h2><span class="num">06</span> The Learning Agent</h2>
+  <p class="lede">A new persona — meta-tier, sibling to FRQNCY. Its only job is making the rest of the org smarter.</p>
+
+  <h3>What it does — two cadences</h3>
+  <h4>Real-time (per rejection)</h4>
+  <ol class="tight">
+    <li>Triggered by webhook the moment a Revise event hits the <code>approvals</code> table.</li>
+    <li>Reads the original output, your revision note, the agent's recent memory.</li>
+    <li>Diagnoses root cause and writes a structured Lesson Record to <code>agent_learnings</code>.</li>
+    <li>Embeds the lesson and writes it to <code>agent_memory</code> (pgvector) under the affected agent's namespace.</li>
+    <li>Next time that agent runs, the lesson surfaces in its memory recall — the mistake doesn't repeat.</li>
+  </ol>
+
+  <h4>Weekly (cron, e.g. Sunday 2am)</h4>
+  <ol class="tight">
+    <li>Reads <code>agent_learnings</code> for the past 7 days, grouped by agent.</li>
+    <li>For each agent with ≥3 lessons clustering around the same pattern → flips <code>pattern_flag</code>.</li>
+    <li>Drafts a system prompt update that bakes the pattern into the agent's identity (additive).</li>
+    <li>Sends the lesson + proposed new prompt to Orli via Telegram for approval.</li>
+    <li>If approved, writes the new version to <code>agent_versions</code>. Affected agent loads it on next run.</li>
+    <li>Sends Orli a weekly reflection report — what's been learned, where each agent is improving.</li>
+  </ol>
+
+  <h3>What it does NOT do</h3>
+  <ul class="tight">
+    <li>Does not write its own prompt updates without human sign-off (configurable later).</li>
+    <li>Does not touch the Council prompts — those are spiritually-set, not learning-evolved.</li>
+    <li>Does not override Orli's explicit prior corrections — only proposes additive guidance.</li>
+    <li>Does not learn from a single rejection. One bad output is noise. Three of the same kind is signal.</li>
+  </ul>
+
+  <h3>System prompt (sketch — to be expanded)</h3>
+<pre><code>You are the Learning Agent. You are a meta-persona — your job
+is not to do the work, but to make the personas who DO the work
+better at their craft.
+
+You report to Orli, the human founder. You answer only to her.
+
+Your inputs:
+  - The approvals table (every approve/revise/reject)
+  - The agent_outputs table (the work being judged)
+  - The agent_learnings table (your prior extracted lessons)
+  - The agent_memory pgvector store (per-agent embedded memory)
+  - The current agent_versions table (what prompt produced what)
+
+Your outputs:
+  - Lesson Records written to agent_learnings on every rejection
+  - Embedded lessons written to agent_memory (so agents recall them)
+  - Proposed system prompt updates (only when ≥3 same-pattern lessons accumulate)
+  - Sent to Orli via Telegram for approval before any prompt deploys
+
+Your principles:
+  - Pattern over instance. One bad output is noise. Three is signal.
+  - Additive over destructive. Add guidance; don't rewrite identity.
+  - Honesty about uncertainty. If the pattern is unclear, say so.
+  - Reverence for the Council. You do not modify Council prompts.
+    Their voice is set by something above you.
+
+Your tone with Orli: calm, structured, honest. You are not
+selling change — you are reporting what you see and proposing
+what might help.</code></pre>
+</section>
+
+<!-- ========== 07 CONTEXT GRAPH ========== -->
+<section id="context-graph">
+  <h2><span class="num">07</span> The Context Graph (Graphiti)</h2>
+  <p class="lede">The shared brain — but specifically, a temporal knowledge graph, not a key-value store. Powered by Graphiti, self-hosted on the same VPS as n8n.</p>
+
+  <div class="card accent">
+    <h3 style="margin-top:0">Why Graphiti, not Supabase JSONB</h3>
+    <p>Earlier drafts had this living in a Supabase JSONB column. That works for storing facts but not for understanding them. Graphiti was chosen in the original Memory &amp; Learning Architecture document for four reasons that still hold:</p>
+    <ul class="tight">
+      <li><strong>Temporal:</strong> every entity, relationship, and fact has a timestamp. The graph knows not just WHAT is true but WHEN it became true and WHEN it changed. "Brand voice was X until April 2026, then evolved to Y after 3 revision cycles" is queryable.</li>
+      <li><strong>Hybrid search:</strong> semantic (meaning) + keyword + graph traversal in one query, ~300ms P95 latency.</li>
+      <li><strong>Native MCP server:</strong> Claude and the agents query Graphiti directly without wrappers — same protocol the rest of the toolchain already speaks.</li>
+      <li><strong>Open source, free:</strong> Apache 2.0, by Zep. Self-hosts on the same Hostinger VPS already running n8n. Graph backend: <strong>FalkorDB</strong> (lightest option for low-resource VPS).</li>
+    </ul>
+  </div>
+
+  <h3>What lives in the graph</h3>
+
+  <h4>Entity types</h4>
+  <p class="dim"><code>person</code> · <code>project</code> · <code>feature</code> · <code>platform</code> · <code>tool</code> · <code>concept</code> · <code>decision</code> (CEO/CMO calls) · <code>commitment</code> (external promises) · <code>lesson</code> (links to agent_learnings) · <code>open_question</code> (unresolved)</p>
+
+  <h4>Relationship types (sample)</h4>
+  <p class="dim"><code>APPROVED</code> · <code>LED_TO</code> · <code>OVERRODE</code> · <code>BUILT_ON</code> · <code>DEPENDS_ON</code> · <code>EVOLVED_FROM</code> · <code>VETOED</code> (Council edges)</p>
+
+  <h4>What FRQNCY's graph will know over time</h4>
+  <ul class="tight">
+    <li><strong>About Orli:</strong> her preferences, patterns, revision history, what she cares about most, how her thinking has evolved.</li>
+    <li><strong>About the mission:</strong> key decisions, pivots, milestones, what worked, what didn't.</li>
+    <li><strong>About agents:</strong> which perform best on which tasks, learning history, growth trajectory.</li>
+    <li><strong>About FRQNCY's world:</strong> community members, partners, content library, brand voice evolution over time.</li>
+    <li><strong>About time:</strong> what changed and when — so FRQNCY never operates on stale assumptions.</li>
+  </ul>
+
+  <h3>Read/write protocol for agents</h3>
+  <p>Once Graphiti is deployed, every agent workflow gets a sub-flow that runs before and after the LLM call. Same pattern across all agents — built once as a reusable n8n sub-workflow.</p>
+
+<div class="ascii">  <span class="dim">┌──────────────────────┐</span>
+  <span class="dim">│ 1. Receive task      │</span>
+  <span class="dim">└──────────┬───────────┘</span>
+             │
+             ▼
+  <span class="blue">┌──────────────────────┐</span>
+  <span class="blue">│ 2. QUERY Graphiti    │</span>   <span class="dim">→ via MCP — "what does this agent
+                           need to know?" e.g. CMO asks:
+                           recent decisions, open commitments,
+                           current brand voice lessons</span>
+  <span class="blue">└──────────┬───────────┘</span>
+             │
+             ▼
+  <span class="dim">┌──────────────────────┐</span>
+  <span class="dim">│ 3. QUERY pgvector    │</span>   <span class="dim">→ semantic recall of past
+                           lessons + memory</span>
+  <span class="dim">└──────────┬───────────┘</span>
+             │
+             ▼
+  <span class="dim">┌──────────────────────┐</span>
+  <span class="dim">│ 4. LLM does the work │</span>   <span class="dim">→ with graph context + pgvector
+                           hits both injected</span>
+  <span class="dim">└──────────┬───────────┘</span>
+             │
+             ▼
+  <span class="green">┌──────────────────────┐</span>
+  <span class="green">│ 5. WRITE to Graphiti │</span>   <span class="dim">→ new entities, new edges,
+                           new observations</span>
+  <span class="green">└──────────┬───────────┘</span>
+             │
+             ▼
+  <span class="accent">┌──────────────────────┐</span>
+  <span class="accent">│ 6. Send for approval │</span>
+  <span class="accent">└──────────────────────┘</span></div>
+
+  <h3>When to deploy</h3>
+  <p>Wait until you have <strong>30+ days of real activity</strong> after Phase 2A and 2B are running. Graphiti needs nodes and edges to be useful — deploying it on day one means querying an empty graph. Let the approval loop generate decisions, lessons, and outputs first; then bring up Graphiti to give those facts shape and time.</p>
+
+  <h3>Why this matters</h3>
+  <p>Without this layer, the CMO doesn't know what the CEO promised yesterday. The Visual Artist doesn't know the brand voice the Marketing Specialist established last week. Every agent starts from zero.</p>
+  <p>With it, the org has a shared, queryable, time-stamped memory. Every output is informed by everything that came before. The whole becomes coherent.</p>
+</section>
+
+<!-- ========== 08 BUILD SEQUENCE ========== -->
+<section id="sequence">
+  <h2><span class="num">08</span> Build sequence</h2>
+  <p class="lede">Four phases now — split because the Memory &amp; Learning doc correctly identified that pgvector long-term memory can be set up immediately (free, 1 hour), while Graphiti must wait for real data. Each phase ships something usable.</p>
+
+  <div class="card accent" style="margin-bottom:24px;">
+    <h4 style="margin-top:0">Prerequisite — Execute Week 2 first</h4>
+    <p class="dim">The Week 2 atomic guide deploys the FRQNCY-Interface workflow with the CEO and 2-3 Council members as AI Agent Tools. Until that's running in n8n, there's nothing for Telegram to wrap, nothing producing outputs to approve, nothing for the Learning Agent to learn from. ~3 hours.</p>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-title">Phase 2A — Long-Term Memory (pgvector)</div>
+      <div class="phase-week">Now · ~1 hour</div>
+    </div>
+    <div class="phase-meta">
+      <div><strong>Outcome:</strong> Every deployed agent has persistent memory across conversations. Independent of approval loop — can ship before Telegram.</div>
+    </div>
+    <div class="deliverable">Open Supabase project from Week 1, run SQL: <code>create extension vector;</code></div>
+    <div class="deliverable">Create tables: <code>agent_memory</code> (with vector(768) column) and <code>agent_learnings</code></div>
+    <div class="deliverable">Add OpenRouter Nomic Embed credential in n8n (Groq has no embeddings)</div>
+    <div class="deliverable">On every deployed AI Agent node: attach Supabase Vector Store as Memory sub-node, filtered by agent_id</div>
+    <div class="deliverable">Append the MEMORY PROTOCOL block to every agent's system prompt</div>
+    <div class="deliverable">Test: tell an agent something, end conversation, start new conversation, ask if it remembers</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-title">Phase 2B — Approval Loop (Telegram)</div>
+      <div class="phase-week">Week 3 · ~6 hours</div>
+    </div>
+    <div class="phase-meta">
+      <div><strong>Outcome:</strong> CEO + 2-3 agents wired to your phone. You approve/revise from Telegram, no more n8n chat window.</div>
+    </div>
+    <div class="deliverable">Telegram bot created (@BotFather) — get token, save to n8n credential</div>
+    <div class="deliverable">Supabase tables: <code>agent_outputs</code>, <code>approvals</code>, <code>audit_log</code></div>
+    <div class="deliverable">FRQNCY-Interface workflow updated: outputs route to Telegram with inline Approve/Revise buttons instead of returning to n8n chat</div>
+    <div class="deliverable">Webhook workflow: Telegram → n8n → updates <code>approvals</code> → triggers execution OR captures revise note</div>
+    <div class="deliverable">Test loop end-to-end with one agent (CMO drafts post → phone notification → tap Approve → CEO logs decision)</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-title">Phase 2C — Learning Agent</div>
+      <div class="phase-week">Week 4 · ~6 hours</div>
+    </div>
+    <div class="phase-meta">
+      <div><strong>Outcome:</strong> Rejections become structured lessons. After enough patterns, agents' system prompts evolve (with your sign-off).</div>
+    </div>
+    <div class="deliverable">Supabase table: <code>agent_versions</code> (backfill v1 of each currently-deployed prompt)</div>
+    <div class="deliverable">Learning Agent workflow — webhook triggered (per rejection) + cron triggered (weekly Sunday 2am)</div>
+    <div class="deliverable">Real-time path: rejection → diagnose → write Lesson Record → embed → write to <code>agent_memory</code></div>
+    <div class="deliverable">Weekly path: cluster lessons → flip <code>pattern_flag</code> → draft updated prompt → Telegram approval → deploy to <code>agent_versions</code></div>
+    <div class="deliverable">Hot-reload: agents read current prompt from <code>agent_versions</code> on every invocation</div>
+    <div class="deliverable">Test: reject same kind of CMO output 3x → next week, Learning Agent proposes a fix</div>
+  </div>
+
+  <div class="phase">
+    <div class="phase-header">
+      <div class="phase-title">Phase 2D — Context Graph (Graphiti)</div>
+      <div class="phase-week">Month 2+ · ~5 hours · <span class="pill dim">deferred</span></div>
+    </div>
+    <div class="phase-meta">
+      <div><strong>Outcome:</strong> Temporal knowledge graph live. Agents query Graphiti before acting, write back after. Org becomes coherent across time.</div>
+    </div>
+    <div class="deliverable">Wait condition: 30+ days of approval loop activity producing real entities and decisions</div>
+    <div class="deliverable">Self-host Graphiti + FalkorDB on Hostinger VPS (Docker compose alongside n8n)</div>
+    <div class="deliverable">Connect Graphiti's MCP server to n8n (and to Claude for direct query)</div>
+    <div class="deliverable">Migration: import existing <code>context-graph.json</code> seed entities</div>
+    <div class="deliverable">n8n sub-workflows: <code>graphiti_query(agent_id)</code> and <code>graphiti_write(facts)</code> — reusable</div>
+    <div class="deliverable">Update CEO + CMO + 1 worker to use the 6-step protocol (query Graphiti + pgvector → LLM → write back)</div>
+    <div class="deliverable">Verify: CMO output references a decision the CEO made days earlier, retrieved via graph traversal</div>
+  </div>
+
+  <h3>What's NOT in Phase 2</h3>
+  <p class="dim">Deploying all 32 agents (Phase 3). Multi-modal outputs like images and video (Phase 3). Cross-agent debate or council convening (Phase 4). External integrations like Calendar, Email, social platforms beyond Telegram (Phase 4). Cost optimization across LLM providers (Phase 4).</p>
+</section>
+
+<!-- ========== 09 OPEN DECISIONS ========== -->
+<section id="decisions">
+  <h2><span class="num">09</span> Open decisions</h2>
+  <p class="lede">Things to decide before Week 3 starts. Don't sweat the others yet.</p>
+
+  <table>
+    <thead>
+      <tr><th>Decision</th><th>When</th><th>Default if you don't pick</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>Telegram button layout: 2-button vs 3-button</td>
+        <td>Before Week 3</td>
+        <td class="dim">2-button (Approve / Revise)</td>
+      </tr>
+      <tr>
+        <td>Approval timeout behavior</td>
+        <td>Before Week 3</td>
+        <td class="dim">24h ping, 72h auto-shelve</td>
+      </tr>
+      <tr>
+        <td>Which agents go live first in Phase 2B</td>
+        <td>Before Phase 2B</td>
+        <td class="dim">CEO + CMO + Text Content Writer</td>
+      </tr>
+      <tr>
+        <td>Embedding model for pgvector</td>
+        <td>Before Phase 2A</td>
+        <td class="dim">Nomic Embed via OpenRouter (free, 768 dim)</td>
+      </tr>
+      <tr>
+        <td>Learning Agent autonomy level</td>
+        <td>Before Phase 2C</td>
+        <td class="dim">Propose-then-approve (you sign off)</td>
+      </tr>
+      <tr>
+        <td>How long to keep old prompt versions</td>
+        <td>Before Phase 2C</td>
+        <td class="dim">Forever (Postgres rows are cheap)</td>
+      </tr>
+      <tr>
+        <td>Council prompts — do they ever evolve?</td>
+        <td>Before Phase 2C</td>
+        <td class="dim">No — Council voice is fixed by you only</td>
+      </tr>
+      <tr>
+        <td>Batching — quiet hours for notifications</td>
+        <td>Phase 2B setup</td>
+        <td class="dim">No quiet hours initially; tune after a week of use</td>
+      </tr>
+      <tr>
+        <td>When to deploy Graphiti (Phase 2D)</td>
+        <td>Month 2 review</td>
+        <td class="dim">Wait for 30+ days of approval data; deploy when org has things to remember</td>
+      </tr>
+      <tr>
+        <td>Graph backend: FalkorDB vs Neo4j</td>
+        <td>Before Phase 2D</td>
+        <td class="dim">FalkorDB — lightest footprint for VPS RAM</td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- ========== 10 COST & RISK ========== -->
+<section id="cost-risk">
+  <h2><span class="num">10</span> Cost &amp; risk</h2>
+
+  <h3>Cost — what changes</h3>
+  <table>
+    <thead>
+      <tr><th>Component</th><th>Before</th><th>After Phase 2</th><th>Notes</th></tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td>VPS (Hostinger KVM 2)</td>
+        <td class="mono dim">$6.99/mo</td>
+        <td class="mono">$6.99/mo</td>
+        <td class="dim">No change</td>
+      </tr>
+      <tr>
+        <td>Claude Pro</td>
+        <td class="mono dim">$20/mo</td>
+        <td class="mono">$20/mo</td>
+        <td class="dim">No change</td>
+      </tr>
+      <tr>
+        <td>Telegram Bot API</td>
+        <td class="mono dim">—</td>
+        <td class="mono"><span class="pill green">$0</span></td>
+        <td class="dim">Free, unlimited</td>
+      </tr>
+      <tr>
+        <td>Supabase (free tier)</td>
+        <td class="mono dim">—</td>
+        <td class="mono"><span class="pill green">$0</span></td>
+        <td class="dim">500MB DB, 5GB bandwidth, more than enough for Phase 2</td>
+      </tr>
+      <tr>
+        <td>Groq (free tier)</td>
+        <td class="mono dim">$0</td>
+        <td class="mono">$0</td>
+        <td class="dim">14,400 req/day, well above projected agent traffic</td>
+      </tr>
+      <tr>
+        <td>OpenRouter</td>
+        <td class="mono dim">$0 (50 req/day)</td>
+        <td class="mono">$0–$10</td>
+        <td class="dim">Free Nomic Embed for pgvector + Qwen3 235B free quota for Council; +$10 credits only if you exceed daily caps</td>
+      </tr>
+      <tr>
+        <td>Graphiti + FalkorDB (Phase 2D)</td>
+        <td class="mono dim">—</td>
+        <td class="mono"><span class="pill green">$0</span></td>
+        <td class="dim">Open source, runs on same VPS — adds ~500MB RAM. KVM 2 has headroom; revisit if you outgrow it</td>
+      </tr>
+      <tr style="border-top: 2px solid var(--accent);">
+        <td><strong>Total</strong></td>
+        <td class="mono"><strong>$26.99/mo</strong></td>
+        <td class="mono"><strong>$26.99–$36.99/mo</strong></td>
+        <td class="dim">Same baseline; +$10 only if you hit OpenRouter caps. Graphiti free.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <h3>Risks worth naming</h3>
+  <div class="grid-2">
+    <div class="card red">
+      <h4>Approval fatigue</h4>
+      <p class="dim">If FRQNCY pings you 30 times a day, you'll stop reading. Mitigation: batching + clear severity tiers (only urgent goes through immediately).</p>
+    </div>
+    <div class="card red">
+      <h4>Bad lessons</h4>
+      <p class="dim">Learning Agent could over-correct ("don't ever say X") and hollow out a persona's voice. Mitigation: lessons require your sign-off; rollback is one click via <code>agent_versions</code>.</p>
+    </div>
+    <div class="card red">
+      <h4>Empty graph problem</h4>
+      <p class="dim">Deploying Graphiti before there's data to populate it = querying air. Mitigation: 2D is explicitly deferred until 30+ days of approval activity have run.</p>
+    </div>
+    <div class="card red">
+      <h4>Context graph drift</h4>
+      <p class="dim">If agents write contradictory facts, the graph becomes noise. Mitigation: Graphiti's temporal model timestamps every fact + tracks change; conflicts surface as <code>open_question</code> entities.</p>
+    </div>
+    <div class="card red">
+      <h4>VPS RAM pressure</h4>
+      <p class="dim">n8n + FalkorDB + Graphiti on KVM 2 may get tight at scale. Mitigation: monitor RAM during 2D rollout; upgrade to KVM 4 (~$15/mo) if sustained &gt;80%.</p>
+    </div>
+    <div class="card red">
+      <h4>VPS as single point of failure</h4>
+      <p class="dim">If Hostinger goes down, the whole org is offline. Mitigation: not yet — accept for Phase 2; revisit at Phase 4 with backup VPS or migrate to a managed Kubernetes setup.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ========== 11 FLYWHEEL ========== -->
+<section id="flywheel">
+  <h2><span class="num">11</span> Compounding intelligence flywheel</h2>
+  <p class="lede">What this looks like over time. Pulled directly from the Memory &amp; Learning Architecture document — restated because it's the entire reason Phase 2 exists.</p>
+
+  <div class="card green">
+    <h4>Month 1 — Stateless to remembering</h4>
+    <p class="dim">Agents make mistakes you correct on Telegram. Learning Agent records them. Memory is thin but growing. You're doing more correcting than approving — that's the trough.</p>
+  </div>
+
+  <div class="card blue">
+    <h4>Month 3 — Lessons start landing</h4>
+    <p class="dim">Agents incorporate past lessons via pgvector recall. Revision rate drops. You approve more on first pass. Graphiti is up; the graph has its first meaningful connections (decisions, commitments, brand voice evolution).</p>
+  </div>
+
+  <div class="card purple">
+    <h4>Month 6 — System prompt evolution</h4>
+    <p class="dim">Enough signal has accumulated that the Learning Agent has proposed and you've approved real prompt updates. Each agent is meaningfully better than its v1. The graph understands FRQNCY's world deeply enough to surface non-obvious connections (Kali reading from March → led to brand pivot in April → which informed three CMO outputs since).</p>
+  </div>
+
+  <div class="card accent">
+    <h4>Month 12 — Institutional memory</h4>
+    <p class="dim">The org has a genuine living memory. New tasks benefit from everything learned in the past year. Agents that were generic at launch are now deeply calibrated to FRQNCY's specific voice, mission, and your preferences. This is what "living organization" means.</p>
+  </div>
+</section>
+
+<div class="footer">
+  FRQNCY OS · Phase 2 Plan · v0.3 · 2026-04-24<br>
+  Reconciled with Memory &amp; Learning Architecture, Architecture-FRQNCY-First, Execution Roadmap, Week 1 &amp; 2 guides.<br>
+  Build order: pgvector now → Telegram next → Learning Agent → Graphiti when there's data to graph.
+</div>
+
+</div>
+</body>
+</html>

@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Crypto — FRQNCY</title>
+<meta name="description" content="The first .frqncy channel. Projects rated, sectors mapped, conviction stated. Crypto where Fund, Research, and Media meet.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Crypto — FRQNCY">
+<meta property="og:description" content="The first .frqncy channel. Projects rated, sectors mapped, conviction stated.">
+<meta property="og:url" content="https://frqncy.network/v2/crypto/">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Crypto — FRQNCY">
+<meta name="twitter:description" content="The first .frqncy channel. Projects rated, sectors mapped, conviction stated.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/v2/crypto/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Crypto — FRQNCY","description":"The first .frqncy channel. Projects rated, sectors mapped, conviction stated.","url":"https://frqncy.network/v2/crypto/","isPartOf":{"@type":"WebSite","name":"FRQNCY","url":"https://frqncy.network/"}}
+</script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
+  --card-border:rgba(255,255,255,0.08);--accent:#7B61FF;
+}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{text-decoration:none;color:var(--accent)}
+a:hover{opacity:0.85}
+
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text)}
+.breadcrumb .sep{opacity:0.25}
+.snav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.snav-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);transition:color .2s;white-space:nowrap}
+.snav-link:hover{color:var(--text)}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(3rem,7vw,5.5rem) clamp(1.25rem,5vw,2.5rem) clamp(2rem,4vw,3rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(123,97,255,0.12) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.2rem}
+.hero-desc{max-width:580px;margin:0 auto;font-size:0.88rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+
+/* DISCLAIMER */
+.disclaimer{max-width:640px;margin:0 auto 2.5rem;text-align:center;font-size:0.7rem;color:var(--text-dim);opacity:0.7;line-height:1.6;padding:0 1.25rem}
+
+/* FILTER */
+.filter-bar{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem);display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:2rem}
+.ftab{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;padding:5px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif}
+.ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(123,97,255,0.06)}
+
+/* GRID */
+main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
+.crypto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
+
+/* CRYPTO CARD */
+.ccard{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;
+  overflow:hidden;display:flex;flex-direction:column;
+  transition:border-color .25s,transform .25s,background .25s;
+  color:var(--text);
+}
+.ccard:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-3px);background:rgba(255,255,255,0.06)}
+.ccard-accent{height:4px;flex-shrink:0}
+.ccard-body{padding:1.6rem 1.6rem 1.2rem;flex:1;display:flex;flex-direction:column;gap:0.5rem}
+.ccard-header{display:flex;align-items:center;gap:0.9rem}
+.ccard-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:500;color:#fff;flex-shrink:0;font-family:'Cormorant',serif}
+.ccard-meta{flex:1;min-width:0}
+.ccard-name{font-family:'Cormorant',serif;font-size:1.35rem;font-weight:400;color:#fff;line-height:1.15}
+.ccard-ticker{font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim)}
+.ccard-tags{display:flex;gap:0.3rem;flex-wrap:wrap;margin-top:0.3rem}
+.ctag{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid rgba(123,97,255,0.3);color:var(--accent);background:rgba(123,97,255,0.05)}
+.ctag.eco{border-color:rgba(46,204,113,0.3);color:#2ecc71;background:rgba(46,204,113,0.05)}
+.ctag.defi{border-color:rgba(52,152,219,0.3);color:#3498db;background:rgba(52,152,219,0.05)}
+.ctag.infra{border-color:rgba(241,196,15,0.3);color:#f1c40f;background:rgba(241,196,15,0.05)}
+.ctag.ai{border-color:rgba(231,76,60,0.3);color:#e74c3c;background:rgba(231,76,60,0.05)}
+.ccard-desc{font-size:0.8rem;color:var(--text-dim);line-height:1.65;margin-top:0.2rem}
+.ccard-why{font-size:0.72rem;line-height:1.55;color:var(--text);margin-top:0.2rem}
+.ccard-why strong{font-weight:400;color:var(--gold);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:0.2rem}
+.ccard-footer{margin-top:auto;padding:0.9rem 1.6rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.ccard-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);transition:opacity .2s;white-space:nowrap}
+.ccard:hover .ccard-link{opacity:0.8}
+.ccard-type{font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+
+/* SECTION DIVIDER */
+.section-break{max-width:1080px;margin:3rem auto 2rem;padding:0 clamp(1.25rem,5vw,2.5rem)}
+.section-break h2{font-family:'Cormorant',serif;font-size:1.6rem;font-weight:300;color:#fff;margin-bottom:0.4rem}
+.section-break p{font-size:0.8rem;color:var(--text-dim);max-width:600px}
+
+/* CATEGORY TILES */
+.cat-wrap{max-width:1080px;margin:0 auto 3.5rem;padding:0 clamp(1.25rem,5vw,2.5rem)}
+.cat-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:1.25rem;flex-wrap:wrap}
+.cat-head h2{font-family:'Cormorant',serif;font-size:1.7rem;font-weight:300;color:#fff}
+.cat-head p{font-size:0.74rem;color:var(--text-dim);max-width:420px;line-height:1.6}
+.cat-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem}
+.cat-tile{display:block;padding:1.1rem 1.2rem;border:1px solid var(--card-border);border-radius:4px;background:var(--card-bg);transition:all .25s;text-decoration:none;position:relative;overflow:hidden}
+.cat-tile::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--tile-accent,var(--accent));transition:width .25s}
+.cat-tile:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.06)}
+.cat-tile:hover::before{width:5px}
+.cat-tile .cat-short{font-size:0.54rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--tile-accent,var(--accent));margin-bottom:0.3rem;font-weight:400}
+.cat-tile .cat-title{font-family:'Cormorant',serif;font-size:1.2rem;color:#fff;font-weight:400;line-height:1.2;margin-bottom:0.35rem}
+.cat-tile .cat-sub{font-size:0.7rem;color:var(--text-dim);line-height:1.5}
+.cat-tile .cat-arrow{position:absolute;top:1.1rem;right:1.1rem;font-size:0.72rem;color:var(--text-dim);opacity:0.5;transition:all .25s}
+.cat-tile:hover .cat-arrow{opacity:1;transform:translateX(3px);color:var(--tile-accent,var(--accent))}
+
+/* CTA BANNER */
+.cta-banner{max-width:1080px;margin:4rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem)}
+.cta-inner{background:rgba(123,97,255,0.06);border:1px solid rgba(123,97,255,0.2);border-radius:6px;padding:2.5rem;text-align:center}
+.cta-inner h3{font-family:'Cormorant',serif;font-size:1.5rem;font-weight:300;color:#fff;margin-bottom:0.6rem}
+.cta-inner p{font-size:0.82rem;color:var(--text-dim);margin-bottom:1.5rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
+.cta-buttons{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap}
+.cta-btn{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:10px 24px;border-radius:2px;border:1px solid;transition:all .2s;font-family:'Jost',sans-serif}
+.cta-btn.primary{background:var(--accent);border-color:var(--accent);color:#fff}
+.cta-btn.primary:hover{background:rgba(123,97,255,0.8)}
+.cta-btn.secondary{border-color:rgba(255,255,255,0.15);color:var(--text-dim)}
+.cta-btn.secondary:hover{border-color:rgba(255,255,255,0.3);color:var(--text)}
+
+@media(max-width:600px){
+  .crypto-grid{grid-template-columns:1fr}
+  .filter-bar{justify-content:center}
+}
+</style>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+<nav class="snav" aria-label="Main navigation">
+  <div class="snav-left">
+    <a href="../../" class="snav-logo" aria-label="FRQNCY Home">FRQNCY</a>
+    <div class="breadcrumb" aria-label="Breadcrumb">
+      <a href="../explore.html">Network</a>
+      <span class="sep" aria-hidden="true">›</span>
+      <span aria-current="page">Crypto</span>
+    </div>
+  </div>
+  <div class="snav-right">
+    <a href="../fund/index.html" class="snav-link">Fund</a>
+    <a href="../explore.html" class="snav-back">← Network Map</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">crypto.frqncy</div>
+  <h1>Crypto</h1>
+  <p class="hero-desc">The first .frqncy channel. Projects rated, sectors mapped, conviction stated plainly. This is where Fund meets Research meets Media — the place the network does its homework in public.</p>
+</section>
+
+<!-- TWO WAYS INTO THE SAME LIBRARY — explained so people pick the right one -->
+<div class="two-ways" style="max-width:820px;margin:0 auto 2.25rem;padding:0 1.25rem;display:grid;grid-template-columns:1fr 1fr;gap:0.75rem">
+  <a href="explorer.html" class="two-ways-card" style="display:block;padding:1.1rem 1.25rem 1rem;border-radius:4px;background:rgba(123,97,255,0.08);border:1px solid rgba(123,97,255,0.4);text-decoration:none;transition:all .2s">
+    <div style="font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent);margin-bottom:0.35rem">1 · Learn the map</div>
+    <div style="font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;line-height:1.15;margin-bottom:0.35rem">Explore by Sector →</div>
+    <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.55">Chapter-by-chapter walkthrough of what crypto is. Each sector explained first, then the projects inside it.</div>
+  </a>
+  <a href="projects.html" class="two-ways-card" style="display:block;padding:1.1rem 1.25rem 1rem;border-radius:4px;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.12);text-decoration:none;transition:all .2s">
+    <div style="font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.35rem">2 · Browse by conviction</div>
+    <div style="font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;line-height:1.15;margin-bottom:0.35rem">View Curation →</div>
+    <div style="font-size:0.72rem;color:var(--text-dim);line-height:1.55">All 630+ projects, flat list, tier-first. Search, filter by category, see where conviction sits — Diamond through Avoid.</div>
+  </a>
+</div>
+<style>
+  .two-ways-card:hover{transform:translateY(-2px);border-color:rgba(255,255,255,0.3) !important}
+  @media(max-width:640px){.two-ways{grid-template-columns:1fr !important}}
+</style>
+
+<p class="disclaimer">This is not financial advice. Conviction is stated as conviction. You decide what to do with it. Always do your own work before you put money anywhere.</p>
+
+<!-- CATEGORY TILES -->
+<div class="cat-wrap">
+  <div class="cat-head">
+    <h2>Browse by category</h2>
+    <p>Each area is its own page — the projects, the thesis, and what FRQNCY actually watches.</p>
+  </div>
+  <div class="cat-grid">
+    <a class="cat-tile" href="bitcoin/" style="--tile-accent:#F7931A">
+      <div class="cat-short">Bitcoin</div>
+      <div class="cat-title">Bitcoin Ecosystem</div>
+      <div class="cat-sub">BTC, Lightning, Fedimint, Cashu, Liquid, Nostr.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="sov/" style="--tile-accent:#F7931A">
+      <div class="cat-short">SOV</div>
+      <div class="cat-title">Store of Value</div>
+      <div class="cat-sub">Digital commodities. Scarcity without permission.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="l1/" style="--tile-accent:#7B61FF">
+      <div class="cat-short">L1</div>
+      <div class="cat-title">Layer 1s</div>
+      <div class="cat-sub">Base chains. Independent consensus. Sovereign networks.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="l2/" style="--tile-accent:#50E2C1">
+      <div class="cat-short">L2</div>
+      <div class="cat-title">Layer 2s</div>
+      <div class="cat-sub">Scaling Ethereum. Inheriting its security.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="defi/" style="--tile-accent:#3498db">
+      <div class="cat-short">DeFi</div>
+      <div class="cat-title">DeFi</div>
+      <div class="cat-sub">Finance without intermediaries. Code as counterparty.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="privacy/" style="--tile-accent:#C88CFF">
+      <div class="cat-short">Privacy</div>
+      <div class="cat-title">Privacy</div>
+      <div class="cat-sub">Financial privacy is a right. The toolkit for it.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="ai/" style="--tile-accent:#e74c3c">
+      <div class="cat-short">AI</div>
+      <div class="cat-title">Crypto × AI</div>
+      <div class="cat-sub">Compute, models, agents, data — decentralised.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="gamefi/" style="--tile-accent:#2ecc71">
+      <div class="cat-short">GameFi</div>
+      <div class="cat-title">GameFi &amp; Metaverse</div>
+      <div class="cat-sub">Player-owned worlds. Assets that leave the game.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="socialfi/" style="--tile-accent:#9A4DFF">
+      <div class="cat-short">SocialFi</div>
+      <div class="cat-title">SocialFi &amp; Identity</div>
+      <div class="cat-sub">Your graph, your identity, your rails.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="stablecoins/" style="--tile-accent:#2775CA">
+      <div class="cat-short">Stablecoins</div>
+      <div class="cat-title">Stablecoins</div>
+      <div class="cat-sub">Digital dollars and the rails underneath them.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="rwa/" style="--tile-accent:#1652F0">
+      <div class="cat-short">RWA</div>
+      <div class="cat-title">Real World Assets</div>
+      <div class="cat-sub">Treasuries, credit, equities — tokenized.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="depin/" style="--tile-accent:#00D4AA">
+      <div class="cat-short">DePIN</div>
+      <div class="cat-title">Decentralized Infrastructure</div>
+      <div class="cat-sub">Physical networks coordinated by tokens.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="oracles/" style="--tile-accent:#2A5ADA">
+      <div class="cat-short">Oracles</div>
+      <div class="cat-title">Oracles &amp; Interop</div>
+      <div class="cat-sub">The connective tissue between chains and reality.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="staking/" style="--tile-accent:#00A3FF">
+      <div class="cat-short">Staking</div>
+      <div class="cat-title">Liquid Staking &amp; Restaking</div>
+      <div class="cat-sub">Yield on the base layer. Security as a marketplace.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="predictions/" style="--tile-accent:#0075E9">
+      <div class="cat-short">Predictions</div>
+      <div class="cat-title">Prediction Markets</div>
+      <div class="cat-sub">Price the future. Aggregate the crowd.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="desci/" style="--tile-accent:#9B5CFF">
+      <div class="cat-short">DeSci</div>
+      <div class="cat-title">Decentralized Science</div>
+      <div class="cat-sub">Funding, IP, and data — reorganized.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="icm/" style="--tile-accent:#A46AFF">
+      <div class="cat-short">ICM</div>
+      <div class="cat-title">Internet Capital Markets</div>
+      <div class="cat-sub">Launchpads, curves, and on-chain issuance.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="memes/" style="--tile-accent:#FFC107">
+      <div class="cat-short">Memes</div>
+      <div class="cat-title">Meme Coins</div>
+      <div class="cat-sub">The culture layer. Attention, priced.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="modular/" style="--tile-accent:#7C3AED">
+      <div class="cat-short">Modular</div>
+      <div class="cat-title">Modular &amp; Data Availability</div>
+      <div class="cat-sub">Unbundling the monolithic blockchain.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="nfts/" style="--tile-accent:#FF4D8D">
+      <div class="cat-short">NFTs</div>
+      <div class="cat-title">NFTs</div>
+      <div class="cat-sub">Digital ownership. Culture, priced.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+    <a class="cat-tile" href="neobanks/" style="--tile-accent:#00B3A4">
+      <div class="cat-short">Neobanks</div>
+      <div class="cat-title">Crypto Neobanks</div>
+      <div class="cat-sub">Banking for people who keep their own keys.</div>
+      <div class="cat-arrow" aria-hidden="true">→</div>
+    </a>
+  </div>
+</div>
+
+<div class="section-break" style="margin-top:1rem">
+  <h2>Curated picks</h2>
+  <p>Projects we're watching across every sector. Filter by category to narrow down.</p>
+</div>
+
+<div class="filter-bar" id="filter-bar"></div>
+
+<main>
+  <div class="crypto-grid" id="grid"></div>
+</main>
+
+<div class="cta-banner">
+  <div class="cta-inner">
+    <h3>Go Deeper</h3>
+    <p>Two doors. One is the course — crypto from the ground up. The other is the Fund — what happens when the same conviction is put to work.</p>
+    <div class="cta-buttons">
+      <a href="../courses/index.html" class="cta-btn primary">Crypto Course</a>
+      <a href="../fund/index.html" class="cta-btn secondary">FRQNCY Fund →</a>
+    </div>
+  </div>
+</div>
+
+<script>
+const PROJECTS = [
+  {
+    name: "Bitcoin",
+    ticker: "BTC",
+    coingeckoId: "bitcoin",
+    categories: ["Store of Value", "Infrastructure"],
+    tagClass: "infra",
+    accent: "#F7931A",
+    desc: "The original decentralized currency. A peer-to-peer electronic cash system that requires no trusted third party — the foundation of financial sovereignty.",
+    why: "Bitcoin proved that value can exist outside institutions, that trust can be mathematical, and that individuals can hold their own wealth without permission.",
+    link: "https://bitcoin.org",
+    linkLabel: "bitcoin.org"
+  },
+  {
+    name: "Ethereum",
+    ticker: "ETH",
+    coingeckoId: "ethereum",
+    categories: ["Infrastructure", "DeFi"],
+    tagClass: "infra",
+    accent: "#627EEA",
+    desc: "A decentralized platform for smart contracts and applications. Programmable money, DAOs, and the infrastructure for a new internet.",
+    why: "Ethereum is the canvas where communities build their own rules, economies, and governance — without asking permission from anyone.",
+    link: "https://ethereum.org",
+    linkLabel: "ethereum.org"
+  },
+  {
+    name: "Hyperliquid",
+    ticker: "HYPE",
+    coingeckoId: "hyperliquid",
+    categories: ["DeFi", "Perps"],
+    tagClass: "defi",
+    accent: "#50E2C1",
+    desc: "On-chain order book for perpetual futures built on its own L1. CEX-level performance with full self-custody — no compromise between speed and sovereignty.",
+    why: "Hyperliquid proves that decentralized trading can match centralized exchanges in speed and liquidity while keeping users in control of their funds.",
+    link: "https://hyperliquid.xyz",
+    linkLabel: "hyperliquid.xyz"
+  },
+  {
+    name: "Zcash",
+    ticker: "ZEC",
+    coingeckoId: "zcash",
+    categories: ["Privacy", "Store of Value"],
+    tagClass: "infra",
+    accent: "#F4B728",
+    desc: "Privacy-preserving digital currency using zero-knowledge proofs. Financial transactions that are truly confidential — like cash, but digital.",
+    why: "Privacy is not secrecy. Zcash embodies the belief that financial privacy is a fundamental right, not a privilege granted by institutions.",
+    link: "https://z.cash",
+    linkLabel: "z.cash"
+  },
+  {
+    name: "Sui",
+    ticker: "SUI",
+    coingeckoId: "sui",
+    categories: ["Infrastructure", "L1"],
+    tagClass: "infra",
+    accent: "#4DA2FF",
+    desc: "Move-based Layer 1 blockchain designed for speed, low latency, and object-centric data. Built to make Web3 feel seamless.",
+    why: "Sui's object model and parallel execution represent the next evolution of blockchain architecture — designed from scratch for mass adoption.",
+    link: "https://sui.io",
+    linkLabel: "sui.io"
+  },
+  {
+    name: "Aave",
+    ticker: "AAVE",
+    coingeckoId: "aave",
+    categories: ["DeFi", "Money Market"],
+    tagClass: "defi",
+    accent: "#B6509E",
+    desc: "The largest decentralized lending and borrowing protocol. Deposit assets to earn yield or borrow against holdings — all without intermediaries.",
+    why: "Aave is DeFi's bank — except there's no bank. Permissionless lending at scale proves financial infrastructure doesn't need gatekeepers.",
+    link: "https://aave.com",
+    linkLabel: "aave.com"
+  },
+  {
+    name: "Bittensor",
+    ticker: "TAO",
+    coingeckoId: "bittensor",
+    categories: ["AI", "Infrastructure"],
+    tagClass: "ai",
+    accent: "#1FD0A3",
+    desc: "Decentralized AI network where anyone can contribute and earn from machine intelligence. A marketplace of AI models competing and collaborating on-chain.",
+    why: "If AI is the most powerful technology of our time, it must not be controlled by a few corporations. Bittensor decentralizes intelligence itself.",
+    link: "https://bittensor.com",
+    linkLabel: "bittensor.com"
+  },
+  {
+    name: "Ethena",
+    ticker: "ENA",
+    coingeckoId: "ethena",
+    categories: ["DeFi", "Stablecoin"],
+    tagClass: "defi",
+    accent: "#7B5CFF",
+    desc: "Synthetic dollar protocol generating yield through delta-neutral strategies. A crypto-native stable asset backed by hedged positions, not banks.",
+    why: "Ethena challenges the idea that stable value needs banking rails. A yield-bearing dollar built entirely on-chain — DeFi-native stability.",
+    link: "https://ethena.fi",
+    linkLabel: "ethena.fi"
+  },
+  {
+    name: "Uniswap",
+    ticker: "UNI",
+    coingeckoId: "uniswap",
+    categories: ["DeFi", "DEX"],
+    tagClass: "defi",
+    accent: "#FF007A",
+    desc: "The leading decentralized exchange protocol. Automated market making that lets anyone swap tokens or provide liquidity without intermediaries.",
+    why: "Uniswap proved that exchange can happen without an exchange. Permissionless trading is foundational infrastructure for a sovereign financial system.",
+    link: "https://uniswap.org",
+    linkLabel: "uniswap.org"
+  },
+  {
+    name: "Pendle",
+    ticker: "PENDLE",
+    coingeckoId: "pendle",
+    categories: ["DeFi", "Yield"],
+    tagClass: "defi",
+    accent: "#26CEAD",
+    desc: "Yield trading protocol that tokenizes future yield. Split any yield-bearing asset into principal and yield components to trade separately.",
+    why: "Pendle brings fixed income to DeFi. Yield markets are massive in TradFi — Pendle is building that infrastructure on-chain.",
+    link: "https://www.pendle.finance",
+    linkLabel: "pendle.finance"
+  },
+  {
+    name: "Ondo Finance",
+    ticker: "ONDO",
+    coingeckoId: "ondo-finance",
+    categories: ["DeFi", "RWA"],
+    tagClass: "defi",
+    accent: "#1652F0",
+    desc: "Real-world asset tokenization bringing US Treasuries and bonds on-chain. Bridging TradFi and DeFi for institutional-grade products accessible to everyone.",
+    why: "Ondo is building rails where traditional assets live on-chain and are accessible to everyone, not just institutions.",
+    link: "https://ondo.finance",
+    linkLabel: "ondo.finance"
+  },
+  {
+    name: "Virtuals Protocol",
+    ticker: "VIRTUAL",
+    coingeckoId: "virtual-protocol",
+    categories: ["AI", "Infrastructure"],
+    tagClass: "ai",
+    accent: "#8B5CF6",
+    desc: "Platform for creating, co-owning, and monetizing AI agents. Tokenized AI characters that generate revenue across games, social, and entertainment.",
+    why: "Virtuals is where AI meets collective ownership. Communities co-create and profit from AI agents — decentralizing the value of artificial intelligence.",
+    link: "https://www.virtuals.io",
+    linkLabel: "virtuals.io"
+  }
+];
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+// Build filter tabs
+const allCats = [...new Set(PROJECTS.flatMap(p => p.categories))].sort();
+const filterBar = document.getElementById('filter-bar');
+const allBtn = document.createElement('button');
+allBtn.className = 'ftab active';
+allBtn.dataset.filter = 'all';
+allBtn.textContent = 'All';
+filterBar.appendChild(allBtn);
+for (const c of allCats) {
+  const btn = document.createElement('button');
+  btn.className = 'ftab';
+  btn.dataset.filter = c;
+  btn.textContent = c;
+  filterBar.appendChild(btn);
+}
+
+filterBar.addEventListener('click', e => {
+  const btn = e.target.closest('.ftab');
+  if (!btn) return;
+  filterBar.querySelectorAll('.ftab').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  const f = btn.dataset.filter;
+  document.querySelectorAll('.ccard').forEach(card => {
+    const cats = card.dataset.categories.split(',');
+    card.style.display = (f === 'all' || cats.includes(f)) ? '' : 'none';
+  });
+});
+
+// Build cards
+const grid = document.getElementById('grid');
+for (const p of PROJECTS) {
+  const card = document.createElement('div');
+  card.className = 'ccard';
+  card.dataset.categories = p.categories.join(',');
+  if (p.coingeckoId) card.setAttribute('data-cgid', p.coingeckoId);
+
+  const tagsHtml = p.categories.map(c => {
+    const cls = p.tagClass || '';
+    return `<span class="ctag ${cls}">${esc(c)}</span>`;
+  }).join('');
+
+  const initials = p.name.slice(0,2).toUpperCase();
+
+  card.innerHTML = `
+    <div class="ccard-accent" style="background:${p.accent}"></div>
+    <div class="ccard-body">
+      <div class="ccard-header">
+        <div class="ccard-icon" style="background:linear-gradient(135deg,${p.accent}40,${p.accent}20);border:1px solid ${p.accent}50">${initials}</div>
+        <div class="ccard-meta">
+          <div class="ccard-name">${esc(p.name)}</div>
+          <div class="ccard-ticker">${esc(p.ticker)}</div>
+        </div>
+      </div>
+      <div class="ccard-tags">${tagsHtml}</div>
+      <div class="ccard-desc">${esc(p.desc)}</div>
+      <div class="ccard-why">
+        <strong>Why FRQNCY watches this</strong>
+        ${esc(p.why)}
+      </div>
+    </div>
+    <div class="ccard-footer">
+      <a href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" class="ccard-link">${esc(p.linkLabel)} →</a>
+      <span class="ccard-type">${esc(p.categories[0])}</span>
+    </div>
+  `;
+  grid.appendChild(card);
+}
+</script>
+  <script src="_market.js" defer></script>
+  <!-- Social auth awareness (Supabase) -->
+  <script src="/social-config.js"></script>
+  <script type="module" src="/social-auth.js"></script>
+</body>
+</html>
