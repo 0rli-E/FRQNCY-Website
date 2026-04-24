@@ -519,12 +519,33 @@ function resourceSection(nodeId, label, res = null) {
   <div class="empty"><p>FRQNCY is curating this space.<br>Resources coming soon.</p></div>
 </section>`;
   }
+  // At-a-glance summary: count by type + picks, render as a one-liner meta
+  // above the filter tabs. Gives readers the shape-of-this-topic signal
+  // before diving in.
+  const typeCounts = {};
+  let pickCount = 0;
+  for (const r of res) {
+    typeCounts[r.type] = (typeCounts[r.type] || 0) + 1;
+    if (r.frqncy_pick) pickCount++;
+  }
+  const typeOrder = ['person', 'book', 'org', 'media', 'place', 'course', 'tool', 'platform', 'app', 'website', 'reference', 'article'];
+  const prettyType = (t, n) => {
+    const plural = n === 1 ? '' : 's';
+    const labels = { person: `teacher${plural}`, book: `book${plural}`, org: `org${plural}`, media: n === 1 ? 'media' : 'media', place: n === 1 ? 'place' : 'places', course: `course${plural}`, tool: `tool${plural}`, platform: `platform${plural}`, app: `app${plural}`, website: `website${plural}`, reference: `reference${plural}`, article: `article${plural}` };
+    return `${n} ${labels[t] || t + plural}`;
+  };
+  const metaParts = [`${res.length} resource${res.length === 1 ? '' : 's'}`];
+  for (const t of typeOrder) if (typeCounts[t]) metaParts.push(prettyType(t, typeCounts[t]));
+  if (pickCount) metaParts.push(`<span style="color:var(--gold)">${pickCount} ✦ pick${pickCount === 1 ? '' : 's'}</span>`);
+  const glanceBar = `<div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">${metaParts.join(' &nbsp;·&nbsp; ')}</div>`;
+
   const types = [...new Set(res.map(r => r.type))];
   const tabs  = ['all', ...types].map(t =>
     `<button class="ftab${t === 'all' ? ' active' : ''}" data-filter="${t}">${t}</button>`
   ).join('');
   return `<section>
   <div class="section-label">${label}</div>
+  ${glanceBar}
   <div class="ftabs">${tabs}</div>
   <div class="rlist">${res.map(rcard).join('\n')}</div>
 </section>
@@ -1480,13 +1501,32 @@ for (const t of DATA.topics) {
 
 // ── Helper: entity index page builder (one alphabetical grid of cards) ──
 function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intro }) {
-  // Enrich each entity with appearance count + pick status for card display.
-  // Counts every appears_in entry (topics, domains, pillars) — reflects total
-  // visibility of the entity across the network.
+  // For each entity, derive the set of pillars it touches. A person teaching
+  // topics across Well-being and Metaphysics shows under BOTH Education and
+  // Research filters. Appears_in can contain topic, domain, or pillar ids —
+  // walk each to its ancestor pillar(s).
+  const domainById = new Map(DATA.domains.map(d => [d.id, d]));
+  const topicById  = new Map(DATA.topics.map(t => [t.id, t]));
+  const pillarIds  = new Set(DATA.pillars.map(p => p.id));
+  function pillarsFor(appearsIn) {
+    const pills = new Set();
+    for (const id of appearsIn || []) {
+      if (pillarIds.has(id)) { pills.add(id); continue; }
+      if (domainById.has(id)) { pills.add(domainById.get(id).pillar); continue; }
+      if (topicById.has(id))  {
+        const d = domainById.get(topicById.get(id).domain);
+        if (d) pills.add(d.pillar);
+      }
+    }
+    return [...pills];
+  }
+
+  // Enrich each entity with appearance count + pick status + pillar set.
   const enriched = entities.map(e => {
     const appCount = (e.appears_in || []).length;
     const picked = (e.picked_in || []).length > 0;
-    return { e, appCount, picked };
+    const pillars = pillarsFor(e.appears_in);
+    return { e, appCount, picked, pillars };
   });
   // Sort: picks first, then alphabetical.
   enriched.sort((a, b) => {
@@ -1498,7 +1538,7 @@ function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intr
 
   const pickCount = enriched.filter(x => x.picked).length;
 
-  const cards = enriched.map(({ e, appCount, picked }) => {
+  const cards = enriched.map(({ e, appCount, picked, pillars }) => {
     const slug = slugFn(e);
     const display = e.name || e.title;
     const desc = e.bio || '';
@@ -1507,13 +1547,28 @@ function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intr
     meta.push(eyebrow);
     if (appCount) meta.push(`${appCount} appearance${appCount === 1 ? '' : 's'}`);
     const pickBadge = picked ? ' <span style="color:var(--gold);font-size:0.54rem;letter-spacing:0.15em;border:1px solid rgba(196,151,58,0.5);padding:1px 5px;border-radius:2px;margin-left:0.35rem;vertical-align:middle">✦ PICK</span>' : '';
-    return `<a href="./${slug}/index.html" class="ncard">
+    // data-pillars attribute enables in-page filter JS at bottom of this page.
+    const pillarAttr = pillars.length ? ` data-pillars="${esc(pillars.join(' '))}"` : '';
+    return `<a href="./${slug}/index.html" class="ncard entity-card"${pillarAttr}>
   <div class="ncard-type">${esc(meta.join(' · '))}</div>
   <h3>${esc(display)}${pickBadge}</h3>
   ${snippet ? `<p>${esc(snippet)}${desc.length > 90 ? '…' : ''}</p>` : ''}
   <span class="ncard-arrow">→</span>
 </a>`;
   }).join('\n');
+
+  // Build pillar filter chips. Counts are visible up front; clicking filters
+  // to entities that touch that pillar.
+  const pillarCounts = new Map();
+  for (const { pillars } of enriched) {
+    for (const pid of pillars) pillarCounts.set(pid, (pillarCounts.get(pid) || 0) + 1);
+  }
+  const filterChipsHtml = DATA.pillars
+    .filter(p => pillarCounts.has(p.id))
+    .map(p => `<button class="ftab" data-pillar-filter="${esc(p.id)}">${esc(p.label)} <span style="opacity:0.55">· ${pillarCounts.get(p.id)}</span></button>`)
+    .join('');
+  const allChip = `<button class="ftab active" data-pillar-filter="all">All <span style="opacity:0.55">· ${enriched.length}</span></button>`;
+  const pickChip = pickCount ? `<button class="ftab" data-pillar-filter="picks" style="border-color:rgba(196,151,58,0.45);color:var(--gold)">✦ Picks only <span style="opacity:0.55">· ${pickCount}</span></button>` : '';
 
   const canonical = `https://frqncy.network${canonicalPath}`;
   const defaultIntro = `${entities.length} ${label.toLowerCase()} on the FRQNCY network — ${pickCount} ✦ picks first.`;
@@ -1537,10 +1592,38 @@ nav(`<a href="../index.html">FRQNCY</a><span class="sep">/</span><span>${esc(lab
   <p class="hero-desc">${esc(heroDesc)}</p>
 </div>
 <main>
+  ${filterChipsHtml || pickChip ? `<div class="ftabs" style="margin-bottom:1.75rem;flex-wrap:wrap">${allChip}${pickChip}${filterChipsHtml}</div>` : ''}
+  <div id="filter-empty" style="display:none;padding:3rem 1rem;text-align:center;color:var(--text-dim);font-size:0.85rem">No entities match this filter.</div>
   <section>
-    <div class="grid grid-sm">${cards}</div>
+    <div class="grid grid-sm" id="entity-grid">${cards}</div>
   </section>
 </main>
+<script>
+(function() {
+  const chips = document.querySelectorAll('[data-pillar-filter]');
+  const cards = document.querySelectorAll('.entity-card');
+  const emptyMsg = document.getElementById('filter-empty');
+  chips.forEach(chip => {
+    chip.addEventListener('click', () => {
+      chips.forEach(c => c.classList.remove('active'));
+      chip.classList.add('active');
+      const filter = chip.dataset.pillarFilter;
+      let visible = 0;
+      cards.forEach(card => {
+        const pillars = (card.dataset.pillars || '').split(' ');
+        const isPick = !!card.querySelector('.fpick, [style*="PICK"]') || card.innerHTML.includes('✦ PICK');
+        let show;
+        if (filter === 'all') show = true;
+        else if (filter === 'picks') show = isPick;
+        else show = pillars.includes(filter);
+        card.style.display = show ? '' : 'none';
+        if (show) visible++;
+      });
+      emptyMsg.style.display = visible === 0 ? 'block' : 'none';
+    });
+  });
+})();
+</script>
 ${FOOTER}
 </body></html>`;
 }
