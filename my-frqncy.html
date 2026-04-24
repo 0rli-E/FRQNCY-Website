@@ -592,7 +592,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
 // guard drawConstellation in case D3 fails to load.
 
 // ── State ──────────────────────────────────────────────────────────────
-let TOPICS = [], RESOURCES = [];
+let TOPICS = [], RESOURCES = [], ENTITIES = [];
 let selectedDomains = [];
 let selectedIntent = null;
 let selectedDepth = null;
@@ -612,12 +612,14 @@ const DOMAINS = [
 
 // ── Load data ─────────────────────────────────────────────────────────
 async function loadData() {
-  const [t, r] = await Promise.allSettled([
+  const [t, r, e] = await Promise.allSettled([
     fetch('search.json').then(x => x.json()),
     fetch('resources.json').then(x => x.json()),
+    fetch('entities.json').then(x => x.json()),
   ]);
   if (t.status === 'fulfilled') TOPICS = t.value;
   if (r.status === 'fulfilled') RESOURCES = r.value;
+  if (e.status === 'fulfilled') ENTITIES = e.value;
 }
 
 // ── Build domain tiles ─────────────────────────────────────────────────
@@ -749,19 +751,57 @@ function buildConstellationData(name) {
     }
   }
 
-  // Curated teachers — up to 5 people across selected domains
-  // Exclude names that look like URLs (e.g. "BobLazar.com")
+  // Curated teachers — up to 5 people across selected domains.
+  // Prefer picks; then cross-domain teachers (higher breadth across the
+  // network); then anyone. Exclude names that look like URLs.
   const looksLikeUrl = n => /\.(com|org|net|io|co|info|gov|edu|tv)$/i.test(n) || /^https?:\/\//i.test(n);
-  const teacherPool = RESOURCES.filter(r =>
-    r.type === 'person' && selectedDomains.includes(r.domain) && r.name && !looksLikeUrl(r.name)
-  );
-  const seen = new Set();
-  const teachers = [];
-  for (const r of teacherPool) {
-    if (seen.has(r.name)) continue;
-    seen.add(r.name);
-    teachers.push(r);
-    if (teachers.length >= 5) break;
+
+  // If entities.json loaded, score people across the user's selected domains
+  let teachers = [];
+  if (ENTITIES.length) {
+    // Map each domain label to its slug (search.json puts label in r.domain)
+    // Entities.json gives us topics[] and pick flag directly — much richer.
+    const selectedDomainSet = new Set(selectedDomains);
+    // Build a set of topic slugs that belong to the user's selected domains
+    const topicSlugsInSelectedDomains = new Set(
+      TOPICS.filter(t => selectedDomainSet.has(t.domain)).map(t => t.id)
+    );
+    const candidates = ENTITIES
+      .filter(e => e.type === 'person' && e.name && !looksLikeUrl(e.name))
+      .map(e => {
+        const overlap = (e.topics || []).filter(tid => topicSlugsInSelectedDomains.has(tid)).length;
+        return { e, overlap };
+      })
+      .filter(x => x.overlap > 0);
+    // Sort: picks first, then overlap count desc, then name
+    candidates.sort((a, b) => {
+      if (a.e.pick !== b.e.pick) return a.e.pick ? -1 : 1;
+      if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+      return a.e.name.localeCompare(b.e.name);
+    });
+    teachers = candidates.slice(0, 5).map(x => ({
+      name: x.e.name,
+      desc: x.e.desc,
+      url: x.e.url,          // internal profile URL (/people/[slug]/)
+      external: x.e.external,
+      type: 'person',
+      topicLabel: '',        // no single topic for entity-level teachers
+      pick: x.e.pick,
+      overlap: x.overlap,
+    }));
+  }
+  // Fallback: if entities.json didn't load, use the old resources.json path
+  if (!teachers.length) {
+    const teacherPool = RESOURCES.filter(r =>
+      r.type === 'person' && selectedDomains.includes(r.domain) && r.name && !looksLikeUrl(r.name)
+    );
+    const seen = new Set();
+    for (const r of teacherPool) {
+      if (seen.has(r.name)) continue;
+      seen.add(r.name);
+      teachers.push(r);
+      if (teachers.length >= 5) break;
+    }
   }
 
   // Start here — pick based on intent
@@ -1022,11 +1062,18 @@ function renderTeachers(teachers) {
   for (const t of teachers) {
     const a = document.createElement('a');
     a.className = 'teacher-card';
-    a.href = t.url || t.topicUrl || '#';
-    if (t.url) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+    const href = t.url || t.topicUrl || '#';
+    a.href = href;
+    // Internal FRQNCY URLs open in same tab; externals open in new tab.
+    const isInternal = href && href.startsWith('/');
+    if (href !== '#' && !isInternal) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+    // Build subtitle: for entity-level teachers we have overlap, otherwise topic.
+    const subtitle = t.overlap
+      ? `across ${t.overlap} of your topics${t.pick ? ' · ✦ PICK' : ''}`
+      : t.topicLabel ? `in ${t.topicLabel}` : '';
     a.innerHTML = `<div class="tc-type">${t.type || 'person'}</div>
       <div class="tc-name">${esc(t.name)}</div>
-      <div class="tc-topic">in ${esc(t.topicLabel || '')}</div>
+      ${subtitle ? `<div class="tc-topic">${esc(subtitle)}</div>` : ''}
       <div class="tc-desc">${esc(t.desc || '')}</div>`;
     grid.appendChild(a);
   }
@@ -1036,8 +1083,14 @@ function renderTeachers(teachers) {
 function renderStartHere(pick) {
   if (!pick) return;
   const card = document.getElementById('start-card');
-  card.href = pick.url || pick.topicUrl || '#';
-  if (pick.url) { card.target = '_blank'; card.rel = 'noopener noreferrer'; }
+  const href = pick.url || pick.topicUrl || '#';
+  card.href = href;
+  const isInternal = href && href.startsWith('/');
+  if (href !== '#' && !isInternal) {
+    card.target = '_blank'; card.rel = 'noopener noreferrer';
+  } else {
+    card.removeAttribute('target'); card.removeAttribute('rel');
+  }
   document.getElementById('start-badge').textContent = (pick.type || 'pick').toUpperCase();
   document.getElementById('start-title').textContent = pick.name;
   document.getElementById('start-desc').textContent = pick.desc || '';

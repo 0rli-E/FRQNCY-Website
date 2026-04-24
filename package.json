@@ -12,7 +12,8 @@
     "build:watch": "node generate-watch.js",
     "dev": "npm run build && echo '\\n▶  Run: npx serve . -p 3000\\n   then open http://localhost:3000'",
     "serve": "npx serve . -p 3000",
-    "lint": "node -e \"require('./content.json'); console.log('content.json ✓')\" && node -e \"require('./videos.json'); console.log('videos.json ✓')\" && node -e \"require('./courses.json'); console.log('courses.json ✓')\" && node -e \"require('./providers.json'); console.log('providers.json ✓')\" && echo 'All data files OK'"
+    "lint": "node -e \"require('./content.json'); console.log('content.json ✓')\" && node -e \"require('./videos.json'); console.log('videos.json ✓')\" && node -e \"require('./courses.json'); console.log('courses.json ✓')\" && node -e \"require('./providers.json'); console.log('providers.json ✓')\" && echo 'All data files OK'",
+    "check:links": "node scripts/check-links.mjs"
   },
   "dependencies": {
     "sharp": "^0.34.0"
