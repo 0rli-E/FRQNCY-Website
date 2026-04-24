@@ -82,6 +82,25 @@ Also emitted: **`entities.json`** — a slim unified index of all 527 first-clas
 - 1 place profile + index
 - Site-level pages (about, platform, podcast, etc.)
 
+### Entity hubs in the main nav
+
+The Discover dropdown in the site header now exposes all five entity hubs: **People / Books / Orgs / Media / Places**. Applied across all 9 root-level pages that carry the main nav. Readers can now jump straight from any page to the relevant hub.
+
+### Enriched entity index pages
+
+Each entity index (`/people/`, `/books/`, `/orgs/`, `/media/`, `/places/`) is now a discovery tool, not just an alphabetical dump:
+- **Picks first** — FRQNCY's curated selections surface at the top
+- **Appearance count** on each card — "5 appearances" signals how woven an entity is across the network
+- **✦ PICK badge** — gold, in the FRQNCY voice
+- Header tagline updates automatically: "82 teachers, founders, creators, and thinkers. Picks first."
+
+Current pick density on each hub:
+- `/people/` — 32 of 82 picked
+- `/books/` — 106 of 268 picked
+- `/orgs/` — 14 of 102 picked
+- `/media/` — 15 of 74 picked
+- `/places/` — 1 of 1 picked
+
 ### `generate.js` now reads the beds
 
 At build time, for each topic, the generator merges bed-sourced entities with leftover content.json resources (tools, courses, platforms, apps, websites, references, articles). Output HTML is byte-identical to what was there before, with the approved cleanups (Erin Claire Jones, Lyn Alden, Jovian Archive, etc.).

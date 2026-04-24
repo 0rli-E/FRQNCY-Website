@@ -1403,37 +1403,62 @@ for (const t of DATA.topics) {
 }
 
 // ── Helper: entity index page builder (one alphabetical grid of cards) ──
-function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, outPath }) {
-  const sorted = [...entities].sort((a, b) => (a.name || a.title).toLowerCase().localeCompare((b.name || b.title).toLowerCase()));
-  const cards = sorted.map(e => {
+function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intro }) {
+  // Enrich each entity with appearance count + pick status for card display.
+  // Counts every appears_in entry (topics, domains, pillars) — reflects total
+  // visibility of the entity across the network.
+  const enriched = entities.map(e => {
+    const appCount = (e.appears_in || []).length;
+    const picked = (e.picked_in || []).length > 0;
+    return { e, appCount, picked };
+  });
+  // Sort: picks first, then alphabetical.
+  enriched.sort((a, b) => {
+    if (a.picked !== b.picked) return a.picked ? -1 : 1;
+    const an = (a.e.name || a.e.title || '').toLowerCase();
+    const bn = (b.e.name || b.e.title || '').toLowerCase();
+    return an.localeCompare(bn);
+  });
+
+  const pickCount = enriched.filter(x => x.picked).length;
+
+  const cards = enriched.map(({ e, appCount, picked }) => {
     const slug = slugFn(e);
     const display = e.name || e.title;
     const desc = e.bio || '';
     const snippet = desc.slice(0, 90);
+    const meta = [];
+    meta.push(eyebrow);
+    if (appCount) meta.push(`${appCount} appearance${appCount === 1 ? '' : 's'}`);
+    const pickBadge = picked ? ' <span style="color:var(--gold);font-size:0.54rem;letter-spacing:0.15em;border:1px solid rgba(196,151,58,0.5);padding:1px 5px;border-radius:2px;margin-left:0.35rem;vertical-align:middle">✦ PICK</span>' : '';
     return `<a href="./${slug}/index.html" class="ncard">
-  <div class="ncard-type">${esc(eyebrow)}</div>
-  <h3>${esc(display)}</h3>
+  <div class="ncard-type">${esc(meta.join(' · '))}</div>
+  <h3>${esc(display)}${pickBadge}</h3>
   ${snippet ? `<p>${esc(snippet)}${desc.length > 90 ? '…' : ''}</p>` : ''}
   <span class="ncard-arrow">→</span>
 </a>`;
   }).join('\n');
 
   const canonical = `https://frqncy.network${canonicalPath}`;
+  const defaultIntro = `${entities.length} ${label.toLowerCase()} on the FRQNCY network — ${pickCount} ✦ picks first.`;
+  const heroDesc = intro || defaultIntro;
+  const metaDesc = `${entities.length} ${label.toLowerCase()} curated on the FRQNCY network.`;
+
   const ld = {
     '@context': 'https://schema.org',
     '@type': 'CollectionPage',
     name: `${label} — FRQNCY Network`,
-    description: `${entities.length} ${label.toLowerCase()} on the FRQNCY network.`,
+    description: metaDesc,
     url: canonical,
     isPartOf: SITE_REF,
   };
 
-  return head(label, null, `${entities.length} ${label.toLowerCase()} on the FRQNCY network.`, canonical, ld, null) +
+  return head(label, null, metaDesc, canonical, ld, null) +
 nav(`<a href="../index.html">FRQNCY</a><span class="sep">/</span><span>${esc(label)}</span>`) +
 `<div class="hero">
   <div class="hero-eyebrow">Network</div>
   <h1>${esc(label)}</h1>
-  <p class="hero-desc">${entities.length} ${esc(label.toLowerCase())} on the FRQNCY network.</p>
+  <p class="hero-desc">${esc(heroDesc)}</p>
 </div>
 <main>
   <section>
@@ -1457,43 +1482,15 @@ if (PEOPLE) {
     fs.writeFileSync(path.join(PEOPLE_OUT, slug, 'index.html'), personPage(p));
     personCount++;
   }
-  // People index — alphabetical grid of all profiles
-  const peopleSorted = [...PEOPLE.people].sort((a, b) => a.name.toLowerCase().localeCompare(b.name.toLowerCase()));
-  const cards = peopleSorted.map(p => {
-    const slug = personSlug(p);
-    const snippet = (p.bio || '').slice(0, 90);
-    return `<a href="./${slug}/index.html" class="ncard">
-  <div class="ncard-type">Person</div>
-  <h3>${esc(p.name)}</h3>
-  ${snippet ? `<p>${esc(snippet)}${p.bio && p.bio.length > 90 ? '…' : ''}</p>` : ''}
-  <span class="ncard-arrow">→</span>
-</a>`;
-  }).join('\n');
-
-  const indexCanonical = 'https://frqncy.network/people/';
-  const indexLd = {
-    '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: 'People — FRQNCY Network',
-    description: `The people FRQNCY points to — ${PEOPLE.people.length} teachers, founders, creators, and thinkers.`,
-    url: indexCanonical,
-    isPartOf: SITE_REF,
-  };
-  const indexHtml = head('People', null, `The people FRQNCY points to — ${PEOPLE.people.length} teachers, founders, creators, and thinkers across the network.`, indexCanonical, indexLd, null) +
-nav(`<a href="../index.html">FRQNCY</a><span class="sep">/</span><span>People</span>`) +
-`<div class="hero">
-  <div class="hero-eyebrow">Network</div>
-  <h1>People</h1>
-  <p class="hero-desc">The humans FRQNCY points to — ${PEOPLE.people.length} teachers, founders, creators, and thinkers across the network.</p>
-</div>
-<main>
-  <section>
-    <div class="grid grid-sm">${cards}</div>
-  </section>
-</main>
-${FOOTER}
-</body></html>`;
-  fs.writeFileSync(path.join(PEOPLE_OUT, 'index.html'), indexHtml);
+  fs.writeFileSync(path.join(PEOPLE_OUT, 'index.html'),
+    entityIndexPage({
+      label: 'People',
+      eyebrow: 'Person',
+      entities: PEOPLE.people,
+      slugFn: personSlug,
+      canonicalPath: '/people/',
+      intro: `The humans FRQNCY points to — ${PEOPLE.people.length} teachers, founders, creators, and thinkers. Picks first.`,
+    }));
   console.log(`  people: ${personCount} profiles + 1 index → ./people/`);
 }
 
