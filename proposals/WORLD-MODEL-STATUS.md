@@ -1,23 +1,59 @@
 # FRQNCY World Model — Current Status
 
-**As of 2026-04-24.**
+**As of 2026-04-24 (updated).**
 
-The shift from "content.json only" to "content.json + four first-class beds" is live in `generate.js`. Every build reads from the beds and composes them with the remaining resource types.
+The shift from "content.json only" to "content.json + five first-class beds" is live in `generate.js`. Every build reads from the beds and composes them with the remaining resource types. The website now shows cross-domain connections computed from shared entities.
 
 ---
 
 ## What's live now
 
-### Four first-class beds at the repo root
+### Five first-class beds at the repo root
 
 | File | Entries | What's in it |
 |---|---|---|
-| `people.json` | 35 humans | Teachers, founders, creators, thinkers with structured bios, topic links, pick status, and optional `channels` arrays for humans who channel named entities |
+| `people.json` | **82 humans** | Teachers, founders, creators, thinkers with structured bios, topic links, pick status, and optional `channels` arrays for humans who channel named entities |
 | `books.json` | 268 books | Canonical title, author (p-id link or string), URL, one bio per book, topic links |
 | `orgs.json` | 102 orgs | Name, founder (p-id or string), URL, bio, topic links |
 | `media.json` | 74 media | Podcasts, channels, newsletters, films, publications with creator links |
+| `places.json` | 1 place (Intaaya) | Physical venues — name, location, URL, bio, topic links, teachers_in_residence |
 
-**467 first-class entities** across the four beds.
+**527 first-class entities** across the five beds.
+
+### People-bed expansion (waves 2 + 3)
+
+**Wave 2 (27 added):** Swami Muktananda, Rhonda Byrne, Gurumayi Chidvilasananda, Sri Swami Satchidananda, Sean Carroll, Peter Drucker, Paul Selig, Napoleon Hill, Michael A. Singer, Lao Tzu, Kevin Trudeau, Geshe Michael Roach, Dale Carnegie, Carlo Rovelli, Carl Sagan, Sylvia Earle, Manly P. Hall, Eileen McKusick, Swami Kriyananda, Steven Greer, Bill Ryan & Kerry Cassidy, Krista Tippett, Ryan Holiday, Sugata Mitra, Roger Ebert, Grant Sanderson, Gwern Branwen.
+
+**Wave 3 (20 added — cultural heavyweights with single-book presence):** Eckhart Tolle, Viktor Frankl, James Nestor, Fritjof Capra, Peter Wohlleben, Richard Dawkins, Walter Isaacson, adrienne maree brown, Robin Wall Kimmerer, Neville Goddard, Deepak Chopra, Malcolm Gladwell, Satoshi Nakamoto, Andreas Antonopoulos, Balaji Srinivasan, Anita Moorjani, Helen Schucman, Hermes Trismegistus, Three Initiates, Edgar Cayce.
+
+**Cumulative bed-linked references:**
+- Books with author → p-id: **74/268 (28%)** — up from 8 → 21 → 54 → 74
+- Orgs with founder → p-id: **7/102** — every org with an identifiable founder now linked
+- Media with creator → p-id: **13/74**
+
+### New user-visible feature: "Connected through the network"
+
+Every topic page now computes a **related topics section based on shared entities**. If Meditation and Vibration share Dr. David R. Hawkins (books) and Masaru Emoto, they're connected. If Meditation and Permaculture share Intaaya (place), they're connected. The section ranks topics by overlap count and shows "N shared" on each card. **35 of 134 topic pages** now have meaningful cross-network connections (up from 31 after wave 2) — and the density of connections on each page has grown as well.
+
+The existing "More in [Domain]" section still renders, deduped against the new connections so no topic appears twice.
+
+### Network map now reads from the beds too
+
+`v2/explore.html` used to carry its own hand-maintained `NODES` / `RAW` / `NODE_URL` arrays — a third source of truth. That's gone. The map now fetches `v2/explore-data.json` at runtime. On every build, `generate.js` syncs that file with content.json + places.json:
+
+- Adds any new pillar, domain, topic, or place automatically
+- Adds primary pillar→domain and domain→topic links automatically
+- Adds place→topic links from `places.json` `appears_in`
+- **Preserves hand-curated cross-pillar links and map-specific short descriptions**
+- **Flags ghost nodes** (in the map but not in content.json or places.json) in a `$ghost_nodes` field for manual review
+
+First sync caught real drift: `t-humandesign` was missing from the map (now added). Four ghost topics (`t-filestorage`, `t-stocks`, `t-commodities`, `t-world-models`) that existed on the map but not in content.json have been **removed** — if you want them back, add them to content.json and they'll reappear on the map automatically.
+
+### Voice linter at build time
+
+Every `node generate.js` run scans all bios (across the five beds) and all descriptions (on topics/domains/pillars/resources in content.json) against the voice doc's banish list: *wellness, holistic, authentic self, vibes, disrupt, game changing, high vibe, join the revolution,* and more. Word-boundary matched so "vibration" doesn't false-trip on "vibes." Proper-noun phrases like Savory's "Holistic Planned Grazing" are allowlisted. Non-fatal — the build completes either way, but drift is visible.
+
+**Current state: `voice: clean — no banished words across beds or content.json descs`.**
 
 ### `generate.js` now reads the beds
 
@@ -25,36 +61,18 @@ At build time, for each topic, the generator merges bed-sourced entities with le
 
 Fallback: if any bed file is missing, the generator falls back to pure-content.json mode. Safe default.
 
-### Author/founder/creator links
-
-- **21 books** now link their author to a `p-` id (up from 8).
-- **8 founders** in orgs (Sadhguru → Isha Foundation being the new one; 7 others from the original extraction with founders still as strings).
-- **8 media creators** now link to `p-` ids (up from 0).
-
 ---
 
-## Who's in the people bed (35)
+## What's still plain strings (remaining work)
 
-### Originally extracted (23)
-Alan Watts, Arizona Wilder, Barbara Marciniak (channels The Pleiadians), Bob Lazar, Darryl Anka (channels Bashar), Dolores Cannon, Dr. Joe Dispenza, Emma Grede, Erin Claire Jones, George Green, Graham Hancock, Jenna Zoe, Joe McMoneagle, Karen Curry Parker, Lyn Alden, Marshall Rosenberg, Osho, Ra Uru Hu, Randall Carlson, Rupert Spira, Sai Maa, Sarah (Medical Intuitive), Birgit Fischer.
+### Authors in books.json
+**194 books** still reference their author as a plain string. These are the long tail — mostly single-book authors who weren't culturally load-bearing enough for wave 2 or wave 3. Each can be promoted to a `p-` link by adding the person to `people.json` and flipping one field. No code changes needed.
 
-### Just added (12 priority)
-Andrew Huberman, Bruce Schneier, Dr. David R. Hawkins, Masaru Emoto, Michael Pollan, Naval Ravikant, Paramhansa Yogananda, Paul Graham, Rupert Sheldrake, Sadhguru, Thich Nhat Hanh, Vitalik Buterin.
-
----
-
-## What's still plain strings (future A-work)
-
-### Authors in books.json with 2+ appearances (top candidates)
-Swami Muktananda (3), Rhonda Byrne (3), Gurumayi Chidvilasananda (3), Sri Swami Satchidananda, Sean Carroll, Peter Drucker, Paul Selig, Napoleon Hill, Michael A. Singer, Lao Tzu, Kevin Trudeau, Geshe Michael Roach, Dale Carnegie, Carlo Rovelli, Carl Sagan — 2 books each.
-
-### Founders in orgs.json still as strings
-Swami Kriyananda, Eileen McKusick, Manly P. Hall, Bill Ryan & Kerry Cassidy, Sylvia Earle, Steven Greer.
+### Founders in orgs.json
+Zero remaining. Every org with an identifiable founder in the data is now linked.
 
 ### Creators in media.json still as strings
-Joe Rogan (if added), Tim Ferriss, Krista Tippett, Joshua Fields Millburn & Ryan Nicodemus, Ryan Sean Adams & David Hoffman, Joe McMoneagle (already linked as person), Ryan Holiday, Lex Fridman.
-
-Each of these is a one-line update away from being linked.
+Joshua Fields Millburn & Ryan Nicodemus (The Minimalists — a partnership), Ryan Sean Adams & David Hoffman (Bankless — a partnership). Partnerships are harder to model as single-person entities; defer until we decide whether to split them or allow multi-person creator arrays.
 
 ---
 

@@ -1,0 +1,44 @@
+{
+  "$schema_version": 1,
+  "$purpose": "First-class places list for FRQNCY — physical venues where practices happen. Retreats, sanctuaries, spaces, future FRQNCY venues.",
+  "$generated": "2026-04-24",
+  "$source": "Extracted from v2/explore.html (places block). Currently seeds: Intaaya.",
+  "$id_prefix": "pl- (places) to avoid collision with p- (people), b- (books), o- (orgs), m- (media). The older explore.html uses p- for places; that legacy reference will be migrated in a follow-up pass.",
+  "$schema": {
+    "id": "Stable identifier, 'pl-' prefix",
+    "name": "Canonical place name",
+    "url": "External canonical URL (venue's own site)",
+    "location": "Human-readable location ('Nusa Penida, Bali, Indonesia')",
+    "bio": "One-paragraph description in the FRQNCY voice",
+    "appears_in": "Array of topic/domain/pillar ids where this place should appear on the site",
+    "picked_in": "Array of bucket ids where the place gets the ✦ FRQNCY PICK badge",
+    "teachers_in_residence": "(optional) Array of p-ids — linking humans who teach at this place",
+    "practices": "(optional) Array of topic slugs describing what the place hosts — currently implicit via appears_in"
+  },
+  "places": [
+    {
+      "id": "pl-intaaya",
+      "name": "Intaaya",
+      "url": "https://intaaya.com",
+      "location": "Nusa Penida, Bali, Indonesia",
+      "bio": "Regenerative retreat sanctuary on Nusa Penida, near Bali. Off-grid, farm-to-table, living to the rhythm of nature. A living example of the Sanctuary pillar — the physical extension of the FRQNCY network.",
+      "appears_in": [
+        "network-state",
+        "d-wellbeing",
+        "d-lifestyle",
+        "t-meditation",
+        "t-yoga",
+        "t-soundheal",
+        "t-breathwork",
+        "t-sustliving",
+        "t-permaculture",
+        "t-regenbiz",
+        "t-community"
+      ],
+      "picked_in": [
+        "network-state"
+      ],
+      "teachers_in_residence": []
+    }
+  ]
+}

@@ -28,6 +28,7 @@ const PEOPLE = loadBed('people.json');
 const BOOKS  = loadBed('books.json');
 const ORGS   = loadBed('orgs.json');
 const MEDIA  = loadBed('media.json');
+const PLACES = loadBed('places.json');
 
 // ── Provider helpers ─────────────────────────────────────────────
 const providerMap = new Map(PROVIDERS.map(p => [p.id, p]));
@@ -91,10 +92,46 @@ function orgToCard(o, nid) {
 function mediaToCard(m, nid) {
   return { type: 'media', title: m.name, url: m.url, desc: m.bio, frqncy_pick: (m.picked_in||[]).includes(nid) };
 }
+function placeToCard(pl, nid) {
+  // Place cards include location in the description for context.
+  const locPrefix = pl.location ? `${pl.location} — ` : '';
+  return { type: 'place', title: pl.name, url: pl.url, desc: locPrefix + pl.bio, frqncy_pick: (pl.picked_in||[]).includes(nid) };
+}
+
+// ── Related topics computed from shared entities across the beds ──
+// For a given topic, finds other topics that share people, books, orgs, media,
+// or places with it. Returns topics sorted by overlap count (most shared first).
+function relatedTopicsByEntities(topicId) {
+  const counts = new Map();
+  const bump = (otherTopicId) => {
+    if (!otherTopicId || !otherTopicId.startsWith('t-')) return; // topics only, not domains/pillars
+    if (otherTopicId === topicId) return;
+    counts.set(otherTopicId, (counts.get(otherTopicId) || 0) + 1);
+  };
+  const scan = (arr) => {
+    if (!arr) return;
+    for (const e of arr) {
+      if ((e.appears_in || []).includes(topicId)) {
+        for (const other of e.appears_in) bump(other);
+      }
+    }
+  };
+  if (PEOPLE) scan(PEOPLE.people);
+  if (BOOKS)  scan(BOOKS.books);
+  if (ORGS)   scan(ORGS.orgs);
+  if (MEDIA)  scan(MEDIA.media);
+  if (PLACES) scan(PLACES.places);
+
+  const topicById = new Map(DATA.topics.map(t => [t.id, t]));
+  return [...counts.entries()]
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .map(([tid, count]) => ({ topic: topicById.get(tid), count }))
+    .filter(x => x.topic);
+}
 
 function resourcesFor(nid) {
   const raw = DATA.resources[nid] || [];
-  if (!PEOPLE && !BOOKS && !ORGS && !MEDIA) return raw; // beds not loaded, passthrough
+  if (!PEOPLE && !BOOKS && !ORGS && !MEDIA && !PLACES) return raw; // beds not loaded, passthrough
 
   const out = [];
   const seen = new Set();
@@ -122,6 +159,18 @@ function resourcesFor(nid) {
     }
     // Bed types where the bed match failed silently drop — the bed is authoritative.
   }
+
+  // Places don't have pre-existing content.json entries — append any whose
+  // appears_in includes this node.
+  if (PLACES) {
+    for (const pl of PLACES.places) {
+      if ((pl.appears_in||[]).includes(nid)) {
+        const k = `place|${normU(pl.url)}`;
+        if (!seen.has(k)) { out.push(placeToCard(pl, nid)); seen.add(k); }
+      }
+    }
+  }
+
   return out;
 }
 function videosFor(nid)    { return (VIDEOS[nid] || []).filter(v => { const id = videoId(v); return id && !id.startsWith('PLACEHOLDER'); }); }
@@ -644,7 +693,25 @@ function topicPage(t) {
   const pillar = pillarMap.get(domain.pillar);
 
   // Related topics in same domain (exclude current, max 6)
-  const related = (topicsByDomain.get(t.domain) || []).filter(r => r.id !== t.id).slice(0, 6);
+  // ── Connected through the network — topics linked by shared bed entities ──
+  const connected = relatedTopicsByEntities(t.id).slice(0, 6);
+  const connectedIds = new Set(connected.map(x => x.topic.id));
+  const connectedSection = connected.length ? `<section>
+    <div class="section-label">Connected through the network</div>
+    <div class="grid grid-sm">
+      ${connected.map(({topic: r, count}) => `<a href="../${r.slug}/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; ${count} shared</div>
+  <h3>${esc(r.label)}</h3>
+  ${r.desc ? `<p>${esc(r.desc.slice(0, 70))}…</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`).join('\n')}
+    </div>
+  </section>` : '';
+
+  // ── More in [Domain] — same-domain topics, excluding any already shown in "Connected" ──
+  const related = (topicsByDomain.get(t.domain) || [])
+    .filter(r => r.id !== t.id && !connectedIds.has(r.id))
+    .slice(0, 6);
   const relatedCards = related.length ? `<section>
     <div class="section-label">More in ${esc(domain.label)}</div>
     <div class="grid grid-sm">
@@ -703,14 +770,218 @@ nav(crumb) +
   ${vidSection}
   ${courseCallout}
   ${resourceSection(t.id, 'Curated Resources', res)}
+  ${connectedSection}
   ${relatedCards}
 </main>
 ${FOOTER}
 </body></html>`;
 }
 
+// ── EXPLORE-DATA SYNC ────────────────────────────────────────────
+// Keep v2/explore-data.json in sync with content.json + places.json.
+// Preserves hand-curated map topology (cross-pillar links, map-specific
+// short descs, radius sizes) while adding any new entities automatically.
+// Flags ghost entries (in the map but not in content/places) for review.
+function syncExploreData() {
+  const exploreDataPath = path.join(OUT, 'explore-data.json');
+  if (!fs.existsSync(exploreDataPath)) {
+    console.warn('  explore-data.json not found — skipping map sync');
+    return;
+  }
+  const data = JSON.parse(fs.readFileSync(exploreDataPath, 'utf8'));
+  const existingById = new Map(data.nodes.map(n => [n.id, n]));
+  const existingLinks = new Set(data.links.map(([s, t]) => `${s}|${t}`));
+
+  // ── Nodes ──
+  // Add any pillar/domain/topic/place missing from the map.
+  const additions = [];
+  for (const p of DATA.pillars) {
+    if (!existingById.has(p.id)) {
+      data.nodes.push({ id: p.id, label: p.label, type: 'main', r: 30 });
+      additions.push(`+ pillar ${p.id}`);
+    }
+  }
+  for (const d of DATA.domains) {
+    if (!existingById.has(d.id)) {
+      data.nodes.push({ id: d.id, label: d.label, type: 'cluster', r: 23 });
+      additions.push(`+ domain ${d.id}`);
+    }
+  }
+  for (const t of DATA.topics) {
+    if (!existingById.has(t.id)) {
+      data.nodes.push({ id: t.id, label: t.label, type: 'topic', r: 12 });
+      additions.push(`+ topic ${t.id}`);
+    }
+  }
+  if (PLACES) {
+    for (const pl of PLACES.places) {
+      // Places historically used p- prefix in explore.html; we keep that convention
+      // in the map's node id. Our world-model bed uses pl- to avoid collision with people.
+      const mapId = pl.id.replace(/^pl-/, 'p-');
+      if (!existingById.has(mapId)) {
+        const loc = pl.location ? ` — ${pl.location}` : '';
+        data.nodes.push({ id: mapId, label: pl.name, type: 'topic', r: 14, desc: pl.bio + (loc ? '' : '') });
+        additions.push(`+ place ${mapId}`);
+      }
+    }
+  }
+
+  // ── Links ──
+  // Add the primary pillar→domain link from content.json (hand-curated cross-pillar links preserved).
+  for (const d of DATA.domains) {
+    const key = `${d.pillar}|${d.id}`;
+    if (!existingLinks.has(key)) {
+      data.links.push([d.pillar, d.id]);
+      existingLinks.add(key);
+      additions.push(`+ link ${key}`);
+    }
+  }
+  // Add domain→topic for every topic.
+  for (const t of DATA.topics) {
+    const key = `${t.domain}|${t.id}`;
+    if (!existingLinks.has(key)) {
+      data.links.push([t.domain, t.id]);
+      existingLinks.add(key);
+      additions.push(`+ link ${key}`);
+    }
+  }
+  // Add place→topic for every topic a place appears in.
+  if (PLACES) {
+    for (const pl of PLACES.places) {
+      const mapId = pl.id.replace(/^pl-/, 'p-');
+      for (const aid of pl.appears_in || []) {
+        if (!aid.startsWith('t-')) continue; // skip pillars/domains — topology handled separately
+        const key = `${mapId}|${aid}`;
+        if (!existingLinks.has(key)) {
+          data.links.push([mapId, aid]);
+          existingLinks.add(key);
+          additions.push(`+ link ${key}`);
+        }
+      }
+    }
+  }
+
+  // ── URLs ──
+  // Fill in missing node_urls for pillars, domains, topics.
+  for (const p of DATA.pillars) {
+    if (!data.node_urls[p.id]) data.node_urls[p.id] = `${p.slug}/index.html`;
+  }
+  for (const d of DATA.domains) {
+    if (!data.node_urls[d.id]) data.node_urls[d.id] = `${d.slug}/index.html`;
+  }
+  for (const t of DATA.topics) {
+    if (!data.node_urls[t.id]) data.node_urls[t.id] = `${t.slug}/index.html`;
+  }
+  if (PLACES) {
+    for (const pl of PLACES.places) {
+      const mapId = pl.id.replace(/^pl-/, 'p-');
+      if (!data.node_urls[mapId]) data.node_urls[mapId] = pl.url;
+    }
+  }
+
+  // ── Ghost detection (in map but not in content/places) ──
+  const validIds = new Set([
+    'frqncy',
+    ...DATA.pillars.map(p => p.id),
+    ...DATA.domains.map(d => d.id),
+    ...DATA.topics.map(t => t.id),
+    ...(PLACES ? PLACES.places.map(pl => pl.id.replace(/^pl-/, 'p-')) : []),
+  ]);
+  const ghosts = data.nodes.filter(n => !validIds.has(n.id));
+
+  // Mark sync state
+  data.$synced_with_beds = true;
+  data.$last_sync = new Date().toISOString().slice(0, 10);
+  if (ghosts.length) {
+    data.$ghost_nodes = ghosts.map(g => ({ id: g.id, label: g.label, reason: 'In explore map but not in content.json or places.json — review whether to keep or remove.' }));
+  } else {
+    delete data.$ghost_nodes;
+  }
+
+  fs.writeFileSync(exploreDataPath, JSON.stringify(data, null, 2));
+
+  if (additions.length) {
+    console.log(`  map: ${additions.length} additions to explore-data.json`);
+    for (const a of additions.slice(0, 10)) console.log(`    ${a}`);
+    if (additions.length > 10) console.log(`    ...and ${additions.length - 10} more`);
+  }
+  if (ghosts.length) {
+    console.log(`  map: ${ghosts.length} ghost nodes in map but not in beds — see explore-data.json $ghost_nodes`);
+  }
+}
+
+// ── VOICE LINTER ─────────────────────────────────────────────────
+// Scans all bios across the beds plus content.json descs for banished words
+// from the FRQNCY voice doc. Non-fatal — reports hits at build time so drift
+// becomes visible. Word-boundary matched to reduce false positives (e.g.,
+// "vibes" does not trip on "vibration" or "vibrational").
+const BANISHED = [
+  // Wellness / spiritual clichés
+  'wellness', 'self care', 'do the work', 'holistic', 'authentic self',
+  'vibes', 'abundance mindset', 'love-n-light', 'high vibe',
+  // Tech / startup clichés
+  'disrupt', 'disruptive', 'next gen', 'next-gen', 'game changing', 'game-changing',
+  'join the revolution', 'join the movement',
+  // Additional flagged in prior voice audits
+  'signal over noise', 'grindset', 'synergy', 'level up', 'unlock your',
+];
+// Proper-noun phrases that contain banished words but are legitimate (brand/methodology names).
+// If a hit falls inside one of these, it's skipped.
+const VOICE_ALLOWLIST = [
+  'Holistic Planned Grazing', // Allan Savory's named methodology
+];
+// Build a single regex with word boundaries.
+function esc_re(s) { return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&'); }
+const BANISHED_RE = new RegExp(`\\b(${BANISHED.map(esc_re).join('|')})\\b`, 'gi');
+
+function lintVoice() {
+  const hits = [];
+  const check = (origin, text) => {
+    if (!text || typeof text !== 'string') return;
+    // Mask allowlisted phrases so banished words inside them aren't flagged
+    let masked = text;
+    for (const phrase of VOICE_ALLOWLIST) {
+      masked = masked.split(phrase).join('_'.repeat(phrase.length));
+    }
+    const matches = masked.match(BANISHED_RE);
+    if (matches) for (const m of matches) hits.push({ origin, term: m, snippet: text.length > 80 ? text.slice(0, 80) + '…' : text });
+  };
+
+  // Beds
+  if (PEOPLE) for (const p of PEOPLE.people) check(`people[${p.id}].bio`, p.bio);
+  if (BOOKS)  for (const b of BOOKS.books)   check(`books[${b.id}].bio`,  b.bio);
+  if (ORGS)   for (const o of ORGS.orgs)     check(`orgs[${o.id}].bio`,   o.bio);
+  if (MEDIA)  for (const m of MEDIA.media)   check(`media[${m.id}].bio`,  m.bio);
+  if (PLACES) for (const pl of PLACES.places) check(`places[${pl.id}].bio`, pl.bio);
+
+  // content.json descs on topics, domains, pillars, and resources
+  for (const t of DATA.topics)  check(`topic[${t.id}].desc`, t.desc);
+  for (const d of DATA.domains) check(`domain[${d.id}].desc`, d.desc);
+  for (const p of DATA.pillars) check(`pillar[${p.id}].desc`, p.desc);
+  for (const [bucketId, items] of Object.entries(DATA.resources)) {
+    for (const r of items || []) {
+      check(`${bucketId} > ${r.title || '(untitled)'}.desc`, r.desc);
+    }
+  }
+
+  if (hits.length === 0) {
+    console.log('  voice: clean — no banished words across beds or content.json descs');
+    return;
+  }
+  console.log(`  voice: ${hits.length} banished-word hits across the content:`);
+  const byTerm = {};
+  for (const h of hits) (byTerm[h.term.toLowerCase()] = byTerm[h.term.toLowerCase()] || []).push(h);
+  for (const [term, list] of Object.entries(byTerm).sort((a,b)=>b[1].length-a[1].length)) {
+    console.log(`    "${term}" × ${list.length}`);
+    for (const h of list.slice(0, 3)) console.log(`      ${h.origin} — "${h.snippet}"`);
+    if (list.length > 3) console.log(`      ...and ${list.length - 3} more`);
+  }
+}
+
 // ── RUN ──────────────────────────────────────────────────────────
 mkdirp(OUT);
+syncExploreData();
+lintVoice();
 let count = 0;
 
 for (const p of DATA.pillars) {

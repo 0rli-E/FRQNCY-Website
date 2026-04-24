@@ -1,11 +1,23 @@
 {
-  "$schema_version": 3,
+  "$schema_version": 5,
   "$purpose": "Draft first-class people list for FRQNCY. This is a PROPOSAL — not wired into the live site. Review, push back on anything wrong, and we refine.",
   "$generated": "2026-04-24",
-  "$updated": "2026-04-24 — added 12 priority people (Huberman, Sadhguru, Hawkins, Buterin, Ravikant, Graham, Schneier, Thich Nhat Hanh, Sheldrake, Emoto, Pollan, Yogananda). Total: 35.",
+  "$updated": "2026-04-24 — wave 3: added 20 culturally significant single-book authors. Total: 82.",
   "$source": "Extracted from content.json — every resource with type:'person' (25 rows, 23 unique people after deduping Rupert Spira and Osho who each appeared twice).",
   "$reconciliation_notes": "Channeling humans now carry a 'channels' array listing the entities they channel, each with name and description. This keeps the human as the canonical person while giving the channeled entity its own structure — easy to migrate to a standalone channels.json later if we want.",
   "people": [
+    {
+      "id": "p-adrienne-maree-brown",
+      "name": "adrienne maree brown",
+      "url": "https://adriennemareebrown.net",
+      "bio": "Writer and facilitator whose Emergent Strategy drew from Octavia Butler to map how movements, communities, and change actually unfold — nonlinear, relational, and alive. Essential reading for anyone building cooperatively.",
+      "appears_in": [
+        "d-society"
+      ],
+      "picked_in": [
+        "d-society"
+      ]
+    },
     {
       "id": "p-alan-watts",
       "name": "Alan Watts",
@@ -15,6 +27,18 @@
         "d-meta"
       ],
       "picked_in": []
+    },
+    {
+      "id": "p-andreas-antonopoulos",
+      "name": "Andreas Antonopoulos",
+      "url": "https://aantonop.com",
+      "bio": "Educator and advocate whose Mastering Bitcoin and The Internet of Money books, together with his decades of talks, shaped how a generation understood Bitcoin's moral and technical architecture.",
+      "appears_in": [
+        "t-crypto"
+      ],
+      "picked_in": [
+        "t-crypto"
+      ]
     },
     {
       "id": "p-andrew-huberman",
@@ -29,6 +53,17 @@
       ]
     },
     {
+      "id": "p-anita-moorjani",
+      "name": "Anita Moorjani",
+      "url": "https://www.anitamoorjani.com",
+      "bio": "Author of Dying to Be Me, whose recovery from end-stage cancer after a profound near-death experience became one of the most widely shared first-person accounts of what love and self-acceptance can do.",
+      "appears_in": [
+        "t-med",
+        "t-nde"
+      ],
+      "picked_in": []
+    },
+    {
       "id": "p-arizona-wilder",
       "name": "Arizona Wilder",
       "url": "https://podcasts.apple.com/si/podcast/redesigning-destiny/id1383945584",
@@ -38,6 +73,20 @@
       ],
       "picked_in": [],
       "needs_review": "URL is her podcast feed, not a personal site. A canonical URL would be better if available."
+    },
+    {
+      "id": "p-balaji-srinivasan",
+      "name": "Balaji Srinivasan",
+      "url": "https://balajis.com",
+      "bio": "Technologist, investor, and author of The Network State — the foundational text on starting a new kind of country online before building its physical presence. His work maps the organising principle behind the Sanctuary pillar.",
+      "appears_in": [
+        "network-state",
+        "t-dao"
+      ],
+      "picked_in": [
+        "network-state",
+        "t-dao"
+      ]
     },
     {
       "id": "p-barbara-marciniak",
@@ -56,6 +105,16 @@
           "description": "A collective of multidimensional beings from the Pleiades star system. Their transmissions through Barbara Marciniak since 1988 cover DNA activation, timelines, planetary awakening, and the deeper game being played on Earth — demanding, dense, and among the most widely read channeled material published."
         }
       ]
+    },
+    {
+      "id": "p-bill-ryan-kerry-cassidy",
+      "name": "Bill Ryan & Kerry Cassidy",
+      "url": "https://projectcamelotportal.com",
+      "bio": "Since 2006 they have filmed hundreds of hours of whistleblower testimony — insiders from intelligence, military, finance, and the fringes of science — and built Project Camelot into the internet's most important archive of voices the mainstream will not air.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": []
     },
     {
       "id": "p-birgit-fischer",
@@ -91,6 +150,44 @@
       ]
     },
     {
+      "id": "p-carl-sagan",
+      "name": "Carl Sagan",
+      "url": "https://www.planetary.org",
+      "bio": "The cosmologist, science communicator, and author whose Cosmos series and writing (Pale Blue Dot, The Demon-Haunted World) shaped how a generation understood our place in the universe. Science infused with awe, advocacy for reason delivered with poetry.",
+      "appears_in": [
+        "t-astrophys",
+        "t-cosmos"
+      ],
+      "picked_in": [
+        "t-astrophys",
+        "t-cosmos"
+      ]
+    },
+    {
+      "id": "p-carlo-rovelli",
+      "name": "Carlo Rovelli",
+      "url": "https://www.penguin.co.uk/authors/carlo-rovelli",
+      "bio": "Italian theoretical physicist working at the edges of loop quantum gravity and the philosophy of time. His short books (Seven Brief Lessons on Physics, The Order of Time) are among the most beautiful introductions to modern physics ever written.",
+      "appears_in": [
+        "d-sciences",
+        "t-cycles"
+      ],
+      "picked_in": [
+        "t-cycles"
+      ]
+    },
+    {
+      "id": "p-dale-carnegie",
+      "name": "Dale Carnegie",
+      "url": "https://www.dalecarnegie.com",
+      "bio": "Author of How to Win Friends and Influence People — the 1936 text on human relations that has sold over 30 million copies and remains the foundation of nearly every communication-skills book written since.",
+      "appears_in": [
+        "t-personal-dev",
+        "t-speaking"
+      ],
+      "picked_in": []
+    },
+    {
       "id": "p-darryl-anka",
       "name": "Darryl Anka",
       "url": "https://www.bashar.org",
@@ -105,6 +202,16 @@
           "description": "A multi-dimensional being from a future Earth timeline, channeled by Darryl Anka since 1983. Bashar's teachings center on parallel realities, permission slips, and the practice of following your highest excitement in every moment — one of the most accessible and pragmatic transmissions in contemporary channeling."
         }
       ]
+    },
+    {
+      "id": "p-deepak-chopra",
+      "name": "Deepak Chopra",
+      "url": "https://www.deepakchopra.com",
+      "bio": "Indian-American physician, teacher, and author whose work across dozens of books has brought yoga, Ayurveda, and consciousness into mainstream Western self-development.",
+      "appears_in": [
+        "t-wealth-mind"
+      ],
+      "picked_in": []
     },
     {
       "id": "p-dolores-cannon",
@@ -145,6 +252,38 @@
       "picked_in": []
     },
     {
+      "id": "p-eckhart-tolle",
+      "name": "Eckhart Tolle",
+      "url": "https://eckharttolle.com",
+      "bio": "Author of The Power of Now, whose teaching on present-moment awareness brought non-dual consciousness into mainstream Western spirituality. A living transmission of what Osho and Krishnamurti pointed to.",
+      "appears_in": [
+        "t-oneness"
+      ],
+      "picked_in": [
+        "t-oneness"
+      ]
+    },
+    {
+      "id": "p-edgar-cayce",
+      "name": "Edgar Cayce",
+      "url": "https://www.edgarcayce.org",
+      "bio": "The Sleeping Prophet — 20th-century American psychic whose trance readings produced some of the most extensive bodies of channeled material on Earth: health diagnoses, past lives, Atlantis, Jesus. His Association for Research and Enlightenment holds the archive.",
+      "appears_in": [
+        "t-akashic"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-eileen-mckusick",
+      "name": "Eileen McKusick",
+      "url": "https://www.biofieldtuning.com",
+      "bio": "Sound therapist and researcher whose Biofield Tuning method uses tuning forks to map and clear the human biofield. Her evidence-gathering approach treats subtle energy as measurable — unusual, rigorous, and deeply effective in practice.",
+      "appears_in": [
+        "t-soundheal"
+      ],
+      "picked_in": []
+    },
+    {
       "id": "p-emma-grede",
       "name": "Emma Grede",
       "url": "https://www.emmagrede.com",
@@ -167,6 +306,16 @@
       "picked_in": []
     },
     {
+      "id": "p-fritjof-capra",
+      "name": "Fritjof Capra",
+      "url": "https://www.fritjofcapra.net",
+      "bio": "Austrian-born physicist whose Tao of Physics (1975) drew the parallels between quantum physics and Eastern mysticism that a generation had been waiting for. His subsequent systems-theory work extends into ecology, biology, and economics.",
+      "appears_in": [
+        "d-sciences"
+      ],
+      "picked_in": []
+    },
+    {
       "id": "p-george-green",
       "name": "George Green",
       "url": "https://projectcamelotportal.com/2008/04/17/project-camelot-interviews-george-green-part-1-of-2/",
@@ -178,6 +327,16 @@
       "needs_review": "URL points to a specific interview, not a canonical personal site. Consider replacing if one exists."
     },
     {
+      "id": "p-geshe-michael-roach",
+      "name": "Geshe Michael Roach",
+      "url": "https://www.diamondcutterpress.com",
+      "bio": "American-born Tibetan Buddhist monk and businessman whose Diamond Cutter teachings bridge ancient Buddhist wisdom with modern business practice. His work reframes karmic mechanics as the operating principle of sustainable wealth.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
       "id": "p-graham-hancock",
       "name": "Graham Hancock",
       "url": "https://grahamhancock.com",
@@ -186,6 +345,70 @@
         "t-history"
       ],
       "picked_in": []
+    },
+    {
+      "id": "p-grant-sanderson",
+      "name": "Grant Sanderson",
+      "url": "https://www.3blue1brown.com",
+      "bio": "Creator of 3Blue1Brown — the YouTube channel that has redefined how mathematics is visualised and taught. His animations make linear algebra, calculus, and topology not just clear but beautiful.",
+      "appears_in": [
+        "t-math"
+      ],
+      "picked_in": [
+        "t-math"
+      ]
+    },
+    {
+      "id": "p-gurumayi-chidvilasananda",
+      "name": "Gurumayi Chidvilasananda",
+      "url": "https://www.siddhayoga.org",
+      "bio": "Siddha Yoga guru and spiritual successor of Swami Muktananda, leading the Siddha Yoga path since 1982. Her teachings on the inner experience of divinity carry an unbroken living transmission.",
+      "appears_in": [
+        "t-siddha-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-gwern-branwen",
+      "name": "Gwern Branwen",
+      "url": "https://gwern.net",
+      "bio": "Researcher, writer, and early experimenter with long-form serious blogging at gwern.net — covering rationalist psychology, darknet markets, machine learning, and everything in between. A model for rigour and intellectual honesty on the open web.",
+      "appears_in": [
+        "t-ai"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-helen-schucman",
+      "name": "Helen Schucman",
+      "url": "https://acim.org",
+      "bio": "Psychology professor who scribed A Course in Miracles from an inner voice identifying itself as Jesus Christ, between 1965 and 1972. Published anonymously for years, it remains one of the most-read channeled works of the 20th century.",
+      "appears_in": [
+        "t-source"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-hermes-trismegistus",
+      "name": "Hermes Trismegistus",
+      "url": "https://en.wikipedia.org/wiki/Hermes_Trismegistus",
+      "bio": "Legendary figure — part Greek god, part Egyptian sage — traditionally credited with the Emerald Tablet and the Hermetic Corpus. The source of the phrase 'as above, so below' and the foundation of Western esoteric philosophy.",
+      "appears_in": [
+        "t-saclaw"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-james-nestor",
+      "name": "James Nestor",
+      "url": "https://www.mrjamesnestor.com",
+      "bio": "Science journalist whose book Breath compiled the most comprehensive investigation into how humans breathe — and how most of us are doing it wrong. Changed the conversation on the most basic human practice.",
+      "appears_in": [
+        "t-breathwork"
+      ],
+      "picked_in": [
+        "t-breathwork"
+      ]
     },
     {
       "id": "p-jenna-zoe",
@@ -220,12 +443,66 @@
       "picked_in": []
     },
     {
+      "id": "p-kevin-trudeau",
+      "name": "Kevin Trudeau",
+      "url": "https://www.kevintrudeau.com",
+      "bio": "Teacher and author whose work on the Law of Attraction (Your Wish Is Your Command) and hidden knowledge (Natural Cures) has reached millions. A controversial figure — honest about his own troubles with the legal system — and one of the most direct voices in contemporary manifestation teaching. Part of the FRQNCY voice lineage.",
+      "appears_in": [
+        "t-med"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-krista-tippett",
+      "name": "Krista Tippett",
+      "url": "https://onbeing.org",
+      "bio": "Host of On Being — the Peabody-winning radio show and podcast where the biggest questions (what it means to be human, how we live together, what matters in the end) are asked of poets, scientists, and spiritual teachers. Nobody listens more carefully in contemporary American media.",
+      "appears_in": [
+        "t-poetry"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-lao-tzu",
+      "name": "Lao Tzu",
+      "url": "https://en.wikipedia.org/wiki/Laozi",
+      "bio": "The legendary sage whose Tao Te Ching, composed in ancient China, founded Taoism and gave the world one of its deepest wisdom texts — a guide to flowing with the nature of things. Authorship is traditional; the work is eternal.",
+      "appears_in": [
+        "d-meta",
+        "t-source"
+      ],
+      "picked_in": [
+        "d-meta",
+        "t-source"
+      ]
+    },
+    {
       "id": "p-lyn-alden",
       "name": "Lyn Alden",
       "url": "https://www.lynalden.com",
       "bio": "The clearest macro analyst covering Bitcoin as an emerging monetary network. Her long-form research bridges traditional finance and the new monetary paradigm.",
       "appears_in": [
         "t-crypto"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-malcolm-gladwell",
+      "name": "Malcolm Gladwell",
+      "url": "https://www.gladwellbooks.com",
+      "bio": "The New Yorker staff writer and author (Outliers, The Tipping Point, Blink) who defines the contemporary art of finding the story inside the research. A master of narrative non-fiction.",
+      "appears_in": [
+        "t-personal-dev"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-manly-p-hall",
+      "name": "Manly P. Hall",
+      "url": "https://www.philosophicalresearch.org",
+      "bio": "American esoteric scholar whose Secret Teachings of All Ages (1928) attempted to map the entire Western wisdom tradition in one volume. His Philosophical Research Society in Los Angeles remains the home of his lectures and library — one of the great archives of sacred philosophy.",
+      "appears_in": [
+        "t-saclaw"
       ],
       "picked_in": []
     },
@@ -253,6 +530,16 @@
       "picked_in": []
     },
     {
+      "id": "p-michael-a-singer",
+      "name": "Michael A. Singer",
+      "url": "https://www.mickeysinger.com",
+      "bio": "Author of The Untethered Soul and The Surrender Experiment — books that map the practice of letting go as a path to the direct experience of consciousness. Founder of the Temple of the Universe meditation community in Florida.",
+      "appears_in": [
+        "t-source"
+      ],
+      "picked_in": []
+    },
+    {
       "id": "p-michael-pollan",
       "name": "Michael Pollan",
       "url": "https://michaelpollan.com",
@@ -269,12 +556,35 @@
       ]
     },
     {
+      "id": "p-napoleon-hill",
+      "name": "Napoleon Hill",
+      "url": "https://www.naphill.org",
+      "bio": "The 20th-century writer whose Think and Grow Rich, drawn from interviews with Carnegie, Edison, and hundreds of other successful figures, remains the most-read success book in history. The source code for most of the self-development literature that followed.",
+      "appears_in": [
+        "t-personal-dev",
+        "t-wealth-mind"
+      ],
+      "picked_in": [
+        "t-personal-dev"
+      ]
+    },
+    {
       "id": "p-naval-ravikant",
       "name": "Naval Ravikant",
       "url": "https://nav.al",
       "bio": "Founder of AngelList and a philosopher of wealth, happiness, and leverage. His body of aphorisms and long-form conversations is one of the most-quoted bodies of contemporary thought on building a life of sovereignty and meaning.",
       "appears_in": [
         "d-lifestyle"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-neville-goddard",
+      "name": "Neville Goddard",
+      "url": "https://neville.org",
+      "bio": "20th-century mystic whose teachings on imagination as the creative force — 'imagining creates reality' — form one of the deepest wells of the contemporary manifestation tradition. Part of the FRQNCY voice lineage.",
+      "appears_in": [
+        "t-manifestation"
       ],
       "picked_in": []
     },
@@ -316,6 +626,39 @@
       "picked_in": []
     },
     {
+      "id": "p-paul-selig",
+      "name": "Paul Selig",
+      "url": "https://www.paulselig.com",
+      "bio": "Contemporary channel whose transmissions from the Guides — published as a series of dictated books — cover incarnation, the true self, and the coming collective awakening. One of the clearest working channels writing today.",
+      "appears_in": [
+        "t-channeling"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-peter-drucker",
+      "name": "Peter Drucker",
+      "url": "https://www.drucker.institute",
+      "bio": "The father of modern management. His decades of writing shaped how organisations everywhere think about purpose, the customer, and the knowledge worker. The foundational voice in management theory.",
+      "appears_in": [
+        "t-conscap"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-peter-wohlleben",
+      "name": "Peter Wohlleben",
+      "url": "https://www.whataboutrees.com",
+      "bio": "German forester and author whose Hidden Life of Trees revealed the communication, support, and social life of forests — science written with the wonder of someone who has spent his life among the trees.",
+      "appears_in": [
+        "d-nature",
+        "t-forests"
+      ],
+      "picked_in": [
+        "t-forests"
+      ]
+    },
+    {
       "id": "p-ra-uru-hu",
       "name": "Ra Uru Hu",
       "url": "https://www.jovianarchive.com",
@@ -338,6 +681,54 @@
       "picked_in": []
     },
     {
+      "id": "p-rhonda-byrne",
+      "name": "Rhonda Byrne",
+      "url": "https://www.thesecret.tv",
+      "bio": "Author whose 2006 book The Secret brought the Law of Attraction into mainstream culture. Her subsequent works on gratitude, love, and manifestation have sold tens of millions of copies — the gateway text for many first encountering these ideas.",
+      "appears_in": [
+        "t-manifestation"
+      ],
+      "picked_in": [
+        "t-manifestation"
+      ]
+    },
+    {
+      "id": "p-richard-dawkins",
+      "name": "Richard Dawkins",
+      "url": "https://richarddawkins.com",
+      "bio": "Evolutionary biologist whose Selfish Gene (1976) reshaped how we think about life, cooperation, and altruism. One of the sharpest thinkers of the gene's-eye view of biology.",
+      "appears_in": [
+        "t-bio"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-robin-wall-kimmerer",
+      "name": "Robin Wall Kimmerer",
+      "url": "https://www.robinwallkimmerer.com",
+      "bio": "Potawatomi botanist whose Braiding Sweetgrass weaves indigenous wisdom with Western botany. A meditation on gratitude, reciprocity, and the grammar of being in right relationship with land and life.",
+      "appears_in": [
+        "d-food",
+        "d-nature",
+        "t-ecology",
+        "t-indigenous"
+      ],
+      "picked_in": [
+        "d-nature",
+        "t-indigenous"
+      ]
+    },
+    {
+      "id": "p-roger-ebert",
+      "name": "Roger Ebert",
+      "url": "https://www.rogerebert.com",
+      "bio": "The film critic who elevated popular movie criticism to literature. His reviews, published from 1967 until his death in 2013, remain the clearest record of what it means to watch a film with full attention and write from inside the experience.",
+      "appears_in": [
+        "t-film"
+      ],
+      "picked_in": []
+    },
+    {
       "id": "p-rupert-sheldrake",
       "name": "Rupert Sheldrake",
       "url": "https://www.sheldrake.org",
@@ -355,6 +746,16 @@
       "appears_in": [
         "d-meta",
         "t-source"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-ryan-holiday",
+      "name": "Ryan Holiday",
+      "url": "https://ryanholiday.net",
+      "bio": "Modern populariser of Stoic philosophy whose books (The Obstacle Is the Way, Ego Is the Enemy) and Daily Stoic newsletter have brought Marcus Aurelius and Epictetus into the hands of athletes, executives, and seekers.",
+      "appears_in": [
+        "t-personal-dev"
       ],
       "picked_in": []
     },
@@ -390,6 +791,95 @@
       "needs_review": "No last name in source data. Kept 'Sarah (Medical Intuitive)' as the display name for now. Revisit when/if a fuller name surfaces."
     },
     {
+      "id": "p-satoshi-nakamoto",
+      "name": "Satoshi Nakamoto",
+      "url": "https://bitcoin.org/bitcoin.pdf",
+      "bio": "The pseudonymous creator of Bitcoin. In 2008 an anonymous figure posted a 9-page whitepaper and released the software; in 2011 they vanished, leaving the network to the world. The origin myth of programmable money.",
+      "appears_in": [
+        "t-blockchain",
+        "t-crypto"
+      ],
+      "picked_in": [
+        "t-blockchain",
+        "t-crypto"
+      ]
+    },
+    {
+      "id": "p-sean-carroll",
+      "name": "Sean Carroll",
+      "url": "https://www.preposterousuniverse.com",
+      "bio": "Theoretical physicist working on quantum mechanics, cosmology, and the foundations of reality. His books (Something Deeply Hidden, The Big Picture) and Mindscape podcast bring the frontiers of physics into clear, demanding prose.",
+      "appears_in": [
+        "t-cosmos",
+        "t-quantum"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-sri-swami-satchidananda",
+      "name": "Sri Swami Satchidananda",
+      "url": "https://www.integralyoga.org",
+      "bio": "The yogi who opened Woodstock in 1969 and founded Integral Yoga — a synthesis of yoga's major paths. His commentaries on the Yoga Sutras and the Bhagavad Gita brought the classical texts into lived practice for modern Westerners.",
+      "appears_in": [
+        "t-yoga"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-steven-greer",
+      "name": "Steven Greer",
+      "url": "https://www.siriusdisclosure.com",
+      "bio": "Former emergency physician who founded The Disclosure Project in 1993 — bringing hundreds of military, intelligence, and government witnesses forward to testify publicly about UFO reality. The landmark 2001 National Press Club event remains the movement's most cited inflection point.",
+      "appears_in": [
+        "t-aliens"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-sugata-mitra",
+      "name": "Sugata Mitra",
+      "url": "https://en.wikipedia.org/wiki/Sugata_Mitra",
+      "bio": "British-Indian education researcher whose Hole in the Wall experiments — placing internet-connected computers in Indian slum walls with no instruction — demonstrated that children can teach themselves almost anything, given access and each other.",
+      "appears_in": [
+        "t-edusystem"
+      ],
+      "picked_in": [
+        "t-edusystem"
+      ]
+    },
+    {
+      "id": "p-swami-kriyananda",
+      "name": "Swami Kriyananda",
+      "url": "https://www.ananda.org",
+      "bio": "Direct disciple of Paramhansa Yogananda who founded the Ananda communities — living examples of Yogananda's vision of spiritual cooperative living. Author of over 140 books and a lifelong carrier of the Kriya Yoga transmission.",
+      "appears_in": [
+        "t-kriya"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "p-swami-muktananda",
+      "name": "Swami Muktananda",
+      "url": "https://www.siddhayoga.org",
+      "bio": "Indian siddha yogi who founded Siddha Yoga and brought the experience of Shaktipat — direct transmission of spiritual energy — to generations of seekers. His Play of Consciousness remains one of the clearest autobiographical accounts of awakening.",
+      "appears_in": [
+        "t-siddha-yoga"
+      ],
+      "picked_in": [
+        "t-siddha-yoga"
+      ]
+    },
+    {
+      "id": "p-sylvia-earle",
+      "name": "Sylvia Earle",
+      "url": "https://mission-blue.org",
+      "bio": "The legendary oceanographer known as Her Deepness — former chief scientist of NOAA, founder of Mission Blue, and one of the most visible voices for ocean conservation. Her Hope Spots initiative is building a global network of protected marine areas.",
+      "appears_in": [
+        "t-oceans"
+      ],
+      "picked_in": []
+    },
+    {
       "id": "p-thich-nhat-hanh",
       "name": "Thich Nhat Hanh",
       "url": "https://plumvillage.org",
@@ -398,6 +888,31 @@
         "t-meditation"
       ],
       "picked_in": []
+    },
+    {
+      "id": "p-three-initiates",
+      "name": "Three Initiates",
+      "url": "https://www.sacred-texts.com/eso/kyb/",
+      "bio": "Pseudonymous authors of The Kybalion (1908), the modern distillation of seven Hermetic principles — mentalism, correspondence, vibration, polarity, rhythm, cause and effect, gender. Identity unknown. Text foundational.",
+      "appears_in": [
+        "d-meta",
+        "t-saclaw"
+      ],
+      "picked_in": [
+        "t-saclaw"
+      ]
+    },
+    {
+      "id": "p-viktor-frankl",
+      "name": "Viktor Frankl",
+      "url": "https://www.viktorfrankl.org",
+      "bio": "Austrian psychiatrist and Auschwitz survivor whose Man's Search for Meaning gave the 20th century its clearest case for the primacy of meaning in human life. Founder of logotherapy.",
+      "appears_in": [
+        "t-psych"
+      ],
+      "picked_in": [
+        "t-psych"
+      ]
     },
     {
       "id": "p-vitalik-buterin",
@@ -410,6 +925,18 @@
       ],
       "picked_in": [
         "t-web3"
+      ]
+    },
+    {
+      "id": "p-walter-isaacson",
+      "name": "Walter Isaacson",
+      "url": "https://www.walterisaacson.com",
+      "bio": "The biographer who brought the inner lives of Einstein, Steve Jobs, Benjamin Franklin, Leonardo da Vinci, and Jennifer Doudna into clear, human-scale prose. Among the most respected biographers writing today.",
+      "appears_in": [
+        "t-biotech"
+      ],
+      "picked_in": [
+        "t-biotech"
       ]
     }
   ]
