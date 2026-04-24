@@ -439,16 +439,24 @@ document.querySelectorAll('.ftab').forEach(btn=>{
 
 // ── Nav / Footer ─────────────────────────────────────────────────
 function nav(crumbHtml) {
+  // Absolute paths so the nav works on any generated page regardless of
+  // depth (v2/[topic]/, people/[slug]/, books/[slug]/, etc.).
+  // Compact hub links for People / Books / Orgs / Media / Places so readers
+  // can cross the world model without detouring through the homepage.
+  const hubLinkStyle = "border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em";
   return `<nav class="snav">
   <div class="snav-left">
-    <a href="../explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
+    <a href="/v2/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
     ${crumbHtml ? `<div class="breadcrumb">${crumbHtml}</div>` : ''}
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="../watch/index.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Watch</a>
-    <a href="../courses/index.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Courses</a>
-    <a href="../../search.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
-    <a href="../../index.html" class="snav-back">← Main Site</a>
+    <a href="/people/" class="snav-back" style="${hubLinkStyle}">People</a>
+    <a href="/books/"  class="snav-back" style="${hubLinkStyle}">Books</a>
+    <a href="/orgs/"   class="snav-back" style="${hubLinkStyle}">Orgs</a>
+    <a href="/media/"  class="snav-back" style="${hubLinkStyle}">Media</a>
+    <a href="/places/" class="snav-back" style="${hubLinkStyle}">Places</a>
+    <a href="/search.html" class="snav-back" style="${hubLinkStyle}">Search</a>
+    <a href="/" class="snav-back">← Main</a>
   </div>
 </nav>`;
 }
@@ -859,11 +867,62 @@ function topicsForPerson(person) {
   return DATA.topics.filter(t => ids.has(t.id));
 }
 
+// Shared "Appears on" section renderer for entity profile pages.
+// Labels each card Topic/Domain/Pillar and optionally marks PICK.
+function appearsOnSection(appearsIn, pickedIn) {
+  const apps = appearancesFor(appearsIn);
+  if (!apps.length) return '';
+  const pickedSet = new Set(pickedIn || []);
+  // Map each appearance back to its id to check pick status
+  const pillarByLabel = new Map(DATA.pillars.map(p => [p.label, p.id]));
+  const domainByLabel = new Map(DATA.domains.map(d => [d.label, d.id]));
+  const topicByLabel  = new Map(DATA.topics.map(t => [t.label, t.id]));
+  const lookupId = (a) => ({Topic: topicByLabel, Domain: domainByLabel, Pillar: pillarByLabel}[a.eyebrow] || new Map()).get(a.label);
+  const cards = apps.map(a => {
+    const id = lookupId(a);
+    const pick = id && pickedSet.has(id) ? ' &nbsp;·&nbsp; ✦ PICK' : '';
+    return `<a href="${esc(a.href)}" class="ncard">
+  <div class="ncard-type">${esc(a.eyebrow)}${pick}</div>
+  <h3>${esc(a.label)}</h3>
+  ${a.desc ? `<p>${esc(a.desc.slice(0, 70))}…</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`;
+  }).join('\n');
+  return `<section>
+  <div class="section-label">Appears on</div>
+  <div class="grid grid-sm">${cards}</div>
+</section>`;
+}
+
+// Returns every place the entity appears: topics, domains, pillars — as
+// a card-renderable shape with `href` + `label` + `eyebrow` + `desc`.
+function appearancesFor(appearsIn) {
+  const out = [];
+  const ids = new Set(appearsIn || []);
+  const pillarById = new Map(DATA.pillars.map(p => [p.id, p]));
+  const domainById = new Map(DATA.domains.map(d => [d.id, d]));
+  const topicById  = new Map(DATA.topics.map(t => [t.id, t]));
+  for (const id of appearsIn || []) {
+    if (pillarById.has(id)) {
+      const p = pillarById.get(id);
+      out.push({ eyebrow: 'Pillar', label: p.label, desc: p.desc, href: `/v2/${p.slug}/index.html` });
+    } else if (domainById.has(id)) {
+      const d = domainById.get(id);
+      out.push({ eyebrow: 'Domain', label: d.label, desc: d.desc, href: `/v2/${d.slug}/index.html` });
+    } else if (topicById.has(id)) {
+      const t = topicById.get(id);
+      out.push({ eyebrow: 'Topic', label: t.label, desc: t.desc, href: `/v2/${t.slug}/index.html` });
+    }
+  }
+  return out;
+}
+
 function personPage(person) {
   const slug = personSlug(person);
   const canonical = `https://frqncy.network/people/${slug}/`;
   const works = worksForPerson(person.id);
-  const topics = topicsForPerson(person);
+  const appearances = appearancesFor(person.appears_in);
+  const topics = topicsForPerson(person); // kept for pick logic / legacy callers
 
   // Works section — reuse the rcard/resourceSection look
   const worksSection = works.length ? `<section>
@@ -883,14 +942,16 @@ function personPage(person) {
 </div>`).join('\n')}</div>
 </section>` : '';
 
-  // Topics they appear on
-  const topicsSection = topics.length ? `<section>
+  // All appearances (topics, domains, pillars) — renders a richer "teaches across"
+  // section when a person is attached at the domain or pillar level rather than
+  // only to specific topics.
+  const topicsSection = appearances.length ? `<section>
   <div class="section-label">Teaches across</div>
   <div class="grid grid-sm">
-    ${topics.map(t => `<a href="../../v2/${t.slug}/index.html" class="ncard">
-  <div class="ncard-type">Topic</div>
-  <h3>${esc(t.label)}</h3>
-  ${t.desc ? `<p>${esc(t.desc.slice(0, 70))}…</p>` : ''}
+    ${appearances.map(a => `<a href="${esc(a.href)}" class="ncard">
+  <div class="ncard-type">${esc(a.eyebrow)}</div>
+  <h3>${esc(a.label)}</h3>
+  ${a.desc ? `<p>${esc(a.desc.slice(0, 70))}…</p>` : ''}
   <span class="ncard-arrow">→</span>
 </a>`).join('\n')}
   </div>
@@ -950,18 +1011,7 @@ function bookPage(book) {
     authorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By ${esc(book.author)}</div>`;
   }
 
-  const topics = topicsForBucketList(book.appears_in);
-  const topicsSection = topics.length ? `<section>
-  <div class="section-label">Appears on</div>
-  <div class="grid grid-sm">
-    ${topics.map(t => `<a href="/v2/${t.slug}/index.html" class="ncard">
-  <div class="ncard-type">Topic${(book.picked_in||[]).includes(t.id) ? ' &nbsp;·&nbsp; ✦ PICK' : ''}</div>
-  <h3>${esc(t.label)}</h3>
-  ${t.desc ? `<p>${esc(t.desc.slice(0, 70))}…</p>` : ''}
-  <span class="ncard-arrow">→</span>
-</a>`).join('\n')}
-  </div>
-</section>` : '';
+  const topicsSection = appearsOnSection(book.appears_in, book.picked_in);
 
   const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Books</a><span class="sep">/</span><span>${esc(book.title)}</span>`;
   const externalLink = book.url ? `<a href="${esc(book.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>` : '';
@@ -1011,18 +1061,7 @@ function orgPage(org) {
     founderHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">Founded by ${esc(org.founder)}</div>`;
   }
 
-  const topics = topicsForBucketList(org.appears_in);
-  const topicsSection = topics.length ? `<section>
-  <div class="section-label">Appears on</div>
-  <div class="grid grid-sm">
-    ${topics.map(t => `<a href="/v2/${t.slug}/index.html" class="ncard">
-  <div class="ncard-type">Topic${(org.picked_in||[]).includes(t.id) ? ' &nbsp;·&nbsp; ✦ PICK' : ''}</div>
-  <h3>${esc(t.label)}</h3>
-  ${t.desc ? `<p>${esc(t.desc.slice(0, 70))}…</p>` : ''}
-  <span class="ncard-arrow">→</span>
-</a>`).join('\n')}
-  </div>
-</section>` : '';
+  const topicsSection = appearsOnSection(org.appears_in, org.picked_in);
 
   const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Orgs</a><span class="sep">/</span><span>${esc(org.name)}</span>`;
   const externalLink = org.url ? `<a href="${esc(org.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>` : '';
@@ -1071,18 +1110,7 @@ function mediaPage(media) {
     creatorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By ${esc(media.creator)}</div>`;
   }
 
-  const topics = topicsForBucketList(media.appears_in);
-  const topicsSection = topics.length ? `<section>
-  <div class="section-label">Appears on</div>
-  <div class="grid grid-sm">
-    ${topics.map(t => `<a href="/v2/${t.slug}/index.html" class="ncard">
-  <div class="ncard-type">Topic${(media.picked_in||[]).includes(t.id) ? ' &nbsp;·&nbsp; ✦ PICK' : ''}</div>
-  <h3>${esc(t.label)}</h3>
-  ${t.desc ? `<p>${esc(t.desc.slice(0, 70))}…</p>` : ''}
-  <span class="ncard-arrow">→</span>
-</a>`).join('\n')}
-  </div>
-</section>` : '';
+  const topicsSection = appearsOnSection(media.appears_in, media.picked_in);
 
   const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Media</a><span class="sep">/</span><span>${esc(media.name)}</span>`;
   const externalLink = media.url ? `<a href="${esc(media.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>` : '';
@@ -1135,13 +1163,14 @@ function placePage(place) {
     }
   }
 
-  const topicsSection = topics.length ? `<section>
+  const appearances = appearancesFor(place.appears_in);
+  const topicsSection = appearances.length ? `<section>
   <div class="section-label">Practices hosted here</div>
   <div class="grid grid-sm">
-    ${topics.map(t => `<a href="/v2/${t.slug}/index.html" class="ncard">
-  <div class="ncard-type">Topic</div>
-  <h3>${esc(t.label)}</h3>
-  ${t.desc ? `<p>${esc(t.desc.slice(0, 70))}…</p>` : ''}
+    ${appearances.map(a => `<a href="${esc(a.href)}" class="ncard">
+  <div class="ncard-type">${esc(a.eyebrow)}</div>
+  <h3>${esc(a.label)}</h3>
+  ${a.desc ? `<p>${esc(a.desc.slice(0, 70))}…</p>` : ''}
   <span class="ncard-arrow">→</span>
 </a>`).join('\n')}
   </div>

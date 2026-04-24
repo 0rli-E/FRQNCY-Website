@@ -453,7 +453,7 @@ function render() {
 
   // Filter resources
   const typeFiltered = activeType !== 'all' && activeType !== 'topics';
-  const filteredResources = showResources ? RESOURCES.filter(item => {
+  const filteredResourcesRaw = showResources ? RESOURCES.filter(item => {
     if (typeFiltered && item.type !== activeType) return false;
     if (activeDomain !== 'all' && item.domain !== activeDomain) return false;
     // Show resources when there's a query OR when a specific type/domain filter is active
@@ -462,6 +462,24 @@ function render() {
     return matches(item.name, q) || matches(item.desc, q) ||
            matches(item.topicLabel, q) || matches(item.type, q);
   }) : [];
+
+  // Dedup entity rows (person / book / org / media / place) by internal URL.
+  // resources.json has one row per entity-topic pair; for entities with their
+  // own profile pages we only want one search hit, not N. We collapse and
+  // annotate with how many topic contexts that entity appears across.
+  const ENTITY_TYPES = new Set(['person','book','org','media','place']);
+  const byKey = new Map();
+  for (const item of filteredResourcesRaw) {
+    const isEntity = ENTITY_TYPES.has(item.type) && (item.url || '').startsWith('/');
+    const key = isEntity ? `${item.type}|${item.url}` : `row|${filteredResourcesRaw.indexOf(item)}`;
+    const existing = byKey.get(key);
+    if (existing) {
+      existing._appearances = (existing._appearances || 1) + 1;
+    } else {
+      byKey.set(key, { ...item, _appearances: 1 });
+    }
+  }
+  const filteredResources = [...byKey.values()];
 
   const totalResults = filteredTopics.length + filteredResources.length;
 
@@ -570,10 +588,15 @@ function resourceCard(item, q) {
   a.setAttribute('role', 'listitem');
   a.setAttribute('aria-label', item.name);
   const typeClass = item.type || 'org';
+  // Deduped entity hits show "across N topics" instead of a single topic label.
+  const appearances = item._appearances || 1;
+  const contextLabel = appearances > 1
+    ? `<span class="rc-topic">across ${appearances} topics</span>`
+    : `<span class="rc-topic">in <a href="${esc(item.topicUrl)}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:underline;text-underline-offset:2px">${highlight(item.topicLabel, q)}</a></span>`;
   a.innerHTML = `
     <div class="rc-meta">
       <span class="rc-type ${esc(typeClass)}">${esc(item.type || 'resource')}</span>
-      <span class="rc-topic">in <a href="${esc(item.topicUrl)}" onclick="event.stopPropagation()" style="color:inherit;text-decoration:underline;text-underline-offset:2px">${highlight(item.topicLabel, q)}</a></span>
+      ${contextLabel}
     </div>
     <div class="rc-title">${highlight(item.name, q)}</div>
     <div class="rc-desc">${highlight(item.desc || '', q)}</div>
