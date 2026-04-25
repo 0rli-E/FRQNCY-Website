@@ -199,6 +199,17 @@ nav{
 .ct-name{font-size:0.82rem;font-weight:400;color:var(--text);margin-bottom:0.15rem;transition:color .2s}
 .ct-desc{font-size:0.64rem;color:var(--text-dim);line-height:1.4}
 
+/* Preference chips (modalities multi-select) */
+.pref-chip{
+  border:1px solid var(--card-border);border-radius:999px;
+  padding:0.45rem 0.9rem;cursor:pointer;
+  background:rgba(255,255,255,0.03);transition:all .2s;
+  font-size:0.72rem;color:var(--text);letter-spacing:0.02em;
+  user-select:none;
+}
+.pref-chip:hover{border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.06)}
+.pref-chip.selected{border-color:var(--accent);background:rgba(74,122,232,0.12);color:#fff}
+
 /* Name input */
 .name-wrap{margin-bottom:2rem}
 .name-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.5rem;display:block}
@@ -461,22 +472,65 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
       </div>
 
       <div style="margin-bottom:2rem">
-        <div class="form-hint" style="margin-bottom:0.6rem">I am —</div>
-        <div class="depth-grid" id="depth-grid" role="radiogroup" aria-label="Current depth">
-          <div class="choice-tile" data-val="beginning" onclick="selectDepth(this)" style="flex:1;min-width:140px">
-            <div class="ct-name">Just beginning</div>
+        <div class="form-hint" style="margin-bottom:0.6rem">On the path I am —</div>
+        <div class="depth-grid" id="depth-grid" role="radiogroup" aria-label="Where you are on the path">
+          <div class="choice-tile" data-val="curious" onclick="selectDepth(this)" style="flex:1;min-width:140px">
+            <div class="ct-name">Curious</div>
             <div class="ct-desc">New to this territory</div>
           </div>
-          <div class="choice-tile" data-val="exploring" onclick="selectDepth(this)" style="flex:1;min-width:140px">
-            <div class="ct-name">Actively exploring</div>
-            <div class="ct-desc">Some threads already pulled</div>
+          <div class="choice-tile" data-val="practicing" onclick="selectDepth(this)" style="flex:1;min-width:140px">
+            <div class="ct-name">Practicing</div>
+            <div class="ct-desc">Working with the first layers</div>
           </div>
-          <div class="choice-tile" data-val="deep" onclick="selectDepth(this)" style="flex:1;min-width:140px">
-            <div class="ct-name">Going deeper</div>
-            <div class="ct-desc">Looking for the next layer</div>
+          <div class="choice-tile" data-val="integrating" onclick="selectDepth(this)" style="flex:1;min-width:140px">
+            <div class="ct-name">Integrating</div>
+            <div class="ct-desc">Weaving it into daily life</div>
+          </div>
+          <div class="choice-tile" data-val="embodying" onclick="selectDepth(this)" style="flex:1;min-width:140px">
+            <div class="ct-name">Embodying</div>
+            <div class="ct-desc">It is how I live</div>
           </div>
         </div>
       </div>
+
+      <!-- Optional signature block — HD + modalities. Pre-fills from /chart save. -->
+      <details style="margin-bottom:1.5rem;border:1px solid var(--card-border);border-radius:6px;padding:0.9rem 1.1rem;background:rgba(255,255,255,0.02)" id="sig-details">
+        <summary style="cursor:pointer;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);outline:none">
+          <span id="sig-summary-text">Refine with your signature (optional)</span>
+        </summary>
+
+        <div id="sig-saved-card" style="display:none;margin-top:0.9rem;padding:0.9rem 1rem;border-radius:5px;background:rgba(224,192,106,0.06);border:1px solid rgba(224,192,106,0.2)">
+          <div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">From your chart</div>
+          <div style="font-family:'Cormorant',serif;font-size:1.15rem;color:#fff;line-height:1.4" id="sig-saved-summary"></div>
+          <div style="margin-top:0.6rem;display:flex;gap:0.8rem;align-items:center">
+            <button type="button" class="btn-ghost" onclick="clearSignature()" style="font-size:0.62rem;padding:0.3rem 0.7rem">Change</button>
+            <a href="/chart" style="font-size:0.62rem;color:var(--text-dim);letter-spacing:0.08em">Regenerate chart →</a>
+          </div>
+        </div>
+
+        <div id="sig-manual" style="margin-top:0.9rem">
+          <div class="form-hint" style="margin-bottom:0.6rem">Human Design Type (optional)</div>
+          <select id="sig-hd-type" onchange="onSignatureChange()" style="width:100%;max-width:340px;padding:0.6rem 0.8rem;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);border-radius:4px;color:#fff;font-family:'Jost',sans-serif;font-size:0.82rem">
+            <option value="">— I don't know / skip —</option>
+            <option value="Manifestor">Manifestor</option>
+            <option value="Generator">Generator</option>
+            <option value="Manifesting Generator">Manifesting Generator</option>
+            <option value="Projector">Projector</option>
+            <option value="Reflector">Reflector</option>
+          </select>
+          <p style="font-size:0.62rem;color:var(--text-dim);margin-top:0.5rem;line-height:1.5">Don't know yours? <a href="/chart" style="color:var(--accent)">Generate your chart →</a> and come back.</p>
+        </div>
+
+        <div style="margin-top:1.2rem">
+          <div class="form-hint" style="margin-bottom:0.6rem">What resonates (optional, pick any)</div>
+          <div id="prefs-grid" style="display:flex;flex-wrap:wrap;gap:0.5rem">
+            <div class="pref-chip" data-val="science"  onclick="togglePref(this)" role="checkbox" aria-checked="false" tabindex="0">Science-grounded</div>
+            <div class="pref-chip" data-val="mystical" onclick="togglePref(this)" role="checkbox" aria-checked="false" tabindex="0">Mystical / metaphysical</div>
+            <div class="pref-chip" data-val="channeled" onclick="togglePref(this)" role="checkbox" aria-checked="false" tabindex="0">Channeled / transmitted</div>
+            <div class="pref-chip" data-val="embodied" onclick="togglePref(this)" role="checkbox" aria-checked="false" tabindex="0">Embodied / practical</div>
+          </div>
+        </div>
+      </details>
 
       <div class="btn-row">
         <button type="button" class="btn-primary" id="btn-s2" onclick="goStep(3)" disabled>Continue →</button>
@@ -509,6 +563,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
     <div class="result-eyebrow" id="result-eyebrow">Your FRQNCY</div>
     <h1 class="result-title" id="result-title">Your Constellation</h1>
     <p class="result-sub" id="result-sub"></p>
+    <div id="sig-badge" style="display:none;margin-top:1.1rem;padding:0.75rem 1rem;border-radius:4px;background:rgba(224,192,106,0.06);border:1px solid rgba(224,192,106,0.18);max-width:520px;margin-left:auto;margin-right:auto"></div>
   </div>
 
   <div id="constellation-wrap">
@@ -673,6 +728,82 @@ function updateStep2Btn() {
   document.getElementById('btn-s2').disabled = !selectedIntent || !selectedDepth;
 }
 
+// ── Signature (HD + preferences) — optional personalisation ──────────────
+// Reads /chart save from localStorage on load; falls back to the inline
+// dropdown. Also persists selections so returning visitors skip the setup.
+let userSignature = { hd: null, prefs: [] };
+
+function loadSignature() {
+  try {
+    const chart = JSON.parse(localStorage.getItem('frqncy:chart') || 'null');
+    const prefs = JSON.parse(localStorage.getItem('frqncy:prefs') || '[]');
+    if (chart && chart.hd) userSignature.hd = chart.hd;
+    if (Array.isArray(prefs)) userSignature.prefs = prefs;
+  } catch (e) { /* ignore */ }
+
+  // Paint signature UI
+  const savedCard = document.getElementById('sig-saved-card');
+  const manual = document.getElementById('sig-manual');
+  const sumText = document.getElementById('sig-summary-text');
+  if (userSignature.hd && userSignature.hd.type) {
+    savedCard.style.display = 'block';
+    manual.style.display = 'none';
+    const parts = [userSignature.hd.type];
+    if (userSignature.hd.authority) parts.push(userSignature.hd.authority + ' authority');
+    if (userSignature.hd.profile) parts.push('Profile ' + userSignature.hd.profile);
+    document.getElementById('sig-saved-summary').textContent = parts.join(' · ');
+    sumText.textContent = 'Your signature: ' + userSignature.hd.type;
+  } else {
+    savedCard.style.display = 'none';
+    manual.style.display = 'block';
+  }
+
+  // Paint pref chips
+  document.querySelectorAll('.pref-chip').forEach(chip => {
+    const on = userSignature.prefs.includes(chip.dataset.val);
+    chip.classList.toggle('selected', on);
+    chip.setAttribute('aria-checked', String(on));
+  });
+  if (userSignature.prefs.length) {
+    sumText.textContent = (userSignature.hd && userSignature.hd.type ? userSignature.hd.type + ' · ' : '')
+      + userSignature.prefs.length + ' preference' + (userSignature.prefs.length === 1 ? '' : 's');
+  }
+}
+
+function onSignatureChange() {
+  const sel = document.getElementById('sig-hd-type');
+  if (sel.value) userSignature.hd = { type: sel.value, authority: '', profile: '', strategy: '' };
+  else userSignature.hd = null;
+  persistSignature();
+}
+
+function clearSignature() {
+  try { localStorage.removeItem('frqncy:chart'); } catch (e) {}
+  userSignature.hd = null;
+  document.getElementById('sig-saved-card').style.display = 'none';
+  document.getElementById('sig-manual').style.display = 'block';
+  document.getElementById('sig-summary-text').textContent = 'Refine with your signature (optional)';
+}
+
+function togglePref(el) {
+  const val = el.dataset.val;
+  const i = userSignature.prefs.indexOf(val);
+  if (i >= 0) { userSignature.prefs.splice(i, 1); el.classList.remove('selected'); el.setAttribute('aria-checked','false'); }
+  else { userSignature.prefs.push(val); el.classList.add('selected'); el.setAttribute('aria-checked','true'); }
+  persistSignature();
+}
+
+function persistSignature() {
+  try { localStorage.setItem('frqncy:prefs', JSON.stringify(userSignature.prefs)); } catch (e) {}
+}
+
+// Keyboard toggle for pref chips
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pref-chip')) {
+    e.preventDefault(); togglePref(e.target);
+  }
+});
+
 // ── Step nav ──────────────────────────────────────────────────────────
 function goStep(n) {
   document.querySelectorAll('.form-step').forEach(s => s.classList.remove('visible'));
@@ -719,6 +850,38 @@ async function generate() {
   history.replaceState(null, '', '?' + params.toString());
 }
 
+// ── Personalisation maps — used when userSignature has values ──────────
+// HD affinity: which teachers resonate with which HD type. Grounded in
+// the nature of each teacher's work (initiator / builder / guide / mirror).
+// Absence of a teacher means neutral — no boost, no demotion.
+const HD_AFFINITY = {
+  'Manifestor':            ['p-satoshi-nakamoto','p-balaji-srinivasan','p-vitalik-buterin','p-ra-uru-hu','p-napoleon-hill','p-dale-carnegie','p-emma-grede','p-joshua-fields-millburn'],
+  'Generator':             ['p-osho','p-paramhansa-yogananda','p-michael-pollan','p-andrew-huberman','p-robin-wall-kimmerer','p-peter-wohlleben','p-james-nestor','p-andreas-antonopoulos','p-david-hoffman'],
+  'Manifesting Generator': ['p-osho','p-michael-pollan','p-andrew-huberman','p-andreas-antonopoulos','p-david-hoffman','p-joshua-fields-millburn','p-vitalik-buterin'],
+  'Projector':             ['p-david-r-hawkins','p-eckhart-tolle','p-lao-tzu','p-carlo-rovelli','p-bruce-schneier','p-grant-sanderson','p-anita-moorjani','p-jenna-zoe','p-adrienne-maree-brown','p-carl-sagan'],
+  'Reflector':             ['p-carl-sagan','p-barbara-marciniak','p-dolores-cannon','p-three-initiates','p-esther-hicks','p-lao-tzu'],
+};
+
+// Modality → domain map. Channeled is handled separately (entity-level).
+const MODALITY_DOMAINS = {
+  science:   ['Sciences','Technology'],
+  mystical:  ['Metaphysics','Nature & Cosmos'],
+  embodied:  ['Well-being'],
+  channeled: [], // handled by explicit list below
+};
+
+// Channeled modality — people whose work IS channeled transmission.
+const CHANNELED_IDS = new Set([
+  'p-barbara-marciniak','p-dolores-cannon','p-esther-hicks','p-three-initiates'
+]);
+
+// Derive ID from an entity URL (/people/[slug]/) for affinity lookup.
+function personIdFromUrl(url) {
+  if (!url) return null;
+  const m = url.match(/\/people\/([^/]+)\/?/);
+  return m ? 'p-' + m[1] : null;
+}
+
 // ── Build data ─────────────────────────────────────────────────────────
 function buildConstellationData(name) {
   // Filter topics to selected domains, sort by resource count desc
@@ -760,17 +923,44 @@ function buildConstellationData(name) {
     const topicSlugsInSelectedDomains = new Set(
       TOPICS.filter(t => selectedDomainSet.has(t.domain)).map(t => t.id)
     );
+    // Personalisation weighting
+    const hdType = userSignature.hd && userSignature.hd.type;
+    const hdBoosted = new Set(hdType ? (HD_AFFINITY[hdType] || []) : []);
+    const prefs = userSignature.prefs || [];
+    const prefDomains = new Set(prefs.flatMap(p => MODALITY_DOMAINS[p] || []));
+    const wantChanneled = prefs.includes('channeled');
+
+    // Build topic-id → domain map once so modality scoring is fast.
+    const topicIdToDomain = new Map();
+    for (const t of TOPICS) topicIdToDomain.set(t.id, t.domain);
+
     const candidates = ENTITIES
       .filter(e => e.type === 'person' && e.name && !looksLikeUrl(e.name))
       .map(e => {
         const overlap = (e.topics || []).filter(tid => topicSlugsInSelectedDomains.has(tid)).length;
-        return { e, overlap };
+        const pid = e.id || personIdFromUrl(e.url);
+        // HD bonus: +3 if explicitly in the affinity list for this HD type
+        const hdBonus = pid && hdBoosted.has(pid) ? 3 : 0;
+        // Modality bonus: +1 per modality-domain match (only if prefs chosen)
+        let modBonus = 0;
+        if (prefs.length) {
+          // Derive the person's domains from the topics they appear on.
+          const theirDomains = new Set();
+          for (const tid of (e.topics || [])) {
+            const d = topicIdToDomain.get(tid);
+            if (d) theirDomains.add(d);
+          }
+          for (const d of theirDomains) if (prefDomains.has(d)) modBonus += 1;
+          if (wantChanneled && pid && CHANNELED_IDS.has(pid)) modBonus += 2;
+        }
+        const score = overlap + hdBonus + modBonus;
+        return { e, overlap, score, hdBonus, modBonus };
       })
       .filter(x => x.overlap > 0);
-    // Sort: picks first, then overlap count desc, then name
+    // Sort: picks first, then composite score desc, then name
     candidates.sort((a, b) => {
       if (a.e.pick !== b.e.pick) return a.e.pick ? -1 : 1;
-      if (b.overlap !== a.overlap) return b.overlap - a.overlap;
+      if (b.score !== a.score) return b.score - a.score;
       return a.e.name.localeCompare(b.e.name);
     });
     teachers = candidates.slice(0, 5).map(x => ({
@@ -782,6 +972,9 @@ function buildConstellationData(name) {
       topicLabel: '',        // no single topic for entity-level teachers
       pick: x.e.pick,
       overlap: x.overlap,
+      score: x.score,
+      hdBonus: x.hdBonus,
+      modBonus: x.modBonus,
     }));
   }
   // Fallback: if entities.json didn't load, use the old resources.json path
@@ -798,12 +991,21 @@ function buildConstellationData(name) {
     }
   }
 
-  // Start here — pick based on intent
+  // Start here — pick based on intent + stage (awareness path)
+  // Stage shifts the type ladder: Curious prefers shorter-form entries,
+  // Embodying reaches for foundational texts regardless of intent.
   let startPick = null;
-  const startTypes = selectedIntent === 'understand' ? ['book'] :
-                     selectedIntent === 'practice'  ? ['course', 'media'] :
-                     selectedIntent === 'discover'  ? ['person'] :
-                     ['org', 'media'];
+  let startTypes = selectedIntent === 'understand' ? ['book'] :
+                   selectedIntent === 'practice'  ? ['course', 'media'] :
+                   selectedIntent === 'discover'  ? ['person'] :
+                   ['org', 'media'];
+  if (selectedDepth === 'curious') {
+    // Favour accessible on-ramps (media / podcast before book)
+    startTypes = ['media','person','book','course','org'];
+  } else if (selectedDepth === 'embodying') {
+    // Favour foundational depth
+    startTypes = ['book','person','course','media','org'];
+  }
   for (const type of startTypes) {
     const p = RESOURCES.find(r =>
       selectedDomains.includes(r.domain) && r.type === type && r.name
@@ -827,10 +1029,29 @@ function renderResult({ topicNodes, resourceNodes, teachers, startPick }, name) 
   document.getElementById('result-sub').textContent =
     `${topicNodes.length} topics · ${teachers.length} teachers · built around ${domainLabels}`;
 
+  renderSignatureBadge();
   drawConstellation(topicNodes, resourceNodes, name);
   renderTeachers(teachers);
   renderStartHere(startPick);
   updateSaveCtaNext();
+}
+
+// Signature badge — shows what personalisation was applied, if any.
+function renderSignatureBadge() {
+  const host = document.getElementById('sig-badge');
+  if (!host) return;
+  const stageNames = { curious:'Curious', practicing:'Practicing', integrating:'Integrating', embodying:'Embodying' };
+  const parts = [];
+  if (userSignature.hd && userSignature.hd.type) parts.push(userSignature.hd.type);
+  if (selectedDepth && stageNames[selectedDepth]) parts.push(stageNames[selectedDepth]);
+  if (userSignature.prefs && userSignature.prefs.length) {
+    const labels = { science:'Science', mystical:'Mystical', channeled:'Channeled', embodied:'Embodied' };
+    parts.push(userSignature.prefs.map(p => labels[p] || p).join(' · '));
+  }
+  if (!parts.length) { host.style.display = 'none'; return; }
+  host.style.display = 'block';
+  host.innerHTML = `<div style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.35rem">Tuned to your signature</div>
+    <div style="font-family:'Cormorant',serif;font-size:0.95rem;color:rgba(255,255,255,0.85);line-height:1.45">${parts.join('  <span style="color:var(--text-dim);opacity:0.6">·</span>  ')}</div>`;
 }
 
 // ── D3 Constellation (Merkle-tree / dendrogram, bottom-up) ─────────────
@@ -1185,6 +1406,7 @@ function enhanceChoiceTiles() {
 (async function init() {
   buildDomainGrid();
   enhanceChoiceTiles();
+  loadSignature(); // read saved chart + prefs from localStorage, paint UI
   await loadData();
   const restored = await restoreFromURL();
   if (!restored) {

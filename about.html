@@ -169,6 +169,57 @@
       color: var(--gold);
     }
 
+    .hero-tagline {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(20px, 2.4vw, 28px);
+      line-height: 1.45;
+      color: var(--gold);
+      max-width: 680px;
+      margin: 0 auto 10px;
+      letter-spacing: 0.005em;
+    }
+    .hero-tagline + .hero-tagline { margin-bottom: 28px; }
+
+    /* =====================
+       MANIFESTO SECTION
+    ===================== */
+    #manifesto-section {
+      background: var(--pure-white);
+      padding: clamp(80px, 12vh, 140px) clamp(28px, 8vw, 180px);
+      border-top: 1px solid rgba(11, 28, 61, 0.06);
+      text-align: center;
+    }
+    .manifesto-inner { max-width: 860px; margin: 0 auto; }
+    .manifesto-label {
+      font-size: 10px;
+      letter-spacing: 0.4em;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 36px;
+      display: block;
+    }
+    .manifesto-line {
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(24px, 3.4vw, 38px);
+      line-height: 1.4;
+      color: var(--dark);
+      margin: 0 auto;
+      max-width: 760px;
+    }
+    .manifesto-line + .manifesto-line { margin-top: 28px; }
+    .manifesto-line em { color: var(--gold); font-style: italic; }
+    .manifesto-divider {
+      width: 56px;
+      height: 1px;
+      background: var(--gold);
+      margin: 36px auto;
+      opacity: 0.45;
+    }
+
     .hero-subtitle {
       font-size: 16px;
       font-weight: 300;
@@ -643,9 +694,21 @@
     <div class="hero-content">
       <span class="hero-label">Vision</span>
       <h1 class="hero-headline">Built on the <em>Foundations of Oneness</em></h1>
+      <p class="hero-tagline">FRQNCY is soul food — to positively impact the whole person.</p>
+      <p class="hero-tagline">The goal — to give humans infinite energy.</p>
       <p class="hero-subtitle">
         A community becoming an alternative society. We remember what we truly are — love and light — and create a future from that knowingness. Unconditional love. Eternal light. Burning passion.
       </p>
+    </div>
+  </section>
+
+  <!-- Manifesto Section -->
+  <section id="manifesto-section">
+    <div class="manifesto-inner">
+      <span class="manifesto-label">Manifesto</span>
+      <p class="manifesto-line">FRQNCY is the <em>spear</em> piercing into the darkness — getting the unable able.</p>
+      <div class="manifesto-divider"></div>
+      <p class="manifesto-line">We <em>empower the empowerers</em>.</p>
     </div>
   </section>
 

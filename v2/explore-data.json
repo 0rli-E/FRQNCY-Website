@@ -968,6 +968,33 @@
       "label": "Human Design",
       "type": "topic",
       "r": 12
+    },
+    {
+      "id": "t-water",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-taoism",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-christianity",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-mythology",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "p-frqncy-space",
+      "label": "The FRQNCY Space",
+      "type": "topic",
+      "r": 14,
+      "desc": "The first physical node of the Sanctuary — a minimal, intentionally designed coworking and gathering space. Calm coworking, quiet rooms for deep work, regular breathwork sessions, and community events. The room where the network meets the world."
     }
   ],
   "links": [
@@ -2138,6 +2165,42 @@
     [
       "d-meta",
       "t-humandesign"
+    ],
+    [
+      "d-lifestyle",
+      "t-water"
+    ],
+    [
+      "d-meta",
+      "t-taoism"
+    ],
+    [
+      "d-meta",
+      "t-christianity"
+    ],
+    [
+      "d-meta",
+      "t-mythology"
+    ],
+    [
+      "p-frqncy-space",
+      "t-meditation"
+    ],
+    [
+      "p-frqncy-space",
+      "t-breathwork"
+    ],
+    [
+      "p-frqncy-space",
+      "t-soundheal"
+    ],
+    [
+      "p-frqncy-space",
+      "t-community"
+    ],
+    [
+      "p-frqncy-space",
+      "t-minimalism"
     ]
   ],
   "node_urls": {
@@ -2296,8 +2359,20 @@
     "t-quantum-grammar": "quantum-grammar/index.html",
     "t-robert-gould": "robert-jay-gould/index.html",
     "p-intaaya": "https://intaaya.com",
-    "t-humandesign": "human-design/index.html"
+    "t-humandesign": "human-design/index.html",
+    "t-water": "water/index.html",
+    "t-taoism": "taoism/index.html",
+    "t-christianity": "christianity/index.html",
+    "t-mythology": "mythology/index.html",
+    "p-frqncy-space": "/space"
   },
-  "$last_sync": "2026-04-24",
-  "$updated": "2026-04-24 — removed 4 ghost nodes (t-commodities, t-filestorage, t-stocks, t-world-models) that existed on the map but not in content.json. If you want these topics back, add them to content.json — the sync will bring them to the map automatically."
+  "$last_sync": "2026-04-25",
+  "$updated": "2026-04-24 — removed 4 ghost nodes (t-commodities, t-filestorage, t-stocks, t-world-models) that existed on the map but not in content.json. If you want these topics back, add them to content.json — the sync will bring them to the map automatically.",
+  "$ghost_nodes": [
+    {
+      "id": "p-frqncy-space",
+      "label": "The FRQNCY Space",
+      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
+    }
+  ]
 }

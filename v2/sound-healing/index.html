@@ -230,6 +230,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
     <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
     <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
+    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
     <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
@@ -303,8 +304,8 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   
   <section>
   <div class="section-label">Curated Resources</div>
-  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">4 resources &nbsp;·&nbsp; 1 book &nbsp;·&nbsp; 1 org &nbsp;·&nbsp; 1 place &nbsp;·&nbsp; 1 tool &nbsp;·&nbsp; <span style="color:var(--gold)">1 ✦ pick</span></div>
-  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="book">book</button><button class="ftab" data-filter="org">org</button><button class="ftab" data-filter="tool">tool</button><button class="ftab" data-filter="place">place</button></div>
+  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">8 resources &nbsp;·&nbsp; 1 teacher &nbsp;·&nbsp; 1 book &nbsp;·&nbsp; 1 org &nbsp;·&nbsp; 1 place &nbsp;·&nbsp; 1 tool &nbsp;·&nbsp; <span style="color:var(--gold)">1 ✦ pick</span></div>
+  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="book">book</button><button class="ftab" data-filter="org">org</button><button class="ftab" data-filter="tool">tool</button><button class="ftab" data-filter="person">person</button><button class="ftab" data-filter="music">music</button><button class="ftab" data-filter="place">place</button></div>
   <div class="rlist"><div class="rcard" data-type="book">
   <span class="rtype">book</span>
   <div class="rinfo">
@@ -328,6 +329,38 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <p>AI-generated music designed to induce focus, relaxation, or sleep states. Functional and effective.</p>
   </div>
   <a href="https://www.brain.fm" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="person">
+  <span class="rtype">person</span>
+  <div class="rinfo">
+    <h4><a href="/people/eileen-mckusick/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Eileen McKusick</a></h4>
+    <p>Sound therapist and researcher whose Biofield Tuning method uses tuning forks to map and clear the human biofield. Her evidence-gathering approach treats subtle energy as measurable — unusual, rigorous, and deeply effective in practice.</p>
+  </div>
+  <a href="https://www.biofieldtuning.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="music">
+  <span class="rtype">music</span>
+  <div class="rinfo">
+    <h4><a href="/music/432hz-natural-tuning/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">432 Hz Natural Tuning — Various</a></h4>
+    <p>The alternative concert pitch that proponents argue resonates with the natural geometries of the body and the cosmos. Heard once you have heard it, it is hard to unhear.</p>
+  </div>
+  <a href="https://en.wikipedia.org/wiki/432_Hz" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="music">
+  <span class="rtype">music</span>
+  <div class="rinfo">
+    <h4><a href="/music/solfeggio-528hz/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">528 Hz — The Love Frequency — Various (Solfeggio tradition)</a></h4>
+    <p>One of the six original Solfeggio frequencies recovered from medieval Gregorian chant — the tone associated with transformation and the repair of DNA.</p>
+  </div>
+  <a href="https://en.wikipedia.org/wiki/Solfeggio" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="music">
+  <span class="rtype">music</span>
+  <div class="rinfo">
+    <h4><a href="/music/snatam-kaur/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Snatam Kaur — Live Sacred Chant</a></h4>
+    <p>American Sikh devotional singer whose live kirtan recordings have made the Aquarian sadhana mantras accessible to a global audience.</p>
+  </div>
+  <a href="https://snatamkaur.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
 </div>
 <div class="rcard" data-type="place">
   <span class="rtype">place</span>
@@ -354,7 +387,19 @@ document.querySelectorAll('.ftab').forEach(btn=>{
   <section>
     <div class="section-label">Explore</div>
     <div class="grid grid-sm">
-      <a href="../breathwork/index.html" class="ncard">
+      <a href="../meditation/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 2 shared</div>
+  <h3>Meditation</h3>
+  <p>The practice of conscious attention — sitting with what is, training t…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../vibration/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 2 shared</div>
+  <h3>Vibration</h3>
+  <p>Everything is frequency — the understanding that matter, thought, and …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../breathwork/index.html" class="ncard">
   <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
   <h3>Breathwork</h3>
   <p>The breath as a tool — conscious breathing practices that regulate the…</p>
@@ -364,12 +409,6 @@ document.querySelectorAll('.ftab').forEach(btn=>{
   <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
   <h3>Community</h3>
   <p>The art of living together — building belonging, trust, and shared lif…</p>
-  <span class="ncard-arrow">→</span>
-</a>
-<a href="../meditation/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
-  <h3>Meditation</h3>
-  <p>The practice of conscious attention — sitting with what is, training t…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../permaculture/index.html" class="ncard">
@@ -382,12 +421,6 @@ document.querySelectorAll('.ftab').forEach(btn=>{
   <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
   <h3>Regenerative Business</h3>
   <p>Companies that give back more than they take — business as a restorati…</p>
-  <span class="ncard-arrow">→</span>
-</a>
-<a href="../sustainable-living/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
-  <h3>Sustainable Living</h3>
-  <p>Living within planetary limits — practical choices that reduce footpri…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../somatic-therapy/index.html" class="ncard">

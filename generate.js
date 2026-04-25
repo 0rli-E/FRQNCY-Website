@@ -29,6 +29,15 @@ const BOOKS  = loadBed('books.json');
 const ORGS   = loadBed('orgs.json');
 const MEDIA  = loadBed('media.json');
 const PLACES = loadBed('places.json');
+const MUSIC  = loadBed('music.json');
+
+// Aligned Goods overlay — curated tools/products/texts living at /aligned/.
+// Entries declare topicSlugs (mapped to topic ids below) so they flow into
+// resources.json + entities.json without duplicating bed entries.
+const ALIGNED = (() => {
+  const p = path.join(ROOT, 'aligned-goods.json');
+  return fs.existsSync(p) ? JSON.parse(fs.readFileSync(p, 'utf8')) : [];
+})();
 
 // ── Provider helpers ─────────────────────────────────────────────
 const providerMap = new Map(PROVIDERS.map(p => [p.id, p]));
@@ -73,7 +82,7 @@ for (const t of DATA.topics)  topicsByDomain.get(t.domain)?.push(t);
 // with content.json's remaining resources (tools, courses, platforms, apps, etc.).
 // Preserves the original content.json ordering. Falls back to pure content.json
 // if the beds aren't present.
-const BED_TYPES = new Set(['person', 'book', 'org', 'media']);
+const BED_TYPES = new Set(['person', 'book', 'org', 'media', 'music']);
 const fixTypos = (u) => (u||'').replace('erinclairehjones', 'erinclairejones');
 const normU = (u) => fixTypos((u||'').replace('https://www.', 'https://').replace(/\/$/, ''));
 
@@ -137,6 +146,27 @@ function placeToCard(pl, nid) {
     internal_url: slug ? `/places/${slug}/` : null,
   };
 }
+function musicToCard(mu, nid) {
+  // Music cards prepend the artist (if not already in the title) so the
+  // ear-grabbing piece of metadata sits where readers look first.
+  const slug = (mu.id || '').replace(/^mu-/, '');
+  let artistName = '';
+  if (mu.artist_is_person_ref && PEOPLE) {
+    const person = PEOPLE.people.find(p => p.id === mu.artist);
+    if (person) artistName = person.name;
+  } else if (typeof mu.artist === 'string') {
+    artistName = mu.artist;
+  }
+  const title = (artistName && !mu.title.includes(artistName)) ? `${mu.title} — ${artistName}` : mu.title;
+  return {
+    type: 'music',
+    title,
+    url: mu.url,
+    desc: mu.bio,
+    frqncy_pick: (mu.picked_in||[]).includes(nid),
+    internal_url: slug ? `/music/${slug}/` : null,
+  };
+}
 
 // ── Related teachers for a topic ─────────────────────────────────
 // Finds people who appear on this topic and ranks them by how many OTHER
@@ -176,6 +206,7 @@ function relatedTopicsByEntities(topicId) {
   if (ORGS)   scan(ORGS.orgs);
   if (MEDIA)  scan(MEDIA.media);
   if (PLACES) scan(PLACES.places);
+  if (MUSIC)  scan(MUSIC.music);
 
   const topicById = new Map(DATA.topics.map(t => [t.id, t]));
   return [...counts.entries()]
@@ -186,42 +217,111 @@ function relatedTopicsByEntities(topicId) {
 
 function resourcesFor(nid) {
   const raw = DATA.resources[nid] || [];
-  if (!PEOPLE && !BOOKS && !ORGS && !MEDIA && !PLACES) return raw; // beds not loaded, passthrough
+  if (!PEOPLE && !BOOKS && !ORGS && !MEDIA && !PLACES && !MUSIC) return raw; // beds not loaded, passthrough
 
   const out = [];
+  // Dedup by stable identity. Bed entries use their unique id (URL is not
+  // unique — multiple Hill books share https://www.naphill.org). Non-bed
+  // pass-through rows from content.json fall back to type|url.
   const seen = new Set();
+  // Helper: pick the next unseen bed match whose appears_in includes this
+  // topic. Solves the URL-collision case where two books share an external
+  // URL — content.json rows pair off in order, not by accident.
+  const pickUnseen = (collection, kind, r) => collection.filter(x => normU(x.url) === normU(r.url) && (x.appears_in||[]).includes(nid)).find(x => !seen.has(`${kind}|${x.id}`));
   for (const r of raw) {
-    const key = `${r.type}|${normU(r.url)}`;
+    const passKey = `${r.type}|${normU(r.url)}`;
     if (r.type === 'person' && PEOPLE) {
-      const p = PEOPLE.people.find(x => normU(x.url) === normU(r.url) && (x.appears_in||[]).includes(nid));
-      const k = `person|${normU(p?.url)}`;
-      if (p && !seen.has(k)) { out.push(peopleToCard(p, nid)); seen.add(k); }
+      const p = pickUnseen(PEOPLE.people, 'person', r);
+      if (p) { out.push(peopleToCard(p, nid)); seen.add(`person|${p.id}`); }
     } else if (r.type === 'book' && BOOKS) {
-      const b = BOOKS.books.find(x => normU(x.url) === normU(r.url) && (x.appears_in||[]).includes(nid));
-      const k = `book|${normU(b?.url)}`;
-      if (b && !seen.has(k)) { out.push(bookToCard(b, nid)); seen.add(k); }
+      const b = pickUnseen(BOOKS.books, 'book', r);
+      if (b) { out.push(bookToCard(b, nid)); seen.add(`book|${b.id}`); }
     } else if (r.type === 'org' && ORGS) {
-      const o = ORGS.orgs.find(x => normU(x.url) === normU(r.url) && (x.appears_in||[]).includes(nid));
-      const k = `org|${normU(o?.url)}`;
-      if (o && !seen.has(k)) { out.push(orgToCard(o, nid)); seen.add(k); }
+      const o = pickUnseen(ORGS.orgs, 'org', r);
+      if (o) { out.push(orgToCard(o, nid)); seen.add(`org|${o.id}`); }
     } else if (r.type === 'media' && MEDIA) {
-      const m = MEDIA.media.find(x => normU(x.url) === normU(r.url) && (x.appears_in||[]).includes(nid));
-      const k = `media|${normU(m?.url)}`;
-      if (m && !seen.has(k)) { out.push(mediaToCard(m, nid)); seen.add(k); }
+      const m = pickUnseen(MEDIA.media, 'media', r);
+      if (m) { out.push(mediaToCard(m, nid)); seen.add(`media|${m.id}`); }
+    } else if (r.type === 'music' && MUSIC) {
+      const mu = pickUnseen(MUSIC.music, 'music', r);
+      if (mu) { out.push(musicToCard(mu, nid)); seen.add(`music|${mu.id}`); }
     } else if (!BED_TYPES.has(r.type)) {
       // Non-bed types (tools, courses, platforms, apps, websites, references, articles) pass through
-      if (!seen.has(key)) { out.push(r); seen.add(key); }
+      if (!seen.has(passKey)) { out.push(r); seen.add(passKey); }
     }
     // Bed types where the bed match failed silently drop — the bed is authoritative.
   }
 
+  // Beds are authoritative: append any bed entry whose appears_in includes
+  // this topic but didn't have a pre-existing content.json row. Without
+  // this step, new books/people/orgs added directly to the beds would be
+  // invisible on topic pages even though they show up in resources.json,
+  // entities.json, search, and the sitemap.
+  if (PEOPLE) {
+    for (const p of PEOPLE.people) {
+      if ((p.appears_in||[]).includes(nid) && !seen.has(`person|${p.id}`)) {
+        out.push(peopleToCard(p, nid)); seen.add(`person|${p.id}`);
+      }
+    }
+  }
+  if (BOOKS) {
+    for (const b of BOOKS.books) {
+      if ((b.appears_in||[]).includes(nid) && !seen.has(`book|${b.id}`)) {
+        out.push(bookToCard(b, nid)); seen.add(`book|${b.id}`);
+      }
+    }
+  }
+  if (ORGS) {
+    for (const o of ORGS.orgs) {
+      if ((o.appears_in||[]).includes(nid) && !seen.has(`org|${o.id}`)) {
+        out.push(orgToCard(o, nid)); seen.add(`org|${o.id}`);
+      }
+    }
+  }
+  if (MEDIA) {
+    for (const m of MEDIA.media) {
+      if ((m.appears_in||[]).includes(nid) && !seen.has(`media|${m.id}`)) {
+        out.push(mediaToCard(m, nid)); seen.add(`media|${m.id}`);
+      }
+    }
+  }
+  if (MUSIC) {
+    for (const mu of MUSIC.music) {
+      if ((mu.appears_in||[]).includes(nid) && !seen.has(`music|${mu.id}`)) {
+        out.push(musicToCard(mu, nid)); seen.add(`music|${mu.id}`);
+      }
+    }
+  }
   // Places don't have pre-existing content.json entries — append any whose
   // appears_in includes this node.
   if (PLACES) {
     for (const pl of PLACES.places) {
-      if ((pl.appears_in||[]).includes(nid)) {
-        const k = `place|${normU(pl.url)}`;
-        if (!seen.has(k)) { out.push(placeToCard(pl, nid)); seen.add(k); }
+      if ((pl.appears_in||[]).includes(nid) && !seen.has(`place|${pl.id}`)) {
+        out.push(placeToCard(pl, nid)); seen.add(`place|${pl.id}`);
+      }
+    }
+  }
+
+  // Aligned Goods — non-bed entries (tools etc). Maps topicSlugs → topic id
+  // to surface curated picks on topic pages alongside the rest. rcard reads
+  // `title`, not `name`, so emit accordingly.
+  if (ALIGNED && ALIGNED.length) {
+    const topic = DATA.topics.find(t => t.id === nid);
+    if (topic) {
+      for (const a of ALIGNED) {
+        if (a.type === 'book' || a.type === 'person') continue; // beds own these
+        if (!(a.topicSlugs || []).includes(topic.slug)) continue;
+        const k = `${a.type}|aligned-${a.id}`;
+        if (seen.has(k)) continue;
+        const vendor = (a.vendor && a.vendor[0]) || {};
+        out.push({
+          type: a.type,
+          title: a.name,
+          desc: a.desc || '',
+          url: vendor.url || '',
+          frqncy_pick: a.tier === 'pick',
+        });
+        seen.add(k);
       }
     }
   }
@@ -473,6 +573,7 @@ function nav(crumbHtml) {
     <a href="/books/"  class="snav-back" style="${hubLinkStyle}">Books</a>
     <a href="/orgs/"   class="snav-back" style="${hubLinkStyle}">Orgs</a>
     <a href="/media/"  class="snav-back" style="${hubLinkStyle}">Media</a>
+    <a href="/music/"  class="snav-back" style="${hubLinkStyle}">Music</a>
     <a href="/places/" class="snav-back" style="${hubLinkStyle}">Places</a>
     <a href="/search" class="snav-back" style="${hubLinkStyle}">Search</a>
     <a href="/" class="snav-back">← Main</a>
@@ -1193,6 +1294,61 @@ ${FOOTER}
 </body></html>`;
 }
 
+// ── MUSIC PAGE — /music/[slug]/ ──────────────────────────────────
+function musicSlug(mu) { return (mu.id || '').replace(/^mu-/, ''); }
+
+function musicPage(mu) {
+  const slug = musicSlug(mu);
+  const canonical = `https://frqncy.network/music/${slug}/`;
+
+  let artistHtml = '';
+  if (mu.artist_is_person_ref && PEOPLE) {
+    const person = PEOPLE.people.find(p => p.id === mu.artist);
+    if (person) {
+      const pslug = personSlug(person);
+      artistHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By <a href="/people/${esc(pslug)}/" style="color:var(--accent);border-bottom:1px solid rgba(255,255,255,0.18);text-decoration:none">${esc(person.name)}</a></div>`;
+    }
+  } else if (typeof mu.artist === 'string' && mu.artist) {
+    artistHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By ${esc(mu.artist)}</div>`;
+  }
+
+  const meta = [];
+  if (mu.type) meta.push(esc(mu.type));
+  if (mu.year) meta.push(esc(String(mu.year)));
+  const metaLine = meta.length ? `<div style="margin-top:0.4rem;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);opacity:0.8">${meta.join(' · ')}</div>` : '';
+
+  const topicsSection = appearsOnSection(mu.appears_in, mu.picked_in);
+
+  const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Music</a><span class="sep">/</span><span>${esc(mu.title)}</span>`;
+  const externalLink = mu.url ? `<a href="${esc(mu.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Listen →</a>` : '';
+
+  const ld = {
+    '@context': 'https://schema.org',
+    '@type': 'MusicComposition',
+    name: mu.title,
+    description: mu.bio,
+    url: canonical,
+    sameAs: mu.url ? [mu.url] : undefined,
+    isPartOf: SITE_REF,
+  };
+
+  return head(mu.title, null, mu.bio, canonical, ld, null) +
+nav(crumb) +
+`<div class="hero">
+  <div class="hero-eyebrow">Music</div>
+  <h1>${esc(mu.title)}</h1>
+  ${artistHtml}
+  ${metaLine}
+  ${mu.bio ? `<p class="hero-desc">${esc(mu.bio)}</p>` : ''}
+  ${externalLink}
+</div>
+<main>
+  ${topicsSection}
+</main>
+${FOOTER}
+</body></html>`;
+}
+
 // ── PLACE PAGE — /places/[slug]/ ─────────────────────────────────
 function placeSlug(place) { return (place.id || '').replace(/^pl-/, ''); }
 
@@ -1435,6 +1591,7 @@ function lintVoice() {
   if (BOOKS)  for (const b of BOOKS.books)   check(`books[${b.id}].bio`,  b.bio);
   if (ORGS)   for (const o of ORGS.orgs)     check(`orgs[${o.id}].bio`,   o.bio);
   if (MEDIA)  for (const m of MEDIA.media)   check(`media[${m.id}].bio`,  m.bio);
+  if (MUSIC)  for (const mu of MUSIC.music)  check(`music[${mu.id}].bio`, mu.bio);
   if (PLACES) for (const pl of PLACES.places) check(`places[${pl.id}].bio`, pl.bio);
 
   // content.json descs on topics, domains, pillars, and resources
@@ -1719,6 +1876,23 @@ if (MEDIA) {
   console.log(`  media:  ${mediaCount} profiles + 1 index → ./media/`);
 }
 
+// ── MUSIC PAGES — /music/[slug]/ + /music/index.html ─────────────
+const MUSIC_OUT = path.join(ROOT, 'music');
+let musicCount = 0;
+if (MUSIC) {
+  mkdirp(MUSIC_OUT);
+  for (const mu of MUSIC.music) {
+    const slug = musicSlug(mu);
+    if (!slug) continue;
+    mkdirp(path.join(MUSIC_OUT, slug));
+    fs.writeFileSync(path.join(MUSIC_OUT, slug, 'index.html'), musicPage(mu));
+    musicCount++;
+  }
+  fs.writeFileSync(path.join(MUSIC_OUT, 'index.html'),
+    entityIndexPage({ label: 'Music', eyebrow: 'Music', entities: MUSIC.music, slugFn: musicSlug, canonicalPath: '/music/', showFilters: false, titleField: 'title' }));
+  console.log(`  music:  ${musicCount} profiles + 1 index → ./music/`);
+}
+
 // ── PLACE PAGES — /places/[slug]/ + /places/index.html ───────────
 const PLACES_OUT = path.join(ROOT, 'places');
 let placeCount = 0;
@@ -1759,6 +1933,8 @@ const sitemapEntries = [
   ...(ORGS   ? ORGS.orgs.map(o => ({ loc: `https://frqncy.network/orgs/${orgSlug(o)}/`, priority: '0.5', freq: 'monthly' })) : []),
   ...(MEDIA  ? [{ loc: 'https://frqncy.network/media/',  priority: '0.7', freq: 'weekly' }]  : []),
   ...(MEDIA  ? MEDIA.media.map(m => ({ loc: `https://frqncy.network/media/${mediaSlug(m)}/`, priority: '0.5', freq: 'monthly' })) : []),
+  ...(MUSIC  ? [{ loc: 'https://frqncy.network/music/',  priority: '0.7', freq: 'weekly' }]  : []),
+  ...(MUSIC  ? MUSIC.music.map(mu => ({ loc: `https://frqncy.network/music/${musicSlug(mu)}/`, priority: '0.5', freq: 'monthly' })) : []),
   ...(PLACES ? [{ loc: 'https://frqncy.network/places/', priority: '0.7', freq: 'weekly' }] : []),
   ...(PLACES ? PLACES.places.map(pl => ({ loc: `https://frqncy.network/places/${placeSlug(pl)}/`, priority: '0.5', freq: 'monthly' })) : []),
 ];
@@ -1860,6 +2036,26 @@ if (MEDIA) for (const m of MEDIA.media) {
     pick: (m.picked_in || []).length > 0,
   });
 }
+if (MUSIC) for (const mu of MUSIC.music) {
+  let artistName = '';
+  if (mu.artist_is_person_ref && PEOPLE) {
+    const person = PEOPLE.people.find(pp => pp.id === mu.artist);
+    artistName = person ? person.name : '';
+  } else if (typeof mu.artist === 'string') {
+    artistName = mu.artist;
+  }
+  entitiesIndex.push({
+    type: 'music',
+    id: mu.id,
+    name: mu.title,
+    artist: artistName,
+    desc: (mu.bio || '').slice(0, 200),
+    url: `/music/${musicSlug(mu)}/`,
+    external: mu.url || '',
+    topics: (mu.appears_in || []).filter(x => x.startsWith('t-')),
+    pick: (mu.picked_in || []).length > 0,
+  });
+}
 if (PLACES) for (const pl of PLACES.places) {
   entitiesIndex.push({
     type: 'place',
@@ -1873,6 +2069,42 @@ if (PLACES) for (const pl of PLACES.places) {
     pick: (pl.picked_in || []).length > 0,
   });
 }
+
+// Courses — surface in entities.json so they're searchable. Resources.json
+// already gets them via the content.json leftover-types path (course rows
+// declared per-topic in DATA.resources).
+for (const co of COURSES) {
+  entitiesIndex.push({
+    type: 'course',
+    id: co.id,
+    name: co.title,
+    desc: (co.desc || co.subtitle || '').slice(0, 200),
+    url: `/v2/courses/${co.slug}/`,
+    external: '',
+    topics: (co.topics || []).filter(x => x.startsWith('t-')),
+    pick: false,
+  });
+}
+
+// Aligned Goods — emit non-bed entries (tools, etc.) so they appear in
+// search and on topic pages. Book/people entries already live in their
+// respective beds — skip those to avoid duplicates.
+const slugToTopicId = new Map(DATA.topics.map(t => [t.slug, t.id]));
+for (const a of ALIGNED) {
+  if (a.type === 'book' || a.type === 'person') continue; // beds own these
+  const topicIds = (a.topicSlugs || []).map(s => slugToTopicId.get(s)).filter(Boolean);
+  entitiesIndex.push({
+    type: a.type, // tool, place, etc.
+    id: a.id,
+    name: a.name,
+    desc: (a.desc || '').slice(0, 200),
+    url: '/aligned/#' + a.id,
+    external: (a.vendor && a.vendor[0] && a.vendor[0].url) || '',
+    topics: topicIds,
+    pick: a.tier === 'pick',
+  });
+}
+
 fs.writeFileSync(path.join(ROOT, 'entities.json'), JSON.stringify(entitiesIndex), 'utf8');
 
 // ── RESOURCES INDEX (regenerated from beds + non-bed types) ────
@@ -1925,6 +2157,18 @@ if (MEDIA) for (const m of MEDIA.media) {
   const internalUrl = `/media/${mediaSlug(m)}/`;
   for (const tid of (m.appears_in || [])) emitResource(m, 'media', tid, { url: internalUrl, external: m.url || '' });
 }
+if (MUSIC) for (const mu of MUSIC.music) {
+  let artistName = '';
+  if (mu.artist_is_person_ref && PEOPLE) {
+    const person = PEOPLE.people.find(pp => pp.id === mu.artist);
+    artistName = person ? person.name : '';
+  } else if (typeof mu.artist === 'string') {
+    artistName = mu.artist;
+  }
+  const displayName = (artistName && !mu.title.includes(artistName)) ? `${mu.title} — ${artistName}` : mu.title;
+  const internalUrl = `/music/${musicSlug(mu)}/`;
+  for (const tid of (mu.appears_in || [])) emitResource({ ...mu, name: displayName }, 'music', tid, { url: internalUrl, external: mu.url || '' });
+}
 if (PLACES) for (const pl of PLACES.places) {
   const internalUrl = `/places/${placeSlug(pl)}/`;
   for (const tid of (pl.appears_in || [])) emitResource(pl, 'place', tid, { url: internalUrl, external: pl.url || '' });
@@ -1939,6 +2183,22 @@ for (const [bucketId, items] of Object.entries(DATA.resources)) {
     emitResource({ name: r.title, desc: r.desc, url: r.url }, r.type, bucketId);
   }
 }
+// Aligned Goods — non-bed entries flow as topic resources too. Book/person
+// entries skip because they're already covered by the people/books beds.
+for (const a of ALIGNED) {
+  if (a.type === 'book' || a.type === 'person') continue;
+  for (const slug of (a.topicSlugs || [])) {
+    const tid = slugToTopicId.get(slug);
+    if (!tid) continue;
+    const vendor = (a.vendor && a.vendor[0]) || {};
+    emitResource(
+      { name: a.name, desc: a.desc || '', url: '/aligned/#' + a.id },
+      a.type,
+      tid,
+      { external: vendor.url || '' }
+    );
+  }
+}
 fs.writeFileSync(path.join(ROOT, 'resources.json'), JSON.stringify(resourcesIndex), 'utf8');
 
 console.log(`\n✓ FRQNCY Network v2 generated`);
@@ -1950,6 +2210,7 @@ console.log(`  People  : ${personCount} profiles → ./people/`);
 console.log(`  Books   : ${bookCount} profiles → ./books/`);
 console.log(`  Orgs    : ${orgCount} profiles → ./orgs/`);
 console.log(`  Media   : ${mediaCount} profiles → ./media/`);
+console.log(`  Music   : ${musicCount} profiles → ./music/`);
 console.log(`  Places  : ${placeCount} profiles → ./places/`);
 console.log(`  Sitemap : ${sitemapEntries.length} URLs → sitemap.xml`);
 console.log(`  Search  : ${searchIndex.length} topics → search.json`);

@@ -10,7 +10,10 @@ on:
       - 'books.json'
       - 'orgs.json'
       - 'media.json'
+      - 'music.json'
       - 'places.json'
+      - 'aligned-goods.json'
+      - 'courses.json'
       - 'generate.js'
       - 'build-kb.js'
       - 'build-og.js'
@@ -54,7 +57,7 @@ jobs:
           git config user.email "github-actions[bot]@users.noreply.github.com"
           # Include everything generate.js regenerates from the beds so the
           # committed tree matches what the generator produces.
-          git add v2/ people/ books/ orgs/ media/ places/ \
+          git add v2/ people/ books/ orgs/ media/ music/ places/ \
                   functions/api/_kb.js sitemap.xml search.json og-image.png \
                   entities.json resources.json
           git diff --staged --quiet || git commit -m "chore: rebuild site assets from content.json [skip ci]"

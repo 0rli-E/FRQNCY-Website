@@ -1,0 +1,423 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Aligned Goods — FRQNCY</title>
+<meta name="description" content="A curated index of products, places, texts, and tools that help you live in alignment. Information in abundance. No paid placement.">
+<meta name="theme-color" content="#0B1C3D">
+<meta name="robots" content="index, follow">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FRQNCY">
+<meta property="og:title" content="Aligned Goods — FRQNCY">
+<meta property="og:description" content="A curated index of products, places, texts, and tools that help you live in alignment. Information in abundance. No paid placement.">
+<meta property="og:url" content="https://frqncy.network/aligned/">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@frqncy">
+<meta name="twitter:title" content="Aligned Goods — FRQNCY">
+<meta name="twitter:description" content="A curated index of products, places, texts, and tools that help you live in alignment.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
+<link rel="canonical" href="https://frqncy.network/aligned/">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="manifest" href="/manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.025);
+  --card-border:rgba(255,255,255,0.08);--accent:#4A7AE8;--accent-glow:rgba(74,122,232,0.12);
+}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6;overflow-x:hidden}
+body{max-width:100vw}
+a{color:inherit;text-decoration:none}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.nav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;opacity:0.85;transition:opacity .2s}
+.nav-logo:hover{opacity:1}
+.nav-links{display:flex;align-items:center;gap:clamp(1rem,2vw,2rem);list-style:none}
+.nav-links a{font-size:0.68rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);transition:color .2s}
+.nav-links a:hover{color:var(--text)}
+.nav-cta-gold{
+  border:1px solid rgba(196,151,58,0.35)!important;border-radius:2px;
+  padding:5px 12px;color:var(--gold)!important;
+  transition:all .2s!important;
+}
+.nav-cta-gold:hover{background:rgba(196,151,58,0.08)!important;border-color:var(--gold)!important}
+@media(max-width:700px){.nav-links{display:none}}
+
+/* ── HERO ── */
+.hero{
+  margin-top:56px;
+  padding:clamp(3rem,7vw,5rem) clamp(1.25rem,5vw,2.5rem) 1.5rem;
+  text-align:center;position:relative;overflow:hidden;
+}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -20%,rgba(196,151,58,0.10) 0%,transparent 60%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:24px;height:1px;background:currentColor;opacity:0.5}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.4rem,5.5vw,4.4rem);font-weight:300;color:#fff;line-height:1.05;margin-bottom:0.9rem;letter-spacing:0.005em}
+.hero h1 em{font-style:italic;color:var(--gold-light)}
+.hero-desc{max-width:600px;margin:0 auto 1.25rem;font-size:0.94rem;color:var(--text);line-height:1.75}
+.hero-meta{font-size:0.66rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--text-dim);margin-top:0.4rem}
+
+/* ── EDITORIAL ── */
+.editorial{
+  max-width:760px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) 2.4rem;
+  text-align:center;position:relative;
+}
+.editorial-rule{width:48px;height:1px;background:rgba(196,151,58,0.4);margin:0 auto 1.6rem}
+.editorial p{font-family:'Cormorant',serif;font-size:1.18rem;font-weight:300;line-height:1.7;color:var(--text);font-style:italic;letter-spacing:0.005em}
+.editorial p + p{margin-top:0.85rem;font-size:0.86rem;font-family:'Jost',sans-serif;font-style:normal;color:var(--text-dim);line-height:1.7}
+
+/* ── CATEGORY GRID ── */
+.cats-wrap{
+  max-width:1200px;margin:0 auto;
+  padding:1.6rem clamp(1.25rem,5vw,2.5rem) 2.4rem;
+}
+.cats-label{
+  font-size:0.6rem;letter-spacing:0.28em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:1rem;text-align:center;
+}
+.cats{
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
+  gap:0.6rem;
+}
+.cat{
+  border:1px solid var(--card-border);background:var(--card-bg);
+  border-radius:3px;padding:0.95rem 1rem 0.85rem;
+  cursor:pointer;text-align:center;transition:all .2s;
+  display:flex;flex-direction:column;align-items:center;gap:0.3rem;
+  font-family:'Jost',sans-serif;color:var(--text);
+}
+.cat:hover{border-color:rgba(196,151,58,0.45);background:rgba(196,151,58,0.03)}
+.cat.active{border-color:var(--gold);background:rgba(196,151,58,0.07);color:#fff}
+.cat-icon{font-family:'Cormorant',serif;font-size:1.1rem;color:var(--gold);opacity:0.9;line-height:1}
+.cat-name{font-size:0.74rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:400}
+.cat-count{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim)}
+.cat.active .cat-count{color:var(--gold-light)}
+
+/* ── FILTERS ── */
+.filters{
+  max-width:1200px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) 0.6rem;
+  display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center;justify-content:center;
+}
+.filter-label{font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-right:0.25rem}
+.ftab{
+  font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;
+  padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;
+  cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;
+  font-family:'Jost',sans-serif;
+}
+.ftab:hover{color:var(--text);border-color:rgba(255,255,255,0.22)}
+.ftab.on{color:var(--gold);border-color:rgba(196,151,58,0.5);background:rgba(196,151,58,0.06)}
+
+/* ── LIST ── */
+.list-wrap{
+  max-width:1200px;margin:0 auto;
+  padding:1rem clamp(1.25rem,5vw,2.5rem) 4rem;
+}
+.list-meta{
+  font-size:0.66rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:1.2rem;text-align:center;
+}
+.list{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:0.9rem;
+}
+.gcard{
+  border:1px solid var(--card-border);background:var(--card-bg);
+  border-radius:3px;padding:1.4rem 1.4rem 1.2rem;
+  display:flex;flex-direction:column;gap:0.6rem;
+  transition:all .2s;
+  position:relative;
+}
+.gcard:hover{border-color:rgba(196,151,58,0.3);background:rgba(255,255,255,0.035)}
+.gcard.tier-pick{border-color:rgba(196,151,58,0.28)}
+.gcard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:0.6rem}
+.gcard-tier{
+  font-size:0.54rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--gold);white-space:nowrap;padding-top:0.25rem;
+}
+.gcard-tier.aligned{color:var(--text-dim)}
+.gcard h3{
+  font-family:'Cormorant',serif;font-size:1.32rem;font-weight:400;color:#fff;
+  line-height:1.2;letter-spacing:0.005em;
+}
+.gcard-cat{
+  font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:0.1rem;
+}
+.gcard-desc{
+  font-size:0.86rem;color:var(--text);line-height:1.7;
+}
+.gcard-criteria{
+  display:flex;flex-wrap:wrap;gap:0.3rem;margin-top:0.3rem;
+}
+.crit{
+  font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--text-dim);padding:3px 8px;
+  border:1px solid rgba(255,255,255,0.08);border-radius:2px;
+}
+.gcard-vendors{
+  display:flex;flex-direction:column;gap:0.3rem;
+  margin-top:0.6rem;padding-top:0.85rem;
+  border-top:1px solid rgba(255,255,255,0.06);
+}
+.vendor{
+  display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
+  font-size:0.78rem;color:var(--text);transition:color .2s;
+}
+.vendor:hover{color:var(--gold-light)}
+.vendor-name{display:flex;align-items:center;gap:0.5rem;flex:1;min-width:0}
+.vendor-name span{overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.vendor-arrow{font-size:0.7rem;color:var(--text-dim);flex-shrink:0}
+.vendor:hover .vendor-arrow{color:var(--gold)}
+.vendor-tag{
+  font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--gold);padding:1px 6px;
+  border:1px solid rgba(196,151,58,0.3);border-radius:2px;flex-shrink:0;
+}
+.vendor-tag.aff{color:var(--text-dim);border-color:rgba(255,255,255,0.12)}
+
+.empty{
+  text-align:center;padding:3rem 1rem;
+  font-size:0.86rem;color:var(--text-dim);font-style:italic;
+}
+
+/* ── DISCLOSURE ── */
+.disclosure{
+  max-width:760px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) 3rem;
+  text-align:center;
+}
+.disclosure-inner{
+  border-top:1px solid rgba(255,255,255,0.06);
+  padding-top:1.6rem;
+  font-size:0.78rem;color:var(--text-dim);line-height:1.7;
+}
+.disclosure-inner strong{color:var(--text);font-weight:400}
+
+/* ── FOOTER ── */
+footer.site{
+  border-top:1px solid rgba(255,255,255,0.06);
+  padding:1.8rem clamp(1.25rem,5vw,2.5rem);
+  text-align:center;font-size:0.66rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);
+}
+footer.site .wm{font-family:'Cormorant',serif;font-size:0.94rem;letter-spacing:0.32em;color:var(--text);margin-right:1rem}
+</style>
+</head>
+<body>
+
+<nav aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li><a href="/about">About</a></li>
+    <li><a href="/v2/explore.html">Explore</a></li>
+    <li><a href="/aligned/" style="color:var(--gold)">Aligned Goods</a></li>
+    <li><a href="/search">Search</a></li>
+    <li><a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a></li>
+  </ul>
+</nav>
+
+<section class="hero">
+  <span class="hero-eyebrow">A curated index</span>
+  <h1>Aligned <em>Goods</em></h1>
+  <p class="hero-desc">The best of everything that helps you live in alignment. Products, places, texts, tools — chosen for what they do for the body, the home, the work, the life.</p>
+  <p class="hero-meta">Information in abundance · No paid placement</p>
+</section>
+
+<section class="editorial">
+  <div class="editorial-rule"></div>
+  <p>True freedom is living in full alignment with oneself.</p>
+  <p>Every entry on this page meets a rubric — used, clean, independent, verifiable, accessible, durable. Picks are things we use ourselves. Aligned items are things we'd recommend. Nothing is here because someone paid for it.</p>
+</section>
+
+<section class="cats-wrap">
+  <p class="cats-label">Browse by category</p>
+  <div class="cats" id="cats"></div>
+</section>
+
+<div class="filters" id="filters" hidden>
+  <span class="filter-label">Tier</span>
+  <button class="ftab on" data-tier="all">All</button>
+  <button class="ftab" data-tier="pick">FRQNCY Pick</button>
+  <button class="ftab" data-tier="aligned">Aligned</button>
+</div>
+
+<section class="list-wrap">
+  <p class="list-meta" id="listMeta"></p>
+  <div class="list" id="list"></div>
+</section>
+
+<section class="disclosure">
+  <div class="disclosure-inner">
+    <strong>On affiliate links.</strong> Where an entry is marked <span style="color:var(--text-dim);border:1px solid rgba(255,255,255,0.12);padding:1px 6px;border-radius:2px;font-size:0.66rem;letter-spacing:0.16em;text-transform:uppercase;">aff</span> it means clicking helps support FRQNCY at no extra cost to you. Affiliate status never affects whether something is included or how it is ranked. We do not accept paid placement.
+  </div>
+</section>
+
+<footer class="site" role="contentinfo">
+  <span class="wm">FRQNCY</span>
+  <span>© 2026 · All frequencies reserved</span>
+</footer>
+
+<script>
+const CATEGORIES = [
+  { id: 'body',        name: 'Body',        icon: '✦', desc: 'What touches the body daily' },
+  { id: 'nourishment', name: 'Nourishment', icon: '✦', desc: 'What goes in the body' },
+  { id: 'home',        name: 'Home',        icon: '✦', desc: 'The space around the body' },
+  { id: 'stay',        name: 'Stay',        icon: '✦', desc: 'Places to be' },
+  { id: 'wear',        name: 'Wear',        icon: '✦', desc: 'Clothing & adornment' },
+  { id: 'move',        name: 'Move',        icon: '✦', desc: 'Getting around' },
+  { id: 'money',       name: 'Money',       icon: '✦', desc: 'Tools for value flow' },
+  { id: 'tech',        name: 'Tech',        icon: '✦', desc: 'Tools that augment thinking' },
+  { id: 'library',     name: 'Library',     icon: '✦', desc: 'Texts worth a lifetime' },
+  { id: 'learn',       name: 'Learn',       icon: '✦', desc: 'Living education' },
+  { id: 'practice',    name: 'Practice',    icon: '✦', desc: 'Tools to do the work' },
+];
+
+const CRIT_LABEL = {
+  used: 'Used',
+  clean: 'Clean',
+  independent: 'Independent',
+  verifiable: 'Verifiable',
+  accessible: 'Accessible',
+  durable: 'Durable',
+};
+
+let GOODS = [];
+let activeCat = 'all';
+let activeTier = 'all';
+
+async function load() {
+  try {
+    const r = await fetch('/aligned-goods.json', { cache: 'no-store' });
+    GOODS = await r.json();
+  } catch (e) {
+    GOODS = [];
+  }
+  renderCats();
+  render();
+}
+
+function renderCats() {
+  const counts = { all: GOODS.length };
+  for (const g of GOODS) counts[g.category] = (counts[g.category] || 0) + 1;
+
+  const wrap = document.getElementById('cats');
+  const all = `<button class="cat ${activeCat==='all'?'active':''}" data-cat="all">
+    <span class="cat-icon">✦</span>
+    <span class="cat-name">All</span>
+    <span class="cat-count">${counts.all} entries</span>
+  </button>`;
+  const cats = CATEGORIES.map(c => `
+    <button class="cat ${activeCat===c.id?'active':''}" data-cat="${c.id}">
+      <span class="cat-icon">${c.icon}</span>
+      <span class="cat-name">${c.name}</span>
+      <span class="cat-count">${counts[c.id]||0} ${counts[c.id]===1?'entry':'entries'}</span>
+    </button>
+  `).join('');
+  wrap.innerHTML = all + cats;
+
+  wrap.querySelectorAll('.cat').forEach(el => {
+    el.addEventListener('click', () => {
+      activeCat = el.dataset.cat;
+      renderCats();
+      render();
+    });
+  });
+}
+
+function render() {
+  const list = document.getElementById('list');
+  const meta = document.getElementById('listMeta');
+  const filters = document.getElementById('filters');
+
+  let items = GOODS.slice();
+  if (activeCat !== 'all') items = items.filter(g => g.category === activeCat);
+  if (activeTier !== 'all') items = items.filter(g => g.tier === activeTier);
+
+  // sort: pick first, then aligned, then by name
+  const tierRank = { pick: 0, aligned: 1, referenced: 2 };
+  items.sort((a,b) => (tierRank[a.tier]??9)-(tierRank[b.tier]??9) || a.name.localeCompare(b.name));
+
+  filters.hidden = GOODS.length === 0;
+  meta.textContent = items.length === 0
+    ? 'Nothing here yet'
+    : `${items.length} ${items.length===1?'entry':'entries'}${activeCat==='all'?'':' in '+catName(activeCat)}`;
+
+  if (items.length === 0) {
+    list.innerHTML = `<div class="empty" style="grid-column:1/-1;">
+      ${GOODS.length===0
+        ? 'The index is being seeded. Check back soon.'
+        : 'No entries match your filters yet — this category is on the way.'}
+    </div>`;
+    return;
+  }
+
+  list.innerHTML = items.map(card).join('');
+}
+
+function catName(id) {
+  const c = CATEGORIES.find(x => x.id === id);
+  return c ? c.name : id;
+}
+
+function card(g) {
+  const tierLabel = g.tier === 'pick' ? '✦ FRQNCY Pick' : (g.tier === 'aligned' ? 'Aligned' : '');
+  const tierClass = g.tier === 'pick' ? 'pick' : (g.tier === 'aligned' ? 'aligned' : 'referenced');
+
+  const crits = (g.criteria || []).map(c => `<span class="crit">${CRIT_LABEL[c] || c}</span>`).join('');
+
+  const vendors = (g.vendor || []).map(v => {
+    const tags = [];
+    if (v.free) tags.push('<span class="vendor-tag">Free</span>');
+    if (v.affiliate) tags.push('<span class="vendor-tag aff">Aff</span>');
+    return `<a class="vendor" href="${v.url}" target="_blank" rel="noopener noreferrer">
+      <span class="vendor-name"><span>${v.name}</span>${tags.join('')}</span>
+      <span class="vendor-arrow">↗</span>
+    </a>`;
+  }).join('');
+
+  return `<article class="gcard tier-${tierClass}">
+    <div class="gcard-head">
+      <div style="flex:1;min-width:0;">
+        <p class="gcard-cat">${catName(g.category)}</p>
+        <h3>${g.name}</h3>
+      </div>
+      ${tierLabel ? `<span class="gcard-tier ${g.tier==='aligned'?'aligned':''}">${tierLabel}</span>` : ''}
+    </div>
+    <p class="gcard-desc">${g.desc}</p>
+    ${crits ? `<div class="gcard-criteria">${crits}</div>` : ''}
+    ${vendors ? `<div class="gcard-vendors">${vendors}</div>` : ''}
+  </article>`;
+}
+
+document.addEventListener('click', (e) => {
+  const tab = e.target.closest('.ftab');
+  if (!tab) return;
+  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('on'));
+  tab.classList.add('on');
+  activeTier = tab.dataset.tier;
+  render();
+});
+
+load();
+</script>
+</body>
+</html>

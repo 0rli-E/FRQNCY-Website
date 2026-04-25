@@ -468,6 +468,35 @@
             border-color: #B8862E;
         }
 
+        /* Themes Grid */
+        .themes-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(240px, 1fr));
+            gap: 1.5rem;
+            margin-top: 1rem;
+        }
+        .theme-card {
+            background: #FAFAFA;
+            border-left: 4px solid var(--gold);
+            padding: 1.75rem 1.6rem;
+            transition: transform 0.25s ease;
+        }
+        .theme-card:hover { transform: translateY(-2px); }
+        .theme-card h3 {
+            font-family: 'Cormorant', serif;
+            font-size: 1.55rem;
+            font-weight: 400;
+            color: var(--dark);
+            margin-bottom: 0.6rem;
+            font-style: italic;
+        }
+        .theme-card p {
+            font-size: 0.92rem;
+            line-height: 1.6;
+            color: var(--mid);
+            margin: 0;
+        }
+
         /* Guest Categories */
         .categories {
             display: grid;
@@ -686,6 +715,27 @@
             <p>Every episode sits with one person long enough for the real thing to come through. How they think. What they build. Why they build it. You leave each conversation with the map of someone else's practice slightly in your hands.</p>
             <div class="format-quote">
                 "The podcast is how the network finds its voice — and how you find the voices inside the network."
+            </div>
+        </div>
+    </section>
+
+    <!-- Themes We Sit With -->
+    <section>
+        <div class="section-label">Themes We Sit With</div>
+        <h2>Lectures &amp; Conversations on the Inner World</h2>
+        <p style="max-width:680px;margin-bottom:2rem;">Recurring threads across the podcast and live talks — the territories we keep returning to, in long-form conversation and in person.</p>
+        <div class="themes-grid">
+            <div class="theme-card">
+                <h3>Emotions</h3>
+                <p>How we feel, why we feel, and what feeling actually does. The body as instrument, the heart as compass.</p>
+            </div>
+            <div class="theme-card">
+                <h3>The Self</h3>
+                <p>Identity, witnessing, ego, soul. Who is the one watching? What stays when the mask is set down?</p>
+            </div>
+            <div class="theme-card">
+                <h3>Thought</h3>
+                <p>How thinking works. Where thoughts come from. The architecture of mind — and the silence underneath.</p>
             </div>
         </div>
     </section>

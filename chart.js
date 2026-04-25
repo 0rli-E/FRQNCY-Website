@@ -1071,10 +1071,34 @@ function _svgBodygraph(chart) {
 }
 
 // ── Render HD ─────────────────────────────────────────────────────────
+// ── Shared chart save → localStorage ──────────────────────────────────
+// My FRQNCY reads this to personalise teacher / resource selection. We
+// merge on write so generating HD and then GK builds up a single record.
+function saveChartSignature(patch) {
+  try {
+    const existing = JSON.parse(localStorage.getItem('frqncy:chart') || '{}');
+    const merged = Object.assign({}, existing, patch, {
+      generatedAt: new Date().toISOString(),
+    });
+    localStorage.setItem('frqncy:chart', JSON.stringify(merged));
+  } catch (e) { /* localStorage unavailable — ignore */ }
+}
+
 function renderHD(dob, tob, tzLabel, dateStr) {
   const chart = deriveHD(dob, tob, '', window._FRQ_ZONE);
   _lastHDChart = chart; // stash for AI reading
   const t = HD_TYPES[chart.type] || { pct:'', strategy:'', desc:'' };
+
+  // Persist the signature so /my-frqncy can personalise without re-asking.
+  saveChartSignature({
+    hd: {
+      type: chart.type,
+      authority: chart.authority,
+      profile: chart.profile,
+      strategy: t.strategy || '',
+    },
+    dob,
+  });
   const P = chart.personality, D = chart.design;
   const BODIES = ['Sun','Earth','Moon','North Node','South Node','Mercury','Venus','Mars','Jupiter','Saturn','Uranus','Neptune','Pluto'];
 
@@ -1167,6 +1191,12 @@ function renderGK(dob, tob, tzLabel, dateStr) {
   // Use the same astronomical chart HD uses, then map planetary gates to spheres.
   const chart = deriveHD(dob, tob, '', window._FRQ_ZONE);
   const spheres = deriveGK(chart);
+
+  // Persist Gene Keys primes (Activation sequence: 4 spheres) for /my-frqncy.
+  const primes = spheres
+    .filter(s => s.group === 'Activation')
+    .map(s => ({ name: s.name, key: s.key, line: s.line, gift: s.gift, shadow: s.shadow, siddhi: s.siddhi }));
+  saveChartSignature({ gk: { primes }, dob });
 
   document.getElementById('res-eyebrow').textContent = 'Gene Keys';
   document.getElementById('res-title').textContent = 'Your Hologenetic Profile';
