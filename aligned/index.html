@@ -82,63 +82,69 @@ nav{
 .editorial p{font-family:'Cormorant',serif;font-size:1.18rem;font-weight:300;line-height:1.7;color:var(--text);font-style:italic;letter-spacing:0.005em}
 .editorial p + p{margin-top:0.85rem;font-size:0.86rem;font-family:'Jost',sans-serif;font-style:normal;color:var(--text-dim);line-height:1.7}
 
-/* ── CATEGORY GRID ── */
-.cats-wrap{
+/* ── SHELF NAV (sticky, horizontal-scrollable on mobile) ── */
+.shelf-nav-wrap{
+  position:sticky;top:0;z-index:50;
+  background:rgba(11,28,61,0.92);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+}
+.shelf-nav{
   max-width:1200px;margin:0 auto;
-  padding:1.6rem clamp(1.25rem,5vw,2.5rem) 2.4rem;
+  padding:0.85rem clamp(1.25rem,5vw,2.5rem);
+  display:flex;gap:0.4rem;overflow-x:auto;scrollbar-width:none;
+  scroll-snap-type:x proximity;
 }
-.cats-label{
-  font-size:0.6rem;letter-spacing:0.28em;text-transform:uppercase;
-  color:var(--text-dim);margin-bottom:1rem;text-align:center;
+.shelf-nav::-webkit-scrollbar{display:none}
+.shelf-nav-link{
+  flex-shrink:0;scroll-snap-align:start;
+  font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;
+  padding:6px 14px;border:1px solid rgba(255,255,255,0.08);border-radius:2px;
+  color:var(--text-dim);text-decoration:none;transition:all .2s;
+  font-family:'Jost',sans-serif;white-space:nowrap;
 }
-.cats{
-  display:grid;
-  grid-template-columns:repeat(auto-fit,minmax(150px,1fr));
-  gap:0.6rem;
-}
-.cat{
-  border:1px solid var(--card-border);background:var(--card-bg);
-  border-radius:3px;padding:0.95rem 1rem 0.85rem;
-  cursor:pointer;text-align:center;transition:all .2s;
-  display:flex;flex-direction:column;align-items:center;gap:0.3rem;
-  font-family:'Jost',sans-serif;color:var(--text);
-}
-.cat:hover{border-color:rgba(196,151,58,0.45);background:rgba(196,151,58,0.03)}
-.cat.active{border-color:var(--gold);background:rgba(196,151,58,0.07);color:#fff}
-.cat-icon{font-family:'Cormorant',serif;font-size:1.1rem;color:var(--gold);opacity:0.9;line-height:1}
-.cat-name{font-size:0.74rem;letter-spacing:0.15em;text-transform:uppercase;font-weight:400}
-.cat-count{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim)}
-.cat.active .cat-count{color:var(--gold-light)}
+.shelf-nav-link:hover{color:var(--text);border-color:rgba(255,255,255,0.22)}
+.shelf-nav-link.active{color:var(--gold);border-color:rgba(196,151,58,0.5);background:rgba(196,151,58,0.06)}
 
-/* ── FILTERS ── */
-.filters{
+/* ── SHELVES ── */
+.shelves-wrap{
   max-width:1200px;margin:0 auto;
-  padding:0 clamp(1.25rem,5vw,2.5rem) 0.6rem;
-  display:flex;gap:0.4rem;flex-wrap:wrap;align-items:center;justify-content:center;
+  padding:2.2rem clamp(1.25rem,5vw,2.5rem) 4rem;
 }
-.filter-label{font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-right:0.25rem}
-.ftab{
-  font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;
-  padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;
-  cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;
-  font-family:'Jost',sans-serif;
+.shelf{
+  padding:3rem 0 3.4rem;
+  border-bottom:1px solid rgba(255,255,255,0.05);
 }
-.ftab:hover{color:var(--text);border-color:rgba(255,255,255,0.22)}
-.ftab.on{color:var(--gold);border-color:rgba(196,151,58,0.5);background:rgba(196,151,58,0.06)}
-
-/* ── LIST ── */
-.list-wrap{
-  max-width:1200px;margin:0 auto;
-  padding:1rem clamp(1.25rem,5vw,2.5rem) 4rem;
+.shelf:last-child{border-bottom:none}
+.shelf-head{
+  display:flex;align-items:baseline;justify-content:space-between;
+  gap:1rem;flex-wrap:wrap;margin-bottom:2rem;
 }
-.list-meta{
-  font-size:0.66rem;letter-spacing:0.18em;text-transform:uppercase;
-  color:var(--text-dim);margin-bottom:1.2rem;text-align:center;
+.shelf-head-text{flex:1;min-width:0}
+.shelf-num{
+  font-family:'Cormorant',serif;font-size:0.92rem;font-weight:300;
+  color:var(--gold);opacity:0.7;letter-spacing:0.04em;display:block;margin-bottom:0.35rem;
 }
-.list{
+.shelf-title{
+  font-family:'Cormorant',serif;font-size:clamp(1.7rem,3.4vw,2.4rem);
+  font-weight:300;color:#fff;line-height:1.1;letter-spacing:0.005em;
+  margin-bottom:0.5rem;
+}
+.shelf-desc{
+  font-size:0.86rem;color:var(--text-dim);line-height:1.6;max-width:560px;
+}
+.shelf-count{
+  font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-dim);opacity:0.8;flex-shrink:0;align-self:flex-start;
+  padding-top:0.45rem;
+}
+.shelf-items{
   display:grid;
-  grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  grid-template-columns:repeat(auto-fill,minmax(280px,1fr));
   gap:0.9rem;
+}
+@media(max-width:520px){
+  .shelf-items{grid-template-columns:1fr}
+  .shelf-head{flex-direction:column;align-items:flex-start}
 }
 .gcard{
   border:1px solid var(--card-border);background:var(--card-bg);
@@ -248,22 +254,11 @@ footer.site .wm{font-family:'Cormorant',serif;font-size:0.94rem;letter-spacing:0
   <p>Every entry on this page meets a rubric — used, clean, independent, verifiable, accessible, durable. Picks are things we use ourselves. Aligned items are things we'd recommend. Nothing is here because someone paid for it.</p>
 </section>
 
-<section class="cats-wrap">
-  <p class="cats-label">Browse by category</p>
-  <div class="cats" id="cats"></div>
-</section>
+<nav class="shelf-nav-wrap" aria-label="Aligned Goods shelves">
+  <div class="shelf-nav" id="shelfNav"></div>
+</nav>
 
-<div class="filters" id="filters" hidden>
-  <span class="filter-label">Tier</span>
-  <button class="ftab on" data-tier="all">All</button>
-  <button class="ftab" data-tier="pick">FRQNCY Pick</button>
-  <button class="ftab" data-tier="aligned">Aligned</button>
-</div>
-
-<section class="list-wrap">
-  <p class="list-meta" id="listMeta"></p>
-  <div class="list" id="list"></div>
-</section>
+<section class="shelves-wrap" id="shelvesWrap"></section>
 
 <section class="disclosure">
   <div class="disclosure-inner">
@@ -277,18 +272,21 @@ footer.site .wm{font-family:'Cormorant',serif;font-size:0.94rem;letter-spacing:0
 </footer>
 
 <script>
+// Shelves — each category gets its own section with serif heading, tagline,
+// and a grid of items. Sticky nav at the top scroll-jumps between them.
 const CATEGORIES = [
-  { id: 'body',        name: 'Body',        icon: '✦', desc: 'What touches the body daily' },
-  { id: 'nourishment', name: 'Nourishment', icon: '✦', desc: 'What goes in the body' },
-  { id: 'home',        name: 'Home',        icon: '✦', desc: 'The space around the body' },
-  { id: 'stay',        name: 'Stay',        icon: '✦', desc: 'Places to be' },
-  { id: 'wear',        name: 'Wear',        icon: '✦', desc: 'Clothing & adornment' },
-  { id: 'move',        name: 'Move',        icon: '✦', desc: 'Getting around' },
-  { id: 'money',       name: 'Money',       icon: '✦', desc: 'Tools for value flow' },
-  { id: 'tech',        name: 'Tech',        icon: '✦', desc: 'Tools that augment thinking' },
-  { id: 'library',     name: 'Library',     icon: '✦', desc: 'Texts worth a lifetime' },
-  { id: 'learn',       name: 'Learn',       icon: '✦', desc: 'Living education' },
-  { id: 'practice',    name: 'Practice',    icon: '✦', desc: 'Tools to do the work' },
+  { id: 'nourishment', name: 'Water',                desc: 'What you drink first. The most-used input to the body.' },
+  { id: 'food',        name: 'Food',                 desc: 'Sources you can trace from the farm to the plate.' },
+  { id: 'body-care',   name: 'Body care',            desc: 'What touches the skin and what you wash with — clean, transparent, simple.' },
+  { id: 'supplements', name: 'Supplements',          desc: 'Single ingredients, third-party tested, no proprietary blends.' },
+  { id: 'sleep',       name: 'Sleep & recovery',     desc: 'The body\'s daily restoration. The thing that compounds.' },
+  { id: 'movement',    name: 'Movement & practice', desc: 'How the body trains and how the practice is held.' },
+  { id: 'cookware',    name: 'Cookware',             desc: 'Pots, pans, knives. Multigenerational, tactile, the opposite of disposable.' },
+  { id: 'coffee-tea',  name: 'Coffee & tea',         desc: 'The morning ritual — beans, leaves, the tools that brew them properly.' },
+  { id: 'audio',       name: 'Audio',                desc: 'Headphones, speakers, the hardware of how you actually hear it.' },
+  { id: 'tools-carry', name: 'Tools & carry',        desc: 'Everyday objects that should last a decade. The opposite of fast fashion for things.' },
+  { id: 'cards',       name: 'Cards',                desc: 'How money moves with intention — for travel, sovereignty, and the new financial layer.' },
+  { id: 'privacy',     name: 'Privacy & sovereignty', desc: 'Tools that keep you the owner of your data, your money, and your attention.' },
 ];
 
 const CRIT_LABEL = {
@@ -301,8 +299,6 @@ const CRIT_LABEL = {
 };
 
 let GOODS = [];
-let activeCat = 'all';
-let activeTier = 'all';
 
 async function load() {
   try {
@@ -311,71 +307,74 @@ async function load() {
   } catch (e) {
     GOODS = [];
   }
-  renderCats();
-  render();
+  renderShelfNav();
+  renderShelves();
+  attachActiveShelfTracking();
 }
 
-function renderCats() {
-  const counts = { all: GOODS.length };
-  for (const g of GOODS) counts[g.category] = (counts[g.category] || 0) + 1;
-
-  const wrap = document.getElementById('cats');
-  const all = `<button class="cat ${activeCat==='all'?'active':''}" data-cat="all">
-    <span class="cat-icon">✦</span>
-    <span class="cat-name">All</span>
-    <span class="cat-count">${counts.all} entries</span>
-  </button>`;
-  const cats = CATEGORIES.map(c => `
-    <button class="cat ${activeCat===c.id?'active':''}" data-cat="${c.id}">
-      <span class="cat-icon">${c.icon}</span>
-      <span class="cat-name">${c.name}</span>
-      <span class="cat-count">${counts[c.id]||0} ${counts[c.id]===1?'entry':'entries'}</span>
-    </button>
-  `).join('');
-  wrap.innerHTML = all + cats;
-
-  wrap.querySelectorAll('.cat').forEach(el => {
-    el.addEventListener('click', () => {
-      activeCat = el.dataset.cat;
-      renderCats();
-      render();
+function itemsFor(catId) {
+  return GOODS.filter(g => g.category === catId)
+    .sort((a, b) => {
+      const tr = { pick: 0, aligned: 1, referenced: 2 };
+      return (tr[a.tier]??9)-(tr[b.tier]??9) || a.name.localeCompare(b.name);
     });
-  });
 }
 
-function render() {
-  const list = document.getElementById('list');
-  const meta = document.getElementById('listMeta');
-  const filters = document.getElementById('filters');
+function renderShelfNav() {
+  const nav = document.getElementById('shelfNav');
+  // Only show categories that actually have items
+  const visible = CATEGORIES.filter(c => itemsFor(c.id).length > 0);
+  nav.innerHTML = visible.map(c =>
+    `<a class="shelf-nav-link" href="#shelf-${c.id}" data-shelf="${c.id}">${c.name}</a>`
+  ).join('');
+}
 
-  let items = GOODS.slice();
-  if (activeCat !== 'all') items = items.filter(g => g.category === activeCat);
-  if (activeTier !== 'all') items = items.filter(g => g.tier === activeTier);
-
-  // sort: pick first, then aligned, then by name
-  const tierRank = { pick: 0, aligned: 1, referenced: 2 };
-  items.sort((a,b) => (tierRank[a.tier]??9)-(tierRank[b.tier]??9) || a.name.localeCompare(b.name));
-
-  filters.hidden = GOODS.length === 0;
-  meta.textContent = items.length === 0
-    ? 'Nothing here yet'
-    : `${items.length} ${items.length===1?'entry':'entries'}${activeCat==='all'?'':' in '+catName(activeCat)}`;
-
-  if (items.length === 0) {
-    list.innerHTML = `<div class="empty" style="grid-column:1/-1;">
-      ${GOODS.length===0
-        ? 'The index is being seeded. Check back soon.'
-        : 'No entries match your filters yet — this category is on the way.'}
-    </div>`;
+function renderShelves() {
+  const wrap = document.getElementById('shelvesWrap');
+  if (GOODS.length === 0) {
+    wrap.innerHTML = `<div class="empty" style="padding:4rem 1rem;text-align:center;color:var(--text-dim);font-style:italic;">The index is being seeded. Check back soon.</div>`;
     return;
   }
-
-  list.innerHTML = items.map(card).join('');
+  const visible = CATEGORIES.filter(c => itemsFor(c.id).length > 0);
+  const total = visible.length;
+  wrap.innerHTML = visible.map((c, i) => {
+    const items = itemsFor(c.id);
+    const num = String(i + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    return `<section class="shelf" id="shelf-${c.id}" data-shelf="${c.id}">
+      <header class="shelf-head">
+        <div class="shelf-head-text">
+          <span class="shelf-num">${num}</span>
+          <h2 class="shelf-title">${c.name}</h2>
+          <p class="shelf-desc">${c.desc}</p>
+        </div>
+        <span class="shelf-count">${items.length} pick${items.length===1?'':'s'}</span>
+      </header>
+      <div class="shelf-items">
+        ${items.map(card).join('')}
+      </div>
+    </section>`;
+  }).join('');
 }
 
-function catName(id) {
-  const c = CATEGORIES.find(x => x.id === id);
-  return c ? c.name : id;
+function attachActiveShelfTracking() {
+  // Highlight the shelf-nav link of whichever shelf is in view
+  const links = document.querySelectorAll('.shelf-nav-link');
+  const linkById = new Map();
+  links.forEach(l => linkById.set(l.dataset.shelf, l));
+  const obs = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (!e.isIntersecting) return;
+      const id = e.target.dataset.shelf;
+      links.forEach(l => l.classList.remove('active'));
+      const link = linkById.get(id);
+      if (link) {
+        link.classList.add('active');
+        // scroll the nav so the active chip stays visible
+        link.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+      }
+    });
+  }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
+  document.querySelectorAll('.shelf').forEach(s => obs.observe(s));
 }
 
 function card(g) {
@@ -394,10 +393,10 @@ function card(g) {
     </a>`;
   }).join('');
 
+  // The category is implicit (we're inside its shelf) so the per-card cat label is redundant — drop it.
   return `<article class="gcard tier-${tierClass}">
     <div class="gcard-head">
       <div style="flex:1;min-width:0;">
-        <p class="gcard-cat">${catName(g.category)}</p>
         <h3>${g.name}</h3>
       </div>
       ${tierLabel ? `<span class="gcard-tier ${g.tier==='aligned'?'aligned':''}">${tierLabel}</span>` : ''}
@@ -407,15 +406,6 @@ function card(g) {
     ${vendors ? `<div class="gcard-vendors">${vendors}</div>` : ''}
   </article>`;
 }
-
-document.addEventListener('click', (e) => {
-  const tab = e.target.closest('.ftab');
-  if (!tab) return;
-  document.querySelectorAll('.ftab').forEach(t => t.classList.remove('on'));
-  tab.classList.add('on');
-  activeTier = tab.dataset.tier;
-  render();
-});
 
 load();
 </script>
