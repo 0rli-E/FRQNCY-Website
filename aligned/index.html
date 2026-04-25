@@ -412,8 +412,9 @@ function renderShelves() {
 }
 
 function attachActiveShelfTracking() {
-  // Highlight the shelf-nav link of whichever shelf is in view
+  // Highlight the shelf-nav link of whichever shelf is in view.
   const links = document.querySelectorAll('.shelf-nav-link');
+  const nav = document.getElementById('shelfNav');
   const linkById = new Map();
   links.forEach(l => linkById.set(l.dataset.shelf, l));
   const obs = new IntersectionObserver((entries) => {
@@ -422,10 +423,22 @@ function attachActiveShelfTracking() {
       const id = e.target.dataset.shelf;
       links.forEach(l => l.classList.remove('active'));
       const link = linkById.get(id);
-      if (link) {
-        link.classList.add('active');
-        // scroll the nav so the active chip stays visible
-        link.scrollIntoView({ behavior: 'smooth', inline: 'nearest', block: 'nearest' });
+      if (!link || !nav) return;
+      link.classList.add('active');
+      // IMPORTANT: scroll the nav HORIZONTALLY only — never call
+      // link.scrollIntoView(). scrollIntoView on a sticky-positioned
+      // element ends up nudging the page's vertical scroll, which
+      // fights the user and causes a "bouncing" effect when you try
+      // to scroll past the first shelf. Manually setting
+      // nav.scrollLeft only moves the nav, never the page.
+      const linkRect = link.getBoundingClientRect();
+      const navRect = nav.getBoundingClientRect();
+      const offscreen = linkRect.left < navRect.left + 8 || linkRect.right > navRect.right - 8;
+      if (offscreen) {
+        nav.scrollTo({
+          left: link.offsetLeft - nav.clientWidth / 2 + link.offsetWidth / 2,
+          behavior: 'smooth'
+        });
       }
     });
   }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });

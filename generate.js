@@ -1432,25 +1432,36 @@ function syncExploreData() {
   const existingLinks = new Set(data.links.map(([s, t]) => `${s}|${t}`));
 
   // ── Nodes ──
-  // Add any pillar/domain/topic/place missing from the map.
+  // Add any pillar/domain/topic/place missing from the map. ALSO refresh
+  // the label/desc on existing nodes — when a topic is added with a stale
+  // schema (e.g. 'title' instead of 'label') the node ends up label-less,
+  // which makes the canvas render nameless dots.
   const additions = [];
-  for (const p of DATA.pillars) {
-    if (!existingById.has(p.id)) {
-      data.nodes.push({ id: p.id, label: p.label, type: 'main', r: 30 });
-      additions.push(`+ pillar ${p.id}`);
+  function upsertNode(id, fields) {
+    const existing = existingById.get(id);
+    if (existing) {
+      // Patch missing/empty fields without overwriting hand-curated values
+      for (const [k, v] of Object.entries(fields)) {
+        if ((existing[k] === undefined || existing[k] === null || existing[k] === '') && v) {
+          existing[k] = v;
+        }
+      }
+      // Always refresh label if the node has none (most common breakage)
+      if (!existing.label && fields.label) existing.label = fields.label;
+    } else {
+      data.nodes.push({ id, ...fields });
+      existingById.set(id, fields);
+      additions.push(`+ ${fields.type} ${id}`);
     }
+  }
+  for (const p of DATA.pillars) {
+    upsertNode(p.id, { id: p.id, label: p.label, type: 'main', r: 30 });
   }
   for (const d of DATA.domains) {
-    if (!existingById.has(d.id)) {
-      data.nodes.push({ id: d.id, label: d.label, type: 'cluster', r: 23 });
-      additions.push(`+ domain ${d.id}`);
-    }
+    upsertNode(d.id, { id: d.id, label: d.label, type: 'cluster', r: 23 });
   }
   for (const t of DATA.topics) {
-    if (!existingById.has(t.id)) {
-      data.nodes.push({ id: t.id, label: t.label, type: 'topic', r: 12 });
-      additions.push(`+ topic ${t.id}`);
-    }
+    upsertNode(t.id, { id: t.id, label: t.label, type: 'topic', r: 12 });
   }
   if (PLACES) {
     for (const pl of PLACES.places) {
