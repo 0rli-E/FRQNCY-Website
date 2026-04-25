@@ -4,7 +4,7 @@
  * Provides offline fallback for the shell and fonts.
  */
 
-const CACHE = 'frqncy-v22';
+const CACHE = 'frqncy-v23';
 
 // Assets that should be pre-cached on install (the app shell)
 const PRECACHE = [
@@ -25,6 +25,19 @@ const PRECACHE = [
   '/space.html',
   '/my-frqncy.html',
   '/chart.html',
+  '/start-here.html',
+  // Entity hub indexes — added with the world-model expansion
+  '/people/index.html',
+  '/books/index.html',
+  '/orgs/index.html',
+  '/media/index.html',
+  '/music/index.html',
+  '/places/index.html',
+  '/aligned/index.html',
+  // Search index data
+  '/search.json',
+  '/entities.json',
+  '/resources.json',
 ];
 
 // ── Install: pre-cache the app shell ────────────────────────────────

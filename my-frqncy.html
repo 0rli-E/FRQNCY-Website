@@ -345,7 +345,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">FRQNCY</a>
+  <a href="/" class="nav-logo">FRQNCY</a>
   <ul class="nav-links">
     <li class="nav-dd">
       <a href="/about">About</a>
@@ -674,6 +674,7 @@ async function loadData() {
 // ── Build domain tiles ─────────────────────────────────────────────────
 function buildDomainGrid() {
   const grid = document.getElementById('domain-grid');
+  if (!grid) return;
   grid.innerHTML = '';
   for (const d of DOMAINS) {
     const div = document.createElement('div');
@@ -741,17 +742,21 @@ function loadSignature() {
     if (Array.isArray(prefs)) userSignature.prefs = prefs;
   } catch (e) { /* ignore */ }
 
-  // Paint signature UI
+  // Paint signature UI — every getElementById guarded so a partial DOM
+  // (e.g. a future page reusing loadSignature without the sig block)
+  // can't crash with a TypeError.
   const savedCard = document.getElementById('sig-saved-card');
   const manual = document.getElementById('sig-manual');
   const sumText = document.getElementById('sig-summary-text');
+  if (!savedCard || !manual || !sumText) return; // sig block isn't on this page
   if (userSignature.hd && userSignature.hd.type) {
     savedCard.style.display = 'block';
     manual.style.display = 'none';
     const parts = [userSignature.hd.type];
     if (userSignature.hd.authority) parts.push(userSignature.hd.authority + ' authority');
     if (userSignature.hd.profile) parts.push('Profile ' + userSignature.hd.profile);
-    document.getElementById('sig-saved-summary').textContent = parts.join(' · ');
+    const savedSummary = document.getElementById('sig-saved-summary');
+    if (savedSummary) savedSummary.textContent = parts.join(' · ');
     sumText.textContent = 'Your signature: ' + userSignature.hd.type;
   } else {
     savedCard.style.display = 'none';

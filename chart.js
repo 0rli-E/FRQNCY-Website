@@ -360,12 +360,11 @@ function updateBtn() {
     paintErrors(errors);
   }
 }
-document.getElementById('dob').addEventListener('input', updateBtn);
-document.getElementById('tob').addEventListener('input', updateBtn);
-document.getElementById('tz').addEventListener('change', updateBtn);
-['lat','lng'].forEach(id => {
+// Guard each lookup — page reuse / partial DOM should not throw.
+['dob','tob','tz','lat','lng'].forEach(id => {
   const el = document.getElementById(id);
-  if (el) el.addEventListener('input', updateBtn);
+  if (!el) return;
+  el.addEventListener(id === 'tz' ? 'change' : 'input', updateBtn);
 });
 
 // ── Human Design data ──────────────────────────────────────────────────

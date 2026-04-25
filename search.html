@@ -242,7 +242,7 @@ mark{background:rgba(74,122,232,0.22);color:#fff;border-radius:2px;padding:0 2px
 <body>
 
 <nav>
-  <a href="index.html" class="nav-logo">FRQNCY</a>
+  <a href="/" class="nav-logo">FRQNCY</a>
   <ul class="nav-links">
       <li class="nav-dd">
         <a href="/about">About</a>
@@ -365,6 +365,14 @@ async function loadIndex() {
   ]);
   if (topicsRes.status === 'fulfilled') TOPICS = topicsRes.value;
   if (resourcesRes.status === 'fulfilled') RESOURCES = resourcesRes.value;
+  // If both failed, surface a visible error rather than rendering an empty page.
+  if (topicsRes.status !== 'fulfilled' && resourcesRes.status !== 'fulfilled') {
+    const list = document.getElementById('result-list');
+    if (list) {
+      list.innerHTML = '<div style="padding:2rem;text-align:center;color:var(--text-dim)">Search index could not be loaded. Please refresh the page or check your connection.</div>';
+    }
+    return;
+  }
   const hero = document.getElementById('hero-count');
   if (hero) hero.textContent = `${TOPICS.length} Topics · ${RESOURCES.length} Resources`;
   buildTypeFilters();
