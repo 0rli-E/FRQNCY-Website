@@ -82,6 +82,42 @@ nav{
 .editorial p{font-family:'Cormorant',serif;font-size:1.18rem;font-weight:300;line-height:1.7;color:var(--text);font-style:italic;letter-spacing:0.005em}
 .editorial p + p{margin-top:0.85rem;font-size:0.86rem;font-family:'Jost',sans-serif;font-style:normal;color:var(--text-dim);line-height:1.7}
 
+/* ── CRITERIA BLOCK (stated values, not badges) ── */
+.criteria-block{
+  max-width:760px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) 3rem;
+  text-align:center;
+}
+.criteria-rule{width:48px;height:1px;background:rgba(196,151,58,0.4);margin:0 auto 1.6rem}
+.criteria-eyebrow{
+  font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:1rem;opacity:0.85;
+}
+.criteria-body{
+  font-family:'Cormorant',serif;font-size:1.05rem;font-weight:300;
+  line-height:1.85;color:var(--text);max-width:640px;margin:0 auto 1.4rem;
+  letter-spacing:0.005em;
+}
+.criteria-body em{color:var(--gold-light);font-style:normal;font-weight:400;letter-spacing:0.02em}
+.criteria-meta{
+  font-size:0.62rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-dim);font-family:'Jost',sans-serif;opacity:0.75;
+}
+
+/* Editor's Choice marker — restraint */
+.shelf-editor-choice{
+  font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--gold);margin-top:0.7rem;display:flex;align-items:center;gap:0.5rem;
+  font-family:'Jost',sans-serif;
+}
+.shelf-editor-choice::before{content:'★';font-size:0.7rem;color:var(--gold);opacity:0.85}
+.shelf-editor-choice em{color:#fff;font-style:normal;letter-spacing:0.04em;text-transform:none;font-size:0.78rem;font-weight:400;font-family:'Cormorant',serif;letter-spacing:0.005em}
+
+.shelf-footer{
+  margin-top:1.6rem;font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-dim);opacity:0.6;font-family:'Jost',sans-serif;
+}
+
 /* ── SHELF NAV (sticky, horizontal-scrollable on mobile) ── */
 .shelf-nav-wrap{
   position:sticky;top:0;z-index:50;
@@ -148,19 +184,23 @@ nav{
 }
 .gcard{
   border:1px solid var(--card-border);background:var(--card-bg);
-  border-radius:3px;padding:1.4rem 1.4rem 1.2rem;
-  display:flex;flex-direction:column;gap:0.6rem;
+  border-radius:3px;padding:1.6rem 1.5rem 1.3rem;
+  display:flex;flex-direction:column;gap:0.7rem;
   transition:all .2s;
   position:relative;
 }
-.gcard:hover{border-color:rgba(196,151,58,0.3);background:rgba(255,255,255,0.035)}
-.gcard.tier-pick{border-color:rgba(196,151,58,0.28)}
+.gcard:hover{border-color:rgba(255,255,255,0.18);background:rgba(255,255,255,0.04)}
+/* Editor's Choice: subtle gold border + warm interior tint. The visual signal
+   that distinguishes the canonical pick from the other equally valid entries. */
+.gcard.tier-pick{
+  border-color:rgba(196,151,58,0.4);background:rgba(196,151,58,0.04);
+}
+.gcard.tier-pick:hover{border-color:rgba(196,151,58,0.6);background:rgba(196,151,58,0.06)}
 .gcard-head{display:flex;align-items:flex-start;justify-content:space-between;gap:0.6rem}
 .gcard-tier{
   font-size:0.54rem;letter-spacing:0.22em;text-transform:uppercase;
-  color:var(--gold);white-space:nowrap;padding-top:0.25rem;
+  color:var(--gold);white-space:nowrap;padding-top:0.3rem;flex-shrink:0;
 }
-.gcard-tier.aligned{color:var(--text-dim)}
 .gcard h3{
   font-family:'Cormorant',serif;font-size:1.32rem;font-weight:400;color:#fff;
   line-height:1.2;letter-spacing:0.005em;
@@ -242,10 +282,17 @@ footer.site .wm{font-family:'Cormorant',serif;font-size:0.94rem;letter-spacing:0
 </nav>
 
 <section class="hero">
-  <span class="hero-eyebrow">A curated index</span>
+  <span class="hero-eyebrow">FRQNCY edit · issue 01</span>
   <h1>Aligned <em>Goods</em></h1>
-  <p class="hero-desc">The best of everything that helps you live in alignment. Products, places, texts, tools — chosen for what they do for the body, the home, the work, the life.</p>
-  <p class="hero-meta">Information in abundance · No paid placement</p>
+  <p class="hero-desc">The best of everything that helps you live in alignment. Products, places, tools — chosen for what they do for the body, the home, the work, the life.</p>
+  <p class="hero-meta" id="heroMeta">Loading the edit…</p>
+</section>
+
+<section class="criteria-block">
+  <div class="criteria-rule"></div>
+  <p class="criteria-eyebrow">Why these picks</p>
+  <p class="criteria-body">Every entry is held against five questions. <em>Used</em> — does someone we trust actually use it. <em>Clean</em> — does the ingredient or material list survive a literate reading. <em>Independent</em> — is the maker free of the incentive to compromise. <em>Verifiable</em> — can the claims be checked. <em>Durable</em> — will it outlast its first replacement. One Editor's Choice per shelf. Everything else is held to the same bar.</p>
+  <p class="criteria-meta">No paid placement · Affiliate-free · Updated April 2026</p>
 </section>
 
 <section class="editorial">
@@ -337,21 +384,29 @@ function renderShelves() {
   }
   const visible = CATEGORIES.filter(c => itemsFor(c.id).length > 0);
   const total = visible.length;
+  // Hero meta: total picks across all shelves
+  const heroMeta = document.getElementById('heroMeta');
+  if (heroMeta) heroMeta.textContent = `${GOODS.length} entries · ${total} rooms · Updated April 2026`;
+
   wrap.innerHTML = visible.map((c, i) => {
     const items = itemsFor(c.id);
-    const num = String(i + 1).padStart(2, '0') + ' / ' + String(total).padStart(2, '0');
+    const num = String(i + 1).padStart(2, '0') + ' · ' + String(total).padStart(2, '0');
+    const choice = items.find(x => x.tier === 'pick');
+    const choiceLine = choice ? `<div class="shelf-editor-choice">Editor's choice <em>${choice.name}</em></div>` : '';
     return `<section class="shelf" id="shelf-${c.id}" data-shelf="${c.id}">
       <header class="shelf-head">
         <div class="shelf-head-text">
           <span class="shelf-num">${num}</span>
           <h2 class="shelf-title">${c.name}</h2>
           <p class="shelf-desc">${c.desc}</p>
+          ${choiceLine}
         </div>
-        <span class="shelf-count">${items.length} pick${items.length===1?'':'s'}</span>
+        <span class="shelf-count">${items.length} ${items.length===1?'entry':'entries'}</span>
       </header>
       <div class="shelf-items">
         ${items.map(card).join('')}
       </div>
+      <p class="shelf-footer">Last reviewed by FRQNCY · April 2026</p>
     </section>`;
   }).join('');
 }
@@ -378,10 +433,11 @@ function attachActiveShelfTracking() {
 }
 
 function card(g) {
-  const tierLabel = g.tier === 'pick' ? '✦ FRQNCY Pick' : (g.tier === 'aligned' ? 'Aligned' : '');
-  const tierClass = g.tier === 'pick' ? 'pick' : (g.tier === 'aligned' ? 'aligned' : 'referenced');
-
-  const crits = (g.criteria || []).map(c => `<span class="crit">${CRIT_LABEL[c] || c}</span>`).join('');
+  // Editor's Choice is the ONLY card that wears the badge — that is what makes
+  // the badge mean something. Other entries are unmarked, equally valid picks
+  // held to the same bar but not the canonical recommendation.
+  const isChoice = g.tier === 'pick';
+  const tierClass = isChoice ? 'pick' : 'aligned';
 
   const vendors = (g.vendor || []).map(v => {
     const tags = [];
@@ -393,16 +449,15 @@ function card(g) {
     </a>`;
   }).join('');
 
-  // The category is implicit (we're inside its shelf) so the per-card cat label is redundant — drop it.
+  // Criteria moved to the page-level criteria block. Cards stay quiet.
   return `<article class="gcard tier-${tierClass}">
     <div class="gcard-head">
       <div style="flex:1;min-width:0;">
         <h3>${g.name}</h3>
       </div>
-      ${tierLabel ? `<span class="gcard-tier ${g.tier==='aligned'?'aligned':''}">${tierLabel}</span>` : ''}
+      ${isChoice ? `<span class="gcard-tier">★ Editor's choice</span>` : ''}
     </div>
     <p class="gcard-desc">${g.desc}</p>
-    ${crits ? `<div class="gcard-criteria">${crits}</div>` : ''}
     ${vendors ? `<div class="gcard-vendors">${vendors}</div>` : ''}
   </article>`;
 }
