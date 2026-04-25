@@ -6,17 +6,14 @@
 <title>Quantum Reality — FRQNCY Courses</title>
 <meta name="description" content="A guided journey through quantum mechanics — from the double slit experiment to quantum fields and what it all means for consciousness and reality.">
 <meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Quantum Reality — FRQNCY Courses">
 <meta property="og:description" content="A guided journey through quantum mechanics — from the double slit experiment to quantum fields and what it all means for consciousness and reality.">
 <meta property="og:url" content="https://frqncy.network/v2/courses/quantum-reality/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
-<meta property="og:image:alt" content="Quantum Reality — an intermediate physics course from FRQNCY Network.">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:site_name" content="FRQNCY">
-<meta property="og:type" content="article">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Quantum Reality — FRQNCY Courses">
-<meta name="twitter:description" content="A guided journey through quantum mechanics — from the double slit experiment to quantum fields.">
-<meta name="twitter:image" content="https://frqncy.network/og-image.png">
 <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="manifest" href="../../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/courses/quantum-reality/">
@@ -86,12 +83,12 @@ nav.snav{
 .lesson-list{padding:0.4rem 0;flex:1}
 
 .lesson-btn{
-  width:100%;min-height:44px;display:flex;align-items:center;gap:0.7rem;
-  padding:0.85rem 1.1rem 0.85rem 1rem;
+  width:100%;display:flex;align-items:center;gap:0.7rem;
+  padding:0.7rem 1.1rem 0.7rem 1rem;
   border:none;background:none;color:var(--text);
   text-align:left;transition:background .15s;
   border-left:2px solid transparent;
-  position:relative;cursor:pointer;
+  position:relative;
 }
 .lesson-btn:hover{background:rgba(255,255,255,0.04)}
 .lesson-btn.active{background:rgba(255,255,255,0.06);border-left-color:var(--accent)}
@@ -209,7 +206,7 @@ nav.snav{
   flex-wrap:wrap;
 }
 .btn-complete{
-  padding:13px 28px;min-height:44px;border-radius:2px;
+  padding:10px 26px;border-radius:2px;
   font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;border:none;
   background:var(--accent);color:#fff;transition:opacity .2s,background .2s,transform .15s;
 }
@@ -221,7 +218,7 @@ nav.snav{
 }
 .lesson-nav-btns{display:flex;gap:0.6rem}
 .btn-nav{
-  padding:12px 20px;min-height:44px;border-radius:2px;
+  padding:9px 18px;border-radius:2px;
   font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;
   border:1px solid rgba(255,255,255,0.12);background:none;color:var(--text-dim);
   transition:all .2s;
@@ -274,8 +271,8 @@ nav.snav{
 .mobile-lesson-title{flex:1;min-width:0;font-size:0.78rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mobile-lessons-btn{
   background:var(--accent);color:#fff;border:none;
-  padding:12px 16px;min-height:44px;border-radius:2px;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
-  flex-shrink:0;white-space:nowrap;cursor:pointer;
+  padding:7px 14px;border-radius:2px;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
+  flex-shrink:0;white-space:nowrap;
 }
 .mobile-sidebar{
   display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;
@@ -304,18 +301,12 @@ nav.snav{
   .video-wrap{max-width:100%}
   .reflection-box,.reading-card{max-width:100%}
 }
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important}
-}
 </style>
 <script src="../../../mobile-nav.js" defer></script>
 <script src="../../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../../nav-dropdown.css">
 <link rel="manifest" href="../../../manifest.json">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Course","name":"Quantum Reality","description":"A guided journey through quantum mechanics — from the double slit experiment to quantum fields and what it all means for consciousness and reality.","url":"https://frqncy.network/v2/courses/quantum-reality/","provider":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/"},"educationalLevel":"Intermediate","inLanguage":"en","about":"Quantum mechanics, physics, consciousness"}
-</script>
 </head>
 <body>
 
@@ -387,7 +378,7 @@ nav.snav{
   </aside>
 
   <!-- MAIN -->
-  <main class="main-content" id="main-content">
+  <div class="main-content" id="main-content">
     
   <div class="lesson-panel" id="panel-0" role="tabpanel" aria-labelledby="nav-0">
     <div class="lesson-header">
@@ -397,7 +388,7 @@ nav.snav{
     </div>
     <div class="video-wrap">
         <iframe data-src="https://www.youtube.com/embed/p-MNSLsjjdo?rel=0&amp;modestbranding=1"
-          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="The Double Slit Experiment"></iframe>
+          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="The Double Slit Experiment"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-0" onclick="markComplete(0)">Mark Complete</button>
@@ -415,7 +406,7 @@ nav.snav{
     </div>
     <div class="video-wrap">
         <iframe data-src="https://www.youtube.com/embed/MmqyATpRPMY?rel=0&amp;modestbranding=1"
-          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Quantum Fields — What Everything Is Made Of"></iframe>
+          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Quantum Fields — What Everything Is Made Of"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-1" onclick="markComplete(1)">Mark Complete</button>
@@ -475,7 +466,7 @@ nav.snav{
       </div>
     </div>
   </div>
-  </main>
+  </div>
 </div>
 
 <!-- MOBILE BOTTOM BAR -->

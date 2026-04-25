@@ -4,19 +4,16 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Quantum Grammar — FRQNCY Courses</title>
-<meta name="description" content="Explore the hidden structure of language, law, and contracts through Quantum Grammar — how syntax and sentence construction shape reality, commerce, and sovereignty.">
+<meta name="description" content="Explore how syntax and sentence construction shape reality, commerce, and sovereignty. Discover the mathematical structure behind contracts, statutes, and the language that binds.">
 <meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="article">
 <meta property="og:title" content="Quantum Grammar — FRQNCY Courses">
-<meta property="og:description" content="Explore the hidden structure of language, law, and contracts through Quantum Grammar — how syntax and sentence construction shape reality, commerce, and sovereignty.">
+<meta property="og:description" content="Explore how syntax and sentence construction shape reality, commerce, and sovereignty. Discover the mathematical structure behind contracts, statutes, and the language that binds.">
 <meta property="og:url" content="https://frqncy.network/v2/courses/quantum-grammar/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
-<meta property="og:image:alt" content="Quantum Grammar — the hidden structure of language and law from FRQNCY Network.">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
 <meta property="og:site_name" content="FRQNCY">
-<meta property="og:type" content="article">
-<meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Quantum Grammar — FRQNCY Courses">
-<meta name="twitter:description" content="How syntax and sentence construction shape reality, commerce, and sovereignty.">
-<meta name="twitter:image" content="https://frqncy.network/og-image.png">
 <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="manifest" href="../../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/courses/quantum-grammar/">
@@ -77,6 +74,7 @@ nav.snav{
 .sidebar-title{font-family:'Cormorant',serif;font-size:1.05rem;font-weight:400;color:#fff;line-height:1.2}
 .sidebar-meta{font-size:0.63rem;color:var(--text-dim);margin-top:0.3rem}
 
+/* Overall progress bar in sidebar */
 .sidebar-progress{padding:0.8rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.04)}
 .sp-label{display:flex;justify-content:space-between;font-size:0.6rem;letter-spacing:0.06em;color:var(--text-dim);margin-bottom:5px}
 .sp-bar{height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
@@ -85,12 +83,12 @@ nav.snav{
 .lesson-list{padding:0.4rem 0;flex:1}
 
 .lesson-btn{
-  width:100%;min-height:44px;display:flex;align-items:center;gap:0.7rem;
-  padding:0.85rem 1.1rem 0.85rem 1rem;
+  width:100%;display:flex;align-items:center;gap:0.7rem;
+  padding:0.7rem 1.1rem 0.7rem 1rem;
   border:none;background:none;color:var(--text);
   text-align:left;transition:background .15s;
   border-left:2px solid transparent;
-  position:relative;cursor:pointer;
+  position:relative;
 }
 .lesson-btn:hover{background:rgba(255,255,255,0.04)}
 .lesson-btn.active{background:rgba(255,255,255,0.06);border-left-color:var(--accent)}
@@ -137,14 +135,14 @@ nav.snav{
   position:relative;
 }
 .video-wrap iframe{width:100%;height:100%;border:none;display:block}
+/* Loading state */
 .video-wrap::before{
   content:'';position:absolute;inset:0;
   background:linear-gradient(135deg,#0a1428,#0d1f44);
   transition:opacity .3s;pointer-events:none;
 }
 .video-wrap.loaded::before{opacity:0}
-
-/* External video link */
+/* External provider link (non-embeddable, e.g. Gaia) */
 .video-wrap-ext{aspect-ratio:unset;height:auto;min-height:120px;display:flex;align-items:center;justify-content:center;padding:2rem}
 .video-wrap-ext::before{display:none}
 .ext-video-link{display:flex;flex-direction:column;align-items:center;gap:0.75rem;text-decoration:none;color:var(--text);text-align:center;transition:opacity .2s}
@@ -208,7 +206,7 @@ nav.snav{
   flex-wrap:wrap;
 }
 .btn-complete{
-  padding:13px 28px;min-height:44px;border-radius:2px;
+  padding:10px 26px;border-radius:2px;
   font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;border:none;
   background:var(--accent);color:#fff;transition:opacity .2s,background .2s,transform .15s;
 }
@@ -220,7 +218,7 @@ nav.snav{
 }
 .lesson-nav-btns{display:flex;gap:0.6rem}
 .btn-nav{
-  padding:12px 20px;min-height:44px;border-radius:2px;
+  padding:9px 18px;border-radius:2px;
   font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;
   border:1px solid rgba(255,255,255,0.12);background:none;color:var(--text-dim);
   transition:all .2s;
@@ -239,7 +237,7 @@ nav.snav{
 .completion-overlay.open{opacity:1;pointer-events:all}
 .completion-box{
   max-width:440px;width:100%;text-align:center;
-  background:#0d1f44;border:1px solid rgba(232,122,74,0.25);border-radius:8px;
+  background:#0d1f44;border:1px solid rgba(196,151,58,0.25);border-radius:8px;
   padding:3rem 2.5rem;
   transform:translateY(16px) scale(0.97);transition:transform .3s;
 }
@@ -273,8 +271,8 @@ nav.snav{
 .mobile-lesson-title{flex:1;min-width:0;font-size:0.78rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .mobile-lessons-btn{
   background:var(--accent);color:#fff;border:none;
-  padding:12px 16px;min-height:44px;border-radius:2px;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
-  flex-shrink:0;white-space:nowrap;cursor:pointer;
+  padding:7px 14px;border-radius:2px;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
+  flex-shrink:0;white-space:nowrap;
 }
 .mobile-sidebar{
   display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;
@@ -303,18 +301,12 @@ nav.snav{
   .video-wrap{max-width:100%}
   .reflection-box,.reading-card{max-width:100%}
 }
-@media(prefers-reduced-motion:reduce){
-  *,*::before,*::after{animation-duration:0.01ms !important;transition-duration:0.01ms !important}
-}
 </style>
-<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script src="../../../mobile-nav.js" defer></script>
 <script src="../../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../../nav-dropdown.css">
+<link rel="manifest" href="../../../manifest.json">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script type="application/ld+json">
-{"@context":"https://schema.org","@type":"Course","name":"Quantum Grammar","description":"Explore how syntax and sentence construction shape reality, commerce, and sovereignty. Discover the mathematical structure behind contracts, statutes, and the language that binds.","url":"https://frqncy.network/v2/courses/quantum-grammar/","provider":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/"},"educationalLevel":"Intermediate","inLanguage":"en","about":"Language, law, sovereignty, syntax, quantum grammar"}
-</script>
 </head>
 <body>
 
@@ -322,7 +314,7 @@ nav.snav{
   <div class="snav-left">
     <a href="../../../" class="snav-logo">FRQNCY</a>
     <div class="breadcrumb">
-      <a href="../../courses/">Courses</a>
+      <a href="../../">Courses</a>
       <span class="sep">›</span>
       <span>Quantum Grammar</span>
     </div>
@@ -340,16 +332,16 @@ nav.snav{
   <aside class="sidebar" id="sidebar" aria-label="Course lessons">
     <div class="sidebar-head">
       <div class="sidebar-accent-bar"></div>
-      <div class="sidebar-course">Language &amp; Law · Intermediate</div>
+      <div class="sidebar-course">Society · Intermediate</div>
       <div class="sidebar-title">Quantum Grammar</div>
-      <div class="sidebar-meta">5 lessons · ~2.5 hours</div>
+      <div class="sidebar-meta">5 lessons · 2.5 hours</div>
     </div>
     <div class="sidebar-progress">
       <div class="sp-label"><span>Progress</span><span id="sp-text">0 / 5</span></div>
       <div class="sp-bar"><div class="sp-fill" id="sp-fill" style="width:0%"></div></div>
     </div>
     <div class="lesson-list" id="lesson-list" role="tablist">
-
+      
     <button class="lesson-btn" data-idx="0" id="nav-0">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
@@ -394,17 +386,17 @@ nav.snav{
   </aside>
 
   <!-- MAIN -->
-  <main class="main-content" id="main-content">
-
+  <div class="main-content" id="main-content">
+    
   <div class="lesson-panel" id="panel-0" role="tabpanel" aria-labelledby="nav-0">
     <div class="lesson-header">
       <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">25 min</span></div>
       <h1 class="lesson-h1">What Is Quantum Grammar?</h1>
-      <p class="lesson-subdesc">An introduction to the idea that language has a mathematical structure — and that most legal, commercial, and governmental documents are syntactically fraudulent. Discover the work of David Wynn Miller and why sentence structure matters more than most people realize.</p>
+      <p class="lesson-subdesc">An introduction to the idea that language has a mathematical structure — and that most legal, commercial, and governmental documents are syntactically fraudulent.</p>
     </div>
     <div class="video-wrap">
-        <iframe data-src="https://www.youtube.com/embed/lJXEJBgfDqQ?rel=0&modestbranding=1"
-          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="What Is Quantum Grammar?"></iframe>
+        <iframe data-src="https://www.youtube.com/embed/lJXEJBgfDqQ?rel=0&amp;modestbranding=1"
+          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="What Is Quantum Grammar?"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-0" onclick="markComplete(0)">Mark Complete</button>
@@ -414,16 +406,15 @@ nav.snav{
       </div>
     </div>
   </div>
-
   <div class="lesson-panel" id="panel-1" role="tabpanel" aria-labelledby="nav-1">
     <div class="lesson-header">
       <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">40 min</span></div>
       <h1 class="lesson-h1">The Syntax of Control — How Language Binds</h1>
-      <p class="lesson-subdesc">How contracts, statutes, and legal documents use specific grammatical constructions to create obligations. This lesson explores how adverbs, adjectives, pronouns, and prepositional phrases can void or change the meaning of an entire document.</p>
+      <p class="lesson-subdesc">How contracts, statutes, and legal documents use specific grammatical constructions to create obligations.</p>
     </div>
     <div class="video-wrap">
-        <iframe data-src="https://www.youtube.com/embed/VjHi8LT6plo?rel=0&modestbranding=1"
-          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="The Syntax of Control"></iframe>
+        <iframe data-src="https://www.youtube.com/embed/VjHi8LT6plo?rel=0&amp;modestbranding=1"
+          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="The Syntax of Control — How Language Binds"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-1" onclick="markComplete(1)">Mark Complete</button>
@@ -433,16 +424,15 @@ nav.snav{
       </div>
     </div>
   </div>
-
   <div class="lesson-panel" id="panel-2" role="tabpanel" aria-labelledby="nav-2">
     <div class="lesson-header">
       <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">35 min</span></div>
       <h1 class="lesson-h1">Correct-Sentence-Structure Communication Parse-Syntax</h1>
-      <p class="lesson-subdesc">A deep dive into CSSCPSGP (Correct Sentence Structure Communication Parse Syntax Grammar Performance) — the methodology for writing mathematically correct language where every word has a verified position and function.</p>
+      <p class="lesson-subdesc">A deep dive into CSSCPSGP — the methodology for writing mathematically correct language.</p>
     </div>
     <div class="video-wrap">
-        <iframe data-src="https://www.youtube.com/embed/e_BUuho4b_8?rel=0&modestbranding=1"
-          src="" loading="lazy" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Correct Sentence Structure Communication Parse Syntax"></iframe>
+        <iframe data-src="https://www.youtube.com/embed/e_BUuho4b_8?rel=0&amp;modestbranding=1"
+          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Correct-Sentence-Structure Communication Parse-Syntax"></iframe>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-2" onclick="markComplete(2)">Mark Complete</button>
@@ -452,17 +442,17 @@ nav.snav{
       </div>
     </div>
   </div>
-
   <div class="lesson-panel" id="panel-3" role="tabpanel" aria-labelledby="nav-3">
     <div class="lesson-header">
       <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg> Reflection<span class="lesson-dur">15 min</span></div>
       <h1 class="lesson-h1">Reflection — Deconstructing a Contract</h1>
+      
     </div>
     <div class="reflection-box">
       <div class="reflection-label">
         <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg> Reflection Prompt
       </div>
-      <p class="reflection-prompt">Take any contract, terms of service, or legal notice you've recently signed or agreed to. Read it slowly — one sentence at a time. For each sentence, identify: Who is the subject? What is the verb? Is there a prepositional phrase that changes the meaning? Are there adverbs or adjectives that modify the claim? Write your observations below. What did you notice about the language that you hadn't seen before?</p>
+      <p class="reflection-prompt">Take any contract, terms of service, or legal notice you've recently signed or agreed to. Read it slowly — one sentence at a time. For each sentence, identify: Who is the subject? What is the verb? Is there a prepositional phrase that changes the meaning?</p>
       <div class="reflection-write">
         <textarea placeholder="Write your reflection here… (saved in your browser)" aria-label="Your reflection" id="reflect-l4"></textarea>
         <div class="reflect-actions">
@@ -479,7 +469,6 @@ nav.snav{
       </div>
     </div>
   </div>
-
   <div class="lesson-panel" id="panel-4" role="tabpanel" aria-labelledby="nav-4">
     <div class="lesson-header">
       <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg> Reading<span class="lesson-dur">20 min</span></div>
@@ -489,8 +478,8 @@ nav.snav{
     <a class="reading-card" href="https://www.dwmlc.com/" target="_blank" rel="noopener">
       <span class="reading-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
       <span class="reading-body">
-        <span class="reading-title">David Wynn Miller's Legacy — Correct-Sentence-Structure Communication Parse-Syntax-Grammar</span>
-        <span class="reading-domain">dwmlc.com</span>
+        <span class="reading-title">How quantum grammar connects to broader questions of sovereignty, individual rights, and the hidden architecture of legal systems worldwide.</span>
+        <span class="reading-domain">https://www.dwmlc.com/</span>
         <span class="reading-dur">20 min read</span>
       </span>
       <span class="reading-arrow">→</span>
@@ -503,7 +492,7 @@ nav.snav{
       </div>
     </div>
   </div>
-  </main>
+  </div>
 </div>
 
 <!-- MOBILE BOTTOM BAR -->
@@ -518,7 +507,7 @@ nav.snav{
     <button class="mobile-sidebar-close" onclick="closeMobileSidebar()" aria-label="Close">✕</button>
   </div>
   <div class="lesson-list" id="mobile-lesson-list">
-
+    
     <button class="lesson-btn" data-idx="0" id="m-nav-0">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
@@ -571,10 +560,10 @@ nav.snav{
     <div class="completion-badge">
       <span class="badge-label">✓ Intermediate · FRQNCY Certificate</span>
     </div>
-    <div class="completion-desc">You've completed all 5 lessons. The language is no longer invisible — carry this awareness forward.</div>
+    <div class="completion-desc">You've completed all 5 lessons. The ideas are yours — carry them into practice.</div>
     <div class="completion-btns">
       <button class="cbtn cbtn-primary" onclick="closeCompletion()">Keep Exploring</button>
-      <a href="../../courses/" class="cbtn cbtn-sec">All Courses</a>
+      <a href="../../" class="cbtn cbtn-sec">All Courses</a>
     </div>
   </div>
 </div>
@@ -620,6 +609,7 @@ function updateSidebar() {
     btn.classList.toggle('active', i === current);
     btn.classList.toggle('done', completed.has(i));
   });
+  // Mobile lesson title
   const mlt = document.getElementById('mobile-lesson-title');
   if (mlt && LESSONS[current]) mlt.textContent = (current + 1) + '. ' + LESSONS[current].title;
 }
@@ -628,15 +618,18 @@ function updateSidebar() {
 function showLesson(idx) {
   if (idx < 0 || idx >= TOTAL) return;
 
+  // Pause the leaving lesson's iframe (if any)
   const leavingPanel = document.getElementById('panel-' + current);
   if (leavingPanel) {
     const iframe = leavingPanel.querySelector('iframe');
     if (iframe) iframe.src = '';
   }
 
+  // Activate new panel
   document.querySelectorAll('.lesson-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
   current = idx;
 
+  // Load this lesson's iframe (lazy)
   const panel = document.getElementById('panel-' + idx);
   if (panel) {
     const iframe = panel.querySelector('iframe[data-src]');
@@ -645,6 +638,7 @@ function showLesson(idx) {
       const wrap = iframe.closest('.video-wrap');
       if (wrap) iframe.addEventListener('load', () => wrap.classList.add('loaded'), { once: true });
     }
+    // Load reflection text
     const lesson = LESSONS[idx];
     if (lesson && lesson.type === 'reflection' && lesson.id) {
       const ta = document.getElementById('reflect-' + lesson.id);
@@ -698,6 +692,7 @@ function markComplete(idx) {
     updateCompleteBtn();
     updateSidebar();
 
+    // Auto-advance to next lesson after a beat
     if (idx < TOTAL - 1) {
       setTimeout(() => showLesson(idx + 1), 800);
     } else if (completed.size === TOTAL) {

@@ -995,6 +995,16 @@
       "type": "topic",
       "r": 14,
       "desc": "The first physical node of the Sanctuary — a minimal, intentionally designed coworking and gathering space. Calm coworking, quiet rooms for deep work, regular breathwork sessions, and community events. The room where the network meets the world."
+    },
+    {
+      "id": "t-cards",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-bodycare",
+      "type": "topic",
+      "r": 12
     }
   ],
   "links": [
@@ -2201,6 +2211,14 @@
     [
       "p-frqncy-space",
       "t-minimalism"
+    ],
+    [
+      "d-money",
+      "t-cards"
+    ],
+    [
+      "d-lifestyle",
+      "t-bodycare"
     ]
   ],
   "node_urls": {
@@ -2364,7 +2382,9 @@
     "t-taoism": "taoism/index.html",
     "t-christianity": "christianity/index.html",
     "t-mythology": "mythology/index.html",
-    "p-frqncy-space": "/space"
+    "p-frqncy-space": "/space",
+    "t-cards": "cards/index.html",
+    "t-bodycare": "body-care/index.html"
   },
   "$last_sync": "2026-04-25",
   "$updated": "2026-04-24 — removed 4 ghost nodes (t-commodities, t-filestorage, t-stocks, t-world-models) that existed on the map but not in content.json. If you want these topics back, add them to content.json — the sync will bring them to the map automatically.",

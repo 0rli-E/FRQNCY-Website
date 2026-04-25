@@ -1,9 +1,9 @@
 [
   {
-    "id": "eva-water",
+    "id": "water-vs-eva",
     "type": "tool",
-    "name": "Eva water purifier",
-    "desc": "Structured-water purification that removes the contamination and restores molecular coherence. The closest a domestic appliance gets to drinking from a real spring.",
+    "name": "Water vs Eva Water",
+    "desc": "What you drink is the most-used input to the body. Tap is regulated for safety, not for vitality — heavy metals, chlorine, microplastics, and lost molecular structure. Eva is structured-water purification: filters the contamination, then restores molecular coherence. The closest a domestic appliance gets to drinking from a real spring.",
     "category": "nourishment",
     "tier": "pick",
     "criteria": [
@@ -26,114 +26,178 @@
     ]
   },
   {
-    "id": "anthropic-claude",
+    "id": "white-oak-pastures",
     "type": "tool",
-    "name": "Anthropic Claude",
-    "desc": "An AI built with care for what it says and how it says it. The free tier is generous and the model behaves like a thoughtful collaborator rather than a vending machine.",
-    "category": "tech",
+    "name": "White Oak Pastures",
+    "desc": "Family-owned regenerative farm in Bluffton, Georgia. Whole-animal butchery, holistic grazing, carbon-positive at the farm scale. The clearest US example of meat as medicine when raised on healthy land.",
+    "category": "food",
     "tier": "pick",
     "criteria": [
       "used",
       "clean",
+      "independent",
       "verifiable",
-      "accessible"
+      "durable"
     ],
     "topicSlugs": [
-      "artificial-intelligence"
+      "nutrition",
+      "cuisine"
     ],
     "vendor": [
       {
-        "name": "Claude.ai",
-        "url": "https://claude.ai/",
+        "name": "whiteoakpastures.com",
+        "url": "https://www.whiteoakpastures.com/",
         "affiliate": false,
-        "region": "global",
-        "free": true
+        "region": "US"
       }
     ]
   },
   {
-    "id": "tao-te-ching",
-    "type": "book",
-    "name": "Tao Te Ching",
-    "desc": "Eighty-one short chapters that have outlasted empires. Lao Tzu's map of how nature, leadership, and the self return to alignment when they stop forcing.",
-    "category": "library",
+    "id": "frantoio-franci",
+    "type": "tool",
+    "name": "Frantoio Franci",
+    "desc": "Tuscan single-estate olive oil, cold-extracted within hours of harvest. The benchmark for what extra-virgin olive oil should taste like — peppery, alive, traceable to a single grove.",
+    "category": "food",
     "tier": "pick",
     "criteria": [
       "clean",
       "independent",
       "verifiable",
-      "accessible",
       "durable"
     ],
     "topicSlugs": [
-      "taoism"
+      "nutrition",
+      "cuisine"
     ],
     "vendor": [
       {
-        "name": "Wikisource (Legge translation)",
-        "url": "https://en.wikisource.org/wiki/Tao_Te_Ching",
-        "affiliate": false,
-        "region": "global",
-        "free": true
-      },
-      {
-        "name": "Stephen Mitchell translation (recommended)",
-        "url": "https://www.harpercollins.com/products/tao-te-ching-lao-tzu",
+        "name": "frantoiofranci.com",
+        "url": "https://www.frantoiofranci.com/",
         "affiliate": false,
         "region": "global"
       }
     ]
   },
   {
-    "id": "bible",
-    "type": "book",
-    "name": "The Bible",
-    "desc": "The most widely read book in human history. Read as the long story of relationship — between people, and between people and the source of life.",
-    "category": "library",
+    "id": "manuka-health",
+    "type": "tool",
+    "name": "Manuka Health",
+    "desc": "UMF-certified raw Manuka honey from New Zealand. Antibacterial, traceable, third-party-tested. Honey that still does what honey is supposed to do.",
+    "category": "food",
     "tier": "pick",
     "criteria": [
       "clean",
       "verifiable",
-      "accessible",
       "durable"
     ],
     "topicSlugs": [
-      "christianity"
+      "nutrition"
     ],
     "vendor": [
       {
-        "name": "BibleGateway (read free, all major translations)",
-        "url": "https://www.biblegateway.com/",
+        "name": "manukahealth.com",
+        "url": "https://www.manukahealth.com/",
         "affiliate": false,
-        "region": "global",
-        "free": true
+        "region": "global"
       }
     ]
   },
   {
-    "id": "book-of-enoch",
-    "type": "book",
-    "name": "The Book of Enoch",
-    "desc": "Pre-flood text excluded from most modern canons but preserved in the Ethiopian Bible. The clearest extant source on the Watchers, the Nephilim, and what the deluge erased.",
-    "category": "library",
+    "id": "dr-bronners-soap",
+    "type": "tool",
+    "name": "Dr. Bronner's Pure-Castile Soap",
+    "desc": "Family-owned for five generations, fair-trade certified, organic, biodegradable. Eighteen uses on one bottle. The simplest soap that actually does the job, with a label worth reading.",
+    "category": "body-care",
     "tier": "pick",
     "criteria": [
+      "used",
+      "clean",
       "independent",
       "verifiable",
-      "accessible",
       "durable"
     ],
     "topicSlugs": [
-      "mythology",
-      "channeling"
+      "body-care"
     ],
     "vendor": [
       {
-        "name": "Sacred Texts (R.H. Charles, 1917, free)",
-        "url": "https://www.sacred-texts.com/bib/boe/",
+        "name": "drbronner.com",
+        "url": "https://www.drbronner.com/",
         "affiliate": false,
-        "region": "global",
-        "free": true
+        "region": "global"
+      }
+    ]
+  },
+  {
+    "id": "bite-toothpaste",
+    "type": "tool",
+    "name": "Bite Toothpaste Bits",
+    "desc": "Fluoride-free toothpaste tablets in a refillable glass jar. Plastic-free, simple ingredients, no surfactants you cannot pronounce. The cleanest mainstream alternative to the tube.",
+    "category": "body-care",
+    "tier": "pick",
+    "criteria": [
+      "used",
+      "clean",
+      "verifiable",
+      "durable"
+    ],
+    "topicSlugs": [
+      "body-care"
+    ],
+    "vendor": [
+      {
+        "name": "bitetoothpastebits.com",
+        "url": "https://bitetoothpastebits.com/",
+        "affiliate": false,
+        "region": "global"
+      }
+    ]
+  },
+  {
+    "id": "native-deodorant",
+    "type": "tool",
+    "name": "Native Deodorant",
+    "desc": "Aluminum-free, paraben-free deodorant with a transparent ingredient list. Effective without the trade-offs the conventional formulas ask of the lymphatic system.",
+    "category": "body-care",
+    "tier": "pick",
+    "criteria": [
+      "used",
+      "clean",
+      "verifiable"
+    ],
+    "topicSlugs": [
+      "body-care"
+    ],
+    "vendor": [
+      {
+        "name": "nativecos.com",
+        "url": "https://www.nativecos.com/",
+        "affiliate": false,
+        "region": "US"
+      }
+    ]
+  },
+  {
+    "id": "boie-toothbrush",
+    "type": "tool",
+    "name": "Boie Toothbrush",
+    "desc": "Antimicrobial bristles, BPA-free, designed to outlast a normal toothbrush by a factor of six. Less plastic in landfills, gentler on enamel.",
+    "category": "body-care",
+    "tier": "pick",
+    "criteria": [
+      "clean",
+      "verifiable",
+      "durable"
+    ],
+    "topicSlugs": [
+      "body-care"
+    ],
+    "vendor": [
+      {
+        "name": "boieusa.com",
+        "url": "https://boieusa.com/",
+        "affiliate": false,
+        "region": "US"
       }
     ]
   },
@@ -141,21 +205,20 @@
     "id": "amex-platinum",
     "type": "tool",
     "name": "American Express Platinum",
-    "desc": "Card that pays for itself if you travel and value real customer service. Concierge that actually picks up. Lounge access that actually exists. Status as a tool, not a flex.",
-    "category": "money",
-    "tier": "aligned",
+    "desc": "The traveller's card. Lounge access, hotel and airline credits, concierge that actually picks up. Annual fee is steep — works only if you actually move through the world.",
+    "category": "cards",
+    "tier": "pick",
     "criteria": [
       "used",
-      "verifiable",
-      "durable"
+      "verifiable"
     ],
     "topicSlugs": [
-      "conscious-capital"
+      "cards"
     ],
     "vendor": [
       {
-        "name": "American Express",
-        "url": "https://www.americanexpress.com/",
+        "name": "americanexpress.com",
+        "url": "https://www.americanexpress.com/us/credit-cards/card/platinum/",
         "affiliate": false,
         "region": "global"
       }
@@ -165,20 +228,19 @@
     "id": "crypto-com-visa",
     "type": "tool",
     "name": "Crypto.com Visa",
-    "desc": "Spend crypto in everyday currency without manually converting. A bridge between the asset you want to hold and the bills you have to pay.",
-    "category": "money",
-    "tier": "aligned",
+    "desc": "Spend crypto like cash. CRO-staking tiers unlock cashback, streaming-service rebates, and metal cards. The on-ramp for using digital assets in everyday purchases.",
+    "category": "cards",
+    "tier": "pick",
     "criteria": [
       "used",
-      "verifiable",
-      "accessible"
+      "verifiable"
     ],
     "topicSlugs": [
-      "cryptocurrency"
+      "cards"
     ],
     "vendor": [
       {
-        "name": "Crypto.com",
+        "name": "crypto.com/cards",
         "url": "https://crypto.com/cards",
         "affiliate": false,
         "region": "global"
