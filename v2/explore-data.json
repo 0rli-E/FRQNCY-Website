@@ -1005,6 +1005,42 @@
       "id": "t-bodycare",
       "type": "topic",
       "r": 12
+    },
+    {
+      "id": "t-coffee-tea",
+      "label": "Coffee & Tea",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-cookware",
+      "label": "Cookware",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-privacy",
+      "label": "Privacy & Sovereignty",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-supplements",
+      "label": "Supplements",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-tools-carry",
+      "label": "Tools & Carry",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-audio",
+      "label": "Audio",
+      "type": "topic",
+      "r": 12
     }
   ],
   "links": [
@@ -2219,6 +2255,30 @@
     [
       "d-lifestyle",
       "t-bodycare"
+    ],
+    [
+      "d-lifestyle",
+      "t-coffee-tea"
+    ],
+    [
+      "d-lifestyle",
+      "t-cookware"
+    ],
+    [
+      "d-tech",
+      "t-privacy"
+    ],
+    [
+      "d-wellbeing",
+      "t-supplements"
+    ],
+    [
+      "d-lifestyle",
+      "t-tools-carry"
+    ],
+    [
+      "d-arts",
+      "t-audio"
     ]
   ],
   "node_urls": {
@@ -2384,7 +2444,13 @@
     "t-mythology": "mythology/index.html",
     "p-frqncy-space": "/space",
     "t-cards": "cards/index.html",
-    "t-bodycare": "body-care/index.html"
+    "t-bodycare": "body-care/index.html",
+    "t-coffee-tea": "coffee-tea/index.html",
+    "t-cookware": "cookware/index.html",
+    "t-privacy": "privacy/index.html",
+    "t-supplements": "supplements/index.html",
+    "t-tools-carry": "tools-carry/index.html",
+    "t-audio": "audio/index.html"
   },
   "$last_sync": "2026-04-25",
   "$updated": "2026-04-24 — removed 4 ghost nodes (t-commodities, t-filestorage, t-stocks, t-world-models) that existed on the map but not in content.json. If you want these topics back, add them to content.json — the sync will bring them to the map automatically.",
