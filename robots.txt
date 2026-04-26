@@ -14,4 +14,11 @@ Disallow: /chart-v2/
 Disallow: /social-app.superseded/
 Disallow: /social-src/
 
+# Internal docs / strategy / build artifacts (in repo for git history, not for crawlers)
+Disallow: /proposals/
+Disallow: /docs/
+Disallow: /scripts/
+Disallow: /AUDIT-REPORT.md
+Disallow: /CLAUDE.md
+
 Sitemap: https://frqncy.network/sitemap.xml

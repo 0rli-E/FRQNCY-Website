@@ -26,6 +26,19 @@ const RATE_WINDOW_MS = 60_000;
 const RATE_MAX       = 5;            // 5 signups per IP per minute is plenty
 const rateBuckets    = new Map();
 
+const ALLOWED_ORIGINS = [
+  'https://frqncy.network',
+  'https://www.frqncy.network',
+];
+
+function isAllowedOrigin(origin) {
+  if (!origin) return false;
+  if (ALLOWED_ORIGINS.includes(origin)) return true;
+  if (/^https:\/\/.*\.frqncy-website\.pages\.dev$/.test(origin)) return true;
+  if (/^http:\/\/localhost(:\d+)?$/.test(origin)) return true;
+  return false;
+}
+
 function checkRateLimit(ip) {
   if (!ip) return true; // fail closed
   const now = Date.now();
@@ -43,42 +56,45 @@ function checkRateLimit(ip) {
 
 const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-function json(body, status = 200) {
-  return new Response(JSON.stringify(body), {
-    status,
-    headers: {
-      'content-type': 'application/json; charset=utf-8',
-      'cache-control': 'no-store',
-      // CORS — same-origin in prod, but useful in dev
-      'access-control-allow-origin': '*',
-      'access-control-allow-methods': 'POST, OPTIONS',
-      'access-control-allow-headers': 'content-type',
-    },
-  });
+function json(body, status = 200, origin = '') {
+  const headers = {
+    'content-type': 'application/json; charset=utf-8',
+    'cache-control': 'no-store',
+    'access-control-allow-methods': 'POST, OPTIONS',
+    'access-control-allow-headers': 'content-type',
+    'access-control-max-age': '86400',
+    'vary': 'origin',
+  };
+  if (isAllowedOrigin(origin)) {
+    headers['access-control-allow-origin'] = origin;
+  }
+  return new Response(JSON.stringify(body), { status, headers });
 }
 
-export async function onRequestOptions() {
-  return json({ ok: true });
+export async function onRequestOptions({ request }) {
+  const origin = request.headers.get('origin') || '';
+  return json({ ok: true }, 200, origin);
 }
 
 export async function onRequestPost({ request, env }) {
+  const origin = request.headers.get('origin') || '';
   // ── Rate limit ──────────────────────────────────────────────────
   const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || '';
   if (checkRateLimit(ip)) {
-    return json({ ok: false, error: 'Too many requests, slow down a moment.' }, 429);
+    return json({ ok: false, error: 'Too many requests, slow down a moment.' }, 429, origin);
   }
 
   // ── Parse + validate ────────────────────────────────────────────
   let body;
   try { body = await request.json(); }
-  catch { return json({ ok: false, error: 'Invalid JSON.' }, 400); }
+  catch { return json({ ok: false, error: 'Invalid JSON.' }, 400, origin); }
 
   const email   = String(body.email || '').trim().toLowerCase();
   const source  = String(body.source || 'frqncy_website').slice(0, 64);
   const referrer = (request.headers.get('referer') || '').slice(0, 500);
 
   if (!email || !EMAIL_RE.test(email) || email.length > 254) {
-    return json({ ok: false, error: 'Please enter a valid email address.' }, 400);
+    return json({ ok: false, error: 'Please enter a valid email address.' }, 400, origin);
   }
 
   // ── Config ──────────────────────────────────────────────────────
@@ -87,7 +103,7 @@ export async function onRequestPost({ request, env }) {
   if (!SUPABASE_URL || !SERVICE_KEY) {
     // Don't leak which one is missing
     console.error('Missing Supabase config in env');
-    return json({ ok: false, error: 'Subscription is temporarily unavailable. Please try again shortly.' }, 503);
+    return json({ ok: false, error: 'Subscription is temporarily unavailable. Please try again shortly.' }, 503, origin);
   }
 
   // ── Upsert subscriber via Supabase REST ─────────────────────────
@@ -120,7 +136,7 @@ export async function onRequestPost({ request, env }) {
   if (!upsertResp.ok) {
     const text = await upsertResp.text();
     console.error('Supabase upsert failed', upsertResp.status, text);
-    return json({ ok: false, error: 'Could not save your subscription. Please try again.' }, 502);
+    return json({ ok: false, error: 'Could not save your subscription. Please try again.' }, 502, origin);
   }
 
   const rows = await upsertResp.json().catch(() => []);
@@ -161,14 +177,16 @@ export async function onRequestPost({ request, env }) {
     }
   }
 
-  return json({ ok: true, isNew });
+  return json({ ok: true, isNew }, 200, origin);
 }
 
 // Reject anything that isn't POST/OPTIONS
-export async function onRequest({ request }) {
-  if (request.method === 'POST') return onRequestPost(arguments[0]);
-  if (request.method === 'OPTIONS') return onRequestOptions();
-  return json({ ok: false, error: 'Method not allowed' }, 405);
+export async function onRequest(context) {
+  const { request } = context;
+  const origin = request.headers.get('origin') || '';
+  if (request.method === 'POST')    return onRequestPost(context);
+  if (request.method === 'OPTIONS') return onRequestOptions(context);
+  return json({ ok: false, error: 'Method not allowed' }, 405, origin);
 }
 
 // ── Email templates ───────────────────────────────────────────────

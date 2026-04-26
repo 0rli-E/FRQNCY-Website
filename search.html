@@ -99,11 +99,12 @@ nav{
 #q::placeholder{color:rgba(255,255,255,0.25)}
 #q:focus{border-color:rgba(74,122,232,0.55);background:rgba(255,255,255,0.08)}
 .clear-btn{
-  position:absolute;right:8px;top:50%;transform:translateY(-50%);
+  position:absolute;right:6px;top:50%;transform:translateY(-50%);
   background:none;border:none;color:var(--text-dim);cursor:pointer;
-  font-size:1.1rem;line-height:1;padding:10px;min-width:36px;min-height:36px;display:none;transition:color .2s;
-  align-items:center;justify-content:center;
+  font-size:1.1rem;line-height:1;padding:10px;min-width:44px;min-height:44px;display:none;transition:color .2s;
+  align-items:center;justify-content:center;border-radius:4px;
 }
+.clear-btn:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .clear-btn:hover{color:var(--text)}
 .clear-btn.visible{display:flex}
 
@@ -116,11 +117,12 @@ nav{
 .filter-label{font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim);margin-right:0.25rem}
 .ftab{
   font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;
-  padding:6px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;
+  padding:8px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;
   cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;
-  font-family:'Jost',sans-serif;white-space:nowrap;min-height:32px;
+  font-family:'Jost',sans-serif;white-space:nowrap;min-height:36px;
 }
-@media(max-width:640px){.ftab{padding:8px 14px;min-height:36px;font-size:0.64rem}}
+@media(max-width:640px){.ftab{padding:11px 16px;min-height:44px;font-size:0.64rem}}
+.ftab:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
 .ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
 .ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(74,122,232,0.07)}
 

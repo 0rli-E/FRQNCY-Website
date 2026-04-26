@@ -41,9 +41,24 @@ const PRECACHE = [
 ];
 
 // ── Install: pre-cache the app shell ────────────────────────────────
+// addAll() is atomic — if a single URL 404s, the entire install rejects.
+// We fall back to cache.add() per-URL so a single missing asset doesn't
+// brick the install. Failures are logged but don't block activation.
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE).then(c => c.addAll(PRECACHE)).then(() => self.skipWaiting())
+    caches.open(CACHE)
+      .then(cache => Promise.all(
+        PRECACHE.map(url =>
+          cache.add(url).catch(err => {
+            console.warn('[sw] precache failed for', url, err && err.message);
+          })
+        )
+      ))
+      .then(() => self.skipWaiting())
+      .catch(err => {
+        console.error('[sw] install failed catastrophically', err);
+        throw err;
+      })
   );
 });
 

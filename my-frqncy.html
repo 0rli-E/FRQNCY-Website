@@ -452,19 +452,19 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
       <div style="margin-bottom:1rem">
         <div class="form-hint" style="margin-bottom:0.6rem">My intention is to —</div>
         <div class="intent-grid" id="intent-grid" role="radiogroup" aria-label="Intention">
-          <div class="choice-tile" data-val="understand" onclick="selectIntent(this)">
+          <div class="choice-tile" data-val="understand" role="radio" tabindex="0" aria-checked="false" onclick="selectIntent(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectIntent(this)}">
             <div class="ct-name">Understand deeply</div>
             <div class="ct-desc">Books, papers, core texts</div>
           </div>
-          <div class="choice-tile" data-val="practice" onclick="selectIntent(this)">
+          <div class="choice-tile" data-val="practice" role="radio" tabindex="0" aria-checked="false" onclick="selectIntent(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectIntent(this)}">
             <div class="ct-name">Build a practice</div>
             <div class="ct-desc">Techniques, guides, courses</div>
           </div>
-          <div class="choice-tile" data-val="discover" onclick="selectIntent(this)">
+          <div class="choice-tile" data-val="discover" role="radio" tabindex="0" aria-checked="false" onclick="selectIntent(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectIntent(this)}">
             <div class="ct-name">Discover teachers</div>
             <div class="ct-desc">People, voices, thinkers</div>
           </div>
-          <div class="choice-tile" data-val="create" onclick="selectIntent(this)">
+          <div class="choice-tile" data-val="create" role="radio" tabindex="0" aria-checked="false" onclick="selectIntent(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectIntent(this)}">
             <div class="ct-name">Create and build</div>
             <div class="ct-desc">Tools, organisations, methods</div>
           </div>
@@ -474,19 +474,19 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
       <div style="margin-bottom:2rem">
         <div class="form-hint" style="margin-bottom:0.6rem">On the path I am —</div>
         <div class="depth-grid" id="depth-grid" role="radiogroup" aria-label="Where you are on the path">
-          <div class="choice-tile" data-val="curious" onclick="selectDepth(this)" style="flex:1;min-width:140px">
+          <div class="choice-tile" data-val="curious" role="radio" tabindex="0" aria-checked="false" onclick="selectDepth(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectDepth(this)}" style="flex:1;min-width:140px">
             <div class="ct-name">Curious</div>
             <div class="ct-desc">New to this territory</div>
           </div>
-          <div class="choice-tile" data-val="practicing" onclick="selectDepth(this)" style="flex:1;min-width:140px">
+          <div class="choice-tile" data-val="practicing" role="radio" tabindex="0" aria-checked="false" onclick="selectDepth(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectDepth(this)}" style="flex:1;min-width:140px">
             <div class="ct-name">Practicing</div>
             <div class="ct-desc">Working with the first layers</div>
           </div>
-          <div class="choice-tile" data-val="integrating" onclick="selectDepth(this)" style="flex:1;min-width:140px">
+          <div class="choice-tile" data-val="integrating" role="radio" tabindex="0" aria-checked="false" onclick="selectDepth(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectDepth(this)}" style="flex:1;min-width:140px">
             <div class="ct-name">Integrating</div>
             <div class="ct-desc">Weaving it into daily life</div>
           </div>
-          <div class="choice-tile" data-val="embodying" onclick="selectDepth(this)" style="flex:1;min-width:140px">
+          <div class="choice-tile" data-val="embodying" role="radio" tabindex="0" aria-checked="false" onclick="selectDepth(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectDepth(this)}" style="flex:1;min-width:140px">
             <div class="ct-name">Embodying</div>
             <div class="ct-desc">It is how I live</div>
           </div>
@@ -567,7 +567,7 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
   </div>
 
   <div id="constellation-wrap">
-    <svg id="constellation-svg"></svg>
+    <svg id="constellation-svg" role="img" aria-label="Your personal constellation — a hierarchical map of the FRQNCY domains, pillars, and topics most aligned with your intention. The visible pattern visualises which areas of the network resonate most strongly for you."></svg>
   </div>
 
   <div class="curated">

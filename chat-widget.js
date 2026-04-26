@@ -251,12 +251,23 @@
     //    Markdown links: [text](url) — internal links stay in same tab
     out = out
       .replace(/\[([^\]]+)\]\(([^)]+)\)/g, (_, label, href) => {
-        // Sanitize href: block javascript: and data: protocols
-        const hrefClean = href.replace(/&amp;/g,'&');
-        if (/^\s*(javascript|data|vbscript|blob)\s*:/i.test(hrefClean)) return label;
-        const safeHref = href.replace(/"/g, '&quot;');
-        const isInternal = href.startsWith('/');
-        return `<a href="${safeHref}"${isInternal ? '' : ' target="_blank" rel="noopener"'} class="fc-link">${label}</a>`;
+        // Sanitize href against javascript: / data: / vbscript: / blob: smuggling.
+        // Decode HTML entities (numeric + named) so attackers can't hide a protocol
+        // behind &#106;avascript: or java&#x73;cript:. Then enforce an allowlist of
+        // safe protocols/shapes — must be http(s)://, mailto:, anchor (#), or a
+        // relative path (./, /, plain word). Anything else is dropped.
+        let decoded = href.replace(/&amp;/g, '&')
+                          .replace(/&#x([0-9a-f]+);?/gi, (_, h) => String.fromCharCode(parseInt(h, 16)))
+                          .replace(/&#(\d+);?/g, (_, d) => String.fromCharCode(parseInt(d, 10)))
+                          .trim();
+        const isSafeAbsolute = /^(https?:|mailto:)/i.test(decoded);
+        const isAnchor       = decoded.startsWith('#');
+        const isRelative     = /^[\/.]/.test(decoded) || /^[a-z0-9-]+(\.html|\/)/i.test(decoded);
+        if (!isSafeAbsolute && !isAnchor && !isRelative) return label;
+        if (/^\s*(javascript|data|vbscript|blob|file)\s*:/i.test(decoded)) return label;
+        const safeHref = decoded.replace(/"/g, '&quot;').replace(/</g, '&lt;');
+        const isInternal = decoded.startsWith('/') || isAnchor;
+        return `<a href="${safeHref}"${isInternal ? '' : ' target="_blank" rel="noopener noreferrer"'} class="fc-link">${label}</a>`;
       })
 
     //    Auto-linkify bare FRQNCY paths like /v2/human-design/ that aren't already inside an <a>
