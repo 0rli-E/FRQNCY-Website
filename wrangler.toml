@@ -1,0 +1,13 @@
+# Pages-level config for the FRQNCY static site + Functions in functions/api/.
+# This file is read by `wrangler pages deploy` and (when Git-deploys are
+# linked) by the Pages build pipeline. Bindings here apply to every
+# Cloudflare Pages Function under functions/.
+
+name = "frqncy-website"
+pages_build_output_dir = "."
+compatibility_date = "2025-01-01"
+
+# Workers AI binding for the chat widget at functions/api/chat.js
+# (Qwen 30B fp8 — free tier, runs on Cloudflare's edge, no external API key)
+[ai]
+binding = "AI"
