@@ -241,7 +241,33 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Peer-to-peer architectures that remove single points of control — the infrastructure of a more open internet.</p>
 </div>
 <main>
-  
+<!-- topic-content-block -->
+  <section style="max-width:780px">
+    <div class="section-label">The frame</div>
+    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">A decentralised network is one where no single party can shut it down, no single party owns it, and no single party can rewrite the rules without consent of the participants. Bitcoin is the canonical example. So is BitTorrent, Tor, Mastodon, Nostr, the original internet protocols (TCP/IP, SMTP, DNS) before they got captured at the application layer.</p>
+    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's lens: decentralisation is a spectrum, not a binary. Most projects waving the word are partly centralised somewhere — at a foundation, a token allocation, a small validator set, a key dev team. The honest question isn't "is it decentralised?" but "where does power actually concentrate, and what happens if that point gets captured?"</p>
+  </section>
+
+  <section style="max-width:780px">
+    <div class="section-label">What you get when it works</div>
+    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Property 1</div><strong style="color:#fff;font-weight:500">Censorship resistance.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">No platform CEO, no government, no payment processor can deplatform you. The protocol is the only authority and it doesn't have an opinion about what you say.</p></div>
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Property 2</div><strong style="color:#fff;font-weight:500">Permissionlessness.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Anyone can run a node, fork the codebase, build on top, or join the network without asking. The bar is technical capability, not regulatory approval.</p></div>
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Property 3</div><strong style="color:#fff;font-weight:500">Resilience.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">No single point of failure. Bitcoin has run for sixteen years with no scheduled downtime — every centralised payment system has more outages in a single year than Bitcoin has had in its entire history.</p></div>
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Property 4</div><strong style="color:#fff;font-weight:500">Credible neutrality.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">The protocol treats all participants equally because it can't tell who they are. This is the property that makes decentralised infrastructure usable for adversaries who would never trust each other to run a centralised one.</p></div>
+    </div>
+  </section>
+
+  <section style="max-width:780px">
+    <div class="section-label">Where the failures live</div>
+    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">UX is harder.</strong> Decentralised systems push complexity onto the user (key management, gas fees, network selection). The teams that successfully hide this without re-introducing custodial trust are the ones that scale.</li>
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Governance is unsolved.</strong> Onchain voting, token-curated registries, foundations, BIP processes — every approach so far has failed at scale in some way. Worth watching, not yet worth depending on for high-stakes coordination.</li>
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Performance ceilings.</strong> Truly decentralised systems can never match the throughput of a single-server design. The trade is real and architectural. Layer-2s and rollups are the current best path — they push performance up while keeping security on the decentralised base.</li>
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Capture risk at the edges.</strong> Even Bitcoin's edges (exchanges, custodians, block-explorer APIs) are centralised. The protocol holding doesn't help if the way most users interact with it is captured.</li>
+    </ul>
+    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Crypto, DeFi, DAOs, Network State, Web3, Privacy, Open Source. Decentralisation is the architectural primitive most of FRQNCY's economic vision rests on.</em></p>
+  </section>
   
   <section>
   <div class="section-label">Curated Resources</div>

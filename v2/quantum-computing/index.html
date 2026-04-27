@@ -241,7 +241,33 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Computing that harnesses quantum mechanical phenomena — with the potential to solve problems beyond classical computers.</p>
 </div>
 <main>
-  
+<!-- topic-content-block -->
+  <section style="max-width:780px">
+    <div class="section-label">The frame</div>
+    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">A quantum computer uses the rules of quantum mechanics — superposition, entanglement, interference — to do certain kinds of computation in ways that classical computers can't, or can't efficiently. It's not a faster classical computer. It's a different machine that's exponentially better at specific problems and roughly the same or worse at most others. Knowing which is which is most of the field.</p>
+    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">After three decades of "five years away," the field is in a different regime. IBM, Google, IonQ, PsiQuantum, Quantinuum, and several others run real machines with hundreds of qubits. Most are noisy and limited in usable depth, but the trajectory is no longer hypothetical. The interesting timeline isn't "will this work?" — it's "which problems will it actually be useful for, and on what schedule?"</p>
+  </section>
+
+  <section style="max-width:780px">
+    <div class="section-label">Where it changes things</div>
+    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Domain 1</div><strong style="color:#fff;font-weight:500">Cryptography.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Shor's algorithm breaks RSA and elliptic-curve cryptography on a sufficiently large quantum computer. "Sufficiently large" is still years away, but the migration to post-quantum cryptography is already in flight. The risk: harvest-now-decrypt-later attacks on data captured today.</p></div>
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Domain 2</div><strong style="color:#fff;font-weight:500">Materials and chemistry.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Simulating molecular dynamics is exponentially expensive on classical hardware. Quantum computers are natural fits — they're literally simulating the same kind of physics. Catalysts, batteries, drugs, room-temperature superconductors all live in this category.</p></div>
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Domain 3</div><strong style="color:#fff;font-weight:500">Optimisation.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Logistics, supply chains, financial portfolios — large combinatorial spaces where finding-near-optimal solutions today consumes serious classical compute. Mixed evidence so far on whether quantum gives meaningful speedup over best classical heuristics.</p></div>
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Domain 4</div><strong style="color:#fff;font-weight:500">Things that won't change.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Most everyday computing. Web servers, databases, video rendering, machine learning training (largely). The marketing copy claiming quantum will speed up everything is wrong. Most workloads have no quantum advantage at all.</p></div>
+    </div>
+  </section>
+
+  <section style="max-width:780px">
+    <div class="section-label">What to track</div>
+    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Logical qubits, not physical.</strong> Headlines tout 1000-qubit machines. Of those, single-digit logical qubits (after error correction) are typical today. Crossing into hundreds of stable logical qubits is the threshold that matters.</li>
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Post-quantum migration.</strong> NIST has standardised post-quantum cryptography algorithms. Adoption is the bottleneck. Anything signed today that needs to remain confidential for decades should already be using PQ-resistant ciphers.</li>
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Quantum-inspired classical algorithms.</strong> A quiet but real result of the field: studying quantum algorithms has produced classical algorithms that beat the previous classical state of the art on the same problems. Some of the practical wins from "quantum" research will arrive on classical machines first.</li>
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Healthy scepticism.</strong> The field has produced more PR than results. The serious work is being done by a small set of teams; their published papers — not company press releases — are the place to take the temperature.</li>
+    </ul>
+    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Quantum, Cybersecurity, Mathematics, Future Tech, Cryptography. Quantum computing is one of the few technologies whose societal effect will be precise and traceable to specific algorithmic results.</em></p>
+  </section>
   
   <section>
   <div class="section-label">Curated Resources</div>
