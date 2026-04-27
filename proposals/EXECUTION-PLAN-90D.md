@@ -83,16 +83,13 @@ Goal: every scaffolded thing becomes alive on a real URL.
 - Wire `SearchView.tsx` against the FTS index from migration 003.
 - Acceptance: two test accounts can DM each other; search returns posts.
 
-**Sa May 2 — Chart-v2 calibration sprint**
-- Add 3 fresh Jovian Archive fixtures to `chart-v2/fixtures.json` (find 3 known birth charts, log all 26 activations).
-- Run `calibration.html` auto-sweep, verify single offset matches all 5 fixtures.
-- If it does: bake `WHEEL_OFFSET` into `hd-engine.js`. If not: investigate node convention / design-offset before re-tuning.
+**Sa May 2 — Deploy AI HD reading worker** *(the chart engine itself is already alive — see correction below)*
+- The production chart at `/chart/` (HD + Gene Keys + Natal) is already live, calibrated against Jovian Archive (1.83° wheel offset, 26/26 gates match), and renders the full bodygraph SVG + Hologenetic Profile inline. No calibration sprint needed.
+- The AI HD reading button calls `workers/hd-reading.js`, which is **not yet deployed**. Run `wrangler deploy` after `wrangler login` is set. Add the `AI` binding via Pages dashboard.
+- Verify `chart.html`'s `WORKER_URL` matches the deployed Worker URL.
 
-**Su May 3 — Public chart swap**
-- Replace `chart.html`'s Jovian Archive handoff with `chart-v2/hd-engine.js` computation.
-- Render bodygraph SVG inline; show type / profile / authority / defined centres / channels.
-- Add Gene Keys layer as a deferred TODO comment (see Week 2).
-- Commit + deploy.
+**Su May 3 — chart-v2 cleanup decision**
+- `chart-v2/` (separate ES-module engine + calibration harness) is a refactor-in-progress, not a prerequisite. Decide: (a) finish the refactor now (consolidate 1,565 inline lines into modules + harness for future fixture additions), or (b) defer to Phase 5+. Default = defer. The production engine works.
 
 ### Week 2 (May 4 → May 10)
 
@@ -101,10 +98,9 @@ Goal: every scaffolded thing becomes alive on a real URL.
 - Wire `my-frqncy.html` form to POST to a Cloudflare Function that writes to Supabase.
 - On return visit: prefill from saved chart instead of re-asking.
 
-**T May 5 — Gene Keys layer**
-- Extend `chart-v2/hd-engine.js` with Gene Keys mapping (gates → keys, line → giftspheres). Use the same planetary positions; no new ephemeris work.
-- Surface on `chart.html` as a tab next to HD.
-- (Profound interpretive content can come from the AI reading worker; see Week 4.)
+**T May 5 — Gene Keys polish** *(layer is already live — see correction)*
+- `chart.js` already renders the full Hologenetic Profile (11 spheres × Activation/Venus/Pearl sequences, with Shadow/Gift/Siddhi for all 64 keys).
+- This day becomes: improve the Gene Keys results layout (typography, sequence grouping, copy), add a "what is this?" intro for first-time users, link each key to its full profile page if/when those exist.
 
 **W May 6 — Personalisation engine v0**
 - On `my-frqncy.html`: given chart, query MCP `frqncy-content` for topics/resources tagged with the user's HD type / authority / sun gate. Render as "your domains" + "teachers aligned to your design."

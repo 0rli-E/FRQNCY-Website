@@ -61,17 +61,17 @@ Keep entries short. Each surface: one paragraph state + bullets for files + bull
 - **Blocking "alive":** the same migration apply + env vars as social platform. After that, logged-in users get cross-device sync; anonymous visitors keep local-storage only.
 - Personalisation engine (filter resources by HD type / authority / sun gate) is **not yet wired** — Phase 2 work.
 
-## Charts (Human Design / Gene Keys)
+## Charts (Human Design / Gene Keys / Natal)
 
-🟡 Scaffolded. Public form is live; computation is mid-build.
+🟢 **Alive and calibrated.** Earlier audit got this wrong — the chart generator is fully working today, not blocked.
 
-- `chart.html` (522 lines) + `chart.js` (1,565 lines): public form, currently uses an approximate client-side reading or hands off to Jovian Archive for the high-precision read.
-- `chart-v2/hd-engine.js` (263 lines): own engine using `astronomy-engine`. Sub-arcsec planetary positions. 88° solar arc design solver. Gate-line-color-tone-base decomposition.
-- `chart-v2/calibration.html`: harness with auto-sweep against `fixtures.json`.
-- `chart-v2/fixtures.json`: needs **≥5 Jovian Archive fixtures** to lock `WHEEL_OFFSET`. Currently ~2.
-- `workers/hd-reading.js` (223 lines): Cloudflare Worker for AI HD reading. Not yet deployed.
-- Gene Keys layer: not built yet — Phase 2.
-- **Blocking "alive":** add 3 fresh Jovian Archive fixtures, run auto-sweep, bake offset, swap `chart.html`'s computation path.
+- `chart.html` (522 lines) + `chart.js` (1,565 lines): the production chart engine. Three tabs (HD / Gene Keys / Natal). Sub-arcsec planetary positions via `astronomy-engine` with a full Meeus fallback if the CDN fails. Wheel offset baked at **1.83°**, calibrated against Jovian Archive (26/26 gates match on the v1 fixture).
+- **Human Design:** type, profile, authority, defined centres, all 26 activations across Personality + Design, plus a full inline bodygraph SVG (9 centres, 64 gates, 36 channels). PDF export wired.
+- **Gene Keys:** complete Hologenetic Profile per Richard Rudd's framework — 11 spheres across three sequences (Activation, Venus, Pearl), each with Shadow/Gift/Siddhi data baked in for all 64 keys.
+- **Natal:** birth chart layer using the same planetary calculation.
+- `workers/hd-reading.js` (223 lines): Cloudflare Worker for AI HD reading. **Not yet deployed** — needs the `AI` binding set in Pages and a `wrangler deploy`. The chart still works without it; the AI reading is an upgrade.
+- `chart-v2/` is a refactor project (cleaner ES modules, tighter calibration harness), not a prerequisite. The production engine in `chart.js` works today. Treat `chart-v2/` as a Phase 5+ refactor to consolidate the inline engine.
+- **The only "alive" gap left here is wiring the AI reading worker** — that's a Phase 2 Day 1 deploy step, not new code.
 
 ## Watch (video curation)
 
