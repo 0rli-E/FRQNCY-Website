@@ -1,4 +1,4 @@
--- 002_conviction.sql
+-- 004_conviction.sql
 -- Adds a "conviction" field to posts so users can declare bullish / bearish /
 -- neutral stance on the project they tag. This is FRQNCY's core differentiator:
 -- project-anchored posts + conviction tracking.

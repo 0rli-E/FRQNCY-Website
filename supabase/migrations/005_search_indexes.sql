@@ -1,4 +1,4 @@
--- 003_search_and_leaderboard.sql
+-- 005_search_indexes.sql
 -- Text-search indexes for /social/search.
 --
 -- NOTE (April 2026): The conviction leaderboard RPC that originally lived in

@@ -40,16 +40,16 @@ Physical places (e.g., a meditation center, a bookshop) live on `/v2/explore.htm
 
 There's a sibling repo at `/Users/orli/Documents/Claude/Projects/frqncy-harness/` — `@frqncy/harness`, Orlando's plug-and-play LLM harness. It's pushed to `github.com/0rli-E/frqncy-harness`.
 
-Current state: **v0.4.0-alpha.1** shipped 2026-04-26. Capabilities:
-- Six provider lanes: anthropic, openai, google, openrouter (API path) + claude-code, codex (subscription subprocess path)
+Current state: **v0.7.0-alpha.1**. Capabilities:
+- Seven provider lanes: anthropic, openai, google, openrouter, chutes (API path) + claude-code, codex (subscription subprocess path)
 - Tools: bash, read, write, grep, glob, web_fetch, web_search (Tavily/Brave)
-- MCP client (Claude Desktop schema-compatible)
+- MCP client (Claude Desktop schema-compatible). `frqncy-content` server is NOT auto-configured — wire it manually via `frqncy-harness mcp add ...` or `mcp import-from-claude-desktop`.
 - Sandbox: gtr worktree per agent run, tempdir fallback
-- Trace storage: `~/.frqncy-harness/traces/` (JSONL, append-only, never compacted, mirrored to private GitHub repo `0rli-E/frqncy-harness-traces`)
-- Cost guardrails: $5 soft warn / $25 hard abort per conversation
-- Lethal-trifecta gate (Simon Willison)
-- 112 tests passing
-- Wired with the FRQNCY content MCP server (this repo's `mcp-servers/frqncy-content/`)
+- Trace storage: `~/.frqncy-harness/traces/<YYYY-MM-DD>/<conversation-id>.jsonl` + INDEX.jsonl. Auto-commit-and-push hook available; intended remote `0rli-E/frqncy-harness-traces` (configure git remote manually).
+- Cost guardrails: $5 soft warn / $25 hard abort per conversation. No per-day/per-month aggregates yet.
+- Lethal-trifecta gate (Simon Willison): privateData + untrustedContent + outboundNetwork — severity warn / block / allow
+- 202 tests passing across 20 test files
+- Replay command (`frqncy-harness replay <conversation-id> [--diff]`) for manual regression eval. No autonomous self-optimisation loop yet.
 
 CLI usage:
 ```bash
@@ -73,14 +73,18 @@ Read these before changing anything structural:
 - `proposals/HARNESS-RESEARCH-NOTES.md` — five-agent research dump (VC theses, Hermes, frontier-lab essays)
 - `proposals/REVENUE-MODEL.md` — five revenue surfaces (Aligned, Courses, Referrals, Sanctuary, Fund)
 - `proposals/HARNESS-BEGINNER-GUIDE.md` — beginner-friendly setup for harness users
+- `proposals/EXECUTION-PLAN-90D.md` — current 90-day plan (2026-04-27 → 2026-07-26)
+- `proposals/VISION-1H-DEMO.md` — north star: the 1h demo that explains FRQNCY without slides
+- `proposals/BACKEND-STATUS.md` — single source of truth on what's alive / scaffolded / zero-state per surface
 
 ## What's currently in motion
 
 As of 2026-04-27:
 
-1. **FRQNCY content MCP server** just shipped (`mcp-servers/frqncy-content/`). 11 tools exposed: search_topics, get_topic, list_topics, list_domains, list_pillars, search_resources, get_resource, list_resources_for_topic, list_resources_by_type, random_topic, stats. Wired into the harness as `frqncy-content`.
-2. **Trace data** is being preserved at `~/.frqncy-harness/traces/` and pushed to `github.com/0rli-E/frqncy-harness-traces` (private).
-3. **Open ideas** for FRQNCY work via the harness — see `proposals/HARNESS-USE-CASES.md` for 10 ready-to-paste agent prompts.
+1. **90-day execution plan** is locked in `proposals/EXECUTION-PLAN-90D.md` (window: 2026-04-27 → 2026-07-26, solo, ~$100 budget). Phase 1 = stand up every scaffolded surface; Future Roadmap appendix lists capital-blocked items.
+2. **FRQNCY content MCP server** (`mcp-servers/frqncy-content/`). 11 tools: search_topics, get_topic, list_topics, list_domains, list_pillars, search_resources, get_resource, list_resources_for_topic, list_resources_by_type, random_topic, stats. Not auto-wired into harness — add via `frqncy-harness mcp add`.
+3. **Trace data** preserved at `~/.frqncy-harness/traces/`. Mirror to a private repo via a manually-configured git remote.
+4. **Open ideas** for FRQNCY work via the harness — see `proposals/HARNESS-USE-CASES.md`.
 
 ## How to do common tasks
 
