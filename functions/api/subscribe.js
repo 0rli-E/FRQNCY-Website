@@ -93,6 +93,17 @@ export async function onRequestPost({ request, env }) {
   const source  = String(body.source || 'frqncy_website').slice(0, 64);
   const referrer = (request.headers.get('referer') || '').slice(0, 500);
 
+  // Referral attribution: explicit `ref` in body wins, otherwise parse ?ref=
+  // out of the page URL (Referer header). Codes are short alphanumeric.
+  let ref = String(body.ref || '').trim().slice(0, 32);
+  if (!ref && referrer) {
+    try {
+      const refUrl = new URL(referrer);
+      ref = (refUrl.searchParams.get('ref') || '').trim().slice(0, 32);
+    } catch { /* malformed referer — ignore */ }
+  }
+  if (ref && !/^[A-Za-z0-9_-]+$/.test(ref)) ref = '';
+
   if (!email || !EMAIL_RE.test(email) || email.length > 254) {
     return json({ ok: false, error: 'Please enter a valid email address.' }, 400, origin);
   }
@@ -128,6 +139,7 @@ export async function onRequestPost({ request, env }) {
         metadata: {
           ip_country: request.headers.get('cf-ipcountry') || null,
           ua: (request.headers.get('user-agent') || '').slice(0, 200),
+          ref: ref || null,
         },
       }]),
     }
