@@ -776,7 +776,7 @@ function generate() {
 // Calls the FRQNCY HD Reading Worker for an AI-generated personalised
 // reading. Falls back to a rich client-side reading if the Worker is
 // unavailable (not deployed yet, network error, etc).
-const WORKER_URL = 'https://frqncy-hd-reading.frqncy.workers.dev';
+const WORKER_URL = 'https://frqncy-hd-reading.orlando-eisenreich.workers.dev';
 let _lastHDChart = null; // stashed by renderHD for the AI reading
 
 // HD reading data — not-self themes and signatures for rich fallback
