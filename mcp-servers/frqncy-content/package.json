@@ -1,0 +1,33 @@
+{
+  "name": "@frqncy/mcp-content",
+  "version": "0.1.0",
+  "description": "MCP server exposing FRQNCY's topics + resources as tools for any LLM agent.",
+  "type": "module",
+  "main": "./index.js",
+  "bin": {
+    "frqncy-mcp-content": "./index.js"
+  },
+  "files": [
+    "index.js",
+    "README.md"
+  ],
+  "scripts": {
+    "start": "node index.js"
+  },
+  "keywords": [
+    "frqncy",
+    "mcp",
+    "model-context-protocol",
+    "llm",
+    "agent"
+  ],
+  "author": "Orlando Eisenreich <orlando.eisenreich@gmail.com>",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20.0.0"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/sdk": "^1.29.0",
+    "zod": "^3.25.76"
+  }
+}
