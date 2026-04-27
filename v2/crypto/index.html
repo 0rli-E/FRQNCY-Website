@@ -68,6 +68,38 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
 .ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(123,97,255,0.06)}
 
+/* Curated resource cards (merged in from cryptocurrency topic page) */
+.section-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
+.rlist{display:flex;flex-direction:column;gap:0.65rem}
+.rcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1.25rem 1.4rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:border-color .2s,background .2s}
+.rcard:hover{border-color:rgba(255,255,255,0.14);background:rgba(255,255,255,0.05)}
+.rtype{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--navy);background:var(--accent);padding:3px 9px;border-radius:2px;font-weight:500;white-space:nowrap;line-height:1.6;margin-top:2px}
+.rinfo{min-width:0}
+.rinfo h4{font-size:0.9rem;font-weight:400;color:#fff;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;line-height:1.35}
+.rinfo p{font-size:0.76rem;color:var(--text-dim);line-height:1.55}
+.fpick{font-size:0.48rem;letter-spacing:0.15em;color:var(--gold);border:1px solid rgba(196,151,58,0.5);padding:1px 6px;border-radius:2px;flex-shrink:0;font-weight:400}
+.rlink{font-size:0.66rem;letter-spacing:0.1em;color:var(--accent);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:2px;white-space:nowrap;transition:all .2s;text-decoration:none;margin-top:1px}
+.rlink:hover{border-color:var(--accent);opacity:1}
+.course-callout{display:flex;align-items:center;gap:1.25rem;background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1.25rem 1.4rem;margin-bottom:0.75rem;text-decoration:none;color:var(--text);transition:background .2s,border-color .2s;position:relative;overflow:hidden}
+.course-callout::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--course-accent,var(--accent))}
+.course-callout:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.14);opacity:1}
+.cc-level{font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid currentColor;flex-shrink:0;white-space:nowrap}
+.cc-body{flex:1;min-width:0;display:flex;flex-direction:column}
+.cc-title{font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:0.25rem}
+.cc-meta{font-size:0.68rem;color:var(--text-dim)}
+.cc-arrow{font-size:1rem;color:var(--accent);flex-shrink:0;transition:transform .2s}
+.course-callout:hover .cc-arrow{transform:translateX(3px)}
+.merged-resources{max-width:980px;margin:3rem auto 1rem;padding:0 clamp(1.25rem,4vw,2.5rem)}
+@media(max-width:680px){
+  .rcard{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+  .rlink{grid-column:2;margin-top:0.5rem}
+}
+@media(max-width:520px){
+  .rcard{grid-template-columns:1fr}
+  .rlink{grid-column:1}
+  .section-label{font-size:0.6rem}
+}
+
 /* GRID */
 main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 .crypto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
@@ -333,6 +365,163 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 
 <main>
   <div class="crypto-grid" id="grid"></div>
+
+  <!-- ── MERGED FROM /v2/cryptocurrency/ ── -->
+  <div class="merged-resources">
+    <section>
+      <div class="section-label">Take a Course</div>
+      <a class="course-callout" href="../courses/crypto-fundamentals/" style="--course-accent:#7B61FF">
+        <span class="cc-level" style="color:#7B61FF;border-color:#7B61FF60">Beginner</span>
+        <span class="cc-body">
+          <span class="cc-title">Crypto Fundamentals</span>
+          <span class="cc-meta">6 lessons · 2 hours · Sovereignty Through Decentralization</span>
+        </span>
+        <span class="cc-arrow">→</span>
+      </a>
+    </section>
+
+    <section style="margin-top:2.5rem">
+      <div class="section-label">Curated Resources</div>
+      <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">15 resources &nbsp;·&nbsp; 5 teachers &nbsp;·&nbsp; 3 books &nbsp;·&nbsp; 4 media &nbsp;·&nbsp; 3 tools &nbsp;·&nbsp; <span style="color:var(--gold)">4 ✦ picks</span></div>
+      <div class="ftabs"><button class="ftab active" data-rfilter="all">all</button><button class="ftab" data-rfilter="book">book</button><button class="ftab" data-rfilter="tool">tool</button><button class="ftab" data-rfilter="media">media</button><button class="ftab" data-rfilter="person">person</button></div>
+      <div class="rlist">
+        <div class="rcard" data-type="book">
+          <span class="rtype">book</span>
+          <div class="rinfo">
+            <h4><a href="/books/bitcoin-whitepaper/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Bitcoin Whitepaper — Satoshi Nakamoto</a> <span class="fpick">✦ FRQNCY PICK</span></h4>
+            <p>Nine pages that changed money forever. The original 2008 paper describing a peer-to-peer electronic cash system — still the clearest, most radical thing written about what Bitcoin actually does.</p>
+          </div>
+          <a href="https://bitcoin.org/bitcoin.pdf" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="tool">
+          <span class="rtype">tool</span>
+          <div class="rinfo">
+            <h4>CoinGecko</h4>
+            <p>The most comprehensive crypto market data platform — prices, volumes, market caps, and on-chain metrics across thousands of assets.</p>
+          </div>
+          <a href="https://www.coingecko.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="media">
+          <span class="rtype">media</span>
+          <div class="rinfo">
+            <h4><a href="/media/messari/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Messari</a></h4>
+            <p>Professional-grade crypto research and intelligence. The go-to for serious market analysis, protocol breakdowns, and sector reports.</p>
+          </div>
+          <a href="https://messari.io" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="book">
+          <span class="rtype">book</span>
+          <div class="rinfo">
+            <h4><a href="/books/the-infinite-machine/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">The Infinite Machine — Camila Russo</a></h4>
+            <p>The definitive story of Ethereum's creation — Vitalik Buterin, the early contributors, and how a teenager's white paper became programmable money. The most human account of how a world-changing protocol was born.</p>
+          </div>
+          <a href="https://www.harpercollins.com/products/the-infinite-machine-camila-russo" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="book">
+          <span class="rtype">book</span>
+          <div class="rinfo">
+            <h4><a href="/books/the-internet-of-money/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">The Internet of Money — Andreas Antonopoulos</a> <span class="fpick">✦ FRQNCY PICK</span></h4>
+            <p>The most articulate case for why Bitcoin matters — not as a speculative asset, but as a political and monetary revolution. Required reading.</p>
+          </div>
+          <a href="https://aantonop.com/books/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="media">
+          <span class="rtype">media</span>
+          <div class="rinfo">
+            <h4><a href="/media/bankless/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Bankless</a></h4>
+            <p>The leading crypto media and podcast network — covering Ethereum, DeFi, and the broader move toward a bankless financial system.</p>
+          </div>
+          <a href="https://www.bankless.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="media">
+          <span class="rtype">media</span>
+          <div class="rinfo">
+            <h4><a href="/media/the-block/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">The Block</a></h4>
+            <p>Institutional-grade crypto news and data. The standard for breaking developments across Bitcoin, Ethereum, and the broader market.</p>
+          </div>
+          <a href="https://www.theblock.co" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="tool">
+          <span class="rtype">tool</span>
+          <div class="rinfo">
+            <h4>Glassnode</h4>
+            <p>On-chain analytics platform tracking Bitcoin and Ethereum network behaviour — the best lens on what actual holders are doing versus what the price suggests.</p>
+          </div>
+          <a href="https://glassnode.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="person">
+          <span class="rtype">person</span>
+          <div class="rinfo">
+            <h4><a href="/people/lyn-alden/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Lyn Alden</a></h4>
+            <p>The clearest macro analyst covering Bitcoin as an emerging monetary network. Her long-form research bridges traditional finance and the new monetary paradigm.</p>
+          </div>
+          <a href="https://www.lynalden.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="media">
+          <span class="rtype">media</span>
+          <div class="rinfo">
+            <h4><a href="/media/decrypt/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Decrypt</a></h4>
+            <p>Accessible, well-edited crypto news covering everything from Bitcoin price action to NFT culture and Web3 policy.</p>
+          </div>
+          <a href="https://decrypt.co" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="person">
+          <span class="rtype">person</span>
+          <div class="rinfo">
+            <h4><a href="/people/andreas-antonopoulos/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Andreas Antonopoulos</a> <span class="fpick">✦ FRQNCY PICK</span></h4>
+            <p>Educator and advocate whose Mastering Bitcoin and The Internet of Money books, together with his decades of talks, shaped how a generation understood Bitcoin's moral and technical architecture.</p>
+          </div>
+          <a href="https://aantonop.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="person">
+          <span class="rtype">person</span>
+          <div class="rinfo">
+            <h4><a href="/people/david-hoffman/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">David Hoffman</a></h4>
+            <p>Co-founder of Bankless with Ryan Sean Adams. His clear explanations of Ethereum's economic architecture and long-term thesis have made Bankless the primary education source for the bankless generation.</p>
+          </div>
+          <a href="https://www.bankless.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="person">
+          <span class="rtype">person</span>
+          <div class="rinfo">
+            <h4><a href="/people/ryan-sean-adams/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Ryan Sean Adams</a></h4>
+            <p>Co-founder of Bankless with David Hoffman. An ex-banker turned Ethereum advocate, he hosts the leading daily podcast and newsletter on decentralised finance. His conviction-driven long-form interviews shape how a generation thinks about money.</p>
+          </div>
+          <a href="https://www.bankless.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="person">
+          <span class="rtype">person</span>
+          <div class="rinfo">
+            <h4><a href="/people/satoshi-nakamoto/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Satoshi Nakamoto</a> <span class="fpick">✦ FRQNCY PICK</span></h4>
+            <p>The pseudonymous creator of Bitcoin. In 2008 an anonymous figure posted a 9-page whitepaper and released the software; in 2011 they vanished, leaving the network to the world. The origin myth of programmable money.</p>
+          </div>
+          <a href="https://bitcoin.org/bitcoin.pdf" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+        <div class="rcard" data-type="tool">
+          <span class="rtype">tool</span>
+          <div class="rinfo">
+            <h4>Ledger Nano X</h4>
+            <p>Hardware wallet for self-custodying crypto. Bluetooth, secure element, supports thousands of assets. The recommended starting point for actually owning your keys.</p>
+          </div>
+          <a href="https://www.ledger.com/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+        </div>
+      </div>
+    </section>
+  </div>
+  <script>
+  // Filter logic for the merged resource list. Uses data-rfilter so it doesn't
+  // collide with the projects-grid filter-bar above (which uses data-filter).
+  document.querySelectorAll('[data-rfilter]').forEach(btn=>{
+    btn.addEventListener('click',()=>{
+      document.querySelectorAll('[data-rfilter]').forEach(b=>b.classList.remove('active'));
+      btn.classList.add('active');
+      const f=btn.dataset.rfilter;
+      document.querySelectorAll('.rcard').forEach(c=>{
+        c.style.display=(f==='all'||c.dataset.type===f)?'':'none';
+      });
+    });
+  });
+  </script>
 </main>
 
 <div class="cta-banner">
