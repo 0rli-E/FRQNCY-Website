@@ -241,7 +241,34 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Batteries, flywheels, and hydrogen — the technologies that make intermittent renewables reliable.</p>
 </div>
 <main>
-  
+<!-- topic-content-block -->
+  <section style="max-width:780px">
+    <div class="section-label">The frame</div>
+    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Storage is the missing piece of the renewable transition. Solar generates when the sun shines; wind when the wind blows; demand doesn't always match. Storage decouples generation from consumption — turning intermittent power into firm dispatchable power. Without storage at scale, renewables top out around 30-40% of grid capacity. With it, they reach 80-100%.</p>
+    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's framing: storage is one of the cleanest cost-curve technology stories of the decade. Lithium-ion battery prices fell roughly 90% in fifteen years. Grid-scale deployment is multiplying year over year. The remaining question isn't whether storage works; it's which chemistries win which use cases, and how fast.</p>
+  </section>
+
+  <section style="max-width:780px">
+    <div class="section-label">Five categories</div>
+    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Lithium-ion</div><strong style="color:#fff;font-weight:500">The workhorse.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Dominant for vehicles and short-duration grid storage (1-4 hours). Continually improving. Constrained on raw materials (lithium, cobalt, nickel) but new chemistries (LFP, sodium-ion) reduce dependency.</p></div>
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Iron-air / flow</div><strong style="color:#fff;font-weight:500">Long-duration cheap.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">For 8-100 hour storage, different chemistries win. Iron-air (Form Energy) and various flow batteries (vanadium, zinc-bromine) trade lower energy density for longer duration and cheaper materials. Critical for week-long renewable lulls.</p></div>
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Pumped hydro</div><strong style="color:#fff;font-weight:500">The largest category nobody talks about.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Pump water uphill when power's cheap, let it run downhill through turbines when power's expensive. Mature, large-scale, ~95% of the world's grid storage capacity today. Geographically constrained but underused where capable.</p></div>
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Thermal</div><strong style="color:#fff;font-weight:500">Heat as the storage medium.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Molten salt, hot rocks, phase-change materials. Pair with industrial-heat applications and the round-trip efficiency story changes — sometimes you don't need to convert back to electricity at all.</p></div>
+      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Hydrogen + green ammonia</div><strong style="color:#fff;font-weight:500">Seasonal scale.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Convert excess summer renewables into hydrogen, store underground, burn or fuel-cell in winter. Inefficient compared with batteries but works for the longest durations and is exportable as fuel. Still emerging.</p></div>
+    </div>
+  </section>
+
+  <section style="max-width:780px">
+    <div class="section-label">Choosing well</div>
+    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Match duration to use.</strong> Short-cycle daily smoothing wants lithium-ion. Multi-day backup wants iron-air or flow. Seasonal wants hydrogen. There's no single right battery for every job.</li>
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Round-trip efficiency.</strong> Some chemistries return 90%+ of stored energy, others 50% or less. Pair efficient storage with low-cost generation, and inefficient storage with very low marginal-cost generation (curtailed solar/wind that would otherwise be wasted).</li>
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Recycling.</strong> The first wave of EV batteries is now reaching end-of-life. Serious recycling capacity (Redwood Materials, Li-Cycle, others) is coming online. Closing the loop is necessary for long-term sustainability claims to hold.</li>
+      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Behind-the-meter is rising.</strong> Home batteries combined with solar are increasingly economic on their own without subsidies. The decentralised storage layer changes grid dynamics in ways utilities are scrambling to adapt to.</li>
+    </ul>
+    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Renewable Energy, Solar, Wind Energy, Grid Technology, Future Tech.</em></p>
+  </section>
   
   <section>
   <div class="section-label">Curated Resources</div>
