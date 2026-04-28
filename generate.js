@@ -15,6 +15,16 @@ const COURSES   = JSON.parse(fs.readFileSync(path.join(ROOT, 'courses.json'),   
 const PROVIDERS = JSON.parse(fs.readFileSync(path.join(ROOT, 'providers.json'), 'utf8'));
 const OUT       = path.join(ROOT, 'v2');
 
+// ── Bespoke pages — DO NOT REGENERATE ────────────────────────────
+// These slugs have hand-shaped pages whose content does not come from the
+// pillar/domain/topic templates. Skipping them here prevents bulk regen runs
+// from overwriting bespoke narrative (Vision/Echo/Legion/Roadmap, etc.).
+// To intentionally regenerate one of these, remove its slug from the set,
+// or pass --force-regen-fund (etc.) — not implemented yet, add when needed.
+const BESPOKE_PILLARS = new Set(['fund']);
+const BESPOKE_DOMAINS = new Set();
+const BESPOKE_TOPICS  = new Set();
+
 // ── Entity beds (world model, v1) ────────────────────────────────
 // First-class lists of people, books, orgs, and media. Each entity declares
 // `appears_in` (topic/domain/pillar ids) and `picked_in` (FRQNCY PICK buckets).
@@ -1636,16 +1646,28 @@ lintVoice();
 let count = 0;
 
 for (const p of DATA.pillars) {
+  if (BESPOKE_PILLARS.has(p.slug)) {
+    console.log(`  skip pillar ${p.slug} — bespoke page (see BESPOKE_PILLARS in generate.js)`);
+    continue;
+  }
   mkdirp(path.join(OUT, p.slug));
   fs.writeFileSync(path.join(OUT, p.slug, 'index.html'), pillarPage(p));
   count++;
 }
 for (const d of DATA.domains) {
+  if (BESPOKE_DOMAINS.has(d.slug)) {
+    console.log(`  skip domain ${d.slug} — bespoke page`);
+    continue;
+  }
   mkdirp(path.join(OUT, d.slug));
   fs.writeFileSync(path.join(OUT, d.slug, 'index.html'), domainPage(d));
   count++;
 }
 for (const t of DATA.topics) {
+  if (BESPOKE_TOPICS.has(t.slug)) {
+    console.log(`  skip topic ${t.slug} — bespoke page`);
+    continue;
+  }
   mkdirp(path.join(OUT, t.slug));
   fs.writeFileSync(path.join(OUT, t.slug, 'index.html'), topicPage(t));
   count++;
