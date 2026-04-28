@@ -4,288 +4,1423 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Layer 2s — FRQNCY Crypto</title>
-<meta name="description" content="L2s process transactions off-chain but post their data and proofs back to Ethereum. You get the fees and latency of a sidechain, with the settlement guarantees of mainnet.">
+<meta name="description" content="Rollups and validity-proof systems that scale Ethereum without compromising its security. The bet that the base layer should optimise for finality and the execution layer for throughput.">
 <meta name="theme-color" content="#0B1C3D">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Layer 2s — FRQNCY Crypto">
-<meta property="og:description" content="L2s process transactions off-chain but post their data and proofs back to Ethereum. You get the fees and latency of a sidechain, with the settlement guarantees of mainnet.">
+<meta property="og:description" content="Rollups and validity-proof systems that scale Ethereum without compromising its security. The bet that the base layer should optimise for finality and the execution layer for throughput.">
 <meta property="og:url" content="https://frqncy.network/v2/crypto/l2/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:site_name" content="FRQNCY">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Layer 2s — FRQNCY Crypto">
-<meta name="twitter:description" content="L2s process transactions off-chain but post their data and proofs back to Ethereum. You get the fees and latency of a sidechain, with the settlement guarantees of mainnet.">
+<meta name="twitter:description" content="Rollups and validity-proof systems that scale Ethereum without compromising its security. The bet that the base layer should optimise for finality and the execution layer for throughput.">
 <meta name="twitter:image" content="https://frqncy.network/og-image.png">
 <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="manifest" href="../../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/crypto/l2/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/v2/crypto/_artwork.css">
 <style>
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{
-  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
-  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
-  --card-border:rgba(255,255,255,0.08);--accent:#7B61FF;--cat:#50E2C1;
-}
-html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
-a{text-decoration:none;color:var(--accent)}
-a:hover{opacity:0.85}
-nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
-.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
-.snav-logo:hover{opacity:1}
-.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.breadcrumb a{color:var(--text-dim);transition:color .2s}
-.breadcrumb a:hover{color:var(--text)}
-.breadcrumb .sep{opacity:0.25}
-.snav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
-.snav-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);transition:color .2s;white-space:nowrap}
-.snav-link:hover{color:var(--text)}
-.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
-.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
-.hero{margin-top:56px;padding:clamp(3rem,7vw,5.5rem) clamp(1.25rem,5vw,2.5rem) clamp(2rem,4vw,3rem);text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(80,226,193,0.12) 0%,transparent 65%);pointer-events:none}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--cat);margin-bottom:1.25rem;position:relative}
-.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.5}
-.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.2rem;position:relative}
-.hero-tagline{font-family:'Cormorant',serif;font-style:italic;font-size:clamp(1rem,2.1vw,1.3rem);color:var(--cat);font-weight:300;margin-bottom:1rem;position:relative}
-.hero-desc{max-width:620px;margin:0 auto;font-size:0.88rem;color:var(--text-dim);font-weight:300;line-height:1.75;position:relative}
-.intro{max-width:780px;margin:0 auto 2.5rem;padding:0 clamp(1.25rem,5vw,2.5rem)}
-.intro-inner{background:rgba(80,226,193,0.05);border:1px solid rgba(80,226,193,0.2);border-radius:6px;padding:1.5rem 1.75rem}
-.intro-inner p{font-size:0.8rem;color:var(--text);line-height:1.75;margin:0}
-.intro-inner p + p{margin-top:0.75rem}
-.intro-inner em{color:var(--cat);font-style:normal;font-weight:400}
-main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 5rem}
-.crypto-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1.5rem}
-.ccard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .25s,transform .25s,background .25s;color:var(--text)}
-.ccard:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-3px);background:rgba(255,255,255,0.06)}
-.ccard-accent{height:4px;flex-shrink:0}
-.ccard-body{padding:1.6rem 1.6rem 1.2rem;flex:1;display:flex;flex-direction:column;gap:0.5rem}
-.ccard-header{display:flex;align-items:center;gap:0.9rem}
-.ccard-icon{width:48px;height:48px;border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:1.2rem;font-weight:500;color:#fff;flex-shrink:0;font-family:'Cormorant',serif}
-.ccard-meta{flex:1;min-width:0}
-.ccard-name{font-family:'Cormorant',serif;font-size:1.35rem;font-weight:400;color:#fff;line-height:1.15}
-.ccard-ticker{font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim)}
-.ccard-tags{display:flex;gap:0.3rem;flex-wrap:wrap;margin-top:0.3rem}
-.ctag{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid rgba(80,226,193,0.35);color:var(--cat);background:rgba(80,226,193,0.08)}
-.ccard-desc{font-size:0.8rem;color:var(--text-dim);line-height:1.65;margin-top:0.2rem}
-.ccard-why{font-size:0.72rem;line-height:1.55;color:var(--text);margin-top:0.2rem}
-.ccard-why strong{font-weight:400;color:var(--gold);font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;display:block;margin-bottom:0.2rem}
-.ccard-footer{margin-top:auto;padding:0.9rem 1.6rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;justify-content:space-between;gap:1rem}
-.ccard-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--cat);transition:opacity .2s;white-space:nowrap}
-.ccard:hover .ccard-link{opacity:0.8}
-.ccard-type{font-size:0.52rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
-.section-label{max-width:1080px;margin:2.5rem auto 1.25rem;padding:0 clamp(1.25rem,5vw,2.5rem);display:flex;align-items:center;gap:0.75rem}
-.section-label-line{flex:1;height:1px;background:rgba(255,255,255,0.08)}
-.section-label-text{font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim)}
-.cta-banner{max-width:1080px;margin:3.5rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem)}
-.cta-inner{background:rgba(80,226,193,0.05);border:1px solid rgba(80,226,193,0.2);border-radius:6px;padding:2.5rem;text-align:center}
-.cta-inner h3{font-family:'Cormorant',serif;font-size:1.5rem;font-weight:300;color:#fff;margin-bottom:0.6rem}
-.cta-inner p{font-size:0.82rem;color:var(--text-dim);margin-bottom:1.5rem;max-width:480px;margin-left:auto;margin-right:auto;line-height:1.7}
-.cta-buttons{display:flex;gap:0.75rem;justify-content:center;flex-wrap:wrap}
-.cta-btn{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;padding:10px 24px;border-radius:2px;border:1px solid;transition:all .2s;font-family:'Jost',sans-serif;text-decoration:none}
-.cta-btn.primary{background:var(--cat);border-color:var(--cat);color:#fff}
-.cta-btn.primary:hover{opacity:0.85}
-.cta-btn.secondary{border-color:rgba(255,255,255,0.15);color:var(--text-dim);background:none}
-.cta-btn.secondary:hover{border-color:rgba(255,255,255,0.3);color:var(--text)}
-.disclaimer{max-width:640px;margin:0 auto 2rem;text-align:center;font-size:0.7rem;color:var(--text-dim);opacity:0.7;line-height:1.6;padding:0 1.25rem}
-a:focus-visible,button:focus-visible{outline:2px solid var(--gold);outline-offset:2px;border-radius:2px}.ccard:focus-within{border-color:rgba(196,151,58,0.4)}@media(hover:none) and (pointer:coarse){.snav-back{min-height:44px;display:inline-flex;align-items:center;padding:8px 14px}.snav-link{min-height:44px;display:inline-flex;align-items:center}.ccard-link{min-height:44px;display:inline-flex;align-items:center}.cta-btn{min-height:44px;display:inline-flex;align-items:center;justify-content:center}}@media(max-width:600px){.crypto-grid{grid-template-columns:1fr;gap:1rem}.ccard-body{padding:1.3rem 1.3rem 1rem}.ccard-footer{padding:0.8rem 1.3rem}.snav-right .snav-link{display:none}}@media(max-width:360px){.hero h1{font-size:2rem}.breadcrumb a:first-child{display:none}.breadcrumb .sep:first-of-type{display:none}}
+  :root {
+    --sector-accent: #50E2C1;
+    --sector-warm:   #7BEDD2;
+    --sector-soft:   rgba(80, 226, 193, 0.16);
+    --sector-warm-soft: rgba(80, 226, 193, 0.3);
+    --sector-bg:     rgba(80, 226, 193, 0.06);
+  }
+  .hero-bg { background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=85&w=2400'); }
+  .closing-bg { background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=85&w=2400'); }
 </style>
+<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script src="../../../mobile-nav.js" defer></script>
 <script src="../../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Layer 2s — FRQNCY Crypto","description":"Rollups and validity-proof systems that scale Ethereum without compromising its security. The bet that the base layer should optimise for finality and the execution layer for throughput.","url":"https://frqncy.network/v2/crypto/l2/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Crypto","item":"https://frqncy.network/v2/crypto/"},{"@type":"ListItem","position":3,"name":"Layer 2s","item":"https://frqncy.network/v2/crypto/l2/"}]}}</script>
 </head>
 <body>
 
-<nav class="snav" aria-label="Main navigation">
+<nav class="snav">
   <div class="snav-left">
-    <a href="../../../" class="snav-logo" aria-label="FRQNCY Home">FRQNCY</a>
-    <div class="breadcrumb" aria-label="Breadcrumb">
-      <a href="../../explore.html">Network</a>
-      <span class="sep" aria-hidden="true">›</span>
-      <a href="../">Crypto</a>
-      <span class="sep" aria-hidden="true">›</span>
-      <span aria-current="page">L2</span>
+    <a href="/v2/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">CRYPTO</span></a>
+    <div class="breadcrumb">
+      <a href="/v2/crypto/">Crypto</a><span class="sep">/</span>
+      <span>Layer 2s</span>
     </div>
   </div>
-  <div class="snav-right">
-    <a href="../explorer.html" class="snav-link">All Sectors</a>
-    <a href="../" class="snav-back">← Crypto</a>
+  <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
+    <a href="/v2/crypto/" class="snav-back">← Crypto hub</a>
+    <a href="/v2/fund/" class="snav-back">Fund</a>
+    <a href="/" class="snav-back">Main</a>
   </div>
 </nav>
 
 <section class="hero">
-  <div class="hero-eyebrow">l2.crypto.frqncy</div>
-  <h1>Layer 2s</h1>
-  <div class="hero-tagline">Scaling Ethereum. Inheriting its security, exceeding its speed.</div>
-  <p class="hero-desc">L2s process transactions off-chain but post their data and proofs back to Ethereum. You get the fees and latency of a sidechain, with the settlement guarantees of mainnet.</p>
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Sector · L2 · Inheriting Ethereum's security</div>
+      <h1 class="hero-title">Layer 2s</h1>
+      <p class="hero-desc">Rollups and validity-proof systems that scale Ethereum without compromising its security. The bet that the base layer should optimise for finality and the execution layer for throughput.</p>
+      <div class="hero-quote">
+        Rollups inherit security from their base layer. That is the whole trick.
+        <cite>Vitalik Buterin · 2021</cite>
+      </div>
+    </div>
+    <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
+      
+    <defs>
+      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
+        <stop offset="0%"  stop-color="#50E2C1" stop-opacity="0.34"/>
+        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
+        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%"  stop-color="#7BEDD2" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#50E2C1" stop-opacity="0.7"/>
+      </linearGradient>
+    </defs>
+    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
+      
+      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.6" fill="none">
+        <rect x="-50" y="-50" width="100" height="100" transform="rotate(15)"/>
+        <rect x="-50" y="-50" width="100" height="100" transform="rotate(-15)"/>
+        <rect x="-30" y="-30" width="60" height="60" opacity="0.6"/>
+      </g>
+      <g class="glyph-rotate-rev" stroke="rgba(245,248,251,0.20)" stroke-width="0.35" stroke-dasharray="2 4" fill="none">
+        <circle cx="0" cy="0" r="68"/>
+      </g>
+      
+      <circle cx="0" cy="0" r="22" fill="none" stroke="#50E2C1" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
+      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
+      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#7BEDD2" stroke-opacity="0.55" stroke-width="0.55"/>
+      <circle cx="0" cy="0" r="3.5" fill="#7BEDD2"/>
+    </svg>
+  </div>
+  <div class="scroll-hint">descend</div>
 </section>
 
-<div class="intro">
-  <div class="intro-inner">
-    <p>An L2 is a chain whose final judge is another chain. Rollups (optimistic and zero-knowledge) batch thousands of transactions, compress them, and post the result to Ethereum, which then enforces correctness.</p>
-    <p><em>The L2 era is the reason Ethereum fees are sane again.</em> The question now is which rollup becomes the default home for users and apps.</p>
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 2880 100" preserveAspectRatio="none">
+    <path class="w3" fill="rgba(80, 226, 193, 0.16)" d="M0,55 C144,30 288,30 432,45 C576,60 720,72 864,55 C1008,38 1152,30 1296,45 C1440,60 1584,72 1728,55 C1872,38 2016,30 2160,45 C2304,60 2448,72 2592,55 C2736,38 2808,38 2880,45 L2880,100 L0,100 Z"/>
+    <path class="w2" fill="rgba(80, 226, 193, 0.1)" d="M0,65 C144,45 288,45 432,55 C576,65 720,75 864,65 C1008,55 1152,45 1296,55 C1440,65 1584,75 1728,65 C1872,55 2016,45 2160,55 C2304,65 2448,75 2592,65 C2736,55 2808,55 2880,60 L2880,100 L0,100 Z"/>
+    <path class="w1" fill="rgba(245, 248, 251, 0.06)" d="M0,80 C144,68 288,68 432,75 C576,82 720,88 864,80 C1008,72 1152,68 1296,75 C1440,82 1584,88 1728,80 C1872,72 2016,68 2160,75 C2304,82 2448,88 2592,80 C2736,72 2808,72 2880,76 L2880,100 L0,100 Z"/>
+  </svg>
+</div>
+
+<main class="sector-body">
+
+<!-- PRELUDE -->
+<section class="section section-narrow fade-up">
+  <p>Layer 2s are not separate chains. They are scaling primitives that lean on Ethereum's economic security, doing the heavy execution off-chain and posting compressed proofs back. The base layer never has to scale; the systems built on top of it do.</p>
+<p>The L2s in this sector compete on three axes: proof system (optimistic vs zero-knowledge), data availability (on-chain vs off-chain), and ecosystem (DeFi, gaming, social).</p>
+</section>
+
+<!-- BLEED -->
+<div class="bleed fade-up">
+  <img src="https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=85&w=2400" alt="">
+  <div class="bleed-cap">The base layer holds the truth. <em>The L2 holds the speed.</em></div>
+</div>
+
+<!-- WORKING SET -->
+<section class="section section-wide fade-up">
+  <span class="label">Working set</span>
+  <h2>Projects we <strong>actually watch.</strong></h2>
+  <p style="max-width: 60ch;">
+    Conviction is stated as conviction; you decide what to do with it. Tiers below — Core,
+    Conviction, Watch, Speculative — reflect how much of FRQNCY's attention each project
+    currently earns, not a recommendation to buy.
+  </p>
+
+  <div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">60</span></button><button class="ttab" data-tier="core">core<span class="ct">6</span></button><button class="ttab" data-tier="conviction">conviction<span class="ct">3</span></button><button class="ttab" data-tier="watch">watch<span class="ct">6</span></button><button class="ttab" data-tier="speculative">speculative<span class="ct">15</span></button><button class="ttab" data-tier="unrated">unrated<span class="ct">23</span></button><button class="ttab" data-tier="avoid">avoid<span class="ct">7</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="core">
+  <div class="project-accent" style="background:#F7931A"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#F7931A40,#F7931A20);border:1px solid #F7931A50">BI</div>
+      <div class="project-meta">
+        <div class="project-name">Bitcoin</div>
+        <div class="project-ticker">BTC</div>
+      </div>
+      <span class="project-tier tier-core">core</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Store of Value</span><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc">The original decentralized currency — a peer-to-peer electronic cash system that requires no trusted third party. The bedrock of financial sovereignty.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>Bitcoin proved value can exist outside institutions, that trust can be mathematical, and that individuals can hold their own wealth without permission.</div>
   </div>
-</div>
+  <div class="project-foot">
+    <a class="project-link" href="https://bitcoin.org" target="_blank" rel="noopener noreferrer">bitcoin.org →</a>
+    <span class="project-cat">Store of Value</span>
+  </div>
+</article>
+<article class="project" data-tier="core">
+  <div class="project-accent" style="background:#3FD2A4"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#3FD2A440,#3FD2A420);border:1px solid #3FD2A450">BI</div>
+      <div class="project-meta">
+        <div class="project-name">Bittensor</div>
+        <div class="project-ticker">TAO</div>
+      </div>
+      <span class="project-tier tier-core">core</span>
+    </div>
+    <div class="project-tags"><span class="ptag">AI</span><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc">Decentralized network of machine intelligence — &#x27;subnets&#x27; compete to produce the best AI outputs (models, data, compute, knowledge) and earn TAO through a peer-to-peer incentive mechanism.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>Bittensor is the leading attempt to build an open, permissionless market for AI. Rather than AI being controlled by a handful of labs, subnets on Bittensor reward anyone who can contribute useful machine intelligence — models, inference, data, compute. The can</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://bittensor.com" target="_blank" rel="noopener noreferrer">bittensor.com →</a>
+    <span class="project-cat">AI</span>
+  </div>
+</article>
+<article class="project" data-tier="core">
+  <div class="project-accent" style="background:#627EEA"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#627EEA40,#627EEA20);border:1px solid #627EEA50">ET</div>
+      <div class="project-meta">
+        <div class="project-name">Ethereum</div>
+        <div class="project-ticker">ETH</div>
+      </div>
+      <span class="project-tier tier-core">core</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">DeFi</span></div>
+    <div class="project-desc">A decentralized platform for smart contracts and applications. Programmable money, DAOs, and the infrastructure for a new internet.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>Ethereum is the canvas where communities build their own rules, economies, and governance — without asking permission from anyone.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://ethereum.org" target="_blank" rel="noopener noreferrer">ethereum.org →</a>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="core">
+  <div class="project-accent" style="background:#9945FF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#9945FF40,#9945FF20);border:1px solid #9945FF50">SO</div>
+      <div class="project-meta">
+        <div class="project-name">Solana</div>
+        <div class="project-ticker">SOL</div>
+      </div>
+      <span class="project-tier tier-core">core</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc">High-performance blockchain built for speed and scale. Sub-second finality, low fees, and a thriving ecosystem of DeFi, NFTs, and consumer apps.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>Speed matters for adoption. Solana brings blockchain to the speed of thought — making decentralized apps feel as fast as centralized ones.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://solana.com" target="_blank" rel="noopener noreferrer">solana.com →</a>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="core">
+  <div class="project-accent" style="background:#4DA2FF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#4DA2FF40,#4DA2FF20);border:1px solid #4DA2FF50">SU</div>
+      <div class="project-meta">
+        <div class="project-name">Sui</div>
+        <div class="project-ticker">SUI</div>
+      </div>
+      <span class="project-tier tier-core">core</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc">Move-based Layer 1 blockchain designed for speed, low latency, and object-centric data. Built by former Meta engineers to make Web3 feel seamless.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>Sui&#x27;s object model and parallel execution represent the next evolution of blockchain architecture — designed from scratch for mass adoption.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://sui.io" target="_blank" rel="noopener noreferrer">sui.io →</a>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="core">
+  <div class="project-accent" style="background:#8B5CF6"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#8B5CF640,#8B5CF620);border:1px solid #8B5CF650">VI</div>
+      <div class="project-meta">
+        <div class="project-name">Virtuals Protocol</div>
+        <div class="project-ticker">VIRTUAL</div>
+      </div>
+      <span class="project-tier tier-core">core</span>
+    </div>
+    <div class="project-tags"><span class="ptag">AI</span><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc">Platform for creating, co-owning, and monetizing AI agents. Tokenized AI characters that generate revenue across games, social, and entertainment.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>Virtuals is where AI meets collective ownership. Communities can co-create and profit from AI agents — decentralizing the value of artificial intelligence.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://www.virtuals.io" target="_blank" rel="noopener noreferrer">virtuals.io →</a>
+    <span class="project-cat">AI</span>
+  </div>
+</article>
+<article class="project" data-tier="conviction">
+  <div class="project-accent" style="background:#7B61FF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#7B61FF40,#7B61FF20);border:1px solid #7B61FF50">ET</div>
+      <div class="project-meta">
+        <div class="project-name">Ethos</div>
+        <div class="project-ticker">ETHOS</div>
+      </div>
+      <span class="project-tier tier-conviction">conviction</span>
+    </div>
+    <div class="project-tags"><span class="ptag">SocialFi</span><span class="ptag">Decentralized Social</span></div>
+    <div class="project-desc">A reputation layer for crypto. Peers vouch for each other with stake and attestations, turning trust into a portable on-chain score anyone can verify.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>Credibility is the missing primitive. Ethos makes reputation skin-in-the-game — a counterweight to anon grift and a foundation for a more honest network.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://ethos.network" target="_blank" rel="noopener noreferrer">ethos.network →</a>
+    <span class="project-cat">SocialFi</span>
+  </div>
+</article>
+<article class="project" data-tier="conviction">
+  <div class="project-accent" style="background:#855DCD"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#855DCD40,#855DCD20);border:1px solid #855DCD50">FA</div>
+      <div class="project-meta">
+        <div class="project-name">Farcaster</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-conviction">conviction</span>
+    </div>
+    <div class="project-tags"><span class="ptag">SocialFi</span><span class="ptag">Decentralized Social</span></div>
+    <div class="project-desc">A sufficiently decentralized social protocol. User-owned identity, portable social graphs, and an open feed anyone can build clients on — Warpcast is one of many.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>Farcaster is the credible alternative to platform lock-in. If social networks belong to users, their graph should travel with them.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://www.farcaster.xyz" target="_blank" rel="noopener noreferrer">farcaster.xyz →</a>
+    <span class="project-cat">SocialFi</span>
+  </div>
+</article>
+<article class="project" data-tier="conviction">
+  <div class="project-accent" style="background:#65B3AE"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#65B3AE40,#65B3AE20);border:1px solid #65B3AE50">MA</div>
+      <div class="project-meta">
+        <div class="project-name">Mantle</div>
+        <div class="project-ticker">MNT</div>
+      </div>
+      <span class="project-tier tier-conviction">conviction</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L2</span></div>
+    <div class="project-desc">Ethereum L2 built by the BitDAO community. Modular rollup architecture with its own data availability layer, designed for lower fees and higher throughput.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>Mantle is an L2 backed by one of the largest DAO treasuries in crypto. Community-funded infrastructure scaling Ethereum for the next wave of users.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://www.mantle.xyz" target="_blank" rel="noopener noreferrer">mantle.xyz →</a>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#A8E6CF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#A8E6CF40,#A8E6CF20);border:1px solid #A8E6CF50">AR</div>
+      <div class="project-meta">
+        <div class="project-name">Arweave</div>
+        <div class="project-ticker">AR</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#F3BA2F"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#F3BA2F40,#F3BA2F20);border:1px solid #F3BA2F50">BN</div>
+      <div class="project-meta">
+        <div class="project-name">BNB</div>
+        <div class="project-ticker">BNB</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc">The utility token powering the BNB Chain ecosystem. High throughput, low fees, and the largest exchange ecosystem in crypto backing its adoption.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>BNB Chain brings millions of users on-chain. While more centralized than purist chains, its reach is undeniable for mainstream adoption.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://www.bnbchain.org" target="_blank" rel="noopener noreferrer">bnbchain.org →</a>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#96CEB4"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#96CEB440,#96CEB420);border:1px solid #96CEB450">EI</div>
+      <div class="project-meta">
+        <div class="project-name">Eigencloud</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00EC97"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#00EC9740,#00EC9720);border:1px solid #00EC9750">NE</div>
+      <div class="project-meta">
+        <div class="project-name">NEAR</div>
+        <div class="project-ticker">NEAR</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc">A sharded Layer 1 blockchain with a focus on usability. Human-readable accounts, gas-free onboarding, and chain abstraction for seamless multi-chain UX.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>NEAR&#x27;s thesis is that Web3 must be invisible. Chain abstraction and account aggregation put the user first — sovereignty without complexity.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://near.org" target="_blank" rel="noopener noreferrer">near.org →</a>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#FF6B6B"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF6B6B40,#FF6B6B20);border:1px solid #FF6B6B50">SO</div>
+      <div class="project-meta">
+        <div class="project-name">Sonic</div>
+        <div class="project-ticker">S</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#0098EA"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#0098EA40,#0098EA20);border:1px solid #0098EA50">TO</div>
+      <div class="project-meta">
+        <div class="project-name">Toncoin</div>
+        <div class="project-ticker">TON</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc">The blockchain integrated with Telegram. TON brings Web3 to 900M+ Telegram users through native wallets, mini-apps, and in-chat payments.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>TON has the most direct path to mass adoption of any L1. When crypto lives inside the chat app people already use, adoption becomes invisible.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://ton.org" target="_blank" rel="noopener noreferrer">ton.org →</a>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#78E08F"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#78E08F40,#78E08F20);border:1px solid #78E08F50">BE</div>
+      <div class="project-meta">
+        <div class="project-name">Berachain</div>
+        <div class="project-ticker">BERA</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#CF6A87"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#CF6A8740,#CF6A8720);border:1px solid #CF6A8750">BR</div>
+      <div class="project-meta">
+        <div class="project-name">Brett</div>
+        <div class="project-ticker">BRETT</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Meme</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Meme</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#3366CC"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#3366CC40,#3366CC20);border:1px solid #3366CC50">CA</div>
+      <div class="project-meta">
+        <div class="project-name">Cardano</div>
+        <div class="project-ticker">ADA</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc">Research-driven blockchain built on peer-reviewed academic papers. Haskell-based smart contracts with a focus on formal verification and governance.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>Cardano asks: what if we built a blockchain the way scientists build knowledge? Rigorous, peer-reviewed, and methodical — even if slower to ship.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://cardano.org" target="_blank" rel="noopener noreferrer">cardano.org →</a>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#FF6B6B"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF6B6B40,#FF6B6B20);border:1px solid #FF6B6B50">DO</div>
+      <div class="project-meta">
+        <div class="project-name">DoubleZero</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#B8E994"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#B8E99440,#B8E99420);border:1px solid #B8E99450">FI</div>
+      <div class="project-meta">
+        <div class="project-name">Filecoin</div>
+        <div class="project-ticker">FIL</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#38ADA9"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#38ADA940,#38ADA920);border:1px solid #38ADA950">GN</div>
+      <div class="project-meta">
+        <div class="project-name">Gnosis</div>
+        <div class="project-ticker">GNO</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">DeFi</span><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">DeFi</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#CF6A87"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#CF6A8740,#CF6A8720);border:1px solid #CF6A8750">IN</div>
+      <div class="project-meta">
+        <div class="project-name">Injective</div>
+        <div class="project-ticker">INJ</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#596275"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#59627540,#59627520);border:1px solid #59627550">KA</div>
+      <div class="project-meta">
+        <div class="project-name">Kaia</div>
+        <div class="project-ticker">KAIA</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#E15F41"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#E15F4140,#E15F4120);border:1px solid #E15F4150">KA</div>
+      <div class="project-meta">
+        <div class="project-name">Kava</div>
+        <div class="project-ticker">KAVA</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#3DC1D3"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#3DC1D340,#3DC1D320);border:1px solid #3DC1D350">LI</div>
+      <div class="project-meta">
+        <div class="project-name">Linea</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L2</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#786FA6"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#786FA640,#786FA620);border:1px solid #786FA650">SE</div>
+      <div class="project-meta">
+        <div class="project-name">Sei</div>
+        <div class="project-ticker">SEI</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#FFD93D"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FFD93D40,#FFD93D20);border:1px solid #FFD93D50">TE</div>
+      <div class="project-meta">
+        <div class="project-name">Tezos</div>
+        <div class="project-ticker">XTZ</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#78E08F"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#78E08F40,#78E08F20);border:1px solid #78E08F50">TH</div>
+      <div class="project-meta">
+        <div class="project-name">Theta Network</div>
+        <div class="project-ticker">THETA</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#786FA6"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#786FA640,#786FA620);border:1px solid #786FA650">VE</div>
+      <div class="project-meta">
+        <div class="project-name">VeChain</div>
+        <div class="project-ticker">VET</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#5A9CE8"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#5A9CE840,#5A9CE820);border:1px solid #5A9CE850">XR</div>
+      <div class="project-meta">
+        <div class="project-name">XRP</div>
+        <div class="project-ticker">XRP</div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Payments</span><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc">A digital payment protocol designed for fast, low-cost cross-border transactions. Built for institutional settlement and global money movement.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>XRP focuses on the pipes of global finance. Whether you agree with its approach to decentralization, its institutional traction is undeniable.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://xrpl.org" target="_blank" rel="noopener noreferrer">xrpl.org →</a>
+    <span class="project-cat">Payments</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#F233B0"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#F233B040,#F233B020);border:1px solid #F233B050">0X</div>
+      <div class="project-meta">
+        <div class="project-name">0x Protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#1CBAE6"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#1CBAE640,#1CBAE620);border:1px solid #1CBAE650">AC</div>
+      <div class="project-meta">
+        <div class="project-name">access Protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#E4DF44"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#E4DF4440,#E4DF4420);border:1px solid #E4DF4450">AC</div>
+      <div class="project-meta">
+        <div class="project-name">across protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">Bridge</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#43CF94"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#43CF9440,#43CF9420);border:1px solid #43CF9450">AD</div>
+      <div class="project-meta">
+        <div class="project-name">ado protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#D03E99"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#D03E9940,#D03E9920);border:1px solid #D03E9950">AN</div>
+      <div class="project-meta">
+        <div class="project-name">Anyone protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#00C853"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#00C85340,#00C85320);border:1px solid #00C85350">BI</div>
+      <div class="project-meta">
+        <div class="project-name">Bio Protocol</div>
+        <div class="project-ticker">BIO</div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">DeSci</span><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc">Decentralized science protocol funding biotech research through tokenized IP. Communities pool capital to fund longevity, rare disease, and health research.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>Science funding is broken — slow, gatekept, and misaligned. Bio Protocol lets communities directly fund the research that matters to them.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://bio.xyz" target="_blank" rel="noopener noreferrer">bio.xyz →</a>
+    <span class="project-cat">DeSci</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#B961D2"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#B961D240,#B961D220);border:1px solid #B961D250">BL</div>
+      <div class="project-meta">
+        <div class="project-name">Blockchain Capital</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">AI</span><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">AI</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#A1E249"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#A1E24940,#A1E24920);border:1px solid #A1E24950">CO</div>
+      <div class="project-meta">
+        <div class="project-name">cow protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#4243CE"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#4243CE40,#4243CE20);border:1px solid #4243CE50">DA</div>
+      <div class="project-meta">
+        <div class="project-name">Data Ownership Protocol 2</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#62B2D3"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#62B2D340,#62B2D320);border:1px solid #62B2D350">DR</div>
+      <div class="project-meta">
+        <div class="project-name">Drift Protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#E870E7"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#E870E740,#E870E720);border:1px solid #E870E750">DU</div>
+      <div class="project-meta">
+        <div class="project-name">duckchain token</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">AI</span><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">AI</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#EB971E"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#EB971E40,#EB971E20);border:1px solid #EB971E50">EK</div>
+      <div class="project-meta">
+        <div class="project-name">ekubo protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#57A1DE"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#57A1DE40,#57A1DE20);border:1px solid #57A1DE50">F(</div>
+      <div class="project-meta">
+        <div class="project-name">f(x) protocol fxUSD</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Stablecoin</span><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Stablecoin</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#F39F41"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#F39F4140,#F39F4120);border:1px solid #F39F4150">FI</div>
+      <div class="project-meta">
+        <div class="project-name">fio protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#9F68E9"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#9F68E940,#9F68E920);border:1px solid #9F68E950">GR</div>
+      <div class="project-meta">
+        <div class="project-name">graphite protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#F0C13C"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#F0C13C40,#F0C13C20);border:1px solid #F0C13C50">HA</div>
+      <div class="project-meta">
+        <div class="project-name">haedal protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#46CF38"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#46CF3840,#46CF3820);border:1px solid #46CF3850">HA</div>
+      <div class="project-meta">
+        <div class="project-name">hana network</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#D944B7"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#D944B740,#D944B720);border:1px solid #D944B750">HI</div>
+      <div class="project-meta">
+        <div class="project-name">Hippo Protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#A9E930"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#A9E93040,#A9E93020);border:1px solid #A9E93050">HO</div>
+      <div class="project-meta">
+        <div class="project-name">hooked protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#D8EA65"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#D8EA6540,#D8EA6520);border:1px solid #D8EA6550">LA</div>
+      <div class="project-meta">
+        <div class="project-name">Layer3</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#23DCD8"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#23DCD840,#23DCD820);border:1px solid #23DCD850">LO</div>
+      <div class="project-meta">
+        <div class="project-name">loopin network</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#D85556"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#D8555640,#D8555620);border:1px solid #D8555650">LO</div>
+      <div class="project-meta">
+        <div class="project-name">Lorenzo Protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#7986DF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#7986DF40,#7986DF20);border:1px solid #7986DF50">MA</div>
+      <div class="project-meta">
+        <div class="project-name">map protocol</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="avoid">
+  <div class="project-accent" style="background:#574B90"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#574B9040,#574B9020);border:1px solid #574B9050">DA</div>
+      <div class="project-meta">
+        <div class="project-name">Dash</div>
+        <div class="project-ticker">DASH</div>
+      </div>
+      <span class="project-tier tier-avoid">avoid</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="avoid">
+  <div class="project-accent" style="background:#45B7D1"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#45B7D140,#45B7D120);border:1px solid #45B7D150">EC</div>
+      <div class="project-meta">
+        <div class="project-name">eCash</div>
+        <div class="project-ticker">XEC</div>
+      </div>
+      <span class="project-tier tier-avoid">avoid</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="avoid">
+  <div class="project-accent" style="background:#6B3FD4"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#6B3FD440,#6B3FD420);border:1px solid #6B3FD450">IN</div>
+      <div class="project-meta">
+        <div class="project-name">Internet Computer</div>
+        <div class="project-ticker">ICP</div>
+      </div>
+      <span class="project-tier tier-avoid">avoid</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc">A world computer running smart contracts at web speed. ICP hosts entire web applications on-chain — frontend, backend, and data — without cloud servers.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>ICP&#x27;s vision is radical: replace the cloud entirely with a decentralized world computer. If it works, it&#x27;s the most ambitious infrastructure play in crypto.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://internetcomputer.org" target="_blank" rel="noopener noreferrer">internetcomputer.org →</a>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="avoid">
+  <div class="project-accent" style="background:#786FA6"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#786FA640,#786FA620);border:1px solid #786FA650">IO</div>
+      <div class="project-meta">
+        <div class="project-name">IOTA</div>
+        <div class="project-ticker">IOTA</div>
+      </div>
+      <span class="project-tier tier-avoid">avoid</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="avoid">
+  <div class="project-accent" style="background:#6C5CE7"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#6C5CE740,#6C5CE720);border:1px solid #6C5CE750">NE</div>
+      <div class="project-meta">
+        <div class="project-name">Neo</div>
+        <div class="project-ticker">NEO</div>
+      </div>
+      <span class="project-tier tier-avoid">avoid</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="avoid">
+  <div class="project-accent" style="background:#74D756"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#74D75640,#74D75620);border:1px solid #74D75650">PR</div>
+      <div class="project-meta">
+        <div class="project-name">Provenance Blockchain</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-avoid">avoid</span>
+    </div>
+    <div class="project-tags"><span class="ptag">AI</span><span class="ptag">Infrastructure</span></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-cat" style="opacity:0.4">no website</span>
+    <span class="project-cat">AI</span>
+  </div>
+</article>
+<article class="project" data-tier="avoid">
+  <div class="project-accent" style="background:#FF0013"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF001340,#FF001320);border:1px solid #FF001350">TR</div>
+      <div class="project-meta">
+        <div class="project-name">TRON</div>
+        <div class="project-ticker">TRX</div>
+      </div>
+      <span class="project-tier tier-avoid">avoid</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">Payments</span></div>
+    <div class="project-desc">High-throughput blockchain dominating stablecoin transfers. TRON processes more USDT volume than any other chain — the invisible backbone of crypto payments.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>TRON is crypto&#x27;s unsexy workhorse. It may not win design awards, but its dominance in stablecoin transfers makes it impossible to ignore.</div>
+  </div>
+  <div class="project-foot">
+    <a class="project-link" href="https://tron.network" target="_blank" rel="noopener noreferrer">tron.network →</a>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article></div>
+</section>
 
-<p class="disclaimer">This is not financial advice. Conviction is stated as conviction. You decide what to do with it. Always do your own work before you put money anywhere.</p>
+<!-- PRACTICE -->
+<section class="section fade-up">
+  <span class="label">A practice</span>
+  <h2>Five small things, repeated.</h2>
+  <p>
+    Conviction is theatre without practice. Five steps that turn the thesis above into something
+    the body actually does, not just something the mind agrees with.
+  </p>
+  <div class="practice"><div class="step"><div class="step-num">i</div>
+<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step"><div class="step-num">ii</div>
+<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step"><div class="step-num">iii</div>
+<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step"><div class="step-num">iv</div>
+<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step"><div class="step-num">v</div>
+<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+</section>
 
-<div class="section-label">
-  <h2 class="section-label-text" style="font-weight:400;margin:0">Projects we watch</h2>
-  <div class="section-label-line"></div>
-</div>
+<!-- CTA -->
+<section class="section fade-up">
+  <div class="cta">
+    <h3>Two doors. <em>Pick one.</em></h3>
+    <p>The Crypto hub is the index of all sectors and the freedom-technology frame they share. The Fund is what happens when the same conviction gets put to work on behalf of the network.</p>
+    <div class="cta-buttons">
+      <a href="/v2/crypto/" class="cta-btn primary">Crypto Hub</a>
+      <a href="/v2/fund/" class="cta-btn secondary">FRQNCY Fund →</a>
+    </div>
+  </div>
+</section>
 
-<main>
-  <div class="crypto-grid" id="grid" role="list" aria-label="Curated projects"></div>
 </main>
 
-<div class="cta-banner">
-  <div class="cta-inner">
-    <h3>Keep Exploring</h3>
-    <p>Layer 2s is one channel in the broader crypto network. See the full sector map, or go deeper with the Crypto course.</p>
-    <div class="cta-buttons">
-      <a href="../explorer.html" class="cta-btn primary">Explore by Sector →</a>
-      <a href="../../courses/index.html" class="cta-btn secondary">Crypto Course</a>
-    </div>
+<section class="closing fade-up">
+  <div class="closing-bg" aria-hidden="true"></div>
+  <div class="closing-inner">
+    <p>
+      Speed without permission.<br>
+      Throughput without trust.<br>
+      <em>Settlement still on Ethereum.</em>
+    </p>
+    <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
+      <strong>The bet pays off.</strong>
+    </p>
+    <cite>FRQNCY · Crypto</cite>
   </div>
-</div>
+</section>
+
+<footer class="site-foot">
+  <span class="wm">FRQNCY · CRYPTO</span>
+  <span class="legal">© 2026 · All frequencies reserved · Sector · Layer 2s</span>
+</footer>
 
 <script>
-const PROJECTS = [
-  {
-    "name": "Arbitrum",
-    "ticker": "ARB",
-    "categories": [
-      "Optimistic Rollup",
-      "DeFi Hub"
-    ],
-    "accent": "#28A0F0",
-    "desc": "The largest optimistic rollup by TVL. Home to a mature DeFi ecosystem, deep liquidity, and a generous grant program funding the next generation of apps.",
-    "why": "Arbitrum is where Ethereum-native DeFi actually got usable. If mainnet is the settlement court, Arbitrum is the trading floor.",
-    "link": "https://arbitrum.io",
-    "linkLabel": "arbitrum.io",
-    "type": "Optimistic Rollup",
-    "coingeckoId": "arbitrum"
-  },
-  {
-    "name": "Optimism",
-    "ticker": "OP",
-    "categories": [
-      "Optimistic Rollup",
-      "OP Stack"
-    ],
-    "accent": "#FF0420",
-    "desc": "An optimistic rollup plus the OP Stack — a shared, open-source codebase used by Base, Worldcoin, Unichain, Mode and dozens more. The Superchain thesis.",
-    "why": "Optimism's real product isn't Optimism — it's the Superchain. A fabric of rollups that share a sequencer, governance and liquidity is the strongest L2 network effect in crypto.",
-    "link": "https://optimism.io",
-    "linkLabel": "optimism.io",
-    "type": "Superchain",
-    "coingeckoId": "optimism"
-  },
-  {
-    "name": "Base",
-    "ticker": "—",
-    "categories": [
-      "OP Stack",
-      "Consumer"
-    ],
-    "accent": "#0052FF",
-    "desc": "Coinbase's L2 on the OP Stack. Backed by the largest compliant onramp in crypto and home to much of the consumer-social-on-chain activity (Farcaster, Zora, Clanker).",
-    "why": "Base is where crypto's next billion users will most likely first sign a transaction. Distribution beats elegance.",
-    "link": "https://base.org",
-    "linkLabel": "base.org",
-    "type": "Consumer L2"
-  },
-  {
-    "name": "zkSync",
-    "ticker": "ZK",
-    "categories": [
-      "ZK Rollup",
-      "ZK EVM"
-    ],
-    "accent": "#8C8DFC",
-    "desc": "A zero-knowledge rollup with a custom ZK EVM and a modular stack (ZK Stack) for launching sovereign chains that settle to Ethereum.",
-    "why": "ZK rollups finalise in minutes, not days. zkSync is one of the few teams shipping production-grade ZK execution at scale.",
-    "link": "https://zksync.io",
-    "linkLabel": "zksync.io",
-    "type": "ZK Rollup"
-  },
-  {
-    "name": "Starknet",
-    "ticker": "STRK",
-    "categories": [
-      "ZK Rollup",
-      "Cairo"
-    ],
-    "accent": "#EC796B",
-    "desc": "A Cairo-based ZK rollup designed for scale first, EVM compatibility second. Powers dYdX v3 historically, plus a growing set of provable applications.",
-    "why": "Cairo is a bet that a purpose-built language for ZK will win out over retrofitting the EVM. Starknet is that bet in production.",
-    "link": "https://starknet.io",
-    "linkLabel": "starknet.io",
-    "type": "ZK Rollup",
-    "coingeckoId": "starknet"
-  },
-  {
-    "name": "Scroll",
-    "ticker": "SCR",
-    "categories": [
-      "ZK EVM",
-      "Bytecode-Equivalent"
-    ],
-    "accent": "#FFDCB6",
-    "desc": "A bytecode-equivalent ZK EVM. Lets Solidity contracts deploy unchanged while still getting the proof-backed settlement guarantees of a ZK rollup.",
-    "why": "Scroll chose strict EVM equivalence over performance shortcuts. The purist path — slower, but with the least semantic surprise for developers.",
-    "link": "https://scroll.io",
-    "linkLabel": "scroll.io",
-    "type": "ZK Rollup",
-    "coingeckoId": "scroll"
+// Tier filter
+document.querySelectorAll('[data-tier]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-tier]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.tier;
+    document.querySelectorAll('.project').forEach(card => {
+      card.style.display = (f === 'all' || card.dataset.tier === f) ? '' : 'none';
+    });
+  });
+});
+
+// Fade-up reveal
+(function () {
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
+    return;
   }
-];
-
-function esc(s) {
-  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
-}
-
-const grid = document.getElementById('grid');
-for (const p of PROJECTS) {
-  const card = document.createElement('div');
-  card.className = 'ccard';
-  card.setAttribute('role','listitem');
-  if (p.coingeckoId) card.setAttribute('data-cgid', p.coingeckoId);
-  const tagsHtml = p.categories.map(c => `<span class="ctag">${esc(c)}</span>`).join('');
-  const initials = p.name.replace(/[^A-Za-z]/g,'').slice(0,2).toUpperCase() || p.name.slice(0,2).toUpperCase();
-  card.innerHTML = `
-    <div class="ccard-accent" style="background:${p.accent}"></div>
-    <div class="ccard-body">
-      <div class="ccard-header">
-        <div class="ccard-icon" style="background:linear-gradient(135deg,${p.accent}40,${p.accent}20);border:1px solid ${p.accent}50">${esc(initials)}</div>
-        <div class="ccard-meta">
-          <div class="ccard-name">${esc(p.name)}</div>
-          <div class="ccard-ticker">${esc(p.ticker)}</div>
-        </div>
-      </div>
-      <div class="ccard-tags">${tagsHtml}</div>
-      <div class="ccard-desc">${esc(p.desc)}</div>
-      <div class="ccard-why">
-        <strong>Why FRQNCY watches this</strong>
-        ${esc(p.why)}
-      </div>
-    </div>
-    <div class="ccard-footer">
-      <a href="${esc(p.link)}" target="_blank" rel="noopener noreferrer" class="ccard-link" aria-label="Visit ${esc(p.name)} — ${esc(p.linkLabel)} (opens in new tab)">${esc(p.linkLabel)} →</a>
-      <span class="ccard-type">${esc(p.type)}</span>
-    </div>
-  `;
-  grid.appendChild(card);
-}
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+})();
 </script>
-<script src="../_market.js" defer></script>
-  <!-- Social auth awareness (Supabase) -->
-  <script src="/social-config.js"></script>
-  <script type="module" src="/social-auth.js"></script>
 </body>
 </html>
