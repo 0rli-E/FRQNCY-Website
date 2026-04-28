@@ -31,6 +31,9 @@
     --sector-soft:   rgba(123, 97, 255, 0.16);
     --sector-warm-soft: rgba(123, 97, 255, 0.3);
     --sector-bg:     rgba(123, 97, 255, 0.06);
+    --sector-pattern: linear-gradient(45deg, var(--sector-soft) 1px, transparent 1px),linear-gradient(-45deg, var(--sector-soft) 1px, transparent 1px);
+    --sector-pattern-size: 60px 60px;
+    --sector-pattern-opacity: 0.07;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1605792657660-596af9009e82?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1666816943035-15c29931e975?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-split-right">
     <div>
       <div class="hero-eyebrow">Sector · L1 · Sovereign base chains</div>
-      <h1 class="hero-title">Layer 1s</h1>
+      <h1 class="hero-title t-mid">Layer 1s</h1>
       <p class="hero-desc">Independent consensus, independent token, independent security model. Each L1 is a sovereign network running its own time and its own truth. The base layer everything else builds on top of.</p>
       <div class="hero-quote">
         The strength of a chain lies in the independence of its links.

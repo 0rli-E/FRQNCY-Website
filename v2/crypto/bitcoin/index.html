@@ -31,6 +31,9 @@
     --sector-soft:   rgba(247, 147, 26, 0.16);
     --sector-warm-soft: rgba(247, 147, 26, 0.3);
     --sector-bg:     rgba(247, 147, 26, 0.06);
+    --sector-pattern: radial-gradient(circle at 50% 0%, var(--sector-soft) 1px, transparent 1.5px),radial-gradient(circle at 0% 50%, var(--sector-soft) 1px, transparent 1.5px),radial-gradient(circle at 100% 50%, var(--sector-soft) 1px, transparent 1.5px),radial-gradient(circle at 50% 100%, var(--sector-soft) 1px, transparent 1.5px);
+    --sector-pattern-size: 70px 70px;
+    --sector-pattern-opacity: 0.1;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1639322537231-2f206e06af84?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1619709821682-ec24ace60f09?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-split-right">
     <div>
       <div class="hero-eyebrow">Sector · Bitcoin · The original freedom technology</div>
-      <h1 class="hero-title">Bitcoin</h1>
+      <h1 class="hero-title t-monumental">Bitcoin</h1>
       <p class="hero-desc">Bitcoin and the protocols that turn sound money into a usable layer. Lightning for payments, Fedimint for community custody, Cashu for ecash, Liquid for sidechain assets, Nostr for the relay graph that messages and value can ride together.</p>
       <div class="hero-quote">
         If you don't believe it or don't get it, I don't have time to try to convince you, sorry.

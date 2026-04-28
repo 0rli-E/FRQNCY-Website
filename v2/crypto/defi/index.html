@@ -31,6 +31,9 @@
     --sector-soft:   rgba(52, 152, 219, 0.16);
     --sector-warm-soft: rgba(52, 152, 219, 0.3);
     --sector-bg:     rgba(52, 152, 219, 0.06);
+    --sector-pattern: repeating-linear-gradient(90deg, transparent 0, transparent 28px, var(--sector-soft) 28px, var(--sector-soft) 31px, transparent 31px, transparent 56px);
+    --sector-pattern-size: auto;
+    --sector-pattern-opacity: 0.1;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1639322537138-5e513100b36e?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-split-left">
     <div>
       <div class="hero-eyebrow">Sector · DeFi · Code as counterparty</div>
-      <h1 class="hero-title">DeFi</h1>
+      <h1 class="hero-title t-mid">DeFi</h1>
       <p class="hero-desc">Lending, exchange, derivatives, yield — operating without banks, brokers, or clearing houses. The middle of every traditional financial transaction replaced by a smart contract anyone can read, anyone can call.</p>
       <div class="hero-quote">
         Smart contracts are the lawyer that does not get tired, does not lie, and does not bill by the hour.

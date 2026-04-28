@@ -31,6 +31,9 @@
     --sector-soft:   rgba(255, 193, 7, 0.16);
     --sector-warm-soft: rgba(255, 193, 7, 0.3);
     --sector-bg:     rgba(255, 193, 7, 0.06);
+    --sector-pattern: radial-gradient(circle, var(--sector-warm-soft) 2.5px, transparent 3px);
+    --sector-pattern-size: 20px 20px;
+    --sector-pattern-opacity: 0.18;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1635377090186-036bca445c6b?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1654792393225-3e8a53d124d2?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-stacked">
     <div>
       <div class="hero-eyebrow">Sector · Memes · The culture layer</div>
-      <h1 class="hero-title">Memes</h1>
+      <h1 class="hero-title t-pop">Memes</h1>
       <p class="hero-desc">Tokens whose entire thesis is attention. Pure liquid culture. Most meme coins are jokes; the ones that survive are jokes that became identity, and identity that became coordination.</p>
       <div class="hero-quote">
         The most efficient market in the world is the one for attention.

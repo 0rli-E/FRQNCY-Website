@@ -31,6 +31,9 @@
     --sector-soft:   rgba(200, 140, 255, 0.16);
     --sector-warm-soft: rgba(200, 140, 255, 0.3);
     --sector-bg:     rgba(200, 140, 255, 0.06);
+    --sector-pattern: repeating-linear-gradient(0deg, transparent 0, transparent 14px, var(--sector-soft) 14px, var(--sector-soft) 15px),repeating-linear-gradient(90deg, transparent 0, transparent 11px, var(--sector-warm-soft) 11px, var(--sector-warm-soft) 12px);
+    --sector-pattern-size: auto, auto;
+    --sector-pattern-opacity: 0.07;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1597092430960-9724170fcbbe?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-centered">
     <div>
       <div class="hero-eyebrow">Sector · Privacy · A right, not a privilege</div>
-      <h1 class="hero-title">Privacy</h1>
+      <h1 class="hero-title t-tight">Privacy</h1>
       <p class="hero-desc">Cash is private by default. Most blockchains are transparent by default. Privacy crypto is the work to put the floor back where it should be — financial privacy as a precondition for financial freedom.</p>
       <div class="hero-quote">
         Privacy is necessary for an open society in the electronic age. Privacy is not secrecy.

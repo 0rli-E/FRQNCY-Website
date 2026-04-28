@@ -31,6 +31,9 @@
     --sector-soft:   rgba(0, 163, 255, 0.16);
     --sector-warm-soft: rgba(0, 163, 255, 0.3);
     --sector-bg:     rgba(0, 163, 255, 0.06);
+    --sector-pattern: radial-gradient(circle, transparent 26px, var(--sector-soft) 27px, transparent 28px, transparent 38px, var(--sector-warm-soft) 39px, transparent 40px);
+    --sector-pattern-size: 100px 100px;
+    --sector-pattern-opacity: 0.12;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1639503547276-90230c4a4198?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1715026323215-a2dbb71272f6?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-split-right">
     <div>
       <div class="hero-eyebrow">Sector · Staking · Security as a marketplace</div>
-      <h1 class="hero-title">Staking</h1>
+      <h1 class="hero-title t-bold">Staking</h1>
       <p class="hero-desc">Proof-of-stake networks pay validators to secure them. Liquid staking turns that yield into a tradeable token; restaking turns it into a marketplace where the same security can be rented to other applications. Yield on the base layer, composable.</p>
       <div class="hero-quote">
         Security is no longer a network's monopoly. It is a marketplace.

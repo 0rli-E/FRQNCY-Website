@@ -31,6 +31,9 @@
     --sector-soft:   rgba(39, 117, 202, 0.16);
     --sector-warm-soft: rgba(39, 117, 202, 0.3);
     --sector-bg:     rgba(39, 117, 202, 0.06);
+    --sector-pattern: repeating-linear-gradient(0deg, transparent 0, transparent 18px, var(--sector-soft) 18px, var(--sector-soft) 19px, transparent 19px, transparent 38px);
+    --sector-pattern-size: auto;
+    --sector-pattern-opacity: 0.07;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1622630998477-20aa696ecb05?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1715026323215-a2dbb71272f6?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-split-left">
     <div>
       <div class="hero-eyebrow">Sector · Stablecoins · Digital dollars on open rails</div>
-      <h1 class="hero-title">Stablecoins</h1>
+      <h1 class="hero-title t-mid">Stablecoins</h1>
       <p class="hero-desc">Tokens that hold a stable peg — usually to the dollar, sometimes to a basket, sometimes to a synthetic. Stablecoins are the everyday rails that make on-chain commerce usable for anyone who isn't trying to speculate.</p>
       <div class="hero-quote">
         The stablecoin is the killer app of crypto, hiding in plain sight.

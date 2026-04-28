@@ -31,6 +31,9 @@
     --sector-soft:   rgba(0, 212, 170, 0.16);
     --sector-warm-soft: rgba(0, 212, 170, 0.3);
     --sector-bg:     rgba(0, 212, 170, 0.06);
+    --sector-pattern: radial-gradient(circle at 25% 25%, transparent 12px, var(--sector-soft) 13px, transparent 14px),radial-gradient(circle at 75% 75%, transparent 12px, var(--sector-warm-soft) 13px, transparent 14px);
+    --sector-pattern-size: 200px 200px;
+    --sector-pattern-opacity: 0.18;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1589325999881-d0e235b1f572?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1517181875630-f72350452109?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-corner">
     <div>
       <div class="hero-eyebrow">Sector · DePIN · Physical networks, token-coordinated</div>
-      <h1 class="hero-title">DePIN</h1>
+      <h1 class="hero-title t-mid">DePIN</h1>
       <p class="hero-desc">Decentralised Physical Infrastructure Networks. Wireless coverage, GPU compute, mapping data, energy markets — coordinated by tokens that pay contributors for real-world work the network can verify.</p>
       <div class="hero-quote">
         The hardest networks to build used to be the ones with physical capital. Tokens just changed that.

@@ -31,6 +31,9 @@
     --sector-soft:   rgba(154, 77, 255, 0.16);
     --sector-warm-soft: rgba(154, 77, 255, 0.3);
     --sector-bg:     rgba(154, 77, 255, 0.06);
+    --sector-pattern: radial-gradient(circle at 30% 30%, var(--sector-soft) 2px, transparent 3px),radial-gradient(circle at 70% 70%, var(--sector-soft) 2px, transparent 3px),radial-gradient(circle at 50% 90%, var(--sector-warm-soft) 2px, transparent 3px);
+    --sector-pattern-size: 180px 180px;
+    --sector-pattern-opacity: 0.1;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1516251193007-45ef944ab0c6?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1647101958033-25284bb10325?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-split-right">
     <div>
       <div class="hero-eyebrow">Sector · SocialFi · Your graph, your rails</div>
-      <h1 class="hero-title">SocialFi</h1>
+      <h1 class="hero-title t-thin">SocialFi</h1>
       <p class="hero-desc">The social graph as a public good rather than a private moat. Identity, content, and following relationships that travel with the user across applications. Whatever app you switch to, your network and history come with you.</p>
       <div class="hero-quote">
         If your followers can be deleted by a Trust & Safety committee, they were never your followers.

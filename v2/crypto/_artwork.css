@@ -103,6 +103,41 @@ nav.snav {
   gap: 4rem; align-items: end;
   padding-bottom: clamp(5rem, 10vh, 8rem);
 }
+/* Hero layout variants — each sector picks one to differentiate identity */
+.hero-inner.layout-split-right  { grid-template-columns: 1fr auto; }
+.hero-inner.layout-split-left   { grid-template-columns: auto 1fr; }
+.hero-inner.layout-split-left > .hero-glyph { order: -1; }
+.hero-inner.layout-stacked      { grid-template-columns: 1fr; text-align: center; justify-items: center; gap: 1.5rem; max-width: 920px; }
+.hero-inner.layout-stacked .hero-quote, .hero-inner.layout-stacked .hero-desc { margin-left: auto; margin-right: auto; }
+.hero-inner.layout-centered     { grid-template-columns: 1fr; text-align: center; justify-items: center; max-width: 880px; }
+.hero-inner.layout-centered .hero-glyph { display: none; }
+.hero-inner.layout-centered .hero-quote, .hero-inner.layout-centered .hero-desc { margin-left: auto; margin-right: auto; }
+.hero-inner.layout-corner       { grid-template-columns: 1fr; max-width: 920px; align-items: start; padding-top: 4rem; }
+.hero-inner.layout-corner .hero-glyph {
+  position: absolute; top: 80px; right: clamp(1.5rem, 5vw, 4rem);
+  width: clamp(140px, 16vw, 220px);
+}
+
+/* h1 typography variants — five accents for the 21 sectors */
+h1.hero-title.t-monumental { font-size: clamp(5rem, 16vw, 17rem); line-height: 0.82; letter-spacing: -0.045em; }
+h1.hero-title.t-mid        { font-size: clamp(3rem, 8vw, 7rem); line-height: 0.92; letter-spacing: -0.03em; }
+h1.hero-title.t-thin       { font-size: clamp(3.5rem, 10vw, 9rem); font-weight: 200; line-height: 0.9; letter-spacing: -0.02em; }
+h1.hero-title.t-tight      { font-size: clamp(2.6rem, 6.5vw, 5.5rem); font-style: normal; font-weight: 400; letter-spacing: 0.05em; text-transform: uppercase; line-height: 1; }
+h1.hero-title.t-bold       { font-size: clamp(4rem, 12vw, 11rem); font-weight: 500; line-height: 0.85; letter-spacing: -0.035em; }
+h1.hero-title.t-pop        { font-size: clamp(5.5rem, 18vw, 19rem); font-weight: 500; line-height: 0.78; letter-spacing: -0.05em; }
+
+/* Body pattern overlay — sits under all sections, very low opacity, sector-tinted */
+main.sector-body::before {
+  content: ""; position: absolute; inset: 0; pointer-events: none;
+  background: var(--sector-pattern, none);
+  background-size: var(--sector-pattern-size, 80px 80px);
+  opacity: var(--sector-pattern-opacity, 0.05);
+  z-index: 0;
+}
+main.sector-body > * { position: relative; z-index: 1; }
+@media (max-width: 760px) {
+  main.sector-body::before { opacity: calc(var(--sector-pattern-opacity, 0.05) * 0.6); }
+}
 .hero-eyebrow {
   display: inline-flex; align-items: center; gap: 0.7rem;
   font-size: 0.6rem; letter-spacing: 0.42em; text-transform: uppercase;

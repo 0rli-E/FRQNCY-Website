@@ -31,6 +31,9 @@
     --sector-soft:   rgba(46, 204, 113, 0.16);
     --sector-warm-soft: rgba(46, 204, 113, 0.3);
     --sector-bg:     rgba(46, 204, 113, 0.06);
+    --sector-pattern: linear-gradient(var(--sector-soft) 2px, transparent 2px),linear-gradient(90deg, var(--sector-soft) 2px, transparent 2px);
+    --sector-pattern-size: 44px 44px;
+    --sector-pattern-opacity: 0.06;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1668119064861-c6a30746f056?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1635237755468-5fba69c13f29?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-split-right">
     <div>
       <div class="hero-eyebrow">Sector · GameFi · Player-owned worlds</div>
-      <h1 class="hero-title">GameFi</h1>
+      <h1 class="hero-title t-bold">GameFi</h1>
       <p class="hero-desc">Worlds where the assets you earn or buy are yours, not the studio's. Where time invested produces ownership, not just badges. Where the game economy survives the studio that built it.</p>
       <div class="hero-quote">
         If you cannot leave the game with what you earned, you were never really playing.

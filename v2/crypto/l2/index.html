@@ -31,6 +31,9 @@
     --sector-soft:   rgba(80, 226, 193, 0.16);
     --sector-warm-soft: rgba(80, 226, 193, 0.3);
     --sector-bg:     rgba(80, 226, 193, 0.06);
+    --sector-pattern: repeating-linear-gradient(45deg, var(--sector-soft) 0, var(--sector-soft) 1px, transparent 1px, transparent 16px);
+    --sector-pattern-size: auto;
+    --sector-pattern-opacity: 0.08;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1639322537504-6427a16b0a28?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1639762681057-408e52192e55?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-split-right">
     <div>
       <div class="hero-eyebrow">Sector · L2 · Inheriting Ethereum's security</div>
-      <h1 class="hero-title">Layer 2s</h1>
+      <h1 class="hero-title t-mid">Layer 2s</h1>
       <p class="hero-desc">Rollups and validity-proof systems that scale Ethereum without compromising its security. The bet that the base layer should optimise for finality and the execution layer for throughput.</p>
       <div class="hero-quote">
         Rollups inherit security from their base layer. That is the whole trick.

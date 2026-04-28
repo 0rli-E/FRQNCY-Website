@@ -31,6 +31,9 @@
     --sector-soft:   rgba(124, 58, 237, 0.16);
     --sector-warm-soft: rgba(124, 58, 237, 0.3);
     --sector-bg:     rgba(124, 58, 237, 0.06);
+    --sector-pattern: linear-gradient(45deg, var(--sector-soft) 25%, transparent 25%),linear-gradient(-45deg, var(--sector-soft) 25%, transparent 25%);
+    --sector-pattern-size: 44px 44px;
+    --sector-pattern-opacity: 0.05;
   }
   .hero-bg { background-image: url('https://images.unsplash.com/photo-1681139384187-235c97f6d1f2?auto=format&fit=crop&q=85&w=2400'); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1685169227683-de4090d9bd65?auto=format&fit=crop&q=85&w=2400'); }
@@ -61,10 +64,10 @@
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner layout-split-right">
     <div>
       <div class="hero-eyebrow">Sector · Modular · Unbundling the monolith</div>
-      <h1 class="hero-title">Modular</h1>
+      <h1 class="hero-title t-mid">Modular</h1>
       <p class="hero-desc">Splitting a blockchain into separate execution, settlement, consensus, and data-availability layers. Optimising each independently. Composing them on demand. The modular thesis says the monolithic chain has always been an artefact of constraint, not design.</p>
       <div class="hero-quote">
         Specialisation everywhere — except, until recently, blockchains.

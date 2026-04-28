@@ -255,6 +255,7 @@ SECTORS = {
         chains=["Bitcoin", "Lightning", "Liquid"],
         keywords=["bitcoin", "lightning", "fedimint", "cashu", "liquid", "nostr"],
         practice=base_practice(),
+        treatment="foundation", pattern_kind="honeycomb",
         closing=("Sound money you can hold yourself.",
                  "A network nobody can switch off.",
                  "<em>The first thing to fix; the hardest to defend.</em>",
@@ -279,6 +280,7 @@ SECTORS = {
         cats=["Store of Value"],
         keywords=["store of value", "digital gold", "scarcity"],
         practice=base_practice(),
+        treatment="foundation", pattern_kind="vault-grid",
         closing=("A unit nobody can print more of.",
                  "A ledger nobody can rewrite.",
                  "<em>A reserve that does not ask permission to exist.</em>",
@@ -303,6 +305,7 @@ SECTORS = {
         cats=["L1", "Infrastructure"],
         chains=["Solana", "Sui", "Aptos", "Avalanche", "TON", "Cosmos", "NEAR", "Cardano"],
         practice=base_practice(),
+        treatment="architecture", pattern_kind="diamond",
         closing=("Independent consensus.",
                  "Independent issuance.",
                  "<em>Independent truth.</em>",
@@ -327,6 +330,7 @@ SECTORS = {
         cats=["L2", "Infrastructure"],
         chains=["Arbitrum", "Optimism", "Base", "ZkSync", "Linea", "Scroll", "Blast", "Mantle"],
         practice=base_practice(),
+        treatment="architecture", pattern_kind="diagonal",
         closing=("Speed without permission.",
                  "Throughput without trust.",
                  "<em>Settlement still on Ethereum.</em>",
@@ -350,6 +354,7 @@ SECTORS = {
         bleed_cap="Finance without intermediaries. <em>The contract is the counterparty.</em>",
         cats=["DeFi", "DEX", "Money Market", "Yield", "Lending", "Stablecoin"],
         practice=base_practice(),
+        treatment="market", pattern_kind="candlesticks",
         closing=("Lending without a bank.",
                  "Trading without a broker.",
                  "<em>Settlement without a clearing house.</em>",
@@ -374,6 +379,7 @@ SECTORS = {
         cats=["Privacy"],
         keywords=["zcash", "monero", "privacy", "shielded", "zero-knowledge", "tornado", "railgun"],
         practice=base_practice(),
+        treatment="cipher", pattern_kind="code-rain",
         closing=("A floor, not a ceiling.",
                  "A right, not a permission.",
                  "<em>The default state of cash, recovered for the digital age.</em>",
@@ -398,6 +404,7 @@ SECTORS = {
         cats=["AI", "Infrastructure"],
         keywords=["ai", "agent", "compute", "inference", "model"],
         practice=base_practice(),
+        treatment="neural", pattern_kind="neural-wave",
         closing=("Compute, decentralised.",
                  "Models, open.",
                  "<em>Agents, ownable.</em>",
@@ -422,6 +429,7 @@ SECTORS = {
         cats=["Gaming", "GameFi"],
         keywords=["game", "metaverse", "play"],
         practice=base_practice(),
+        treatment="player", pattern_kind="pixel-grid",
         closing=("Assets that leave the game.",
                  "Economies that outlive the studio.",
                  "<em>Time that compounds into ownership.</em>",
@@ -446,6 +454,7 @@ SECTORS = {
         cats=["SocialFi", "Decentralized Social", "Identity"],
         keywords=["social", "graph", "identity", "lens", "farcaster", "nostr"],
         practice=base_practice(),
+        treatment="social", pattern_kind="graph-nodes",
         closing=("Identity that travels.",
                  "A graph that doesn't get deleted.",
                  "<em>Relationships that outlive the app.</em>",
@@ -469,6 +478,7 @@ SECTORS = {
         bleed_cap="A dollar that moves at the speed of light <em>and asks no one for permission.</em>",
         cats=["Stablecoin", "Payments"],
         practice=base_practice(),
+        treatment="market", pattern_kind="ticker",
         closing=("A dollar that moves anywhere.",
                  "A peg the protocol holds.",
                  "<em>Rails that aren't owned by the issuer.</em>",
@@ -493,6 +503,7 @@ SECTORS = {
         cats=["RWA"],
         keywords=["rwa", "treasur", "real world", "tokenis", "tokenized"],
         practice=base_practice(),
+        treatment="bridge_t", pattern_kind="bridge-hatch",
         closing=("Boring assets, liquid.",
                  "Legacy yield, on-chain.",
                  "<em>Access without gatekeepers.</em>",
@@ -517,6 +528,7 @@ SECTORS = {
         cats=["DePIN", "Infrastructure"],
         keywords=["depin", "helium", "hivemapper", "render", "io.net", "wireless", "compute"],
         practice=base_practice(),
+        treatment="signal", pattern_kind="radio-pulse",
         closing=("Hardware coordinated by code.",
                  "Capacity priced by the network.",
                  "<em>Infrastructure that doesn't need a corporation.</em>",
@@ -541,6 +553,7 @@ SECTORS = {
         cats=["Oracle", "Bridge"],
         keywords=["oracle", "chainlink", "pyth", "bridge", "interop", "wormhole", "axelar", "layerzero"],
         practice=base_practice(),
+        treatment="signal", pattern_kind="interconnect",
         closing=("Off-chain data, on-chain truth.",
                  "Cross-chain messages, single-honest-actor security.",
                  "<em>The layer everything depends on.</em>",
@@ -565,6 +578,7 @@ SECTORS = {
         cats=["Liquid Staking", "Staking"],
         keywords=["lido", "rocket pool", "ssv", "eigenlayer", "restaking", "stake"],
         practice=base_practice(),
+        treatment="vault", pattern_kind="rings",
         closing=("Yield on the base layer.",
                  "Security as a market.",
                  "<em>The same stake, working in two places at once.</em>",
@@ -589,6 +603,7 @@ SECTORS = {
         cats=["Prediction"],
         keywords=["polymarket", "augur", "kalshi", "prediction"],
         practice=base_practice(),
+        treatment="future", pattern_kind="chart-grid",
         closing=("Markets price what polls cannot.",
                  "Conviction is auditable.",
                  "<em>The future, in basis points.</em>",
@@ -613,6 +628,7 @@ SECTORS = {
         cats=["DeSci"],
         keywords=["desci", "vitadao", "molecule", "research"],
         practice=base_practice(),
+        treatment="lab", pattern_kind="petri",
         closing=("Funding without committees.",
                  "Publishing without paywalls.",
                  "<em>Data without custodians.</em>",
@@ -637,6 +653,7 @@ SECTORS = {
         cats=["ICM", "Launchpad"],
         keywords=["launchpad", "bonding curve", "issuance"],
         practice=base_practice(),
+        treatment="launch", pattern_kind="ascending",
         closing=("Issuance as a function call.",
                  "Capital formation, programmable.",
                  "<em>Pricing in real time, not after roadshows.</em>",
@@ -660,6 +677,7 @@ SECTORS = {
         bleed_cap="Attention, made tradeable. <em>The honest version of speculation.</em>",
         cats=["Meme"],
         practice=base_practice(),
+        treatment="pop", pattern_kind="halftone",
         closing=("Attention, priced.",
                  "Identity, coordinated.",
                  "<em>A token that is its own thesis.</em>",
@@ -684,6 +702,7 @@ SECTORS = {
         cats=["Modular", "Data Availability"],
         keywords=["modular", "celestia", "eigenda", "avail", "data availability"],
         practice=base_practice(),
+        treatment="architecture", pattern_kind="checker",
         closing=("Execution, separately.",
                  "Settlement, separately.",
                  "<em>Data availability, separately.</em>",
@@ -708,6 +727,7 @@ SECTORS = {
         cats=["NFT", "PFP", "Art"],
         keywords=["nft", "ordinals", "ens"],
         practice=base_practice(),
+        treatment="gallery", pattern_kind="frame-grid",
         closing=("Ownership, registered.",
                  "Royalties, programmable.",
                  "<em>Provenance, on-chain.</em>",
@@ -732,6 +752,7 @@ SECTORS = {
         cats=["CeFi", "Neobank", "Payments"],
         keywords=["card", "neobank", "swiss"],
         practice=base_practice(),
+        treatment="card", pattern_kind="card-stack",
         closing=("A card that draws from your keys.",
                  "Yield without custody.",
                  "<em>The interface, without the intermediary.</em>",
@@ -887,6 +908,155 @@ def hex_alpha(hex_color: str, alpha: float) -> str:
     return f"rgba({r}, {g}, {b}, {alpha})"
 
 
+# ── Treatments: hero layout + h1 typography ─────────────────────────
+# Each sector picks one of these. The classes are defined in _artwork.css.
+TREATMENT = {
+    "foundation": dict(layout="layout-split-right", h1_class="t-monumental"),  # bitcoin/sov — huge italic
+    "architecture": dict(layout="layout-split-right", h1_class="t-mid"),        # l1/l2/modular
+    "market": dict(layout="layout-split-left", h1_class="t-mid"),               # defi/stablecoins — glyph LEFT
+    "cipher": dict(layout="layout-centered", h1_class="t-tight"),               # privacy — uppercase, no glyph
+    "neural": dict(layout="layout-stacked", h1_class="t-thin"),                 # ai — thin italic, stacked
+    "lab": dict(layout="layout-stacked", h1_class="t-tight"),                   # desci — uppercase roman
+    "signal": dict(layout="layout-corner", h1_class="t-mid"),                   # depin/oracles — corner glyph
+    "vault": dict(layout="layout-split-right", h1_class="t-bold"),              # staking — bold heavy
+    "future": dict(layout="layout-split-left", h1_class="t-thin"),              # predictions — glyph left, thin
+    "pop": dict(layout="layout-stacked", h1_class="t-pop"),                     # memes — oversized italic
+    "gallery": dict(layout="layout-centered", h1_class="t-monumental"),         # nfts — gallery centered
+    "player": dict(layout="layout-split-right", h1_class="t-bold"),             # gamefi — bold pixel-feel
+    "social": dict(layout="layout-split-right", h1_class="t-thin"),             # socialfi
+    "card": dict(layout="layout-stacked", h1_class="t-tight"),                  # neobanks — clean tight
+    "launch": dict(layout="layout-corner", h1_class="t-mid"),                   # icm
+    "bridge_t": dict(layout="layout-split-left", h1_class="t-mid"),             # rwa
+}
+
+
+# ── Body pattern overlays — pure CSS, sector-tinted ───────────────────
+# Each pattern returns a (background, size, opacity) tuple.
+def pattern(kind: str) -> tuple[str, str, float]:
+    """Returns CSS values for --sector-pattern, --sector-pattern-size, --sector-pattern-opacity."""
+    if kind == "honeycomb":  # bitcoin
+        return (
+            "radial-gradient(circle at 50% 0%, var(--sector-soft) 1px, transparent 1.5px),"
+            "radial-gradient(circle at 0% 50%, var(--sector-soft) 1px, transparent 1.5px),"
+            "radial-gradient(circle at 100% 50%, var(--sector-soft) 1px, transparent 1.5px),"
+            "radial-gradient(circle at 50% 100%, var(--sector-soft) 1px, transparent 1.5px)",
+            "70px 70px", 0.10
+        )
+    if kind == "vault-grid":  # sov
+        return (
+            "linear-gradient(var(--sector-soft) 1px, transparent 1px),"
+            "linear-gradient(90deg, var(--sector-soft) 1px, transparent 1px)",
+            "120px 120px", 0.10
+        )
+    if kind == "diamond":  # l1
+        return (
+            "linear-gradient(45deg, var(--sector-soft) 1px, transparent 1px),"
+            "linear-gradient(-45deg, var(--sector-soft) 1px, transparent 1px)",
+            "60px 60px", 0.07
+        )
+    if kind == "diagonal":  # l2
+        return (
+            "repeating-linear-gradient(45deg, var(--sector-soft) 0, var(--sector-soft) 1px, transparent 1px, transparent 16px)",
+            "auto", 0.08
+        )
+    if kind == "checker":  # modular
+        return (
+            "linear-gradient(45deg, var(--sector-soft) 25%, transparent 25%),"
+            "linear-gradient(-45deg, var(--sector-soft) 25%, transparent 25%)",
+            "44px 44px", 0.05
+        )
+    if kind == "candlesticks":  # defi
+        return (
+            "repeating-linear-gradient(90deg, transparent 0, transparent 28px, var(--sector-soft) 28px, var(--sector-soft) 31px, transparent 31px, transparent 56px)",
+            "auto", 0.10
+        )
+    if kind == "ticker":  # stablecoins
+        return (
+            "repeating-linear-gradient(0deg, transparent 0, transparent 18px, var(--sector-soft) 18px, var(--sector-soft) 19px, transparent 19px, transparent 38px)",
+            "auto", 0.07
+        )
+    if kind == "code-rain":  # privacy
+        return (
+            "repeating-linear-gradient(0deg, transparent 0, transparent 14px, var(--sector-soft) 14px, var(--sector-soft) 15px),"
+            "repeating-linear-gradient(90deg, transparent 0, transparent 11px, var(--sector-warm-soft) 11px, var(--sector-warm-soft) 12px)",
+            "auto, auto", 0.07
+        )
+    if kind == "neural-wave":  # ai
+        return (
+            "radial-gradient(ellipse 200px 30px at 25% 30%, var(--sector-soft) 0%, transparent 60%),"
+            "radial-gradient(ellipse 200px 30px at 75% 70%, var(--sector-warm-soft) 0%, transparent 60%)",
+            "300px 300px", 0.16
+        )
+    if kind == "pixel-grid":  # gamefi
+        return (
+            "linear-gradient(var(--sector-soft) 2px, transparent 2px),"
+            "linear-gradient(90deg, var(--sector-soft) 2px, transparent 2px)",
+            "44px 44px", 0.06
+        )
+    if kind == "graph-nodes":  # socialfi
+        return (
+            "radial-gradient(circle at 30% 30%, var(--sector-soft) 2px, transparent 3px),"
+            "radial-gradient(circle at 70% 70%, var(--sector-soft) 2px, transparent 3px),"
+            "radial-gradient(circle at 50% 90%, var(--sector-warm-soft) 2px, transparent 3px)",
+            "180px 180px", 0.10
+        )
+    if kind == "bridge-hatch":  # rwa
+        return (
+            "repeating-linear-gradient(20deg, transparent 0, transparent 22px, var(--sector-soft) 22px, var(--sector-soft) 23px)",
+            "auto", 0.09
+        )
+    if kind == "radio-pulse":  # depin
+        return (
+            "radial-gradient(circle at 25% 25%, transparent 12px, var(--sector-soft) 13px, transparent 14px),"
+            "radial-gradient(circle at 75% 75%, transparent 12px, var(--sector-warm-soft) 13px, transparent 14px)",
+            "200px 200px", 0.18
+        )
+    if kind == "interconnect":  # oracles
+        return (
+            "linear-gradient(45deg, var(--sector-soft) 1px, transparent 1px),"
+            "linear-gradient(135deg, var(--sector-soft) 1px, transparent 1px)",
+            "44px 44px", 0.07
+        )
+    if kind == "rings":  # staking
+        return (
+            "radial-gradient(circle, transparent 26px, var(--sector-soft) 27px, transparent 28px, transparent 38px, var(--sector-warm-soft) 39px, transparent 40px)",
+            "100px 100px", 0.12
+        )
+    if kind == "chart-grid":  # predictions
+        return (
+            "linear-gradient(var(--sector-soft) 1px, transparent 1px),"
+            "linear-gradient(90deg, var(--sector-soft) 1px, transparent 1px)",
+            "32px 32px", 0.05
+        )
+    if kind == "petri":  # desci
+        return (
+            "radial-gradient(circle, var(--sector-soft) 1px, transparent 1.5px)",
+            "26px 26px", 0.10
+        )
+    if kind == "ascending":  # icm
+        return (
+            "repeating-linear-gradient(70deg, transparent 0, transparent 24px, var(--sector-soft) 24px, var(--sector-soft) 25px)",
+            "auto", 0.08
+        )
+    if kind == "halftone":  # memes
+        return (
+            "radial-gradient(circle, var(--sector-warm-soft) 2.5px, transparent 3px)",
+            "20px 20px", 0.18
+        )
+    if kind == "frame-grid":  # nfts
+        return (
+            "linear-gradient(var(--sector-soft) 1px, transparent 1px),"
+            "linear-gradient(90deg, var(--sector-soft) 1px, transparent 1px)",
+            "70px 70px", 0.08
+        )
+    if kind == "card-stack":  # neobanks
+        return (
+            "repeating-linear-gradient(0deg, transparent 0, transparent 30px, var(--sector-soft) 30px, var(--sector-soft) 31px)",
+            "auto", 0.06
+        )
+    return ("none", "auto", 0.05)
+
+
 def render_page(slug: str, cfg: dict) -> str:
     accent = cfg["accent"]
     warm = cfg["warm"]
@@ -921,6 +1091,11 @@ def render_page(slug: str, cfg: dict) -> str:
     prelude_html = "\n".join(f"<p>{p}</p>" for p in prelude)
     wave = WAVE_SVG_TEMPLATE.format(accent_a=wave_a, accent_b=wave_b)
 
+    treatment = TREATMENT.get(cfg.get("treatment", "architecture"), TREATMENT["architecture"])
+    layout_class = treatment["layout"]
+    h1_class = treatment["h1_class"]
+    pat_bg, pat_size, pat_opacity = pattern(cfg.get("pattern_kind", "diamond"))
+
     return f"""<!DOCTYPE html>
 <html lang="en">
 <head>
@@ -954,6 +1129,9 @@ def render_page(slug: str, cfg: dict) -> str:
     --sector-soft:   {soft};
     --sector-warm-soft: {soft_warm};
     --sector-bg:     {bg_soft};
+    --sector-pattern: {pat_bg};
+    --sector-pattern-size: {pat_size};
+    --sector-pattern-opacity: {pat_opacity};
   }}
   .hero-bg {{ background-image: url('{cfg["hero_bg"]}'); }}
   .closing-bg {{ background-image: url('{cfg["closing_bg"]}'); }}
@@ -984,10 +1162,10 @@ def render_page(slug: str, cfg: dict) -> str:
 
 <section class="hero">
   <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
+  <div class="hero-inner {layout_class}">
     <div>
       <div class="hero-eyebrow">{eyebrow}</div>
-      <h1 class="hero-title">{h1}</h1>
+      <h1 class="hero-title {h1_class}">{h1}</h1>
       <p class="hero-desc">{desc}</p>
       <div class="hero-quote">
         {quote_text}
