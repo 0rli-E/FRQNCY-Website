@@ -1,5 +1,8 @@
 # Aligned Goods — Schema & Taxonomy
 
+> **Status: superseded for taxonomy and rubric. Kept for design rationale.**
+> The canonical spec is **`proposals/ALIGNED-GOODS.md`**. That doc reflects the shipped shelves layout, the 12 magazine-style categories, the 5-question rubric used on the page, and the `revenue_relationship` schema field that replaced the simple affiliate flag.
+
 A first sketch for FRQNCY's curated index of products, places, people, orgs, texts, and tools that help people live in alignment. No code yet. This is the shape we'd build toward.
 
 ## What this is (and isn't)

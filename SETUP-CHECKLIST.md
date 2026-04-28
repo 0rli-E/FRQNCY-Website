@@ -1,148 +1,130 @@
 # FRQNCY — Human Setup Checklist
 
-Everything Claude can't do for you. Work through these in order — each section builds on the last.
+Everything an agent can't do for you. Work through these in order — each section builds on the last.
+
+> **Status as of 2026-04-28:** the live site is deployed; chat widget runs on free Cloudflare Workers AI; HD AI Reading Worker is deployed (commit `8fc27ff`); Sanctuary cloud-sync code is shipped but blocked on three dashboard steps (migrations + env vars). The current focused checklist is `SETUP-NEXT-STEPS.md` — three steps, ~5 minutes total. **Do those first.** This doc is the broader ongoing checklist.
 
 ---
 
-## 1. Push to GitHub
+## 1. Apply the pending Supabase migrations + Cloudflare env vars
 
-Your local repo has uncommitted work (HD topic data, chart explainer, AI reading, nav redesign, Worker file). This is the first step to get anything live.
+This is the active blocker for everything else. See `SETUP-NEXT-STEPS.md` and `HANDOFF-2026-04-28-MAKE-EVERYTHING-LIVE.md` for the full context. Three steps:
 
-- [ ] `git add .` and commit everything
-- [ ] Push to `main` (triggers Cloudflare Pages auto-deploy)
-- [ ] Verify the GitHub Action in `.github/workflows/build.yml` runs clean
+- [ ] Run `supabase/migrations/002_fix_conversation_rls.sql` and `003_subscribers_charts_storage.sql` in the Supabase SQL editor (project `vyazlspbmwmlyncdlezh`).
+- [ ] Add `PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` to Cloudflare Pages env vars (Production + Preview).
+- [ ] Verify the `AI` Workers AI binding exists on the Pages project (powers the chat widget).
+- [ ] Optional: sign up for Resend, verify the `frqncy.network` domain, add `RESEND_API_KEY` and `RESEND_FROM` env vars so subscribe-form welcome emails send from `hello@frqncy.network` instead of `onboarding@resend.dev`.
 
----
-
-## 2. Cloudflare Pages Setup
-
-Your site auto-deploys from GitHub to Cloudflare Pages. If this isn't connected yet:
-
-- [ ] Log into [Cloudflare Dashboard](https://dash.cloudflare.com) → Pages
-- [ ] Create a project → Connect your GitHub repo
-- [ ] Set build output directory (the repo root — it's a static site)
-- [ ] Confirm `frqncy.network` custom domain is pointed to Cloudflare Pages (DNS → CNAME or nameservers)
+After this, smoke-test with the three curls in `SETUP-NEXT-STEPS.md`. All three should return 200.
 
 ---
 
-## 3. Deploy the HD AI Reading Worker
+## 2. Push any locally staged work
 
-This powers the "Get AI Reading" button on chart.html. Without it, the button still works — it falls back to a rich client-side reading — but the Worker adds AI-personalised insights via Qwen on Cloudflare's edge.
+Cowork sandbox can't always commit cleanly (bindfs blocks `.git/HEAD.lock` removal on some commits). When that happens, run from your own terminal:
 
-- [ ] In your terminal (with Wrangler installed):
-  ```bash
-  cd workers
-  wrangler init frqncy-hd-reading
-  ```
-- [ ] Copy `hd-reading.js` → `src/index.js` in the new project
-- [ ] Add to `wrangler.toml`:
-  ```toml
-  [ai]
-  binding = "AI"
-  ```
-- [ ] Deploy:
-  ```bash
-  wrangler deploy
-  ```
-- [ ] Note your Worker URL (e.g. `https://frqncy-hd-reading.YOUR-SUBDOMAIN.workers.dev`)
-- [ ] If it differs from `https://frqncy-hd-reading.frqncy.workers.dev`, update `WORKER_URL` in `chart.html` (line near the top of the `<script>` block)
+```bash
+cd ~/Documents/Claude/Projects/FRQNCY\ WEBSITE
+rm -f .git/HEAD.lock .git/index.lock
+git status
+git add .
+git commit -m "<descriptive message>"
+git push
+```
+
+Cloudflare Pages auto-deploys from `main` via `.github/workflows/build.yml`.
 
 ---
 
-## 4. Chat Widget Backend (Anthropic API Key)
+## 3. Cloudflare Pages — confirm setup
 
-The FRQNCY Navigator chat widget (`chat-widget.js`) calls `/api/chat`, which is a Cloudflare Pages Function at `functions/api/chat.js`. It needs an Anthropic API key to work.
+The site auto-deploys from GitHub. If a fresh project setup is ever needed:
 
-- [ ] Create an account at [console.anthropic.com](https://console.anthropic.com)
-- [ ] Generate an API key (starts with `sk-ant-...`)
-- [ ] In Cloudflare Dashboard → Pages → your project → Settings → Environment Variables:
-  - Add `ANTHROPIC_API_KEY` = your key
-  - Set for **Production** environment
-- [ ] The chat widget will start working on next deploy — no code changes needed
-
-Detailed instructions are also in `CHATBOT-SETUP.md`.
+- [ ] Cloudflare Dashboard → Pages → connect the GitHub repo.
+- [ ] Build output directory: repo root (it's a static site).
+- [ ] Custom domain: `frqncy.network` pointed to Cloudflare Pages (DNS via Cloudflare nameservers).
+- [ ] Bindings: `AI` (Workers AI) — required for chat widget.
+- [ ] Env vars: `PUBLIC_SUPABASE_URL`, `SUPABASE_SERVICE_ROLE_KEY`, optionally `RESEND_API_KEY` + `RESEND_FROM`.
 
 ---
 
-## 5. Email / Newsletter Collection
+## 4. HD AI Reading Worker — already deployed
 
-The subscribe forms on `index.html` and the contact section currently POST to Substack (`frqncy.substack.com`). You have two paths:
+Status: deployed (commit `8fc27ff`, "Deploy: HD reading Cloudflare Worker live").
 
-### Option A: Keep Substack (simplest)
-- [ ] Create a Substack publication at [substack.com](https://substack.com) with handle `frqncy`
-- [ ] Verify it's live at `frqncy.substack.com`
-- [ ] Done — the forms already point there
+The "Get AI Reading" button on `/chart.html` calls `workers/hd-reading.js`, deployed as a Cloudflare Worker. If you ever need to redeploy:
 
-### Option B: Switch to Brevo (more control, custom emails)
-- [ ] Create a Brevo account at [brevo.com](https://brevo.com)
-- [ ] Get your API key (`xkeysib-...` format)
-- [ ] Create a contact list called "FRQNCY Waitlist", note the List ID
-- [ ] Create the missing `functions/api/subscribe.js` Cloudflare Function (see `EMAIL-SETUP.md` for the template)
-- [ ] Add environment variables in Cloudflare Pages:
-  - `BREVO_API_KEY` = your key
-  - `BREVO_LIST_ID` = your list ID
-- [ ] Update `index.js` to POST to `/api/subscribe` instead of Substack
+```bash
+cd workers
+wrangler deploy
+```
+
+The worker uses the `AI` binding (Workers AI / Qwen 30B). If `WORKER_URL` in `chart.html` ever drifts from the deployed URL, update the constant near the top of the inline `<script>` block.
 
 ---
 
-## 6. Email Address
+## 5. Chat widget — already wired
 
-`hello@frqncy.network` is referenced as the contact email across the site.
+Status: deployed and working when the `AI` binding is set on Pages.
 
-- [ ] Set up email forwarding or a mailbox for `hello@frqncy.network`
-  - Cloudflare Email Routing (free, in your Cloudflare dashboard) is the easiest — forward to your personal email
-  - Or use a provider like Google Workspace / Zoho
+Runs on free Cloudflare Workers AI (`@cf/qwen/qwen3-30b-a3b-fp8`) — **no Anthropic API key required**. See `CHATBOT-SETUP.md` for full details. Earlier versions of this doc told you to set `ANTHROPIC_API_KEY` — that requirement has been retired; the key is now optional, paid-fallback only.
 
 ---
 
-## 7. Social / Branding Accounts
+## 6. Email / Newsletter — Resend wiring
+
+The homepage subscribe forms now POST to `/api/subscribe` (Cloudflare Pages Function), which writes to the `subscribers` Supabase table and sends a welcome email via Resend if `RESEND_API_KEY` is set. Substack is no longer the sink.
+
+- [ ] Resend account at [resend.com](https://resend.com) (free, 3000 emails/month).
+- [ ] Verify the `frqncy.network` domain (DNS records in Cloudflare DNS).
+- [ ] Set `RESEND_API_KEY` and `RESEND_FROM` (e.g. `FRQNCY <hello@frqncy.network>`) in Pages env vars.
+- [ ] Without these, the subscribe endpoint still saves to Supabase and gracefully skips the welcome email.
+
+---
+
+## 7. Email address — `hello@frqncy.network`
+
+Referenced as the contact email across the site.
+
+- [ ] Cloudflare Email Routing (free, in your Cloudflare dashboard) → forward `hello@frqncy.network` to your personal mailbox.
+- [ ] Or use Google Workspace / Zoho if you want a real mailbox.
+
+---
+
+## 8. Social / Branding accounts
 
 Referenced in meta tags and footer:
 
-- [ ] Claim `@frqncy` on Twitter/X (referenced in `<meta name="twitter:site">`)
-- [ ] Set up any other social handles you want (Instagram, YouTube, etc.)
+- [ ] `@frqncy` on Twitter/X (already in `<meta name="twitter:site">`).
+- [ ] Other social handles as you ship them (Instagram, YouTube, etc.).
 
 ---
 
-## 8. After Codex Finishes (v2/ topic pages)
+## 9. Analytics verification
 
-Codex is currently editing the 152 `v2/[topic-slug]/index.html` files. Once it's done:
+Plausible script lives on every page (`plausible.io/js/script.js`, domain `frqncy.network`).
 
-- [ ] Run `node generate.js` to regenerate all v2 pages (picks up the new Human Design topic + any content.json changes)
-- [ ] Re-patch `sitemap.xml` — generate.js overwrites it to 161 URLs, losing 5 manual additions (chart, my-frqncy, search, v2/watch/, v2/courses/). Run:
-  ```bash
-  python3 patch-sitemap.py  # or ask Claude to re-patch
-  ```
-- [ ] Commit and push the regenerated files
+- [ ] Log into [plausible.io](https://plausible.io), confirm `frqncy.network` is registered.
+- [ ] Verify pageviews flow after each deploy.
 
 ---
 
-## 9. Analytics Verification
+## 10. Content gaps to fill over time
 
-Plausible analytics script is already on every page (`plausible.io/js/script.js` with `data-domain="frqncy.network"`).
+Tracked across `proposals/CONTENT-DEPTH-AUDIT.md` and `proposals/EXECUTION-PLAN-90D.md`. Not blockers; ongoing editorial work:
 
-- [ ] Log into [plausible.io](https://plausible.io) and verify `frqncy.network` is registered as a site
-- [ ] Check that pageviews are flowing after the site is live
-
----
-
-## 10. Content Gaps to Fill Over Time
-
-These aren't blockers, but will make the library stronger:
-
-- [ ] Add more **people** resources — only 3.5% of the library currently
-- [ ] 123 topics have **zero video resources** — add curated YouTube/Vimeo links
-- [ ] Eastern tradition topics are underrepresented (Buddhism, Hinduism, Taoism)
-- [ ] Add more courses across all domains
-- [ ] Generate unique OG images for ~6 topics that have TODO placeholders (gene-keys, human-design, quantum-grammar, money, robert-jay-gould, cryptocurrency)
+- [ ] ~50 topic pages still in stub state — each gets a unique commission, one at a time, per the Phase 5 reframe (no more templated batch sweeps).
+- [ ] Add more **people** resources (currently ~3.5% of the library).
+- [ ] Add curated video resources to topics that have none.
+- [ ] Eastern tradition topics underrepresented (Buddhism, Hinduism, Taoism).
+- [ ] Generate unique OG images for the ~6 topics with TODO placeholders.
 
 ---
 
-## Priority Order (what to do first)
+## Priority order
 
-1. **Push to GitHub** — gets everything live
-2. **Anthropic API key** — enables the chat widget
-3. **Substack account** — enables email collection
-4. **Deploy HD Worker** — upgrades chart reading from client-side to AI
-5. **Email forwarding** — so people can reach you
-6. **Everything else** — at your own pace
+1. **Apply the migrations + env vars** (Section 1) — unblocks the whole social platform + Sanctuary sync.
+2. **Push local staged work** (Section 2) — gets everything to `main` and auto-deployed.
+3. **Verify chat widget binding + Resend wiring** (Sections 5–6) — small, polishes the user-facing surface.
+4. **Email forwarding** (Section 7) — makes `hello@frqncy.network` reachable.
+5. **Everything else** at your own pace, driven by `EXECUTION-PLAN-90D.md`.

@@ -1,6 +1,10 @@
 # FRQNCY — Vision & Strategy Notes
 *Living document — revisit and update as the project evolves*
 
+> **STATUS 2026-04-28 — partly superseded.** Read with care. The voice rules, working-spine framing, six-pillar cycle, and naming architecture in this doc have been **superseded by `FRQNCY — Voice & Vision Answers.md`** (the canonical strategic spine) and `proposals/FRQNCY-VOICE-PLAYBOOK.md` (the canonical voice contract). The slogan rotation has been **superseded by `proposals/EDITORIAL-VALUES-V2.md`** ("FRQNCY makes the unable able" was rejected; the live homepage is "A network of people, building their dream life. We invite you to find yourself.").
+>
+> **Still load-bearing:** the three-layer revenue model (curation / featured placement / co-production), the Edeka parallel, the "key tension to solve early" framing on public selection criteria, and the early-decisions sketches that haven't been re-litigated elsewhere. Use those.
+
 ---
 
 ## What FRQNCY Is (at the start)

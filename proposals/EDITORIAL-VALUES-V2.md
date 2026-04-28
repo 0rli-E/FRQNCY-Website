@@ -8,9 +8,9 @@ The canonical reference for FRQNCY's slogans, voice, and editorial posture. When
 
 These are the lines we write toward. They aren't taglines to plaster everywhere — they're the editorial gravity that should pull every page in the same direction.
 
-### "FRQNCY makes the unable able"
+### "A network of people, building their dream life. We invite you to find yourself."
 
-The promise. Practices, teachings, tools — laid out so a person who couldn't do the thing yesterday can do a version of it today. It frames FRQNCY as enabling infrastructure, not aspirational content. **Lands on:** homepage tagline rotation (primary), About page hero, footer of every page (small caps).
+The homepage promise. Locked 2026-04-28 after iteration with Orlando — landed on a normie-translatable framing of "FRQNCY is a community becoming an alternative society for people to opt into." The H1 is the network statement; the sub is the invitation. **Lands on:** homepage hero (live), About page hero, OG/Twitter card descriptions.
 
 ### "FRQNCY empowers the empowering"
 
@@ -19,6 +19,10 @@ The network logic. We platform people who already platform others — teachers, 
 ### "Crypto is freedom technology"
 
 Topic-specific. Used on `/v2/crypto/` as the lead-in to the Bitcoin values block (borderlessness, immutability, censorship resistance, permissionless, scarcity, transparency). Not deployed elsewhere — it's a frame for the crypto pillar, not a global slogan. **Lands on:** `/v2/crypto/` hero, the money topic page (as a callback), and any crypto-adjacent topic intro.
+
+### Retired: "FRQNCY makes the unable able"
+
+Previously listed here as the homepage tagline. **Rejected 2026-04-28** as offensive — it positions readers as incomplete and violates the abundance + remembrance frame. Don't deploy it anywhere. Don't revive it without re-litigating with Orlando. The replacement is the network/invitation pair above.
 
 ---
 
@@ -54,7 +58,7 @@ This distinction also gives us editorial cover: when a contribution drifts towar
 The fastest way to violate FRQNCY's voice is to *announce* its voice. A few rules of thumb:
 
 - **Show through structure, not statements.** The absence of a leaderboard says more than a paragraph about why we don't have one. The presence of a free, well-edited topic page says more than a manifesto.
-- **Slogans appear once per surface, max.** "FRQNCY makes the unable able" earns its weight through the rest of the page proving it. Repeating it 4 times turns it into noise.
+- **Slogans appear once per surface, max.** "A network of people, building their dream life" earns its weight through the rest of the page proving it. Repeating it 4 times turns it into noise.
 - **Editorial values live in a Colophon.** Add `/v2/colophon.html` (or a section on the About page) titled something like "How this site is made." List the values plainly, sourced (Trungpa for spiritual materialism, etc.), with one sentence each. Linkable, citable, not preached.
 - **Footer rotation, not banner.** The footer can rotate one slogan per page-load from the canonical list. Subtle, never the main event.
 - **Voice tests.** Before any new page ships, ask: would this read as *enabling* or as *positioning*? If it positions FRQNCY against something instead of opening a door for the reader, rewrite.
@@ -65,7 +69,7 @@ The fastest way to violate FRQNCY's voice is to *announce* its voice. A few rule
 
 | Value / Slogan | Primary surface | Secondary surfaces |
 |---|---|---|
-| FRQNCY makes the unable able | Homepage tagline rotation | About hero, footer rotation |
+| A network of people, building their dream life | Homepage hero (live) | About hero, OG/Twitter cards |
 | FRQNCY empowers the empowering | About / mission | Explore intro, Sanctuary |
 | Crypto is freedom technology | `/v2/crypto/` hero | Money topic page callback |
 | Cooperation over competition | Colophon | Implicit across the site (no leaderboards) |

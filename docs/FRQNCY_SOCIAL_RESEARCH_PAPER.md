@@ -7,10 +7,17 @@ authors:
   - research-agent-3 (Monetization, Moderation, Community Health)
 date: 2026-04-18
 version: 1.0
+revision: 2026-04-28 — leaderboard recommendations retired (cooperation over competition); see §0
 status: "Founding thesis — informs the 24-month roadmap for FRQNCY Social"
 ---
 
 # Building FRQNCY Social
+
+> **§0. 2026-04-28 editorial revision.** The original paper recommended public conviction leaderboards as a retention and ritual surface. **This recommendation has been retired** in line with FRQNCY's cooperation-over-competition rule (`CLAUDE.md`, `proposals/EDITORIAL-VALUES-V2.md`). Public ranking of people — by conviction accuracy, by Brier score, by any aggregate — is out of bounds at FRQNCY.
+>
+> Conviction stays in the product as **self-expression** at the post level (every project-tagged post can carry a bullish/bearish stance). Brier-scored calibration stays as a **private feedback loop** visible only to the author themselves — the same way Headspace shows you your own minutes meditated. Quarterly "Calibration Leagues" stay as an **editorial digest** (a reflective recap of how the community's calls aged) not a leaderboard. The Supabase schema already reflects this: `migration 003` removed the leaderboard RPC; `migration 004` keeps the per-post `conviction` column with no aggregation surface.
+>
+> The chapters that follow are otherwise preserved — the platform research, the ranking math, the protocol comparison, and the economics frame all stand. Where the prose still says "leaderboard" or "ranking" in a FRQNCY-recommendation context, read it as "private calibration view + editorial digest" instead.
 
 A research paper on the architecture, ranking, economics, and governance of a social network for a conscious-living and crypto-adjacent community. Target outcome: a product that begins as a centralized MVP on Supabase + Astro + Preact, and evolves over 24 months into a protocol-native network — Farcaster- or Nostr-grade in decentralization, but retaining the retention, discovery, and economic primitives that keep people returning to a centralized product.
 
@@ -234,7 +241,7 @@ debate(u) = Σ_replies r in u's_history { 1[has_source(r)] · (likes_from_opposi
 
 **With 100 users.** The full formula activates with the small-network weighting (`w_G = 0.5, w_R = 2.0`). Conviction tracking turns on for project-tagged posts but `w_C` stays at 0.3 until ~50 calls have resolved. Add a "What you missed" daily-digest email — a conscious-network analog of Hacker News' Best-of-Week — that uses the `Q(p)` term over a 7-day window, scoped to the user's followed authors and tag overlap. Email digests are the most underrated retention mechanic for small communities; they convert the network's quietness from a bug into a calmness signal.
 
-The deepest cold-start lesson is that, at small scale, *editorial* and *ritual* outperform any algorithm. A weekly pinned thesis-debate prompt, a Friday "calls coming due" digest, and a quarterly conviction leaderboard generate more meaningful return visits than any reweighting of `w_G`. The algorithm exists to keep working when ritual stops scaling — not to substitute for it.
+The deepest cold-start lesson is that, at small scale, *editorial* and *ritual* outperform any algorithm. A weekly pinned thesis-debate prompt, a Friday "calls coming due" digest, and a quarterly editorial recap of how the community's conviction calls aged generate more meaningful return visits than any reweighting of `w_G`. (See §0 — public ranking is out; the recap is editorial reflection, not a scoreboard.) The algorithm exists to keep working when ritual stops scaling — not to substitute for it.
 
 ---
 
@@ -277,7 +284,7 @@ FRQNCY already rates 630 projects A–F. Posts can be tagged with a project and 
 - Every post tagged to a project with stance B/b (bull) or S/s (bear) and a time horizon (7d / 30d / 90d / 1y) becomes a "call."
 - At horizon end, the system resolves using on-chain price data (CoinGecko/CMC API, free tier) against a benchmark (BTC or the project's category index).
 - Score per resolved call: `score = sign(direction) * log(1 + |return_vs_benchmark|) * conviction_weight`, where `conviction_weight ∈ {1, 2, 3}` set at post time (costs posting-frequency quota, not money).
-- Leaderboard aggregates rolling 90-day Brier-adjusted accuracy: `BrierScore = mean((p - o)^2)` where p is the user's implied probability (inferred from conviction weight and stance) and o is outcome. Lower is better; display inverted as a 0–100 "Conviction Score."
+- The user's **own** Brier-adjusted accuracy aggregates over a rolling 90 days: `BrierScore = mean((p - o)^2)` where p is the user's implied probability (inferred from conviction weight and stance) and o is outcome. Lower is better; display inverted as a 0–100 "Conviction Score" **on the user's own profile only — never as a public ranking** (see §0). Treat it like Headspace's minutes-meditated: a personal feedback loop, not a competition.
 
 This is not gambling. It's a public track record, analogous to a sports tipster's ledger. Legally uninteresting.
 
@@ -409,11 +416,11 @@ This roadmap synthesizes the recommendations from all three chapters into a sing
 
 *Protocol:* Keep the Supabase + Astro + Preact stack exactly as it is. Add three things: (a) a Lexicon spec repo at `github.com/frqncy/lexicons` defining `xyz.frqncy.*` record types; (b) a server-side DID issuer that creates `did:web` identities lazily per user and stores signing keys in Supabase Vault; (c) a nightly Supabase→signed-JSON exporter so every user can download their repo today, even if nothing else is bridged yet.
 
-*Ranking:* Pure reverse-chrono feed + project-anchored rooms for the first 10–100 users. Introduce the full ranking formula only once `n_users ≥ 100`, with small-network weights (`w_G = 0.5, w_R = 2.0`). Conviction tracking ships points-only from day one — every project-tagged post with a stance gets a horizon and a resolution record. The Brier leaderboard becomes visible at ~50 resolved calls.
+*Ranking:* Pure reverse-chrono feed + project-anchored rooms for the first 10–100 users. Introduce the full ranking formula only once `n_users ≥ 100`, with small-network weights (`w_G = 0.5, w_R = 2.0`). Conviction tracking ships points-only from day one — every project-tagged post with a stance gets a horizon and a resolution record. The user's **own** Brier calibration view becomes visible to them (and only them) once they've crossed ~50 resolved calls; no public surface.
 
 *Economics:* Free core product. FRQNCY Supporter at $5/mo (Stripe). Creator tipping via Stripe Connect at 0% platform fee. No ads, ever. Founder moderates everything; Llama Guard 3 runs as an automated first pass. EU DSA notice-and-action endpoint live from launch.
 
-*Deliverables:* Lexicon v0.1, DID issuer service, export-my-data endpoint, one end-to-end test showing a FRQNCY post round-tripping through a local PDS. Full ranking formula implemented behind a feature flag. Points-only conviction v1 shipped. Supporter subscription live. Llama Guard integration + incident response playbook committed to repo.
+*Deliverables:* Lexicon v0.1, DID issuer service, export-my-data endpoint, one end-to-end test showing a FRQNCY post round-tripping through a local PDS. Full ranking formula implemented behind a feature flag. Points-only conviction v1 shipped — per-post stance + private calibration view only, no public leaderboard (see §0). Supporter subscription live. Llama Guard integration + incident response playbook committed to repo.
 
 ### Phase 2 — Dual-write federation + differentiation lock-in (months 6–12)
 
@@ -431,7 +438,7 @@ This roadmap synthesizes the recommendations from all three chapters into a sing
 
 *Ranking:* Expose FRQNCY's ranker as a Bluesky custom feed so it runs on any ATProto client, not just FRQNCY's. Ship a user-facing "Feed tuning" UI that exposes the `w_*` weights as sliders (following Bluesky's precedent). Add AI-generated personal feeds (Attie-style) as an opt-in. The reputation vector becomes a PDS record (`xyz.frqncy.reputation`) users can bring to any compatible client.
 
-*Economics:* If legal review green-lit v2: staked conviction markets with a regulated-intermediary partner, 1–2% protocol fee on winning-side payouts. If legal review did not: stay points-only, convert the conviction leaderboard into a user-visible "Calibration Leagues" ritual with quarterly cash prizes funded from Supporter revenue. Per-channel community mods with 6-month rotation. Blameless post-mortems for any SEV1/SEV2 incident published publicly.
+*Economics:* If legal review green-lit v2: staked conviction markets with a regulated-intermediary partner, 1–2% protocol fee on winning-side payouts. If legal review did not: stay points-only. Replace the originally-planned public "Calibration Leagues" ritual with an editorial recap — a quarterly thesis essay reflecting on how the community's conviction calls aged, with no ranking and no prize purse (per §0 the cooperation-over-competition rule rules out a competitive surface). Quarterly cash from Supporter revenue redirects toward the editorial budget instead. Per-channel community mods with 6-month rotation. Blameless post-mortems for any SEV1/SEV2 incident published publicly.
 
 *Deliverables:* Canonical-PDS cutover, BYO-DID import, public Lexicon registry, Farcaster Mini App, Nostr read-bridge, feed-tuning UI, v2 markets or Calibration Leagues (one or the other ships, not both), public transparency report.
 

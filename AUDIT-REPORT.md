@@ -74,6 +74,8 @@ On a static MPA these leak on a single page-view's lifetime only (page navigatio
 
 ## Part 3 — Folder reorganisation
 
+> **DECISION 2026-04-28: not running.** Inspected `reorg.sh` against current repo state. Risk-to-benefit doesn't justify it: `.github/workflows/build.yml` references `node generate.js` directly, four `package.json` scripts hardcode the same paths, and 13 cross-references across the markdown corpus point at the setup/internal docs by their current root paths. Patching all of that is more work than the aesthetic gain of the cleaner top-level. CLAUDE.md is the navigational entry point; agents and humans both find what they need. Item closed; current layout stays. Re-evaluate only if a `src/` + `public/` + `dist/` separation becomes worth the deploy-semantics change.
+
 **Constraint honoured: no deployed URLs were changed.** Every file currently served stays at its current served path. Only build-time scripts and internal docs are subject to reorg.
 
 The 5 research agents converged on this layout (synthesised from Astro / Eleventy / Hugo / Cloudflare Pages docs / freeCodeCamp / TypeScript-Website / Backstage ADR conventions):

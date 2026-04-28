@@ -1,3 +1,7 @@
+> **STATUS: external-content corpus, not a project plan.** This file preserves four essays on harness engineering and context graphs — verbatim source material we reason from, not active spec or roadmap. The `@frqncy-network/harness` project's actual plan lives in `proposals/HARNESS-PLAN.md`; current state lives in the harness repo's `AGENT.md` + `README.md`. Treat this as a reference library.
+
+---
+
 # The Definitive Guide to Harness Engineering
 
 **Source:** TRAE (@Trae_ai) — published Apr 23, 2026
@@ -873,5 +877,332 @@ Three reasons it's the right footnote to this doc rather than a passing link:
 1. **It makes the abstract concrete.** The four essays argue that orchestration matters; `gtr` is one of the smallest possible tools that makes parallel agent orchestration ergonomic on a real repo today. A reader who finishes the four essays and asks *"OK, but where do I start tomorrow?"* gets a one-liner answer.
 2. **It aligns with the FRQNCY working pattern.** Most of the agent work on FRQNCY (the social research paper, the discover-brand piece, the v2 page generation) has been multi-agent batches. Doing those across worktrees instead of serially in the main checkout would let multiple drafts run in parallel without stomping on each other's `dist/`.
 3. **It's a clean instance of the "harness" frame.** TRAE's whole metaphor is that you don't change the horse, you build the reins. `gtr` is reins for the filesystem-level horse — git itself.
+
+---
+---
+
+# Operations layer — five sources from Marius (2026-04-28)
+
+> Marius dropped five links into chat: the **Ralph Loop** plugin, Anthropic's official **Agent Teams** docs, **Geoffrey Huntley's blog** (originator of the "ralph loop" frame), the **tmux wiki**, and the **pi-mono coding-agent** package. The brief: "add them to our context graph and check how we can optimise our harness."
+>
+> Where the four essays above describe the *theory* of harnesses and context graphs, and `gtr` is the filesystem-level isolation primitive, these five sources are the **operations layer** — the actual runtime patterns, hooks, session formats, and processes people are running in production today. They converge on three claims that the theory pieces only hint at: *the loop should live outside the LLM, state belongs on disk, and tmux is the de facto parallel-agent runtime.*
+
+---
+
+## A. Geoffrey Huntley — *everything is a ralph loop* (the philosophy)
+
+**Source:** Geoffrey Huntley (@GeoffreyHuntley) — published Jan 17, 2026
+**URL:** https://ghuntley.com/loop/
+**Author bio:** Independent engineer, runs workshops on building coding agents. Coined the "ralph" naming and pattern.
+
+> Why this is the entry point: it's the namesake of the Ralph Loop plugin and the source ideology behind the "run a coding agent in a loop until it's done" pattern that the rest of the operations layer assumes. Read it before the plugin docs and the Agent Teams docs make sense.
+
+### The core idea
+
+> "Standard software practices is to build it vertically brick by brick — like Jenga but these days I approach everything as a loop. You see ralph isn't just about forwards (building autonomously) or reverse mode (clean rooming) it's also a mind set that these computers can be indeed programmed."
+
+The frame: an LLM isn't a smarter programmer, it's **a new kind of computer that you program by shaping its loop**. The engineer's job moves from writing the bricks to writing the loop that lays them.
+
+### Anti-pattern: multi-agent everything
+
+A direct quote from Huntley's earlier ralph post that he re-quotes in this one:
+
+> "While I was in SFO, everyone seemed to be trying to crack on multi-agent, agent-to-agent communication and multiplexing. At this stage, it's not needed. Consider microservices and all the complexities that come with them. Now, consider what microservices would look like if the microservices (agents) themselves are non-deterministic — a red hot mess.
+>
+> What's the opposite of microservices? A monolithic application. A single operating system process that scales vertically. **Ralph is monolithic. Ralph works autonomously in a single repository as a single process that performs one task per loop.**"
+
+This is a real philosophical fork from the Agent Teams direction. Huntley's claim: until single-agent loops are exhausted, multi-agent setups are accidental complexity dressed up as sophistication.
+
+### The discipline: *watch the loop*
+
+> "It's important to *watch the loop* as that is where your personal development and learning will come from. When you see a failure domain — put on your engineering hat and resolve the problem so it never happens again."
+
+This is **the same closed loop TRAE describes** ("when a model hits a wall, we implement an engineered mechanism to ensure that the same class of failure never happens again") — but expressed as a daily practice rather than an architecture. The harness grows by watching real failures and codifying the fix as a rule the loop now enforces.
+
+### Two related projects worth knowing
+
+- **Loom** ("The Weaving Loom") — Huntley's in-progress project, "infrastructure for evolutionary software" / "a software factory" where autonomous loops evolve products and optimize for revenue. He calls it a "level 9" — beyond Steve Yegge's "Gas Town" level 8 of orchestration. Repo: github.com/ghuntley/loom (private/personal use only at the time of writing).
+- **"How to build a coding agent"** — his free workshop. Money quote: *"It's not that hard to build a coding agent. 300 lines of code running in a loop with LLM tokens. You just keep throwing tokens at the loop, and then you've got yourself an agent."* (link: ghuntley.com/agent/)
+
+### Where this sits in the harness
+
+Huntley's frame **is** the PPAF outer loop, named and made into a discipline. Everything else in this section is implementation detail under his thesis: ralph the loop, watch the loop, codify the failure modes, refuse to bolt on multi-agent complexity prematurely.
+
+---
+
+## B. Ralph Loop — Anthropic plugin (the productized version)
+
+**Source:** Claude Code plugin, published on the Claude plugins directory
+**URL:** https://claude.com/plugins/ralph-loop
+**Status:** First-party plugin from Anthropic — productizes Huntley's pattern.
+
+### What it actually is
+
+A Claude Code plugin that turns a Claude session into a self-iterating worker by hooking the session's **stop event** and re-feeding the original prompt for another pass. Files and git history persist between iterations; only the conversation context resets. Termination is governed by two stopping conditions: Claude emits a configured `--completion-promise` string, OR `--max-iterations` is hit.
+
+### The mechanism in one line
+
+> "Ralph Loop enables iterative, self-referential AI development loops where Claude works on the same task repeatedly until completion. The plugin intercepts session exits via a stop hook and automatically re-feeds your prompt while preserving all file modifications and git history between iterations."
+
+### The two slash commands
+
+```bash
+/ralph-loop "your prompt here" --max-iterations 10 --completion-promise "DONE"
+/cancel-ralph
+```
+
+> "The loop continues until Claude outputs the completion promise or reaches the iteration limit."
+
+### The non-obvious design choice
+
+The "feedback channel" between iterations is **the filesystem itself.** There's no persistent in-context memory — Claude reads its own past work (test output, partial code, scratch notes) at the start of each iteration. This is the State Separation Principle from TRAE, taken to its logical conclusion: even *conversation history* lives outside the LLM.
+
+### Where it slots in
+
+| Harness component | Role Ralph Loop plays |
+|---|---|
+| **Exception Handler** | The stop-hook converts "session terminated" from fatal to recoverable |
+| **Context State Manager** | Filesystem + git become the persisted state between iterations |
+| **Feedback Assembler** | Completion-promise string match is the gate signal |
+| **PPAF outer loop** | The whole plugin *is* a productized PPAF outer loop |
+
+### Sister plugins worth noting
+
+The plugin page lists "Related plugins" pointing at the surface area Anthropic is building out: **Frontend Design**, **Superpowers** (sub-agents/TDD/skill authoring), **Context7** (live docs lookup), **Code Review**.
+
+---
+
+## C. Agent Teams — Anthropic official docs (multi-agent, when you really need it)
+
+**Source:** code.claude.com/docs/en/agent-teams
+**Status:** Experimental. Gated by `CLAUDE_CODE_EXPERIMENTAL_AGENT_TEAMS=1`. Requires Claude Code v2.1.32+.
+
+> Where Ralph Loop is monolithic-by-design (and Huntley argues that's the right call most of the time), Agent Teams is Anthropic's answer for the cases where you genuinely need peer agents that talk to each other — not just one orchestrator with read-only sub-agents.
+
+### The four-component architecture
+
+1. **Team lead** — the orchestrator session that spawns and coordinates teammates.
+2. **Teammates** — independent Claude Code instances, each with its own context window, each loading CLAUDE.md / MCP servers / skills like a fresh session, plus a spawn prompt. *The lead's conversation history does NOT carry over.* Teammates are addressable by name.
+3. **Shared task list** — persisted at `~/.claude/tasks/{team-name}/`. Coordination happens through the task list, not direct message-passing. Dependencies between tasks unblock automatically.
+4. **Mailbox** — direct teammate-to-teammate (or lead-to-teammate, or user-to-teammate) messaging. Team config persisted at `~/.claude/teams/{team-name}/config.json`.
+
+### The distinction that matters
+
+> "Unlike subagents, which run within a single session and can only report back to the main agent, you can also interact with individual teammates directly without going through the lead."
+
+> "Use subagents when you need quick, focused workers that report back. Use agent teams when teammates need to share findings, challenge each other, and coordinate on their own."
+
+### Display modes
+
+- `in-process` (default) — Shift+Down to cycle teammates inside the lead's terminal.
+- `tmux` / iTerm2 split-pane — `teammateMode: "tmux"` or auto-detected when already inside tmux. **Explicitly does not work** in VS Code's integrated terminal, Windows Terminal, or Ghostty.
+
+That tmux is the official multi-pane substrate for first-party multi-agent work is significant — it explains why the tmux wiki is in this set of links.
+
+### Three lifecycle hooks (this is the new vocabulary worth stealing)
+
+| Hook | Fires when | Exit-code-2 effect |
+|---|---|---|
+| `TeammateIdle` | A teammate is about to go idle | Sends feedback and keeps the teammate working |
+| `TaskCreated` | A new task is added | Can inject context or reroute |
+| `TaskCompleted` | A task finishes | Can validate and re-open if invalid |
+
+These are textbook **Call Interceptors / Feedback Assembler hookpoints**, with a clean exit-code-2 semantic.
+
+### The hard limits
+
+- `/resume` and `/rewind` don't restore in-process teammates.
+- Teammates cannot spawn their own teams (no nested teams).
+- Permissions inherited from lead at spawn; not settable per-teammate at spawn.
+- **Two teammates editing the same file leads to overwrites.** "Break the work so each teammate owns a different set of files." (This is the use-case for `gtr` worktrees, mentioned in the docs' "Manual parallel sessions" section.)
+- Sweet spot: 3–5 teammates with 5–6 tasks each. Below that, no point paying the token premium; above that, coordination overhead dominates.
+
+### Where it slots in
+
+- The team lead is a **PPAF orchestrator at the macro level**: Perception = task list + mailboxes; Action = spawn/assign/message/shutdown; Feedback = hook outputs and synthesis prompts.
+- Shared task list on disk = **Context State Manager**, persisted exactly the way TRAE's State Separation Principle demands.
+- Subagent vs. agent-team is a new dimension our harness model didn't yet name: it's the read-only/report-back vs. peer-collaboration split, which maps to two different Tool Gateway invocation styles (RPC return vs. shared bus).
+
+---
+
+## D. tmux Wiki — the runtime substrate
+
+**Source:** github.com/tmux/tmux/wiki
+**Maintainer:** the tmux project
+**Why it's in this set:** Anthropic's Agent Teams docs link to this wiki as the canonical install/usage reference, and tmux is now the official split-pane substrate for first-party multi-agent work. Pi (next section) also explicitly says "use tmux instead of background bash."
+
+### What tmux is, in one sentence
+
+> "tmux is a terminal multiplexer. It lets you switch easily between several programs in one terminal, detach them (they keep running in the background) and reattach them to a different terminal."
+
+### The wiki sections that actually matter for harness work
+
+The Home page is intentionally minimal. The load-bearing pages for AI-agent-runtime use are:
+
+- **Control-Mode** — programmatic control of tmux from another process (`tmux -CC`). This is how a parent agent drives a child agent's session.
+- **Advanced-Use** — scripting patterns, including `send-keys`, `pipe-pane`, `capture-pane`.
+- **Recipes** — concrete patterns, including detached session creation and IPC.
+- **Formats** — string templating used in scripted invocations.
+- **FAQ** + **Installing** — the basics. Agent Teams docs link to `Installing`.
+
+### The harness primitives tmux gives you for free
+
+- **Durable session state** — a session keeps running after you close your terminal. The agent process doesn't die when the supervising shell does.
+- **Programmatic input injection** — `tmux send-keys -t target "prompt" Enter` lets a parent process feed instructions into a child's REPL without restarting it.
+- **Output capture** — `capture-pane` (snapshot) and `pipe-pane` (continuous tee to a file) give you observability without modifying the child agent.
+- **Multiple panes** — natural fit for "watch all four agents at once" without writing a custom TUI.
+- **Detach/reattach** — agents survive ssh disconnects, sleep/wake cycles, terminal crashes.
+
+### Where it slots in
+
+- tmux is the **lightweight Sandboxed Execution layer** for parallel-coding-agents — the lightest possible multi-process container that gives durable state, IPC, and observability.
+- Combined with `gtr` (each pane runs a different worktree) and Ralph Loop (each pane runs its own outer loop), tmux becomes the runtime under which the PPAF outer loop operates physically on a single dev machine.
+- It's also a **Tool Gateway substrate**: an agent can drive *other* agents (or shells) by sending keys to their panes — brutally simple, extremely robust IPC.
+
+---
+
+## E. pi-mono / coding-agent — Mario Zechner's minimalist harness (the reference implementation)
+
+**Source:** github.com/badlogic/pi-mono/tree/main/packages/coding-agent
+**Author:** Mario Zechner (`badlogic`)
+**npm:** `@mariozechner/pi-coding-agent`
+**Tagline (theirs):** *"A minimal terminal coding harness. Adapt pi to your workflows, not the other way around, without having to fork and modify pi internals."*
+
+> Why this is in here: Pi is a complete, hand-rolled, opinionatedly-minimal instance of TRAE's Engineering Landmarks pattern. It's what you get if you read the harness essays and decide to ship the smallest harness that satisfies them. Reading pi's README is like reading a code-level rebuttal to "let's bolt features onto our agent" — every refusal is doctrinal.
+
+### The four built-in tools (the entire Tool Gateway)
+
+`read`, `write`, `edit`, `bash`. **That's it.** Everything else is extension territory.
+
+### The four runtime modes
+
+| Mode | Use |
+|---|---|
+| **Interactive TUI** | A human at a terminal |
+| **`--print`** | One-shot, headless |
+| **`--mode json`** | Event stream as JSONL on stdout |
+| **`--mode rpc`** | LF-delimited JSONL on stdin/stdout for process integration |
+| **SDK** | Embed pi inside another Node app |
+
+> **Real-world gotcha worth pinning:** RPC mode warns that clients must split on `\n` only because Node's `readline` splits on Unicode line separators that can appear inside JSON payloads. Concrete bug, not stylistic.
+
+### The session format (this is the steal)
+
+> Sessions are **JSONL files with a tree (id + parentId)**, enabling in-place branching without file copies. `/tree`, `/fork`, `/clone` operate on this graph.
+
+This is the Context State Manager done right: every conversation is a **DAG, not a stack**. You can fork a session at any point, run two variations, and merge what you learned — without copying files or rewinding history. Compaction is lossy by design but the JSONL keeps the full history available.
+
+### The philosophy (verbatim, because the no's are doctrinal)
+
+- **No background bash.** Use tmux. Full observability, direct interaction.
+- **No sub-agents.** "Spawn pi instances via tmux, or build your own with extensions, or install a package that does it your way."
+- **No built-in to-dos.** "They confuse models. Use a TODO.md file, or build your own with extensions."
+- **No MCP shipped by default.** A CLI tool with a README is the same primitive — and pi's stance is that this is preferable for many uses.
+
+> "Pi ships with powerful defaults but skips features like sub agents and plan mode. Instead, you can ask pi to build what you want or install a third party pi package that matches your workflow."
+
+### Extensions API in one paragraph
+
+A TypeScript module with a default-exported factory that gets an `ExtensionAPI` and can `registerTool`, `registerCommand`, `on('tool_call', ...)`, replace built-ins, register providers, render UI. Async factories supported (e.g., for fetching remote model lists at boot). Extensions are how you implement: sub-agents, plan mode, custom compaction, permission gates, git checkpointing/auto-commit, SSH/sandbox execution, MCP integration — *everything pi refuses to ship.*
+
+### Provider matrix
+
+5 subscription providers (Anthropic Pro/Max, ChatGPT Plus/Pro Codex, GitHub Copilot, Gemini CLI, Antigravity) and ~20 API-key providers (Bedrock, Vertex, Groq, Cerebras, OpenRouter, Vercel AI Gateway, Fireworks, …). Bring-your-own via `~/.pi/agent/models.json`. Sessions can be published to Hugging Face for OSS-training use via the sister tool `pi-share-hf`.
+
+### Where it slots in
+
+Pi is a **complete, runnable instance of TRAE's Engineering Landmarks pattern** in TypeScript:
+
+| TRAE Engineering Landmark | Pi component |
+|---|---|
+| Tool Gateway | The four built-in tools + `registerTool` |
+| Call Interceptor | `on('tool_call', ...)` extension hook |
+| Context State Manager (input) | Skills/prompts loader |
+| Context State Manager (persisted) | JSONL session tree (`id`/`parentId`) |
+| Context State Manager (compaction) | `/compact` primitive |
+| PPAF boundary for embedding | RPC mode (LF-delimited JSONL) |
+
+It's also the cleanest *philosophical* convergence of the four other sources: small core, loop outside, parallelism via tmux, state on disk.
+
+---
+
+# Synthesis — three ways to optimize the FRQNCY harness
+
+Across all five sources plus the four essays above, there is a coherent diff between *"the harness we have today"* and *"the harness the operations layer is converging on."* Three optimizations stand out as concrete, low-risk steals.
+
+## 1. Move the loop **outside** the agent (Ralph Loop pattern)
+
+**The current state.** Today, when an agent works on a long task, the agent itself decides when to stop. That's the "wild horse decides when to stop running" pattern — fragile, opaque, and prone to giving up early or running forever.
+
+**The change.** Adopt the **stop-hook + completion-promise sentinel + max-iterations contract** as the default outer-loop primitive:
+
+```
+[orchestrator] → spawn agent with prompt P, completion_promise S, max_iterations N
+[agent] → work, write files, commit
+[stop hook] → if agent emitted S → halt; if iteration < N → re-spawn with P; else → halt
+```
+
+Why it works:
+- The completion criterion is **external and verifiable** (a string match, a build status, a passing test) — not "the agent thinks it's done."
+- The filesystem is the cross-iteration memory, exactly as TRAE's State Separation Principle prescribes. The LLM stays stateless.
+- Max-iterations gives every long run a **predictable cost ceiling** — important for the FRQNCY economics.
+- It composes with `gtr` (each iteration in a clean worktree) and tmux (each loop in its own pane).
+
+**Where to apply this on FRQNCY first.** The next time we run the multi-agent research-paper-style batches (like `docs/FRQNCY_SOCIAL_RESEARCH_PAPER.md` was generated), give each agent a `completion_promise` and a `max_iterations` instead of a vague "keep going until you're done." Same for the v2 topic-page generation pipeline.
+
+## 2. Persist sessions as a **JSONL DAG** (Pi pattern)
+
+**The current state.** Conversation history lives in whatever the agent's chat scrollback happens to be. There's no clean way to fork a session, run two variants, and pick the better one. We've been working around this with branchy git history and ad-hoc filenames.
+
+**The change.** Adopt **JSONL session files with `id` + `parentId`** as the canonical persistence format for any non-trivial agent run. Add three primitives:
+
+- `tree` — visualize the conversation DAG.
+- `fork` — branch a session at any point, get a new id, parent set to the fork point.
+- `clone` — copy a session as a starting template.
+
+Why it works:
+- It makes the **Context Graph** (per the Foundation Capital essay) into a real on-disk artifact. Every fork is a decision trace; every parent link is the "why" link.
+- It's strictly more expressive than linear history. Linear history is the special case where every node has exactly one child.
+- Pi has shipped a working implementation we can just copy the data layout from.
+
+**Where to apply this on FRQNCY first.** The brand-voice / discover-brand / research workflows are exactly the ones that benefit from forking — *"run this agent five different ways with five different prompts, keep the best, archive the rest."* Today that's manual; with a JSONL DAG it's a one-line `fork` per branch.
+
+## 3. Standardize on **tmux + gtr + lifecycle hooks** as the runtime (Agent Teams + Pi + tmux)
+
+**The current state.** Multi-agent runs on FRQNCY have been ad-hoc — multiple Claude sessions in different terminal tabs, no observability, no structured handoff, no canonical place state lives.
+
+**The change.** Three steps, in order:
+
+1. **tmux as the parallel-agent substrate.** Every multi-agent batch runs as a tmux session with one pane per agent. `tmux send-keys` for steering, `tmux pipe-pane` for centralized logging. Aligns with Anthropic's Agent Teams official tmux mode and Pi's "no background bash, use tmux" rule.
+2. **`gtr` worktrees as the per-agent workspace.** Each pane runs an agent in its own worktree, so two agents editing the same file is *physically impossible* — the Agent Teams docs name this exact failure mode and point at git worktrees as the fix.
+3. **Three lifecycle hooks as the canonical Feedback Assembler interface.** `TeammateIdle`, `TaskCreated`, `TaskCompleted` — adopt Anthropic's hook names, even if we're not running their plugin, so anything we build is portable. Each hook writes to a shared task list on disk (the Agent Teams pattern at `~/.claude/tasks/{team-name}/`).
+
+Why it works:
+- All three are zero-cost (tmux, git, filesystem). No new infrastructure.
+- It's the path Anthropic has standardized on for first-party multi-agent work. We get plugin compatibility for free.
+- It satisfies all three convergent claims: loop is outside (tmux + hooks), state is on disk (worktrees + task list), parallelism is real OS processes (tmux panes).
+
+**Where to apply this on FRQNCY first.** The next time we batch-generate v2 topic pages or run the brand-voice discovery sweep, do it as `tmux new-session -d` + `gtr new topic-X --ai` per topic + a shared `tasks.md`. Compare the cost and quality to the serial baseline.
+
+## Bonus: the discipline (Huntley)
+
+Steal Huntley's daily practice independent of any specific tool: **watch the loop**, and every time you see a failure mode, codify the fix into the harness so it can't happen again. This is the *event clock* (Animesh) and the *closed loop* (TRAE) and *the engineer becoming the guardian of the creation process* (TRAE again) — but as a practice, not an architecture.
+
+---
+
+## Updated source map — operations layer added
+
+| Layer | Sources |
+|---|---|
+| **Market thesis** | Foundation Capital — *AI's trillion-dollar opportunity: Context graphs* |
+| **World model** | Animesh Koratana (PlayerZero) — *How to build a context graph* |
+| **Data structure** | Ishan Chhabra (Oliv) — *From CRM to CRCG* |
+| **Runtime architecture** | TRAE — *The Definitive Guide to Harness Engineering* |
+| **Filesystem isolation** | `gtr` (git-worktree-runner, CodeRabbit) |
+| **Loop philosophy** | Geoffrey Huntley — *everything is a ralph loop* |
+| **Loop primitive** | Anthropic — *Ralph Loop plugin* |
+| **Multi-agent runtime** | Anthropic — *Agent Teams docs* |
+| **Process substrate** | tmux project wiki |
+| **Reference implementation** | Mario Zechner — *pi-mono / coding-agent* |
 
 **Suggested experiment:** install `gtr` on the FRQNCY repo, set `gtr.editor.default cursor` and `gtr.ai.default claude`, and the next time we do a multi-agent batch (e.g., generating four topic pages in parallel), spin each one up as `git gtr new topic-X --ai` so they run in isolated worktrees instead of serially. The `clean --merged` command would then garbage-collect the branches after PRs land.

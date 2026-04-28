@@ -38,7 +38,7 @@
 | Phase | Weeks | Theme | Headline outcome |
 |---|---|---|---|
 | **Phase 1 — Stand it up** | 1–2 | Get every scaffolded surface to "live" | Social platform deployed; chart engine calibrated; my-frqncy persists |
-| **Phase 2 — Personalisation** | 3–4 | Charts → My FRQNCY → Sanctuary scoring loop | A logged-in user sees their HD chart, gets personal recs, tracks practice |
+| **Phase 2 — Personalisation + FRQNCY OS** | 3–4 | Track A: charts → My FRQNCY → Sanctuary scoring. Track B: n8n + Telegram + Council org with harness as substrate | A logged-in user tracks practice; Orlando's Telegram bot routes to the Council |
 | **Phase 3 — Membership + Referrals** | 5–6 | Make the economy real (one tier, one Stripe, one referral loop) | Stripe live; ref codes work; first paying member possible |
 | **Phase 4 — Auto-grow loops** | 7–8 | Harness self-optimisation seed + content auto-grow | Trace reflection script + nightly resource-PR agent + video ingestion v0 |
 | **Phase 5 — Content depth + crypto cards** | 9–10 | Make the site read like a book + ship crypto values content | 30 thin topic pages levelled up; crypto values + Ethos + Obi + Maloney + Trudeau live |
@@ -128,9 +128,15 @@ Goal: every scaffolded thing becomes alive on a real URL.
 
 ---
 
-## Phase 2 — Personalisation loop (Weeks 3–4: May 11 → May 24)
+## Phase 2 — Personalisation loop + FRQNCY OS rollout (Weeks 3–4: May 11 → May 24)
 
-Goal: a member's daily-use loop is real. Charts → My FRQNCY → Sanctuary scoring → next practice.
+> **Reconciliation note (added 2026-04-28).** Phase 2 now runs two parallel tracks. Track A is the original personalisation loop. Track B is the **FRQNCY OS** rollout per `proposals/FRQNCY-OS-STATUS.md` and `frqncy-harness/proposals/HARNESS-AS-PHASE2-SUBSTRATE.md` — the n8n + Telegram + Council agent organisation, with the harness as LLM substrate. Track B was previously sitting outside the 90-day plan; folding it in now per Orlando's call.
+>
+> **Track B blockers before kickoff:** (1) the **n8n vs. alternatives** research note (`proposals/N8N-ALTERNATIVES-RESEARCH.md` — to be written) must land before Track B Day 1 so we lock the workflow runtime on evidence, not default. (2) The harness-as-substrate proposal needs a final ack — no large changes expected, but worth a re-read before kickoff. (3) Hostinger VPS provisioned + SSH access verified.
+>
+> **Track allocation:** treat Track A as ~60% of Week 3–4 effort and Track B as ~40%. If Track B's runtime choice slides (e.g., we pick Temporal or Cloudflare Workflows over n8n and need extra learning time), Track B compresses to "OS spine + first three personas" by end of Phase 2 and the rest carries into Phase 4.
+
+Goal: a member's daily-use loop is real (Track A). Charts → My FRQNCY → Sanctuary scoring → next practice. AND: Orlando's personal AI org is operational (Track B) — Telegram in, Council/CEO/Workers behind, harness as LLM substrate, traces flowing.
 
 ### Week 3 (May 11 → May 17)
 
@@ -173,6 +179,23 @@ Goal: a member's daily-use loop is real. Charts → My FRQNCY → Sanctuary scor
 
 **Sun — Phase 2 demo + commit**
 - Walk a logged-in user from signup → birth data → chart → my-frqncy → log a practice → see streak update. Record screencast.
+- Track B demo: send a Telegram message to the FRQNCY bot, watch it route through the runtime to a Council member, get a response, confirm the trace landed in `~/.frqncy-harness/traces/`.
+
+### Track B — FRQNCY OS rollout (parallel, Weeks 3–4)
+
+Detailed task graph in `proposals/FRQNCY-OS-STATUS.md` — the doc has 32 prompts written, a Week 2 atomic build guide, and a Phase 2 plan v0.3. Headline tasks for the 90-day plan integration:
+
+- **Wk 3 Mon — runtime choice locked.** Decision deliverable: which workflow runtime hosts the org. Default candidate is n8n; the comparison note (Temporal, Inngest, Trigger.dev, Activepieces, Pipedream, Windmill, native Cloudflare Workflows) must be written first. See `proposals/N8N-ALTERNATIVES-RESEARCH.md` (TBD).
+- **Wk 3 Tue–Wed — Hostinger VPS + runtime install.** Provision, harden, install runtime, deploy a hello-world Telegram echo workflow.
+- **Wk 3 Thu — Harness-as-substrate wiring.** Hermes Agent installed; harness skill loaded; runtime nodes call out to the harness CLI for all LLM work per `HARNESS-AS-PHASE2-SUBSTRATE.md`. Verify trace logs flow.
+- **Wk 3 Fri — Supabase memory layer.** Tables: `agent_outputs` (with `trace_conversation_id` back to harness), `approvals`, `agent_memory` (pgvector), `agent_versions`. Drop `audit_log` (the harness trace IS the audit log per the substrate proposal). Graphiti deferred to Phase 4.
+- **Wk 3 Sat–Sun — FRQNCY router persona live.** First persona deployed: routes incoming Telegram messages to the right Council member or CEO line. Test end-to-end with three sample messages.
+- **Wk 4 Mon–Tue — Council personas v0.** All seven Council members (Krishna, Kali, Merlin, Saraswati, Sai Maa, Spivey, Trudeau) with their spiritually-set system prompts wired. CEO line wired. Each callable from the router.
+- **Wk 4 Wed — C-Suite scaffolding.** Six C-Suite personas with placeholder prompts; Worker bench with two sample workers.
+- **Wk 4 Thu — Veto authority + cost rollup.** Council veto path implemented. Per-conversation cost guardrails ($5 soft, $25 hard) confirm firing through the harness layer.
+- **Wk 4 Fri — Learning Agent v0.** Reads recent trace store entries, surfaces patterns to Orlando in the morning Telegram digest. Read-only, no auto-edit.
+
+**Track B success criteria for Phase 2 close:** Orlando sends a Telegram message; it lands; the right persona responds; cost is logged; trace is stored. Everything else (the full 32 personas, C-Suite depth, Graphiti memory) carries into later phases.
 
 ---
 
