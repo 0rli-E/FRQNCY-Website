@@ -26,7 +26,7 @@ const BESPOKE_DOMAINS = new Set();
 // Commissioned topic pages (the artwork) — each is a unique piece, not a template.
 // See proposals/TOPIC-COMMISSION-CONTEXT-GRAPH.md for the procedure that builds them.
 // Add a slug here as soon as a topic is commissioned, BEFORE the next regen run.
-const BESPOKE_TOPICS  = new Set(['water', 'music', 'money']);
+const BESPOKE_TOPICS  = new Set(['water', 'music', 'money', 'wellbeing']);
 
 // ── Entity beds (world model, v1) ────────────────────────────────
 // First-class lists of people, books, orgs, and media. Each entity declares

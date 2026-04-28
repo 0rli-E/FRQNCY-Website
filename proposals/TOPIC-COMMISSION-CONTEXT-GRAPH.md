@@ -263,7 +263,8 @@ Until the harness can do this autonomously, the procedure is run by hand, with t
 | 0001 | Water | `water` | "crystals in motion" | 2026-04-28 | 2 | Reference commission — sets the precedent. |
 | 0002 | Music | `music` | "frequency made audible" | 2026-04-28 | 1 | Cymatic motif as visual signature. Analog-vs-digital split + lyric loop are the user-requested anchors. |
 | 0003 | Money | `money` | "energy you create by being of service" | 2026-04-28 | 1 | Service-as-source frame. Maloney's currency-vs-money + six attributes preserved. Triangular flow SVG (service → value → exchange) as visual signature. |
-| 0004 | Crypto | `crypto` | "freedom technology" | — | — | Editorial seed already locked: "Crypto is freedom technology" + the six Bitcoin properties already on the page. |
+| 0004 | Wellbeing | `wellbeing` | "the body knows how" | 2026-04-28 | 1 | Six pillars (sleep, food, movement, breath, sun, connection). Six-circle flower-of-life as visual signature. Sage-green accent (#8FAE7C). Conventional vs functional medicine split. Trauma-in-the-body section anchored by Maté + van der Kolk. Originally drafted as "Health" — renamed to Wellbeing on user direction. |
+| 0005 | Crypto | `crypto` | "freedom technology" | — | — | Editorial seed already locked: "Crypto is freedom technology" + the six Bitcoin properties already on the page. |
 
 Update this log when each commission ships.
 
