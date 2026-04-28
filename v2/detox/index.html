@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../education/index.html">Education</a><span class="sep">/</span><a href="../lifestyle/index.html">Lifestyle</a><span class="sep">/</span><span>Detox</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,54 +235,8 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Clearing the body, mind, and environment of what burdens them — fasting, cleansing, and conscious simplification.</p>
 </div>
 <main>
-
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Detox isn't a juice cleanse. It's the broader practice of reducing the burden a body, mind, or environment carries — and giving the systems already designed to clear that burden (liver, kidneys, lymph, sleep, attention, breath) the conditions to do their work.</p>
-    <p style="font-size:0.92rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">Every traditional medicine — Ayurveda, traditional Chinese medicine, Greek humoral theory, Hippocratic fasting — built detox into its model from the start. Modern medicine quietly does the same when it talks about hepatic clearance, autophagy, glymphatic drainage, or the reset of insulin sensitivity through fasting. Different language, same observation: living systems accumulate residue, and they have a built-in way of clearing it when given the space.</p>
-    <p style="font-size:0.92rem;line-height:1.75;color:var(--text-dim)">FRQNCY's frame: detox is what happens when input drops below output. The methods are how you achieve that drop in different domains.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Four domains</div>
-    <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem">
-        <div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem">Body</div>
-        <strong style="color:#fff;font-weight:500">Reduce intake, support clearance.</strong>
-        <p style="font-size:0.83rem;color:var(--text-dim);line-height:1.65;margin-top:0.4rem">Time-restricted eating, intermittent fasting, sauna/sweat protocols, hydration with mineralised water, sleep prioritisation, exposure cuts (alcohol, ultra-processed food, plastics in food contact, fragrance chemicals).</p>
-      </div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem">
-        <div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem">Mind</div>
-        <strong style="color:#fff;font-weight:500">Reduce input, restore attention.</strong>
-        <p style="font-size:0.83rem;color:var(--text-dim);line-height:1.65;margin-top:0.4rem">Information fasts, social-feed deletion, dopamine resets, single-tasking blocks, silence as practice. The bottleneck is rarely "more knowledge"; it's the recovery of an attention span that can hold a thought for sixty seconds.</p>
-      </div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem">
-        <div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem">Environment</div>
-        <strong style="color:#fff;font-weight:500">Reduce ambient toxicity.</strong>
-        <p style="font-size:0.83rem;color:var(--text-dim);line-height:1.65;margin-top:0.4rem">Air filtration, water filtration, swap personal-care products with non-disclosed ingredient lists for ones with full disclosure, replace polyester bedding and food storage with natural fibres and glass, audit cleaning products. Small changes compound across years.</p>
-      </div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem">
-        <div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.5rem">Relational</div>
-        <strong style="color:#fff;font-weight:500">Reduce energy drain.</strong>
-        <p style="font-size:0.83rem;color:var(--text-dim);line-height:1.65;margin-top:0.4rem">The most overlooked detox: relationships, contracts, recurring obligations, news intake, and notification settings that quietly extract attention. Periodic audit, conscious removal. The body's clearing systems work better when the nervous system isn't permanently elevated.</p>
-      </div>
-    </div>
-    <p style="font-size:0.85rem;color:var(--text-dim);max-width:680px;line-height:1.7"><em>Note on framing.</em> "Toxin" gets used loosely. The body's primary clearing organs (liver phase I/II, kidneys, lymph, gut) handle most of what's classically called toxicity. Where the system breaks down is at the input volume — not because the body is broken, but because modern environmental load exceeds what the system evolved to clear. That's a quantitative problem, not a mystical one.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">A starting protocol</div>
-    <p style="font-size:0.92rem;color:var(--text-dim);line-height:1.7;margin-bottom:1rem">Not advice. A common-sense default Maybe-Helpful place to begin if you've never tried any of this:</p>
-    <ol style="font-size:0.9rem;color:var(--text);line-height:1.8;padding-left:1.25rem;margin-bottom:1rem">
-      <li>One week of <strong style="color:#fff;font-weight:500">eating in a 10-hour window</strong> (e.g., 9am–7pm). Nothing else changed.</li>
-      <li>One week of <strong style="color:#fff;font-weight:500">filtered water as the only drink</strong> outside of one cup of coffee or tea. Reverse-osmosis or structured-water filtration is the cleanest tier — see <a href="../../aligned/" style="color:var(--accent)">Aligned Goods</a>.</li>
-      <li>One week of <strong style="color:#fff;font-weight:500">no ultra-processed packaged food</strong>. Define ultra-processed as: ingredients you can't pronounce, or wouldn't keep in a kitchen.</li>
-      <li>One week of <strong style="color:#fff;font-weight:500">phone outside the bedroom</strong>. Buy a $10 alarm clock; the bedroom becomes a sleep environment again.</li>
-      <li>One <strong style="color:#fff;font-weight:500">information fast</strong>: 24 hours, no feeds, no news. Repeat monthly. Attention rebuilds.</li>
-    </ol>
-    <p style="font-size:0.84rem;color:var(--text-dim);line-height:1.7"><em>If anything in this list feels difficult — that's the signal of where the load is. The difficulty is the diagnostic.</em></p>
-  </section>
-
+  
+  
   <section>
   <div class="section-label">Curated Resources</div>
   <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">3 resources &nbsp;·&nbsp; 1 book &nbsp;·&nbsp; 1 org &nbsp;·&nbsp; 1 tool &nbsp;·&nbsp; <span style="color:var(--gold)">1 ✦ pick</span></div>

@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../media/index.html">Media</a><span class="sep">/</span><a href="../arts/index.html">Arts &amp; Culture</a><span class="sep">/</span><span>Architecture</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,33 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">The art of shaping space — how buildings form the invisible container of human experience.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Architecture is the design of the space humans live in — and the space designs the humans back. A cathedral organises attention upward and inward. A strip-mall parking lot organises attention toward the horizon and away from one's neighbours. Most people inherit the buildings they spend their lives in without noticing how thoroughly the rooms shape what's possible inside them.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's lens: most modernist and post-war architecture optimised for efficiency, scale, and developer economics — and produced spaces that quietly damage the people who live in them. The recovery is happening through traditional pattern-language work (Christopher Alexander), biophilic design, regenerative material practices, and a return to human-scale walkability. Building well is one of the highest-leverage things a culture does.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Patterns that almost always work</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Pattern 1</div><strong style="color:#fff;font-weight:500">Light from two sides.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Rooms with windows on at least two walls feel meaningfully better than rooms with one. Cross-light, no dark corners, three-dimensional shadow. One of Christopher Alexander's most reliable findings.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Pattern 2</div><strong style="color:#fff;font-weight:500">Human scale.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Spaces sized to be reachable, walkable, and seen at a glance. The body's intuitive sense of "I belong here" emerges from walls, ceilings, and distances calibrated to human dimensions rather than monumental ones.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Pattern 3</div><strong style="color:#fff;font-weight:500">Materials that age well.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Stone, brick, real wood, copper, plaster. They develop character with time. Cheap composite materials degrade visibly; quality materials patina. Buildings made of the second kind become more loved over decades.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Pattern 4</div><strong style="color:#fff;font-weight:500">Layered transitions.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Public street → semi-public threshold → semi-private courtyard → private home. The gradient between fully exposed and fully sheltered makes social life possible. Modern apartment blocks usually skip the middle layers and produce isolation as a result.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">What to advocate for</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Walkability over parking.</strong> Most planning rules still mandate vast parking minimums for new buildings. The rules made some sense in 1955 and very little now. Reforming them is among the highest-leverage urban policy moves available.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Mid-rise mixed-use.</strong> Four-to-six-story buildings with shops below and homes above. The pattern most beloved old neighbourhoods follow. Very few new neighbourhoods are built this way; zoning is usually the obstacle.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Embodied carbon awareness.</strong> Concrete and steel are roughly 8% of global emissions. Mass timber, hempcrete, lower-carbon cement, and reuse of existing buildings are the levers. "The greenest building is the one already built" is mostly true.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Beauty as a non-negotiable.</strong> The argument that "we can't afford beautiful buildings" is mostly a budgeting choice. Cultures that decided beauty mattered managed to produce it at every income level; cultures that decided it didn't built buildings nobody loves.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Future Cities, Permaculture, Visual Art, Sacred Geometry, Indigenous Wisdom.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>

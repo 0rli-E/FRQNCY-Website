@@ -17,11 +17,23 @@ Keep entries short. Each surface: one paragraph state + bullets for files + bull
 
 ## Static site (main)
 
-🟢 Alive. 146 topic pages under `v2/`, 766 resources in `resources.json`, 695 URLs in sitemap. Auto-deploys on push via `.github/workflows/build.yml` + Cloudflare Pages.
+🟢 Alive. 146 topic pages under `v2/`, 770+ resources in `resources.json`, 695 URLs in sitemap. Auto-deploys on push via `.github/workflows/build.yml` + Cloudflare Pages.
 
 - Build: `package.json` scripts (`build`, `build:kb`, `build:og`, `build:pages`, `build:courses`, `build:watch`).
-- Topic graph: `search.json` (146 topics), `resources.json` (766 resources), `entities.json` + per-entity dirs (`people/`, `books/`, `orgs/`, `media/`).
+- Topic graph: `search.json` (146 topics), `resources.json` (770+ resources), `entities.json` + per-entity dirs (`people/`, `books/`, `orgs/`, `media/`).
 - Navigation: `v2/explore.html` is the topic graph spine. Header has Discover / Capital / Community dropdowns. No prev/next or mini-map on individual topic pages — that's a Phase 1 polish target.
+
+### Topic-page state (important framing)
+
+The long horizon: **every topic page is its own piece** — its own layout, typography, structural metaphor, colour, and visual language emerging from the subject. FRQNCY is an artwork; each topic is an expression. This is months-to-years of work, not a sprint.
+
+Three states a topic page can be in:
+
+- 🟢 **Book / commissioned** — substantively written and laid out specifically for this topic. About 6–10 pages today (meditation, manifestation, prosperity-mindset, history, etc.).
+- 🟡 **Scaffolded — templated content block** — a 3-section template (frame / structure / practice) was inserted on 2026-04-28 to lift these out of stub state. Better than the bare 10-paragraph baseline, but they share a structural skeleton and are **placeholder, not finished**. They will be replaced with unique treatments one at a time as each is commissioned. About 35 pages today: detox, water, quantum-grammar, governance, future-cities, regenerative-farming, peace, collective-intelligence, biomimicry, systems-thinking, taoism, soul, oneness, synchronicity, akashic-records, dimensions, merkaba, remote-viewing, mythology, decentralized-networks, ar-vr, robotics, quantum-computing, biotechnology, future-tech, emergence, open-source, renewable-energy, solar, wind-energy, geothermal, energy-storage, bioenergy, grid-technology, energy-policy, visual-art, dance, architecture, fashion, photography, theater, film, poetry.
+- 🔴 **Stub** — auto-generated 334-line / 10-paragraph baseline only. No content beyond the topic name and curated resources. About 50 pages remain. **Stays as stub** until each gets its own commissioned treatment.
+
+`scripts/insert-topic-content.py` exists in the repo as a record of the templated-block approach but **will not be re-run**. Future topic-page work happens one page at a time, on demand, with structural decisions specific to that topic.
 
 ## AI chat widget
 

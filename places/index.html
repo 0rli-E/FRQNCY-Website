@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Places — FRQNCY Network</title>
-<meta name="description" content="7 places curated on the FRQNCY network: Intaaya, Auroville, Esalen, Findhorn, Plum Village, Schumacher College, Tassajara.">
+<meta name="description" content="1 places curated on the FRQNCY network.">
 <meta name="theme-color" content="#0B1C3D">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Places — FRQNCY Network">
-<meta property="og:description" content="7 places curated on the FRQNCY network: Intaaya, Auroville, Esalen, Findhorn, Plum Village, Schumacher College, Tassajara.">
+<meta property="og:description" content="1 places curated on the FRQNCY network.">
 <meta property="og:url" content="https://frqncy.network/places/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -16,7 +16,7 @@
 <meta property="og:site_name" content="FRQNCY">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Places — FRQNCY Network">
-<meta name="twitter:description" content="7 places curated on the FRQNCY network: Intaaya, Auroville, Esalen, Findhorn, Plum Village, Schumacher College, Tassajara.">
+<meta name="twitter:description" content="1 places curated on the FRQNCY network.">
 <meta name="twitter:image" content="https://frqncy.network/og-image.png">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="manifest" href="../../manifest.json">
@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -218,7 +218,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Places — FRQNCY Network","description":"7 places curated on the FRQNCY network.","url":"https://frqncy.network/places/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Places — FRQNCY Network","description":"1 places curated on the FRQNCY network.","url":"https://frqncy.network/places/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -226,76 +226,25 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../index.html">FRQNCY</a><span class="sep">/</span><span>Places</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
 </nav><div class="hero">
   <div class="hero-eyebrow">Network</div>
   <h1>Places</h1>
-  <p class="hero-desc">Sanctuaries, monasteries, ecovillages, and laboratories of conscious living. The physical layer of the network — places that have already done the work, that you can visit and learn from.</p>
+  <p class="hero-desc">1 places on the FRQNCY network — 1 ✦ picks first.</p>
 </div>
 <main>
-
+  
   <div id="filter-empty" style="display:none;padding:3rem 1rem;text-align:center;color:var(--text-dim);font-size:0.85rem">No entities match this filter.</div>
   <section>
-    <div class="grid grid-sm" id="entity-grid">
-
-<a href="./intaaya/index.html" class="ncard entity-card" data-pillars="network-state education fund">
-  <div class="ncard-type">Place · Bali, Indonesia</div>
+    <div class="grid grid-sm" id="entity-grid"><a href="./intaaya/index.html" class="ncard entity-card" data-pillars="network-state education fund">
+  <div class="ncard-type">Place · 11 appearances</div>
   <h3>Intaaya <span style="color:var(--gold);font-size:0.54rem;letter-spacing:0.15em;border:1px solid rgba(196,151,58,0.5);padding:1px 5px;border-radius:2px;margin-left:0.35rem;vertical-align:middle">✦ PICK</span></h3>
-  <p>Regenerative retreat sanctuary on Nusa Penida. Off-grid, farm-to-table, living to the rhythm of nature.</p>
+  <p>Regenerative retreat sanctuary on Nusa Penida, near Bali. Off-grid, farm-to-table, living …</p>
   <span class="ncard-arrow">→</span>
-</a>
-
-<a href="./esalen/index.html" class="ncard entity-card" data-pillars="education research media">
-  <div class="ncard-type">Place · Big Sur, California</div>
-  <h3>Esalen Institute</h3>
-  <p>Founded 1962 on the Big Sur cliffs. The hub of the human potential movement — Gestalt, somatics, hot springs, workshops.</p>
-  <span class="ncard-arrow">→</span>
-</a>
-
-<a href="./findhorn/index.html" class="ncard entity-card" data-pillars="network-state education">
-  <div class="ncard-type">Place · Findhorn, Scotland</div>
-  <h3>Findhorn Foundation</h3>
-  <p>A spiritual community and ecovillage on the Scottish coast, founded 1962. One of the working models of regenerative living.</p>
-  <span class="ncard-arrow">→</span>
-</a>
-
-<a href="./plum-village/index.html" class="ncard entity-card" data-pillars="education media">
-  <div class="ncard-type">Place · Dordogne, France</div>
-  <h3>Plum Village</h3>
-  <p>Thich Nhat Hanh's mindfulness practice centre, founded 1982. The home of Engaged Buddhism in the West.</p>
-  <span class="ncard-arrow">→</span>
-</a>
-
-<a href="./auroville/index.html" class="ncard entity-card" data-pillars="network-state education research">
-  <div class="ncard-type">Place · Tamil Nadu, India</div>
-  <h3>Auroville</h3>
-  <p>A universal city in southern India, founded 1968 to embody human unity. Endorsed by UNESCO. An active experiment in voluntary, post-national community.</p>
-  <span class="ncard-arrow">→</span>
-</a>
-
-<a href="./tassajara/index.html" class="ncard entity-card" data-pillars="education">
-  <div class="ncard-type">Place · Carmel Valley, California</div>
-  <h3>Tassajara Zen Mountain Center</h3>
-  <p>The first Zen monastery established in the West, founded 1967 in a remote Big Sur canyon.</p>
-  <span class="ncard-arrow">→</span>
-</a>
-
-<a href="./schumacher-college/index.html" class="ncard entity-card" data-pillars="education research network-state">
-  <div class="ncard-type">Place · Devon, England</div>
-  <h3>Schumacher College</h3>
-  <p>Holistic learning centre on the Dartington estate. Ecology, systems thinking, regenerative economics taught with hands in the soil.</p>
-  <span class="ncard-arrow">→</span>
-</a>
-
-    </div>
+</a></div>
+    
   </section>
 </main>
 <script>

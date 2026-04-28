@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../research/index.html">Research</a><span class="sep">/</span><a href="../sciences/index.html">Sciences</a><span class="sep">/</span><span>Quantum Grammar</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,46 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">A framework exploring how language, syntax, and meaning operate at a fundamental level — bridging quantum principles with the structure of consciousness and communication.</p>
 </div>
 <main>
-
-  <section style="max-width:780px">
-    <div class="section-label">What this actually is</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Quantum Grammar is a framework — popularised by David Wynn Miller and Russell Jay Gould — that treats every word as a structured carrier of meaning under specific syntactic rules, and every legal name, contract, and statute as a parsable expression with consequences if mis-spoken. The claim, stripped of its extras, is that language has a grammar precise enough to be tested for internal consistency the way mathematics is tested.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">It is also a controversial framework. Some practitioners use it as a tool of personal sovereignty — a way to write contracts, names, and statements that can't be misread or weaponised. Others have pushed it into legal-pseudoscience territory in courtrooms with mixed results. FRQNCY presents Quantum Grammar as a <em>frame for examining how language structures reality</em> — useful as a thinking tool, not as legal advice.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim)">Treat the practice as an experiment in precision: what changes in a relationship, contract, or self-narrative when each word is chosen for its <em>function</em>, not its connotation? The discipline of that question is the practice, regardless of where you land on the larger claims.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Three claims worth taking seriously</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem">
-        <div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Claim 1</div>
-        <strong style="color:#fff;font-weight:500">Words have function, not just meaning.</strong>
-        <p style="font-size:0.85rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Every word in a sentence does a specific job (modifier, fact, position, action). Quantum Grammar's contribution is the discipline of identifying what each word is <em>doing</em> rather than what it merely connotes. When you can name the function, you can spot the failure point in a vague clause or a manipulative claim.</p>
-      </div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem">
-        <div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Claim 2</div>
-        <strong style="color:#fff;font-weight:500">Punctuation, capitalisation, and tense carry weight.</strong>
-        <p style="font-size:0.85rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">A name in all caps versus mixed case, a comma where a colon belongs, a passive verb where an active one was needed — each shifts what is actually being said. This holds in legal contracts, in confession of intent, and in self-talk. Most readers skim past these details; that's part of why miscommunication is so durable.</p>
-      </div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem">
-        <div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Claim 3</div>
-        <strong style="color:#fff;font-weight:500">Speaking precisely changes what shows up.</strong>
-        <p style="font-size:0.85rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Whether or not you accept the metaphysical reading (intent encoded in language echoes into reality), the pragmatic reading still holds: people who speak with precision get more of what they ask for, attract less of what they fear, and write contracts that survive scrutiny. The discipline pays whether or not the larger frame is true.</p>
-      </div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">A starter practice</div>
-    <ol style="font-size:0.92rem;color:var(--text);line-height:1.85;padding-left:1.25rem;margin-bottom:1rem">
-      <li><strong style="color:#fff;font-weight:500">Audit one paragraph you wrote this week.</strong> A message, an email, a journal entry. Read each word and ask: <em>what is this word doing?</em> Strike anything that doesn't have a function.</li>
-      <li><strong style="color:#fff;font-weight:500">Convert one passive sentence to active.</strong> "Mistakes were made" → "I made these mistakes." Notice how the sentence changes the relationship to the events.</li>
-      <li><strong style="color:#fff;font-weight:500">Test a name.</strong> Read a contract, statute, or terms-of-service document. Note where capitalisation shifts. Note which words have legal definitions and which use everyday meaning. The drift between the two is where most misunderstanding hides.</li>
-      <li><strong style="color:#fff;font-weight:500">Hold one statement clean for a day.</strong> Pick a recurring claim about yourself ("I'm not good at X", "I always do Y"). Watch how often you say it. Replace with a precise version that's actually true. Notice what changes.</li>
-    </ol>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>For the formal framework — modifiers, facts, positions, actions, and the syntax claims — the course below walks through the structure with examples. We treat it as a discipline of attention, not a magic incantation.</em></p>
-  </section>
-
+  
   <section>
   <div class="section-label">Take a Course</div>
   <a class="course-callout" href="../courses/quantum-grammar/" style="--course-accent:#E87A4A">

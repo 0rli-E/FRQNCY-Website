@@ -17,6 +17,8 @@ These are non-negotiable. Violating them = wrong output.
 3. **Conscious about consciousness.** No spiritual cliches. Frame practices as experiments, not prescriptions.
 4. **Default "add" target is `/v2/explore.html`.** When the user says "add X" without a destination, place on the explore page where it fits thematically.
 
+**Voice guide (canonical):** `proposals/FRQNCY-VOICE-PLAYBOOK.md` — read before writing any user-facing copy. Seven voice attributes, must-use / banished terminology, tone-by-context matrix, open questions blocking live deployment.
+
 ## Repo layout — where things live
 
 - `v2/` — main static site (146 topic pages, content data, page templates)
@@ -40,28 +42,37 @@ Physical places (e.g., a meditation center, a bookshop) live on `/v2/explore.htm
 
 There's a sibling repo at `/Users/orli/Documents/Claude/Projects/frqncy-harness/` — `@frqncy/harness`, Orlando's plug-and-play LLM harness. It's pushed to `github.com/0rli-E/frqncy-harness`.
 
-Current state: **v0.7.0-alpha.1**. Capabilities:
-- Seven provider lanes: anthropic, openai, google, openrouter, chutes (API path) + claude-code, codex (subscription subprocess path)
+Current state: **v0.7.0-alpha.1+** (post-2026-04-28 perplexity + claude-sdk lanes). Capabilities:
+- **Nine provider lanes:**
+  - API path (full tool/streaming support): `anthropic`, `openai`, `google`, `openrouter`, `chutes`, `perplexity` (sonar/sonar-pro/sonar-reasoning, returns structured `sources`)
+  - SDK path (in-process agent loop, real per-token cost, structured tool events, MCP/hooks): `claude-sdk` (uses `@anthropic-ai/claude-agent-sdk`'s `query()`)
+  - Subscription path (subprocess CLI, no tools, $0 cost from Max/Pro quota): `claude-code`, `codex`
 - Tools: bash, read, write, grep, glob, web_fetch, web_search (Tavily/Brave)
 - MCP client (Claude Desktop schema-compatible). `frqncy-content` server is NOT auto-configured — wire it manually via `frqncy-harness mcp add ...` or `mcp import-from-claude-desktop`.
 - Sandbox: gtr worktree per agent run, tempdir fallback
 - Trace storage: `~/.frqncy-harness/traces/<YYYY-MM-DD>/<conversation-id>.jsonl` + INDEX.jsonl. Auto-commit-and-push hook available; intended remote `0rli-E/frqncy-harness-traces` (configure git remote manually).
-- Cost guardrails: $5 soft warn / $25 hard abort per conversation. No per-day/per-month aggregates yet.
+- Cost guardrails: $5 soft warn / $25 hard abort per conversation. No per-day/per-month aggregates yet. **Caveat:** Perplexity per-request search fees aren't modeled in v0.7's per-token schema (will silently undercount; v0.8 schema bump fixes).
 - Lethal-trifecta gate (Simon Willison): privateData + untrustedContent + outboundNetwork — severity warn / block / allow
-- 202 tests passing across 20 test files
+- **Sub-agents blocked by default on the claude-sdk lane** (`disallowedTools: ['Agent']`) per `proposals/SUB-AGENTS.md` — proposal recommends keeping sub-agents off until trace schema bumps to support parent/child conversation_id linkage. Override per-call via `allowedTools` if you've read the proposal.
+- 204 tests passing across 20 test files (was 201 before today's parse-test additions for perplexity + claude-sdk)
 - Replay command (`frqncy-harness replay <conversation-id> [--diff]`) for manual regression eval. No autonomous self-optimisation loop yet.
 
 CLI usage:
 ```bash
-frqncy-harness chat "..." --model claude-code/sonnet            # free via Max
-frqncy-harness chat "..." --model openrouter/openrouter/free    # free via OpenRouter auto-router
+frqncy-harness chat "..." --model claude-code/sonnet                   # free via Max (no tools)
+frqncy-harness chat "..." --model claude-sdk/claude-sonnet-4-6         # API rate, full tools/MCP/hooks (NEW 2026-04-28)
+frqncy-harness chat "..." --model perplexity/sonar-pro                 # search-grounded, returns sources (NEW 2026-04-28)
+frqncy-harness chat "..." --model openrouter/openrouter/free           # free via OpenRouter auto-router
 frqncy-harness agent "..." --model openrouter/google/gemini-2.5-flash --yolo  # cheap reliable agent
 frqncy-harness doctor
 frqncy-harness mcp list
 frqncy-harness costs --period 7d
 ```
 
-For agent runs: tools work on API providers. They do NOT work with `claude-code/*` or `codex/*` (those subprocess the official CLIs which do their own internal tooling).
+For agent runs:
+- Tools work on API providers (anthropic, openai, google, openrouter, chutes, perplexity) — go through the harness's HarnessTool surface.
+- Tools work on `claude-sdk/*` — but use the SDK's own internal tool registry (bash/file/web/MCP); the harness's HarnessTool array is NOT yet bridged into the SDK lane (v0.8 follow-up).
+- Tools do NOT work with `claude-code/*` or `codex/*` — those subprocess the official CLIs which do their own internal tooling.
 
 ## Architectural decisions to know about
 
@@ -71,11 +82,18 @@ Read these before changing anything structural:
 - `proposals/HARNESS-DEFAULTS-REVIEW.md` — 30 architectural defaults with pros/cons
 - `proposals/HARNESS-USE-CASES.md` — 10 practical use cases for FRQNCY-flavored work
 - `proposals/HARNESS-RESEARCH-NOTES.md` — five-agent research dump (VC theses, Hermes, frontier-lab essays)
+- `proposals/HARNESS-TOOLS-INVESTIGATION.md` — Skills, Hooks, Caveman, Graphiti+Neo4j, DeAI providers — recommendations
 - `proposals/REVENUE-MODEL.md` — five revenue surfaces (Aligned, Courses, Referrals, Sanctuary, Fund)
+- `proposals/EDITORIAL-STANDARDS.md` — what makes a FRQNCY pick, conflict-of-interest disclosure, who can mark a pick
+- `proposals/EDITORIAL-VALUES-V2.md` — slogans, voice, posture (slogan-level supersedes this CLAUDE.md)
+- `proposals/FRQNCY-VOICE-PLAYBOOK.md` — canonical voice guide (read before writing any user-facing copy)
 - `proposals/HARNESS-BEGINNER-GUIDE.md` — beginner-friendly setup for harness users
 - `proposals/EXECUTION-PLAN-90D.md` — current 90-day plan (2026-04-27 → 2026-07-26)
 - `proposals/VISION-1H-DEMO.md` — north star: the 1h demo that explains FRQNCY without slides
 - `proposals/BACKEND-STATUS.md` — single source of truth on what's alive / scaffolded / zero-state per surface
+- `proposals/TOPIC-COMMISSION-CONTEXT-GRAPH.md` — the procedure for commissioning a unique topic page (each one is its own piece)
+- `proposals/WORD-ILLUMINATOR-V2.md` — the source-set + 5-section template for Word Illuminator outputs
+- `frqncy-harness/proposals/SUB-AGENTS.md` — recommend-against-unless framing on sub-agents in the harness (lives in the sibling repo)
 
 ## What's currently in motion
 

@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../fund/index.html">Fund</a><span class="sep">/</span><a href="../energy/index.html">Energy</a><span class="sep">/</span><span>Solar</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,32 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">The sun as power source — photovoltaics and concentrated solar as the fastest-growing energy technology in history.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Solar is the technology of converting sunlight into useful energy — most often electricity (photovoltaics), sometimes heat (solar thermal). The cost curve is the most striking thing in the energy transition: PV modules cost roughly $100/watt in the late 1970s and roughly $0.10/watt today. A thousand-fold reduction in less than fifty years. Few technologies in human history have moved this fast.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's lens: solar is the closest thing to abundant, decentralised energy we have. Anyone with a roof, a balcony, or a south-facing wall can produce some of their own power. At scale, it's already the cheapest electricity in most of the world. The remaining frictions are storage, grid integration, and the materials supply chain — none of which are solved, all of which are solvable.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Three scales</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Residential</div><strong style="color:#fff;font-weight:500">Rooftop + battery.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">A 5-10 kW system covers most of a single-family home's annual usage. Combined with a 10-20 kWh battery, the home reaches mostly-self-supply with backup. Payback is 5-10 years in most regions, sometimes faster with incentives.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Commercial</div><strong style="color:#fff;font-weight:500">Warehouse roofs and parking lots.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Massive flat surfaces, generally underutilised. Industrial-scale solar without taking new land. Most commercial buildings could host their own electrical needs many times over.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Utility</div><strong style="color:#fff;font-weight:500">Hundred-megawatt-plus farms.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">The cheapest electricity available. Sites in deserts, marginal farmland, mine reclamation areas. Dual-use "agrivoltaics" — crops and panels on the same land — is a small but growing category that improves yield in arid regions.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Choosing well</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Roof first.</strong> If you own a roof, sizing for self-consumption + battery is more economically robust than sizing to maximise feed-in tariffs (which often shrink over time).</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Quality over name brand.</strong> The panel and inverter market is competitive; tier-1 manufacturers are reliable, but installer quality matters far more than panel brand. A great panel poorly installed will underperform a moderate panel installed well.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Add storage thoughtfully.</strong> Battery economics are improving fast but still take longer to pay back than panels alone. The decision depends on grid stability, time-of-use pricing, and how much you value being independent of outages.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Watch the supply chain.</strong> Most solar panels today come from a small number of regions. Diversification of supply (US, EU, India) is improving but uneven. The ethics of where your panels come from matter; ask.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Renewable Energy, Energy Storage, Grid Technology, Future Cities.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>

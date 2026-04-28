@@ -265,20 +265,17 @@ Goal: harness starts to feed the site with less manual input.
 
 ## Phase 5 — Content depth + crypto cards (Weeks 9–10: Jun 22 → Jul 5)
 
-Goal: site reads like a book; high-priority content from IDEAS-INBOX is live.
+Goal: high-priority content from IDEAS-INBOX is live; navigation and crypto-cards are sharp.
+
+**Reframe (2026-04-28):** the topic-page sprint via templated content blocks ended after lifting ~35 stubs out of the 10-paragraph baseline. Going forward, **every topic page is treated as its own commission** — its own layout, structural metaphor, typography, and visual language emerging from the subject itself. FRQNCY is an artwork; each topic is an expression. That's months-to-years of work and doesn't fit in a 90-day window. The remaining ~50 stubs stay as stubs until each gets unique treatment, on demand, one at a time. See `proposals/BACKEND-STATUS.md` for the three-state framing (commissioned / scaffolded / stub).
 
 ### Week 9 (Jun 22 → Jun 28)
 
-**Mon — Topic-page audit**
-- Walk every topic in `search.json`. Rate each `book / stub / empty`. Output `proposals/CONTENT-DEPTH-AUDIT.md`.
+**Topic-page work this week is bespoke, not batched.** Pick 1–2 topics that genuinely call to be made now (likely ones tied to current Sanctuary / Aligned / Crypto threads, or ones that surfaced from real visitor questions). Treat each as its own piece — layout, typography, and structure designed for that subject.
 
-**Tue–Sun — Topic pages, batch (target: 30 thin → book)**
-- Use `frqncy-harness agent` with `frqncy-content` MCP to draft sections. Review + commit batch of 4–5 per day.
-- Each page must hit: hook, history, the people (link to entity pages), the practice, where to go next, related topics.
+### Week 10 (Jun 29 → Jul 5) — already partly delivered ahead of schedule
 
-### Week 10 (Jun 29 → Jul 5)
-
-**Mon — Crypto: values + slogans live**
+**Mon — Crypto: values + slogans live** *(landed 2026-04-28 in commit e894d09)*
 - On `/v2/crypto/`: add slogan "Crypto is freedom technology." Add Bitcoin values list (borderlessness, immutability, censorship resistance, permissionless, scarcity, transparency).
 - "What crypto provides" section: financial sovereignty, banking the unbanked, programmable money, unconfiscatable savings, micropayments, etc.
 

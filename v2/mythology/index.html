@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../research/index.html">Research</a><span class="sep">/</span><a href="../metaphysics/index.html">Metaphysics</a><span class="sep">/</span><span>Mythology</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,33 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">The stories cultures tell to remember what they cannot otherwise hold — gods, ancestors, and the layered cosmologies of every people.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Mythology is what cultures use to remember what they cannot otherwise hold. The hero's descent into the underworld and return; the trickster who breaks the rules to reveal them; the flood story that appears, with local variations, in cultures that never made contact — these aren't bedtime stories. They're compressed wisdom: maps of the human psyche encoded in narrative because narrative is the format the human mind retains best.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's lens: myth isn't pre-scientific superstition. It's pattern-recognition working in a different register from analysis. Joseph Campbell's <em>Hero with a Thousand Faces</em> (1949), Mircea Eliade's history of religions, Jung and Kerényi on archetypes, Marie-Louise von Franz on fairy tales — all converge on the same finding: the same handful of structural patterns recur across cultures because they correspond to something stable in human experience.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Four patterns that keep showing up</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Pattern 1</div><strong style="color:#fff;font-weight:500">The hero's journey.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Call → refusal → mentor → threshold → trials → ordeal → reward → return → integration. Campbell's monomyth. Found in Gilgamesh, Odysseus, Buddha, Christ, Frodo, Luke Skywalker, every personal story of meaningful change. The structure of growth itself.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Pattern 2</div><strong style="color:#fff;font-weight:500">Death and rebirth.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Inanna, Persephone, Osiris, Christ, Dionysus, Quetzalcoatl. The descent to the underworld and the transformation that follows. Most cultures noticed: nothing meaningful is built without something prior dying first.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Pattern 3</div><strong style="color:#fff;font-weight:500">The trickster.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Hermes, Loki, Anansi, Coyote, Krishna in his playful aspect. The figure who disrupts the order to remind it of its limits. Cultures without an authorised trickster tend to calcify; the role exists to keep the system honest.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Pattern 4</div><strong style="color:#fff;font-weight:500">The world tree / axis mundi.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Yggdrasil, the Tree of Life, Mount Meru, Mayan world tree. Most cultures imagined a vertical structure connecting underworld, ordinary world, and upper realms. The same shamanic geometry, encoded differently. A way of remembering that reality isn't single-storey.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Why this matters now</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">A culture without live myth.</strong> The post-Enlightenment West largely dispensed with myth as a guide and tried to live on rational frameworks alone. The vacuum has been filled by lower-grade substitutes (consumer narratives, partisan tribalism). Recovering working myth is part of recovering meaning.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Personal mythology as a tool.</strong> Asking which archetypes a person is currently living — hero, mother, lover, trickster, magician, sage — surfaces patterns that more analytic framings miss. The questions "what's the story I'm in?" and "what's the next chapter?" are unusually clarifying.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Reading myths as instruction.</strong> The old stories aren't entertainment. They're compressed psychology. Reading them with the question "what is this telling me about being human?" changes how they land.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Don't conflate myth with fact.</strong> Myths aren't bad history; they're a different category of true. Treating them as failed science misses what they were always doing.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Storytelling, Soul, Indigenous Wisdom, Sacred Geometry, History, Christianity. Mythology is the bedrock most consciousness work eventually returns to.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>

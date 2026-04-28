@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../network-state/index.html">Network State</a><span class="sep">/</span><a href="../society/index.html">Society &amp; Networks</a><span class="sep">/</span><span>Peace</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,33 +235,8 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">More than the absence of war — active peace-building, reconciliation, and the conditions for human flourishing.</p>
 </div>
 <main>
-
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Peace is not the absence of conflict; it's the presence of conditions that make conflict resolvable without violence. Confuse the two and you build societies that suppress the surface symptoms of disagreement while the underlying drivers compound underground. Most modern peacebuilding fails for exactly this reason — it polices behaviour rather than addressing the substrate.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's lens: peace operates at three nested scales. <strong style="color:#fff;font-weight:400">Inner peace</strong> is the foundation — a nervous system that doesn't reflexively perceive threat. <strong style="color:#fff;font-weight:400">Relational peace</strong> is what becomes possible between two regulated nervous systems — repair, honest disagreement, the capacity to be present with someone you don't agree with. <strong style="color:#fff;font-weight:400">Collective peace</strong> is what scales when relational peace becomes the cultural default. The work is bottom-up. Treaties only hold cultures that already practice the lower two layers.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Three lineages worth knowing</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Lineage 1</div><strong style="color:#fff;font-weight:500">Nonviolence as discipline.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Gandhi's <em>satyagraha</em>, MLK's strategic nonviolence, Thich Nhat Hanh's engaged Buddhism. Active, strategic, often physically demanding. Treats nonviolence not as passivity but as a more difficult and more powerful response to injustice than violent retaliation.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Lineage 2</div><strong style="color:#fff;font-weight:500">Conflict transformation.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Marshall Rosenberg's NVC, John Paul Lederach's transformation theory, restorative justice. The premise: conflict is information about unmet needs; resolution comes from naming the needs underneath the positions, not from compromising on the positions themselves.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Lineage 3</div><strong style="color:#fff;font-weight:500">Polyvagal / nervous-system work.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Stephen Porges, Deb Dana, Peter Levine. The newest layer: peace begins in the autonomic nervous system. A regulated nervous system can hold disagreement without escalating; a dysregulated one can't, no matter what tools you give it. Peace skills are downstream of regulation skills.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Practice</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Regulate first, talk second.</strong> If your nervous system is in fight/flight/freeze, no conversation will go well. Two minutes of slow breath, eye contact with something neutral, or a walk before re-entering.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Speak in observation + need, not accusation.</strong> "When X happened, I felt Y, because I needed Z" — the NVC frame. Replaces the reflexive "you always / you never" pattern that escalates by default.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Name the second-order question.</strong> Most disagreements aren't about what they look like — they're about a deeper unmet need underneath. Find the need, the surface conflict often dissolves.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Repair quickly.</strong> Per the Gottman work: rupture isn't the problem; failed repair is. The skill of the apology that lands and changes something is among the most transferable.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Nonviolent Communication, Mental Health, Trauma, Meditation, Indigenous Wisdom, Community.</em></p>
-  </section>
-
+  
+  
   <section>
   <div class="section-label">Curated Resources</div>
   <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">3 resources &nbsp;·&nbsp; 1 teacher &nbsp;·&nbsp; 1 org &nbsp;·&nbsp; 1 media &nbsp;·&nbsp; <span style="color:var(--gold)">1 ✦ pick</span></div>

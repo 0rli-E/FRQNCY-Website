@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../research/index.html">Research</a><span class="sep">/</span><a href="../metaphysics/index.html">Metaphysics</a><span class="sep">/</span><span>Taoism</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,35 +235,8 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">The Way of returning. Lao Tzu, Chuang Tzu, and the tradition of moving with rather than against.</p>
 </div>
 <main>
-
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Taoism — properly <em>Daoism</em>, from <em>Dao</em>, "the way" — is a 2,500-year-old Chinese tradition that takes one observation seriously: there is a way the world already moves, and most human suffering comes from forcing against it. The practice is the long-term project of noticing that movement and aligning with it, rather than imposing a different one. Quieter than other traditions, harder to commodify, easier to misread.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">Two foundational texts. Lao Tzu's <em>Tao Te Ching</em> (~6th-4th century BCE) — 81 short verses, the most-translated work of Chinese philosophy. Chuang Tzu's <em>Zhuangzi</em> (~4th century BCE) — story-form philosophy that pokes fun at certainty itself. Together they sketch a worldview where opposites generate each other (no high without low), where the soft outlasts the rigid (water shapes stone), and where doing-without-forcing (<em>wu wei</em>) is the highest form of action.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Five concepts</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">道 · Dao</div><strong style="color:#fff;font-weight:500">"The way."</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">The pattern by which things actually move — water flowing downhill, seasons turning, breath cycling. Not a rule to follow but a current to read. The <em>Tao Te Ching</em> opens by warning that any Dao you can name isn't really the Dao — naming it is already a step away.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">無為 · Wu wei</div><strong style="color:#fff;font-weight:500">"Effortless action."</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Action that arises from alignment with the situation, not from imposed will. The cook in the <em>Zhuangzi</em> who's used the same blade for nineteen years — he doesn't carve through the bone, he finds the gaps the joints already make. Modern translators sometimes call this "spontaneous skill"; it's not laziness, it's mastery.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">陰陽 · Yin / Yang</div><strong style="color:#fff;font-weight:500">Complementary opposites.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Each pole contains the seed of its opposite (the dot in the curve). Day becomes night becomes day. Tension and rest, pursuit and release, action and stillness — all are pairs that generate each other. Trying to live at one pole permanently is the source of most exhaustion.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">樸 · Pu</div><strong style="color:#fff;font-weight:500">"Uncarved block."</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">The state of natural simplicity, before the conditioning that turns a person into someone with a position to defend. Children have it. Sages return to it. Most adult life is spent carving the block; the practice is partly the work of un-carving.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">德 · De</div><strong style="color:#fff;font-weight:500">Inner power, virtue.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">The capacity that comes from being aligned with the Dao — not moral virtue in the Confucian sense, but a kind of charged presence. The person living in <em>de</em> doesn't have to push; their environment rearranges around them. Hard to describe, recognisable when encountered.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Practice</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Read the <em>Tao Te Ching</em> slowly.</strong> Not all 81 verses at once — one a day, returned to repeatedly. Stephen Mitchell's translation is the most-loved English version; D.C. Lau's is the most accurate.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Practice tai chi or qigong.</strong> The body-form embodiments of these principles. Slow, internal-arts movement that teaches <em>wu wei</em> through the muscles before the mind catches up.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Notice when you're forcing.</strong> The body knows. Tightening shoulders, held breath, white knuckles on the wheel. Most often the situation didn't require that much force; it required a different angle of approach.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Sit by water.</strong> Lao Tzu kept returning to it as the teacher. It always finds the lowest point, doesn't argue with stone, and outlasts what tries to dam it. The slowest practice on this page; arguably the most useful.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Meditation, Movement, Sacred Law, Indigenous Wisdom, Christianity (Christian mystics often arrive in the same neighbourhood from a different door), Buddhism. Taoism's deepest gift is its restraint — it teaches less, more quietly, than almost any other tradition on this site.</em></p>
-  </section>
-
+  
+  
   <section>
   <div class="section-label">Curated Resources</div>
   <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">1 resource &nbsp;·&nbsp; 1 book &nbsp;·&nbsp; <span style="color:var(--gold)">1 ✦ pick</span></div>

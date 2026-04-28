@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../fund/index.html">Fund</a><span class="sep">/</span><a href="../energy/index.html">Energy</a><span class="sep">/</span><span>Grid Technology</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,33 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Smart grids, microgrids, and the infrastructure of energy distribution — how power gets from source to use.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">The grid is the largest, most important machine humans have ever built — a synchronised electromagnetic system spanning continents that has to balance generation against demand within fractions of a second, every second, twenty-four hours a day, for over a century. It was designed for a one-way world: a few large generators sending power to many passive consumers. The renewable transition breaks that assumption, and rebuilding the grid for the new pattern is one of the great unsung infrastructure projects of this century.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's framing: most discussion of the energy transition treats generation as the story ("we need more solar"). The grid is the harder problem. You can build all the renewables you want; without transmission to move them, storage to firm them, and software to manage them, you can't actually use them. The bottleneck has shifted from kilowatts to kilovolts.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">What's changing</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Shift 1</div><strong style="color:#fff;font-weight:500">From one-way to two-way.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Households with rooftop solar are now generators, not just consumers. The grid wasn't designed for power flowing backwards through distribution lines. Rewiring the assumptions, in software and hardware, is multi-decade work.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Shift 2</div><strong style="color:#fff;font-weight:500">From scheduled to variable.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Coal and gas plants run on command. Solar runs when the sun shines; wind when the wind blows. Grid operators now manage cloud cover and weather forecasts as core operational inputs, with consequences for stability, planning, and reserve margins.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Shift 3</div><strong style="color:#fff;font-weight:500">From dumb to smart.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Smart meters, demand response, vehicle-to-grid charging, time-of-use pricing. The grid is becoming software-defined. Done well, demand becomes flexible and the system runs more efficiently. Done badly, cybersecurity becomes critical infrastructure risk.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Shift 4</div><strong style="color:#fff;font-weight:500">From regional to interconnected.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">High-voltage direct-current (HVDC) lines move bulk power across continents with minimal loss. Connecting Europe's wind to its solar, or wiring Asia together, smooths out variability. Politically harder than technically.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">The bottlenecks</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Permitting.</strong> Building new transmission takes 10-15 years between concept and operation in most developed countries. Most of that is not engineering; it's environmental review, land acquisition, and political negotiation. The transition is bottlenecked here more than on technology.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Interconnection queues.</strong> Hundreds of gigawatts of solar and wind sit waiting to connect to the grid in the US alone, sometimes for years. The procedural backlog is functionally a generation pause that few outside the industry notice.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Workforce.</strong> Linemen, substation engineers, transformer manufacturers — the workforce that built the existing grid is retiring faster than it's being replaced. Decarbonising the grid runs into who actually builds it.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Cybersecurity.</strong> A digitised grid is also a target. Attacks on Ukraine's grid, on US utilities, on small water authorities are the leading edge. The grid of 2040 has to be secure-by-default in ways the grid of 2010 wasn't.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Renewable Energy, Energy Storage, Energy Policy, Cybersecurity, Future Cities.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>

@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../media/index.html">Media</a><span class="sep">/</span><a href="../arts/index.html">Arts &amp; Culture</a><span class="sep">/</span><span>Photography</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,33 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">The art of the decisive moment — freezing light and time into meaning.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Photography is one of the few media less than two centuries old that has fundamentally reshaped how humans see. Before 1839, the only way to fix an image of a place or person was to draw or paint it. After: anyone with a camera could capture, and reproduce, what the eye had seen. The technology democratised seeing — and slowly trained generations of eyes to expect images everywhere.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's lens: photography is consciousness practice with a tool. The act of choosing where to point the camera, what to include, what to exclude, when to press the shutter — all of that is the work. The technical mastery follows. Phone cameras are now better than any 35mm film camera ever was; the bottleneck has fully moved from gear to seeing.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Four ways photographs work</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Mode 1</div><strong style="color:#fff;font-weight:500">Document.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Witness work. Photojournalism, Sebastião Salgado's miners, Dorothea Lange's migrant mother. The image as historical record and ethical claim.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Mode 2</div><strong style="color:#fff;font-weight:500">Compose.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">The image as a small designed thing. Cartier-Bresson's decisive moment, Adams's f/64, formal landscape work. The aesthetics of seeing where geometry, light, and timing collapse into one frame.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Mode 3</div><strong style="color:#fff;font-weight:500">Reveal.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Macro, microscopy, astrophotography, infrared. Photography that shows what the eye can't normally see — single grains of pollen, the heat radiating from a wall, the structure of distant galaxies.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Mode 4</div><strong style="color:#fff;font-weight:500">Remember.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Family photographs. Travel diaries. The most-used and least-discussed mode. The image as private memory device, anchoring presence to specific moments years later. The most important photographs in most lives.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Practice</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">One photo a day.</strong> Phone is enough. Not for social media — for yourself. The discipline of making one frame that's worth keeping each day teaches the eye faster than any course.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Print the ones you love.</strong> A printed photograph is a different object from a screen image. It survives software changes, account deletions, and dead drives. A wall of prints is a small museum of your own attention.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Ration the camera.</strong> Photographing during an experience is partly an exit from the experience. Pick the moments you photograph deliberately; let the rest land in memory unmediated.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Study masters.</strong> One book of one photographer's lifetime work — Atget, Avedon, Saul Leiter, Vivian Maier — beats ten how-to manuals. Letting your eye sit with how someone great saw is the deepest education available.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Visual Art, Architecture, Storytelling, Journalism, Film.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>

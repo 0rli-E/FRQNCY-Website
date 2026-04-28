@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../builder/index.html">Builder</a><span class="sep">/</span><a href="../creation/index.html">Creation</a><span class="sep">/</span><span>Systems Thinking</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,35 +235,8 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Seeing wholes, not parts — the discipline of understanding complex, interconnected systems.</p>
 </div>
 <main>
-
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Systems thinking is the discipline of seeing the structure that produces the behaviour, instead of getting trapped in the behaviour itself. Most failures of analysis aren't from missing facts — they're from missing the loop, the delay, or the feedback structure that turns a fix into a worse problem six months later. The famous example: speeding up a road network usually increases traffic. The structural reason: latent demand. The behaviour you can see is downstream of a structure you can't.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">Donella Meadows is the canonical introduction. <em>Thinking in Systems</em> (2008) is the book most worth owning. Her insight: every system has leverage points — places where a small intervention shifts the whole. Most policy attacks the lowest-leverage points (parameters, constants) and ignores the highest (paradigms, the goals of the system itself).</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Five concepts you can't unsee once you have them</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Concept 1</div><strong style="color:#fff;font-weight:500">Stocks and flows.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">A stock is what's accumulated (water in a tank, money in an account, carbon in the atmosphere). Flows fill it or drain it. Most failures of intuition come from confusing the two — emissions are a flow, atmospheric concentration is the stock, and reducing the flow doesn't reduce the stock until inflow drops below outflow.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Concept 2</div><strong style="color:#fff;font-weight:500">Reinforcing vs balancing loops.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Reinforcing loops compound (compound interest, viral spread, network effects). Balancing loops self-correct (thermostats, immune responses, market price-finding). Every system is built of these two; reading any structure is reading which is which and where they connect.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Concept 3</div><strong style="color:#fff;font-weight:500">Delays.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Real systems respond on lag. Steering corrections that arrive too late cause oscillation; doses too soon cause overshoot. Climate, supply chains, hiring decisions — all have multi-year delays that destroy intuition unless you model them.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Concept 4</div><strong style="color:#fff;font-weight:500">Leverage points.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Meadows ranked them, weakest to strongest: parameters → buffer sizes → stock-flow structures → delays → balancing loops → reinforcing loops → information access → system rules → power to design rules → goals of the system → paradigm under the goals → power to transcend paradigms. The further down the list, the more changes ripple.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Concept 5</div><strong style="color:#fff;font-weight:500">Emergent behaviour.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">A system's behaviour is rarely predictable from its parts. A market is more than its traders, a brain is more than its neurons, a culture is more than its members. The properties that <em>only show up at the system level</em> are the ones that matter most — and the easiest to miss when you reason atomistically.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Practice</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Sketch the loop.</strong> When something keeps going wrong, draw the actual feedback structure on paper before proposing a fix. Most "fixes" turn out to be inputs to the loop you didn't see.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Ask "and then what?"</strong> First-order thinking stops at the immediate effect. Systems thinking asks what happens at month six, year three, generation two. The interesting answers usually live there.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Look for the unintended winners.</strong> Every regulation, technology, and reform creates new beneficiaries you didn't intend. Trace them. They're often the ones who shape what happens next.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Don't optimise the part.</strong> Optimising one variable inside a system almost always degrades the whole. Healthier organs in a sick body, top-performing employees in a collapsing company, profitable suburbs in a hollowed-out city.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Biomimicry, Emergence, Systems-thinking is the meta-skill underneath Governance, Future Cities, and Conscious Capital. Worth learning early.</em></p>
-  </section>
-
+  
+  
   <section>
   <div class="section-label">Curated Resources</div>
   <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">3 resources &nbsp;·&nbsp; 2 books &nbsp;·&nbsp; 1 course &nbsp;·&nbsp; <span style="color:var(--gold)">1 ✦ pick</span></div>

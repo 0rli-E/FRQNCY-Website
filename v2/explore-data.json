@@ -1083,6 +1083,24 @@
       "label": "Schumacher College",
       "type": "topic",
       "r": 11
+    },
+    {
+      "id": "t-abilities",
+      "label": "Abilities",
+      "type": "topic",
+      "r": 13
+    },
+    {
+      "id": "p-monroe-institute",
+      "label": "Monroe Institute",
+      "type": "topic",
+      "r": 11
+    },
+    {
+      "id": "t-spirituality",
+      "label": "Spirituality",
+      "type": "topic",
+      "r": 13
     }
   ],
   "links": [
@@ -2425,6 +2443,90 @@
     [
       "p-schumacher-college",
       "d-nature"
+    ],
+    [
+      "t-abilities",
+      "d-meta"
+    ],
+    [
+      "t-abilities",
+      "t-remote-view"
+    ],
+    [
+      "t-abilities",
+      "t-channeling"
+    ],
+    [
+      "t-abilities",
+      "t-nde"
+    ],
+    [
+      "t-abilities",
+      "t-manifestation"
+    ],
+    [
+      "t-abilities",
+      "t-akashic"
+    ],
+    [
+      "t-abilities",
+      "t-meditation"
+    ],
+    [
+      "t-abilities",
+      "t-soundheal"
+    ],
+    [
+      "p-monroe-institute",
+      "t-abilities"
+    ],
+    [
+      "p-monroe-institute",
+      "t-remote-view"
+    ],
+    [
+      "p-monroe-institute",
+      "t-meditation"
+    ],
+    [
+      "p-monroe-institute",
+      "t-soundheal"
+    ],
+    [
+      "p-monroe-institute",
+      "t-akashic"
+    ],
+    [
+      "p-monroe-institute",
+      "d-meta"
+    ],
+    [
+      "t-spirituality",
+      "d-meta"
+    ],
+    [
+      "t-spirituality",
+      "t-channeling"
+    ],
+    [
+      "t-spirituality",
+      "t-oneness"
+    ],
+    [
+      "t-spirituality",
+      "t-meditation"
+    ],
+    [
+      "t-spirituality",
+      "t-soul"
+    ],
+    [
+      "t-spirituality",
+      "t-abilities"
+    ],
+    [
+      "t-spirituality",
+      "t-akashic"
     ]
   ],
   "node_urls": {
@@ -2602,14 +2704,57 @@
     "p-plum-village": "/places/plum-village/",
     "p-auroville": "/places/auroville/",
     "p-tassajara": "/places/tassajara/",
-    "p-schumacher-college": "/places/schumacher-college/"
+    "p-schumacher-college": "/places/schumacher-college/",
+    "t-abilities": "abilities/index.html",
+    "p-monroe-institute": "/places/monroe-institute/",
+    "t-spirituality": "spirituality/index.html"
   },
-  "$last_sync": "2026-04-25",
+  "$last_sync": "2026-04-28",
   "$updated": "2026-04-24 — removed 4 ghost nodes (t-commodities, t-filestorage, t-stocks, t-world-models) that existed on the map but not in content.json. If you want these topics back, add them to content.json — the sync will bring them to the map automatically.",
   "$ghost_nodes": [
     {
       "id": "p-frqncy-space",
       "label": "The FRQNCY Space",
+      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
+    },
+    {
+      "id": "p-esalen",
+      "label": "Esalen",
+      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
+    },
+    {
+      "id": "p-findhorn",
+      "label": "Findhorn",
+      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
+    },
+    {
+      "id": "p-plum-village",
+      "label": "Plum Village",
+      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
+    },
+    {
+      "id": "p-auroville",
+      "label": "Auroville",
+      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
+    },
+    {
+      "id": "p-tassajara",
+      "label": "Tassajara",
+      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
+    },
+    {
+      "id": "p-schumacher-college",
+      "label": "Schumacher College",
+      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
+    },
+    {
+      "id": "t-abilities",
+      "label": "Abilities",
+      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
+    },
+    {
+      "id": "p-monroe-institute",
+      "label": "Monroe Institute",
       "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
     }
   ]

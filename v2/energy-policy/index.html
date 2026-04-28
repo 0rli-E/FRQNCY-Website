@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../fund/index.html">Fund</a><span class="sep">/</span><a href="../energy/index.html">Energy</a><span class="sep">/</span><span>Energy Policy</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,33 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">The governance of energy systems — the laws, incentives, and international agreements shaping the energy transition.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Energy policy is the set of rules that decide which technologies get built, who profits, who pays, and how fast the transition moves. The technology of the energy shift is essentially solved. The economics now favour clean energy in most markets. What remains is a political and institutional problem — and that's where most of the actual work is.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's lens: good energy policy is rarer than good engineering. Most countries' frameworks were written for a world of large central generators, regulated monopolies, and slow-changing technology. The fast-moving renewable + storage + smart-grid combination breaks all three assumptions. Policy that worked in 1980 actively obstructs the transition today; policy that worked in 2010 misses what's possible in 2030.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">The four levers</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Lever 1</div><strong style="color:#fff;font-weight:500">Carbon pricing.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Tax or trading scheme. Internalises the climate externality. Cleanest economic tool, politically fragile because the cost is visible while the benefit is diffuse. Works where implemented (BC, EU ETS, California); rare globally.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Lever 2</div><strong style="color:#fff;font-weight:500">Direct support.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Tax credits, feed-in tariffs, contracts-for-difference, public investment. Less elegant than carbon pricing but politically more workable in many democracies. The Inflation Reduction Act and similar industrial-policy frameworks belong here.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Lever 3</div><strong style="color:#fff;font-weight:500">Standards.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Renewable portfolio standards, building codes, vehicle fuel-economy rules. Mandate the outcome, let the market choose how. Often the highest-impact lever and the least sexy; minimum-standard regulations have done much of the heavy lifting on appliance efficiency.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Lever 4</div><strong style="color:#fff;font-weight:500">Permitting reform.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">The most overlooked. Faster permitting for transmission, renewables, and clean industrial sites is a bigger lever than most subsidies. Hard because it requires changing process rules that conservation groups, NIMBY coalitions, and incumbents all have stakes in.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">What separates good from bad policy</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Technology-neutral framing.</strong> Good policy specifies the goal (megatonnes of CO₂, percent renewables) and lets technologies compete to deliver it. Picking specific winners locks in 2020s assumptions for 2050 outcomes.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;top:-2px;font-size:1.4rem;line-height:1;font-weight:500">Predictability.</strong> Boom-bust subsidy cycles are worse than steady moderate support. Investors need to plan twenty-year asset lifetimes. Consistent policy over a decade beats huge subsidies that turn off and on.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Just transitions.</strong> The communities tied to coal, oil, and gas need real economic alternatives, not platitudes. Transition policies that ignore the workers and tax bases of the old industries produce the political backlash that derails the project.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Update the rules with the technology.</strong> Net-metering frameworks designed for sparse rooftop solar break under widespread adoption. Subsidies that fit early-stage tech distort late-stage markets. Periodic, predictable review prevents this.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Climate, Renewable Energy, Grid Technology, Governance, Conscious Capital.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>

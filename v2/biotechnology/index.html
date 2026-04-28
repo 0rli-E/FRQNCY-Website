@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../builder/index.html">Builder</a><span class="sep">/</span><a href="../technology/index.html">Technology</a><span class="sep">/</span><span>Biotechnology</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,33 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Using biology as technology — engineering living systems to solve human problems.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Biotechnology is the discipline of using biological systems — cells, enzymes, organisms — as engineering substrates. We've been doing it for ten thousand years (fermentation, selective breeding, vaccines). The recent decades have pushed it into territory where cells become programmable: CRISPR-Cas9 gene editing, mRNA vaccines, designer proteins, organism-scale synthetic biology, AI-designed molecules. Most of what's possible now would have been science fiction in 2010.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's framing: this is one of the few areas where the rate of capability gain has outpaced the rate of public understanding. Biotech is going to reshape medicine, agriculture, materials, and environmental remediation in the next twenty years. Whether it does so in ways we're glad about depends on choices being made now about who develops what, with which oversight, on which timelines.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Four frontiers</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Frontier 1</div><strong style="color:#fff;font-weight:500">Gene editing.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">CRISPR has moved from lab to clinic. Sickle-cell disease has an FDA-approved cure. Single-gene disorders are the cleanest targets. Polygenic traits (most complex disease) are messier but coming.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Frontier 2</div><strong style="color:#fff;font-weight:500">mRNA platforms.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">COVID vaccines were the proof-of-concept. The platform underneath — instructing cells to make a specific protein — applies to cancer immunotherapy, infectious disease, autoimmune treatment. The real significance is the speed: design-to-clinic in weeks rather than years.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Frontier 3</div><strong style="color:#fff;font-weight:500">Synthetic biology.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Programming bacteria or yeast to produce specific compounds. Insulin, vaccines, leather, spider silk, fragrance, precision-fermented dairy proteins. The economics are starting to compete with petrochemical or animal-sourced alternatives across whole categories.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Frontier 4</div><strong style="color:#fff;font-weight:500">AI-designed molecules.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">AlphaFold's protein-structure prediction. Generative models for novel binding molecules. Drug pipelines that compress 5-year discovery to months. The compounding effect: each new tool makes the next round of tools faster to develop.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Where to be careful</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Dual-use risk.</strong> The same tools that produce vaccines can produce pathogens. Biosecurity is no longer a niche issue; the gap between what motivated amateurs can do and what state actors can do is closing.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Germline editing.</strong> Editing somatic cells affects one person. Editing germline cells affects every descendant. The ethical bright line here matters more than most people realise. International agreements are still patchwork.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Concentration of capability.</strong> The most powerful biotech tools are increasingly held by a handful of companies and labs. The pricing of treatments, the agendas chosen, the populations served — all downstream of who owns the platform.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Whole-system effects.</strong> Modifying a crop, a microbiome, an ecosystem rarely changes only the targeted variable. Biology is densely networked; second-order effects appear seasons or generations later.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Genetics, Biology, Future Tech, Health, Food Sovereignty, Conscious Capital.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>

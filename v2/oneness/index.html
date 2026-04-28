@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../research/index.html">Research</a><span class="sep">/</span><a href="../metaphysics/index.html">Metaphysics</a><span class="sep">/</span><span>Oneness</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,33 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">The non-dual understanding that all existence is one — the mystical foundation underlying most wisdom traditions.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Oneness is the experience — and in many traditions, the realisation — that the boundary between self and world is more permeable than ordinary perception suggests. Mystics describe it; meditators report it; near-death experiencers come back changed by it; ayahuasca drinkers and contemplatives both find it; and a growing strand of physics and neuroscience finds the boundary between observer and observed less stable than the textbooks once claimed.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's posture: take the experience seriously without forcing a single metaphysical conclusion. The unitive experience is real and recurring across cultures. What you do with it — and how you live afterwards — matters more than which interpretive system you wrap around it.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">How traditions point at it</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Advaita Vedanta</div><strong style="color:#fff;font-weight:500">Not-two.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">The most direct articulation. Self and Brahman were never separate; the perception of separation is the illusion (maya). Ramana Maharshi, Nisargadatta, modern teachers like Rupert Spira keep returning to a single inquiry: who is asking this question?</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Christian mysticism</div><strong style="color:#fff;font-weight:500">Union with God.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Meister Eckhart, Teresa of Ávila, John of the Cross. Unitive experience as participation in divine love. The vocabulary differs from non-dualism; the destination converges.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Buddhist</div><strong style="color:#fff;font-weight:500">Interbeing.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Thich Nhat Hanh's framing: a sheet of paper contains the cloud, the rain, the tree, the logger, the bread the logger ate. Nothing is itself by itself. The implication of dependent origination, made walkable.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Indigenous</div><strong style="color:#fff;font-weight:500">Relational ontology.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">"All my relations" (Mitakuye Oyasin in Lakota): rivers, animals, ancestors, mountains as kin rather than resource. Not metaphor. Living as if oneness is structurally true changes the relationship with land in ways the modern mind keeps trying to recover.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Practice</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Self-inquiry.</strong> Ramana's pointer: when a thought arises, ask <em>to whom is this happening?</em> Trace the answer back to its source. The trail reliably ends in the awareness in which all thoughts appear.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Loving-kindness practice.</strong> Metta meditation: extend warm regard outward in concentric circles — friend, neutral person, difficult person, all beings. Done consistently, the felt boundary between self and other thins.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Time in nature alone.</strong> Long enough that the social self quiets. Most people report a softening of the boundary at three days minimum; a week is better.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Hold the experience lightly.</strong> Glimpses are common. Building identity around them is the trap ("I'm someone who has unitive experiences") — that's spiritual materialism reasserting the small self under a new banner.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Soul, Meditation, Sacred Geometry, Indigenous Wisdom, Plant Medicine, Near-Death Experiences. Oneness is what most consciousness traditions are pointing at, said in different dialects.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>

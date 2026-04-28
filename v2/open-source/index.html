@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../builder/index.html">Builder</a><span class="sep">/</span><a href="../creation/index.html">Creation</a><span class="sep">/</span><span>Open Source</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,33 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Building in public — code, knowledge, and tools shared freely for anyone to use and improve.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Open source is the practice of publishing software in a form that anyone can read, modify, run, and redistribute. The model has produced most of the infrastructure the modern world runs on — Linux on roughly all servers, every web browser, the libraries underneath every smartphone app, the protocols of the internet itself. It works in ways the proprietary model can't, and it has its own characteristic failure modes.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's lens: open source is the most successful working example of large-scale cooperation we have. It produces results no single company could match, by tens of thousands of contributors who never met. Understanding why it works tells you a lot about how to build any decentralised cooperative system — and why the assumptions of conventional management don't apply at all.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Why it works</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Reason 1</div><strong style="color:#fff;font-weight:500">The marginal cost of distribution is zero.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Software is the only product where one well-written copy can serve every user on Earth at no incremental cost. Open source removes the artificial scarcity that proprietary licensing imposes on top.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Reason 2</div><strong style="color:#fff;font-weight:500">"Given enough eyeballs, all bugs are shallow."</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Linus's Law. The more people read the source, the faster bugs get found. Closed-source software has a small group with long familiarity but limited diversity of perspective; open source adds the diversity at scale.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Reason 3</div><strong style="color:#fff;font-weight:500">No single point of failure.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">If a company that owns proprietary software shuts down, the software dies. Open-source projects are forkable — if a maintainer abandons or captures a project, the community continues elsewhere. Resilience by design.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Reason 4</div><strong style="color:#fff;font-weight:500">Intrinsic motivation scales.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">People who scratch their own itch produce work that's qualitatively different from people doing assigned tasks. The software gets shaped by users with deep context. The motivational economy is something most companies can't reproduce internally.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">The hard problems</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Sustainability of maintainers.</strong> Critical infrastructure often depends on a small number of unpaid volunteers. The xkcd comic about all of modern infrastructure depending on a project maintained by one person in Nebraska isn't a joke — it's a documented pattern. Funding mechanisms are still primitive.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Free riding by large corporations.</strong> Tech giants build empires on open-source software while contributing relatively little back. The licenses don't require it; the social contract has often been broken without consequence.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Governance under stress.</strong> Most open-source projects are benevolent dictatorships of the original maintainer. Works until the maintainer burns out, becomes capricious, or sells out. Successful succession is rare; the field is still inventing what good governance looks like at scale.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Supply-chain risk.</strong> Modern software is built from thousands of dependencies. A malicious package update somewhere in the stack can compromise downstream products. Several near-catastrophes in recent years; the response is still maturing.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Decentralised Networks, Co-creation, Collective Intelligence, Cybersecurity, Conscious Capital. Open source is the lived proof that large-scale cooperation works — and a window into where it still struggles.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>
@@ -279,7 +247,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <h4><a href="/books/the-cathedral-and-the-bazaar/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">The Cathedral and the Bazaar — Eric Raymond</a> <span class="fpick">✦ FRQNCY PICK</span></h4>
     <p>The essay that explained open source to the world. How decentralised collaboration beats centralised design.</p>
   </div>
-  <a href="https://www.catb.org/~esr/writings/cathedral-bazaar/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+  <a href="http://www.catb.org/~esr/writings/cathedral-bazaar/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
 </div>
 <div class="rcard" data-type="tool">
   <span class="rtype">tool</span>

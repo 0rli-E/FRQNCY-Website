@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../network-state/index.html">Network State</a><span class="sep">/</span><a href="../society/index.html">Society &amp; Networks</a><span class="sep">/</span><span>Future Cities</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,35 +235,8 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Urban design for human and ecological thriving — the cities we need to build and the ones we need to transform.</p>
 </div>
 <main>
-
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Cities are a five-thousand-year-old technology that we keep iterating on. The current default — sprawl, asphalt, single-use zoning, cars at the centre, nature pushed to the edge — is one local maximum, not a destiny. The interesting work in this century is figuring out what comes after it: cities that are walkable, energy-positive, food-coupled to the land around them, and small enough that you can know your neighbours.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">Two simultaneous pushes: <strong style="color:#fff;font-weight:400">retrofit existing cities</strong> (the bulk of the work — 80% of humanity will live in cities that already exist by 2050), and <strong style="color:#fff;font-weight:400">build new ones from scratch</strong> in jurisdictions willing to host the experiment. Both matter. The second is where FRQNCY's energy lives.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Live experiments worth watching</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Charter cities</div><strong style="color:#fff;font-weight:500">Próspera (Roatán, Honduras).</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">A special economic zone with its own regulatory framework, building from scratch on the basis of common-law arbitration and opt-in governance. Whether it works long-term is unproven; that it exists at all is the point — a real-world test of whether jurisdictional competition produces better cities.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Network states</div><strong style="color:#fff;font-weight:500">Balaji's frame: digital-first, physical second.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">A community that aligns online, then crowdfunds territory and recognition. The order — coherence first, land second — flips how cities historically formed. Several pilots underway. FRQNCY's own arc (digital community → coworking space → multi-Sanctuary network) is the same shape.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Permaculture / regenerative</div><strong style="color:#fff;font-weight:500">Auroville, Findhorn, the model city ambition.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Cities designed around food-forest economics, energy independence, and human-scale layout. <a href="../../places/auroville/" style="color:var(--accent)">Auroville</a> at 50+ years is the longest-running. The aspiration: a cluster of these at network-state scale, sharing protocols, complementary economies.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">15-minute city</div><strong style="color:#fff;font-weight:500">Retrofit, not new build.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Carlos Moreno's frame: every essential need within 15 minutes on foot or bike. Paris, Melbourne, Portland and others are running real-world tests. Less glamorous than charter cities, more impactful at scale.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Design constants worth keeping</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Walkable scale.</strong> Density without mega-blocks. Christopher Alexander's <em>A Pattern Language</em> is still the canon.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Mixed use as default.</strong> Single-use zoning is a 20th-century mistake; layered streets — homes above shops above workshops — are how cities worked for most of history.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Energy + food coupled to the place.</strong> Solar, wind, geothermal where available; aquaponics, vertical farms, edible landscaping. A city that imports 100% of its calories is fragile.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Civic ritual.</strong> Plazas, markets, festivals, third places. The infrastructure of trust isn't a thing you build once — it's an ongoing practice.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Soft infrastructure.</strong> Right to repair, building codes that allow small experimentation, governance that lets the city evolve. The hardest layer to get right.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Governance, Network State, Permaculture, Regenerative Farming, Energy Storage. Cities are where every FRQNCY pillar eventually meets the ground.</em></p>
-  </section>
-
+  
+  
   <section>
   <div class="section-label">Curated Resources</div>
   <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">3 resources &nbsp;·&nbsp; 1 book &nbsp;·&nbsp; 1 org &nbsp;·&nbsp; 1 media &nbsp;·&nbsp; <span style="color:var(--gold)">1 ✦ pick</span></div>

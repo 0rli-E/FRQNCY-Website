@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../fund/index.html">Fund</a><span class="sep">/</span><a href="../energy/index.html">Energy</a><span class="sep">/</span><span>Geothermal</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,33 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Earth&#39;s internal heat as power — stable, baseload renewable energy from the planet itself.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Geothermal is energy harvested from the heat of the Earth. Conventional geothermal exploits naturally occurring hot springs and steam fields — Iceland gets most of its heat and electricity this way; New Zealand, Kenya, the Philippines, parts of California. The constraint has always been geography: you need the geology to cooperate. Most places don't.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">Enhanced geothermal (EGS) and closed-loop deep geothermal change the picture. Drilling techniques borrowed from oil and gas can reach hot rock several kilometres down almost anywhere on Earth. Companies like Fervo and Eavor are demonstrating that this works at commercial scale. If the cost curve continues, geothermal becomes the dark-horse breakthrough — firm, baseload, low-emission electricity available everywhere.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Why it matters now</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Reason 1</div><strong style="color:#fff;font-weight:500">Firm and baseload.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Solar and wind are intermittent. Geothermal runs 24/7 with capacity factors over 90%. The grid needs both — variable cheap renewables plus firm dispatchable backbone. Geothermal fills the second slot without the carbon of fossil baseload.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Reason 2</div><strong style="color:#fff;font-weight:500">Geography-flexible.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">EGS unlocks geothermal where there's no natural surface activity. The same drilling stack that fracks shale can create heat-exchange wells in dry hot rock anywhere temperature gradients are sufficient.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Reason 3</div><strong style="color:#fff;font-weight:500">Industrial heat, not just electricity.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">A large share of industrial energy use is heat — cement, glass, paper, chemicals. Geothermal can deliver that heat directly. The decarbonisation lever here is bigger than the electricity discussion alone implies.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Reason 4</div><strong style="color:#fff;font-weight:500">Tiny land footprint.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">A geothermal plant occupies acres, not square miles. Compared with the land footprint of equivalent solar or wind, geothermal is dramatically more compact — relevant in regions where land is contested.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Honest constraints</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Drilling cost.</strong> The economics are essentially: how cheaply can you drill several kilometres into hard rock? Cost is dropping but still the dominant factor in plant economics. The oil and gas industry is the relevant talent pool.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Induced seismicity.</strong> Pumping fluid into deep hot rock can trigger small earthquakes, as a controversial Swiss project demonstrated. The risk is manageable with careful site selection and monitoring; it's not zero.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Project finance is hard.</strong> Geothermal is capital-intensive upfront and pays back over decades. Most utility-scale finance prefers solar's faster cycles. The financing structures haven't fully caught up with the technology.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Public awareness is decades behind.</strong> Most policy-makers don't yet know that EGS works. The framing "geothermal is a niche option" persists; the data has moved past it. Expect the conversation to shift in the late 2020s.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Renewable Energy, Energy Storage, Grid Technology, Climate, Future Tech.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>

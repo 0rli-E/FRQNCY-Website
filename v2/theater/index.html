@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../media/index.html">Media</a><span class="sep">/</span><a href="../arts/index.html">Arts &amp; Culture</a><span class="sep">/</span><span>Theater</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,33 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Live performance as ritual — the oldest form of communal storytelling.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Theater is the live form. A roomful of people gather to watch other people pretend in front of them, and somehow the pretending becomes real for an evening. It's the oldest narrative medium that's still alive in its original form — Greek tragedies, Sanskrit drama, Noh plays, kabuki, commedia dell'arte, all functionally continuous with what happens in a black-box theatre on Tuesday night.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's lens: theater does something film can't. The presence of bodies in the room with you, the breath in real time, the small risk that anything could happen — these aren't recreatable in mediated form. Cultures that lose their theatre lose a specific kind of public collective imagining; cultures that keep it know something about the difference between watching and witnessing.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Three things theatre is for</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Function 1</div><strong style="color:#fff;font-weight:500">Catharsis.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Aristotle's term: the safe release of strong emotion through proxy. Tragedy lets a society process grief, rage, and fear without acting any of it out. The function is older than psychotherapy and still arguably more efficient.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Function 2</div><strong style="color:#fff;font-weight:500">Mirror.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Hamlet calls it "holding the mirror up to nature." A play surfaces what a culture is currently grappling with in ways that direct argument can't. Brecht, Soyinka, Caryl Churchill — political theatre at its best does what no policy paper reaches.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Function 3</div><strong style="color:#fff;font-weight:500">Communion.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">The shared event. Strangers in a darkened room laughing at the same joke, breathing held during the same silence. Theatre is one of the few remaining contexts where a hundred people coordinate emotion in real time without their phones intervening.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Function 4</div><strong style="color:#fff;font-weight:500">Discipline of presence.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">For the actors. Live performance is one of the most exacting attention practices invented — eight shows a week, no second takes. Most of what serious actors learn is contemplative work in disguise.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">How to relate to theatre</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Go more than you think you should.</strong> One play a month is plenty. Mix venues — small fringe houses, big repertory, community productions. The form lives partly through audiences showing up for it.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Take an improv class.</strong> The single most useful course you can take for life skills as well as performance. Improv trains listening, acceptance, building on others, and risk tolerance — usable everywhere afterward.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Read plays.</strong> Plays are written to be heard, not read, and that's why they read fast. A Pinter or a Mamet at one sitting is an unusually dense piece of literary experience. The form rewards it.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Support local companies.</strong> Theatre survives on small audiences who keep showing up. A subscription to a regional company is one of the cheaper ways to actively keep an art form alive.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Storytelling, Music, Mythology, Public Speaking, Festivals.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>

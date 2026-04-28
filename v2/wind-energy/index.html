@@ -205,10 +205,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
@@ -226,12 +226,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="breadcrumb"><a href="../fund/index.html">Fund</a><span class="sep">/</span><a href="../energy/index.html">Energy</a><span class="sep">/</span><span>Wind Energy</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
@@ -241,32 +235,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <p class="hero-desc">Capturing the motion of air — onshore and offshore wind as mature, scalable clean energy.</p>
 </div>
 <main>
-<!-- topic-content-block -->
-  <section style="max-width:780px">
-    <div class="section-label">The frame</div>
-    <p style="font-size:1.05rem;line-height:1.75;color:var(--text);margin-bottom:1.25rem">Wind is one of the oldest harvested energies — Persian windmills pumping water by 800 CE, Dutch windmills draining polders for centuries — and one of the most modern. Today's utility turbines are 200-meter-plus structures that generate enough power per machine to supply thousands of homes. Onshore wind is among the cheapest electricity sources in the world; offshore wind is one of the highest-leverage industrial buildouts of this decade.</p>
-    <p style="font-size:0.95rem;line-height:1.75;color:var(--text-dim);margin-bottom:1.5rem">FRQNCY's lens: wind is the renewable that's least like a consumer product. You don't put one on your roof. Its scale is regional infrastructure, and its politics involve sight-lines, bird migration, fishing access, transmission corridors, and rural-versus-urban friction. The technology is mature; the social work isn't.</p>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">Onshore vs offshore</div>
-    <div style="display:grid;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);margin-bottom:1.5rem">
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Onshore</div><strong style="color:#fff;font-weight:500">Mature, cheap, local.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Land-based wind is the cheapest new electricity source in many markets. Capacity factors of 35-50% in good wind regions. Often farmed alongside crops or pasture without disrupting the land use underneath. The bottleneck is usually transmission and permitting rather than turbines.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">Offshore (fixed)</div><strong style="color:#fff;font-weight:500">Bigger, windier, harder.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Bottom-fixed offshore turbines work in waters up to ~60m deep. Higher capacity factors (40-60%), much higher capital cost, complex installation, supply-chain bottleneck on heavy-lift vessels. Europe leads; US, China, and Japan are scaling.</p></div>
-      <div style="background:var(--navy);padding:1.3rem 1.5rem"><div style="font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem">Offshore (floating)</div><strong style="color:#fff;font-weight:500">The dark-horse breakthrough.</strong><p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7;margin-top:0.4rem">Turbines on floating platforms tethered to the seabed work in deep water — opening huge stretches of ocean off California, Japan, Norway, the Atlantic. Still expensive, dropping fast. May ultimately exceed onshore wind in scale.</p></div>
-    </div>
-  </section>
-
-  <section style="max-width:780px">
-    <div class="section-label">The honest costs</div>
-    <ul style="list-style:none;padding:0;display:grid;gap:0.55rem;font-size:0.92rem;line-height:1.65;color:var(--text);margin-bottom:1.5rem">
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Bird and bat mortality is real.</strong> Modern turbines are far less lethal than older ones, and the per-megawatt mortality is dwarfed by buildings, cars, and house cats — but specific sites with raptor populations or migratory paths require careful siting that often gets skipped.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Visual + acoustic impact.</strong> Living near a wind farm is different. Most who do report adapting; some don't. Compensation structures that share revenue with neighbouring landowners (rather than just hosts) work better than those that don't.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Blade end-of-life.</strong> Turbine blades are composite materials that haven't been easy to recycle. New blade chemistries (recyclable thermoplastics, fully biodegradable concepts) are coming online. The industry is several years behind solar on circularity.</li>
-      <li style="padding-left:1.4rem;position:relative"><span style="color:var(--gold);position:absolute;left:0.5rem;top:-2px;font-size:1.4rem;line-height:1">·</span><strong style="color:#fff;font-weight:500">Transmission is the unfilmable obstacle.</strong> The best wind blows where few people live. Getting the electricity to load centres requires high-voltage transmission lines that take decades to permit and build. Many planned wind projects sit waiting for grid connection.</li>
-    </ul>
-    <p style="font-size:0.86rem;color:var(--text-dim);line-height:1.7"><em>Related: Renewable Energy, Solar, Energy Storage, Grid Technology, Energy Policy.</em></p>
-  </section>
+  
   
   <section>
   <div class="section-label">Curated Resources</div>
