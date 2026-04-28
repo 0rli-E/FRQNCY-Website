@@ -70,35 +70,45 @@
       <h1 class="hero-title t-bold">Staking</h1>
       <p class="hero-desc">Proof-of-stake networks pay validators to secure them. Liquid staking turns that yield into a tradeable token; restaking turns it into a marketplace where the same security can be rented to other applications. Yield on the base layer, composable.</p>
       <div class="hero-quote">
-        Security is no longer a network's monopoly. It is a marketplace.
-        <cite>EigenLayer thesis · 2023</cite>
+        Restaking is a generalization of Ethereum's social consensus to anything programmable.
+        <cite>Sreeram Kannan · EigenLayer whitepaper, 2023</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#00A3FF" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#4FC0FF" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#00A3FF" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.6" fill="none">
-        <path d="M0,-50 L42,-30 L42,18 Q42,38 0,52 Q-42,38 -42,18 L-42,-30 Z"/>
-        <path d="M0,-30 L24,-18 L24,12 Q24,24 0,32 Q-24,24 -24,12 L-24,-18 Z" opacity="0.55"/>
-      </g>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#00A3FF" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#4FC0FF" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#4FC0FF"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_staking" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_staking)"/>
+  <path d="M 0,-78 L 56,-58 L 56,4 Q 56,52 0,80 Q -56,52 -56,4 L -56,-58 Z"
+        fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="1.4"/>
+  <path d="M 0,-68 L 48,-50 L 48,4 Q 48,46 0,70 Q -48,46 -48,4 L -48,-50 Z"
+        fill="none" stroke="var(--sector-warm)" stroke-width="0.6" opacity="0.7"/>
+  <g class="glyph-rotate-rev" opacity="0.55">
+    <circle cx="0" cy="0" r="40" stroke="var(--sector-accent)" stroke-width="0.6" fill="none" stroke-dasharray="2 4"/>
+    <circle cx="0" cy="0" r="30" stroke="var(--sector-accent)" stroke-width="0.5" fill="none" stroke-dasharray="2 4"/>
+    <circle cx="0" cy="0" r="20" stroke="var(--sector-accent)" stroke-width="0.4" fill="none" stroke-dasharray="2 4"/>
+  </g>
+  <polygon points="0,-26 -16,-2 0,-8" fill="var(--sector-soft)"
+           stroke="var(--sector-warm)" stroke-width="0.7" opacity="0.95"/>
+  <polygon points="0,-26 16,-2 0,-8" fill="var(--sector-warm)"
+           stroke="var(--sector-warm)" stroke-width="0.7" opacity="0.6"/>
+  <polygon points="0,26 -16,4 0,-2" fill="var(--sector-soft)"
+           stroke="var(--sector-warm)" stroke-width="0.7"/>
+  <polygon points="0,26 16,4 0,-2" fill="var(--sector-warm)"
+           stroke="var(--sector-warm)" stroke-width="0.7" opacity="0.55"/>
+  <circle cx="0" cy="0" r="50" stroke="var(--sector-warm)" stroke-width="0.4"
+          fill="none" opacity="0.5" class="glyph-pulse-1"/>
+  <g fill="var(--sector-warm)" class="glyph-pulse-2">
+    <rect x="42" y="-46" width="3" height="6"/>
+    <rect x="42" y="-36" width="3" height="6"/>
+    <rect x="42" y="-26" width="3" height="6"/>
+  </g>
+  <text x="0" y="56" text-anchor="middle" font-family="Georgia,serif"
+        font-size="9" letter-spacing="2" fill="var(--sector-warm)" opacity="0.85">% APR</text>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -115,8 +125,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>On a proof-of-stake chain, validators lock up the native asset and earn yield for honest behaviour. Liquid staking protocols (Lido, Rocket Pool) issue a tradeable receipt token that lets stakers keep their position liquid while still earning the yield.</p>
-<p>Restaking takes the next step: the same staked capital is rented out as security to other applications, paying additional fees for additional risk. The architecture is new; the economic model — security as a tradeable good — is novel and consequential.</p>
+  <p>Staking is the economic backbone of proof-of-stake Ethereum, and the LST market made it composable. Lido (Vasiliy Shapovalov, Konstantin Lomashuk) launched stETH in December 2020 and now stakes roughly 28 percent of all ETH — a number that triggers existential debates about validator concentration in every Ethereum core-dev call. Rocket Pool offers the decentralized alternative with rETH and an 8-ETH minipool model that small operators can run. Jito does the equivalent on Solana, with MEV redistribution baked into the LST. The category is huge and structurally important.</p>
+<p>Restaking is the second-order primitive that ate 2024. Sreeram Kannan's EigenLayer launched in April 2024 and let stakers re-pledge their ETH to secure additional services — AVSs (Actively Validated Services) like EigenDA, Hyperlane, AltLayer. The design is elegant: existing trust capital, programmable slashing conditions, new revenue for stakers. The risk is that AVS slashing risks compound and a single bad AVS could cascade through restaked positions. Symbiotic and Karak are the competitors with different trust models. The space hit $20B+ TVL in months.</p>
+<p>LRTs — Liquid Restaking Tokens — sit on top of restaking the way LSTs sit on staking. Ether.fi's eETH, Renzo's ezETH, Kelp's rsETH, Puffer's pufETH. Each abstracts AVS selection from the user and emits a tokenized claim. The points-and-airdrop economics of 2024 (pre-EIGEN airdrop) drove a meta-game where users farmed restaking points across protocols. The post-airdrop world is more sober: real yield, real slashing risk, and a question about whether AVSs generate enough fees to justify the security budget. The next year decides it.</p>
 </section>
 
 <!-- BLEED -->
@@ -626,15 +637,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Solo-stake 32 ETH if you can. Pool through Rocket Pool if you can't.</strong><p>Run the validator client. Read the slashing conditions. Trustless staking is a real skill.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Hold an LST for a year.</strong><p>stETH, rETH, ETHx. Watch the rebase or the price. Compare to native staking. The unbond queue matters.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Restake on EigenLayer.</strong><p>Pick one or two AVSs. Read each one's slashing conditions. The risk model is the product.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Run an AVS operator node.</strong><p>Spin up an EigenDA or Hyperlane operator on testnet. Feel what restaked security actually requires.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Read the EigenLayer whitepaper.</strong><p>Sreeram's argument for restaking as a generalization of Ethereum's social consensus is the most important crypto-economic paper of 2023.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -655,12 +666,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Yield on the base layer.<br>
-      Security as a market.<br>
-      <em>The same stake, working in two places at once.</em>
+      Validators are the economy of the chain.<br>
+      Restaking generalizes that economy to anything programmable.<br>
+      Slashing is the price of credibility.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>Capital, multiplied.</strong>
+      <strong>Run a validator.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

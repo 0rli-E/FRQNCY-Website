@@ -70,39 +70,41 @@
       <h1 class="hero-title t-mid">Layer 1s</h1>
       <p class="hero-desc">Independent consensus, independent token, independent security model. Each L1 is a sovereign network running its own time and its own truth. The base layer everything else builds on top of.</p>
       <div class="hero-quote">
-        The strength of a chain lies in the independence of its links.
-        <cite>after Vitalik · 2016</cite>
+        Ethereum is a world computer. It's a single shared computer that the entire world can access and trust.
+        <cite>Vitalik Buterin · Devcon 2, 2016</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#7B61FF" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#A99CFF" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#7B61FF" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.6" fill="none">
-        <rect x="-50" y="-50" width="100" height="100" transform="rotate(15)"/>
-        <rect x="-50" y="-50" width="100" height="100" transform="rotate(-15)"/>
-        <rect x="-30" y="-30" width="60" height="60" opacity="0.6"/>
-      </g>
-      <g class="glyph-rotate-rev" stroke="rgba(245,248,251,0.20)" stroke-width="0.35" stroke-dasharray="2 4" fill="none">
-        <circle cx="0" cy="0" r="68"/>
-      </g>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#7B61FF" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#A99CFF" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#A99CFF"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_l1" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_l1)"/>
+  <g class="glyph-rotate">
+    <circle cx="0" cy="0" r="82" stroke="var(--sector-accent)" stroke-width="0.4"
+            fill="none" stroke-dasharray="2 6" opacity="0.5"/>
+    <circle cx="0"   cy="-82" r="3.2" fill="var(--sector-warm)"/>
+    <circle cx="58"  cy="-58" r="2.4" fill="var(--sector-accent)"/>
+    <circle cx="82"  cy="0"   r="3.2" fill="var(--sector-warm)"/>
+    <circle cx="58"  cy="58"  r="2.4" fill="var(--sector-accent)"/>
+    <circle cx="0"   cy="82"  r="3.2" fill="var(--sector-warm)"/>
+    <circle cx="-58" cy="58"  r="2.4" fill="var(--sector-accent)"/>
+    <circle cx="-82" cy="0"   r="3.2" fill="var(--sector-warm)"/>
+    <circle cx="-58" cy="-58" r="2.4" fill="var(--sector-accent)"/>
+  </g>
+  <polygon points="0,-58 -32,-2 0,-18" fill="var(--sector-soft)"
+           stroke="var(--sector-accent)" stroke-width="0.8" opacity="0.85"/>
+  <polygon points="0,-58 32,-2 0,-18" fill="var(--sector-accent)"
+           stroke="var(--sector-accent)" stroke-width="0.8" opacity="0.55"/>
+  <polygon points="0,58 -32,8 0,-8" fill="var(--sector-soft)"
+           stroke="var(--sector-accent)" stroke-width="0.8" opacity="0.95"/>
+  <polygon points="0,58 32,8 0,-8" fill="var(--sector-warm)"
+           stroke="var(--sector-accent)" stroke-width="0.8" opacity="0.6"/>
+  <line x1="-32" y1="-2" x2="32" y2="-2" stroke="var(--sector-warm)"
+        stroke-width="0.8" opacity="0.7" class="glyph-pulse-1"/>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -119,8 +121,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>Every Layer 1 is an attempt to answer one question: what is the right tradeoff between throughput, decentralisation, and finality? There is no universal answer. There are only different settlements of the same constraint.</p>
-<p>What follows is the working set — the chains FRQNCY actually watches because their consensus model, validator distribution, or token economics extend the freedom-technology thesis in a different direction.</p>
+  <p>Layer 1s are the substrate. Ethereum, launched July 2015 by Vitalik and a founding crew including Gavin Wood, Joe Lubin, and Charles Hoskinson, gave the world programmable money via the EVM. The DAO hack in 2016 forked the chain and birthed Ethereum Classic. The Merge in September 2022 ended proof-of-work on mainnet and cut energy by ~99.95 percent. Dencun in March 2024 introduced EIP-4844 blobs and dropped L2 fees by an order of magnitude. The roadmap — Surge, Scourge, Verge, Purge, Splurge — is public and weird and being executed.</p>
+<p>The competitor set has its own cultures. Solana's Anatoly Yakovenko shipped a single-state-machine, parallel-execution chain that traded validator decentralization for throughput; the network melted under load multiple times in 2022 and came back as the canonical home for memes, Pump.fun, and consumer apps. Sui and Aptos came out of Meta's Diem corpse with the Move language. Cosmos and the Tendermint stack pioneered app-chains and IBC. TON inherited Telegram's billion-user surface. NEAR pushed sharding and chain abstraction with Illia Polosukhin (who co-authored the Transformer paper, incidentally).</p>
+<p>The argument that won't die is monolithic versus modular. Solana says one chain, one state, one execution environment. Ethereum says rollup-centric — settlement and DA on L1, execution on L2s. Cosmos says sovereign app-chains. The honest answer is that the question is empirical and the next decade decides it. What's settled: L1 design is a values question dressed up as an engineering one.</p>
 </section>
 
 <!-- BLEED -->
@@ -1350,15 +1353,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Run a validator on a testnet.</strong><p>Holesky for Ethereum, Devnet for Solana. Feel slot times and finality in your own logs.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Bridge $50 across three L1s.</strong><p>Ethereum, Solana, Cosmos. Notice the UX, the fees, the wait times. The differences are the thesis.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Read the Ethereum yellow paper's first ten pages.</strong><p>Gavin Wood's notation is dense. The state transition function is the whole game.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Stake natively on one chain you believe in.</strong><p>32 ETH solo, or pool through Rocket Pool. SOL through Marinade or Jito. Feel the validator economy from the inside.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Pick one L1 and read its core dev calls for a month.</strong><p>Ethereum All Core Devs, Solana validator calls. The roadmap is in the meeting notes, not the marketing.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -1379,12 +1382,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Independent consensus.<br>
-      Independent issuance.<br>
-      <em>Independent truth.</em>
+      An L1 is a values document executed in code.<br>
+      Throughput, decentralization, and credible neutrality are the trilemma.<br>
+      Pick the chain whose tradeoffs you can defend in a hostile room.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>An L1 is a country.</strong>
+      <strong>Consensus is a choice.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

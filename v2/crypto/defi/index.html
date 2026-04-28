@@ -70,38 +70,42 @@
       <h1 class="hero-title t-mid">DeFi</h1>
       <p class="hero-desc">Lending, exchange, derivatives, yield — operating without banks, brokers, or clearing houses. The middle of every traditional financial transaction replaced by a smart contract anyone can read, anyone can call.</p>
       <div class="hero-quote">
-        Smart contracts are the lawyer that does not get tired, does not lie, and does not bill by the hour.
-        <cite>Andreas Antonopoulos · 2016</cite>
+        DeFi is not an industry. It's an open financial system being built in public, with money as the test case.
+        <cite>Stani Kulechov · Aavenomics paper, 2020</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#3498DB" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#5FAEE0" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#3498DB" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.7" fill="none">
-        <ellipse cx="-18" cy="0" rx="34" ry="50"/>
-        <ellipse cx="18"  cy="0" rx="34" ry="50"/>
-      </g>
-      <g class="glyph-rotate-rev" stroke="rgba(245,248,251,0.18)" stroke-width="0.4" fill="none" stroke-dasharray="2 5">
-        <circle cx="0" cy="0" r="72"/>
-      </g>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#3498DB" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#5FAEE0" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#5FAEE0"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_defi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_defi)"/>
+  <g class="glyph-rotate">
+    <circle cx="0" cy="-22" r="34" stroke="var(--sector-accent)" stroke-width="2.2"
+            fill="none" opacity="0.85"/>
+    <circle cx="-26" cy="18" r="34" stroke="var(--sector-warm)" stroke-width="2.2"
+            fill="none" opacity="0.85"/>
+    <circle cx="26" cy="18" r="34" stroke="var(--sector-accent)" stroke-width="2.2"
+            fill="none" opacity="0.65"/>
+  </g>
+  <g class="glyph-rotate-rev" opacity="0.7">
+    <path d="M 0,-78 A 78,78 0 0 1 67.5,39" stroke="var(--sector-warm)"
+          stroke-width="0.6" fill="none" stroke-dasharray="3 4"/>
+    <polygon points="67.5,39 60,46 70,50" fill="var(--sector-warm)"/>
+    <path d="M 67.5,39 A 78,78 0 0 1 -67.5,39" stroke="var(--sector-warm)"
+          stroke-width="0.6" fill="none" stroke-dasharray="3 4"/>
+    <polygon points="-67.5,39 -70,50 -60,46" fill="var(--sector-warm)"/>
+    <path d="M -67.5,39 A 78,78 0 0 1 0,-78" stroke="var(--sector-warm)"
+          stroke-width="0.6" fill="none" stroke-dasharray="3 4"/>
+    <polygon points="0,-78 -8,-72 -2,-66" fill="var(--sector-warm)"/>
+  </g>
+  <circle cx="0" cy="6" r="14" fill="var(--sector-soft)" stroke="var(--sector-accent)"
+          stroke-width="0.6" class="glyph-pulse-1"/>
+  <text x="0" y="10" text-anchor="middle" font-family="Georgia,serif"
+        font-size="11" font-style="italic" fill="var(--sector-warm)">%</text>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -118,8 +122,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>DeFi is what happens when financial primitives stop being a privilege and start being a public good. Lending, borrowing, market-making, derivatives — every one of them re-implemented as transparent code rather than opaque counterparty.</p>
-<p>The sector goes through cycles, breaks under stress, and recovers in different shape every time. What persists is the architectural fact: an entire stack of financial services running without permission.</p>
+  <p>DeFi is finance with the trust assumptions made legible. Hayden Adams shipped Uniswap V1 in November 2018 with a 300-line constant-product AMM and changed how liquidity works. Stani built Aave (formerly ETHLend) into the canonical money market. Rune Christensen's MakerDAO gave the world the first credibly decentralized stablecoin, then rebranded as Sky. Michael Egorov's Curve solved stablecoin AMMs with the StableSwap invariant and accidentally created the Curve Wars — Convex, Yearn, and Frax fighting for veCRV bribes for two years.</p>
+<p>DeFi Summer 2020 is the cultural reference point. Compound launched COMP, yield farming was born, TVL went from $1B to $15B in three months, and food coins (SUSHI, YAM, KIMCHI) ate the timeline. The Sushi vampire attack on Uniswap is the canonical case study in mercenary liquidity. Then Terra/Luna in May 2022 — Anchor's 20 percent yield was structurally broken and took $40B with it. Then FTX in November 2022. The survivors got more conservative and more competent. The losers got rugged.</p>
+<p>What's alive now is a different shape. Hyperliquid's perp DEX — Jeff Yan's team — is doing more volume than most CEXs and ran a fair-launch token in November 2024 that became the Solana-vs-Ethereum debate of 2025. Pendle owns yield tokenization. Morpho rebuilt money markets as isolated, immutable vaults. Ethena's USDe is a basis-trade-backed synthetic dollar. The frontier moved from yield farming to capital efficiency and structured products. It looks more like fixed income every cycle.</p>
 </section>
 
 <!-- BLEED -->
@@ -1349,15 +1354,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Provide liquidity to a Curve pool and feel impermanent loss.</strong><p>Pick a stable-stable pool first. Then a volatile pair. Track LP value vs hold for two weeks. The math becomes intuitive.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Borrow against ETH on Aave and don't get liquidated.</strong><p>Set a conservative LTV. Watch the health factor through one volatile day. Repay early. The discipline is the lesson.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Trade a basis trade on Pendle.</strong><p>Buy a PT (principal token) and lock in fixed yield. Feel the duration risk. Notice how it rhymes with TradFi fixed income.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Run an MEV-aware swap.</strong><p>Use CowSwap or 1inch Fusion. Read the order flow. The mempool is a public market for your trade.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Read the Uniswap V3 whitepaper.</strong><p>Concentrated liquidity changed everything. The math is graspable in an afternoon and explains half of DeFi 2024.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -1378,12 +1383,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Lending without a bank.<br>
-      Trading without a broker.<br>
-      <em>Settlement without a clearing house.</em>
+      DeFi is a public financial system with the trust assumptions visible.<br>
+      Yield without risk is yield you do not understand.<br>
+      Read the contract. Verify the invariant. Trust the math, not the marketing.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>The middle, removed.</strong>
+      <strong>Permissionless is the feature.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

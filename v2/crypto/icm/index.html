@@ -70,39 +70,53 @@
       <h1 class="hero-title t-mid">Internet Capital Markets</h1>
       <p class="hero-desc">Fundraising, issuance, and capital formation done as a programmable primitive rather than a multi-month legal process. Bonding curves, launchpads, and the new shape of going-to-market.</p>
       <div class="hero-quote">
-        Capital formation should not require a banker.
-        <cite>FRQNCY editorial</cite>
+        The internet capital market is the idea that any group of people anywhere should be able to capitalize a thing in real time.
+        <cite>Alon Cohen · Pump.fun founder interview, 2024</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#A46AFF" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#C194FF" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#A46AFF" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate-rev" stroke="rgba(245,248,251,0.18)" stroke-width="0.35" stroke-dasharray="2 4" fill="none">
-        <circle cx="0" cy="0" r="72"/>
-      </g>
-      <g class="glyph-rotate" fill="none" stroke="url(#gEdge)" stroke-width="0.7">
-        <path d="M-50,42 Q-20,-50 50,-32"/>
-        <line x1="-50" y1="42" x2="50" y2="42"/>
-      </g>
-      <circle cx="50" cy="-32" r="5" fill="#C194FF"/>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#A46AFF" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#C194FF" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#C194FF"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_icm" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gCurve_icm" x1="0" x2="1" y1="1" y2="0">
+      <stop offset="0%" stop-color="var(--sector-accent)" stop-opacity="0.05"/>
+      <stop offset="100%" stop-color="var(--sector-warm)" stop-opacity="0.45"/>
+    </linearGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_icm)"/>
+  <line x1="-72" y1="60" x2="72" y2="60" stroke="var(--sector-accent)" stroke-width="0.5" opacity="0.6"/>
+  <line x1="-72" y1="60" x2="-72" y2="-72" stroke="var(--sector-accent)" stroke-width="0.5" opacity="0.6"/>
+  <g stroke="var(--sector-accent)" stroke-width="0.3" opacity="0.2">
+    <line x1="-72" y1="30" x2="72" y2="30"/>
+    <line x1="-72" y1="0"  x2="72" y2="0"/>
+    <line x1="-72" y1="-30" x2="72" y2="-30"/>
+    <line x1="-36" y1="60" x2="-36" y2="-72"/>
+    <line x1="0"   y1="60" x2="0"   y2="-72"/>
+    <line x1="36"  y1="60" x2="36"  y2="-72"/>
+  </g>
+  <path d="M -72,60 Q -40,58 -10,46 Q 20,32 40,4 Q 56,-22 64,-58 L 72,-58 L 72,60 Z"
+        fill="url(#gCurve_icm)" opacity="0.85"/>
+  <path d="M -72,60 Q -40,58 -10,46 Q 20,32 40,4 Q 56,-22 64,-58"
+        stroke="var(--sector-warm)" stroke-width="1.6" fill="none" class="glyph-pulse-1"/>
+  <g class="glyph-pulse-2" transform="translate(64, -58)">
+    <path d="M -3,-12 Q 0,-18 3,-12 L 3,4 L -3,4 Z"
+          fill="var(--sector-warm)" stroke="var(--sector-accent)" stroke-width="0.5"/>
+    <path d="M -3,0 L -7,6 L -3,4 Z" fill="var(--sector-accent)"/>
+    <path d="M 3,0 L 7,6 L 3,4 Z" fill="var(--sector-accent)"/>
+    <circle cx="0" cy="-6" r="1.5" fill="var(--sector-accent)"/>
+    <path d="M -2,4 Q 0,16 -1,22 M 2,4 Q 0,18 1,24"
+          stroke="var(--sector-warm)" stroke-width="0.6" fill="none" opacity="0.6"/>
+  </g>
+  <g class="glyph-pulse-1">
+    <line x1="-50" y1="42" x2="-50" y2="-10" stroke="var(--sector-warm)" stroke-width="0.7"/>
+    <rect x="-54" y="14" width="8" height="22" fill="var(--sector-warm)" opacity="0.7"
+          stroke="var(--sector-warm)" stroke-width="0.5"/>
+  </g>
+  <text x="0" y="78" text-anchor="middle" font-family="Georgia,serif"
+        font-size="8" letter-spacing="3" fill="var(--sector-warm)" opacity="0.65">SUPPLY → PRICE</text>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -119,8 +133,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>ICM is what happens when raising capital becomes a smart-contract call. Bonding curves price tokens against demand in real-time. Launchpads automate fair issuance. The rails compress what used to take a quarter into a transaction.</p>
-<p>The model has been abused — most token launches in 2021 were ICM in name only. The 2024–2026 cohort is making the curves more honest, the unlocks more transparent, and the early-buyer edge less extractive.</p>
+  <p>Internet Capital Markets is the frame Alon and the Pump.fun team gave to what they were doing — bonding-curve token launches, no team allocation, no presale, anyone can launch in 30 seconds. Pump.fun went live on Solana in January 2024 and crossed $700M in lifetime revenue inside its first year. The mechanic is brutal and elegant: a bonding curve front-runs price discovery, the token graduates to Raydium at a $69K market cap, and 99 percent of launches go to zero. The 1 percent that don't are the meta.</p>
+<p>The category sprawled fast. Daos.fun lets groups crowdfund treasuries with tokenized governance. Believe (formerly Clout) is the X-native launcher Pasternak's team built. Virtuals on Base did the same mechanic for AI agents — every agent gets a bonding curve, aixbt was the breakout. LetsBonk and Moonshot are the BONK-affiliated and Jupiter-affiliated venues. Sunpump is the Tron clone. Bags came later with a creator-coin angle. The pattern: lower the floor on capitalizing an idea from millions to dollars, accept that most of it is noise.</p>
+<p>The honest critique is that ICM is a PvP slot machine wearing capital-formation clothes. Almost every token rugs. Sniper bots win the first ten blocks. Retail loses on the curve. The optimistic frame, which the founders genuinely hold, is that the median launch is noise but the long tail produces things that couldn't have been capitalized any other way — niche communities, AI agents, art experiments, joke-coins-that-became-real-companies. The thesis is that 2025 looks dumb and 2030 looks like the moment capital formation went from quarters to seconds. Both are likely true.</p>
 </section>
 
 <!-- BLEED -->
@@ -190,15 +205,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Launch a token on Pump.fun.</strong><p>Cost is a few dollars. Watch the bonding curve. Watch it die. The mechanic is the lesson.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Trade one ICM launch from $0 to graduation.</strong><p>Most won't graduate. The ones that do teach you about momentum, snipers, and exit liquidity.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Read the Pump.fun bonding curve formula.</strong><p>Linear price-per-supply. Graduate at $69K. The math takes ten minutes and explains a year of timeline.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Back a Daos.fun treasury.</strong><p>Pool capital with strangers around a thesis. Vote on deployment. Feel the on-chain LP fund experience.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Hold one ICM token for 90 days.</strong><p>Pick the one with real cultural weight, not the highest pump. See if anything is left.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -219,12 +234,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Issuance as a function call.<br>
-      Capital formation, programmable.<br>
-      <em>Pricing in real time, not after roadshows.</em>
+      Capitalizing an idea used to take months. It now takes 30 seconds.<br>
+      Most of it is noise. Some of it is the future.<br>
+      The price is real. The conviction is yours to bring.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>Markets, on-chain.</strong>
+      <strong>Issue your own market.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

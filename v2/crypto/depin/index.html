@@ -70,43 +70,54 @@
       <h1 class="hero-title t-mid">DePIN</h1>
       <p class="hero-desc">Decentralised Physical Infrastructure Networks. Wireless coverage, GPU compute, mapping data, energy markets — coordinated by tokens that pay contributors for real-world work the network can verify.</p>
       <div class="hero-quote">
-        The hardest networks to build used to be the ones with physical capital. Tokens just changed that.
-        <cite>FRQNCY editorial</cite>
+        DePIN is the answer to the question: how do you bootstrap a network without a billion-dollar capex budget?
+        <cite>Sami Kassab · Messari DePIN report, 2023</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#00D4AA" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#3FE0BD" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#00D4AA" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.55" fill="none">
-        <circle cx="-44" cy="-22" r="6"/>
-        <circle cx="44"  cy="-22" r="6"/>
-        <circle cx="0"   cy="44"  r="6"/>
-        <circle cx="0"   cy="0"   r="3" fill="#3FE0BD"/>
-        <line x1="-44" y1="-22" x2="0" y2="0"/>
-        <line x1="44"  y1="-22" x2="0" y2="0"/>
-        <line x1="0"   y1="44"  x2="0" y2="0"/>
-      </g>
-      <circle cx="-44" cy="-22" r="14" fill="none" stroke="#3FE0BD" stroke-opacity="0.35" stroke-dasharray="2 3"/>
-      <circle cx="44"  cy="-22" r="14" fill="none" stroke="#3FE0BD" stroke-opacity="0.35" stroke-dasharray="2 3"/>
-      <circle cx="0"   cy="44"  r="14" fill="none" stroke="#3FE0BD" stroke-opacity="0.35" stroke-dasharray="2 3"/>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#00D4AA" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#3FE0BD" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#3FE0BD"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_depin" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_depin)"/>
+  <g fill="none" stroke="var(--sector-warm)" stroke-width="0.8">
+    <path d="M -34,-50 Q 0,-72 34,-50" opacity="0.8" class="glyph-pulse-1"/>
+    <path d="M -50,-44 Q 0,-86 50,-44" opacity="0.55" class="glyph-pulse-2"/>
+    <path d="M -66,-38 Q 0,-98 66,-38" opacity="0.3" class="glyph-pulse-1"/>
+  </g>
+  <g stroke="var(--sector-accent)" stroke-width="1" fill="none">
+    <line x1="-14" y1="60" x2="-3" y2="-30"/>
+    <line x1="14"  y1="60" x2="3"  y2="-30"/>
+    <line x1="-12" y1="50" x2="12" y2="50"/>
+    <line x1="-10" y1="36" x2="10" y2="36"/>
+    <line x1="-8"  y1="22" x2="8"  y2="22"/>
+    <line x1="-6"  y1="8"  x2="6"  y2="8"/>
+    <line x1="-5"  y1="-6" x2="5"  y2="-6"/>
+    <line x1="-4"  y1="-20" x2="4" y2="-20"/>
+    <line x1="-12" y1="50" x2="10" y2="36"/>
+    <line x1="12"  y1="50" x2="-10" y2="36"/>
+    <line x1="-10" y1="36" x2="8" y2="22"/>
+    <line x1="10"  y1="36" x2="-8" y2="22"/>
+    <line x1="-8"  y1="22" x2="6" y2="8"/>
+    <line x1="8"   y1="22" x2="-6" y2="8"/>
+    <line x1="-6"  y1="8" x2="5" y2="-6"/>
+    <line x1="6"   y1="8" x2="-5" y2="-6"/>
+  </g>
+  <circle cx="0" cy="-32" r="3" fill="var(--sector-warm)" class="glyph-pulse-1"/>
+  <line x1="0" y1="-32" x2="0" y2="-44" stroke="var(--sector-warm)" stroke-width="1.2"/>
+  <circle cx="0" cy="-46" r="2" fill="var(--sector-warm)"/>
+  <line x1="-40" y1="60" x2="40" y2="60" stroke="var(--sector-accent)" stroke-width="0.6" opacity="0.5"/>
+  <g fill="var(--sector-accent)" opacity="0.85">
+    <circle cx="-66" cy="60" r="2.5"/><circle cx="66"  cy="60" r="2.5"/>
+    <circle cx="-50" cy="78" r="2"/><circle cx="50"  cy="78" r="2"/>
+  </g>
+  <g stroke="var(--sector-accent)" stroke-width="0.7">
+    <line x1="-66" y1="60" x2="-66" y2="50"/>
+    <line x1="66"  y1="60" x2="66"  y2="50"/>
+  </g>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -123,8 +134,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>DePIN is what happens when a token economy meets a physical good. Helium pays people to host wireless hotspots; Hivemapper pays drivers to record streets; Render and io.net pay GPU operators for inference and training cycles.</p>
-<p>The thesis is that coordinating physical-world capital with token incentives produces networks that scale faster, settle cheaper, and route around incumbents that depend on the old coordination model.</p>
+  <p>DePIN — Decentralized Physical Infrastructure Networks — is the cleanest crypto thesis nobody noticed first time around. The premise: you can use token incentives to coordinate hardware deployment that would otherwise require a corporate balance sheet. Helium pioneered it with LoRaWAN hotspots in 2019 (Amir Haleem, Sean Carey) and migrated to Solana in April 2023, with Helium Mobile now running a $20/month unlimited 5G plan in the U.S. by offloading traffic to a community-deployed network of CBRS radios.</p>
+<p>The categories sort cleanly. Storage: Filecoin (Juan Benet's IPFS team), Arweave, Storj. Compute: Akash, io.net, Render. Wireless: Helium, World Mobile. Sensor and mapping: Hivemapper (dashcam-mapped streets, training data for AVs), GEODNET (RTK-GPS base stations), DIMO (vehicle telemetry). Bandwidth: Grass (residential IPs for AI training data scraping), Wynd. Each network has the same shape — supply side runs hardware for tokens, demand side pays in tokens or USD, the coordination layer is on-chain.</p>
+<p>The honest critique is that token incentives can over-deploy supply before demand exists. Helium had this for years — hotspots everywhere, almost no LoRaWAN traffic — until Helium Mobile gave the network a real product. The DePIN thesis works when the unit economics close: real revenue per node, real demand on the network, tokens as bootstrap rather than payroll. The next decade's biggest infrastructure plays may be Helium-shaped — community hardware, token-coordinated, undercutting telco and cloud incumbents on cost because the capex is socialized.</p>
 </section>
 
 <!-- BLEED -->
@@ -1354,15 +1366,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Run a Helium 5G hotspot or a LoRaWAN miner.</strong><p>Outdoor mount, real coverage. Earn HNT or MOBILE rewards. Feel the supply-side coordination from inside.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Pin a file on Filecoin.</strong><p>Use Web3.Storage or NFT.Storage. Verify the storage proof. The retrieval works or it doesn't.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Drive with a Hivemapper dashcam.</strong><p>Map streets, earn HONEY. Notice that you are producing real training data for autonomous-vehicle stacks.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Run a Grass node.</strong><p>Residential bandwidth as a service, paid in tokens. Read the disclosures on what your IP is used for. The ethics are part of the product.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Read the Messari DePIN report.</strong><p>Sami Kassab's annual writeup. The category taxonomy and unit economics are the most rigorous public analysis.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -1383,12 +1395,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Hardware coordinated by code.<br>
-      Capacity priced by the network.<br>
-      <em>Infrastructure that doesn't need a corporation.</em>
+      Hardware coordinated by tokens scales differently than hardware funded by VC.<br>
+      The capex is socialized. The upside is too.<br>
+      Real demand or it's just a subsidy.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>Physical, decentralised.</strong>
+      <strong>Build the network. Use the network.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

@@ -70,37 +70,41 @@
       <h1 class="hero-title t-mid">Stablecoins</h1>
       <p class="hero-desc">Tokens that hold a stable peg — usually to the dollar, sometimes to a basket, sometimes to a synthetic. Stablecoins are the everyday rails that make on-chain commerce usable for anyone who isn't trying to speculate.</p>
       <div class="hero-quote">
-        The stablecoin is the killer app of crypto, hiding in plain sight.
-        <cite>Lyn Alden · 2024</cite>
+        Stablecoins are the killer app of crypto. Everyone uses them. Almost nobody calls them crypto.
+        <cite>Nic Carter · On The Brink podcast, 2023</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#2775CA" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#5C9EE2" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#2775CA" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.6" fill="none">
-        <line x1="0" y1="-50" x2="0" y2="38"/>
-        <circle cx="0" cy="-50" r="6"/>
-        <path d="M-30,38 a30,30 0 0,0 60,0"/>
-        <line x1="-22" y1="-30" x2="22" y2="-30"/>
-      </g>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#2775CA" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#5C9EE2" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#5C9EE2"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_stablecoins" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_stablecoins)"/>
+  <circle cx="0" cy="0" r="76" stroke="var(--sector-accent)" stroke-width="0.5"
+          fill="none" opacity="0.4" stroke-dasharray="1 3"/>
+  <circle cx="0" cy="0" r="48" stroke="var(--sector-accent)" stroke-width="1.2"
+          fill="var(--sector-soft)" opacity="0.85"/>
+  <g class="glyph-pulse-1" stroke="var(--sector-warm)" stroke-width="0.8" opacity="0.7">
+    <line x1="0"   y1="-76" x2="0"   y2="-48"/><line x1="76"  y1="0"   x2="48"  y2="0"/>
+    <line x1="0"   y1="76"  x2="0"   y2="48"/><line x1="-76" y1="0"   x2="-48" y2="0"/>
+    <line x1="54"  y1="-54" x2="34"  y2="-34"/><line x1="54"  y1="54"  x2="34"  y2="34"/>
+    <line x1="-54" y1="54"  x2="-34" y2="34"/><line x1="-54" y1="-54" x2="-34" y2="-34"/>
+  </g>
+  <g fill="var(--sector-warm)">
+    <circle cx="0" cy="-76" r="2.2"/><circle cx="76" cy="0" r="2.2"/>
+    <circle cx="0" cy="76" r="2.2"/><circle cx="-76" cy="0" r="2.2"/>
+    <circle cx="54" cy="-54" r="1.8"/><circle cx="54" cy="54" r="1.8"/>
+    <circle cx="-54" cy="54" r="1.8"/><circle cx="-54" cy="-54" r="1.8"/>
+  </g>
+  <text x="0" y="-2" text-anchor="middle" font-family="Georgia,serif"
+        font-size="42" font-weight="500" fill="var(--sector-warm)"
+        stroke="var(--sector-accent)" stroke-width="0.4">$</text>
+  <text x="0" y="22" text-anchor="middle" font-family="Georgia,serif"
+        font-size="11" letter-spacing="3" fill="var(--sector-accent)"
+        opacity="0.85" class="glyph-pulse-2">1.00</text>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -117,8 +121,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>Stablecoins outrun every other use case in raw volume because they are the only piece of crypto that someone can use without thinking about crypto. Send dollars to anyone, anywhere, in seconds, for a fee that approaches zero.</p>
-<p>The model splits three ways: fiat-backed (USDC, USDT), crypto-collateralised (DAI, LUSD), and synthetic delta-neutral (Ethena). Each tradeoff differs; the property they share is dollar-equivalence on rails the dollar itself does not own.</p>
+  <p>Stablecoins are crypto's most successful product and the one nobody talks about as crypto. Tether (Giancarlo Devasini, Paolo Ardoino) launched USDT on Bitcoin's Omni layer in 2014 and now settles more annual volume than Visa, mostly outside the U.S. Circle's USDC arrived in 2018 with a regulated reserve thesis and got tested in March 2023 when SVB held part of its reserves and USDC briefly depegged to $0.87 over a weekend. MakerDAO's DAI was the original decentralized stablecoin, now rebranded to USDS under Sky with Rune Christensen's Endgame plan.</p>
+<p>The frontier is yield-bearing and synthetic. Ethena's USDe — Guy Young's protocol — backs every dollar with a delta-neutral basis trade: long ETH spot, short ETH perp, capture the funding rate. It works until funding goes negative for sustained periods, which is the failure mode the team is open about. crvUSD uses Curve's LLAMMA mechanism for soft liquidations. GHO is Aave's overcollateralized stablecoin. PYUSD is PayPal's, FDUSD is First Digital's, and the pattern is clear: every major fintech wants its own dollar.</p>
+<p>The geopolitical layer is the real story. The GENIUS Act in 2025 finally gave U.S. stablecoins a regulatory framework. Treasury Secretary Bessent has been explicit that stablecoins extend dollar dominance offshore by routing demand for U.S. Treasuries through stablecoin issuers. Tether holds more T-bills than Germany. The dollar's biggest export market in 2026 is people in Argentina and Nigeria using USDT on Tron because their local currency is collapsing. That is the thesis playing out in real time, and almost nobody calls it crypto.</p>
 </section>
 
 <!-- BLEED -->
@@ -768,15 +773,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Send $10 of USDC across three chains.</strong><p>Ethereum, Base, Solana. Compare fees and finality. The unit is the same; the rails are not.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Mint DAI against ETH on Sky.</strong><p>Open a Vault, deposit collateral, mint at a conservative ratio. Feel the stability fee. Repay before liquidation.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Hold USDe and watch the funding rate.</strong><p>Read Ethena's transparency dashboard daily for a week. The basis trade is the whole product.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Read Tether's quarterly attestation.</strong><p>The reserves report is public. Form your own view on the assets backing $150B of dollars.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Pay someone in another country in USDC.</strong><p>Argentina, Turkey, Nigeria. Notice what real demand for digital dollars looks like.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -797,12 +802,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      A dollar that moves anywhere.<br>
-      A peg the protocol holds.<br>
-      <em>Rails that aren't owned by the issuer.</em>
+      The dollar found new rails.<br>
+      Stablecoins are the bridge between fiat and the open financial system.<br>
+      Reserve composition is the whole product.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>Usable money, finally.</strong>
+      <strong>Read the attestation.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

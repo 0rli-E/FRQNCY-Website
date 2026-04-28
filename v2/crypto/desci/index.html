@@ -70,49 +70,50 @@
       <h1 class="hero-title t-tight">DeSci</h1>
       <p class="hero-desc">Funding research without grant committees. Owning intellectual property without a publisher. Sharing data without a custodian. DeSci is the slow rebuild of the scientific institution on programmable rails.</p>
       <div class="hero-quote">
-        Science already runs on a peer-to-peer trust network. The plumbing is just bad.
-        <cite>FRQNCY editorial</cite>
+        The bottleneck in biology is no longer experimental — it's coordination.
+        <cite>Tyler Golato · VitaDAO founding memo, 2021</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#9B5CFF" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#B989FF" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#9B5CFF" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.55" fill="rgba(245,248,251,0.04)">
-        <circle cx="0"   cy="-44" r="6"/>
-        <circle cx="38"  cy="-22" r="6"/>
-        <circle cx="38"  cy="22"  r="6"/>
-        <circle cx="0"   cy="44"  r="6"/>
-        <circle cx="-38" cy="22"  r="6"/>
-        <circle cx="-38" cy="-22" r="6"/>
-        <line x1="0" y1="-44" x2="38" y2="-22"/>
-        <line x1="38" y1="-22" x2="38" y2="22"/>
-        <line x1="38" y1="22" x2="0" y2="44"/>
-        <line x1="0" y1="44" x2="-38" y2="22"/>
-        <line x1="-38" y1="22" x2="-38" y2="-22"/>
-        <line x1="-38" y1="-22" x2="0" y2="-44"/>
-        <line x1="0" y1="-44" x2="0" y2="44" opacity="0.35"/>
-        <line x1="38" y1="-22" x2="-38" y2="22" opacity="0.35"/>
-        <line x1="-38" y1="-22" x2="38" y2="22" opacity="0.35"/>
-      </g>
-      <circle cx="0" cy="0" r="4" fill="#B989FF"/>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#9B5CFF" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#B989FF" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#B989FF"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_desci" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_desci)"/>
+  <g class="glyph-rotate">
+    <path d="M -28,-72 Q 0,-54 28,-72 Q 56,-90 28,-72
+             Q 0,-54 -28,-36 Q -56,-18 -28,-36
+             Q 0,-18 28,0 Q 56,18 28,0
+             Q 0,18 -28,36 Q -56,54 -28,36
+             Q 0,54 28,72"
+          stroke="var(--sector-accent)" stroke-width="1.2" fill="none" opacity="0.85"/>
+    <path d="M 28,-72 Q 0,-54 -28,-72 Q -56,-90 -28,-72
+             Q 0,-54 28,-36 Q 56,-18 28,-36
+             Q 0,-18 -28,0 Q -56,18 -28,0
+             Q 0,18 28,36 Q 56,54 28,36
+             Q 0,54 -28,72"
+          stroke="var(--sector-warm)" stroke-width="1.2" fill="none" opacity="0.75"/>
+    <g stroke="var(--sector-warm)" stroke-width="0.5" opacity="0.6">
+      <line x1="-22" y1="-58" x2="22" y2="-58"/>
+      <line x1="-22" y1="-22" x2="22" y2="-22"/>
+      <line x1="-22" y1="14" x2="22" y2="14"/>
+      <line x1="-22" y1="50" x2="22" y2="50"/>
+    </g>
+  </g>
+  <g class="glyph-pulse-1">
+    <path d="M -16,-12 L -16,4 L -26,28 Q -28,38 -18,38 L 18,38 Q 28,38 26,28 L 16,4 L 16,-12 Z"
+          fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="1.2" opacity="0.85"/>
+    <line x1="-18" y1="-12" x2="-14" y2="-12" stroke="var(--sector-accent)" stroke-width="1"/>
+    <line x1="14" y1="-12" x2="18" y2="-12" stroke="var(--sector-accent)" stroke-width="1"/>
+    <path d="M -22,18 L 22,18 L 26,28 Q 28,38 18,38 L -18,38 Q -28,38 -26,28 Z"
+          fill="var(--sector-warm)" opacity="0.45"/>
+    <circle cx="-6" cy="22" r="1.5" fill="var(--sector-warm)" class="glyph-pulse-2"/>
+    <circle cx="6" cy="28" r="1.2" fill="var(--sector-warm)" class="glyph-pulse-1"/>
+    <circle cx="0" cy="14" r="1" fill="var(--sector-warm)" class="glyph-pulse-2"/>
+  </g>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -129,8 +130,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>Twentieth-century science institutionalised three things: grant funding (centralised committees), publication (paywalled journals), and data custody (private servers). Each was a pragmatic answer to a coordination problem; each became a chokepoint.</p>
-<p>DeSci protocols re-implement the three layers as public goods. IP-NFTs, decentralised journals, on-chain replication markets. Most are early. Some are quietly working.</p>
+  <p>DeSci is the bet that scientific funding, IP, and replication can be coordinated by tokens better than by NIH grant cycles. Tyler Golato and Paul Kohlhaas spun out Molecule in 2019 as the IP-NFT platform — a way to fractionalize ownership of early-stage research. VitaDAO, formed 2021 with Vitalik Buterin and others backing it, was the first BioDAO: a token-governed treasury that funds longevity research and holds IP-NFTs for the projects it sponsors. ResearchHub (Patrick Brown's project, funded by Brian Armstrong) tokenized peer review with RSC.</p>
+<p>BIO Protocol launched in 2024 as the meta-platform — a launchpad for BioDAOs with curated reputation, tokenized treasuries, and a shared governance layer across VitaDAO, AthenaDAO (women's health), HairDAO (hair loss), CerebrumDAO (neurodegenerative), and others. The thesis is that disease-area-specific DAOs aggregate patient communities, deploy capital faster than pharma, and own the resulting IP through IP-NFTs that route royalties back to token holders. It is biotech venture restructured around community ownership.</p>
+<p>Pump.science is the most cracked DeSci experiment of 2024 — a livestream of actual longevity compounds being tested on C. elegans and mice, with bonding-curve tokens for each compound that pay holders if the molecule extends lifespan. Rifampicin, urolithin, and others have run live. It is either the future of pre-clinical research or a casino with worms — and the people running it (the Molecule and Pump teams) are open that they are figuring it out in public. The cultural posture is anti-pharma, pro-longevity, pro-radical-coordination, and slightly too much for a normie biotech investor. Which is the point.</p>
 </section>
 
 <!-- BLEED -->
@@ -240,15 +242,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Hold a BioDAO token through a research milestone.</strong><p>VITA, ATH, HAIR. Read the project updates. Notice what real research timelines look like.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Vote on a VitaDAO proposal.</strong><p>Read the funding memo, evaluate the science, vote your tokens. You are now a longevity grant committee.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Buy into a Pump.science compound.</strong><p>Read the protocol, watch the C. elegans data, hold to the readout. The science is the chart.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Peer-review a paper on ResearchHub.</strong><p>Earn RSC for substantive review. The incentive layer is the experiment.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Read the IP-NFT framework on Molecule.</strong><p>Smart-contract IP licensing for biotech. The legal scaffolding is the unlock.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -269,12 +271,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Funding without committees.<br>
-      Publishing without paywalls.<br>
-      <em>Data without custodians.</em>
+      Science needs liquidity, not just funding.<br>
+      Coordination is the bottleneck. Tokens are the solvent.<br>
+      Patients, researchers, and capital on the same cap table.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>Science, rebuilt.</strong>
+      <strong>Replication is governance.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

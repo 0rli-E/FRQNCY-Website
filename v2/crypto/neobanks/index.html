@@ -70,38 +70,62 @@
       <h1 class="hero-title t-tight">Neobanks</h1>
       <p class="hero-desc">Bank accounts, debit cards, and yield products that hold crypto natively. The interface most people experience banking through, rebuilt on rails that don't require trusting an intermediary with custody.</p>
       <div class="hero-quote">
-        The interface is the bank. The rails do not have to be.
-        <cite>FRQNCY editorial</cite>
+        Stablecoins are eating the consumer banking stack. The exchanges that adapt become banks. The ones that don't become Western Union.
+        <cite>Brian Armstrong · Coinbase shareholder letter, 2024</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#00B3A4" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#3FCDC0" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#00B3A4" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.7" fill="none">
-        <circle cx="-22" cy="0" r="26"/>
-        <line x1="4" y1="0" x2="56" y2="0"/>
-        <line x1="38" y1="0" x2="38" y2="14"/>
-        <line x1="50" y1="0" x2="50" y2="10"/>
-      </g>
-      <circle cx="-22" cy="0" r="6" fill="#3FCDC0"/>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#00B3A4" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#3FCDC0" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#3FCDC0"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_neobanks" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+    <linearGradient id="gCard_neobanks" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="var(--sector-accent)" stop-opacity="0.65"/>
+      <stop offset="100%" stop-color="var(--sector-warm)" stop-opacity="0.4"/>
+    </linearGradient>
+    <linearGradient id="gChip_neobanks" x1="0" x2="1" y1="0" y2="1">
+      <stop offset="0%" stop-color="var(--sector-warm)" stop-opacity="0.95"/>
+      <stop offset="100%" stop-color="var(--sector-accent)" stop-opacity="0.6"/>
+    </linearGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_neobanks)"/>
+  <g class="glyph-pulse-1">
+    <path d="M -68,-30 L 60,-46 L 76,30 L -52,46 Z"
+          fill="var(--sector-accent)" opacity="0.25"/>
+    <path d="M -64,-26 L 64,-42 L 80,34 L -48,50 Z"
+          fill="url(#gCard_neobanks)" stroke="var(--sector-accent)" stroke-width="1"/>
+  </g>
+  <g class="glyph-pulse-2">
+    <path d="M -44,-12 L -16,-15 L -12,5 L -40,8 Z"
+          fill="url(#gChip_neobanks)" stroke="var(--sector-accent)" stroke-width="0.6"/>
+    <g stroke="var(--sector-accent)" stroke-width="0.4" opacity="0.6">
+      <line x1="-40" y1="-8" x2="-16" y2="-11"/>
+      <line x1="-39" y1="-3" x2="-15" y2="-6"/>
+      <line x1="-38" y1="2"  x2="-14" y2="-1"/>
+      <line x1="-30" y1="-12" x2="-28" y2="6"/>
+      <line x1="-22" y1="-13" x2="-20" y2="5"/>
+    </g>
+  </g>
+  <g stroke="var(--sector-warm)" stroke-width="1" fill="none" opacity="0.7">
+    <path d="M -4,-14 Q 4,-12 6,-4" class="glyph-pulse-1"/>
+    <path d="M 0,-20 Q 12,-16 14,0" class="glyph-pulse-2"/>
+    <path d="M 4,-26 Q 20,-20 22,4" class="glyph-pulse-1"/>
+  </g>
+  <text x="50" y="34" text-anchor="end" font-family="Georgia,serif"
+        font-size="12" font-style="italic" font-weight="400"
+        fill="var(--sector-warm)" letter-spacing="0.5">FRQNCY</text>
+  <g fill="var(--sector-warm)" opacity="0.6">
+    <rect x="-44" y="20" width="14" height="2"/>
+    <rect x="-26" y="18" width="14" height="2"/>
+    <rect x="-8"  y="16" width="14" height="2"/>
+    <rect x="10"  y="14" width="14" height="2"/>
+  </g>
+  <g fill="var(--sector-warm)" opacity="0.4">
+    <circle cx="-72" cy="-60" r="1.5"/><circle cx="-60" cy="-68" r="1.2"/>
+    <circle cx="64"  cy="60" r="1.5"/><circle cx="76"  cy="52" r="1.2"/>
+  </g>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -118,8 +142,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>Crypto neobanks are the on-ramp that lets a regular person live off-chain assets without giving up self-custody on the underlying balance. Card-swiping, payroll, savings products — all running on rails the user can audit, on assets the user controls.</p>
-<p>The category is fragmented and regulation-sensitive. Where the model works, it produces an experience indistinguishable from a normal bank for everyone except the user, who knows the keys are theirs.</p>
+  <p>Crypto neobanks are what happens when an exchange grows up and notices most of its users want to spend money, not trade it. Coinbase (Brian Armstrong, Fred Ehrsam, founded 2012, IPO 2021) ships a Visa debit card that auto-converts crypto at point of sale and pays USDC rewards on stablecoin balances at competitive rates. Crypto.com built the same product faster and bigger with Matt Damon ads and the Staples Center renaming. Binance Card serves international users in the regions Binance still operates in. Gemini's card pays bitcoin back. The category exists.</p>
+<p>The frontier is stablecoin-first. Plasma launched in 2025 as a stablecoin-native L1 with Bitcoin security, $0 USDT transfers, and a Visa-enabled card from day one — the first crypto bank-shaped product where the chain itself was designed for the use case rather than retrofitted. Phantom's wallet shipped a debit card linked to Solana balances. Tether's own Tether Pay product is in beta in Latin America. The pattern is clear: stablecoins go from trading instrument to payment rail, and the front-end is a card and a phone app. Argentine and Turkish users have been doing this for years through informal rails; the formal version is finally arriving.</p>
+<p>The honest read is that the U.S. neobank surface is regulatory-bound. The GENIUS Act in 2025 unlocked some of it. Yield on stablecoin balances is the killer feature outside the U.S. (8-12 percent on USDT in 2024, paid by exchanges from their own basis-trade or T-bill stacks) and the gated feature inside it. The exchanges that win the neobank fight will be the ones that integrate cleanly with traditional payment networks (Visa, Mastercard, ACH) while keeping the stablecoin economics intact. Coinbase is closest. Crypto.com is loudest. Plasma is the most architecturally interesting. The next two years sort it out.</p>
 </section>
 
 <!-- BLEED -->
@@ -309,15 +334,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Get a crypto debit card and use it for one month.</strong><p>Coinbase, Crypto.com, or Gemini. Track what you actually spent in stablecoins vs crypto. The behavior data is the lesson.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Move a paycheck to USDC.</strong><p>Use Coinbase's direct deposit or a stablecoin off-ramp. Live on it for two weeks. Feel what fiat-free actually means.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Compare stablecoin yield across three platforms.</strong><p>Coinbase, Nexo, Aave. Read each one's risk disclosures. The yield is the credit risk.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Send $100 from a card to a friend in another country.</strong><p>Compare to a wire and to Wise. The settlement-time gap is the whole pitch.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Read the Coinbase 2024 shareholder letter.</strong><p>Armstrong's stablecoin-strategy paragraph is the most lucid case for the crypto-neobank thesis from inside the largest player.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -338,12 +363,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      A card that draws from your keys.<br>
-      Yield without custody.<br>
-      <em>The interface, without the intermediary.</em>
+      The exchange becomes the bank.<br>
+      Stablecoins are the rails. The card is the front end.<br>
+      Self-custody is still the asymptote. The neobank is the on-ramp.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>Banking, finally yours.</strong>
+      <strong>Spend the dollar. Hold the keys.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

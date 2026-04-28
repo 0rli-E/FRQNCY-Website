@@ -20,7 +20,15 @@ import html as _h
 import json
 import os
 import re
+import sys
 from pathlib import Path
+
+# Sibling modules: iconic per-sector glyph SVGs + sector-native deep research
+_HERE = Path(__file__).resolve().parent
+if str(_HERE) not in sys.path:
+    sys.path.insert(0, str(_HERE))
+from iconic_glyphs import ICONIC_GLYPHS  # noqa: E402
+from sector_research import SECTOR_RESEARCH  # noqa: E402
 
 ROOT = Path(__file__).resolve().parent.parent
 CRYPTO = ROOT / "v2" / "crypto"
@@ -1149,10 +1157,15 @@ def render_page(slug: str, cfg: dict) -> str:
     h1 = cfg["h1"]
     eyebrow = cfg["eyebrow"]
     desc = cfg["desc"]
-    quote_text, quote_cite = cfg["quote"]
-    prelude = cfg["prelude"]
     bleed_cap = cfg["bleed_cap"]
-    closing = cfg["closing"]
+
+    # Sector-native overlay: founders, terminology, cultural moments, real quotes.
+    # Falls back to the original generic copy if a sector hasn't been researched yet.
+    research = SECTOR_RESEARCH.get(slug, {})
+    quote_text, quote_cite = research.get("quote_native", cfg["quote"])
+    prelude = research.get("prelude_native", cfg["prelude"])
+    practice = research.get("practice_native", cfg["practice"])
+    closing = research.get("closing_native", cfg["closing"])
 
     projects = filter_for(slug, cfg)
     project_html = "\n".join(render_project(p) for p in projects)
@@ -1168,9 +1181,11 @@ def render_page(slug: str, cfg: dict) -> str:
             + f'<div class="projects-grid" id="projects">{project_html}</div>'
         )
 
-    practice_html = render_practice(cfg["practice"])
+    practice_html = render_practice(practice)
     closing_html = render_closing(closing, warm)
-    glyph_svg = glyph(cfg["glyph"], accent, warm)
+    # Sector-iconic glyph (Bitcoin ₿+lightning, ETH diamond, TAO subnets, etc.)
+    # — falls back to the generic family glyph if a sector lacks an iconic one.
+    glyph_svg = ICONIC_GLYPHS.get(slug) or glyph(cfg["glyph"], accent, warm)
 
     prelude_html = "\n".join(f"<p>{p}</p>" for p in prelude)
     wave = WAVE_SVG_TEMPLATE.format(accent_a=wave_a, accent_b=wave_b)

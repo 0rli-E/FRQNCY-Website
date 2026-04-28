@@ -70,38 +70,58 @@
       <h1 class="hero-title t-mid">Real World Assets</h1>
       <p class="hero-desc">Government bonds, corporate credit, equities, real estate — bridged on-chain with the same composability and 24/7 settlement that crypto-native assets have always had. The legacy financial system meeting the new rails.</p>
       <div class="hero-quote">
-        The biggest crypto innovation of the next decade may be making boring assets liquid.
-        <cite>FRQNCY editorial</cite>
+        Every stock, every bond, every fund — every asset — can be tokenized. If it's tokenized, it transforms investing.
+        <cite>Larry Fink · BlackRock annual letter, 2024</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#1652F0" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#4F84F5" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#1652F0" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.6" fill="none">
-        <path d="M-58,12 q58,-50 116,0"/>
-        <line x1="-58" y1="12" x2="58" y2="12"/>
-        <line x1="-30" y1="12" x2="-30" y2="40"/>
-        <line x1="0"   y1="12" x2="0"   y2="40"/>
-        <line x1="30"  y1="12" x2="30"  y2="40"/>
-      </g>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#1652F0" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#4F84F5" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#4F84F5"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_rwa" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_rwa)"/>
+  <g stroke="var(--sector-accent)" stroke-width="0.8" fill="var(--sector-soft)">
+    <rect x="-72" y="-30" width="24" height="56"/>
+    <rect x="-76" y="-34" width="32" height="6"/>
+    <rect x="-76" y="26" width="32" height="6"/>
+    <line x1="-66" y1="-28" x2="-66" y2="24" stroke-width="0.4"/>
+    <line x1="-60" y1="-28" x2="-60" y2="24" stroke-width="0.4"/>
+    <line x1="-54" y1="-28" x2="-54" y2="24" stroke-width="0.4"/>
+  </g>
+  <text x="-60" y="3" text-anchor="middle" font-family="Georgia,serif"
+        font-size="20" fill="var(--sector-warm)" font-weight="500">$</text>
+  <g stroke="var(--sector-accent)" stroke-width="0.8" fill="var(--sector-soft)">
+    <rect x="48" y="-30" width="24" height="56"/>
+    <rect x="44" y="-34" width="32" height="6"/>
+    <rect x="44" y="26" width="32" height="6"/>
+  </g>
+  <g transform="translate(60, 0)">
+    <polygon points="0,-14 -8,0 0,-4" fill="var(--sector-soft)"
+             stroke="var(--sector-accent)" stroke-width="0.6"/>
+    <polygon points="0,-14 8,0 0,-4" fill="var(--sector-warm)"
+             stroke="var(--sector-accent)" stroke-width="0.6" opacity="0.7"/>
+    <polygon points="0,14 -8,2 0,-2" fill="var(--sector-soft)"
+             stroke="var(--sector-accent)" stroke-width="0.6"/>
+    <polygon points="0,14 8,2 0,-2" fill="var(--sector-warm)"
+             stroke="var(--sector-accent)" stroke-width="0.6" opacity="0.5"/>
+  </g>
+  <path d="M -48,-2 Q 0,-30 48,-2"
+        stroke="var(--sector-warm)" stroke-width="1.5" fill="none" opacity="0.85"/>
+  <path d="M -48,8 Q 0,-20 48,8"
+        stroke="var(--sector-accent)" stroke-width="0.6" fill="none" opacity="0.5"/>
+  <g stroke="var(--sector-accent)" stroke-width="0.4" opacity="0.6">
+    <line x1="-30" y1="-12" x2="-30" y2="-2"/><line x1="-15" y1="-20" x2="-15" y2="-2"/>
+    <line x1="0" y1="-24" x2="0" y2="-2"/><line x1="15" y1="-20" x2="15" y2="-2"/>
+    <line x1="30" y1="-12" x2="30" y2="-2"/>
+  </g>
+  <circle cx="-32" cy="-12" r="2.2" fill="var(--sector-warm)" class="glyph-pulse-1"/>
+  <circle cx="0" cy="-22" r="2.2" fill="var(--sector-warm)" class="glyph-pulse-2"/>
+  <circle cx="32" cy="-12" r="2.2" fill="var(--sector-warm)" class="glyph-pulse-1"/>
+  <text x="0" y="58" text-anchor="middle" font-family="Georgia,serif"
+        font-size="8" letter-spacing="3" fill="var(--sector-warm)" opacity="0.7">RWA</text>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -118,8 +138,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>RWA is the boring revolution. Tokenising a US Treasury bill is not a flashy story; making it tradeable 24/7, divisible to a dollar, and accessible to anyone with an internet connection is.</p>
-<p>The protocols below are the bridge between the legacy financial system and the new rails. Where the bridge holds, traditional yield becomes available without traditional gatekeeping.</p>
+  <p>RWAs are the bridge from a $4T crypto market into a $400T global asset market, and BlackRock's Larry Fink said the quiet part out loud in his 2024 annual letter: every asset will be tokenized. The flagship product is BUIDL — BlackRock's tokenized Treasury fund issued via Securitize on Ethereum, March 2024 — which crossed $500M in its first months and proved institutional demand for on-chain T-bills. Ondo's USDY and OUSG are the retail-accessible analogues. Franklin Templeton's BENJI is the third major issuer.</p>
+<p>The credit side is older and quieter. Maple Finance (Sid Powell's team) ran undercollateralized institutional lending through DeFi Summer and got repriced after the 2022 collapses; the post-FTX rebuild with overcollateralized Syrup is more boring and more durable. Centrifuge tokenizes invoice and trade-finance receivables. Goldfinch did emerging-markets credit. MakerDAO/Sky has roughly half of DAI's backing in RWA vaults — Monetalis, BlockTower, Coinbase Custody — earning real T-bill yield that flows to DSR depositors.</p>
+<p>The structural argument is regulatory. Reg D, Reg S, Reg A+ — the U.S. private-placement framework — already supports tokenized securities. The KYC layer is the friction. Securitize is the canonical transfer agent. Pendle PT-tokens of RWAs let you trade duration on tokenized treasuries the way bond desks have for a century. The promise is 24/7 settlement, programmable compliance, and global access to instruments that are currently gated by jurisdiction. The execution is mostly slow because the lawyers are.</p>
 </section>
 
 <!-- BLEED -->
@@ -249,15 +270,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Hold tokenized T-bills for a quarter.</strong><p>Ondo OUSG or BlackRock BUIDL via Securitize. Track the yield. Compare to your bank's savings rate. The gap is the thesis.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Read the BUIDL prospectus.</strong><p>It is publicly filed. The transfer-agent mechanics and KYC layer are the whole product.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Lend USDC on Maple Syrup.</strong><p>Pick a pool, read the borrower disclosures, accept the credit risk. Real credit, real diligence, real returns.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Trade a Pendle PT on a tokenized RWA.</strong><p>Lock in fixed yield on T-bill exposure. Notice it rhymes exactly with TradFi fixed income.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Read Larry Fink's 2024 BlackRock letter.</strong><p>The tokenization paragraph is two pages. It is the most consequential institutional crypto endorsement on record.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -278,12 +299,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Boring assets, liquid.<br>
-      Legacy yield, on-chain.<br>
-      <em>Access without gatekeepers.</em>
+      The world's assets are coming on-chain.<br>
+      T-bills first. Equities and credit next. Real estate eventually.<br>
+      The regulatory layer is the unlock, not the chain.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>The bridge holds.</strong>
+      <strong>Tokenization is plumbing.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

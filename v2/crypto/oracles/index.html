@@ -70,38 +70,66 @@
       <h1 class="hero-title t-mid">Oracles</h1>
       <p class="hero-desc">The connective tissue. Oracles bring off-chain data on-chain. Interop bridges move assets and messages between chains. Both are the unglamorous middleware that lets everything else compose.</p>
       <div class="hero-quote">
-        A blockchain is only as useful as the data it can act on.
-        <cite>FRQNCY editorial</cite>
+        Smart contracts are only as smart as the data they consume.
+        <cite>Sergey Nazarov · Chainlink whitepaper, 2017</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#2A5ADA" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#5C81E5" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#2A5ADA" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.6" fill="none">
-        <path d="M-58,12 q58,-50 116,0"/>
-        <line x1="-58" y1="12" x2="58" y2="12"/>
-        <line x1="-30" y1="12" x2="-30" y2="40"/>
-        <line x1="0"   y1="12" x2="0"   y2="40"/>
-        <line x1="30"  y1="12" x2="30"  y2="40"/>
-      </g>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#2A5ADA" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#5C81E5" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#5C81E5"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_oracles" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_oracles)"/>
+  <g class="glyph-rotate">
+    <polygon points="0,-32 28,-16 28,16 0,32 -28,16 -28,-16"
+             fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="1.2"/>
+    <polygon points="0,-22 19,-11 19,11 0,22 -19,11 -19,-11"
+             fill="none" stroke="var(--sector-warm)" stroke-width="0.8" opacity="0.9"/>
+    <line x1="0" y1="-22" x2="0" y2="22" stroke="var(--sector-warm)" stroke-width="0.5" opacity="0.7"/>
+    <line x1="-19" y1="-11" x2="19" y2="11" stroke="var(--sector-warm)" stroke-width="0.5" opacity="0.5"/>
+    <line x1="19" y1="-11" x2="-19" y2="11" stroke="var(--sector-warm)" stroke-width="0.5" opacity="0.5"/>
+  </g>
+  <g class="glyph-pulse-1">
+    <circle cx="-66" cy="-66" r="8" fill="var(--sector-warm)" opacity="0.7"/>
+    <g stroke="var(--sector-warm)" stroke-width="0.7" opacity="0.6">
+      <line x1="-66" y1="-82" x2="-66" y2="-78"/>
+      <line x1="-50" y1="-66" x2="-54" y2="-66"/>
+      <line x1="-78" y1="-66" x2="-82" y2="-66"/>
+      <line x1="-66" y1="-50" x2="-66" y2="-54"/>
+    </g>
+  </g>
+  <g class="glyph-pulse-2">
+    <rect x="48" y="-78" width="22" height="14" rx="2"
+          fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="0.6"/>
+    <text x="59" y="-68" text-anchor="middle" font-family="Georgia,serif"
+          font-size="9" fill="var(--sector-warm)">$</text>
+  </g>
+  <g stroke="var(--sector-warm)" stroke-width="0.7" fill="none" opacity="0.7">
+    <line x1="-58" y1="-58" x2="-22" y2="-22"/>
+    <polygon points="-22,-22 -28,-20 -24,-26" fill="var(--sector-warm)"/>
+    <line x1="50" y1="-58" x2="22" y2="-22"/>
+    <polygon points="22,-22 28,-20 24,-26" fill="var(--sector-warm)"/>
+  </g>
+  <g fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="0.6">
+    <rect x="-66" y="56" width="22" height="18" rx="1"/>
+    <rect x="-11" y="56" width="22" height="18" rx="1"/>
+    <rect x="44" y="56" width="22" height="18" rx="1"/>
+  </g>
+  <g stroke="var(--sector-accent)" stroke-width="1" fill="none">
+    <line x1="-44" y1="65" x2="-11" y2="65"/>
+    <line x1="11" y1="65" x2="44" y2="65"/>
+  </g>
+  <g stroke="var(--sector-warm)" stroke-width="0.7" fill="none" opacity="0.7">
+    <line x1="-14" y1="22" x2="-55" y2="52"/>
+    <polygon points="-55,52 -50,50 -53,56" fill="var(--sector-warm)"/>
+    <line x1="0" y1="32" x2="0" y2="52"/>
+    <polygon points="0,52 -3,46 3,46" fill="var(--sector-warm)"/>
+    <line x1="14" y1="22" x2="55" y2="52"/>
+    <polygon points="55,52 53,56 50,50" fill="var(--sector-warm)"/>
+  </g>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -118,8 +146,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>Smart contracts cannot read the price of ETH on their own. They cannot know it rained in Lagos, or that an aircraft landed in Tokyo, or that the Fed cut rates. Oracles answer those questions, with reputational and economic stake on the answer being correct.</p>
-<p>Interop protocols solve a related problem: messages and assets crossing between chains without trusting a single bridge operator. Both layers are infrastructure — invisible when working, catastrophic when not.</p>
+  <p>Oracles are the tendons of the on-chain economy. Smart contracts cannot natively reach the outside world; oracles bridge the gap. Sergey Nazarov and Steve Ellis's Chainlink, launched 2017, became the dominant push-based oracle by aggregating off-chain data feeds into on-chain reports, secured by LINK-staked node operators. Pyth, born inside Jump Crypto, took the pull-based approach — first-party data from market makers and exchanges (Jane Street, DRW, Binance) signed and posted on Solana, fetched by anyone for a small fee. The two architectures define the field.</p>
+<p>The interop layer sits adjacent and the lines blur. LayerZero (Bryan Pellegrino's protocol) does omnichain messaging via DVNs (Decentralized Verifier Networks) — config-it-yourself trust assumptions, used by Stargate, Radiant, dozens of others. Wormhole shipped guardian-network messaging across 30+ chains and survived the $326M February-2022 hack with an emergency Jump Crypto bailout. Axelar uses a proof-of-stake validator set to bridge. Hyperlane lets every chain bring its own security model. The bridge category lost more than $2B to hacks across 2021-2024; the survivors hardened.</p>
+<p>OEV — Oracle Extractable Value — is the frontier conversation. Liquidations on Aave, Compound, and other money markets get triggered by oracle updates, and the value of being first to liquidate is real money. Pyth's Express Relay, Chainlink's CCIP, and protocols like API3 are competing on how to capture that value and rebate it to protocols rather than letting it leak to MEV searchers. Whoever solves OEV cleanly wins the next cycle of money-market integrations. The plumbing is the product.</p>
 </section>
 
 <!-- BLEED -->
@@ -309,15 +338,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Read a Chainlink price feed on-chain.</strong><p>Pull the latestRoundData on the ETH/USD feed. Notice the heartbeat, deviation threshold, and decimals. That's the contract surface.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Bridge with three different bridges.</strong><p>LayerZero (Stargate), Wormhole, Axelar. Read each one's trust model before sending. The differences are the lesson.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Subscribe to a Pyth feed.</strong><p>Use Pyth's pull oracle in a small contract. Pay for the update. The pull-vs-push UX is the whole architecture debate.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Track liquidations on Aave for a day.</strong><p>Watch which oracle update triggered which liquidation. OEV is real money, paid by borrowers, captured by searchers.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Read the Wormhole hack post-mortem.</strong><p>Certik and Jump's writeup. Bridge security is signature verification, and one missed check cost $326M.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -338,12 +367,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Off-chain data, on-chain truth.<br>
-      Cross-chain messages, single-honest-actor security.<br>
-      <em>The layer everything depends on.</em>
+      The chain ends at the contract. The world begins at the oracle.<br>
+      Decentralize the data feeds. Audit the heartbeat. Verify the signers.<br>
+      OEV is the next MEV.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>Connective tissue, decentralised.</strong>
+      <strong>Plumbing is the product.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

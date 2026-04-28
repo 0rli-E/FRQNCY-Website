@@ -70,39 +70,73 @@
       <h1 class="hero-title t-mid">Modular</h1>
       <p class="hero-desc">Splitting a blockchain into separate execution, settlement, consensus, and data-availability layers. Optimising each independently. Composing them on demand. The modular thesis says the monolithic chain has always been an artefact of constraint, not design.</p>
       <div class="hero-quote">
-        Specialisation everywhere — except, until recently, blockchains.
-        <cite>Celestia thesis · 2022</cite>
+        The next billion users won't fit on one chain. Modularity is the only honest answer.
+        <cite>Mustafa Al-Bassam · Celestia whitepaper, 2019</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#7C3AED" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#9C66F2" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#7C3AED" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.6" fill="none">
-        <rect x="-50" y="-50" width="100" height="100" transform="rotate(15)"/>
-        <rect x="-50" y="-50" width="100" height="100" transform="rotate(-15)"/>
-        <rect x="-30" y="-30" width="60" height="60" opacity="0.6"/>
-      </g>
-      <g class="glyph-rotate-rev" stroke="rgba(245,248,251,0.20)" stroke-width="0.35" stroke-dasharray="2 4" fill="none">
-        <circle cx="0" cy="0" r="68"/>
-      </g>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#7C3AED" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#9C66F2" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#9C66F2"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_modular" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_modular)"/>
+  <circle cx="0" cy="0" r="60" stroke="var(--sector-accent)" stroke-width="0.3"
+          fill="none" stroke-dasharray="1 4" opacity="0.4" class="glyph-rotate-rev"/>
+  <g class="glyph-pulse-1">
+    <polygon points="0,-16 14,-8 14,8 0,16 -14,8 -14,-8"
+             fill="var(--sector-accent)" opacity="0.5"
+             stroke="var(--sector-warm)" stroke-width="0.8"/>
+    <circle cx="0" cy="0" r="4" fill="var(--sector-warm)"/>
+  </g>
+  <g class="glyph-rotate">
+    <g transform="translate(0, -60)">
+      <polygon points="-12,-8 12,-8 12,8 -12,8" fill="var(--sector-soft)"
+               stroke="var(--sector-accent)" stroke-width="0.7"/>
+      <polygon points="-12,-8 -8,-12 16,-12 12,-8" fill="var(--sector-accent)" opacity="0.4"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <polygon points="12,-8 16,-12 16,4 12,8" fill="var(--sector-accent)" opacity="0.6"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <text x="0" y="2" text-anchor="middle" font-family="Georgia,serif"
+            font-size="7" letter-spacing="1.5" fill="var(--sector-warm)">DA</text>
+    </g>
+    <g transform="translate(60, 0)">
+      <polygon points="-12,-8 12,-8 12,8 -12,8" fill="var(--sector-soft)"
+               stroke="var(--sector-accent)" stroke-width="0.7"/>
+      <polygon points="-12,-8 -8,-12 16,-12 12,-8" fill="var(--sector-accent)" opacity="0.4"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <polygon points="12,-8 16,-12 16,4 12,8" fill="var(--sector-accent)" opacity="0.6"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <text x="0" y="2" text-anchor="middle" font-family="Georgia,serif"
+            font-size="6" letter-spacing="1" fill="var(--sector-warm)">EXEC</text>
+    </g>
+    <g transform="translate(0, 60)">
+      <polygon points="-12,-8 12,-8 12,8 -12,8" fill="var(--sector-soft)"
+               stroke="var(--sector-accent)" stroke-width="0.7"/>
+      <polygon points="-12,-8 -8,-12 16,-12 12,-8" fill="var(--sector-accent)" opacity="0.4"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <polygon points="12,-8 16,-12 16,4 12,8" fill="var(--sector-accent)" opacity="0.6"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <text x="0" y="2" text-anchor="middle" font-family="Georgia,serif"
+            font-size="6" letter-spacing="1" fill="var(--sector-warm)">SET</text>
+    </g>
+    <g transform="translate(-60, 0)">
+      <polygon points="-12,-8 12,-8 12,8 -12,8" fill="var(--sector-soft)"
+               stroke="var(--sector-accent)" stroke-width="0.7"/>
+      <polygon points="-12,-8 -8,-12 16,-12 12,-8" fill="var(--sector-accent)" opacity="0.4"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <polygon points="12,-8 16,-12 16,4 12,8" fill="var(--sector-accent)" opacity="0.6"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <text x="0" y="2" text-anchor="middle" font-family="Georgia,serif"
+            font-size="6" letter-spacing="1" fill="var(--sector-warm)">CON</text>
+    </g>
+  </g>
+  <g stroke="var(--sector-warm)" stroke-width="0.4" opacity="0.5" class="glyph-pulse-2">
+    <line x1="0" y1="-44" x2="0" y2="-16"/><line x1="44" y1="0"  x2="16" y2="0"/>
+    <line x1="0" y1="44"  x2="0" y2="16"/><line x1="-44" y1="0" x2="-16" y2="0"/>
+  </g>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -119,8 +153,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>A monolithic blockchain does everything: it executes transactions, reaches consensus on order, settles disputes, and stores the data. The modular thesis is that each of those is a separate problem, with its own optimal trust model and economic design.</p>
-<p>Celestia, EigenDA, Avail, and the rollups built on top of them are the working set. The bet is that decoupling lets each layer scale at its own rate, and that the composed result outperforms any single chain that tries to do all four.</p>
+  <p>Modularity is the architectural counter-thesis to monolithic chains. Mustafa Al-Bassam's LazyLedger paper in 2019 — which became Celestia — argued that a blockchain's job is consensus and data availability, not execution. Celestia mainnet went live October 2023 with TIA airdropped to ETH stakers, IBC users, and Cosmos contributors. The pitch is clean: rollups post their data to Celestia, get cheap DA, and bring their own execution environment. Data availability sampling (DAS) lets light nodes verify availability with logarithmic resources. The design is elegant; whether the market wants it is a different question.</p>
+<p>EigenDA — built by EigenLabs on top of EigenLayer's restaked ETH — is the institutional alternative. Same problem (DA), different security model (restaked ETH instead of TIA-staked). Avail spun out of Polygon and runs its own DA layer with similar primitives. NearDA piggybacks on Near's existing chain. Polygon CDK, Arbitrum Orbit, OP Stack — every L2 platform now lets builders pick their DA layer at launch time. The DA market is small in dollars and structurally important to the rollup-centric Ethereum thesis.</p>
+<p>The honest debate is whether modular wins. Solana's Anatoly argues that the integrated stack is faster and cheaper at the application layer, that latency between modules is the dealbreaker, and that monolithic execution will out-iterate modular composition. The Celestia and Ethereum camps argue that sovereign rollups with cheap DA scale beyond what any monolith can support, that specialization beats integration at scale, and that the next billion users will run on chains we haven't named yet. Both sides are betting real treasuries on the answer. The next three years tell us who's right.</p>
 </section>
 
 <!-- BLEED -->
@@ -190,15 +225,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Run a Celestia light node.</strong><p>Sync the chain, sample data availability. Feel what DAS actually verifies.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Spin up a sovereign rollup.</strong><p>Use Rollkit, Sovereign SDK, or Dymension RollApps. Post data to Celestia. Build the chain in a weekend.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Compare DA costs across layers.</strong><p>Post 1MB to Celestia, EigenDA, Avail, and Ethereum blobs. The fee differences are the modular thesis in numbers.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Read the Celestia whitepaper.</strong><p>Mustafa's data-availability sampling argument is the most important modular-thesis primitive.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Bridge between two sovereign rollups.</strong><p>Use IBC or a shared sequencer. Notice what cross-rollup composability requires.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -219,12 +254,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Execution, separately.<br>
-      Settlement, separately.<br>
-      <em>Data availability, separately.</em>
+      Specialization beats integration at scale.<br>
+      Consensus, data availability, execution — separable, composable, replaceable.<br>
+      The next billion users run on chains we haven't named yet.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>The monolith breaks.</strong>
+      <strong>Modularity is a values bet.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

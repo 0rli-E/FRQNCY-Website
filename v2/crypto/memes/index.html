@@ -70,40 +70,50 @@
       <h1 class="hero-title t-pop">Memes</h1>
       <p class="hero-desc">Tokens whose entire thesis is attention. Pure liquid culture. Most meme coins are jokes; the ones that survive are jokes that became identity, and identity that became coordination.</p>
       <div class="hero-quote">
-        The most efficient market in the world is the one for attention.
-        <cite>FRQNCY editorial</cite>
+        Memes are ideas that survive selection pressure. Tokens are memes with a price.
+        <cite>Murad Mahmudov · Token2049 keynote, 2024</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#FFC107" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#FFD759" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#FFC107" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.55" fill="none">
-        <circle cx="0" cy="0" r="58"/>
-        <circle cx="0" cy="0" r="42"/>
-        <circle cx="0" cy="0" r="26"/>
-        <circle cx="0" cy="0" r="10" fill="#FFD759" fill-opacity="0.85"/>
-      </g>
-      <g class="glyph-rotate-rev" stroke="#FFD759" stroke-width="0.4" stroke-dasharray="2 6" fill="none">
-        <circle cx="0" cy="0" r="74"/>
-      </g>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#FFC107" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#FFD759" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#FFD759"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_memes" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.34"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gFire_memes" cx="50%" cy="80%" r="60%">
+      <stop offset="0%" stop-color="var(--sector-warm)" stop-opacity="0.85"/>
+      <stop offset="80%" stop-color="var(--sector-accent)" stop-opacity="0.4"/>
+      <stop offset="100%" stop-color="var(--sector-accent)" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_memes)"/>
+  <path class="glyph-pulse-1"
+        d="M 0,72 Q -44,58 -42,18 Q -40,-12 -22,-22
+           Q -28,4 -14,12 Q -22,-28 0,-58
+           Q 14,-30 6,-12 Q 22,-20 18,-44
+           Q 42,-12 42,18 Q 44,58 0,72 Z"
+        fill="url(#gFire_memes)" stroke="var(--sector-warm)" stroke-width="1.2"/>
+  <path class="glyph-pulse-2"
+        d="M 0,52 Q -22,42 -22,18 Q -22,-2 -8,-14
+           Q -10,2 0,4 Q -6,-12 0,-32
+           Q 8,-14 4,-2 Q 14,-6 12,-20
+           Q 22,-2 22,18 Q 22,42 0,52 Z"
+        fill="var(--sector-warm)" opacity="0.65"/>
+  <g class="glyph-pulse-2">
+    <text x="-60" y="40" font-family="Georgia,serif" font-size="22"
+          font-weight="500" fill="var(--sector-warm)" opacity="0.75">$</text>
+    <text x="62" y="20" font-family="Georgia,serif" font-size="26"
+          font-weight="500" fill="var(--sector-warm)" opacity="0.85">$</text>
+    <text x="-66" y="-12" font-family="Georgia,serif" font-size="18"
+          font-weight="500" fill="var(--sector-accent)" opacity="0.65">$</text>
+  </g>
+  <circle cx="0" cy="32" r="3" fill="var(--sector-warm)" class="glyph-pulse-1"/>
+  <g fill="var(--sector-warm)" opacity="0.85">
+    <circle cx="-32" cy="-66" r="1.5"/>
+    <circle cx="36" cy="-58" r="1.8"/>
+    <circle cx="0" cy="-78" r="1.3"/>
+  </g>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -120,8 +130,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>Meme coins are crypto's purest expression of price-as-attention. There is no protocol thesis to defend; the asset is the collective decision to keep paying attention to it.</p>
-<p>FRQNCY does not feature memes for the speculation. The cultural-coordination angle is real — Dogecoin, Shiba, Pepe each represent a community holding a token because of identity, not yield. The risk profile is binary; the rest of crypto under-prices how much of itself runs on the same logic.</p>
+  <p>Memecoins are the most honest market in crypto. There is no roadmap, no team, no use case — only attention and the price-of-attention curve. Dogecoin (Billy Markus and Jackson Palmer, 2013) was the original joke that wouldn't die, partly because Elon Musk kept tweeting it. Shiba Inu came in 2020 and minted a generation of retail wins. Pepe launched in April 2023 with no presale, no team allocation, and ran 10,000x in its first months. WIF — dogwifhat — became Solana's mascot and a $4B market cap on a JPEG of a dog in a beanie.</p>
+<p>The 2024 cycle was Solana-native. Bonk seeded the meta in late 2023. Pump.fun's launchpad industrialized memecoin issuance to thousands per day. Fartcoin launched as an AI-agent meme via the Truth Terminal account that Andy Ayrey was running, became a $1B+ market cap, and forced everyone to update their model of what counts as a serious asset. Popcat, Mog, the GOAT-ecosystem, the Truth Terminal lineage — each one is a culture artifact priced in real dollars. The cycle minted more 100x trades in memecoins than in any other category.</p>
+<p>Murad Mahmudov's thesis — that memecoins are the only assets where the price IS the product, and that they will outlive most L1s — is correct in proportion and wrong in distribution. 99 percent of memecoins go to zero. The 1 percent that survive (DOGE 12 years, SHIB 5 years, WIF 2 years and counting) build communities, merch, conferences, and meaningful onchain activity. They are the most honest case for crypto's permissionless ethos: no committee approved them, no VC seeded them, the market priced them anyway. The cope-or-conviction split runs straight through this category.</p>
 </section>
 
 <!-- BLEED -->
@@ -711,15 +722,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Buy $50 of a memecoin and hold for 90 days.</strong><p>Pick by cultural weight, not pump. Notice what survives the dump and what doesn't.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Read the contract before you buy.</strong><p>Mint authority renounced? LP locked? Tax functions? The rug detection layer is your own diligence.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Watch a Pump.fun graduation live.</strong><p>Sit on Pump.fun for an hour. The bonding curve, the snipers, the discord all come into focus.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Trade one meme on Solana, one on Base, one on Ethereum.</strong><p>Compare fees, snipe times, exit liquidity. The chain matters as much as the meme.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Read Murad's Token2049 deck.</strong><p>His memecoin supercycle thesis is the most rigorous public argument for the category.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -740,12 +751,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Attention, priced.<br>
-      Identity, coordinated.<br>
-      <em>A token that is its own thesis.</em>
+      Memecoins are markets for attention, priced honestly.<br>
+      Most go to zero. The survivors build culture.<br>
+      The price is the product.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>The culture layer is real.</strong>
+      <strong>Conviction is the only edge.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

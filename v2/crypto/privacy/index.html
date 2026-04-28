@@ -71,37 +71,44 @@
       <p class="hero-desc">Cash is private by default. Most blockchains are transparent by default. Privacy crypto is the work to put the floor back where it should be — financial privacy as a precondition for financial freedom.</p>
       <div class="hero-quote">
         Privacy is necessary for an open society in the electronic age. Privacy is not secrecy.
-        <cite>Eric Hughes · A Cypherpunk's Manifesto · 1993</cite>
+        <cite>Eric Hughes · A Cypherpunk's Manifesto, 1993</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#C88CFF" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#DDB1FF" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#C88CFF" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.7" fill="none">
-        <circle cx="-22" cy="0" r="26"/>
-        <line x1="4" y1="0" x2="56" y2="0"/>
-        <line x1="38" y1="0" x2="38" y2="14"/>
-        <line x1="50" y1="0" x2="50" y2="10"/>
-      </g>
-      <circle cx="-22" cy="0" r="6" fill="#DDB1FF"/>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#C88CFF" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#DDB1FF" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#DDB1FF"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_privacy" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+    <radialGradient id="gShield_privacy" cx="50%" cy="40%" r="60%">
+      <stop offset="0%" stop-color="var(--sector-warm)" stop-opacity="0.5"/>
+      <stop offset="100%" stop-color="var(--sector-accent)" stop-opacity="0.1"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_privacy)"/>
+  <g class="glyph-rotate" opacity="0.55">
+    <line x1="0" y1="-32" x2="0" y2="-86" stroke="var(--sector-warm)" stroke-width="0.6"/>
+    <line x1="22" y1="-22" x2="60" y2="-60" stroke="var(--sector-warm)" stroke-width="0.5"/>
+    <line x1="32" y1="0" x2="86" y2="0" stroke="var(--sector-warm)" stroke-width="0.6"/>
+    <line x1="22" y1="22" x2="60" y2="60" stroke="var(--sector-warm)" stroke-width="0.5"/>
+    <line x1="0" y1="32" x2="0" y2="86" stroke="var(--sector-warm)" stroke-width="0.6"/>
+    <line x1="-22" y1="22" x2="-60" y2="60" stroke="var(--sector-warm)" stroke-width="0.5"/>
+    <line x1="-32" y1="0" x2="-86" y2="0" stroke="var(--sector-warm)" stroke-width="0.6"/>
+    <line x1="-22" y1="-22" x2="-60" y2="-60" stroke="var(--sector-warm)" stroke-width="0.5"/>
+  </g>
+  <rect x="-32" y="-32" width="64" height="64" rx="2"
+        fill="url(#gShield_privacy)" stroke="var(--sector-accent)" stroke-width="1.2"/>
+  <g class="glyph-pulse-2" stroke="var(--sector-warm)" stroke-width="1" fill="none" opacity="0.85">
+    <path d="M -16,-12 Q 0,-22 16,-12 L 14,-2 Q 8,2 4,0 L 0,8 L -4,0 Q -8,2 -14,-2 Z"/>
+    <path d="M -10,4 Q -6,8 -2,6 M 2,6 Q 6,8 10,4"/>
+    <line x1="-8" y1="-8" x2="-4" y2="-8" stroke-width="1.5"/>
+    <line x1="4" y1="-8" x2="8" y2="-8" stroke-width="1.5"/>
+    <path d="M -3,12 L 0,22 L 3,12"/>
+  </g>
+  <text x="0" y="-44" text-anchor="middle" font-family="Georgia,serif"
+        font-size="9" letter-spacing="3" fill="var(--sector-warm)"
+        opacity="0.9" class="glyph-pulse-1">ZK</text>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -118,8 +125,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>Cash is private. The cheque is private. The handshake is private. The default state of human commerce, for centuries, has been that two parties to a transaction know about it and nobody else does.</p>
-<p>Public blockchains broke that default. Privacy crypto is the work to put it back — zero-knowledge proofs, ring signatures, mixing protocols, shielded transactions. None of these are about hiding from law. They are about restoring the baseline of what private commerce already was.</p>
+  <p>Privacy is the cypherpunk bet. The 1993 Hughes manifesto frames it cleanly: privacy is the power to selectively reveal yourself, and in an electronic age it has to be built, not granted. Monero forked from Bytecoin in 2014 and made ring signatures, stealth addresses, and RingCT the default — every transaction is shielded by construction. Zcash, founded by Zooko Wilcox in 2016, ran the original trusted-setup ceremony (the Powers of Tau) and shipped zk-SNARKs to production before the rest of the industry knew what they were.</p>
+<p>August 2022 is the inflection point everyone references. The U.S. Treasury's OFAC sanctioned Tornado Cash's smart contracts — not a person, a contract — and arrested its developer Alexey Pertsev in the Netherlands. Roman Storm's case is still being litigated. The chilling effect rewrote what privacy infrastructure can ship in public. Railgun, Aztec, and Penumbra are the post-Tornado generation building shielded pools that are harder to prosecute and harder to use. Nym is mixnet-layer privacy at the network level — Sphinx packets, not just shielded balances.</p>
+<p>The cultural posture is adversarial. Privacy people assume surveillance is the default and engineer accordingly. They reference Phil Zimmermann's PGP fight in the 90s, the Crypto Wars, Snowden 2013, the Chaum papers from the 80s. They are slightly too much for normies and exactly right for the moment. The thesis is that financial privacy is a precondition for political freedom and the chains that don't have it will eventually be regulated into being surveillance instruments. The chains that do have it will be the holdouts.</p>
 </section>
 
 <!-- BLEED -->
@@ -189,15 +197,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Send a Monero transaction.</strong><p>Download the GUI wallet, sync the chain, send XMR to yourself. The default-shielded UX is the lesson.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Read A Cypherpunk's Manifesto.</strong><p>Eric Hughes, 1993. Eight paragraphs. It still describes the present.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Use Railgun to shield an ETH balance.</strong><p>Deposit, transact privately, withdraw to a fresh address. Feel the fungibility difference.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Run a Nym mixnode or use NymVPN.</strong><p>Mixnet-layer privacy is a different abstraction than chain-level. Try both.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Read the Zcash trusted setup ceremony post-mortem.</strong><p>Zooko's writeup of the Powers of Tau. Multi-party computation in adversarial conditions, written like a thriller.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -218,12 +226,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      A floor, not a ceiling.<br>
-      A right, not a permission.<br>
-      <em>The default state of cash, recovered for the digital age.</em>
+      Privacy is a precondition for freedom, not a feature request.<br>
+      Default-shielded is the only honest design.<br>
+      Build the tools that make surveillance economically infeasible.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>Privacy is freedom's substrate.</strong>
+      <strong>Cypherpunks write code.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

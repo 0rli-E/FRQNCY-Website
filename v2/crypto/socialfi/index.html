@@ -70,49 +70,50 @@
       <h1 class="hero-title t-thin">SocialFi</h1>
       <p class="hero-desc">The social graph as a public good rather than a private moat. Identity, content, and following relationships that travel with the user across applications. Whatever app you switch to, your network and history come with you.</p>
       <div class="hero-quote">
-        If your followers can be deleted by a Trust & Safety committee, they were never your followers.
-        <cite>FRQNCY editorial</cite>
+        Sufficient decentralization means a developer can build an app that competes with us, using only the protocol, and we can't stop them.
+        <cite>Dan Romero · Farcaster docs, 2023</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#9A4DFF" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#B884FF" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#9A4DFF" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.55" fill="rgba(245,248,251,0.04)">
-        <circle cx="0"   cy="-44" r="6"/>
-        <circle cx="38"  cy="-22" r="6"/>
-        <circle cx="38"  cy="22"  r="6"/>
-        <circle cx="0"   cy="44"  r="6"/>
-        <circle cx="-38" cy="22"  r="6"/>
-        <circle cx="-38" cy="-22" r="6"/>
-        <line x1="0" y1="-44" x2="38" y2="-22"/>
-        <line x1="38" y1="-22" x2="38" y2="22"/>
-        <line x1="38" y1="22" x2="0" y2="44"/>
-        <line x1="0" y1="44" x2="-38" y2="22"/>
-        <line x1="-38" y1="22" x2="-38" y2="-22"/>
-        <line x1="-38" y1="-22" x2="0" y2="-44"/>
-        <line x1="0" y1="-44" x2="0" y2="44" opacity="0.35"/>
-        <line x1="38" y1="-22" x2="-38" y2="22" opacity="0.35"/>
-        <line x1="-38" y1="-22" x2="38" y2="22" opacity="0.35"/>
-      </g>
-      <circle cx="0" cy="0" r="4" fill="#B884FF"/>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#9A4DFF" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#B884FF" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#B884FF"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_socialfi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_socialfi)"/>
+  <g class="glyph-rotate">
+    <g fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="0.7">
+      <circle cx="0"   cy="-66" r="9"/><circle cx="57"  cy="-33" r="9"/>
+      <circle cx="57"  cy="33"  r="9"/><circle cx="0"   cy="66"  r="9"/>
+      <circle cx="-57" cy="33"  r="9"/><circle cx="-57" cy="-33" r="9"/>
+    </g>
+    <g fill="var(--sector-warm)">
+      <circle cx="0"   cy="-67" r="2"/><circle cx="57"  cy="-34" r="2"/>
+      <circle cx="57"  cy="32"  r="2"/><circle cx="0"   cy="65"  r="2"/>
+      <circle cx="-57" cy="32"  r="2"/><circle cx="-57" cy="-34" r="2"/>
+    </g>
+  </g>
+  <g class="glyph-rotate" stroke="var(--sector-warm)" stroke-width="0.8" opacity="0.75" fill="none">
+    <line x1="0" y1="-22" x2="0" y2="-54"/>
+    <polygon points="0,-54 -3,-48 3,-48" fill="var(--sector-warm)"/>
+    <line x1="19"  y1="-11" x2="46" y2="-26"/>
+    <polygon points="46,-26 41,-22 44,-30" fill="var(--sector-warm)"/>
+    <line x1="19"  y1="11"  x2="46" y2="26"/>
+    <polygon points="46,26 44,30 41,22" fill="var(--sector-warm)"/>
+    <line x1="0"   y1="22"  x2="0"  y2="54"/>
+    <polygon points="0,54 -3,48 3,48" fill="var(--sector-warm)"/>
+    <line x1="-19" y1="11"  x2="-46" y2="26"/>
+    <polygon points="-46,26 -41,22 -44,30" fill="var(--sector-warm)"/>
+    <line x1="-19" y1="-11" x2="-46" y2="-26"/>
+    <polygon points="-46,-26 -41,-22 -44,-30" fill="var(--sector-warm)"/>
+  </g>
+  <circle cx="0" cy="0" r="20" fill="var(--sector-accent)" opacity="0.6"
+          stroke="var(--sector-warm)" stroke-width="1" class="glyph-pulse-1"/>
+  <circle cx="0" cy="-4" r="5.5" fill="var(--sector-warm)"/>
+  <path d="M -10,12 Q 0,2 10,12 L 10,8 Q 0,-2 -10,8 Z"
+        fill="var(--sector-warm)" opacity="0.95"/>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -129,8 +130,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>Web2 social platforms made the network effect the thing they sold. SocialFi is the architectural reversal — protocols where the graph is public, the identity is portable, and the application layer competes on user experience rather than lock-in.</p>
-<p>The early entries vary in approach: Lens, Farcaster, Nostr each move the locus of control to a different layer. What unites them is the commitment that the user, not the platform, owns the relationship.</p>
+  <p>SocialFi is the bet that protocols beat platforms when the network effect can be ported. Dan Romero and Varun Srinivasan — both Coinbase alumni — launched Farcaster in 2021 with the sufficient-decentralization design: identity on-chain, casts in hubs, anyone can build a client. Warpcast is the reference client. Frames in early 2024 turned casts into mini-apps and made Farcaster the first social protocol that shipped genuine native interaction. The user count is small and the signal-to-noise is the highest in crypto social.</p>
+<p>Lens (Stani Kulechov's other project, originally on Polygon, now on its own L2) took the opposite approach — full on-chain social graph as NFTs, Profile NFTs and Follow NFTs as first-class primitives. Hey is the canonical client. Then there's Nostr — Fiatjaf's protocol from 2020, relay-based, no chain, no token, growing fastest in the Bitcoin-native crowd because Jack Dorsey funded it after leaving Twitter. World (formerly Worldcoin) added proof-of-personhood via the orb, which is either dystopian biometrics or the only credible bot-resistance layer, depending on who you ask.</p>
+<p>The Friend.tech moment in August 2023 is the cultural reference. Racer's app turned X profiles into bonding-curve-priced shares, did $50M in fees in three weeks, and collapsed inside six months. The lesson the survivors took: financialization of social capital works as a stunt and breaks as a substrate. The protocols that lasted (Farcaster, Lens, Nostr) chose composability and identity over speculation. The next round of SocialFi will be agents posting alongside humans on the same graph.</p>
 </section>
 
 <!-- BLEED -->
@@ -400,15 +402,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Get a Farcaster account and post for 30 days.</strong><p>Use Warpcast. Engage with at least 5 channels. The signal-to-noise is the lesson.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Run a Nostr relay or use multiple clients.</strong><p>Damus, Amethyst, Iris. Notice that your identity (npub) survives every client switch. That's the point.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Build a Frame.</strong><p>Farcaster Frames are HTML-ish. Ship one in an afternoon. Ten million wallets can interact with it.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Verify your humanity at a World orb.</strong><p>Then read the criticism. Form your own view on biometric proof-of-personhood with the device in your hand.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Bridge your social graph.</strong><p>Export Farcaster follows, import to Lens, post the same content. Compare engagement. The portability is the alpha.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -429,12 +431,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Identity that travels.<br>
-      A graph that doesn't get deleted.<br>
-      <em>Relationships that outlive the app.</em>
+      The graph belongs to you, not the platform.<br>
+      Identity is a primitive. Posts are payloads. Clients are interchangeable.<br>
+      Sufficient decentralization is a competitive moat against your own founders.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>The user is the network.</strong>
+      <strong>Own the protocol.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

@@ -70,39 +70,46 @@
       <h1 class="hero-title t-mid">Layer 2s</h1>
       <p class="hero-desc">Rollups and validity-proof systems that scale Ethereum without compromising its security. The bet that the base layer should optimise for finality and the execution layer for throughput.</p>
       <div class="hero-quote">
-        Rollups inherit security from their base layer. That is the whole trick.
-        <cite>Vitalik Buterin · 2021</cite>
+        Rollups are the only trustless scaling solution that we know how to build.
+        <cite>Vitalik Buterin · ethresear.ch, 2021</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#50E2C1" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#7BEDD2" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#50E2C1" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.6" fill="none">
-        <rect x="-50" y="-50" width="100" height="100" transform="rotate(15)"/>
-        <rect x="-50" y="-50" width="100" height="100" transform="rotate(-15)"/>
-        <rect x="-30" y="-30" width="60" height="60" opacity="0.6"/>
-      </g>
-      <g class="glyph-rotate-rev" stroke="rgba(245,248,251,0.20)" stroke-width="0.35" stroke-dasharray="2 4" fill="none">
-        <circle cx="0" cy="0" r="68"/>
-      </g>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#50E2C1" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#7BEDD2" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#7BEDD2"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_l2" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_l2)"/>
+  <g class="glyph-pulse-1">
+    <rect x="-72" y="-78" width="20" height="6" fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="0.5"/>
+    <rect x="-48" y="-78" width="20" height="6" fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="0.5"/>
+    <rect x="-24" y="-78" width="20" height="6" fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="0.5"/>
+    <rect x="0"   y="-78" width="20" height="6" fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="0.5"/>
+    <rect x="24"  y="-78" width="20" height="6" fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="0.5"/>
+    <rect x="48"  y="-78" width="20" height="6" fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="0.5"/>
+  </g>
+  <g stroke="var(--sector-accent)" stroke-width="0.4" opacity="0.4">
+    <line x1="-62" y1="-70" x2="-44" y2="-50"/><line x1="-38" y1="-70" x2="-22" y2="-50"/>
+    <line x1="-14" y1="-70" x2="0" y2="-50"/><line x1="10"  y1="-70" x2="22" y2="-50"/>
+    <line x1="34"  y1="-70" x2="44" y2="-50"/>
+  </g>
+  <rect x="-50" y="-50" width="100" height="10" rx="1" fill="var(--sector-soft)"
+        stroke="var(--sector-accent)" stroke-width="0.6"/>
+  <rect x="-50" y="-34" width="100" height="10" rx="1" fill="var(--sector-soft)"
+        stroke="var(--sector-accent)" stroke-width="0.6"/>
+  <rect x="-40" y="-12" width="80" height="14" rx="2" fill="var(--sector-accent)"
+        opacity="0.7" stroke="var(--sector-warm)" stroke-width="0.8" class="glyph-pulse-2"/>
+  <text x="0" y="-1" text-anchor="middle" font-family="Georgia,serif"
+        font-size="9" letter-spacing="2" fill="var(--sector-warm)" opacity="0.95">PROOF</text>
+  <line x1="0" y1="6" x2="0" y2="42" stroke="var(--sector-warm)" stroke-width="1.5"
+        stroke-dasharray="3 3" opacity="0.8"/>
+  <polygon points="0,50 -6,40 6,40" fill="var(--sector-warm)" opacity="0.9"/>
+  <polygon points="0,58 -18,72 0,80 18,72" fill="var(--sector-soft)"
+           stroke="var(--sector-accent)" stroke-width="0.8"/>
+  <line x1="-18" y1="72" x2="18" y2="72" stroke="var(--sector-warm)" stroke-width="0.5" opacity="0.6"/>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -119,8 +126,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>Layer 2s are not separate chains. They are scaling primitives that lean on Ethereum's economic security, doing the heavy execution off-chain and posting compressed proofs back. The base layer never has to scale; the systems built on top of it do.</p>
-<p>The L2s in this sector compete on three axes: proof system (optimistic vs zero-knowledge), data availability (on-chain vs off-chain), and ecosystem (DeFi, gaming, social).</p>
+  <p>L2s are Ethereum's scaling answer and they finally work. The endgame thesis Vitalik articulated in 2020 — rollup-centric Ethereum — became reality through Arbitrum and Optimism's optimistic rollups, then zkSync, Scroll, and Linea's validity proofs, then Base, Coinbase's L2 built on the OP Stack that hit a billion in TVL faster than any chain in history. EIP-4844 in March 2024 introduced blobs and dropped costs from dollars to cents. The L2Beat dashboard is the de facto leaderboard nobody admits to checking.</p>
+<p>The cultural fault line runs between optimistic and ZK. Optimistic rollups assume validity and let anyone fraud-proof; the seven-day withdrawal window is the price. ZK rollups prove validity cryptographically and settle faster but the prover stack is hard. Both camps are converging — Arbitrum is researching Stylus and BoLD, Optimism shipped fault proofs in 2024, zkSync ships native account abstraction, Scroll bytecode-equivalent zkEVM, Linea via Consensys. The Superchain (OP Stack) and Orbit (Arbitrum) are platform plays for app-specific rollups.</p>
+<p>The honest critique is sequencer centralization. Almost every major L2 runs a single sequencer the foundation operates. Decentralizing it is on every roadmap and shipped on almost none. The Base team — Jesse Pollak's group — is open about treating it as a multi-year problem. Until then, L2s are a credible-neutrality bet on the foundations that run them. Fast and cheap is the feature. Trustless is the asymptote.</p>
 </section>
 
 <!-- BLEED -->
@@ -1350,15 +1358,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Bridge ETH to three L2s and back.</strong><p>Arbitrum, Base, zkSync. Time the deposits and withdrawals. The seven-day optimistic window is real.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Read L2Beat's risk page.</strong><p>Stage 0, 1, 2. Sequencer, prover, upgrade keys. Most L2s are still Stage 0 and the page tells you why.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Run a rollup.</strong><p>Spin up an OP Stack chain locally with op-stack-getting-started. The whole stack fits in a laptop.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Pay gas with USDC on Base.</strong><p>Native paymaster flows. Notice the moment the unit of account stops being ETH.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Trade a perp on an L2 perp DEX.</strong><p>GMX on Arbitrum, Aevo on its own L2. Feel how block time and finality affect execution quality.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -1379,12 +1387,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Speed without permission.<br>
-      Throughput without trust.<br>
-      <em>Settlement still on Ethereum.</em>
+      Scaling Ethereum is a credibility test for the rollup thesis.<br>
+      Cheap blockspace is necessary but not sufficient.<br>
+      The endgame is many chains, one settlement layer, shared security.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>The bet pays off.</strong>
+      <strong>Decentralize the sequencer.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

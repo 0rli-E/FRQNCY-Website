@@ -70,41 +70,37 @@
       <h1 class="hero-title t-monumental">Bitcoin</h1>
       <p class="hero-desc">Bitcoin and the protocols that turn sound money into a usable layer. Lightning for payments, Fedimint for community custody, Cashu for ecash, Liquid for sidechain assets, Nostr for the relay graph that messages and value can ride together.</p>
       <div class="hero-quote">
-        If you don't believe it or don't get it, I don't have time to try to convince you, sorry.
-        <cite>Satoshi Nakamoto · 2010</cite>
+        If you don't believe it or don't get it, I don't have the time to try to convince you, sorry.
+        <cite>Satoshi Nakamoto · BitcoinTalk forum, 2010</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#F7931A" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#FFB257" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#F7931A" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate-rev">
-        <circle cx="0" cy="0" r="78" fill="none" stroke="rgba(245,248,251,0.20)"
-                stroke-width="0.4" stroke-dasharray="3 4"/>
-      </g>
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.7" fill="none">
-        <polygon points="-58,40 -22,-32 14,18 38,-12 60,40"/>
-        <polygon points="-46,40 -18,-8 8,18 30,-2 52,40" opacity="0.55"/>
-      </g>
-      <line x1="-65" y1="40" x2="65" y2="40" stroke="#FFB257" stroke-opacity="0.6" stroke-width="0.6"/>
-      <circle cx="-22" cy="-32" r="3.5" fill="#FFB257"/>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#F7931A" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#FFB257" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#FFB257"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_bitcoin" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.34"/>
+      <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_bitcoin)"/>
+  <polygon class="glyph-rotate-rev" points="0,-78 67.5,-39 67.5,39 0,78 -67.5,39 -67.5,-39"
+           stroke="var(--sector-accent)" stroke-width="0.8" fill="none" opacity="0.55"/>
+  <polygon points="0,-62 53.7,-31 53.7,31 0,62 -53.7,31 -53.7,-31"
+           stroke="var(--sector-accent)" stroke-width="0.4" fill="var(--sector-soft)" opacity="0.8"/>
+  <text x="0" y="28" text-anchor="middle" font-family="Georgia,'Times New Roman',serif"
+        font-size="108" font-weight="700" font-style="italic"
+        fill="var(--sector-warm)" stroke="var(--sector-accent)" stroke-width="0.6">₿</text>
+  <path class="glyph-pulse-1" d="M -82,-22 L -68,-30 L -72,-12 L -58,-18 L -70,4 L -78,-6 L -72,-14 Z"
+        fill="var(--sector-warm)" opacity="0.85"/>
+  <path class="glyph-pulse-2" d="M 82,22 L 68,30 L 72,12 L 58,18 L 70,-4 L 78,6 L 72,14 Z"
+        fill="var(--sector-warm)" opacity="0.85"/>
+  <path class="glyph-pulse-2" d="M -8,-86 L 4,-78 L -4,-72 L 8,-64"
+        stroke="var(--sector-accent)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <path class="glyph-pulse-1" d="M 8,86 L -4,78 L 4,72 L -8,64"
+        stroke="var(--sector-accent)" stroke-width="2" fill="none" stroke-linecap="round"/>
+  <circle cx="-66" cy="-46" r="1.6" fill="var(--sector-warm)" class="glyph-pulse-1"/>
+  <circle cx="66" cy="46" r="1.6" fill="var(--sector-warm)" class="glyph-pulse-2"/>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -121,8 +117,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>Bitcoin is the only monetary asset in human history with a fixed supply that no committee, treasury, or central bank can debase. Twenty-one million units, ever, public from the genesis block forward.</p>
-<p>What follows are the protocols, layers, and tools that extend the base property — payments at the speed of light, community-scale custody, privacy-preserving issuance, the social layer that runs on the same key.</p>
+  <p>Bitcoin is the only chain where the founder vanished on purpose. Satoshi shipped the white paper in October 2008, mined the genesis block with a Times headline embedded in it, and was gone by 2011. What's left is the protocol — 21 million coins, ten-minute blocks, no foundation, no roadmap, no CEO to subpoena. Hal Finney ran the first node. Laszlo bought two pizzas for 10,000 BTC. Adam Back's Hashcash sits underneath the proof-of-work.</p>
+<p>The culture splits into camps that all call themselves Bitcoiners. Lightning maximalists running channels and Phoenix wallets. Nostr posters paying zaps over LNURL. Fedimint and Cashu people rebuilding ecash on top of Lightning, making custody look like federations and chaumian mints again. Then the Ordinals and Runes contingent — Casey Rodarmor's inscription protocol that turned every sat into a potential JPEG carrier, which the OG cypherpunks hate and the fee market loves.</p>
+<p>The institutional layer arrived late and arrived hard. Saylor put MicroStrategy's treasury into BTC in August 2020. El Salvador made it legal tender in 2021. BlackRock's IBIT cleared the spot ETF in January 2024 and ate flows nobody predicted. The orange-coiner thesis — sound money, separation of money and state, opt-out from fiat — is no longer fringe. It's a Larry Fink talking point. The protocol doesn't care.</p>
 </section>
 
 <!-- BLEED -->
@@ -492,15 +489,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Run a node.</strong><p>Spin up Bitcoin Core or Umbrel on a Raspberry Pi. Verify your own balance against the chain. Stop trusting block explorers.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Open a Lightning channel.</strong><p>Install Phoenix or Zeus. Open a channel to a routing node. Send a sat-denominated payment. Feel what sub-cent settlement actually means.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Self-custody with a hardware wallet.</strong><p>Coldcard or BitBox02. Generate the seed offline. Test recovery on a fresh device before funding it. Not your keys, not your coins is not a meme.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Post on Nostr with zaps enabled.</strong><p>Get a Damus or Amethyst client. Set up an LNURL address. Receive your first zap. Notice how different it feels from a like.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Read the white paper out loud.</strong><p>Nine pages. Twice a year. The protocol hasn't changed; your understanding of it should.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -521,12 +518,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Sound money you can hold yourself.<br>
-      A network nobody can switch off.<br>
-      <em>The first thing to fix; the hardest to defend.</em>
+      Sound money is not nostalgia.<br>
+      It is a protocol that refuses to be edited.<br>
+      Bitcoin is the answer to a question fiat is no longer allowed to ask.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>Bitcoin is the floor.</strong>
+      <strong>Verify. Don't trust.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

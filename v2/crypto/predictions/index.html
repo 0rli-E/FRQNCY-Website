@@ -70,40 +70,51 @@
       <h1 class="hero-title t-thin">Prediction Markets</h1>
       <p class="hero-desc">Markets that price the probability of a future event. Election outcomes, hurricane paths, sports results, geopolitics. Prediction markets aggregate dispersed information into a single auditable number.</p>
       <div class="hero-quote">
-        Markets are a way of finding out what the truth is.
-        <cite>Robin Hanson · 2003</cite>
+        Prediction markets are the most efficient information aggregator we have. The trouble is they're illegal.
+        <cite>Robin Hanson · Overcoming Bias, 2007</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#0075E9" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#4F9FED" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#0075E9" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.55" fill="none">
-        <circle cx="0" cy="0" r="58"/>
-        <circle cx="0" cy="0" r="42"/>
-        <line x1="0" y1="-58" x2="0" y2="-46"/>
-        <line x1="0" y1="58"  x2="0" y2="46"/>
-        <line x1="-58" y1="0" x2="-46" y2="0"/>
-        <line x1="58"  y1="0" x2="46"  y2="0"/>
-      </g>
-      <polygon points="0,-30 8,0 0,30 -8,0" fill="#4F9FED" opacity="0.85"/>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#0075E9" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#4F9FED" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#4F9FED"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_predictions" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_predictions)"/>
+  <circle cx="0" cy="-58" r="9" fill="var(--sector-warm)"
+          stroke="var(--sector-accent)" stroke-width="0.8" class="glyph-pulse-1"/>
+  <text x="0" y="-55" text-anchor="middle" font-family="Georgia,serif"
+        font-size="11" fill="var(--sector-accent)" font-style="italic">?</text>
+  <line x1="-3" y1="-50" x2="-46" y2="-2" stroke="var(--sector-accent)" stroke-width="1.2"/>
+  <line x1="3"  y1="-50" x2="46"  y2="-2" stroke="var(--sector-accent)" stroke-width="1.2"/>
+  <circle cx="-46" cy="6" r="20" fill="var(--sector-soft)"
+          stroke="var(--sector-accent)" stroke-width="1" class="glyph-pulse-2"/>
+  <text x="-46" y="2" text-anchor="middle" font-family="Georgia,serif"
+        font-size="14" font-weight="500" fill="var(--sector-accent)">38</text>
+  <text x="-46" y="14" text-anchor="middle" font-family="Georgia,serif"
+        font-size="8" fill="var(--sector-warm)" opacity="0.85">NO ¢</text>
+  <circle cx="46" cy="6" r="22" fill="var(--sector-soft)"
+          stroke="var(--sector-warm)" stroke-width="1.2" class="glyph-pulse-1"/>
+  <text x="46" y="3" text-anchor="middle" font-family="Georgia,serif"
+        font-size="16" font-weight="500" fill="var(--sector-warm)">62</text>
+  <text x="46" y="16" text-anchor="middle" font-family="Georgia,serif"
+        font-size="8" fill="var(--sector-warm)" opacity="0.85">YES ¢</text>
+  <g stroke="var(--sector-accent)" stroke-width="0.5" opacity="0.5">
+    <line x1="-46" y1="26" x2="-66" y2="58"/>
+    <line x1="-46" y1="26" x2="-26" y2="58"/>
+    <line x1="46"  y1="28" x2="26"  y2="58"/>
+    <line x1="46"  y1="28" x2="66"  y2="58"/>
+  </g>
+  <g fill="var(--sector-accent)" opacity="0.6">
+    <circle cx="-66" cy="62" r="3"/><circle cx="-26" cy="62" r="3"/>
+    <circle cx="26"  cy="62" r="3"/><circle cx="66"  cy="62" r="3"/>
+  </g>
+  <line x1="-72" y1="78" x2="72" y2="78" stroke="var(--sector-warm)"
+        stroke-width="0.4" opacity="0.4"/>
+  <text x="0" y="90" text-anchor="middle" font-family="Georgia,serif"
+        font-size="8" letter-spacing="3" fill="var(--sector-warm)" opacity="0.65">PROBABILITY</text>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -120,8 +131,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>When people put money behind a forecast, the market price tends to converge on the most accurate available estimate of the underlying probability. Prediction markets formalise that observation into a venue.</p>
-<p>On-chain prediction markets remove the regulatory and counterparty constraints that limited their predecessors. The result is a global, 24/7, anyone-can-list, anyone-can-trade probability engine — and a real-time public good for forecasting.</p>
+  <p>Prediction markets are the oldest unfulfilled promise in crypto. Augur launched in 2018 with a fully decentralized REP-staked oracle and almost no users. Polymarket — Shayne Coplan's project, founded 2020 on Polygon — finally cracked it by being beautiful, USDC-denominated, and willing to be censored out of the U.S. while serving global volume. The 2024 U.S. presidential election put $3.6B through Polymarket and Nate Silver and Elon Musk both quoted its odds against the polls. The prediction market thesis stopped being theoretical that year.</p>
+<p>The U.S. legal layer is its own story. Kalshi, founded by Tarek Mansour and Luana Lopes Lara in 2018, fought CFTC for years to list event contracts and finally won in 2024 with the Kalshi vs. CFTC ruling on election markets. That decision opened the U.S. market to regulated prediction trading and is the single most important regulatory win in crypto's adjacent neighborhood, even though Kalshi itself isn't on-chain. The DeFi mirrors — Drift Predict on Solana, Limitless on Base, Azuro across chains — are racing to build the on-chain equivalent.</p>
+<p>The cultural argument Robin Hanson made in the 90s — that prediction markets are the most efficient information aggregators humans have built — is now being tested at scale. Polymarket's election volume out-predicted polling. The objection from regulators has always been gambling concerns; the objection from epistemics people is that they want it everywhere — pandemics, climate, science replication. The next cycle's question is whether on-chain prediction markets can offer enough liquidity to compete with Kalshi's regulated venue, and whether the U.S. lets them.</p>
 </section>
 
 <!-- BLEED -->
@@ -152,15 +164,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Trade a Polymarket position on a real event.</strong><p>Pick a market with a clear resolution. Size small. Hold until resolution. Notice what your conviction actually is.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Compare Polymarket to a polling aggregator.</strong><p>Track an election or a Fed decision in both. The disagreements are the alpha.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Provide liquidity to an Azuro pool.</strong><p>On-chain LPing for prediction markets. Feel the impermanent loss when the favorite wins.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Read Robin Hanson's Futarchy paper.</strong><p>Vote on values, bet on beliefs. The governance application of prediction markets is the most underrated crypto idea.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Trade a science-replication market.</strong><p>Pump.science or a Manifold replication question. The market is your peer review.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -181,12 +193,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Markets price what polls cannot.<br>
-      Conviction is auditable.<br>
-      <em>The future, in basis points.</em>
+      Prices aggregate beliefs better than committees do.<br>
+      Skin in the game is epistemics, not gambling.<br>
+      Prediction markets are governance infrastructure waiting for permission.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>Forecasting, public.</strong>
+      <strong>Bet your beliefs.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

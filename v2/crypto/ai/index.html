@@ -70,34 +70,44 @@
       <h1 class="hero-title t-thin">Crypto × AI</h1>
       <p class="hero-desc">If artificial intelligence is the most consequential technology of the century, it cannot end up controlled by three companies. The intersection of crypto and AI is the work to keep compute, models, agents, and data permissionless.</p>
       <div class="hero-quote">
-        Decentralisation is not an aesthetic. It is the only honest answer to the alignment problem.
-        <cite>FRQNCY editorial</cite>
+        The cost of intelligence is going to zero. The question is who owns the rails.
+        <cite>Bittensor whitepaper, 2021</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#E74C3C" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#EE7B6F" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#E74C3C" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" fill="none" stroke="url(#gEdge)" stroke-width="0.7">
-        <path d="M0,0 m-2,0 a2,2 0 1,0 4,0 a4,4 0 0,1 -8,0 a8,8 0 0,1 16,0 a16,16 0 0,1 -32,0 a32,32 0 0,1 64,0 a48,48 0 0,1 -72,0"/>
-      </g>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#E74C3C" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#EE7B6F" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#EE7B6F"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_ai" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_ai)"/>
+  <circle cx="0" cy="0" r="78" stroke="var(--sector-accent)" stroke-width="0.3"
+          fill="none" opacity="0.3" class="glyph-rotate-rev"/>
+  <g class="glyph-rotate">
+    <g stroke="var(--sector-accent)" stroke-width="0.7" opacity="0.7">
+      <line x1="0" y1="0" x2="0"   y2="-72"/><line x1="0" y1="0" x2="36"  y2="-62"/>
+      <line x1="0" y1="0" x2="62"  y2="-36"/><line x1="0" y1="0" x2="72"  y2="0"/>
+      <line x1="0" y1="0" x2="62"  y2="36"/><line x1="0" y1="0" x2="36"  y2="62"/>
+      <line x1="0" y1="0" x2="0"   y2="72"/><line x1="0" y1="0" x2="-36" y2="62"/>
+      <line x1="0" y1="0" x2="-62" y2="36"/><line x1="0" y1="0" x2="-72" y2="0"/>
+      <line x1="0" y1="0" x2="-62" y2="-36"/><line x1="0" y1="0" x2="-36" y2="-62"/>
+    </g>
+    <g fill="var(--sector-warm)">
+      <circle cx="0"   cy="-72" r="3.5"/><circle cx="36"  cy="-62" r="2.6"/>
+      <circle cx="62"  cy="-36" r="3.5"/><circle cx="72"  cy="0"   r="2.6"/>
+      <circle cx="62"  cy="36"  r="3.5"/><circle cx="36"  cy="62"  r="2.6"/>
+      <circle cx="0"   cy="72"  r="3.5"/><circle cx="-36" cy="62"  r="2.6"/>
+      <circle cx="-62" cy="36"  r="3.5"/><circle cx="-72" cy="0"   r="2.6"/>
+      <circle cx="-62" cy="-36" r="3.5"/><circle cx="-36" cy="-62" r="2.6"/>
+    </g>
+  </g>
+  <circle cx="0" cy="0" r="16" fill="var(--sector-soft)"
+          stroke="var(--sector-warm)" stroke-width="1" class="glyph-pulse-1"/>
+  <circle cx="0" cy="0" r="6" fill="var(--sector-warm)" class="glyph-pulse-2"/>
+  <text x="0" y="4" text-anchor="middle" font-family="Georgia,serif"
+        font-size="12" fill="var(--sector-accent)" font-style="italic">τ</text>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -114,8 +124,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>Centralised AI labs train the most capable models in the world on infrastructure no one outside their walls can audit. Crypto × AI is the parallel track — open compute markets, open model weights, open agent frameworks, all coordinated by tokenised incentives that anyone can join.</p>
-<p>The sector is young and the failure modes are real. What persists is the architectural commitment: if intelligence is going to compound, the substrate that intelligence runs on cannot be a black box.</p>
+  <p>Crypto-AI is the thesis that intelligence will be a commodity and the rails for producing, routing, and verifying it should not be owned by three labs in San Francisco. Bittensor — Const and Jacob's project — runs a network of subnets where miners produce intelligence (inference, embeddings, prediction) and validators score them, with TAO emissions distributed by Yuma Consensus. Subnet 1 (text-to-text) was the original; there are now 80+ subnets covering image gen, time-series, scraping, and more. The argument is that decentralized inference markets out-evolve centralized ones because anyone can ship a subnet.</p>
+<p>The compute layer is its own fight. Render (formerly OTOY's RNDR) tokenized GPU rendering and migrated to Solana in 2023. io.net aggregates idle GPUs into clusters for ML training. Akash is the OG decentralized cloud. The DePIN-meets-AI overlap is real — these are supply-side coordination games for hardware that already exists. Then there's ZKML — Ritual, EZKL, Modulus — proving model inference on-chain so you can verify which model produced which output.</p>
+<p>The agentic and IP layers are newer and weirder. Virtuals on Base lets anyone tokenize an AI agent with bonding-curve economics; aixbt is the canonical example, an agent that posts about crypto and accumulated a market cap measured in hundreds of millions. Story Protocol — Jason and SY Lee's team — is building IP-as-a-primitive on its own L1, with Stanford and a16z behind the licensing-on-chain thesis. Worldcoin is the orb-scanned proof-of-personhood layer Sam Altman has been building since 2019, and it is either the most important identity infrastructure of the decade or the most dystopian, depending on the room.</p>
 </section>
 
 <!-- BLEED -->
@@ -1345,15 +1356,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Stake on a Bittensor subnet.</strong><p>Pick a subnet, delegate TAO to a validator, watch emissions. Read the dTAO doc to understand the new economics.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Rent a GPU on Akash or io.net.</strong><p>Train a small model, pay in tokens, compare cost-per-hour to AWS. The arbitrage is the thesis.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Run an agent on Virtuals.</strong><p>Create or buy into a Virtuals agent. Watch the bonding curve and the agent's actual output. Both matter.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Verify a ZKML proof.</strong><p>Use EZKL to prove a small model's inference. The proof system is the future of AI accountability.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Read the Bittensor whitepaper.</strong><p>Yuma Consensus is unintuitive until you've read it. Then it's the only thing that makes sense.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -1374,12 +1385,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Compute, decentralised.<br>
-      Models, open.<br>
-      <em>Agents, ownable.</em>
+      Intelligence is becoming a commodity.<br>
+      The rails for routing it are being built right now.<br>
+      Decentralized inference is a bet against three-lab capture.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>The substrate stays neutral.</strong>
+      <strong>Verify the model, not the marketing.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>

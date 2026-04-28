@@ -70,36 +70,49 @@
       <h1 class="hero-title t-bold">GameFi</h1>
       <p class="hero-desc">Worlds where the assets you earn or buy are yours, not the studio's. Where time invested produces ownership, not just badges. Where the game economy survives the studio that built it.</p>
       <div class="hero-quote">
-        If you cannot leave the game with what you earned, you were never really playing.
-        <cite>FRQNCY editorial</cite>
+        The most important thing is to make the game fun. The economy comes second. Both have to be true.
+        <cite>Aleksander Larsen (Psycheout) · Sky Mavis interview, 2022</cite>
       </div>
     </div>
     <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
-      
-    <defs>
-      <radialGradient id="gGlow" cx="50%" cy="50%" r="50%">
-        <stop offset="0%"  stop-color="#2ECC71" stop-opacity="0.34"/>
-        <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-      </radialGradient>
-      <linearGradient id="gEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-        <stop offset="0%"  stop-color="#5EE294" stop-opacity="0.85"/>
-        <stop offset="100%" stop-color="#2ECC71" stop-opacity="0.7"/>
-      </linearGradient>
-    </defs>
-    <circle cx="0" cy="0" r="92" fill="url(#gGlow)"/>
-      
-      <g class="glyph-rotate" stroke="url(#gEdge)" stroke-width="0.6" fill="none">
-        <rect x="-50" y="-30" width="100" height="60" rx="14"/>
-        <circle cx="-26" cy="0" r="9"/>
-        <circle cx="26"  cy="0" r="4" fill="#5EE294"/>
-      </g>
-      
-      <circle cx="0" cy="0" r="22" fill="none" stroke="#2ECC71" stroke-opacity="0.55" stroke-width="0.5" class="glyph-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.42)" stroke-width="0.4" class="glyph-pulse-2"/>
-      <circle cx="0" cy="0" r="11" fill="rgba(247,147,26,0.04)" stroke="#5EE294" stroke-opacity="0.55" stroke-width="0.55"/>
-      <circle cx="0" cy="0" r="3.5" fill="#5EE294"/>
-    </svg>
+  <defs>
+    <radialGradient id="gGlow_gamefi" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_gamefi)"/>
+  <g class="glyph-pulse-1">
+    <path d="M -56,-22 Q -68,-22 -68,-6 L -60,30 Q -56,40 -42,40 Q -28,40 -22,28
+             L -8,28 Q 0,38 8,28 L 22,28 Q 28,40 42,40 Q 56,40 60,30 L 68,-6
+             Q 68,-22 56,-22 Z"
+          fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="1.2"/>
+  </g>
+  <g fill="var(--sector-accent)" opacity="0.85">
+    <rect x="-46" y="-2" width="14" height="4"/>
+    <rect x="-41" y="-7" width="4" height="14"/>
+  </g>
+  <circle cx="40" cy="-2" r="3.5" fill="var(--sector-warm)" class="glyph-pulse-2"/>
+  <circle cx="50" cy="6" r="3.5" fill="var(--sector-warm)" class="glyph-pulse-1"/>
+  <g class="glyph-pulse-2" fill="var(--sector-warm)" opacity="0.85">
+    <rect x="-2" y="-78" width="4" height="4"/><rect x="-2" y="-74" width="4" height="4"/>
+    <rect x="-2" y="-70" width="4" height="4"/><rect x="-2" y="-66" width="4" height="4"/>
+    <rect x="-2" y="-62" width="4" height="4"/><rect x="-2" y="-58" width="4" height="4"/>
+    <rect x="-2" y="-54" width="4" height="4"/><rect x="-2" y="-50" width="4" height="4"/>
+    <rect x="-10" y="-46" width="20" height="4" fill="var(--sector-accent)"/>
+    <rect x="-2" y="-42" width="4" height="8" fill="var(--sector-accent)"/>
+    <rect x="-3" y="-34" width="6" height="3" fill="var(--sector-warm)"/>
+  </g>
+  <g class="glyph-pulse-1">
+    <rect x="-22" y="56" width="44" height="22" rx="2"
+          fill="var(--sector-soft)" stroke="var(--sector-accent)" stroke-width="0.8"/>
+    <path d="M -22,62 Q 0,52 22,62" stroke="var(--sector-accent)"
+          stroke-width="0.8" fill="none"/>
+    <rect x="-3" y="62" width="6" height="6" fill="var(--sector-warm)"/>
+    <text x="0" y="72" text-anchor="middle" font-family="Georgia,serif"
+          font-size="6" letter-spacing="1.5" fill="var(--sector-warm)">LOOT</text>
+  </g>
+</svg>
   </div>
   <div class="scroll-hint">descend</div>
 </section>
@@ -116,8 +129,9 @@
 
 <!-- PRELUDE -->
 <section class="section section-narrow fade-up">
-  <p>The first generation of GameFi over-promised and under-delivered. The second generation is doing the harder work — making the games actually fun first, then letting the on-chain layer do what it does well: portable assets, transparent economies, and player-driven secondary markets.</p>
-<p>What lives below is the working set. The games whose tokens have a reason to exist beyond the launch incentive.</p>
+  <p>GameFi has had two cycles and one near-death. Axie Infinity, built by Sky Mavis (Trung Nguyen, Aleksander Larsen, Jeff Zirlin), hit $1.3B in monthly revenue in mid-2021 and gave Filipinos and Venezuelans a wage in SLP. The Ronin bridge hack in March 2022 — North Korea's Lazarus Group, $625M stolen — was the largest crypto theft on record and forced the team to rebuild Ronin into a credible app-chain. Pixels migrated to Ronin in 2024 and brought back daily active numbers nobody believed were still possible.</p>
+<p>The on-chain shooter thesis got real with Off The Grid (Gunzilla on the Avalanche subnet) in late 2024 — a battle-royale that streamed on Twitch with NFT loadouts and crypto-native economics, the first GameFi title that didn't apologize for being a game. Illuvium's auto-battler shipped after years in development. Star Atlas is still building its space MMO on Solana with cinematic-grade Unreal Engine 5 trailers and a long roadmap. The metaverse plays — Sandbox, Decentraland — are quieter now but still hold real estate culture.</p>
+<p>The honest critique is that play-to-earn was Ponzi-shaped in cycle one. New player money paid old player rewards, the token sinks were broken, and when growth stopped, the wage stopped. The cycle-two posture is play-and-own — fun first, economy second, NFT items as portable inventory across games rather than yield-bearing primitives. The Web3 gaming critics on X (Pirate Software being the loudest) are not entirely wrong, and the builders who survived agree with half of it.</p>
 </section>
 
 <!-- BLEED -->
@@ -567,15 +581,15 @@
     the body actually does, not just something the mind agrees with.
   </p>
   <div class="practice"><div class="step"><div class="step-num">i</div>
-<div class="step-body"><strong>Hold your own keys.</strong><p>Move a meaningful position off an exchange and onto a hardware wallet you control. The first time it works, the abstraction stops being abstract.</p></div></div>
+<div class="step-body"><strong>Play Off The Grid for an hour.</strong><p>It is a real game. Notice what disappears when crypto stops being the marketing and starts being the inventory layer.</p></div></div>
 <div class="step"><div class="step-num">ii</div>
-<div class="step-body"><strong>Read one whitepaper a month.</strong><p>Develop a feel for how new monetary systems are actually proposed. The point is not to memorise the cryptography. The point is to recognise good design when you see it.</p></div></div>
+<div class="step-body"><strong>Mint an Axie and breed once.</strong><p>The breeding mechanic is the original GameFi loop. Feel why it broke and why it sometimes worked.</p></div></div>
 <div class="step"><div class="step-num">iii</div>
-<div class="step-body"><strong>Send a transaction across a border.</strong><p>Bypass the bank, the wire-transfer fee, and the three-business-day delay. The lived experience of doing this once explains more than any essay can.</p></div></div>
+<div class="step-body"><strong>Buy a Pixels land and farm.</strong><p>Daily quests, $PIXEL emissions, on Ronin. The Filipino server is alive at hours nobody else is.</p></div></div>
 <div class="step"><div class="step-num">iv</div>
-<div class="step-body"><strong>Stake conviction, not capital first.</strong><p>Pick one project you can write a paragraph about — what it does, why it matters, what would change your mind. Position size after that, not before.</p></div></div>
+<div class="step-body"><strong>Read the Ronin bridge post-mortem.</strong><p>Sky Mavis's writeup of the hack and the rebuild. A case study in what app-chain security actually requires.</p></div></div>
 <div class="step"><div class="step-num">v</div>
-<div class="step-body"><strong>Hold across cycles.</strong><p>The price chart is the worst lens on the technology. Most of the people who lose money in crypto sold a sound thesis at the wrong cycle moment.</p></div></div></div>
+<div class="step-body"><strong>Hold one game NFT for a year.</strong><p>Ignore the floor. Notice if you played the game. That answer is the whole thesis.</p></div></div></div>
 </section>
 
 <!-- CTA -->
@@ -596,12 +610,12 @@
   <div class="closing-bg" aria-hidden="true"></div>
   <div class="closing-inner">
     <p>
-      Assets that leave the game.<br>
-      Economies that outlive the studio.<br>
-      <em>Time that compounds into ownership.</em>
+      Fun is the moat.<br>
+      Tokens are inventory, not wages.<br>
+      The game has to be worth playing without the chain.
     </p>
     <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
-      <strong>The player is sovereign.</strong>
+      <strong>Then the chain is worth playing.</strong>
     </p>
     <cite>FRQNCY · Crypto</cite>
   </div>
