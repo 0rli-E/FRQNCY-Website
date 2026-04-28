@@ -3,1070 +3,375 @@
 <head>
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
-<title>Wellbeing — FRQNCY Network</title>
-<meta name="description" content="The body knows how. Wellbeing is what happens when you stop interfering. A field guide to the six pillars — sleep, food, movement, breath, sun, and connection — and the lineages worth listening to.">
+<title>Well-being — FRQNCY Network</title>
+<meta name="description" content="Healing and wholeness — the full spectrum of human health across body, mind, and spirit.">
 <meta name="theme-color" content="#0B1C3D">
 <meta property="og:type" content="website">
-<meta property="og:title" content="Wellbeing — FRQNCY Network">
-<meta property="og:description" content="The body knows how. Wellbeing is what happens when you stop interfering.">
+<meta property="og:title" content="Well-being — FRQNCY Network">
+<meta property="og:description" content="Healing and wholeness — the full spectrum of human health across body, mind, and spirit.">
 <meta property="og:url" content="https://frqncy.network/v2/wellbeing/">
 <meta property="og:image" content="https://frqncy.network/v2/og/wellbeing.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="FRQNCY">
 <meta name="twitter:card" content="summary_large_image">
-<meta name="twitter:title" content="Wellbeing — FRQNCY Network">
-<meta name="twitter:description" content="The body knows how. Wellbeing is what happens when you stop interfering.">
+<meta name="twitter:title" content="Well-being — FRQNCY Network">
+<meta name="twitter:description" content="Healing and wholeness — the full spectrum of human health across body, mind, and spirit.">
 <meta name="twitter:image" content="https://frqncy.network/v2/og/wellbeing.png">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="manifest" href="../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/wellbeing/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-/* ════════════════════════════════════════════════════════════════════
-   WELLBEING — Topic 0004 of 146.
-   "The body knows how. Wellbeing is what happens when you stop interfering."
-   ──────────────────────────────────────────────────────────────────── */
+:root{--accent:#E84A8A;--accent-glow:rgba(232,74,138,0.14)}
 
-:root {
-  --navy: #0B1C3D;
-  --navy-deep: #081530;
-  --navy-mid: #0D2451;
-  --gold: #C4973A;
-  --gold-light: #E0C06A;
-  --gold-soft: rgba(196, 151, 58, 0.14);
-  --cream: #F5EBD8;
-  --foam: #F5F8FB;
-  --pearl: #FFFFFF;
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#8FA8CC;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08)}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+a:hover{opacity:0.8}
 
-  /* Wellbeing-specific accent — vital sage / living-green */
-  --topic-accent: #8FAE7C;
-  --topic-accent-warm: #B5C998;
-  --topic-soft: rgba(143, 174, 124, 0.14);
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.snav-badge{font-size:0.55rem;letter-spacing:0.18em;color:var(--accent);border:1px solid currentColor;padding:1px 6px;border-radius:2px;vertical-align:middle;margin-left:4px;opacity:0.8}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text);opacity:1}
+.breadcrumb .sep{opacity:0.25;font-size:0.65rem}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28);opacity:1}
 
-  --serif: 'Cormorant', Georgia, serif;
-  --body: 'Jost', sans-serif;
-}
+/* HERO */
+.hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
+.hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-html { background: var(--navy); scroll-behavior: smooth; }
-body {
-  font-family: var(--body); font-weight: 300;
-  color: var(--foam);
-  line-height: 1.7;
-  overflow-x: hidden;
-  background: var(--navy);
-}
-::selection { background: rgba(143, 174, 124, 0.4); color: var(--pearl); }
-::-webkit-scrollbar { width: 4px; }
-::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
-::-webkit-scrollbar-thumb { background: rgba(143, 174, 124, 0.4); border-radius: 2px; }
-::-webkit-scrollbar-thumb:hover { background: rgba(143, 174, 124, 0.7); }
-a { color: var(--topic-accent-warm); text-decoration: none; transition: color 0.3s ease; }
-a:hover { color: var(--gold-light); }
+/* MAIN */
+main{max-width:1080px;margin:0 auto;padding:3rem clamp(1.25rem,5vw,2.5rem) 7rem}
+section{margin-bottom:4.5rem}
+.section-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
 
-nav.snav {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  background: rgba(11, 28, 61, 0.55);
-  backdrop-filter: blur(22px) saturate(140%);
-  -webkit-backdrop-filter: blur(22px) saturate(140%);
-  border-bottom: 1px solid rgba(255,255,255,0.06);
-  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
-  height: 56px;
-  display: flex; align-items: center; justify-content: space-between;
-}
-.snav-left { display: flex; align-items: center; gap: 1.75rem; min-width: 0; overflow: hidden; }
-.snav-logo {
-  font-family: var(--serif); font-size: 1.1rem; letter-spacing: 0.28em;
-  color: var(--pearl); text-transform: uppercase; text-decoration: none;
-  flex-shrink: 0; opacity: 0.85; transition: opacity 0.3s, text-shadow 0.3s;
-}
-.snav-logo:hover { opacity: 1; text-shadow: 0 0 20px rgba(143, 174, 124, 0.55); }
-.snav-badge {
-  font-size: 0.55rem; letter-spacing: 0.18em; color: var(--topic-accent-warm);
-  border: 1px solid currentColor; padding: 1px 6px; border-radius: 2px;
-  vertical-align: middle; margin-left: 4px; opacity: 0.9;
-}
-.breadcrumb {
-  font-size: 0.7rem; letter-spacing: 0.06em; color: rgba(245, 248, 251, 0.55);
-  display: flex; align-items: center; gap: 0.4rem; white-space: nowrap;
-  overflow: hidden; text-overflow: ellipsis;
-}
-.breadcrumb a { color: rgba(245, 248, 251, 0.6); transition: color 0.2s; }
-.breadcrumb a:hover { color: var(--foam); }
-.breadcrumb .sep { opacity: 0.3; }
-.snav-back {
-  font-size: 0.68rem; letter-spacing: 0.12em; color: rgba(245, 248, 251, 0.7);
-  border: 1px solid rgba(255,255,255,0.12); padding: 5px 14px; border-radius: 2px;
-  transition: all 0.3s; text-decoration: none; flex-shrink: 0; white-space: nowrap;
-}
-.snav-back:hover { color: var(--foam); border-color: rgba(143, 174, 124, 0.5); }
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border)}
+.grid-sm{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
 
-.hero {
-  position: relative; min-height: 100vh; padding-top: 56px;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden; background: var(--navy-deep);
-}
-.hero-bg {
-  position: absolute; inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1518611012118-696072aa579a?auto=format&fit=crop&q=85&w=2400');
-  background-size: cover; background-position: center;
-  filter: saturate(0.8) brightness(0.5) contrast(1.05);
-  transform: scale(1.04);
-  animation: heroDrift 32s ease-in-out infinite alternate;
-  z-index: 0;
-}
-@keyframes heroDrift {
-  0%   { transform: scale(1.04) translate(0, 0); }
-  100% { transform: scale(1.1) translate(-1%, -2%); }
-}
-.hero::after {
-  content: ''; position: absolute; inset: 0; z-index: 2;
-  background:
-    radial-gradient(ellipse at 30% 40%, rgba(143, 174, 124, 0.2) 0%, transparent 55%),
-    linear-gradient(to bottom, rgba(11, 28, 61, 0.4) 0%, rgba(11, 28, 61, 0.2) 30%, rgba(8, 21, 48, 0.85) 95%);
-  pointer-events: none;
-}
-.hero-inner {
-  position: relative; z-index: 3;
-  width: 100%; max-width: 1280px;
-  padding: 0 clamp(1.5rem, 5vw, 4rem);
-  display: grid; grid-template-columns: 1fr auto;
-  gap: 4rem; align-items: end;
-  padding-bottom: clamp(5rem, 10vh, 8rem);
-}
-.hero-eyebrow {
-  display: inline-flex; align-items: center; gap: 0.7rem;
-  font-size: 0.6rem; letter-spacing: 0.42em; text-transform: uppercase;
-  color: var(--topic-accent-warm); margin-bottom: 2rem; opacity: 0.95;
-}
-.hero-eyebrow::before { content: ''; display: block; width: 36px; height: 1px; background: var(--topic-accent-warm); opacity: 0.5; }
-h1.hero-title {
-  font-family: var(--serif); font-style: italic; font-weight: 300;
-  font-size: clamp(4rem, 14vw, 13rem);
-  line-height: 0.88; letter-spacing: -0.04em;
-  color: var(--pearl);
-  text-shadow: 0 4px 80px rgba(11, 28, 61, 0.7);
-  margin-bottom: 2.5rem;
-}
-.hero-desc {
-  max-width: 580px;
-  font-size: clamp(1.05rem, 1.45vw, 1.25rem);
-  font-weight: 300; line-height: 1.7;
-  color: rgba(245, 248, 251, 0.88);
-}
-.hero-desc em {
-  font-family: var(--serif); font-style: italic; font-weight: 400;
-  color: var(--topic-accent-warm); font-size: 1.1em;
-}
-.hero-quote {
-  margin-top: 2rem; padding-top: 1.5rem;
-  border-top: 1px solid rgba(143, 174, 124, 0.32);
-  max-width: 560px;
-  font-family: var(--serif); font-style: italic; font-weight: 300;
-  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
-  line-height: 1.45;
-  color: rgba(245, 248, 251, 0.78);
-}
-.hero-quote cite {
-  display: block;
-  font-family: var(--body); font-style: normal; font-weight: 300;
-  font-size: 0.6rem; letter-spacing: 0.32em; text-transform: uppercase;
-  color: var(--topic-accent-warm); margin-top: 0.85rem; opacity: 0.9;
-}
+/* NODE CARD */
+.ncard{background:var(--navy);padding:1.4rem 1.4rem 1.1rem;text-decoration:none;color:var(--text);display:block;transition:background .2s;position:relative}
+.ncard:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.ncard-type{font-size:0.54rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem;opacity:0.8}
+.ncard h3{font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.4rem;line-height:1.2}
+.ncard p{font-size:0.76rem;color:var(--text-dim);line-height:1.45}
+.ncard-arrow{position:absolute;top:1.2rem;right:1.2rem;font-size:0.7rem;color:var(--accent);opacity:0;transition:opacity .2s}
+.ncard:hover .ncard-arrow{opacity:1}
 
-/* Hero flower-of-life signature */
-.hero-flower {
-  width: clamp(180px, 22vw, 320px);
-  aspect-ratio: 1; opacity: 0.95;
-  filter: drop-shadow(0 0 60px rgba(143, 174, 124, 0.28));
-  overflow: visible;
-}
-.flower-rotate { transform-origin: 50% 50%; animation: flowerRotate 90s linear infinite; }
-.flower-rotate-rev { transform-origin: 50% 50%; animation: flowerRotate 120s linear infinite reverse; }
-.flower-pulse-1 { transform-origin: 50% 50%; animation: flowerPulse 7s ease-in-out infinite alternate; }
-.flower-pulse-2 { transform-origin: 50% 50%; animation: flowerPulse 7s ease-in-out infinite alternate; animation-delay: 3.5s; }
-@keyframes flowerRotate { to { transform: rotate(360deg); } }
-@keyframes flowerPulse {
-  0%   { opacity: 0.45; transform: scale(0.92); }
-  100% { opacity: 1; transform: scale(1.04); }
-}
+/* RESOURCE CARD */
+.rcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1.25rem 1.4rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:border-color .2s,background .2s}
+.rcard:hover{border-color:rgba(255,255,255,0.14);background:rgba(255,255,255,0.05)}
+.rtype{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--navy);background:var(--accent);padding:3px 9px;border-radius:2px;font-weight:500;white-space:nowrap;line-height:1.6;margin-top:2px}
+.rinfo{min-width:0}
+.rinfo h4{font-size:0.9rem;font-weight:400;color:#fff;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;line-height:1.35}
+.rinfo p{font-size:0.76rem;color:var(--text-dim);line-height:1.55}
+.fpick{font-size:0.48rem;letter-spacing:0.15em;color:var(--gold);border:1px solid rgba(196,151,58,0.5);padding:1px 6px;border-radius:2px;flex-shrink:0;font-weight:400}
+.rlink{font-size:0.66rem;letter-spacing:0.1em;color:var(--accent);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:2px;white-space:nowrap;transition:all .2s;text-decoration:none;margin-top:1px}
+.rlink:hover{border-color:var(--accent);opacity:1}
 
-.scroll-hint {
-  position: absolute; bottom: 2rem; left: 50%;
-  transform: translateX(-50%);
-  font-size: 0.55rem; letter-spacing: 0.42em; text-transform: uppercase;
-  color: rgba(245, 248, 251, 0.55);
-  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
-  z-index: 4;
-}
-.scroll-hint::after {
-  content: ''; width: 1px; height: 36px;
-  background: linear-gradient(to bottom, rgba(245, 248, 251, 0.55), transparent);
-  animation: drip 2.6s ease-in-out infinite;
-}
-@keyframes drip {
-  0%, 100% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
-  50%      { opacity: 1;   transform: scaleY(1);   transform-origin: top; }
-}
+/* EMPTY */
+.empty{text-align:center;padding:3.5rem 2rem;border:1px dashed rgba(255,255,255,0.08);border-radius:4px}
+.empty p{color:var(--text-dim);font-size:0.82rem;line-height:1.7}
 
-.wave-divider { position: relative; width: 100%; height: 100px; overflow: hidden; pointer-events: none; }
-.wave-divider svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; display: block; }
-.wave-divider .w1 { animation: waveSlide 22s linear infinite; opacity: 0.55; }
-.wave-divider .w2 { animation: waveSlide 16s linear infinite reverse; opacity: 0.4; }
-.wave-divider .w3 { animation: waveSlide 30s linear infinite; opacity: 0.7; }
-@keyframes waveSlide { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+/* FILTER TABS */
+.ftabs{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1.75rem}
+.ftab{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;padding:5px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif}
+.ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(255,255,255,0.03)}
 
-main.wellbeing-body { position: relative; background: var(--navy); padding: 0 clamp(1.5rem, 5vw, 3rem); }
-.section { max-width: 720px; margin: 0 auto; padding: clamp(5rem, 12vh, 9rem) 0; position: relative; }
-.section-wide { max-width: 1080px; }
-.section-narrow { max-width: 600px; }
+/* RLIST */
+.rlist{display:flex;flex-direction:column;gap:0.65rem}
 
-.label {
-  font-size: 0.58rem; letter-spacing: 0.42em; text-transform: uppercase;
-  color: var(--topic-accent-warm); margin-bottom: 2rem; opacity: 0.9;
-  display: inline-flex; align-items: center; gap: 0.7rem;
-}
-.label::before { content: ''; display: block; width: 32px; height: 1px; background: var(--topic-accent-warm); opacity: 0.5; }
+/* PICKS CALLOUT */
+.picks-intro{font-size:0.78rem;color:var(--text-dim);margin-bottom:1.5rem;line-height:1.6;max-width:600px}
+.picks-intro strong{color:var(--gold);font-weight:400}
 
-h2 {
-  font-family: var(--serif); font-style: italic; font-weight: 300;
-  font-size: clamp(2.4rem, 6vw, 4.6rem);
-  line-height: 1.04; letter-spacing: -0.02em;
-  color: var(--pearl); margin-bottom: 2rem; max-width: 18ch;
+/* VIDEO SECTION */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-top:0}
+.vcard-t{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
+  overflow:hidden;cursor:pointer;transition:border-color .22s,transform .22s,background .22s;
+  display:flex;flex-direction:column;
 }
-h2 strong { font-style: normal; font-weight: 400; color: var(--topic-accent-warm); }
-h3 {
-  font-family: var(--serif); font-style: italic; font-weight: 400;
-  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
-  line-height: 1.2; color: var(--foam); margin-bottom: 0.85rem;
+.vcard-t:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.05)}
+.vcard-t:active{transform:translateY(0);transition-duration:.1s}
+.vthumb-t{position:relative;width:100%;aspect-ratio:16/9;background:#0a1428;overflow:hidden;flex-shrink:0}
+.vthumb-t img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.vcard-t:hover .vthumb-t img{transform:scale(1.04)}
+.vplay-t{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);transition:background .2s}
+.vcard-t:hover .vplay-t{background:rgba(0,0,0,0.38)}
+.vplay-btn-t{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,0.18);backdrop-filter:blur(4px);
+  border:1.5px solid rgba(255,255,255,0.35);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,transform .2s;
 }
-p.lede {
-  font-size: clamp(1.15rem, 1.5vw, 1.4rem);
-  font-weight: 300; line-height: 1.65;
-  color: var(--foam); margin-bottom: 1.6rem;
+.vcard-t:hover .vplay-btn-t{background:rgba(255,255,255,0.28);transform:scale(1.1)}
+.vdur-t{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.78);color:#fff;font-family:'Jost',sans-serif;font-size:0.6rem;padding:1px 6px;border-radius:2px;letter-spacing:0.02em}
+.vpick-t{position:absolute;top:6px;left:6px;background:rgba(196,151,58,0.92);color:#0B1C3D;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;padding:2px 6px;border-radius:2px}
+.vprov-t{position:absolute;bottom:6px;left:6px;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.12em;text-transform:uppercase;padding:2px 6px;border-radius:2px}
+.vthumb-fallback-t{width:100%;height:100%;background:linear-gradient(135deg,rgba(74,122,232,0.12),rgba(196,151,58,0.08))}
+.vplay-ext-t{border-style:dashed}
+.vinfo-t{padding:0.8rem 1rem 0.9rem;flex:1;display:flex;flex-direction:column;gap:0.2rem}
+.vtitle-t{font-family:'Cormorant',serif;font-size:1rem;font-weight:400;color:#fff;line-height:1.25}
+.vchan-t{font-size:0.66rem;color:var(--text-dim)}
+/* VIDEO MODAL */
+.vmodal{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;padding:1.25rem;
+  opacity:0;pointer-events:none;transition:opacity .25s;
 }
-p { font-size: 1.025rem; line-height: 1.85; color: rgba(245, 248, 251, 0.72); margin-bottom: 1.4rem; }
-p em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--topic-accent-warm); font-size: 1.08em; }
+.vmodal.open{opacity:1;pointer-events:all}
+.vmodal-box{
+  width:100%;max-width:860px;background:#0c1e42;
+  border:1px solid rgba(255,255,255,0.1);border-radius:6px;overflow:hidden;
+  transform:translateY(10px) scale(0.98);transition:transform .25s;
+}
+.vmodal.open .vmodal-box{transform:translateY(0) scale(1)}
+.vmodal-player{width:100%;aspect-ratio:16/9}
+.vmodal-player iframe{width:100%;height:100%;border:none;display:block}
+.vmodal-footer{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07)}
+.vmodal-title{font-family:'Cormorant',serif;font-size:1.2rem;color:#fff;line-height:1.2;margin-bottom:0.15rem}
+.vmodal-chan{font-size:0.68rem;color:var(--text-dim)}
+.vmodal-close{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  cursor:pointer;width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);font-size:0.95rem;transition:all .2s;
+}
+.vmodal-close:hover{color:#fff;background:rgba(255,255,255,0.12)}
+.watch-link{
+  display:inline-flex;align-items:center;gap:0.4rem;margin-top:1.1rem;
+  font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--accent);border:1px solid rgba(255,255,255,0.1);
+  padding:6px 14px;border-radius:2px;transition:border-color .2s;text-decoration:none;
+}
+.watch-link:hover{border-color:var(--accent);opacity:1}
 
-blockquote {
-  font-family: var(--serif); font-style: italic; font-weight: 300;
-  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
-  line-height: 1.3; letter-spacing: -0.005em;
-  color: var(--pearl);
-  padding: 2.5rem 0 2.5rem 2rem; margin: 3rem 0;
-  border-left: 1px solid rgba(143, 174, 124, 0.55);
-  max-width: 26ch;
+/* COURSE CALLOUT */
+.course-callout{
+  display:flex;align-items:center;gap:1.25rem;
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
+  padding:1.25rem 1.4rem;margin-bottom:0.75rem;
+  text-decoration:none;color:var(--text);transition:background .2s,border-color .2s;
+  position:relative;overflow:hidden;
 }
-blockquote cite {
-  display: block;
-  font-family: var(--body); font-style: normal; font-weight: 300;
-  font-size: 0.65rem; letter-spacing: 0.32em; text-transform: uppercase;
-  color: var(--topic-accent-warm); margin-top: 1.5rem; opacity: 0.9;
+.course-callout::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--course-accent,var(--accent))}
+.course-callout:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.14);opacity:1}
+.cc-level{font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid currentColor;flex-shrink:0;white-space:nowrap}
+.cc-body{flex:1;min-width:0}
+.cc-title{font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:0.25rem}
+.cc-meta{font-size:0.68rem;color:var(--text-dim)}
+.cc-arrow{font-size:1rem;color:var(--accent);flex-shrink:0;transition:transform .2s}
+.course-callout:hover .cc-arrow{transform:translateX(3px)}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center}
+.footer-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.footer-logo{font-family:'Cormorant',serif;font-size:1rem;letter-spacing:0.25em;color:rgba(255,255,255,0.3);text-transform:uppercase}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;transition:color .2s}
+.footer-links a:hover{color:var(--text);opacity:1}
+
+@media(max-width:640px){
+  .hero{padding:3rem 1.25rem 2.5rem}
+  main{padding:2rem 1.25rem 5rem}
+  .rcard{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+  .rlink{grid-column:2;margin-top:0.5rem}
+  .breadcrumb{display:none}
+  .footer-inner{flex-direction:column;gap:1rem;text-align:center}
+  .vgrid{grid-template-columns:1fr 1fr;gap:0.75rem}
+  .snav-back{font-size:0.6rem;padding:4px 10px}
+}
+@media(max-width:400px){
+  .vgrid{grid-template-columns:1fr}
+  .rcard{grid-template-columns:1fr}
+  .rlink{grid-column:1}
+  .section-label{font-size:0.6rem}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
+  .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
-.bleed {
-  position: relative; width: 100vw; margin-left: calc(50% - 50vw);
-  height: clamp(60vh, 90vh, 800px);
-  margin-top: clamp(4rem, 8vh, 7rem); margin-bottom: clamp(4rem, 8vh, 7rem);
-  overflow: hidden; display: flex; align-items: center; justify-content: center;
-}
-.bleed img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6) saturate(0.95); }
-.bleed::after {
-  content: ''; position: absolute; inset: 0;
-  background: linear-gradient(180deg, rgba(11,28,61,0.5) 0%, rgba(11,28,61,0.15) 30%, rgba(11,28,61,0.15) 70%, rgba(11,28,61,0.7) 100%);
-  pointer-events: none;
-}
-.bleed-cap {
-  position: relative; z-index: 2;
-  font-family: var(--serif); font-style: italic; font-weight: 300;
-  font-size: clamp(1.6rem, 3.4vw, 2.8rem);
-  line-height: 1.3; color: var(--pearl);
-  text-align: center; max-width: 26ch; padding: 0 1.5rem;
-  text-shadow: 0 2px 30px rgba(11, 28, 61, 0.7);
-}
-.bleed-cap cite {
-  display: block;
-  font-family: var(--body); font-style: normal; font-weight: 300;
-  font-size: 0.62rem; letter-spacing: 0.4em; text-transform: uppercase;
-  color: var(--topic-accent-warm); margin-top: 2rem; opacity: 0.9;
-}
-
-/* SIX PILLARS — radial layout / grid */
-.pillars {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-  gap: 1px;
-  background: rgba(255, 255, 255, 0.06);
-  border: 1px solid rgba(255, 255, 255, 0.06);
-  border-radius: 2px; overflow: hidden;
-  margin: 2.5rem 0 1rem;
-}
-.pillar {
-  background: var(--navy-mid);
-  padding: 1.6rem 1.5rem 1.5rem;
-  display: flex; flex-direction: column; gap: 0.4rem;
-  transition: background 0.4s ease;
-}
-.pillar:hover { background: rgba(15, 36, 81, 0.95); }
-.pillar-num {
-  font-family: var(--serif); font-style: italic; font-weight: 300;
-  font-size: 1.5rem;
-  color: var(--topic-accent-warm); line-height: 1;
-  margin-bottom: 0.4rem;
-  opacity: 0.9;
-}
-.pillar h4 {
-  font-family: var(--serif); font-style: italic; font-weight: 400;
-  font-size: 1.4rem;
-  color: var(--foam);
-  line-height: 1.2;
-  margin-bottom: 0.4rem;
-}
-.pillar h4 strong { font-style: normal; font-weight: 500; color: var(--topic-accent-warm); }
-.pillar p {
-  font-size: 0.86rem; line-height: 1.65;
-  color: rgba(245, 248, 251, 0.72);
-  margin: 0;
-}
-.pillar-meta {
-  margin-top: 0.6rem;
-  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
-  color: var(--topic-accent-warm); opacity: 0.7;
-}
-
-/* FLOWER FEATURE — six-circle flower-of-life as the page's signature */
-.flower-feature {
-  display: grid; grid-template-columns: 1fr 1fr;
-  gap: clamp(2rem, 6vw, 5rem);
-  align-items: center;
-  margin: clamp(3rem, 6vh, 5rem) 0;
-}
-.flower-feature-svg {
-  width: 100%; max-width: 480px; aspect-ratio: 1;
-  margin: 0 auto; overflow: visible;
-  filter: drop-shadow(0 0 80px rgba(143, 174, 124, 0.32));
-}
-
-/* SPLIT — modern medicine vs functional medicine */
-.split {
-  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 2px; overflow: hidden;
-  margin: 3rem 0;
-}
-.split-half {
-  background: var(--navy-mid);
-  padding: clamp(1.8rem, 3vw, 2.5rem);
-  display: flex; flex-direction: column; gap: 0.9rem;
-}
-.split-half.warm {
-  background: linear-gradient(135deg, rgba(143, 174, 124, 0.10) 0%, rgba(13, 36, 81, 0.95) 70%);
-  border-right: 1px solid rgba(143, 174, 124, 0.22);
-}
-.split-eyebrow {
-  font-size: 0.55rem; letter-spacing: 0.32em; text-transform: uppercase;
-  color: var(--topic-accent-warm); margin-bottom: 0.5rem;
-  display: flex; align-items: center; gap: 0.6rem;
-}
-.split-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--topic-accent-warm); opacity: 0.6; }
-.split-half h4 {
-  font-family: var(--serif); font-style: italic; font-weight: 400;
-  font-size: clamp(1.6rem, 2.4vw, 2rem);
-  color: var(--foam); margin-bottom: 0.6rem; line-height: 1.2;
-}
-.split-half p { font-size: 0.95rem; margin-bottom: 0; }
-
-/* PRACTICE */
-.practice { display: grid; gap: 1.5rem; margin: 3rem 0 1rem; }
-.step {
-  display: grid; grid-template-columns: 80px 1fr; gap: 2rem;
-  padding: 1.6rem 0;
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  align-items: baseline;
-}
-.step:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
-.step-num {
-  font-family: var(--serif); font-style: italic; font-weight: 300;
-  font-size: clamp(2rem, 3vw, 2.6rem);
-  color: var(--topic-accent-warm); opacity: 0.85; line-height: 1;
-}
-.step-body strong {
-  display: block;
-  font-family: var(--serif); font-style: italic; font-weight: 400;
-  font-size: 1.35rem; color: var(--foam);
-  margin-bottom: 0.4rem;
-}
-.step-body p { margin-bottom: 0; max-width: 56ch; }
-
-/* PICKS */
-.picks {
-  display: grid;
-  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
-  gap: 1px;
-  background: rgba(255, 255, 255, 0.08);
-  border: 1px solid rgba(255, 255, 255, 0.08);
-  border-radius: 2px; overflow: hidden;
-  margin: 3rem 0 1rem;
-}
-.pick {
-  background: var(--navy-mid); padding: 2rem 1.8rem;
-  transition: background 0.4s ease;
-  display: flex; flex-direction: column;
-}
-.pick:hover { background: rgba(13, 36, 81, 0.92); }
-.pick-eyebrow {
-  font-size: 0.55rem; letter-spacing: 0.32em; text-transform: uppercase;
-  color: var(--topic-accent-warm); margin-bottom: 1rem;
-  display: flex; align-items: center; gap: 0.6rem;
-}
-.pick-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--topic-accent-warm); opacity: 0.6; }
-.pick h4 {
-  font-family: var(--serif); font-style: italic; font-weight: 400;
-  font-size: 1.45rem; color: var(--foam);
-  margin-bottom: 0.5rem; line-height: 1.2;
-}
-.pick p { font-size: 0.92rem; margin-bottom: 1.2rem; flex: 1; }
-.pick a.pick-link {
-  font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--topic-accent-warm); border-bottom: 1px solid currentColor;
-  padding-bottom: 2px; transition: color 0.3s, border-color 0.3s;
-  align-self: flex-start;
-}
-.pick a.pick-link:hover { color: var(--gold-light); border-color: var(--gold-light); }
-
-.closing {
-  position: relative; min-height: 80vh;
-  display: flex; align-items: center; justify-content: center;
-  text-align: center;
-  margin-top: clamp(4rem, 10vh, 8rem);
-  padding: clamp(4rem, 10vh, 8rem) 1.5rem;
-  overflow: hidden;
-}
-.closing-bg {
-  position: absolute; inset: 0;
-  background-image: url('https://images.unsplash.com/photo-1487956382158-bb926046304a?auto=format&fit=crop&q=85&w=2400');
-  background-size: cover; background-position: center;
-  filter: brightness(0.4) saturate(0.85);
-}
-.closing-bg::after {
-  content: ''; position: absolute; inset: 0;
-  background: radial-gradient(ellipse at center, rgba(11, 28, 61, 0.4) 30%, rgba(11, 28, 61, 0.95) 100%);
-}
-.closing-inner { position: relative; z-index: 2; max-width: 38ch; margin: 0 auto; }
-.closing p {
-  font-family: var(--serif); font-style: italic; font-weight: 300;
-  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
-  line-height: 1.45; color: var(--pearl);
-  text-shadow: 0 2px 30px rgba(11, 28, 61, 0.7);
-  margin: 0 0 1.2rem;
-}
-.closing p strong { font-style: normal; font-weight: 400; color: var(--topic-accent-warm); }
-.closing cite {
-  display: block;
-  font-family: var(--body); font-style: normal; font-weight: 300;
-  font-size: 0.62rem; letter-spacing: 0.4em; text-transform: uppercase;
-  color: var(--topic-accent-warm); margin-top: 1.5rem; opacity: 0.9;
-}
-
-footer.site-foot {
-  background: var(--navy-deep);
-  border-top: 1px solid rgba(255, 255, 255, 0.06);
-  padding: 3rem clamp(1.25rem, 5vw, 2.5rem);
-  text-align: center; position: relative; z-index: 2;
-}
-footer.site-foot .wm {
-  font-family: var(--serif); font-weight: 300;
-  font-size: 1rem; letter-spacing: 0.32em;
-  color: rgba(245, 248, 251, 0.4); text-transform: uppercase;
-}
-footer.site-foot .legal {
-  font-size: 0.66rem; letter-spacing: 0.1em;
-  color: rgba(245, 248, 251, 0.3);
-  margin-top: 0.5rem; display: block;
-}
-
-.fade-up {
-  opacity: 0; transform: translateY(30px);
-  transition: opacity 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
-              transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
-}
-.fade-up.in { opacity: 1; transform: translateY(0); }
-
-@media (max-width: 760px) {
-  .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
-  .hero-flower { width: 180px; }
-  .breadcrumb { display: none; }
-  .step { grid-template-columns: 50px 1fr; gap: 1rem; }
-  blockquote { padding-left: 1rem; font-size: 1.5rem; }
-  .split { grid-template-columns: 1fr; }
-  .split-half.warm { border-right: 0; border-bottom: 1px solid rgba(143, 174, 124, 0.22); }
-  .flower-feature { grid-template-columns: 1fr; }
-  .flower-feature-svg { max-width: 320px; }
-}
-@media (prefers-reduced-motion: reduce) {
-  .hero-bg, .scroll-hint::after,
-  .flower-rotate, .flower-rotate-rev,
-  .flower-pulse-1, .flower-pulse-2,
-  .wave-divider .w1, .wave-divider .w2, .wave-divider .w3 { animation: none; }
-  .fade-up { transition: none; opacity: 1; transform: none; }
-}
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Wellbeing — The body knows how","description":"A field guide to the six pillars of vitality and the lineages worth listening to.","url":"https://frqncy.network/v2/wellbeing/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Explore","item":"https://frqncy.network/v2/explore.html"},{"@type":"ListItem","position":3,"name":"Wellbeing","item":"https://frqncy.network/v2/wellbeing/"}]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Well-being — FRQNCY Network","description":"Healing and wholeness — the full spectrum of human health across body, mind, and spirit.","url":"https://frqncy.network/v2/wellbeing/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
 </head>
-<body>
-
-<nav class="snav">
+<body><nav class="snav">
   <div class="snav-left">
     <a href="/v2/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
-    <div class="breadcrumb">
-      <a href="/v2/explore.html">Explore</a><span class="sep">/</span>
-      <span>Wellbeing</span>
-    </div>
+    <div class="breadcrumb"><a href="../education/index.html">Education</a><span class="sep">/</span><span>Well-being</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/v2/water/" class="snav-back">Water</a>
-    <a href="/v2/music/" class="snav-back">Music</a>
-    <a href="/v2/money/" class="snav-back">Money</a>
-    <a href="/" class="snav-back">Main</a>
+    <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
+    <a href="/" class="snav-back">← Main</a>
   </div>
-</nav>
-
-<section class="hero">
-  <div class="hero-bg" aria-hidden="true"></div>
-  <div class="hero-inner">
-    <div>
-      <div class="hero-eyebrow">Wellbeing · Topic 0004 of 146 · The artwork continues</div>
-      <h1 class="hero-title">Wellbeing</h1>
-      <p class="hero-desc">
-        The body knows how. <em>Wellbeing is what happens when you stop interfering.</em>
-        Modern medicine treats the breakdown. The deeper work is the conditions that prevent the
-        breakdown in the first place.
-      </p>
-      <div class="hero-quote">
-        Natural forces within us are the true healers of disease.
-        <cite>Hippocrates</cite>
-      </div>
-    </div>
-
-    <!-- Six-circle flower-of-life signature -->
-    <svg class="hero-flower" viewBox="-100 -100 200 200" aria-hidden="true">
-      <defs>
-        <radialGradient id="flowerGlow" cx="50%" cy="50%" r="50%">
-          <stop offset="0%"  stop-color="#8FAE7C" stop-opacity="0.32"/>
-          <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
-          <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-        </radialGradient>
-        <linearGradient id="flowerEdge" x1="0%" y1="0%" x2="100%" y2="100%">
-          <stop offset="0%"  stop-color="#F5F8FB" stop-opacity="0.85"/>
-          <stop offset="100%" stop-color="#8FAE7C" stop-opacity="0.7"/>
-        </linearGradient>
-      </defs>
-      <circle cx="0" cy="0" r="92" fill="url(#flowerGlow)"/>
-
-      <!-- Six surrounding circles + central circle -->
-      <g class="flower-rotate" stroke="url(#flowerEdge)" stroke-width="0.8" fill="rgba(143, 174, 124, 0.05)">
-        <circle cx="0" cy="-44" r="44"/>
-        <circle cx="38" cy="-22" r="44"/>
-        <circle cx="38" cy="22" r="44"/>
-        <circle cx="0" cy="44" r="44"/>
-        <circle cx="-38" cy="22" r="44"/>
-        <circle cx="-38" cy="-22" r="44"/>
-      </g>
-
-      <!-- Central anchor circle -->
-      <circle cx="0" cy="0" r="44" fill="rgba(196,151,58,0.05)"
-              stroke="rgba(196,151,58,0.45)" stroke-width="0.6"/>
-
-      <!-- Counter-rotating outer ring -->
-      <g class="flower-rotate-rev">
-        <circle cx="0" cy="0" r="78" fill="none"
-                stroke="rgba(245,248,251,0.18)" stroke-width="0.4"
-                stroke-dasharray="3 4"/>
-      </g>
-
-      <!-- Pulsing breath rings -->
-      <circle cx="0" cy="0" r="22" fill="none" stroke="rgba(143, 174, 124, 0.55)" stroke-width="0.5" class="flower-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196, 151, 58, 0.4)" stroke-width="0.4" class="flower-pulse-2"/>
-
-      <!-- Centre — the source of vitality -->
-      <circle cx="0" cy="0" r="3.5" fill="rgba(196, 151, 58, 0.95)"/>
-      <circle cx="0" cy="0" r="9" fill="none" stroke="rgba(196, 151, 58, 0.4)" stroke-width="0.3"/>
-    </svg>
-  </div>
-  <div class="scroll-hint">return</div>
-</section>
-
-<div class="wave-divider" aria-hidden="true">
-  <svg viewBox="0 0 2880 100" preserveAspectRatio="none">
-    <path class="w3" fill="rgba(143, 174, 124, 0.14)" d="M0,55 C144,30 288,30 432,45 C576,60 720,72 864,55 C1008,38 1152,30 1296,45 C1440,60 1584,72 1728,55 C1872,38 2016,30 2160,45 C2304,60 2448,72 2592,55 C2736,38 2808,38 2880,45 L2880,100 L0,100 Z"/>
-    <path class="w2" fill="rgba(143, 174, 124, 0.10)" d="M0,65 C144,45 288,45 432,55 C576,65 720,75 864,65 C1008,55 1152,45 1296,55 C1440,65 1584,75 1728,65 C1872,55 2016,45 2160,55 C2304,65 2448,75 2592,65 C2736,55 2808,55 2880,60 L2880,100 L0,100 Z"/>
-    <path class="w1" fill="rgba(245, 248, 251, 0.06)" d="M0,80 C144,68 288,68 432,75 C576,82 720,88 864,80 C1008,72 1152,68 1296,75 C1440,82 1584,88 1728,80 C1872,72 2016,68 2160,75 C2304,82 2448,88 2592,80 C2736,72 2808,72 2880,76 L2880,100 L0,100 Z"/>
-  </svg>
+</nav><div class="hero">
+  <div class="hero-eyebrow">Education &nbsp;·&nbsp; Domain</div>
+  <h1>Well-being</h1>
+  <p class="hero-desc">Healing and wholeness — the full spectrum of human health across body, mind, and spirit.</p>
 </div>
-
-<main class="wellbeing-body">
-
-<!-- PRELUDE -->
-<section class="section section-narrow fade-up">
-  <p class="lede">
-    The body has been doing this for hundreds of millions of years. Every time you cut yourself,
-    catch a cold, sprain a wrist, lose sleep — a system older than written language repairs the
-    damage. The repair runs whether you understand it or not. The work, mostly, is to give it the
-    conditions it needs and to stop sabotaging it.
-  </p>
-  <p>
-    What follows is what FRQNCY treats as the floor — six pillars the body cannot do without, the
-    interfering inputs to remove, and the lineages worth listening to when the floor is solid and
-    you want to go deeper.
-  </p>
-  <blockquote>
-    Let food be thy medicine and medicine be thy food.
-    <cite>Hippocrates · c. 400 BCE</cite>
-  </blockquote>
-</section>
-
-<div class="bleed fade-up">
-  <img src="https://images.unsplash.com/photo-1493836512294-502baa1986e2?auto=format&fit=crop&q=85&w=2400"
-       alt="Sunlight filtering through forest canopy onto a path">
-  <div class="bleed-cap">
-    The body is not broken. <em>The conditions it lives in are.</em>
+<main>
+  <section>
+  <div class="section-label">FRQNCY Picks — Well-being</div>
+  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">5 resources &nbsp;·&nbsp; 2 books &nbsp;·&nbsp; 1 place &nbsp;·&nbsp; 2 tools &nbsp;·&nbsp; <span style="color:var(--gold)">1 ✦ pick</span></div>
+  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="tool">tool</button><button class="ftab" data-filter="book">book</button><button class="ftab" data-filter="place">place</button></div>
+  <div class="rlist"><div class="rcard" data-type="tool">
+  <span class="rtype">tool</span>
+  <div class="rinfo">
+    <h4>Insight Timer <span class="fpick">✦ FRQNCY PICK</span></h4>
+    <p>The world&#39;s largest free library of guided meditations — 100,000+ teachers, zero subscription required for core library.</p>
   </div>
+  <a href="https://www.insighttimer.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
 </div>
-
-<!-- I — THE SIX PILLARS -->
-<section class="section section-wide fade-up">
-  <span class="label">I · The six pillars</span>
-  <h2><strong>Six</strong> conditions the body cannot do without.</h2>
-  <p style="max-width: 60ch;">
-    Almost every modern chronic condition has a root in one or more of these going wrong for
-    long enough. The interventions are not exotic. The discipline is in the consistency.
-  </p>
-
-  <div class="pillars">
-    <div class="pillar">
-      <div class="pillar-num">i</div>
-      <h4><strong>Sleep</strong></h4>
-      <p>Seven to nine hours, dark room, cool, no phone within reach. The single highest-leverage wellbeing input. Most chronic disease compounds out of chronic sleep deprivation. The first thing to fix; the hardest to defend.</p>
-      <span class="pillar-meta">Glymphatic clearance · hormonal reset · memory consolidation</span>
-    </div>
-    <div class="pillar">
-      <div class="pillar-num">ii</div>
-      <h4><strong>Food</strong></h4>
-      <p>Real food. Recognisable as plant or animal. Cooked at home most of the time. Less ultra-processed packaging. Animal protein for satiety; plants for fibre and micronutrients; fat for the brain. The specifics matter less than the consistency of returning to whole-food defaults.</p>
-      <span class="pillar-meta">Insulin signal · gut microbiome · mitochondrial fuel</span>
-    </div>
-    <div class="pillar">
-      <div class="pillar-num">iii</div>
-      <h4><strong>Movement</strong></h4>
-      <p>Walk daily. Strength-train twice a week. Sprint occasionally. The body that does not move atrophies — bones, muscles, mitochondria, mood. A long unbroken walking habit is more health-protective than nearly any exercise programme that sometimes happens.</p>
-      <span class="pillar-meta">Mitochondrial density · insulin sensitivity · neurogenesis</span>
-    </div>
-    <div class="pillar">
-      <div class="pillar-num">iv</div>
-      <h4><strong>Breath</strong></h4>
-      <p>Through the nose, slow, into the belly. Most adults are over-breathing — chronic stress drives chest-breathing through an open mouth, which down-regulates everything from immune function to sleep quality. Breath is the only autonomic system you can directly steer; use it.</p>
-      <span class="pillar-meta">Vagal tone · CO₂ tolerance · nervous-system regulation</span>
-    </div>
-    <div class="pillar">
-      <div class="pillar-num">v</div>
-      <h4><strong>Sun &amp; light</strong></h4>
-      <p>Twenty minutes of morning sun on the skin, no sunglasses. Sunset light on the eyes. Avoid bright artificial light after dark. Circadian rhythm is the master regulator of nearly every other system in the body; light is what sets it.</p>
-      <span class="pillar-meta">Vitamin D · circadian alignment · mood regulation</span>
-    </div>
-    <div class="pillar">
-      <div class="pillar-num">vi</div>
-      <h4><strong>Connection</strong></h4>
-      <p>Relationships you actually look forward to. Touch you actually feel safe in. Community you actually belong to. The Harvard Adult Development Study followed people for 80 years and found the strongest single predictor of long-term wellbeing was the quality of close relationships. Loneliness compounds like compound interest, in reverse.</p>
-      <span class="pillar-meta">HRV · oxytocin · longevity</span>
-    </div>
+<div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/the-body-keeps-the-score/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">The Body Keeps the Score — Bessel van der Kolk</a></h4>
+    <p>The definitive book on trauma — how it reshapes body, brain, and mind, and what actually heals it. The most important book about trauma ever written. Essential reading.</p>
   </div>
-</section>
-
-<div class="wave-divider" aria-hidden="true">
-  <svg viewBox="0 0 2880 100" preserveAspectRatio="none">
-    <path class="w3" fill="rgba(143, 174, 124, 0.16)" d="M0,50 C144,20 288,20 432,40 C576,60 720,75 864,50 C1008,25 1152,20 1296,40 C1440,60 1584,75 1728,50 C1872,25 2016,20 2160,40 C2304,60 2448,75 2592,50 C2736,25 2808,30 2880,40 L2880,100 L0,100 Z"/>
-    <path class="w2" fill="rgba(143, 174, 124, 0.10)" d="M0,68 C144,50 288,50 432,60 C576,70 720,80 864,68 C1008,56 1152,50 1296,60 C1440,70 1584,80 1728,68 C1872,56 2016,50 2160,60 C2304,70 2448,80 2592,68 C2736,56 2808,58 2880,62 L2880,100 L0,100 Z"/>
-    <path class="w1" fill="rgba(245, 248, 251, 0.06)" d="M0,82 C144,72 288,72 432,78 C576,84 720,90 864,82 C1008,74 1152,72 1296,78 C1440,84 1584,90 1728,82 C1872,74 2016,72 2160,78 C2304,84 2448,90 2592,82 C2736,74 2808,76 2880,80 L2880,100 L0,100 Z"/>
-  </svg>
+  <a href="https://www.besselvanderkolk.com/resources/the-body-keeps-the-score" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
 </div>
-
-<!-- II — STOP INTERFERING -->
-<section class="section fade-up">
-  <span class="label">II · Stop interfering</span>
-  <h2>What you <strong>remove</strong> matters more than what you add.</h2>
-  <p class="lede">
-    The supplement industry sells the addition story — drink this, take this, fix this. The
-    deeper work is usually subtraction. The body is already trying to repair. Most of what's in
-    the way is something you can stop putting in.
-  </p>
-
-  <div class="flower-feature">
-    <svg class="flower-feature-svg" viewBox="-100 -100 200 200" aria-hidden="true">
-      <defs>
-        <radialGradient id="ffFill" cx="50%" cy="50%" r="55%">
-          <stop offset="0%"  stop-color="#8FAE7C" stop-opacity="0.18"/>
-          <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.04"/>
-          <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
-        </radialGradient>
-      </defs>
-      <circle cx="0" cy="0" r="95" fill="url(#ffFill)"/>
-
-      <g class="flower-rotate" stroke="rgba(143, 174, 124, 0.5)" stroke-width="0.65" fill="rgba(143, 174, 124, 0.04)">
-        <circle cx="0" cy="-44" r="44"/>
-        <circle cx="38" cy="-22" r="44"/>
-        <circle cx="38" cy="22" r="44"/>
-        <circle cx="0" cy="44" r="44"/>
-        <circle cx="-38" cy="22" r="44"/>
-        <circle cx="-38" cy="-22" r="44"/>
-      </g>
-
-      <circle cx="0" cy="0" r="44" fill="rgba(196,151,58,0.06)"
-              stroke="rgba(196,151,58,0.55)" stroke-width="0.7"/>
-
-      <g class="flower-rotate-rev">
-        <circle cx="0" cy="0" r="78" fill="none"
-                stroke="rgba(245,248,251,0.22)" stroke-width="0.4"
-                stroke-dasharray="2 4"/>
-      </g>
-
-      <circle cx="0" cy="0" r="22" fill="none" stroke="rgba(143, 174, 124, 0.55)" stroke-width="0.5" class="flower-pulse-1"/>
-      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196, 151, 58, 0.45)" stroke-width="0.4" class="flower-pulse-2"/>
-
-      <circle cx="0" cy="0" r="3.5" fill="rgba(196, 151, 58, 0.98)"/>
-      <circle cx="0" cy="0" r="10" fill="none" stroke="rgba(196, 151, 58, 0.5)" stroke-width="0.4"/>
-    </svg>
-    <blockquote style="margin: 0; border-left: 0; padding: 0; max-width: 100%;">
-      The body is not broken. The signals it is receiving are.
-      <cite>after Bruce Lipton</cite>
-    </blockquote>
+<div class="rcard" data-type="tool">
+  <span class="rtype">tool</span>
+  <div class="rinfo">
+    <h4>Waking Up — Sam Harris</h4>
+    <p>A secular meditation app with serious depth — theory, practice, and a growing library of conversations.</p>
   </div>
-
-  <p>
-    The shortlist of inputs to subtract first, in roughly priority order:
-  </p>
-  <ol style="margin-left: 1.4rem; margin-bottom: 1.4rem;">
-    <li style="padding: 0.5rem 0;"><strong style="color: var(--foam); font-weight: 400;">Ultra-processed food.</strong> The single largest input shift in modern diets. Hydrogenated oils, seed oils, refined sugars, artificial dyes, preservative cocktails. Replacing 80% of these with home-cooked whole food usually does more than any supplement protocol.</li>
-    <li style="padding: 0.5rem 0;"><strong style="color: var(--foam); font-weight: 400;">Chronic stress.</strong> The body cannot tell a deadline apart from a predator. Persistent cortisol elevation degrades almost every system. The intervention is not "manage stress" — it is removing the source where possible, and learning vagal regulation where not.</li>
-    <li style="padding: 0.5rem 0;"><strong style="color: var(--foam); font-weight: 400;">Plastics and chemical exposure.</strong> Microplastics in food and water, fragrance chemicals in skin contact, fluorinated compounds in cookware, pesticide residues, off-gassing from new furniture. Each one is small. The cumulative load is not. See <a href="/v2/detox/">Detox</a>.</li>
-    <li style="padding: 0.5rem 0;"><strong style="color: var(--foam); font-weight: 400;">Pharmaceutical over-reliance.</strong> Some medications are the difference between life and death. Some are masking a problem the body would resolve faster if given conditions. The honest evaluation requires a doctor who is willing to remove drugs as well as add them. Functional medicine practitioners tend to ask both questions; allopathic models often only ask one.</li>
-    <li style="padding: 0.5rem 0;"><strong style="color: var(--foam); font-weight: 400;">Information overload.</strong> Phones in the bedroom. Notifications all day. Twenty-four-hour news cycles. The nervous system was built to encounter a few sources of novelty per day; we encounter several thousand. The body reads it as low-grade emergency for years on end.</li>
-  </ol>
-  <blockquote>
-    Genes do not determine our destiny. Our perceptions of the environment do.
-    <cite>Bruce Lipton · The Biology of Belief</cite>
-  </blockquote>
-</section>
-
-<!-- III — TWO MEDICINES split -->
-<section class="section section-wide fade-up">
-  <span class="label">III · Two medicines</span>
-  <h2><strong>Conventional</strong> &amp; functional.</h2>
-  <p style="max-width: 60ch;">
-    There is more than one model of medicine. Both are useful. Knowing which one fits which
-    situation is part of becoming a competent operator on your own behalf.
-  </p>
-
-  <div class="split">
-    <div class="split-half">
-      <div class="split-eyebrow">Conventional / allopathic</div>
-      <h4>Treats the breakdown.</h4>
-      <p>
-        Diagnostic. Pharmaceutical. Surgical. Specialty-fragmented. Excellent at acute crisis —
-        a trauma, an infection, a fracture, an emergency. Less suited to chronic conditions where
-        the cause is environmental, behavioural, or systemic. Insurance reimburses interventions,
-        not prevention; the model bends accordingly.
-      </p>
-    </div>
-    <div class="split-half warm">
-      <div class="split-eyebrow">Functional &amp; integrative</div>
-      <h4>Treats the conditions.</h4>
-      <p>
-        Root-cause oriented. Considers food, sleep, environment, relationships, mental and emotional
-        state as primary inputs. More expensive (rarely insurance-covered), often slower, often
-        more effective for chronic disease. Practitioners include MDs, naturopaths, traditional
-        Chinese medicine doctors, ayurvedic physicians. Quality varies; vet carefully.
-      </p>
-    </div>
-  </div>
-
-  <p>
-    The right move is rarely one or the other. Acute crisis: conventional. Chronic condition with
-    a thousand small contributing factors: functional. Most serious chronic-illness journeys end
-    up using both, and the patient who's done their own research tends to get better outcomes
-    than the patient who hasn't.
-  </p>
-</section>
-
-<div class="wave-divider" aria-hidden="true">
-  <svg viewBox="0 0 2880 100" preserveAspectRatio="none">
-    <path class="w3" fill="rgba(143, 174, 124, 0.18)" d="M0,55 C144,28 288,28 432,45 C576,62 720,75 864,55 C1008,35 1152,28 1296,45 C1440,62 1584,75 1728,55 C1872,35 2016,28 2160,45 C2304,62 2448,75 2592,55 C2736,35 2808,38 2880,45 L2880,100 L0,100 Z"/>
-    <path class="w2" fill="rgba(143, 174, 124, 0.12)" d="M0,68 C144,52 288,52 432,60 C576,68 720,78 864,68 C1008,58 1152,52 1296,60 C1440,68 1584,78 1728,68 C1872,58 2016,52 2160,60 C2304,68 2448,78 2592,68 C2736,58 2808,60 2880,64 L2880,100 L0,100 Z"/>
-    <path class="w1" fill="rgba(245, 248, 251, 0.06)" d="M0,82 C144,74 288,74 432,78 C576,84 720,90 864,82 C1008,76 1152,74 1296,78 C1440,84 1584,90 1728,82 C1872,76 2016,74 2160,78 C2304,84 2448,90 2592,82 C2736,76 2808,76 2880,80 L2880,100 L0,100 Z"/>
-  </svg>
+  <a href="https://www.wakingup.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
 </div>
-
-<!-- IV — TRAUMA IN THE BODY -->
-<section class="section fade-up">
-  <span class="label">IV · Trauma in the body</span>
-  <h2>The body keeps the <strong>score.</strong></h2>
-  <p>
-    For most of the twentieth century, mind and body were treated as separate systems. The work
-    of Bessel van der Kolk, Gabor Maté, Peter Levine, Stephen Porges, and many others has now
-    overwhelmingly demonstrated that they are not. Stored psychological stress shows up as
-    physical disease. Repressed emotion shows up as autoimmunity, inflammation, chronic pain,
-    addiction. The body remembers what the mind has filed away.
-  </p>
-  <blockquote>
-    Trauma is not what happens to you. It is what happens inside you as a result of what
-    happened to you.
-    <cite>Gabor Maté · The Myth of Normal</cite>
-  </blockquote>
-  <p>
-    This changes the picture of wellbeing in two important ways. <em>First</em>, you cannot
-    fully resolve a chronic condition while leaving its emotional substrate untouched.
-    Anti-inflammatory diets that ignore underlying nervous-system dysregulation tend to plateau.
-    <em>Second</em>, the modalities that move stored trauma — somatic experiencing, EMDR, breathwork,
-    psychedelic-assisted therapy where legal, family-systems work — are not luxuries. For
-    chronic-disease patients they are often more decisive than the next supplement.
-  </p>
-  <p>
-    Joe Dispenza's broader claim — that sustained changes in thought and emotional state produce
-    measurable changes in the body — is more contested in mainstream science but consistent with
-    the trauma-and-healing literature when properly bounded. Take the most ambitious framings
-    with appropriate scepticism. Take the underlying observation seriously.
-  </p>
-</section>
-
-<!-- V — PRACTICE -->
-<section class="section fade-up">
-  <span class="label">A practice</span>
-  <h2>Five small things, repeated.</h2>
-  <p>
-    The pillars are obvious. The practice is the discipline of returning to them when life pulls
-    you off. Five small things that change what wellbeing does in a life:
-  </p>
-
-  <div class="practice">
-    <div class="step">
-      <div class="step-num">i</div>
-      <div class="step-body">
-        <strong>Phone outside the bedroom.</strong>
-        <p>The single most leveraged change available to most adults. Better sleep. Less morning anxiety. Recovered evenings. A $10 alarm clock makes it possible. Most people resist this for a week and then never go back.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">ii</div>
-      <div class="step-body">
-        <strong>Twenty minutes of morning sun, no sunglasses.</strong>
-        <p>Within an hour of waking. Light on the skin and through the eyes. Sets circadian rhythm, primes vitamin D, regulates mood. Free, fast, almost unfair in how much it changes how the day feels.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">iii</div>
-      <div class="step-body">
-        <strong>Walk an hour a day.</strong>
-        <p>Cumulatively, in any combination. Outside if possible, with another person if available. Walking is the most-protective single behaviour in longitudinal health studies. The bar is low; the compounding is enormous.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">iv</div>
-      <div class="step-body">
-        <strong>Cook one meal a day from real ingredients.</strong>
-        <p>Not perfectly, not gourmet — just real. Vegetables, eggs, meat, fish, fruit, rice, beans, butter, olive oil, salt. The skill compounds. The supply line shifts. The relationship to food rebuilds. Six months of this changes what the body wants.</p>
-      </div>
-    </div>
-    <div class="step">
-      <div class="step-num">v</div>
-      <div class="step-body">
-        <strong>Find one person you can be honest with.</strong>
-        <p>Not a therapist necessarily. Could be a friend, partner, sibling, mentor. The Harvard 80-year study's headline result. The most under-priced wellbeing intervention available. Depression and chronic stress drop sharply when one such relationship is in place; they compound brutally without it.</p>
-      </div>
-    </div>
+<div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/when-the-body-says-no/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">When the Body Says No — Gabor Maté</a></h4>
+    <p>The hidden cost of stress and suppressed emotion — Maté&#39;s compassionate investigation into how the mind-body connection shapes illness.</p>
   </div>
-</section>
-
-<!-- VI — PICKS -->
-<section class="section section-wide fade-up">
-  <span class="label">FRQNCY picks</span>
-  <h2>People, books, and tools we <strong>actually use.</strong></h2>
-  <p style="max-width: 60ch;">
-    A small list, kept honest. Each entry below has been used, read, or followed long enough to
-    have an opinion about. See <a href="/aligned/">Aligned Goods</a> for the full curated list and the
-    <a href="/proposals/EDITORIAL-STANDARDS.md">editorial standards</a> that govern how a pick gets made.
-  </p>
-
-  <div class="picks">
-    <div class="pick">
-      <div class="pick-eyebrow">Person · ✦ pick</div>
-      <h4>Andrew Huberman</h4>
-      <p>
-        Stanford neuroscientist whose podcast turns peer-reviewed sleep, stress, and metabolism
-        research into actionable protocols. Long-form, technical, honest about what the evidence
-        does and doesn't say. The cleanest entry-point to evidence-based wellbeing on the internet.
-      </p>
-      <a class="pick-link" href="https://hubermanlab.com" target="_blank" rel="noopener noreferrer">Huberman Lab →</a>
-    </div>
-
-    <div class="pick">
-      <div class="pick-eyebrow">Book · ✦ pick</div>
-      <h4>Outlive</h4>
-      <p>
-        Peter Attia, 2023. The most rigorous popular treatment of longevity-medicine principles
-        available. The four horsemen of chronic disease, the five tactical domains (exercise,
-        nutrition, sleep, emotional health, exogenous molecules), the uncomfortable trade-offs.
-        If you read one wellbeing book this year, this one.
-      </p>
-      <a class="pick-link" href="https://www.goodreads.com/book/show/61153739-outlive" target="_blank" rel="noopener noreferrer">Find the book →</a>
-    </div>
-
-    <div class="pick">
-      <div class="pick-eyebrow">Book</div>
-      <h4>The Body Keeps the Score</h4>
-      <p>
-        Bessel van der Kolk, 2014. The canonical popular work on how trauma lives in the body
-        and what reliably moves it. Touches EMDR, somatic experiencing, neurofeedback, yoga,
-        psychedelic-assisted therapy. Written by the practitioner most responsible for bringing
-        these modalities into mainstream medicine.
-      </p>
-      <a class="pick-link" href="https://www.goodreads.com/book/show/18693771-the-body-keeps-the-score" target="_blank" rel="noopener noreferrer">Find the book →</a>
-    </div>
-
-    <div class="pick">
-      <div class="pick-eyebrow">Book</div>
-      <h4>The Biology of Belief</h4>
-      <p>
-        Bruce Lipton, 2005. Cell biologist's account of epigenetics — how the cellular environment,
-        not the gene alone, controls expression. Some of the popular framings outrun the data;
-        the underlying observation is now mainstream science. Worth reading critically.
-      </p>
-      <a class="pick-link" href="https://www.goodreads.com/book/show/91254.The_Biology_of_Belief" target="_blank" rel="noopener noreferrer">Find the book →</a>
-    </div>
-
-    <div class="pick">
-      <div class="pick-eyebrow">Person</div>
-      <h4>Wim Hof</h4>
-      <p>
-        The Iceman. Cold exposure plus structured breathwork as a self-administered protocol for
-        stress resilience and immune function. Some of the wilder claims are unsupported;
-        controlled trials of the basic method (cold + breath) consistently show measurable
-        physiological effects. A fixture of the modern practice canon.
-      </p>
-      <a class="pick-link" href="https://www.wimhofmethod.com/" target="_blank" rel="noopener noreferrer">Wim Hof Method →</a>
-    </div>
-
-    <div class="pick">
-      <div class="pick-eyebrow">Tool</div>
-      <h4>Oura Ring · Whoop · Apple Watch</h4>
-      <p>
-        Wearable sleep and recovery tracking. The specific device matters less than the practice
-        of attending to the data. Most people who wear one for six months end up with
-        meaningfully better sleep just from the feedback loop. Oura is the most accurate for
-        sleep stages; Whoop for HRV; Apple Watch is the convenient compromise.
-      </p>
-      <a class="pick-link" href="https://ouraring.com/" target="_blank" rel="noopener noreferrer">Oura →</a>
-    </div>
-
-    <div class="pick">
-      <div class="pick-eyebrow">Person</div>
-      <h4>Gabor Maté</h4>
-      <p>
-        Hungarian-Canadian physician whose work on the relationship between childhood emotional
-        experience and adult disease has shaped a generation of trauma-informed practitioners.
-        <em>The Myth of Normal</em> (2022) is his magnum opus. Lecture videos are excellent.
-      </p>
-      <a class="pick-link" href="/people/gabor-mate/">Profile →</a>
-    </div>
-
-    <div class="pick">
-      <div class="pick-eyebrow">Book</div>
-      <h4>Natural Cures &amp; Functional-Medicine Skeptic Stack</h4>
-      <p>
-        Kevin Trudeau's <em>Natural Cures</em> is part of FRQNCY's canon as a cultural artefact
-        of the alternative-health movement, taken with appropriate scepticism. Read alongside
-        Mark Hyman, Jeffrey Bland, Joel Fuhrman for the credentialed functional-medicine view.
-        Two ends of the same instinct that something is wrong with the standard model.
-      </p>
-      <a class="pick-link" href="/people/kevin-trudeau/">Trudeau profile →</a>
-    </div>
+  <a href="https://drgabormate.com/book/when-the-body-says-no" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="place">
+  <span class="rtype">place</span>
+  <div class="rinfo">
+    <h4><a href="/places/intaaya/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Intaaya</a></h4>
+    <p>Nusa Penida, Bali, Indonesia — Regenerative retreat sanctuary on Nusa Penida, near Bali. Off-grid, farm-to-table, living to the rhythm of nature. A living example of the Sanctuary pillar — the physical extension of the FRQNCY network.</p>
   </div>
+  <a href="https://intaaya.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div></div>
 </section>
-
-<!-- MORE FROM THE LIBRARY -->
-<section class="section section-wide fade-up">
-  <span class="label">More from the library</span>
-  <h2>Adjacent topics, <strong>across the network.</strong></h2>
-  <p style="max-width: 60ch;">
-    Wellbeing is the synthesis of about a dozen FRQNCY topics. The deeper work lives on those
-    individual pages.
-  </p>
-
-  <ul class="pillars">
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/sleep/">Sleep</a></h4><p>The foundation. Where nearly every other system rests.</p></li>
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/breathwork/">Breathwork</a></h4><p>The autonomic system you can directly steer.</p></li>
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/movement/">Movement</a></h4><p>The body in motion — exercise, somatic, daily walking.</p></li>
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/nutrition/">Nutrition</a></h4><p>Food as primary input. Real food, mostly home-cooked.</p></li>
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/water/">Water</a></h4><p>The most-used input to the body. Filter, mineralise, drink consciously.</p></li>
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/detox/">Detox</a></h4><p>Reduce input below output. The subtraction half of the work.</p></li>
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/mental-health/">Mental Health</a></h4><p>Nervous-system regulation, peer support, professional help.</p></li>
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/trauma/">Trauma</a></h4><p>What the body keeps the score of. Where chronic illness often roots.</p></li>
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/somatic-therapy/">Somatic Therapy</a></h4><p>The body-first approaches that move stored stress.</p></li>
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/meditation/">Meditation</a></h4><p>The practice that re-trains the nervous system from the inside.</p></li>
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/sound-healing/">Sound Healing</a></h4><p>Frequency as a therapeutic input. Ancient and now researched.</p></li>
-    <li class="pillar"><div class="pillar-num">·</div><h4><a href="/v2/supplements/">Supplements</a></h4><p>The narrow set worth taking. Single ingredients, third-party tested.</p></li>
-  </ul>
-</section>
-
-</main>
-
-<!-- CLOSING -->
-<section class="closing fade-up">
-  <div class="closing-bg" aria-hidden="true"></div>
-  <div class="closing-inner">
-    <p>
-      The body has been doing this for a long time.<br>
-      Most of the work is removing what's in the way.<br>
-      <em>Then return to the six pillars, daily.</em>
-    </p>
-    <p style="font-size: clamp(1.7rem, 2.8vw, 2.4rem); margin-top: 1.5rem;">
-      <strong>The body knows how.</strong>
-    </p>
-    <cite>FRQNCY</cite>
-  </div>
-</section>
-
-<footer class="site-foot">
-  <span class="wm">FRQNCY</span>
-  <span class="legal">© 2026 · All frequencies reserved · Topic 0004 of 146 · The artwork continues</span>
-</footer>
 
 <script>
-(function () {
-  if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
-    return;
-  }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        io.unobserve(entry.target);
-      }
+document.querySelectorAll('.ftab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.rcard').forEach(c=>{
+      c.style.display=(f==='all'||c.dataset.type===f)?'':'none';
     });
-  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
-  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
-})();
+  });
+});
 </script>
-</body>
-</html>
+  <section>
+    <div class="section-label">Explore topics in Well-being</div>
+    <div class="grid grid-sm"><a href="../meditation/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>Meditation</h3>
+  <p>The practice of conscious attention — sitting with what is, training the mind toward …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../sound-healing/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>Sound Healing</h3>
+  <p>Frequency as medicine — the use of vibration, music, and resonance to heal body and m…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../breathwork/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>Breathwork</h3>
+  <p>The breath as a tool — conscious breathing practices that regulate the nervous system…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../somatic-therapy/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>Somatic Therapy</h3>
+  <p>Healing stored in the body — trauma-informed approaches that work through sensation a…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../energy-healing/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>Energy Healing</h3>
+  <p>Working with the subtle body — reiki, acupuncture, and other modalities that address …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../yoga/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>Yoga</h3>
+  <p>The union of body, breath, and mind — one of humanity&#39;s oldest and most refined movem…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../mental-health/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>Mental Health</h3>
+  <p>The full spectrum of psychological wellbeing — from everyday emotional literacy to cl…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../trauma/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>Trauma</h3>
+  <p>The wound and the path through it — understanding how traumatic experience shapes the…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../kriya-yoga/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>Kriya Yoga</h3>
+  <p>The ancient science of energy and breath — the meditation techniques transmitted thro…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../siddha-yoga/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>Siddha Yoga</h3>
+  <p>The path of grace through the Siddha lineage — shaktipat initiation, self-inquiry, an…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../eft-tapping/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>EFT &amp; Tapping</h3>
+  <p>Emotional Freedom Techniques — combining acupressure tapping with modern psychology t…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../supplements/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>Supplements</h3>
+  <p>What you put inside the body. Single ingredients, third-party tested, no proprietary …</p>
+  <span class="ncard-arrow">→</span>
+</a></div>
+  </section>
+</main>
+<footer style="border-top:1px solid rgba(255,255,255,0.06);padding:32px clamp(1.25rem,6vw,2.5rem);text-align:center;margin-top:3rem">
+  <span style="font-family:'Cormorant',serif;font-weight:300;font-size:16px;letter-spacing:0.3em;color:rgba(255,255,255,0.5);text-transform:uppercase">FRQNCY</span>
+  <br>
+  <span style="font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-top:6px;display:inline-block">&copy; 2026 FRQNCY &middot; All frequencies reserved</span>
+</footer>
+</body></html>
