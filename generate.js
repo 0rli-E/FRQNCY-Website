@@ -22,11 +22,13 @@ const OUT       = path.join(ROOT, 'v2');
 // To intentionally regenerate one of these, remove its slug from the set,
 // or pass --force-regen-fund (etc.) — not implemented yet, add when needed.
 const BESPOKE_PILLARS = new Set(['fund']);
-const BESPOKE_DOMAINS = new Set();
-// Commissioned topic pages (the artwork) — each is a unique piece, not a template.
+// Commissioned pages (the artwork) — each is a unique piece, not a template.
 // See proposals/TOPIC-COMMISSION-CONTEXT-GRAPH.md for the procedure that builds them.
-// Add a slug here as soon as a topic is commissioned, BEFORE the next regen run.
-const BESPOKE_TOPICS  = new Set(['water', 'music', 'money', 'wellbeing']);
+// Add a slug here as soon as a page is commissioned, BEFORE the next regen run.
+// Whether to add it to DOMAINS or TOPICS depends on its id prefix in content.json:
+//   d-<slug> → BESPOKE_DOMAINS · t-<slug> → BESPOKE_TOPICS.
+const BESPOKE_DOMAINS = new Set(['money', 'wellbeing']);
+const BESPOKE_TOPICS  = new Set(['water', 'music']);
 
 // ── Entity beds (world model, v1) ────────────────────────────────
 // First-class lists of people, books, orgs, and media. Each entity declares

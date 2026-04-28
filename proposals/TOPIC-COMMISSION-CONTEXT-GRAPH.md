@@ -229,7 +229,7 @@ Save bandwidth, save mobile data. The IntersectionObserver pause/play snippet is
 
 ## 8 · Build, ship, iterate
 
-1. **Add the slug to `BESPOKE_TOPICS` in `generate.js`** — *critical step*. The site has a static-site generator that re-renders every templated topic page from `search.json`. Without this addition, the next regen run silently overwrites the commissioned page from the template. The set lives near the top of `generate.js`. Add the slug *before* writing the page.
+1. **Add the slug to the right BESPOKE set in `generate.js`** — *critical step*. The site has a static-site generator that re-renders every templated page from `content.json`. Without this addition, the next regen run silently overwrites the commissioned page from the template. Pick the set by `id` prefix in `content.json`: `t-<slug>` → `BESPOKE_TOPICS`; `d-<slug>` → `BESPOKE_DOMAINS`. (Money and Wellbeing are domains; Water, Music, Crypto are topics.) Add *before* writing the page.
 2. **Write the page** to `v2/<slug>/index.html`. Replace any prior templated content.
 3. **Voice pass** — apply the checklist in §6 before any preview.
 4. **Commit** with a message naming the topic number and the seed phrase.
