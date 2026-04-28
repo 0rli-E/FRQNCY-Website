@@ -35,7 +35,7 @@
     --sector-pattern-size: 44px 44px;
     --sector-pattern-opacity: 0.06;
   }
-  .hero-bg { background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=95&w=3840'); }
+  .hero-bg { background-image: url('https://images.unsplash.com/photo-1542751371-adc38448a05e?auto=format&fit=crop&q=95&w=3840'); --hero-filter: saturate(1.2) brightness(0.5) contrast(1.2); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1633493702341-4d04841df53b?auto=format&fit=crop&q=95&w=3840'); }
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
@@ -66,8 +66,10 @@
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-inner layout-split-right">
     <div>
+      <div class="hero-ghost" aria-hidden="true">GameFi</div>
       <div class="hero-eyebrow">Sector · GameFi · Player-owned worlds</div>
       <h1 class="hero-title t-bold">GameFi</h1>
+      <div class="hero-stats"><div><span class="hero-stat-num">$625M</span><span class="hero-stat-lbl">Ronin bridge hack</span></div><div><span class="hero-stat-num">Mar 2022</span><span class="hero-stat-lbl">P2E peak ended</span></div><div><span class="hero-stat-num">2024</span><span class="hero-stat-lbl">Off The Grid live</span></div></div>
       <p class="hero-desc">Worlds where the assets you earn or buy are yours, not the studio's. Where time invested produces ownership, not just badges. Where the game economy survives the studio that built it.</p>
       <div class="hero-quote">
         The most important thing is to make the game fun. The economy comes second. Both have to be true.
@@ -140,6 +142,9 @@
   <div class="bleed-cap">A world the player owns, <em>not the studio.</em></div>
 </div>
 
+<!-- TECH INSIDE THIS SECTOR — native protocols + brief explainers -->
+
+
 <!-- WORKING SET -->
 <section class="section section-wide fade-up">
   <span class="label">Working set</span>
@@ -150,424 +155,204 @@
     currently earns, not a recommendation to buy.
   </p>
 
-  <div class="ticker-rail"><a class="tk-card" href="https://www.virtuals.io" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#8B5CF630,#8B5CF610);border:1px solid #8B5CF655"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/virtual.svg" alt="Virtuals Protocol" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#8B5CF6">VI</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#8B5CF6">VIRTUAL</span><span class="tk-name">Virtuals Protocol</span></span></a><a class="tk-card" href="https://ethos.network" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#7B61FF30,#7B61FF10);border:1px solid #7B61FF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ethos.svg" alt="Ethos" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#7B61FF">ET</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#7B61FF">ETHOS</span><span class="tk-name">Ethos</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#78E08F30,#78E08F10);border:1px solid #78E08F55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/floki.svg" alt="Floki" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#78E08F">FL</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#78E08F">FLOKI</span><span class="tk-name">Floki</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#96CEB430,#96CEB410);border:1px solid #96CEB455"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/super.svg" alt="SuperVerse" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#96CEB4">SU</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#96CEB4">SUPER</span><span class="tk-name">SuperVerse</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#E9814530,#E9814510);border:1px solid #E9814555;color:#E98145">BC</span><span class="tk-meta"><span class="tk-ticker" style="color:#E98145"></span><span class="tk-name">bcgame coin</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#E77A9F30,#E77A9F10);border:1px solid #E77A9F55;color:#E77A9F">CR</span><span class="tk-meta"><span class="tk-ticker" style="color:#E77A9F"></span><span class="tk-name">crown by third time games</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#5767F330,#5767F310);border:1px solid #5767F355;color:#5767F3">ED</span><span class="tk-meta"><span class="tk-ticker" style="color:#5767F3"></span><span class="tk-name">Edu3Games</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#D6445B30,#D6445B10);border:1px solid #D6445B55;color:#D6445B">GA</span><span class="tk-meta"><span class="tk-ticker" style="color:#D6445B"></span><span class="tk-name">game by virtuals</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">21</span></button><button class="ttab" data-tier="core">core<span class="ct">1</span></button><button class="ttab" data-tier="conviction">conviction<span class="ct">1</span></button><button class="ttab" data-tier="speculative">speculative<span class="ct">2</span></button><button class="ttab" data-tier="unrated">unrated<span class="ct">16</span></button><button class="ttab" data-tier="avoid">avoid<span class="ct">1</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="core">
-  <div class="project-accent" style="background:#8B5CF6"></div>
+  <div class="ticker-rail"><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#2ECC7130,#2ECC7110);border:1px solid #2ECC7155"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/beam.svg" alt="Beam" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#2ECC71">BE</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#2ECC71">BEAM</span><span class="tk-name">Beam</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#2ECC7130,#2ECC7110);border:1px solid #2ECC7155"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/gala.svg" alt="Gala" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#2ECC71">GA</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#2ECC71">GALA</span><span class="tk-name">Gala</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#2ECC7130,#2ECC7110);border:1px solid #2ECC7155;color:#2ECC71">OF</span><span class="tk-meta"><span class="tk-ticker" style="color:#2ECC71"></span><span class="tk-name">Off The Grid</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#2ECC7130,#2ECC7110);border:1px solid #2ECC7155"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/pixel.svg" alt="Pixels" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#2ECC71">PI</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#2ECC71">PIXEL</span><span class="tk-name">Pixels</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#2ECC7130,#2ECC7110);border:1px solid #2ECC7155"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ron.svg" alt="Ronin" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#2ECC71">RO</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#2ECC71">RON</span><span class="tk-name">Ronin</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">10</span></button><button class="ttab" data-tier="watch">watch<span class="ct">6</span></button><button class="ttab" data-tier="speculative">speculative<span class="ct">3</span></button><button class="ttab" data-tier="unrated">unrated<span class="ct">1</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#2ECC71"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#8B5CF640,#8B5CF620);border:1px solid #8B5CF650"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/virtual.svg" alt="Virtuals Protocol" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">VI</span></div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#2ECC7140,#2ECC7120);border:1px solid #2ECC7150"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/beam.svg" alt="Beam" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">BE</span></div>
       <div class="project-meta">
-        <div class="project-name">Virtuals Protocol</div>
-        <div class="project-ticker">VIRTUAL  ·  <span class="project-chain">Base</span></div>
+        <div class="project-name">Beam</div>
+        <div class="project-ticker">BEAM</div>
       </div>
-      <span class="project-tier tier-core">core</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
-    <div class="project-tags"><span class="ptag">AI</span><span class="ptag">Infrastructure</span></div>
-    <div class="project-desc">Platform for creating, co-owning, and monetizing AI agents. Tokenized AI characters that generate revenue across games, social, and entertainment.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>Virtuals is where AI meets collective ownership. Communities can co-create and profit from AI agents — decentralizing the value of artificial intelligence.</div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
   </div>
   <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://www.virtuals.io" target="_blank" rel="noopener noreferrer">virtuals.io →</a><a class="project-aux" href="https://x.com/virtuals_io" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a></span>
-    <span class="project-cat">AI</span>
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
-<article class="project" data-tier="conviction">
-  <div class="project-accent" style="background:#7B61FF"></div>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#2ECC71"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#7B61FF40,#7B61FF20);border:1px solid #7B61FF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ethos.svg" alt="Ethos" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">ET</span></div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#2ECC7140,#2ECC7120);border:1px solid #2ECC7150"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/gala.svg" alt="Gala" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">GA</span></div>
       <div class="project-meta">
-        <div class="project-name">Ethos</div>
-        <div class="project-ticker">ETHOS  ·  <span class="project-chain">Base</span></div>
+        <div class="project-name">Gala</div>
+        <div class="project-ticker">GALA</div>
       </div>
-      <span class="project-tier tier-conviction">conviction</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
-    <div class="project-tags"><span class="ptag">SocialFi</span><span class="ptag">Decentralized Social</span></div>
-    <div class="project-desc">A reputation layer for crypto. Peers vouch for each other with stake and attestations, turning trust into a portable on-chain score anyone can verify.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>Credibility is the missing primitive. Ethos makes reputation skin-in-the-game — a counterweight to anon grift and a foundation for a more honest network.</div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
   </div>
   <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://ethos.network" target="_blank" rel="noopener noreferrer">ethos.network →</a><a class="project-aux" href="https://x.com/ethos_network" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a><a class="project-aux" href="https://docs.ethos.network" target="_blank" rel="noopener noreferrer" title="Docs">docs</a></span>
-    <span class="project-cat">SocialFi</span>
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#2ECC71"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#2ECC7140,#2ECC7120);border:1px solid #2ECC7150">OF</div>
+      <div class="project-meta">
+        <div class="project-name">Off The Grid</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#2ECC71"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#2ECC7140,#2ECC7120);border:1px solid #2ECC7150"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/pixel.svg" alt="Pixels" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">PI</span></div>
+      <div class="project-meta">
+        <div class="project-name">Pixels</div>
+        <div class="project-ticker">PIXEL</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#2ECC71"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#2ECC7140,#2ECC7120);border:1px solid #2ECC7150"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ron.svg" alt="Ronin" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">RO</span></div>
+      <div class="project-meta">
+        <div class="project-name">Ronin</div>
+        <div class="project-ticker">RON</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#2ECC71"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#2ECC7140,#2ECC7120);border:1px solid #2ECC7150"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/atlas.svg" alt="Star Atlas" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">ST</span></div>
+      <div class="project-meta">
+        <div class="project-name">Star Atlas</div>
+        <div class="project-ticker">ATLAS</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
 <article class="project" data-tier="speculative">
-  <div class="project-accent" style="background:#78E08F"></div>
+  <div class="project-accent" style="background:#FF8B94"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#78E08F40,#78E08F20);border:1px solid #78E08F50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/floki.svg" alt="Floki" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">FL</span></div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF8B9440,#FF8B9420);border:1px solid #FF8B9450"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/axs.svg" alt="Axie Infinity" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">AX</span></div>
       <div class="project-meta">
-        <div class="project-name">Floki</div>
-        <div class="project-ticker">FLOKI  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Axie Infinity</div>
+        <div class="project-ticker">AXS  ·  <span class="project-chain">Multi-chain</span></div>
       </div>
       <span class="project-tier tier-speculative">speculative</span>
     </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
 <article class="project" data-tier="speculative">
-  <div class="project-accent" style="background:#96CEB4"></div>
+  <div class="project-accent" style="background:#E15F41"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#96CEB440,#96CEB420);border:1px solid #96CEB450"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/super.svg" alt="SuperVerse" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">SU</span></div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#E15F4140,#E15F4120);border:1px solid #E15F4150"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/mana.svg" alt="Decentraland" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">DE</span></div>
       <div class="project-meta">
-        <div class="project-name">SuperVerse</div>
-        <div class="project-ticker">SUPER  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Decentraland</div>
+        <div class="project-ticker">MANA  ·  <span class="project-chain">Multi-chain</span></div>
       </div>
       <span class="project-tier tier-speculative">speculative</span>
     </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#B8E994"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#B8E99440,#B8E99420);border:1px solid #B8E99450"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/sand.svg" alt="The Sandbox" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">TH</span></div>
+      <div class="project-meta">
+        <div class="project-name">The Sandbox</div>
+        <div class="project-ticker">SAND  ·  <span class="project-chain">Multi-chain</span></div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
 <article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#E98145"></div>
+  <div class="project-accent" style="background:#F3E931"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#E9814540,#E9814520);border:1px solid #E9814550">BC</div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#F3E93140,#F3E93120);border:1px solid #F3E93150">IL</div>
       <div class="project-meta">
-        <div class="project-name">bcgame coin</div>
+        <div class="project-name">Illuvium</div>
         <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
       </div>
       <span class="project-tier tier-unrated">unrated</span>
     </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#E77A9F"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#E77A9F40,#E77A9F20);border:1px solid #E77A9F50">CR</div>
-      <div class="project-meta">
-        <div class="project-name">crown by third time games</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#5767F3"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#5767F340,#5767F320);border:1px solid #5767F350">ED</div>
-      <div class="project-meta">
-        <div class="project-name">Edu3Games</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#D6445B"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#D6445B40,#D6445B20);border:1px solid #D6445B50">GA</div>
-      <div class="project-meta">
-        <div class="project-name">game by virtuals</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#F3CA71"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#F3CA7140,#F3CA7120);border:1px solid #F3CA7150">GA</div>
-      <div class="project-meta">
-        <div class="project-name">gamebuild</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#E66759"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#E6675940,#E6675920);border:1px solid #E6675950">GA</div>
-      <div class="project-meta">
-        <div class="project-name">gamefi,org</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#B438E4"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#B438E440,#B438E420);border:1px solid #B438E450">GA</div>
-      <div class="project-meta">
-        <div class="project-name">gamercoin</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#6990ED"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#6990ED40,#6990ED20);border:1px solid #6990ED50">GA</div>
-      <div class="project-meta">
-        <div class="project-name">games for a living</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#494AEA"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#494AEA40,#494AEA20);border:1px solid #494AEA50">GE</div>
-      <div class="project-meta">
-        <div class="project-name">georgeplaysclashroyale</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#EAE16C"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#EAE16C40,#EAE16C20);border:1px solid #EAE16C50">NA</div>
-      <div class="project-meta">
-        <div class="project-name">nakamoto games</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#DE48A8"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#DE48A840,#DE48A820);border:1px solid #DE48A850">NO</div>
-      <div class="project-meta">
-        <div class="project-name">Non playable coin</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#EB9360"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#EB936040,#EB936020);border:1px solid #EB936050">PL</div>
-      <div class="project-meta">
-        <div class="project-name">Playsout</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#5CD796"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#5CD79640,#5CD79620);border:1px solid #5CD79650">TH</div>
-      <div class="project-meta">
-        <div class="project-name">the last play</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#F15CDC"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#F15CDC40,#F15CDC20);border:1px solid #F15CDC50">UN</div>
-      <div class="project-meta">
-        <div class="project-name">Undeads Games</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#9EE256"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#9EE25640,#9EE25620);border:1px solid #9EE25650">YI</div>
-      <div class="project-meta">
-        <div class="project-name">yield guild games</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#49E153"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#49E15340,#49E15320);border:1px solid #49E15350">YO</div>
-      <div class="project-meta">
-        <div class="project-name">yooldo Games</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Gaming</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Gaming</span>
-  </div>
-</article>
-<article class="project" data-tier="avoid">
-  <div class="project-accent" style="background:#6B3FD4"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#6B3FD440,#6B3FD420);border:1px solid #6B3FD450"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/icp.svg" alt="Internet Computer" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">IN</span></div>
-      <div class="project-meta">
-        <div class="project-name">Internet Computer</div>
-        <div class="project-ticker">ICP  ·  <span class="project-chain">ICP</span></div>
-      </div>
-      <span class="project-tier tier-avoid">avoid</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
-    <div class="project-desc">A world computer running smart contracts at web speed. ICP hosts entire web applications on-chain — frontend, backend, and data — without cloud servers.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>ICP&#x27;s vision is radical: replace the cloud entirely with a decentralized world computer. If it works, it&#x27;s the most ambitious infrastructure play in crypto.</div>
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://internetcomputer.org" target="_blank" rel="noopener noreferrer">internetcomputer.org →</a><a class="project-aux" href="https://x.com/dfinity" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a><a class="project-aux" href="https://internetcomputer.org/docs" target="_blank" rel="noopener noreferrer" title="Docs">docs</a></span>
-    <span class="project-cat">Infrastructure</span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article></div>
 </section>
@@ -639,8 +424,21 @@ document.querySelectorAll('[data-tier]').forEach(btn => {
   });
 });
 
-// Fade-up reveal
+// Fade-up reveal + typewriter-quote trigger
 (function () {
+  // Hero quote: clip-path reveal once when hero scrolls into view
+  const heroQuote = document.querySelector('.hero .hero-quote');
+  if (heroQuote && 'IntersectionObserver' in window) {
+    const qio = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { heroQuote.classList.add('in-view'); qio.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    qio.observe(heroQuote);
+  } else if (heroQuote) {
+    heroQuote.classList.add('in-view');
+  }
+
   if (!('IntersectionObserver' in window)) {
     document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
     return;

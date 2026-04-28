@@ -35,7 +35,7 @@
     --sector-pattern-size: auto;
     --sector-pattern-opacity: 0.06;
   }
-  .hero-bg { background-image: url('https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&q=95&w=3840'); }
+  .hero-bg { background-image: url('https://images.unsplash.com/photo-1556742044-3c52d6e88c62?auto=format&fit=crop&q=95&w=3840'); --hero-filter: saturate(0.7) brightness(0.45) contrast(1.15); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1556740758-90de374c12ad?auto=format&fit=crop&q=95&w=3840'); }
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
@@ -66,8 +66,10 @@
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-inner layout-stacked">
     <div>
+      <div class="hero-ghost" aria-hidden="true">Neobanks</div>
       <div class="hero-eyebrow">Sector · Neobanks · Banking for keyholders</div>
       <h1 class="hero-title t-tight">Neobanks</h1>
+      <div class="hero-stats"><div><span class="hero-stat-num">8-12%</span><span class="hero-stat-lbl">USDT yield (offshore)</span></div><div><span class="hero-stat-num">2025</span><span class="hero-stat-lbl">GENIUS Act passed</span></div><div><span class="hero-stat-num">Plasma · Phantom</span><span class="hero-stat-lbl">Stablecoin-native</span></div></div>
       <p class="hero-desc">Bank accounts, debit cards, and yield products that hold crypto natively. The interface most people experience banking through, rebuilt on rails that don't require trusting an intermediary with custody.</p>
       <div class="hero-quote">
         Stablecoins are eating the consumer banking stack. The exchanges that adapt become banks. The ones that don't become Western Union.
@@ -153,6 +155,9 @@
   <div class="bleed-cap">A bank for the keyholder, <em>not on top of one.</em></div>
 </div>
 
+<!-- TECH INSIDE THIS SECTOR — native protocols + brief explainers -->
+
+
 <!-- WORKING SET -->
 <section class="section section-wide fade-up">
   <span class="label">Working set</span>
@@ -163,24 +168,144 @@
     currently earns, not a recommendation to buy.
   </p>
 
-  <div class="ticker-rail"><a class="tk-card" href="https://cardano.org" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#3366CC30,#3366CC10);border:1px solid #3366CC55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ada.svg" alt="Cardano" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#3366CC">CA</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#3366CC">ADA</span><span class="tk-name">Cardano</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#A8E6CF30,#A8E6CF10);border:1px solid #A8E6CF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/nexo.svg" alt="NEXO" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#A8E6CF">NE</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#A8E6CF">NEXO</span><span class="tk-name">NEXO</span></span></span><a class="tk-card" href="https://xrpl.org" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#5A9CE830,#5A9CE810);border:1px solid #5A9CE855"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/xrp.svg" alt="XRP" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#5A9CE8">XR</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#5A9CE8">XRP</span><span class="tk-name">XRP</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#9CE44F30,#9CE44F10);border:1px solid #9CE44F55;color:#9CE44F">OZ</span><span class="tk-meta"><span class="tk-ticker" style="color:#9CE44F"></span><span class="tk-name">ozapay</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#5352DF30,#5352DF10);border:1px solid #5352DF55;color:#5352DF">PA</span><span class="tk-meta"><span class="tk-ticker" style="color:#5352DF"></span><span class="tk-name">Payfi stategy token USDC</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#FFEAA730,#FFEAA710);border:1px solid #FFEAA755"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/borg.svg" alt="SwissBorg" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#FFEAA7">SW</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#FFEAA7">BORG</span><span class="tk-name">SwissBorg</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#6C5CE730,#6C5CE710);border:1px solid #6C5CE755"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/tel.svg" alt="Telcoin" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#6C5CE7">TE</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#6C5CE7">TEL</span><span class="tk-name">Telcoin</span></span></span><a class="tk-card" href="https://tron.network" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#FF001330,#FF001310);border:1px solid #FF001355"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/trx.svg" alt="TRON" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#FF0013">TR</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#FF0013">TRX</span><span class="tk-name">TRON</span></span></a></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">8</span></button><button class="ttab" data-tier="speculative">speculative<span class="ct">3</span></button><button class="ttab" data-tier="unrated">unrated<span class="ct">2</span></button><button class="ttab" data-tier="avoid">avoid<span class="ct">3</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="speculative">
-  <div class="project-accent" style="background:#3366CC"></div>
+  <div class="ticker-rail"><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#E77F6730,#E77F6710);border:1px solid #E77F6755"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/plasma.svg" alt="Plasma" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#E77F67">PL</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#E77F67">PLASMA</span><span class="tk-name">Plasma</span></span></span><a class="tk-card" href="https://www.bnbchain.org" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#F3BA2F30,#F3BA2F10);border:1px solid #F3BA2F55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/bnb.svg" alt="BNB" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#F3BA2F">BN</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#F3BA2F">BNB</span><span class="tk-name">BNB</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#00B3A430,#00B3A410);border:1px solid #00B3A455"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/coin.svg" alt="Coinbase" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#00B3A4">CO</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#00B3A4">COIN</span><span class="tk-name">Coinbase</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#00B3A430,#00B3A410);border:1px solid #00B3A455"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/cro.svg" alt="Crypto.com" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#00B3A4">CR</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#00B3A4">CRO</span><span class="tk-name">Crypto.com</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#00B3A430,#00B3A410);border:1px solid #00B3A455;color:#00B3A4">GE</span><span class="tk-meta"><span class="tk-ticker" style="color:#00B3A4"></span><span class="tk-name">Gemini</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">8</span></button><button class="ttab" data-tier="conviction">conviction<span class="ct">1</span></button><button class="ttab" data-tier="watch">watch<span class="ct">6</span></button><button class="ttab" data-tier="speculative">speculative<span class="ct">1</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="conviction">
+  <div class="project-accent" style="background:#E77F67"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#3366CC40,#3366CC20);border:1px solid #3366CC50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ada.svg" alt="Cardano" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">CA</span></div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#E77F6740,#E77F6720);border:1px solid #E77F6750"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/plasma.svg" alt="Plasma" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">PL</span></div>
       <div class="project-meta">
-        <div class="project-name">Cardano</div>
-        <div class="project-ticker">ADA  ·  <span class="project-chain">Cardano</span></div>
+        <div class="project-name">Plasma</div>
+        <div class="project-ticker">PLASMA  ·  <span class="project-chain">Multi-chain</span></div>
       </div>
-      <span class="project-tier tier-speculative">speculative</span>
+      <span class="project-tier tier-conviction">conviction</span>
     </div>
-    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
-    <div class="project-desc">Research-driven blockchain built on peer-reviewed academic papers. Haskell-based smart contracts with a focus on formal verification and governance.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>Cardano asks: what if we built a blockchain the way scientists build knowledge? Rigorous, peer-reviewed, and methodical — even if slower to ship.</div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
   </div>
   <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://cardano.org" target="_blank" rel="noopener noreferrer">cardano.org →</a><a class="project-aux" href="https://x.com/Cardano" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a><a class="project-aux" href="https://docs.cardano.org" target="_blank" rel="noopener noreferrer" title="Docs">docs</a></span>
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#F3BA2F"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#F3BA2F40,#F3BA2F20);border:1px solid #F3BA2F50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/bnb.svg" alt="BNB" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">BN</span></div>
+      <div class="project-meta">
+        <div class="project-name">BNB</div>
+        <div class="project-ticker">BNB  ·  <span class="project-chain">BNB Chain</span></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc">The utility token powering the BNB Chain ecosystem. High throughput, low fees, and the largest exchange ecosystem in crypto backing its adoption.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>BNB Chain brings millions of users on-chain. While more centralized than purist chains, its reach is undeniable for mainstream adoption.</div>
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><a class="project-link" href="https://www.bnbchain.org" target="_blank" rel="noopener noreferrer">bnbchain.org →</a><a class="project-aux" href="https://x.com/BNBChain" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a><a class="project-aux" href="https://docs.bnbchain.org" target="_blank" rel="noopener noreferrer" title="Docs">docs</a></span>
     <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00B3A4"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#00B3A440,#00B3A420);border:1px solid #00B3A450"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/coin.svg" alt="Coinbase" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">CO</span></div>
+      <div class="project-meta">
+        <div class="project-name">Coinbase</div>
+        <div class="project-ticker">COIN</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00B3A4"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#00B3A440,#00B3A420);border:1px solid #00B3A450"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/cro.svg" alt="Crypto.com" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">CR</span></div>
+      <div class="project-meta">
+        <div class="project-name">Crypto.com</div>
+        <div class="project-ticker">CRO</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00B3A4"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#00B3A440,#00B3A420);border:1px solid #00B3A450">GE</div>
+      <div class="project-meta">
+        <div class="project-name">Gemini</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00B3A4"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#00B3A440,#00B3A420);border:1px solid #00B3A450">PH</div>
+      <div class="project-meta">
+        <div class="project-name">Phantom</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00B3A4"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#00B3A440,#00B3A420);border:1px solid #00B3A450">WI</div>
+      <div class="project-meta">
+        <div class="project-name">Wirex</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
 <article class="project" data-tier="speculative">
@@ -201,126 +326,6 @@
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
     <span class="project-cat">CeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="speculative">
-  <div class="project-accent" style="background:#5A9CE8"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#5A9CE840,#5A9CE820);border:1px solid #5A9CE850"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/xrp.svg" alt="XRP" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">XR</span></div>
-      <div class="project-meta">
-        <div class="project-name">XRP</div>
-        <div class="project-ticker">XRP  ·  <span class="project-chain">XRP Ledger</span></div>
-      </div>
-      <span class="project-tier tier-speculative">speculative</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Payments</span><span class="ptag">Infrastructure</span></div>
-    <div class="project-desc">A digital payment protocol designed for fast, low-cost cross-border transactions. Built for institutional settlement and global money movement.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>XRP focuses on the pipes of global finance. Whether you agree with its approach to decentralization, its institutional traction is undeniable.</div>
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://xrpl.org" target="_blank" rel="noopener noreferrer">xrpl.org →</a><a class="project-aux" href="https://x.com/Ripple" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a><a class="project-aux" href="https://xrpl.org/docs" target="_blank" rel="noopener noreferrer" title="Docs">docs</a></span>
-    <span class="project-cat">Payments</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#9CE44F"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#9CE44F40,#9CE44F20);border:1px solid #9CE44F50">OZ</div>
-      <div class="project-meta">
-        <div class="project-name">ozapay</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Payments</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Payments</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#5352DF"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#5352DF40,#5352DF20);border:1px solid #5352DF50">PA</div>
-      <div class="project-meta">
-        <div class="project-name">Payfi stategy token USDC</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Payments</span><span class="ptag">Stablecoin</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Payments</span>
-  </div>
-</article>
-<article class="project" data-tier="avoid">
-  <div class="project-accent" style="background:#FFEAA7"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#FFEAA740,#FFEAA720);border:1px solid #FFEAA750"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/borg.svg" alt="SwissBorg" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">SW</span></div>
-      <div class="project-meta">
-        <div class="project-name">SwissBorg</div>
-        <div class="project-ticker">BORG  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-avoid">avoid</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span><span class="ptag">CeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="avoid">
-  <div class="project-accent" style="background:#6C5CE7"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#6C5CE740,#6C5CE720);border:1px solid #6C5CE750"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/tel.svg" alt="Telcoin" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">TE</span></div>
-      <div class="project-meta">
-        <div class="project-name">Telcoin</div>
-        <div class="project-ticker">TEL  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-avoid">avoid</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Payments</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Payments</span>
-  </div>
-</article>
-<article class="project" data-tier="avoid">
-  <div class="project-accent" style="background:#FF0013"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#FF001340,#FF001320);border:1px solid #FF001350"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/trx.svg" alt="TRON" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">TR</span></div>
-      <div class="project-meta">
-        <div class="project-name">TRON</div>
-        <div class="project-ticker">TRX  ·  <span class="project-chain">TRON</span></div>
-      </div>
-      <span class="project-tier tier-avoid">avoid</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">Payments</span></div>
-    <div class="project-desc">High-throughput blockchain dominating stablecoin transfers. TRON processes more USDT volume than any other chain — the invisible backbone of crypto payments.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>TRON is crypto&#x27;s unsexy workhorse. It may not win design awards, but its dominance in stablecoin transfers makes it impossible to ignore.</div>
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://tron.network" target="_blank" rel="noopener noreferrer">tron.network →</a><a class="project-aux" href="https://x.com/tron_DAO" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a><a class="project-aux" href="https://developers.tron.network" target="_blank" rel="noopener noreferrer" title="Docs">docs</a></span>
-    <span class="project-cat">Infrastructure</span>
   </div>
 </article></div>
 </section>
@@ -392,8 +397,21 @@ document.querySelectorAll('[data-tier]').forEach(btn => {
   });
 });
 
-// Fade-up reveal
+// Fade-up reveal + typewriter-quote trigger
 (function () {
+  // Hero quote: clip-path reveal once when hero scrolls into view
+  const heroQuote = document.querySelector('.hero .hero-quote');
+  if (heroQuote && 'IntersectionObserver' in window) {
+    const qio = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { heroQuote.classList.add('in-view'); qio.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    qio.observe(heroQuote);
+  } else if (heroQuote) {
+    heroQuote.classList.add('in-view');
+  }
+
   if (!('IntersectionObserver' in window)) {
     document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
     return;

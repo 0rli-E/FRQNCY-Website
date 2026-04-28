@@ -35,7 +35,7 @@
     --sector-pattern-size: auto, auto;
     --sector-pattern-opacity: 0.07;
   }
-  .hero-bg { background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=95&w=3840'); }
+  .hero-bg { background-image: url('https://images.unsplash.com/photo-1526374965328-7f61d4dc18c5?auto=format&fit=crop&q=95&w=3840'); --hero-filter: saturate(0.18) brightness(0.32) contrast(1.4) grayscale(0.3); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1640340434855-6084b1f4901c?auto=format&fit=crop&q=95&w=3840'); }
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
@@ -66,8 +66,10 @@
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-inner layout-centered">
     <div>
+      <div class="hero-ghost" aria-hidden="true">Privacy</div>
       <div class="hero-eyebrow">Sector · Privacy · A right, not a privilege</div>
       <h1 class="hero-title t-tight">Privacy</h1>
+      <div class="hero-stats"><div><span class="hero-stat-num">1993</span><span class="hero-stat-lbl">Cypherpunk Manifesto</span></div><div><span class="hero-stat-num">Aug 2022</span><span class="hero-stat-lbl">Tornado sanction</span></div><div><span class="hero-stat-num">Default-shielded</span><span class="hero-stat-lbl">Monero · Zcash</span></div></div>
       <p class="hero-desc">Cash is private by default. Most blockchains are transparent by default. Privacy crypto is the work to put the floor back where it should be — financial privacy as a precondition for financial freedom.</p>
       <div class="hero-quote">
         Privacy is necessary for an open society in the electronic age. Privacy is not secrecy.
@@ -136,6 +138,9 @@
   <div class="bleed-cap">Cash is private. <em>The blockchain should be too.</em></div>
 </div>
 
+<!-- TECH INSIDE THIS SECTOR — native protocols + brief explainers -->
+
+
 <!-- WORKING SET -->
 <section class="section section-wide fade-up">
   <span class="label">Working set</span>
@@ -146,7 +151,7 @@
     currently earns, not a recommendation to buy.
   </p>
 
-  <div class="ticker-rail"><a class="tk-card" href="https://z.cash" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#F4B72830,#F4B72810);border:1px solid #F4B72855"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/zec.svg" alt="Zcash" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#F4B728">ZC</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#F4B728">ZEC</span><span class="tk-name">Zcash</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#B8E99430,#B8E99410);border:1px solid #B8E99455"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/bdx.svg" alt="Beldex" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#B8E994">BE</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#B8E994">BDX</span><span class="tk-name">Beldex</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">2</span></button><button class="ttab" data-tier="conviction">conviction<span class="ct">1</span></button><button class="ttab" data-tier="speculative">speculative<span class="ct">1</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="conviction">
+  <div class="ticker-rail"><a class="tk-card" href="https://z.cash" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#F4B72830,#F4B72810);border:1px solid #F4B72855"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/zec.svg" alt="Zcash" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#F4B728">ZC</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#F4B728">ZEC</span><span class="tk-name">Zcash</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#C88CFF30,#C88CFF10);border:1px solid #C88CFF55;color:#C88CFF">AZ</span><span class="tk-meta"><span class="tk-ticker" style="color:#C88CFF"></span><span class="tk-name">Aztec</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#C88CFF30,#C88CFF10);border:1px solid #C88CFF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/xmr.svg" alt="Monero" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#C88CFF">MO</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#C88CFF">XMR</span><span class="tk-name">Monero</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#C88CFF30,#C88CFF10);border:1px solid #C88CFF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/nam.svg" alt="Namada" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#C88CFF">NA</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#C88CFF">NAM</span><span class="tk-name">Namada</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#C88CFF30,#C88CFF10);border:1px solid #C88CFF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/nym.svg" alt="Nym" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#C88CFF">NY</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#C88CFF">NYM</span><span class="tk-name">Nym</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">10</span></button><button class="ttab" data-tier="conviction">conviction<span class="ct">1</span></button><button class="ttab" data-tier="watch">watch<span class="ct">8</span></button><button class="ttab" data-tier="unrated">unrated<span class="ct">1</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="conviction">
   <div class="project-accent" style="background:#F4B728"></div>
   <div class="project-body">
     <div class="project-head">
@@ -166,24 +171,184 @@
     <span class="project-cat">Privacy</span>
   </div>
 </article>
-<article class="project" data-tier="speculative">
-  <div class="project-accent" style="background:#B8E994"></div>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#C88CFF"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#B8E99440,#B8E99420);border:1px solid #B8E99450"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/bdx.svg" alt="Beldex" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">BE</span></div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#C88CFF40,#C88CFF20);border:1px solid #C88CFF50">AZ</div>
       <div class="project-meta">
-        <div class="project-name">Beldex</div>
-        <div class="project-ticker">BDX  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Aztec</div>
+        <div class="project-ticker"></div>
       </div>
-      <span class="project-tier tier-speculative">speculative</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
-    <div class="project-tags"><span class="ptag">Privacy</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Privacy</span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#C88CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#C88CFF40,#C88CFF20);border:1px solid #C88CFF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/xmr.svg" alt="Monero" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">MO</span></div>
+      <div class="project-meta">
+        <div class="project-name">Monero</div>
+        <div class="project-ticker">XMR</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#C88CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#C88CFF40,#C88CFF20);border:1px solid #C88CFF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/nam.svg" alt="Namada" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">NA</span></div>
+      <div class="project-meta">
+        <div class="project-name">Namada</div>
+        <div class="project-ticker">NAM</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#C88CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#C88CFF40,#C88CFF20);border:1px solid #C88CFF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/nym.svg" alt="Nym" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">NY</span></div>
+      <div class="project-meta">
+        <div class="project-name">Nym</div>
+        <div class="project-ticker">NYM</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#C88CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#C88CFF40,#C88CFF20);border:1px solid #C88CFF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/um.svg" alt="Penumbra" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">PE</span></div>
+      <div class="project-meta">
+        <div class="project-name">Penumbra</div>
+        <div class="project-ticker">UM</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#C88CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#C88CFF40,#C88CFF20);border:1px solid #C88CFF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/rail.svg" alt="Railgun" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">RA</span></div>
+      <div class="project-meta">
+        <div class="project-name">Railgun</div>
+        <div class="project-ticker">RAIL</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#C88CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#C88CFF40,#C88CFF20);border:1px solid #C88CFF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/scrt.svg" alt="Secret Network" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">SE</span></div>
+      <div class="project-meta">
+        <div class="project-name">Secret Network</div>
+        <div class="project-ticker">SCRT</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#C88CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#C88CFF40,#C88CFF20);border:1px solid #C88CFF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/torn.svg" alt="Tornado Cash" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">TO</span></div>
+      <div class="project-meta">
+        <div class="project-name">Tornado Cash</div>
+        <div class="project-ticker">TORN</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="unrated">
+  <div class="project-accent" style="background:#E2E744"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#E2E74440,#E2E74420);border:1px solid #E2E74450">IR</div>
+      <div class="project-meta">
+        <div class="project-name">iron fish</div>
+        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
+      </div>
+      <span class="project-tier tier-unrated">unrated</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article></div>
 </section>
@@ -255,8 +420,21 @@ document.querySelectorAll('[data-tier]').forEach(btn => {
   });
 });
 
-// Fade-up reveal
+// Fade-up reveal + typewriter-quote trigger
 (function () {
+  // Hero quote: clip-path reveal once when hero scrolls into view
+  const heroQuote = document.querySelector('.hero .hero-quote');
+  if (heroQuote && 'IntersectionObserver' in window) {
+    const qio = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { heroQuote.classList.add('in-view'); qio.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    qio.observe(heroQuote);
+  } else if (heroQuote) {
+    heroQuote.classList.add('in-view');
+  }
+
   if (!('IntersectionObserver' in window)) {
     document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
     return;

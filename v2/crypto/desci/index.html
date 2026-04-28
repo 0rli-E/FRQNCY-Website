@@ -35,7 +35,7 @@
     --sector-pattern-size: 26px 26px;
     --sector-pattern-opacity: 0.1;
   }
-  .hero-bg { background-image: url('https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&q=95&w=3840'); }
+  .hero-bg { background-image: url('https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&q=95&w=3840'); --hero-filter: saturate(0.55) brightness(0.5) contrast(1.05) hue-rotate(8deg); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?auto=format&fit=crop&q=95&w=3840'); }
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
@@ -66,8 +66,10 @@
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-inner layout-stacked">
     <div>
+      <div class="hero-ghost" aria-hidden="true">DeSci</div>
       <div class="hero-eyebrow">Sector · DeSci · Funding, IP, and data — reorganised</div>
       <h1 class="hero-title t-tight">DeSci</h1>
+      <div class="hero-stats"><div><span class="hero-stat-num">30+ BioDAOs</span><span class="hero-stat-lbl">Under BIO Protocol</span></div><div><span class="hero-stat-num">2024</span><span class="hero-stat-lbl">Pump.science live</span></div><div><span class="hero-stat-num">IP-NFT</span><span class="hero-stat-lbl">On-chain licensing</span></div></div>
       <p class="hero-desc">Funding research without grant committees. Owning intellectual property without a publisher. Sharing data without a custodian. DeSci is the slow rebuild of the scientific institution on programmable rails.</p>
       <div class="hero-quote">
         The bottleneck in biology is no longer experimental — it's coordination.
@@ -141,6 +143,9 @@
   <div class="bleed-cap">Science as a public good, <em>not a publisher's franchise.</em></div>
 </div>
 
+<!-- TECH INSIDE THIS SECTOR — native protocols + brief explainers -->
+
+
 <!-- WORKING SET -->
 <section class="section section-wide fade-up">
   <span class="label">Working set</span>
@@ -151,24 +156,124 @@
     currently earns, not a recommendation to buy.
   </p>
 
-  <div class="ticker-rail"><a class="tk-card" href="https://cardano.org" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#3366CC30,#3366CC10);border:1px solid #3366CC55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ada.svg" alt="Cardano" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#3366CC">CA</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#3366CC">ADA</span><span class="tk-name">Cardano</span></span></a><a class="tk-card" href="https://bio.xyz" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#00C85330,#00C85310);border:1px solid #00C85355"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/bio.svg" alt="Bio Protocol" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#00C853">BI</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#00C853">BIO</span><span class="tk-name">Bio Protocol</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#69F06F30,#69F06F10);border:1px solid #69F06F55;color:#69F06F">RE</span><span class="tk-meta"><span class="tk-ticker" style="color:#69F06F"></span><span class="tk-name">researchocin</span></span></span><a class="tk-card" href="https://www.vitadao.com" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#6366F130,#6366F110);border:1px solid #6366F155"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/vita.svg" alt="VitaDAO" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#6366F1">VI</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#6366F1">VITA</span><span class="tk-name">VitaDAO</span></span></a></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">4</span></button><button class="ttab" data-tier="speculative">speculative<span class="ct">1</span></button><button class="ttab" data-tier="unrated">unrated<span class="ct">3</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="speculative">
-  <div class="project-accent" style="background:#3366CC"></div>
+  <div class="ticker-rail"><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#9B5CFF30,#9B5CFF10);border:1px solid #9B5CFF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ath.svg" alt="AthenaDAO" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#9B5CFF">AT</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#9B5CFF">ATH</span><span class="tk-name">AthenaDAO</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#9B5CFF30,#9B5CFF10);border:1px solid #9B5CFF55;color:#9B5CFF">CE</span><span class="tk-meta"><span class="tk-ticker" style="color:#9B5CFF"></span><span class="tk-name">CerebrumDAO</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#9B5CFF30,#9B5CFF10);border:1px solid #9B5CFF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/hair.svg" alt="HairDAO" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#9B5CFF">HA</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#9B5CFF">HAIR</span><span class="tk-name">HairDAO</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#9B5CFF30,#9B5CFF10);border:1px solid #9B5CFF55;color:#9B5CFF">MO</span><span class="tk-meta"><span class="tk-ticker" style="color:#9B5CFF"></span><span class="tk-name">Molecule</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#9B5CFF30,#9B5CFF10);border:1px solid #9B5CFF55;color:#9B5CFF">PU</span><span class="tk-meta"><span class="tk-ticker" style="color:#9B5CFF"></span><span class="tk-name">Pump.science</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">8</span></button><button class="ttab" data-tier="watch">watch<span class="ct">6</span></button><button class="ttab" data-tier="unrated">unrated<span class="ct">2</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#9B5CFF"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#3366CC40,#3366CC20);border:1px solid #3366CC50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ada.svg" alt="Cardano" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">CA</span></div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#9B5CFF40,#9B5CFF20);border:1px solid #9B5CFF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ath.svg" alt="AthenaDAO" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">AT</span></div>
       <div class="project-meta">
-        <div class="project-name">Cardano</div>
-        <div class="project-ticker">ADA  ·  <span class="project-chain">Cardano</span></div>
+        <div class="project-name">AthenaDAO</div>
+        <div class="project-ticker">ATH</div>
       </div>
-      <span class="project-tier tier-speculative">speculative</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
-    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
-    <div class="project-desc">Research-driven blockchain built on peer-reviewed academic papers. Haskell-based smart contracts with a focus on formal verification and governance.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>Cardano asks: what if we built a blockchain the way scientists build knowledge? Rigorous, peer-reviewed, and methodical — even if slower to ship.</div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
   </div>
   <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://cardano.org" target="_blank" rel="noopener noreferrer">cardano.org →</a><a class="project-aux" href="https://x.com/Cardano" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a><a class="project-aux" href="https://docs.cardano.org" target="_blank" rel="noopener noreferrer" title="Docs">docs</a></span>
-    <span class="project-cat">Infrastructure</span>
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#9B5CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#9B5CFF40,#9B5CFF20);border:1px solid #9B5CFF50">CE</div>
+      <div class="project-meta">
+        <div class="project-name">CerebrumDAO</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#9B5CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#9B5CFF40,#9B5CFF20);border:1px solid #9B5CFF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/hair.svg" alt="HairDAO" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">HA</span></div>
+      <div class="project-meta">
+        <div class="project-name">HairDAO</div>
+        <div class="project-ticker">HAIR</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#9B5CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#9B5CFF40,#9B5CFF20);border:1px solid #9B5CFF50">MO</div>
+      <div class="project-meta">
+        <div class="project-name">Molecule</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#9B5CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#9B5CFF40,#9B5CFF20);border:1px solid #9B5CFF50">PU</div>
+      <div class="project-meta">
+        <div class="project-name">Pump.science</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#9B5CFF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#9B5CFF40,#9B5CFF20);border:1px solid #9B5CFF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/rsc.svg" alt="ResearchHub" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">RE</span></div>
+      <div class="project-meta">
+        <div class="project-name">ResearchHub</div>
+        <div class="project-ticker">RSC</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
 <article class="project" data-tier="unrated">
@@ -189,26 +294,6 @@
   <div class="project-foot">
     <span class="project-foot-links"><a class="project-link" href="https://bio.xyz" target="_blank" rel="noopener noreferrer">bio.xyz →</a><a class="project-aux" href="https://x.com/bioprotocol" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a></span>
     <span class="project-cat">DeSci</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#69F06F"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#69F06F40,#69F06F20);border:1px solid #69F06F50">RE</div>
-      <div class="project-meta">
-        <div class="project-name">researchocin</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Crypto</span>
   </div>
 </article>
 <article class="project" data-tier="unrated">
@@ -300,8 +385,21 @@ document.querySelectorAll('[data-tier]').forEach(btn => {
   });
 });
 
-// Fade-up reveal
+// Fade-up reveal + typewriter-quote trigger
 (function () {
+  // Hero quote: clip-path reveal once when hero scrolls into view
+  const heroQuote = document.querySelector('.hero .hero-quote');
+  if (heroQuote && 'IntersectionObserver' in window) {
+    const qio = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { heroQuote.classList.add('in-view'); qio.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    qio.observe(heroQuote);
+  } else if (heroQuote) {
+    heroQuote.classList.add('in-view');
+  }
+
   if (!('IntersectionObserver' in window)) {
     document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
     return;

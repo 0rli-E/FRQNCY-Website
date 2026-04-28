@@ -35,7 +35,7 @@
     --sector-pattern-size: 32px 32px;
     --sector-pattern-opacity: 0.05;
   }
-  .hero-bg { background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=95&w=3840'); }
+  .hero-bg { background-image: url('https://images.unsplash.com/photo-1611974789855-9c2a0a7236a3?auto=format&fit=crop&q=95&w=3840'); --hero-filter: saturate(0.85) brightness(0.42) contrast(1.18); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1640340434855-6084b1f4901c?auto=format&fit=crop&q=95&w=3840'); }
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
@@ -66,8 +66,10 @@
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-inner layout-split-left">
     <div>
+      <div class="hero-ghost" aria-hidden="true">Prediction Markets</div>
       <div class="hero-eyebrow">Sector · Predictions · Aggregating the crowd</div>
       <h1 class="hero-title t-thin">Prediction Markets</h1>
+      <div class="hero-stats"><div><span class="hero-stat-num">$3.6B</span><span class="hero-stat-lbl">Polymarket 2024</span></div><div><span class="hero-stat-num">2024</span><span class="hero-stat-lbl">Kalshi vs CFTC</span></div><div><span class="hero-stat-num">UMA</span><span class="hero-stat-lbl">Optimistic oracle</span></div></div>
       <p class="hero-desc">Markets that price the probability of a future event. Election outcomes, hurricane paths, sports results, geopolitics. Prediction markets aggregate dispersed information into a single auditable number.</p>
       <div class="hero-quote">
         Prediction markets are the most efficient information aggregator we have. The trouble is they're illegal.
@@ -142,6 +144,9 @@
   <div class="bleed-cap">The crowd, <em>priced.</em></div>
 </div>
 
+<!-- TECH INSIDE THIS SECTOR — native protocols + brief explainers -->
+
+
 <!-- WORKING SET -->
 <section class="section section-wide fade-up">
   <span class="label">Working set</span>
@@ -152,7 +157,166 @@
     currently earns, not a recommendation to buy.
   </p>
 
-  <div class="empty-grid">No FRQNCY-tracked projects yet in this sector — sub-hub awaiting curation. The thesis above stands; the working set will land here.</div>
+  <div class="ticker-rail"><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#0075E930,#0075E910);border:1px solid #0075E955"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/rep.svg" alt="Augur" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#0075E9">AU</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#0075E9">REP</span><span class="tk-name">Augur</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#0075E930,#0075E910);border:1px solid #0075E955"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/azur.svg" alt="Azuro" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#0075E9">AZ</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#0075E9">AZUR</span><span class="tk-name">Azuro</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#0075E930,#0075E910);border:1px solid #0075E955"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/drift.svg" alt="Drift" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#0075E9">DR</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#0075E9">DRIFT</span><span class="tk-name">Drift</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#0075E930,#0075E910);border:1px solid #0075E955;color:#0075E9">KA</span><span class="tk-meta"><span class="tk-ticker" style="color:#0075E9"></span><span class="tk-name">Kalshi</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#0075E930,#0075E910);border:1px solid #0075E955;color:#0075E9">LI</span><span class="tk-meta"><span class="tk-ticker" style="color:#0075E9"></span><span class="tk-name">Limitless</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">8</span></button><button class="ttab" data-tier="watch">watch<span class="ct">8</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#0075E9"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#0075E940,#0075E920);border:1px solid #0075E950"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/rep.svg" alt="Augur" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">AU</span></div>
+      <div class="project-meta">
+        <div class="project-name">Augur</div>
+        <div class="project-ticker">REP</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#0075E9"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#0075E940,#0075E920);border:1px solid #0075E950"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/azur.svg" alt="Azuro" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">AZ</span></div>
+      <div class="project-meta">
+        <div class="project-name">Azuro</div>
+        <div class="project-ticker">AZUR</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#0075E9"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#0075E940,#0075E920);border:1px solid #0075E950"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/drift.svg" alt="Drift" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">DR</span></div>
+      <div class="project-meta">
+        <div class="project-name">Drift</div>
+        <div class="project-ticker">DRIFT</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#0075E9"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#0075E940,#0075E920);border:1px solid #0075E950">KA</div>
+      <div class="project-meta">
+        <div class="project-name">Kalshi</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#0075E9"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#0075E940,#0075E920);border:1px solid #0075E950">LI</div>
+      <div class="project-meta">
+        <div class="project-name">Limitless</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#0075E9"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#0075E940,#0075E920);border:1px solid #0075E950">MA</div>
+      <div class="project-meta">
+        <div class="project-name">Manifold</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#0075E9"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#0075E940,#0075E920);border:1px solid #0075E950">MY</div>
+      <div class="project-meta">
+        <div class="project-name">Myriad Markets</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#0075E9"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#0075E940,#0075E920);border:1px solid #0075E950">PO</div>
+      <div class="project-meta">
+        <div class="project-name">Polymarket</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article></div>
 </section>
 
 <!-- PRACTICE -->
@@ -222,8 +386,21 @@ document.querySelectorAll('[data-tier]').forEach(btn => {
   });
 });
 
-// Fade-up reveal
+// Fade-up reveal + typewriter-quote trigger
 (function () {
+  // Hero quote: clip-path reveal once when hero scrolls into view
+  const heroQuote = document.querySelector('.hero .hero-quote');
+  if (heroQuote && 'IntersectionObserver' in window) {
+    const qio = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { heroQuote.classList.add('in-view'); qio.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    qio.observe(heroQuote);
+  } else if (heroQuote) {
+    heroQuote.classList.add('in-view');
+  }
+
   if (!('IntersectionObserver' in window)) {
     document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
     return;

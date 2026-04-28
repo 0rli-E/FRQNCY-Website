@@ -35,7 +35,7 @@
     --sector-pattern-size: 70px 70px;
     --sector-pattern-opacity: 0.08;
   }
-  .hero-bg { background-image: url('https://images.unsplash.com/photo-1633493702341-4d04841df53b?auto=format&fit=crop&q=95&w=3840'); }
+  .hero-bg { background-image: url('https://images.unsplash.com/photo-1633493702341-4d04841df53b?auto=format&fit=crop&q=95&w=3840'); --hero-filter: saturate(1.25) brightness(0.5) contrast(1.2); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1654792393225-3e8a53d124d2?auto=format&fit=crop&q=95&w=3840'); }
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
@@ -66,8 +66,10 @@
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-inner layout-centered">
     <div>
+      <div class="hero-ghost" aria-hidden="true">NFTs</div>
       <div class="hero-eyebrow">Sector · NFTs · Digital ownership, priced</div>
       <h1 class="hero-title t-monumental">NFTs</h1>
+      <div class="hero-stats"><div><span class="hero-stat-num">10,000</span><span class="hero-stat-lbl">CryptoPunks</span></div><div><span class="hero-stat-num">Jun 2017</span><span class="hero-stat-lbl">Larva Labs launch</span></div><div><span class="hero-stat-num">Walmart · Target</span><span class="hero-stat-lbl">Pudgy Penguins</span></div></div>
       <p class="hero-desc">Tokens that represent a unique thing — an artwork, a domain, a membership, a credential. NFTs were over-hyped, then dismissed; the part that survives is the architectural fact that on-chain ownership of a unique digital good is now a primitive.</p>
       <div class="hero-quote">
         The point of an NFT was never the JPEG. It was the ledger entry that says: this is mine, verifiably, forever.
@@ -137,6 +139,9 @@
   <div class="bleed-cap">A specific thing, <em>provably owned.</em></div>
 </div>
 
+<!-- TECH INSIDE THIS SECTOR — native protocols + brief explainers -->
+
+
 <!-- WORKING SET -->
 <section class="section section-wide fade-up">
   <span class="label">Working set</span>
@@ -147,176 +152,36 @@
     currently earns, not a recommendation to buy.
   </p>
 
-  <div class="ticker-rail"><a class="tk-card" href="https://bittensor.com" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#3FD2A430,#3FD2A410);border:1px solid #3FD2A455"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/tao.svg" alt="Bittensor" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#3FD2A4">BI</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#3FD2A4">TAO</span><span class="tk-name">Bittensor</span></span></a><a class="tk-card" href="https://solana.com" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#9945FF30,#9945FF10);border:1px solid #9945FF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/sol.svg" alt="Solana" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#9945FF">SO</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#9945FF">SOL</span><span class="tk-name">Solana</span></span></a><a class="tk-card" href="https://lens.xyz" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#ABFE2C30,#ABFE2C10);border:1px solid #ABFE2C55;color:#ABFE2C">LE</span><span class="tk-meta"><span class="tk-ticker" style="color:#ABFE2C"></span><span class="tk-name">Lens</span></span></a><a class="tk-card" href="https://www.pepe.vip" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#479F5330,#479F5310);border:1px solid #479F5355"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/pepe.svg" alt="Pepe" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#479F53">PE</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#479F53">PEPE</span><span class="tk-name">Pepe</span></span></a><a class="tk-card" href="https://zora.co" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#2B5CE630,#2B5CE610);border:1px solid #2B5CE655"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/zora.svg" alt="Zora" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#2B5CE6">ZO</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#2B5CE6">ZORA</span><span class="tk-name">Zora</span></span></a><a class="tk-card" href="https://ai16z.ai" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#FF6B3530,#FF6B3510);border:1px solid #FF6B3555"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ai16z.svg" alt="ai16z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#FF6B35">AI</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#FF6B35">AI16Z</span><span class="tk-name">ai16z</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#E5974530,#E5974510);border:1px solid #E5974555;color:#E59745">AP</span><span class="tk-meta"><span class="tk-ticker" style="color:#E59745"></span><span class="tk-name">apex</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#515BE030,#515BE010);border:1px solid #515BE055;color:#515BE0">SH</span><span class="tk-meta"><span class="tk-ticker" style="color:#515BE0"></span><span class="tk-name">shapeshift fox</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">10</span></button><button class="ttab" data-tier="core">core<span class="ct">2</span></button><button class="ttab" data-tier="conviction">conviction<span class="ct">3</span></button><button class="ttab" data-tier="unrated">unrated<span class="ct">4</span></button><button class="ttab" data-tier="avoid">avoid<span class="ct">1</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="core">
-  <div class="project-accent" style="background:#3FD2A4"></div>
+  <div class="ticker-rail"><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#786FA630,#786FA610);border:1px solid #786FA655"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/pengu.svg" alt="Pudgy Penguins" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#786FA6">PU</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#786FA6">PENGU</span><span class="tk-name">Pudgy Penguins</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#FF4D8D30,#FF4D8D10);border:1px solid #FF4D8D55;color:#FF4D8D">AZ</span><span class="tk-meta"><span class="tk-ticker" style="color:#FF4D8D"></span><span class="tk-name">Azuki</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#FF4D8D30,#FF4D8D10);border:1px solid #FF4D8D55;color:#FF4D8D">BI</span><span class="tk-meta"><span class="tk-ticker" style="color:#FF4D8D"></span><span class="tk-name">Bitcoin Ordinals</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#FF4D8D30,#FF4D8D10);border:1px solid #FF4D8D55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/blur.svg" alt="Blur" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#FF4D8D">BL</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#FF4D8D">BLUR</span><span class="tk-name">Blur</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#FF4D8D30,#FF4D8D10);border:1px solid #FF4D8D55;color:#FF4D8D">BO</span><span class="tk-meta"><span class="tk-ticker" style="color:#FF4D8D"></span><span class="tk-name">Bored Ape Yacht Club</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">10</span></button><button class="ttab" data-tier="core">core<span class="ct">1</span></button><button class="ttab" data-tier="watch">watch<span class="ct">9</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="core">
+  <div class="project-accent" style="background:#786FA6"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#3FD2A440,#3FD2A420);border:1px solid #3FD2A450"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/tao.svg" alt="Bittensor" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">BI</span></div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#786FA640,#786FA620);border:1px solid #786FA650"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/pengu.svg" alt="Pudgy Penguins" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">PU</span></div>
       <div class="project-meta">
-        <div class="project-name">Bittensor</div>
-        <div class="project-ticker">TAO  ·  <span class="project-chain">Bittensor</span></div>
+        <div class="project-name">Pudgy Penguins</div>
+        <div class="project-ticker">PENGU  ·  <span class="project-chain">Multi-chain</span></div>
       </div>
       <span class="project-tier tier-core">core</span>
     </div>
-    <div class="project-tags"><span class="ptag">AI</span><span class="ptag">Infrastructure</span></div>
-    <div class="project-desc">Decentralized network of machine intelligence — &#x27;subnets&#x27; compete to produce the best AI outputs (models, data, compute, knowledge) and earn TAO through a peer-to-peer incentive mechanism.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>Bittensor is the leading attempt to build an open, permissionless market for AI. Rather than AI being controlled by a handful of labs, subnets on Bittensor reward anyone who can contribute useful machine intelligence — models, inference, data, compute. The can</div>
+    <div class="project-tags"><span class="ptag">Meme</span></div>
+    <div class="project-desc"></div>
+    
   </div>
   <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://bittensor.com" target="_blank" rel="noopener noreferrer">bittensor.com →</a><a class="project-aux" href="https://x.com/opentensor" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a></span>
-    <span class="project-cat">AI</span>
-  </div>
-</article>
-<article class="project" data-tier="core">
-  <div class="project-accent" style="background:#9945FF"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#9945FF40,#9945FF20);border:1px solid #9945FF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/sol.svg" alt="Solana" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">SO</span></div>
-      <div class="project-meta">
-        <div class="project-name">Solana</div>
-        <div class="project-ticker">SOL  ·  <span class="project-chain">Solana</span></div>
-      </div>
-      <span class="project-tier tier-core">core</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
-    <div class="project-desc">High-performance blockchain built for speed and scale. Sub-second finality, low fees, and a thriving ecosystem of DeFi, NFTs, and consumer apps.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>Speed matters for adoption. Solana brings blockchain to the speed of thought — making decentralized apps feel as fast as centralized ones.</div>
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://solana.com" target="_blank" rel="noopener noreferrer">solana.com →</a><a class="project-aux" href="https://x.com/solana" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a><a class="project-aux" href="https://solana.com/docs" target="_blank" rel="noopener noreferrer" title="Docs">docs</a></span>
-    <span class="project-cat">Infrastructure</span>
-  </div>
-</article>
-<article class="project" data-tier="conviction">
-  <div class="project-accent" style="background:#ABFE2C"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#ABFE2C40,#ABFE2C20);border:1px solid #ABFE2C50">LE</div>
-      <div class="project-meta">
-        <div class="project-name">Lens</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Lens Chain</span></div>
-      </div>
-      <span class="project-tier tier-conviction">conviction</span>
-    </div>
-    <div class="project-tags"><span class="ptag">SocialFi</span><span class="ptag">Decentralized Social</span></div>
-    <div class="project-desc">An open social graph where profiles, follows, and posts are assets you own. Built by the Aave team — a modular social layer apps can compose on top of.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>Lens treats social graphs as public infrastructure. If your audience is yours, it should be portable and composable across every app built on the protocol.</div>
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://lens.xyz" target="_blank" rel="noopener noreferrer">lens.xyz →</a><a class="project-aux" href="https://x.com/LensProtocol" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a><a class="project-aux" href="https://lens.xyz/docs" target="_blank" rel="noopener noreferrer" title="Docs">docs</a></span>
-    <span class="project-cat">SocialFi</span>
-  </div>
-</article>
-<article class="project" data-tier="conviction">
-  <div class="project-accent" style="background:#479F53"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#479F5340,#479F5320);border:1px solid #479F5350"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/pepe.svg" alt="Pepe" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">PE</span></div>
-      <div class="project-meta">
-        <div class="project-name">Pepe</div>
-        <div class="project-ticker">PEPE  ·  <span class="project-chain">Ethereum</span></div>
-      </div>
-      <span class="project-tier tier-conviction">conviction</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span><span class="ptag">Culture</span></div>
-    <div class="project-desc">The frog-themed token that became the flagship of the meme coin movement on Ethereum. Pure community, no utility promises — just cultural consensus.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>PEPE is the purest expression of memetic value in crypto. It reminds us that culture, humor, and community are legitimate forms of consensus.</div>
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://www.pepe.vip" target="_blank" rel="noopener noreferrer">pepe.vip →</a><a class="project-aux" href="https://x.com/pepecoineth" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a></span>
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
     <span class="project-cat">Meme</span>
   </div>
 </article>
-<article class="project" data-tier="conviction">
-  <div class="project-accent" style="background:#2B5CE6"></div>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#FF4D8D"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#2B5CE640,#2B5CE620);border:1px solid #2B5CE650"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/zora.svg" alt="Zora" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">ZO</span></div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF4D8D40,#FF4D8D20);border:1px solid #FF4D8D50">AZ</div>
       <div class="project-meta">
-        <div class="project-name">Zora</div>
-        <div class="project-ticker">ZORA  ·  <span class="project-chain">Zora</span></div>
+        <div class="project-name">Azuki</div>
+        <div class="project-ticker"></div>
       </div>
-      <span class="project-tier tier-conviction">conviction</span>
-    </div>
-    <div class="project-tags"><span class="ptag">SocialFi</span><span class="ptag">NFT</span></div>
-    <div class="project-desc">A creator-first platform and L2 for minting and sharing media on-chain. Zora turns every piece of content into an on-chain asset anyone can collect.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>Zora reimagines social media as a creator economy where every post has value. Culture and content become ownable, tradeable assets.</div>
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://zora.co" target="_blank" rel="noopener noreferrer">zora.co →</a><a class="project-aux" href="https://x.com/ourzora" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a></span>
-    <span class="project-cat">SocialFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#FF6B35"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#FF6B3540,#FF6B3520);border:1px solid #FF6B3550"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ai16z.svg" alt="ai16z" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">AI</span></div>
-      <div class="project-meta">
-        <div class="project-name">ai16z</div>
-        <div class="project-ticker">AI16Z  ·  <span class="project-chain">Solana</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">AI</span><span class="ptag">DeFi</span></div>
-    <div class="project-desc">AI-managed venture DAO on Solana. Autonomous AI agents make investment decisions using on-chain data and social signals — decentralized venture capital.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>What happens when AI runs a VC fund on-chain? ai16z is the experiment — and it challenges every assumption about how capital should be allocated.</div>
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://ai16z.ai" target="_blank" rel="noopener noreferrer">ai16z.ai →</a><a class="project-aux" href="https://x.com/ai16zdao" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a></span>
-    <span class="project-cat">AI</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#E59745"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#E5974540,#E5974520);border:1px solid #E5974550">AP</div>
-      <div class="project-meta">
-        <div class="project-name">apex</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">NFT</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">NFT</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#515BE0"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#515BE040,#515BE020);border:1px solid #515BE050">SH</div>
-      <div class="project-meta">
-        <div class="project-name">shapeshift fox</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">NFT</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">NFT</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#6DDCF7"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#6DDCF740,#6DDCF720);border:1px solid #6DDCF750">TE</div>
-      <div class="project-meta">
-        <div class="project-name">Tether Gold Tokens</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
     <div class="project-tags"></div>
     <div class="project-desc"></div>
@@ -327,24 +192,164 @@
     <span class="project-cat">Crypto</span>
   </div>
 </article>
-<article class="project" data-tier="avoid">
-  <div class="project-accent" style="background:#EF826B"></div>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#FF4D8D"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#EF826B40,#EF826B20);border:1px solid #EF826B50">AP</div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF4D8D40,#FF4D8D20);border:1px solid #FF4D8D50">BI</div>
       <div class="project-meta">
-        <div class="project-name">Ape and pepe</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Bitcoin Ordinals</div>
+        <div class="project-ticker"></div>
       </div>
-      <span class="project-tier tier-avoid">avoid</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
-    <div class="project-tags"><span class="ptag">NFT</span><span class="ptag">Meme</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">NFT</span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#FF4D8D"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF4D8D40,#FF4D8D20);border:1px solid #FF4D8D50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/blur.svg" alt="Blur" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">BL</span></div>
+      <div class="project-meta">
+        <div class="project-name">Blur</div>
+        <div class="project-ticker">BLUR</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#FF4D8D"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF4D8D40,#FF4D8D20);border:1px solid #FF4D8D50">BO</div>
+      <div class="project-meta">
+        <div class="project-name">Bored Ape Yacht Club</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#FF4D8D"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF4D8D40,#FF4D8D20);border:1px solid #FF4D8D50">CR</div>
+      <div class="project-meta">
+        <div class="project-name">CryptoPunks</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#FF4D8D"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF4D8D40,#FF4D8D20);border:1px solid #FF4D8D50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/dood.svg" alt="Doodles" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">DO</span></div>
+      <div class="project-meta">
+        <div class="project-name">Doodles</div>
+        <div class="project-ticker">DOOD</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#FF4D8D"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF4D8D40,#FF4D8D20);border:1px solid #FF4D8D50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/me.svg" alt="Magic Eden" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">MA</span></div>
+      <div class="project-meta">
+        <div class="project-name">Magic Eden</div>
+        <div class="project-ticker">ME</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#FF4D8D"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF4D8D40,#FF4D8D20);border:1px solid #FF4D8D50">MI</div>
+      <div class="project-meta">
+        <div class="project-name">Milady Maker</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#FF4D8D"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FF4D8D40,#FF4D8D20);border:1px solid #FF4D8D50">TE</div>
+      <div class="project-meta">
+        <div class="project-name">Tensor</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article></div>
 </section>
@@ -416,8 +421,21 @@ document.querySelectorAll('[data-tier]').forEach(btn => {
   });
 });
 
-// Fade-up reveal
+// Fade-up reveal + typewriter-quote trigger
 (function () {
+  // Hero quote: clip-path reveal once when hero scrolls into view
+  const heroQuote = document.querySelector('.hero .hero-quote');
+  if (heroQuote && 'IntersectionObserver' in window) {
+    const qio = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { heroQuote.classList.add('in-view'); qio.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    qio.observe(heroQuote);
+  } else if (heroQuote) {
+    heroQuote.classList.add('in-view');
+  }
+
   if (!('IntersectionObserver' in window)) {
     document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
     return;

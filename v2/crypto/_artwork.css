@@ -293,6 +293,138 @@ blockquote cite {
   color: var(--sector-warm);
 }
 
+/* HERO STAT STRIP — sector-iconic monospace numbers between h1 and descriptor */
+.hero-stats {
+  display: flex; gap: clamp(1.5rem, 3vw, 3rem); flex-wrap: wrap;
+  margin: 0 0 2.2rem; padding: 0.9rem 0;
+  border-top: 1px solid var(--sector-soft);
+  border-bottom: 1px solid var(--sector-soft);
+  font-family: ui-monospace, 'JetBrains Mono', 'SF Mono', Menlo, monospace;
+}
+.hero-stats > div { display: flex; flex-direction: column; gap: 4px; }
+.hero-stat-num {
+  font-size: clamp(1rem, 1.4vw, 1.3rem);
+  color: var(--sector-warm); font-weight: 500; letter-spacing: -0.01em;
+}
+.hero-stat-lbl {
+  font-size: 0.55rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: rgba(245, 248, 251, 0.5);
+  font-family: var(--body); font-weight: 300;
+}
+
+/* GHOST H1 — Linear-style atmospheric letterform behind the hero */
+.hero-inner > div { position: relative; }
+.hero-ghost {
+  position: absolute;
+  top: -8%; left: -6%;
+  pointer-events: none; z-index: 0;
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(10rem, 28vw, 28rem); line-height: 1;
+  color: var(--sector-warm); opacity: 0.05;
+  white-space: nowrap; user-select: none;
+}
+.hero-inner > div > * { position: relative; z-index: 1; }
+
+/* DROP CAP — first prelude paragraph gets a serif initial */
+.section-narrow > p:first-of-type::first-letter {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 4em; float: left; line-height: 0.85;
+  margin: 0.1em 0.14em -0.05em -0.04em;
+  color: var(--sector-warm);
+}
+
+/* TYPEWRITER QUOTE — clip-path reveal once when hero scrolls in */
+.hero-quote { overflow: hidden; }
+.hero-quote.in-view {
+  animation: typewriter 2.4s steps(40, end) 0.4s both;
+}
+@keyframes typewriter {
+  from { clip-path: inset(0 100% 0 0); }
+  to   { clip-path: inset(0 0     0 0); }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-quote.in-view { animation: none; clip-path: none; }
+}
+
+/* DESK NOTE — "this week in [sector]" hand-edited brief */
+.desk-note {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: 1.2rem; align-items: center;
+  padding: 0.85rem 1.2rem;
+  margin: 0 0 1.6rem;
+  background: rgba(255, 255, 255, 0.02);
+  border-left: 2px solid var(--sector-warm);
+  font-size: 0.82rem; line-height: 1.55;
+  color: rgba(245, 248, 251, 0.78);
+}
+.desk-note .dn-date {
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--sector-warm);
+}
+.desk-note .dn-tag {
+  font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(245, 248, 251, 0.4);
+}
+
+/* TICKER PCT — 24h delta chip */
+.tk-pct {
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.02em;
+  margin-left: 0.35rem;
+  padding: 1px 5px; border-radius: 2px;
+  white-space: nowrap;
+}
+.tk-pct.up   { color: #7BD0A0; background: rgba(123, 208, 160, 0.10); }
+.tk-pct.down { color: #E58787; background: rgba(229, 135, 135, 0.10); }
+.tk-pct.flat { color: rgba(245, 248, 251, 0.5); background: rgba(255, 255, 255, 0.04); }
+
+/* PER-SECTOR HERO FILTER — CSS variable override per sub-hub */
+.hero-bg { filter: var(--hero-filter, saturate(0.8) brightness(0.42) contrast(1.1)); }
+
+/* DEFAULT-HIDE unrated and avoid tiers — conviction over noise */
+.tier-bar .ttab[data-tier="unrated"] { opacity: 0.55; }
+.tier-bar .ttab[data-tier="avoid"] { display: none; }
+
+/* TECH-INSIDE-SECTOR explainer block — 5-7 native protocols per sub-hub */
+.tech-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px; overflow: hidden;
+  margin: 2rem 0 1rem;
+}
+.tech-card {
+  background: var(--navy-mid);
+  padding: 1.6rem 1.5rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.5rem;
+  transition: background 0.4s ease;
+}
+.tech-card:hover { background: rgba(15, 36, 81, 0.95); }
+.tech-card-head { display: flex; align-items: baseline; gap: 0.6rem; flex-wrap: wrap; margin-bottom: 0.2rem; }
+.tech-card-name {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.4rem; color: var(--foam); line-height: 1.15;
+}
+.tech-card-year {
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.16em; color: var(--sector-warm); opacity: 0.7;
+}
+.tech-card-tag {
+  font-size: 0.55rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--sector-warm); opacity: 0.85;
+  border: 1px solid var(--sector-soft);
+  padding: 1px 7px; border-radius: 2px;
+  margin-bottom: 0.6rem; align-self: flex-start;
+}
+.tech-card p {
+  font-size: 0.88rem; line-height: 1.7;
+  color: rgba(245, 248, 251, 0.72); margin: 0;
+}
+
 /* TICKER RAIL — CoinGecko-style logo strip above the working set */
 .ticker-rail {
   display: flex; gap: 0.6rem; flex-wrap: wrap;

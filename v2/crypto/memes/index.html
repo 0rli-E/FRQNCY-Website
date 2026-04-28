@@ -35,7 +35,7 @@
     --sector-pattern-size: 20px 20px;
     --sector-pattern-opacity: 0.18;
   }
-  .hero-bg { background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=95&w=3840'); }
+  .hero-bg { background-image: url('https://images.unsplash.com/photo-1639762681485-074b7f938ba0?auto=format&fit=crop&q=95&w=3840'); --hero-filter: saturate(1.55) brightness(0.55) contrast(1.25) hue-rotate(-6deg); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1639762681057-408e52192e55?auto=format&fit=crop&q=95&w=3840'); }
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
@@ -66,8 +66,10 @@
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-inner layout-stacked">
     <div>
+      <div class="hero-ghost" aria-hidden="true">Memes</div>
       <div class="hero-eyebrow">Sector · Memes · The culture layer</div>
       <h1 class="hero-title t-pop">Memes</h1>
+      <div class="hero-stats"><div><span class="hero-stat-num">99%</span><span class="hero-stat-lbl">Go to zero</span></div><div><span class="hero-stat-num">$1B+</span><span class="hero-stat-lbl">Fartcoin peak cap</span></div><div><span class="hero-stat-num">Truth Terminal</span><span class="hero-stat-lbl">AI agent meme</span></div></div>
       <p class="hero-desc">Tokens whose entire thesis is attention. Pure liquid culture. Most meme coins are jokes; the ones that survive are jokes that became identity, and identity that became coordination.</p>
       <div class="hero-quote">
         Memes are ideas that survive selection pressure. Tokens are memes with a price.
@@ -141,6 +143,9 @@
   <div class="bleed-cap">Attention, made tradeable. <em>The honest version of speculation.</em></div>
 </div>
 
+<!-- TECH INSIDE THIS SECTOR — native protocols + brief explainers -->
+
+
 <!-- WORKING SET -->
 <section class="section section-wide fade-up">
   <span class="label">Working set</span>
@@ -151,27 +156,7 @@
     currently earns, not a recommendation to buy.
   </p>
 
-  <div class="ticker-rail"><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#786FA630,#786FA610);border:1px solid #786FA655"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/pengu.svg" alt="Pudgy Penguins" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#786FA6">PU</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#786FA6">PENGU</span><span class="tk-name">Pudgy Penguins</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#4ECDC430,#4ECDC410);border:1px solid #4ECDC455"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/spx.svg" alt="SPX6900" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#4ECDC4">SP</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#4ECDC4">SPX</span><span class="tk-name">SPX6900</span></span></span><a class="tk-card" href="https://dogecoin.com" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#C2A63330,#C2A63310);border:1px solid #C2A63355"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/doge.svg" alt="Dogecoin" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#C2A633">DO</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#C2A633">DOGE</span><span class="tk-name">Dogecoin</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#A8E6CF30,#A8E6CF10);border:1px solid #A8E6CF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/fartcoin.svg" alt="Fartcoin" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#A8E6CF">FA</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#A8E6CF">FARTCOIN</span><span class="tk-name">Fartcoin</span></span></span><a class="tk-card" href="https://www.pepe.vip" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#479F5330,#479F5310);border:1px solid #479F5355"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/pepe.svg" alt="Pepe" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#479F53">PE</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#479F53">PEPE</span><span class="tk-name">Pepe</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#CF6A8730,#CF6A8710);border:1px solid #CF6A8755"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/brett.svg" alt="Brett" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#CF6A87">BR</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#CF6A87">BRETT</span><span class="tk-name">Brett</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#3DC1D330,#3DC1D310);border:1px solid #3DC1D355"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/wif.svg" alt="Dogwifhat" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#3DC1D3">DO</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#3DC1D3">WIF</span><span class="tk-name">Dogwifhat</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#C961F230,#C961F210);border:1px solid #C961F255;color:#C961F2">AR</span><span class="tk-meta"><span class="tk-ticker" style="color:#C961F2"></span><span class="tk-name">arbdoge ai</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">28</span></button><button class="ttab" data-tier="core">core<span class="ct">2</span></button><button class="ttab" data-tier="conviction">conviction<span class="ct">3</span></button><button class="ttab" data-tier="speculative">speculative<span class="ct">2</span></button><button class="ttab" data-tier="unrated">unrated<span class="ct">19</span></button><button class="ttab" data-tier="avoid">avoid<span class="ct">2</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="core">
-  <div class="project-accent" style="background:#786FA6"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#786FA640,#786FA620);border:1px solid #786FA650"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/pengu.svg" alt="Pudgy Penguins" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">PU</span></div>
-      <div class="project-meta">
-        <div class="project-name">Pudgy Penguins</div>
-        <div class="project-ticker">PENGU  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-core">core</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="core">
+  <div class="ticker-rail"><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#4ECDC430,#4ECDC410);border:1px solid #4ECDC455"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/spx.svg" alt="SPX6900" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#4ECDC4">SP</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#4ECDC4">SPX</span><span class="tk-name">SPX6900</span></span></span><a class="tk-card" href="https://dogecoin.com" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#C2A63330,#C2A63310);border:1px solid #C2A63355"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/doge.svg" alt="Dogecoin" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#C2A633">DO</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#C2A633">DOGE</span><span class="tk-name">Dogecoin</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#A8E6CF30,#A8E6CF10);border:1px solid #A8E6CF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/fartcoin.svg" alt="Fartcoin" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#A8E6CF">FA</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#A8E6CF">FARTCOIN</span><span class="tk-name">Fartcoin</span></span></span><a class="tk-card" href="https://www.pepe.vip" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#479F5330,#479F5310);border:1px solid #479F5355"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/pepe.svg" alt="Pepe" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#479F53">PE</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#479F53">PEPE</span><span class="tk-name">Pepe</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#FFC10730,#FFC10710);border:1px solid #FFC10755"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/popcat.svg" alt="Popcat" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#FFC107">PO</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#FFC107">POPCAT</span><span class="tk-name">Popcat</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">10</span></button><button class="ttab" data-tier="core">core<span class="ct">1</span></button><button class="ttab" data-tier="conviction">conviction<span class="ct">3</span></button><button class="ttab" data-tier="watch">watch<span class="ct">1</span></button><button class="ttab" data-tier="speculative">speculative<span class="ct">3</span></button><button class="ttab" data-tier="unrated">unrated<span class="ct">1</span></button><button class="ttab" data-tier="avoid">avoid<span class="ct">1</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="core">
   <div class="project-accent" style="background:#4ECDC4"></div>
   <div class="project-body">
     <div class="project-head">
@@ -251,6 +236,46 @@
     <span class="project-cat">Meme</span>
   </div>
 </article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#FFC107"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#FFC10740,#FFC10720);border:1px solid #FFC10750"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/popcat.svg" alt="Popcat" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">PO</span></div>
+      <div class="project-meta">
+        <div class="project-name">Popcat</div>
+        <div class="project-ticker">POPCAT</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="speculative">
+  <div class="project-accent" style="background:#E77F67"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#E77F6740,#E77F6720);border:1px solid #E77F6750"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/bonk.svg" alt="Bonk" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">BO</span></div>
+      <div class="project-meta">
+        <div class="project-name">Bonk</div>
+        <div class="project-ticker">BONK  ·  <span class="project-chain">Multi-chain</span></div>
+      </div>
+      <span class="project-tier tier-speculative">speculative</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
 <article class="project" data-tier="speculative">
   <div class="project-accent" style="background:#CF6A87"></div>
   <div class="project-body">
@@ -292,423 +317,43 @@
   </div>
 </article>
 <article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#C961F2"></div>
+  <div class="project-accent" style="background:#5A7DF1"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#C961F240,#C961F220);border:1px solid #C961F250">AR</div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#5A7DF140,#5A7DF120);border:1px solid #5A7DF150">MO</div>
       <div class="project-meta">
-        <div class="project-name">arbdoge ai</div>
+        <div class="project-name">Mog coin</div>
         <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
       </div>
       <span class="project-tier tier-unrated">unrated</span>
     </div>
-    <div class="project-tags"><span class="ptag">AI</span><span class="ptag">Meme</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">AI</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#5456DB"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#5456DB40,#5456DB20);border:1px solid #5456DB50">BA</div>
-      <div class="project-meta">
-        <div class="project-name">Baby Doge Coin</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#41E54D"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#41E54D40,#41E54D20);border:1px solid #41E54D50">BO</div>
-      <div class="project-meta">
-        <div class="project-name">Book of meme</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#24E83D"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#24E83D40,#24E83D20);border:1px solid #24E83D50">CA</div>
-      <div class="project-meta">
-        <div class="project-name">Cat in a dogs world</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#31C9E8"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#31C9E840,#31C9E820);border:1px solid #31C9E850">CA</div>
-      <div class="project-meta">
-        <div class="project-name">cat terminal</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#D26177"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#D2617740,#D2617720);border:1px solid #D2617750">CZ</div>
-      <div class="project-meta">
-        <div class="project-name">CZs dog</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#E9378D"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#E9378D40,#E9378D20);border:1px solid #E9378D50">DO</div>
-      <div class="project-meta">
-        <div class="project-name">Dog (bitcoin)</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#785CEF"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#785CEF40,#785CEF20);border:1px solid #785CEF50">KE</div>
-      <div class="project-meta">
-        <div class="project-name">keyboard Cat</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#F25DAD"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#F25DAD40,#F25DAD20);border:1px solid #F25DAD50">ME</div>
-      <div class="project-meta">
-        <div class="project-name">melania meme</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#3DDEC0"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#3DDEC040,#3DDEC020);border:1px solid #3DDEC050">ME</div>
-      <div class="project-meta">
-        <div class="project-name">Memecoin</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#D5458E"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#D5458E40,#D5458E20);border:1px solid #D5458E50">ME</div>
-      <div class="project-meta">
-        <div class="project-name">memefi</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#A57CDE"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#A57CDE40,#A57CDE20);border:1px solid #A57CDE50">ME</div>
-      <div class="project-meta">
-        <div class="project-name">memetern</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#DDA434"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#DDA43440,#DDA43420);border:1px solid #DDA43450">MI</div>
-      <div class="project-meta">
-        <div class="project-name">Milady meme coin</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#735FD8"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#735FD840,#735FD820);border:1px solid #735FD850">OW</div>
-      <div class="project-meta">
-        <div class="project-name">own the doge</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#6447E1"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#6447E140,#6447E120);border:1px solid #6447E150">PU</div>
-      <div class="project-meta">
-        <div class="project-name">pumpmeme</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#AAE14B"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#AAE14B40,#AAE14B20);border:1px solid #AAE14B50">PU</div>
-      <div class="project-meta">
-        <div class="project-name">purple pepe</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#C238D2"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#C238D240,#C238D220);border:1px solid #C238D250">SI</div>
-      <div class="project-meta">
-        <div class="project-name">simons cat</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#54CD41"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#54CD4140,#54CD4120);border:1px solid #54CD4150">SK</div>
-      <div class="project-meta">
-        <div class="project-name">ski mask dog</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#D729C6"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#D729C640,#D729C620);border:1px solid #D729C650">WI</div>
-      <div class="project-meta">
-        <div class="project-name">wiki cat</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
 <article class="project" data-tier="avoid">
-  <div class="project-accent" style="background:#EF826B"></div>
+  <div class="project-accent" style="background:#3DC1D3"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#EF826B40,#EF826B20);border:1px solid #EF826B50">AP</div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#3DC1D340,#3DC1D320);border:1px solid #3DC1D350"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/shib.svg" alt="Shiba Inu" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">SH</span></div>
       <div class="project-meta">
-        <div class="project-name">Ape and pepe</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Shiba Inu</div>
+        <div class="project-ticker">SHIB  ·  <span class="project-chain">Multi-chain</span></div>
       </div>
       <span class="project-tier tier-avoid">avoid</span>
     </div>
-    <div class="project-tags"><span class="ptag">NFT</span><span class="ptag">Meme</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">NFT</span>
-  </div>
-</article>
-<article class="project" data-tier="avoid">
-  <div class="project-accent" style="background:#4ECDC4"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#4ECDC440,#4ECDC420);border:1px solid #4ECDC450">LO</div>
-      <div class="project-meta">
-        <div class="project-name">Loaded Lions</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-avoid">avoid</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Meme</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Meme</span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article></div>
 </section>
@@ -780,8 +425,21 @@ document.querySelectorAll('[data-tier]').forEach(btn => {
   });
 });
 
-// Fade-up reveal
+// Fade-up reveal + typewriter-quote trigger
 (function () {
+  // Hero quote: clip-path reveal once when hero scrolls into view
+  const heroQuote = document.querySelector('.hero .hero-quote');
+  if (heroQuote && 'IntersectionObserver' in window) {
+    const qio = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { heroQuote.classList.add('in-view'); qio.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    qio.observe(heroQuote);
+  } else if (heroQuote) {
+    heroQuote.classList.add('in-view');
+  }
+
   if (!('IntersectionObserver' in window)) {
     document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
     return;

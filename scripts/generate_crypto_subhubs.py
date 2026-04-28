@@ -28,7 +28,42 @@ _HERE = Path(__file__).resolve().parent
 if str(_HERE) not in sys.path:
     sys.path.insert(0, str(_HERE))
 from iconic_glyphs import ICONIC_GLYPHS  # noqa: E402
-from sector_research import SECTOR_RESEARCH  # noqa: E402
+from sector_research import (  # noqa: E402
+    SECTOR_RESEARCH,
+    SECTOR_TOP_PROJECTS,
+    SECTOR_STATS,
+)
+try:
+    from sector_tech import SECTOR_TECH  # noqa: E402
+except ImportError:
+    SECTOR_TECH = {}  # filled in by the tech-explainer pass
+
+
+# Per-sector hero filter override — varies brightness/saturation/hue
+# so Memes ≠ Privacy ≠ DeSci visually, even with the same image filter chain.
+SECTOR_HERO_FILTER = {
+    "bitcoin":     "saturate(1.05) brightness(0.5) contrast(1.15) hue-rotate(-4deg)",
+    "sov":         "saturate(0.95) brightness(0.48) contrast(1.12)",
+    "l1":          "saturate(0.85) brightness(0.45) contrast(1.15) hue-rotate(2deg)",
+    "l2":          "saturate(0.75) brightness(0.5) contrast(1.1)",
+    "modular":     "saturate(0.7) brightness(0.42) contrast(1.2) hue-rotate(8deg)",
+    "defi":        "saturate(0.95) brightness(0.45) contrast(1.15)",
+    "stablecoins": "saturate(0.85) brightness(0.5) contrast(1.1)",
+    "privacy":     "saturate(0.18) brightness(0.32) contrast(1.4) grayscale(0.3)",
+    "ai":          "saturate(1.1) brightness(0.4) contrast(1.25) hue-rotate(-6deg)",
+    "gamefi":      "saturate(1.2) brightness(0.5) contrast(1.2)",
+    "socialfi":    "saturate(0.85) brightness(0.45) contrast(1.1)",
+    "rwa":         "saturate(0.65) brightness(0.42) contrast(1.18)",
+    "depin":       "saturate(0.8) brightness(0.42) contrast(1.18)",
+    "oracles":     "saturate(0.85) brightness(0.42) contrast(1.18)",
+    "staking":     "saturate(0.85) brightness(0.42) contrast(1.18)",
+    "predictions": "saturate(0.85) brightness(0.42) contrast(1.18)",
+    "desci":       "saturate(0.55) brightness(0.5) contrast(1.05) hue-rotate(8deg)",
+    "icm":         "saturate(1.05) brightness(0.45) contrast(1.2) hue-rotate(-8deg)",
+    "memes":       "saturate(1.55) brightness(0.55) contrast(1.25) hue-rotate(-6deg)",
+    "nfts":        "saturate(1.25) brightness(0.5) contrast(1.2)",
+    "neobanks":    "saturate(0.7) brightness(0.45) contrast(1.15)",
+}
 
 ROOT = Path(__file__).resolve().parent.parent
 CRYPTO = ROOT / "v2" / "crypto"
@@ -771,39 +806,45 @@ SECTORS = {
 
 # ── Project filter helpers ────────────────────────────────────────────
 def filter_for(slug: str, cfg: dict, max_n: int = 60) -> list[dict]:
-    """Return projects matching this sector. Categories first, then keyword fallback."""
-    cats = set(cfg.get("cats", []))
-    chains = set(cfg.get("chains", []))
-    kws = [k.lower() for k in cfg.get("keywords", [])]
-    out = []
-    seen = set()
+    """Strict thematic whitelist. Each sector lists exactly the projects that
+    belong on it (SECTOR_TOP_PROJECTS in sector_research.py). Match against
+    crypto-projects.json by case-insensitive name. If the whitelisted project
+    isn't in the projects bed, synthesize a minimal card from (name, ticker)
+    so the user still sees it. No category/chain/keyword fallback — that
+    leaked DOGE onto the Bitcoin page and Tether onto everything."""
+    whitelist = SECTOR_TOP_PROJECTS.get(slug, [])
+    if not whitelist:
+        return []  # unmapped sector → empty grid
+    by_name_lc = {(p.get("name") or "").strip().lower(): p for p in PROJECTS}
+    by_ticker_uc = {}
     for p in PROJECTS:
-        if p.get("name") in seen:
-            continue
-        match = False
-        # Category match
-        for c in p.get("categories", []):
-            if c in cats:
-                match = True; break
-        # Chain match
-        if not match and chains:
-            chain = p.get("chain", "")
-            if any(c in chain for c in chains):
-                match = True
-        # Keyword fallback (search name + desc + thesis)
-        if not match and kws:
-            blob = " ".join([
-                str(p.get("name", "")), str(p.get("desc", "")),
-                str(p.get("thesis", "")), str(p.get("ticker", "")),
-            ]).lower()
-            if any(k in blob for k in kws):
-                match = True
-        if match:
-            seen.add(p.get("name"))
+        t = (p.get("ticker") or "").strip().upper()
+        if t and t not in by_ticker_uc:
+            by_ticker_uc[t] = p
+    out = []
+    for name, ticker in whitelist[:max_n]:
+        key = name.strip().lower()
+        p = by_name_lc.get(key)
+        if not p and ticker and ticker not in ("—", "-"):
+            p = by_ticker_uc.get(ticker.upper())
+        if p:
             out.append(p)
-            if len(out) >= max_n:
-                break
-    # Sort: tier rank first, then name
+        else:
+            # Synthesize a minimal card when the whitelisted project isn't in
+            # the projects bed yet. Keeps the sub-hub thematically complete.
+            synth_ticker = ticker if ticker not in ("—", "-") else ""
+            out.append({
+                "name": name,
+                "ticker": synth_ticker,
+                "tier": "watch",
+                "categories": [],
+                "desc": "",
+                "thesis": "",
+                "links": {},
+                "accent": cfg.get("accent", "#7B61FF"),
+                "_synthesized": True,
+            })
+    # Sort: tier rank first, then preserve whitelist order within tier
     tier_rank = {"core": 0, "conviction": 1, "watch": 2, "speculative": 3, "unrated": 4, "avoid": 5}
     out.sort(key=lambda p: (tier_rank.get(p.get("tier", "unrated"), 9), p.get("name", "").lower()))
     return out
@@ -886,6 +927,53 @@ def render_project(p: dict) -> str:
     <span class="project-cat">{cat}</span>
   </div>
 </article>"""
+
+
+def render_hero_stats(slug: str) -> str:
+    """Three sector-iconic monospace numbers between the h1 and the descriptor."""
+    stats = SECTOR_STATS.get(slug, [])
+    if not stats:
+        return ""
+    items = "".join(
+        f'<div><span class="hero-stat-num">{esc(num)}</span>'
+        f'<span class="hero-stat-lbl">{esc(lbl)}</span></div>'
+        for num, lbl in stats
+    )
+    return f'<div class="hero-stats">{items}</div>'
+
+
+def render_tech_grid(slug: str) -> str:
+    """The 'tech inside this sector' explainer block — 5-7 native protocols."""
+    tech = SECTOR_TECH.get(slug)
+    if not tech:
+        return ""
+    items = []
+    for it in tech.get("items", []):
+        name = esc(it.get("name", ""))
+        year = esc(it.get("year", ""))
+        tag = esc(it.get("tag", ""))
+        body = esc(it.get("body", ""))
+        items.append(
+            f'<div class="tech-card">'
+            f'<span class="tech-card-tag">{tag}</span>'
+            f'<div class="tech-card-head">'
+            f'<div class="tech-card-name">{name}</div>'
+            f'<div class="tech-card-year">{year}</div>'
+            f'</div>'
+            f'<p>{body}</p>'
+            f'</div>'
+        )
+    eyebrow = esc(tech.get("section_eyebrow", "The stack"))
+    title = esc(tech.get("section_title", "Native protocols"))
+    intro = esc(tech.get("section_intro", ""))
+    grid = "".join(items)
+    intro_html = f'<p style="max-width: 60ch;">{intro}</p>' if intro else ""
+    return f"""<section class="section section-wide fade-up">
+  <span class="label">{eyebrow}</span>
+  <h2>{title}</h2>
+  {intro_html}
+  <div class="tech-grid">{grid}</div>
+</section>"""
 
 
 def render_ticker_rail(projects: list[dict], limit: int = 8) -> str:
@@ -1176,7 +1264,7 @@ def render_page(slug: str, cfg: dict) -> str:
         )
     else:
         project_block = (
-            render_ticker_rail(projects, limit=8)
+            render_ticker_rail(projects, limit=5)
             + render_tier_bar(projects)
             + f'<div class="projects-grid" id="projects">{project_html}</div>'
         )
@@ -1194,6 +1282,10 @@ def render_page(slug: str, cfg: dict) -> str:
     layout_class = treatment["layout"]
     h1_class = treatment["h1_class"]
     pat_bg, pat_size, pat_opacity = pattern(cfg.get("pattern_kind", "diamond"))
+
+    hero_stats_html = render_hero_stats(slug)
+    tech_html = render_tech_grid(slug)
+    sector_filter = SECTOR_HERO_FILTER.get(slug, "saturate(0.8) brightness(0.42) contrast(1.1)")
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -1232,7 +1324,7 @@ def render_page(slug: str, cfg: dict) -> str:
     --sector-pattern-size: {pat_size};
     --sector-pattern-opacity: {pat_opacity};
   }}
-  .hero-bg {{ background-image: url('{cfg["hero_bg"]}'); }}
+  .hero-bg {{ background-image: url('{cfg["hero_bg"]}'); --hero-filter: {sector_filter}; }}
   .closing-bg {{ background-image: url('{cfg["closing_bg"]}'); }}
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
@@ -1263,8 +1355,10 @@ def render_page(slug: str, cfg: dict) -> str:
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-inner {layout_class}">
     <div>
+      <div class="hero-ghost" aria-hidden="true">{esc(h1)}</div>
       <div class="hero-eyebrow">{eyebrow}</div>
       <h1 class="hero-title {h1_class}">{h1}</h1>
+      {hero_stats_html}
       <p class="hero-desc">{desc}</p>
       <div class="hero-quote">
         {quote_text}
@@ -1290,6 +1384,9 @@ def render_page(slug: str, cfg: dict) -> str:
   <img src="{cfg["hero_bg"]}" alt="">
   <div class="bleed-cap">{bleed_cap}</div>
 </div>
+
+<!-- TECH INSIDE THIS SECTOR — native protocols + brief explainers -->
+{tech_html}
 
 <!-- WORKING SET -->
 <section class="section section-wide fade-up">
@@ -1349,8 +1446,21 @@ document.querySelectorAll('[data-tier]').forEach(btn => {{
   }});
 }});
 
-// Fade-up reveal
+// Fade-up reveal + typewriter-quote trigger
 (function () {{
+  // Hero quote: clip-path reveal once when hero scrolls into view
+  const heroQuote = document.querySelector('.hero .hero-quote');
+  if (heroQuote && 'IntersectionObserver' in window) {{
+    const qio = new IntersectionObserver((entries) => {{
+      entries.forEach(e => {{
+        if (e.isIntersecting) {{ heroQuote.classList.add('in-view'); qio.disconnect(); }}
+      }});
+    }}, {{ threshold: 0.4 }});
+    qio.observe(heroQuote);
+  }} else if (heroQuote) {{
+    heroQuote.classList.add('in-view');
+  }}
+
   if (!('IntersectionObserver' in window)) {{
     document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
     return;

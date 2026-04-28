@@ -35,7 +35,7 @@
     --sector-pattern-size: 100px 100px;
     --sector-pattern-opacity: 0.12;
   }
-  .hero-bg { background-image: url('https://images.unsplash.com/photo-1644361566696-3d442b5b482a?auto=format&fit=crop&q=95&w=3840'); }
+  .hero-bg { background-image: url('https://images.unsplash.com/photo-1644361566696-3d442b5b482a?auto=format&fit=crop&q=95&w=3840'); --hero-filter: saturate(0.85) brightness(0.42) contrast(1.18); }
   .closing-bg { background-image: url('https://images.unsplash.com/photo-1640161704729-cbe966a08476?auto=format&fit=crop&q=95&w=3840'); }
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
@@ -66,8 +66,10 @@
   <div class="hero-bg" aria-hidden="true"></div>
   <div class="hero-inner layout-split-right">
     <div>
+      <div class="hero-ghost" aria-hidden="true">Staking</div>
       <div class="hero-eyebrow">Sector · Staking · Security as a marketplace</div>
       <h1 class="hero-title t-bold">Staking</h1>
+      <div class="hero-stats"><div><span class="hero-stat-num">$90B+</span><span class="hero-stat-lbl">ETH staked</span></div><div><span class="hero-stat-num">28%</span><span class="hero-stat-lbl">Lido share of stake</span></div><div><span class="hero-stat-num">$20B+</span><span class="hero-stat-lbl">Restaked TVL</span></div></div>
       <p class="hero-desc">Proof-of-stake networks pay validators to secure them. Liquid staking turns that yield into a tradeable token; restaking turns it into a marketplace where the same security can be rented to other applications. Yield on the base layer, composable.</p>
       <div class="hero-quote">
         Restaking is a generalization of Ethereum's social consensus to anything programmable.
@@ -136,6 +138,9 @@
   <div class="bleed-cap">Security, rentable. <em>Yield, composable.</em></div>
 </div>
 
+<!-- TECH INSIDE THIS SECTOR — native protocols + brief explainers -->
+
+
 <!-- WORKING SET -->
 <section class="section section-wide fade-up">
   <span class="label">Working set</span>
@@ -146,27 +151,7 @@
     currently earns, not a recommendation to buy.
   </p>
 
-  <div class="ticker-rail"><a class="tk-card" href="https://ethos.network" target="_blank" rel="noopener noreferrer"><span class="tk-avatar" style="background:linear-gradient(135deg,#7B61FF30,#7B61FF10);border:1px solid #7B61FF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ethos.svg" alt="Ethos" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#7B61FF">ET</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#7B61FF">ETHOS</span><span class="tk-name">Ethos</span></span></a><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#63CDDA30,#63CDDA10);border:1px solid #63CDDA55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/jto.svg" alt="Jito" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#63CDDA">JI</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#63CDDA">JTO</span><span class="tk-name">Jito</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#FFEAA730,#FFEAA710);border:1px solid #FFEAA755"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ethfi.svg" alt="Ether.fi" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#FFEAA7">ET</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#FFEAA7">ETHFI</span><span class="tk-name">Ether.fi</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#213AEC30,#213AEC10);border:1px solid #213AEC55;color:#213AEC">BE</span><span class="tk-meta"><span class="tk-ticker" style="color:#213AEC"></span><span class="tk-name">Benqi Liquid Staked AVAX</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#7573E030,#7573E010);border:1px solid #7573E055;color:#7573E0">CR</span><span class="tk-meta"><span class="tk-ticker" style="color:#7573E0"></span><span class="tk-name">Crypto.com staked eth</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#2B3EE030,#2B3EE010);border:1px solid #2B3EE055;color:#2B3EE0">DR</span><span class="tk-meta"><span class="tk-ticker" style="color:#2B3EE0"></span><span class="tk-name">Drift staked sol</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#CE815530,#CE815510);border:1px solid #CE815555;color:#CE8155">ET</span><span class="tk-meta"><span class="tk-ticker" style="color:#CE8155"></span><span class="tk-name">Ether.fi Staked BTC</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#886AF730,#886AF710);border:1px solid #886AF755;color:#886AF7">JU</span><span class="tk-meta"><span class="tk-ticker" style="color:#886AF7"></span><span class="tk-name">Jupiter Staked SOL</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">24</span></button><button class="ttab" data-tier="conviction">conviction<span class="ct">2</span></button><button class="ttab" data-tier="watch">watch<span class="ct">1</span></button><button class="ttab" data-tier="unrated">unrated<span class="ct">21</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="conviction">
-  <div class="project-accent" style="background:#7B61FF"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#7B61FF40,#7B61FF20);border:1px solid #7B61FF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ethos.svg" alt="Ethos" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">ET</span></div>
-      <div class="project-meta">
-        <div class="project-name">Ethos</div>
-        <div class="project-ticker">ETHOS  ·  <span class="project-chain">Base</span></div>
-      </div>
-      <span class="project-tier tier-conviction">conviction</span>
-    </div>
-    <div class="project-tags"><span class="ptag">SocialFi</span><span class="ptag">Decentralized Social</span></div>
-    <div class="project-desc">A reputation layer for crypto. Peers vouch for each other with stake and attestations, turning trust into a portable on-chain score anyone can verify.</div>
-    <div class="project-why"><strong>Why FRQNCY watches this</strong>Credibility is the missing primitive. Ethos makes reputation skin-in-the-game — a counterweight to anon grift and a foundation for a more honest network.</div>
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><a class="project-link" href="https://ethos.network" target="_blank" rel="noopener noreferrer">ethos.network →</a><a class="project-aux" href="https://x.com/ethos_network" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a><a class="project-aux" href="https://docs.ethos.network" target="_blank" rel="noopener noreferrer" title="Docs">docs</a></span>
-    <span class="project-cat">SocialFi</span>
-  </div>
-</article>
-<article class="project" data-tier="conviction">
+  <div class="ticker-rail"><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#63CDDA30,#63CDDA10);border:1px solid #63CDDA55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/jto.svg" alt="Jito" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#63CDDA">JI</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#63CDDA">JTO</span><span class="tk-name">Jito</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#00A3FF30,#00A3FF10);border:1px solid #00A3FF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/eigen.svg" alt="EigenLayer" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#00A3FF">EI</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#00A3FF">EIGEN</span><span class="tk-name">EigenLayer</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#FFEAA730,#FFEAA710);border:1px solid #FFEAA755"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ethfi.svg" alt="Ether.fi" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#FFEAA7">ET</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#FFEAA7">ETHFI</span><span class="tk-name">Ether.fi</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#00A3FF30,#00A3FF10);border:1px solid #00A3FF55;color:#00A3FF">KA</span><span class="tk-meta"><span class="tk-ticker" style="color:#00A3FF"></span><span class="tk-name">Karak</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#00A3FF30,#00A3FF10);border:1px solid #00A3FF55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/kelp.svg" alt="Kelp" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#00A3FF">KE</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#00A3FF">KELP</span><span class="tk-name">Kelp</span></span></span></div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">10</span></button><button class="ttab" data-tier="conviction">conviction<span class="ct">1</span></button><button class="ttab" data-tier="watch">watch<span class="ct">9</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="conviction">
   <div class="project-accent" style="background:#63CDDA"></div>
   <div class="project-body">
     <div class="project-head">
@@ -184,6 +169,26 @@
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
     <span class="project-cat">DeFi</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00A3FF"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#00A3FF40,#00A3FF20);border:1px solid #00A3FF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/eigen.svg" alt="EigenLayer" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">EI</span></div>
+      <div class="project-meta">
+        <div class="project-name">EigenLayer</div>
+        <div class="project-ticker">EIGEN</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
 <article class="project" data-tier="watch">
@@ -206,276 +211,16 @@
     <span class="project-cat">DeFi</span>
   </div>
 </article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#213AEC"></div>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00A3FF"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#213AEC40,#213AEC20);border:1px solid #213AEC50">BE</div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#00A3FF40,#00A3FF20);border:1px solid #00A3FF50">KA</div>
       <div class="project-meta">
-        <div class="project-name">Benqi Liquid Staked AVAX</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Karak</div>
+        <div class="project-ticker"></div>
       </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#7573E0"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#7573E040,#7573E020);border:1px solid #7573E050">CR</div>
-      <div class="project-meta">
-        <div class="project-name">Crypto.com staked eth</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#2B3EE0"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#2B3EE040,#2B3EE020);border:1px solid #2B3EE050">DR</div>
-      <div class="project-meta">
-        <div class="project-name">Drift staked sol</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#CE8155"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#CE815540,#CE815520);border:1px solid #CE815550">ET</div>
-      <div class="project-meta">
-        <div class="project-name">Ether.fi Staked BTC</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#886AF7"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#886AF740,#886AF720);border:1px solid #886AF750">JU</div>
-      <div class="project-meta">
-        <div class="project-name">Jupiter Staked SOL</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span><span class="ptag">DEX</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#F15D0E"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#F15D0E40,#F15D0E20);border:1px solid #F15D0E50">KE</div>
-      <div class="project-meta">
-        <div class="project-name">Kelp DAO Restaked ETH</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">Governance</span><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Governance</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#5ADDB6"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#5ADDB640,#5ADDB620);border:1px solid #5ADDB650">KI</div>
-      <div class="project-meta">
-        <div class="project-name">Kinetiq Staked Hype</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#B52EF3"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#B52EF340,#B52EF320);border:1px solid #B52EF350">LO</div>
-      <div class="project-meta">
-        <div class="project-name">Lombard Staked BTC</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#D15BCE"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#D15BCE40,#D15BCE20);border:1px solid #D15BCE50">MA</div>
-      <div class="project-meta">
-        <div class="project-name">Mantle Restaked ETH</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#7E47F1"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#7E47F140,#7E47F120);border:1px solid #7E47F150">MA</div>
-      <div class="project-meta">
-        <div class="project-name">Mantle Staked Ether</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#2FD0E8"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#2FD0E840,#2FD0E820);border:1px solid #2FD0E850">MA</div>
-      <div class="project-meta">
-        <div class="project-name">Marinade Staked SOL</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#EB1C77"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#EB1C7740,#EB1C7720);border:1px solid #EB1C7750">PH</div>
-      <div class="project-meta">
-        <div class="project-name">Phantom Staked SOl</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#13EF4F"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#13EF4F40,#13EF4F20);border:1px solid #13EF4F50">RE</div>
-      <div class="project-meta">
-        <div class="project-name">Renzo Staked ETH</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#C05BED"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#C05BED40,#C05BED20);border:1px solid #C05BED50">RE</div>
-      <div class="project-meta">
-        <div class="project-name">REstaking Vault ETH</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
     <div class="project-tags"></div>
     <div class="project-desc"></div>
@@ -486,144 +231,124 @@
     <span class="project-cat">Crypto</span>
   </div>
 </article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#D4803F"></div>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00A3FF"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#D4803F40,#D4803F20);border:1px solid #D4803F50">SO</div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#00A3FF40,#00A3FF20);border:1px solid #00A3FF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/kelp.svg" alt="Kelp" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">KE</span></div>
       <div class="project-meta">
-        <div class="project-name">Solv Protocol Staked BTC</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Kelp</div>
+        <div class="project-ticker">KELP</div>
       </div>
-      <span class="project-tier tier-unrated">unrated</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
-    <div class="project-tags"><span class="ptag">DeFi</span><span class="ptag">Infrastructure</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#D747EC"></div>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00A3FF"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#D747EC40,#D747EC20);border:1px solid #D747EC50">ST</div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#00A3FF40,#00A3FF20);border:1px solid #00A3FF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/ldo.svg" alt="Lido" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">LI</span></div>
       <div class="project-meta">
-        <div class="project-name">Stake Dao</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Lido</div>
+        <div class="project-ticker">LDO</div>
       </div>
-      <span class="project-tier tier-unrated">unrated</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
-    <div class="project-tags"><span class="ptag">Governance</span><span class="ptag">DeFi</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Governance</span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#29E729"></div>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00A3FF"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#29E72940,#29E72920);border:1px solid #29E72950">ST</div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#00A3FF40,#00A3FF20);border:1px solid #00A3FF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/puffer.svg" alt="Puffer" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">PU</span></div>
       <div class="project-meta">
-        <div class="project-name">staked frax</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Puffer</div>
+        <div class="project-ticker">PUFFER</div>
       </div>
-      <span class="project-tier tier-unrated">unrated</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#D66228"></div>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00A3FF"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#D6622840,#D6622820);border:1px solid #D6622850">ST</div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#00A3FF40,#00A3FF20);border:1px solid #00A3FF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/rez.svg" alt="Renzo" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">RE</span></div>
       <div class="project-meta">
-        <div class="project-name">Staked Frax Ether</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Renzo</div>
+        <div class="project-ticker">REZ</div>
       </div>
-      <span class="project-tier tier-unrated">unrated</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#D2DE48"></div>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00A3FF"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#D2DE4840,#D2DE4820);border:1px solid #D2DE4850">ST</div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#00A3FF40,#00A3FF20);border:1px solid #00A3FF50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/rpl.svg" alt="Rocket Pool" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">RO</span></div>
       <div class="project-meta">
-        <div class="project-name">staked IP</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Rocket Pool</div>
+        <div class="project-ticker">RPL</div>
       </div>
-      <span class="project-tier tier-unrated">unrated</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#6AEBCE"></div>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00A3FF"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#6AEBCE40,#6AEBCE20);border:1px solid #6AEBCE50">ST</div>
+      <div class="project-icon" style="background:linear-gradient(135deg,#00A3FF40,#00A3FF20);border:1px solid #00A3FF50">SY</div>
       <div class="project-meta">
-        <div class="project-name">Staked Stream USD</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
+        <div class="project-name">Symbiotic</div>
+        <div class="project-ticker"></div>
       </div>
-      <span class="project-tier tier-unrated">unrated</span>
+      <span class="project-tier tier-watch">watch</span>
     </div>
-    <div class="project-tags"><span class="ptag">Stablecoin</span><span class="ptag">DeFi</span></div>
+    <div class="project-tags"></div>
     <div class="project-desc"></div>
     
   </div>
   <div class="project-foot">
     <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">Stablecoin</span>
-  </div>
-</article>
-<article class="project" data-tier="unrated">
-  <div class="project-accent" style="background:#DC40CC"></div>
-  <div class="project-body">
-    <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,#DC40CC40,#DC40CC20);border:1px solid #DC40CC50">ST</div>
-      <div class="project-meta">
-        <div class="project-name">Stakewise staked ETH</div>
-        <div class="project-ticker">  ·  <span class="project-chain">Multi-chain</span></div>
-      </div>
-      <span class="project-tier tier-unrated">unrated</span>
-    </div>
-    <div class="project-tags"><span class="ptag">DeFi</span></div>
-    <div class="project-desc"></div>
-    
-  </div>
-  <div class="project-foot">
-    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
-    <span class="project-cat">DeFi</span>
+    <span class="project-cat">Crypto</span>
   </div>
 </article></div>
 </section>
@@ -695,8 +420,21 @@ document.querySelectorAll('[data-tier]').forEach(btn => {
   });
 });
 
-// Fade-up reveal
+// Fade-up reveal + typewriter-quote trigger
 (function () {
+  // Hero quote: clip-path reveal once when hero scrolls into view
+  const heroQuote = document.querySelector('.hero .hero-quote');
+  if (heroQuote && 'IntersectionObserver' in window) {
+    const qio = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { heroQuote.classList.add('in-view'); qio.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    qio.observe(heroQuote);
+  } else if (heroQuote) {
+    heroQuote.classList.add('in-view');
+  }
+
   if (!('IntersectionObserver' in window)) {
     document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
     return;
