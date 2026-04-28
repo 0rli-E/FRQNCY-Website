@@ -232,10 +232,17 @@ h1.hero-title {
 }
 .hero-crystal-spin { transform-origin: 50% 50%; animation: crystalSpin 70s linear infinite; }
 .hero-crystal-breathe { transform-origin: 50% 50%; animation: crystalBreathe 6s ease-in-out infinite alternate; }
+.cf-spin { transform-origin: 0 0; animation: crystalSpin 80s linear infinite; }
+.cf-breathe { transform-origin: 0 0; animation: crystalBreathe 7s ease-in-out infinite alternate; }
+.cf-glow-pulse { transform-origin: 0 0; animation: glowPulse 5s ease-in-out infinite alternate; }
 @keyframes crystalSpin { to { transform: rotate(360deg); } }
 @keyframes crystalBreathe {
   0%   { transform: scale(0.95); opacity: 0.55; }
   100% { transform: scale(1.05); opacity: 1; }
+}
+@keyframes glowPulse {
+  0%   { transform: scale(0.85); opacity: 0.5; }
+  100% { transform: scale(1.15); opacity: 1; }
 }
 
 .scroll-hint {
@@ -443,10 +450,11 @@ blockquote cite {
 }
 .crystal-feature-svg {
   width: 100%;
-  max-width: 420px;
+  max-width: 480px;
   aspect-ratio: 1;
   margin: 0 auto;
-  filter: drop-shadow(0 0 60px rgba(196, 151, 58, 0.2));
+  overflow: visible;
+  filter: drop-shadow(0 0 80px rgba(196, 151, 58, 0.28));
 }
 
 /* ──────────────── THREE LAYERS — descent grid ──────────────── */
@@ -486,6 +494,91 @@ blockquote cite {
 .layer-title strong { font-style: normal; font-weight: 400; color: var(--gold-light); }
 .layer p { max-width: 60ch; }
 .layer p:last-child { margin-bottom: 0; }
+
+.ms-callout {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 1.5rem;
+  margin-top: 1.6rem;
+  padding: 1.5rem 1.6rem;
+  background: rgba(196, 151, 58, 0.05);
+  border: 1px solid rgba(196, 151, 58, 0.2);
+  border-radius: 4px;
+  align-items: start;
+}
+.ms-label {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(1.7rem, 2.6vw, 2.2rem);
+  color: var(--gold-light);
+  line-height: 1; padding-top: 0.2rem;
+}
+.ms-body {
+  font-size: 0.95rem;
+  color: rgba(245, 248, 251, 0.8);
+  line-height: 1.7;
+}
+.ms-body strong { color: var(--foam); font-weight: 400; }
+.ms-scale {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.ms-scale li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.86rem;
+}
+.ms-scale li:last-child { border-bottom: 0; }
+.ms-scale li > span:last-child {
+  color: var(--gold-light);
+  font-family: var(--body); font-weight: 400;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.ms-body em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--foam);
+}
+
+/* Forms grid */
+.forms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 2.5rem 0 1rem;
+}
+.form-cell {
+  background: var(--navy-mid);
+  padding: 1.35rem 1.4rem;
+  transition: background 0.4s ease;
+}
+.form-cell:hover { background: rgba(15, 36, 81, 0.95); }
+.form-cell-eyebrow {
+  font-size: 0.5rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold-light); opacity: 0.85;
+  margin-bottom: 0.6rem;
+}
+.form-cell h4 {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.25rem;
+  color: var(--foam);
+  margin-bottom: 0.4rem;
+  line-height: 1.2;
+}
+.form-cell p {
+  font-size: 0.82rem; line-height: 1.6;
+  color: rgba(245, 248, 251, 0.65);
+  margin: 0;
+}
 
 /* ──────────────── PRACTICE ──────────────── */
 .practice {
@@ -666,6 +759,7 @@ footer.site-foot .legal {
 @media (prefers-reduced-motion: reduce) {
   .hero-video,
   .hero-crystal-spin, .hero-crystal-breathe,
+  .cf-spin, .cf-breathe, .cf-glow-pulse,
   .scroll-hint::after,
   .wave-divider .w1, .wave-divider .w2, .wave-divider .w3 {
     animation: none;
@@ -840,7 +934,52 @@ footer.site-foot .legal {
   </p>
 
   <div class="crystal-feature">
-    <svg class="crystal-feature-svg" aria-hidden="true"><use href="#water-crystal"/></svg>
+    <svg class="crystal-feature-svg" viewBox="-100 -100 200 200" aria-hidden="true">
+      <defs>
+        <radialGradient id="cfFill" cx="50%" cy="40%" r="60%">
+          <stop offset="0%"  stop-color="#F5F8FB" stop-opacity="0.5"/>
+          <stop offset="50%" stop-color="#4A7AB5" stop-opacity="0.28"/>
+          <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="cfEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"  stop-color="#F5F8FB" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="#C4973A" stop-opacity="0.75"/>
+        </linearGradient>
+        <radialGradient id="cfGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"  stop-color="#C4973A" stop-opacity="0.32"/>
+          <stop offset="60%" stop-color="#4A7AB5" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <!-- Pulsing glow halo -->
+      <circle cx="0" cy="0" r="95" fill="url(#cfGlow)" class="cf-glow-pulse"/>
+      <g class="cf-spin">
+        <g class="cf-breathe">
+          <polygon points="0,-80 69,-40 69,40 0,80 -69,40 -69,-40"
+                   fill="url(#cfFill)"
+                   stroke="url(#cfEdge)" stroke-width="0.8" stroke-linejoin="round"/>
+          <polygon points="0,-46 40,-23 40,23 0,46 -40,23 -40,-23"
+                   fill="none"
+                   stroke="rgba(245, 248, 251, 0.6)" stroke-width="0.5"
+                   transform="rotate(30)"/>
+          <g fill="rgba(245, 248, 251, 0.95)">
+            <circle cx="0"   cy="-80" r="2.8"/>
+            <circle cx="69"  cy="-40" r="2.8"/>
+            <circle cx="69"  cy="40"  r="2.8"/>
+            <circle cx="0"   cy="80"  r="2.8"/>
+            <circle cx="-69" cy="40"  r="2.8"/>
+            <circle cx="-69" cy="-40" r="2.8"/>
+          </g>
+          <g stroke="rgba(196, 151, 58, 0.5)" stroke-width="0.4" fill="none">
+            <line x1="0" y1="-80" x2="0"   y2="80"/>
+            <line x1="-69" y1="-40" x2="69"  y2="40"/>
+            <line x1="-69" y1="40"  x2="69"  y2="-40"/>
+          </g>
+          <circle cx="0" cy="0" r="3.5" fill="rgba(196, 151, 58, 0.98)"/>
+          <circle cx="0" cy="0" r="11" fill="none" stroke="rgba(196, 151, 58, 0.45)" stroke-width="0.4"/>
+        </g>
+      </g>
+    </svg>
     <blockquote style="margin: 0; border-left: 0; padding: 0; max-width: 100%;">
       Water is structured, charged, and alive.
       <cite>Gerald Pollack</cite>
@@ -901,9 +1040,95 @@ footer.site-foot .legal {
        alt="Concentric ripples on still water surface">
   <div class="bleed-cap">
     Implosion, not explosion.<br>
-    <em>The shape water chooses when nobody is forcing it.</em>
+    The shape water chooses when nobody is forcing it.
   </div>
 </div>
+
+<!-- ════════════════════════════════════════════════════
+     FORMS — the same substance, many shapes
+     ════════════════════════════════════════════════════ -->
+<section class="section section-wide fade-up">
+  <span class="label">The forms</span>
+  <h2>One substance, <strong>many shapes.</strong></h2>
+  <p style="max-width: 60ch;">
+    Most science textbooks teach three states. Reality has more — both in the laboratory and in
+    the river. The same H₂O takes different geometries depending on temperature, pressure,
+    surface, and stillness. Each form behaves differently. Each one is doing something specific.
+  </p>
+
+  <h3 style="margin-top: 2.5rem; font-size: 0.62rem; letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold-light); font-family: var(--body); font-style: normal; font-weight: 400; opacity: 0.85;">— States</h3>
+  <div class="forms-grid">
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Solid</div>
+      <h4>Ice</h4>
+      <p>Crystalline lattice. Less dense than the liquid that produced it — the rare exception that lets lakes freeze from the top down and life survive underneath.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Liquid</div>
+      <h4>The everyday</h4>
+      <p>Loose hydrogen-bonded clusters constantly forming and breaking. Anomalous in dozens of ways. The most-used substance on Earth and the least-understood.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Vapour</div>
+      <h4>Steam, mist, fog</h4>
+      <p>Free molecules in air. The way water travels around the planet, around your kitchen, around the inside of your lungs.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Plasma</div>
+      <h4>Supercritical</h4>
+      <p>Above 374°C and 220 bar — neither liquid nor vapour. Used in industrial extraction, found near deep-sea vents. Rare on the surface, common deeper in.</p>
+    </div>
+    <div class="form-cell" style="background: linear-gradient(135deg, rgba(196,151,58,0.10) 0%, rgba(74,122,181,0.08) 60%); border: 1px solid rgba(196, 151, 58, 0.2);">
+      <div class="form-cell-eyebrow" style="color: var(--gold);">Fourth phase · EZ</div>
+      <h4>Structured</h4>
+      <p>The hexagonal lattice Pollack named — exclusion-zone water against hydrophilic surfaces. Powered by infrared light. Possibly the most consequential of all of them.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 3rem; font-size: 0.62rem; letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold-light); font-family: var(--body); font-style: normal; font-weight: 400; opacity: 0.85;">— Sources in nature</h3>
+  <div class="forms-grid">
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Spring</h4>
+      <p>Filtered through rock for years, sometimes centuries. Mineralised by the geology it travelled through. The water human bodies evolved on.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Rain</h4>
+      <p>Distilled by evaporation, re-charged on the way down through the atmosphere. Soft, low-mineral, alive in a different way from spring.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Snow &amp; glacier</h4>
+      <p>Slow rain. Held in crystal for years or millennia. Some of the cleanest fresh water remaining on the planet, melting fast.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Dew &amp; mist</h4>
+      <p>Atmospheric water condensing onto leaves overnight. Forests collect it. The ancient Mediterranean and Atacama still farm it.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>River</h4>
+      <p>Spring water in motion, gathering minerals and information from every metre it travels. Schauberger's living water — when allowed to spiral and shade.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Aquifer</h4>
+      <p>Underground reserves, often ancient. The world's largest fresh-water bank — and the one being drained fastest by industrial agriculture.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Ocean</h4>
+      <p>97% of the planet's water. The salt makes it undrinkable; the mineral richness makes it foundational. Every body's blood plasma is roughly seawater minus a few salts.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Living tissue</h4>
+      <p>The water in cells. ~60% of you, by mass. Hydrating the body is partly drinking; partly sleeping, eating fruit, resting in shade, breathing slowly.</p>
+    </div>
+  </div>
+</section>
 
 <!-- ════════════════════════════════════════════════════
      III — THE WAVE — Thich Nhat Hanh interlude
@@ -992,6 +1217,25 @@ footer.site-foot .legal {
         calcium, magnesium, potassium, sodium, trace minerals. The body absorbs minerals from
         water more efficiently than from food. Most filtration setups skip this layer entirely.
       </p>
+      <div class="ms-callout">
+        <div class="ms-label">μS / cm</div>
+        <div class="ms-body">
+          <strong>Microsiemens per centimetre</strong> — the practical reading you can take with a
+          twenty-dollar TDS meter. It measures conductivity, which tracks dissolved minerals.
+          A useful map:
+          <ul class="ms-scale">
+            <li><span>Distilled / fresh RO</span><span>~0–10 μS/cm</span></li>
+            <li><span>Re-mineralised RO (good)</span><span>50–200 μS/cm</span></li>
+            <li><span>Soft spring water (Lauretana)</span><span>~14 μS/cm</span></li>
+            <li><span>Hard spring water (Evian)</span><span>~580 μS/cm</span></li>
+            <li><span>Typical municipal tap</span><span>200–800 μS/cm</span></li>
+            <li><span>Hard tap or bore</span><span>800–2000+ μS/cm</span></li>
+            <li><span>Sea water</span><span>~50,000 μS/cm</span></li>
+          </ul>
+          The reading does not tell you <em>which</em> minerals are dissolved. It tells you how much.
+          Pair it with knowing where the water came from.
+        </div>
+      </div>
     </div>
 
     <div class="layer">
