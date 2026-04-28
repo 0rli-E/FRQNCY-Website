@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Money — FRQNCY Network</title>
-<meta name="description" content="Capital, finance, and the new monetary systems — from conscious capital and impact investing to crypto, DeFi, and the sovereign individual.">
+<meta name="description" content="Money is energy you create by being of service. A field guide — Maloney, Wattles, Lapin, Hill — to what money actually is, what it isn't, and how to relate to it without losing yourself.">
 <meta name="theme-color" content="#0B1C3D">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Money — FRQNCY Network">
-<meta property="og:description" content="Capital, finance, and the new monetary systems — from conscious capital and impact investing to crypto, DeFi, and the sovereign individual.">
+<meta property="og:description" content="Money is energy you create by being of service. The classics, the contested, the practice.">
 <meta property="og:url" content="https://frqncy.network/v2/money/">
 <meta property="og:image" content="https://frqncy.network/v2/og/money.png">
 <meta property="og:image:width" content="1200">
@@ -16,310 +16,1035 @@
 <meta property="og:site_name" content="FRQNCY">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Money — FRQNCY Network">
-<meta name="twitter:description" content="Capital, finance, and the new monetary systems — from conscious capital and impact investing to crypto, DeFi, and the sovereign individual.">
+<meta name="twitter:description" content="Money is energy you create by being of service.">
 <meta name="twitter:image" content="https://frqncy.network/v2/og/money.png">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="manifest" href="../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/money/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--accent:#4AB8A0;--accent-glow:rgba(74,184,160,0.14)}
+/* ════════════════════════════════════════════════════════════════════
+   MONEY — Topic 0003 of 146.
+   "Money is a certificate of appreciation from those you have helped."
+   — after Rabbi Daniel Lapin
+   ──────────────────────────────────────────────────────────────────── */
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#8FA8CC;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08)}
-html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
-a{color:var(--accent);text-decoration:none}
-a:hover{opacity:0.8}
-
-/* NAV */
-nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between}
-.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
-.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
-.snav-logo:hover{opacity:1}
-.snav-badge{font-size:0.55rem;letter-spacing:0.18em;color:var(--accent);border:1px solid currentColor;padding:1px 6px;border-radius:2px;vertical-align:middle;margin-left:4px;opacity:0.8}
-.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.breadcrumb a{color:var(--text-dim);transition:color .2s}
-.breadcrumb a:hover{color:var(--text);opacity:1}
-.breadcrumb .sep{opacity:0.25;font-size:0.65rem}
-.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
-.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28);opacity:1}
-
-/* HERO */
-.hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
-.hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
-.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
-.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
-.hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
-
-/* MAIN */
-main{max-width:1080px;margin:0 auto;padding:3rem clamp(1.25rem,5vw,2.5rem) 7rem}
-section{margin-bottom:4.5rem}
-.section-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
-
-/* GRID */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border)}
-.grid-sm{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
-
-/* NODE CARD */
-.ncard{background:var(--navy);padding:1.4rem 1.4rem 1.1rem;text-decoration:none;color:var(--text);display:block;transition:background .2s;position:relative}
-.ncard:hover{background:rgba(255,255,255,0.04);color:var(--text)}
-.ncard-type{font-size:0.54rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem;opacity:0.8}
-.ncard h3{font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.4rem;line-height:1.2}
-.ncard p{font-size:0.76rem;color:var(--text-dim);line-height:1.45}
-.ncard-arrow{position:absolute;top:1.2rem;right:1.2rem;font-size:0.7rem;color:var(--accent);opacity:0;transition:opacity .2s}
-.ncard:hover .ncard-arrow{opacity:1}
-
-/* RESOURCE CARD */
-.rcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1.25rem 1.4rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:border-color .2s,background .2s}
-.rcard:hover{border-color:rgba(255,255,255,0.14);background:rgba(255,255,255,0.05)}
-.rtype{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--navy);background:var(--accent);padding:3px 9px;border-radius:2px;font-weight:500;white-space:nowrap;line-height:1.6;margin-top:2px}
-.rinfo{min-width:0}
-.rinfo h4{font-size:0.9rem;font-weight:400;color:#fff;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;line-height:1.35}
-.rinfo p{font-size:0.76rem;color:var(--text-dim);line-height:1.55}
-.fpick{font-size:0.48rem;letter-spacing:0.15em;color:var(--gold);border:1px solid rgba(196,151,58,0.5);padding:1px 6px;border-radius:2px;flex-shrink:0;font-weight:400}
-.rlink{font-size:0.66rem;letter-spacing:0.1em;color:var(--accent);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:2px;white-space:nowrap;transition:all .2s;text-decoration:none;margin-top:1px}
-.rlink:hover{border-color:var(--accent);opacity:1}
-
-/* EMPTY */
-.empty{text-align:center;padding:3.5rem 2rem;border:1px dashed rgba(255,255,255,0.08);border-radius:4px}
-.empty p{color:var(--text-dim);font-size:0.82rem;line-height:1.7}
-
-/* FILTER TABS */
-.ftabs{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1.75rem}
-.ftab{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;padding:5px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif}
-.ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
-.ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(255,255,255,0.03)}
-
-/* RLIST */
-.rlist{display:flex;flex-direction:column;gap:0.65rem}
-
-/* PICKS CALLOUT */
-.picks-intro{font-size:0.78rem;color:var(--text-dim);margin-bottom:1.5rem;line-height:1.6;max-width:600px}
-.picks-intro strong{color:var(--gold);font-weight:400}
-
-/* VIDEO SECTION */
-.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-top:0}
-.vcard-t{
-  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
-  overflow:hidden;cursor:pointer;transition:border-color .22s,transform .22s,background .22s;
-  display:flex;flex-direction:column;
-}
-.vcard-t:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.05)}
-.vcard-t:active{transform:translateY(0);transition-duration:.1s}
-.vthumb-t{position:relative;width:100%;aspect-ratio:16/9;background:#0a1428;overflow:hidden;flex-shrink:0}
-.vthumb-t img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
-.vcard-t:hover .vthumb-t img{transform:scale(1.04)}
-.vplay-t{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);transition:background .2s}
-.vcard-t:hover .vplay-t{background:rgba(0,0,0,0.38)}
-.vplay-btn-t{
-  width:40px;height:40px;border-radius:50%;
-  background:rgba(255,255,255,0.18);backdrop-filter:blur(4px);
-  border:1.5px solid rgba(255,255,255,0.35);
-  display:flex;align-items:center;justify-content:center;
-  transition:background .2s,transform .2s;
-}
-.vcard-t:hover .vplay-btn-t{background:rgba(255,255,255,0.28);transform:scale(1.1)}
-.vdur-t{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.78);color:#fff;font-family:'Jost',sans-serif;font-size:0.6rem;padding:1px 6px;border-radius:2px;letter-spacing:0.02em}
-.vpick-t{position:absolute;top:6px;left:6px;background:rgba(196,151,58,0.92);color:#0B1C3D;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;padding:2px 6px;border-radius:2px}
-.vprov-t{position:absolute;bottom:6px;left:6px;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.12em;text-transform:uppercase;padding:2px 6px;border-radius:2px}
-.vthumb-fallback-t{width:100%;height:100%;background:linear-gradient(135deg,rgba(74,122,232,0.12),rgba(196,151,58,0.08))}
-.vplay-ext-t{border-style:dashed}
-.vinfo-t{padding:0.8rem 1rem 0.9rem;flex:1;display:flex;flex-direction:column;gap:0.2rem}
-.vtitle-t{font-family:'Cormorant',serif;font-size:1rem;font-weight:400;color:#fff;line-height:1.25}
-.vchan-t{font-size:0.66rem;color:var(--text-dim)}
-/* VIDEO MODAL */
-.vmodal{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  display:flex;align-items:center;justify-content:center;padding:1.25rem;
-  opacity:0;pointer-events:none;transition:opacity .25s;
-}
-.vmodal.open{opacity:1;pointer-events:all}
-.vmodal-box{
-  width:100%;max-width:860px;background:#0c1e42;
-  border:1px solid rgba(255,255,255,0.1);border-radius:6px;overflow:hidden;
-  transform:translateY(10px) scale(0.98);transition:transform .25s;
-}
-.vmodal.open .vmodal-box{transform:translateY(0) scale(1)}
-.vmodal-player{width:100%;aspect-ratio:16/9}
-.vmodal-player iframe{width:100%;height:100%;border:none;display:block}
-.vmodal-footer{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07)}
-.vmodal-title{font-family:'Cormorant',serif;font-size:1.2rem;color:#fff;line-height:1.2;margin-bottom:0.15rem}
-.vmodal-chan{font-size:0.68rem;color:var(--text-dim)}
-.vmodal-close{
-  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
-  cursor:pointer;width:30px;height:30px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--text-dim);font-size:0.95rem;transition:all .2s;
-}
-.vmodal-close:hover{color:#fff;background:rgba(255,255,255,0.12)}
-.watch-link{
-  display:inline-flex;align-items:center;gap:0.4rem;margin-top:1.1rem;
-  font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;
-  color:var(--accent);border:1px solid rgba(255,255,255,0.1);
-  padding:6px 14px;border-radius:2px;transition:border-color .2s;text-decoration:none;
-}
-.watch-link:hover{border-color:var(--accent);opacity:1}
-
-/* COURSE CALLOUT */
-.course-callout{
-  display:flex;align-items:center;gap:1.25rem;
-  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
-  padding:1.25rem 1.4rem;margin-bottom:0.75rem;
-  text-decoration:none;color:var(--text);transition:background .2s,border-color .2s;
-  position:relative;overflow:hidden;
-}
-.course-callout::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--course-accent,var(--accent))}
-.course-callout:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.14);opacity:1}
-.cc-level{font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid currentColor;flex-shrink:0;white-space:nowrap}
-.cc-body{flex:1;min-width:0}
-.cc-title{font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:0.25rem}
-.cc-meta{font-size:0.68rem;color:var(--text-dim)}
-.cc-arrow{font-size:1rem;color:var(--accent);flex-shrink:0;transition:transform .2s}
-.course-callout:hover .cc-arrow{transform:translateX(3px)}
-
-/* FOOTER */
-footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center}
-.footer-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.footer-logo{font-family:'Cormorant',serif;font-size:1rem;letter-spacing:0.25em;color:rgba(255,255,255,0.3);text-transform:uppercase}
-.footer-links{display:flex;gap:1.5rem}
-.footer-links a{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;transition:color .2s}
-.footer-links a:hover{color:var(--text);opacity:1}
-
-@media(max-width:640px){
-  .hero{padding:3rem 1.25rem 2.5rem}
-  main{padding:2rem 1.25rem 5rem}
-  .rcard{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
-  .rlink{grid-column:2;margin-top:0.5rem}
-  .breadcrumb{display:none}
-  .footer-inner{flex-direction:column;gap:1rem;text-align:center}
-  .vgrid{grid-template-columns:1fr 1fr;gap:0.75rem}
-  .snav-back{font-size:0.6rem;padding:4px 10px}
-}
-@media(max-width:400px){
-  .vgrid{grid-template-columns:1fr}
-  .rcard{grid-template-columns:1fr}
-  .rlink{grid-column:1}
-  .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
-  .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
+:root {
+  --navy: #0B1C3D;
+  --navy-deep: #081530;
+  --navy-mid: #0D2451;
+  --gold: #C4973A;
+  --gold-light: #E0C06A;
+  --gold-deep: #9A7222;
+  --gold-soft: rgba(196, 151, 58, 0.14);
+  --cream: #F5EBD8;
+  --foam: #F5F8FB;
+  --pearl: #FFFFFF;
+  --topic-accent: #C4973A;
+  --topic-soft: rgba(196, 151, 58, 0.14);
+  --serif: 'Cormorant', Georgia, serif;
+  --body: 'Jost', sans-serif;
 }
 
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--navy); scroll-behavior: smooth; }
+body {
+  font-family: var(--body); font-weight: 300;
+  color: var(--foam);
+  line-height: 1.7;
+  overflow-x: hidden;
+  background: var(--navy);
+}
+::selection { background: rgba(196, 151, 58, 0.4); color: var(--pearl); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+::-webkit-scrollbar-thumb { background: rgba(196,151,58,0.4); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(196,151,58,0.7); }
+a { color: var(--topic-accent); text-decoration: none; transition: color 0.3s ease; }
+a:hover { color: var(--gold-light); }
+
+nav.snav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11, 28, 61, 0.55);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.snav-left { display: flex; align-items: center; gap: 1.75rem; min-width: 0; overflow: hidden; }
+.snav-logo {
+  font-family: var(--serif); font-size: 1.1rem; letter-spacing: 0.28em;
+  color: var(--pearl); text-transform: uppercase; text-decoration: none;
+  flex-shrink: 0; opacity: 0.85; transition: opacity 0.3s, text-shadow 0.3s;
+}
+.snav-logo:hover { opacity: 1; text-shadow: 0 0 20px rgba(196,151,58,0.55); }
+.snav-badge {
+  font-size: 0.55rem; letter-spacing: 0.18em; color: var(--gold-light);
+  border: 1px solid currentColor; padding: 1px 6px; border-radius: 2px;
+  vertical-align: middle; margin-left: 4px; opacity: 0.85;
+}
+.breadcrumb {
+  font-size: 0.7rem; letter-spacing: 0.06em; color: rgba(245, 248, 251, 0.55);
+  display: flex; align-items: center; gap: 0.4rem; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.breadcrumb a { color: rgba(245, 248, 251, 0.6); transition: color 0.2s; }
+.breadcrumb a:hover { color: var(--foam); }
+.breadcrumb .sep { opacity: 0.3; }
+.snav-back {
+  font-size: 0.68rem; letter-spacing: 0.12em; color: rgba(245, 248, 251, 0.7);
+  border: 1px solid rgba(255,255,255,0.12); padding: 5px 14px; border-radius: 2px;
+  transition: all 0.3s; text-decoration: none; flex-shrink: 0; white-space: nowrap;
+}
+.snav-back:hover { color: var(--foam); border-color: rgba(196,151,58,0.45); }
+
+.hero {
+  position: relative; min-height: 100vh; padding-top: 56px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; background: var(--navy-deep);
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1601597111158-2fceff292cdc?auto=format&fit=crop&q=85&w=2400');
+  background-size: cover; background-position: center;
+  filter: saturate(0.85) brightness(0.5) contrast(1.1);
+  transform: scale(1.04);
+  animation: heroDrift 32s ease-in-out infinite alternate;
+  z-index: 0;
+}
+@keyframes heroDrift {
+  0%   { transform: scale(1.04) translate(0, 0); }
+  100% { transform: scale(1.1) translate(-1%, -2%); }
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; z-index: 2;
+  background:
+    radial-gradient(ellipse at 30% 30%, rgba(196, 151, 58, 0.22) 0%, transparent 55%),
+    linear-gradient(to bottom, rgba(11, 28, 61, 0.4) 0%, rgba(11, 28, 61, 0.2) 30%, rgba(8, 21, 48, 0.85) 95%);
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative; z-index: 3;
+  width: 100%; max-width: 1280px;
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 4rem; align-items: end;
+  padding-bottom: clamp(5rem, 10vh, 8rem);
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  font-size: 0.6rem; letter-spacing: 0.42em; text-transform: uppercase;
+  color: var(--gold-light); margin-bottom: 2rem; opacity: 0.95;
+}
+.hero-eyebrow::before { content: ''; display: block; width: 36px; height: 1px; background: var(--gold-light); opacity: 0.5; }
+h1.hero-title {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(5rem, 18vw, 17rem);
+  line-height: 0.85; letter-spacing: -0.04em;
+  color: var(--pearl);
+  text-shadow: 0 4px 80px rgba(11, 28, 61, 0.7);
+  margin-bottom: 2.5rem;
+}
+.hero-desc {
+  max-width: 580px;
+  font-size: clamp(1.05rem, 1.45vw, 1.25rem);
+  font-weight: 300; line-height: 1.7;
+  color: rgba(245, 248, 251, 0.88);
+}
+.hero-desc em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--gold-light); font-size: 1.1em;
+}
+.hero-quote {
+  margin-top: 2rem; padding-top: 1.5rem;
+  border-top: 1px solid rgba(196, 151, 58, 0.28);
+  max-width: 560px;
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  line-height: 1.45;
+  color: rgba(245, 248, 251, 0.78);
+}
+.hero-quote cite {
+  display: block;
+  font-family: var(--body); font-style: normal; font-weight: 300;
+  font-size: 0.6rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold-light); margin-top: 0.85rem; opacity: 0.9;
+}
+
+.hero-flow {
+  width: clamp(180px, 22vw, 320px);
+  aspect-ratio: 1; opacity: 0.95;
+  filter: drop-shadow(0 0 60px rgba(196, 151, 58, 0.28));
+  overflow: visible;
+}
+.flow-rotate { transform-origin: 50% 50%; animation: flowRotate 60s linear infinite; }
+.flow-rotate-rev { transform-origin: 50% 50%; animation: flowRotate 80s linear infinite reverse; }
+.flow-pulse-1 { transform-origin: 50% 50%; animation: flowPulse 6s ease-in-out infinite; }
+.flow-pulse-2 { transform-origin: 50% 50%; animation: flowPulse 6s ease-in-out infinite; animation-delay: 2s; }
+.flow-pulse-3 { transform-origin: 50% 50%; animation: flowPulse 6s ease-in-out infinite; animation-delay: 4s; }
+.flow-particle { animation: flowOrbit 12s linear infinite; transform-origin: 0 0; }
+.flow-particle-2 { animation-delay: -4s; }
+.flow-particle-3 { animation-delay: -8s; }
+@keyframes flowRotate { to { transform: rotate(360deg); } }
+@keyframes flowPulse {
+  0%, 100% { opacity: 0.3; transform: scale(0.95); }
+  50%      { opacity: 0.95; transform: scale(1.05); }
+}
+@keyframes flowOrbit { to { transform: rotate(360deg); } }
+
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.55rem; letter-spacing: 0.42em; text-transform: uppercase;
+  color: rgba(245, 248, 251, 0.55);
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  z-index: 4;
+}
+.scroll-hint::after {
+  content: ''; width: 1px; height: 36px;
+  background: linear-gradient(to bottom, rgba(245, 248, 251, 0.55), transparent);
+  animation: drip 2.6s ease-in-out infinite;
+}
+@keyframes drip {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
+  50%      { opacity: 1;   transform: scaleY(1);   transform-origin: top; }
+}
+
+.wave-divider { position: relative; width: 100%; height: 100px; overflow: hidden; pointer-events: none; }
+.wave-divider svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; display: block; }
+.wave-divider .w1 { animation: waveSlide 22s linear infinite; opacity: 0.55; }
+.wave-divider .w2 { animation: waveSlide 16s linear infinite reverse; opacity: 0.4; }
+.wave-divider .w3 { animation: waveSlide 30s linear infinite; opacity: 0.7; }
+@keyframes waveSlide { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+main.money-body { position: relative; background: var(--navy); padding: 0 clamp(1.5rem, 5vw, 3rem); }
+.section { max-width: 720px; margin: 0 auto; padding: clamp(5rem, 12vh, 9rem) 0; position: relative; }
+.section-wide { max-width: 1080px; }
+.section-narrow { max-width: 600px; }
+
+.label {
+  font-size: 0.58rem; letter-spacing: 0.42em; text-transform: uppercase;
+  color: var(--gold-light); margin-bottom: 2rem; opacity: 0.9;
+  display: inline-flex; align-items: center; gap: 0.7rem;
+}
+.label::before { content: ''; display: block; width: 32px; height: 1px; background: var(--gold-light); opacity: 0.5; }
+
+h2 {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height: 1.04; letter-spacing: -0.02em;
+  color: var(--pearl); margin-bottom: 2rem; max-width: 18ch;
+}
+h2 strong { font-style: normal; font-weight: 400; color: var(--gold-light); }
+h3 {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  line-height: 1.2; color: var(--foam); margin-bottom: 0.85rem;
+}
+p.lede {
+  font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+  font-weight: 300; line-height: 1.65;
+  color: var(--foam); margin-bottom: 1.6rem;
+}
+p { font-size: 1.025rem; line-height: 1.85; color: rgba(245, 248, 251, 0.72); margin-bottom: 1.4rem; }
+p em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--gold-light); font-size: 1.08em; }
+
+blockquote {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+  line-height: 1.3; letter-spacing: -0.005em;
+  color: var(--pearl);
+  padding: 2.5rem 0 2.5rem 2rem; margin: 3rem 0;
+  border-left: 1px solid rgba(196, 151, 58, 0.5);
+  max-width: 26ch;
+}
+blockquote cite {
+  display: block;
+  font-family: var(--body); font-style: normal; font-weight: 300;
+  font-size: 0.65rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold-light); margin-top: 1.5rem; opacity: 0.9;
+}
+
+.bleed {
+  position: relative; width: 100vw; margin-left: calc(50% - 50vw);
+  height: clamp(60vh, 90vh, 800px);
+  margin-top: clamp(4rem, 8vh, 7rem); margin-bottom: clamp(4rem, 8vh, 7rem);
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+.bleed img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6) saturate(0.95); }
+.bleed::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(11,28,61,0.5) 0%, rgba(11,28,61,0.15) 30%, rgba(11,28,61,0.15) 70%, rgba(11,28,61,0.7) 100%);
+  pointer-events: none;
+}
+.bleed-cap {
+  position: relative; z-index: 2;
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(1.6rem, 3.4vw, 2.8rem);
+  line-height: 1.3; color: var(--pearl);
+  text-align: center; max-width: 26ch; padding: 0 1.5rem;
+  text-shadow: 0 2px 30px rgba(11, 28, 61, 0.7);
+}
+.bleed-cap cite {
+  display: block;
+  font-family: var(--body); font-style: normal; font-weight: 300;
+  font-size: 0.62rem; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold-light); margin-top: 2rem; opacity: 0.9;
+}
+
+.split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px; overflow: hidden;
+  margin: 3rem 0;
+}
+.split-half {
+  background: var(--navy-mid);
+  padding: clamp(1.8rem, 3vw, 2.5rem);
+  display: flex; flex-direction: column; gap: 0.9rem;
+}
+.split-half.warm {
+  background: linear-gradient(135deg, rgba(196,151,58,0.10) 0%, rgba(13,36,81,0.95) 70%);
+  border-right: 1px solid rgba(196, 151, 58, 0.2);
+}
+.split-eyebrow {
+  font-size: 0.55rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold-light); margin-bottom: 0.5rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.split-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--gold-light); opacity: 0.6; }
+.split-half h4 {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  color: var(--foam); margin-bottom: 0.6rem; line-height: 1.2;
+}
+.split-half p { font-size: 0.95rem; margin-bottom: 0; }
+
+.attrs {
+  list-style: none; margin: 2rem 0; padding: 0;
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 0.75rem;
+}
+.attrs li {
+  background: var(--navy-mid);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 4px;
+  padding: 1.1rem 1.3rem;
+  font-size: 0.88rem; line-height: 1.55;
+  color: rgba(245, 248, 251, 0.72);
+}
+.attrs li.gold-marked {
+  background: linear-gradient(135deg, rgba(196,151,58,0.10) 0%, rgba(13,36,81,0.95) 60%);
+  border: 1px solid rgba(196, 151, 58, 0.3);
+}
+.attrs li strong {
+  display: block;
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--foam); font-size: 1.15rem;
+  margin-bottom: 0.35rem;
+}
+.attrs li .num {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  color: var(--gold-light); margin-right: 0.5rem;
+  font-size: 1.05em;
+}
+.attrs li.gold-marked strong { color: var(--gold-light); }
+
+.flow-feature {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+  margin: clamp(3rem, 6vh, 5rem) 0;
+}
+.flow-feature-svg {
+  width: 100%; max-width: 460px; aspect-ratio: 1;
+  margin: 0 auto; overflow: visible;
+  filter: drop-shadow(0 0 80px rgba(196, 151, 58, 0.28));
+}
+
+.practice { display: grid; gap: 1.5rem; margin: 3rem 0 1rem; }
+.step {
+  display: grid; grid-template-columns: 80px 1fr; gap: 2rem;
+  padding: 1.6rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  align-items: baseline;
+}
+.step:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.step-num {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  color: var(--gold-light); opacity: 0.85; line-height: 1;
+}
+.step-body strong {
+  display: block;
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.35rem; color: var(--foam);
+  margin-bottom: 0.4rem;
+}
+.step-body p { margin-bottom: 0; max-width: 56ch; }
+
+.picks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px; overflow: hidden;
+  margin: 3rem 0 1rem;
+}
+.pick {
+  background: var(--navy-mid); padding: 2rem 1.8rem;
+  transition: background 0.4s ease;
+  display: flex; flex-direction: column;
+}
+.pick:hover { background: rgba(13, 36, 81, 0.92); }
+.pick-eyebrow {
+  font-size: 0.55rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold-light); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.pick-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--gold-light); opacity: 0.6; }
+.pick h4 {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.45rem; color: var(--foam);
+  margin-bottom: 0.5rem; line-height: 1.2;
+}
+.pick p { font-size: 0.92rem; margin-bottom: 1.2rem; flex: 1; }
+.pick a.pick-link {
+  font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold-light); border-bottom: 1px solid currentColor;
+  padding-bottom: 2px; transition: color 0.3s, border-color 0.3s;
+  align-self: flex-start;
+}
+.pick a.pick-link:hover { color: var(--gold); border-color: var(--gold); }
+
+.closing {
+  position: relative; min-height: 80vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  margin-top: clamp(4rem, 10vh, 8rem);
+  padding: clamp(4rem, 10vh, 8rem) 1.5rem;
+  overflow: hidden;
+}
+.closing-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1493612276216-ee3925520721?auto=format&fit=crop&q=85&w=2400');
+  background-size: cover; background-position: center;
+  filter: brightness(0.4) saturate(0.85);
+}
+.closing-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(11, 28, 61, 0.4) 30%, rgba(11, 28, 61, 0.95) 100%);
+}
+.closing-inner { position: relative; z-index: 2; max-width: 38ch; margin: 0 auto; }
+.closing p {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+  line-height: 1.45; color: var(--pearl);
+  text-shadow: 0 2px 30px rgba(11, 28, 61, 0.7);
+  margin: 0 0 1.2rem;
+}
+.closing p strong { font-style: normal; font-weight: 400; color: var(--gold-light); }
+.closing cite {
+  display: block;
+  font-family: var(--body); font-style: normal; font-weight: 300;
+  font-size: 0.62rem; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold-light); margin-top: 1.5rem; opacity: 0.9;
+}
+
+footer.site-foot {
+  background: var(--navy-deep);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 3rem clamp(1.25rem, 5vw, 2.5rem);
+  text-align: center; position: relative; z-index: 2;
+}
+footer.site-foot .wm {
+  font-family: var(--serif); font-weight: 300;
+  font-size: 1rem; letter-spacing: 0.32em;
+  color: rgba(245, 248, 251, 0.4); text-transform: uppercase;
+}
+footer.site-foot .legal {
+  font-size: 0.66rem; letter-spacing: 0.1em;
+  color: rgba(245, 248, 251, 0.3);
+  margin-top: 0.5rem; display: block;
+}
+
+.fade-up {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.fade-up.in { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 760px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero-flow { width: 180px; }
+  .breadcrumb { display: none; }
+  .step { grid-template-columns: 50px 1fr; gap: 1rem; }
+  blockquote { padding-left: 1rem; font-size: 1.5rem; }
+  .split { grid-template-columns: 1fr; }
+  .split-half.warm { border-right: 0; border-bottom: 1px solid rgba(196,151,58,0.2); }
+  .flow-feature { grid-template-columns: 1fr; }
+  .flow-feature-svg { max-width: 320px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg, .scroll-hint::after,
+  .flow-rotate, .flow-rotate-rev,
+  .flow-pulse-1, .flow-pulse-2, .flow-pulse-3,
+  .flow-particle, .flow-particle-2, .flow-particle-3,
+  .wave-divider .w1, .wave-divider .w2, .wave-divider .w3 { animation: none; }
+  .fade-up { transition: none; opacity: 1; transform: none; }
+}
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Money — FRQNCY Network","description":"Capital, finance, and the new monetary systems — from conscious capital and impact investing to crypto, DeFi, and the sovereign individual.","url":"https://frqncy.network/v2/money/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Money — Energy you create by being of service","description":"A field guide to what money actually is, what it isn't, and how to relate to it without losing yourself.","url":"https://frqncy.network/v2/money/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
 </head>
-<body><nav class="snav">
+<body>
+
+<nav class="snav">
   <div class="snav-left">
     <a href="/v2/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
-    <div class="breadcrumb"><a href="../fund/index.html">Fund</a><span class="sep">/</span><span>Money</span></div>
+    <div class="breadcrumb">
+      <a href="../fund/index.html">Fund</a><span class="sep">/</span>
+      <span>Money</span>
+    </div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
     <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/media/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Media</a>
-    <a href="/music/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Music</a>
-    <a href="/places/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Places</a>
-    <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
-    <a href="/" class="snav-back">← Main</a>
+    <a href="/books/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
+    <a href="/v2/water/" class="snav-back">Water</a>
+    <a href="/v2/music/" class="snav-back">Music</a>
+    <a href="/" class="snav-back">Main</a>
   </div>
-</nav><div class="hero">
-  <div class="hero-eyebrow">Fund &nbsp;·&nbsp; Domain</div>
-  <h1>Money</h1>
-  <p class="hero-desc">Capital, finance, and the new monetary systems — from conscious capital and impact investing to crypto, DeFi, and the sovereign individual.</p>
-</div>
-<main>
-  <section>
-  <div class="section-label">Money vs Currency</div>
-  <p style="font-size:0.95rem;line-height:1.7;color:var(--text);max-width:780px;margin-bottom:1.5rem">Mike Maloney's central distinction. Most of what we call "money" is actually currency. Confusing the two is how empires lose their wealth without noticing.</p>
-  <div style="display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border);max-width:780px;margin-bottom:2rem">
-    <div style="background:var(--navy);padding:1.4rem 1.5rem">
-      <div style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem">Currency</div>
-      <p style="font-size:0.85rem;color:var(--text);line-height:1.65">A medium of exchange, unit of account, portable, divisible, fungible, durable. The dollar in your account is currency. So is gold-backed paper, so are most cryptocurrencies in everyday use.</p>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Fund · Topic 0003 of 146 · The artwork continues</div>
+      <h1 class="hero-title">Money</h1>
+      <p class="hero-desc">
+        Money is energy you create by being of service. <em>A certificate of appreciation
+        from those you have helped.</em> The substance gets misunderstood in both directions —
+        worshipped or refused. It deserves neither.
+      </p>
+      <div class="hero-quote">
+        Money is a reflection of service, not greed or luck. Revenue flows toward people who meet
+        the needs of others reliably and with genuine care.
+        <cite>after Rabbi Daniel Lapin</cite>
+      </div>
     </div>
-    <div style="background:var(--navy);padding:1.4rem 1.5rem">
-      <div style="font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem">Money</div>
-      <p style="font-size:0.85rem;color:var(--text);line-height:1.65">Everything currency is, <em>plus a store of value over long time horizons</em>. The thing you can hold for a generation and have it still buy what it bought. Throughout history that's been gold, silver, occasionally land. Many people now argue Bitcoin earns the title.</p>
+
+    <svg class="hero-flow" viewBox="-100 -100 200 200" aria-hidden="true">
+      <defs>
+        <radialGradient id="flowGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"  stop-color="#C4973A" stop-opacity="0.32"/>
+          <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
+          <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="0" cy="0" r="92" fill="url(#flowGlow)"/>
+      <g class="flow-rotate">
+        <polygon points="0,-72 62,36 -62,36" fill="none"
+                 stroke="rgba(196,151,58,0.5)" stroke-width="0.6" stroke-linejoin="round"/>
+        <text x="0" y="-78" text-anchor="middle"
+              font-family="Jost, sans-serif" font-size="6" letter-spacing="2.5"
+              fill="rgba(245,248,251,0.6)" style="text-transform:uppercase">SERVICE</text>
+        <text x="68" y="46" text-anchor="middle"
+              font-family="Jost, sans-serif" font-size="6" letter-spacing="2.5"
+              fill="rgba(245,248,251,0.6)" style="text-transform:uppercase">VALUE</text>
+        <text x="-68" y="46" text-anchor="middle"
+              font-family="Jost, sans-serif" font-size="6" letter-spacing="2.5"
+              fill="rgba(245,248,251,0.6)" style="text-transform:uppercase">EXCHANGE</text>
+      </g>
+      <g class="flow-rotate-rev">
+        <circle cx="0" cy="0" r="48" fill="none" stroke="rgba(245,248,251,0.25)" stroke-width="0.4" stroke-dasharray="3 5"/>
+        <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196,151,58,0.45)" stroke-width="0.5"/>
+      </g>
+      <circle cx="0" cy="0" r="22" fill="none" stroke="rgba(245,248,251,0.4)" stroke-width="0.6" class="flow-pulse-1"/>
+      <circle cx="0" cy="0" r="22" fill="none" stroke="rgba(196,151,58,0.5)" stroke-width="0.5" class="flow-pulse-2"/>
+      <circle cx="0" cy="0" r="22" fill="none" stroke="rgba(245,248,251,0.25)" stroke-width="0.4" class="flow-pulse-3"/>
+      <g>
+        <g class="flow-particle"><circle cx="58" cy="0" r="2.2" fill="#E0C06A"/></g>
+        <g class="flow-particle flow-particle-2"><circle cx="58" cy="0" r="1.8" fill="#E0C06A" opacity="0.7"/></g>
+        <g class="flow-particle flow-particle-3"><circle cx="58" cy="0" r="1.5" fill="#F5EBD8" opacity="0.55"/></g>
+      </g>
+      <circle cx="0" cy="0" r="3.5" fill="rgba(196,151,58,0.98)"/>
+      <circle cx="0" cy="0" r="9" fill="none" stroke="rgba(196,151,58,0.4)" stroke-width="0.3"/>
+    </svg>
+  </div>
+  <div class="scroll-hint">circulate</div>
+</section>
+
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 2880 100" preserveAspectRatio="none">
+    <path class="w3" fill="rgba(196, 151, 58, 0.16)" d="M0,55 C144,30 288,30 432,45 C576,60 720,72 864,55 C1008,38 1152,30 1296,45 C1440,60 1584,72 1728,55 C1872,38 2016,30 2160,45 C2304,60 2448,72 2592,55 C2736,38 2808,38 2880,45 L2880,100 L0,100 Z"/>
+    <path class="w2" fill="rgba(196, 151, 58, 0.10)" d="M0,65 C144,45 288,45 432,55 C576,65 720,75 864,65 C1008,55 1152,45 1296,55 C1440,65 1584,75 1728,65 C1872,55 2016,45 2160,55 C2304,65 2448,75 2592,65 C2736,55 2808,55 2880,60 L2880,100 L0,100 Z"/>
+    <path class="w1" fill="rgba(245, 248, 251, 0.07)" d="M0,80 C144,68 288,68 432,75 C576,82 720,88 864,80 C1008,72 1152,68 1296,75 C1440,82 1584,88 1728,80 C1872,72 2016,68 2160,75 C2304,82 2448,88 2592,80 C2736,72 2808,72 2880,76 L2880,100 L0,100 Z"/>
+  </svg>
+</div>
+
+<main class="money-body">
+
+<section class="section section-narrow fade-up">
+  <p class="lede">
+    Two cultures train two opposite reflexes around money. One says it is dirty, that wanting it
+    indicates a missing soul, that nobility lives in refusing it. The other says it is everything,
+    that having more of it proves you matter, that the rich are good and the poor have failed.
+    Both miss what money actually is.
+  </p>
+  <p>
+    Money is a way of measuring how much your work has helped someone. It is not the work, and
+    it is not the help — it is the receipt. Treat it as the work and you become a hoarder. Treat
+    it as the help and you become a servant. Treat it as the receipt — and the energy underneath
+    starts moving the way it was meant to.
+  </p>
+  <blockquote>
+    There is plenty of money for everyone who will follow the natural laws of getting it.
+    <cite>Wallace D. Wattles · The Science of Getting Rich</cite>
+  </blockquote>
+</section>
+
+<div class="bleed fade-up">
+  <img src="https://images.unsplash.com/photo-1554224155-6726b3ff858f?auto=format&fit=crop&q=85&w=2400"
+       alt="Stack of gold coins under warm light">
+  <div class="bleed-cap">
+    Money is a certificate of appreciation from those you have helped.
+    <cite>Rabbi Daniel Lapin</cite>
+  </div>
+</div>
+
+<section class="section fade-up">
+  <span class="label">I · The source</span>
+  <h2><strong>Service</strong> is the actual currency.</h2>
+  <p class="lede">
+    The deepest framework FRQNCY can offer on money in one sentence: revenue is downstream of
+    service. Everything else — pricing strategy, sales, negotiation, branding — is technique.
+    The substrate is whether you are reliably solving a real problem for someone who values it
+    being solved.
+  </p>
+  <p>
+    This sounds obvious until you watch what happens when people forget it. The career stops
+    growing the moment focus shifts from "how can I help" to "how do I extract." The business
+    decays the moment products stop improving and marketing budgets go up. The speaker who
+    polishes the slides instead of refining the substance begins, slowly, to repel audiences.
+    Service is the wave; money is the foam on top of it. Take the wave away and the foam goes
+    too.
+  </p>
+  <blockquote>
+    The very best business is one in which you provide the most value to others.
+    <cite>after Rabbi Daniel Lapin · Thou Shall Prosper</cite>
+  </blockquote>
+  <p>
+    The question that compounds wealth is not <em>what should I sell.</em> It is
+    <em>whose problem do I genuinely care about, and what would actually solve it.</em>
+    Get specific. Stay specific. The market rewards specificity in every direction.
+  </p>
+</section>
+
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 2880 100" preserveAspectRatio="none">
+    <path class="w3" fill="rgba(196, 151, 58, 0.16)" d="M0,50 C144,20 288,20 432,40 C576,60 720,75 864,50 C1008,25 1152,20 1296,40 C1440,60 1584,75 1728,50 C1872,25 2016,20 2160,40 C2304,60 2448,75 2592,50 C2736,25 2808,30 2880,40 L2880,100 L0,100 Z"/>
+    <path class="w2" fill="rgba(196, 151, 58, 0.10)" d="M0,68 C144,50 288,50 432,60 C576,70 720,80 864,68 C1008,56 1152,50 1296,60 C1440,70 1584,80 1728,68 C1872,56 2016,50 2160,60 C2304,70 2448,80 2592,68 C2736,56 2808,58 2880,62 L2880,100 L0,100 Z"/>
+    <path class="w1" fill="rgba(245, 248, 251, 0.07)" d="M0,82 C144,72 288,72 432,78 C576,84 720,90 864,82 C1008,74 1152,72 1296,78 C1440,84 1584,90 1728,82 C1872,74 2016,72 2160,78 C2304,84 2448,90 2592,82 C2736,74 2808,76 2880,80 L2880,100 L0,100 Z"/>
+  </svg>
+</div>
+
+<section class="section section-wide fade-up">
+  <span class="label">II · Currency &amp; money</span>
+  <h2><strong>Mike Maloney's</strong> central distinction.</h2>
+  <p style="max-width: 60ch;">
+    Most of what we call "money" is actually currency. Confusing the two is how empires lose
+    their wealth without noticing. The distinction that took two thousand years to articulate,
+    and that Maloney puts on the first page of <em>Hidden Secrets of Money</em>, is this:
+  </p>
+
+  <div class="split">
+    <div class="split-half">
+      <div class="split-eyebrow">Currency</div>
+      <h4>What you spend.</h4>
+      <p>
+        A medium of exchange. A unit of account. Portable, divisible, fungible, durable enough.
+        The dollar in your account is currency. So is gold-backed paper. So are most
+        cryptocurrencies in everyday use. Currency does five things, and modern fiat does them
+        well.
+      </p>
+    </div>
+    <div class="split-half warm">
+      <div class="split-eyebrow">Money</div>
+      <h4>What you hold.</h4>
+      <p>
+        Everything currency is, <em>plus a store of value over long time horizons</em>.
+        The thing you can hold for a generation and have it still buy what it bought. Throughout
+        history that has been gold, silver, occasionally land. Many people now argue Bitcoin
+        earns the title.
+      </p>
     </div>
   </div>
 
-  <div class="section-label" style="margin-top:3rem">The Six Attributes of Money</div>
-  <p style="font-size:0.9rem;color:var(--text-dim);max-width:780px;margin-bottom:1.5rem">Maloney's checklist. A medium that meets all six is money; one that meets only the first five is currency.</p>
-  <ol style="max-width:780px;list-style:none;padding:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:0.75rem;margin-bottom:2rem">
-    <li style="background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:0.95rem 1.1rem"><strong style="color:#fff;font-weight:500">1 · Medium of exchange</strong><br><span style="font-size:0.8rem;color:var(--text-dim);line-height:1.55">Accepted in trade for goods and services.</span></li>
-    <li style="background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:0.95rem 1.1rem"><strong style="color:#fff;font-weight:500">2 · Unit of account</strong><br><span style="font-size:0.8rem;color:var(--text-dim);line-height:1.55">A common measure that lets you compare prices across goods.</span></li>
-    <li style="background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:0.95rem 1.1rem"><strong style="color:#fff;font-weight:500">3 · Portable</strong><br><span style="font-size:0.8rem;color:var(--text-dim);line-height:1.55">Can be carried with you. Cattle were currency once; they failed this.</span></li>
-    <li style="background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:0.95rem 1.1rem"><strong style="color:#fff;font-weight:500">4 · Divisible</strong><br><span style="font-size:0.8rem;color:var(--text-dim);line-height:1.55">Can be split into smaller units without losing value per unit.</span></li>
-    <li style="background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:0.95rem 1.1rem"><strong style="color:#fff;font-weight:500">5 · Fungible & durable</strong><br><span style="font-size:0.8rem;color:var(--text-dim);line-height:1.55">Each unit is interchangeable; the thing itself doesn't decay.</span></li>
-    <li style="background:var(--card-bg);border:1px solid var(--gold);border-radius:4px;padding:0.95rem 1.1rem"><strong style="color:var(--gold);font-weight:500">6 · Store of value</strong><br><span style="font-size:0.8rem;color:var(--text-dim);line-height:1.55">Holds purchasing power across decades. <em>This is what currency lacks.</em></span></li>
+  <h3 style="margin-top: 2.5rem; font-size: 0.62rem; letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold-light); font-family: var(--body); font-style: normal; font-weight: 400; opacity: 0.85;">— The six attributes of money</h3>
+  <p style="font-size: 0.9rem; max-width: 60ch; color: rgba(245, 248, 251, 0.72);">
+    Maloney's checklist. A medium that meets all six is money. One that meets only the first
+    five is currency.
+  </p>
+  <ol class="attrs">
+    <li><span class="num">i</span><strong>Medium of exchange</strong>Accepted in trade for goods and services.</li>
+    <li><span class="num">ii</span><strong>Unit of account</strong>A common measure that lets you compare prices across goods.</li>
+    <li><span class="num">iii</span><strong>Portable</strong>Can be carried with you. Cattle were currency once. They failed this.</li>
+    <li><span class="num">iv</span><strong>Divisible</strong>Can be split into smaller units without losing value per unit.</li>
+    <li><span class="num">v</span><strong>Fungible &amp; durable</strong>Each unit interchangeable. The thing itself does not decay.</li>
+    <li class="gold-marked"><span class="num">vi</span><strong>Store of value</strong>Holds purchasing power across decades. <em>This is what currency lacks.</em></li>
   </ol>
-  <p style="font-size:0.85rem;color:var(--text-dim);max-width:780px;margin-bottom:0.5rem">Want the long version? Watch <a href="../watch/index.html" style="color:var(--accent)">Hidden Secrets of Money</a> — Maloney's 10-episode series, now in the FRQNCY Watch library.</p>
+
+  <p style="margin-top: 1.5rem;">
+    Want the long version? Watch <a href="/v2/watch/">Hidden Secrets of Money</a> — Maloney's
+    ten-episode series, viewable from the FRQNCY Watch library.
+  </p>
 </section>
-  <section>
-  <div class="section-label">FRQNCY Picks — Money</div>
-  <div class="empty"><p>FRQNCY is curating this space.<br>Resources coming soon.</p></div>
+
+<section class="section fade-up">
+  <span class="label">III · The flow</span>
+  <h2>Money <strong>circulates,</strong> or it stagnates.</h2>
+  <p class="lede">
+    Treat money as energy and the rules become physical. Stagnant water rots. Hoarded money rots
+    in a different way — it loses connection to the service that earned it, and gradually
+    distorts the holder. Reckless spending dissipates it. The middle path is circulation:
+    receive, hold, spend, give, in proportions calibrated to your season.
+  </p>
+
+  <div class="flow-feature">
+    <svg class="flow-feature-svg" viewBox="-100 -100 200 200" aria-hidden="true">
+      <defs>
+        <radialGradient id="ffFill" cx="50%" cy="50%" r="55%">
+          <stop offset="0%"  stop-color="#C4973A" stop-opacity="0.18"/>
+          <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.04"/>
+          <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <circle cx="0" cy="0" r="95" fill="url(#ffFill)"/>
+      <g class="flow-rotate">
+        <path d="M 0,-72 L 62,36 L -62,36 Z" fill="none"
+              stroke="rgba(196,151,58,0.6)" stroke-width="0.7" stroke-linejoin="round"/>
+        <polygon points="3,-65 -3,-65 0,-72" fill="rgba(196,151,58,0.85)"/>
+        <polygon points="58,29 58,38 65,33" fill="rgba(196,151,58,0.85)"/>
+        <polygon points="-58,29 -58,38 -65,33" fill="rgba(196,151,58,0.85)"/>
+        <text x="0" y="-82" text-anchor="middle"
+              font-family="Cormorant, serif" font-size="9" font-style="italic"
+              fill="rgba(245,248,251,0.85)">Service</text>
+        <text x="76" y="46" text-anchor="middle"
+              font-family="Cormorant, serif" font-size="9" font-style="italic"
+              fill="rgba(245,248,251,0.85)">Value</text>
+        <text x="-76" y="46" text-anchor="middle"
+              font-family="Cormorant, serif" font-size="9" font-style="italic"
+              fill="rgba(245,248,251,0.85)">Currency</text>
+      </g>
+      <g class="flow-rotate-rev">
+        <circle cx="0" cy="0" r="48" fill="none"
+                stroke="rgba(245,248,251,0.3)" stroke-width="0.4" stroke-dasharray="2 4"/>
+        <circle cx="0" cy="0" r="32" fill="none"
+                stroke="rgba(196,151,58,0.5)" stroke-width="0.5"/>
+      </g>
+      <circle cx="0" cy="0" r="20" fill="none" stroke="rgba(245,248,251,0.4)" stroke-width="0.6" class="flow-pulse-1"/>
+      <circle cx="0" cy="0" r="20" fill="none" stroke="rgba(196,151,58,0.55)" stroke-width="0.5" class="flow-pulse-2"/>
+      <circle cx="0" cy="0" r="20" fill="none" stroke="rgba(245,248,251,0.25)" stroke-width="0.4" class="flow-pulse-3"/>
+      <g>
+        <g class="flow-particle"><circle cx="56" cy="0" r="2.4" fill="#E0C06A"/></g>
+        <g class="flow-particle flow-particle-2"><circle cx="56" cy="0" r="1.9" fill="#E0C06A" opacity="0.7"/></g>
+        <g class="flow-particle flow-particle-3"><circle cx="56" cy="0" r="1.5" fill="#F5EBD8" opacity="0.55"/></g>
+      </g>
+      <circle cx="0" cy="0" r="3.5" fill="rgba(196,151,58,0.98)"/>
+      <circle cx="0" cy="0" r="10" fill="none" stroke="rgba(196,151,58,0.5)" stroke-width="0.4"/>
+    </svg>
+    <blockquote style="margin: 0; border-left: 0; padding: 0; max-width: 100%;">
+      The world is full of abundance, and abundance is what you create when you serve.
+      <cite>after Wallace Wattles</cite>
+    </blockquote>
+  </div>
+
+  <p>
+    The traditions that took money seriously also took giving seriously. The Jewish concept of
+    tithing. The Christian understanding of stewardship. The Islamic obligation of zakat. The
+    Buddhist practice of dāna. The various New Thought authors — Wattles, Hill, Holmes, Ponder —
+    all converging on the same observation. A person who can receive cleanly and give cleanly
+    builds a reliable monetary life. A person who only receives, or only gives, breaks the loop.
+  </p>
 </section>
-  <section>
-    <div class="section-label">Explore topics in Money</div>
-    <div class="grid grid-sm"><a href="../defi/index.html" class="ncard">
-  <div class="ncard-type">Topic</div>
-  <h3>DeFi</h3>
-  <p>Decentralised Finance — financial instruments and markets built on blockchain, withou…</p>
-  <span class="ncard-arrow">→</span>
-</a>
-<a href="../impact-investing/index.html" class="ncard">
-  <div class="ncard-type">Topic</div>
-  <h3>Impact Investing</h3>
-  <p>Capital directed toward measurable social and environmental outcomes alongside financ…</p>
-  <span class="ncard-arrow">→</span>
-</a>
-<a href="../conscious-capital/index.html" class="ncard">
-  <div class="ncard-type">Topic</div>
-  <h3>Conscious Capital</h3>
-  <p>Investment and finance as a force for good — capital aligned with values, not just re…</p>
-  <span class="ncard-arrow">→</span>
-</a>
-<a href="../dao/index.html" class="ncard">
-  <div class="ncard-type">Topic</div>
-  <h3>DAOs</h3>
-  <p>Decentralised Autonomous Organisations — internet-native entities governed by code an…</p>
-  <span class="ncard-arrow">→</span>
-</a>
-<a href="../crypto/index.html" class="ncard">
-  <div class="ncard-type">Topic</div>
-  <h3>Crypto</h3>
-  <p>Digital assets, monetary networks, and the new financial layer being built on top of …</p>
-  <span class="ncard-arrow">→</span>
-</a>
-<a href="../prosperity-mindset/index.html" class="ncard">
-  <div class="ncard-type">Topic</div>
-  <h3>Prosperity Mindset</h3>
-  <p>Wealth as a state of consciousness first — the philosophy, psychology, and practical …</p>
-  <span class="ncard-arrow">→</span>
-</a>
-<a href="../cards/index.html" class="ncard">
-  <div class="ncard-type">Topic</div>
-  <h3>Debit &amp; Credit Cards</h3>
-  <p>Cards that move with intention. Built for travel, for sovereignty, or for participati…</p>
-  <span class="ncard-arrow">→</span>
-</a></div>
-  </section>
+
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 2880 100" preserveAspectRatio="none">
+    <path class="w3" fill="rgba(196, 151, 58, 0.18)" d="M0,55 C144,28 288,28 432,45 C576,62 720,75 864,55 C1008,35 1152,28 1296,45 C1440,62 1584,75 1728,55 C1872,35 2016,28 2160,45 C2304,62 2448,75 2592,55 C2736,35 2808,38 2880,45 L2880,100 L0,100 Z"/>
+    <path class="w2" fill="rgba(196, 151, 58, 0.12)" d="M0,68 C144,52 288,52 432,60 C576,68 720,78 864,68 C1008,58 1152,52 1296,60 C1440,68 1584,78 1728,68 C1872,58 2016,52 2160,60 C2304,68 2448,78 2592,68 C2736,58 2808,60 2880,64 L2880,100 L0,100 Z"/>
+    <path class="w1" fill="rgba(245, 248, 251, 0.07)" d="M0,82 C144,74 288,74 432,78 C576,84 720,90 864,82 C1008,76 1152,74 1296,78 C1440,84 1584,90 1728,82 C1872,76 2016,74 2160,78 C2304,84 2448,90 2592,82 C2736,76 2808,76 2880,80 L2880,100 L0,100 Z"/>
+  </svg>
+</div>
+
+<section class="section fade-up">
+  <span class="label">IV · A warning</span>
+  <h2>Every fiat currency in history <strong>has gone to zero.</strong></h2>
+  <p>
+    Maloney's broader thesis: a society's quality is directly proportional to the quality of its
+    money. Debase the currency long enough and you get deficits, debt-driven crises, and
+    eventually delusional leaders. The pattern has repeated for 2,400 years. Each fiat currency
+    ever issued has gone to zero, has been replaced, or is in the process. The current dollar is
+    on that arc. The only debate is the timeline.
+  </p>
+  <p>
+    This is the contested layer. Mainstream economics treats fiat-backed-by-the-state as
+    permanent in a way the historical record does not support. Sound-money advocates take the
+    historical record as decisive. Bitcoin advocates take it as the basis for the first hard
+    monetary alternative in over a century. Each frame has its own evidence and its own blind
+    spots. Hold the question seriously. Diversify the form your savings take. Treat the dollar
+    as one tool, not the tool.
+  </p>
+  <blockquote>
+    A society's quality is directly proportional to the quality of its money.
+    <cite>Mike Maloney</cite>
+  </blockquote>
+  <p>
+    Practical reading. Some allocation in physical gold and silver — even small. Some allocation
+    in Bitcoin, if you have done the work to understand the trade. Some allocation in productive
+    real assets (land, housing you actually use, businesses that make things). Some currency
+    available for daily life. The exact mix depends on the season. The principle is to never be
+    100% in a single store of value, and especially not in the one that has historically failed
+    every time.
+  </p>
+</section>
+
+<section class="section fade-up">
+  <span class="label">A practice</span>
+  <h2>Five small things, repeated.</h2>
+  <p>
+    Money work is not theoretical. The principles compound only when applied. Five small things
+    that change what money does in a life:
+  </p>
+
+  <div class="practice">
+    <div class="step">
+      <div class="step-num">i</div>
+      <div class="step-body">
+        <strong>Track every dollar in and out for 30 days.</strong>
+        <p>No app required. A spreadsheet, a pen, a kitchen-table envelope system. The exercise
+        is not budgeting. It is honesty. Most people have no felt sense of where their money
+        goes until they have written it down. After thirty days the felt sense returns, and almost
+        no further action is required for spending to align with what actually matters.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">ii</div>
+      <div class="step-body">
+        <strong>Identify your service.</strong>
+        <p>What problem do you solve, in one sentence, for whom, that they would pay to have
+        solved? Most people cannot answer this in fewer than five sentences. Refining it to one
+        is more financially useful than any negotiation tactic.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">iii</div>
+      <div class="step-body">
+        <strong>Give first, ten percent.</strong>
+        <p>Tithing is the oldest financial practice on Earth. The mechanism is not religious. It
+        is psychological — money you give willingly to causes you actually care about resets your
+        relationship to scarcity faster than any affirmation. Start with ten percent of after-tax
+        income for ninety days. Notice what changes.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">iv</div>
+      <div class="step-body">
+        <strong>Hold something you cannot easily spend.</strong>
+        <p>A small gold coin. A modest amount of Bitcoin. A productive asset that pays in
+        something other than cash. The point is not return. The point is to feel what holding
+        actual money — the kind that does not vanish — does to the nervous system.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">v</div>
+      <div class="step-body">
+        <strong>Read one classic per quarter.</strong>
+        <p>Wattles, Hill, Lapin, Maloney, Kiyosaki, Trudeau on debt. The frameworks compound
+        more than the individual tactics. A book a quarter is enough. An obsession is not
+        required.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="section section-wide fade-up">
+  <span class="label">FRQNCY picks</span>
+  <h2>The classics, the current, the <strong>contested.</strong></h2>
+  <p style="max-width: 60ch;">
+    A small list, kept honest. Each entry below has been studied or used long enough to have an
+    opinion about. See <a href="/aligned/">Aligned Goods</a> for the full curated list and the
+    <a href="/proposals/EDITORIAL-STANDARDS.md">editorial standards</a> that govern how a pick gets made.
+  </p>
+
+  <div class="picks">
+    <div class="pick">
+      <div class="pick-eyebrow">Series · ✦ pick</div>
+      <h4>Hidden Secrets of Money</h4>
+      <p>
+        Mike Maloney's ten-episode documentary — currency vs money, the seven stages of empire,
+        fractional-reserve banking, the velocity shockwave, Bitcoin in monetary context. The
+        cleanest single resource on what money actually is. All ten episodes live on FRQNCY's
+        Watch library.
+      </p>
+      <a class="pick-link" href="/v2/watch/">Open Watch →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Book · ✦ pick</div>
+      <h4>The Science of Getting Rich</h4>
+      <p>
+        Wallace D. Wattles, 1910. The clearest statement ever made of the Certain Way of Thinking
+        — service as the substrate, abundance as the field, specificity as the discipline. The
+        book Rhonda Byrne's <em>The Secret</em> was based on, in a third of the words and twice
+        the precision.
+      </p>
+      <a class="pick-link" href="https://www.goodreads.com/book/show/164897.The_Science_of_Getting_Rich" target="_blank" rel="noopener noreferrer">Find the book →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Book</div>
+      <h4>Think and Grow Rich</h4>
+      <p>
+        Napoleon Hill, 1937. The thirteen principles distilled from twenty years of interviewing
+        the wealthiest people in America. Definite chief aim. Mastermind. Persistence. Some
+        chapters dated; the framework has out-survived its century.
+      </p>
+      <a class="pick-link" href="https://www.goodreads.com/book/show/30186948-think-and-grow-rich" target="_blank" rel="noopener noreferrer">Find the book →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Book</div>
+      <h4>Thou Shall Prosper</h4>
+      <p>
+        Rabbi Daniel Lapin's ten commandments for making money — the philosophical and practical
+        wisdom of three thousand years of Jewish commercial culture. "Money is a certificate of
+        appreciation" comes from this book. Read it slowly.
+      </p>
+      <a class="pick-link" href="https://rabbidaniellapin.com/product/thou-shall-prosper-hardcover-book/" target="_blank" rel="noopener noreferrer">Find the book →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Book</div>
+      <h4>Rich Dad Poor Dad</h4>
+      <p>
+        Robert Kiyosaki, 1997. The popular gateway to financial literacy. Assets versus
+        liabilities. Working for money versus money working for you. Some specifics dated. The
+        cognitive shift it produces in first-time readers is well-documented.
+      </p>
+      <a class="pick-link" href="https://www.goodreads.com/book/show/69571.Rich_Dad_Poor_Dad" target="_blank" rel="noopener noreferrer">Find the book →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Book</div>
+      <h4>The Art of Money Getting</h4>
+      <p>
+        P.T. Barnum, 1880. The original American money manual, written by a man who lost
+        everything twice and rebuilt it both times. Most of the principles still apply. Some of
+        the language is gloriously of its century. Free in the public domain.
+      </p>
+      <a class="pick-link" href="https://www.gutenberg.org/ebooks/8581" target="_blank" rel="noopener noreferrer">Read free →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Person</div>
+      <h4>Napoleon Hill</h4>
+      <p>
+        The first systematic researcher of wealth as a science. <em>Think and Grow Rich</em>,
+        plus the longer companion <em>Law of Success</em>. His audio lectures on definite chief
+        aim, mastermind, and the master key are among the most consequential business writings
+        of the twentieth century.
+      </p>
+      <a class="pick-link" href="/people/napoleon-hill/">Profile →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Person</div>
+      <h4>Kevin Trudeau · Debt &amp; Free Money</h4>
+      <p>
+        Trudeau's two practical-finance books — <em>Debt Cures</em> and <em>Free Money They
+        Don't Want You to Know About</em> — are the most concrete books in his canon. Credit
+        repair tactics, government-grant directories, debt renegotiation. Less metaphysical,
+        more verifiable. <em>Take with the discernment Trudeau requires.</em>
+      </p>
+      <a class="pick-link" href="/people/kevin-trudeau/">Profile →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-wide fade-up">
+  <span class="label">More from the library</span>
+  <h2>Adjacent reading, <strong>across the network.</strong></h2>
+  <p style="max-width: 60ch;">
+    Money sits next to several other FRQNCY topics. Related libraries have been carried over —
+    twenty entries on <a href="/v2/prosperity-mindset/">Prosperity Mindset</a> alone (Hill's
+    <em>Master Key to Riches</em>, Hawkins' <em>Success Is For You</em>, Charles Fillmore's
+    <em>Prosperity</em>), thirty-seven entries on <a href="/v2/manifestation/">Manifestation</a>
+    (the Neville Goddard catalogue, James Allen, Pam Grout, the New Thought lineage). The shape
+    of the answer is rarely on a single page.
+  </p>
+
+  <ul class="attrs">
+    <li><strong>Prosperity Mindset</strong>20 entries — Hill, Fillmore, Hawkins, Getty, Kiyosaki, Russell Simmons, the New Thought tradition.</li>
+    <li><strong>Manifestation</strong>37 entries — Neville Goddard's complete works, James Allen, Pam Grout, Ernest Holmes.</li>
+    <li><strong>Conscious Capital</strong>Capital aligned with values. The bridge between this page and the Fund.</li>
+    <li><strong>DeFi · DAOs · Crypto</strong>The technical edge of the new monetary architecture. Where money moves toward sovereignty.</li>
+    <li><strong>The Watch library</strong>Hidden Secrets of Money plus dozens of teacher channels. Listening as a financial practice.</li>
+    <li class="gold-marked"><strong>The Fund</strong>FRQNCY's own deal-flow vehicle. Capital as a force for conscious civilisation.</li>
+  </ul>
+</section>
+
 </main>
-<footer style="border-top:1px solid rgba(255,255,255,0.06);padding:32px clamp(1.25rem,6vw,2.5rem);text-align:center;margin-top:3rem">
-  <span style="font-family:'Cormorant',serif;font-weight:300;font-size:16px;letter-spacing:0.3em;color:rgba(255,255,255,0.5);text-transform:uppercase">FRQNCY</span>
-  <br>
-  <span style="font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-top:6px;display:inline-block">&copy; 2026 FRQNCY &middot; All frequencies reserved</span>
+
+<section class="closing fade-up">
+  <div class="closing-bg" aria-hidden="true"></div>
+  <div class="closing-inner">
+    <p>
+      Treat money as the work and you become a hoarder.<br>
+      Treat money as the help and you become a servant.<br>
+      <em>Treat money as the receipt — and it starts moving the way it was meant to.</em>
+    </p>
+    <p style="font-size: clamp(1.7rem, 2.8vw, 2.4rem); margin-top: 1.5rem;">
+      <strong>Be of service.</strong>
+    </p>
+    <cite>FRQNCY</cite>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <span class="wm">FRQNCY</span>
+  <span class="legal">© 2026 · All frequencies reserved · Topic 0003 of 146 · The artwork continues</span>
 </footer>
-</body></html>
+
+<script>
+(function () {
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>

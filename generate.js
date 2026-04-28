@@ -23,7 +23,10 @@ const OUT       = path.join(ROOT, 'v2');
 // or pass --force-regen-fund (etc.) — not implemented yet, add when needed.
 const BESPOKE_PILLARS = new Set(['fund']);
 const BESPOKE_DOMAINS = new Set();
-const BESPOKE_TOPICS  = new Set();
+// Commissioned topic pages (the artwork) — each is a unique piece, not a template.
+// See proposals/TOPIC-COMMISSION-CONTEXT-GRAPH.md for the procedure that builds them.
+// Add a slug here as soon as a topic is commissioned, BEFORE the next regen run.
+const BESPOKE_TOPICS  = new Set(['water', 'music', 'money']);
 
 // ── Entity beds (world model, v1) ────────────────────────────────
 // First-class lists of people, books, orgs, and media. Each entity declares
@@ -543,10 +546,10 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   .rcard{grid-template-columns:1fr}
   .rlink{grid-column:1}
   .section-label{font-size:0.6rem}
-  /* snav links stay visible below 400px so People/Books/Orgs/Media/Places
-     remain reachable from every deep page on narrow phones. Wrapping handled
-     by flex-wrap on the container. */
-  .snav > div:last-child{flex-wrap:wrap;gap:0.4rem;justify-content:flex-end}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
   .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 `;
@@ -570,8 +573,11 @@ document.querySelectorAll('.ftab').forEach(btn=>{
 function nav(crumbHtml) {
   // Absolute paths so the nav works on any generated page regardless of
   // depth (v2/[topic]/, people/[slug]/, books/[slug]/, etc.).
-  // Compact hub links for People / Books / Orgs / Media / Places so readers
-  // can cross the world model without detouring through the homepage.
+  //
+  // 2026-04-28 (per WEBSITE-FEEDBACK item #1): collapsed the per-page chiplet
+  // row from 8 (People/Books/Orgs/Media/Music/Places/Search/← Main) to 2
+  // (Search + ← Main). Bed-hub navigation now lives in the main site header
+  // dropdown — it doesn't need to compete with the topic name on every page.
   const hubLinkStyle = "border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em";
   return `<nav class="snav">
   <div class="snav-left">
@@ -579,12 +585,6 @@ function nav(crumbHtml) {
     ${crumbHtml ? `<div class="breadcrumb">${crumbHtml}</div>` : ''}
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="${hubLinkStyle}">People</a>
-    <a href="/books/"  class="snav-back" style="${hubLinkStyle}">Books</a>
-    <a href="/orgs/"   class="snav-back" style="${hubLinkStyle}">Orgs</a>
-    <a href="/media/"  class="snav-back" style="${hubLinkStyle}">Media</a>
-    <a href="/music/"  class="snav-back" style="${hubLinkStyle}">Music</a>
-    <a href="/places/" class="snav-back" style="${hubLinkStyle}">Places</a>
     <a href="/search" class="snav-back" style="${hubLinkStyle}">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>

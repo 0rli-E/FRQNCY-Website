@@ -229,13 +229,14 @@ Save bandwidth, save mobile data. The IntersectionObserver pause/play snippet is
 
 ## 8 · Build, ship, iterate
 
-1. **Write the page** to `v2/<slug>/index.html`. Replace any prior templated content.
-2. **Voice pass** — apply the checklist in §6 before any preview.
-3. **Commit** with a message naming the topic number and the seed phrase.
-4. **Deploy** via `wrangler pages deploy . --project-name=frqncy-website --commit-dirty=true`.
-5. **Operator review** — operator opens production, names what feels off.
-6. **Iterate** — apply notes, redeploy. The first commission (water) took ~2 iterations after first-look. Expect roughly the same per topic.
-7. **Lock** — when operator says it's right, the topic graduates from "scaffolded" to "commissioned" in `BACKEND-STATUS.md`.
+1. **Add the slug to `BESPOKE_TOPICS` in `generate.js`** — *critical step*. The site has a static-site generator that re-renders every templated topic page from `search.json`. Without this addition, the next regen run silently overwrites the commissioned page from the template. The set lives near the top of `generate.js`. Add the slug *before* writing the page.
+2. **Write the page** to `v2/<slug>/index.html`. Replace any prior templated content.
+3. **Voice pass** — apply the checklist in §6 before any preview.
+4. **Commit** with a message naming the topic number and the seed phrase.
+5. **Deploy** via `wrangler pages deploy . --project-name=frqncy-website --commit-dirty=true`.
+6. **Operator review** — operator opens production, names what feels off.
+7. **Iterate** — apply notes, redeploy. The first commission (water) took ~2 iterations after first-look. Expect roughly the same per topic.
+8. **Lock** — when operator says it's right, the topic graduates from "scaffolded" to "commissioned" in `BACKEND-STATUS.md`.
 
 ---
 
@@ -259,9 +260,10 @@ Until the harness can do this autonomously, the procedure is run by hand, with t
 
 | # | Topic | Slug | Seed phrase | Shipped | Iterations | Notes |
 |---|---|---|---|---|---|---|
-| 0001 | Water | `water` | "crystals in motion" | 2026-04-28 | TBD | Reference commission — sets the precedent. |
-| 0002 | Crypto | `crypto` | "freedom technology" | — | — | Editorial seed already locked: "Crypto is freedom technology" + the six Bitcoin properties already on the page. |
-| 0003 | — | — | — | — | — | — |
+| 0001 | Water | `water` | "crystals in motion" | 2026-04-28 | 2 | Reference commission — sets the precedent. |
+| 0002 | Music | `music` | "frequency made audible" | 2026-04-28 | 1 | Cymatic motif as visual signature. Analog-vs-digital split + lyric loop are the user-requested anchors. |
+| 0003 | Money | `money` | "energy you create by being of service" | 2026-04-28 | 1 | Service-as-source frame. Maloney's currency-vs-money + six attributes preserved. Triangular flow SVG (service → value → exchange) as visual signature. |
+| 0004 | Crypto | `crypto` | "freedom technology" | — | — | Editorial seed already locked: "Crypto is freedom technology" + the six Bitcoin properties already on the page. |
 
 Update this log when each commission ships.
 
