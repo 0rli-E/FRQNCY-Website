@@ -28,7 +28,10 @@ const BESPOKE_PILLARS = new Set(['fund']);
 // Whether to add it to DOMAINS or TOPICS depends on its id prefix in content.json:
 //   d-<slug> → BESPOKE_DOMAINS · t-<slug> → BESPOKE_TOPICS.
 const BESPOKE_DOMAINS = new Set(['money', 'wellbeing']);
-const BESPOKE_TOPICS  = new Set(['water', 'music']);
+// 'cryptocurrency' is a redirect stub merged into the 'crypto' hub — keep it
+// short. 'audio' carries a hand-injected listening section (Strangest Secret
+// iframe) that the topicPage() template can't reproduce.
+const BESPOKE_TOPICS  = new Set(['water', 'music', 'audio', 'cryptocurrency']);
 
 // ── Entity beds (world model, v1) ────────────────────────────────
 // First-class lists of people, books, orgs, and media. Each entity declares
@@ -2211,9 +2214,10 @@ if (PLACES) for (const pl of PLACES.places) {
   const internalUrl = `/places/${placeSlug(pl)}/`;
   for (const tid of (pl.appears_in || [])) emitResource(pl, 'place', tid, { url: internalUrl, external: pl.url || '' });
 }
-// Non-bed types (tools, courses, platforms, apps, websites, references, articles)
-// from content.json's original topic resource arrays
-const leftoverTypes = new Set(['tool', 'course', 'platform', 'app', 'website', 'reference', 'article']);
+// Non-bed types from content.json's original topic resource arrays.
+// 'recording' covers historical audio (e.g. The Strangest Secret) — without
+// it, those entries vanish from resources.json on regen and fall out of the KB.
+const leftoverTypes = new Set(['tool', 'course', 'platform', 'app', 'website', 'reference', 'article', 'recording']);
 for (const [bucketId, items] of Object.entries(DATA.resources)) {
   if (!bucketId.startsWith('t-')) continue; // topic-level only
   for (const r of items || []) {
