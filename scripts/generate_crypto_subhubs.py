@@ -808,7 +808,8 @@ def esc(s: str) -> str:
 
 def render_project(p: dict) -> str:
     name = esc(p.get("name", ""))
-    ticker = esc(p.get("ticker", ""))
+    ticker = (p.get("ticker") or "").strip()
+    ticker_safe = esc(ticker)
     tier = p.get("tier", "unrated")
     tags = p.get("categories", [])
     tags = [t for t in tags if t and t != "Other"][:2]
@@ -816,25 +817,55 @@ def render_project(p: dict) -> str:
     initials = (p.get("name") or "??")[:2].upper()
     desc = esc(p.get("desc", "")[:240])
     why = esc((p.get("thesis") or "")[:260])
-    link = esc((p.get("links") or {}).get("website") or "")
+    links = p.get("links") or {}
+    link = esc(links.get("website") or "")
+    twitter = links.get("twitter") or ""
+    docs = links.get("docs") or ""
     link_label = re.sub(r"^https?://(?:www\.)?", "", link).rstrip("/").split("/")[0] if link else ""
     accent = esc(p.get("accent") or "#F7931A")
+    chain = (p.get("chain") or "").strip()
+    chain_html = f'<span class="project-chain">{esc(chain)}</span>' if chain else ""
     cat = esc(tags[0] if tags else (p.get("category") or "Crypto"))
     why_block = (
         f'<div class="project-why"><strong>Why FRQNCY watches this</strong>{why}</div>' if why else ""
     )
-    foot_link = (
-        f'<a class="project-link" href="{link}" target="_blank" rel="noopener noreferrer">{esc(link_label)} →</a>'
-        if link else '<span class="project-cat" style="opacity:0.4">no website</span>'
-    )
+
+    # Logo (cryptocurrency-icons CDN with onerror fallback to initials)
+    if ticker:
+        logo_url = f"https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/{ticker.lower()}.svg"
+        icon_html = (
+            f'<div class="project-icon" style="background:linear-gradient(135deg,{accent}40,{accent}20);'
+            f'border:1px solid {accent}50">'
+            f'<img src="{logo_url}" alt="{name}" loading="lazy"'
+            f' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+            f'<span class="project-icon-fallback" style="display:none">{esc(initials)}</span></div>'
+        )
+    else:
+        icon_html = (
+            f'<div class="project-icon" style="background:linear-gradient(135deg,{accent}40,{accent}20);'
+            f'border:1px solid {accent}50">{esc(initials)}</div>'
+        )
+
+    # Footer links: website + twitter + docs (where present)
+    foot_links = []
+    if link:
+        foot_links.append(f'<a class="project-link" href="{link}" target="_blank" rel="noopener noreferrer">{esc(link_label)} →</a>')
+    if twitter:
+        foot_links.append(f'<a class="project-aux" href="{esc(twitter)}" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a>')
+    if docs:
+        foot_links.append(f'<a class="project-aux" href="{esc(docs)}" target="_blank" rel="noopener noreferrer" title="Docs">docs</a>')
+    if not foot_links:
+        foot_links.append('<span class="project-cat" style="opacity:0.4">no website</span>')
+    foot_html = "".join(foot_links)
+
     return f"""<article class="project" data-tier="{esc(tier)}">
   <div class="project-accent" style="background:{accent}"></div>
   <div class="project-body">
     <div class="project-head">
-      <div class="project-icon" style="background:linear-gradient(135deg,{accent}40,{accent}20);border:1px solid {accent}50">{esc(initials)}</div>
+      {icon_html}
       <div class="project-meta">
         <div class="project-name">{name}</div>
-        <div class="project-ticker">{ticker}</div>
+        <div class="project-ticker">{ticker_safe}{('  ·  ' + chain_html) if chain else ''}</div>
       </div>
       <span class="project-tier tier-{esc(tier)}">{esc(tier)}</span>
     </div>
@@ -843,10 +874,59 @@ def render_project(p: dict) -> str:
     {why_block}
   </div>
   <div class="project-foot">
-    {foot_link}
+    <span class="project-foot-links">{foot_html}</span>
     <span class="project-cat">{cat}</span>
   </div>
 </article>"""
+
+
+def render_ticker_rail(projects: list[dict], limit: int = 8) -> str:
+    """CoinGecko-style horizontal rail of project ticker badges. Logos sourced
+    from cryptocurrency-icons jsDelivr CDN keyed by lowercased ticker;
+    falls back to a coloured initial circle when no logo exists."""
+    rank = {"core": 0, "conviction": 1, "watch": 2, "speculative": 3, "unrated": 4, "avoid": 9}
+    tops = sorted(projects, key=lambda p: rank.get(p.get("tier", "unrated"), 9))[:limit]
+    if not tops:
+        return ""
+    items = []
+    for p in tops:
+        name = esc(p.get("name", ""))
+        ticker = (p.get("ticker") or "").strip()
+        accent = esc(p.get("accent") or "#7B61FF")
+        link = (p.get("links") or {}).get("website") or ""
+        logo_url = (
+            f"https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/{ticker.lower()}.svg"
+            if ticker else ""
+        )
+        initials = (p.get("name") or "??")[:2].upper()
+        ticker_html = esc(ticker) if ticker else ""
+        if logo_url:
+            avatar = (
+                f'<span class="tk-avatar" style="background:linear-gradient(135deg,{accent}30,{accent}10);'
+                f'border:1px solid {accent}55">'
+                f'<img src="{logo_url}" alt="{name}" loading="lazy"'
+                f' onerror="this.style.display=\'none\';this.nextElementSibling.style.display=\'flex\'">'
+                f'<span class="tk-fallback" style="display:none;color:{accent}">{esc(initials)}</span></span>'
+            )
+        else:
+            avatar = (
+                f'<span class="tk-avatar" style="background:linear-gradient(135deg,{accent}30,{accent}10);'
+                f'border:1px solid {accent}55;color:{accent}">{esc(initials)}</span>'
+            )
+        if link:
+            shell_open = f'<a class="tk-card" href="{esc(link)}" target="_blank" rel="noopener noreferrer">'
+            shell_close = '</a>'
+        else:
+            shell_open = '<span class="tk-card">'
+            shell_close = '</span>'
+        items.append(
+            f'{shell_open}{avatar}'
+            f'<span class="tk-meta">'
+            f'<span class="tk-ticker" style="color:{accent}">{ticker_html}</span>'
+            f'<span class="tk-name">{name}</span>'
+            f'</span>{shell_close}'
+        )
+    return f'<div class="ticker-rail">{"".join(items)}</div>'
 
 
 def render_tier_bar(projects: list[dict]) -> str:
@@ -1082,7 +1162,11 @@ def render_page(slug: str, cfg: dict) -> str:
             'sub-hub awaiting curation. The thesis above stands; the working set will land here.</div>'
         )
     else:
-        project_block = render_tier_bar(projects) + f'<div class="projects-grid" id="projects">{project_html}</div>'
+        project_block = (
+            render_ticker_rail(projects, limit=8)
+            + render_tier_bar(projects)
+            + f'<div class="projects-grid" id="projects">{project_html}</div>'
+        )
 
     practice_html = render_practice(cfg["practice"])
     closing_html = render_closing(closing, warm)
