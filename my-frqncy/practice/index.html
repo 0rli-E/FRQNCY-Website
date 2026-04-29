@@ -1,0 +1,632 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0B1C3D">
+<meta name="robots" content="noindex">
+<title>Practice · FRQNCY</title>
+<meta name="description" content="The Sanctuary daily practice loop. Sit. Note. Continue. Practices are experiments, never assignments.">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--navy-light:#112860;--navy-deep:#08152F;
+  --gold:#C4973A;--gold-light:#E0C06A;--gold-dim:rgba(196,151,58,0.35);
+  --text:#C8D8F0;--text-dim:#7090B8;--text-faint:#4A6280;
+  --accent:#4A7AE8;--good:#5BC79A;--warn:#E8B04A;--bad:#E47878;
+  --card:rgba(255,255,255,0.025);--card-hover:rgba(255,255,255,0.05);
+  --card-border:rgba(255,255,255,0.08);--card-border-hover:rgba(255,255,255,0.15);
+}
+html,body{
+  background:var(--navy);color:var(--text);
+  font-family:'Jost',sans-serif;font-weight:300;
+  min-height:100vh;line-height:1.6;
+  -webkit-font-smoothing:antialiased;
+}
+body{padding-top:56px;padding-bottom:80px}
+a{color:inherit;text-decoration:none}
+button{font-family:inherit;background:none;border:none;color:inherit;cursor:pointer}
+input,textarea{font-family:inherit;color:inherit;background:none;border:none;outline:none;width:100%}
+::selection{background:var(--gold);color:var(--navy)}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--card-border);
+  padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;opacity:0.85}
+.nav-links{list-style:none;display:flex;align-items:center;gap:1.5rem}
+.nav-links a{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+@media(max-width:780px){.nav-links{display:none}}
+
+/* ── LAYOUT ── */
+.wrap{max-width:980px;margin:0 auto;padding:2rem clamp(1rem,3vw,2rem)}
+.hero{margin:0.5rem 0 2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--card-border)}
+.hero h1{
+  font-family:'Cormorant',serif;font-weight:300;
+  font-size:clamp(2.2rem,5vw,3.4rem);color:#fff;letter-spacing:0.02em;
+  line-height:1.05;
+}
+.hero h1 em{font-style:italic;color:var(--gold-light);font-weight:400}
+.hero .sub{
+  color:var(--text-dim);font-size:0.9rem;margin-top:0.7rem;letter-spacing:0.03em;
+  max-width:54ch;line-height:1.55;
+}
+
+/* ── BUTTON ── */
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;
+  font-family:'Jost',sans-serif;font-weight:400;
+  font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;
+  padding:0.65rem 1.1rem 0.65rem 1.28rem;
+  border-radius:3px;line-height:1;white-space:nowrap;
+  border:1px solid rgba(196,151,58,0.22);color:var(--gold-light);
+  background:rgba(196,151,58,0.04);
+  cursor:pointer;transition:border-color .18s,background .18s,color .18s,transform .12s;
+}
+.btn:hover{border-color:var(--gold);color:#fff;background:rgba(196,151,58,0.12)}
+.btn:disabled{opacity:0.45;cursor:not-allowed}
+.btn-gold{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.08)}
+.btn-gold:hover{background:rgba(196,151,58,0.18);color:#fff}
+.btn-ghost{border-color:rgba(255,255,255,0.14);color:var(--text-dim);background:transparent}
+.btn-ghost:hover{border-color:rgba(255,255,255,0.3);color:#fff}
+
+/* ── SECTION ── */
+.section{margin:2.5rem 0}
+.section h2{
+  font-family:'Cormorant',serif;font-weight:400;font-size:1.5rem;
+  color:#fff;letter-spacing:0.04em;margin-bottom:0.4rem;
+}
+.section .section-sub{color:var(--text-dim);font-size:0.78rem;letter-spacing:0.04em;margin-bottom:1.25rem}
+
+/* ── SUGGESTION CARD ── */
+.suggestion-card{
+  position:relative;overflow:hidden;
+  padding:1.6rem 1.8rem;
+  border:1px solid rgba(196,151,58,0.36);border-radius:4px;
+  background:linear-gradient(135deg,rgba(196,151,58,0.07) 0%,rgba(11,16,32,0.3) 60%);
+}
+.suggestion-card::before{
+  content:"";position:absolute;top:0;right:0;width:200px;height:100%;
+  background:radial-gradient(ellipse at top right,rgba(224,192,106,0.12),transparent 70%);
+  pointer-events:none;
+}
+.suggestion-eyebrow{
+  font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);
+  margin-bottom:0.5rem;
+}
+.suggestion-headline{
+  font-family:'Cormorant',serif;font-weight:300;font-size:1.9rem;
+  color:#fff;line-height:1.15;margin-bottom:0.4rem;
+}
+.suggestion-headline em{font-style:italic;color:var(--gold-light)}
+.suggestion-subline{color:var(--text);font-size:0.95rem;max-width:54ch;line-height:1.55;margin-bottom:0.5rem}
+.suggestion-meta{
+  font-size:0.72rem;color:var(--text-dim);letter-spacing:0.05em;
+  display:flex;flex-wrap:wrap;align-items:center;gap:0.7rem;margin-bottom:1.1rem;
+}
+.suggestion-meta .dot{width:3px;height:3px;border-radius:50%;background:var(--text-faint);display:inline-block}
+.suggestion-actions{display:flex;flex-wrap:wrap;gap:0.6rem}
+.suggestion-why{
+  margin-top:0.9rem;padding-top:0.9rem;border-top:1px dashed var(--card-border);
+  font-size:0.72rem;color:var(--text-faint);font-style:italic;line-height:1.55;
+}
+
+/* ── TIMER ── */
+.timer-card{
+  display:none;flex-direction:column;align-items:center;gap:1.1rem;
+  padding:2rem 1.6rem;
+  border:1px solid var(--gold-dim);border-radius:4px;
+  background:linear-gradient(160deg,rgba(196,151,58,0.06) 0%,rgba(11,16,32,0.4) 100%);
+}
+.timer-card.active{display:flex}
+.timer-label{font-size:0.65rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
+.timer-name{font-family:'Cormorant',serif;font-weight:400;font-size:1.4rem;color:#fff}
+.ring-wrap{position:relative;width:200px;height:200px}
+.ring-wrap svg{transform:rotate(-90deg);width:100%;height:100%}
+.ring-bg{stroke:rgba(255,255,255,0.08);fill:none;stroke-width:6}
+.ring-fg{stroke:var(--gold);fill:none;stroke-width:6;stroke-linecap:round;transition:stroke-dashoffset .3s linear}
+.ring-time{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant',serif;font-size:2.6rem;color:#fff;font-weight:300;letter-spacing:0.02em;
+}
+.timer-actions{display:flex;flex-wrap:wrap;gap:0.6rem;justify-content:center}
+
+/* ── MOOD PROMPT ── */
+.mood-card{
+  display:none;flex-direction:column;gap:1rem;
+  padding:1.5rem 1.6rem;
+  border:1px solid var(--card-border);border-radius:4px;
+  background:var(--card);
+}
+.mood-card.active{display:flex}
+.mood-card h3{font-family:'Cormorant',serif;font-weight:400;font-size:1.25rem;color:#fff}
+.mood-card .mood-q{font-size:0.85rem;color:var(--text-dim);margin-bottom:0.4rem}
+.mood-row{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.mood-dot{
+  width:30px;height:30px;border-radius:50%;border:1px solid var(--card-border);
+  display:inline-flex;align-items:center;justify-content:center;
+  color:var(--text-dim);font-size:0.78rem;cursor:pointer;
+  transition:border-color .15s,background .15s,color .15s;
+  background:transparent;
+}
+.mood-dot:hover{border-color:var(--gold-dim);color:var(--text)}
+.mood-dot.selected{border-color:var(--gold);background:rgba(196,151,58,0.14);color:#fff}
+.mood-scale-label{font-size:0.65rem;color:var(--text-faint);letter-spacing:0.1em;text-transform:uppercase}
+.notes-input{
+  width:100%;padding:0.7rem 0.8rem;border:1px solid var(--card-border);border-radius:3px;
+  background:var(--navy-deep);color:var(--text);font-size:0.88rem;line-height:1.5;
+  resize:vertical;min-height:64px;
+}
+.notes-input:focus{border-color:var(--gold-dim)}
+
+/* ── PRACTICE GRID ── */
+.practice-grid{
+  display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.8rem;
+}
+.practice-card{
+  display:flex;flex-direction:column;gap:0.45rem;
+  padding:1.05rem 1.15rem;
+  border:1px solid var(--card-border);border-radius:3px;
+  background:var(--card);text-align:left;
+  transition:border-color .15s,background .15s,transform .12s;cursor:pointer;
+}
+.practice-card:hover{border-color:var(--gold-dim);background:var(--card-hover);transform:translateY(-1px)}
+.practice-card.selected{border-color:var(--gold);background:rgba(196,151,58,0.06)}
+.practice-label{
+  font-family:'Cormorant',serif;font-size:1.15rem;color:#fff;font-weight:400;letter-spacing:0.02em;
+}
+.practice-framing{font-size:0.78rem;color:var(--text-dim);line-height:1.5;flex:1}
+.practice-foot{
+  display:flex;align-items:center;justify-content:space-between;
+  margin-top:0.3rem;
+  font-size:0.62rem;color:var(--text-faint);letter-spacing:0.14em;text-transform:uppercase;
+}
+.practice-foot .topic-link{color:var(--gold-light);opacity:0.7}
+
+/* ── RECENT ── */
+.recent-list{display:flex;flex-direction:column;gap:0.55rem}
+.recent-row{
+  display:flex;align-items:center;justify-content:space-between;gap:0.8rem;
+  padding:0.8rem 1rem;
+  border:1px solid var(--card-border);border-radius:3px;
+  background:var(--card);
+}
+.recent-left{display:flex;align-items:center;gap:0.7rem;min-width:0}
+.recent-bullet{width:6px;height:6px;border-radius:50%;background:var(--gold);flex-shrink:0}
+.recent-name{color:#fff;font-size:0.92rem;letter-spacing:0.01em;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.recent-meta{font-size:0.72rem;color:var(--text-dim);letter-spacing:0.04em;white-space:nowrap}
+.recent-empty{
+  padding:1.2rem 1rem;border:1px dashed var(--card-border);border-radius:3px;
+  color:var(--text-faint);font-size:0.88rem;text-align:center;font-style:italic;
+}
+
+/* ── PRIVACY BANNER ── */
+.privacy{
+  display:inline-flex;align-items:center;gap:0.6rem;
+  padding:0.55rem 0.9rem;border:1px solid var(--card-border);border-radius:3px;
+  background:var(--card);color:var(--text-dim);font-size:0.74rem;
+  margin-bottom:1.5rem;
+}
+.privacy .lock{color:var(--gold)}
+
+/* ── SIGNED OUT ── */
+.signed-out{
+  padding:2.5rem 1.6rem;border:1px solid var(--card-border);border-radius:4px;
+  background:var(--card);text-align:center;
+}
+.signed-out h2{font-family:'Cormorant',serif;font-weight:300;font-size:1.6rem;color:#fff;margin-bottom:0.6rem}
+.signed-out p{color:var(--text-dim);font-size:0.9rem;max-width:48ch;margin:0 auto 1.2rem}
+
+/* ── LINK SCORE TO CHARTS ── */
+.charts-link{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  font-size:0.7rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold-light);
+}
+.charts-link:hover{color:#fff}
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="/" class="nav-logo">FRQNCY</a>
+  <ul class="nav-links">
+    <li><a href="/my-frqncy/">Constellation</a></li>
+    <li><a href="/my-frqncy/dashboard/">Sanctuary</a></li>
+    <li><a href="/my-frqncy/practice/" class="active">Practice</a></li>
+    <li><a href="/my-frqncy/charts/">Charts</a></li>
+  </ul>
+  <span id="frqncy-auth-pill"></span>
+</nav>
+
+<div class="wrap">
+
+  <header class="hero">
+    <h1>Today's <em>Practice</em></h1>
+    <p class="sub">Sit. Note. Continue. Practices are experiments, not prescriptions. Nothing here ranks you against anyone.</p>
+  </header>
+
+  <!-- Signed-out state -->
+  <div id="signed-out" class="signed-out" style="display:none">
+    <h2>Sign in to keep your practice</h2>
+    <p>Logs are private and live with your account. Sign in once and your practice follows you across devices — no comparison surface, no leaderboard.</p>
+    <a href="/social/login/?redirect=/my-frqncy/practice/" class="btn btn-gold">Sign in</a>
+  </div>
+
+  <!-- Signed-in state -->
+  <div id="signed-in" style="display:none">
+
+    <span class="privacy"><span class="lock">⚿</span> Only you see what's here.</span>
+
+    <!-- Suggestion -->
+    <section class="section">
+      <article id="suggestion-card" class="suggestion-card" aria-live="polite">
+        <div class="suggestion-eyebrow">Today's path</div>
+        <h2 id="sug-headline" class="suggestion-headline">Loading…</h2>
+        <p id="sug-subline" class="suggestion-subline"></p>
+        <div class="suggestion-meta">
+          <span id="sug-practice-name">—</span>
+          <span class="dot"></span>
+          <span id="sug-duration">—</span>
+        </div>
+        <div class="suggestion-actions">
+          <button id="begin-btn" class="btn btn-gold">Begin</button>
+          <button id="other-btn" class="btn btn-ghost">Or pick another</button>
+        </div>
+        <div id="sug-why" class="suggestion-why"></div>
+      </article>
+    </section>
+
+    <!-- Active timer -->
+    <section class="section">
+      <div id="timer-card" class="timer-card" aria-live="polite">
+        <div class="timer-label">In session</div>
+        <div id="timer-name" class="timer-name">Meditation</div>
+        <div class="ring-wrap">
+          <svg viewBox="0 0 100 100" aria-hidden="true">
+            <circle class="ring-bg" cx="50" cy="50" r="44"></circle>
+            <circle id="ring-fg" class="ring-fg" cx="50" cy="50" r="44"
+                    stroke-dasharray="276.46" stroke-dashoffset="0"></circle>
+          </svg>
+          <div id="ring-time" class="ring-time">25:00</div>
+        </div>
+        <div class="timer-actions">
+          <button id="stop-log-btn" class="btn btn-gold">Stop &amp; log</button>
+          <button id="stop-discard-btn" class="btn btn-ghost">Stop &amp; discard</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mood / notes prompt (shown after Stop & log) -->
+    <section class="section">
+      <div id="mood-card" class="mood-card">
+        <h3>How was that?</h3>
+        <div>
+          <div class="mood-q">Mood after — pick one (or skip).</div>
+          <div class="mood-row" id="mood-post-row">
+            <button class="mood-dot" data-mood="1">1</button>
+            <button class="mood-dot" data-mood="2">2</button>
+            <button class="mood-dot" data-mood="3">3</button>
+            <button class="mood-dot" data-mood="4">4</button>
+            <button class="mood-dot" data-mood="5">5</button>
+            <span class="mood-scale-label">low → high</span>
+          </div>
+        </div>
+        <div>
+          <div class="mood-q">Notes — anything you want to remember.</div>
+          <textarea id="notes-input" class="notes-input" placeholder="Optional. The page hears what the mind cannot."></textarea>
+        </div>
+        <div style="display:flex;gap:0.6rem;flex-wrap:wrap">
+          <button id="save-log-btn" class="btn btn-gold">Save</button>
+          <button id="skip-mood-btn" class="btn btn-ghost">Save without mood</button>
+        </div>
+      </div>
+    </section>
+
+    <!-- Practice grid -->
+    <section class="section" id="grid-section">
+      <h2>Or pick another</h2>
+      <div class="section-sub">Each is a doorway. None is the only one.</div>
+      <div id="practice-grid" class="practice-grid"></div>
+    </section>
+
+    <!-- Recent -->
+    <section class="section">
+      <h2>Recent</h2>
+      <div class="section-sub">Your last seven sessions. <a href="/my-frqncy/charts/" class="charts-link">See full charts →</a></div>
+      <div id="recent-list" class="recent-list">
+        <div class="recent-empty">No sessions logged yet. Begin one above.</div>
+      </div>
+    </section>
+
+  </div>
+
+</div>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/frqncy-supabase.js"></script>
+<script type="module">
+import {
+  CURATED_PRACTICES,
+  getPractice,
+  logSession,
+  listLogs,
+  getDailySuggestion,
+  relativeTime,
+} from '/assets/frqncy-practice.js';
+
+// ── State ─────────────────────────────────────────────────────────────────
+const state = {
+  selected: null,         // active Practice
+  durationMinutes: 25,    // selected duration for the next session
+  timer: {
+    intervalId: null,
+    startedAt: null,
+    plannedSeconds: 0,
+    endedSeconds: 0,
+    practice: null,
+  },
+  mood: { post: null },
+  pendingLog: null,       // { practice, started_at, durationMinutes }
+};
+
+// ── DOM refs ──────────────────────────────────────────────────────────────
+const $ = (id) => document.getElementById(id);
+const signedOut = $('signed-out');
+const signedIn  = $('signed-in');
+const sugHeadline = $('sug-headline');
+const sugSubline  = $('sug-subline');
+const sugPracticeName = $('sug-practice-name');
+const sugDuration = $('sug-duration');
+const sugWhy = $('sug-why');
+const beginBtn = $('begin-btn');
+const otherBtn = $('other-btn');
+const timerCard = $('timer-card');
+const timerName = $('timer-name');
+const ringFg = $('ring-fg');
+const ringTime = $('ring-time');
+const stopLogBtn = $('stop-log-btn');
+const stopDiscardBtn = $('stop-discard-btn');
+const moodCard = $('mood-card');
+const moodPostRow = $('mood-post-row');
+const notesInput = $('notes-input');
+const saveLogBtn = $('save-log-btn');
+const skipMoodBtn = $('skip-mood-btn');
+const practiceGrid = $('practice-grid');
+const recentList = $('recent-list');
+
+const RING_CIRCUMFERENCE = 2 * Math.PI * 44; // ≈276.46
+ringFg.setAttribute('stroke-dasharray', String(RING_CIRCUMFERENCE));
+ringFg.setAttribute('stroke-dashoffset', '0');
+
+// ── Auth gating ───────────────────────────────────────────────────────────
+async function bootstrap() {
+  await window.frqncy.ready;
+  window.frqncy.mountAuthPill(document.querySelector('#frqncy-auth-pill'));
+
+  const user = await window.frqncy.auth.getUser();
+  if (!user) {
+    signedOut.style.display = 'block';
+    signedIn.style.display  = 'none';
+    return;
+  }
+  signedOut.style.display = 'none';
+  signedIn.style.display  = 'block';
+
+  // Render the curated grid (always available)
+  renderGrid();
+
+  // Honor ?practice=<slug> from /my-frqncy "Today's path" handoff
+  const params = new URLSearchParams(location.search);
+  const fromSlug = params.get('practice');
+  let initialPractice = null;
+  if (fromSlug) initialPractice = getPractice(fromSlug);
+
+  if (initialPractice) {
+    setActivePractice(initialPractice);
+    renderSuggestion({
+      headline: 'Picking up the thread',
+      subline: initialPractice.framing,
+      practice: initialPractice,
+      durationMinutes: initialPractice.defaultDurationMinutes,
+      reasoning: 'Carried over from your constellation page.',
+    });
+  } else {
+    const sug = await getDailySuggestion();
+    setActivePractice(sug.practice);
+    state.durationMinutes = sug.durationMinutes;
+    renderSuggestion(sug);
+  }
+
+  await renderRecent();
+}
+
+// ── Render: suggestion ────────────────────────────────────────────────────
+function renderSuggestion(sug) {
+  sugHeadline.textContent = sug.headline;
+  sugSubline.textContent = sug.subline;
+  sugPracticeName.textContent = sug.practice.label;
+  sugDuration.textContent = `${sug.durationMinutes} min`;
+  sugWhy.textContent = `Why this: ${sug.reasoning}`;
+}
+
+// ── Render: practice grid ─────────────────────────────────────────────────
+function renderGrid() {
+  practiceGrid.innerHTML = CURATED_PRACTICES.map((p) => `
+    <button class="practice-card" data-slug="${p.slug}">
+      <div class="practice-label">${escapeHtml(p.label)}</div>
+      <div class="practice-framing">${escapeHtml(p.framing)}</div>
+      <div class="practice-foot">
+        <span>${p.defaultDurationMinutes} min</span>
+        ${p.topicSlug ? `<span class="topic-link">read →</span>` : ''}
+      </div>
+    </button>
+  `).join('');
+  practiceGrid.querySelectorAll('.practice-card').forEach((el) => {
+    el.addEventListener('click', () => {
+      const p = getPractice(el.dataset.slug);
+      if (!p) return;
+      setActivePractice(p);
+      state.durationMinutes = p.defaultDurationMinutes;
+      renderSuggestion({
+        headline: `${p.label}`,
+        subline: p.framing,
+        practice: p,
+        durationMinutes: p.defaultDurationMinutes,
+        reasoning: 'Chosen by you, just now.',
+      });
+      // Scroll back to suggestion so Begin is in view
+      document.getElementById('suggestion-card').scrollIntoView({ behavior: 'smooth', block: 'start' });
+    });
+  });
+}
+
+function setActivePractice(p) {
+  state.selected = p;
+  practiceGrid.querySelectorAll('.practice-card').forEach((el) => {
+    el.classList.toggle('selected', el.dataset.slug === p.slug);
+  });
+}
+
+// ── Render: recent ────────────────────────────────────────────────────────
+async function renderRecent() {
+  const logs = await listLogs({ limit: 7 });
+  if (!logs.length) {
+    recentList.innerHTML = '<div class="recent-empty">No sessions logged yet. Begin one above.</div>';
+    return;
+  }
+  recentList.innerHTML = logs.map((l) => {
+    const p = getPractice(l.practice_slug);
+    const name = p ? p.label : l.practice_slug;
+    return `
+      <div class="recent-row">
+        <div class="recent-left">
+          <span class="recent-bullet"></span>
+          <span class="recent-name">${escapeHtml(name)} · ${l.duration_minutes} min</span>
+        </div>
+        <span class="recent-meta">${escapeHtml(relativeTime(l.started_at))}</span>
+      </div>
+    `;
+  }).join('');
+}
+
+// ── Timer ─────────────────────────────────────────────────────────────────
+beginBtn.addEventListener('click', () => {
+  if (!state.selected) return;
+  startTimer(state.selected, state.durationMinutes);
+});
+
+otherBtn.addEventListener('click', () => {
+  document.getElementById('grid-section').scrollIntoView({ behavior: 'smooth', block: 'start' });
+});
+
+stopLogBtn.addEventListener('click', () => stopTimer({ log: true }));
+stopDiscardBtn.addEventListener('click', () => stopTimer({ log: false }));
+
+function startTimer(practice, minutes) {
+  state.timer.startedAt = new Date();
+  state.timer.plannedSeconds = minutes * 60;
+  state.timer.endedSeconds = 0;
+  state.timer.practice = practice;
+  timerName.textContent = practice.label;
+  timerCard.classList.add('active');
+  moodCard.classList.remove('active');
+  updateRing(state.timer.plannedSeconds);
+
+  state.timer.intervalId = setInterval(() => {
+    const elapsed = Math.floor((Date.now() - state.timer.startedAt.getTime()) / 1000);
+    const remaining = Math.max(0, state.timer.plannedSeconds - elapsed);
+    updateRing(remaining);
+    if (remaining <= 0) {
+      // Auto-finish — go to log flow
+      stopTimer({ log: true, autoFinish: true });
+    }
+  }, 1000);
+}
+
+function updateRing(remainingSeconds) {
+  const total = state.timer.plannedSeconds || 1;
+  const elapsed = total - remainingSeconds;
+  const ratio = Math.max(0, Math.min(1, elapsed / total));
+  ringFg.setAttribute('stroke-dashoffset', String(RING_CIRCUMFERENCE * (1 - ratio)));
+  const m = Math.floor(remainingSeconds / 60);
+  const s = remainingSeconds % 60;
+  ringTime.textContent = `${m}:${String(s).padStart(2, '0')}`;
+}
+
+function stopTimer({ log, autoFinish }) {
+  if (state.timer.intervalId) clearInterval(state.timer.intervalId);
+  state.timer.intervalId = null;
+  const elapsedSeconds = Math.floor((Date.now() - state.timer.startedAt.getTime()) / 1000);
+  const minutes = Math.max(1, Math.round(elapsedSeconds / 60));
+  timerCard.classList.remove('active');
+
+  if (!log) return;
+
+  // Open mood / notes prompt; save on user action
+  state.pendingLog = {
+    practice: state.timer.practice,
+    started_at: state.timer.startedAt.toISOString(),
+    durationMinutes: minutes,
+  };
+  state.mood.post = null;
+  notesInput.value = '';
+  moodPostRow.querySelectorAll('.mood-dot').forEach((d) => d.classList.remove('selected'));
+  moodCard.classList.add('active');
+  moodCard.scrollIntoView({ behavior: 'smooth', block: 'start' });
+}
+
+// ── Mood / notes ──────────────────────────────────────────────────────────
+moodPostRow.addEventListener('click', (e) => {
+  const dot = e.target.closest('.mood-dot');
+  if (!dot) return;
+  state.mood.post = parseInt(dot.dataset.mood, 10);
+  moodPostRow.querySelectorAll('.mood-dot').forEach((d) => d.classList.toggle('selected', d === dot));
+});
+
+saveLogBtn.addEventListener('click', () => commitLog({ withMood: true }));
+skipMoodBtn.addEventListener('click', () => commitLog({ withMood: false }));
+
+async function commitLog({ withMood }) {
+  if (!state.pendingLog) return;
+  const { practice, started_at, durationMinutes } = state.pendingLog;
+  const notes = notesInput.value.trim() || null;
+  await logSession({
+    practice_slug: practice.slug,
+    duration_minutes: durationMinutes,
+    notes,
+    mood_post: withMood ? state.mood.post : null,
+    mood_pre: null,
+    started_at,
+  });
+  state.pendingLog = null;
+  moodCard.classList.remove('active');
+  await renderRecent();
+  // Refresh suggestion: practiced today now triggers acknowledgement
+  const sug = await getDailySuggestion();
+  setActivePractice(sug.practice);
+  state.durationMinutes = sug.durationMinutes;
+  renderSuggestion(sug);
+}
+
+// ── Helpers ───────────────────────────────────────────────────────────────
+function escapeHtml(s) {
+  return String(s ?? '').replace(/[&<>"']/g, (c) => ({
+    '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;',
+  }[c]));
+}
+
+// ── Boot ──────────────────────────────────────────────────────────────────
+bootstrap().catch((err) => console.error('[practice] bootstrap failed', err));
+</script>
+
+</body>
+</html>

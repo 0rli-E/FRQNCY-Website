@@ -141,22 +141,20 @@ Goal: a member's daily-use loop is real (Track A). Charts → My FRQNCY → Sanc
 ### Week 3 (May 11 → May 17)
 
 **Mon–Tue — Sanctuary practice tracker schema**
-- New Supabase table `practice_logs(user_id, practice_slug, duration_minutes, notes, completed_at, mood_pre, mood_post)`.
-- New table `practice_scores(user_id, practice_slug, streak, total_minutes, last_completed_at, score)` — derived from logs, no public ranking.
-- Migrations 004 + 005.
+- ✓ shipped — see `proposals/PRACTICE-TRACKER.md`.
+- Migration 012 (`supabase/migrations/012_practice_tracker.sql`) — `practice_logs` table + `practice_scores` view, RLS-locked to owner. "Streak" reframed as `consistency_days_30d`; no leaderboard surface anywhere per CLAUDE.md.
 
 **Wed–Thu — Practice tracker UI**
-- New page `/my-frqncy/practice/`. Pick from a curated list of practices (meditation, breathwork, journaling, study session, etc. — pulled from `courses.json` + topic graph).
-- Log a session: duration, optional notes, optional mood pre/post.
-- Show your own streak and total minutes per practice.
+- ✓ shipped — see `proposals/PRACTICE-TRACKER.md`.
+- `/my-frqncy/practice/` (vanilla HTML). 9 curated practices in `assets/frqncy-practice.js`. Suggestion card → 25-min progress-ring timer → mood-post (1-5 dot scale) + notes → save. "Recent" list of last 7 sessions.
 
 **Fri — Personal charts (graphs)**
-- Render personal progress as charts on `/my-frqncy/charts/`: practice minutes per day, streaks, mood delta. Use Chart.js or SVG (`chart.js` already exists in repo at root for chart rendering — reuse style if possible).
-- All private; no comparison; no leaderboard.
+- ✓ shipped — see `proposals/PRACTICE-TRACKER.md`.
+- `/my-frqncy/charts/` (vanilla HTML, Chart.js via CDN). Three private charts: consistency bars (days turned to each practice in last 30, never "streak"), minutes-per-day line over 30 days, mood-delta histogram. No comparison surface.
 
 **Sat–Sun — Daily-use ritual surface**
-- On `my-frqncy` index: "Today's path" section that suggests a 3-step practice flow based on chart + last 7 days of logs.
-- Logic: if streak broken, suggest a short anchor practice. If on streak, suggest depth. Pull recommendation copy from topic pages.
+- ✓ shipped — see `proposals/PRACTICE-TRACKER.md`.
+- `my-frqncy.html` injection: signed-in users see "Today's path" card above the birth-data form. Pulls `getDailySuggestion()` from `assets/frqncy-practice.js` — four-case logic (practiced today / no recent / consistent / fall-through). Begin button hands off to `/my-frqncy/practice/?practice=<slug>`.
 
 ### Week 4 (May 18 → May 24)
 

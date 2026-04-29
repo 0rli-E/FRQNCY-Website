@@ -120,6 +120,63 @@ The Aman files remain on disk at `v2/_chrome/imagery/` for future use on a topic
 
 ---
 
+## Round 5 — 2026-04-29 — Full-network mass elevation + auto-QA validation
+
+### Summary
+
+After the auto-QA's first run (35 topics scored, 106 truncated by OpenRouter cap), executed a full mass-elevation pass: every non-locked topic in the network now has a bespoke 4K hero+closing pair. 285 unique image URLs across 141 topics, 0 duplicate-URL groups.
+
+### Big swaps from this round
+
+| Topic | What was wrong | What landed |
+|---|---|---|
+| `christianity` | Asian pagoda imagery (R10 violation) | Cologne + Amiens cathedrals |
+| `coffee-tea` | sunset beach + city skyline | matcha ceremony + clay teapots |
+| `cookware` | sunset silhouette | cast iron + ingredients |
+| `collective-intelligence` | green snake | bird flock murmurations |
+| `biology / chemistry` | nebula closings (Sciences default) | microscope cells + lab beakers |
+| `biotechnology` | circuit board + Earth from space | microscope cells + DNA helix |
+| `biomimicry` | bookshelf + craft (Communication default) | honeycomb close-up + facade |
+| `blockchain` | screen-interface duplicates (R5) | metal chain links (the literal metaphor) |
+| `defi`, `web3`, `prosperity-mindset`, `impact-investing` | trading charts everywhere | ETH coins for crypto trio; community + meditation imagery for ethical-finance pair |
+| `aliens` | Clarke "both equally terrifying" | Sagan "Somewhere, something incredible is waiting to be known" |
+| `breathwork` | Wim Hof cold imagery (read as winter, not breath) | man in lotus pose pranayama at sundown |
+| `cards` | playing-card imagery | credit-card + contactless payment imagery; quote → "Money is a renewable resource"; added Bitcoin Standard + Debt 5K Years books + MetaMask Card + Gnosis Pay tools |
+| `decentralized-networks` | server racks (read as databases) | mesh-topology abstract |
+| `aquaculture` | rural barn + vegetable market (R6) | fish farm aerials |
+| `ar-vr` | circuit board + Earth from space | VR headset imagery |
+| `astrology` | starry night + mountain lake | natal chart + moon-phases wheel |
+
+### New patterns from Round 5
+
+14. **Closing-only swaps must verify the hero isn't shared with sibling topics** *(documented earlier; reaffirmed here)*
+
+15. **Sources without good brand/protocol imagery on Pexels need either (a) per-protocol grids like the bitcoin sub-hub or (b) representative coin imagery.** `defi` cluster used (b) — distinct ETH coin compositions for each crypto topic so they read as siblings without cloning.
+
+16. **For finance topics, "abstract trading chart" is a default, not a fit.** The user's "trading isn't impact investing or prosperity mindset" verdict generalises: charts only fit topics whose *literal subject* is markets (e.g., `investing` if it existed). Anything broader gets human/community/contemplative imagery.
+
+17. **Empty resource sections should be hidden, not shown with a placeholder.** *(2026-04-29)* Generator now returns `""` from `_render_resources()` when no items resolve, instead of rendering "No entries yet." This keeps sparse-resource topics from looking padded.
+
+---
+
+## Auto-QA Round 2 (full-network re-run via Claude Max) — 2026-04-29
+
+OpenRouter daily key cap was hit on the v1 run. Pivoted to using Claude Max via the local CLI subprocess (`claude --print --output-format json`). Cost to user: $0 within Max quota. Sequential mode was too slow (~7 topics in 10 min), so split into 4 parallel chunks of ~35 topics each. Each chunk runs its own claude CLI process; all 4 share the `~/.frqncy-qa-cache/` image cache.
+
+This is also where Rule 14 came from — the agent caught biology/chemistry sharing a hero (Sciences default) when only their closings had been swapped.
+
+Live spotcheck observations from in-flight scoring (will be aggregated when all 4 chunks complete):
+
+- `astrophysics`, `architecture` — re-approved (5/5 + 5/5 / 4/4 + 5/4)
+- `audio`, `broadcasting` — flagged (R1/R2/R5: too much vinyl-on-vinyl repetition; pair coherence too tight)
+- `blockchain` — auto-flagged R9 ("acceptable but not great" parking signal) — chains-as-metaphor reads but doesn't sing
+- `body-care` — hard flag (R1/R12/R2): "sunset silhouette" hero doesn't read as body-care; the Bulgari closing is OK but doesn't redeem the pair
+- `biology / biodiversity / cards / artificial-intelligence` — flagged on C4 aesthetic (3/3 or 5/2 patterns) — the imagery hits the literal subject but skews stock-photo rather than editorial
+
+The live-flag stream is exactly the next-round triage list once all 4 chunks land their final reports.
+
+---
+
 ## Round 4 — second addendum — refinements after first redo pass
 
 User: "detox is fine now / minimalism: bottom picture is ugly as fuck and doesnt align with frqncys elegance / breathwork: why is there a woman breathing out smoke? a guy looking away? aren't there pics that show people that breathe? / rest is fine"

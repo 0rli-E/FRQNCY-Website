@@ -451,6 +451,97 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
 </div>
 
 <main>
+
+<!-- ── TODAY'S PATH (signed-in only; populated by JS) ────────────────────── -->
+<!-- Sanctuary daily-use loop. Reframes the practice tracker as an invitation,
+     not an assignment. Hidden by default; revealed when frqncy auth resolves
+     to a logged-in user. See assets/frqncy-practice.js for the API. -->
+<section id="todays-path" aria-label="Today's path" style="display:none;max-width:700px;margin:0 auto 2rem;padding:0 clamp(1rem,3vw,2rem)">
+  <article id="tp-card" style="position:relative;overflow:hidden;padding:1.4rem 1.6rem;border:1px solid rgba(196,151,58,0.36);border-radius:4px;background:linear-gradient(135deg,rgba(196,151,58,0.07) 0%,rgba(11,16,32,0.3) 60%);">
+    <div style="position:absolute;top:0;right:0;width:200px;height:100%;background:radial-gradient(ellipse at top right,rgba(224,192,106,0.12),transparent 70%);pointer-events:none"></div>
+    <div style="position:relative;z-index:1">
+      <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">Today's path</div>
+      <h2 id="tp-headline" style="font-family:'Cormorant',serif;font-weight:300;font-size:1.7rem;color:#fff;line-height:1.15;margin:0 0 0.4rem">Loading…</h2>
+      <p id="tp-subline" style="color:var(--text);font-size:0.92rem;max-width:54ch;line-height:1.55;margin:0 0 0.5rem"></p>
+      <div style="font-size:0.72rem;color:var(--text-dim);letter-spacing:0.05em;display:flex;flex-wrap:wrap;align-items:center;gap:0.7rem;margin-bottom:1rem">
+        <span id="tp-practice">—</span>
+        <span style="width:3px;height:3px;border-radius:50%;background:var(--text-dim);display:inline-block"></span>
+        <span id="tp-duration">—</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.6rem">
+        <a id="tp-begin" href="/my-frqncy/practice/" style="display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.65rem 1.1rem 0.65rem 1.28rem;border-radius:3px;border:1px solid var(--gold);color:var(--gold);background:rgba(196,151,58,0.08);text-decoration:none;line-height:1">Begin</a>
+        <a href="/my-frqncy/charts/" style="display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.65rem 1.1rem 0.65rem 1.28rem;border-radius:3px;border:1px solid rgba(255,255,255,0.14);color:var(--text-dim);text-decoration:none;line-height:1">See your charts</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Recent practices (last 3) -->
+  <div id="tp-recent" style="margin-top:0.9rem;display:none">
+    <div style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.5rem;padding:0 0.2rem">Recent</div>
+    <div id="tp-recent-list" style="display:flex;flex-direction:column;gap:0.4rem"></div>
+  </div>
+</section>
+
+<script type="module">
+  // Populate Today's Path when signed in. Silent no-op when signed out.
+  import { getDailySuggestion, listLogs, relativeTime, getPractice }
+    from '/assets/frqncy-practice.js';
+
+  async function paintTodaysPath() {
+    if (!window.frqncy) return;
+    await window.frqncy.ready;
+    const user = await window.frqncy.auth.getUser();
+    if (!user) return;
+
+    const section = document.getElementById('todays-path');
+    if (!section) return;
+    section.style.display = 'block';
+
+    try {
+      const sug = await getDailySuggestion();
+      document.getElementById('tp-headline').textContent = sug.headline;
+      document.getElementById('tp-subline').textContent = sug.subline;
+      document.getElementById('tp-practice').textContent = sug.practice.label;
+      document.getElementById('tp-duration').textContent = sug.durationMinutes + ' min';
+      const beginA = document.getElementById('tp-begin');
+      beginA.href = '/my-frqncy/practice/?from=today&practice=' + encodeURIComponent(sug.practice.slug);
+    } catch (err) {
+      console.error('[todays-path] suggestion failed', err);
+    }
+
+    try {
+      const recent = await listLogs({ limit: 3 });
+      if (recent.length) {
+        const wrap = document.getElementById('tp-recent');
+        const list = document.getElementById('tp-recent-list');
+        list.innerHTML = recent.map(function (l) {
+          const p = getPractice(l.practice_slug);
+          const name = p ? p.label : l.practice_slug;
+          return '<div style="display:flex;align-items:center;justify-content:space-between;gap:0.7rem;padding:0.55rem 0.85rem;border:1px solid var(--card-border);border-radius:3px;background:rgba(255,255,255,0.025);font-size:0.82rem;color:var(--text)">'
+            + '<span><span style="color:var(--gold)">·</span> ' + escapeHtml(name) + ' · ' + l.duration_minutes + ' min</span>'
+            + '<span style="font-size:0.7rem;color:var(--text-dim)">' + escapeHtml(relativeTime(l.started_at)) + '</span>'
+            + '</div>';
+        }).join('');
+        wrap.style.display = 'block';
+      }
+    } catch (err) {
+      console.error('[todays-path] recent failed', err);
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', paintTodaysPath);
+  // Re-paint if auth flips while on the page
+  if (window.frqncy && typeof window.frqncy.onAuth === 'function') {
+    window.frqncy.onAuth((u) => { if (u) paintTodaysPath(); });
+  }
+</script>
+
 <!-- ── FORM VIEW ── -->
 <section id="form-view" aria-labelledby="form-heading">
   <div class="form-inner">

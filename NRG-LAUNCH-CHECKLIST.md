@@ -96,7 +96,7 @@ cp -r dist/* ../social/
 
 Verify the build is clean (no Vite resolution errors). The `cp` step copies the regenerated static output into the deployed `/social/` folder.
 
-### 1. Apply Supabase migrations 002, 003, 006, 007, 008, 009, AND 010
+### 1. Apply Supabase migrations 002, 003, 006, 007, 008, 009, 010, 011, AND 012
 
 Open the Supabase SQL editor:
 <https://supabase.com/dashboard/project/vyazlspbmwmlyncdlezh/sql/new>
@@ -109,8 +109,10 @@ Paste + Run each in order:
 5. `supabase/migrations/008_group_chat_encryption.sql` (message_recipients table for per-recipient ciphertexts in group chats)
 6. `supabase/migrations/009_signed_message_mirror.sql` (signing_public_key on profiles; signature + signed_payload on posts and follows — Phase 2 commitment device foundation)
 7. `supabase/migrations/010_bluesky_handle.sql` (bluesky_handle on profiles for the NRG ↔ Bluesky cross-post bridge — public column; app password lives in user localStorage only)
+8. `supabase/migrations/011_encrypted_message_media.sql` (per-recipient encrypted media chunks for group chats)
+9. `supabase/migrations/012_practice_tracker.sql` (Sanctuary practice tracker — `practice_logs` table + `practice_scores` view; RLS-locked to owner, no leaderboard surface anywhere — see proposals/PRACTICE-TRACKER.md)
 
-All seven are idempotent — safe to re-run.
+All nine are idempotent — safe to re-run.
 
 ### 2. Create a Privy app (5 min)
 

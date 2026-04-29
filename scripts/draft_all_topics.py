@@ -294,6 +294,8 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "indigenous-wisdom":  _p(34400687),  # bearded elderly man in traditional attire holding book
     "human-design":       _p(34473507),  # elderly man in robe with book, contemplation
     "diaspora":           _p(11571017),  # senior monk holding prayer beads, walking stick
+    # Bioenergy — fix Energy-domain hero HEAD failure (Unsplash 1497292207894)
+    "bioenergy":          _p(2254097),   # harvested sugarcane stalks for agricultural use
     "sustainable-living": _p(31995022),  # contemporary indoor workspace surrounded by plants
     # Final dupe fixes
     "energy-fields":      _p(30895543),  # gold/silver particles forming a sphere, dark bg
@@ -469,6 +471,8 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "indigenous-wisdom":  _p(11377878),  # bearded man with white headscarf, wisdom
     "human-design":       _p(33295978),  # elderly wise man in contemplative pose indoors
     "diaspora":           _p(9859622),   # senior man with white beard and turban, serious
+    # Bioenergy closing
+    "bioenergy":          _p(34049306),  # cornfield panorama with wind turbines, sustainable ag
     "sustainable-living": _p(33719778),  # contemporary glass office building with trees
     # Final dupe-fix closings
     "energy-fields":      _p(12214773),  # 3D molecules with yellow + orange, energy/motion

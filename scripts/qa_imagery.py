@@ -560,6 +560,8 @@ def main() -> int:
     ap.add_argument("--all", action="store_true")
     ap.add_argument("--bespoke", action="store_true",
                     help="only topics with override imagery")
+    ap.add_argument("--slug-file", default="",
+                    help="newline-delimited file of slugs to score (for parallel chunks)")
     ap.add_argument("--limit", type=int, default=0)
     ap.add_argument("--report", default="")
     args = ap.parse_args()
@@ -569,6 +571,8 @@ def main() -> int:
 
     if args.slug:
         slugs = [args.slug]
+    elif args.slug_file:
+        slugs = [s.strip() for s in Path(args.slug_file).read_text().splitlines() if s.strip()]
     elif args.bespoke:
         slugs = sorted(topics_with_overrides() & set(search.keys()))
     elif args.all:

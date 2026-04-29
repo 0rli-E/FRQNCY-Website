@@ -313,10 +313,11 @@ def _render_resources(s: dict, brief: dict) -> str:
         "</a>"
     )
 
+    # Hide section entirely if no items resolved (no header, no empty placeholder).
     if not cards:
-        body = '<div class="r-empty">No entries yet.</div>'
-    else:
-        body = f'<div class="rlist">{"".join(cards)}</div>{forward}'
+        return ""
+
+    body = f'<div class="rlist">{"".join(cards)}</div>{forward}'
 
     parts: list[str] = []
     if label:
