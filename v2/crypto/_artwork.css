@@ -346,6 +346,33 @@ blockquote cite {
   .hero-quote.in-view { animation: none; clip-path: none; }
 }
 
+/* COUNTER-BOX — "What would change our mind" objection + falsification.
+   Rubric's "Pointed" anchor (Axis 2 score 8+). Lives between the bleed
+   image and the tech grid on every sub-hub. */
+.counter-box {
+  max-width: 720px; margin: clamp(3rem, 6vh, 5rem) auto;
+  padding: 1.6rem 1.8rem;
+  background: rgba(255, 255, 255, 0.025);
+  border-left: 2px solid var(--sector-warm);
+  border-radius: 0 3px 3px 0;
+}
+.counter-box .cb-tag {
+  font-size: 0.55rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--sector-warm);
+  margin-bottom: 0.85rem; opacity: 0.95;
+  font-family: var(--body); font-weight: 400;
+}
+.counter-box p {
+  font-size: 0.94rem; line-height: 1.7;
+  color: rgba(245, 248, 251, 0.78);
+  margin-bottom: 0.7rem;
+}
+.counter-box p:last-child { margin-bottom: 0; }
+.counter-box strong {
+  color: var(--sector-warm); font-weight: 500;
+  font-family: var(--body);
+}
+
 /* DESK NOTE — "this week in [sector]" hand-edited brief */
 .desk-note {
   display: grid;

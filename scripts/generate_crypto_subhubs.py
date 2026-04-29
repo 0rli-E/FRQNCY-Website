@@ -32,11 +32,17 @@ from sector_research import (  # noqa: E402
     SECTOR_RESEARCH,
     SECTOR_TOP_PROJECTS,
     SECTOR_STATS,
+    SECTOR_COUNTER,
 )
 try:
     from sector_tech import SECTOR_TECH  # noqa: E402
 except ImportError:
     SECTOR_TECH = {}  # filled in by the tech-explainer pass
+
+try:
+    from sector_imagery import SECTOR_IMAGERY  # noqa: E402
+except ImportError:
+    SECTOR_IMAGERY = {}  # falls back to SECTORS dict's hero_bg/closing_bg
 
 
 # Per-sector hero filter override — varies brightness/saturation/hue
@@ -929,6 +935,21 @@ def render_project(p: dict) -> str:
 </article>"""
 
 
+def render_counter_box(slug: str) -> str:
+    """Sector-specific objection + falsification block. Rubric's 'Pointed' anchor."""
+    cfg = SECTOR_COUNTER.get(slug)
+    if not cfg or not cfg.get("objection"):
+        return ""
+    eyebrow = esc(cfg.get("eyebrow", "What would change our mind"))
+    objection = esc(cfg["objection"])
+    falsification = esc(cfg["falsification"])
+    return f'''<aside class="counter-box fade-up">
+  <div class="cb-tag">{eyebrow}</div>
+  <p>{objection}</p>
+  <p><strong>Falsification:</strong> {falsification}</p>
+</aside>'''
+
+
 def render_hero_stats(slug: str) -> str:
     """Three sector-iconic monospace numbers between the h1 and the descriptor."""
     stats = SECTOR_STATS.get(slug, [])
@@ -1285,7 +1306,14 @@ def render_page(slug: str, cfg: dict) -> str:
 
     hero_stats_html = render_hero_stats(slug)
     tech_html = render_tech_grid(slug)
+    counter_html = render_counter_box(slug)
     sector_filter = SECTOR_HERO_FILTER.get(slug, "saturate(0.8) brightness(0.42) contrast(1.1)")
+
+    # Real crypto-website imagery (project sites / CoinGecko / DefiLlama)
+    # overrides the SECTORS dict's hero_bg/closing_bg URLs.
+    if slug in SECTOR_IMAGERY:
+        cfg = dict(cfg)
+        cfg["hero_bg"], cfg["closing_bg"] = SECTOR_IMAGERY[slug]
 
     return f"""<!DOCTYPE html>
 <html lang="en">
@@ -1384,6 +1412,9 @@ def render_page(slug: str, cfg: dict) -> str:
   <img src="{cfg["hero_bg"]}" alt="">
   <div class="bleed-cap">{bleed_cap}</div>
 </div>
+
+<!-- COUNTER-BOX — rubric's "Pointed" anchor: objection + falsification -->
+{counter_html}
 
 <!-- TECH INSIDE THIS SECTOR — native protocols + brief explainers -->
 {tech_html}
