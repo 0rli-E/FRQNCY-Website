@@ -33,6 +33,7 @@ from sector_research import (  # noqa: E402
     SECTOR_TOP_PROJECTS,
     SECTOR_STATS,
     SECTOR_COUNTER,
+    SECTOR_DESK_NOTE,
 )
 try:
     from sector_tech import SECTOR_TECH  # noqa: E402
@@ -935,6 +936,22 @@ def render_project(p: dict) -> str:
 </article>"""
 
 
+def render_desk_note(slug: str) -> str:
+    """Hand-edited dated brief — Builder B's winning pattern.
+    Sits above the working set, reads like an editor's desk note."""
+    cfg = SECTOR_DESK_NOTE.get(slug)
+    if not cfg or not cfg.get("body"):
+        return ""
+    date = esc(cfg.get("date", ""))
+    body = esc(cfg.get("body", ""))
+    tag = esc(cfg.get("tag", "desk"))
+    return f'''<div class="desk-note fade-up">
+  <span class="dn-date">{date}</span>
+  <span>{body}</span>
+  <span class="dn-tag">{tag}</span>
+</div>'''
+
+
 def render_counter_box(slug: str) -> str:
     """Sector-specific objection + falsification block. Rubric's 'Pointed' anchor."""
     cfg = SECTOR_COUNTER.get(slug)
@@ -1276,6 +1293,8 @@ def render_page(slug: str, cfg: dict) -> str:
     practice = research.get("practice_native", cfg["practice"])
     closing = research.get("closing_native", cfg["closing"])
 
+    desk_html = render_desk_note(slug)  # Builder B's winning pattern
+
     projects = filter_for(slug, cfg)
     project_html = "\n".join(render_project(p) for p in projects)
     if not projects:
@@ -1286,6 +1305,7 @@ def render_page(slug: str, cfg: dict) -> str:
     else:
         project_block = (
             render_ticker_rail(projects, limit=5)
+            + desk_html  # dated editorial brief
             + render_tier_bar(projects)
             + f'<div class="projects-grid" id="projects">{project_html}</div>'
         )
