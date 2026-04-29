@@ -48,8 +48,24 @@ jobs:
       - name: Generate OG images
         run: node build-og.js
 
-      - name: Rebuild v2 pages
+      - name: Rebuild v2 pages (legacy generator from content.json)
         run: node generate.js
+
+      # Layer 2/3 generator — runs AFTER generate.js so it has the final
+      # word on v2/<slug>/index.html for any topic with a data/topics/
+      # YAML brief. Skips LOCKED_TOPICS (water, music, channeling, etc.).
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.11'
+
+      - name: Install pyyaml
+        run: pip install pyyaml
+
+      - name: Apply Layer-2/3 topic-page generator (overrides legacy output)
+        run: |
+          python3 scripts/draft_all_topics.py
+          python3 scripts/generate_topic_page.py --all
 
       - name: Commit all generated assets
         run: |
