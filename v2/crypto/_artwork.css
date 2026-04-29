@@ -346,6 +346,116 @@ blockquote cite {
   .hero-quote.in-view { animation: none; clip-path: none; }
 }
 
+/* DOWNLOAD CANON — brutalist Bitcoin-maxi treatment for sectors that
+   host their canonical text locally. Sharp corners, mono SHA-256
+   verify, primary source link. Built for the whitepaper but reusable
+   for any sector that drops a PDF in its directory. */
+.download-canon {
+  margin: 1rem 0 0;
+  padding: 2.4rem 2.4rem 2rem;
+  background: linear-gradient(180deg, rgba(247, 147, 26, 0.08) 0%, rgba(0, 0, 0, 0.55) 100%);
+  border: 1px solid var(--sector-warm);
+  border-radius: 0;
+  position: relative;
+  overflow: hidden;
+}
+.download-canon::before {
+  content: ""; position: absolute;
+  top: 0; left: 0; right: 0; height: 3px;
+  background: var(--sector-accent);
+}
+.dl-tag {
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.42em; text-transform: uppercase;
+  color: var(--sector-accent);
+  margin-bottom: 1.4rem;
+}
+.dl-title {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: clamp(1.6rem, 3vw, 2.4rem);
+  line-height: 1.15; color: var(--pearl);
+  margin: 0 0 0.6rem;
+  letter-spacing: -0.01em;
+  max-width: none;
+}
+.dl-author {
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 0.7rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--sector-warm);
+  margin-bottom: 1.2rem;
+}
+.dl-epigraph {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(0.95rem, 1.4vw, 1.1rem);
+  line-height: 1.5;
+  color: rgba(245, 248, 251, 0.7);
+  padding: 0.8rem 0 0.8rem 1.2rem;
+  border-left: 2px solid var(--sector-soft);
+  margin: 0 0 1.2rem;
+}
+.dl-subtitle {
+  font-size: 1rem; line-height: 1.65;
+  color: rgba(245, 248, 251, 0.85);
+  margin: 0 0 1.6rem;
+  max-width: 56ch;
+}
+.dl-actions {
+  display: flex; gap: 0.8rem; flex-wrap: wrap;
+  margin-bottom: 1.4rem;
+}
+.dl-btn {
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 0.74rem; letter-spacing: 0.16em; text-transform: uppercase;
+  padding: 0.95rem 1.4rem;
+  border: 1px solid currentColor;
+  text-decoration: none;
+  transition: all 0.2s ease;
+  font-weight: 500;
+}
+.dl-btn.primary {
+  background: var(--sector-accent);
+  color: #000;
+  border-color: var(--sector-accent);
+}
+.dl-btn.primary:hover {
+  background: var(--sector-warm);
+  border-color: var(--sector-warm);
+}
+.dl-btn.secondary {
+  background: transparent;
+  color: var(--sector-warm);
+  border-color: var(--sector-warm);
+}
+.dl-btn.secondary:hover {
+  background: rgba(247, 147, 26, 0.08);
+  color: var(--pearl);
+}
+.dl-hash, .dl-genesis {
+  display: flex; flex-direction: column; gap: 0.3rem;
+  padding: 0.85rem 0;
+  border-top: 1px dashed rgba(247, 147, 26, 0.25);
+  text-decoration: none;
+  transition: background 0.2s;
+}
+.dl-genesis:hover { background: rgba(247, 147, 26, 0.04); }
+.dl-hash-label {
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 0.6rem; letter-spacing: 0.28em; text-transform: uppercase;
+  color: var(--sector-warm); opacity: 0.85;
+}
+.dl-hash-value {
+  font-family: ui-monospace, 'JetBrains Mono', 'SF Mono', monospace;
+  font-size: 0.72rem; letter-spacing: 0.01em;
+  color: rgba(245, 248, 251, 0.7);
+  word-break: break-all; line-height: 1.4;
+  background: transparent; padding: 0;
+}
+@media (max-width: 600px) {
+  .download-canon { padding: 1.8rem 1.4rem 1.5rem; }
+  .dl-actions { flex-direction: column; }
+  .dl-btn { text-align: center; }
+}
+
 /* PROJECT FEATURE GRID — rich per-project cards with image, extended
    explainer, and full link set (website, docs, X, extra). Per user:
    "pictures of these projects on the bitcoin page aswell as ... a

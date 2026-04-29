@@ -507,6 +507,33 @@ SECTOR_COUNTER: dict[str, dict[str, str]] = {
 }
 
 
+# ── Downloadable canonical text per sector (when one exists) ────────
+# Bitcoin has the whitepaper PDF hosted locally. Verified SHA-256.
+# Renders as a brutalist "download the canon" block — the maxi gesture
+# of "don't trust, verify the hash."
+SECTOR_DOWNLOAD: dict[str, dict] = {
+    "bitcoin": {
+        "tag": "The whitepaper",
+        "title": "Bitcoin: A Peer-to-Peer Electronic Cash System",
+        "author": "Satoshi Nakamoto",
+        "year": "2008",
+        "subtitle": "Nine pages. Don't trust — verify the hash. Read the source.",
+        "pages": 9,
+        "size_kb": 180,
+        "format": "PDF",
+        "local_url": "/v2/crypto/bitcoin/bitcoin.pdf",
+        "primary_url": "https://bitcoin.org/bitcoin.pdf",
+        "primary_label": "bitcoin.org",
+        "sha256": "b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553",
+        "sha256_label": "SHA-256 · canonical",
+        "genesis_block": "00000000839a8e6886ab5951d76f411475428afc90947ee320161bbf18eb6048",
+        "genesis_label": "Genesis block · #0 · Jan 3 2009",
+        "genesis_url": "https://mempool.space/block/00000000839a8e6886ab5951d76f411475428afc90947ee320161bbf18eb6048",
+        "epigraph": "The Times 03/Jan/2009 Chancellor on brink of second bailout for banks.",
+    },
+}
+
+
 # ── Per-project rich data — image + extended explainer + links ──────
 # Used by render_project_feature() to render large visual project cards
 # in the working-set section. Each entry: project name → dict with
@@ -610,7 +637,10 @@ SECTOR_PROJECT_DATA: dict[str, dict[str, dict]] = {
         },
         "Runes": {
             "tagline": "Fungible tokens, UTXO-native.",
-            "image": "https://avatars.githubusercontent.com/u/121339173?s=400&v=4",  # ordinals (Casey)
+            # Hand-crafted inline SVG: rune-like sigil ᚱ + halving block 840000 marker.
+            # Distinct from Ordinals' image; references Runes' actual launch
+            # (April 2024 halving block) and the ᚱ "raidho" rune as visual identity.
+            "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450'><defs><radialGradient id='r' cx='50%25' cy='50%25' r='65%25'><stop offset='0%25' stop-color='%23F2A900' stop-opacity='0.6'/><stop offset='60%25' stop-color='%23F2A900' stop-opacity='0.15'/><stop offset='100%25' stop-color='%23000' stop-opacity='0'/></radialGradient></defs><rect width='800' height='450' fill='%231a0f00'/><circle cx='400' cy='225' r='220' fill='url(%23r)'/><g stroke='%23F2A900' stroke-width='3' fill='none' opacity='0.4'><path d='M 200 100 L 200 350 M 600 100 L 600 350'/><path d='M 250 80 L 200 100 L 250 120 M 550 80 L 600 100 L 550 120'/><path d='M 250 330 L 200 350 L 250 370 M 550 330 L 600 350 L 550 370'/></g><text x='400' y='280' text-anchor='middle' font-family='Georgia,serif' font-size='280' font-weight='400' fill='%23F2A900' opacity='0.95'>ᚱ</text><text x='400' y='420' text-anchor='middle' font-family='ui-monospace,monospace' font-size='14' letter-spacing='6' fill='%23F2A900' opacity='0.65'>BLOCK 840,000 · APRIL 2024</text></svg>",
             "accent": "#FFB627",
             "year": "2024",
             "founder": "Casey Rodarmor",

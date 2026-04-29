@@ -36,6 +36,7 @@ from sector_research import (  # noqa: E402
     SECTOR_DESK_NOTE,
     SECTOR_SEMINAL,
     SECTOR_PROJECT_DATA,
+    SECTOR_DOWNLOAD,
 )
 try:
     from sector_tech import SECTOR_TECH  # noqa: E402
@@ -1017,6 +1018,68 @@ def render_project_feature_grid(slug: str, projects: list[dict]) -> str:
     return f'<div class="project-feature-grid">{"".join(cards)}</div>'
 
 
+def render_download_canon(slug: str) -> str:
+    """Brutalist download block for sectors with a canonical text hosted
+    locally. Shows the SHA-256 hash, byte size, page count, and links to
+    both the local mirror and the primary source. The maxi gesture: don't
+    trust — verify the hash."""
+    cfg = SECTOR_DOWNLOAD.get(slug)
+    if not cfg or not cfg.get("local_url"):
+        return ""
+    tag = esc(cfg.get("tag", "The canon"))
+    title = esc(cfg.get("title", ""))
+    author = esc(cfg.get("author", ""))
+    year = esc(cfg.get("year", ""))
+    subtitle = esc(cfg.get("subtitle", ""))
+    pages = cfg.get("pages", "")
+    size_kb = cfg.get("size_kb", "")
+    fmt = esc(cfg.get("format", "PDF"))
+    local_url = esc(cfg.get("local_url", ""))
+    primary_url = esc(cfg.get("primary_url", ""))
+    primary_label = esc(cfg.get("primary_label", "Primary source"))
+    sha256 = esc(cfg.get("sha256", ""))
+    sha256_label = esc(cfg.get("sha256_label", ""))
+    genesis_block = esc(cfg.get("genesis_block", ""))
+    genesis_label = esc(cfg.get("genesis_label", ""))
+    genesis_url = esc(cfg.get("genesis_url", ""))
+    epigraph = esc(cfg.get("epigraph", ""))
+
+    meta_bits = []
+    if pages: meta_bits.append(f"{pages} pages")
+    if size_kb: meta_bits.append(f"{size_kb} KB")
+    if fmt: meta_bits.append(fmt)
+    meta_line = "  ·  ".join(meta_bits)
+
+    epigraph_html = f'<div class="dl-epigraph">"{epigraph}"</div>' if epigraph else ""
+    sha_html = (
+        f'<div class="dl-hash"><span class="dl-hash-label">{sha256_label}</span>'
+        f'<code class="dl-hash-value">{sha256}</code></div>'
+        if sha256 else ""
+    )
+    genesis_html = (
+        f'<a class="dl-genesis" href="{genesis_url}" target="_blank" rel="noopener noreferrer">'
+        f'<span class="dl-hash-label">{genesis_label}</span>'
+        f'<code class="dl-hash-value">{genesis_block}</code></a>'
+        if genesis_block else ""
+    )
+
+    return f'''<section class="section section-narrow fade-up">
+  <div class="download-canon">
+    <div class="dl-tag">{tag}</div>
+    <h2 class="dl-title">{title}</h2>
+    <div class="dl-author">{author} · {year}</div>
+    {epigraph_html}
+    <p class="dl-subtitle">{subtitle}</p>
+    <div class="dl-actions">
+      <a class="dl-btn primary" href="{local_url}" download>↓  Download · {meta_line}</a>
+      <a class="dl-btn secondary" href="{primary_url}" target="_blank" rel="noopener noreferrer">{primary_label} →</a>
+    </div>
+    {sha_html}
+    {genesis_html}
+  </div>
+</section>'''
+
+
 def render_seminal(slug: str) -> str:
     """The seminal text per sector — Bitcoin whitepaper, Cypherpunk Manifesto,
     Aavenomics, BlackRock annual letter, etc. — with a substantive excerpt
@@ -1446,6 +1509,7 @@ def render_page(slug: str, cfg: dict) -> str:
     tech_html = render_tech_grid(slug)
     counter_html = render_counter_box(slug)
     seminal_html = render_seminal(slug)
+    download_html = render_download_canon(slug)
     sector_filter = SECTOR_HERO_FILTER.get(slug, "saturate(0.8) brightness(0.42) contrast(1.1)")
 
     # Real crypto-website imagery (project sites / CoinGecko / DefiLlama)
@@ -1551,6 +1615,9 @@ def render_page(slug: str, cfg: dict) -> str:
   <img src="{cfg["hero_bg"]}" alt="">
   <div class="bleed-cap">{bleed_cap}</div>
 </div>
+
+<!-- DOWNLOAD CANON — locally-hosted canonical text + SHA-256 verify -->
+{download_html}
 
 <!-- SEMINAL TEXT — the founding document per sector with excerpt + link -->
 {seminal_html}
