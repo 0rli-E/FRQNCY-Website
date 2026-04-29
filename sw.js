@@ -16,7 +16,7 @@
  *   - /api/*:         pass-through (functions handle their own caching)
  */
 
-const VERSION = 'v24';
+const VERSION = 'v25';
 const SHELL_CACHE   = `frqncy-shell-${VERSION}`;
 const DATA_CACHE    = `frqncy-data-${VERSION}`;
 const RUNTIME_CACHE = 'frqncy-runtime';   // intentionally unversioned
@@ -56,6 +56,8 @@ const DATA_PRECACHE = [
   '/search.json',
   '/entities.json',
   '/resources.json',
+  '/v2/explore-data.json',
+  '/v2/explore-data.js',
 ];
 
 // ── Install: pre-cache the app shell + the data set ────────────────
