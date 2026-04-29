@@ -507,6 +507,187 @@ SECTOR_COUNTER: dict[str, dict[str, str]] = {
 }
 
 
+# ── Seminal text excerpts — the founding document per sector ────────
+# Each sub-hub gets a long-form pull-quote from the actual seminal
+# work + a direct link to read it. Bitcoin → whitepaper. Privacy →
+# Cypherpunk Manifesto. DeFi → Aavenomics. AI → Bittensor whitepaper.
+# Per user request: "excerpts from the bitcoin whitepaper and a link
+# to it... Learn from this and improve the other sites aswell."
+SECTOR_SEMINAL: dict[str, dict[str, str]] = {
+    "bitcoin": {
+        "title": "Bitcoin: A Peer-to-Peer Electronic Cash System",
+        "author": "Satoshi Nakamoto",
+        "year": "2008",
+        "excerpt": "Commerce on the Internet has come to rely almost exclusively on financial institutions serving as trusted third parties to process electronic payments. While the system works well enough for most transactions, it still suffers from the inherent weaknesses of the trust based model. What is needed is an electronic payment system based on cryptographic proof instead of trust, allowing any two willing parties to transact directly with each other without the need for a trusted third party.",
+        "url": "https://bitcoin.org/bitcoin.pdf",
+        "url_label": "Read the whitepaper · 9 pages",
+    },
+    "sov": {
+        "title": "The Bitcoin Standard",
+        "author": "Saifedean Ammous",
+        "year": "2018",
+        "excerpt": "Hard money is money that is hard to produce. Easy money is money that is easy to produce. The harder it is to produce a unit of money, the harder it is for the producer to debase the existing stock through inflation. The history of money is the history of progressively harder forms — shells, beads, cattle, copper, silver, gold — replacing easier ones. Bitcoin is the next step.",
+        "url": "https://saifedean.com/thebitcoinstandard",
+        "url_label": "The Bitcoin Standard",
+    },
+    "l1": {
+        "title": "Ethereum: A Next-Generation Smart Contract Platform",
+        "author": "Vitalik Buterin",
+        "year": "2013",
+        "excerpt": "What Ethereum intends to provide is a blockchain with a built-in fully fledged Turing-complete programming language that can be used to create 'contracts' that can be used to encode arbitrary state transition functions, allowing users to create any of the systems described above, as well as many others that we have not yet imagined, simply by writing up the logic in a few lines of code.",
+        "url": "https://ethereum.org/en/whitepaper/",
+        "url_label": "Ethereum whitepaper",
+    },
+    "l2": {
+        "title": "An Incomplete Guide to Rollups",
+        "author": "Vitalik Buterin",
+        "year": "2021",
+        "excerpt": "Rollups are a powerful new layer-2 scaling paradigm, and are expected to be a cornerstone of Ethereum scaling in the short and medium-term future (and possibly long-term as well). They are based on the principle of moving computation off-chain while keeping data on-chain — and proving the correctness of that off-chain computation either through fraud proofs or validity proofs.",
+        "url": "https://vitalik.eth.limo/general/2021/01/05/rollup.html",
+        "url_label": "Vitalik on rollups",
+    },
+    "modular": {
+        "title": "LazyLedger: A Distributed Data Availability Ledger",
+        "author": "Mustafa Al-Bassam",
+        "year": "2019",
+        "excerpt": "We propose LazyLedger, a design for distributed ledgers where the consensus layer's only role is to order and guarantee the availability of transaction data. Application logic — the rules for what makes a transaction valid — is enforced by clients themselves rather than by the consensus protocol. This separation of concerns lets the consensus layer scale by doing less.",
+        "url": "https://arxiv.org/abs/1905.09274",
+        "url_label": "LazyLedger paper · arXiv",
+    },
+    "defi": {
+        "title": "Aavenomics",
+        "author": "Stani Kulechov · Aave",
+        "year": "2020",
+        "excerpt": "Decentralised finance is not an industry — it is an open financial system being built in public, with money as the test case. Every primitive — lending, exchange, derivatives, insurance — is being re-implemented as transparent code rather than opaque counterparty. The protocols compose. The composability is the product.",
+        "url": "https://github.com/aave/aave-tokenomics/blob/master/Aavenomics.pdf",
+        "url_label": "Aavenomics paper",
+    },
+    "stablecoins": {
+        "title": "Maker White Paper — The Dai Stablecoin System",
+        "author": "Rune Christensen · MakerDAO",
+        "year": "2017",
+        "excerpt": "Dai is a price-stable cryptocurrency whose value is held steady against the US Dollar through a system of Collateralized Debt Positions, autonomous feedback mechanisms, and appropriately incentivised external actors. Dai's stability is maintained by the Dai Savings Rate, the Stability Fee, and ultimately by Global Settlement — a mechanism that returns Dai holders to their underlying collateral if all else fails.",
+        "url": "https://makerdao.com/whitepaper/",
+        "url_label": "Maker whitepaper",
+    },
+    "privacy": {
+        "title": "A Cypherpunk's Manifesto",
+        "author": "Eric Hughes",
+        "year": "1993",
+        "excerpt": "Privacy is necessary for an open society in the electronic age. Privacy is not secrecy. A private matter is something one doesn't want the whole world to know, but a secret matter is something one doesn't want anybody to know. Privacy is the power to selectively reveal oneself to the world. We the Cypherpunks are dedicated to building anonymous systems. We are defending our privacy with cryptography, with anonymous mail forwarding systems, with digital signatures, and with electronic money.",
+        "url": "https://www.activism.net/cypherpunk/manifesto.html",
+        "url_label": "A Cypherpunk's Manifesto · 1993",
+    },
+    "ai": {
+        "title": "Bittensor: A Peer-to-Peer Intelligence Market",
+        "author": "Const · Yuma Rao",
+        "year": "2021",
+        "excerpt": "We propose a market-based protocol for evaluating and rewarding the production of machine intelligence. Miners produce models that perform tasks; validators score those models against each other; the protocol distributes emissions according to the consensus of validator scores. The result is a permissionless, market-discovered ranking of intelligence, with the strongest miners receiving the most reward.",
+        "url": "https://bittensor.com/whitepaper",
+        "url_label": "Bittensor whitepaper",
+    },
+    "gamefi": {
+        "title": "Ronin: A Sidechain for Axie Infinity",
+        "author": "Sky Mavis",
+        "year": "2021",
+        "excerpt": "A blockchain game's economy needs predictable settlement that doesn't compete with NFT mints and meme tokens for blockspace. Ronin was built explicitly for that — a dedicated EVM sidechain so Axie's millions of daily transactions could clear at sub-cent cost. The bridge hack of March 2022 (~$625M, attributed to the Lazarus Group) became the canonical case study in app-chain security and the rebuild that followed it.",
+        "url": "https://whitepaper.axieinfinity.com/",
+        "url_label": "Axie & Ronin whitepaper",
+    },
+    "socialfi": {
+        "title": "Sufficient Decentralisation for Social Networks",
+        "author": "Varun Srinivasan · Farcaster",
+        "year": "2022",
+        "excerpt": "A sufficiently decentralised network is one where two users can find each other and communicate, even if the rest of the network wants to prevent it. Identity, the social graph, and the messages themselves must each be portable across clients without permission. Anything less is a platform pretending to be a protocol.",
+        "url": "https://merklemanufactory.com/blog/sufficient-decentralization",
+        "url_label": "Sufficient decentralisation",
+    },
+    "rwa": {
+        "title": "Larry Fink's 2024 Annual Letter to Investors",
+        "author": "Larry Fink · BlackRock",
+        "year": "2024",
+        "excerpt": "Every stock, every bond, every fund — every asset — can be tokenised. If it's tokenised, it transforms investing. Markets wouldn't need to close. Transactions that currently take days would clear in seconds. And we eliminate hundreds of billions of dollars in fees that, today, are pocketed by intermediaries between the issuer and the investor.",
+        "url": "https://www.blackrock.com/corporate/investor-relations/larry-fink-annual-chairmans-letter",
+        "url_label": "BlackRock annual letter",
+    },
+    "depin": {
+        "title": "DePIN: A Sector Definition",
+        "author": "Sami Kassab · Messari",
+        "year": "2022",
+        "excerpt": "Decentralised Physical Infrastructure Networks use token incentives to coordinate the deployment of real-world hardware that would otherwise require billions in capital expenditure. The supply side runs the hardware for tokens; the demand side pays in tokens or cash; the coordination layer is on-chain. The thesis works when the unit economics close — real revenue per node, real demand for the service, not just speculative subsidy.",
+        "url": "https://messari.io/report/the-depin-sector-map",
+        "url_label": "Messari DePIN report",
+    },
+    "oracles": {
+        "title": "Chainlink: A Decentralized Oracle Network",
+        "author": "Sergey Nazarov · Steve Ellis",
+        "year": "2017",
+        "excerpt": "Smart contracts are deterministic by design — they cannot natively reach the outside world. Without a trustworthy way to obtain off-chain data, smart contracts can only operate over inputs that are already on-chain, severely limiting what they can do. The decentralised oracle network described here aggregates off-chain data feeds and posts them on-chain in a way that is itself trust-minimised.",
+        "url": "https://research.chain.link/whitepaper-v2.pdf",
+        "url_label": "Chainlink v2 whitepaper",
+    },
+    "staking": {
+        "title": "EigenLayer: The Restaking Collective",
+        "author": "Sreeram Kannan",
+        "year": "2023",
+        "excerpt": "Ethereum's economic security — the value at stake against a 51% attack — is currently committed only to securing Ethereum itself. We propose restaking: a primitive that lets stakers re-pledge their staked ETH to additional services, with additional slashing conditions specific to those services. The result is a marketplace where new protocols can rent Ethereum-grade trust without bootstrapping their own validator set.",
+        "url": "https://docs.eigenlayer.xyz/eigenlayer/whitepaper",
+        "url_label": "EigenLayer whitepaper",
+    },
+    "predictions": {
+        "title": "Shall We Vote on Values, but Bet on Beliefs?",
+        "author": "Robin Hanson",
+        "year": "2003",
+        "excerpt": "Democracies fail in part because voters are ignorant about most policy questions. Democracies could fail less if we let market speculators tell us which policies have what consequences. Specifically, when a clear policy metric — say GDP, or human flourishing — is chosen, betting markets can predict which proposed policies would best maximise that metric. Vote on values; bet on beliefs.",
+        "url": "https://mason.gmu.edu/~rhanson/futarchy.html",
+        "url_label": "Hanson on futarchy",
+    },
+    "desci": {
+        "title": "VitaDAO Founding Memo",
+        "author": "Tyler Golato · Paul Kohlhaas",
+        "year": "2021",
+        "excerpt": "The bottleneck in biology is no longer experimental — it is coordination. Funding cycles take years; peer review is unpaid; intellectual property is locked behind university tech transfer offices that rarely get it to market. We propose a token-governed treasury that funds longevity research directly, holds the resulting IP as on-chain primitives, and lets the patient capital of a thousand small wallets coordinate on a single autophagy lab without a fund structure.",
+        "url": "https://www.vitadao.com/learn",
+        "url_label": "VitaDAO founding materials",
+    },
+    "icm": {
+        "title": "Pump.fun: Bonding Curve Issuance for Memecoins",
+        "author": "Alon Cohen · Noah Tweedale · Dylan Kerler",
+        "year": "2024",
+        "excerpt": "Capitalising an idea used to take months — incorporation, legal, distribution, listing. We made it 30 seconds. A name, a ticker, an image, and a curve. The curve front-runs price discovery; the token graduates to Raydium at a fixed market cap; the issuance unit is now free. Most launches go to zero. The 1% that don't are the meta.",
+        "url": "https://pump.fun",
+        "url_label": "pump.fun",
+    },
+    "memes": {
+        "title": "Memecoins as Markets for Attention",
+        "author": "Murad Mahmudov",
+        "year": "2024",
+        "excerpt": "Memes are ideas that survive selection pressure. Tokens are memes with a price. The most efficient market in the world is the one for attention — and the only honest reading of crypto is that the price IS the product, that distribution is the moat, and that the token is the way ordinary people get fractional exposure to a cultural moment. 99% go to zero. The survivors build religions.",
+        "url": "https://twitter.com/MustStopMurad",
+        "url_label": "Murad on X",
+    },
+    "modular_v2": {  # ignored
+        "title": "", "author": "", "year": "", "excerpt": "", "url": "", "url_label": "",
+    },
+    "nfts": {
+        "title": "An Open Metaverse",
+        "author": "Punk6529",
+        "year": "2021",
+        "excerpt": "Either the metaverse is open and people own their stuff, or there is no metaverse — there is just Disneyland: a series of closed simulations operated by a small number of huge corporations. The choice is binary. Open metaverses are built on open protocols, open identity, open data, and ownership that is portable between worlds. NFTs are the technical means by which that ownership is provable; the cultural and political work of insisting on it is what determines whether the metaverse stays open.",
+        "url": "https://twitter.com/punk6529/status/1444922954039984129",
+        "url_label": "Punk6529's open-metaverse thread",
+    },
+    "neobanks": {
+        "title": "Coinbase 2024 Shareholder Letter",
+        "author": "Brian Armstrong · Coinbase",
+        "year": "2024",
+        "excerpt": "Stablecoins are eating the consumer banking stack. The exchanges that adapt become banks. The ones that don't become Western Union. Our card products move customers from holding crypto as an asset to spending stablecoins as a medium of exchange — the architectural shift the GENIUS Act framework will accelerate.",
+        "url": "https://investor.coinbase.com/financials/sec-filings/default.aspx",
+        "url_label": "Coinbase shareholder letters",
+    },
+}
+
+
 # ── Desk notes — sector-specific dated briefs ───────────────────────
 # Builder B's round-1 winning pattern: a hand-edited "this week in
 # [sector]" block that reads like a desk note an editor wrote, not an

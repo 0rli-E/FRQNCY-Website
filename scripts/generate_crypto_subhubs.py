@@ -34,6 +34,7 @@ from sector_research import (  # noqa: E402
     SECTOR_STATS,
     SECTOR_COUNTER,
     SECTOR_DESK_NOTE,
+    SECTOR_SEMINAL,
 )
 try:
     from sector_tech import SECTOR_TECH  # noqa: E402
@@ -938,6 +939,34 @@ def render_project(p: dict) -> str:
 </article>"""
 
 
+def render_seminal(slug: str) -> str:
+    """The seminal text per sector — Bitcoin whitepaper, Cypherpunk Manifesto,
+    Aavenomics, BlackRock annual letter, etc. — with a substantive excerpt
+    and a direct link. Per user request: 'excerpts from the bitcoin whitepaper
+    and a link to it... Learn from this and improve the other sites aswell.'"""
+    cfg = SECTOR_SEMINAL.get(slug)
+    if not cfg or not cfg.get("excerpt"):
+        return ""
+    title = esc(cfg.get("title", ""))
+    author = esc(cfg.get("author", ""))
+    year = esc(cfg.get("year", ""))
+    excerpt = esc(cfg.get("excerpt", ""))
+    url = esc(cfg.get("url", ""))
+    url_label = esc(cfg.get("url_label", "Read"))
+    return f'''<section class="section section-narrow fade-up">
+  <span class="label">The seminal text</span>
+  <h2>The <strong>founding</strong> document.</h2>
+  <article class="seminal">
+    <header class="seminal-head">
+      <div class="seminal-title">{title}</div>
+      <div class="seminal-meta">{author} · {year}</div>
+    </header>
+    <blockquote class="seminal-quote">{excerpt}</blockquote>
+    <a class="seminal-link" href="{url}" target="_blank" rel="noopener noreferrer">{url_label} →</a>
+  </article>
+</section>'''
+
+
 def render_desk_note(slug: str) -> str:
     """Hand-edited dated brief — Builder B's winning pattern.
     Sits above the working set, reads like an editor's desk note."""
@@ -1072,11 +1101,13 @@ def render_tier_bar(projects: list[dict]) -> str:
         counts[t] = counts.get(t, 0) + 1
     if not projects:
         return ""
-    order = ["all", "core", "conviction", "watch", "speculative", "unrated", "avoid"]
+    # 'avoid' tier hidden entirely — conviction over noise (rubric).
+    order = ["all", "core", "conviction", "watch", "speculative", "unrated"]
+    visible_count = sum(counts.get(t, 0) for t in order if t != "all")
     pieces = []
     for t in order:
         if t == "all":
-            pieces.append(f'<button class="ttab active" data-tier="all">All<span class="ct">{len(projects)}</span></button>')
+            pieces.append(f'<button class="ttab active" data-tier="all">All<span class="ct">{visible_count}</span></button>')
         elif counts.get(t):
             pieces.append(f'<button class="ttab" data-tier="{t}">{t}<span class="ct">{counts[t]}</span></button>')
     return f'<div class="tier-bar">{"".join(pieces)}</div>'
@@ -1329,6 +1360,7 @@ def render_page(slug: str, cfg: dict) -> str:
     hero_stats_html = render_hero_stats(slug)
     tech_html = render_tech_grid(slug)
     counter_html = render_counter_box(slug)
+    seminal_html = render_seminal(slug)
     sector_filter = SECTOR_HERO_FILTER.get(slug, "saturate(0.8) brightness(0.42) contrast(1.1)")
 
     # Real crypto-website imagery (project sites / CoinGecko / DefiLlama)
@@ -1434,6 +1466,9 @@ def render_page(slug: str, cfg: dict) -> str:
   <img src="{cfg["hero_bg"]}" alt="">
   <div class="bleed-cap">{bleed_cap}</div>
 </div>
+
+<!-- SEMINAL TEXT — the founding document per sector with excerpt + link -->
+{seminal_html}
 
 <!-- COUNTER-BOX — rubric's "Pointed" anchor: objection + falsification -->
 {counter_html}
