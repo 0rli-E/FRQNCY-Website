@@ -576,7 +576,8 @@ SECTOR_PROJECT_DATA: dict[str, dict[str, dict]] = {
         },
         "Fedimint": {
             "tagline": "Community banks, cryptographically verified.",
-            "image": "https://avatars.githubusercontent.com/u/94670866?s=400&v=4",  # Fedimint GitHub
+            # Official Fedimint-Full.png wordmark from fedimint.org
+            "image": "https://fedimint.org/img/Fedimint-Full.png",
             "accent": "#FF7A45",
             "year": "2022",
             "founder": "Eric Sirion · Obi Nwosu",
