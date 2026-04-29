@@ -65,7 +65,7 @@ SECTOR_HERO_FILTER = {
     "oracles":     "saturate(0.85) brightness(0.42) contrast(1.18)",
     "staking":     "saturate(0.85) brightness(0.42) contrast(1.18)",
     "predictions": "saturate(0.85) brightness(0.42) contrast(1.18)",
-    "desci":       "saturate(0.55) brightness(0.5) contrast(1.05) hue-rotate(8deg)",
+    "desci":       "saturate(0.7) brightness(0.5) contrast(1.1) hue-rotate(118deg)",
     "icm":         "saturate(1.05) brightness(0.45) contrast(1.2) hue-rotate(-8deg)",
     "memes":       "saturate(1.55) brightness(0.55) contrast(1.25) hue-rotate(-6deg)",
     "nfts":        "saturate(1.25) brightness(0.5) contrast(1.2)",
@@ -663,7 +663,9 @@ SECTORS = {
         title="Decentralised Science",
         h1="DeSci",
         eyebrow="Sector · DeSci · Funding, IP, and data — reorganised",
-        accent="#9B5CFF", warm="#B989FF",
+        # Mint/teal — disambiguates from Privacy's lavender (Juror 3 audit fix).
+        # Ties to BIO Protocol's brand palette and biotech semantic register.
+        accent="#2BE0AC", warm="#5FE6BC",
         glyph="graph",
         hero_bg="https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&q=95&w=3840",
         closing_bg="https://images.unsplash.com/photo-1614741118887-7a4ee193a5fa?auto=format&fit=crop&q=95&w=3840",

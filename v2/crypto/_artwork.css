@@ -373,26 +373,34 @@ blockquote cite {
   font-family: var(--body);
 }
 
-/* DESK NOTE — "this week in [sector]" hand-edited brief */
+/* DESK NOTE — dated dispatch, distinct from counter-box.
+   Per Juror 3 audit: counter-box keeps the border-left (editorial gravitas),
+   desk-note becomes a horizontal monospace dateline with top+bottom rules
+   so the two patterns no longer rhyme. */
 .desk-note {
   display: grid;
   grid-template-columns: auto 1fr auto;
   gap: 1.2rem; align-items: center;
-  padding: 0.85rem 1.2rem;
+  padding: 0.9rem 0;
   margin: 0 0 1.6rem;
-  background: rgba(255, 255, 255, 0.02);
-  border-left: 2px solid var(--sector-warm);
-  font-size: 0.82rem; line-height: 1.55;
+  border-top: 1px solid var(--sector-soft);
+  border-bottom: 1px solid var(--sector-soft);
+  background: transparent;
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 0.78rem; line-height: 1.55;
   color: rgba(245, 248, 251, 0.78);
+  letter-spacing: 0.005em;
 }
 .desk-note .dn-date {
-  font-family: ui-monospace, 'JetBrains Mono', monospace;
-  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  font-family: inherit;
+  font-size: 0.66rem; letter-spacing: 0.22em; text-transform: uppercase;
   color: var(--sector-warm);
+  font-weight: 500;
 }
 .desk-note .dn-tag {
-  font-size: 0.55rem; letter-spacing: 0.2em; text-transform: uppercase;
-  color: rgba(245, 248, 251, 0.4);
+  font-size: 0.56rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: rgba(245, 248, 251, 0.42);
+  font-weight: 400;
 }
 
 /* TICKER PCT — 24h delta chip */
@@ -407,8 +415,20 @@ blockquote cite {
 .tk-pct.down { color: #E58787; background: rgba(229, 135, 135, 0.10); }
 .tk-pct.flat { color: rgba(245, 248, 251, 0.5); background: rgba(255, 255, 255, 0.04); }
 
-/* PER-SECTOR HERO FILTER — CSS variable override per sub-hub */
-.hero-bg { filter: var(--hero-filter, saturate(0.8) brightness(0.42) contrast(1.1)); }
+/* PER-SECTOR HERO FILTER — CSS variable override per sub-hub.
+   Tuned heavier than v1 because OG meta images (logos centred on white)
+   need stronger blur + scale-out so only their colour field survives
+   and the logo crops outside the visible frame. */
+.hero-bg {
+  filter: var(--hero-filter, saturate(0.55) brightness(0.5) contrast(1.1) blur(3px));
+  background-size: 145%;
+  background-position: 50% 30%;
+}
+/* Match bleed filter so OG-image bleed images don't read as logo placards */
+.bleed img { filter: brightness(0.4) saturate(0.65) blur(1px); }
+.bleed::after {
+  background: linear-gradient(180deg, rgba(11,28,61,0.72) 0%, rgba(11,28,61,0.4) 30%, rgba(11,28,61,0.4) 70%, rgba(11,28,61,0.85) 100%);
+}
 
 /* DEFAULT-HIDE unrated and avoid tiers — conviction over noise */
 .tier-bar .ttab[data-tier="unrated"] { opacity: 0.55; }
@@ -766,6 +786,17 @@ footer.site-foot .legal {
   .breadcrumb { display: none; }
   .step { grid-template-columns: 40px 1fr; gap: 1rem; }
   blockquote { padding-left: 1rem; font-size: 1.4rem; }
+}
+/* 380px breakpoint — fixes hero-stats wrap, tech-grid + projects-grid overflow */
+@media (max-width: 380px) {
+  .hero-stats { flex-direction: column; gap: 0.7rem; padding: 0.8rem 0; }
+  .hero-stats > div { flex-direction: row; align-items: baseline; gap: 0.7rem; }
+  .tech-grid { grid-template-columns: 1fr; }
+  .tech-card { padding: 1.2rem 1rem 1.1rem; }
+  .projects-grid { grid-template-columns: 1fr; }
+  .desk-note { grid-template-columns: 1fr; gap: 0.5rem; padding: 0.7rem 0; text-align: left; }
+  .desk-note .dn-tag { display: none; }
+  .counter-box { padding: 1.2rem 1.1rem; }
 }
 @media (prefers-reduced-motion: reduce) {
   .hero-bg, .scroll-hint::after,
