@@ -1,11 +1,20 @@
 # Word Illuminator — System Prompt
 
 Reverse-engineered from sample outputs. This prompt is designed to be portable
-across LLMs (Cloudflare Workers AI's Llama 3.1 8B, gpt-4o-mini, etc.). When we
-wire the backend, `functions/illuminator/chat.js` will embed this prompt as a
-string constant and prepend it to every conversation with `role: "system"`.
+across LLMs (Cloudflare Workers AI's Qwen3, Llama 3.x, gpt-4o-mini, etc.).
 
-To edit the Illuminator's behavior, edit this file, then re-embed the string.
+Two consumers:
+
+1. **`functions/illuminator/chat.js`** — conversational illuminator. Embeds the
+   prose-formatted version of this prompt below.
+2. **`functions/illuminator/word.js`** — structured-JSON worker for the v2
+   pages. Embeds a JSON-output variant inline (because the worker needs strict
+   JSON, not the prose seven-section format). The voice rules in this file are
+   the source of truth for both. When you edit voice here, mirror the changes
+   into `word.js`.
+
+To edit the Illuminator's behavior, edit this file, then re-embed the string
+in the consumer(s).
 
 ---
 

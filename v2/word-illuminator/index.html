@@ -70,6 +70,49 @@ section{margin-bottom:4.5rem}
 
 .note{padding:1.25rem 1.4rem;border-left:2px solid var(--gold);background:var(--gold-soft);border-radius:0 4px 4px 0;font-size:0.85rem;color:var(--text);line-height:1.7;margin:1.5rem 0}
 
+/* Illuminate-any-word search box */
+.illum-search{margin-bottom:2rem;padding:1.5rem 1.5rem 1.5rem;border:1px solid var(--card-border);border-radius:4px;background:var(--card-bg)}
+.illum-search-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;display:block}
+.illum-search-row{display:flex;gap:0.5rem;flex-wrap:wrap}
+.illum-search input{flex:1;min-width:200px;background:var(--navy);color:#fff;border:1px solid var(--card-border);border-radius:3px;padding:0.7rem 0.9rem;font-family:'Cormorant',serif;font-style:italic;font-size:1.1rem;outline:none}
+.illum-search input:focus{border-color:var(--gold)}
+.illum-search button{background:var(--gold);color:var(--navy);border:none;border-radius:3px;padding:0.7rem 1.4rem;font-family:'Jost',sans-serif;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:opacity .2s}
+.illum-search button:hover{opacity:0.85}
+.illum-search button:disabled{opacity:0.4;cursor:not-allowed}
+.illum-search-help{font-size:0.72rem;color:var(--text-dim);margin-top:0.6rem;line-height:1.5}
+.illum-search-help em{font-family:'Cormorant',serif;font-style:italic;color:var(--cream)}
+
+/* Rendered illumination block (mirrors the per-word page styles, scoped) */
+.illum-out{display:none;margin-top:2rem;padding:0;border-top:1px solid var(--card-border)}
+.illum-out.visible{display:block}
+.illum-out h2{font-family:'Cormorant',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:300;font-style:italic;color:#fff;margin:2rem 0 1.5rem;text-align:center}
+.illum-out .io-section{margin-bottom:2.5rem}
+.illum-out .io-num{font-family:'Cormorant',serif;font-style:italic;font-size:0.95rem;color:var(--gold);margin-bottom:0.4rem;display:inline-block}
+.illum-out .io-h{font-family:'Cormorant',serif;font-size:1.5rem;font-weight:400;color:#fff;margin-bottom:1rem}
+.illum-out .io-def{margin-bottom:1.1rem;padding-left:1.25rem;border-left:1px solid rgba(196,151,58,0.25)}
+.illum-out .io-def-meaning{color:#fff}
+.illum-out .io-def-ex{font-size:0.85rem;color:var(--text-dim);font-family:'Cormorant',serif;font-style:italic;margin-top:0.3rem}
+.illum-out .io-def-ex::before{content:'— ';color:var(--gold);opacity:0.6}
+.illum-out .io-roots{white-space:pre-line;color:var(--text);margin-bottom:1rem;line-height:1.7}
+.illum-out .io-essence{margin-top:1.25rem;padding:1rem 1.25rem;background:var(--gold-soft);border-left:2px solid var(--gold);border-radius:0 4px 4px 0;font-family:'Cormorant',serif;font-style:italic;color:#fff;line-height:1.6}
+.illum-out .io-essence-label{font-family:'Jost',sans-serif;font-style:normal;font-size:0.55rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;display:block}
+.illum-out .io-syn-grid{display:grid;grid-template-columns:1fr;gap:0.75rem}
+@media(min-width:600px){.illum-out .io-syn-grid{grid-template-columns:1fr 1fr}}
+.illum-out .io-syn-block{padding:0.9rem 1.1rem;border:1px solid var(--card-border);border-radius:4px}
+.illum-out .io-syn-label{font-size:0.55rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--gold);margin-bottom:0.45rem;display:block}
+.illum-out .io-deriv{margin-bottom:1.4rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.illum-out .io-deriv:last-child{border-bottom:none}
+.illum-out .io-deriv-head{font-family:'Cormorant',serif;font-style:italic;color:#fff;font-size:1.25rem;margin-bottom:0.5rem}
+.illum-out .io-deriv-head .pos{font-family:'Jost',sans-serif;font-style:normal;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-left:0.5rem}
+.illum-out .io-deriv-row{font-size:0.85rem;color:var(--text);margin-bottom:0.35rem;line-height:1.55}
+.illum-out .io-deriv-row strong{color:var(--gold);font-weight:400;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;margin-right:0.5rem;display:inline-block;min-width:70px}
+.illum-out .io-prose{font-family:'Cormorant',serif;font-size:1.1rem;line-height:1.7;color:var(--cream);margin-bottom:1.25rem}
+.illum-out .io-question{padding:1.1rem 1.3rem;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);border-radius:4px;font-family:'Cormorant',serif;font-style:italic;font-size:1.05rem;color:#fff;line-height:1.5}
+.illum-out .io-question-label{font-family:'Jost',sans-serif;font-style:normal;font-size:0.55rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;display:block}
+.illum-out .io-meta{font-size:0.7rem;color:var(--text-dim);text-align:center;margin-top:1.5rem;letter-spacing:0.04em;font-style:italic}
+.illum-status{font-size:0.78rem;color:var(--text-dim);margin-top:0.75rem;min-height:1.2em}
+.illum-status.error{color:#E89B6B}
+
 footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px clamp(1.25rem,6vw,2.5rem);text-align:center;margin-top:3rem}
 footer .wm{font-family:'Cormorant',serif;font-weight:300;font-size:16px;letter-spacing:0.3em;color:rgba(255,255,255,0.5);text-transform:uppercase}
 footer .copy{font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-top:6px;display:inline-block}
@@ -130,6 +173,21 @@ footer .copy{font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);ma
 </section>
 
 <section>
+  <div class="section-label">Illuminate any word</div>
+  <h2>Try one not on the shelf</h2>
+  <div class="illum-search">
+    <span class="illum-search-label">Word</span>
+    <form class="illum-search-row" id="illum-form" autocomplete="off">
+      <input type="text" id="illum-input" placeholder="e.g. presence, integrity, witness" maxlength="30" pattern="[A-Za-z0-9-]+" required>
+      <button type="submit" id="illum-btn">Illuminate</button>
+    </form>
+    <p class="illum-search-help">A working illumination — <em>not</em> the curated shelf below. The six pages beneath are the gold-standard hand-written references; this is for exploring a word the shelf hasn't reached yet.</p>
+    <div class="illum-status" id="illum-status" aria-live="polite"></div>
+  </div>
+  <div class="illum-out" id="illum-out" aria-live="polite"></div>
+</section>
+
+<section>
   <div class="section-label">First illuminations</div>
   <h2>Six words to begin</h2>
   <div class="grid">
@@ -181,6 +239,95 @@ footer .copy{font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);ma
   <span class="wm">FRQNCY</span><br>
   <span class="copy">&copy; 2026 FRQNCY &middot; All frequencies reserved</span>
 </footer>
+
+<script>
+(function(){
+  const form   = document.getElementById('illum-form');
+  const input  = document.getElementById('illum-input');
+  const btn    = document.getElementById('illum-btn');
+  const status = document.getElementById('illum-status');
+  const out    = document.getElementById('illum-out');
+  if (!form) return;
+
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  function render(d) {
+    const defs = (d.definitions || []).map((x, i) =>
+      `<div class="io-def"><span class="io-def-meaning"><em style="color:var(--gold);font-style:italic">${i+1}.</em> ${esc(x.sense)}</span>${x.example ? `<div class="io-def-ex">${esc(x.example)}</div>` : ''}</div>`
+    ).join('');
+
+    const ety = d.etymology || {};
+    const etymBlock = `
+      ${ety.roots ? `<div class="io-roots">${esc(ety.roots)}</div>` : ''}
+      ${ety.evolution ? `<p style="color:var(--text);margin-bottom:1rem;line-height:1.7">${esc(ety.evolution)}</p>` : ''}
+      ${ety.earliest_essence ? `<div class="io-essence"><span class="io-essence-label">Earliest essence</span>${esc(ety.earliest_essence)}</div>` : ''}
+    `;
+
+    const sa = d.synonyms_antonyms || {};
+    const synBlock = `
+      <div class="io-syn-grid">
+        <div class="io-syn-block"><span class="io-syn-label">Synonyms</span>${(sa.synonyms || []).map(esc).join(' &middot; ')}</div>
+        <div class="io-syn-block"><span class="io-syn-label">Antonyms</span>${(sa.antonyms || []).map(esc).join(' &middot; ')}</div>
+      </div>
+    `;
+
+    const derivs = (d.derivatives || []).map(x => `
+      <div class="io-deriv">
+        <div class="io-deriv-head">${esc(x.word)}${x.part_of_speech ? `<span class="pos">${esc(x.part_of_speech)}</span>` : ''}</div>
+        ${x.definition ? `<div class="io-deriv-row"><strong>Definition</strong>${esc(x.definition)}</div>` : ''}
+        ${x.example ? `<div class="io-deriv-row"><strong>Example</strong><em style="font-family:Cormorant,serif;font-style:italic;color:var(--text-dim)">${esc(x.example)}</em></div>` : ''}
+        ${(x.synonyms||[]).length ? `<div class="io-deriv-row"><strong>Synonyms</strong>${x.synonyms.map(esc).join(', ')}</div>` : ''}
+        ${(x.antonyms||[]).length ? `<div class="io-deriv-row"><strong>Antonyms</strong>${x.antonyms.map(esc).join(', ')}</div>` : ''}
+      </div>
+    `).join('');
+
+    const di = d.deeper_illumination || {};
+    const deeper = `
+      ${di.prose ? `<p class="io-prose">${esc(di.prose)}</p>` : ''}
+      ${di.reflective_question ? `<div class="io-question"><span class="io-question-label">A question to reflect on</span>${esc(di.reflective_question)}</div>` : ''}
+    `;
+
+    out.innerHTML = `
+      <h2><em>${esc(d.word)}</em></h2>
+      <div class="io-section"><span class="io-num">i.</span><div class="io-h">Definitions</div>${defs}</div>
+      <div class="io-section"><span class="io-num">ii.</span><div class="io-h">Etymology</div>${etymBlock}</div>
+      <div class="io-section"><span class="io-num">iii.</span><div class="io-h">Synonyms &amp; antonyms</div>${synBlock}</div>
+      <div class="io-section"><span class="io-num">iv.</span><div class="io-h">Derivatives</div>${derivs}</div>
+      <div class="io-section"><span class="io-num">v.</span><div class="io-h">Deeper illumination</div>${deeper}</div>
+      <div class="io-meta">A working illumination — generated, not curated. The shelf below is the canonical reference.</div>
+    `;
+    out.classList.add('visible');
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const word = input.value.trim().toLowerCase();
+    if (!/^[A-Za-z0-9-]{1,30}$/.test(word)) {
+      status.textContent = 'Letters, numbers, and hyphens only — up to 30 characters.';
+      status.classList.add('error');
+      return;
+    }
+    status.classList.remove('error');
+    status.textContent = 'Illuminating…';
+    btn.disabled = true;
+    out.classList.remove('visible');
+
+    try {
+      const r = await fetch(`/illuminator/word?word=${encodeURIComponent(word)}`);
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || 'Request failed');
+      status.textContent = '';
+      render(j);
+      out.scrollIntoView({behavior:'smooth', block:'start'});
+    } catch (err) {
+      status.classList.add('error');
+      status.textContent = err.message || 'The Illuminator is resting — try again in a moment.';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
 
 </body>
 </html>

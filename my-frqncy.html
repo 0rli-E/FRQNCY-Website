@@ -452,6 +452,147 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
 
 <main>
 
+<!-- ── YOUR DESIGN (Personalisation Engine v0; signed-in + has-chart only) ── -->
+<!-- Two cards: domains from search.json + teachers from people.json, matched
+     against the user's saved Human Design / Gene Keys signature. Suggestion
+     not prescription — see proposals/PRACTICE-TRACKER.md > "Personalisation
+     engine v0 (paired)" and assets/frqncy-personalisation.js. Hidden by
+     default; revealed only when the user is signed in AND has a chart. -->
+<section id="your-design" aria-label="Your design" style="display:none;max-width:920px;margin:0 auto 2rem;padding:0 clamp(1rem,3vw,2rem)">
+  <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem">Your design</div>
+  <div id="yd-signature" style="font-size:0.78rem;color:var(--text-dim);margin-bottom:0.85rem;letter-spacing:0.04em"></div>
+  <div id="yd-grid" style="display:grid;grid-template-columns:1fr;gap:0.9rem">
+    <article style="position:relative;overflow:hidden;padding:1.2rem 1.4rem;border:1px solid var(--card-border);border-radius:4px;background:rgba(255,255,255,0.025)">
+      <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.4rem">Your domains</div>
+      <h3 style="font-family:'Cormorant',serif;font-weight:300;font-size:1.25rem;color:#fff;margin:0 0 0.35rem;line-height:1.2">Topics that often resonate with your type</h3>
+      <p style="font-size:0.75rem;color:var(--text-dim);margin:0 0 0.85rem;line-height:1.5">Suggestions, not prescriptions. Follow what calls.</p>
+      <ul id="yd-topics" style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem"></ul>
+    </article>
+    <article style="position:relative;overflow:hidden;padding:1.2rem 1.4rem;border:1px solid var(--card-border);border-radius:4px;background:rgba(255,255,255,0.025)">
+      <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.4rem">Teachers aligned</div>
+      <h3 style="font-family:'Cormorant',serif;font-weight:300;font-size:1.25rem;color:#fff;margin:0 0 0.35rem;line-height:1.2">Teachers worth reading at your design</h3>
+      <p style="font-size:0.75rem;color:var(--text-dim);margin:0 0 0.85rem;line-height:1.5">A starting bench. Take what serves; leave the rest.</p>
+      <ul id="yd-people" style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem"></ul>
+    </article>
+  </div>
+</section>
+
+<!-- Empty state — signed in, no chart yet. Tiny nudge to /chart/. -->
+<section id="your-design-empty" aria-label="Save your chart" style="display:none;max-width:700px;margin:0 auto 2rem;padding:0 clamp(1rem,3vw,2rem)">
+  <div style="padding:1rem 1.2rem;border:1px dashed var(--card-border);border-radius:4px;background:rgba(255,255,255,0.02)">
+    <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.45rem">Your design</div>
+    <p style="font-size:0.86rem;color:var(--text);margin:0 0 0.6rem;line-height:1.55">Save your chart on the chart page to see suggestions tailored to your design.</p>
+    <a href="/chart/" style="display:inline-flex;align-items:center;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.55rem 1rem;border-radius:3px;border:1px solid var(--gold);color:var(--gold);text-decoration:none">Generate your chart →</a>
+  </div>
+</section>
+
+<!-- Two columns on wider screens for #your-design — kept inline so this
+     surface stays self-contained without touching the global stylesheet. -->
+<style>
+  @media (min-width: 720px) {
+    #yd-grid { grid-template-columns: 1fr 1fr !important; }
+  }
+  #yd-topics li, #yd-people li {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--card-border);
+    border-radius: 3px;
+    background: rgba(255,255,255,0.02);
+  }
+  #yd-topics a, #yd-people a {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.88rem;
+    letter-spacing: 0.02em;
+  }
+  #yd-topics .yd-framing, #yd-people .yd-framing {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.45;
+  }
+</style>
+
+<script type="module">
+  // Personalisation Engine v0 — paint "Your design" cards when the signed-in
+  // user has a saved chart. Silent no-op for everyone else.
+  import {
+    getUserChart, matchTopicsToChart, matchPeopleToChart, loadTopicsAndPeople,
+  } from '/assets/frqncy-personalisation.js';
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+
+  async function paintYourDesign() {
+    if (!window.frqncy) return;
+    await window.frqncy.ready;
+    const user = await window.frqncy.auth.getUser();
+    if (!user) return;
+
+    let chart = null;
+    try { chart = await getUserChart(); }
+    catch (err) { console.warn('[your-design] chart fetch failed', err); }
+
+    const sectionMain  = document.getElementById('your-design');
+    const sectionEmpty = document.getElementById('your-design-empty');
+    if (!sectionMain || !sectionEmpty) return;
+
+    if (!chart) {
+      sectionEmpty.style.display = 'block';
+      return;
+    }
+
+    sectionMain.style.display = 'block';
+
+    // Signature line — a quiet acknowledgement of what we read.
+    const sigBits = [chart.hd_type, chart.profile, chart.authority]
+      .filter(Boolean).join(' · ');
+    const sigEl = document.getElementById('yd-signature');
+    if (sigEl) {
+      sigEl.textContent = sigBits
+        ? `Reading from your saved chart — ${sigBits}.`
+        : 'Reading from your saved chart.';
+    }
+
+    let topics = [], people = [];
+    try {
+      const data = await loadTopicsAndPeople();
+      topics = matchTopicsToChart(chart, data.topics, 5);
+      people = matchPeopleToChart(chart, data.people, 5);
+    } catch (err) {
+      console.warn('[your-design] match failed', err);
+    }
+
+    const topicsEl = document.getElementById('yd-topics');
+    if (topicsEl) {
+      topicsEl.innerHTML = topics.map(function (t) {
+        return '<li>'
+          + '<a href="' + escapeHtml(t.url) + '">' + escapeHtml(t.label) + '</a>'
+          + '<span class="yd-framing">' + escapeHtml(t.framing) + '</span>'
+          + '</li>';
+      }).join('') || '<li style="color:var(--text-dim);font-size:0.8rem">No matches yet — try saving your chart again.</li>';
+    }
+
+    const peopleEl = document.getElementById('yd-people');
+    if (peopleEl) {
+      peopleEl.innerHTML = people.map(function (p) {
+        return '<li>'
+          + '<a href="' + escapeHtml(p.url) + '">' + escapeHtml(p.name) + '</a>'
+          + '<span class="yd-framing">' + escapeHtml(p.framing) + '</span>'
+          + '</li>';
+      }).join('') || '<li style="color:var(--text-dim);font-size:0.8rem">No matches yet — try saving your chart again.</li>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', paintYourDesign);
+  if (window.frqncy && typeof window.frqncy.onAuth === 'function') {
+    window.frqncy.onAuth((u) => { if (u) paintYourDesign(); });
+  }
+</script>
+
 <!-- ── TODAY'S PATH (signed-in only; populated by JS) ────────────────────── -->
 <!-- Sanctuary daily-use loop. Reframes the practice tracker as an invitation,
      not an assignment. Hidden by default; revealed when frqncy auth resolves

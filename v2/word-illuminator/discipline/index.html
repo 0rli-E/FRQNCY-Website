@@ -88,6 +88,38 @@ section{margin-bottom:4rem;scroll-margin-top:80px}
 .related{padding-top:2rem;border-top:1px solid var(--card-border);font-size:0.82rem;color:var(--text-dim)}
 .related strong{color:var(--gold);font-weight:400;letter-spacing:0.04em;display:block;margin-bottom:0.5rem;font-size:0.6rem;text-transform:uppercase;letter-spacing:0.24em}
 
+/* AI re-illuminate block */
+.ai-reillum{margin-top:3.5rem;padding-top:2.5rem;border-top:1px solid var(--card-border)}
+.ai-reillum-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;display:block}
+.ai-reillum h3{font-family:'Cormorant',serif;font-size:1.6rem;font-weight:400;font-style:italic;color:#fff;margin-bottom:0.75rem}
+.ai-reillum p{font-size:0.85rem;color:var(--text-dim);line-height:1.6;margin-bottom:1.25rem}
+.ai-reillum button{background:transparent;color:var(--gold);border:1px solid var(--gold);border-radius:3px;padding:0.65rem 1.4rem;font-family:'Jost',sans-serif;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.ai-reillum button:hover{background:var(--gold);color:var(--navy)}
+.ai-reillum button:disabled{opacity:0.4;cursor:not-allowed}
+.ai-reillum-status{font-size:0.78rem;color:var(--text-dim);margin-top:0.75rem;min-height:1.2em}
+.ai-reillum-status.error{color:#E89B6B}
+.ai-out{display:none;margin-top:2rem;padding:1.5rem;border:1px dashed var(--card-border);border-radius:4px;background:rgba(255,255,255,0.02)}
+.ai-out.visible{display:block}
+.ai-out-tag{font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);opacity:0.8;margin-bottom:1rem;display:block}
+.ai-out h4{font-family:'Cormorant',serif;font-size:1rem;font-weight:400;color:var(--gold);font-style:italic;margin:1.25rem 0 0.5rem}
+.ai-out h4:first-child{margin-top:0}
+.ai-out .ai-roots{white-space:pre-line;font-size:0.85rem;color:var(--text);margin-bottom:0.75rem;line-height:1.65}
+.ai-out p.ai-evo{font-size:0.85rem;color:var(--text);line-height:1.65;margin-bottom:0.75rem}
+.ai-out .ai-essence{padding:0.85rem 1.1rem;background:var(--gold-soft);border-left:2px solid var(--gold);font-family:'Cormorant',serif;font-style:italic;color:#fff;font-size:0.95rem;line-height:1.55;border-radius:0 4px 4px 0}
+.ai-out ol{padding-left:1.4rem;font-size:0.85rem;color:var(--text);line-height:1.65;margin-bottom:0.5rem}
+.ai-out ol li{margin-bottom:0.45rem}
+.ai-out .ai-ex{font-family:'Cormorant',serif;font-style:italic;color:var(--text-dim);font-size:0.92rem;display:block;margin-top:0.15rem}
+.ai-out .ai-syn{font-size:0.82rem;color:var(--text);margin-bottom:0.4rem}
+.ai-out .ai-syn strong{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);font-weight:400;margin-right:0.5rem}
+.ai-out .ai-deriv{margin-bottom:1rem;padding:0.75rem 0;border-bottom:1px solid rgba(255,255,255,0.04)}
+.ai-out .ai-deriv:last-child{border-bottom:none}
+.ai-out .ai-deriv-head{font-family:'Cormorant',serif;font-style:italic;color:#fff;font-size:1.1rem}
+.ai-out .ai-deriv-head .pos{font-family:'Jost',sans-serif;font-style:normal;font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-left:0.5rem}
+.ai-out .ai-deriv-row{font-size:0.8rem;color:var(--text);margin-top:0.35rem;line-height:1.55}
+.ai-out .ai-deriv-row strong{color:var(--gold);font-weight:400;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;margin-right:0.4rem}
+.ai-out .ai-prose{font-family:'Cormorant',serif;font-size:1.02rem;color:var(--cream);line-height:1.65;margin-bottom:0.85rem}
+.ai-out .ai-question{padding:0.85rem 1.1rem;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);border-radius:4px;font-family:'Cormorant',serif;font-style:italic;color:#fff;font-size:0.98rem;line-height:1.5}
+
 footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px clamp(1.25rem,6vw,2.5rem);text-align:center;margin-top:3rem}
 footer .wm{font-family:'Cormorant',serif;font-weight:300;font-size:16px;letter-spacing:0.3em;color:rgba(255,255,255,0.5);text-transform:uppercase}
 footer .copy{font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-top:6px;display:inline-block}
@@ -213,6 +245,15 @@ footer .copy{font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);ma
     <strong>Related illuminations</strong>
     <a href="/v2/word-illuminator/practice/">Practice</a> · <a href="/v2/word-illuminator/devotion/">Devotion</a>
   </div>
+
+  <div class="ai-reillum">
+    <span class="ai-reillum-label">Compare</span>
+    <h3>Illuminate again with AI</h3>
+    <p>The illumination above is hand-curated. Below, the same word run through the live worker — for comparison, not replacement. The curated version is canonical; the AI version is a working draft.</p>
+    <button id="ai-illum-btn" type="button">Run live illumination</button>
+    <div class="ai-reillum-status" id="ai-illum-status" aria-live="polite"></div>
+    <div class="ai-out" id="ai-illum-out" aria-live="polite"></div>
+  </div>
 </section>
 
 </main>
@@ -221,6 +262,70 @@ footer .copy{font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);ma
   <span class="wm">FRQNCY</span><br>
   <span class="copy">&copy; 2026 FRQNCY &middot; All frequencies reserved</span>
 </footer>
+
+<script>
+(function(){
+  const btn    = document.getElementById('ai-illum-btn');
+  const status = document.getElementById('ai-illum-status');
+  const out    = document.getElementById('ai-illum-out');
+  if (!btn) return;
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  function render(d){
+    const defs = (d.definitions||[]).map((x,i) =>
+      `<li>${esc(x.sense)}${x.example?`<span class="ai-ex">— ${esc(x.example)}</span>`:''}</li>`
+    ).join('');
+    const ety = d.etymology||{};
+    const sa  = d.synonyms_antonyms||{};
+    const derivs = (d.derivatives||[]).map(x => `
+      <div class="ai-deriv">
+        <div class="ai-deriv-head">${esc(x.word)}${x.part_of_speech?`<span class="pos">${esc(x.part_of_speech)}</span>`:''}</div>
+        ${x.definition?`<div class="ai-deriv-row"><strong>Def</strong>${esc(x.definition)}</div>`:''}
+        ${x.example?`<div class="ai-deriv-row"><strong>Ex</strong><em style="font-family:Cormorant,serif;font-style:italic;color:var(--text-dim)">${esc(x.example)}</em></div>`:''}
+        ${(x.synonyms||[]).length?`<div class="ai-deriv-row"><strong>Syn</strong>${x.synonyms.map(esc).join(', ')}</div>`:''}
+        ${(x.antonyms||[]).length?`<div class="ai-deriv-row"><strong>Ant</strong>${x.antonyms.map(esc).join(', ')}</div>`:''}
+      </div>
+    `).join('');
+    const di = d.deeper_illumination||{};
+    out.innerHTML = `
+      <span class="ai-out-tag">AI illumination · live</span>
+      <h4>Definitions</h4>
+      <ol>${defs}</ol>
+      <h4>Etymology</h4>
+      ${ety.roots?`<div class="ai-roots">${esc(ety.roots)}</div>`:''}
+      ${ety.evolution?`<p class="ai-evo">${esc(ety.evolution)}</p>`:''}
+      ${ety.earliest_essence?`<div class="ai-essence">${esc(ety.earliest_essence)}</div>`:''}
+      <h4>Synonyms &amp; antonyms</h4>
+      <div class="ai-syn"><strong>Synonyms</strong>${(sa.synonyms||[]).map(esc).join(', ')}</div>
+      <div class="ai-syn"><strong>Antonyms</strong>${(sa.antonyms||[]).map(esc).join(', ')}</div>
+      <h4>Derivatives</h4>
+      ${derivs}
+      <h4>Deeper illumination</h4>
+      ${di.prose?`<p class="ai-prose">${esc(di.prose)}</p>`:''}
+      ${di.reflective_question?`<div class="ai-question">${esc(di.reflective_question)}</div>`:''}
+    `;
+    out.classList.add('visible');
+  }
+
+  btn.addEventListener('click', async () => {
+    status.classList.remove('error');
+    status.textContent = 'Running…';
+    btn.disabled = true;
+    try {
+      const r = await fetch('/illuminator/word?word=discipline');
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || 'Request failed');
+      status.textContent = '';
+      render(j);
+    } catch (err) {
+      status.classList.add('error');
+      status.textContent = err.message || 'The Illuminator is resting — try again in a moment.';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
 
 </body>
 </html>

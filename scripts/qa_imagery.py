@@ -431,12 +431,16 @@ def score_topic(client, provider: str, model: str,
     if not hero_url or not closing_url:
         v.error = "missing image URL"
         return v
-    if not head_check(hero_url):
-        v.error = f"hero HEAD failed: {hero_url}"
-        return v
-    if not head_check(closing_url):
-        v.error = f"closing HEAD failed: {closing_url}"
-        return v
+    # Skip HEAD checks under claude-cli — _cache_image will fetch and fail
+    # loud if the URL is broken, so the HEAD round-trip is redundant. Saves
+    # ~15-30s per topic when running parallel chunks.
+    if provider != "claude-cli":
+        if not head_check(hero_url):
+            v.error = f"hero HEAD failed: {hero_url}"
+            return v
+        if not head_check(closing_url):
+            v.error = f"closing HEAD failed: {closing_url}"
+            return v
 
     prompt = RUBRIC_PROMPT.format(slug=slug, label=label, domain=domain, desc=desc[:300])
 

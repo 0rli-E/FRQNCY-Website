@@ -90,3 +90,25 @@ For signed-out users (anywhere the today's-path block is reachable), the functio
 - `proposals/PRACTICE-TRACKER.md` — this file
 - `NRG-LAUNCH-CHECKLIST.md` — migration 012 added to dashboard step list
 - `proposals/EXECUTION-PLAN-90D.md` — Phase 2 Week 3 entries marked shipped
+
+## Personalisation engine v0 (paired)
+
+Sister surface to the today's-path block. Same surface (`my-frqncy.html`), same auth gate, same voice rules. Phase 2 Wk 2 Wed of `proposals/EXECUTION-PLAN-90D.md`.
+
+When a signed-in user has a saved chart (`Constellation` row in `public.charts`), `my-frqncy.html` reveals a **Your design** section above today's-path with two cards:
+
+- **Your domains** — 3-5 topics from `/search.json`, scored against the user's HD type, authority, and Sun gate.
+- **Teachers aligned** — 3-5 people from `/people.json`, scored via curated lineage cues + bio substring.
+
+When the user is signed in but has no chart, an empty-state nudge to `/chart/` shows instead. Signed-out visitors see neither — silent no-op.
+
+Matching logic is intentionally crude: substring + tag rules in `assets/frqncy-personalisation.js`. No vector store, no AI call, no embeddings. Each topic/person carries a 6-10 word framing pulled from the source JSON's `desc`/`bio`. Curated fallbacks (5 default topics; the canonical FRQNCY 5 teachers — Neville, Osho, Sadhguru, Sai Maa, Trudeau) ensure the cards are never empty.
+
+Voice constraints inherited from the playbook: never "your destiny", "your path is X", "you must". Headers framed as "topics that often resonate with your type" and "teachers worth reading at your design." Suggestion not prescription, per CLAUDE.md cooperation rule.
+
+Files added/modified:
+
+- `assets/frqncy-personalisation.js` — new ES module: `getUserChart`, `matchTopicsToChart`, `matchPeopleToChart`, `loadTopicsAndPeople`.
+- `my-frqncy.html` — new `#your-design` and `#your-design-empty` sections + module script, injected directly above `#todays-path`.
+
+Future v0.1 (cut for time): better signature read for non-Constellation rows, Profile-based matching beyond Osho's 5/1 cue, gate-specific topic mapping (the 64 gates → topic keyword table), and a "why this match?" disclosure tooltip per item.
