@@ -98,9 +98,13 @@ C3 · 4K TECHNICAL QUALITY
    Sharp, well-composed, professional. (HTTP 200 already verified out of band.)
 
 C4 · FRQNCY-AESTHETIC ALIGNMENT
-   5 = editorial photography in the Aman/Bulgari/Kinfolk register
+   5 = editorial photography in the Aman/Bulgari/Kinfolk register AND
+       distinctive (named building, recognisable lineage, or signature
+       composition that reads one-of-a-kind, not stock-shoot)
+   4 = editorial but generic (good Unsplash/Pexels but interchangeable)
    3 = clean stock that doesn't undermine
-   1 = oversaturated wedding-photographer vibes, posed selfie energy, real-estate-staging interior
+   1 = oversaturated wedding-photographer vibes, posed selfie energy,
+       real-estate-staging interior, conference-presentation aesthetic
 
 C5 · HERO–CLOSING PAIR COHERENCE
    Same subject family, different composition. NOT the same shot twice.

@@ -138,7 +138,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "siddha-yoga":        _u("photo-1526427158867-98ee4ba58d5a"),  # pagoda
     "kriya-yoga":         _u("photo-1616901945149-47f7eac169cb"),  # SE-Asian temple
     "taoism":             _u("photo-1687674107949-295fdc658bab"),  # mountain low clouds
-    "christianity":       _u("photo-1598791074971-28b36cac6c25"),  # brown concrete clouds
+    "christianity":       _p(36989682),  # Cologne Cathedral Gothic interior with stained glass
     "architecture":       _u("photo-1604245462979-e10d27052b35"),  # wooden window frame
     "yoga":               _u("photo-1577790668485-b3e70d84b462"),  # Japanese house, natural
     "soul":               _u("photo-1630507120833-34d85ae27fb3"),  # red-black temple, water
@@ -210,6 +210,13 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "dao":                _p(28887851),  # 3D rendering of connected geometric cubes
     "impact-investing":   _p(5784807),   # close-up financial graph, stock market data
     "prosperity-mindset": _p(7567223),   # digital stock market chart, growth analytics
+
+    # ── Auto-QA Round 2 fixes (top 8 flags from full-network run) ──
+    "coffee-tea":         _p(8748538),   # person in kimono preparing matcha, ceremony
+    "cookware":           _p(30537297),  # cast iron grill pan over open campfire
+    "collective-intelligence": _p(14639112),  # silhouette of bird flock at dusk
+    "biotechnology":      _p(16328960),  # biological cells under microscope, intricate patterns
+    "biomimicry":         _p(12391587),  # honeycomb close-up, intricate hexagonal pattern
 }
 
 TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
@@ -221,12 +228,12 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "meditation":         _u("photo-1432958576632-8a39f6b97dc7"),  # wooden bridge, creek
     "mindfulness":        _u("photo-1470364799705-5cd35cff0c88"),  # stone beside river
     "presence":           _u("photo-1687674108336-c4c5fc2a67bb"),  # mountain distant fog
-    "breathwork":         "/v2/_chrome/imagery/breathwork-closing.jpg",  # woman seated, hands on chest+belly, conscious breathing (Pexels 6173713, downloaded local)
+    "breathwork":         _p(6648561),   # close-up woman breathing exercise, eyes closed, face visible (Rule 12 fix)
     "detox":              _p(4443437),   # green juice being poured with fresh produce
     "siddha-yoga":        _u("photo-1697112725138-1a91c83d0af8"),  # bell in garden
     "kriya-yoga":         _u("photo-1622506092974-38b108ee3436"),  # red temple by lake
     "taoism":             _u("photo-1628025535476-b2d60ed67185"),  # pathway near water
-    "christianity":       _u("photo-1565117306083-93e0c223e4ae"),  # white clouds
+    "christianity":       _p(33498881),  # Amiens Cathedral Gothic architecture and organ
     "architecture":       _u("photo-1545659705-c769b5c3d132"),     # house with black roof
     "yoga":               _u("photo-1445019980597-93fa8acb246c"),  # resort lounge, mountain
     "soul":               _u("photo-1672758688320-685bb6b36846"),  # rock garden, gravel
@@ -298,6 +305,15 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "dao":                _p(17977092),  # Bitcoin with rising investment chart
     "impact-investing":   _p(30268012),  # stock market chart, rapid growth
     "prosperity-mindset": _p(29611783),  # bullish digital candlestick chart
+
+    # ── Auto-QA Round 2 fixes (closings) ──
+    "coffee-tea":         _p(8952612),   # clay teapots and cups on wooden table, ceremony
+    "cookware":           _p(1435909),   # empty cast iron pan with fresh ingredients
+    "collective-intelligence": _p(12463531),  # large flock of birds against blue sky
+    "biology":            _p(8932609),   # microscopic plant cells, intricate structure
+    "chemistry":          _p(8325716),   # colored liquids in laboratory beakers
+    "biotechnology":      _p(25626515),  # abstract DNA strands representation
+    "biomimicry":         _p(4784827),   # building with honeycomb pattern facade
 }
 
 
