@@ -54,6 +54,29 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+/* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
+   Subtle on hover, never shouts. Routes to the Sanctuary panel pre-seeded. */
+.illum-cta{display:inline-flex;align-items:center;gap:0.6rem;margin-top:1.6rem;padding:0.55rem 1.15rem;border:1px solid rgba(196,151,58,0.32);border-radius:999px;background:rgba(196,151,58,0.05);color:var(--gold,#C4973A);font-size:0.74rem;letter-spacing:0.06em;text-decoration:none;transition:border-color .2s,background .2s,color .2s;font-family:'Jost',sans-serif;font-weight:400;position:relative;z-index:1}
+.illum-cta:hover{border-color:rgba(224,192,106,0.62);background:rgba(196,151,58,0.1);color:#fff}
+.illum-cta-glyph{font-size:0.92rem;line-height:1}
+.illum-cta-text em{font-style:italic;color:var(--gold-light,#E0C06A);font-weight:400}
+.illum-cta:hover .illum-cta-text em{color:#fff}
+
+/* Topic prev/next mini-nav — chapter-book continuity at the foot of every
+   topic page. Two side-by-side links; placeholder spans keep the layout
+   stable at the boundaries. */
+.topic-prevnext{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin:3rem 0 4rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.06)}
+.topic-prevnext-link{display:flex;flex-direction:column;gap:0.4rem;padding:1.1rem 1.25rem;border:1px solid var(--card-border);border-radius:4px;background:rgba(255,255,255,0.02);text-decoration:none;color:var(--text);transition:border-color .2s,background .2s,transform .2s}
+.topic-prevnext-link:hover{border-color:rgba(196,151,58,0.32);background:rgba(255,255,255,0.045);color:var(--text);transform:translateY(-1px)}
+.topic-prevnext-link.next{align-items:flex-end;text-align:right}
+.topic-prevnext-link.disabled{visibility:hidden;pointer-events:none}
+.topic-prevnext-eyebrow{font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);opacity:0.85}
+.topic-prevnext-label{font-family:'Cormorant',serif;font-size:1.18rem;font-weight:400;color:#fff;line-height:1.3}
+@media(max-width:560px){
+  .topic-prevnext{grid-template-columns:1fr;gap:0.7rem}
+  .topic-prevnext-link.next{align-items:flex-start;text-align:left}
+  .topic-prevnext-link.disabled{display:none}
+}
 
 /* MAIN */
 main{max-width:1080px;margin:0 auto;padding:3rem clamp(1.25rem,5vw,2.5rem) 7rem}
@@ -218,7 +241,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"PodcastSeries","name":"The Minimalists","description":"Joshua Fields Millburn and Ryan Nicodemus on living meaningfully with less. Podcast, essays, documentary.","url":"https://frqncy.network/media/the-minimalists/","sameAs":["https://www.theminimalists.com"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"The Minimalists","description":"Joshua Fields Millburn and Ryan Nicodemus on living meaningfully with less. Podcast, essays, documentary.","url":"https://frqncy.network/media/the-minimalists/","sameAs":["https://www.theminimalists.com"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
