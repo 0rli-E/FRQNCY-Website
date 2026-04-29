@@ -36,6 +36,7 @@ import subprocess
 import sys
 import time
 import urllib.request
+from concurrent.futures import ThreadPoolExecutor, as_completed
 from dataclasses import dataclass, asdict
 from pathlib import Path
 
@@ -573,6 +574,8 @@ def main() -> int:
     ap.add_argument("--slug-file", default="",
                     help="newline-delimited file of slugs to score (for parallel chunks)")
     ap.add_argument("--limit", type=int, default=0)
+    ap.add_argument("--workers", type=int, default=3,
+                    help="number of parallel claude-cli calls per chunk (default 3)")
     ap.add_argument("--report", default="")
     args = ap.parse_args()
 
@@ -594,18 +597,37 @@ def main() -> int:
     if args.limit:
         slugs = slugs[:args.limit]
 
-    print(f"Scoring {len(slugs)} topic(s) via {provider} ({model})…\n")
-    verdicts: list[Verdict] = []
-    for slug in slugs:
+    workers = max(1, args.workers)
+    print(f"Scoring {len(slugs)} topic(s) via {provider} ({model}) — {workers} parallel worker(s)…\n")
+
+    def _process(slug: str) -> tuple[Verdict | None, str, str]:
         meta = search.get(slug)
         brief_path = TOPICS_DIR / f"{slug}.yaml"
         if not meta or not brief_path.exists():
-            print(f"  ✗  {slug}: no brief or search.json entry")
-            continue
+            return None, slug, "no brief or search.json entry"
         brief = yaml.safe_load(brief_path.read_text())
         v = score_topic(client, provider, model, meta, brief)
-        verdicts.append(v)
-        print(render_row(v))
+        return v, slug, ""
+
+    verdicts: list[Verdict] = []
+    if workers == 1:
+        for slug in slugs:
+            v, sl, err = _process(slug)
+            if v is None:
+                print(f"  ✗  {sl}: {err}")
+                continue
+            verdicts.append(v)
+            print(render_row(v))
+    else:
+        with ThreadPoolExecutor(max_workers=workers) as ex:
+            futures = {ex.submit(_process, slug): slug for slug in slugs}
+            for fut in as_completed(futures):
+                v, sl, err = fut.result()
+                if v is None:
+                    print(f"  ✗  {sl}: {err}")
+                    continue
+                verdicts.append(v)
+                print(render_row(v))
 
     # Summary
     counts = {"approve": 0, "watchlist": 0, "flag": 0, "error": 0}

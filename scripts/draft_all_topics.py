@@ -148,9 +148,9 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "astrophysics":       _p(31876937),  # spiral galaxy
     "cosmos":             _p(207529),    # Milky Way
     "nutrition":          _p(6632286),   # nutritious bowl
-    "cuisine":            _p(8629081),   # professional chef skillfully cooking with steel kitchen
+    "cuisine":            _p(32399760),  # gourmet French cuisine, fine dining, Vonnas
     "forests":            _p(35898950),  # misty forest, tall trees
-    "biodiversity":       _p(1828304),   # mountain fog with trees
+    "biodiversity":       _p(33312831),  # glasswing butterfly on leaf in Costa Rica jungle
     "ecology":            _p(34926159),  # Serbian misty forest
     "oceans":             _p(18045518),  # aerial ocean ripples
     "climate":            _p(35264949),  # Aletsch Glacier framed by Swiss Alps
@@ -181,8 +181,8 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "blockchain":         _p(30094470),  # weathered metal chain links — distributed-ledger metaphor
     "cybersecurity":      _p(5380589),   # green security code monitor (R12 fix — ditches hooded cliché)
     "future-tech":        _p(35579528),  # vibrant futuristic architecture, glowing illumination
-    "open-source":        _p(33572895),  # cozy dual-monitor home office setup
-    "robotics":           _p(34207359),  # yellow industrial robotic arm in manufacturing
+    "open-source":        _p(7325498),   # colorful programming code on monitor (R12+R13 fix)
+    "robotics":           _p(19233057),  # high-tech robots assembling car, modern factory
     "quantum-computing":  _p(30547566),  # futuristic digital processor with glowing elements
 
     # Arts batch — each art form gets its signature subject
@@ -204,7 +204,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "community":          _p(33879868),  # aerial view, diverse circle on green field
     "governance":         _p(36207471),  # Swiss Parliament council chamber, Bern
     "social-movements":   _p(29496244),  # protesters in Chicago, peaceful march
-    "education-systems":  _p(8197558),   # professor instructing diverse learners
+    "education-systems":  _p(8199661),   # two students smiling, talking, holding books in library
 
     # Web3 / DeFi cluster
     "defi":               _p(8369695),   # pile of shiny gold + silver cryptocurrency coins on wood
@@ -247,7 +247,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "source":             _p(789397),    # captivating forest sunrays at dawn (R4 + R7 fix)
     # ── Creation ──
     "manifestation":      _p(36421444),  # woman writing in journal outdoors, red dress
-    "product-design":     _p(36809500),  # architectural workspace, blueprints + design models
+    "product-design":     _p(7674587),   # designer examining ceramic items at marble desk
     "sacred-geometry":    _p(7181865),   # detailed dot painting mandala, teal background
     "merkaba":            _p(12352533),  # symmetrical ceiling Star of David, geometric (R10 fix)
     # ── Play ──
@@ -255,16 +255,16 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "movement":           _p(6926636),   # dancers in colorful attire, contemporary motion
     # ── Food ──
     "fermentation":       _p(30637886),  # row of vibrant mason jars, fermented vegetables
-    "regenerative-farming": _p(36785117),  # top-view lush green cabbage field (regenerative)
+    "regenerative-farming": _p(33987634),  # aerial perspective fields and forest, Croatia
     "permaculture":       _p(8678828),   # vibrant tropical plants, lush green leaves
     "urban-farming":      _p(28129609),  # vertical hydroponics with lush greens, LED lights
     # ── More Sciences / Wellbeing / Society / Tech / Metaphysics ──
     "quantum":            _p(806763),    # CERN Large Hadron Collider machinery (R1+R2 fix)
-    "psychology":         _p(7579189),   # male therapist engaging clients, psychotherapy
+    "psychology":         _p(32224557),  # contemplative side profile portrait of man, soft light
     "supplements":        _p(3683049),   # assorted pills and capsules, yellow surface
     "peace":              _p(33978515),  # white dove in flight against blue sky
     "social-media":       _p(8886104),   # close-up smartphone, Instagram profile
-    "privacy":            _p(11391947),  # smartphone wrapped in chain with padlock
+    "privacy":            _p(13072973),  # CCTV on modern wall (R13 fix — editorial framing)
     # ── Final pass — Communication / Sciences / Creation / Energy / Lifestyle / Metaphysics ──
     "poetry":             _p(8716190),   # person creating calligraphy on paper, tools
     "translation":        _p(33175754),  # individual practicing Chinese calligraphy with brush
@@ -284,7 +284,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "play-creativity":    _p(7710203),   # colleagues brainstorming creative ideas, paper
     "festivals":          _p(15203359),  # large crowd at Budapest music festival, stage lights
     "energy-healing":     _p(5573584),   # serene close-up of woman receiving reiki massage
-    "eft-tapping":        _p(6187265),   # hand massage in soothing spa setting
+    "eft-tapping":        _p(5340270),   # stethoscope on handmade red heart (chest-tap metaphor)
     "sound-healing":      _p(3544322),   # hands holding a Tibetan singing bowl
     "food-systems":       _p(868110),    # colorful fruits + vegetables in outdoor market
     "food-sovereignty":   _p(30893239),  # customers buying fresh vegetables, green canopy
@@ -333,9 +333,9 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "astrophysics":       _p(821644),    # Andromeda Galaxy with stars
     "cosmos":             _p(1341279),   # deep starry night sky
     "nutrition":          _p(12174224),  # breakfast bowl, oats, granola
-    "cuisine":            _p(4253319),   # chef adding final sauce touch to gourmet dish
+    "cuisine":            _p(35420084),  # close-up elegantly plated fine dining, Tokyo
     "forests":            _p(9407824),   # aerial misty forest, pines
-    "biodiversity":       _p(8602485),   # forest covered in fog
+    "biodiversity":       _p(37306777),  # tropical forest sunlight through layered canopy
     "ecology":            _p(14032412),  # green trees in fog
     "oceans":             _p(11795649),  # clear blue ocean meets sky
     "climate":            _p(17845895),  # storm clouds over rural landscape
@@ -364,8 +364,8 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "blockchain":         _p(35834044),  # rusty chains forming abstract textured composition
     "cybersecurity":      _p(10725897),  # vibrant close-up of code with programming details
     "future-tech":        _p(32660203),  # Chongqing skyscrapers, cyberpunk-style reflections
-    "open-source":        _p(16129724),  # software developer typing code, dual monitors
-    "robotics":           _p(34194567),  # Delta brand robotic arm, industrial automation
+    "open-source":        _p(36571389),  # HTML code on dark mode monitor
+    "robotics":           _p(11951215),  # robotic arm welding, bright sparks (industrial)
     "quantum-computing":  _p(2105927),   # macro shot of computer CPU chip with gold pins
 
     # Arts batch closings
@@ -387,7 +387,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "community":          _p(29229694),  # aerial view, team-building circle on grass
     "governance":         _p(14501973),  # Dutch Parliament circular seating, Den Haag
     "social-movements":   _p(35142090),  # street protest with political banners
-    "education-systems":  _p(36834057),  # contemporary learning space, blue seating
+    "education-systems":  _p(33845771),  # two students engaged in study session at library
 
     # Web3 / DeFi cluster closings
     "defi":               _p(14911391),  # Ethereum coin on reflective surface (the protocol DeFi runs on)
@@ -426,7 +426,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "source":             _p(33429071),  # sunbeams creating magical ambiance in dense forest dawn
     # ── Creation closings ──
     "manifestation":      _p(5190600),   # top view of hands writing in open notepad
-    "product-design":     _p(36731322),  # fashion designer arranging sketches in studio
+    "product-design":     _p(8000540),   # two designers collaborating, futuristic model projection
     "sacred-geometry":    _p(32279577),  # textile mandala, intricate geometric patterns
     "merkaba":            _p(5488299),   # Star of David necklace on vintage map background
     # ── Play closings ──
@@ -434,16 +434,16 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "movement":           _p(28994016),  # contemporary dancer in flowing orange + red costume
     # ── Food closings ──
     "fermentation":       _p(25857329),  # workers among large clay jars, traditional ferment
-    "regenerative-farming": _p(7457044),   # vibrant kale field thriving on outdoor plantation
+    "regenerative-farming": _p(11828660),  # terraced farmland bordered by dense trees, aerial
     "permaculture":       _p(24032556),  # botanical garden with diverse plants, stone pathway
     "urban-farming":      _p(32146752),  # expansive hydroponic greenhouse, fresh spinach
     # ── More closings ──
     "quantum":            _p(6855582),   # close-up inside CERN's Large Hadron Collider
-    "psychology":         _p(36729378),  # therapist consulting with patient in office
+    "psychology":         _p(6062046),   # woman with closed eyes, soft introspective lighting
     "supplements":        _p(7615407),   # assorted pills and capsules on white marble
     "peace":              _p(31859363),  # white dove amid lush greenery, Cambodian garden
     "social-media":       _p(7634159),   # smartphone with Instagram, Pinterest, Twitter apps
-    "privacy":            _p(36740854),  # hand holding brass padlock, security
+    "privacy":            _p(35865183),  # multiple cameras on pole, surveillance
     # ── Final pass closings ──
     "poetry":             _p(7333509),   # intricate calligraphy writing on white sheets
     "translation":        _p(35087827),  # hand practicing Arabic calligraphy on parchment
@@ -463,7 +463,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "play-creativity":    _p(33784418),  # diverse adults in painting workshop with canvases
     "festivals":          _p(32072177),  # vibrant outdoor music festival on sunny day
     "energy-healing":     _p(5240734),   # masseuse performing reiki treatment in spa
-    "eft-tapping":        _p(7298690),   # open hands cupped together, openness/spirituality
+    "eft-tapping":        _p(9228384),   # close-up hand holding realistic red heart model
     "sound-healing":      _p(5602461),   # Tibetan singing bowls and gong for meditation
     "food-systems":       _p(2448523),   # lively city market scene, vegetables at stalls
     "food-sovereignty":   _p(27666298),  # vibrant fresh root vegetables and greens at market
