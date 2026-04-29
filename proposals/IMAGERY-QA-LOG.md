@@ -133,6 +133,40 @@ User: "detox is fine now / minimalism: bottom picture is ugly as fuck and doesnt
 
 ---
 
+## Auto-QA Round 2 — 2026-04-29 — actioning the 20-flag triage
+
+After the full-network auto-QA run dropped (`proposals/IMAGERY-QA-RUN-FULL-2026-04-29.md`), actioned the top 9 flags. The agent's literal-subject scoring mapped 1:1 onto every miss the user would have caught.
+
+### ✓ Approved by user
+
+| Topic | Verdict |
+|---|---|
+| `christianity` | passed (Cologne + Amiens cathedrals — was Asian pagoda from R10 violation) |
+| `coffee-tea` | passed (matcha ceremony + clay teapots) |
+| `cookware` | passed (cast iron + ingredients) |
+| `collective-intelligence` | passed (bird flock murmurations — was a *snake*) |
+| `biotechnology` | passed (microscope cells + DNA helix) |
+| `biomimicry` | passed (honeycomb close-up + facade) |
+| `breathwork` (closing) | passed (eyes-closed face — Rule 12 fix landed) |
+
+### ✓ Approved after follow-up swap
+
+| Topic | First swap | Why insufficient | Follow-up |
+|---|---|---|---|
+| `biology` | closing-only swap (microscope plant cells) | User: "chemistry and biology have the same first pic dont they?" — closing-only swap left both topics sharing the Sciences-domain pipetting hero default. **Real bug.** | Hero swapped to *microorganisms at high magnification* (Pexels 10448221). User: "amazing way better" |
+| `chemistry` | closing-only swap (lab beakers) | Same — shared hero with biology | Hero swapped to *vibrant lab glassware with colorful liquids* (Pexels 8442641). User: "amazing way better" |
+
+---
+
+## New pattern from Auto-QA Round 2
+
+14. **Closing-only swaps must verify the hero isn't shared with a sibling topic in the same domain.** *(Auto-QA Round 2)*
+    When fixing a flagged topic by swapping only the closing, the hero falls back to the domain default — which means two sibling topics in the same domain end up with identical heroes. The user caught `biology` and `chemistry` sharing the Sciences-default pipetting hero this way. **Rule for next swaps and for the auto-QA program: after every closing-only swap, run a uniqueness check against all sibling topics in the same domain. If any two share a hero URL, the swap is incomplete — give each a distinct hero.**
+
+The auto-QA program can encode this as a pre-flight check: before approving any verdict that consults a domain-default URL, flag if another topic in the same domain also resolves to that same URL.
+
+---
+
 ## New pattern from Round 4 second addendum
 
 11. **Cold-breath imagery doesn't read as breathwork — it reads as winter.** *(Round 4-b)*

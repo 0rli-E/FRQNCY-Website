@@ -148,7 +148,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "astrophysics":       _p(31876937),  # spiral galaxy
     "cosmos":             _p(207529),    # Milky Way
     "nutrition":          _p(6632286),   # nutritious bowl
-    "cuisine":            _p(7660436),   # chopsticks, vegetable bowls
+    "cuisine":            _p(8629081),   # professional chef skillfully cooking with steel kitchen
     "forests":            _p(35898950),  # misty forest, tall trees
     "biodiversity":       _p(1828304),   # mountain fog with trees
     "ecology":            _p(34926159),  # Serbian misty forest
@@ -199,7 +199,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "energy-storage":     _p(2800832),   # top view of solar panels — pairs w/ storage closing
 
     # Society & Networks batch
-    "community":          _p(27769510),  # educational gathering in Lagos, community
+    "community":          _p(33879868),  # aerial view, diverse circle on green field
     "governance":         _p(36207471),  # Swiss Parliament council chamber, Bern
     "social-movements":   _p(29496244),  # protesters in Chicago, peaceful march
     "education-systems":  _p(8197558),   # professor instructing diverse learners
@@ -207,7 +207,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     # Web3 / DeFi cluster
     "defi":               _p(8919551),   # crypto coins with smartphone trading graph
     "web3":               _p(14314638),  # modern digital spheres interconnected, network
-    "dao":                _p(28887851),  # 3D rendering of connected geometric cubes
+    "dao":                _p(8846757),   # multiple hands around vote sign, collective action
     "impact-investing":   _p(5784807),   # close-up financial graph, stock market data
     "prosperity-mindset": _p(7567223),   # digital stock market chart, growth analytics
 
@@ -215,8 +215,92 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "coffee-tea":         _p(8748538),   # person in kimono preparing matcha, ceremony
     "cookware":           _p(30537297),  # cast iron grill pan over open campfire
     "collective-intelligence": _p(14639112),  # silhouette of bird flock at dusk
-    "biotechnology":      _p(16328960),  # biological cells under microscope, intricate patterns
+    "biotechnology":      _p(16328960),  # biological cells under microscope
     "biomimicry":         _p(12391587),  # honeycomb close-up, intricate hexagonal pattern
+    # ── Round 2 follow-up — distinct heroes for biology and chemistry ──
+    # (User caught both topics sharing the Sciences-domain pipetting default.)
+    "biology":            _p(10448221),  # microorganisms at high magnification
+    "chemistry":          _p(8442641),   # vibrant lab glassware with colorful liquids
+
+    # ── Auto-QA Round 3 follow-ups (more flags from full-network run) ──
+    "cards":              _p(13179266),  # intimate tabletop card game scene
+    "circular-economy":   _p(36751337),  # staff organizing recyclables on conveyor
+    "co-creation":        _p(32702849),  # creative workshop in urban art studio
+    "conscious-capital":  _p(5550904),   # hands cupping coins with sprouting plant
+    "decentralized-networks": _p(17323801),  # modern server room with blue illumination
+
+    # ── Mass-elevation pass — Communication ──
+    "language":           _p(5099795),   # colorful magnetic letters on whiteboard
+    "journalism":         _p(36376224),  # workers reading freshly printed newspaper
+    "public-speaking":    _p(8872488),   # confident woman delivering speech at podium
+    "humor":              _p(35481826),  # comedian with microphone on stage, B&W
+    "dialogue":           _p(7964495),   # two colleagues in focused conversation
+    # ── Sciences ──
+    "neuroscience":       _p(7089331),   # close-up MRI sagittal view, brain structure
+    "medicine":           _p(5234504),   # African American female doctor with stethoscope
+    "mathematics":        _p(6238050),   # hand writing equations on chalkboard
+    # ── Metaphysics — atmospheric/abstract ──
+    "consciousness":      _p(31585093),  # vibrant aurora illuminating starry night
+    "vibration":          _p(27141312),  # digital audio interface with sound wave
+    "source":             _p(28435764),  # pink and green aurora over starry night
+    # ── Creation ──
+    "manifestation":      _p(6931840),   # woman with afro hair organizing vision board
+    "product-design":     _p(36809500),  # architectural workspace, blueprints + design models
+    "sacred-geometry":    _p(7181865),   # detailed dot painting mandala, teal background
+    "merkaba":            _p(29343428),  # Islamic ceiling, golden geometric accents
+    # ── Play ──
+    "outdoor-adventure":  _p(32757481),  # serene forest trail, lush greenery
+    "movement":           _p(6926636),   # dancers in colorful attire, contemporary motion
+    # ── Food ──
+    "fermentation":       _p(30637886),  # row of vibrant mason jars, fermented vegetables
+    "regenerative-farming": _p(32954652),  # Asian farmer in traditional hat among rice
+    "permaculture":       _p(8678828),   # vibrant tropical plants, lush green leaves
+    "urban-farming":      _p(28129609),  # vertical hydroponics with lush greens, LED lights
+    # ── More Sciences / Wellbeing / Society / Tech / Metaphysics ──
+    "quantum":            _p(12214777),  # dynamic abstract molecules, vibrant warm tones
+    "psychology":         _p(7579189),   # male therapist engaging clients, psychotherapy
+    "supplements":        _p(3683049),   # assorted pills and capsules, yellow surface
+    "peace":              _p(33978515),  # white dove in flight against blue sky
+    "social-media":       _p(8886104),   # close-up smartphone, Instagram profile
+    "privacy":            _p(11391947),  # smartphone wrapped in chain with padlock
+    # ── Final pass — Communication / Sciences / Creation / Energy / Lifestyle / Metaphysics ──
+    "poetry":             _p(8716190),   # person creating calligraphy on paper, tools
+    "translation":        _p(33175754),  # individual practicing Chinese calligraphy with brush
+    "genetics":           _p(25626587),  # colorful abstract molecular structure illustration
+    "prototyping":        _p(12698667),  # detailed view of 3D printer at work
+    "tools-carry":        _p(6790750),   # wide assortment of woodworking tools on bench
+    "grid-technology":    _p(3334038),   # electricity towers silhouetted against vibrant sunset
+    "personal-development": _p(1836048),  # detailed view of open hardcover book on wood table
+    "synchronicity":      _p(8327684),   # gears in clock mechanism, precision engineering
+    "natural-cycles":     _p(14792673),  # sunset over ocean with golden reflections
+    "dimensions":         _p(5691022),   # atmospheric stone tunnel with light through vents
+    "near-death-experiences": _p(10523258),  # B&W concrete tunnel with bright light at end
+    "oneness":            _p(37258376),  # expansive ocean meeting sky, tranquility
+    # ── Duplicate-fix pass — give each topic in shared domains its own image ──
+    "esports":            _p(30111694),  # young female esports player intensely focused
+    "gaming":             _p(7915245),   # young gamers in multiplayer at esports arena
+    "play-creativity":    _p(7710203),   # colleagues brainstorming creative ideas, paper
+    "festivals":          _p(7862514),   # team of gamers (placeholder until festival shoot)
+    "energy-healing":     _p(5573584),   # serene close-up of woman receiving reiki massage
+    "eft-tapping":        _p(6187265),   # hand massage in soothing spa setting
+    "sound-healing":      _p(3544322),   # hands holding a Tibetan singing bowl
+    "food-systems":       _p(868110),    # colorful fruits + vegetables in outdoor market
+    "food-sovereignty":   _p(30893239),  # customers buying fresh vegetables, green canopy
+    "emergence":          _p(33443226),  # mesmerizing abstract blue + orange fractal patterns
+    "systems-thinking":   _p(14146743),  # vibrant green/blue circular abstract pattern
+    "future-cities":      _p(7104647),   # dense residential city skyline, Gurugram
+    "regenerative-business": _p(8297858),  # stylish office, peace lilies, natural light
+    "social-enterprise":  _p(7141029),   # bright minimalist office, calm work environment
+    "indigenous-wisdom":  _p(34400687),  # bearded elderly man in traditional attire holding book
+    "human-design":       _p(34473507),  # elderly man in robe with book, contemplation
+    "diaspora":           _p(11571017),  # senior monk holding prayer beads, walking stick
+    "sustainable-living": _p(31995022),  # contemporary indoor workspace surrounded by plants
+    # Final dupe fixes
+    "energy-fields":      _p(30895543),  # gold/silver particles forming a sphere, dark bg
+    "sacred-law":         _p(5976146),   # elderly man in suit reading book, peaceful
+    "remote-viewing":     _p(12784315),  # captivating abstract sphere with glowing halo
+    "quantum-grammar":    _p(6256063),   # detailed math equations and diagrams on blackboard
+    "robert-jay-gould":   _p(36110173),  # elderly woman in traditional attire outdoors
 }
 
 TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
@@ -243,7 +327,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "astrophysics":       _p(821644),    # Andromeda Galaxy with stars
     "cosmos":             _p(1341279),   # deep starry night sky
     "nutrition":          _p(12174224),  # breakfast bowl, oats, granola
-    "cuisine":            _p(3622474),   # acai smoothie bowl
+    "cuisine":            _p(4253319),   # chef adding final sauce touch to gourmet dish
     "forests":            _p(9407824),   # aerial misty forest, pines
     "biodiversity":       _p(8602485),   # forest covered in fog
     "ecology":            _p(14032412),  # green trees in fog
@@ -294,7 +378,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "energy-storage":     _p(12858693),  # solar panel farm under clear blue sky
 
     # Society & Networks closings
-    "community":          _p(8199141),   # multicultural attendees, university classroom
+    "community":          _p(29229694),  # aerial view, team-building circle on grass
     "governance":         _p(14501973),  # Dutch Parliament circular seating, Den Haag
     "social-movements":   _p(35142090),  # street protest with political banners
     "education-systems":  _p(36834057),  # contemporary learning space, blue seating
@@ -302,7 +386,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     # Web3 / DeFi cluster closings
     "defi":               _p(8358046),   # Bitcoin coins with financial indicators on laptop
     "web3":               _p(14832159),  # multiple cryptocurrency coins on white
-    "dao":                _p(17977092),  # Bitcoin with rising investment chart
+    "dao":                _p(28887851),  # 3D rendering of connected geometric cubes (network)
     "impact-investing":   _p(30268012),  # stock market chart, rapid growth
     "prosperity-mindset": _p(29611783),  # bullish digital candlestick chart
 
@@ -314,6 +398,84 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "chemistry":          _p(8325716),   # colored liquids in laboratory beakers
     "biotechnology":      _p(25626515),  # abstract DNA strands representation
     "biomimicry":         _p(4784827),   # building with honeycomb pattern facade
+
+    # ── Auto-QA Round 3 follow-up closings ──
+    "cards":              _p(35778233),  # close-up hand fanning Briscola playing cards
+    "circular-economy":   _p(36397860),  # industrial crane processing scrap metal
+    "co-creation":        _p(7710208),   # diverse group sketching on large paper, planning
+    "conscious-capital":  _p(7163410),   # professionals in plant-filled coworking space
+    "decentralized-networks": _p(17489160),  # illuminated server racks, modern infrastructure
+
+    # ── Mass-elevation pass closings ──
+    "language":           _p(6005118),   # Scrabble letters arranged alphabetically
+    "journalism":         _p(28704264),  # Paris newsstand with international newspapers
+    "public-speaking":    _p(9727913),   # man in suit delivering presentation at conference
+    "humor":              _p(10078868),  # man performing stand-up comedy
+    "dialogue":           _p(1035296),   # two elderly men sitting and conversing outside
+    "neuroscience":       _p(4226139),   # medical professional examining brain MRI
+    "medicine":           _p(7446987),   # professional female doctor holding clipboard
+    "mathematics":        _p(22690752),  # blackboard with mathematical and chemical formulas
+    "consciousness":      _p(28949221),  # ethereal green and purple luminescence over forest
+    "vibration":          _p(70911),     # audio editing software, waveform visualization
+    "source":             _p(35199519),  # vivid northern lights, radiant green and red hues
+    # ── Creation closings ──
+    "manifestation":      _p(6931845),   # person arranging photos and notes on cork board
+    "product-design":     _p(36731322),  # fashion designer arranging sketches in studio
+    "sacred-geometry":    _p(32279577),  # textile mandala, intricate geometric patterns
+    "merkaba":            _p(7182356),   # gold and teal patterned mandala, symmetrical
+    # ── Play closings ──
+    "outdoor-adventure":  _p(9629644),   # hikers navigating rocky mountain terrain
+    "movement":           _p(28994016),  # contemporary dancer in flowing orange + red costume
+    # ── Food closings ──
+    "fermentation":       _p(25857329),  # workers among large clay jars, traditional ferment
+    "regenerative-farming": _p(35852040),  # farmer walking through vibrant green rice field
+    "permaculture":       _p(24032556),  # botanical garden with diverse plants, stone pathway
+    "urban-farming":      _p(32146752),  # expansive hydroponic greenhouse, fresh spinach
+    # ── More closings ──
+    "quantum":            _p(13014236),  # vibrant closeup colorful molecular model
+    "psychology":         _p(36729378),  # therapist consulting with patient in office
+    "supplements":        _p(7615407),   # assorted pills and capsules on white marble
+    "peace":              _p(31859363),  # white dove amid lush greenery, Cambodian garden
+    "social-media":       _p(7634159),   # smartphone with Instagram, Pinterest, Twitter apps
+    "privacy":            _p(36740854),  # hand holding brass padlock, security
+    # ── Final pass closings ──
+    "poetry":             _p(7333509),   # intricate calligraphy writing on white sheets
+    "translation":        _p(35087827),  # hand practicing Arabic calligraphy on parchment
+    "genetics":           _p(7722849),   # purple molecular model on hexagonal grid
+    "prototyping":        _p(19149826),  # workspace featuring 3D printer + computer 3D models
+    "tools-carry":        _p(7480720),   # collection of carpentry tools on workshop table
+    "grid-technology":    _p(17282155),  # high voltage power lines with sunset background
+    "personal-development": _p(6387592),  # open books bathed in sunlight
+    "synchronicity":      _p(16184220),  # antique clock mechanism exhibition with gears
+    "natural-cycles":     _p(378271),    # ocean view with dramatic clouds at sunset
+    "dimensions":         _p(35415335),  # curved tunnel showcasing modern architectural lighting
+    "near-death-experiences": _p(17702242),  # long illuminated road tunnel, curved perspective
+    "oneness":            _p(10513109),  # vast ocean under clear blue sky
+    # ── Duplicate-fix closings ──
+    "esports":            _p(9072317),   # gamers focused on competitive match, dimly lit arena
+    "gaming":             _p(7915522),   # three excited gamers celebrating victory
+    "play-creativity":    _p(33784418),  # diverse adults in painting workshop with canvases
+    "festivals":          _p(7862518),   # focused gamers competing intensely (placeholder)
+    "energy-healing":     _p(5240734),   # masseuse performing reiki treatment in spa
+    "eft-tapping":        _p(7298690),   # open hands cupped together, openness/spirituality
+    "sound-healing":      _p(5602461),   # Tibetan singing bowls and gong for meditation
+    "food-systems":       _p(2448523),   # lively city market scene, vegetables at stalls
+    "food-sovereignty":   _p(27666298),  # vibrant fresh root vegetables and greens at market
+    "emergence":          _p(32737446),  # vibrant abstract fractal art, green and purple
+    "systems-thinking":   _p(27024510),  # vibrant abstract curves + fractal patterns
+    "future-cities":      _p(35172564),  # Mumbai skyline with urban sprawl + railways
+    "regenerative-business": _p(31995055),  # office with windows over lush green garden
+    "social-enterprise":  _p(8297854),   # contemporary open office, wooden lockers, plants
+    "indigenous-wisdom":  _p(11377878),  # bearded man with white headscarf, wisdom
+    "human-design":       _p(33295978),  # elderly wise man in contemplative pose indoors
+    "diaspora":           _p(9859622),   # senior man with white beard and turban, serious
+    "sustainable-living": _p(33719778),  # contemporary glass office building with trees
+    # Final dupe-fix closings
+    "energy-fields":      _p(12214773),  # 3D molecules with yellow + orange, energy/motion
+    "sacred-law":         _p(34182730),  # macro mechanical watch gears (eternal law metaphor)
+    "remote-viewing":     _p(25626518),  # abstract connected molecular shapes, vibrant colors
+    "quantum-grammar":    _p(11135534),  # traditional Arabic calligraphy on red fabric
+    "robert-jay-gould":   _p(8167537),   # — collides w/ sculpture-related; use Canova bust
 }
 
 
