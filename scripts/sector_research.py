@@ -147,7 +147,9 @@ SECTOR_TOP_PROJECTS: dict[str, list[tuple[str, str]]] = {
         ("Liquid Network", "L-BTC"),
         ("Ordinals", "—"),
         ("Runes", "—"),
+        ("BRC-20", "—"),
         ("Stamps", "—"),
+        ("Mempool", "—"),
     ],
     "sov": [
         ("Bitcoin", "BTC"),
@@ -559,7 +561,9 @@ SECTOR_PROJECT_DATA: dict[str, dict[str, dict]] = {
         },
         "Lightning Network": {
             "tagline": "Sub-cent payments at internet scale.",
-            "image": "https://avatars.githubusercontent.com/u/15310939?s=400&v=4",  # Lightning Labs GitHub avatar
+            # Custom SVG — lightning bolt on bitcoin-orange field. The
+            # GitHub avatar was rendering as the generic octocat default.
+            "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450'><defs><radialGradient id='g' cx='50%25' cy='50%25' r='65%25'><stop offset='0%25' stop-color='%23F7CA45' stop-opacity='0.55'/><stop offset='60%25' stop-color='%23F7931A' stop-opacity='0.15'/><stop offset='100%25' stop-color='%230a0500' stop-opacity='0'/></radialGradient></defs><rect width='800' height='450' fill='%230c0700'/><circle cx='400' cy='225' r='220' fill='url(%23g)'/><path d='M 425 80 L 290 240 L 380 240 L 310 380 L 540 200 L 440 200 L 480 80 Z' fill='%23F7CA45' stroke='%23F7931A' stroke-width='3' stroke-linejoin='round'/><text x='400' y='420' text-anchor='middle' font-family='ui-monospace,monospace' font-size='12' letter-spacing='6' fill='%23F7CA45' opacity='0.65'>LIGHTNING NETWORK · BOLT 11</text></svg>",
             "accent": "#F7CA45",
             "year": "2018",
             "founder": "Joseph Poon · Thaddeus Dryja",
@@ -585,7 +589,9 @@ SECTOR_PROJECT_DATA: dict[str, dict[str, dict]] = {
         },
         "Cashu": {
             "tagline": "Chaumian ecash for Bitcoin.",
-            "image": "https://avatars.githubusercontent.com/u/116617488?s=400&v=4",  # Cashu GitHub
+            # Custom SVG — stylized C in chaumian-purple. Was rendering as
+            # generic GitHub default identicon (the four-square checker).
+            "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450'><defs><radialGradient id='g' cx='50%25' cy='50%25' r='65%25'><stop offset='0%25' stop-color='%23B084D6' stop-opacity='0.45'/><stop offset='60%25' stop-color='%239C5BC9' stop-opacity='0.18'/><stop offset='100%25' stop-color='%23120822' stop-opacity='0'/></radialGradient></defs><rect width='800' height='450' fill='%230f0518'/><circle cx='400' cy='225' r='230' fill='url(%23g)'/><path d='M 540 130 A 130 130 0 1 0 540 320' fill='none' stroke='%23B084D6' stroke-width='42' stroke-linecap='round'/><circle cx='420' cy='225' r='14' fill='%23F0DCFF' opacity='0.9'/><circle cx='420' cy='225' r='34' fill='none' stroke='%239C5BC9' stroke-width='1.5' stroke-dasharray='2 5'/><text x='400' y='420' text-anchor='middle' font-family='ui-monospace,monospace' font-size='12' letter-spacing='6' fill='%23B084D6' opacity='0.75'>CASHU · CHAUMIAN ECASH · NUT</text></svg>",
             "accent": "#9C5BC9",
             "year": "2022",
             "founder": "calle",
@@ -611,7 +617,10 @@ SECTOR_PROJECT_DATA: dict[str, dict[str, dict]] = {
         },
         "Liquid Network": {
             "tagline": "Two-minute Bitcoin sidechain.",
-            "image": "https://avatars.githubusercontent.com/u/12554035?s=400&v=4",  # ElementsProject (Blockstream)
+            # Was rendering a person's face — that GitHub user ID belongs to
+            # an individual, not the ElementsProject org. Switched to liquid.net's
+            # official protocol image (verified hotlink-friendly).
+            "image": "https://liquid.net/liquid-net.png",
             "accent": "#1E5FA4",
             "year": "2018",
             "founder": "Blockstream",
@@ -624,7 +633,8 @@ SECTOR_PROJECT_DATA: dict[str, dict[str, dict]] = {
         },
         "Ordinals": {
             "tagline": "Inscriptions on individual sats.",
-            "image": "https://avatars.githubusercontent.com/u/121339173?s=400&v=4",  # ordinals GitHub
+            # ordinals.com favicon — verified, official Casey Rodarmor source
+            "image": "https://ordinals.com/static/favicon.png",
             "accent": "#F2A900",
             "year": "2023",
             "founder": "Casey Rodarmor",
@@ -651,9 +661,24 @@ SECTOR_PROJECT_DATA: dict[str, dict[str, dict]] = {
             "extra": "https://magiceden.io/runes",
             "extra_label": "Runes on ME",
         },
+        "BRC-20": {
+            "tagline": "Inscribed fungible tokens.",
+            # Custom SVG — JSON-inscription motif on bitcoin orange
+            "image": "data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 800 450'><defs><radialGradient id='g' cx='50%25' cy='50%25' r='65%25'><stop offset='0%25' stop-color='%23F7931A' stop-opacity='0.45'/><stop offset='60%25' stop-color='%23F7931A' stop-opacity='0.12'/><stop offset='100%25' stop-color='%230a0500' stop-opacity='0'/></radialGradient></defs><rect width='800' height='450' fill='%230a0500'/><circle cx='400' cy='225' r='220' fill='url(%23g)'/><g font-family='ui-monospace,monospace' fill='%23F7CA45'><text x='220' y='160' font-size='15' opacity='0.5'>{</text><text x='240' y='190' font-size='15' opacity='0.85'>%22p%22:%22brc-20%22,</text><text x='240' y='220' font-size='15' opacity='0.85'>%22op%22:%22mint%22,</text><text x='240' y='250' font-size='15' opacity='0.85'>%22tick%22:%22ordi%22,</text><text x='240' y='280' font-size='15' opacity='0.85'>%22amt%22:%221000%22</text><text x='220' y='310' font-size='15' opacity='0.5'>}</text></g><text x='400' y='420' text-anchor='middle' font-family='ui-monospace,monospace' font-size='12' letter-spacing='6' fill='%23F7CA45' opacity='0.65'>BRC-20 · INSCRIBED TOKENS · MARCH 2023</text></svg>",
+            "accent": "#F7931A",
+            "year": "2023",
+            "founder": "domo (anonymous)",
+            "body": "A fungible token standard built on top of Ordinals inscriptions. Each token-mint is an inscription containing a tiny JSON object: {p:'brc-20', op:'mint', tick, amt}. The protocol is brutally inefficient — every transfer is a new inscription — but went viral on Bitcoin in March 2023, drove fees to multi-year highs, and proved fungibles could live on Bitcoin. Runes (April 2024) replaced it for serious use, but BRC-20 was the proof.",
+            "website": "https://layer1.foundation/brc-20",
+            "docs": "https://domo-2.gitbook.io/brc-20-experiment/",
+            "twitter": "https://x.com/domodata",
+            "extra": "https://unisat.io/brc20",
+            "extra_label": "BRC-20 explorer",
+        },
         "Stamps": {
             "tagline": "Permanent on-chain artefacts.",
-            "image": "https://avatars.githubusercontent.com/u/124320811?s=400&v=4",  # Stampchain
+            # Official stampchain.io OG image — verified hotlink-friendly
+            "image": "https://stampchain.io/img/logo/stampchain-logo-opengraph.jpg",
             "accent": "#E84545",
             "year": "2023",
             "founder": "Mike In Space",
@@ -663,6 +688,19 @@ SECTOR_PROJECT_DATA: dict[str, dict[str, dict]] = {
             "twitter": "https://x.com/BitcoinStamps",
             "extra": "https://stampchain.io/stamp",
             "extra_label": "Stamp explorer",
+        },
+        "Mempool": {
+            "tagline": "The block explorer for the rest of us.",
+            "image": "https://mempool.space/resources/previews/mempool-space-preview.jpg",
+            "accent": "#FF9500",
+            "year": "2019",
+            "founder": "softsimon (Simon Castor) · contributors",
+            "body": "Open-source, self-hostable block explorer and fee visualiser. Real-time mempool, fee-rate forecasts, lightning-network graph view, mining-pool dashboards, address indexing — built for plebs who want to verify their own chain rather than trust a third-party API. Runs on your own node if you want it to. The reference reading interface for active Bitcoiners.",
+            "website": "https://mempool.space",
+            "docs": "https://github.com/mempool/mempool",
+            "twitter": "https://x.com/mempool",
+            "extra": "https://mempool.space/about#self-hosting",
+            "extra_label": "Self-host",
         },
     },
     # Other sectors will get filled in iteratively. For now bitcoin is the
