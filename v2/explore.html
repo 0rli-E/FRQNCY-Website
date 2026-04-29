@@ -25,6 +25,8 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
   <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+  <!-- Embedded map data (works via file:// where fetch() is blocked). -->
+  <script src="./explore-data.js"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Explore the Network — FRQNCY","description":"Navigate 134 topics across 6 pillars of conscious living. An interactive map of the FRQNCY Network.","url":"https://frqncy.network/v2/explore.html","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -381,21 +383,29 @@ let NODES = [];
 let LINKS = [];
 let NODE_URL = {};
 
-fetch('./explore-data.json', {cache: 'no-cache'})
-  .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
-  .then(data => {
-    NODES = data.nodes;
-    LINKS = data.links.map(([s, t]) => ({source: s, target: t}));
-    NODE_URL = data.node_urls;
-    initMap();
-  })
-  .catch(err => {
-    console.error('Could not load explore-data.json — the map cannot render without it.', err);
-    const msg = document.createElement('div');
-    msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-family:Jost,sans-serif;text-align:center;z-index:9999;';
-    msg.innerHTML = '<p>Could not load the map data.</p><p style="opacity:.6;font-size:0.8rem;">Check console for details.</p>';
-    document.body.appendChild(msg);
-  });
+function bootMap(data) {
+  NODES = data.nodes;
+  LINKS = data.links.map(([s, t]) => ({source: s, target: t}));
+  NODE_URL = data.node_urls;
+  initMap();
+}
+
+// 1) Prefer the inline-loaded data (works under file:// and http(s)://).
+if (window.EXPLORE_DATA && Array.isArray(window.EXPLORE_DATA.nodes)) {
+  bootMap(window.EXPLORE_DATA);
+} else {
+  // 2) Fallback to fetch — works under http(s):// when explore-data.js is absent.
+  fetch('./explore-data.json', {cache: 'no-cache'})
+    .then(r => { if (!r.ok) throw new Error('HTTP ' + r.status); return r.json(); })
+    .then(bootMap)
+    .catch(err => {
+      console.error('Could not load explore-data — the map cannot render without it.', err);
+      const msg = document.createElement('div');
+      msg.style.cssText = 'position:fixed;top:50%;left:50%;transform:translate(-50%,-50%);color:#fff;font-family:Jost,sans-serif;text-align:center;z-index:9999;';
+      msg.innerHTML = '<p>Could not load the map data.</p><p style="opacity:.6;font-size:0.8rem;">Check console for details.</p>';
+      document.body.appendChild(msg);
+    });
+}
 
 function initMap() {
 /* ── Embedded mode: hide standalone UI chrome when inside an iframe ── */

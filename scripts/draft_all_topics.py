@@ -142,7 +142,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "architecture":       _u("photo-1604245462979-e10d27052b35"),  # wooden window frame
     "yoga":               _p(9271155),   # Indian yogi in serene setting, advanced pose (R10 fix)
     "soul":               _p(18539162),  # tree trunk with sprawling roots in forest (soul metaphor)
-    "somatic-therapy":    _u("photo-1488345979593-09db0f85545f"),  # resort pool, atmospheric
+    "somatic-therapy":    _p(16947574),  # lone figure in German forest, streaming sunlight
 
     # ── Open-source Pexels 4K, sourced 2026-04-29, all verified HTTP 200 ──
     "astrophysics":       _p(31876937),  # spiral galaxy
@@ -154,7 +154,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "ecology":            _p(34926159),  # Serbian misty forest
     "oceans":             _p(18045518),  # aerial ocean ripples
     "climate":            _p(35264949),  # Aletsch Glacier framed by Swiss Alps
-    "mental-health":      _p(36852508),  # silhouette gazing over foggy lake
+    "mental-health":      _p(4392699),   # two on pathway among trees, gentle (R12 fix — face-present)
     # trauma override removed — topic deleted from FRQNCY network 2026-04-29.
     "plant-medicine":     _p(105028),    # marble mortar with fresh herbs and flowers
     "history":            _p(30019381),  # vintage bookshelf
@@ -208,9 +208,9 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
 
     # Web3 / DeFi cluster
     "defi":               _p(8369695),   # pile of shiny gold + silver cryptocurrency coins on wood
-    "web3":               _p(14314638),  # modern digital spheres interconnected, network
+    "web3":               _p(11105273),  # person photographing digital art, Istanbul exhibition
     "dao":                _p(28887851),  # 3D rendering of connected geometric cubes (R1 fix — was US voting)
-    "impact-investing":   _p(36384099),  # village women planning community development
+    "impact-investing":   _p(30582337),  # community gathering for aid distribution
     "prosperity-mindset": _p(5772283),   # man in lotus pose meditating on seacoast at sundown
 
     # ── Auto-QA Round 2 fixes (top 8 flags from full-network run) ──
@@ -246,10 +246,10 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "vibration":          _p(27141312),  # digital audio interface with sound wave
     "source":             _p(789397),    # captivating forest sunrays at dawn (R4 + R7 fix)
     # ── Creation ──
-    "manifestation":      _p(6931840),   # woman with afro hair organizing vision board
+    "manifestation":      _p(36421444),  # woman writing in journal outdoors, red dress
     "product-design":     _p(36809500),  # architectural workspace, blueprints + design models
     "sacred-geometry":    _p(7181865),   # detailed dot painting mandala, teal background
-    "merkaba":            _p(29343428),  # Islamic ceiling, golden geometric accents
+    "merkaba":            _p(12352533),  # symmetrical ceiling Star of David, geometric (R10 fix)
     # ── Play ──
     "outdoor-adventure":  _p(32757481),  # serene forest trail, lush greenery
     "movement":           _p(6926636),   # dancers in colorful attire, contemporary motion
@@ -291,22 +291,22 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "emergence":          _p(37248160),  # macro fern fiddlehead unfurling — emergence in nature
     "systems-thinking":   _p(30521620),  # illuminated highway interchange at night, intricate patterns
     "future-cities":      _p(7104647),   # dense residential city skyline, Gurugram
-    "regenerative-business": _p(8297858),  # stylish office, peace lilies, natural light
-    "social-enterprise":  _p(7141029),   # bright minimalist office, calm work environment
-    "indigenous-wisdom":  _p(34400687),  # bearded elderly man in traditional attire holding book
-    "human-design":       _p(34473507),  # elderly man in robe with book, contemplation
+    "regenerative-business": _p(31912311),  # modern brick house with solar panels + greenery
+    "social-enterprise":  _p(6646882),   # two volunteers handing over food aid box
+    "indigenous-wisdom":  _p(33603662),  # elderly man with pipe, traditional attire (R10 fix)
+    "human-design":       _p(7222079),   # astrology charts, laptop, cards, stationery (chart imagery)
     "diaspora":           _p(11571017),  # senior monk holding prayer beads, walking stick
     # Bioenergy — fix Energy-domain hero HEAD failure (Unsplash 1497292207894)
     "bioenergy":          _p(2254097),   # harvested sugarcane stalks for agricultural use
     # photography — was sharing Arts default; that closing URL 404'd in cache prewarm
-    "photography":        _p(35970478),  # vintage film camera with open back + 35mm roll
-    "sustainable-living": _p(31995022),  # contemporary indoor workspace surrounded by plants
+    "photography":        _p(36697538),  # professional photographer in studio reviewing camera
+    "sustainable-living": _p(28286652),  # mountain house with solar panel in foggy forest
     # Final dupe fixes
     "energy-fields":      _p(30895543),  # gold/silver particles forming a sphere, dark bg
-    "sacred-law":         _p(5976146),   # elderly man in suit reading book, peaceful
+    "sacred-law":         _p(34326703),  # B&W ancient inscribed tablet (R10 fix — pan-tradition)
     "remote-viewing":     _p(12784315),  # captivating abstract sphere with glowing halo
     "quantum-grammar":    _p(6256063),   # detailed math equations and diagrams on blackboard
-    "robert-jay-gould":   _p(36110173),  # elderly woman in traditional attire outdoors
+    "robert-jay-gould":   _p(23484073),  # Plateosaurus skeleton at Vienna Natural History Museum
 }
 
 TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
@@ -327,7 +327,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "architecture":       _u("photo-1545659705-c769b5c3d132"),     # house with black roof
     "yoga":               _p(9271162),   # Indian yogi advanced pose, flexibility (R10 fix)
     "soul":               _p(1792626),   # old tree displaying sprawling root system
-    "somatic-therapy":    _u("photo-1537154259951-00da64098b37"),  # zen wooden flooring
+    "somatic-therapy":    _p(36703243),  # wooden pathway through sunlit early spring forest
 
     # ── Open-source Pexels 4K, sourced 2026-04-29, all verified HTTP 200 ──
     "astrophysics":       _p(821644),    # Andromeda Galaxy with stars
@@ -339,7 +339,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "ecology":            _p(14032412),  # green trees in fog
     "oceans":             _p(11795649),  # clear blue ocean meets sky
     "climate":            _p(17845895),  # storm clouds over rural landscape
-    "mental-health":      _p(31005853),  # solitary figure by misty lake, bare trees
+    "mental-health":      _p(31591488),  # couple holding hands during sunlit forest trail
     # trauma override removed — topic deleted from FRQNCY network 2026-04-29.
     "plant-medicine":     _p(28250490),  # mushroom on vibrant green moss, sunlit forest
     "history":            _p(14751147),  # vintage library
@@ -391,9 +391,9 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
 
     # Web3 / DeFi cluster closings
     "defi":               _p(14911391),  # Ethereum coin on reflective surface (the protocol DeFi runs on)
-    "web3":               _p(30018096),  # mesmerizing abstract digital art with fluid waves (user-owned web)
+    "web3":               _p(33447580),  # young man viewing artworks in modern gallery
     "dao":                _p(33443226),  # mesmerizing abstract blue+orange fractal (network nodes feel)
-    "impact-investing":   _p(6472413),   # children + volunteers, outdoor community outreach
+    "impact-investing":   _p(6647008),   # volunteers organizing and loading aid boxes
     "prosperity-mindset": _p(5928615),   # woman meditating with tranquil ocean sunset
 
     # ── Auto-QA Round 2 fixes (closings) ──
@@ -425,10 +425,10 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "vibration":          _p(70911),     # audio editing software, waveform visualization
     "source":             _p(33429071),  # sunbeams creating magical ambiance in dense forest dawn
     # ── Creation closings ──
-    "manifestation":      _p(6931845),   # person arranging photos and notes on cork board
+    "manifestation":      _p(5190600),   # top view of hands writing in open notepad
     "product-design":     _p(36731322),  # fashion designer arranging sketches in studio
     "sacred-geometry":    _p(32279577),  # textile mandala, intricate geometric patterns
-    "merkaba":            _p(7182356),   # gold and teal patterned mandala, symmetrical
+    "merkaba":            _p(5488299),   # Star of David necklace on vintage map background
     # ── Play closings ──
     "outdoor-adventure":  _p(9629644),   # hikers navigating rocky mountain terrain
     "movement":           _p(28994016),  # contemporary dancer in flowing orange + red costume
@@ -470,21 +470,21 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "emergence":          _p(20765597),  # macro vibrant green fern spirals unfolding in spring
     "systems-thinking":   _p(8783598),   # intricate Los Angeles highway interchanges, urban sprawl
     "future-cities":      _p(35172564),  # Mumbai skyline with urban sprawl + railways
-    "regenerative-business": _p(31995055),  # office with windows over lush green garden
-    "social-enterprise":  _p(8297854),   # contemporary open office, wooden lockers, plants
-    "indigenous-wisdom":  _p(11377878),  # bearded man with white headscarf, wisdom
+    "regenerative-business": _p(36763997),  # modern wooden house with glass + greenery
+    "social-enterprise":  _p(33749790),  # rural African community receiving aid supplies
+    "indigenous-wisdom":  _p(25856945),  # elderly man with long gray hair and staff
     "human-design":       _p(33295978),  # elderly wise man in contemplative pose indoors
     "diaspora":           _p(9859622),   # senior man with white beard and turban, serious
     # Bioenergy closing
     "bioenergy":          _p(34049306),  # cornfield panorama with wind turbines, sustainable ag
-    "photography":        _p(11622760),  # collection of analog cameras on white surface
-    "sustainable-living": _p(33719778),  # contemporary glass office building with trees
+    "photography":        _p(35001844),  # professional studio portrait session in Berlin
+    "sustainable-living": _p(12284244),  # contemporary home with solar + lush garden by river
     # Final dupe-fix closings
     "energy-fields":      _p(12214773),  # 3D molecules with yellow + orange, energy/motion
-    "sacred-law":         _p(34182730),  # macro mechanical watch gears (eternal law metaphor)
+    "sacred-law":         _p(23938508),  # ancient text in stone, inscription
     "remote-viewing":     _p(25626518),  # abstract connected molecular shapes, vibrant colors
     "quantum-grammar":    _p(11135534),  # traditional Arabic calligraphy on red fabric
-    "robert-jay-gould":   _p(8167537),   # — collides w/ sculpture-related; use Canova bust
+    "robert-jay-gould":   _p(36705828),  # dinosaur fossil exhibit, detailed bone structure
 }
 
 

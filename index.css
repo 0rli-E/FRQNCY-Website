@@ -633,7 +633,14 @@
       background: var(--pure-white);
       padding: 44px 38px;
       transition: background 0.3s;
+      text-decoration: none;
+      color: inherit;
     }
+    .detail-card,
+    .detail-card:hover,
+    .detail-card:focus,
+    .detail-card:visited,
+    .detail-card * { text-decoration: none; }
     .detail-card:hover { background: var(--warm-white); }
     .detail-number {
       font-family: var(--font-display);
