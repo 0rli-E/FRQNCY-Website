@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Taoism — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py taoism
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: taoism
+  label: "Taoism"
+  domain: "Metaphysics"
+  domain_slug: metaphysics
+  pillar: "Research"
+  pillar_slug: research
+  accent: "#7B4AE8"
+
+treatment:
+  register: mythic
+
+hero:
+  variant: split
+  eyebrow: "Metaphysics · Research"
+  title: "Taoism"
+  desc: |
+    The Way of returning. Lao Tzu, Chuang Tzu, and the tradition of moving with rather than against.
+  media:
+    poster_url: https://images.unsplash.com/photo-1687674107949-295fdc658bab?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1628025535476-b2d60ed67185?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      The Tao that can be told is not the eternal Tao. *— Lao Tzu — Tao Te Ching*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Metaphysics", url: "/v2/metaphysics/" }
+  canonical: https://frqncy.network/v2/taoism/
+  og_image: https://frqncy.network/v2/og/taoism.png

@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Bioenergy — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py bioenergy
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: bioenergy
+  label: "Bioenergy"
+  domain: "Energy"
+  domain_slug: energy
+  pillar: "Fund"
+  pillar_slug: fund
+  accent: "#A8E84A"
+
+treatment:
+  register: scientific
+
+hero:
+  variant: split
+  eyebrow: "Energy · Fund"
+  title: "Bioenergy"
+  desc: |
+    Energy from biological material — from biogas to advanced biofuels, biomass and beyond.
+  media:
+    poster_url: https://images.unsplash.com/photo-1497292207894-95884b04e30e?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1518709268805-4e9042af2176?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      The plant is the mother of the animal. *— Justus von Liebig*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Energy", url: "/v2/energy/" }
+  canonical: https://frqncy.network/v2/bioenergy/
+  og_image: https://frqncy.network/v2/og/bioenergy.png

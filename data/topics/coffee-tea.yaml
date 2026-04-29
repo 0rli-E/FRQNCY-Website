@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Coffee & Tea — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py coffee-tea
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: coffee-tea
+  label: "Coffee & Tea"
+  domain: "Lifestyle"
+  domain_slug: lifestyle
+  pillar: "Education"
+  pillar_slug: education
+  accent: "#7AAB7A"
+
+treatment:
+  register: contemplative
+
+hero:
+  variant: split
+  eyebrow: "Lifestyle · Education"
+  title: "Coffee & Tea"
+  desc: |
+    The daily ritual. Beans, leaves, brewing tools — what you reach for first in the morning, made the way it deserves.
+  media:
+    poster_url: https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      Tea is the elixir of life. *— Lao Tzu*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Lifestyle", url: "/v2/lifestyle/" }
+  canonical: https://frqncy.network/v2/coffee-tea/
+  og_image: https://frqncy.network/v2/og/coffee-tea.png

@@ -346,7 +346,8 @@ const POPULAR = [
 
 const TYPE_LABELS = {
   topics:'Topics', person:'People', book:'Books',
-  org:'Organisations', media:'Media', course:'Courses'
+  org:'Organisations', place:'Places', tool:'Tools',
+  media:'Media', course:'Courses'
 };
 
 // ── Load ──────────────────────────────────────────────────────────────
@@ -381,6 +382,26 @@ async function loadIndex() {
   if (hero) hero.textContent = `${TOPICS.length} Topics · ${RESOURCES.length} Resources`;
   buildTypeFilters();
   buildDomainFilters();
+  // ── Pre-fill from URL params (?q=&type=&domain=) so external links can deep-link
+  try {
+    const params = new URLSearchParams(window.location.search);
+    const qParam = params.get('q');
+    const typeParam = params.get('type');
+    const domainParam = params.get('domain');
+    if (qParam) {
+      query = qParam;
+      const qInput = document.getElementById('q');
+      if (qInput) qInput.value = qParam;
+    }
+    if (typeParam) {
+      const allowed = ['topics','person','book','org','media','course','place','tool','app','platform'];
+      activeType = allowed.includes(typeParam) ? typeParam : 'all';
+      document.querySelectorAll('#type-row .ftab').forEach(b => {
+        b.classList.toggle('active', b.dataset.filter === activeType);
+      });
+    }
+    if (domainParam) activeDomain = domainParam;
+  } catch (_e) { /* no-op */ }
   render();
 }
 
@@ -388,7 +409,7 @@ async function loadIndex() {
 function buildTypeFilters() {
   const row = document.getElementById('type-row');
   row.innerHTML = '<span class="filter-label">Type</span>';
-  const types = ['all','topics','person','book','org','media','course'];
+  const types = ['all','topics','person','book','org','place','tool','media','course'];
   for (const t of types) {
     const btn = makeFilterBtn(t, t === 'all' ? 'All' : TYPE_LABELS[t] || t, 'type');
     if (t === 'all') btn.classList.add('active');

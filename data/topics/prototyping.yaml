@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Prototyping — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py prototyping
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: prototyping
+  label: "Prototyping"
+  domain: "Creation"
+  domain_slug: creation
+  pillar: "Builder"
+  pillar_slug: builder
+  accent: "#E87A4A"
+
+treatment:
+  register: mythic
+
+hero:
+  variant: split
+  eyebrow: "Creation · Builder"
+  title: "Prototyping"
+  desc: |
+    Making to learn — the practice of building rough versions fast to discover what works.
+  media:
+    poster_url: https://images.unsplash.com/photo-1513475382585-d06e58bcb0e0?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1452860606245-08befc0ff44b?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      If a picture is worth a thousand words, a prototype is worth a thousand meetings. *— Tom and David Kelley — IDEO*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Creation", url: "/v2/creation/" }
+  canonical: https://frqncy.network/v2/prototyping/
+  og_image: https://frqncy.network/v2/og/prototyping.png

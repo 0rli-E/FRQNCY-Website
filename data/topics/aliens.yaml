@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Extraterrestrial Life — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py aliens
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: aliens
+  label: "Extraterrestrial Life"
+  domain: "Metaphysics"
+  domain_slug: metaphysics
+  pillar: "Research"
+  pillar_slug: research
+  accent: "#7B4AE8"
+
+treatment:
+  register: mythic
+
+hero:
+  variant: split
+  eyebrow: "Metaphysics · Research"
+  title: "Extraterrestrial Life"
+  desc: |
+    Evidence, contact, and the implications of non-human intelligence — from UAP disclosure to ancient astronaut theory and the search for life beyond Earth.
+  media:
+    poster_url: https://images.pexels.com/photos/9271469/pexels-photo-9271469.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/7108184/pexels-photo-7108184.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      Two possibilities exist: either we are alone in the universe or we are not. Both are equally terrifying. *— Arthur C. Clarke*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Metaphysics", url: "/v2/metaphysics/" }
+  canonical: https://frqncy.network/v2/aliens/
+  og_image: https://frqncy.network/v2/og/aliens.png

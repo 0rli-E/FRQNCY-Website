@@ -8,21 +8,34 @@ interface FeedProps {
    * Used on profile pages.
    */
   username?: string;
+  /**
+   * When provided, filter the feed to only posts tagged with this channel
+   * (project_tag). Used on /social/channel/[slug].
+   */
+  channel?: string;
 }
 
 interface PostRow {
   id: string;
   content: string;
   project_tag: string | null;
+  link_url: string | null;
+  link_preview: any;
   created_at: string;
+  likes_count: number;
+  comments_count: number;
+  bookmarks_count: number;
+  signature: string | null;
+  signed_payload: string | null;
   profiles: {
     username: string;
     display_name: string;
     avatar_url: string | null;
+    signing_public_key: string | null;
   };
-  likes: { count: number }[];
-  comments: { count: number }[];
 }
+
+const PAGE_SIZE = 20;
 
 function timeAgo(dateStr: string): string {
   const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
@@ -35,9 +48,11 @@ function timeAgo(dateStr: string): string {
   return `${days}d`;
 }
 
-export default function Feed({ username }: FeedProps = {}) {
+export default function Feed({ username, channel: channelFilter }: FeedProps = {}) {
   const [posts, setPosts] = useState<PostRow[]>([]);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
   const [authorId, setAuthorId] = useState<string | null>(null);
 
   // If a username is provided, first resolve it to an author_id
@@ -60,30 +75,52 @@ export default function Feed({ username }: FeedProps = {}) {
     };
   }, [username]);
 
-  const fetchPosts = useCallback(async () => {
-    let query = supabase
+  // Build a fresh query each call — used for both the initial fetch and
+  // subsequent "load more" pages. `from` / `to` mark the inclusive range.
+  const buildQuery = useCallback((from: number, to: number) => {
+    let q = supabase
       .from('posts')
-      .select('*, profiles!author_id(username, display_name, avatar_url), likes(count), comments(count)')
+      .select(
+        'id, content, project_tag, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, profiles!author_id(username, display_name, avatar_url, signing_public_key)'
+      )
       .order('created_at', { ascending: false })
-      .limit(20);
+      .range(from, to);
+    if (username && authorId) q = q.eq('author_id', authorId);
+    if (channelFilter) q = q.eq('project_tag', channelFilter);
+    return q;
+  }, [username, authorId, channelFilter]);
 
-    if (username) {
-      // If filtering by user, require the authorId to be resolved first
-      if (!authorId) {
-        setPosts([]);
-        setLoading(false);
-        return;
-      }
-      query = query.eq('author_id', authorId);
+  const fetchPosts = useCallback(async () => {
+    if (username && !authorId) {
+      setPosts([]);
+      setLoading(false);
+      return;
     }
-
-    const { data, error } = await query;
-
+    const { data, error } = await buildQuery(0, PAGE_SIZE - 1);
     if (!error && data) {
-      setPosts(data as unknown as PostRow[]);
+      const rows = data as unknown as PostRow[];
+      setPosts(rows);
+      setHasMore(rows.length === PAGE_SIZE);
     }
     setLoading(false);
-  }, [username, authorId]);
+  }, [buildQuery, username, authorId]);
+
+  const loadMore = useCallback(async () => {
+    if (loadingMore || !hasMore) return;
+    setLoadingMore(true);
+    const offset = posts.length;
+    const { data, error } = await buildQuery(offset, offset + PAGE_SIZE - 1);
+    if (!error && data) {
+      const rows = data as unknown as PostRow[];
+      setPosts((prev) => {
+        // Dedupe in case a realtime insert sneaked between fetches
+        const seen = new Set(prev.map((p) => p.id));
+        return [...prev, ...rows.filter((r) => !seen.has(r.id))];
+      });
+      setHasMore(rows.length === PAGE_SIZE);
+    }
+    setLoadingMore(false);
+  }, [buildQuery, hasMore, loadingMore, posts.length]);
 
   useEffect(() => {
     // Wait for authorId to resolve before fetching if filtering by user
@@ -93,7 +130,7 @@ export default function Feed({ username }: FeedProps = {}) {
 
     // Subscribe to realtime inserts. Channel name must be unique per mount
     // so a global feed + a profile feed on different tabs don't collide.
-    const channelKey = `posts-feed-${username ?? 'global'}-${Math.random().toString(36).slice(2, 8)}`;
+    const channelKey = `posts-feed-${username ?? channelFilter ?? 'global'}-${Math.random().toString(36).slice(2, 8)}`;
     const channel = supabase
       .channel(channelKey)
       .on(
@@ -108,7 +145,7 @@ export default function Feed({ username }: FeedProps = {}) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [fetchPosts, username, authorId]);
+  }, [fetchPosts, username, authorId, channelFilter]);
 
   if (loading) {
     return (
@@ -150,18 +187,32 @@ export default function Feed({ username }: FeedProps = {}) {
           avatar={post.profiles?.avatar_url || undefined}
           content={post.content}
           tags={post.project_tag ? [post.project_tag] : []}
-          likes={post.likes?.[0]?.count || 0}
-          comments={post.comments?.[0]?.count || 0}
+          link_preview={post.link_preview}
+          likes={post.likes_count ?? 0}
+          comments={post.comments_count ?? 0}
           time={timeAgo(post.created_at)}
+          signature={post.signature ?? null}
+          signed_payload={post.signed_payload ?? null}
+          author_signing_public_key={post.profiles?.signing_public_key ?? null}
         />
       ))}
 
-      {/* Load more */}
-      <div class="text-center py-6">
-        <button class="text-sm text-text-dim hover:text-gold transition-colors border border-card-border rounded-full px-6 py-2 hover:border-gold/30">
-          Load more posts
-        </button>
-      </div>
+      {/* Load more — disabled when there's nothing left, animates while fetching */}
+      {hasMore ? (
+        <div class="text-center py-6">
+          <button
+            onClick={loadMore}
+            disabled={loadingMore}
+            class="text-sm text-text-dim hover:text-gold transition-colors border border-card-border rounded-full px-6 py-2 hover:border-gold/30 disabled:opacity-50 disabled:cursor-wait"
+          >
+            {loadingMore ? 'Loading…' : 'Load more posts'}
+          </button>
+        </div>
+      ) : (
+        <div class="text-center py-6 text-xs text-text-dim italic">
+          You've reached the end of the thread.
+        </div>
+      )}
     </div>
   );
 }

@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Cuisine — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py cuisine
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: cuisine
+  label: "Cuisine"
+  domain: "Food & Agriculture"
+  domain_slug: food
+  pillar: "Education"
+  pillar_slug: education
+  accent: "#C47A3A"
+
+treatment:
+  register: editorial
+
+hero:
+  variant: split
+  eyebrow: "Food & Agriculture · Education"
+  title: "Cuisine"
+  desc: |
+    Cooking as culture — the traditions, flavours, and knowledge that different peoples have built around food.
+  media:
+    poster_url: https://images.pexels.com/photos/7660436/pexels-photo-7660436.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/3622474/pexels-photo-3622474.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      Cooking is the art of adjustment. *— Jacques Pépin*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Food & Agriculture", url: "/v2/food/" }
+  canonical: https://frqncy.network/v2/cuisine/
+  og_image: https://frqncy.network/v2/og/cuisine.png

@@ -56,6 +56,17 @@
 # Dynamic profile route — serve the same shell for any username
 /social/profile/*       /social/profile/index.html 200
 
+# Dynamic channel route — same shell for every channel slug. The Astro build
+# emits /social/channel/<seed>/index.html for the seeds in getStaticPaths;
+# this redirect routes any other slug to one of them so the Preact ChannelView
+# can read the slug from location.pathname and filter the feed.
+/social/channel/*       /social/channel/research/index.html 200
+
+# Dynamic single-post route — same shell for every post id. The Astro build
+# emits /social/post/shell/index.html; this redirect routes any post id to
+# it so the Preact PostView can fetch the post by id from the URL.
+/social/post/*          /social/post/shell/index.html 200
+
 # Legacy leaderboard URL → /social/space (cooperation-over-competition)
 /social/leaderboard     /social/space              301
 /social/leaderboard/    /social/space              301

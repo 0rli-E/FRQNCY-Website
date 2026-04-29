@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Circular Economy — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py circular-economy
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: circular-economy
+  label: "Circular Economy"
+  domain: "Business"
+  domain_slug: business
+  pillar: "Fund"
+  pillar_slug: fund
+  accent: "#C4973A"
+
+treatment:
+  register: editorial
+
+hero:
+  variant: split
+  eyebrow: "Business · Fund"
+  title: "Circular Economy"
+  desc: |
+    Economic systems designed to eliminate waste — where the end of one product becomes the start of another.
+  media:
+    poster_url: https://images.unsplash.com/photo-1486406146926-c627a92ad1ab?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1554260570-9140fd3b7614?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      Waste is a design flaw. *— William McDonough — Cradle to Cradle*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Business", url: "/v2/business/" }
+  canonical: https://frqncy.network/v2/circular-economy/
+  og_image: https://frqncy.network/v2/og/circular-economy.png

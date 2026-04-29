@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Quantum Physics — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py quantum
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: quantum
+  label: "Quantum Physics"
+  domain: "Sciences"
+  domain_slug: sciences
+  pillar: "Research"
+  pillar_slug: research
+  accent: "#4A7AE8"
+
+treatment:
+  register: scientific
+
+hero:
+  variant: split
+  eyebrow: "Sciences · Research"
+  title: "Quantum Physics"
+  desc: |
+    The behaviour of matter and energy at the smallest scales — where reality gets strange, probabilistic, and deeply interconnected.
+  media:
+    poster_url: https://images.unsplash.com/photo-1532187863486-abf9dbad1b69?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1462331940025-496dfbfc7564?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      If you think you understand quantum mechanics, you don't understand quantum mechanics. *— Richard Feynman*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Sciences", url: "/v2/sciences/" }
+  canonical: https://frqncy.network/v2/quantum/
+  og_image: https://frqncy.network/v2/og/quantum.png

@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Wind Energy — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py wind-energy
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: wind-energy
+  label: "Wind Energy"
+  domain: "Energy"
+  domain_slug: energy
+  pillar: "Fund"
+  pillar_slug: fund
+  accent: "#A8E84A"
+
+treatment:
+  register: scientific
+
+hero:
+  variant: split
+  eyebrow: "Energy · Fund"
+  title: "Wind Energy"
+  desc: |
+    Capturing the motion of air — onshore and offshore wind as mature, scalable clean energy.
+  media:
+    poster_url: https://images.pexels.com/photos/33443005/pexels-photo-33443005.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/18829029/pexels-photo-18829029.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      Wind is just air in motion. It blows because of the rotation of the earth. *— Carl Sagan*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Energy", url: "/v2/energy/" }
+  canonical: https://frqncy.network/v2/wind-energy/
+  og_image: https://frqncy.network/v2/og/wind-energy.png

@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Biodiversity — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py biodiversity
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: biodiversity
+  label: "Biodiversity"
+  domain: "Nature & Cosmos"
+  domain_slug: nature
+  pillar: "Research"
+  pillar_slug: research
+  accent: "#2E9E6B"
+
+treatment:
+  register: contemplative
+
+hero:
+  variant: split
+  eyebrow: "Nature & Cosmos · Research"
+  title: "Biodiversity"
+  desc: |
+    The richness of life on Earth — the species, ecosystems, and genetic diversity we depend on and are losing.
+  media:
+    poster_url: https://images.pexels.com/photos/1828304/pexels-photo-1828304.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/8602485/pexels-photo-8602485.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      In wildness is the preservation of the world. *— Henry David Thoreau*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Nature & Cosmos", url: "/v2/nature/" }
+  canonical: https://frqncy.network/v2/biodiversity/
+  og_image: https://frqncy.network/v2/og/biodiversity.png

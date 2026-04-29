@@ -1,9 +1,12 @@
-import { useState, useEffect } from 'preact/hooks';
+import { useState, useEffect, useCallback } from 'preact/hooks';
 import ProfileCard from './ProfileCard';
 import ProfileStats from './ProfileStats';
 import FollowButton from './FollowButton';
 import StartConversationButton from './StartConversationButton';
 import Feed from './Feed';
+import EditProfileModal from './EditProfileModal';
+import { useAuth } from './AuthProvider';
+import { getProfile, type Profile } from '../lib/api';
 
 /**
  * ProfilePage — reads @username from the URL client-side, then renders the
@@ -13,6 +16,10 @@ import Feed from './Feed';
  */
 export default function ProfilePage() {
   const [username, setUsername] = useState<string | null>(null);
+  const [profile, setProfile] = useState<Profile | null>(null);
+  const [editOpen, setEditOpen] = useState(false);
+  const [profileVersion, setProfileVersion] = useState(0); // bump after save → ProfileCard refetches
+  const { user } = useAuth();
 
   useEffect(() => {
     // Extract :username from /social/profile/:username (trailing slash tolerant)
@@ -24,6 +31,24 @@ export default function ProfilePage() {
     } else {
       setUsername('');
     }
+  }, []);
+
+  // Fetch the canonical profile row so we can compare ownership and seed the
+  // edit modal with current values.
+  useEffect(() => {
+    if (!username) { setProfile(null); return; }
+    let cancelled = false;
+    (async () => {
+      const p = await getProfile(username);
+      if (!cancelled) setProfile(p);
+    })();
+    return () => { cancelled = true; };
+  }, [username, profileVersion]);
+
+  const isOwnProfile = !!(user && profile && user.id === profile.id);
+  const handleSaved = useCallback((next: Profile) => {
+    setProfile(next);
+    setProfileVersion((v) => v + 1);
   }, []);
 
   if (username === null) {
@@ -47,17 +72,35 @@ export default function ProfilePage() {
   return (
     <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
       <aside class="lg:col-span-4 space-y-4">
-        <ProfileCard username={username} />
-        <div class="rounded-xl bg-card-bg border border-card-border p-5">
-          <FollowButton username={username} />
-          <StartConversationButton username={username} />
+        <ProfileCard username={username} key={profileVersion /* refetch on save */} />
+        <div class="rounded-xl bg-card-bg border border-card-border p-5 space-y-2">
+          {isOwnProfile ? (
+            <button
+              type="button"
+              onClick={() => setEditOpen(true)}
+              class="w-full text-sm px-4 py-2 rounded-full border border-gold/40 text-gold hover:bg-gold/10 transition-colors"
+            >Edit profile</button>
+          ) : (
+            <>
+              <FollowButton username={username} />
+              <StartConversationButton username={username} />
+            </>
+          )}
         </div>
-        <ProfileStats username={username} />
+        <ProfileStats username={username} key={`stats-${profileVersion}`} />
       </aside>
       <section class="lg:col-span-8">
         <h2 class="font-heading text-2xl text-gold mb-4">Posts by @{username}</h2>
         <Feed username={username} />
       </section>
+      {profile && (
+        <EditProfileModal
+          open={editOpen}
+          profile={profile}
+          onClose={() => setEditOpen(false)}
+          onSaved={handleSaved}
+        />
+      )}
     </div>
   );
 }

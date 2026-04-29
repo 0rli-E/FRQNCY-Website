@@ -1,0 +1,19 @@
+---
+// Astro requires getStaticPaths to enumerate dynamic routes at build time.
+// We seed it with the six FRQNCY pillars (and a couple of common topics).
+// Any other channel hits a Cloudflare Pages redirect to this shell at
+// runtime and the slug is read from location.pathname client-side.
+import SocialLayout from '../../layouts/SocialLayout.astro';
+import ChannelView from '../../components/ChannelView';
+
+export function getStaticPaths() {
+  return [
+    'research', 'education', 'builder', 'media', 'fund', 'sanctuary',
+    'meditation', 'water', 'music', 'money', 'wellbeing',
+  ].map((slug) => ({ params: { slug } }));
+}
+---
+
+<SocialLayout title="Channel · NRG · FRQNCY" description="A FRQNCY social channel.">
+  <ChannelView client:load />
+</SocialLayout>

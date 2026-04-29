@@ -1,0 +1,16 @@
+---
+import SocialLayout from '../../layouts/SocialLayout.astro';
+import ConnectionsPanel from '../../components/ConnectionsPanel';
+---
+
+<SocialLayout title="Connections" description="Connect your NRG identity to Bluesky and other networks.">
+  <div class="max-w-2xl mx-auto py-6 space-y-2">
+    <h1 class="font-heading text-3xl text-gold">External connections</h1>
+    <p class="text-sm text-text-dim">
+      Bridge your NRG posts to other networks. Bluesky for now, more later.
+    </p>
+  </div>
+  <div class="max-w-2xl mx-auto">
+    <ConnectionsPanel client:load />
+  </div>
+</SocialLayout>

@@ -1,0 +1,548 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FRQNCY · Architecture · Three-Layer System</title>
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1C3D; --navy-deep:#081530; --navy-mid:#0D2451;
+  --gold:#C4973A; --gold-light:#E0C06A; --gold-soft:rgba(196,151,58,0.14);
+  --foam:#F5F8FB; --pearl:#fff;
+  --ok:#7BD0A0; --warn:#E0C06A; --gap:#E58787;
+  --serif:'Cormorant',Georgia,serif;
+  --body:'Jost',sans-serif;
+  --mono:'JetBrains Mono',ui-monospace,monospace;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--navy);color:var(--foam);font-family:var(--body);font-weight:300;line-height:1.7}
+body{padding:clamp(2rem,5vw,4rem) clamp(1.25rem,5vw,3rem);max-width:1200px;margin:0 auto}
+h1,h2,h3,h4{font-family:var(--serif);font-weight:300;color:var(--pearl);line-height:1.15}
+h1{font-style:italic;font-size:clamp(2.5rem,5vw,4rem);margin-bottom:0.5rem;letter-spacing:-0.02em}
+h2{font-style:italic;font-size:clamp(1.8rem,3vw,2.6rem);margin:3.5rem 0 1.2rem;border-top:1px solid rgba(196,151,58,0.25);padding-top:2.5rem}
+h2 strong{font-style:normal;font-weight:400;color:var(--gold-light)}
+h3{font-size:1.4rem;font-style:italic;margin:1.8rem 0 0.7rem;color:var(--foam)}
+h4{font-family:var(--mono);font-size:0.7rem;font-weight:500;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold-light);margin:1.4rem 0 0.6rem}
+p{margin-bottom:1rem;color:rgba(245,248,251,0.82);max-width:62ch;font-size:1rem}
+p em{font-style:italic;color:var(--gold-light)}
+.eyebrow{font-family:var(--mono);font-size:0.65rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--gold);opacity:0.85;margin-bottom:1.2rem}
+.lede{font-family:var(--serif);font-style:italic;font-size:clamp(1.15rem,1.8vw,1.45rem);color:var(--foam);margin:1.5rem 0 2.5rem;max-width:64ch;line-height:1.55}
+
+/* Diagram chrome */
+.diagram{margin:2rem 0 3rem;padding:2rem;background:rgba(255,255,255,0.025);border:1px solid rgba(196,151,58,0.2);border-radius:4px;overflow:hidden}
+.diagram svg{width:100%;height:auto;display:block;max-width:100%}
+.diagram-caption{font-family:var(--mono);font-size:0.7rem;letter-spacing:0.16em;color:rgba(245,248,251,0.6);text-transform:uppercase;text-align:center;margin-top:1.5rem}
+
+/* Three-layer block */
+.layer-stack{display:grid;gap:0.75rem;margin:2rem 0}
+.layer{padding:1.5rem 1.8rem;border-radius:3px;position:relative}
+.layer-3{background:rgba(196,151,58,0.08);border:1px solid rgba(196,151,58,0.32)}
+.layer-2{background:rgba(123,208,160,0.08);border:1px solid rgba(123,208,160,0.32)}
+.layer-1{background:rgba(135,184,224,0.08);border:1px solid rgba(135,184,224,0.32)}
+.layer-num{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--gold);margin-bottom:0.3rem}
+.layer h3{margin:0 0 0.5rem;font-style:italic;color:var(--pearl)}
+.layer p{margin:0;font-size:0.92rem;max-width:none}
+
+/* Tables */
+table{width:100%;border-collapse:collapse;margin:1.5rem 0 2.5rem;font-size:0.88rem}
+table th{font-family:var(--mono);font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold-light);font-weight:500;text-align:left;padding:0.7rem 1rem;border-bottom:1px solid rgba(196,151,58,0.3)}
+table td{padding:0.7rem 1rem;vertical-align:top;border-bottom:1px solid rgba(255,255,255,0.06);color:rgba(245,248,251,0.82)}
+table td:first-child{font-family:var(--mono);font-size:0.78rem;color:var(--gold-light)}
+.s-ok{color:var(--ok);font-weight:500}
+.s-warn{color:var(--warn);font-weight:500}
+.s-gap{color:var(--gap);font-weight:500}
+
+code{font-family:var(--mono);font-size:0.88em;color:var(--gold-light);background:rgba(196,151,58,0.06);padding:0.05em 0.4em;border-radius:2px}
+
+/* Footer */
+.footer{margin-top:5rem;padding-top:2rem;border-top:1px solid rgba(196,151,58,0.25);font-family:var(--mono);font-size:0.7rem;letter-spacing:0.16em;color:rgba(245,248,251,0.5);text-transform:uppercase}
+
+/* SVG diagram tokens (inherit colours) */
+.dg-bed{fill:#87B8E0;stroke:#87B8E0}
+.dg-topic{fill:#7BD0A0;stroke:#7BD0A0}
+.dg-chrome{fill:#C4973A;stroke:#C4973A}
+.dg-gen{fill:#A99CFF;stroke:#A99CFF}
+.dg-page{fill:#F5F8FB;stroke:#F5F8FB}
+text.dg-label{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:11px;fill:#F5F8FB;letter-spacing:0.04em}
+text.dg-label-sm{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;fill:rgba(245,248,251,0.6);letter-spacing:0.05em}
+text.dg-title{font-family:'Cormorant',serif;font-style:italic;font-size:18px;fill:#F5F8FB}
+text.dg-eyebrow{font-family:'JetBrains Mono',ui-monospace,monospace;font-size:9px;fill:#C4973A;letter-spacing:0.18em;text-transform:uppercase}
+</style>
+</head>
+<body>
+
+<div class="eyebrow">Architecture · v1 · 2026-04-29</div>
+<h1>Three layers, one network.</h1>
+<p class="lede">How FRQNCY stays editable, individual, and beautiful at the same time — and why the cost per new page falls as the network grows. With an audit of what's already built.</p>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     DIAGRAM 1 — THE THREE LAYERS
+     ════════════════════════════════════════════════════════════════════ -->
+<h2>The <strong>three layers.</strong></h2>
+<p>Every page is the result of three things stacked on top of each other. Each layer answers a different question, has a different edit pattern, and grows at a different rate.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 1100 460" xmlns="http://www.w3.org/2000/svg">
+  <!-- Layer 3: Chrome (top, narrow, rare changes) -->
+  <rect x="50" y="40" width="1000" height="80" fill="rgba(196,151,58,0.12)" stroke="#C4973A" stroke-width="1.5" rx="3"/>
+  <text x="70" y="68" class="dg-eyebrow">Layer 3 · Family chrome</text>
+  <text x="70" y="93" class="dg-title">Shared CSS, glyphs, layout primitives.</text>
+  <text x="70" y="111" class="dg-label-sm">Edited rarely · improves all pages simultaneously · stays small</text>
+  <text x="1030" y="72" text-anchor="end" class="dg-label-sm">_artwork.css · iconic_glyphs.py · patterns</text>
+  <text x="1030" y="100" text-anchor="end" class="dg-label" style="fill:#C4973A">~1 file</text>
+
+  <!-- Layer 2: Topic shape (middle, individualistic) -->
+  <rect x="50" y="140" width="1000" height="120" fill="rgba(123,208,160,0.10)" stroke="#7BD0A0" stroke-width="1.5" rx="3"/>
+  <text x="70" y="168" class="dg-eyebrow">Layer 2 · Topic shape</text>
+  <text x="70" y="194" class="dg-title">Per-topic brief — prose, slogans, treatment, picks.</text>
+  <text x="70" y="215" class="dg-label-sm">One YAML / dict per topic · ~150 lines · edited per commission</text>
+  <text x="70" y="235" class="dg-label-sm">Carries: hero, prelude, counter-box, seminal, closing triad,</text>
+  <text x="70" y="250" class="dg-label-sm">accent, glyph_kind, layout_treatment, featured_picks (refs)</text>
+  <text x="1030" y="172" text-anchor="end" class="dg-label-sm">data/topics/&lt;slug&gt;.yaml</text>
+  <text x="1030" y="200" text-anchor="end" class="dg-label" style="fill:#7BD0A0">~1 file per topic</text>
+
+  <!-- Layer 1: Bed (bottom, widest, grows) -->
+  <rect x="50" y="280" width="1000" height="140" fill="rgba(135,184,224,0.10)" stroke="#87B8E0" stroke-width="1.5" rx="3"/>
+  <text x="70" y="308" class="dg-eyebrow">Layer 1 · Canonical data (the bed)</text>
+  <text x="70" y="334" class="dg-title">One file per entity. Source of truth.</text>
+  <text x="70" y="355" class="dg-label-sm">Lightning lives in one file. Aave lives in one file. Vitalik lives in one file.</text>
+  <text x="70" y="370" class="dg-label-sm">Every page that surfaces them dereferences from the bed.</text>
+  <text x="70" y="385" class="dg-label-sm">Edit the entity once → every page using it updates on regen.</text>
+  <text x="70" y="403" class="dg-label-sm">Grows linearly with reality (every new project / person / book = +1 file)</text>
+  <text x="1030" y="312" text-anchor="end" class="dg-label-sm">data/protocols/ · data/people/ · data/texts/</text>
+  <text x="1030" y="340" text-anchor="end" class="dg-label" style="fill:#87B8E0">~1 file per entity</text>
+
+  <!-- Connector arrows -->
+  <g stroke="rgba(196,151,58,0.4)" stroke-width="1" fill="none">
+    <line x1="100" y1="280" x2="100" y2="260" stroke-dasharray="3 3"/>
+    <line x1="100" y1="140" x2="100" y2="120" stroke-dasharray="3 3"/>
+  </g>
+  <text x="115" y="270" class="dg-label-sm">references</text>
+  <text x="115" y="130" class="dg-label-sm">applied with</text>
+
+  <!-- Edge labels -->
+  <text x="20" y="80" transform="rotate(-90 20 80)" text-anchor="middle" class="dg-label-sm" style="letter-spacing:0.18em">RARE</text>
+  <text x="20" y="200" transform="rotate(-90 20 200)" text-anchor="middle" class="dg-label-sm" style="letter-spacing:0.18em">PER COMMISSION</text>
+  <text x="20" y="350" transform="rotate(-90 20 350)" text-anchor="middle" class="dg-label-sm" style="letter-spacing:0.18em">CONSTANT GROWTH</text>
+
+  <text x="1080" y="80" transform="rotate(90 1080 80)" text-anchor="middle" class="dg-label-sm" style="letter-spacing:0.18em">SMALL</text>
+  <text x="1080" y="200" transform="rotate(90 1080 200)" text-anchor="middle" class="dg-label-sm" style="letter-spacing:0.18em">MEDIUM</text>
+  <text x="1080" y="350" transform="rotate(90 1080 350)" text-anchor="middle" class="dg-label-sm" style="letter-spacing:0.18em">LARGE</text>
+</svg>
+<div class="diagram-caption">EDIT FREQUENCY · LAYER · FILE COUNT</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     DIAGRAM 2 — DATA FLOW WHEN RENDERING ONE PAGE
+     ════════════════════════════════════════════════════════════════════ -->
+<h2>How <strong>one page</strong> gets built.</h2>
+<p>The generator dereferences the topic YAML against the bed files, applies the chrome, and emits HTML. The page is individual because the topic YAML is individual. The data is canonical because the bed files are canonical.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 1100 380" xmlns="http://www.w3.org/2000/svg">
+  <!-- Layer 1 (left): bed entities -->
+  <g>
+    <text x="50" y="35" class="dg-eyebrow">Bed (data)</text>
+    <rect x="50" y="55" width="180" height="36" fill="rgba(135,184,224,0.10)" stroke="#87B8E0" stroke-width="1" rx="2"/>
+    <text x="60" y="78" class="dg-label">protocols/lightning.json</text>
+    <rect x="50" y="100" width="180" height="36" fill="rgba(135,184,224,0.10)" stroke="#87B8E0" stroke-width="1" rx="2"/>
+    <text x="60" y="123" class="dg-label">protocols/fedimint.json</text>
+    <rect x="50" y="145" width="180" height="36" fill="rgba(135,184,224,0.10)" stroke="#87B8E0" stroke-width="1" rx="2"/>
+    <text x="60" y="168" class="dg-label">protocols/cashu.json</text>
+    <rect x="50" y="190" width="180" height="36" fill="rgba(135,184,224,0.10)" stroke="#87B8E0" stroke-width="1" rx="2"/>
+    <text x="60" y="213" class="dg-label">people/satoshi.json</text>
+    <rect x="50" y="235" width="180" height="36" fill="rgba(135,184,224,0.10)" stroke="#87B8E0" stroke-width="1" rx="2"/>
+    <text x="60" y="258" class="dg-label">texts/whitepaper.json</text>
+    <text x="50" y="295" class="dg-label-sm">(canonical · grows over time)</text>
+  </g>
+
+  <!-- Layer 2 (middle): topic YAML -->
+  <g>
+    <text x="320" y="35" class="dg-eyebrow">Topic shape</text>
+    <rect x="320" y="55" width="240" height="240" fill="rgba(123,208,160,0.08)" stroke="#7BD0A0" stroke-width="1.5" rx="3"/>
+    <text x="335" y="80" class="dg-title" style="font-size:15px">topics/bitcoin.yaml</text>
+    <line x1="335" y1="95" x2="540" y2="95" stroke="rgba(123,208,160,0.4)" stroke-width="0.5"/>
+    <text x="335" y="115" class="dg-label-sm">accent: #F7931A</text>
+    <text x="335" y="132" class="dg-label-sm">glyph_kind: btc-mountain</text>
+    <text x="335" y="149" class="dg-label-sm">layout: split-right</text>
+    <text x="335" y="166" class="dg-label-sm">treatment: foundation</text>
+    <text x="335" y="186" class="dg-label-sm">prelude: "..."</text>
+    <text x="335" y="203" class="dg-label-sm">closing: ["Don't trust...", ...]</text>
+    <text x="335" y="223" class="dg-label-sm">featured_picks:</text>
+    <text x="350" y="240" class="dg-label-sm" style="fill:#87B8E0">  - ref: protocols/lightning</text>
+    <text x="350" y="257" class="dg-label-sm" style="fill:#87B8E0">  - ref: protocols/fedimint</text>
+    <text x="350" y="274" class="dg-label-sm" style="fill:#87B8E0">  - ref: texts/whitepaper</text>
+  </g>
+
+  <!-- Generator (gear) -->
+  <g>
+    <text x="640" y="35" class="dg-eyebrow">Generator</text>
+    <circle cx="700" cy="170" r="55" fill="rgba(169,156,255,0.12)" stroke="#A99CFF" stroke-width="1.5"/>
+    <text x="700" y="160" text-anchor="middle" class="dg-label" style="fill:#A99CFF">generate_</text>
+    <text x="700" y="175" text-anchor="middle" class="dg-label" style="fill:#A99CFF">topic_</text>
+    <text x="700" y="190" text-anchor="middle" class="dg-label" style="fill:#A99CFF">page.py</text>
+    <text x="700" y="245" text-anchor="middle" class="dg-label-sm">deterministic · no LLM</text>
+  </g>
+
+  <!-- Layer 3 (top): chrome -->
+  <g>
+    <text x="640" y="60" text-anchor="middle" class="dg-eyebrow">Chrome</text>
+    <rect x="615" y="75" width="170" height="32" fill="rgba(196,151,58,0.12)" stroke="#C4973A" stroke-width="1" rx="2"/>
+    <text x="700" y="96" text-anchor="middle" class="dg-label" style="fill:#C4973A">_artwork.css</text>
+  </g>
+
+  <!-- Output: HTML page -->
+  <g>
+    <text x="900" y="35" class="dg-eyebrow">Output</text>
+    <rect x="870" y="55" width="180" height="240" fill="rgba(245,248,251,0.04)" stroke="#F5F8FB" stroke-width="1.5" rx="3"/>
+    <text x="960" y="100" text-anchor="middle" class="dg-title">v2/bitcoin/</text>
+    <text x="960" y="120" text-anchor="middle" class="dg-title">index.html</text>
+    <line x1="880" y1="135" x2="1040" y2="135" stroke="rgba(245,248,251,0.2)" stroke-width="0.5"/>
+    <text x="960" y="155" text-anchor="middle" class="dg-label-sm">+ hero stats</text>
+    <text x="960" y="172" text-anchor="middle" class="dg-label-sm">+ desk note</text>
+    <text x="960" y="189" text-anchor="middle" class="dg-label-sm">+ counter-box</text>
+    <text x="960" y="206" text-anchor="middle" class="dg-label-sm">+ seminal text</text>
+    <text x="960" y="223" text-anchor="middle" class="dg-label-sm">+ project cards</text>
+    <text x="960" y="240" text-anchor="middle" class="dg-label-sm">+ practice steps</text>
+    <text x="960" y="257" text-anchor="middle" class="dg-label-sm">+ closing triad</text>
+    <text x="960" y="285" text-anchor="middle" class="dg-label-sm" style="fill:rgba(245,248,251,0.4)">never hand-edited</text>
+  </g>
+
+  <!-- Arrows -->
+  <g stroke="rgba(245,248,251,0.4)" stroke-width="1.2" fill="none" marker-end="url(#arr)">
+    <line x1="232" y1="73" x2="318" y2="170" stroke-dasharray="2 3"/>
+    <line x1="232" y1="118" x2="318" y2="170" stroke-dasharray="2 3"/>
+    <line x1="232" y1="163" x2="318" y2="170" stroke-dasharray="2 3"/>
+    <line x1="232" y1="208" x2="318" y2="170" stroke-dasharray="2 3"/>
+    <line x1="232" y1="253" x2="318" y2="170" stroke-dasharray="2 3"/>
+    <line x1="562" y1="170" x2="643" y2="170"/>
+    <line x1="700" y1="108" x2="700" y2="115"/>
+    <line x1="757" y1="170" x2="868" y2="170"/>
+  </g>
+  <defs>
+    <marker id="arr" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(245,248,251,0.5)"/>
+    </marker>
+  </defs>
+</svg>
+<div class="diagram-caption">DEREFERENCE · COMPOSE · RENDER</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     DIAGRAM 3 — UPDATE PROPAGATION
+     ════════════════════════════════════════════════════════════════════ -->
+<h2>One <strong>edit</strong>, many pages.</h2>
+<p>The data-availability win. Update Lightning's logo in one bed file → every page that surfaces Lightning updates on regen. The Bitcoin sub-hub today, the future Lightning topic page, the Payments topic — same edit, three pages improved.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 1100 360" xmlns="http://www.w3.org/2000/svg">
+  <!-- Single bed file (left) -->
+  <g>
+    <text x="60" y="35" class="dg-eyebrow">One edit</text>
+    <rect x="60" y="55" width="240" height="100" fill="rgba(135,184,224,0.15)" stroke="#87B8E0" stroke-width="2" rx="3"/>
+    <text x="75" y="85" class="dg-title" style="font-size:16px">protocols/lightning.json</text>
+    <text x="75" y="108" class="dg-label-sm">{</text>
+    <text x="85" y="125" class="dg-label-sm">"image": "<tspan fill="#7BD0A0">lightning-bolt-v2.svg</tspan>",</text>
+    <text x="85" y="142" class="dg-label-sm">"founders": [...]</text>
+    <text x="75" y="158" class="dg-label-sm">}</text>
+  </g>
+
+  <!-- Three pages (right), all using Lightning -->
+  <g>
+    <text x="600" y="35" class="dg-eyebrow">All pages using Lightning regenerate</text>
+
+    <rect x="600" y="55" width="220" height="56" fill="rgba(245,248,251,0.04)" stroke="#F5F8FB" stroke-width="1" rx="3"/>
+    <text x="615" y="78" class="dg-label">v2/bitcoin/</text>
+    <text x="615" y="98" class="dg-label-sm">Lightning shown as featured pick</text>
+
+    <rect x="600" y="130" width="220" height="56" fill="rgba(245,248,251,0.04)" stroke="#F5F8FB" stroke-width="1" rx="3"/>
+    <text x="615" y="153" class="dg-label">v2/payments/</text>
+    <text x="615" y="173" class="dg-label-sm">Lightning shown as primitive #1</text>
+
+    <rect x="600" y="205" width="220" height="56" fill="rgba(245,248,251,0.04)" stroke="#F5F8FB" stroke-width="1" rx="3"/>
+    <text x="615" y="228" class="dg-label">v2/lightning/</text>
+    <text x="615" y="248" class="dg-label-sm">(when commissioned) hero feature</text>
+
+    <rect x="600" y="280" width="220" height="56" fill="rgba(245,248,251,0.04)" stroke="#F5F8FB" stroke-width="1" rx="3" stroke-dasharray="3 3"/>
+    <text x="615" y="303" class="dg-label" style="fill:rgba(245,248,251,0.6)">v2/?/</text>
+    <text x="615" y="323" class="dg-label-sm">future references propagate too</text>
+  </g>
+
+  <!-- Generator -->
+  <circle cx="450" cy="200" r="45" fill="rgba(169,156,255,0.12)" stroke="#A99CFF" stroke-width="1.5"/>
+  <text x="450" y="195" text-anchor="middle" class="dg-label" style="fill:#A99CFF">regen</text>
+  <text x="450" y="212" text-anchor="middle" class="dg-label-sm">~10 seconds</text>
+
+  <!-- Arrows -->
+  <g stroke="rgba(245,248,251,0.4)" stroke-width="1.2" fill="none" marker-end="url(#arr2)">
+    <line x1="302" y1="105" x2="408" y2="195"/>
+    <line x1="497" y1="180" x2="598" y2="80"/>
+    <line x1="497" y1="200" x2="598" y2="155"/>
+    <line x1="497" y1="220" x2="598" y2="230"/>
+    <line x1="497" y1="240" x2="598" y2="305" stroke-dasharray="2 3"/>
+  </g>
+  <defs>
+    <marker id="arr2" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(245,248,251,0.5)"/>
+    </marker>
+  </defs>
+</svg>
+<div class="diagram-caption">ONE BED-FILE EDIT · N PAGES UPDATED</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     DIAGRAM 4 — CURRENT STATE AUDIT
+     ════════════════════════════════════════════════════════════════════ -->
+<h2>What's <strong>already built.</strong></h2>
+<p>An audit of the current FRQNCY-Website + frqncy-harness repos against the three-layer architecture. More infrastructure exists than the conversation implied.</p>
+
+<h4>FRQNCY-Website</h4>
+<table>
+  <thead><tr><th>Path</th><th>Layer</th><th>Status</th><th>Notes</th></tr></thead>
+  <tbody>
+    <tr><td>people.json (71 KB)</td><td>1 — Bed</td><td class="s-ok">EXISTS</td><td>~150 entries · loaded by generate.js</td></tr>
+    <tr><td>books.json (128 KB)</td><td>1 — Bed</td><td class="s-ok">EXISTS</td><td>~300 entries</td></tr>
+    <tr><td>orgs.json (40 KB)</td><td>1 — Bed</td><td class="s-ok">EXISTS</td><td>~80 entries</td></tr>
+    <tr><td>media.json (30 KB)</td><td>1 — Bed</td><td class="s-ok">EXISTS</td><td>recordings, podcasts, channels</td></tr>
+    <tr><td>music.json (5 KB)</td><td>1 — Bed</td><td class="s-ok">EXISTS</td><td>music tracks tagged to topics</td></tr>
+    <tr><td>places.json (2 KB)</td><td>1 — Bed</td><td class="s-ok">EXISTS</td><td>physical sanctuaries</td></tr>
+    <tr><td>aligned-goods.json (38 KB)</td><td>1 — Bed</td><td class="s-ok">EXISTS</td><td>products / picks</td></tr>
+    <tr><td>courses.json (14 KB)</td><td>1 — Bed</td><td class="s-ok">EXISTS</td><td>FRQNCY courses</td></tr>
+    <tr><td>videos.json (110 KB)</td><td>1 — Bed</td><td class="s-ok">EXISTS</td><td>YouTube-tagged videos per topic</td></tr>
+    <tr><td>content.json (239 KB)</td><td>1 — Bed</td><td class="s-ok">EXISTS</td><td>topics + domains + pillars + topic-resource arrays</td></tr>
+    <tr><td>resources.json (319 KB)</td><td>1 — Bed (derived)</td><td class="s-warn">DERIVED</td><td>regenerated by generate.js — output, not source</td></tr>
+    <tr><td>data/protocols/</td><td>1 — Bed</td><td class="s-gap">MISSING</td><td>protocol-level entities (Lightning, Aave, etc.) currently inside crypto-projects.json + scripts/sector_research.py</td></tr>
+    <tr><td>data/topics/</td><td>2 — Topic shape</td><td class="s-gap">MISSING</td><td>topic YAMLs as the schema we'd commission against</td></tr>
+    <tr><td>scripts/sector_research.py</td><td>2 — Topic shape (proto)</td><td class="s-warn">PARTIAL</td><td>~20 sectors of topic-shape data, but as Python dicts — should migrate to YAML</td></tr>
+    <tr><td>scripts/sector_tech.py</td><td>2 — Topic shape</td><td class="s-warn">PARTIAL</td><td>tech-grid items per sector</td></tr>
+    <tr><td>scripts/sector_imagery.py</td><td>2 — Topic shape</td><td class="s-warn">PARTIAL</td><td>per-sector hero imagery</td></tr>
+    <tr><td>scripts/iconic_glyphs.py</td><td>3 — Chrome</td><td class="s-ok">EXISTS</td><td>21 sector-iconic SVG glyphs — chrome-class library</td></tr>
+    <tr><td>v2/crypto/_artwork.css</td><td>3 — Chrome</td><td class="s-ok">EXISTS</td><td>shared chrome for sub-hubs · ~900 lines</td></tr>
+    <tr><td>generate.js</td><td>Generator (templated)</td><td class="s-ok">EXISTS</td><td>renders ~140 templated topic pages from beds</td></tr>
+    <tr><td>scripts/generate_crypto_subhubs.py</td><td>Generator (data-driven)</td><td class="s-ok">EXISTS</td><td>the reference implementation of the new model · ~1500 lines · drives 21 sub-hubs</td></tr>
+    <tr><td>generate_topic_page.py</td><td>Generator (data-driven, generic)</td><td class="s-gap">MISSING</td><td>generalised topic-page generator that reads data/topics/*.yaml</td></tr>
+    <tr><td>BESPOKE_TOPICS / BESPOKE_DOMAINS</td><td>Migration scaffolding</td><td class="s-ok">EXISTS</td><td>protects hand-written commissions from regen — 7 entries</td></tr>
+    <tr><td>mcp-servers/frqncy-content/</td><td>Content access (MCP)</td><td class="s-ok">EXISTS</td><td>11 tools: search_topics, get_topic, list_*, search_resources, get_resource, list_resources_by_type, random_topic, stats</td></tr>
+  </tbody>
+</table>
+
+<h4>frqncy-harness</h4>
+<table>
+  <thead><tr><th>Path</th><th>Purpose</th><th>Status</th></tr></thead>
+  <tbody>
+    <tr><td>src/skills/</td><td>Skill packs · auto-inject by prompt match</td><td class="s-ok">EXISTS</td></tr>
+    <tr><td>src/commands/</td><td>CLI command surface (chat, agent, repl, traces, ...)</td><td class="s-ok">EXISTS</td></tr>
+    <tr><td>src/tools/</td><td>bash, read, write, grep, glob, web_fetch, web_search</td><td class="s-ok">EXISTS</td></tr>
+    <tr><td>src/mcp/</td><td>MCP client — connects to frqncy-content server</td><td class="s-ok">EXISTS</td></tr>
+    <tr><td>~/.frqncy-harness/skills/</td><td>User skill drop-in directory</td><td class="s-ok">EXISTS</td></tr>
+    <tr><td>commission-topic skill</td><td>Skill that commissions a new topic page YAML</td><td class="s-gap">MISSING</td></tr>
+    <tr><td>frqncy-content MCP integration</td><td>Wired into harness for content lookups during commission</td><td class="s-warn">MANUAL</td></tr>
+  </tbody>
+</table>
+
+<p style="margin-top:1.6rem"><em>Read:</em> the substrate is mostly there. The bed files exist. The chrome exists. The reference generator exists (the crypto sub-hub one). The MCP server exposes the world model to the harness. What's missing is one generalised topic-page generator that reads YAML, plus the YAML schema, plus a commission-topic skill in the harness. Three concrete artefacts, not a rewrite.</p>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     DIAGRAM 5 — MIGRATION MAP
+     ════════════════════════════════════════════════════════════════════ -->
+<h2>Migration <strong>map.</strong></h2>
+<p>Where current files end up. Nothing is thrown away — everything refactors into its layer.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 1100 480" xmlns="http://www.w3.org/2000/svg">
+  <!-- Today (left column) -->
+  <g>
+    <text x="60" y="35" class="dg-eyebrow">Today</text>
+    <text x="60" y="58" class="dg-title" style="font-size:14px">Mixed</text>
+
+    <rect x="50" y="80" width="320" height="50" fill="rgba(135,184,224,0.10)" stroke="#87B8E0" stroke-width="1" rx="2"/>
+    <text x="60" y="100" class="dg-label">people.json · books.json · orgs.json</text>
+    <text x="60" y="118" class="dg-label-sm">monolithic JSON files (already beds)</text>
+
+    <rect x="50" y="140" width="320" height="50" fill="rgba(135,184,224,0.10)" stroke="#87B8E0" stroke-width="1" rx="2"/>
+    <text x="60" y="160" class="dg-label">v2/crypto/crypto-projects.json</text>
+    <text x="60" y="178" class="dg-label-sm">635 protocols, monolithic</text>
+
+    <rect x="50" y="200" width="320" height="60" fill="rgba(123,208,160,0.10)" stroke="#7BD0A0" stroke-width="1" rx="2"/>
+    <text x="60" y="220" class="dg-label">scripts/sector_research.py</text>
+    <text x="60" y="238" class="dg-label-sm">21 sectors of topic-shape data</text>
+    <text x="60" y="252" class="dg-label-sm">as Python dicts</text>
+
+    <rect x="50" y="270" width="320" height="60" fill="rgba(123,208,160,0.05)" stroke="#7BD0A0" stroke-width="1" stroke-dasharray="3 3" rx="2"/>
+    <text x="60" y="290" class="dg-label">v2/water/index.html (bespoke)</text>
+    <text x="60" y="308" class="dg-label-sm">hand-written 1400 lines · drifts</text>
+    <text x="60" y="322" class="dg-label-sm">7 such files exist today</text>
+
+    <rect x="50" y="340" width="320" height="50" fill="rgba(196,151,58,0.10)" stroke="#C4973A" stroke-width="1" rx="2"/>
+    <text x="60" y="360" class="dg-label">v2/crypto/_artwork.css</text>
+    <text x="60" y="378" class="dg-label-sm">shared chrome (~900 lines)</text>
+
+    <rect x="50" y="400" width="320" height="50" fill="rgba(169,156,255,0.10)" stroke="#A99CFF" stroke-width="1" rx="2"/>
+    <text x="60" y="420" class="dg-label">scripts/generate_crypto_subhubs.py</text>
+    <text x="60" y="438" class="dg-label-sm">crypto-only generator</text>
+  </g>
+
+  <!-- Arrow column -->
+  <g stroke="rgba(245,248,251,0.3)" stroke-width="1.2" fill="none" marker-end="url(#arr3)">
+    <line x1="380" y1="105" x2="430" y2="105"/>
+    <line x1="380" y1="165" x2="430" y2="120"/>
+    <line x1="380" y1="230" x2="430" y2="200"/>
+    <line x1="380" y1="300" x2="430" y2="200"/>
+    <line x1="380" y1="365" x2="430" y2="305"/>
+    <line x1="380" y1="425" x2="430" y2="370"/>
+  </g>
+  <defs>
+    <marker id="arr3" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="6" markerHeight="6" orient="auto">
+      <path d="M 0 0 L 10 5 L 0 10 z" fill="rgba(245,248,251,0.5)"/>
+    </marker>
+  </defs>
+
+  <!-- Tomorrow (right column) -->
+  <g>
+    <text x="450" y="35" class="dg-eyebrow">After migration</text>
+    <text x="450" y="58" class="dg-title" style="font-size:14px">Three clean layers</text>
+
+    <rect x="440" y="80" width="320" height="80" fill="rgba(135,184,224,0.10)" stroke="#87B8E0" stroke-width="1.5" rx="2"/>
+    <text x="450" y="100" class="dg-eyebrow">L1 · Bed</text>
+    <text x="450" y="120" class="dg-label">data/people/&lt;slug&gt;.json</text>
+    <text x="450" y="135" class="dg-label">data/protocols/&lt;slug&gt;.json</text>
+    <text x="450" y="150" class="dg-label">data/texts/&lt;slug&gt;.json</text>
+
+    <rect x="440" y="180" width="320" height="80" fill="rgba(123,208,160,0.10)" stroke="#7BD0A0" stroke-width="1.5" rx="2"/>
+    <text x="450" y="200" class="dg-eyebrow">L2 · Topic shape</text>
+    <text x="450" y="220" class="dg-label">data/topics/bitcoin.yaml</text>
+    <text x="450" y="235" class="dg-label">data/topics/meditation.yaml</text>
+    <text x="450" y="250" class="dg-label-sm">+ 144 more, one per topic</text>
+
+    <rect x="440" y="280" width="320" height="60" fill="rgba(196,151,58,0.10)" stroke="#C4973A" stroke-width="1.5" rx="2"/>
+    <text x="450" y="300" class="dg-eyebrow">L3 · Chrome</text>
+    <text x="450" y="320" class="dg-label">_artwork.css · glyphs.py</text>
+    <text x="450" y="335" class="dg-label-sm">applied to every page automatically</text>
+
+    <rect x="440" y="360" width="320" height="50" fill="rgba(169,156,255,0.10)" stroke="#A99CFF" stroke-width="1.5" rx="2"/>
+    <text x="450" y="380" class="dg-eyebrow">Generator</text>
+    <text x="450" y="400" class="dg-label">generate_topic_page.py &lt;slug&gt;</text>
+  </g>
+
+  <!-- Far right column: harness commission flow -->
+  <g>
+    <text x="800" y="35" class="dg-eyebrow">Commission loop (harness)</text>
+
+    <rect x="790" y="80" width="280" height="100" fill="rgba(196,151,58,0.06)" stroke="#C4973A" stroke-width="0.8" rx="3"/>
+    <text x="800" y="105" class="dg-label-sm">$ frqncy-harness commission \</text>
+    <text x="800" y="122" class="dg-label-sm">    topic meditation \</text>
+    <text x="800" y="139" class="dg-label-sm">    seed:"the practice that..."</text>
+    <text x="800" y="160" class="dg-label-sm" style="fill:rgba(196,151,58,0.7)">→ writes data/topics/meditation.yaml</text>
+
+    <rect x="790" y="200" width="280" height="80" fill="rgba(123,208,160,0.06)" stroke="#7BD0A0" stroke-width="0.8" rx="3"/>
+    <text x="800" y="225" class="dg-label-sm">human reviews YAML</text>
+    <text x="800" y="245" class="dg-label-sm">edits prose where needed</text>
+    <text x="800" y="265" class="dg-label-sm" style="fill:rgba(123,208,160,0.7)">~15 min polish</text>
+
+    <rect x="790" y="300" width="280" height="80" fill="rgba(169,156,255,0.06)" stroke="#A99CFF" stroke-width="0.8" rx="3"/>
+    <text x="800" y="325" class="dg-label-sm">$ python3 scripts/</text>
+    <text x="800" y="345" class="dg-label-sm">    generate_topic_page.py meditation</text>
+    <text x="800" y="365" class="dg-label-sm" style="fill:rgba(169,156,255,0.7)">→ v2/meditation/index.html</text>
+
+    <rect x="790" y="400" width="280" height="50" fill="rgba(245,248,251,0.04)" stroke="#F5F8FB" stroke-width="0.8" rx="3"/>
+    <text x="800" y="425" class="dg-label-sm">$ git commit && wrangler deploy</text>
+    <text x="800" y="442" class="dg-label-sm" style="fill:rgba(245,248,251,0.6)">→ shipped</text>
+  </g>
+</svg>
+<div class="diagram-caption">EVERY CURRENT FILE HAS A HOME · NOTHING THROWN AWAY</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     DIAGRAM 6 — COMPOUNDING CURVE
+     ════════════════════════════════════════════════════════════════════ -->
+<h2>The <strong>compounding curve.</strong></h2>
+<p>What this gets you over time. Effort per new topic falls; richness and beauty per existing page rise. Both because the bed and the chrome compound.</p>
+
+<div class="diagram">
+<svg viewBox="0 0 1100 380" xmlns="http://www.w3.org/2000/svg">
+  <!-- Axes -->
+  <g stroke="rgba(245,248,251,0.3)" stroke-width="0.7" fill="none">
+    <line x1="80" y1="320" x2="1050" y2="320"/>
+    <line x1="80" y1="40" x2="80" y2="320"/>
+  </g>
+
+  <!-- Time axis labels -->
+  <g class="dg-label-sm">
+    <text x="80" y="345" text-anchor="middle">M1</text>
+    <text x="320" y="345" text-anchor="middle">M6</text>
+    <text x="560" y="345" text-anchor="middle">M12</text>
+    <text x="800" y="345" text-anchor="middle">M18</text>
+    <text x="1040" y="345" text-anchor="middle">M24</text>
+    <text x="565" y="372" text-anchor="middle" style="letter-spacing:0.2em">TIME →</text>
+  </g>
+
+  <!-- Y-axis labels -->
+  <g class="dg-label-sm">
+    <text x="60" y="50" text-anchor="end">100%</text>
+    <text x="60" y="180" text-anchor="end">50%</text>
+    <text x="60" y="320" text-anchor="end">0</text>
+  </g>
+
+  <!-- Curve 1: editing burden per new topic — DECLINING -->
+  <path d="M 80 80 Q 200 110, 320 170 Q 440 220, 560 245 Q 680 265, 800 280 Q 920 290, 1040 295"
+        stroke="#E58787" stroke-width="2" fill="none"/>
+  <text x="92" y="74" class="dg-label" style="fill:#E58787">Editing burden per new topic</text>
+  <text x="92" y="89" class="dg-label-sm" style="fill:#E58787">~60 min → ~10 min</text>
+
+  <!-- Curve 2: bed entity count — RISING -->
+  <path d="M 80 290 Q 200 270, 320 230 Q 440 195, 560 160 Q 680 130, 800 105 Q 920 85, 1040 70"
+        stroke="#87B8E0" stroke-width="2" fill="none"/>
+  <text x="980" y="64" class="dg-label" style="fill:#87B8E0;text-anchor:end">Bed size · entities</text>
+  <text x="980" y="79" class="dg-label-sm" style="fill:#87B8E0;text-anchor:end">50 → 500</text>
+
+  <!-- Curve 3: chrome quality — STAIRCASE up -->
+  <path d="M 80 250 L 200 250 L 200 220 L 380 220 L 380 195 L 560 195 L 560 170 L 740 170 L 740 145 L 920 145 L 920 115 L 1040 115"
+        stroke="#C4973A" stroke-width="2" fill="none"/>
+  <text x="220" y="240" class="dg-label" style="fill:#C4973A">Chrome quality (one CSS edit lifts all pages)</text>
+
+  <!-- Curve 4: total network richness — composite, RISING -->
+  <path d="M 80 220 Q 200 200, 320 175 Q 440 145, 560 115 Q 680 90, 800 70 Q 920 55, 1040 50"
+        stroke="#7BD0A0" stroke-width="3" fill="none"/>
+  <text x="370" y="135" class="dg-label" style="fill:#7BD0A0">Network richness (composite)</text>
+  <text x="370" y="150" class="dg-label-sm" style="fill:#7BD0A0">5 topics → 60 → 140</text>
+
+  <!-- Annotations -->
+  <g stroke="rgba(245,248,251,0.2)" stroke-width="0.5" stroke-dasharray="2 3">
+    <line x1="320" y1="40" x2="320" y2="320"/>
+    <line x1="800" y1="40" x2="800" y2="320"/>
+  </g>
+  <g class="dg-label-sm" style="fill:rgba(245,248,251,0.5)">
+    <text x="335" y="55">prompt + schema stabilise</text>
+    <text x="815" y="55">existing pages have improved twice</text>
+    <text x="815" y="70">without per-page edits</text>
+  </g>
+</svg>
+<div class="diagram-caption">EFFORT FALLS · RICHNESS RISES · BOTH MECHANICAL</div>
+</div>
+
+<!-- ════════════════════════════════════════════════════════════════════
+     SUMMARY · NEXT MOVE
+     ════════════════════════════════════════════════════════════════════ -->
+<h2>The <strong>next concrete move.</strong></h2>
+<p>Three artefacts, in order. None require a rewrite. All are additive.</p>
+
+<table>
+  <thead><tr><th>#</th><th>Artefact</th><th>Effort</th><th>Why first</th></tr></thead>
+  <tbody>
+    <tr><td>1</td><td><code>data/topics/_schema.yaml</code></td><td>30 min</td><td>The contract every later piece composes against. Defines hero, prelude, counter-box, seminal, closing, treatment, picks. One file. Locks editorial shape.</td></tr>
+    <tr><td>2</td><td><code>scripts/generate_topic_page.py</code></td><td>2-3 hours</td><td>Generic version of the crypto sub-hub generator that reads <code>data/topics/&lt;slug&gt;.yaml</code> + dereferences picks against existing bed JSONs. Validates the schema covers what the existing pages need.</td></tr>
+    <tr><td>3</td><td>Backfill 1 topic into YAML</td><td>1 hour</td><td>Pick Bitcoin (the most-developed sub-hub). Re-emit its current state as <code>data/topics/bitcoin.yaml</code>. Run the new generator. Diff against the current Bitcoin sub-hub HTML. Iterate the schema until they match.</td></tr>
+  </tbody>
+</table>
+
+<p>After those three: ship the next commission via the new path. Pick Meditation or Decentralised AI, write the YAML (with LLM help via the prompt skill that comes next), generate. The first end-to-end commission through the new system tells you what the schema is missing. Iterate. Then migrate the remaining 20 crypto sub-hubs by emitting their YAMLs from the existing Python dicts (one-time script).</p>
+
+<p style="font-family:var(--serif);font-style:italic;font-size:1.2rem;color:var(--gold-light);margin-top:2.5rem;border-left:1px solid rgba(196,151,58,0.4);padding-left:1.5rem;max-width:60ch;line-height:1.5">"The substrate is mostly there. What's missing is one schema, one generator, one commission skill — three concrete artefacts, not a rewrite."</p>
+
+<div class="footer">
+  proposals/architecture-layers.html · v1 · 2026-04-29 · locally rendered
+</div>
+
+</body>
+</html>

@@ -1,6 +1,6 @@
 import { useState, useRef, useEffect } from 'preact/hooks';
 import { useAuth } from './AuthProvider';
-import { supabase } from '../lib/supabase';
+import { createComment } from '../lib/api';
 
 interface CommentFormProps {
   postId: string;
@@ -63,18 +63,15 @@ export default function CommentForm({
     setSubmitting(true);
     setError(null);
     try {
-      const { data, error: insertError } = await supabase
-        .from('comments')
-        .insert({
-          post_id: postId,
-          author_id: user.id,
-          content: trimmed,
-          parent_id: parentId,
-        })
-        .select('*, profiles!author_id(username, display_name, avatar_url)')
-        .maybeSingle();
+      // Route through api.ts so notification side-effects fire consistently.
+      const data = await createComment({
+        post_id: postId,
+        author_id: user.id,
+        content: trimmed,
+        parent_id: parentId ?? undefined,
+      });
 
-      if (insertError) throw insertError;
+      if (!data) throw new Error('Comment insert returned null');
 
       setContent('');
       onSubmit?.(data);

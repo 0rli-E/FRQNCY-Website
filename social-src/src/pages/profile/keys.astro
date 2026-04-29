@@ -1,0 +1,16 @@
+---
+import SocialLayout from '../../layouts/SocialLayout.astro';
+import EncryptionKeysPanel from '../../components/EncryptionKeysPanel';
+---
+
+<SocialLayout title="Encryption Keys" description="Backup, restore, or regenerate your end-to-end encryption keys for NRG · FRQNCY Social messages.">
+  <div class="max-w-2xl mx-auto py-6 space-y-2">
+    <h1 class="font-heading text-3xl text-gold">Encryption keys</h1>
+    <p class="text-sm text-text-dim">
+      Your messages on NRG are end-to-end encrypted. The keys live on your device — back them up so you don't lose access.
+    </p>
+  </div>
+  <div class="max-w-2xl mx-auto">
+    <EncryptionKeysPanel client:load />
+  </div>
+</SocialLayout>

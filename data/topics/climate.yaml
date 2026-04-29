@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Climate — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py climate
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: climate
+  label: "Climate"
+  domain: "Nature & Cosmos"
+  domain_slug: nature
+  pillar: "Research"
+  pillar_slug: research
+  accent: "#2E9E6B"
+
+treatment:
+  register: contemplative
+
+hero:
+  variant: split
+  eyebrow: "Nature & Cosmos · Research"
+  title: "Climate"
+  desc: |
+    The science and crisis of Earth's changing atmosphere — the most urgent challenge of this century.
+  media:
+    poster_url: https://images.pexels.com/photos/35264949/pexels-photo-35264949.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/17845895/pexels-photo-17845895.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      We do not have time for a six-month study of the obvious. *— Rachel Carson — Silent Spring*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Nature & Cosmos", url: "/v2/nature/" }
+  canonical: https://frqncy.network/v2/climate/
+  og_image: https://frqncy.network/v2/og/climate.png

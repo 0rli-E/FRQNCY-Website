@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Energy Policy — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py energy-policy
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: energy-policy
+  label: "Energy Policy"
+  domain: "Energy"
+  domain_slug: energy
+  pillar: "Fund"
+  pillar_slug: fund
+  accent: "#A8E84A"
+
+treatment:
+  register: scientific
+
+hero:
+  variant: split
+  eyebrow: "Energy · Fund"
+  title: "Energy Policy"
+  desc: |
+    The governance of energy systems — the laws, incentives, and international agreements shaping the energy transition.
+  media:
+    poster_url: https://images.pexels.com/photos/35013248/pexels-photo-35013248.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/6436372/pexels-photo-6436372.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      The Stone Age did not end for lack of stone, and the Oil Age will end long before the world runs out of oil. *— Ahmed Zaki Yamani*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Energy", url: "/v2/energy/" }
+  canonical: https://frqncy.network/v2/energy-policy/
+  og_image: https://frqncy.network/v2/og/energy-policy.png

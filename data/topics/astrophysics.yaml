@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Astrophysics — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py astrophysics
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: astrophysics
+  label: "Astrophysics"
+  domain: "Sciences"
+  domain_slug: sciences
+  pillar: "Research"
+  pillar_slug: research
+  accent: "#4A7AE8"
+
+treatment:
+  register: scientific
+
+hero:
+  variant: split
+  eyebrow: "Sciences · Research"
+  title: "Astrophysics"
+  desc: |
+    The physics of stars, galaxies, and the cosmos — understanding the universe at the largest scales.
+  media:
+    poster_url: https://images.pexels.com/photos/31876937/pexels-photo-31876937.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/821644/pexels-photo-821644.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      We are made of star-stuff. We are a way for the cosmos to know itself. *— Carl Sagan — Cosmos*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Sciences", url: "/v2/sciences/" }
+  canonical: https://frqncy.network/v2/astrophysics/
+  og_image: https://frqncy.network/v2/og/astrophysics.png

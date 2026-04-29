@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Games & Gaming — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py gaming
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: gaming
+  label: "Games & Gaming"
+  domain: "Play & Recreation"
+  domain_slug: play
+  pillar: "Builder"
+  pillar_slug: builder
+  accent: "#E84A4A"
+
+treatment:
+  register: kinetic
+
+hero:
+  variant: split
+  eyebrow: "Play & Recreation · Builder"
+  title: "Games & Gaming"
+  desc: |
+    Video games as art, culture, and community — one of the defining media forms of the 21st century.
+  media:
+    poster_url: https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1502904550040-7534597429ae?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      A game is an opportunity to focus our energy at something we're good at, with relentless optimism. *— Jane McGonigal — Reality Is Broken*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Play & Recreation", url: "/v2/play/" }
+  canonical: https://frqncy.network/v2/gaming/
+  og_image: https://frqncy.network/v2/og/gaming.png

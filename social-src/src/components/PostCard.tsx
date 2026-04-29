@@ -1,10 +1,26 @@
 import { useState, useEffect } from 'preact/hooks';
 import { useAuth } from './AuthProvider';
 import { supabase } from '../lib/supabase';
+import { parseQuote, buildQuoteBody } from '../lib/render-content';
+import { verifySignature } from '../lib/crypto';
+import QuotedPost from './QuotedPost';
+import LinkPreviewCard, { type LinkPreview } from './LinkPreview';
+import RichContent from './RichContent';
 
 import ProjectBadge from './ProjectBadge';
 import CommentsThread from './CommentsThread';
 import CommentForm from './CommentForm';
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Signature-verification cache.
+//
+// We hold the result of verifySignature() in a module-level Map keyed by
+// post.id so a feed scroll doesn't re-verify the same post every time it
+// re-renders. Posts with null signature stay out of the map — the absence
+// of the badge is the signal for unsigned content.
+// ─────────────────────────────────────────────────────────────────────────────
+type VerifyState = 'verified' | 'mismatch';
+const verifyCache: Map<string, VerifyState> = new Map();
 
 interface PostCardProps {
   id?: string;
@@ -15,9 +31,19 @@ interface PostCardProps {
   tags?: string[];
   project_tag?: string | null;
   project_tier?: string | null;
+  /** Persisted Open Graph preview from the link-preview function. */
+  link_preview?: LinkPreview | null;
   likes?: number;
   comments?: number;
   time?: string;
+  /** Open the comment thread on first render. Used by the single-post page. */
+  defaultShowComments?: boolean;
+  /** Detached Ed25519 signature (base64) over `signed_payload`. */
+  signature?: string | null;
+  /** The exact canonical JSON bytes the signature was computed over. */
+  signed_payload?: string | null;
+  /** Author's libsodium signing public key (base64). Required to verify. */
+  author_signing_public_key?: string | null;
 }
 
 export default function PostCard({
@@ -29,9 +55,14 @@ export default function PostCard({
   tags = [],
   project_tag = null,
   project_tier = null,
+  link_preview = null,
   likes = 0,
   comments = 0,
   time = 'just now',
+  defaultShowComments = false,
+  signature = null,
+  signed_payload = null,
+  author_signing_public_key = null,
 }: PostCardProps) {
   const { user } = useAuth();
   const [liked, setLiked] = useState(false);
@@ -39,8 +70,40 @@ export default function PostCard({
   const [bookmarked, setBookmarked] = useState(false);
   const [likeLoading, setLikeLoading] = useState(false);
   const [bookmarkLoading, setBookmarkLoading] = useState(false);
-  const [showComments, setShowComments] = useState(false);
+  const [showComments, setShowComments] = useState(defaultShowComments);
   const [commentCount, setCommentCount] = useState(comments);
+  // Signature-verification state. Starts at the cached result if we've seen
+  // this post before; otherwise null until the lazy useEffect resolves.
+  const [verifyState, setVerifyState] = useState<VerifyState | null>(
+    id && verifyCache.has(id) ? verifyCache.get(id)! : null,
+  );
+
+  // Lazily verify the signature once on mount. Skipped entirely for unsigned
+  // posts (no badge rendered for those) and for posts whose author hasn't
+  // published a signing public key yet (we can't verify without it). The
+  // result is cached in the module-level Map so feed scrolls don't reverify.
+  useEffect(() => {
+    if (!id || !signature || !signed_payload || !author_signing_public_key) return;
+    if (verifyCache.has(id)) {
+      setVerifyState(verifyCache.get(id)!);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      try {
+        const ok = await verifySignature(signed_payload, signature, author_signing_public_key);
+        const next: VerifyState = ok ? 'verified' : 'mismatch';
+        verifyCache.set(id, next);
+        if (!cancelled) setVerifyState(next);
+      } catch (_) {
+        // Treat verifier errors as mismatch — caller asked us to surface
+        // anything anomalous.
+        verifyCache.set(id, 'mismatch');
+        if (!cancelled) setVerifyState('mismatch');
+      }
+    })();
+    return () => { cancelled = true; };
+  }, [id, signature, signed_payload, author_signing_public_key]);
 
   // Check if current user has liked/bookmarked this post
   useEffect(() => {
@@ -126,12 +189,63 @@ export default function PostCard({
     }
   };
 
+  const [shareCopied, setShareCopied] = useState(false);
+  const [showQuote, setShowQuote] = useState(false);
+  const [quoteText, setQuoteText] = useState('');
+  const [quoteSubmitting, setQuoteSubmitting] = useState(false);
+
+  const submitQuote = async () => {
+    if (!user || !id || quoteSubmitting) return;
+    setQuoteSubmitting(true);
+    try {
+      const body = buildQuoteBody(id, quoteText.trim());
+      const { error } = await supabase.from('posts').insert({
+        author_id: user.id,
+        content: body,
+        media_urls: [],
+        link_url: null,
+        link_preview: null,
+        project_tag: null,
+        project_tier: null,
+      });
+      if (error) {
+        console.error('quote-post failed:', error.message);
+      } else {
+        setQuoteText('');
+        setShowQuote(false);
+      }
+    } finally {
+      setQuoteSubmitting(false);
+    }
+  };
+
   const initials = author
     .split(' ')
     .map((n) => n[0])
     .join('')
     .slice(0, 2)
     .toUpperCase();
+
+  const sharePost = async () => {
+    if (!id) return;
+    const url = `${location.origin}/social/post/${id}`;
+    // Prefer the native share sheet on mobile, fall back to clipboard on desktop.
+    if (navigator.share) {
+      try { await navigator.share({ title: `${author} on FRQNCY`, text: content.slice(0, 140), url }); return; } catch (_) {}
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      setShareCopied(true);
+      setTimeout(() => setShareCopied(false), 1800);
+    } catch (_) {
+      // Last-ditch fallback for old browsers / insecure contexts
+      const ta = document.createElement('textarea');
+      ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      try { document.execCommand('copy'); setShareCopied(true); setTimeout(() => setShareCopied(false), 1800); } catch (_) {}
+      document.body.removeChild(ta);
+    }
+  };
 
   return (
     <article class="rounded-xl bg-card-bg border border-card-border p-5 hover:border-gold/10 transition-colors">
@@ -155,6 +269,24 @@ export default function PostCard({
             <span class="text-xs text-text-dim">@{username}</span>
             <span class="text-xs text-text-dim opacity-50">·</span>
             <span class="text-xs text-text-dim">{time}</span>
+            {verifyState === 'verified' && (
+              <span
+                class="text-[10px] text-gold/70 ml-1 flex items-center gap-0.5"
+                title="Signature verified against author's signing public key"
+              >
+                <span aria-hidden="true">◊</span>
+                <span>verified</span>
+              </span>
+            )}
+            {verifyState === 'mismatch' && (
+              <span
+                class="text-[10px] text-amber-300 ml-1 flex items-center gap-0.5"
+                title="Signature does not match the author's signing public key"
+              >
+                <span aria-hidden="true">✗</span>
+                <span>signature mismatch</span>
+              </span>
+            )}
           </div>
         </div>
         <button class="text-text-dim hover:text-text transition-colors p-1">
@@ -164,9 +296,36 @@ export default function PostCard({
         </button>
       </div>
 
-      {/* Content */}
+      {/* Content — quote posts get an embedded card; everything else goes
+          through the safe tokeniser that linkifies @mentions and URLs. */}
       <div class="mt-3 ml-13">
-        <p class="text-sm text-text leading-relaxed whitespace-pre-wrap">{content}</p>
+        {(() => {
+          const quote = parseQuote(content);
+          if (quote) {
+            return (
+              <div class="space-y-3">
+                {quote.comment.trim() && (
+                  <p class="text-sm text-text leading-relaxed whitespace-pre-wrap">
+                    <RichContent text={quote.comment} />
+                  </p>
+                )}
+                <QuotedPost postId={quote.postId} />
+              </div>
+            );
+          }
+          return (
+            <p class="text-sm text-text leading-relaxed whitespace-pre-wrap">
+              <RichContent text={content} />
+            </p>
+          );
+        })()}
+
+        {/* Link preview (when persisted with the post) */}
+        {link_preview && link_preview.url && (
+          <div class="mt-3">
+            <LinkPreviewCard preview={link_preview} compact />
+          </div>
+        )}
 
         {/* Project tag badge */}
         {project_tag && (
@@ -175,13 +334,13 @@ export default function PostCard({
           </div>
         )}
 
-        {/* Tags */}
+        {/* Tags — link to the channel page so the network has navigable threads */}
         {tags.length > 0 && (
           <div class="flex flex-wrap gap-1.5 mt-3">
             {tags.map((tag) => (
               <a
                 key={tag}
-                href="#"
+                href={`/social/channel/${encodeURIComponent(tag)}`}
                 class="text-xs px-2.5 py-0.5 rounded-full bg-gold/5 border border-gold/15 text-gold hover:bg-gold/10 transition-colors"
               >
                 #{tag}
@@ -230,10 +389,39 @@ export default function PostCard({
           {commentCount > 0 && <span>{commentCount}</span>}
         </button>
 
-        <button class="flex items-center gap-1.5 text-xs text-text-dim hover:text-gold-light transition-colors">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
-          </svg>
+        {/* Quote-repost — opens an inline mini composer */}
+        {user && id && (
+          <button
+            onClick={() => setShowQuote((v) => !v)}
+            aria-expanded={showQuote}
+            aria-label="Quote this post"
+            title="Quote this post"
+            class={`flex items-center gap-1.5 text-xs transition-colors ${showQuote ? 'text-gold-light' : 'text-text-dim hover:text-gold-light'}`}
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M4 7v6a4 4 0 004 4h0M4 7h6m-6 0V5a2 2 0 012-2h2m10 14v-6a4 4 0 00-4-4h0m4 10h-6m6 0v2a2 2 0 01-2 2h-2" />
+            </svg>
+          </button>
+        )}
+
+        <button
+          onClick={sharePost}
+          aria-label={shareCopied ? 'Link copied' : 'Copy or share post link'}
+          title={shareCopied ? 'Link copied' : 'Share this post'}
+          class={`flex items-center gap-1.5 text-xs transition-colors ${shareCopied ? 'text-gold-light' : 'text-text-dim hover:text-gold-light'}`}
+        >
+          {shareCopied ? (
+            <>
+              <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+                <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 13l4 4L19 7" />
+              </svg>
+              <span>Copied</span>
+            </>
+          ) : (
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M8.684 13.342C8.886 12.938 9 12.482 9 12c0-.482-.114-.938-.316-1.342m0 2.684a3 3 0 110-2.684m0 2.684l6.632 3.316m-6.632-6l6.632-3.316m0 0a3 3 0 105.367-2.684 3 3 0 00-5.367 2.684zm0 9.316a3 3 0 105.368 2.684 3 3 0 00-5.368-2.684z" />
+            </svg>
+          )}
         </button>
 
         <button
@@ -248,6 +436,35 @@ export default function PostCard({
           </svg>
         </button>
       </div>
+
+      {/* Inline quote-repost composer */}
+      {showQuote && id && user && (
+        <div class="mt-4 ml-13 rounded-lg bg-navy-mid border border-card-border p-3 space-y-2">
+          <textarea
+            value={quoteText}
+            onInput={(e) => setQuoteText((e.target as HTMLTextAreaElement).value)}
+            placeholder="Add your take, then quote-post…"
+            rows={2}
+            class="w-full bg-transparent text-sm text-text placeholder-text-dim resize-none focus:outline-none"
+          />
+          <div class="flex items-center justify-between gap-3 pt-2 border-t border-card-border">
+            <span class="text-xs text-text-dim">Posts as a new post with the original embedded.</span>
+            <div class="flex gap-2">
+              <button
+                type="button"
+                onClick={() => { setShowQuote(false); setQuoteText(''); }}
+                class="text-xs text-text-dim hover:text-text transition-colors px-3 py-1"
+              >Cancel</button>
+              <button
+                type="button"
+                onClick={submitQuote}
+                disabled={quoteSubmitting}
+                class="text-xs px-4 py-1 rounded-full bg-gold text-navy font-medium hover:bg-gold-light transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+              >{quoteSubmitting ? 'Posting…' : 'Quote post'}</button>
+            </div>
+          </div>
+        </div>
+      )}
 
       {/* Comments section */}
       {showComments && id && (
@@ -267,3 +484,7 @@ export default function PostCard({
     </article>
   );
 }
+
+/* The token-walk renderer that used to live here moved into
+   ./RichContent.tsx so it could be reused by CommentItem and any future
+   user-content surface. Imported above. */

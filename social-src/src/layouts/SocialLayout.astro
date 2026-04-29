@@ -1,13 +1,15 @@
 ---
 import NavAuth from '../components/NavAuth';
 import MobileNavAuth from '../components/MobileNavAuth';
+import NotificationsBadge from '../components/NotificationsBadge';
+import FirstRunWelcome from '../components/FirstRunWelcome';
 
 interface Props {
   title: string;
   description?: string;
 }
 
-const { title, description = 'FRQNCY Social — Connect with the conscious living community.' } = Astro.props;
+const { title, description = 'NRG · The FRQNCY social network. Connect with people building their dream life.' } = Astro.props;
 ---
 
 <!DOCTYPE html>
@@ -16,7 +18,7 @@ const { title, description = 'FRQNCY Social — Connect with the conscious livin
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <meta name="theme-color" content="#0B1C3D" />
-  <title>{title} — FRQNCY</title>
+  <title>{title} · NRG · FRQNCY</title>
   <meta name="description" content={description} />
 
   <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
@@ -33,8 +35,9 @@ const { title, description = 'FRQNCY Social — Connect with the conscious livin
   <nav class="sticky top-0 z-50 bg-navy/95 backdrop-blur-sm border-b border-card-border">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
       <!-- Logo -->
-      <a href="/" class="font-heading text-2xl font-semibold tracking-wide text-gold hover:text-gold-light transition-colors">
-        FRQNCY
+      <a href="/" class="font-heading text-2xl font-semibold tracking-wide text-gold hover:text-gold-light transition-colors flex items-baseline gap-2">
+        <span>FRQNCY</span>
+        <span class="text-sm tracking-[0.3em] text-text-dim font-body uppercase">NRG</span>
       </a>
 
       <!-- Center nav links -->
@@ -42,7 +45,10 @@ const { title, description = 'FRQNCY Social — Connect with the conscious livin
         <a href="/social" class="text-text hover:text-gold transition-colors">Feed</a>
         <a href="/social/space" class="text-text-dim hover:text-gold transition-colors">Space</a>
         <a href="/social/messages" class="text-text-dim hover:text-gold transition-colors">Messages</a>
-        <a href="/social/notifications" class="text-text-dim hover:text-gold transition-colors">Notifications</a>
+        <a href="/social/notifications" class="text-text-dim hover:text-gold transition-colors inline-flex items-center">
+          Notifications
+          <NotificationsBadge client:load />
+        </a>
       </div>
 
       <!-- Right actions -->
@@ -87,7 +93,10 @@ const { title, description = 'FRQNCY Social — Connect with the conscious livin
       <a href="/social/search" class="block text-text-dim py-1.5">Search</a>
       <a href="/social/bookmarks" class="block text-text-dim py-1.5">Bookmarks</a>
       <a href="/social/messages" class="block text-text-dim py-1.5">Messages</a>
-      <a href="/social/notifications" class="block text-text-dim py-1.5">Notifications</a>
+      <a href="/social/notifications" class="block text-text-dim py-1.5">
+        Notifications
+        <NotificationsBadge client:load />
+      </a>
       <MobileNavAuth client:load />
     </div>
   </nav>
@@ -97,7 +106,7 @@ const { title, description = 'FRQNCY Social — Connect with the conscious livin
     <nav class="text-xs text-text-dim font-body" aria-label="Breadcrumb">
       <a href="/" class="hover:text-gold transition-colors">FRQNCY</a>
       <span class="mx-1.5 opacity-50">/</span>
-      <span class="text-text">Social</span>
+      <span class="text-text">NRG</span>
     </nav>
   </div>
 
@@ -106,10 +115,15 @@ const { title, description = 'FRQNCY Social — Connect with the conscious livin
     <slot />
   </main>
 
+  <!-- First-run welcome + backup gate. Renders null until the gating
+       conditions resolve (signed in, has keys, never welcomed, never
+       acknowledged a backup), so it's safe to mount on every page. -->
+  <FirstRunWelcome client:load />
+
   <!-- Footer -->
   <footer class="border-t border-card-border mt-auto">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 text-center text-text-dim text-xs font-body">
-      <p>&copy; 2026 FRQNCY Network. Built on the Foundations of Oneness.</p>
+      <p>&copy; 2026 FRQNCY Network. A network of people, building their dream life.</p>
     </div>
   </footer>
 

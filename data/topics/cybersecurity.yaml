@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Cybersecurity — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py cybersecurity
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: cybersecurity
+  label: "Cybersecurity"
+  domain: "Technology"
+  domain_slug: technology
+  pillar: "Builder"
+  pillar_slug: builder
+  accent: "#00BCD4"
+
+treatment:
+  register: scientific
+
+hero:
+  variant: split
+  eyebrow: "Technology · Builder"
+  title: "Cybersecurity"
+  desc: |
+    The protection of digital systems, data, and people — increasingly critical as life moves online.
+  media:
+    poster_url: https://images.pexels.com/photos/34258666/pexels-photo-34258666.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/1089438/pexels-photo-1089438.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      Security is a process, not a product. *— Bruce Schneier — Secrets and Lies*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Technology", url: "/v2/technology/" }
+  canonical: https://frqncy.network/v2/cybersecurity/
+  og_image: https://frqncy.network/v2/og/cybersecurity.png

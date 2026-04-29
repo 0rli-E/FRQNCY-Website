@@ -1,0 +1,16 @@
+---
+// Astro static-site build emits a single shell. Cloudflare Pages serves
+// the same shell for every /social/post/<id> via a _redirects rule, and
+// the Preact PostView reads the id from location.pathname at runtime.
+import SocialLayout from '../../layouts/SocialLayout.astro';
+import PostView from '../../components/PostView';
+
+export function getStaticPaths() {
+  // Seed one path so Astro emits at least one HTML file we can redirect to.
+  return [{ params: { id: 'shell' } }];
+}
+---
+
+<SocialLayout title="Post · NRG · FRQNCY" description="A post on the FRQNCY social network.">
+  <PostView client:load />
+</SocialLayout>

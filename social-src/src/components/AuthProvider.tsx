@@ -2,6 +2,15 @@ import { useState, useEffect } from 'preact/hooks';
 import type { ComponentChildren } from 'preact';
 import { supabase } from '../lib/supabase';
 import type { User } from '@supabase/supabase-js';
+import { handlePrivyReturnIfPending } from '../lib/privy-bridge';
+import {
+  generateMessagingKeypair,
+  loadPrivateKeyLocal,
+  savePrivateKeyLocal,
+  generateSigningKeypair,
+  loadSigningPrivateKeyLocal,
+  saveSigningPrivateKeyLocal,
+} from '../lib/crypto';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Astro-friendly auth hook.
@@ -23,6 +32,19 @@ interface Profile {
   display_name: string;
   avatar_url: string | null;
   bio: string | null;
+  /** libsodium X25519 public key for E2E encrypted messaging. Set on first
+      signed-in load if missing — see ensureEncryptionKeypair() below. */
+  encryption_public_key?: string | null;
+  /** libsodium Ed25519 public key for the hybrid signed-message mirror. Set
+      alongside encryption_public_key on first signed-in load. Used to verify
+      signatures on the user's posts + follows so they're portable to any
+      future protocol (ATProto, Farcaster, etc.) per the onchain pivot proposal. */
+  signing_public_key?: string | null;
+  privy_did?: string | null;
+  wallet_address?: string | null;
+  /** Public Bluesky handle for the cross-post bridge. App password lives in
+      localStorage only (see lib/atproto-bridge.ts). */
+  bluesky_handle?: string | null;
 }
 
 interface AuthState {
@@ -63,14 +85,123 @@ function setState(next: Partial<AuthState>) {
 }
 
 async function fetchProfile(userId: string): Promise<Profile | null> {
+  // Selecting an explicit column list (rather than *) so this stays cheap
+  // and so the new bluesky_handle column is visible without depending on
+  // the column already existing — when migration 010 hasn't been run, the
+  // select will fail and we fall through. Keep this list aligned with the
+  // Profile interface above.
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, username, display_name, avatar_url, bio')
+    .select('id, username, display_name, avatar_url, bio, encryption_public_key, signing_public_key, privy_did, wallet_address, bluesky_handle')
     .eq('id', userId)
     .single();
 
   if (error || !data) return null;
   return data as Profile;
+}
+
+/**
+ * Ensure the signed-in user has a libsodium messaging keypair.
+ *
+ * Called on every signed-in load. Idempotent — if the user already has both
+ * a private key in localStorage AND a public key on their profile, this is a
+ * no-op. Otherwise:
+ *
+ *   - profile.encryption_public_key set, but no localStorage private key:
+ *     this is a NEW DEVICE. We don't generate a fresh key (that would orphan
+ *     all past messages). Surface the state so the UI can prompt for an
+ *     import. Caller decides what to do.
+ *
+ *   - localStorage has a key but profile doesn't: rare race on signup. Push
+ *     the public key to profile.
+ *
+ *   - Neither exists: first signup. Generate a keypair, save private key
+ *     locally, push public key to profile.
+ */
+async function ensureEncryptionKeypair(userId: string, profile: Profile | null) {
+  try {
+    const localPriv = loadPrivateKeyLocal();
+    const remotePub = profile?.encryption_public_key ?? null;
+
+    if (localPriv && remotePub) return; // Healthy.
+
+    if (remotePub && !localPriv) {
+      // New device. Don't auto-generate — past messages are unrecoverable
+      // without the original key. The UI will detect the mismatch and prompt.
+      console.info('[encryption] new-device state: profile has public key but localStorage is empty. Past messages will need a key import.');
+      return;
+    }
+
+    if (localPriv && !remotePub) {
+      // Push existing local key up. This shouldn't normally happen but we
+      // recover gracefully: derive the public key from the private key would
+      // require sodium APIs we don't expose; simpler to regenerate cleanly.
+      // For now we just regenerate.
+    }
+
+    // First-time generation.
+    const { publicKeyB64, privateKeyB64 } = await generateMessagingKeypair();
+    savePrivateKeyLocal(privateKeyB64);
+    const { error } = await supabase
+      .from('profiles')
+      .update({ encryption_public_key: publicKeyB64 })
+      .eq('id', userId);
+    if (error) {
+      console.warn('[encryption] failed to save public key to profile:', error.message);
+    } else {
+      // Refresh state with the new public key so messaging UI flips to encrypted.
+      setState({
+        profile: profile ? { ...profile, encryption_public_key: publicKeyB64 } : null,
+      });
+    }
+  } catch (err) {
+    console.warn('[encryption] ensureEncryptionKeypair failed (non-fatal):', err);
+  }
+}
+
+/**
+ * Ensure the signed-in user has a libsodium Ed25519 signing keypair for the
+ * hybrid signed-message mirror (per proposals/NRG-ONCHAIN-PIVOT.md section 7).
+ *
+ * Same idempotent pattern as ensureEncryptionKeypair. Generates only if BOTH
+ * the localStorage key and the profile public key are missing — never
+ * regenerates over an existing identity (would invalidate every past
+ * signature).
+ *
+ * Until api.ts is wired to actually sign posts + follows, this just makes
+ * sure the key exists and is portable. The signing happens in the next
+ * session — schema is already open (migration 009).
+ */
+async function ensureSigningKeypair(userId: string, profile: Profile | null) {
+  try {
+    const localPriv = loadSigningPrivateKeyLocal();
+    const remotePub = profile?.signing_public_key ?? null;
+
+    if (localPriv && remotePub) return; // Healthy.
+
+    if (remotePub && !localPriv) {
+      console.info('[signing] new-device state: profile has signing public key but localStorage is empty. Past-author signatures stay verifiable; new posts on this device need a key import to be signed.');
+      return;
+    }
+
+    if (!remotePub) {
+      const { publicKeyB64, privateKeyB64 } = await generateSigningKeypair();
+      saveSigningPrivateKeyLocal(privateKeyB64);
+      const { error } = await supabase
+        .from('profiles')
+        .update({ signing_public_key: publicKeyB64 })
+        .eq('id', userId);
+      if (error) {
+        console.warn('[signing] failed to save signing public key to profile:', error.message);
+      } else {
+        setState({
+          profile: profile ? { ...profile, signing_public_key: publicKeyB64 } : null,
+        });
+      }
+    }
+  } catch (err) {
+    console.warn('[signing] ensureSigningKeypair failed (non-fatal):', err);
+  }
 }
 
 function initAuthOnce() {
@@ -85,7 +216,14 @@ function initAuthOnce() {
   if (user) {
     fetchProfile(user.id).then((profile) => {
       if (profile) setState({ profile });
+      // Ensure messaging + signing keypairs exist. Runs once per signed-in load.
+      ensureEncryptionKeypair(user.id, profile);
+      ensureSigningKeypair(user.id, profile);
     });
+    // If the user just returned from a Privy magic-link, finish the bridge.
+    handlePrivyReturnIfPending(user.id).catch((err) =>
+      console.warn('[privy] return-bridge patch failed:', err),
+    );
   }
 
   // Keep state in sync with subsequent sign in / sign out events.
@@ -93,6 +231,13 @@ function initAuthOnce() {
     const u = session?.user ?? null;
     const p = u ? await fetchProfile(u.id) : null;
     setState({ user: u, profile: p, loading: false });
+    if (u) {
+      ensureEncryptionKeypair(u.id, p);
+      ensureSigningKeypair(u.id, p);
+      handlePrivyReturnIfPending(u.id).catch((err) =>
+        console.warn('[privy] return-bridge patch failed:', err),
+      );
+    }
   });
 }
 

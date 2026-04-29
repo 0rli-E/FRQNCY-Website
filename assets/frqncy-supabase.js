@@ -239,6 +239,91 @@
       };
     },
 
+    /**
+     * Cloud store for the user's Constellation — birth-chart signature, modality
+     * prefs, visited topics, and learning-path progress. Lives in the same
+     * `charts` table as the Sanctuary, under `name = 'Constellation'`.
+     *
+     * Shape of the JSON `data` blob:
+     *   {
+     *     chart:   { hd: {...}, gk: {...}, dob: "YYYY-MM-DD", generatedAt: ISO },
+     *     prefs:   ["channeled", "embodied", ...],     // modality picks
+     *     visited: ["meditation", "water", ...],       // topic slugs opened
+     *     pathDone:["step-id", ...],                   // learning-path checks
+     *   }
+     *
+     * Same swap-on-login pattern as sanctuaryStore: anonymous visitors keep
+     * localStorage; logged-in users get cross-device sync without disruption.
+     */
+    constellationStore(user) {
+      if (!user) throw new Error('constellationStore requires a logged-in user');
+      const userId = user.id;
+      const ROW_NAME = 'Constellation';
+
+      let rowId = null;
+      let rowPromise = null;
+      async function ensureRow() {
+        if (rowId) return rowId;
+        if (rowPromise) return rowPromise;
+        rowPromise = (async () => {
+          const { data: existing, error: selErr } = await client
+            .from('charts')
+            .select('id')
+            .eq('owner_id', userId)
+            .eq('name', ROW_NAME)
+            .maybeSingle();
+          if (selErr) throw selErr;
+          if (existing) { rowId = existing.id; return rowId; }
+          const { data: created, error: insErr } = await client
+            .from('charts')
+            .insert({ owner_id: userId, name: ROW_NAME, data: {}, dreams: [] })
+            .select('id')
+            .single();
+          if (insErr) throw insErr;
+          rowId = created.id;
+          return rowId;
+        })();
+        return rowPromise;
+      }
+      return {
+        async getState() {
+          const id = await ensureRow();
+          const { data, error } = await client
+            .from('charts')
+            .select('data')
+            .eq('id', id)
+            .single();
+          if (error) throw error;
+          return data?.data || null;
+        },
+        async setState(state) {
+          const id = await ensureRow();
+          const { error } = await client
+            .from('charts')
+            .update({ data: state })
+            .eq('id', id);
+          if (error) throw error;
+        },
+        /** Merge a patch into the stored state — small, atomic-feeling writes. */
+        async patch(partial) {
+          const id = await ensureRow();
+          const { data, error } = await client
+            .from('charts')
+            .select('data')
+            .eq('id', id)
+            .single();
+          if (error) throw error;
+          const next = Object.assign({}, data?.data || {}, partial);
+          const { error: updErr } = await client
+            .from('charts')
+            .update({ data: next })
+            .eq('id', id);
+          if (updErr) throw updErr;
+          return next;
+        },
+      };
+    },
+
     /** Auth widget — drops a small "Log in / Profile" pill into a target element. */
     mountAuthPill(targetEl, opts = {}) {
       if (!targetEl) return;

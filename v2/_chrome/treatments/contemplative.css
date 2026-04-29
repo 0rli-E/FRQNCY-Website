@@ -1,0 +1,12 @@
+/* Contemplative — soft, watery, slow.
+   Used by topics that want quiet attention: water, meditation, presence. */
+.t-contemplative {
+  --section-pad: clamp(6rem, 14vh, 10rem);
+}
+.t-contemplative h2 { font-size: clamp(2.2rem, 5.4vw, 4.2rem); letter-spacing: -0.015em; }
+.t-contemplative .section { padding: var(--section-pad) 0; }
+.t-contemplative blockquote { border-left-color: var(--accent-soft); }
+.t-contemplative .hero-eyebrow { letter-spacing: 0.5em; }
+.t-contemplative .label { letter-spacing: 0.5em; }
+.t-contemplative em { font-weight: 300; }
+.t-contemplative .scroll-hint { letter-spacing: 0.6em; }

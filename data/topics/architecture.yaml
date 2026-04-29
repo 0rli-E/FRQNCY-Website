@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Architecture — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py architecture
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: architecture
+  label: "Architecture"
+  domain: "Arts & Culture"
+  domain_slug: arts
+  pillar: "Media"
+  pillar_slug: media
+  accent: "#E8A84A"
+
+treatment:
+  register: editorial
+
+hero:
+  variant: split
+  eyebrow: "Arts & Culture · Media"
+  title: "Architecture"
+  desc: |
+    The art of shaping space — how buildings form the invisible container of human experience.
+  media:
+    poster_url: https://images.unsplash.com/photo-1604245462979-e10d27052b35?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1545659705-c769b5c3d132?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      Form follows function — that has been misunderstood. Form and function should be one, joined in a spiritual union. *— Frank Lloyd Wright*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Arts & Culture", url: "/v2/arts/" }
+  canonical: https://frqncy.network/v2/architecture/
+  og_image: https://frqncy.network/v2/og/architecture.png

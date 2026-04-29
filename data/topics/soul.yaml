@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Soul — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py soul
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: soul
+  label: "Soul"
+  domain: "Metaphysics"
+  domain_slug: metaphysics
+  pillar: "Research"
+  pillar_slug: research
+  accent: "#7B4AE8"
+
+treatment:
+  register: mythic
+
+hero:
+  variant: split
+  eyebrow: "Metaphysics · Research"
+  title: "Soul"
+  desc: |
+    The individual spark of consciousness — its nature, purpose, and relationship to the universal.
+  media:
+    poster_url: https://images.unsplash.com/photo-1630507120833-34d85ae27fb3?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1672758688320-685bb6b36846?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      The wound is the place where the Light enters you. *— Rumi*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Metaphysics", url: "/v2/metaphysics/" }
+  canonical: https://frqncy.network/v2/soul/
+  og_image: https://frqncy.network/v2/og/soul.png

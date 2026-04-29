@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Community — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py community
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: community
+  label: "Community"
+  domain: "Lifestyle"
+  domain_slug: lifestyle
+  pillar: "Education"
+  pillar_slug: education
+  accent: "#7AAB7A"
+
+treatment:
+  register: contemplative
+
+hero:
+  variant: split
+  eyebrow: "Lifestyle · Education"
+  title: "Community"
+  desc: |
+    The art of living together — building belonging, trust, and shared life with others.
+  media:
+    poster_url: https://images.pexels.com/photos/27769510/pexels-photo-27769510.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/8199141/pexels-photo-8199141.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      Alone we can do so little; together we can do so much. *— Helen Keller*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Lifestyle", url: "/v2/lifestyle/" }
+  canonical: https://frqncy.network/v2/community/
+  og_image: https://frqncy.network/v2/og/community.png

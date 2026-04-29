@@ -1,0 +1,249 @@
+# ════════════════════════════════════════════════════════════════════
+# Sports — V2: concise. Resources are the page; prose is the frame.
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: sports
+  label: Sports
+  domain: Play & Recreation
+  domain_slug: play
+  pillar: Builder
+  pillar_slug: builder
+  accent: "#E84A4A"
+
+treatment:
+  register: kinetic
+  overrides:
+    accent_warm: "#FF7A6E"
+    divider: line
+
+hero:
+  variant: split
+  eyebrow: "Play & Recreation · The body as instrument"
+  title: Sports
+  desc: |
+    The most honest mirror we have. *The body cannot lie about whether you trained.*
+  quote:
+    text: |
+      We do not rise to the level of our expectations. We fall to the level of our training.
+    cite: Archilochus — 7th century BC
+  media:
+    poster_url: https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=85&w=2400
+
+prelude:
+  lede: |
+    Sport is one of the few remaining places where the body has the final word. What looks like
+    competition is really practice with stakes — a way to find out what is true under pressure.
+  blockquote:
+    text: The opponent within one's own head is more formidable than the one across the net.
+    cite: W. Timothy Gallwey
+
+sections:
+
+  - module: prose
+    label: The shape
+    title: Three frames *most* athletes pass through.
+    paragraphs:
+      - |
+        **Acquisition.** The first months and years. Awkward, over-thought. The body is being
+        taught what it cannot yet do without supervision from the conscious mind.
+      - |
+        **Performance.** The shape is there in practice but disappears under stakes. The work
+        shifts to managing the nervous system around movement.
+      - |
+        **Release.** The shape is automatic, the pressure is metabolised, and the player begins
+        to enjoy the sport in a different way — less contest, more conversation.
+
+  - module: resources
+    label: Books
+    title: The canon — *what to read first.*
+    types: [book]
+    auto: false
+    inline:
+      - type: book
+        name: The Inner Game of Tennis
+        desc: W. Timothy Gallwey, 1974. The book that named the loudest opponent — the one inside the head.
+        external: https://www.randomhousebooks.com/books/7412/
+      - type: book
+        name: The Art of Learning
+        desc: Josh Waitzkin's account of becoming world-class at chess and then push-hands. The clearest description of how high performers actually practise.
+        external: https://www.joshwaitzkin.com/the-art-of-learning
+      - type: book
+        name: Peak
+        desc: Anders Ericsson on deliberate practice. The empirical foundation under every "10,000 hours" misquotation.
+        external: https://www.hmhbooks.com/shop/books/peak/9780544456259
+      - type: book
+        name: Endure
+        desc: Alex Hutchinson on the science of human limits. What the brain does to the body under fatigue, and back.
+        external: https://www.alexhutchinson.net/endure
+      - type: book
+        name: Born to Run
+        desc: Christopher McDougall. The Tarahumara, ultrarunning, and what feet were before shoes.
+        external: https://www.christophermcdougall.com/born-to-run
+      - type: book
+        name: Mindset
+        desc: Carol Dweck on growth vs. fixed mindsets. The framework underneath most modern coaching language.
+        external: https://www.mindsetworks.com/Science/
+      - type: book
+        name: Range
+        desc: David Epstein's case for generalists in a world that fetishises specialisation. Roger Federer's argument, in book form.
+        external: https://davidepstein.com/range/
+      - type: book
+        name: Deep Survival
+        desc: Laurence Gonzales on who lives, who dies, and why. Pressure, panic, and presence under conditions that select hard.
+        external: https://www.laurencegonzales.com/
+
+  - module: resources
+    label: People
+    title: The teachers — *carriers of the craft.*
+    types: [person]
+    auto: false
+    inline:
+      - type: person
+        name: W. Timothy Gallwey
+        desc: Coach who reframed performance as the dialogue between Self 1 (the chattering critic) and Self 2 (the body that already knows).
+        external: https://theinnergame.com
+      - type: person
+        name: Josh Waitzkin
+        desc: Chess prodigy turned martial artist turned performance coach. The clearest English-language voice on how mastery actually works.
+        external: https://www.joshwaitzkin.com
+      - type: person
+        name: Andrew Huberman
+        desc: Stanford neuroscientist whose work on focus, recovery, and nervous-system regulation has reshaped how athletes think about training.
+        external: https://www.hubermanlab.com
+      - type: person
+        name: Phil Jackson
+        desc: Eleven-time NBA champion coach. Brought zen practice and triangle offence into the same building. The most decorated philosopher in modern sport.
+        external: https://www.philjackson.com
+      - type: person
+        name: John Wooden
+        desc: Ten NCAA titles in twelve years, coaching mostly through character. The Pyramid of Success is dated language for timeless practice.
+        external: https://www.coachwooden.com
+      - type: person
+        name: Pavel Tsatsouline
+        desc: Soviet-trained strength coach who brought kettlebell and minimalist programming west. Strong is a skill, not a goal.
+        external: https://www.strongfirst.com
+      - type: person
+        name: Wim Hof
+        desc: Cold, breath, and what the autonomic nervous system can do when consciously trained. Contested in places, replicated in others.
+        external: https://www.wimhofmethod.com
+      - type: person
+        name: Steve Magness
+        desc: Coach of Olympians and writer on the science of hard. Do Hard Things and the rejection of fake toughness.
+        external: https://www.stevemagness.com
+
+  - module: resources
+    label: Institutions
+    title: The houses — *where the work compounds.*
+    types: [org]
+    auto: false
+    inline:
+      - type: org
+        name: USOPC Training Center — Colorado Springs
+        desc: The original American high-performance campus. Altitude, lab science, and the residency model for elite athletes.
+        external: https://www.teamusa.com/usopc
+      - type: org
+        name: AIS — Australian Institute of Sport
+        desc: The Canberra campus that quietly produced a generation of Olympic medals through coordinated sports science.
+        external: https://www.ais.gov.au
+      - type: org
+        name: INSEP — Institut National du Sport
+        desc: France's elite training centre in Paris. Where most of the country's Olympic team lives, trains, and studies.
+        external: https://www.insep.fr
+      - type: org
+        name: Red Bull High Performance
+        desc: The most well-funded sports science arm in private hands. Diavolo training in Salzburg; athletes from F1 to climbing.
+        external: https://www.redbull.com/int-en/redbullperformance
+      - type: org
+        name: Stanford Center for Sports Performance
+        desc: Sports-science research with academic rigor. Where Huberman and a generation of performance researchers passed through.
+        external: https://med.stanford.edu/sportsperformance.html
+      - type: org
+        name: NSCA — National Strength & Conditioning Association
+        desc: The credentialing body for strength coaches in the US. Reads more like a peer-reviewed journal than a gym certification.
+        external: https://www.nsca.com
+
+  - module: resources
+    label: Places
+    title: The grounds — *where the body shows up.*
+    types: [place]
+    auto: false
+    inline:
+      - type: place
+        name: Boulder, Colorado
+        desc: Endurance and climbing capital of the United States. Altitude, trails, and the highest density of professional athletes per capita in the country.
+        external: https://www.bouldercolorado.gov
+      - type: place
+        name: Iten, Kenya
+        desc: 2,400m altitude village in the Rift Valley. Has produced more world-class distance runners than any other postcode on Earth.
+        external: https://en.wikipedia.org/wiki/Iten
+      - type: place
+        name: Wimbledon — All England Club
+        desc: The oldest tennis tournament. Grass, white clothing, two weeks every July — and still the sport's most reliable temple.
+        external: https://www.wimbledon.com
+      - type: place
+        name: Chamonix, France
+        desc: Birthplace of mountaineering as a discipline. Still the spiritual home of alpinism, ultra-running, and what Europeans call "the mountain life."
+        external: https://www.chamonix.com
+      - type: place
+        name: Yosemite — El Capitan
+        desc: The wall that taught American climbing what was possible. Free Solo, the Dawn Wall, and the long lineage of dirtbag climbers who lived in Camp 4.
+        external: https://www.nps.gov/yose/
+
+  - module: resources
+    label: Tools & media
+    title: The kit — *day-to-day instruments.*
+    auto: true
+    types: [tool, media, app, platform]
+    inline:
+      - type: tool
+        name: WHOOP
+        desc: Continuous HRV and recovery tracking. The watch that makes the calendar legible — not the one that scolds you.
+        external: https://www.whoop.com
+      - type: tool
+        name: Oura Ring
+        desc: Sleep, HRV, and readiness tracked from the finger. Cleaner data than wrist wearables and out of the way.
+        external: https://ouraring.com
+      - type: tool
+        name: Eight Sleep
+        desc: The mattress that controls its own temperature through the night. Sleep is the training; this is the bed that trains.
+        external: https://www.eightsleep.com
+      - type: media
+        name: The Knowledge Project — Shane Parrish
+        desc: The interview show where high performers from sport, finance, and the military explain how they actually think. Long-form, slow.
+        external: https://fs.blog/knowledge-project-podcast/
+
+  - module: practice
+    label: A practice
+    title: Five small things that compound.
+    steps:
+      - title: Move every day. Even fifteen minutes.
+        body: The body does not distinguish between training and rest the way the calendar does — it responds to the year-long average.
+      - title: Pick one skill, train it slow.
+        body: Five minutes of attention-full repetition of one basic movement, daily. Not a workout — a practice.
+      - title: Sleep eight, before midnight when you can.
+        body: Hormonal recovery is non-negotiable for adaptation. Training without it is depositing into a leaky account.
+      - title: Lift something heavy each week.
+        body: Once a week is enough to keep the strength curve from declining. The body's relationship with gravity must be maintained.
+      - title: Compete, gently, often.
+        body: Pickup, pick-a-sides, club nights. The shape under stakes only grows under stakes.
+
+closing:
+  background_url: https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=85&w=2400
+  lines:
+    - The ball does not know you are tired.
+    - The mat does not know what you meant to do.
+  emphasis: Show up anyway.
+  cite: ""
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: Builder, url: "/v2/builder/" }
+    - { label: Play & Recreation, url: "/v2/play/" }
+  canonical: https://frqncy.network/v2/sports/
+  og_image: https://frqncy.network/v2/og/sports.png

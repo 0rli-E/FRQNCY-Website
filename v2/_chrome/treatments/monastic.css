@@ -1,0 +1,9 @@
+/* Monastic — minimal, white space, almost nothing.
+   Used by topics where silence is the point: meditation, breathwork, stillness. */
+.t-monastic main.topic-body { padding: 0 clamp(2rem, 8vw, 5rem); }
+.t-monastic .section { padding: clamp(8rem, 20vh, 14rem) 0; max-width: 640px; }
+.t-monastic h2 { font-size: clamp(2rem, 4.8vw, 3.6rem); max-width: 22ch; }
+.t-monastic p { font-size: 1.02rem; max-width: 56ch; }
+.t-monastic .label { opacity: 0.6; letter-spacing: 0.6em; }
+.t-monastic blockquote { border-left: 0; padding: 2rem 0; max-width: 30ch; text-align: center; margin: 4rem auto; }
+.t-monastic .form-cell { padding: 2rem 1.6rem; }

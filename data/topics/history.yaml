@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# History — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py history
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: history
+  label: "History"
+  domain: "Society & Networks"
+  domain_slug: society
+  pillar: "Network State"
+  pillar_slug: network-state
+  accent: "#4AE8C4"
+
+treatment:
+  register: editorial
+
+hero:
+  variant: split
+  eyebrow: "Society & Networks · Network State"
+  title: "History"
+  desc: |
+    The suppressed and forgotten chapters of human civilisation — lost cultures, ancient advanced knowledge, and the researchers challenging the official timeline.
+  media:
+    poster_url: https://images.pexels.com/photos/30019381/pexels-photo-30019381.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/14751147/pexels-photo-14751147.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      Those who cannot remember the past are condemned to repeat it. *— George Santayana — The Life of Reason*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Society & Networks", url: "/v2/society/" }
+  canonical: https://frqncy.network/v2/history/
+  og_image: https://frqncy.network/v2/og/history.png

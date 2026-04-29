@@ -15,6 +15,16 @@ interface ProfileRow {
   follower_count: number;
   following_count: number;
   created_at: string;
+  wallet_address: string | null;
+  encryption_public_key: string | null;
+  signing_public_key: string | null;
+}
+
+/** Short-form a 0x-prefixed address as `0xabcd…1234`. */
+function shortAddress(addr: string): string {
+  if (!addr) return '';
+  if (addr.length <= 12) return addr;
+  return `${addr.slice(0, 6)}…${addr.slice(-4)}`;
 }
 
 function monthYear(iso: string): string {
@@ -30,13 +40,14 @@ export default function ProfileCard({ username }: ProfileCardProps) {
   const [profile, setProfile] = useState<ProfileRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
+  const [walletCopied, setWalletCopied] = useState(false);
 
   useEffect(() => {
     let cancelled = false;
     (async () => {
       const { data, error } = await supabase
         .from('profiles')
-        .select('id, username, display_name, avatar_url, bio, post_count, follower_count, following_count, created_at')
+        .select('id, username, display_name, avatar_url, bio, post_count, follower_count, following_count, created_at, wallet_address, encryption_public_key, signing_public_key')
         .eq('username', username)
         .maybeSingle();
       if (cancelled) return;
@@ -51,6 +62,17 @@ export default function ProfileCard({ username }: ProfileCardProps) {
       cancelled = true;
     };
   }, [username]);
+
+  const copyWallet = async () => {
+    if (!profile?.wallet_address) return;
+    try {
+      await navigator.clipboard.writeText(profile.wallet_address);
+      setWalletCopied(true);
+      setTimeout(() => setWalletCopied(false), 1600);
+    } catch (_) {
+      // No-op — copy is a nice-to-have.
+    }
+  };
 
   const displayName = profile?.display_name || (username.charAt(0).toUpperCase() + username.slice(1));
   const initials = (profile?.display_name || username).slice(0, 2).toUpperCase();
@@ -118,6 +140,66 @@ export default function ProfileCard({ username }: ProfileCardProps) {
             </span>
           </div>
         )}
+
+        {/* Identity surface — wallet, encryption + signing key state, export.
+            Renders for every profile (even unsigned-in viewers); clicking
+            the wallet copies it. The export endpoint is public so any user
+            can fetch any user's signed records. */}
+        <div class="mt-5 pt-4 border-t border-card-border/60">
+          <p class="text-[11px] uppercase tracking-[0.18em] text-text-dim mb-2.5">Identity</p>
+          <div class="space-y-1.5 text-xs">
+            {/* Wallet */}
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-text-dim">Wallet</span>
+              {profile?.wallet_address ? (
+                <button
+                  type="button"
+                  onClick={copyWallet}
+                  class="font-mono text-text hover:text-gold transition-colors"
+                  title={walletCopied ? 'Copied' : 'Click to copy'}
+                >
+                  {walletCopied ? 'copied' : shortAddress(profile.wallet_address)}
+                </button>
+              ) : (
+                <span class="text-text-dim/70 italic">not connected</span>
+              )}
+            </div>
+
+            {/* Encryption */}
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-text-dim">Encryption</span>
+              {profile?.encryption_public_key ? (
+                <span class="text-gold flex items-center gap-1">
+                  <span aria-hidden="true">◊</span>
+                  <span>End-to-end ready</span>
+                </span>
+              ) : (
+                <span class="text-text-dim/70 italic">no keys yet</span>
+              )}
+            </div>
+
+            {/* Signed records */}
+            <div class="flex items-center justify-between gap-3">
+              <span class="text-text-dim">Signed records</span>
+              {profile?.signing_public_key ? (
+                <span class="text-gold flex items-center gap-1">
+                  <span aria-hidden="true">✓</span>
+                  <span>Signing public key set</span>
+                </span>
+              ) : (
+                <span class="text-text-dim/70 italic">no signing key</span>
+              )}
+            </div>
+          </div>
+
+          {/* Export */}
+          <a
+            href={`/api/export?username=${encodeURIComponent(profile?.username || username)}`}
+            class="block mt-4 text-center text-xs px-4 py-2 rounded-full border border-gold/40 text-gold hover:bg-gold/10 transition-colors"
+          >
+            Download all signed records ↓
+          </a>
+        </div>
       </div>
     </div>
   );

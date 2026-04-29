@@ -10,7 +10,10 @@ export default defineConfig({
   base: '/social',
   trailingSlash: 'ignore',
   integrations: [
-    preact(),
+    // compat enables React-only libraries (e.g. @privy-io/react-auth) to render
+    // through Preact's compatibility layer. Required for Privy embedded-wallet
+    // auth island. See proposals/PROTOCOL-LESSONS-2026-04.md for the rationale.
+    preact({ compat: true }),
     tailwind(),
   ],
   outDir: './dist',

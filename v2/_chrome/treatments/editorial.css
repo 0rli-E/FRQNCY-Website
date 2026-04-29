@@ -1,0 +1,8 @@
+/* Editorial — magazine-like, generous margins, confident serif.
+   The default register. Use when nothing else fits. */
+.t-editorial .section { max-width: 740px; }
+.t-editorial .section-narrow { max-width: 620px; }
+.t-editorial p { font-size: 1.05rem; line-height: 1.9; }
+.t-editorial p.lede { font-size: clamp(1.2rem, 1.6vw, 1.5rem); }
+.t-editorial h2 { letter-spacing: -0.025em; }
+.t-editorial blockquote { padding-left: 2.5rem; }

@@ -1,10 +1,56 @@
-import { useState } from 'preact/hooks';
+import { useEffect, useRef, useState } from 'preact/hooks';
 import { useAuth } from './AuthProvider';
 import { supabase } from '../lib/supabase';
 import type { Post } from '../lib/api';
 import ProjectPicker from './ProjectPicker';
 import ConvictionToggle, { type Conviction } from './ConvictionToggle';
 import type { Project } from '../lib/projects';
+import LinkPreviewCard, { type LinkPreview } from './LinkPreview';
+import { notifyMentions } from '../lib/mention-notify';
+import {
+  getConnectedBlueskyHandle,
+  isBlueskyConnected,
+  publishToBluesky,
+} from '../lib/atproto-bridge';
+
+const CROSSPOST_DEFAULT_LS_KEY = 'frqncy.nrg.atproto.crosspost_default';
+
+function readCrosspostDefault(): boolean {
+  if (typeof window === 'undefined') return true;
+  try {
+    const v = window.localStorage.getItem(CROSSPOST_DEFAULT_LS_KEY);
+    if (v === null) return true; // No preference → default ON.
+    return v === '1';
+  } catch {
+    return true;
+  }
+}
+
+function writeCrosspostDefault(on: boolean): void {
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.setItem(CROSSPOST_DEFAULT_LS_KEY, on ? '1' : '0');
+  } catch {
+    // localStorage write can fail in private mode — non-fatal.
+  }
+}
+
+const URL_RE_GLOBAL = /https?:\/\/[^\s<>"]+/g;
+
+/** Debounce that returns a stable function reference and a cancel handle. */
+function useDebouncedCallback<T extends (...args: any[]) => void>(fn: T, ms: number) {
+  const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const fnRef = useRef(fn);
+  useEffect(() => { fnRef.current = fn; }, [fn]);
+  const debounced = (...args: Parameters<T>) => {
+    if (timerRef.current) clearTimeout(timerRef.current);
+    timerRef.current = setTimeout(() => fnRef.current(...args), ms);
+  };
+  const cancel = () => {
+    if (timerRef.current) { clearTimeout(timerRef.current); timerRef.current = null; }
+  };
+  return [debounced, cancel] as const;
+}
 
 interface PostComposerProps {
   onPost?: () => void;
@@ -24,6 +70,59 @@ export default function PostComposer({ onPost }: PostComposerProps) {
   const [conviction, setConviction] = useState<Conviction | null>(null);
   const [focused, setFocused] = useState(false);
   const [submitting, setSubmitting] = useState(false);
+
+  // Link preview state — auto-detected from content, can be dismissed.
+  const [linkPreview, setLinkPreview] = useState<LinkPreview | null>(null);
+  const [linkLoading, setLinkLoading] = useState(false);
+  const dismissedUrls = useRef<Set<string>>(new Set());
+
+  // Bluesky cross-post toggle — only rendered when the user has a connection.
+  // Defaults to the user's last preference (localStorage), or ON for first use.
+  const [bskyConnected, setBskyConnected] = useState(false);
+  const [bskyHandle, setBskyHandle] = useState<string | null>(null);
+  const [crosspostBsky, setCrosspostBsky] = useState(true);
+
+  useEffect(() => {
+    const connected = isBlueskyConnected();
+    setBskyConnected(connected);
+    if (connected) {
+      setBskyHandle(getConnectedBlueskyHandle());
+      setCrosspostBsky(readCrosspostDefault());
+    }
+  }, []);
+
+  const fetchPreview = async (url: string) => {
+    if (dismissedUrls.current.has(url)) return;
+    setLinkLoading(true);
+    try {
+      const res = await fetch(`/api/link-preview?url=${encodeURIComponent(url)}`);
+      const data = await res.json().catch(() => null);
+      if (data?.ok && data.preview?.url) {
+        setLinkPreview(data.preview);
+      } else {
+        setLinkPreview(null);
+      }
+    } catch (_) {
+      setLinkPreview(null);
+    } finally {
+      setLinkLoading(false);
+    }
+  };
+
+  const [debouncedFetchPreview] = useDebouncedCallback(fetchPreview, 500);
+
+  // Watch the content for the first URL and fetch a preview for it.
+  useEffect(() => {
+    const urls = content.match(URL_RE_GLOBAL);
+    const firstUrl = urls?.[0];
+    if (!firstUrl) {
+      setLinkPreview(null);
+      return;
+    }
+    if (linkPreview && linkPreview.url === firstUrl) return;       // already have it
+    if (dismissedUrls.current.has(firstUrl)) return;                // user said no
+    debouncedFetchPreview(firstUrl);
+  }, [content]);
 
   if (loading) {
     return (
@@ -62,7 +161,9 @@ export default function PostComposer({ onPost }: PostComposerProps) {
 
   const addTag = () => {
     const tag = tagInput.trim().replace(/^#/, '');
-    if (tag && !tags.includes(tag) && tags.length < 5) {
+    // Cap at 1 — the schema persists exactly one channel/tag (project_tag column).
+    // A multi-tag column would need a migration; until then we keep the UI honest.
+    if (tag && !tags.includes(tag) && tags.length < 1) {
       setTags([...tags, tag]);
       setTagInput('');
     }
@@ -85,13 +186,17 @@ export default function PostComposer({ onPost }: PostComposerProps) {
 
     setSubmitting(true);
     try {
+      // Channel resolution: an explicit Project picker wins. Otherwise, if the
+      // user typed a free-text tag, persist that as the channel — so the topic
+      // they wrote about is queryable + the post lands in /social/channel/<tag>.
+      const fallbackTag = tags[0]?.trim();
       const basePayload: Record<string, any> = {
         author_id: user.id,
         content: content.trim(),
         media_urls: [],
-        link_url: null,
-        link_preview: null,
-        project_tag: project?.name ?? null,
+        link_url: linkPreview?.url ?? null,
+        link_preview: linkPreview ?? null,
+        project_tag: project?.name ?? (fallbackTag || null),
         project_tier: project?.tier ?? null,
       };
 
@@ -130,19 +235,48 @@ export default function PostComposer({ onPost }: PostComposerProps) {
       const post = insert.data as Post | null;
       if (!post) throw new Error('Post creation returned null');
 
-      // Bump the author's post_count (matches the logic in lib/api.ts).
-      await supabase.rpc('increment_counter', {
-        row_id: user.id,
-        table_name: 'profiles',
-        column_name: 'post_count',
-        amount: 1,
+      // post_count on profiles is maintained by the handle_post_count
+      // trigger (migration 001). No client-side counter update needed.
+
+      // Mention notifications — best-effort, fire-and-forget. notifyMentions
+      // never throws; if profile lookup or insert fails, the post itself
+      // still went through.
+      void notifyMentions({
+        content: post.content,
+        authorId: user.id,
+        refType: 'post',
+        refId: post.id,
       });
+
+      // Bluesky cross-post — fire-and-forget. Mirror this post to the user's
+      // connected Bluesky account if they have one and the toggle is on.
+      // Per proposals/ATPROTO-BRIDGE.md. Failures are logged, never thrown —
+      // a Bluesky outage must NOT block the local NRG post.
+      if (bskyConnected && crosspostBsky) {
+        writeCrosspostDefault(true);
+        void publishToBluesky({
+          text: post.content,
+          nrgPostId: post.id,
+        })
+          .then((res) => {
+            if (!res.ok) {
+              console.warn('[atproto] cross-post failed (non-fatal):', res.reason);
+            }
+          })
+          .catch((err) => {
+            console.warn('[atproto] cross-post threw (non-fatal):', err);
+          });
+      } else if (bskyConnected && !crosspostBsky) {
+        writeCrosspostDefault(false);
+      }
 
       setContent('');
       setTags([]);
       setTagInput('');
       setProject(null);
       setConviction(null);
+      setLinkPreview(null);
+      dismissedUrls.current.clear();
       onPost?.();
     } catch (err: any) {
       console.error('Failed to create post:', err?.message || err);
@@ -216,6 +350,30 @@ export default function PostComposer({ onPost }: PostComposerProps) {
         </div>
       </div>
 
+      {/* Auto-detected link preview — appears when user pastes a URL.
+          A dismiss button records the URL so we don't re-fetch. */}
+      {(linkLoading || linkPreview) && (
+        <div class="mt-3 pl-[52px]">
+          {linkLoading && !linkPreview && (
+            <div class="rounded-lg border border-card-border bg-navy-mid/40 p-3 animate-pulse">
+              <div class="h-2 bg-navy-mid rounded w-1/4 mb-2" />
+              <div class="h-3 bg-navy-mid rounded w-3/4 mb-1" />
+              <div class="h-3 bg-navy-mid rounded w-1/2" />
+            </div>
+          )}
+          {linkPreview && (
+            <LinkPreviewCard
+              preview={linkPreview}
+              onRemove={() => {
+                if (linkPreview?.url) dismissedUrls.current.add(linkPreview.url);
+                setLinkPreview(null);
+              }}
+              compact
+            />
+          )}
+        </div>
+      )}
+
       {/* Project tag + conviction */}
       {(focused || project || content) && (
         <div class="mt-3 pl-[52px] space-y-2">
@@ -231,6 +389,23 @@ export default function PostComposer({ onPost }: PostComposerProps) {
           {project && (
             <ConvictionToggle value={conviction} onChange={setConviction} />
           )}
+        </div>
+      )}
+
+      {/* Bluesky cross-post toggle — only rendered when connected. */}
+      {bskyConnected && bskyHandle && (
+        <div class="mt-3 pl-[52px]">
+          <label class="inline-flex items-center gap-2 text-xs text-text-dim cursor-pointer select-none hover:text-text transition-colors">
+            <input
+              type="checkbox"
+              checked={crosspostBsky}
+              onChange={(e) => setCrosspostBsky((e.target as HTMLInputElement).checked)}
+              class="accent-gold w-3.5 h-3.5"
+            />
+            <span>
+              <span class="text-gold">✦</span> Also post to Bluesky as @{bskyHandle}
+            </span>
+          </label>
         </div>
       )}
 

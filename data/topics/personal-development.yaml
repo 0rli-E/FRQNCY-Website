@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Personal Development — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py personal-development
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: personal-development
+  label: "Personal Development"
+  domain: "Lifestyle"
+  domain_slug: lifestyle
+  pillar: "Education"
+  pillar_slug: education
+  accent: "#7AAB7A"
+
+treatment:
+  register: contemplative
+
+hero:
+  variant: split
+  eyebrow: "Lifestyle · Education"
+  title: "Personal Development"
+  desc: |
+    The inner and outer work of becoming — habits, mindset, communication, and the lifelong practice of self-mastery.
+  media:
+    poster_url: https://images.unsplash.com/photo-1490730141103-6cac27aaab94?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1480714378408-67cf0d13bc1b?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      The way you do anything is the way you do everything, so do your best even when no one is watching.
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Lifestyle", url: "/v2/lifestyle/" }
+  canonical: https://frqncy.network/v2/personal-development/
+  og_image: https://frqncy.network/v2/og/personal-development.png

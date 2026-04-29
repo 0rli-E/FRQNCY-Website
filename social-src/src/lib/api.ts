@@ -1,4 +1,39 @@
 import { supabase } from './supabase';
+import {
+  canonicalizeForSigning,
+  loadSigningPrivateKeyLocal,
+  signPayload,
+} from './crypto';
+import { isBlueskyConnected, publishToBluesky } from './atproto-bridge';
+import { notifyMentions } from './mention-notify';
+
+// ─── Hybrid signed-message mirror helpers ─────────────────────────────────────
+// Per proposals/HYBRID-SIGNED-MIRROR.md. Best-effort signing on post + follow
+// creation. If the signing key is missing (new device, lost), the row ships
+// unsigned and verifiers skip it. Never blocks the user-visible action.
+
+async function signRowFireAndForget(
+  table: 'posts' | 'follows',
+  matchClause: { col: string; val: string } | { col: string; val: string }[],
+  recordToSign: Record<string, unknown>,
+): Promise<void> {
+  try {
+    const signingPriv = loadSigningPrivateKeyLocal();
+    if (!signingPriv) return;
+    const payload = canonicalizeForSigning(recordToSign);
+    const signature = await signPayload(payload, signingPriv);
+
+    let q = supabase.from(table).update({ signature, signed_payload: payload });
+    const clauses = Array.isArray(matchClause) ? matchClause : [matchClause];
+    for (const c of clauses) q = q.eq(c.col, c.val);
+    const { error } = await q;
+    if (error) {
+      console.warn(`[mirror] ${table} signature update failed (non-fatal):`, error.message);
+    }
+  } catch (err) {
+    console.warn(`[mirror] ${table} signing threw (non-fatal):`, err);
+  }
+}
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -14,6 +49,18 @@ export interface Profile {
   following_count: number;
   karma: number;
   created_at: string;
+  /** libsodium Ed25519 public key for the hybrid signed-message mirror.
+      Used to verify signatures on the user's posts + follows. */
+  signing_public_key: string | null;
+  /** libsodium X25519 public key for E2E encrypted messaging. */
+  encryption_public_key: string | null;
+  /** Privy DID — present only if the user signed in via the Privy bridge. */
+  privy_did: string | null;
+  /** Public Bluesky/ATProto handle (e.g. alice.bsky.social). Set when the
+      user connects their Bluesky account in the Connections panel. The app
+      password used to authenticate lives in localStorage only — never on
+      FRQNCY's server. See proposals/ATPROTO-BRIDGE.md. */
+  bluesky_handle: string | null;
 }
 
 export interface Post {
@@ -30,6 +77,13 @@ export interface Post {
   bookmarks_count: number;
   created_at: string;
   author?: Profile;
+  /** Detached Ed25519 signature (base64) over `signed_payload`. Null on
+      unsigned legacy rows or rows authored from a device without a
+      signing key. */
+  signature: string | null;
+  /** Canonical JSON payload that was signed. Verifiers re-hash this exact
+      string with the author's signing_public_key. */
+  signed_payload: string | null;
 }
 
 export interface Comment {
@@ -45,12 +99,12 @@ export interface Comment {
 
 export interface Notification {
   id: string;
-  user_id: string;
+  target_user_id: string;
   actor_id: string;
-  type: 'like' | 'comment' | 'follow' | 'mention' | 'reply';
-  post_id: string | null;
-  comment_id: string | null;
-  read: boolean;
+  type: 'like' | 'comment' | 'follow' | 'mention' | 'reply' | 'friend_request' | 'friend_accept' | 'message';
+  ref_type: string | null;
+  ref_id: string | null;
+  is_read: boolean;
   created_at: string;
   actor?: Profile;
 }
@@ -86,6 +140,8 @@ async function fetchAllProjects(): Promise<CryptoProject[]> {
 // ─── Profile ────────────────────────────────────────────────────────────────
 
 export async function getProfile(username: string): Promise<Profile | null> {
+  // SELECT * so newly-added profile columns (e.g. bluesky_handle from
+  // migration 010) are returned without a code change.
   const { data, error } = await supabase
     .from('profiles')
     .select('*')
@@ -226,6 +282,10 @@ export async function createPost(data: {
   link_preview?: any;
   project_tag?: string;
   project_tier?: string;
+  /** Whether to mirror this post to the user's connected Bluesky account.
+      Defaults to true when the user has a connection, false otherwise.
+      Pass false explicitly from the composer to suppress for one post. */
+  crosspostToBluesky?: boolean;
 }): Promise<Post | null> {
   const { data: post, error } = await supabase
     .from('posts')
@@ -246,13 +306,53 @@ export async function createPost(data: {
     return null;
   }
 
-  // Increment the author's post_count
-  await supabase.rpc('increment_counter', {
-    row_id: data.author_id,
-    table_name: 'profiles',
-    column_name: 'post_count',
-    amount: 1,
-  });
+  // post_count on profiles is maintained by the handle_post_count trigger
+  // (see migration 001). No client-side counter update needed.
+
+  // Hybrid signed-message mirror — sign the canonical post record so it's
+  // portable to any future protocol. Best-effort: never blocks the user
+  // experience. Per proposals/HYBRID-SIGNED-MIRROR.md.
+  if (post) {
+    const p = post as Post;
+    void signRowFireAndForget(
+      'posts',
+      { col: 'id', val: p.id },
+      {
+        type: 'frqncy.post.v1',
+        id: p.id,
+        author_id: p.author_id,
+        content: p.content,
+        project_tag: p.project_tag,
+        project_tier: p.project_tier,
+        media_urls: p.media_urls ?? [],
+        link_url: p.link_url ?? null,
+        created_at: p.created_at,
+      },
+    );
+
+    // Bluesky cross-post — best-effort, never blocks the post's local return.
+    // Default behaviour: mirror if the user has a connection. Composer can
+    // pass crosspostToBluesky=false to suppress per-post.
+    // Per proposals/ATPROTO-BRIDGE.md.
+    const shouldCrosspost =
+      data.crosspostToBluesky === false
+        ? false
+        : (data.crosspostToBluesky === true || data.crosspostToBluesky === undefined) && isBlueskyConnected();
+    if (shouldCrosspost) {
+      void publishToBluesky({
+        text: p.content,
+        nrgPostId: p.id,
+      })
+        .then((res) => {
+          if (!res.ok) {
+            console.warn('[atproto] cross-post failed (non-fatal):', res.reason);
+          }
+        })
+        .catch((err) => {
+          console.warn('[atproto] cross-post threw (non-fatal):', err);
+        });
+    }
+  }
 
   return post as Post;
 }
@@ -269,13 +369,7 @@ export async function deletePost(postId: string, authorId: string): Promise<bool
     return false;
   }
 
-  await supabase.rpc('increment_counter', {
-    row_id: authorId,
-    table_name: 'profiles',
-    column_name: 'post_count',
-    amount: -1,
-  });
-
+  // post_count is decremented by the handle_post_count trigger on DELETE.
   return true;
 }
 
@@ -288,27 +382,12 @@ export async function toggleLike(
   const existing = await isLiked(userId, postId);
 
   if (existing) {
-    // Unlike
+    // Unlike — handle_likes_count trigger decrements posts.likes_count.
     await supabase
       .from('likes')
       .delete()
       .eq('user_id', userId)
       .eq('post_id', postId);
-
-    const { data } = await supabase
-      .from('posts')
-      .update({ likes_count: supabase.rpc ? undefined : 0 })
-      .eq('id', postId)
-      .select('likes_count')
-      .single();
-
-    // Use RPC to decrement safely
-    await supabase.rpc('increment_counter', {
-      row_id: postId,
-      table_name: 'posts',
-      column_name: 'likes_count',
-      amount: -1,
-    });
 
     const { data: updated } = await supabase
       .from('posts')
@@ -318,17 +397,10 @@ export async function toggleLike(
 
     return { liked: false, count: updated?.likes_count ?? 0 };
   } else {
-    // Like
+    // Like — handle_likes_count trigger increments posts.likes_count.
     await supabase
       .from('likes')
       .insert({ user_id: userId, post_id: postId });
-
-    await supabase.rpc('increment_counter', {
-      row_id: postId,
-      table_name: 'posts',
-      column_name: 'likes_count',
-      amount: 1,
-    });
 
     const { data: updated } = await supabase
       .from('posts')
@@ -364,31 +436,19 @@ export async function toggleBookmark(
   const existing = await isBookmarked(userId, postId);
 
   if (existing) {
+    // handle_bookmarks_count trigger maintains posts.bookmarks_count.
     await supabase
       .from('bookmarks')
       .delete()
       .eq('user_id', userId)
       .eq('post_id', postId);
 
-    await supabase.rpc('increment_counter', {
-      row_id: postId,
-      table_name: 'posts',
-      column_name: 'bookmarks_count',
-      amount: -1,
-    });
-
     return { bookmarked: false };
   } else {
+    // handle_bookmarks_count trigger maintains posts.bookmarks_count.
     await supabase
       .from('bookmarks')
       .insert({ user_id: userId, post_id: postId });
-
-    await supabase.rpc('increment_counter', {
-      row_id: postId,
-      table_name: 'posts',
-      column_name: 'bookmarks_count',
-      amount: 1,
-    });
 
     return { bookmarked: true };
   }
@@ -426,28 +486,32 @@ export async function followUser(
     return false;
   }
 
-  // Update follower/following counts
-  await Promise.all([
-    supabase.rpc('increment_counter', {
-      row_id: followerId,
-      table_name: 'profiles',
-      column_name: 'following_count',
-      amount: 1,
-    }),
-    supabase.rpc('increment_counter', {
-      row_id: followingId,
-      table_name: 'profiles',
-      column_name: 'follower_count',
-      amount: 1,
-    }),
-  ]);
+  // follower_count + following_count maintained by trigger on follows
+  // (see migration 001). No client-side counter update needed.
 
   // Create notification
   await supabase.from('notifications').insert({
-    user_id: followingId,
+    target_user_id: followingId,
     actor_id: followerId,
     type: 'follow',
   });
+
+  // Hybrid signed-message mirror — sign the follow record so the social
+  // graph is portable to any future protocol. Best-effort, never blocks.
+  // Per proposals/HYBRID-SIGNED-MIRROR.md.
+  void signRowFireAndForget(
+    'follows',
+    [
+      { col: 'follower_id', val: followerId },
+      { col: 'following_id', val: followingId },
+    ],
+    {
+      type: 'frqncy.follow.v1',
+      follower_id: followerId,
+      following_id: followingId,
+      created_at: new Date().toISOString(),
+    },
+  );
 
   return true;
 }
@@ -467,20 +531,8 @@ export async function unfollowUser(
     return false;
   }
 
-  await Promise.all([
-    supabase.rpc('increment_counter', {
-      row_id: followerId,
-      table_name: 'profiles',
-      column_name: 'following_count',
-      amount: -1,
-    }),
-    supabase.rpc('increment_counter', {
-      row_id: followingId,
-      table_name: 'profiles',
-      column_name: 'follower_count',
-      amount: -1,
-    }),
-  ]);
+  // follower_count + following_count decremented by the follows trigger
+  // on DELETE. No client-side counter update needed.
 
   return true;
 }
@@ -541,13 +593,7 @@ export async function createComment(input: {
     return null;
   }
 
-  // Increment post comment count
-  await supabase.rpc('increment_counter', {
-    row_id: input.post_id,
-    table_name: 'posts',
-    column_name: 'comments_count',
-    amount: 1,
-  });
+  // posts.comments_count maintained by handle_comments_count trigger.
 
   // Fetch the post to get the author for notification
   const { data: post } = await supabase
@@ -556,16 +602,28 @@ export async function createComment(input: {
     .eq('id', input.post_id)
     .single();
 
-  // Notify post author (if not commenting on own post)
+  // Notify post author (if not commenting on own post). The notifications
+  // table uses (target_user_id, ref_type, ref_id) per migration 001 — no
+  // dedicated post_id/comment_id columns.
   if (post && post.author_id !== input.author_id) {
     await supabase.from('notifications').insert({
-      user_id: post.author_id,
+      target_user_id: post.author_id,
       actor_id: input.author_id,
       type: input.parent_id ? 'reply' : 'comment',
-      post_id: input.post_id,
-      comment_id: data.id,
+      ref_type: 'comment',
+      ref_id: data.id,
     });
   }
+
+  // Notify any @users mentioned in the comment body. Best-effort, never
+  // throws — see mention-notify.ts. Skips self and skips the post author
+  // (already notified above) so a single mention can't fan out twice.
+  void notifyMentions({
+    content: input.content,
+    authorId: input.author_id,
+    refType: 'comment',
+    refId: data.id,
+  });
 
   return data as Comment;
 }
@@ -579,7 +637,7 @@ export async function getNotifications(
   const { data, error } = await supabase
     .from('notifications')
     .select('*, actor:profiles!notifications_actor_id_fkey(*)')
-    .eq('user_id', userId)
+    .eq('target_user_id', userId)
     .order('created_at', { ascending: false })
     .limit(limit);
 
@@ -593,7 +651,7 @@ export async function getNotifications(
 export async function markNotificationRead(id: string): Promise<boolean> {
   const { error } = await supabase
     .from('notifications')
-    .update({ read: true })
+    .update({ is_read: true })
     .eq('id', id);
 
   if (error) {
@@ -606,9 +664,9 @@ export async function markNotificationRead(id: string): Promise<boolean> {
 export async function markAllNotificationsRead(userId: string): Promise<boolean> {
   const { error } = await supabase
     .from('notifications')
-    .update({ read: true })
-    .eq('user_id', userId)
-    .eq('read', false);
+    .update({ is_read: true })
+    .eq('target_user_id', userId)
+    .eq('is_read', false);
 
   if (error) {
     console.error('markAllNotificationsRead error:', error.message);
@@ -621,8 +679,8 @@ export async function getUnreadCount(userId: string): Promise<number> {
   const { count, error } = await supabase
     .from('notifications')
     .select('*', { count: 'exact', head: true })
-    .eq('user_id', userId)
-    .eq('read', false);
+    .eq('target_user_id', userId)
+    .eq('is_read', false);
 
   if (error) {
     console.error('getUnreadCount error:', error.message);

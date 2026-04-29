@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Web3 — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py web3
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: web3
+  label: "Web3"
+  domain: "Technology"
+  domain_slug: technology
+  pillar: "Builder"
+  pillar_slug: builder
+  accent: "#00BCD4"
+
+treatment:
+  register: scientific
+
+hero:
+  variant: split
+  eyebrow: "Technology · Builder"
+  title: "Web3"
+  desc: |
+    A vision of a decentralised web owned by users rather than corporations — still being built, still contested.
+  media:
+    poster_url: https://images.pexels.com/photos/14314638/pexels-photo-14314638.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/14832159/pexels-photo-14832159.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      The Internet was supposed to give us decentralization. Web3 is finally trying. *— Chris Dixon — Read Write Own*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Technology", url: "/v2/technology/" }
+  canonical: https://frqncy.network/v2/web3/
+  og_image: https://frqncy.network/v2/og/web3.png

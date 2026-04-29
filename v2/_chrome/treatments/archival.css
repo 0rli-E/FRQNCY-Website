@@ -1,0 +1,9 @@
+/* Archival — sepia-leaning, indexed, photo-like.
+   Used by topics that look backwards: history, lineage, tradition. */
+.t-archival .hero-poster { filter: sepia(0.25) saturate(0.6) brightness(0.55) contrast(1.05); }
+.t-archival .bleed img { filter: sepia(0.25) saturate(0.6) brightness(0.55) contrast(1.05); }
+.t-archival h2 { font-weight: 400; }
+.t-archival .label::before { width: 48px; }
+.t-archival .form-cell { background: rgba(245, 235, 216, 0.03); }
+.t-archival .pick { background: rgba(245, 235, 216, 0.04); }
+.t-archival blockquote { border-left-style: dashed; }

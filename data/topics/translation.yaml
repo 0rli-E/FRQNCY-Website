@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Translation — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py translation
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: translation
+  label: "Translation"
+  domain: "Communication"
+  domain_slug: communication
+  pillar: "Media"
+  pillar_slug: media
+  accent: "#4AB8E8"
+
+treatment:
+  register: editorial
+
+hero:
+  variant: split
+  eyebrow: "Communication · Media"
+  title: "Translation"
+  desc: |
+    The work of crossing linguistic borders — and what is always gained and lost in the crossing.
+  media:
+    poster_url: https://images.unsplash.com/photo-1457369804613-52c61a468e7d?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1455390582262-044cdead277a?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      Translation is at best an echo. *— George Borrow — Lavengro*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Communication", url: "/v2/communication/" }
+  canonical: https://frqncy.network/v2/translation/
+  og_image: https://frqncy.network/v2/og/translation.png

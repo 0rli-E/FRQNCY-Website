@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Open Source — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py open-source
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: open-source
+  label: "Open Source"
+  domain: "Creation"
+  domain_slug: creation
+  pillar: "Builder"
+  pillar_slug: builder
+  accent: "#E87A4A"
+
+treatment:
+  register: mythic
+
+hero:
+  variant: split
+  eyebrow: "Creation · Builder"
+  title: "Open Source"
+  desc: |
+    Building in public — code, knowledge, and tools shared freely for anyone to use and improve.
+  media:
+    poster_url: https://images.pexels.com/photos/33572895/pexels-photo-33572895.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/16129724/pexels-photo-16129724.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      Given enough eyeballs, all bugs are shallow. *— Eric S. Raymond — The Cathedral and the Bazaar*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Creation", url: "/v2/creation/" }
+  canonical: https://frqncy.network/v2/open-source/
+  og_image: https://frqncy.network/v2/og/open-source.png

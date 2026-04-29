@@ -11,6 +11,29 @@
   if (window.__frqncyChatInit) return;
   window.__frqncyChatInit = true;
 
+  /* ── Topic visit tracker ─────────────────────────────────────────
+     Lightweight: any page at /v2/<slug>/ adds <slug> to a localStorage
+     set the My FRQNCY constellation reads to mark topics as "visited"
+     and to surface the next unvisited next-step in the learning path.
+     Runs once per page load. Anonymous-only — cloud bridging happens
+     on /my-frqncy when the user is logged in.
+  ──────────────────────────────────────────────────────────────── */
+  try {
+    const m = location.pathname.match(/^\/v2\/([a-z0-9-]+)\/?$/i);
+    if (m && m[1] && m[1] !== 'explore.html' && m[1] !== 'explore') {
+      const slug = m[1];
+      const key = 'frqncy:visited';
+      const raw = localStorage.getItem(key);
+      const list = raw ? JSON.parse(raw) : [];
+      if (Array.isArray(list) && !list.includes(slug)) {
+        list.push(slug);
+        // Cap at 500 to be a good citizen
+        const trimmed = list.slice(-500);
+        localStorage.setItem(key, JSON.stringify(trimmed));
+      }
+    }
+  } catch (_) { /* ignore — never break the page on tracker errors */ }
+
   // ── CONFIG ───────────────────────────────────────────────────────
   const API_ENDPOINT  = '/api/chat';
   const BOT_NAME      = 'FRQNCY Navigator';

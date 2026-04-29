@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Prosperity Mindset — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py prosperity-mindset
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: prosperity-mindset
+  label: "Prosperity Mindset"
+  domain: "Money"
+  domain_slug: money
+  pillar: "Fund"
+  pillar_slug: fund
+  accent: "#4AB8A0"
+
+treatment:
+  register: brutalist
+
+hero:
+  variant: split
+  eyebrow: "Money · Fund"
+  title: "Prosperity Mindset"
+  desc: |
+    Wealth as a state of consciousness first — the philosophy, psychology, and practical wisdom of financial abundance.
+  media:
+    poster_url: https://images.pexels.com/photos/7567223/pexels-photo-7567223.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/29611783/pexels-photo-29611783.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      Your income is always the average of your 5 best friends.
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Money", url: "/v2/money/" }
+  canonical: https://frqncy.network/v2/prosperity-mindset/
+  og_image: https://frqncy.network/v2/og/prosperity-mindset.png

@@ -1,0 +1,18 @@
+/* Brutalist — sharp, mono, declarative.
+   Used by topics that want sovereignty energy: bitcoin, sovereignty, security. */
+.t-brutalist {
+  --mono: ui-monospace, 'JetBrains Mono', 'SF Mono', monospace;
+}
+.t-brutalist .label,
+.t-brutalist .hero-eyebrow,
+.t-brutalist .pick-eyebrow,
+.t-brutalist .form-cell-eyebrow,
+.t-brutalist .breadcrumb { font-family: var(--mono); letter-spacing: 0.22em; }
+.t-brutalist h2 { font-style: normal; font-weight: 400; }
+.t-brutalist h2 strong { color: var(--accent); }
+.t-brutalist em { font-style: normal; font-family: var(--mono); color: var(--accent); font-size: 0.95em; }
+.t-brutalist blockquote { font-style: normal; font-family: var(--serif); border-left-width: 2px; }
+.t-brutalist .descent .layer { border-radius: 0; }
+.t-brutalist .form-cell { border-radius: 0; }
+.t-brutalist .pick { border-radius: 0; }
+.t-brutalist .pick-link { letter-spacing: 0.32em; font-family: var(--mono); }

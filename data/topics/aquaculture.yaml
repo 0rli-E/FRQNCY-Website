@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Aquaculture — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py aquaculture
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: aquaculture
+  label: "Aquaculture"
+  domain: "Food & Agriculture"
+  domain_slug: food
+  pillar: "Education"
+  pillar_slug: education
+  accent: "#C47A3A"
+
+treatment:
+  register: editorial
+
+hero:
+  variant: split
+  eyebrow: "Food & Agriculture · Education"
+  title: "Aquaculture"
+  desc: |
+    Farming the water — the sustainable cultivation of fish, shellfish, algae, and other aquatic organisms.
+  media:
+    poster_url: https://images.pexels.com/photos/28738440/pexels-photo-28738440.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/10436679/pexels-photo-10436679.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      In one drop of water are found all the secrets of all the oceans. *— Kahlil Gibran*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Food & Agriculture", url: "/v2/food/" }
+  canonical: https://frqncy.network/v2/aquaculture/
+  og_image: https://frqncy.network/v2/og/aquaculture.png

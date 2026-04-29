@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Somatic Therapy — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py somatic-therapy
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: somatic-therapy
+  label: "Somatic Therapy"
+  domain: "Well-being"
+  domain_slug: wellbeing
+  pillar: "Education"
+  pillar_slug: education
+  accent: "#E84A8A"
+
+treatment:
+  register: monastic
+
+hero:
+  variant: split
+  eyebrow: "Well-being · Education"
+  title: "Somatic Therapy"
+  desc: |
+    Healing stored in the body — trauma-informed approaches that work through sensation and movement rather than talk alone.
+  media:
+    poster_url: https://images.unsplash.com/photo-1488345979593-09db0f85545f?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1537154259951-00da64098b37?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      Trauma is not what happens to us, but what we hold inside in the absence of an empathetic witness. *— Peter Levine — Waking the Tiger*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Well-being", url: "/v2/wellbeing/" }
+  canonical: https://frqncy.network/v2/somatic-therapy/
+  og_image: https://frqncy.network/v2/og/somatic-therapy.png

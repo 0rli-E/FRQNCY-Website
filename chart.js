@@ -1070,17 +1070,37 @@ function _svgBodygraph(chart) {
 }
 
 // ── Render HD ─────────────────────────────────────────────────────────
-// ── Shared chart save → localStorage ──────────────────────────────────
+// ── Shared chart save → localStorage + cloud (when logged in) ─────────
 // My FRQNCY reads this to personalise teacher / resource selection. We
 // merge on write so generating HD and then GK builds up a single record.
+// When a Supabase session is active, we also push the signature into the
+// `charts` table under name='Constellation' so it follows the user across
+// devices. The cloud write is fire-and-forget; failures don't block the UI.
 function saveChartSignature(patch) {
+  let merged = null;
   try {
     const existing = JSON.parse(localStorage.getItem('frqncy:chart') || '{}');
-    const merged = Object.assign({}, existing, patch, {
+    merged = Object.assign({}, existing, patch, {
       generatedAt: new Date().toISOString(),
     });
     localStorage.setItem('frqncy:chart', JSON.stringify(merged));
   } catch (e) { /* localStorage unavailable — ignore */ }
+
+  // Best-effort cloud sync — only when frqncy-supabase.js is loaded and the
+  // user is signed in. Never blocks the chart render.
+  if (merged && window.frqncy && typeof window.frqncy.constellationStore === 'function') {
+    (async () => {
+      try {
+        await window.frqncy.ready;
+        const user = await window.frqncy.auth.getUser();
+        if (!user) return;
+        const store = window.frqncy.constellationStore(user);
+        await store.patch({ chart: merged });
+      } catch (err) {
+        console.warn('[chart] cloud sync skipped', err);
+      }
+    })();
+  }
 }
 
 function renderHD(dob, tob, tzLabel, dateStr) {

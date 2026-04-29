@@ -1,0 +1,323 @@
+# ════════════════════════════════════════════════════════════════════
+# Sports — the body as instrument, the game as practice.
+# Pilot for the layered topic system.
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: sports
+  label: Sports
+  domain: Play & Recreation
+  domain_slug: play
+  pillar: Builder
+  pillar_slug: builder
+  accent: "#E84A4A"
+  topic_number: null
+
+treatment:
+  register: kinetic
+  overrides:
+    accent_warm: "#FF7A6E"
+    divider: line
+
+hero:
+  variant: split
+  eyebrow: "Play & Recreation · The body as instrument"
+  title: Sports
+  desc: |
+    The most honest mirror we have. *The body cannot lie about whether you trained.*
+    What looks like competition is really practice with stakes — a way to find out what
+    is true under pressure, and to put yourself together again afterwards.
+  quote:
+    text: |
+      The opponent within one's own head is more formidable than the one across the net.
+    cite: W. Timothy Gallwey — The Inner Game of Tennis
+  media:
+    poster_url: https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=85&w=2400
+    video_url: null
+
+prelude:
+  lede: |
+    Sport is one of the few remaining places where the body has the final word. You can
+    talk yourself into almost anything elsewhere — a relationship, a job, a self-image — but
+    a sprint, a serve, a heavy lift returns a verdict that does not negotiate.
+  paragraphs:
+    - |
+      What follows is not about winning. It's about what shows up when you keep showing up.
+      Athletes who last long enough to get good at one thing tend to discover the same handful
+      of truths the contemplatives have been writing about for a few thousand years — except
+      they arrived through sweat instead of sitting still.
+  blockquote:
+    text: |
+      We do not rise to the level of our expectations. We fall to the level of our training.
+    cite: Archilochus — 7th century BC
+
+sections:
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1461896836934-ffe607ba8211?auto=format&fit=crop&q=85&w=2400
+    caption: |
+      The mat doesn't care how you feel.
+      *That is the gift.*
+
+  - module: prose
+    label: I · The body remembers
+    title: What the body keeps when the *mind* lets go.
+    paragraphs:
+      - |
+        Motor memory is older than most things we call thinking. Long before language, before
+        symbol, before self, the body was already learning to throw, to climb, to land. The
+        cerebellum — the older brain — runs almost everything that makes a tennis stroke look
+        easy after twenty years and impossible the first time you try it.
+      - |
+        This is the deep promise of physical practice. You are not training your conscious mind.
+        You are negotiating with a much older system that responds only to repetition, attention,
+        and time. The reason a coach matters is not that they tell you new things — it's that
+        they help you stop interfering with what the body already knows how to do.
+
+  - module: descent
+    label: Three frames
+    title: The three frames *most* athletes pass through.
+    intro: |
+      Not everyone gets to the third. The first two are necessary; neither is sufficient.
+    layers:
+      - num: I
+        head: The acquisition
+        title: Learning the shape.
+        body: |
+          The first months and years. Everything is awkward and over-thought. The body is being
+          taught to do something it cannot yet do without supervision from the conscious mind.
+          The work here is patience and reps. Most people who quit, quit in this phase — usually
+          because they expected to skip it.
+      - num: II
+        head: The performance
+        title: Doing it under pressure.
+        body: |
+          The middle phase. The shape is there in practice but disappears under stakes. The work
+          shifts from acquiring movement to managing the nervous system around movement. The
+          ones who make it through this phase tend to be the ones who learned, somewhere, that
+          they could lose and still come back.
+        callouts:
+          - label: Inner Game
+            body: |
+              Gallwey's framing — *Self 1* is the chattering critic; *Self 2* is the body that
+              already knows the stroke. The performance phase is the long argument between them,
+              ending in a treaty.
+      - num: III
+        head: The release
+        title: Doing it for its own sake.
+        body: |
+          The phase most athletes never reach. The shape is automatic, the pressure is metabolised,
+          and the player begins to enjoy the sport in a different way — less as a contest, more
+          as a conversation with their own limits. The Sunday-pickup version of someone who used
+          to play professionally is often a happier person than they were at the peak. Worth
+          knowing in advance.
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1530549387789-4c1017266635?auto=format&fit=crop&q=85&w=2400
+    caption: |
+      Flow is not a state you find. *It is a state that finds you when you have prepared the conditions.*
+
+  - module: prose
+    label: II · Flow, briefly
+    title: The state we keep *almost* describing.
+    paragraphs:
+      - |
+        Mihály Csíkszentmihályi spent his career trying to name what athletes, climbers, surgeons,
+        and chess players were describing when they spoke of "the zone." His best definition: a
+        merger of action and awareness, in which self-consciousness disappears and time bends —
+        produced reliably when challenge and skill are both high and roughly matched.
+      - |
+        The recipe in plainer language. The task must be hard enough to require all of you,
+        easy enough to be doable, with feedback fast enough that adjustments register, and stakes
+        low enough that the nervous system does not panic. Almost every sport is engineered to
+        produce these conditions. That is most of why we keep playing them.
+
+  - module: interlude
+    quote: |
+      You only have to know one thing. You can learn anything.
+    cite: Josh Waitzkin — *The Art of Learning*
+
+  - module: prose
+    label: III · Training as practice
+    title: The four kinds of work that compound.
+    paragraphs:
+      - |
+        Coaches who get athletes to the second decade of their careers tend to converge on a
+        small set of training principles, regardless of sport. Strip away the specifics and what's
+        left looks remarkably like what monasteries have been teaching for a long time: do the
+        basic thing, do it daily, do it with attention, do it for years.
+    # The four kinds get rendered as a forms-grid below.
+
+  - module: forms-grid
+    label: ""
+    cells:
+      - eyebrow: I · Skill
+        title: Technique
+        body: |
+          Slow, deliberate repetition of the basic movements with full attention. The reps that
+          build the shape that everything else stands on. Boring. Non-negotiable.
+      - eyebrow: II · Capacity
+        title: Conditioning
+        body: |
+          Aerobic base, strength, mobility — the substrate the skill runs on. Sport-specific
+          conditioning is mostly cosmetic; general capacity is what carries you through a season.
+      - eyebrow: III · Pressure
+        title: Sparring & games
+        body: |
+          The shape under stakes. You cannot learn pressure without it. Volume of competition is
+          the variable most amateur athletes underweight relative to their professional peers.
+      - eyebrow: IV · Recovery
+        title: Sleep, food, rest
+        body: |
+          Where adaptation actually happens. The training does not produce the gain — the
+          recovery from the training does. Most plateaus are recovery deficits in disguise.
+        accent: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1486218119243-13883505764c?auto=format&fit=crop&q=85&w=2400
+    caption: |
+      Discipline is not punishment.
+      *It is the only known way of becoming free of distraction.*
+
+  - module: prose
+    label: IV · The team
+    title: When the *self* is more than one body.
+    paragraphs:
+      - |
+        Team sports add a layer that solo work cannot replicate. The unit of performance becomes
+        a small group of bodies coordinating in real time, and the practice becomes partly social
+        — reading other people, anticipating, sacrificing, being read in return. A great team is
+        one of the few places in modern life where coordination at this fidelity still happens.
+      - |
+        FRQNCY's editorial line: cooperation over competition, even inside a competitive frame.
+        The opponent is the gift that lets you find out what you can do — not the thing to be
+        crushed. Every long-tenured athlete eventually says some version of this.
+
+  - module: practice
+    label: A practice
+    title: Five small things that compound.
+    intro: |
+      Five things almost every coach who has produced a long career agrees on. None require
+      access — only consistency. They take roughly a month to install in a life and yield for
+      decades.
+    steps:
+      - title: Move every day.
+        body: |
+          Even fifteen minutes. Walking counts. The body does not distinguish between training
+          days and rest days the way the calendar does — it responds to the year-long average.
+      - title: Pick one skill, train it slow.
+        body: |
+          Five minutes of deliberate, attention-full repetition of one basic movement, daily.
+          Not a workout — a practice. Pick the boring thing, not the exciting one.
+      - title: Sleep eight, before midnight when you can.
+        body: |
+          Hormonal recovery is non-negotiable for adaptation. The window before midnight is
+          where most of the deep stages happen. Training without it is depositing into a
+          leaky account.
+      - title: Lift something heavy each week.
+        body: |
+          Once a week is enough to keep the strength curve from declining. Twice is plenty.
+          Whatever sport you do, you are also a body — and the body's relationship with gravity
+          must be maintained.
+      - title: Compete, gently, often.
+        body: |
+          Pickup, pick-a-sides, club nights, tournaments. The shape under stakes only grows
+          under stakes. Lose lightly and frequently and the wins will arrive on their own schedule.
+
+  - module: prose
+    label: V · The longer game
+    title: What the body teaches the *rest of you*.
+    paragraphs:
+      - |
+        After a decade of taking one sport seriously, almost everyone reports the same shift.
+        The wins matter less. The practice matters more. The body becomes a place you live in
+        rather than a project you manage. Habits that started in the gym start showing up in
+        marriages and careers and difficult conversations — the patience, the willingness to
+        be bad at something while you learn it, the trust that consistent small inputs produce
+        large outputs eventually.
+      - |
+        This is the part that does not show up on the scoreboard, and it is most of the point.
+        Sport is one of the most reliable methods we have for building character — not because
+        it is virtuous in itself, but because it cannot be faked.
+
+picks:
+  intro: |
+    A small shelf. Each has either lived in a real training life or been read carefully enough
+    to vouch for. The full sports rack lives on the broader [Aligned Goods](/aligned/) shelf;
+    this is what we'd recommend first.
+  items:
+    - inline:
+        type: book
+        name: The Inner Game of Tennis
+        desc: |
+          W. Timothy Gallwey, 1974. The book that named what every athlete already knew —
+          the loudest opponent is the one inside the head. Reads in an afternoon, works for years.
+          One of the great books on mastery, dressed as a tennis manual.
+        external: https://www.randomhousebooks.com/books/7412/
+      eyebrow: "Book · ✦ pick"
+    - inline:
+        type: book
+        name: The Art of Learning
+        desc: |
+          Josh Waitzkin's account of becoming world-class at chess and then at push hands.
+          The clearest English-language description we have of how high performers actually
+          practise — quietness, layering, the willingness to lose your form to find a better one.
+        external: https://www.joshwaitzkin.com/the-art-of-learning
+      eyebrow: Book
+    - inline:
+        type: book
+        name: Endure
+        desc: |
+          Alex Hutchinson's tour of the science of human limits — what the brain does to the body
+          under fatigue, what the body does back, and how the line between mental and physical
+          collapses under the microscope. Honest, rigorous, useful.
+        external: https://www.alexhutchinson.net/endure
+      eyebrow: Book
+    - inline:
+        type: media
+        name: The Athletic
+        desc: |
+          The deepest sports journalism still being written. No hot takes — just long-form
+          reporting from writers who actually played the game or have been on the beat for
+          decades. Where to read about sport when you want it taken seriously.
+        external: https://theathletic.com
+      eyebrow: Media
+    - inline:
+        type: tool
+        name: Strava
+        desc: |
+          The social layer for athletes who train alone. Track, share, find local rides and
+          runs and the people doing them. Cooperative by design — no leaderboard inside any
+          activity, just the record of what you did and who else did it nearby.
+        external: https://www.strava.com
+      eyebrow: Tool
+    - inline:
+        type: tool
+        name: WHOOP
+        desc: |
+          Continuous heart-rate-variability and recovery tracking. The honest read on whether
+          your training is being matched by recovery — not the watch that scolds you, but the
+          one that makes the calendar legible.
+        external: https://www.whoop.com
+      eyebrow: Tool
+
+closing:
+  background_url: https://images.unsplash.com/photo-1517649763962-0c623066013b?auto=format&fit=crop&q=85&w=2400
+  lines:
+    - The ball does not know you are tired.
+    - The bar does not know you slept badly.
+    - The mat does not know what you meant to do.
+  emphasis: Show up anyway.
+  cite: ""
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: Builder, url: "/v2/builder/" }
+    - { label: Play & Recreation, url: "/v2/play/" }
+  canonical: https://frqncy.network/v2/sports/
+  og_image: https://frqncy.network/v2/og/sports.png

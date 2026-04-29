@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Artificial Intelligence — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py artificial-intelligence
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: artificial-intelligence
+  label: "Artificial Intelligence"
+  domain: "Technology"
+  domain_slug: technology
+  pillar: "Builder"
+  pillar_slug: builder
+  accent: "#00BCD4"
+
+treatment:
+  register: scientific
+
+hero:
+  variant: split
+  eyebrow: "Technology · Builder"
+  title: "Artificial Intelligence"
+  desc: |
+    Machine learning, neural networks, and the development of non-human intelligence — the most consequential technology of our time.
+  media:
+    poster_url: https://images.pexels.com/photos/8566521/pexels-photo-8566521.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/18799044/pexels-photo-18799044.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      The science of today is the technology of tomorrow. *— Edward Teller*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Technology", url: "/v2/technology/" }
+  canonical: https://frqncy.network/v2/artificial-intelligence/
+  og_image: https://frqncy.network/v2/og/artificial-intelligence.png

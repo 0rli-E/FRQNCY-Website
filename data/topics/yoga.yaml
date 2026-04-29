@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Yoga — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py yoga
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: yoga
+  label: "Yoga"
+  domain: "Well-being"
+  domain_slug: wellbeing
+  pillar: "Education"
+  pillar_slug: education
+  accent: "#E84A8A"
+
+treatment:
+  register: monastic
+
+hero:
+  variant: split
+  eyebrow: "Well-being · Education"
+  title: "Yoga"
+  desc: |
+    The union of body, breath, and mind — one of humanity's oldest and most refined movement-meditation systems.
+  media:
+    poster_url: https://images.unsplash.com/photo-1577790668485-b3e70d84b462?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1445019980597-93fa8acb246c?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      In the deepest meditation, the body is at rest, the mind is at rest. Yet the consciousness has wakened to its own infinite, joyous nature. *— Paramahansa Yogananda — Autobiography of a Yogi*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Well-being", url: "/v2/wellbeing/" }
+  canonical: https://frqncy.network/v2/yoga/
+  og_image: https://frqncy.network/v2/og/yoga.png

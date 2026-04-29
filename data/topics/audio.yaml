@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Audio — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py audio
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: audio
+  label: "Audio"
+  domain: "Arts & Culture"
+  domain_slug: arts
+  pillar: "Media"
+  pillar_slug: media
+  accent: "#E8A84A"
+
+treatment:
+  register: editorial
+
+hero:
+  variant: split
+  eyebrow: "Arts & Culture · Media"
+  title: "Audio"
+  desc: |
+    Headphones, speakers, sound made with care. The hardware of how you actually hear the music, the conversation, the silence.
+  media:
+    poster_url: https://images.pexels.com/photos/35254141/pexels-photo-35254141.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/21821336/pexels-photo-21821336.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      Music gives a soul to the universe, wings to the mind, flight to the imagination. *— Plato*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Arts & Culture", url: "/v2/arts/" }
+  canonical: https://frqncy.network/v2/audio/
+  og_image: https://frqncy.network/v2/og/audio.png

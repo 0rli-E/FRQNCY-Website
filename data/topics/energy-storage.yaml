@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Energy Storage — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py energy-storage
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: energy-storage
+  label: "Energy Storage"
+  domain: "Energy"
+  domain_slug: energy
+  pillar: "Fund"
+  pillar_slug: fund
+  accent: "#A8E84A"
+
+treatment:
+  register: scientific
+
+hero:
+  variant: split
+  eyebrow: "Energy · Fund"
+  title: "Energy Storage"
+  desc: |
+    Batteries, flywheels, and hydrogen — the technologies that make intermittent renewables reliable.
+  media:
+    poster_url: https://images.pexels.com/photos/2800832/pexels-photo-2800832.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/12858693/pexels-photo-12858693.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      Storage is the holy grail of renewable energy. *— Elon Musk*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Energy", url: "/v2/energy/" }
+  canonical: https://frqncy.network/v2/energy-storage/
+  og_image: https://frqncy.network/v2/og/energy-storage.png

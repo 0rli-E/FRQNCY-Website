@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Vibration — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py vibration
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: vibration
+  label: "Vibration"
+  domain: "Metaphysics"
+  domain_slug: metaphysics
+  pillar: "Research"
+  pillar_slug: research
+  accent: "#7B4AE8"
+
+treatment:
+  register: mythic
+
+hero:
+  variant: split
+  eyebrow: "Metaphysics · Research"
+  title: "Vibration"
+  desc: |
+    Everything is frequency — the understanding that matter, thought, and emotion all operate as oscillating energy.
+  media:
+    poster_url: https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1539593395743-7da5ee10ff07?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      If you want to find the secrets of the universe, think in terms of energy, frequency, and vibration. *— Nikola Tesla*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Metaphysics", url: "/v2/metaphysics/" }
+  canonical: https://frqncy.network/v2/vibration/
+  og_image: https://frqncy.network/v2/og/vibration.png

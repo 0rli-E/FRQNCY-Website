@@ -301,6 +301,54 @@ nav{
 .start-title{font-family:'Cormorant',serif;font-size:1.1rem;color:#fff;margin-bottom:0.25rem}
 .start-desc{font-size:0.72rem;color:var(--text-dim);line-height:1.5}
 
+/* ── Learning path ── */
+#learning-path{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:2.5rem}
+.path-step{
+  position:relative;display:flex;align-items:center;gap:0.95rem;
+  padding:0.95rem 1.05rem;
+  border:1px solid var(--card-border);border-radius:4px;
+  background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;
+  transition:border-color .2s,background .2s,transform .2s;
+  overflow:hidden;
+}
+.path-step::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,#E0C06A,#C4973A);opacity:0;transition:opacity .2s;
+}
+.path-step:hover{border-color:rgba(196,151,58,0.35);background:rgba(255,255,255,0.04);transform:translateX(2px)}
+.path-step:hover::before{opacity:1}
+.path-step.done{opacity:0.65}
+.path-step.done .path-title{text-decoration:line-through;text-decoration-color:rgba(196,151,58,0.4)}
+.path-step.done::before{opacity:1;background:#5BC79A}
+.path-num{
+  flex-shrink:0;width:30px;height:30px;border-radius:50%;
+  border:1px solid var(--card-border);background:rgba(255,255,255,0.02);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant',serif;font-size:0.95rem;color:var(--gold-light);
+  transition:all .2s;
+}
+.path-step.done .path-num{background:rgba(91,199,154,0.12);border-color:rgba(91,199,154,0.4);color:#5BC79A}
+.path-step.done .path-num::before{content:"✓";font-size:0.95rem}
+.path-step.done .path-num span{display:none}
+.path-info{flex:1;min-width:0}
+.path-title{font-family:'Cormorant',serif;font-size:1.1rem;color:#fff;margin-bottom:0.2rem;line-height:1.3}
+.path-meta{font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-faint)}
+.path-meta strong{color:var(--gold-light);font-weight:400}
+.path-arrow{flex-shrink:0;color:var(--gold);font-size:1.1rem;opacity:0.6;transition:opacity .2s,transform .2s}
+.path-step:hover .path-arrow{opacity:1;transform:translateX(3px)}
+.path-empty{padding:1rem 1.1rem;color:var(--text-faint);font-size:0.78rem;font-style:italic;text-align:center}
+.path-foot{
+  margin-top:0.4rem;font-size:0.65rem;color:var(--text-faint);
+  letter-spacing:0.1em;text-transform:uppercase;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.path-foot .path-progress{flex:1;height:2px;background:rgba(255,255,255,0.06);border-radius:1px;overflow:hidden}
+.path-foot .path-progress span{display:block;height:100%;background:linear-gradient(90deg,#C4973A,#E0C06A);transition:width .4s}
+@media(max-width:520px){
+  .path-step{padding:0.8rem 0.9rem;gap:0.75rem}
+  .path-title{font-size:1rem}
+}
+
 .action-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:3rem}
 .share-url{
   font-size:0.62rem;color:var(--text-dim);letter-spacing:0.08em;
@@ -585,6 +633,10 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
       </div>
     </a>
 
+    <!-- Your path — ordered next-step topics, marks each visited automatically -->
+    <div class="section-label" style="margin-top:2.5rem">Your path</div>
+    <div id="learning-path" aria-live="polite"></div>
+
     <!-- Carry this forward -->
     <div class="section-label" style="margin-top:2.5rem">Carry this forward</div>
 
@@ -801,6 +853,17 @@ function togglePref(el) {
 
 function persistSignature() {
   try { localStorage.setItem('frqncy:prefs', JSON.stringify(userSignature.prefs)); } catch (e) {}
+  // Cloud-mirror — fire-and-forget when logged in
+  if (window.frqncy && typeof window.frqncy.constellationStore === 'function') {
+    (async () => {
+      try {
+        await window.frqncy.ready;
+        const u = await window.frqncy.auth.getUser();
+        if (!u) return;
+        await window.frqncy.constellationStore(u).patch({ prefs: userSignature.prefs });
+      } catch (_) {}
+    })();
+  }
 }
 
 // Keyboard toggle for pref chips
@@ -1039,7 +1102,122 @@ function renderResult({ topicNodes, resourceNodes, teachers, startPick }, name) 
   drawConstellation(topicNodes, resourceNodes, name);
   renderTeachers(teachers);
   renderStartHere(startPick);
+  renderLearningPath(topicNodes);
   updateSaveCtaNext();
+  // Stash for re-render after late cloud merge
+  window._lastTopicNodes = topicNodes;
+}
+
+// ── Visited topics ────────────────────────────────────────────────────
+// Sourced from localStorage (chat-widget.js increments on each /v2/<slug>/
+// page load). When the user is logged in we also merge cloud state in.
+function getVisitedSet() {
+  try {
+    const raw = localStorage.getItem('frqncy:visited');
+    const arr = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(arr) ? arr : []);
+  } catch (_) { return new Set(); }
+}
+function getPathDoneSet() {
+  try {
+    const raw = localStorage.getItem('frqncy:pathDone');
+    const arr = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(arr) ? arr : []);
+  } catch (_) { return new Set(); }
+}
+function setPathDone(set) {
+  try { localStorage.setItem('frqncy:pathDone', JSON.stringify([...set])); }
+  catch (_) {}
+  // Cloud bridge — fire-and-forget when logged in
+  if (window.frqncy && typeof window.frqncy.constellationStore === 'function') {
+    (async () => {
+      try {
+        await window.frqncy.ready;
+        const u = await window.frqncy.auth.getUser();
+        if (!u) return;
+        await window.frqncy.constellationStore(u).patch({ pathDone: [...set] });
+      } catch (_) {}
+    })();
+  }
+}
+
+// ── Render learning path ──────────────────────────────────────────────
+// Picks up to 5 next topics from the user's constellation, ordered:
+//   1. unvisited + not-marked-done first
+//   2. then visited
+//   3. then explicitly marked done (rendered struck-through)
+// Each tile links to /v2/<slug>/. Visiting a topic auto-marks it via the
+// chat-widget.js tracker — the user comes back to a check next time.
+function renderLearningPath(topicNodes) {
+  const host = document.getElementById('learning-path');
+  if (!host) return;
+  if (!topicNodes || !topicNodes.length) {
+    host.innerHTML = '<div class="path-empty">Choose a domain to build your path.</div>';
+    return;
+  }
+  const visited = getVisitedSet();
+  const done = getPathDoneSet();
+
+  // Decorate each topic with state for sorting
+  const decorated = topicNodes.map(t => ({
+    topic: t,
+    visited: visited.has(t.slug),
+    done: done.has(t.slug),
+  }));
+  // Stable order: unvisited & not-done first, then visited (not-done), then done.
+  decorated.sort((a, b) => {
+    const ar = a.done ? 2 : (a.visited ? 1 : 0);
+    const br = b.done ? 2 : (b.visited ? 1 : 0);
+    return ar - br;
+  });
+  const steps = decorated.slice(0, 5);
+
+  const url = t => '/v2/' + encodeURIComponent(t.slug) + '/';
+  host.innerHTML = steps.map((s, i) => {
+    const t = s.topic;
+    const stateLabel = s.done
+      ? '<span style="color:#5BC79A">✓ marked complete</span>'
+      : s.visited
+        ? '<strong>opened</strong> · come back when ready'
+        : (i === 0 ? '<strong>start with this</strong>' : 'next');
+    return `
+      <a class="path-step ${s.done ? 'done' : ''}" data-slug="${esc(t.slug)}" href="${esc(url(t))}">
+        <span class="path-num"><span>${i + 1}</span></span>
+        <div class="path-info">
+          <div class="path-title">${esc(t.label || t.slug)}</div>
+          <div class="path-meta">${stateLabel}${t.domain ? ' · ' + esc(t.domain) : ''}</div>
+        </div>
+        <span class="path-arrow">→</span>
+      </a>`;
+  }).join('');
+
+  // Progress bar
+  const total = steps.length;
+  const completed = steps.filter(s => s.done || s.visited).length;
+  const pct = total ? Math.round((completed / total) * 100) : 0;
+  const foot = document.createElement('div');
+  foot.className = 'path-foot';
+  foot.innerHTML = `
+    <span>${completed}/${total} opened</span>
+    <span class="path-progress" aria-hidden="true"><span style="width:${pct}%"></span></span>
+    <span>${pct}%</span>`;
+  host.appendChild(foot);
+
+  // Cmd/Ctrl+Click toggles "marked complete" without navigating away.
+  // Plain click follows the link normally (which itself increments the
+  // visited set via chat-widget.js).
+  host.querySelectorAll('.path-step').forEach(el => {
+    el.addEventListener('click', e => {
+      if (!(e.metaKey || e.ctrlKey)) return;   // normal click → navigate
+      e.preventDefault();
+      const slug = el.dataset.slug;
+      const set = getPathDoneSet();
+      if (set.has(slug)) set.delete(slug); else set.add(slug);
+      setPathDone(set);
+      renderLearningPath(topicNodes); // re-render
+    });
+    el.title = 'Click to open · Cmd/Ctrl-click to mark complete';
+  });
 }
 
 // Signature badge — shows what personalisation was applied, if any.
@@ -1155,29 +1333,69 @@ function drawConstellation(topics, resources, name) {
 
   nodeG.transition().duration(500).delay(d => 180 + d.depth * 180).style('opacity', 1);
 
+  // Visited topics get a gold-tinted treatment so the user sees their
+  // progress reflected back on their constellation. Sourced live from
+  // localStorage (chat-widget.js writes it; cloud-merge tops it up).
+  const visitedTopics = getVisitedSet();
+  const isVisitedTopic = d => d.data.type === 'topic' && visitedTopics.has(d.data.slug);
+
   // Circles
   nodeG.append('circle')
+    .attr('class', 'node-circle')
     .attr('r', d =>
       d.data.type === 'root'   ? 11 :
       d.data.type === 'domain' ? 7  :
       d.data.type === 'topic'  ? 5.5 : 4)
-    .attr('fill', d =>
-      d.data.type === 'root'   ? 'rgba(196,151,58,0.22)' :
-      d.data.type === 'domain' ? 'rgba(196,151,58,0.14)' :
-      d.data.type === 'topic'  ? 'rgba(74,122,232,0.22)' :
-                                 'rgba(255,255,255,0.1)')
-    .attr('stroke', d =>
-      d.data.type === 'root'   ? 'rgba(224,192,106,0.95)' :
-      d.data.type === 'domain' ? 'rgba(196,151,58,0.7)'   :
-      d.data.type === 'topic'  ? 'rgba(74,122,232,0.65)'  :
-                                 'rgba(255,255,255,0.38)')
-    .attr('stroke-width', d => d.data.type === 'root' ? 1.5 : 1)
-    .attr('filter', d => d.data.type === 'root' ? 'url(#glow)' : null);
+    .attr('fill', d => {
+      if (isVisitedTopic(d))         return 'rgba(196,151,58,0.32)';
+      if (d.data.type === 'root')    return 'rgba(196,151,58,0.22)';
+      if (d.data.type === 'domain')  return 'rgba(196,151,58,0.14)';
+      if (d.data.type === 'topic')   return 'rgba(74,122,232,0.22)';
+      return 'rgba(255,255,255,0.1)';
+    })
+    .attr('stroke', d => {
+      if (isVisitedTopic(d))         return 'rgba(224,192,106,0.95)';
+      if (d.data.type === 'root')    return 'rgba(224,192,106,0.95)';
+      if (d.data.type === 'domain')  return 'rgba(196,151,58,0.7)';
+      if (d.data.type === 'topic')   return 'rgba(74,122,232,0.65)';
+      return 'rgba(255,255,255,0.38)';
+    })
+    .attr('stroke-width', d => d.data.type === 'root' || isVisitedTopic(d) ? 1.5 : 1)
+    .attr('filter', d => (d.data.type === 'root' || isVisitedTopic(d)) ? 'url(#glow)' : null);
+
+  // Tiny ✓ glyph on visited topics — subtle gold mark inside the node
+  nodeG.filter(isVisitedTopic).append('text')
+    .attr('text-anchor', 'middle').attr('dy', '0.34em')
+    .attr('fill', '#E0C06A').attr('font-size', '7.5px').attr('font-weight', '500')
+    .attr('pointer-events', 'none')
+    .text('✓');
 
   // Slow pulse on root node
   nodeG.filter(d => d.data.type === 'root').select('circle')
     .append('animate').attr('attributeName', 'r')
     .attr('values', '11;13;11').attr('dur', '3.6s').attr('repeatCount', 'indefinite');
+
+  // Soft, staggered twinkle on topic nodes — random offset so it doesn't
+  // look like a metronome. Skips visited topics (they have a different signal).
+  nodeG.filter(d => d.data.type === 'topic' && !isVisitedTopic(d)).each(function(d, i) {
+    const dur = (3.4 + Math.random() * 2.2).toFixed(2);     // 3.4–5.6s
+    const begin = (Math.random() * 2.5).toFixed(2);          // 0–2.5s offset
+    d3.select(this).select('circle')
+      .append('animate').attr('attributeName', 'opacity')
+      .attr('values', '0.55;1;0.55').attr('dur', dur + 's')
+      .attr('begin', begin + 's').attr('repeatCount', 'indefinite');
+  });
+
+  // Hover scale on linkable nodes — gentle lift, no layout shift
+  nodeG.filter(d => d.data.url)
+    .on('mouseenter', function () {
+      d3.select(this).select('circle.node-circle')
+        .transition().duration(160).attr('transform', 'scale(1.25)');
+    })
+    .on('mouseleave', function () {
+      d3.select(this).select('circle.node-circle')
+        .transition().duration(220).attr('transform', 'scale(1)');
+    });
 
   // Labels — root (below circle, serif uppercase) — root sits at the bottom now
   nodeG.filter(d => d.data.type === 'root').append('text')
@@ -1302,12 +1520,24 @@ function renderTeachers(teachers) {
 
 // ── Render start here ──────────────────────────────────────────────────
 function renderStartHere(pick) {
-  if (!pick) return;
   const card = document.getElementById('start-card');
-  const href = pick.url || pick.topicUrl || '#';
+  const label = document.getElementById('teachers-label')?.nextElementSibling
+    ? document.querySelectorAll('.section-label')[1]   // the "Start here" label
+    : null;
+  if (!pick) {
+    if (card) card.style.display = 'none';
+    return;
+  }
+  const href = pick.url || pick.topicUrl || '';
+  if (!href) {
+    // No destination — hide rather than leave a dead clickable element
+    if (card) card.style.display = 'none';
+    return;
+  }
+  card.style.display = '';
   card.href = href;
-  const isInternal = href && href.startsWith('/');
-  if (href !== '#' && !isInternal) {
+  const isInternal = href.startsWith('/');
+  if (!isInternal) {
     card.target = '_blank'; card.rel = 'noopener noreferrer';
   } else {
     card.removeAttribute('target'); card.removeAttribute('rel');
@@ -1409,11 +1639,70 @@ function enhanceChoiceTiles() {
     });
   });
 }
+// ── Cloud merge ───────────────────────────────────────────────────────
+// When the user is signed in, pull their cloud Constellation row and
+// merge it into localStorage (cloud wins on conflict — most recent state).
+// This runs after frqncy-supabase.js is ready, then re-paints the UI.
+async function mergeCloudIntoLocal() {
+  if (!window.frqncy || typeof window.frqncy.constellationStore !== 'function') return false;
+  try {
+    await window.frqncy.ready;
+    const user = await window.frqncy.auth.getUser();
+    if (!user) return false;
+    const store = window.frqncy.constellationStore(user);
+    const cloud = await store.getState();
+    if (!cloud || typeof cloud !== 'object') return false;
+    // chart
+    if (cloud.chart) {
+      try { localStorage.setItem('frqncy:chart', JSON.stringify(cloud.chart)); } catch (_) {}
+    }
+    // prefs (replace local — cloud is authoritative for the logged-in user)
+    if (Array.isArray(cloud.prefs)) {
+      try { localStorage.setItem('frqncy:prefs', JSON.stringify(cloud.prefs)); } catch (_) {}
+    }
+    // visited (union — local visits since last sync should also be kept)
+    if (Array.isArray(cloud.visited)) {
+      try {
+        const local = JSON.parse(localStorage.getItem('frqncy:visited') || '[]');
+        const merged = Array.from(new Set([...(Array.isArray(local) ? local : []), ...cloud.visited]));
+        localStorage.setItem('frqncy:visited', JSON.stringify(merged.slice(-500)));
+        // Push the union back so next device sees the combined set
+        await store.patch({ visited: merged.slice(-500) });
+      } catch (_) {}
+    }
+    // pathDone (union same way)
+    if (Array.isArray(cloud.pathDone)) {
+      try {
+        const local = JSON.parse(localStorage.getItem('frqncy:pathDone') || '[]');
+        const merged = Array.from(new Set([...(Array.isArray(local) ? local : []), ...cloud.pathDone]));
+        localStorage.setItem('frqncy:pathDone', JSON.stringify(merged));
+        await store.patch({ pathDone: merged });
+      } catch (_) {}
+    }
+    return true;
+  } catch (err) {
+    console.warn('[my-frqncy] cloud merge skipped', err);
+    return false;
+  }
+}
+
 (async function init() {
   buildDomainGrid();
   enhanceChoiceTiles();
   loadSignature(); // read saved chart + prefs from localStorage, paint UI
   await loadData();
+  // Best-effort cloud merge — non-blocking. If the user is logged in, we pull
+  // their saved state and re-paint the signature/path with cloud values.
+  mergeCloudIntoLocal().then(merged => {
+    if (merged) {
+      loadSignature();
+      // If the result view is already painted, re-render the path
+      const resultView = document.getElementById('result-view');
+      if (resultView && resultView.style.display !== 'none' && typeof window._lastTopicNodes === 'object') {
+        try { renderLearningPath(window._lastTopicNodes); } catch (_) {}
+      }
+    }
+  });
   const restored = await restoreFromURL();
   if (!restored) {
     // Eagerly pre-selected nothing — form is ready
@@ -1431,5 +1720,7 @@ function enhanceChoiceTiles() {
   <!-- Social auth awareness (Supabase) -->
   <script src="/social-config.js"></script>
   <script type="module" src="/social-auth.js"></script>
+  <!-- Cloud sync for chart + prefs + visited topics + path progress -->
+  <script src="/assets/frqncy-supabase.js" defer></script>
 </body>
 </html>

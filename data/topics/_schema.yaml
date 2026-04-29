@@ -1,0 +1,203 @@
+# ════════════════════════════════════════════════════════════════════
+# FRQNCY · Topic brief schema (Layer 2 — the rare layer).
+#
+# One file per topic at data/topics/<slug>.yaml.
+# Generator at scripts/generate_topic_page.py reads this, resolves
+# refs into the bed (data/people/, data/books/, ...), applies the
+# treatment CSS, composes the named modules, preserves bespoke
+# slots, and writes v2/<slug>/index.html.
+#
+# Source of truth: this file. The generated HTML can be re-derived
+# at any time. Topics in LOCKED_TOPICS (the sacred list) are skipped
+# by the generator — they remain hand-edited.
+# ────────────────────────────────────────────────────────────────────
+
+# ──────────────── meta ────────────────
+# Identity. Mirrors the entry in search.json.
+meta:
+  slug: example                     # required, kebab-case
+  label: Example                    # required, display name
+  domain: Sciences                  # required, taxonomy domain
+  domain_slug: sciences
+  pillar: Research                  # required, taxonomy pillar
+  pillar_slug: research
+  accent: "#4A7AE8"                 # required, hex — primary topic accent
+  topic_number: null                # optional, e.g. "0001 of 146"
+
+# ──────────────── treatment ────────────────
+# Which CSS register tunes the chrome for this page.
+# Base set: contemplative, brutalist, scientific, mythic, editorial,
+#           monastic, kinetic, archival.
+# A topic may extend a base register with overrides, or supply a
+# fully bespoke treatment via the bespoke.css slot below.
+treatment:
+  register: editorial               # required, name of base treatment
+  overrides:                        # optional, --variable-name → value map
+    accent: "#4A7AE8"
+    accent_warm: "#6E9BE8"
+    divider: wave-soft              # wave-soft | wave-sharp | line | none
+
+# ──────────────── hero ────────────────
+# The opening. Variant chooses module; payload feeds it.
+hero:
+  variant: split                    # cinematic | split | typographic | bleed-still
+  eyebrow: "Sciences · Research"    # short eyebrow line
+  title: Example                    # required
+  desc: |
+    The opening sentence. Bespoke prose. Italics via *asterisks*.
+  quote:                            # optional pull-quote inside hero
+    text: A short quote that sets the tone.
+    cite: Source — Year
+  media:                            # backdrop image/video
+    poster_url: https://...         # always required for variants that show backdrop
+    video_url: null                 # optional, .mp4 4K loop
+  glyph: null                       # optional path to per-topic SVG file (or inline)
+
+# ──────────────── prelude ────────────────
+# Opening prose section. Lede + supporting paragraph(s) + optional
+# blockquote. Skip by setting to null.
+prelude:
+  lede: |
+    The opening lede. Three sentences max. Italics via *asterisks*.
+  paragraphs:
+    - First supporting paragraph.
+    - Second supporting paragraph.
+  blockquote:
+    text: A foundational quote.
+    cite: Author — Source
+
+# ──────────────── sections ────────────────
+# Ordered list of named modules + payloads. The generator renders
+# them in order. Each section takes a `module` (the renderer) and
+# any payload that module needs.
+#
+# Available modules (Layer 3 chrome):
+#   bleed              — full-width image with poetic caption
+#   interlude          — centered single quote
+#   prose              — labeled prose section: label + h2 + paragraphs + optional quote
+#   crystal-feature    — split layout: paragraph + custom SVG/image + quote
+#   descent            — N ordered layers (used for "three doors", "five stages", etc.)
+#   forms-grid         — auto-fill cell grid, optional accent cell
+#   practice           — numbered steps (i ii iii iv v ...)
+#   tier-bar           — A/B/C tier descriptions
+#   ticker-rail        — moving project ticker
+#   download-canon     — brutalist download box with hash
+#   bespoke            — escape hatch: arbitrary HTML/SVG/CSS payload
+sections:
+
+  - module: prose
+    label: I · The first frame
+    title: Bespoke *italic phrase* with **strong accent**.
+    paragraphs:
+      - First paragraph of the section. Plain prose.
+      - Second paragraph. Use *italics* for emphasis.
+
+  - module: bleed
+    image_url: https://...
+    caption: |
+      A poetic line. *Italics for the second clause.*
+
+  - module: descent
+    label: Three layers
+    title: The three layers of this thing.
+    intro: |
+      One paragraph of intro before the layered grid.
+    layers:
+      - num: I
+        head: Surface
+        title: First layer.
+        body: |
+          Body prose. Multi-line OK.
+      - num: II
+        head: Mid-depth
+        title: Second layer.
+        body: First paragraph.
+        callouts:                   # optional callouts under the body
+          - label: Reading
+            body: A short measured callout.
+      - num: III
+        head: Depth
+        title: Third layer.
+        body: Final layer prose.
+
+  - module: forms-grid
+    label: The forms
+    title: One substance, many shapes.
+    intro: |
+      Optional intro paragraph above the grid.
+    sub_label: States                # small section divider above grid
+    cells:
+      - eyebrow: Label
+        title: Cell title
+        body: Cell description.
+        accent: false
+      - eyebrow: Label
+        title: Accent cell
+        body: This one stands out.
+        accent: true
+
+  - module: practice
+    label: A practice
+    title: Five small things, repeated.
+    intro: |
+      Optional intro before the steps.
+    steps:
+      - title: Filter at home.
+        body: One-sentence elaboration.
+      - title: Glass and steel only.
+        body: Another step.
+
+  - module: bespoke
+    slot: vortex-svg                 # named slot — generator preserves on regen
+    html: |
+      <svg ...>...</svg>
+
+# ──────────────── picks ────────────────
+# Each pick references an entity in the bed by `ref` (preferred) or
+# carries its data inline (only if the entity does not yet exist in
+# the bed).
+picks:
+  intro: |
+    A small list, kept honest. Each entry below has either lived in
+    real homes or has been read carefully.
+  items:
+    - ref: tools/eva-water           # resolves to data/tools/eva-water.json
+      eyebrow: "Filtration · ✦ pick"
+    - ref: books/the-fourth-phase-of-water
+      eyebrow: Book
+    - inline:                        # fallback if ref does not exist yet
+        type: tool
+        name: Klean Kanteen
+        desc: Steel water bottle. No plastic. No microplastics.
+        external: https://www.kleankanteen.com/
+      eyebrow: Vessel
+
+# ──────────────── closing ────────────────
+# Last full-bleed mantra. The signature line that closes the page.
+closing:
+  background_url: https://...
+  lines:                             # rendered as serif italic lines
+    - You put water in a cup, it becomes the cup.
+    - You put water in a teapot, it becomes the teapot.
+  emphasis: Be water, my friend.     # rendered larger, with strong
+  cite: Bruce Lee
+
+# ──────────────── bespoke ────────────────
+# Per-topic escape hatches. Anything here is preserved across
+# regenerations.
+bespoke:
+  css: |
+    /* Optional: per-topic CSS that extends the treatment register. */
+    /* Keep it tiny. If reused 3+ times, graduate it to a module. */
+  head_extra: |
+    <!-- Optional: extra <link> or <meta> tags. -->
+
+# ──────────────── linking ────────────────
+# Pointers used for breadcrumbs + canonical + JSON-LD.
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: Sciences, url: "/v2/sciences/" }
+    - { label: Research, url: "/v2/research/" }
+  canonical: https://frqncy.network/v2/example/
+  og_image: https://frqncy.network/v2/og/example.png

@@ -787,21 +787,61 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:
     </div>
   </header>
 
-  <div class="privacy-banner">
-    <span class="lock">🔒</span>
-    <span>Everything here lives privately on this device. Nothing is shared. Sync &amp; selective sharing are coming next.</span>
+  <div class="privacy-banner" id="privacy-banner" data-mode="local">
+    <span class="lock" aria-hidden="true">🔒</span>
+    <span class="pb-text">Lives privately on this device. <a href="/social/login" class="pb-link" style="color:var(--gold-light);text-decoration:underline;text-decoration-color:var(--gold-dim)">Sign in</a> to sync across devices.</span>
+    <span class="save-indicator" id="save-indicator" aria-live="polite" style="margin-left:auto;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-faint);opacity:0;transition:opacity .25s">Saved</span>
   </div>
 
   <div class="tabs" role="tablist" aria-label="Sanctuary sections">
-    <button type="button" class="tab active" data-tab="dashboard" role="tab" aria-selected="true">Dashboard</button>
-    <button type="button" class="tab" data-tab="pyramid" role="tab" aria-selected="false">Goal Pyramid</button>
-    <button type="button" class="tab" data-tab="practice" role="tab" aria-selected="false">Daily Practice</button>
-    <button type="button" class="tab" data-tab="progress" role="tab" aria-selected="false">Progress</button>
-    <button type="button" class="tab" data-tab="vision" role="tab" aria-selected="false">Vision Board</button>
+    <button type="button" class="tab active" data-tab="dashboard" data-key="1" role="tab" aria-selected="true" aria-keyshortcuts="1" title="Dashboard (press 1)">Dashboard</button>
+    <button type="button" class="tab" data-tab="pyramid" data-key="2" role="tab" aria-selected="false" aria-keyshortcuts="2" title="Goal Pyramid (press 2)">Goal Pyramid</button>
+    <button type="button" class="tab" data-tab="practice" data-key="3" role="tab" aria-selected="false" aria-keyshortcuts="3" title="Daily Practice (press 3)">Daily Practice</button>
+    <button type="button" class="tab" data-tab="progress" data-key="4" role="tab" aria-selected="false" aria-keyshortcuts="4" title="Progress (press 4)">Progress</button>
+    <button type="button" class="tab" data-tab="vision" data-key="5" role="tab" aria-selected="false" aria-keyshortcuts="5" title="Vision Board (press 5)">Vision Board</button>
   </div>
 
   <!-- ─────────────── DASHBOARD VIEW (overview) ─────────────── -->
   <div class="view active" id="view-dashboard">
+
+    <!-- First-run coaching: shown only when state is fully empty -->
+    <section class="section first-run" id="first-run" hidden>
+      <div style="border:1px solid rgba(196,151,58,0.32);border-radius:4px;padding:1.5rem 1.6rem;background:linear-gradient(135deg,rgba(196,151,58,0.05) 0%,rgba(11,16,32,0.4) 60%);position:relative;overflow:hidden">
+        <div style="font-family:'Cormorant',serif;font-size:1.4rem;color:var(--gold-light);margin-bottom:0.4rem;letter-spacing:0.02em">A first pass through your Sanctuary</div>
+        <p style="font-size:0.85rem;color:var(--text-dim);line-height:1.65;margin-bottom:1.2rem;max-width:62ch">Four layers, smallest at the bottom. Each one feeds the one above it. You don't have to fill them in order — you do have to fill them in time.</p>
+        <ol style="list-style:none;padding:0;margin:0;display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:0.7rem">
+          <li>
+            <button type="button" class="fr-step" data-fr-action="dream" style="width:100%;text-align:left;padding:0.9rem 1rem;border:1px solid var(--card-border);border-radius:3px;background:var(--card);color:inherit;cursor:pointer;transition:border-color .18s,background .18s">
+              <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.35rem">01 · Dream</div>
+              <div style="font-family:'Cormorant',serif;font-size:1.05rem;color:#fff;margin-bottom:0.2rem">Beyond this lifetime</div>
+              <div style="font-size:0.74rem;color:var(--text-faint);line-height:1.5">The version of the world that's bigger than you.</div>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="fr-step" data-fr-action="aim" style="width:100%;text-align:left;padding:0.9rem 1rem;border:1px solid var(--card-border);border-radius:3px;background:var(--card);color:inherit;cursor:pointer;transition:border-color .18s,background .18s">
+              <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.35rem">02 · Chief aim</div>
+              <div style="font-family:'Cormorant',serif;font-size:1.05rem;color:#fff;margin-bottom:0.2rem">1–2 years</div>
+              <div style="font-size:0.74rem;color:var(--text-faint);line-height:1.5">What's possible if everything aligns. Up to three.</div>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="fr-step" data-fr-action="objective" style="width:100%;text-align:left;padding:0.9rem 1rem;border:1px solid var(--card-border);border-radius:3px;background:var(--card);color:inherit;cursor:pointer;transition:border-color .18s,background .18s">
+              <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.35rem">03 · Objective</div>
+              <div style="font-family:'Cormorant',serif;font-size:1.05rem;color:#fff;margin-bottom:0.2rem">1–6 months</div>
+              <div style="font-size:0.74rem;color:var(--text-faint);line-height:1.5">A milestone that moves a chief aim forward.</div>
+            </button>
+          </li>
+          <li>
+            <button type="button" class="fr-step" data-fr-action="practice" style="width:100%;text-align:left;padding:0.9rem 1rem;border:1px solid var(--card-border);border-radius:3px;background:var(--card);color:inherit;cursor:pointer;transition:border-color .18s,background .18s">
+              <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-bottom:0.35rem">04 · Daily practice</div>
+              <div style="font-family:'Cormorant',serif;font-size:1.05rem;color:#fff;margin-bottom:0.2rem">Today</div>
+              <div style="font-size:0.74rem;color:var(--text-faint);line-height:1.5">The small things that compound.</div>
+            </button>
+          </li>
+        </ol>
+        <p style="font-size:0.7rem;color:var(--text-faint);margin-top:1.1rem;letter-spacing:0.04em">Tip · press <kbd style="font-family:inherit;font-size:0.78em;padding:0.05em 0.4em;border:1px solid var(--card-border);border-radius:2px;background:rgba(255,255,255,0.03)">1</kbd>–<kbd style="font-family:inherit;font-size:0.78em;padding:0.05em 0.4em;border:1px solid var(--card-border);border-radius:2px;background:rgba(255,255,255,0.03)">5</kbd> to jump between tabs.</p>
+      </div>
+    </section>
 
     <section class="section">
       <div class="section-head">
@@ -998,7 +1038,7 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:
 
   <div class="foot">
     <p>Held privately. Built for the long game.</p>
-    <p style="margin-top:0.4rem">Future: cloud sync &amp; selective sharing via your <a href="/social/">FRQNCY account</a></p>
+    <p style="margin-top:0.4rem">When signed in, your Sanctuary syncs across devices via your <a href="/social/">FRQNCY account</a>. Logged out, it stays on this device.</p>
   </div>
 </main>
 
@@ -1146,6 +1186,7 @@ document.addEventListener('DOMContentLoaded', () => {
   window.frqncy.ready.then(() => {
     window.frqncy.mountAuthPill(document.getElementById('frqncy-auth-pill'));
     window.frqncy.onAuth(async (user) => {
+      updatePrivacyBanner(user);
       if (user) {
         await attachCloudStore(user);
       } else if (cloudStore) {
@@ -1187,7 +1228,59 @@ const todayISO = () => dateISO();
 const monthISO = (d=new Date()) => dateISO(d).slice(0,7);
 const formatDate = d => (d instanceof Date ? d : new Date(d)).toLocaleDateString(undefined, { weekday:'long', month:'long', day:'numeric' });
 
-async function persist() { await store.setState(state); }
+async function persist() {
+  showSaving();
+  try {
+    await store.setState(state);
+    showSaved();
+  } catch (err) {
+    showSaveError();
+    console.warn('[sanctuary] persist failed', err);
+  }
+}
+
+/* ── Save indicator (subtle pulse in the privacy banner) ── */
+let _saveTimer;
+function _saveIndicator() { return document.getElementById('save-indicator'); }
+function showSaving() {
+  const el = _saveIndicator(); if (!el) return;
+  clearTimeout(_saveTimer);
+  el.textContent = cloudStore ? 'Saving…' : 'Saving locally…';
+  el.style.color = 'var(--text-dim)';
+  el.style.opacity = '1';
+}
+function showSaved() {
+  const el = _saveIndicator(); if (!el) return;
+  el.textContent = cloudStore ? '✦ Synced' : '✦ Saved';
+  el.style.color = 'var(--gold-light)';
+  el.style.opacity = '1';
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(() => { el.style.opacity = '0'; }, 1400);
+}
+function showSaveError() {
+  const el = _saveIndicator(); if (!el) return;
+  el.textContent = '! save failed';
+  el.style.color = 'var(--bad)';
+  el.style.opacity = '1';
+  clearTimeout(_saveTimer);
+  _saveTimer = setTimeout(() => { el.style.opacity = '0'; }, 3000);
+}
+
+/* ── Privacy banner mode toggle (local vs synced) ── */
+function updatePrivacyBanner(user) {
+  const banner = document.getElementById('privacy-banner');
+  if (!banner) return;
+  const text = banner.querySelector('.pb-text');
+  if (!text) return;
+  if (user) {
+    banner.dataset.mode = 'cloud';
+    const handle = (user.user_metadata && (user.user_metadata.username || user.user_metadata.handle)) || (user.email ? user.email.split('@')[0] : 'your account');
+    text.innerHTML = `Synced across devices as <span style="color:var(--gold-light)">@${escape(handle)}</span>. Local backup kept on this device.`;
+  } else {
+    banner.dataset.mode = 'local';
+    text.innerHTML = `Lives privately on this device. <a href="/social/login" class="pb-link" style="color:var(--gold-light);text-decoration:underline;text-decoration-color:var(--gold-dim)">Sign in</a> to sync across devices.`;
+  }
+}
 
 async function loadState() {
   const saved = await store.getState();
@@ -1343,7 +1436,7 @@ function renderChiefAimsEdit() {
   if (!el) return;
   el.innerHTML = '';
   if (state.chiefAims.length === 0) {
-    el.innerHTML = `<div class="empty-row">No chief aims yet. <a href="#" id="seed-aim" style="color:var(--gold)">Add your first one →</a></div>`;
+    el.innerHTML = `<div class="empty-row" style="padding:1.5rem 1rem;line-height:1.7">A chief aim is a 1–2 year horizon — what you'd consider possible if everything aligned.<br><a href="#" id="seed-aim" style="color:var(--gold);font-style:normal;display:inline-block;margin-top:0.6rem">+ Add your first chief aim</a></div>`;
     document.getElementById('seed-aim').addEventListener('click', e => { e.preventDefault(); addChiefAim(); });
     return;
   }
@@ -1392,7 +1485,7 @@ function renderObjectives() {
   if (!el) return;
   el.innerHTML = '';
   if (state.chiefAims.length === 0) {
-    el.innerHTML = `<div class="empty-row">Add a chief aim first.</div>`;
+    el.innerHTML = `<div class="empty-row">Objectives are 1–6 month milestones under a chief aim. Add a chief aim above first.</div>`;
     return;
   }
   state.chiefAims.forEach(aim => {
@@ -1474,7 +1567,7 @@ function renderGoalsByObj() {
   el.innerHTML = '';
   const objs = state.objectives;
   if (objs.length === 0) {
-    el.innerHTML = `<div class="empty-row">Add an objective first.</div>`;
+    el.innerHTML = `<div class="empty-row">Goals are this month's 100% commitments — one or two per objective. Add an objective above first.</div>`;
     return;
   }
   objs.forEach(o => {
@@ -2274,6 +2367,21 @@ document.addEventListener('keydown', e => {
   if (e.key === 'Escape' && illumEls.panel.classList.contains('open')) closeChatPanel();
 });
 
+// Number keys 1-5 jump tabs (skip when typing in inputs/textareas/contenteditable)
+document.addEventListener('keydown', e => {
+  if (e.metaKey || e.ctrlKey || e.altKey) return;
+  if (illumEls.panel?.classList.contains('open')) return;
+  if (document.getElementById('modal-bg')?.classList.contains('open')) return;
+  const tag = (e.target && e.target.tagName) || '';
+  if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
+  if (e.target && e.target.isContentEditable) return;
+  const map = { '1': 'dashboard', '2': 'pyramid', '3': 'practice', '4': 'progress', '5': 'vision' };
+  const tab = map[e.key];
+  if (!tab) return;
+  e.preventDefault();
+  switchTab(tab);
+});
+
 document.getElementById('btn-export').addEventListener('click', async () => {
   const imgs = await store.getImages();
   const blob = new Blob([JSON.stringify({ state, images: imgs, exportedAt: new Date().toISOString() }, null, 2)], { type:'application/json' });
@@ -2326,6 +2434,7 @@ document.getElementById('import-file').addEventListener('change', async e => {
    ════════════════════════════════════════════════════════════════ */
 function renderAll() {
   document.getElementById('today-date').textContent = formatDate(new Date());
+  renderFirstRun();
   renderScoreboard();
   renderDream();
   renderChiefAimsEdit();
@@ -2339,6 +2448,50 @@ function renderAll() {
   if (document.querySelector('.view#view-progress.active')) {
     renderScoreChart(); renderHeatmap(); renderHitRate();
   }
+}
+
+/* ── First-run coaching panel ── */
+function isStateEmpty() {
+  return !state.dream
+    && state.chiefAims.length === 0
+    && state.objectives.length === 0
+    && state.goals.length === 0
+    && state.habits.filter(h => !h.archived).length === 0;
+}
+function renderFirstRun() {
+  const el = document.getElementById('first-run');
+  if (!el) return;
+  if (!isStateEmpty()) { el.hidden = true; return; }
+  el.hidden = false;
+  // Bind once
+  if (el.dataset.bound === '1') return;
+  el.dataset.bound = '1';
+  el.querySelectorAll('[data-fr-action]').forEach(btn => {
+    btn.addEventListener('click', () => {
+      const action = btn.dataset.frAction;
+      switchTab(action === 'practice' ? 'practice' : 'pyramid');
+      // Allow tab switch to render before we focus / kick the next step
+      setTimeout(() => {
+        if (action === 'dream') {
+          document.getElementById('dream-input')?.focus();
+        } else if (action === 'aim') {
+          addChiefAim();
+        } else if (action === 'objective') {
+          // Objectives require a chief aim first — if none, create one and an objective under it
+          if (state.chiefAims.length === 0) addChiefAim();
+          // Wait one render cycle so the aim row exists
+          setTimeout(() => {
+            const firstAim = state.chiefAims[0];
+            if (firstAim) addObjective(firstAim.id);
+          }, 60);
+        } else if (action === 'practice') {
+          promptAddHabit('habits-full');
+        }
+      }, 80);
+    });
+    btn.addEventListener('mouseenter', () => { btn.style.borderColor = 'var(--gold)'; btn.style.background = 'rgba(196,151,58,0.05)'; });
+    btn.addEventListener('mouseleave', () => { btn.style.borderColor = 'var(--card-border)'; btn.style.background = 'var(--card)'; });
+  });
 }
 
 (async function init() {

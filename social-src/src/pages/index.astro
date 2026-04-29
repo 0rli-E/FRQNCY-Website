@@ -2,9 +2,13 @@
 import SocialLayout from '../layouts/SocialLayout.astro';
 import Feed from '../components/Feed';
 import PostComposer from '../components/PostComposer';
+import WelcomeBanner from '../components/WelcomeBanner';
 ---
 
-<SocialLayout title="Social">
+<SocialLayout
+  title="Feed"
+  description="NRG · The FRQNCY social network. Connect with people building their dream life."
+>
   <div class="grid grid-cols-1 lg:grid-cols-12 gap-6 mt-6">
 
     <!-- Left sidebar -->
@@ -23,19 +27,54 @@ import PostComposer from '../components/PostComposer';
       </div>
 
       <div class="rounded-xl bg-card-bg border border-card-border p-5">
-        <h3 class="font-heading text-lg text-gold mb-3">Trending Topics</h3>
-        <ul class="space-y-2 text-sm">
-          <li><a href="#" class="text-text-dim hover:text-gold transition-colors"># Meditation</a></li>
-          <li><a href="#" class="text-text-dim hover:text-gold transition-colors"># Quantum Consciousness</a></li>
-          <li><a href="#" class="text-text-dim hover:text-gold transition-colors"># Sound Healing</a></li>
-          <li><a href="#" class="text-text-dim hover:text-gold transition-colors"># Sacred Geometry</a></li>
-          <li><a href="#" class="text-text-dim hover:text-gold transition-colors"># Plant Medicine</a></li>
+        <h3 class="font-heading text-lg text-gold mb-3">Recent commissions</h3>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a href="/v2/water/" class="text-text hover:text-gold transition-colors block">
+              Water
+              <span class="block text-xs text-text-dim mt-0.5">the body knows</span>
+            </a>
+          </li>
+          <li>
+            <a href="/v2/music/" class="text-text hover:text-gold transition-colors block">
+              Music
+              <span class="block text-xs text-text-dim mt-0.5">frequency as practice</span>
+            </a>
+          </li>
+          <li>
+            <a href="/v2/money/" class="text-text hover:text-gold transition-colors block">
+              Money
+              <span class="block text-xs text-text-dim mt-0.5">values, not vibes</span>
+            </a>
+          </li>
+          <li>
+            <a href="/v2/wellbeing/" class="text-text hover:text-gold transition-colors block">
+              Wellbeing
+              <span class="block text-xs text-text-dim mt-0.5">the body knows how</span>
+            </a>
+          </li>
         </ul>
+      </div>
+
+      <!-- Channels — the six pillars are the canonical home for any post,
+           each channel is a filtered feed at /social/channel/<slug>. -->
+      <div class="rounded-xl bg-card-bg border border-card-border p-5">
+        <h3 class="font-heading text-lg text-gold mb-3">Channels</h3>
+        <ul class="space-y-2 text-sm">
+          <li><a href="/social/channel/research" class="text-text-dim hover:text-gold transition-colors flex items-center justify-between"><span>#research</span><span class="text-xs opacity-60">know</span></a></li>
+          <li><a href="/social/channel/education" class="text-text-dim hover:text-gold transition-colors flex items-center justify-between"><span>#education</span><span class="text-xs opacity-60">learn</span></a></li>
+          <li><a href="/social/channel/builder" class="text-text-dim hover:text-gold transition-colors flex items-center justify-between"><span>#builder</span><span class="text-xs opacity-60">make</span></a></li>
+          <li><a href="/social/channel/media" class="text-text-dim hover:text-gold transition-colors flex items-center justify-between"><span>#media</span><span class="text-xs opacity-60">broadcast</span></a></li>
+          <li><a href="/social/channel/fund" class="text-text-dim hover:text-gold transition-colors flex items-center justify-between"><span>#fund</span><span class="text-xs opacity-60">fuel</span></a></li>
+          <li><a href="/social/channel/sanctuary" class="text-text-dim hover:text-gold transition-colors flex items-center justify-between"><span>#sanctuary</span><span class="text-xs opacity-60">inhabit</span></a></li>
+        </ul>
+        <p class="text-xs text-text-dim/70 mt-3 leading-relaxed">Tag a post with one of these in the composer to land it in the channel.</p>
       </div>
     </aside>
 
     <!-- Main feed -->
     <section class="lg:col-span-6 space-y-6">
+      <WelcomeBanner client:load />
       <PostComposer client:load />
       <Feed client:load />
     </section>
@@ -43,31 +82,37 @@ import PostComposer from '../components/PostComposer';
     <!-- Right sidebar -->
     <aside class="hidden lg:block lg:col-span-3 space-y-4">
       <div class="rounded-xl bg-card-bg border border-card-border p-5">
-        <h3 class="font-heading text-lg text-gold mb-3">Suggested People</h3>
-        <ul class="space-y-3">
-          <li class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-accent/20 flex items-center justify-center text-accent text-xs font-semibold">R</div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm text-text truncate">Ram Dass</p>
-              <p class="text-xs text-text-dim">Consciousness</p>
-            </div>
-            <button class="text-xs text-gold border border-gold/30 rounded-full px-2.5 py-0.5 hover:bg-gold/10 transition-colors">Follow</button>
+        <h3 class="font-heading text-lg text-gold mb-3">Teachers we read</h3>
+        <ul class="space-y-3 text-sm">
+          <li>
+            <a href="/v2/explore.html#p-neville-goddard" class="text-text hover:text-gold transition-colors block">
+              Neville Goddard
+              <span class="block text-xs text-text-dim mt-0.5">imagination as creator</span>
+            </a>
           </li>
-          <li class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-gold/20 flex items-center justify-center text-gold text-xs font-semibold">A</div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm text-text truncate">Alan Watts</p>
-              <p class="text-xs text-text-dim">Philosophy</p>
-            </div>
-            <button class="text-xs text-gold border border-gold/30 rounded-full px-2.5 py-0.5 hover:bg-gold/10 transition-colors">Follow</button>
+          <li>
+            <a href="/v2/explore.html#p-osho" class="text-text hover:text-gold transition-colors block">
+              Osho
+              <span class="block text-xs text-text-dim mt-0.5">presence over religion</span>
+            </a>
           </li>
-          <li class="flex items-center gap-3">
-            <div class="w-8 h-8 rounded-full bg-gold-light/20 flex items-center justify-center text-gold-light text-xs font-semibold">T</div>
-            <div class="flex-1 min-w-0">
-              <p class="text-sm text-text truncate">Terence McKenna</p>
-              <p class="text-xs text-text-dim">Psychedelics</p>
-            </div>
-            <button class="text-xs text-gold border border-gold/30 rounded-full px-2.5 py-0.5 hover:bg-gold/10 transition-colors">Follow</button>
+          <li>
+            <a href="/v2/explore.html#p-sadhguru" class="text-text hover:text-gold transition-colors block">
+              Sadhguru
+              <span class="block text-xs text-text-dim mt-0.5">yogic science</span>
+            </a>
+          </li>
+          <li>
+            <a href="/v2/explore.html#p-sai-maa" class="text-text hover:text-gold transition-colors block">
+              Sai Maa
+              <span class="block text-xs text-text-dim mt-0.5">remembrance of light</span>
+            </a>
+          </li>
+          <li>
+            <a href="/v2/explore.html#p-kevin-trudeau" class="text-text hover:text-gold transition-colors block">
+              Kevin Trudeau
+              <span class="block text-xs text-text-dim mt-0.5">natural cures, success principles</span>
+            </a>
           </li>
         </ul>
       </div>

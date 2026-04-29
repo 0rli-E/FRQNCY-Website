@@ -605,7 +605,7 @@
     </footer>
 
     <script>
-        function handleWaitlist(event) {
+        async function handleWaitlist(event) {
             event.preventDefault();
             const form = event.target;
             const input = form.querySelector('input[type="email"]');
@@ -619,25 +619,46 @@
                 setTimeout(() => input.setCustomValidity(''), 2000);
                 return;
             }
+            const origText = btn.textContent;
             btn.disabled = true;
             btn.textContent = 'Sending…';
-            fetch('https://frqncy.substack.com/api/v1/free', {
-                method: 'POST',
-                mode: 'no-cors',
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    email,
-                    first_url: window.location.href,
-                    first_referrer: document.referrer || '',
-                    current_url: window.location.href,
-                    current_referrer: document.referrer || '',
-                    referral_code: '',
-                    source: 'frqncy.network-space',
-                    domain: 'frqncy.substack.com'
-                })
-            }).finally(() => {
-                form.innerHTML = '<div style="color:#fff;font-family:Cormorant,serif;font-size:1.5rem;padding:0.5rem 0;">You\'re on the list.</div><div style="color:#E0E0E0;font-size:0.95rem;margin-top:0.25rem;">Check your inbox to confirm your subscription.</div>';
-            });
+            try {
+                // POST to /api/subscribe — same Cloudflare Pages function the
+                // homepage uses. Persists in the Supabase `subscribers` table.
+                const resp = await fetch('/api/subscribe', {
+                    method: 'POST',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ email, source: 'frqncy_space_waitlist' }),
+                });
+                let data = null;
+                try { data = await resp.json(); } catch (_) {}
+                if (!resp.ok || !data || data.ok !== true) {
+                    const msg = (data && data.error) || (resp.status === 429
+                        ? 'Too many attempts — please wait a minute and try again.'
+                        : 'Connection error. Please try again.');
+                    btn.disabled = false;
+                    btn.textContent = origText;
+                    input.setCustomValidity(msg);
+                    input.reportValidity();
+                    setTimeout(() => input.setCustomValidity(''), 3000);
+                    return;
+                }
+                const already = data.isNew === false;
+                form.innerHTML =
+                    '<div style="color:#fff;font-family:Cormorant,serif;font-size:1.5rem;padding:0.5rem 0;">' +
+                    (already ? 'Already with us.' : "You're on the list.") +
+                    '</div><div style="color:#E0E0E0;font-size:0.95rem;margin-top:0.25rem;">' +
+                    (already
+                        ? "You're already on the FRQNCY list. We'll write when Space details go out."
+                        : "We'll let you know the moment Space details are ready to share.") +
+                    '</div>';
+            } catch (err) {
+                btn.disabled = false;
+                btn.textContent = origText;
+                input.setCustomValidity('Connection error. Please try again.');
+                input.reportValidity();
+                setTimeout(() => input.setCustomValidity(''), 3000);
+            }
         }
     </script>
   <!-- Social auth awareness (Supabase) -->

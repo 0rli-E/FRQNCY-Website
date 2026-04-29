@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Robotics — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py robotics
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: robotics
+  label: "Robotics"
+  domain: "Technology"
+  domain_slug: technology
+  pillar: "Builder"
+  pillar_slug: builder
+  accent: "#00BCD4"
+
+treatment:
+  register: scientific
+
+hero:
+  variant: split
+  eyebrow: "Technology · Builder"
+  title: "Robotics"
+  desc: |
+    The design and engineering of autonomous machines — from industrial robots to soft bio-inspired forms.
+  media:
+    poster_url: https://images.pexels.com/photos/34207359/pexels-photo-34207359.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/34194567/pexels-photo-34194567.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      A robot may not injure a human being, or, through inaction, allow a human being to come to harm. *— Isaac Asimov — I, Robot*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Technology", url: "/v2/technology/" }
+  canonical: https://frqncy.network/v2/robotics/
+  og_image: https://frqncy.network/v2/og/robotics.png

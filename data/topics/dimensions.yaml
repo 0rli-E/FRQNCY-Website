@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Dimensions — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py dimensions
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: dimensions
+  label: "Dimensions"
+  domain: "Metaphysics"
+  domain_slug: metaphysics
+  pillar: "Research"
+  pillar_slug: research
+  accent: "#7B4AE8"
+
+treatment:
+  register: mythic
+
+hero:
+  variant: split
+  eyebrow: "Metaphysics · Research"
+  title: "Dimensions"
+  desc: |
+    Beyond the three spatial dimensions — higher-dimensional reality as explored through physics, mysticism, and consciousness.
+  media:
+    poster_url: https://images.unsplash.com/photo-1419242902214-272b3f66ee7a?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1539593395743-7da5ee10ff07?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      There are more things in heaven and earth, Horatio, than are dreamt of in your philosophy. *— William Shakespeare — Hamlet*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Metaphysics", url: "/v2/metaphysics/" }
+  canonical: https://frqncy.network/v2/dimensions/
+  og_image: https://frqncy.network/v2/og/dimensions.png

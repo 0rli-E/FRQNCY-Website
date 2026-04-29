@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Permaculture — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py permaculture
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: permaculture
+  label: "Permaculture"
+  domain: "Food & Agriculture"
+  domain_slug: food
+  pillar: "Education"
+  pillar_slug: education
+  accent: "#C47A3A"
+
+treatment:
+  register: editorial
+
+hero:
+  variant: split
+  eyebrow: "Food & Agriculture · Education"
+  title: "Permaculture"
+  desc: |
+    Design science for sustainable human habitats — mimicking the patterns and resilience of natural ecosystems.
+  media:
+    poster_url: https://images.unsplash.com/photo-1500076656116-558758c991c1?auto=format&fit=crop&q=85&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.unsplash.com/photo-1464226184884-fa280b87c399?auto=format&fit=crop&q=85&w=3840
+    caption: |
+      The problem is the solution. *— Bill Mollison — Permaculture: A Designer's Manual*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Food & Agriculture", url: "/v2/food/" }
+  canonical: https://frqncy.network/v2/permaculture/
+  og_image: https://frqncy.network/v2/og/permaculture.png

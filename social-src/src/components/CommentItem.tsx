@@ -1,6 +1,7 @@
 import { useState } from 'preact/hooks';
 import CommentForm from './CommentForm';
 import { useAuth } from './AuthProvider';
+import RichContent from './RichContent';
 
 export interface CommentNode {
   id: string;
@@ -93,7 +94,7 @@ export default function CommentItem({
         </div>
 
         <p class="text-sm text-text leading-relaxed whitespace-pre-wrap mt-0.5">
-          {comment.content}
+          <RichContent text={comment.content} />
         </p>
 
         {/* Actions */}

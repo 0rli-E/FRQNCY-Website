@@ -1,0 +1,74 @@
+# ════════════════════════════════════════════════════════════════════
+# Future Tech — auto-drafted brief.
+# Edit by hand to add bespoke prose, panel, or per-topic imagery.
+# Regenerate: python3 scripts/generate_topic_page.py future-tech
+# ────────────────────────────────────────────────────────────────────
+
+meta:
+  slug: future-tech
+  label: "Future Tech"
+  domain: "Creation"
+  domain_slug: creation
+  pillar: "Builder"
+  pillar_slug: builder
+  accent: "#E87A4A"
+
+treatment:
+  register: mythic
+
+hero:
+  variant: split
+  eyebrow: "Creation · Builder"
+  title: "Future Tech"
+  desc: |
+    Technologies that don't fully exist yet — the horizon of what's coming next.
+  media:
+    poster_url: https://images.pexels.com/photos/35579528/pexels-photo-35579528.jpeg?cs=srgb&fm=jpg&w=3840
+
+prelude: null
+
+sections:
+
+  - module: resources
+    label: Books
+    types: [book]
+    auto: true
+
+  - module: resources
+    label: People
+    types: [person]
+    auto: true
+
+  - module: resources
+    label: Institutions
+    types: [org]
+    auto: true
+
+  - module: resources
+    label: Places
+    types: [place]
+    auto: true
+
+  - module: resources
+    label: Tools & media
+    types: [tool, media, app, platform]
+    auto: true
+
+  - module: bleed
+    image_url: https://images.pexels.com/photos/32660203/pexels-photo-32660203.jpeg?cs=srgb&fm=jpg&w=3840
+    caption: |
+      The best way to predict the future is to invent it. *— Alan Kay*
+
+picks: null
+closing: null
+
+bespoke:
+  css: ""
+  head_extra: ""
+
+linking:
+  breadcrumb:
+    - { label: FRQNCY, url: "/" }
+    - { label: "Creation", url: "/v2/creation/" }
+  canonical: https://frqncy.network/v2/future-tech/
+  og_image: https://frqncy.network/v2/og/future-tech.png
