@@ -138,6 +138,7 @@ SECTOR_STATS: dict[str, list[tuple[str, str]]] = {
 
 SECTOR_TOP_PROJECTS: dict[str, list[tuple[str, str]]] = {
     "bitcoin": [
+        # Bitcoin-ecosystem only. BCH is a fork, not in-ecosystem — removed.
         ("Bitcoin", "BTC"),
         ("Lightning Network", "LN"),
         ("Fedimint", "—"),
@@ -147,7 +148,6 @@ SECTOR_TOP_PROJECTS: dict[str, list[tuple[str, str]]] = {
         ("Ordinals", "—"),
         ("Runes", "—"),
         ("Stamps", "—"),
-        ("Bitcoin Cash", "BCH"),
     ],
     "sov": [
         ("Bitcoin", "BTC"),
@@ -507,6 +507,140 @@ SECTOR_COUNTER: dict[str, dict[str, str]] = {
 }
 
 
+# ── Per-project rich data — image + extended explainer + links ──────
+# Used by render_project_feature() to render large visual project cards
+# in the working-set section. Each entry: project name → dict with
+# image (verified URL), accent (brand colour), tagline, body (60-90
+# word native explainer), website, docs, twitter, founder, year.
+# Per user request: "pictures of these projects on the bitcoin page
+# aswell as ... a link to all the projects and explainers to the
+# projects... Learn from this and improve the other sites aswell."
+SECTOR_PROJECT_DATA: dict[str, dict[str, dict]] = {
+    "bitcoin": {
+        "Bitcoin": {
+            "tagline": "Sound money you can hold yourself.",
+            "image": "https://bitcoin.org/img/icons/opengraph.png?1777284471",
+            "accent": "#F7931A",
+            "year": "2009",
+            "founder": "Satoshi Nakamoto",
+            "body": "The original peer-to-peer electronic cash system. 21 million coins, ten-minute blocks, no foundation, no roadmap, no CEO to subpoena. Mining secures the chain through SHA-256 proof-of-work; nodes verify the rules independently. The first money in human history that no committee can debase, freeze, or revoke.",
+            "website": "https://bitcoin.org",
+            "docs": "https://developer.bitcoin.org",
+            "twitter": "https://x.com/Bitcoin",
+            "extra": "https://bitcoin.org/bitcoin.pdf",
+            "extra_label": "Whitepaper",
+        },
+        "Lightning Network": {
+            "tagline": "Sub-cent payments at internet scale.",
+            "image": "https://avatars.githubusercontent.com/u/15310939?s=400&v=4",  # Lightning Labs GitHub avatar
+            "accent": "#F7CA45",
+            "year": "2018",
+            "founder": "Joseph Poon · Thaddeus Dryja",
+            "body": "Routes payments across HTLC-locked channels without touching the base chain. Two parties open a channel with an on-chain funding tx, then exchange signed balance updates off-chain. Phoenix and Wallet of Satoshi made it tappable. The hard part isn't sending — it's inbound liquidity, channel rebalancing, and watchtowers. Sub-cent settlement, with custody trade-offs the user has to understand.",
+            "website": "https://lightning.network",
+            "docs": "https://docs.lightning.engineering",
+            "twitter": "https://x.com/lightning",
+            "extra": "https://github.com/lightning/bolts",
+            "extra_label": "BOLT specs",
+        },
+        "Fedimint": {
+            "tagline": "Community banks, cryptographically verified.",
+            "image": "https://avatars.githubusercontent.com/u/94670866?s=400&v=4",  # Fedimint GitHub
+            "accent": "#FF7A45",
+            "year": "2022",
+            "founder": "Eric Sirion · Obi Nwosu",
+            "body": "Pools Bitcoin into a federation of guardians who issue Chaumian ecash tokens redeemable 1:1. Cash-like privacy — the mint can't see who holds what — while the federation handles custody, Lightning routing, and recovery. The trust model is a community bank, not self-custody: you trust your village's federation, not a corporation. Best fit for circular economies where users already know each other.",
+            "website": "https://fedimint.org",
+            "docs": "https://github.com/fedimint/fedimint",
+            "twitter": "https://x.com/fedimint",
+            "extra": "https://fedi.xyz",
+            "extra_label": "Fedi app",
+        },
+        "Cashu": {
+            "tagline": "Chaumian ecash for Bitcoin.",
+            "image": "https://avatars.githubusercontent.com/u/116617488?s=400&v=4",  # Cashu GitHub
+            "accent": "#9C5BC9",
+            "year": "2022",
+            "founder": "calle",
+            "body": "A mint custodies sats and issues blinded tokens — cryptographic bearer notes — that users hold as text strings. The mint can't link issuance to redemption, so payments inside the mint are private by default. Reference implementation lives alongside a growing wallet ecosystem: Minibits, Nutstack, eNuts. Custodial, private, instant — closer to digital cash than anything else shipping.",
+            "website": "https://cashu.space",
+            "docs": "https://github.com/cashubtc/nuts",
+            "twitter": "https://x.com/cashubtc",
+            "extra": "https://nuts.cashu.space",
+            "extra_label": "NUT specs",
+        },
+        "Nostr": {
+            "tagline": "Notes and Other Stuff Transmitted by Relays.",
+            "image": "https://nostr.org/assets/images/home/social-nostr.png",
+            "accent": "#9747FF",
+            "year": "2022",
+            "founder": "fiatjaf",
+            "body": "A censorship-resistant social protocol. Identity is a secp256k1 keypair, the same curve Bitcoin uses. Events are signed JSON, broadcast to relays clients subscribe to. NIPs (Nostr Implementation Possibilities) extend the protocol — NIP-57 wires Lightning zaps directly into posts. No accounts, no platform, no recovery if you lose the key. Bitcoin culture's native social layer.",
+            "website": "https://nostr.com",
+            "docs": "https://github.com/nostr-protocol/nips",
+            "twitter": "https://x.com/Snowden",  # Snowden's npub on Nostr is iconic; Nostr has no central X account
+            "extra": "https://damus.io",
+            "extra_label": "Damus client",
+        },
+        "Liquid Network": {
+            "tagline": "Two-minute Bitcoin sidechain.",
+            "image": "https://avatars.githubusercontent.com/u/12554035?s=400&v=4",  # ElementsProject (Blockstream)
+            "accent": "#1E5FA4",
+            "year": "2018",
+            "founder": "Blockstream",
+            "body": "Federated sidechain — a two-way peg secured by a rotating set of functionaries. Two-minute blocks, Confidential Transactions hiding amounts and asset types by default, and issued assets (L-BTC, L-USDt, tokenized securities). The federation model is openly trusted: you're trading the full base-layer security for faster settlement and privacy. Used heavily by exchanges for inter-desk Bitcoin movement.",
+            "website": "https://liquid.net",
+            "docs": "https://docs.liquid.net",
+            "twitter": "https://x.com/Blockstream",
+            "extra": "https://blockstream.info/liquid/",
+            "extra_label": "Liquid explorer",
+        },
+        "Ordinals": {
+            "tagline": "Inscriptions on individual sats.",
+            "image": "https://avatars.githubusercontent.com/u/121339173?s=400&v=4",  # ordinals GitHub
+            "accent": "#F2A900",
+            "year": "2023",
+            "founder": "Casey Rodarmor",
+            "body": "Inscribes arbitrary data onto individual satoshis using the witness section made cheap by Taproot (BIP-341) and SegWit. Each sat gets an ordinal number based on mining order, turning fungible coins into addressable units. Inscriptions store images, text, even small programs directly on-chain — no IPFS, no metadata server. Triggered the 2023 fee spike, the BRC-20 experiment, and the durable conviction split inside Bitcoin culture.",
+            "website": "https://ordinals.com",
+            "docs": "https://docs.ordinals.com",
+            "twitter": "https://x.com/rodarmor",
+            "extra": "https://github.com/ordinals/ord",
+            "extra_label": "ord wallet",
+        },
+        "Runes": {
+            "tagline": "Fungible tokens, UTXO-native.",
+            "image": "https://avatars.githubusercontent.com/u/121339173?s=400&v=4",  # ordinals (Casey)
+            "accent": "#FFB627",
+            "year": "2024",
+            "founder": "Casey Rodarmor",
+            "body": "A fungible token protocol on Bitcoin that lives in the UTXO set rather than as inscriptions. Launched at the April 2024 halving block. Cleaner than BRC-20 because Runes don't bloat the chain with inscription metadata — they're encoded in OP_RETURN outputs. Uniswap-shaped trading on Magic Eden Runes; the cohort is volatile but architecturally sound.",
+            "website": "https://docs.ordinals.com/runes.html",
+            "docs": "https://docs.ordinals.com/runes/specification.html",
+            "twitter": "https://x.com/rodarmor",
+            "extra": "https://magiceden.io/runes",
+            "extra_label": "Runes on ME",
+        },
+        "Stamps": {
+            "tagline": "Permanent on-chain artefacts.",
+            "image": "https://avatars.githubusercontent.com/u/124320811?s=400&v=4",  # Stampchain
+            "accent": "#E84545",
+            "year": "2023",
+            "founder": "Mike In Space",
+            "body": "Bitcoin Stamps embed data directly in the UTXO set itself rather than the witness data — making them genuinely unprunable, unlike Ordinals which rely on witness data that nodes could in theory drop. The trade-off is much higher cost per byte. SRC-20 standard followed for fungible tokens. Smaller cultural footprint than Ordinals; technically the most permanent on-chain artefact.",
+            "website": "https://stampchain.io",
+            "docs": "https://github.com/stampchain-io/btc_stamps",
+            "twitter": "https://x.com/BitcoinStamps",
+            "extra": "https://stampchain.io/stamp",
+            "extra_label": "Stamp explorer",
+        },
+    },
+    # Other sectors will get filled in iteratively. For now bitcoin is the
+    # reference implementation — generator falls back to the basic project
+    # card for sectors not yet in this dict.
+}
+
+
 # ── Seminal text excerpts — the founding document per sector ────────
 # Each sub-hub gets a long-form pull-quote from the actual seminal
 # work + a direct link to read it. Bitcoin → whitepaper. Privacy →
@@ -778,10 +912,11 @@ SECTOR_RESEARCH: dict[str, dict] = {
             ("Read the white paper out loud.", "Nine pages. Twice a year. The protocol hasn't changed; your understanding of it should."),
         ],
         "closing_native": (
-            "Sound money is not nostalgia.",
-            "It is a protocol that refuses to be edited.",
-            "Bitcoin is the answer to a question fiat is no longer allowed to ask.",
-            "Verify. Don't trust.",
+            # Real native Bitcoin culture only. No invented lines.
+            "Don't trust. Verify.",
+            "Not your keys, not your coins.",
+            "Run a node.",
+            "Vires in numeris.",
         ),
     },
     "sov": {

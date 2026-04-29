@@ -346,6 +346,109 @@ blockquote cite {
   .hero-quote.in-view { animation: none; clip-path: none; }
 }
 
+/* PROJECT FEATURE GRID — rich per-project cards with image, extended
+   explainer, and full link set (website, docs, X, extra). Per user:
+   "pictures of these projects on the bitcoin page aswell as ... a
+   link to all the projects and explainers to the projects". */
+.project-feature-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 1.4rem;
+  margin: 1rem 0 1rem;
+}
+.project-feature {
+  background: rgba(255, 255, 255, 0.02);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 6px;
+  overflow: hidden;
+  display: flex; flex-direction: column;
+  transition: transform 0.3s ease, border-color 0.3s ease, background 0.3s ease;
+}
+.project-feature:hover {
+  transform: translateY(-3px);
+  border-color: rgba(255, 255, 255, 0.18);
+  background: rgba(255, 255, 255, 0.04);
+}
+.pf-image {
+  width: 100%; aspect-ratio: 16 / 9;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; position: relative;
+}
+.pf-image img {
+  width: 100%; height: 100%; object-fit: contain;
+  padding: 1.5rem;
+  filter: brightness(0.95) saturate(0.95);
+  transition: transform 0.5s ease;
+}
+.project-feature:hover .pf-image img {
+  transform: scale(1.03);
+}
+.pf-body {
+  padding: 1.4rem 1.5rem 1.3rem;
+  display: flex; flex-direction: column; gap: 0.65rem;
+  flex: 1;
+}
+.pf-head {
+  display: flex; align-items: baseline; justify-content: space-between; gap: 0.85rem;
+}
+.pf-name {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: clamp(1.4rem, 2vw, 1.7rem);
+  color: var(--pearl); line-height: 1.15;
+  margin: 0;
+}
+.pf-tier {
+  font-size: 0.5rem; letter-spacing: 0.22em; text-transform: uppercase;
+  padding: 2px 8px; border-radius: 2px;
+  border: 1px solid currentColor;
+  white-space: nowrap; flex-shrink: 0;
+}
+.pf-meta {
+  font-family: ui-monospace, 'JetBrains Mono', monospace;
+  font-size: 0.62rem; letter-spacing: 0.06em;
+  color: rgba(245, 248, 251, 0.55);
+  text-transform: uppercase;
+}
+.pf-tagline {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.05rem; line-height: 1.4;
+  color: var(--sector-warm);
+  margin: 0;
+}
+.pf-body-text {
+  font-size: 0.84rem; line-height: 1.7;
+  color: rgba(245, 248, 251, 0.72);
+  margin: 0;
+}
+.pf-footer {
+  margin-top: auto;
+  padding-top: 0.9rem;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  display: flex; align-items: center; gap: 0.7rem;
+  flex-wrap: wrap;
+}
+.pf-link {
+  font-size: 0.6rem; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(245, 248, 251, 0.6);
+  border-bottom: 1px dotted rgba(255,255,255,0.2);
+  text-decoration: none;
+  transition: color 0.2s, border-color 0.2s;
+  padding-bottom: 1px;
+}
+.pf-link:hover { color: var(--sector-warm); border-color: var(--sector-warm); }
+.pf-link.primary {
+  color: var(--sector-warm);
+  border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  letter-spacing: 0.18em;
+}
+.pf-link.primary:hover { color: var(--gold-light); border-color: var(--gold-light); }
+@media (max-width: 380px) {
+  .project-feature-grid { grid-template-columns: 1fr; }
+  .pf-body { padding: 1.2rem 1.1rem 1.1rem; }
+  .pf-image img { padding: 1.1rem; }
+}
+
 /* SEMINAL TEXT — the founding document per sector. Substantial pull-quote
    from a real primary source (Bitcoin whitepaper, Cypherpunk Manifesto,
    etc.) with a direct link. Per user: "excerpts from the bitcoin

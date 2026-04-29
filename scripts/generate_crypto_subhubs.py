@@ -35,6 +35,7 @@ from sector_research import (  # noqa: E402
     SECTOR_COUNTER,
     SECTOR_DESK_NOTE,
     SECTOR_SEMINAL,
+    SECTOR_PROJECT_DATA,
 )
 try:
     from sector_tech import SECTOR_TECH  # noqa: E402
@@ -939,6 +940,83 @@ def render_project(p: dict) -> str:
 </article>"""
 
 
+def render_project_feature_grid(slug: str, projects: list[dict]) -> str:
+    """Rich per-project feature cards: image, extended explainer,
+    website + docs + X + extra link. Falls back to the simple
+    .project card if sector hasn't been data-enriched yet."""
+    data = SECTOR_PROJECT_DATA.get(slug)
+    if not data:
+        return ""  # caller falls back to render_project per card
+    cards = []
+    rank = {"core": 0, "conviction": 1, "watch": 2, "speculative": 3, "unrated": 4, "avoid": 9}
+    for p in sorted(projects, key=lambda x: (rank.get(x.get("tier", "unrated"), 9), x.get("name", "").lower())):
+        if p.get("tier") == "avoid":
+            continue
+        name = p.get("name", "")
+        if name not in data:
+            # No rich data for this project — render simple fallback
+            cards.append(render_project(p))
+            continue
+        d = data[name]
+        tagline = esc(d.get("tagline", ""))
+        image = esc(d.get("image", ""))
+        accent = esc(d.get("accent") or p.get("accent") or "#7B61FF")
+        year = esc(d.get("year", ""))
+        founder = esc(d.get("founder", ""))
+        body = esc(d.get("body", ""))
+        website = esc(d.get("website", ""))
+        docs = esc(d.get("docs", ""))
+        twitter = esc(d.get("twitter", ""))
+        extra = esc(d.get("extra", ""))
+        extra_label = esc(d.get("extra_label", ""))
+        ticker = esc((p.get("ticker") or "").strip())
+        tier = esc(p.get("tier", "unrated"))
+        chain = esc((p.get("chain") or "").strip())
+        meta_bits = []
+        if ticker:
+            meta_bits.append(ticker)
+        if year:
+            meta_bits.append(year)
+        if founder:
+            meta_bits.append(founder)
+        if chain:
+            meta_bits.append(chain)
+        meta_line = "  ·  ".join(meta_bits)
+        link_html_parts = []
+        if website:
+            link_host = re.sub(r"^https?://(?:www\.)?", "", website).split("/")[0]
+            link_html_parts.append(f'<a class="pf-link primary" href="{website}" target="_blank" rel="noopener noreferrer">{esc(link_host)} →</a>')
+        if docs:
+            link_html_parts.append(f'<a class="pf-link" href="{docs}" target="_blank" rel="noopener noreferrer">Docs</a>')
+        if twitter:
+            link_html_parts.append(f'<a class="pf-link" href="{twitter}" target="_blank" rel="noopener noreferrer">𝕏</a>')
+        if extra and extra_label:
+            link_html_parts.append(f'<a class="pf-link" href="{extra}" target="_blank" rel="noopener noreferrer">{extra_label}</a>')
+        links_html = "".join(link_html_parts)
+        image_block = (
+            f'<div class="pf-image" style="background:linear-gradient(135deg, {accent}30, {accent}10); border-bottom: 2px solid {accent}">'
+            f'<img src="{image}" alt="{esc(name)}" loading="lazy"></div>'
+            if image else
+            f'<div class="pf-image" style="background:linear-gradient(135deg, {accent}30, {accent}10); border-bottom: 2px solid {accent}"></div>'
+        )
+        cards.append(f'''<article class="project-feature" data-tier="{tier}">
+  {image_block}
+  <div class="pf-body">
+    <header class="pf-head">
+      <h3 class="pf-name">{esc(name)}</h3>
+      <span class="pf-tier tier-{tier}">{tier}</span>
+    </header>
+    <div class="pf-meta">{meta_line}</div>
+    <p class="pf-tagline">{tagline}</p>
+    <p class="pf-body-text">{body}</p>
+    <footer class="pf-footer">{links_html}</footer>
+  </div>
+</article>''')
+    if not cards:
+        return ""
+    return f'<div class="project-feature-grid">{"".join(cards)}</div>'
+
+
 def render_seminal(slug: str) -> str:
     """The seminal text per sector — Bitcoin whitepaper, Cypherpunk Manifesto,
     Aavenomics, BlackRock annual letter, etc. — with a substantive excerpt
@@ -1329,18 +1407,25 @@ def render_page(slug: str, cfg: dict) -> str:
     desk_html = render_desk_note(slug)  # Builder B's winning pattern
 
     projects = filter_for(slug, cfg)
-    project_html = "\n".join(render_project(p) for p in projects)
     if not projects:
         project_block = (
             '<div class="empty-grid">No FRQNCY-tracked projects yet in this sector — '
             'sub-hub awaiting curation. The thesis above stands; the working set will land here.</div>'
         )
     else:
+        # Rich feature grid when sector has SECTOR_PROJECT_DATA; falls back to
+        # simple project cards otherwise.
+        feature_html = render_project_feature_grid(slug, projects)
+        if feature_html:
+            grid_html = feature_html
+        else:
+            project_html = "\n".join(render_project(p) for p in projects)
+            grid_html = f'<div class="projects-grid" id="projects">{project_html}</div>'
         project_block = (
             render_ticker_rail(projects, limit=5)
             + desk_html  # dated editorial brief
             + render_tier_bar(projects)
-            + f'<div class="projects-grid" id="projects">{project_html}</div>'
+            + grid_html
         )
 
     practice_html = render_practice(practice)
