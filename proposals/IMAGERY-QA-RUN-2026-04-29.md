@@ -1,10 +1,12 @@
 # Imagery QA — auto-run
 
-Generated: 2026-04-29 20:22  ·  Model: `anthropic/claude-opus-4.1`
+Generated: 2026-04-29 22:48  ·  Model: `sonnet`
 Topics scored: 1
 
-**Summary:** 0 approved · 0 watchlist · 0 flagged · 1 errors
+**Summary:** 0 approved · 0 watchlist · 1 flagged · 0 errors
 
-## ⚠ Errors
+## ✗ Flagged — recommend swap
 
-- `breathwork` — PermissionDeniedError: Error code: 403 - {'error': {'message': 'Key limit exceeded (total limit). Manage it using https://openrouter.ai/settings/keys', 'code': 403}}
+| slug | hero subject (C1/C4) | closing subject (C1/C4) | rules | reason |
+|---|---|---|---|---|
+| `meditation` | Zen rock garden (4/4) | Japanese garden bridge (2/2) | R4,R7 | Heavily infrared-processed magenta garden bridge has zero meditation readability, clashes with the navy filter chain, and sits in a fine-art-stock register far below the Aman/Kinfolk bar. |

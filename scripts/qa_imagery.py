@@ -27,11 +27,15 @@ from __future__ import annotations
 
 import argparse
 import base64
+import hashlib
 import json
 import os
 import re
+import shutil
+import subprocess
 import sys
 import time
+import urllib.request
 from dataclasses import dataclass, asdict
 from pathlib import Path
 
@@ -60,10 +64,21 @@ SEARCH_JSON = ROOT / "search.json"
 HARNESS_KEYS = Path.home() / ".frqncy-harness" / "auth" / "keys.json"
 
 # Provider chosen at runtime by load_client():
-#   ANTHROPIC_API_KEY     → direct Anthropic, model "claude-opus-4-7"
-#   harness OpenRouter    → OpenRouter, model "anthropic/claude-opus-4.1"
-ANTHROPIC_MODEL = "claude-opus-4-7"
-OPENROUTER_MODEL = "anthropic/claude-opus-4.1"
+#   ANTHROPIC_API_KEY     → direct Anthropic, model "claude-sonnet-4-6"
+#   harness OpenRouter    → OpenRouter, primary model below, with auto
+#                           fallback to free Gemma 3 27B if the primary
+#                           returns a 403 (key-cap exceeded).
+#
+# Cost notes (2026-04-29):
+#   • Opus 4.1 vision: ~$0.10-0.15 per topic, ~$15-20 for full --all run
+#   • Sonnet 4.6 vision: ~$0.02-0.03 per topic, ~$3-4 for full run
+#   • Gemma 3 27B free: $0 — used as fallback when OR key cap is hit
+ANTHROPIC_MODEL = "claude-sonnet-4-6"
+OPENROUTER_MODEL = "anthropic/claude-sonnet-4.6"
+OPENROUTER_FALLBACK = "google/gemma-3-27b-it:free"
+
+# Image cache for the claude CLI provider (the CLI can only see local files).
+QA_IMAGE_CACHE = Path.home() / ".frqncy-qa-cache"
 THRESHOLD_C1 = 4.0  # literal subject readability — failure is a hard flag
 THRESHOLD_C4 = 4.0  # FRQNCY-aesthetic alignment — failure is a hard flag
 
@@ -257,20 +272,83 @@ def image_block_openai(url: str) -> dict:
 
 
 def load_client() -> tuple[object, str, str]:
-    """Return (client, provider, model). Provider ∈ {'anthropic', 'openrouter'}."""
-    if os.environ.get("ANTHROPIC_API_KEY") and Anthropic is not None:
-        return Anthropic(), "anthropic", ANTHROPIC_MODEL
-    # Fall back to harness OpenRouter key
+    """Return (client, provider, model).
+
+    Priority order:
+      1. claude-cli  — uses Claude Max subscription via OAuth, $0 to user
+                       (within Max quota). Vision-capable; takes local
+                       file paths only.
+      2. anthropic   — direct Anthropic API. Per-token billing.
+      3. openrouter  — paid Sonnet via OR; auto-falls back to free Gemma
+                       on key-cap exhaustion.
+    Override priority with QA_PROVIDER=claude-cli|anthropic|openrouter.
+    """
+    forced = os.environ.get("QA_PROVIDER")
+
+    if forced != "anthropic" and forced != "openrouter":
+        if shutil.which("claude"):
+            return None, "claude-cli", "sonnet"
+
+    if forced != "openrouter":
+        if os.environ.get("ANTHROPIC_API_KEY") and Anthropic is not None:
+            return Anthropic(), "anthropic", ANTHROPIC_MODEL
+
     if HARNESS_KEYS.exists():
         keys = json.loads(HARNESS_KEYS.read_text())
         or_key = keys.get("apiKeys", {}).get("openrouter")
         if or_key and OpenAI is not None:
             client = OpenAI(api_key=or_key, base_url="https://openrouter.ai/api/v1")
             return client, "openrouter", OPENROUTER_MODEL
-    print("No usable provider found. Set ANTHROPIC_API_KEY or place an "
-          "OpenRouter key in ~/.frqncy-harness/auth/keys.json under apiKeys.openrouter",
+
+    print("No usable provider found. Install claude CLI and run /login, "
+          "set ANTHROPIC_API_KEY, or place an OpenRouter key in "
+          "~/.frqncy-harness/auth/keys.json under apiKeys.openrouter",
           file=sys.stderr)
     sys.exit(1)
+
+
+def _cache_image(url: str) -> Path:
+    """Download a URL to ~/.frqncy-qa-cache/<hash>.<ext>; return local path.
+    Local /v2/_chrome/imagery/ paths are returned unchanged."""
+    if url.startswith("/v2/"):
+        return ROOT / url.lstrip("/")
+    QA_IMAGE_CACHE.mkdir(parents=True, exist_ok=True)
+    h = hashlib.sha1(url.encode()).hexdigest()[:16]
+    ext = ".jpg"
+    lower = url.lower()
+    if ".png" in lower:
+        ext = ".png"
+    elif ".webp" in lower:
+        ext = ".webp"
+    elif ".avif" in lower:
+        ext = ".avif"
+    path = QA_IMAGE_CACHE / f"{h}{ext}"
+    if not path.exists():
+        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0 FRQNCY-QA/1.0"})
+        with urllib.request.urlopen(req, timeout=30) as r, open(path, "wb") as f:
+            shutil.copyfileobj(r, f)
+    return path
+
+
+def call_claude_cli(model: str, prompt: str, hero_url: str, closing_url: str) -> str:
+    """Use the local claude CLI (Max subscription). Local image paths only."""
+    hero_path = _cache_image(hero_url)
+    closing_path = _cache_image(closing_url)
+    full_prompt = (
+        f"{prompt}\n\n"
+        f"HERO image (local file): {hero_path}\n"
+        f"CLOSING image (local file): {closing_path}\n"
+    )
+    result = subprocess.run(
+        ["claude", "--print", "--output-format", "json", "--model", model, full_prompt],
+        capture_output=True, text=True, timeout=180,
+    )
+    if result.returncode != 0:
+        raise RuntimeError(f"claude CLI exit {result.returncode}: {result.stderr[:300]}")
+    outer = json.loads(result.stdout)
+    if outer.get("is_error"):
+        raise RuntimeError(f"claude CLI error: {outer.get('result', '')[:300]}")
+    return outer.get("result", "") or ""
 
 
 def call_anthropic(client, model, prompt: str, hero_url: str, closing_url: str) -> str:
@@ -288,19 +366,52 @@ def call_anthropic(client, model, prompt: str, hero_url: str, closing_url: str) 
     return msg.content[0].text
 
 
+# Module-level state: once we get 403'd on the paid model, stop retrying it.
+_OR_DEGRADED_TO_FREE = False
+
+
 def call_openrouter(client, model, prompt: str, hero_url: str, closing_url: str) -> str:
-    completion = client.chat.completions.create(
-        model=model,
-        max_tokens=1500,
-        messages=[{"role": "user", "content": [
-            {"type": "text", "text": prompt},
-            {"type": "text", "text": "HERO image:"},
-            image_block_openai(hero_url),
-            {"type": "text", "text": "CLOSING image:"},
-            image_block_openai(closing_url),
-        ]}],
-    )
-    return completion.choices[0].message.content
+    """Call OpenRouter; auto-fallback to free Gemma on 403; retry with backoff on 429."""
+    global _OR_DEGRADED_TO_FREE
+
+    def _do(m):
+        completion = client.chat.completions.create(
+            model=m,
+            max_tokens=1500,
+            messages=[{"role": "user", "content": [
+                {"type": "text", "text": prompt},
+                {"type": "text", "text": "HERO image:"},
+                image_block_openai(hero_url),
+                {"type": "text", "text": "CLOSING image:"},
+                image_block_openai(closing_url),
+            ]}],
+        )
+        return completion.choices[0].message.content
+
+    primary = OPENROUTER_FALLBACK if _OR_DEGRADED_TO_FREE else model
+    last_err = None
+    for attempt in range(3):
+        try:
+            return _do(primary)
+        except Exception as e:
+            last_err = e
+            msg = str(e)
+            if "403" in msg or "Key limit exceeded" in msg:
+                # Permanent for this session — switch to free model and retry once
+                if not _OR_DEGRADED_TO_FREE:
+                    _OR_DEGRADED_TO_FREE = True
+                    primary = OPENROUTER_FALLBACK
+                    print(f"  ⚠  paid model capped — degraded to {OPENROUTER_FALLBACK} for the rest of this run")
+                    continue
+                # Already on free and still 403 — give up
+                raise
+            if "429" in msg or "rate" in msg.lower():
+                # Transient — sleep and retry
+                wait = 8 * (attempt + 1)
+                time.sleep(wait)
+                continue
+            raise
+    raise last_err  # exhausted retries
 
 
 def score_topic(client, provider: str, model: str,
@@ -330,7 +441,9 @@ def score_topic(client, provider: str, model: str,
     prompt = RUBRIC_PROMPT.format(slug=slug, label=label, domain=domain, desc=desc[:300])
 
     try:
-        if provider == "anthropic":
+        if provider == "claude-cli":
+            text = call_claude_cli(model, prompt, hero_url, closing_url)
+        elif provider == "anthropic":
             text = call_anthropic(client, model, prompt, hero_url, closing_url)
         else:
             text = call_openrouter(client, model, prompt, hero_url, closing_url)

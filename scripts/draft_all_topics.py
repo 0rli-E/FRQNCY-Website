@@ -133,7 +133,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "meditation":         _u("photo-1672758688257-a110c93de407"),  # zen garden Japan
     "mindfulness":        _u("photo-1674893168376-c3d8efc23906"),  # circular rock garden
     "presence":           _u("photo-1496113329550-ce8886d06d54"),  # tatami interior
-    "breathwork":         "/v2/_chrome/imagery/breathwork-hero.jpg",  # woman pranayama on stone platform in forest (Pexels 32847438, downloaded local)
+    "breathwork":         _p(7880211),   # young man in lotus pose meditating outdoors at sunset
     "detox":              _p(30635724),  # green juice with ginger and lime, detox
     "siddha-yoga":        _u("photo-1526427158867-98ee4ba58d5a"),  # pagoda
     "kriya-yoga":         _u("photo-1616901945149-47f7eac169cb"),  # SE-Asian temple
@@ -176,7 +176,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "artificial-intelligence": _p(8566521),  # close-up humanoid robot with glowing blue lights
 
     # Tech batch — distinguishing each tech topic from the circuit-board default
-    "blockchain":         _p(9577254),   # blockchain interface on laptop, digital finance
+    "blockchain":         _p(30094470),  # weathered metal chain links — distributed-ledger metaphor
     "cybersecurity":      _p(34258666),  # hooded figure typing green code on computer
     "future-tech":        _p(35579528),  # vibrant futuristic architecture, glowing illumination
     "open-source":        _p(33572895),  # cozy dual-monitor home office setup
@@ -205,11 +205,11 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "education-systems":  _p(8197558),   # professor instructing diverse learners
 
     # Web3 / DeFi cluster
-    "defi":               _p(8919551),   # crypto coins with smartphone trading graph
+    "defi":               _p(8369695),   # pile of shiny gold + silver cryptocurrency coins on wood
     "web3":               _p(14314638),  # modern digital spheres interconnected, network
     "dao":                _p(8846757),   # multiple hands around vote sign, collective action
-    "impact-investing":   _p(5784807),   # close-up financial graph, stock market data
-    "prosperity-mindset": _p(7567223),   # digital stock market chart, growth analytics
+    "impact-investing":   _p(36384099),  # village women planning community development
+    "prosperity-mindset": _p(5772283),   # man in lotus pose meditating on seacoast at sundown
 
     # ── Auto-QA Round 2 fixes (top 8 flags from full-network run) ──
     "coffee-tea":         _p(8748538),   # person in kimono preparing matcha, ceremony
@@ -223,11 +223,11 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "chemistry":          _p(8442641),   # vibrant lab glassware with colorful liquids
 
     # ── Auto-QA Round 3 follow-ups (more flags from full-network run) ──
-    "cards":              _p(13179266),  # intimate tabletop card game scene
+    "cards":              _p(164501),    # stack of branded credit cards, gold focus
     "circular-economy":   _p(36751337),  # staff organizing recyclables on conveyor
     "co-creation":        _p(32702849),  # creative workshop in urban art studio
     "conscious-capital":  _p(5550904),   # hands cupping coins with sprouting plant
-    "decentralized-networks": _p(17323801),  # modern server room with blue illumination
+    "decentralized-networks": _p(36536054),  # abstract blue grid pattern (mesh topology)
 
     # ── Mass-elevation pass — Communication ──
     "language":           _p(5099795),   # colorful magnetic letters on whiteboard
@@ -312,7 +312,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "meditation":         _u("photo-1432958576632-8a39f6b97dc7"),  # wooden bridge, creek
     "mindfulness":        _u("photo-1470364799705-5cd35cff0c88"),  # stone beside river
     "presence":           _u("photo-1687674108336-c4c5fc2a67bb"),  # mountain distant fog
-    "breathwork":         _p(6648561),   # close-up woman breathing exercise, eyes closed, face visible (Rule 12 fix)
+    "breathwork":         _p(6933307),   # man with beard meditating indoors eyes closed, lotus
     "detox":              _p(4443437),   # green juice being poured with fresh produce
     "siddha-yoga":        _u("photo-1697112725138-1a91c83d0af8"),  # bell in garden
     "kriya-yoga":         _u("photo-1622506092974-38b108ee3436"),  # red temple by lake
@@ -343,7 +343,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "broadcasting":       _p(4383295),   # vinyl albums on shelf
     "sleep":              _p(12277279),  # bedroom with ambient lighting, peaceful
     "leisure":            _p(34999621),  # woman in hammock reading in forest
-    "minimalism":         "/v2/_chrome/imagery/minimalism-closing.jpg",  # corner of modern building over ocean, elegant architectural minimal (Pexels 34189640, downloaded local)
+    "minimalism":         _p(36134586),  # peaceful zen garden with stacked stones, Valencia
 
     # ── Auto-QA Round 1 fixes (2026-04-29) ──
     "aquaculture":        _p(10436679),  # expansive fish farm in calm blue sea
@@ -355,7 +355,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "artificial-intelligence": _p(18799044),  # futuristic humanoid robot with metallic armor
 
     # Tech batch closings
-    "blockchain":         _p(9577250),   # MacBook Air with blockchain interface in office
+    "blockchain":         _p(35834044),  # rusty chains forming abstract textured composition
     "cybersecurity":      _p(1089438),   # green matrix code background, binary stream
     "future-tech":        _p(32660203),  # Chongqing skyscrapers, cyberpunk-style reflections
     "open-source":        _p(16129724),  # software developer typing code, dual monitors
@@ -384,11 +384,11 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "education-systems":  _p(36834057),  # contemporary learning space, blue seating
 
     # Web3 / DeFi cluster closings
-    "defi":               _p(8358046),   # Bitcoin coins with financial indicators on laptop
-    "web3":               _p(14832159),  # multiple cryptocurrency coins on white
+    "defi":               _p(14911391),  # Ethereum coin on reflective surface (the protocol DeFi runs on)
+    "web3":               _p(30018096),  # mesmerizing abstract digital art with fluid waves (user-owned web)
     "dao":                _p(28887851),  # 3D rendering of connected geometric cubes (network)
-    "impact-investing":   _p(30268012),  # stock market chart, rapid growth
-    "prosperity-mindset": _p(29611783),  # bullish digital candlestick chart
+    "impact-investing":   _p(6472413),   # children + volunteers, outdoor community outreach
+    "prosperity-mindset": _p(5928615),   # woman meditating with tranquil ocean sunset
 
     # ── Auto-QA Round 2 fixes (closings) ──
     "coffee-tea":         _p(8952612),   # clay teapots and cups on wooden table, ceremony
@@ -400,11 +400,11 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "biomimicry":         _p(4784827),   # building with honeycomb pattern facade
 
     # ── Auto-QA Round 3 follow-up closings ──
-    "cards":              _p(35778233),  # close-up hand fanning Briscola playing cards
+    "cards":              _p(4968633),   # Visa card contactless on pink terminal
     "circular-economy":   _p(36397860),  # industrial crane processing scrap metal
     "co-creation":        _p(7710208),   # diverse group sketching on large paper, planning
     "conscious-capital":  _p(7163410),   # professionals in plant-filled coworking space
-    "decentralized-networks": _p(17489160),  # illuminated server racks, modern infrastructure
+    "decentralized-networks": _p(8108663),   # tech-themed circuit board with mesh composition
 
     # ── Mass-elevation pass closings ──
     "language":           _p(6005118),   # Scrabble letters arranged alphabetically
@@ -703,7 +703,7 @@ TOPIC_QUOTES: dict[str, tuple[str, str]] = {
     "cookware":           ("A recipe has no soul. You as the cook must bring soul to the recipe.", "Thomas Keller"),
     "leisure":            ("Leisure is the basis of culture.", "Josef Pieper — Leisure: The Basis of Culture"),
     "synchronicity":      ("Synchronicity reveals the meaningful connections between the subjective and objective world.", "Carl Jung — Synchronicity"),
-    "cards":              ("All life is six to five against.", "Damon Runyon"),
+    "cards":              ("Money is a renewable resource.", ""),
     "audio":              ("Music gives a soul to the universe, wings to the mind, flight to the imagination.", "Plato"),
 
     # ── Play & Recreation ───────────────────────────────────────
@@ -744,7 +744,7 @@ TOPIC_QUOTES: dict[str, tuple[str, str]] = {
     "astrology":          ("As above, so below; as within, so without; as the universe, so the soul.", "Hermes Trismegistus — The Emerald Tablet"),
     "remote-viewing":     ("The eye sees only what the mind is prepared to comprehend.", "Henri Bergson"),
     "abilities":          ("There is nothing in the intellect that was not first in the senses.", "Aristotle — De Anima"),
-    "aliens":             ("Two possibilities exist: either we are alone in the universe or we are not. Both are equally terrifying.", "Arthur C. Clarke"),
+    "aliens":             ("Somewhere, something incredible is waiting to be known.", "Carl Sagan"),
     "christianity":       ("Be still, and know that I am God.", "Psalm 46:10 — King James Bible"),
     "taoism":             ("The Tao that can be told is not the eternal Tao.", "Lao Tzu — Tao Te Ching"),
     "oneness":            ("Tat tvam asi — That thou art.", "Chandogya Upanishad"),
