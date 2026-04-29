@@ -164,8 +164,7 @@ Goal: a member's daily-use loop is real (Track A). Charts → My FRQNCY → Sanc
 - System prompt grounded in the canonical HD/Gene Keys sources (see IDEAS-INBOX A1 for source set principle).
 
 **Wed — Word Illuminator structured-output upgrade**
-- Apply the IDEAS-INBOX A1/A2/A3 spec to Word Illuminator: top-of-page reading, structured Definitions / Etymology / Synonyms / Derivatives / Deeper Illumination.
-- Cross-reference output against the Discipline template.
+- ✓ shipped — see `proposals/WORD-ILLUMINATOR-AI-WORKER.md`.
 
 **Thu — Notifications + mentions**
 - Insert notifications on follow, comment, mention.
@@ -204,10 +203,10 @@ Goal: one paying tier exists; referral rewards work; Aligned Goods has a transpa
 ### Week 5 (May 25 → May 31)
 
 **Mon–Tue — Membership v0 (one tier)**
-- Page `/membership/` (also linked from explore as a node). One tier called **Network member** (or Orlando-chosen name). Monthly + annual toggle.
-- Supabase `memberships` table; Stripe Customer + Subscription via Cloudflare Function.
-- Stripe test mode first; keep it under the $100 budget envelope (Stripe has no setup fee, only per-transaction).
-- Acceptance: signup → checkout → membership flag set on user.
+- ✓ shipped — see `proposals/MEMBERSHIP-V0.md`.
+- One tier (Network Member). Migration 013 (`supabase/migrations/013_membership_referrals.sql`) adds `memberships` + `ref_codes` + `ref_signups` with owner-only RLS and no public ranking surface per CLAUDE.md.
+- `functions/api/checkout-session.js` opens Stripe Checkout (test-mode-first, REST via fetch, no SDK). `functions/api/stripe-webhook.js` syncs membership status. `assets/frqncy-membership.js` exposes `getMyMembership` / `getOrCreateRefCode` / `getMyRefSignups` / `attributeSignup` for vanilla pages. NavAuth dropdown gains a Membership link; my-frqncy shows a quiet "Become a member" pill for non-members.
+- Operator dashboard steps remain: create Stripe products + prices, set `STRIPE_SECRET_KEY` / `STRIPE_PRICE_MONTHLY` / `STRIPE_PRICE_ANNUAL` / `STRIPE_WEBHOOK_SECRET` in Cloudflare Pages env vars, configure the Stripe webhook endpoint.
 
 **Wed — Member-only surfaces (light)**
 - Behind member: `/my-frqncy/practice/` advanced charts, AI HD reading, full course lessons.

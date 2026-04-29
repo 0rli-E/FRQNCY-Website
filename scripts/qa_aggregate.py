@@ -23,8 +23,44 @@ from pathlib import Path
 DEFAULT_GLOB = "/tmp/qa-chunk-*.md"
 
 
+# Rule patterns that constitute HARD flags (all others → watchlist)
+HARD_RULES = {"R6", "R10", "R11", "R12", "R13"}
+
+
+def reclassify(cols: list[str]) -> str:
+    """Given a flagged-table row's cols, decide if it's actually hard or soft.
+       cols: [slug, hero(C1/C4), closing(C1/C4), rules, reason]
+       Returns 'flag' | 'watchlist' | 'approve'."""
+    if len(cols) < 4:
+        return "watchlist"
+
+    def parse_scores(cell: str) -> tuple[int, int]:
+        m = re.search(r"\((\d)/(\d)\)", cell)
+        if m:
+            return int(m.group(1)), int(m.group(2))
+        return 5, 5
+
+    h_c1, h_c4 = parse_scores(cols[1])
+    c_c1, c_c4 = parse_scores(cols[2])
+    rules = cols[3] if len(cols) > 3 else ""
+    rule_set = {r.strip() for r in rules.replace(",", " ").split() if r.strip().startswith("R")}
+
+    # Hard flag conditions
+    if h_c1 <= 2 or c_c1 <= 2:
+        return "flag"
+    if rule_set & HARD_RULES:
+        return "flag"
+
+    # Watchlist conditions (anything not perfect)
+    if min(h_c1, c_c1) == 3 or h_c4 <= 3 or c_c4 <= 3 or rule_set:
+        return "watchlist"
+
+    return "approve"
+
+
 def parse_report(path: Path) -> dict[str, list[dict]]:
-    """Return {bucket: [rows]} where bucket is 'flag' | 'watchlist' | 'approve' | 'error'."""
+    """Return {bucket: [rows]} where bucket is 'flag' | 'watchlist' | 'approve' | 'error'.
+       Re-classifies the agent's flag/watchlist verdict against the relaxed rubric."""
     text = path.read_text() if path.exists() else ""
     out: dict[str, list[dict]] = {"flag": [], "watchlist": [], "approve": [], "error": []}
     section = None
@@ -55,7 +91,9 @@ def parse_report(path: Path) -> dict[str, list[dict]]:
                 continue
             slug = cols[0].strip("`")
             row = {"slug": slug, "cols": cols}
-            out[section].append(row)
+            # Re-bucket using relaxed rubric
+            new_bucket = reclassify(cols)
+            out[new_bucket].append(row)
     return out
 
 
@@ -118,7 +156,13 @@ def main() -> int:
     if merged["approve"]:
         lines += ["## ✓ Approved", ""]
         for r in sorted(merged["approve"], key=lambda x: x["slug"]):
-            lines.append(f"- `{r['slug']}` — {r['summary']}")
+            if "summary" in r:
+                lines.append(f"- `{r['slug']}` — {r['summary']}")
+            else:
+                # Came from reclassification — use cols
+                cols = r.get("cols", [])
+                summary = " · ".join(cols[1:3]) if len(cols) >= 3 else "auto-approved"
+                lines.append(f"- `{r['slug']}` — {summary}")
         lines.append("")
     if merged["error"]:
         lines += ["## ⚠ Errors", ""]

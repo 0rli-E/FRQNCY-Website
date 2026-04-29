@@ -67,6 +67,19 @@
 </script>
 <link rel="sitemap" type="application/xml" href="/sitemap.xml">
 <link rel="stylesheet" href="nav-dropdown.css">
+<!-- Capture ?ref=XYZ from the URL so the eventual signup flow can attribute the
+     new account. Mirrors assets/frqncy-membership.js::captureRefFromUrl(). -->
+<script>
+  (function(){
+    try {
+      var p = new URLSearchParams(location.search);
+      var raw = (p.get('ref') || '').trim().toUpperCase();
+      if (/^[A-Z0-9]{4,12}$/.test(raw)) {
+        localStorage.setItem('frqncy.ref_code', raw);
+      }
+    } catch (_) {}
+  })();
+</script>
 </head>
 <body>
 <a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#C4973A;color:#0B1C3D;padding:8px 16px;z-index:10000;font-size:14px;transition:top .2s;">Skip to main content</a>

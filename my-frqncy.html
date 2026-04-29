@@ -683,6 +683,48 @@ button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visi
   }
 </script>
 
+<!-- ── MEMBERSHIP PILL (signed-in + no-active-membership only) ───────────── -->
+<!-- Quiet nudge to /membership/. Hidden by default; revealed by JS only when
+     the user is signed in AND has no active/trialing membership row. No FOMO,
+     no scarcity copy — just a one-line invitation per CLAUDE.md cooperation
+     rule and proposals/MEMBERSHIP-V0.md voice constraints. -->
+<section id="membership-pill" aria-label="Become a member" style="display:none;max-width:700px;margin:0 auto 2rem;padding:0 clamp(1rem,3vw,2rem)">
+  <a href="/membership/" style="display:flex;align-items:center;justify-content:space-between;gap:0.9rem;padding:0.85rem 1.2rem;border:1px dashed rgba(196,151,58,0.4);border-radius:3px;background:rgba(196,151,58,0.04);color:inherit;text-decoration:none;transition:border-color .2s,background .2s">
+    <span style="display:flex;flex-direction:column;gap:0.2rem">
+      <span style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)">Become a member</span>
+      <span style="font-size:0.82rem;color:var(--text-dim);line-height:1.5">Support the network. The reading stays free.</span>
+    </span>
+    <span style="font-size:1rem;color:var(--gold);flex-shrink:0">→</span>
+  </a>
+</section>
+
+<script type="module">
+  // Show the membership pill when the user is signed in but has no
+  // active/trialing membership. Silent no-op when signed out OR a member.
+  import { getMyMembership } from '/assets/frqncy-membership.js';
+
+  async function paintMembershipPill() {
+    if (!window.frqncy) return;
+    await window.frqncy.ready;
+    const user = await window.frqncy.auth.getUser();
+    const section = document.getElementById('membership-pill');
+    if (!section) return;
+    if (!user) { section.style.display = 'none'; return; }
+    try {
+      const m = await getMyMembership(user);
+      const isMember = m && (m.status === 'active' || m.status === 'trialing');
+      section.style.display = isMember ? 'none' : 'block';
+    } catch (_) {
+      // Tables may not exist yet (migration 013 not applied) — fail closed.
+      section.style.display = 'none';
+    }
+  }
+  document.addEventListener('DOMContentLoaded', paintMembershipPill);
+  if (window.frqncy && typeof window.frqncy.onAuth === 'function') {
+    window.frqncy.onAuth((u) => { paintMembershipPill(); });
+  }
+</script>
+
 <!-- ── FORM VIEW ── -->
 <section id="form-view" aria-labelledby="form-heading">
   <div class="form-inner">

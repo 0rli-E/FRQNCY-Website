@@ -170,10 +170,16 @@ Return a JSON object with this exact shape (no markdown, no prose, no code fence
   "overall": "approve" | "flag" | "watchlist"
 }}
 
-Verdict logic:
-- "flag" if any of: c1_literal < 4, c4_aesthetic < 4, R6/R11/R12/R13 violation
-- "watchlist" if all pass but anything is exactly 3 (acceptable but not great)
-- "approve" otherwise
+Verdict logic (relaxed 2026-04-29 — clean-stock no longer flags):
+- "flag" only if any HARD failure:
+    • c1_literal <= 2 (subject genuinely wrong/contradicts topic)
+    • R6 (contradicts topic literally — e.g. sunrise for "sleep")
+    • R10 (pan-tradition stand-in for tradition-specific topic — e.g. Asian pagoda for Christianity)
+    • R11 (cold-breath imagery for breathwork)
+    • R12 (averted face / face cropped on inner-state human-presence topic)
+    • R13 (residential staging interior below FRQNCY editorial bar)
+- "watchlist" if any soft signal: c1==3, c4<=3, R9 ("alright"), or pair-coherence c5<=3
+- "approve" otherwise (c1>=4, c4>=4, no rule violations from the hard list)
 """
 
 

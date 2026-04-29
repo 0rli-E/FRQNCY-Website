@@ -2504,7 +2504,22 @@ function renderFirstRun() {
   const h = location.hash.replace('#','');
   if (h && ['dashboard','pyramid','practice','progress','vision'].includes(h)) switchTab(h);
   // deep-link: /my-frqncy/dashboard/#illuminate auto-opens the Word Illuminator
-  if (h === 'illuminate') openChatPanel();
+  // and #illuminate=<word> pre-fills the input so a click from any topic page
+  // lands the visitor inside the panel ready to send.
+  if (h.startsWith('illuminate')) {
+    openChatPanel();
+    const m = h.match(/^illuminate=(.+)$/);
+    if (m && illumEls.input) {
+      const seed = decodeURIComponent(m[1]).trim();
+      if (seed) {
+        illumEls.input.value = seed;
+        // Resize textarea to fit and place cursor at end
+        illumEls.input.style.height = 'auto';
+        illumEls.input.style.height = Math.min(160, illumEls.input.scrollHeight) + 'px';
+        illumEls.input.setSelectionRange(seed.length, seed.length);
+      }
+    }
+  }
 })();
 
 window.closeModal = closeModal;

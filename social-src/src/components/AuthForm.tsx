@@ -25,7 +25,7 @@ export default function AuthForm() {
         if (error) throw error;
         setMessage('If an account exists with that email, a reset link has been sent.');
       } else if (mode === 'signup') {
-        const { error } = await supabase.auth.signUp({
+        const { data, error } = await supabase.auth.signUp({
           email,
           password,
           options: {
@@ -36,6 +36,18 @@ export default function AuthForm() {
           },
         });
         if (error) throw error;
+        // Referral attribution — best-effort. If a ref code was captured by
+        // an inline script on a landing page (or by /membership/), record the
+        // attribution row. Never blocks the signup confirmation message.
+        try {
+          const newUserId = data?.user?.id;
+          const storedRef = localStorage.getItem('frqncy.ref_code');
+          if (newUserId && storedRef) {
+            const { attributeSignup } = await import('/assets/frqncy-membership.js' as any);
+            // Fire-and-forget. attributeSignup is defensive and never throws.
+            attributeSignup(storedRef, newUserId).catch(() => {});
+          }
+        } catch (_) { /* private mode / SSR / module-load fail — silent */ }
         setMessage('Check your email for a confirmation link.');
       } else {
         const { error } = await supabase.auth.signInWithPassword({ email, password });

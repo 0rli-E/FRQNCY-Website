@@ -1,10 +1,25 @@
 /**
  * FRQNCY — Service Worker
- * Strategy: network-first for HTML & JSON data, cache-first for static assets.
- * Provides offline fallback for the shell and fonts.
+ *
+ * Strategy:
+ *   - SHELL cache: precached app-shell URLs. Versioned. Evicted on each release.
+ *   - RUNTIME cache: anything cached at fetch-time (static assets / images).
+ *     Unversioned. Survives across releases — this is what unblocks
+ *     AUDIT-REPORT P5: a release no longer evicts every long-lived asset.
+ *   - DATA cache: JSON data files. Versioned alongside SHELL because the
+ *     graph + entity beds churn together.
+ *
+ * Network strategies:
+ *   - HTML:           network-first → SHELL fallback
+ *   - JSON data:      stale-while-revalidate from DATA
+ *   - Static assets:  cache-first from RUNTIME
+ *   - /api/*:         pass-through (functions handle their own caching)
  */
 
-const CACHE = 'frqncy-v23';
+const VERSION = 'v24';
+const SHELL_CACHE   = `frqncy-shell-${VERSION}`;
+const DATA_CACHE    = `frqncy-data-${VERSION}`;
+const RUNTIME_CACHE = 'frqncy-runtime';   // intentionally unversioned
 
 // Assets that should be pre-cached on install (the app shell)
 const PRECACHE = [
@@ -34,26 +49,37 @@ const PRECACHE = [
   '/music/index.html',
   '/places/index.html',
   '/aligned/index.html',
-  // Search index data
+];
+
+// JSON data — pre-cached separately so DATA_CACHE owns them.
+const DATA_PRECACHE = [
   '/search.json',
   '/entities.json',
   '/resources.json',
 ];
 
-// ── Install: pre-cache the app shell ────────────────────────────────
+// ── Install: pre-cache the app shell + the data set ────────────────
 // addAll() is atomic — if a single URL 404s, the entire install rejects.
 // We fall back to cache.add() per-URL so a single missing asset doesn't
 // brick the install. Failures are logged but don't block activation.
 self.addEventListener('install', e => {
   e.waitUntil(
-    caches.open(CACHE)
-      .then(cache => Promise.all(
+    Promise.all([
+      caches.open(SHELL_CACHE).then(cache => Promise.all(
         PRECACHE.map(url =>
           cache.add(url).catch(err => {
-            console.warn('[sw] precache failed for', url, err && err.message);
+            console.warn('[sw] shell precache failed for', url, err && err.message);
           })
         )
-      ))
+      )),
+      caches.open(DATA_CACHE).then(cache => Promise.all(
+        DATA_PRECACHE.map(url =>
+          cache.add(url).catch(err => {
+            console.warn('[sw] data precache failed for', url, err && err.message);
+          })
+        )
+      )),
+    ])
       .then(() => self.skipWaiting())
       .catch(err => {
         console.error('[sw] install failed catastrophically', err);
@@ -62,16 +88,30 @@ self.addEventListener('install', e => {
   );
 });
 
-// ── Activate: delete old caches ──────────────────────────────────────
+// ── Activate: delete only stale versioned caches ────────────────────
+// We keep RUNTIME_CACHE across versions so unchanged static assets
+// (images, fonts, third-party JS already in the cache) survive a
+// release. Without this every deploy nuked ~all of cache.
 self.addEventListener('activate', e => {
   e.waitUntil(
     caches.keys().then(keys =>
-      Promise.all(keys.filter(k => k !== CACHE).map(k => caches.delete(k)))
+      Promise.all(
+        keys
+          .filter(k => {
+            // Drop old versioned caches; leave RUNTIME_CACHE alone.
+            if (k === RUNTIME_CACHE) return false;
+            if (k === SHELL_CACHE)   return false;
+            if (k === DATA_CACHE)    return false;
+            // Anything else (legacy `frqncy-vN`, old shell/data caches) is stale.
+            return true;
+          })
+          .map(k => caches.delete(k))
+      )
     ).then(() => self.clients.claim())
   );
 });
 
-// ── Fetch: network-first for HTML & JSON, cache-first for static ────
+// ── Fetch: route per resource type ──────────────────────────────────
 self.addEventListener('fetch', e => {
   const { request } = e;
   const url = new URL(request.url);
@@ -82,7 +122,7 @@ self.addEventListener('fetch', e => {
   // Skip API calls — always go to network
   if (url.pathname.startsWith('/api/')) return;
 
-  // HTML pages: network-first with offline fallback
+  // HTML pages: network-first with offline fallback to the shell
   if (request.headers.get('Accept')?.includes('text/html')) {
     e.respondWith(
       fetch(request)
@@ -90,7 +130,7 @@ self.addEventListener('fetch', e => {
           // Only cache successful responses — don't poison cache with 404/500
           if (res && res.status === 200 && res.type === 'basic') {
             const copy = res.clone();
-            caches.open(CACHE).then(c => c.put(request, copy));
+            caches.open(SHELL_CACHE).then(c => c.put(request, copy));
           }
           return res;
         })
@@ -99,10 +139,10 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // JSON data files: stale-while-revalidate (serve cache, update in background)
+  // JSON data files: stale-while-revalidate against DATA_CACHE
   if (url.pathname.endsWith('.json') && url.pathname !== '/manifest.json') {
     e.respondWith(
-      caches.open(CACHE).then(cache =>
+      caches.open(DATA_CACHE).then(cache =>
         cache.match(request).then(cached => {
           const fetchPromise = fetch(request).then(res => {
             if (res && res.status === 200) cache.put(request, res.clone());
@@ -115,14 +155,15 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Static assets: cache-first, fall back to network and cache on the fly
+  // Static assets: cache-first against RUNTIME_CACHE (the long-lived
+  // bucket). On a release, these survive — only SHELL_CACHE rotates.
   e.respondWith(
     caches.match(request).then(cached => {
       if (cached) return cached;
       return fetch(request).then(res => {
         if (!res || res.status !== 200 || res.type === 'opaque') return res;
         const copy = res.clone();
-        caches.open(CACHE).then(c => c.put(request, copy));
+        caches.open(RUNTIME_CACHE).then(c => c.put(request, copy));
         return res;
       });
     })

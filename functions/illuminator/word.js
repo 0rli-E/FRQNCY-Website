@@ -16,9 +16,12 @@
 const MODEL      = '@cf/qwen/qwen3-30b-a3b-fp8';
 const MAX_TOKENS = 2048;
 
-// ── In-memory rate limiter — 10 req / min / IP ────────────────────
+// ── In-memory rate limiter — 5 req / min / IP ─────────────────────
+// Per WORD-ILLUMINATOR-AI-WORKER.md: tighter than the chat endpoint because
+// each illumination is a 2k-token structured generation — costlier per call,
+// and the 24h edge cache absorbs repeated lookups of the same word anyway.
 const RATE_WINDOW_MS = 60_000;
-const RATE_MAX       = 10;
+const RATE_MAX       = 5;
 const rateBuckets    = new Map();
 
 function checkRateLimit(ip) {

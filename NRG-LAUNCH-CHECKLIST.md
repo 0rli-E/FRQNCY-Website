@@ -111,8 +111,9 @@ Paste + Run each in order:
 7. `supabase/migrations/010_bluesky_handle.sql` (bluesky_handle on profiles for the NRG ↔ Bluesky cross-post bridge — public column; app password lives in user localStorage only)
 8. `supabase/migrations/011_encrypted_message_media.sql` (per-recipient encrypted media chunks for group chats)
 9. `supabase/migrations/012_practice_tracker.sql` (Sanctuary practice tracker — `practice_logs` table + `practice_scores` view; RLS-locked to owner, no leaderboard surface anywhere — see proposals/PRACTICE-TRACKER.md)
+10. `supabase/migrations/013_membership_referrals.sql` (Membership v0 — `memberships` + `ref_codes` + `ref_signups`; RLS-locked, no public ranking surface, attribution-only — see proposals/MEMBERSHIP-V0.md)
 
-All nine are idempotent — safe to re-run.
+All ten are idempotent — safe to re-run.
 
 ### 2. Create a Privy app (5 min)
 
@@ -131,8 +132,26 @@ Cloudflare Dashboard → Pages → frqncy-website → Settings → Environment v
 - `PUBLIC_PRIVY_APP_ID` = (the App ID from step 2)
 - (Pages already has the `AI` Workers AI binding for the chat widget — verify.)
 - Optional: `RESEND_API_KEY` and `RESEND_FROM` for subscribe-form welcome emails.
+- **Membership v0 (per `proposals/MEMBERSHIP-V0.md`):**
+  - `STRIPE_SECRET_KEY` — `sk_test_...` for test mode, `sk_live_...` for production. Required for `/api/checkout-session`.
+  - `STRIPE_WEBHOOK_SECRET` — `whsec_...` from the configured webhook endpoint. Required for `/api/stripe-webhook`.
+  - `STRIPE_PRICE_MONTHLY` — Stripe price id for the monthly Network Member subscription.
+  - `STRIPE_PRICE_ANNUAL` — Stripe price id for the annual Network Member subscription.
 
 If `PUBLIC_PRIVY_APP_ID` is unset, the Privy button on AuthForm renders disabled with a "not configured" tooltip — the rest of the form (email/password, magic link, Google-via-Supabase) keeps working. Failing-loud beats silently breaking signup.
+
+If `STRIPE_SECRET_KEY` is unset, `/api/checkout-session` returns `503 { error: "Membership not configured. STRIPE_SECRET_KEY missing in Pages env vars." }` and the membership CTAs surface that message instead of opening checkout. Same fail-loud pattern.
+
+### 3b. Stripe dashboard setup (Membership v0)
+
+Required steps before the membership page can charge anyone (per `proposals/MEMBERSHIP-V0.md`):
+
+1. Create a "Network Member" product in Stripe.
+2. Add a recurring **monthly** price → copy the price id into `STRIPE_PRICE_MONTHLY`.
+3. Add a recurring **annual** price → copy the price id into `STRIPE_PRICE_ANNUAL`.
+4. Configure a webhook endpoint at `https://frqncy.network/api/stripe-webhook` subscribed to: `checkout.session.completed`, `customer.subscription.updated`, `customer.subscription.deleted`. Copy the signing secret into `STRIPE_WEBHOOK_SECRET`.
+5. Test in Stripe **test mode** with the standard `4242 4242 4242 4242` card. Confirm a row lands in `memberships` with `status='active'`.
+6. Switch to live keys when ready to soft-launch (the 90-day plan keeps test-mode-first; live happens Phase 3 Wk 6 Thu–Fri).
 
 ### 3. Smoke test after deploy
 
