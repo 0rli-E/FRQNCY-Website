@@ -378,6 +378,18 @@
 <div id="node-count"></div>
 
 <script>
+/* ──────────── BFCACHE RESTORE — force a clean reload ──────────── */
+/* The canvas + d3.forceSimulation + requestAnimationFrame loop cannot be
+ * safely resumed from a paused bfcache state. When the user clicks an
+ * island, navigates to a topic page, then hits back, the browser tries to
+ * restore this page from bfcache — the simulation is stuck, the canvas
+ * is frozen, and the map renders blank. Detect that case and reload. */
+window.addEventListener('pageshow', (event) => {
+  if (event.persisted) {
+    location.reload();
+  }
+});
+
 /* ──────────── NETWORK DATA — loaded from explore-data.json ──────────── */
 let NODES = [];
 let LINKS = [];
