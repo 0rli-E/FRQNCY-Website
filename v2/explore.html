@@ -378,17 +378,41 @@
 <div id="node-count"></div>
 
 <script>
-/* ──────────── BFCACHE RESTORE — force a clean reload ──────────── */
+/* ──────────── BFCACHE / BACK-NAV — force a clean reload ──────────── */
 /* The canvas + d3.forceSimulation + requestAnimationFrame loop cannot be
  * safely resumed from a paused bfcache state. When the user clicks an
  * island, navigates to a topic page, then hits back, the browser tries to
  * restore this page from bfcache — the simulation is stuck, the canvas
- * is frozen, and the map renders blank. Detect that case and reload. */
+ * is frozen, and the map renders blank.
+ *
+ * Belt-and-braces approach:
+ *  1. Register an unload listener — this disqualifies the page from
+ *     bfcache in every modern browser, so back-nav always triggers a
+ *     fresh load with full script execution.
+ *  2. Also handle pageshow with persisted=true as a safety net for
+ *     browsers that bfcache anyway. We hide the body during the reload
+ *     so the user doesn't see a blank flash of frozen canvas. */
+window.addEventListener('unload', () => {});
 window.addEventListener('pageshow', (event) => {
   if (event.persisted) {
+    document.documentElement.style.background = '#0B1C3D';
+    if (document.body) document.body.style.visibility = 'hidden';
     location.reload();
   }
 });
+/* Also catch the case where the browser navigates back via the disk
+ * cache (no bfcache, no fresh fetch) and somehow lands here with the
+ * page already painted from before. navigation.type === 2 means
+ * "back/forward" — if we got here that way and the simulation never
+ * restarted, force a reload. */
+try {
+  const navEntries = performance.getEntriesByType && performance.getEntriesByType('navigation');
+  const navType = (navEntries && navEntries[0] && navEntries[0].type) || (performance.navigation && performance.navigation.type === 2 ? 'back_forward' : '');
+  if (navType === 'back_forward' && !window.__exploreInitialized) {
+    // Slightly defer so the rest of the script can mark itself initialized first.
+    setTimeout(() => { if (!window.__exploreInitialized) location.reload(); }, 0);
+  }
+} catch (_) {}
 
 /* ──────────── NETWORK DATA — loaded from explore-data.json ──────────── */
 let NODES = [];
@@ -420,6 +444,7 @@ if (window.EXPLORE_DATA && Array.isArray(window.EXPLORE_DATA.nodes)) {
 }
 
 function initMap() {
+window.__exploreInitialized = true;
 /* ── Embedded mode: hide standalone UI chrome when inside an iframe ── */
 const isEmbedded = (()=>{ try{ return window.self !== window.top; }catch(e){ return true; } })();
 if(isEmbedded){
