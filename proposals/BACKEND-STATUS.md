@@ -192,6 +192,16 @@ Three states a topic page can be in:
 - Replay command for manual eval. **No autonomous self-optimisation loop yet** — Phase 4 plants the seed via `scripts/reflect-traces.js`.
 - Per-day / per-month cost aggregates not implemented — Phase 4 patches.
 
+## Auto-grow loops
+
+🟢 Alive at v0. Three nightly draft scripts in `scripts/auto-grow/` + GitHub Actions workflow at `.github/workflows/auto-grow.yml`. Per `proposals/AUTO-GROW-LOOPS-V0.md`. Editorial gate intact — nothing auto-merges.
+
+- `resource-suggest.mjs` reads recent NRG posts via Supabase, drafts `resources.json` candidates with source-post context. Exits 0 on missing secrets so the workflow never fails loudly.
+- `video-ingest.mjs` scrapes `c-teachers` playlist channel pages, drafts new `videos.json` IDs. No API key needed.
+- `trace-reflect.mjs` (local-only, not in workflow) writes a Markdown report from `~/.frqncy-harness/traces/` covering volume, cost, top failure modes.
+- Workflow opens a PR via `peter-evans/create-pull-request@v6` when output changes. Schedule: 08:00 UTC daily + manual `workflow_dispatch`.
+- **Blocking full output:** `SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` GitHub Actions secrets are not set, so `resource-suggest` will exit-0 silently each night until they are. `video-ingest` runs unblocked.
+
 ## Build / deploy
 
 🟢 Alive. GitHub Actions (`.github/workflows/build.yml`) regenerates content on push. Cloudflare Pages auto-deploys.

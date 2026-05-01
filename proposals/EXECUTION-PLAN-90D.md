@@ -250,17 +250,19 @@ Goal: harness starts to feed the site with less manual input.
 
 ### Week 7 (Jun 8 → Jun 14)
 
-**Mon–Tue — Trace reflection script**
+✓ shipped 2026-04-30 (ahead of schedule) — see `proposals/AUTO-GROW-LOOPS-V0.md` and `scripts/auto-grow/`. v0 implementation diverged from the original outline below in three ways: (1) trace reflection became `scripts/auto-grow/trace-reflect.mjs` (output to `scripts/auto-grow/output/` rather than `~/.frqncy-harness/reports/`); (2) resource-PR loop became a plain Node URL-scraper over Supabase NRG posts instead of a `frqncy-harness agent` run — the lethal-trifecta concern is sidestepped because there's no LLM in the loop yet; (3) video ingestion uses YouTube channel-page scraping (no API key) instead of the YouTube Data API. v0.2 candidate is to swap the scraper for a `frqncy-harness agent` invocation that drafts in FRQNCY voice from `frqncy-content` MCP tools.
+
+**Mon–Tue — Trace reflection script** *(original outline; superseded above)*
 - `scripts/reflect-traces.js`: reads `~/.frqncy-harness/traces/`, groups by model/tool/error/cost/token-usage, writes weekly markdown summary to `~/.frqncy-harness/reports/`.
 - Surface top 5 most expensive conversations, top 5 tool failures, model cost-per-success.
 - Plant the seed of "harness self-optimises" — manual but data-driven for now.
 
-**Wed–Fri — Resource-PR auto-grow agent**
+**Wed–Fri — Resource-PR auto-grow agent** *(original outline; superseded above)*
 - Cron in Cloudflare Cron (or local cron + git push): nightly `frqncy-harness agent` run for one rotating topic. Prompt: "Find 1–3 new resources on `<topic>` published in the last 30 days from authoritative sources. Output as `resources.json`-shaped entries. Open a PR draft. Never auto-merge."
 - Lethal-trifecta gate enforced (`web_search` + `web_fetch` + `write` is exactly the trifecta — set severity to "warn" with manual review).
 - Test on `decentralised-ai` and `crypto` first (they move fast). Then schedule across other topics.
 
-**Sat–Sun — Video ingestion v0 (NOT full automation)**
+**Sat–Sun — Video ingestion v0 (NOT full automation)** *(original outline; superseded above)*
 - Manual but assisted: a script that takes a YouTube channel ID, lists last 20 videos via YouTube Data API (free tier 10k req/day), proposes additions to `videos.json` as a PR.
 - Run weekly per teacher. Still hand-reviewed.
 - Vision says "automatically upload" but the editorial value is "every teaching lives on the site" — full auto-ingest contradicts curation. This compromise gives speed without losing taste.
