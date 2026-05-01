@@ -226,6 +226,14 @@ nav{
   margin-top:0.6rem;padding-top:0.85rem;
   border-top:1px solid rgba(255,255,255,0.06);
 }
+.gcard-rel-row{ margin-top:0.65rem; }
+.gcard-rel{
+  display:inline-block;font-size:0.6rem;letter-spacing:0.12em;text-transform:uppercase;
+  padding:3px 7px;border-radius:2px;border:1px solid;
+}
+.rel-contributor{ color:var(--gold); border-color:rgba(201,169,110,0.4); background:rgba(201,169,110,0.06); }
+.rel-partner{    color:var(--accent); border-color:rgba(106,160,200,0.4); background:rgba(106,160,200,0.06); }
+.rel-affiliate{  color:#d4a574; border-color:rgba(212,165,116,0.4); background:rgba(212,165,116,0.06); }
 .vendor{
   display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
   font-size:0.78rem;color:var(--text);transition:color .2s;
@@ -499,6 +507,17 @@ function card(g) {
   }).join('');
 
   // Criteria moved to the page-level criteria block. Cards stay quiet.
+  // Money-flows badge: rendered ONLY when revenue_relationship is one of the
+  // three non-default values. Honest disclosure, not marketing — see the
+  // "On money flows" section below for the four-value spec.
+  const REL_BADGES = {
+    contributor: { label: '✦ contributes to FRQNCY', cls: 'rel-contributor' },
+    partner:     { label: '⌬ co-marketing partner',  cls: 'rel-partner'     },
+    affiliate:   { label: '⇄ commission link',        cls: 'rel-affiliate'   },
+  };
+  const rel = REL_BADGES[g.revenue_relationship];
+  const relBadge = rel ? `<span class="gcard-rel ${rel.cls}" title="See 'On money flows' below">${rel.label}</span>` : '';
+
   return `<article class="gcard tier-${tierClass}">
     <div class="gcard-head">
       <div style="flex:1;min-width:0;">
@@ -508,6 +527,7 @@ function card(g) {
     </div>
     <p class="gcard-desc">${g.desc}</p>
     ${vendors ? `<div class="gcard-vendors">${vendors}</div>` : ''}
+    ${relBadge ? `<div class="gcard-rel-row">${relBadge}</div>` : ''}
   </article>`;
 }
 

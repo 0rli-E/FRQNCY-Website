@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!--
+  FrqncyAlarm: Full-screen alarm activity layout.
+  Hosts a WebView that loads /android_asset/public/app/alarm.html so the
+  breath-hold dismiss UI lives in the bundled web layer (consistent with the
+  rest of FRQNCY's local-bundle screens). The WebView exposes a single
+  JavascriptInterface (`FrqncyAlarmBridge`) so alarm.html can call
+  `dismiss()` / `snooze()` / `openWake()` after the gesture completes.
+-->
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/black"
+    android:fitsSystemWindows="false">
+
+    <WebView
+        android:id="@+id/alarm_webview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:background="@android:color/black" />
+</FrameLayout>

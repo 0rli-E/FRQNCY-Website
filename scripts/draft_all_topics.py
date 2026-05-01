@@ -178,7 +178,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "artificial-intelligence": _p(8566521),  # close-up humanoid robot with glowing blue lights
 
     # Tech batch — distinguishing each tech topic from the circuit-board default
-    "blockchain":         _p(30094470),  # weathered metal chain links — distributed-ledger metaphor
+    "blockchain":         _p(36675218),  # rusted chains forming X over calm water (R13 fix)
     "cybersecurity":      _p(5380589),   # green security code monitor (R12 fix — ditches hooded cliché)
     "future-tech":        _p(35579528),  # vibrant futuristic architecture, glowing illumination
     "open-source":        _p(7325498),   # colorful programming code on monitor (R12+R13 fix)
@@ -236,7 +236,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "journalism":         _p(36376224),  # workers reading freshly printed newspaper
     "public-speaking":    _p(8872488),   # confident woman delivering speech at podium
     "humor":              _p(35481826),  # comedian with microphone on stage, B&W
-    "dialogue":           _p(7964495),   # two colleagues in focused conversation
+    "dialogue":           _p(7388826),   # couple in conversation on stones with beverages (R13 fix)
     # ── Sciences ──
     "neuroscience":       _p(7089331),   # close-up MRI sagittal view, brain structure
     "medicine":           _p(5234504),   # African American female doctor with stethoscope
@@ -257,7 +257,7 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "fermentation":       _p(30637886),  # row of vibrant mason jars, fermented vegetables
     "regenerative-farming": _p(33987634),  # aerial perspective fields and forest, Croatia
     "permaculture":       _p(8678828),   # vibrant tropical plants, lush green leaves
-    "urban-farming":      _p(28129609),  # vertical hydroponics with lush greens, LED lights
+    "urban-farming":      _p(28125895),  # lush rooftop garden over NYC skyline + Empire State
     # ── More Sciences / Wellbeing / Society / Tech / Metaphysics ──
     "quantum":            _p(806763),    # CERN Large Hadron Collider machinery (R1+R2 fix)
     "psychology":         _p(32224557),  # contemplative side profile portrait of man, soft light
@@ -297,10 +297,10 @@ TOPIC_OVERRIDE_HERO: dict[str, str] = {
     "human-design":       _p(7222079),   # astrology charts, laptop, cards, stationery (chart imagery)
     "diaspora":           _p(11571017),  # senior monk holding prayer beads, walking stick
     # Bioenergy — fix Energy-domain hero HEAD failure (Unsplash 1497292207894)
-    "bioenergy":          _p(2254097),   # harvested sugarcane stalks for agricultural use
+    "bioenergy":          _p(36976807),  # vast sugarcane fields under bright sky (R13 fix — atmospheric)
     # photography — was sharing Arts default; that closing URL 404'd in cache prewarm
     "photography":        _p(36697538),  # professional photographer in studio reviewing camera
-    "sustainable-living": _p(28286652),  # mountain house with solar panel in foggy forest
+    "sustainable-living": _p(8407795),   # picturesque rural farmhouse, thriving garden (R13 fix)
     # Final dupe fixes
     "energy-fields":      _p(30895543),  # gold/silver particles forming a sphere, dark bg
     "sacred-law":         _p(34326703),  # B&W ancient inscribed tablet (R10 fix — pan-tradition)
@@ -361,7 +361,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "artificial-intelligence": _p(18799044),  # futuristic humanoid robot with metallic armor
 
     # Tech batch closings
-    "blockchain":         _p(35834044),  # rusty chains forming abstract textured composition
+    "blockchain":         _p(33567560),  # rusty chains against ocean waves, motion
     "cybersecurity":      _p(10725897),  # vibrant close-up of code with programming details
     "future-tech":        _p(32660203),  # Chongqing skyscrapers, cyberpunk-style reflections
     "open-source":        _p(36571389),  # HTML code on dark mode monitor
@@ -417,7 +417,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "journalism":         _p(28704264),  # Paris newsstand with international newspapers
     "public-speaking":    _p(9727913),   # man in suit delivering presentation at conference
     "humor":              _p(10078868),  # man performing stand-up comedy
-    "dialogue":           _p(1035296),   # two elderly men sitting and conversing outside
+    "dialogue":           _p(28992081),  # senior men sharing conversation in peaceful outdoor area
     "neuroscience":       _p(4226139),   # medical professional examining brain MRI
     "medicine":           _p(7446987),   # professional female doctor holding clipboard
     "mathematics":        _p(22690752),  # blackboard with mathematical and chemical formulas
@@ -436,7 +436,7 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "fermentation":       _p(25857329),  # workers among large clay jars, traditional ferment
     "regenerative-farming": _p(11828660),  # terraced farmland bordered by dense trees, aerial
     "permaculture":       _p(24032556),  # botanical garden with diverse plants, stone pathway
-    "urban-farming":      _p(32146752),  # expansive hydroponic greenhouse, fresh spinach
+    "urban-farming":      _p(17799884),  # serene urban rooftop garden amidst city buildings
     # ── More closings ──
     "quantum":            _p(6855582),   # close-up inside CERN's Large Hadron Collider
     "psychology":         _p(6062046),   # woman with closed eyes, soft introspective lighting
@@ -476,9 +476,9 @@ TOPIC_OVERRIDE_CLOSING: dict[str, str] = {
     "human-design":       _p(33295978),  # elderly wise man in contemplative pose indoors
     "diaspora":           _p(9859622),   # senior man with white beard and turban, serious
     # Bioenergy closing
-    "bioenergy":          _p(34049306),  # cornfield panorama with wind turbines, sustainable ag
+    "bioenergy":          _p(9622941),   # determined farmer in sugarcane field, Brazil
     "photography":        _p(35001844),  # professional studio portrait session in Berlin
-    "sustainable-living": _p(12284244),  # contemporary home with solar + lush garden by river
+    "sustainable-living": _p(2889792),   # rustic wooden house on farm in rural Quebec
     # Final dupe-fix closings
     "energy-fields":      _p(12214773),  # 3D molecules with yellow + orange, energy/motion
     "sacred-law":         _p(23938508),  # ancient text in stone, inscription

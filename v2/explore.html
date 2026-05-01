@@ -379,39 +379,46 @@
 <div id="node-count"></div>
 
 <script>
-/* ──────────── BFCACHE / BACK-NAV — force a clean reload ──────────── */
-/* The canvas + d3.forceSimulation + requestAnimationFrame loop cannot be
- * safely resumed from a paused bfcache state. When the user clicks an
- * island, navigates to a topic page, then hits back, the browser tries to
- * restore this page from bfcache — the simulation is stuck, the canvas
- * is frozen, and the map renders blank.
+/* ──────────── BFCACHE / BACK-NAV — force a clean state ──────────── */
+/* The canvas + d3.forceSimulation + requestAnimationFrame loop cannot
+ * be safely resumed from a paused bfcache state. When the user clicks
+ * a node, navigates to a topic page, then hits back, the browser may
+ * restore this page from bfcache — the simulation timer and the RAF
+ * queue are paused on some browsers (Safari, mobile Chrome) and never
+ * resume, leaving the map blank/stuck.
  *
- * Belt-and-braces approach:
- *  1. Register an unload listener — this disqualifies the page from
- *     bfcache in every modern browser, so back-nav always triggers a
- *     fresh load with full script execution.
- *  2. Also handle pageshow with persisted=true as a safety net for
- *     browsers that bfcache anyway. We hide the body during the reload
- *     so the user doesn't see a blank flash of frozen canvas. */
+ * Defenses, in order of reliability:
+ *
+ *  (a) `Cache-Control: no-store` is set on /v2/explore.html and
+ *      /v2/explore via the _headers file — this is the ONLY directive
+ *      that reliably disqualifies a page from bfcache in every browser.
+ *      That alone should fix the bug.
+ *
+ *  (b) `unload` + `beforeunload` listeners are registered as a
+ *      belt-and-braces measure for any browser that ignores
+ *      no-store (rare).
+ *
+ *  (c) `pageshow` with persisted=true forces a reload if a browser
+ *      somehow bfcaches us anyway.
+ *
+ *  (d) A back/forward nav-type check forces a reload if a stale
+ *      uninitialized state is detected after disk-cache restoration.
+ */
 window.addEventListener('unload', () => {});
+window.addEventListener('beforeunload', () => {});
 window.addEventListener('pageshow', (event) => {
   if (event.persisted) {
-    document.documentElement.style.background = '#0B1C3D';
-    if (document.body) document.body.style.visibility = 'hidden';
     location.reload();
   }
 });
-/* Also catch the case where the browser navigates back via the disk
- * cache (no bfcache, no fresh fetch) and somehow lands here with the
- * page already painted from before. navigation.type === 2 means
- * "back/forward" — if we got here that way and the simulation never
- * restarted, force a reload. */
 try {
-  const navEntries = performance.getEntriesByType && performance.getEntriesByType('navigation');
-  const navType = (navEntries && navEntries[0] && navEntries[0].type) || (performance.navigation && performance.navigation.type === 2 ? 'back_forward' : '');
-  if (navType === 'back_forward' && !window.__exploreInitialized) {
-    // Slightly defer so the rest of the script can mark itself initialized first.
-    setTimeout(() => { if (!window.__exploreInitialized) location.reload(); }, 0);
+  const nav = performance.getEntriesByType && performance.getEntriesByType('navigation')[0];
+  const isBack = (nav && nav.type === 'back_forward')
+    || (performance.navigation && performance.navigation.type === 2);
+  if (isBack) {
+    // Give the synchronous bootMap → initMap chain time to mark the page
+    // initialized; if it didn't (stale disk-cache restoration), reload.
+    setTimeout(() => { if (!window.__exploreInitialized) location.reload(); }, 600);
   }
 } catch (_) {}
 
