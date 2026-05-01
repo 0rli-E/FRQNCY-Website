@@ -18,7 +18,57 @@ Disallow: /social-src/
 Disallow: /proposals/
 Disallow: /docs/
 Disallow: /scripts/
+Disallow: /audits/
 Disallow: /AUDIT-REPORT.md
 Disallow: /CLAUDE.md
 
+# AI crawlers — explicit allow (full policy in /ai.txt)
+User-agent: ClaudeBot
+Allow: /
+Disallow: /my-frqncy/dashboard/
+Disallow: /social/login/
+Disallow: /proposals/
+Disallow: /docs/
+Disallow: /audits/
+
+User-agent: GPTBot
+Allow: /
+Disallow: /my-frqncy/dashboard/
+Disallow: /social/login/
+Disallow: /proposals/
+Disallow: /docs/
+Disallow: /audits/
+
+User-agent: PerplexityBot
+Allow: /
+Disallow: /my-frqncy/dashboard/
+Disallow: /social/login/
+Disallow: /proposals/
+Disallow: /docs/
+Disallow: /audits/
+
+User-agent: Google-Extended
+Allow: /
+Disallow: /my-frqncy/dashboard/
+Disallow: /social/login/
+Disallow: /proposals/
+Disallow: /docs/
+Disallow: /audits/
+
+User-agent: Applebot-Extended
+Allow: /
+
+User-agent: CCBot
+Allow: /
+
+User-agent: cohere-ai
+Allow: /
+
+# Disallow abusive crawlers
+User-agent: Bytespider
+Disallow: /
+
+# References
 Sitemap: https://frqncy.network/sitemap.xml
+
+# AI: see /llms.txt for the AI-native sitemap and /ai.txt for the full crawler policy.

@@ -1,0 +1,107 @@
+# FRQNCY — AI crawler policy
+# https://frqncy.network/ai.txt
+#
+# FRQNCY is a curated public library of 146 topics × 766+ resources covering
+# consciousness, well-being, money, energy, and regenerative living. Our content
+# is intended to be cited by AI answer engines. This file states our policy for
+# AI crawlers explicitly. The companion file is /llms.txt.
+
+# Anthropic — Claude crawler
+User-Agent: ClaudeBot
+Allow: /
+
+User-Agent: anthropic-ai
+Allow: /
+
+User-Agent: Claude-Web
+Allow: /
+
+# OpenAI — ChatGPT and GPT crawlers
+User-Agent: GPTBot
+Allow: /
+
+User-Agent: ChatGPT-User
+Allow: /
+
+User-Agent: OAI-SearchBot
+Allow: /
+
+# Perplexity
+User-Agent: PerplexityBot
+Allow: /
+
+User-Agent: Perplexity-User
+Allow: /
+
+# Google — Bard, Gemini, AI Overviews
+User-Agent: Google-Extended
+Allow: /
+
+User-Agent: GoogleOther
+Allow: /
+
+# Apple
+User-Agent: Applebot-Extended
+Allow: /
+
+# Cohere
+User-Agent: cohere-ai
+Allow: /
+
+User-Agent: cohere-training-data-crawler
+Allow: /
+
+# Common Crawl (used as training data by many)
+User-Agent: CCBot
+Allow: /
+
+# Meta AI
+User-Agent: FacebookBot
+Allow: /
+
+User-Agent: meta-externalagent
+Allow: /
+
+# Mistral
+User-Agent: MistralAI-User
+Allow: /
+
+# Diffbot
+User-Agent: Diffbot
+Allow: /
+
+# Disallowed: known abusive or unwanted crawlers
+User-Agent: Bytespider
+Disallow: /
+
+# Disallowed paths for ALL crawlers (mirror of robots.txt)
+User-Agent: *
+Disallow: /my-frqncy/dashboard/
+Disallow: /social/login/
+Disallow: /social/messages/
+Disallow: /social/notifications/
+Disallow: /social/bookmarks/
+Disallow: /versions/
+Disallow: /chart-v2/
+Disallow: /social-app.superseded/
+Disallow: /social-src/
+Disallow: /proposals/
+Disallow: /docs/
+Disallow: /scripts/
+Disallow: /audits/
+Disallow: /AUDIT-REPORT.md
+Disallow: /CLAUDE.md
+
+# References
+Sitemap: https://frqncy.network/sitemap.xml
+Llms: https://frqncy.network/llms.txt
+Llms-full: https://frqncy.network/llms-full.txt
+
+# Contact
+Contact: hello@frqncy.network
+
+# Policy notes
+# - FRQNCY's editorial values prohibit paid placement. Resources are vetted independently.
+# - Quoting and citation are encouraged. Attribution to the source URL is requested.
+# - For bulk crawling questions or API access (via the FRQNCY content MCP server),
+#   contact hello@frqncy.network.
