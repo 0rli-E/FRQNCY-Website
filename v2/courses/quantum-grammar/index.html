@@ -308,6 +308,7 @@ nav.snav{
 <link rel="manifest" href="../../../manifest.json">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":"Quantum Grammar","description":"Explore how syntax and sentence construction shape reality, commerce, and sovereignty. Discover the mathematical structure behind contracts, statutes, and the language that binds.","url":"https://frqncy.network/v2/courses/quantum-grammar/","provider":{"@type":"Organization","name":"FRQNCY Network","url":"https://frqncy.network"},"educationalLevel":"advanced","inLanguage":"en","isAccessibleForFree":true,"numberOfLessons":5,"timeRequired":"PT2H15M"}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"Courses","item":"https://frqncy.network/v2/courses/"},{"@type":"ListItem","position":3,"name":"What Is Quantum Grammar?","item":"https://frqncy.network/v2/courses/quantum-grammar/"}]}</script>
 </head>
 <body>
 
@@ -577,19 +578,33 @@ const STORE_KEY = 'frqncy-course-' + SLUG;
 const REFLECT_IDS = ["l4"];
 
 let current   = 0;
-let completed = new Set(JSON.parse(localStorage.getItem(STORE_KEY) || '[]'));
+/* localStorage is unavailable in Safari private mode (and sometimes in
+ * embedded webviews). Wrapping every access in try/catch keeps the
+ * course page interactive in those environments — progress just won't
+ * persist across reloads. */
+function _ls(op, key, val) {
+  try {
+    if (op === 'get')    return localStorage.getItem(key);
+    if (op === 'set')    return localStorage.setItem(key, val);
+    if (op === 'remove') return localStorage.removeItem(key);
+  } catch (_) { return null; }
+}
+let completed = (() => {
+  try { return new Set(JSON.parse(_ls('get', STORE_KEY) || '[]')); }
+  catch (_) { return new Set(); }
+})();
 
 /* ── Persistence ── */
-function save() { localStorage.setItem(STORE_KEY, JSON.stringify([...completed])); }
+function save() { _ls('set', STORE_KEY, JSON.stringify([...completed])); }
 
 function saveReflection(id, text) {
-  localStorage.setItem('frqncy-reflect-' + id, text);
+  _ls('set', 'frqncy-reflect-' + id, text);
 }
 function loadReflection(id) {
-  return localStorage.getItem('frqncy-reflect-' + id) || '';
+  return _ls('get', 'frqncy-reflect-' + id) || '';
 }
 function clearReflect(id) {
-  localStorage.removeItem('frqncy-reflect-' + id);
+  _ls('remove', 'frqncy-reflect-' + id);
   const ta = document.getElementById('reflect-' + id);
   if (ta) ta.value = '';
 }

@@ -543,19 +543,33 @@ const STORE_KEY = 'frqncy-course-' + SLUG;
 const REFLECT_IDS = ${reflectJSON};
 
 let current   = 0;
-let completed = new Set(JSON.parse(localStorage.getItem(STORE_KEY) || '[]'));
+/* localStorage is unavailable in Safari private mode (and sometimes in
+ * embedded webviews). Wrapping every access in try/catch keeps the
+ * course page interactive in those environments — progress just won't
+ * persist across reloads. */
+function _ls(op, key, val) {
+  try {
+    if (op === 'get')    return localStorage.getItem(key);
+    if (op === 'set')    return localStorage.setItem(key, val);
+    if (op === 'remove') return localStorage.removeItem(key);
+  } catch (_) { return null; }
+}
+let completed = (() => {
+  try { return new Set(JSON.parse(_ls('get', STORE_KEY) || '[]')); }
+  catch (_) { return new Set(); }
+})();
 
 /* ── Persistence ── */
-function save() { localStorage.setItem(STORE_KEY, JSON.stringify([...completed])); }
+function save() { _ls('set', STORE_KEY, JSON.stringify([...completed])); }
 
 function saveReflection(id, text) {
-  localStorage.setItem('frqncy-reflect-' + id, text);
+  _ls('set', 'frqncy-reflect-' + id, text);
 }
 function loadReflection(id) {
-  return localStorage.getItem('frqncy-reflect-' + id) || '';
+  return _ls('get', 'frqncy-reflect-' + id) || '';
 }
 function clearReflect(id) {
-  localStorage.removeItem('frqncy-reflect-' + id);
+  _ls('remove', 'frqncy-reflect-' + id);
   const ta = document.getElementById('reflect-' + id);
   if (ta) ta.value = '';
 }
