@@ -1,8 +1,17 @@
 # FRQNCY Website
 
-A conscious living network — curation, community, and connection across 14 domains of human knowledge and experience.
+A consciousness-practice content, social, and mobile platform.
 
 **Live site:** [frqncy.network](https://frqncy.network)
+
+---
+
+## Read First
+
+- `CLAUDE.md` is the orientation pack for agents working in this repo.
+- `SETUP-NEXT-STEPS.md` is the short dashboard checklist for the live backend blockers.
+- `HANDOFF-2026-04-28-MAKE-EVERYTHING-LIVE.md` explains the Supabase, subscribe, and Sanctuary cloud-sync work.
+- `proposals/BACKEND-STATUS.md` is the status ledger for each surface.
 
 ---
 
@@ -10,68 +19,108 @@ A conscious living network — curation, community, and connection across 14 dom
 
 ```
 FRQNCY WEBSITE/
-├── index.html          ← Main landing page (open this)
-├── about.html          ← Vision & mission
-├── platform.html       ← The curation platform
-├── podcast.html        ← The FRQNCY podcast
-├── space.html          ← The physical space / Network State
-├── content.json        ← Single source of truth for all network data
-├── generate.js         ← Static site generator — run to rebuild v2/
-├── functions/
-│   └── api/
-│       └── subscribe.js  ← Cloudflare Pages Function: email collection
+├── index.html                  ← Main landing page
 ├── v2/
-│   ├── explore.html    ← Clickable network map
-│   └── [138 topic subpages]
-└── versions/           ← Archived previous versions (ignore)
+│   ├── explore.html            ← Topic graph spine
+│   ├── watch/                  ← Video curation
+│   ├── courses/                ← Generated course pages
+│   └── [topic]/index.html      ← Topic pages
+├── resources.json              ← Curated resources
+├── search.json                 ← Topic graph data
+├── entities.json               ← People / books / orgs / media entities
+├── courses.json                ← Course catalog
+├── videos.json                 ← Watch catalog
+├── social-src/                 ← Astro + Preact + Supabase social platform
+├── app/                        ← Capacitor mobile app
+├── functions/                  ← Cloudflare Pages Functions
+├── supabase/migrations/        ← Active Supabase migration tree
+├── scripts/                    ← Standalone tools
+├── mcp-servers/frqncy-content/ ← FRQNCY content MCP server
+└── proposals/                  ← Planning, architecture, and handoff docs
 ```
 
 ---
 
 ## Deployment
 
-Hosted on **Cloudflare Pages** — auto-deploys when you push to GitHub.
+Hosted on **Cloudflare Pages**. The build workflow is `.github/workflows/build.yml`.
 
-- Build command: *(none — static site)*
-- Output directory: `/`
+- Build command: `npm run build`
+- Output directory: repo root
 - Functions directory: `functions/`
 
-### Environment Variables (set in Cloudflare Pages → Settings)
+### Required Cloudflare Env Vars
 
 | Variable | Description |
 |---|---|
-| `BREVO_API_KEY` | Brevo API key (xkeysib-...) |
-| `BREVO_LIST_ID` | Brevo list ID number for FRQNCY Waitlist |
+| `PUBLIC_SUPABASE_URL` | Supabase project URL used by server-side functions and builds |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only Supabase key for Pages Functions |
 
-See `EMAIL-SETUP.md` for full Brevo setup instructions.
+### Optional Env Vars
+
+| Variable | Description |
+|---|---|
+| `RESEND_API_KEY` | Sends welcome email from `/api/subscribe` |
+| `RESEND_FROM` | Sender, e.g. `FRQNCY <hello@frqncy.network>` |
+| `AI` binding | Cloudflare Workers AI binding for the chat widget and AI reading paths |
+
+Brevo docs still exist in `EMAIL-SETUP.md`, but the current homepage subscribe path writes to Supabase and optionally sends through Resend.
 
 ---
 
-## Adding Content
+## Current Backend Blockers
 
-All network content lives in `content.json`. To update resources:
+The code for signups, social, DMs, profile uploads, and Sanctuary cloud sync is in the repo. The remaining steps are dashboard-only:
 
-1. Edit `content.json` — add entries under the relevant node ID in `resources`
-2. Run `node generate.js` to rebuild all 138 pages in `v2/`
-3. Commit and push — Cloudflare auto-deploys
+1. Apply `supabase/migrations/002_fix_conversation_rls.sql`.
+2. Apply `supabase/migrations/003_subscribers_charts_storage.sql`.
+3. Set `PUBLIC_SUPABASE_URL` and `SUPABASE_SERVICE_ROLE_KEY` in Cloudflare Pages.
 
-### Resource format
-
-```json
-"t-quantum": [
-  {
-    "title": "Resource Name",
-    "url": "https://example.com",
-    "type": "book|tool|org|media|person|course",
-    "desc": "One sentence on why this matters.",
-    "frqncy_pick": true
-  }
-]
-```
+See `SETUP-NEXT-STEPS.md` for the exact click-path and verification curls.
 
 ---
 
 ## Local Development
 
-Open `index.html` in a browser — everything works locally except the email form
-(`/api/subscribe` only runs on Cloudflare Pages).
+Install dependencies once:
+
+```bash
+npm install
+```
+
+Build generated pages and data:
+
+```bash
+npm run build
+```
+
+Serve locally:
+
+```bash
+npm run serve
+```
+
+Run data validation:
+
+```bash
+npm run lint
+```
+
+Run the link checker:
+
+```bash
+npm run check:links
+```
+
+---
+
+## Content Changes
+
+Most user-facing content is generated from structured data:
+
+- Add resources in `resources.json`.
+- Add or update topics in `search.json`.
+- Add courses in `courses.json`, then run `npm run build:courses`.
+- Add watch entries in `videos.json` / `playlists.json`, then run `npm run build:watch`.
+
+For topic-page copy, do not run broad templated sweeps. `proposals/BACKEND-STATUS.md` records the current rule: future topic-page work should happen one page at a time, with a treatment specific to the topic.
