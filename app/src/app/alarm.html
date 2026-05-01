@@ -6,26 +6,241 @@
     <meta name="theme-color" content="#000000" />
     <title>FRQNCY · Waking</title>
     <style>
-      /* This screen is launched by FrqncyAlarm when the alarm fires.
-         It immediately redirects to wake.html — kept as a separate
-         entry point because Android's AlarmActivity launches a specific
-         URL via a native intent. */
-      body {
-        margin: 0;
+      * { box-sizing: border-box; margin: 0; padding: 0; }
+      html, body {
+        width: 100%; height: 100%;
         background: #000;
-        color: #e8c547;
-        font-family: system-ui, -apple-system, sans-serif;
-        height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        color: #f5f5f5;
+        font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
+        overflow: hidden;
+        overscroll-behavior: none;
+        user-select: none;
+        -webkit-user-select: none;
+        -webkit-touch-callout: none;
+      }
+      #stage {
+        position: fixed; inset: 0;
+        display: flex; align-items: center; justify-content: center;
+      }
+      #field {
+        position: absolute; inset: 0;
+        background: radial-gradient(circle at 50% 45%, rgba(232, 197, 71, 0.22) 0%, rgba(0,0,0,0.95) 60%);
+        opacity: 0;
+        transition: opacity 60s linear;
+        pointer-events: none;
+      }
+      #field.active { opacity: 1; }
+      #ring {
+        width: 260px; height: 260px;
+        border-radius: 50%;
+        border: 1px solid rgba(245, 245, 245, 0.14);
+        display: flex; align-items: center; justify-content: center;
+        position: relative; z-index: 2;
+      }
+      #ring::before {
+        content: '';
+        position: absolute;
+        inset: -1px;
+        border-radius: 50%;
+        border: 1px solid rgba(232, 197, 71, 0);
+        transition: border-color 400ms ease, transform 400ms ease;
+        transform: scale(1);
+      }
+      #ring.holding::before {
+        border-color: rgba(232, 197, 71, 0.9);
+        transform: scale(1.08);
+      }
+      #progress { position: absolute; inset: -6px; border-radius: 50%; pointer-events: none; }
+      #progress circle {
+        fill: none;
+        stroke: rgba(232, 197, 71, 0.85);
+        stroke-width: 1.5;
+        transform: rotate(-90deg);
+        transform-origin: center;
+        stroke-dasharray: 832;
+        stroke-dashoffset: 832;
+        transition: stroke-dashoffset 6000ms linear;
+      }
+      #ring.holding #progress circle { stroke-dashoffset: 0; }
+      .inner {
+        text-align: center;
+        font-weight: 200;
+        letter-spacing: 2.4px;
+        font-size: 13px;
+        color: rgba(245, 245, 245, 0.64);
+        line-height: 1.8;
+      }
+      .hint {
+        position: fixed;
+        bottom: calc(80px + env(safe-area-inset-bottom));
+        left: 0; right: 0;
+        text-align: center;
+        font-size: 13px;
+        font-weight: 200;
+        letter-spacing: 1.2px;
+        color: rgba(245, 245, 245, 0.35);
+        opacity: 0;
+        transition: opacity 1800ms ease 1500ms;
+      }
+      .hint.visible { opacity: 1; }
+      .actions {
+        position: fixed;
+        top: calc(20px + env(safe-area-inset-top));
+        right: 16px;
+        display: flex; gap: 8px;
+      }
+      .actions button {
+        background: rgba(245, 245, 245, 0.06);
+        border: 1px solid rgba(245, 245, 245, 0.14);
+        color: rgba(245, 245, 245, 0.7);
+        padding: 8px 14px;
+        border-radius: 999px;
         font-size: 12px;
-        letter-spacing: 3px;
+        letter-spacing: 0.6px;
+        -webkit-tap-highlight-color: transparent;
       }
     </style>
   </head>
   <body>
-    <div>tuning in</div>
-    <script>window.location.replace('./wake.html');</script>
+    <div class="actions">
+      <button id="snooze">return · 9 min</button>
+    </div>
+    <div id="stage">
+      <div id="field"></div>
+      <div id="ring" aria-label="Hold to arrive">
+        <svg id="progress" viewBox="0 0 268 268">
+          <circle cx="134" cy="134" r="132"></circle>
+        </svg>
+        <div class="inner">arrive</div>
+      </div>
+      <div class="hint" id="hint">hold for one breath</div>
+    </div>
+
+    <script type="module">
+      // alarm.html runs in two contexts:
+      //   1. Inside AlarmActivity's WebView on Android — `FrqncyAlarmBridge` is
+      //      injected. We call dismiss() / snooze() / openWake().
+      //   2. Inside the main Capacitor WebView on iOS — there is no bridge;
+      //      we navigate to wake.html on dismiss. iOS dismiss happens via the
+      //      system notification UI.
+      const bridge = window.FrqncyAlarmBridge;
+
+      // Accessibility: three dismiss modes per Stream 6 — breath-hold (default),
+      // long-press (no breath required), triple-tap (motor accessibility).
+      // Honors prefers-reduced-motion: ring fills linearly, no animation.
+      const DISMISS_MODE_KEY = 'frqncy.accessibility.dismiss_mode';
+      const dismissMode = (() => {
+        try { return localStorage.getItem(DISMISS_MODE_KEY) || 'breath'; }
+        catch { return 'breath'; }
+      })();
+
+      const reducedMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      const field = document.getElementById('field');
+      const ring = document.getElementById('ring');
+      const hint = document.getElementById('hint');
+      const snoozeBtn = document.getElementById('snooze');
+
+      // ARIA labels on the ring so screen readers describe the gesture.
+      ring.setAttribute('role', 'button');
+      ring.setAttribute('tabindex', '0');
+      const hintText = (() => {
+        switch (dismissMode) {
+          case 'long-press': return 'press and hold for 6 seconds to dismiss';
+          case 'triple-tap': return 'tap three times to dismiss';
+          default: return 'hold for one breath';
+        }
+      })();
+      ring.setAttribute('aria-label', hintText);
+      hint.textContent = hintText;
+
+      // Field fade-in: skip the 60s ramp under reduced-motion.
+      if (reducedMotion) {
+        field.style.transition = 'none';
+      }
+      requestAnimationFrame(() => field.classList.add('active'));
+      setTimeout(() => hint.classList.add('visible'), reducedMotion ? 200 : 1500);
+
+      // --- Dismiss mode: breath-hold (default, 6s) ----------------------------
+      let holdStart = null;
+      let holdTimer = null;
+      function onStart(e) {
+        e.preventDefault();
+        holdStart = Date.now();
+        ring.classList.add('holding');
+        if (navigator.vibrate) navigator.vibrate(8);
+        holdTimer = setTimeout(arrive, 6000);
+      }
+      function onEnd() {
+        if (!holdStart) return;
+        ring.classList.remove('holding');
+        clearTimeout(holdTimer);
+        holdStart = null;
+      }
+
+      // --- Dismiss mode: triple-tap (3 taps within 2s) ------------------------
+      let tapTimes = [];
+      function onTap() {
+        const now = Date.now();
+        tapTimes = tapTimes.filter(t => now - t < 2000);
+        tapTimes.push(now);
+        if (tapTimes.length >= 3) {
+          tapTimes = [];
+          arrive();
+        } else {
+          // Visual feedback: small pulse on the ring per tap.
+          ring.classList.add('holding');
+          setTimeout(() => ring.classList.remove('holding'), 150);
+          if (navigator.vibrate) navigator.vibrate(6);
+        }
+      }
+
+      // Wire up listeners based on the configured mode.
+      if (dismissMode === 'triple-tap') {
+        ring.addEventListener('pointerdown', e => { e.preventDefault(); onTap(); });
+      } else {
+        // breath and long-press use the same hold gesture; they differ only
+        // in messaging (long-press emphasizes the hold isn't a breath cue).
+        ring.addEventListener('pointerdown', onStart);
+        ring.addEventListener('pointerup', onEnd);
+        ring.addEventListener('pointercancel', onEnd);
+        ring.addEventListener('pointerleave', onEnd);
+      }
+
+      // Keyboard accessibility — Enter or Space triggers tap-style dismiss
+      // (sequenced for triple-tap mode, immediate for breath/long-press users
+      // who can't physically hold a key).
+      ring.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          if (dismissMode === 'triple-tap') {
+            onTap();
+          } else {
+            // Single Enter dismisses for keyboard users — the gesture is
+            // already represented by intent.
+            arrive();
+          }
+        }
+      });
+
+      function arrive() {
+        ring.classList.remove('holding');
+        if (navigator.vibrate) navigator.vibrate([30, 60, 30]);
+        if (bridge && typeof bridge.openWake === 'function') {
+          bridge.openWake();
+        } else {
+          window.location.replace('./wake.html');
+        }
+      }
+
+      snoozeBtn.addEventListener('click', () => {
+        if (bridge && typeof bridge.snooze === 'function') {
+          bridge.snooze(9);
+        } else {
+          window.location.replace('../index.html');
+        }
+      });
+    </script>
   </body>
 </html>

@@ -25,6 +25,7 @@ import android.content.pm.PackageManager
 import android.os.Build
 import androidx.core.app.NotificationManagerCompat
 import androidx.core.content.ContextCompat
+import com.getcapacitor.JSArray
 import com.getcapacitor.JSObject
 import com.getcapacitor.Plugin
 import com.getcapacitor.PluginCall
@@ -76,14 +77,14 @@ class FrqncyAlarmPlugin : Plugin() {
     fun list(call: PluginCall) {
         val list = alarmStore.all().map(::alarmToJs)
         val result = JSObject()
-        val arr = com.getcapacitor.JSArray()
+        val arr = JSArray()
         list.forEach(arr::put)
         result.put("alarms", arr)
         call.resolve(result)
     }
 
     @PluginMethod
-    fun requestPermissions(call: PluginCall) {
+    override fun requestPermissions(call: PluginCall) {
         // For exact alarms on Android 12+ that aren't auto-granted, route the
         // user to Settings → Alarms & reminders. JS handles the user flow.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
@@ -100,7 +101,7 @@ class FrqncyAlarmPlugin : Plugin() {
     }
 
     @PluginMethod
-    fun checkPermissions(call: PluginCall) {
+    override fun checkPermissions(call: PluginCall) {
         call.resolve(checkPermissionsInternal())
     }
 

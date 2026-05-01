@@ -35,12 +35,26 @@
         border-radius: 24px;
         margin-bottom: 20px;
       }
+      .time-row {
+        display: flex;
+        align-items: baseline;
+        justify-content: space-between;
+        margin-bottom: 6px;
+      }
       .time-display {
         font-size: 64px;
         font-weight: 100;
         letter-spacing: -1.5px;
         line-height: 1;
-        margin-bottom: 6px;
+      }
+      .time-edit {
+        background: none;
+        border: 1px solid rgba(245, 245, 245, 0.12);
+        color: rgba(245, 245, 245, 0.7);
+        padding: 6px 12px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.5px;
       }
       .time-meta {
         font-size: 13px;
@@ -49,9 +63,7 @@
         color: rgba(245, 245, 245, 0.6);
       }
       .toggle-row {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        display: flex; align-items: center; justify-content: space-between;
         padding: 18px 0;
         border-top: 1px solid rgba(245, 245, 245, 0.06);
       }
@@ -104,11 +116,7 @@
         margin-top: 20px;
       }
       .quiet-note strong { color: rgba(245, 245, 245, 0.8); font-weight: 400; }
-      .sleep-entry {
-        display: flex;
-        gap: 12px;
-        margin-top: 24px;
-      }
+      .sleep-entry { display: flex; gap: 12px; margin-top: 24px; }
       .sleep-entry button {
         flex: 1;
         padding: 16px;
@@ -119,6 +127,66 @@
         font-size: 13.5px;
         -webkit-tap-highlight-color: transparent;
       }
+      .oem-overlay {
+        position: fixed; inset: 0;
+        background: rgba(10, 10, 10, 0.96);
+        z-index: 100;
+        display: none;
+        align-items: center; justify-content: center;
+        padding: 24px;
+      }
+      .oem-overlay.visible { display: flex; }
+      .oem-card {
+        max-width: 460px;
+        background: #141414;
+        border: 1px solid rgba(245, 245, 245, 0.08);
+        border-radius: 20px;
+        padding: 28px 24px;
+      }
+      .oem-card h2 {
+        font-size: 18px;
+        font-weight: 300;
+        letter-spacing: 0.5px;
+        margin-bottom: 12px;
+        color: #e8c547;
+      }
+      .oem-card p {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1.6;
+        color: rgba(245, 245, 245, 0.78);
+        margin-bottom: 14px;
+      }
+      .oem-card .actions {
+        display: flex; gap: 12px; margin-top: 20px;
+      }
+      .oem-card button {
+        flex: 1;
+        padding: 12px 14px;
+        border-radius: 12px;
+        font-size: 13px;
+        letter-spacing: 0.6px;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .oem-card .ok {
+        background: rgba(232, 197, 71, 0.95);
+        border: none;
+        color: #0a0a0a;
+      }
+      .oem-card .later {
+        background: none;
+        border: 1px solid rgba(245, 245, 245, 0.18);
+        color: rgba(245, 245, 245, 0.7);
+      }
+      input[type="time"] {
+        background: rgba(245, 245, 245, 0.06);
+        color: #f5f5f5;
+        border: 1px solid rgba(245, 245, 245, 0.14);
+        border-radius: 8px;
+        padding: 6px 10px;
+        font-size: 13px;
+        font-family: inherit;
+      }
     </style>
   </head>
   <body>
@@ -126,7 +194,10 @@
       <h1>bedside</h1>
 
       <div class="alarm-card">
-        <div class="time-display" id="time-display">06:45</div>
+        <div class="time-row">
+          <div class="time-display" id="time-display">06:45</div>
+          <input type="time" id="time-input" value="06:45" />
+        </div>
         <div class="time-meta" id="time-meta">morning · fade-in 90s</div>
 
         <div class="toggle-row">
@@ -149,15 +220,52 @@
         <button id="to-sleep">tonight's session</button>
       </div>
 
-      <div class="quiet-note">
-        <strong>For best reliability:</strong> plug your phone in and leave FRQNCY open in Bedside Mode. On iOS, the system may not wake apps that have been force-closed — we recommend a backup alarm in the iOS Clock app during your first week.
+      <div class="quiet-note" id="reliability-note">
+        <strong>For best reliability:</strong> plug your phone in and leave FRQNCY open in Bedside Mode.
+      </div>
+    </div>
+
+    <!-- OEM guidance overlay (shown on first arm on Android, hidden on iOS) -->
+    <div class="oem-overlay" id="oem-overlay" role="dialog" aria-modal="true" aria-labelledby="oem-title">
+      <div class="oem-card">
+        <h2 id="oem-title">a quick setting on your phone</h2>
+        <p id="oem-text">…</p>
+        <p style="font-size: 12px; color: rgba(245, 245, 245, 0.5);">
+          Phone alarms on Android can fail under aggressive battery management.
+          One-time setup keeps FRQNCY reliable.
+        </p>
+        <div class="actions">
+          <button class="later" id="oem-later">later</button>
+          <button class="ok" id="oem-ok">open settings</button>
+        </div>
       </div>
     </div>
 
     <script type="module">
+      // The Capacitor bundle exposes FrqncyAlarm globally via the registered
+      // plugin. In dev (Vite served, no Capacitor bridge), the plugin object
+      // exists but every method rejects — we feature-detect and degrade.
+      let FrqncyAlarm = null;
+      try {
+        const cap = window.Capacitor;
+        if (cap && cap.Plugins && cap.Plugins.FrqncyAlarm) {
+          FrqncyAlarm = cap.Plugins.FrqncyAlarm;
+        }
+      } catch {}
+
       const arm = document.getElementById('arm');
       const switches = document.querySelectorAll('.switch');
       const toSleep = document.getElementById('to-sleep');
+      const timeInput = document.getElementById('time-input');
+      const timeDisplay = document.getElementById('time-display');
+      const oemOverlay = document.getElementById('oem-overlay');
+      const oemText = document.getElementById('oem-text');
+      const oemTitle = document.getElementById('oem-title');
+      const oemOk = document.getElementById('oem-ok');
+      const oemLater = document.getElementById('oem-later');
+
+      const ALARM_ID = 'frqncy.morning.primary';
+      const OEM_ACK_KEY = 'frqncy.bedside.oem_ack';
 
       switches.forEach(sw => {
         sw.addEventListener('click', () => {
@@ -166,26 +274,131 @@
         });
       });
 
-      let armed = false;
-      arm.addEventListener('click', async () => {
-        armed = !armed;
-        arm.classList.toggle('armed', armed);
-        arm.textContent = armed ? 'armed · tap to disarm' : 'arm for tonight';
+      // Two-way bind the time input <-> display.
+      timeInput.addEventListener('input', () => {
+        timeDisplay.textContent = timeInput.value || '06:45';
+      });
 
-        // TODO: wire to FrqncyAlarm.schedule() + armKeepAlive() on iOS
-        // TODO: show OEM guidance on first arm (Android)
+      function nextOccurrenceTimestamp(hhmm) {
+        const [h, m] = hhmm.split(':').map(n => parseInt(n, 10));
+        const d = new Date();
+        d.setHours(h, m, 0, 0);
+        if (d.getTime() <= Date.now()) {
+          d.setDate(d.getDate() + 1);
+        }
+        return d.getTime();
+      }
+
+      let armed = false;
+
+      arm.addEventListener('click', async () => {
+        if (!FrqncyAlarm) {
+          // Dev fallback — no Capacitor bridge.
+          armed = !armed;
+          arm.classList.toggle('armed', armed);
+          arm.textContent = armed ? 'armed · tap to disarm' : 'arm for tonight';
+          return;
+        }
+
+        if (armed) {
+          try {
+            await FrqncyAlarm.cancel({ id: ALARM_ID });
+            armed = false;
+            arm.classList.remove('armed');
+            arm.textContent = 'arm for tonight';
+          } catch (err) {
+            console.warn('cancel failed', err);
+          }
+          return;
+        }
+
+        // Permission check — Android may need exact-alarm + notifications.
+        try {
+          const perms = await FrqncyAlarm.checkPermissions();
+          if (perms.exactAlarm === 'denied' || perms.notifications !== 'granted') {
+            await FrqncyAlarm.requestPermissions();
+          }
+        } catch {}
+
+        const timestamp = nextOccurrenceTimestamp(timeInput.value || '06:45');
+        try {
+          await FrqncyAlarm.schedule({
+            id: ALARM_ID,
+            timestamp,
+            moment: 'morning',
+            label: 'FRQNCY',
+            repeat: 'daily',
+            fadeInSeconds: 90,
+          });
+          armed = true;
+          arm.classList.add('armed');
+          arm.textContent = 'armed · tap to disarm';
+
+          // iOS: arm the silent-audio keep-alive (no-op on Android).
+          try { await FrqncyAlarm.armKeepAlive(); } catch {}
+
+          // First-arm OEM guidance on Android.
+          await maybeShowOemGuidance();
+        } catch (err) {
+          console.error('arm failed', err);
+          alert(err && err.message ? err.message : 'Could not arm alarm');
+        }
+      });
+
+      async function maybeShowOemGuidance() {
+        if (!FrqncyAlarm) return;
+        if (localStorage.getItem(OEM_ACK_KEY) === '1') return;
+        try {
+          const guidance = await FrqncyAlarm.getOemGuidance();
+          // iOS returns isAggressive=false — show the iOS-specific note in the
+          // reliability footer rather than as a modal.
+          if (!guidance.isAggressive) {
+            const note = document.getElementById('reliability-note');
+            if (note) {
+              note.innerHTML = `<strong>For best reliability:</strong> ${guidance.instructions}`;
+            }
+            localStorage.setItem(OEM_ACK_KEY, '1');
+            return;
+          }
+          oemTitle.textContent = `${guidance.manufacturer.toLowerCase()} keeps strict watch on background apps`;
+          oemText.textContent = guidance.instructions;
+          oemOverlay.classList.add('visible');
+        } catch {}
+      }
+
+      oemOk.addEventListener('click', () => {
+        // TODO Phase 5: route to the deep-link intent if one is provided.
+        // For v1 we just acknowledge — user opens Settings manually.
+        localStorage.setItem(OEM_ACK_KEY, '1');
+        oemOverlay.classList.remove('visible');
+      });
+      oemLater.addEventListener('click', () => {
+        oemOverlay.classList.remove('visible');
+        // Don't set the ack flag — they'll see the prompt next arm.
       });
 
       toSleep.addEventListener('click', () => {
         window.location.href = './sleep.html';
       });
 
-      // Update displayed time every minute (future: reflect real scheduled alarm)
-      function refreshTime() {
-        // Default alarm for now.
-        document.getElementById('time-display').textContent = '06:45';
-      }
-      refreshTime();
+      // Sync UI state with persisted alarm on load.
+      (async function hydrate() {
+        if (!FrqncyAlarm) return;
+        try {
+          const { alarms } = await FrqncyAlarm.list();
+          const existing = alarms && alarms.find(a => a.id === ALARM_ID);
+          if (existing) {
+            armed = true;
+            arm.classList.add('armed');
+            arm.textContent = 'armed · tap to disarm';
+            const d = new Date(existing.timestamp);
+            const hh = String(d.getHours()).padStart(2, '0');
+            const mm = String(d.getMinutes()).padStart(2, '0');
+            timeInput.value = `${hh}:${mm}`;
+            timeDisplay.textContent = `${hh}:${mm}`;
+          }
+        } catch {}
+      })();
     </script>
   </body>
 </html>

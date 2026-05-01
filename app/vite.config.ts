@@ -4,6 +4,10 @@ import { resolve } from 'path';
 export default defineConfig({
   root: 'src',
   publicDir: '../public',
+  // Relative base so AlarmActivity (which loads alarm.html via
+  // file:///android_asset/public/app/alarm.html — outside Capacitor's
+  // https://localhost bridge) can still resolve its JS chunks.
+  base: './',
   build: {
     outDir: '../dist',
     emptyOutDir: true,

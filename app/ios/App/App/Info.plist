@@ -45,5 +45,25 @@
 	</array>
 	<key>UIViewControllerBasedStatusBarAppearance</key>
 	<true/>
+
+	<!-- FrqncyAlarm: background audio mode lets the alarm ring while locked.
+	     'fetch' is for SyncManager content polling on resume. -->
+	<key>UIBackgroundModes</key>
+	<array>
+		<string>audio</string>
+		<string>fetch</string>
+	</array>
+
+	<!-- FrqncyAlarm: lets AVPlayer stream audio from Cloudflare R2/Stream
+	     without per-domain ATS exemptions. -->
+	<key>NSAppTransportSecurity</key>
+	<dict>
+		<key>NSAllowsArbitraryLoadsForMedia</key>
+		<true/>
+	</dict>
+
+	<!-- TODO Phase 7: add NSHealthShareUsageDescription when wiring the
+	     read-only Sleep stage integration for the optional smart-wake window.
+	     Per Stream 6: read-only, never displayed back to the user. -->
 </dict>
 </plist>

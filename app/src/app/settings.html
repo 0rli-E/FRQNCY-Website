@@ -51,10 +51,36 @@
       .row-value {
         color: rgba(245, 245, 245, 0.5);
         font-size: 13px;
+        text-align: right;
       }
+      .row-value.granted { color: rgba(232, 197, 71, 0.95); }
+      .row-value.denied { color: rgba(255, 120, 120, 0.85); }
       .link-row {
         color: rgba(232, 197, 71, 0.9);
         text-decoration: none;
+      }
+      .action-button {
+        background: none;
+        border: 1px solid rgba(232, 197, 71, 0.5);
+        color: rgba(232, 197, 71, 0.9);
+        padding: 8px 14px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.6px;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .support-link {
+        display: block;
+        margin-top: 24px;
+        padding: 16px;
+        text-align: center;
+        background: linear-gradient(145deg, rgba(232, 197, 71, 0.10), rgba(232, 197, 71, 0.02));
+        border: 1px solid rgba(232, 197, 71, 0.3);
+        color: #e8c547;
+        border-radius: 14px;
+        text-decoration: none;
+        font-size: 14px;
+        letter-spacing: 0.6px;
       }
     </style>
   </head>
@@ -71,20 +97,267 @@
 
       <div class="section">
         <div class="section-title">wake & sleep</div>
-        <div class="row"><span>health integration</span><span class="row-value">not connected</span></div>
-        <div class="row"><span>permissions</span><span class="row-value">review</span></div>
+        <div class="row">
+          <span>notifications</span>
+          <span class="row-value" id="perm-notifications">checking</span>
+        </div>
+        <div class="row">
+          <span>exact alarm</span>
+          <span class="row-value" id="perm-exact">checking</span>
+        </div>
+        <div class="row">
+          <span>full-screen wake</span>
+          <span class="row-value" id="perm-fullscreen">checking</span>
+        </div>
+        <div class="row">
+          <span>health integration</span>
+          <span class="row-value">not connected</span>
+        </div>
+        <div class="row" style="justify-content: flex-end;">
+          <button class="action-button" id="open-perms">request permissions</button>
+        </div>
       </div>
+
+      <div class="section">
+        <div class="section-title">how you arrive</div>
+        <div class="row" style="flex-direction: column; align-items: stretch; gap: 10px; padding: 14px 0;">
+          <span style="font-size: 13px; color: rgba(245,245,245,0.6); line-height: 1.5;">
+            choose how the alarm dismiss gesture works. all three resolve to
+            the same arrival.
+          </span>
+          <div id="dismiss-modes" style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
+            <label class="dismiss-option" data-mode="breath">
+              <input type="radio" name="dismiss" value="breath" />
+              <span>breath hold <em>· 6 seconds, default</em></span>
+            </label>
+            <label class="dismiss-option" data-mode="long-press">
+              <input type="radio" name="dismiss" value="long-press" />
+              <span>long press <em>· same hold, no breath cue</em></span>
+            </label>
+            <label class="dismiss-option" data-mode="triple-tap">
+              <input type="radio" name="dismiss" value="triple-tap" />
+              <span>triple tap <em>· three taps within 2 seconds</em></span>
+            </label>
+          </div>
+        </div>
+      </div>
+
+      <style>
+        .dismiss-option {
+          display: flex;
+          align-items: flex-start;
+          gap: 10px;
+          padding: 10px 12px;
+          background: rgba(245, 245, 245, 0.03);
+          border: 1px solid rgba(245, 245, 245, 0.08);
+          border-radius: 10px;
+          cursor: pointer;
+          font-size: 13.5px;
+          line-height: 1.5;
+          -webkit-tap-highlight-color: transparent;
+        }
+        .dismiss-option em { color: rgba(245, 245, 245, 0.5); font-style: normal; }
+        .dismiss-option:has(input:checked) {
+          border-color: rgba(232, 197, 71, 0.45);
+          background: rgba(232, 197, 71, 0.06);
+        }
+        .dismiss-option input { accent-color: #e8c547; margin-top: 2px; }
+      </style>
 
       <div class="section">
         <div class="section-title">about</div>
         <div class="row"><a href="https://frqncy.network/v2/about.html" class="link-row">about frqncy</a></div>
         <div class="row"><a href="https://frqncy.network/v2/privacy.html" class="link-row">privacy</a></div>
-        <div class="row"><span>version</span><span class="row-value">0.1.0</span></div>
+        <div class="row"><span>version</span><span class="row-value" id="app-version">0.1.0</span></div>
+        <div class="row"><span>device</span><span class="row-value" id="device-info">—</span></div>
       </div>
+
+      <a class="support-link" href="https://frqncy.network/support" target="_blank" rel="noopener">
+        support frqncy ◇
+      </a>
     </div>
 
     <script type="module">
-      // TODO: wire to Preferences to show real last-sync timestamp + download bytes
+      // Capacitor plugin access — feature-detect each one. Settings.html runs
+      // both in Vite dev (no native bridge) and inside the Capacitor WebView
+      // on device. The same code path handles both.
+      function getPlugin(name) {
+        try {
+          return window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins[name];
+        } catch { return null; }
+      }
+      const Preferences = getPlugin('Preferences');
+      const Filesystem = getPlugin('Filesystem');
+      const Device = getPlugin('Device');
+      const App = getPlugin('App');
+      const FrqncyAlarm = getPlugin('FrqncyAlarm');
+
+      const lastSyncedEl = document.getElementById('last-synced');
+      const downloadsEl = document.getElementById('downloads');
+      const permNotifications = document.getElementById('perm-notifications');
+      const permExact = document.getElementById('perm-exact');
+      const permFullscreen = document.getElementById('perm-fullscreen');
+      const openPerms = document.getElementById('open-perms');
+      const appVersionEl = document.getElementById('app-version');
+      const deviceInfoEl = document.getElementById('device-info');
+
+      function formatRelative(timestamp) {
+        if (!timestamp) return 'never';
+        const ms = Date.now() - timestamp;
+        const min = Math.floor(ms / 60_000);
+        if (min < 1) return 'moments ago';
+        if (min < 60) return `${min} min ago`;
+        const hr = Math.floor(min / 60);
+        if (hr < 24) return `${hr} hour${hr === 1 ? '' : 's'} ago`;
+        const d = Math.floor(hr / 24);
+        return `${d} day${d === 1 ? '' : 's'} ago`;
+      }
+
+      async function loadSyncStatus() {
+        if (!Preferences) {
+          lastSyncedEl.textContent = '— (dev)';
+          return;
+        }
+        try {
+          const { value } = await Preferences.get({ key: 'manifest' });
+          if (!value) {
+            lastSyncedEl.textContent = 'never';
+            return;
+          }
+          const m = JSON.parse(value);
+          if (m.publishedAt) {
+            const ts = new Date(m.publishedAt).getTime();
+            lastSyncedEl.textContent = formatRelative(ts);
+          }
+        } catch {
+          lastSyncedEl.textContent = '—';
+        }
+      }
+
+      async function loadDownloadsSize() {
+        if (!Filesystem) {
+          downloadsEl.textContent = '0 MB';
+          return;
+        }
+        try {
+          const { files } = await Filesystem.readdir({
+            path: 'content',
+            directory: 'DATA'
+          });
+          let totalBytes = 0;
+          for (const f of files) {
+            try {
+              const stat = await Filesystem.stat({
+                path: `content/${f.name}`,
+                directory: 'DATA'
+              });
+              totalBytes += stat.size || 0;
+            } catch {}
+          }
+          const mb = totalBytes / (1024 * 1024);
+          downloadsEl.textContent = mb < 0.1 ? '< 0.1 MB' : `${mb.toFixed(1)} MB`;
+        } catch {
+          downloadsEl.textContent = '0 MB';
+        }
+      }
+
+      function statusToText(status) {
+        if (status === 'granted') return { text: 'granted', cls: 'granted' };
+        if (status === 'denied') return { text: 'denied', cls: 'denied' };
+        if (status === 'not-needed') return { text: 'not needed', cls: '' };
+        if (status === 'not-applicable') return { text: '—', cls: '' };
+        return { text: status || '—', cls: '' };
+      }
+
+      function applyStatus(el, status) {
+        const s = statusToText(status);
+        el.textContent = s.text;
+        el.classList.remove('granted', 'denied');
+        if (s.cls) el.classList.add(s.cls);
+      }
+
+      async function loadPermissions() {
+        if (!FrqncyAlarm) {
+          permNotifications.textContent = '— (dev)';
+          permExact.textContent = '— (dev)';
+          permFullscreen.textContent = '— (dev)';
+          return;
+        }
+        try {
+          const status = await FrqncyAlarm.checkPermissions();
+          applyStatus(permNotifications, status.notifications);
+          applyStatus(permExact, status.exactAlarm);
+          applyStatus(permFullscreen, status.fullScreen);
+        } catch (err) {
+          console.warn('checkPermissions failed', err);
+        }
+      }
+
+      openPerms.addEventListener('click', async () => {
+        if (!FrqncyAlarm) return;
+        try {
+          await FrqncyAlarm.requestPermissions();
+          await loadPermissions();
+        } catch {}
+      });
+
+      async function loadDeviceInfo() {
+        if (!Device) {
+          deviceInfoEl.textContent = 'web';
+          return;
+        }
+        try {
+          const info = await Device.getInfo();
+          deviceInfoEl.textContent = `${info.manufacturer || ''} ${info.model || ''}`.trim() || info.platform;
+        } catch {
+          deviceInfoEl.textContent = '—';
+        }
+      }
+
+      async function loadAppVersion() {
+        if (!App) return;
+        try {
+          const info = await App.getInfo();
+          if (info && info.version) appVersionEl.textContent = info.version;
+        } catch {}
+      }
+
+      // Refresh on visibility change (user returned from Settings → Permissions).
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'visible') {
+          loadPermissions();
+          loadSyncStatus();
+        }
+      });
+
+      // Listen for content sync events emitted by SyncManager.
+      window.addEventListener('frqncy:content-updated', () => {
+        loadSyncStatus();
+        loadDownloadsSize();
+      });
+
+      // Dismiss-mode preference.
+      const DISMISS_MODE_KEY = 'frqncy.accessibility.dismiss_mode';
+      function applyDismissMode() {
+        let current = 'breath';
+        try { current = localStorage.getItem(DISMISS_MODE_KEY) || 'breath'; } catch {}
+        document.querySelectorAll('input[name="dismiss"]').forEach(input => {
+          input.checked = (input.value === current);
+        });
+      }
+      document.querySelectorAll('input[name="dismiss"]').forEach(input => {
+        input.addEventListener('change', () => {
+          try { localStorage.setItem(DISMISS_MODE_KEY, input.value); } catch {}
+        });
+      });
+      applyDismissMode();
+
+      // Initial hydrate.
+      loadSyncStatus();
+      loadDownloadsSize();
+      loadPermissions();
+      loadDeviceInfo();
+      loadAppVersion();
     </script>
   </body>
 </html>

@@ -1,0 +1,74 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<!--
+  PrivacyInfo.xcprivacy — required by App Store Connect since Feb 2025.
+
+  Declares:
+    - No tracking (NSPrivacyTracking=false). FRQNCY has no ad SDKs and no
+      cross-app/website tracking. Per Stream 7: skip the ATT prompt entirely;
+      adding a prompt without a tracking purpose can itself trigger 5.1.2.
+    - No data collected. Capacitor preferences/filesystem are local-only.
+      Privacy Nutrition Label = "Data Not Collected" across every category.
+    - Required Reason APIs: declare exactly the buckets the @capacitor/* core
+      plugins use. If a third-party plugin is added later (e.g.
+      @mediagrid/capacitor-native-audio), audit its own xcprivacy and update
+      this list.
+
+  Required Reason API codes (Apple's enumerated values):
+    UserDefaults:
+      CA92.1 — read/write app's own preferences
+    NSFileSystemFreeSize / DiskSpace:
+      E174.1 — show user available storage in app
+    NSFileTimestamp:
+      C617.1 — display files modified by app to the user
+    systemBootTime:
+      35F9.1 — measure time elapsed between events that occurred within the app
+-->
+<plist version="1.0">
+<dict>
+    <key>NSPrivacyTracking</key>
+    <false/>
+
+    <key>NSPrivacyTrackingDomains</key>
+    <array/>
+
+    <key>NSPrivacyCollectedDataTypes</key>
+    <array/>
+
+    <key>NSPrivacyAccessedAPITypes</key>
+    <array>
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryUserDefaults</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <string>CA92.1</string>
+            </array>
+        </dict>
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryFileTimestamp</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <string>C617.1</string>
+            </array>
+        </dict>
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategorySystemBootTime</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <string>35F9.1</string>
+            </array>
+        </dict>
+        <dict>
+            <key>NSPrivacyAccessedAPIType</key>
+            <string>NSPrivacyAccessedAPICategoryDiskSpace</string>
+            <key>NSPrivacyAccessedAPITypeReasons</key>
+            <array>
+                <string>E174.1</string>
+            </array>
+        </dict>
+    </array>
+</dict>
+</plist>

@@ -159,8 +159,11 @@
     </div>
 
     <script type="module">
-      // Note: in production this would import from '../native/frqncy-alarm.ts' through
-      // the compiled bundle. For the skeleton we keep the gesture logic pure.
+      // wake.html — runs after the alarm has been dismissed (or as a standalone
+      // morning practice from the launcher). The breath-hold here is the
+      // "arrival" gesture; on completion we surface a reflection prompt and
+      // optionally start a 3-minute movement session pulled from the
+      // morning-tagged resources in resources.json.
 
       const field = document.getElementById('field');
       const ring = document.getElementById('ring');
@@ -178,16 +181,34 @@
         'where is your softness?',
       ];
 
-      // Fade the frequency field in over 90 seconds.
+      // Accessibility: three dismiss modes per Stream 6.
+      const DISMISS_MODE_KEY = 'frqncy.accessibility.dismiss_mode';
+      const dismissMode = (() => {
+        try { return localStorage.getItem(DISMISS_MODE_KEY) || 'breath'; }
+        catch { return 'breath'; }
+      })();
+      const reducedMotion = window.matchMedia &&
+        window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      ring.setAttribute('role', 'button');
+      ring.setAttribute('tabindex', '0');
+      const hintText = (() => {
+        switch (dismissMode) {
+          case 'long-press': return 'press and hold for 6 seconds';
+          case 'triple-tap': return 'tap three times';
+          default: return 'hold for one breath';
+        }
+      })();
+      ring.setAttribute('aria-label', hintText);
+      hint.textContent = hintText;
+
+      if (reducedMotion) field.style.transition = 'none';
       requestAnimationFrame(() => field.classList.add('active'));
+      setTimeout(() => hint.classList.add('visible'), reducedMotion ? 200 : 2000);
 
-      // Show hint after 2s.
-      setTimeout(() => hint.classList.add('visible'), 2000);
-
-      // Breath-hold dismiss: one full breath = ~6 seconds.
+      // Breath-hold / long-press dismiss
       let holdStart = null;
       let holdTimer = null;
-
       function onStart(e) {
         e.preventDefault();
         holdStart = Date.now();
@@ -197,17 +218,41 @@
       }
       function onEnd() {
         if (!holdStart) return;
-        const held = Date.now() - holdStart;
         ring.classList.remove('holding');
         clearTimeout(holdTimer);
         holdStart = null;
-        // If released early, don't punish — just fade back. The gesture is invitation.
       }
 
-      ring.addEventListener('pointerdown', onStart);
-      ring.addEventListener('pointerup', onEnd);
-      ring.addEventListener('pointercancel', onEnd);
-      ring.addEventListener('pointerleave', onEnd);
+      // Triple-tap dismiss
+      let tapTimes = [];
+      function onTap() {
+        const now = Date.now();
+        tapTimes = tapTimes.filter(t => now - t < 2000);
+        tapTimes.push(now);
+        if (tapTimes.length >= 3) {
+          tapTimes = [];
+          arrive();
+        } else {
+          ring.classList.add('holding');
+          setTimeout(() => ring.classList.remove('holding'), 150);
+          if (navigator.vibrate) navigator.vibrate(6);
+        }
+      }
+
+      if (dismissMode === 'triple-tap') {
+        ring.addEventListener('pointerdown', e => { e.preventDefault(); onTap(); });
+      } else {
+        ring.addEventListener('pointerdown', onStart);
+        ring.addEventListener('pointerup', onEnd);
+        ring.addEventListener('pointercancel', onEnd);
+        ring.addEventListener('pointerleave', onEnd);
+      }
+      ring.addEventListener('keydown', (e) => {
+        if (e.key === 'Enter' || e.key === ' ') {
+          e.preventDefault();
+          dismissMode === 'triple-tap' ? onTap() : arrive();
+        }
+      });
 
       function arrive() {
         ring.classList.remove('holding');
@@ -216,10 +261,91 @@
         promptScreen.classList.add('visible');
       }
 
-      movementBtn.addEventListener('click', () => {
-        // TODO: route to a 3-min movement session from the morning-tagged resources.
-        window.location.href = '../index.html';
-      });
+      // --- Movement session ----------------------------------------------------
+      // When user taps "move with me", we look for a morning-tagged resource in
+      // the cached resources.json and either play its audio (if mediagrid is
+      // installed) or open it in the in-app browser as a fallback.
+
+      function getPlugin(name) {
+        try { return window.Capacitor && window.Capacitor.Plugins && window.Capacitor.Plugins[name]; } catch { return null; }
+      }
+      const Filesystem = getPlugin('Filesystem');
+      const NativeAudio = getPlugin('NativeAudio') || getPlugin('CapacitorMediaSession');
+      const Browser = getPlugin('Browser');
+
+      async function readResources() {
+        // Try the offline cache written by SyncManager first.
+        if (Filesystem) {
+          try {
+            const res = await Filesystem.readFile({
+              path: 'content/resources.json',
+              directory: 'DATA',
+              encoding: 'utf8'
+            });
+            return JSON.parse(typeof res.data === 'string' ? res.data : await res.data.text());
+          } catch {}
+        }
+        // Live fallback (web/dev).
+        try {
+          const r = await fetch('https://frqncy.network/resources.json');
+          if (r.ok) return await r.json();
+        } catch {}
+        return null;
+      }
+
+      function pickMorning(resources) {
+        const candidates = resources.filter(r =>
+          Array.isArray(r.moment) && r.moment.includes('morning') &&
+          (r.url || '').match(/\.(mp3|m4a|wav)(\?|$)/i)
+        );
+        if (candidates.length > 0) {
+          return candidates[Math.floor(Math.random() * candidates.length)];
+        }
+        // No audio-typed resources — fall back to any morning entry with a URL.
+        const fallback = resources.filter(r =>
+          Array.isArray(r.moment) && r.moment.includes('morning') && r.url
+        );
+        return fallback.length > 0 ? fallback[Math.floor(Math.random() * fallback.length)] : null;
+      }
+
+      async function playMovement() {
+        const resources = await readResources();
+        if (!resources) {
+          window.location.href = '../index.html';
+          return;
+        }
+        const pick = pickMorning(resources);
+        if (!pick) {
+          window.location.href = '../index.html';
+          return;
+        }
+
+        // If we have a native audio plugin AND the URL is direct audio, play
+        // through it (lock-screen controls, background-safe). Otherwise open
+        // the resource page so the user can engage with it externally.
+        const isDirectAudio = pick.url && /\.(mp3|m4a|wav)(\?|$)/i.test(pick.url);
+        if (NativeAudio && isDirectAudio) {
+          try {
+            const id = `frqncy.morning.${pick.id || Date.now()}`;
+            await NativeAudio.preload({ assetId: id, assetPath: pick.url, audioChannelNum: 1, isUrl: true });
+            await NativeAudio.play({ assetId: id });
+            promptText.textContent = `playing: ${pick.name || 'morning practice'}`;
+            return;
+          } catch (err) {
+            console.warn('NativeAudio play failed, falling back to browser', err);
+          }
+        }
+
+        if (Browser) {
+          try {
+            await Browser.open({ url: pick.url, presentationStyle: 'popover' });
+            return;
+          } catch {}
+        }
+        window.open(pick.url, '_blank');
+      }
+
+      movementBtn.addEventListener('click', playMovement);
       closeBtn.addEventListener('click', () => {
         window.location.href = '../index.html';
       });
