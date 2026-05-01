@@ -453,6 +453,26 @@ if (window.EXPLORE_DATA && Array.isArray(window.EXPLORE_DATA.nodes)) {
 
 function initMap() {
 window.__exploreInitialized = true;
+window.__lastTick = Date.now();
+/* Watchdog: if the d3 simulation hasn't ticked within 1.5s of init, the
+ * page is in a stuck state (frozen RAF / paused timer / bfcache gone wrong).
+ * Force a reload, gated by sessionStorage so we don't loop forever. */
+setTimeout(() => {
+  const now = Date.now();
+  const stale = now - (window.__lastTick || 0) > 1200;
+  if (stale) {
+    const reloads = +(sessionStorage.getItem('explore.wd') || 0);
+    if (reloads < 2) {
+      sessionStorage.setItem('explore.wd', String(reloads + 1));
+      console.warn('[explore] simulation watchdog: no tick in', (now - window.__lastTick), 'ms — reloading');
+      location.reload();
+    } else {
+      console.error('[explore] watchdog reloads exhausted — leaving page as-is');
+    }
+  } else {
+    sessionStorage.removeItem('explore.wd');
+  }
+}, 1500);
 /* ── Embedded mode: hide standalone UI chrome when inside an iframe ── */
 const isEmbedded = (()=>{ try{ return window.self !== window.top; }catch(e){ return true; } })();
 if(isEmbedded){
@@ -528,6 +548,16 @@ const sim=d3.forceSimulation(NODES)
   .force('center',d3.forceCenter(W/2,H/2).strength(0.04))
   .force('collide',d3.forceCollide(d=>d.r+8).strength(0.6).iterations(1))
   .alphaDecay(0.03).velocityDecay(0.45);
+
+/* Tick heartbeat for the watchdog (and for visibility-change recovery). */
+sim.on('tick.__heartbeat', () => { window.__lastTick = Date.now(); });
+window.__sim = sim;
+/* If the user comes back to the tab and the sim is cold, give it a kick. */
+document.addEventListener('visibilitychange', () => {
+  if (!document.hidden && window.__sim) {
+    if (Date.now() - (window.__lastTick || 0) > 800) window.__sim.alpha(0.3).restart();
+  }
+});
 
 /* Node map for fast canvas lookup */
 const nodeById={};

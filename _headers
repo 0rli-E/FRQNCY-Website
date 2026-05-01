@@ -50,17 +50,6 @@
 /v2/*.html
   Cache-Control: public, max-age=0, must-revalidate
 
-# Explore page — opt OUT of bfcache. The page runs a long-lived d3
-# force simulation + canvas RAF loop; when restored from bfcache, RAF
-# and the simulation timer are paused on some browsers (Safari, mobile
-# Chrome) and never resume, leaving the map blank/stuck on back-nav.
-# `no-store` is the only directive that reliably disqualifies a page
-# from bfcache in every browser.
-/v2/explore.html
-  Cache-Control: no-store
-/v2/explore
-  Cache-Control: no-store
-
 # Cloudflare Pages Functions — never cache
 /api/*
   Cache-Control: no-store
