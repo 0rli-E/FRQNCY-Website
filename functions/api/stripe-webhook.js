@@ -113,6 +113,34 @@ async function handleCheckoutCompleted(env, evt) {
     console.warn('checkout.session.completed without client_reference_id — ignoring');
     return;
   }
+
+  // Branch on kind. Default = membership (existing path). kind=course = one-time
+  // payment for a single course; recorded in course_purchases (migration 014).
+  const kind = s.metadata?.kind || (s.mode === 'payment' ? 'course' : 'membership');
+
+  if (kind === 'course') {
+    const courseSlug = s.metadata?.course_slug;
+    if (!courseSlug) {
+      console.warn('course checkout completed without course_slug — ignoring');
+      return;
+    }
+    await supabaseRequest(env, 'course_purchases?on_conflict=user_id,course_slug', {
+      method: 'POST',
+      headers: { Prefer: 'resolution=merge-duplicates,return=minimal' },
+      body: JSON.stringify([{
+        user_id: userId,
+        course_slug: courseSlug,
+        stripe_session_id: s.id || null,
+        stripe_payment_intent: s.payment_intent || null,
+        amount_cents: s.amount_total ?? null,
+        currency: s.currency || 'usd',
+        status: 'paid',
+      }]),
+    });
+    return;
+  }
+
+  // ── Membership path (subscription) ──
   const customerId = s.customer || null;
   const subscriptionId = s.subscription || null;
   const tier = s.metadata?.tier || 'network_member';

@@ -3,13 +3,19 @@
  * Cloudflare Pages Function
  *
  * POST /api/checkout-session
- * Body: { tier: 'monthly' | 'annual', user_id, email, ref_code? }
+ * Body shapes:
+ *   Membership (subscription mode):
+ *     { tier: 'monthly' | 'annual', user_id, email, ref_code? }
+ *   Course (one-time payment mode):
+ *     { kind: 'course', course_slug, stripe_price_id, user_id, email }
  * Returns: { url: <stripe_checkout_url> }
  *
  * Required env vars (Cloudflare Pages → Settings → Environment variables):
  *   STRIPE_SECRET_KEY               — sk_test_... (test mode first)
  *   STRIPE_PRICE_MONTHLY            — price_xxx for the monthly Network Member price
  *   STRIPE_PRICE_ANNUAL             — price_xxx for the annual Network Member price
+ *   (Course price IDs come in the request body — looked up from courses.json
+ *   client-side, so each course can be priced independently without a redeploy.)
  *
  * Stripe is called via the REST API directly — no SDK dependency, since Pages
  * Functions don't bundle node_modules cleanly. fetch() with form-urlencoded
@@ -114,52 +120,86 @@ export async function onRequestPost({ request, env }) {
   try { body = await request.json(); }
   catch { return json({ error: 'Invalid JSON.' }, 400, origin); }
 
-  const tier    = String(body.tier || '').toLowerCase();
+  const kind    = String(body.kind || 'membership').toLowerCase();
   const userId  = String(body.user_id || '').trim();
   const email   = String(body.email || '').trim().toLowerCase();
-  let   refCode = body.ref_code ? String(body.ref_code).trim().toUpperCase() : null;
 
-  if (tier !== 'monthly' && tier !== 'annual') {
-    return json({ error: 'tier must be "monthly" or "annual".' }, 400, origin);
-  }
   if (!UUID_RE.test(userId)) {
     return json({ error: 'user_id must be a UUID.' }, 400, origin);
   }
   if (!EMAIL_RE.test(email) || email.length > 254) {
     return json({ error: 'A valid email is required.' }, 400, origin);
   }
-  if (refCode && !REF_RE.test(refCode)) refCode = null;
 
-  // ── Resolve price ID ───────────────────────────────────────────────────
-  const priceId = tier === 'annual' ? env.STRIPE_PRICE_ANNUAL : env.STRIPE_PRICE_MONTHLY;
-  if (!priceId) {
-    return json(
-      { error: `Stripe price for tier "${tier}" is not configured. Set STRIPE_PRICE_${tier.toUpperCase()} in Pages env vars.` },
-      503,
-      origin,
-    );
-  }
+  // ── Build payload — branches on kind ──────────────────────────────────
+  let payload;
 
-  // ── Build Stripe Checkout Session payload ──────────────────────────────
-  // Form-urlencoded, with array/object syntax Stripe's REST API expects.
-  const payload = {
-    mode: 'subscription',
-    'line_items[0][price]': priceId,
-    'line_items[0][quantity]': 1,
-    customer_email: email,
-    client_reference_id: userId,
-    success_url: 'https://frqncy.network/membership/?status=success&session_id={CHECKOUT_SESSION_ID}',
-    cancel_url:  'https://frqncy.network/membership/?status=cancelled',
-    'metadata[user_id]': userId,
-    'metadata[tier]': tier,
-    'subscription_data[metadata][user_id]': userId,
-    'subscription_data[metadata][tier]': tier,
-    allow_promotion_codes: 'true',
-    'automatic_tax[enabled]': 'false',
-  };
-  if (refCode) {
-    payload['metadata[ref_code]'] = refCode;
-    payload['subscription_data[metadata][ref_code]'] = refCode;
+  if (kind === 'course') {
+    // One-time payment for a course (Phase 3 Wk 5 Fri).
+    const courseSlug = String(body.course_slug || '').trim();
+    const priceId    = String(body.stripe_price_id || '').trim();
+    if (!/^[a-z0-9-]{2,60}$/.test(courseSlug)) {
+      return json({ error: 'course_slug must be a kebab-case slug.' }, 400, origin);
+    }
+    if (!/^price_[A-Za-z0-9]+$/.test(priceId)) {
+      return json({ error: 'stripe_price_id must be a valid Stripe price ID.' }, 400, origin);
+    }
+
+    payload = {
+      mode: 'payment',
+      'line_items[0][price]': priceId,
+      'line_items[0][quantity]': 1,
+      customer_email: email,
+      client_reference_id: userId,
+      success_url: `https://frqncy.network/v2/courses/${courseSlug}/?status=success&session_id={CHECKOUT_SESSION_ID}`,
+      cancel_url:  `https://frqncy.network/v2/courses/${courseSlug}/?status=cancelled`,
+      'metadata[kind]': 'course',
+      'metadata[user_id]': userId,
+      'metadata[course_slug]': courseSlug,
+      'payment_intent_data[metadata][user_id]': userId,
+      'payment_intent_data[metadata][course_slug]': courseSlug,
+      allow_promotion_codes: 'true',
+      'automatic_tax[enabled]': 'false',
+    };
+  } else {
+    // Membership subscription (default).
+    const tier    = String(body.tier || '').toLowerCase();
+    let   refCode = body.ref_code ? String(body.ref_code).trim().toUpperCase() : null;
+
+    if (tier !== 'monthly' && tier !== 'annual') {
+      return json({ error: 'tier must be "monthly" or "annual".' }, 400, origin);
+    }
+    if (refCode && !REF_RE.test(refCode)) refCode = null;
+
+    const priceId = tier === 'annual' ? env.STRIPE_PRICE_ANNUAL : env.STRIPE_PRICE_MONTHLY;
+    if (!priceId) {
+      return json(
+        { error: `Stripe price for tier "${tier}" is not configured. Set STRIPE_PRICE_${tier.toUpperCase()} in Pages env vars.` },
+        503,
+        origin,
+      );
+    }
+
+    payload = {
+      mode: 'subscription',
+      'line_items[0][price]': priceId,
+      'line_items[0][quantity]': 1,
+      customer_email: email,
+      client_reference_id: userId,
+      success_url: 'https://frqncy.network/membership/?status=success&session_id={CHECKOUT_SESSION_ID}',
+      cancel_url:  'https://frqncy.network/membership/?status=cancelled',
+      'metadata[kind]': 'membership',
+      'metadata[user_id]': userId,
+      'metadata[tier]': tier,
+      'subscription_data[metadata][user_id]': userId,
+      'subscription_data[metadata][tier]': tier,
+      allow_promotion_codes: 'true',
+      'automatic_tax[enabled]': 'false',
+    };
+    if (refCode) {
+      payload['metadata[ref_code]'] = refCode;
+      payload['subscription_data[metadata][ref_code]'] = refCode;
+    }
   }
 
   // ── Call Stripe ────────────────────────────────────────────────────────
