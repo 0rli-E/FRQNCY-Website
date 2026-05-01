@@ -152,3 +152,35 @@ nav.over-dark.scrolled .nav-dd-menu {
     display: none;
   }
 }
+
+/* ──────────────────────────────────────────────────────────────────
+   Global keyboard-focus ring.
+   Loaded on ~950 pages via nav-dropdown.css. Uses :focus-visible so
+   mouse users never see the outline, keyboard users always do. Gold
+   accent matches FRQNCY's voice; 2px outline at 2px offset reads at
+   a glance without crowding tight UIs. The :where() wrapper gives
+   each rule a specificity of 0,0,0 so any page-specific :focus rules
+   trump it without !important.
+   ────────────────────────────────────────────────────────────────── */
+:where(a, button, input, textarea, select, summary, [tabindex]):focus-visible {
+  outline: 2px solid #C4973A;
+  outline-offset: 2px;
+  border-radius: 2px;
+}
+
+/* Buttons that already carry their own border get a tighter inset
+   ring so the gold doesn't double up with their existing accent. */
+:where(.btn, .nav-cta-gold, [role="button"]):focus-visible {
+  outline-offset: 3px;
+}
+
+/* Skip-to-main link is keyboard-only by definition; bring it on-screen
+   when focused (per the standard a11y pattern). The base `.skip-nav`
+   class is set inline on the homepage; we make the focused state
+   global so any page that uses the same convention is covered. */
+.skip-nav:focus,
+.skip-nav:focus-visible {
+  top: 0 !important;
+  outline: 2px solid #0B1C3D;
+  outline-offset: 0;
+}
