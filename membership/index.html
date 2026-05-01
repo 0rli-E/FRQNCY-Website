@@ -7,6 +7,8 @@
 <meta name="description" content="Support the network. Get nothing the public site doesn't have. The reading stays free.">
 <meta name="theme-color" content="#0B1C3D">
 <meta name="robots" content="index, follow">
+  <meta name="google-site-verification" content="GOOGLE_SITE_VERIFICATION_PLACEHOLDER">
+  <meta name="msvalidate.01" content="BING_VERIFICATION_PLACEHOLDER">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Membership — FRQNCY">
 <meta property="og:description" content="Support the network. Get nothing the public site doesn't have. The reading stays free.">
@@ -226,6 +228,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
         <span id="ref-count-label">friends who joined via you</span>
       </div>
       <ul class="ref-list" id="ref-list"></ul>
+      <div id="ref-rewards" style="display:none;margin-top:1rem"></div>
     </div>
   </section>
 
@@ -258,7 +261,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <script src="../assets/frqncy-supabase.js" defer></script>
 <!-- Membership helpers (ref code, signups) -->
 <script type="module">
-  import { getOrCreateRefCode, getMyRefSignups, getMyMembership } from '../assets/frqncy-membership.js';
+  import { getOrCreateRefCode, getMyRefSignups, getMyMembership, getMyRewards, checkAndGrantRewards } from '../assets/frqncy-membership.js';
 
   // ── Status banner from Stripe redirect ─────────────────────────────────
   const statusEl = document.getElementById('checkout-status');
@@ -396,6 +399,39 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
       }
     } catch (err) {
       console.warn('Could not load ref signups', err);
+    }
+
+    // Rewards (Phase 3 Wk 6 — migration 015 + /api/check-rewards)
+    try {
+      // First, ask the server to grant any newly-crossed tiers (idempotent).
+      await checkAndGrantRewards();
+      const rewards = await getMyRewards();
+      const rewardsEl = document.getElementById('ref-rewards');
+      if (!rewardsEl) return;
+      if (!rewards || rewards.length === 0) {
+        rewardsEl.style.display = 'none';
+        return;
+      }
+      rewardsEl.style.display = '';
+      const REWARD_LABELS = {
+        free_month_credit:  { tier: 3,  label: 'Free month credit',  body: 'Three friends joined as members. Your next renewal is on us.' },
+        gathering_invite:   { tier: 10, label: 'Gathering invite',   body: 'Ten members through you. Look for the next quarterly gathering invite by email.' },
+        founder_badge:      { tier: 25, label: 'Founder badge',      body: 'Twenty-five members through you. The badge is on your profile, permanent.' },
+      };
+      rewardsEl.innerHTML = `
+        <h3 style="font-family:'Cormorant',serif;font-style:italic;font-size:1.25rem;color:var(--gold,#C9A96E);margin:0 0 0.75rem;">Acknowledgements</h3>
+        <ul style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem;">
+          ${rewards.map(r => {
+            const def = REWARD_LABELS[r.kind] || { tier: r.tier, label: r.kind, body: '' };
+            return `<li style="padding:0.65rem 0.85rem;border:1px solid rgba(201,169,110,0.2);border-radius:0.5rem;background:rgba(201,169,110,0.03);">
+              <div style="font-size:0.85rem;color:var(--gold,#C9A96E);">${def.label} · tier ${def.tier}</div>
+              <div style="font-size:0.78rem;color:var(--text-dim,#7090B8);margin-top:0.2rem;">${def.body}</div>
+            </li>`;
+          }).join('')}
+        </ul>
+      `;
+    } catch (err) {
+      console.warn('Could not load rewards', err);
     }
   }
   renderReferralBlock();

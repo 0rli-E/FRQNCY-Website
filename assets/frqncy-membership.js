@@ -251,3 +251,57 @@ export function readStoredRefCode() {
   } catch (_) {}
   return null;
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Referral rewards (Phase 3 Wk 6 — migration 015)
+//
+// Three tiers: 3 → free month credit, 10 → quarterly gathering invite,
+// 25 → permanent founder badge. Granted by the /api/check-rewards endpoint
+// (server-side, service-role). Read-only on the client.
+//
+// Per CLAUDE.md cooperation rule: rewards are personal acknowledgements, not
+// public ranking. Badges show on the user's OWN profile only. There is no
+// "top referrers" leaderboard anywhere in the product.
+// ─────────────────────────────────────────────────────────────────────────────
+
+/**
+ * Read the user's granted ref_rewards rows. Returns [] if none / not signed
+ * in / migration 015 not yet applied.
+ */
+export async function getMyRewards() {
+  try {
+    const c = await client();
+    const { data: { user } } = await c.auth.getUser();
+    if (!user) return [];
+    const { data, error } = await c
+      .from('ref_rewards')
+      .select('tier, kind, granted_at, redeemed_at')
+      .eq('referrer_id', user.id)
+      .order('tier', { ascending: true });
+    if (error) return [];
+    return data || [];
+  } catch (_) { return []; }
+}
+
+/**
+ * Ask the server to recompute and grant any newly-crossed reward tiers for
+ * the current user. Returns { granted: [...], current_member_count } or
+ * null on failure.
+ *
+ * Idempotent — server uses UNIQUE (referrer_id, tier) so re-running doesn't
+ * double-grant. Safe to call after any signup-attribution event.
+ */
+export async function checkAndGrantRewards() {
+  try {
+    const c = await client();
+    const { data: { user } } = await c.auth.getUser();
+    if (!user) return null;
+    const res = await fetch('/api/check-rewards', {
+      method: 'POST',
+      headers: { 'content-type': 'application/json' },
+      body: JSON.stringify({ user_id: user.id }),
+    });
+    if (!res.ok) return null;
+    return await res.json();
+  } catch (_) { return null; }
+}

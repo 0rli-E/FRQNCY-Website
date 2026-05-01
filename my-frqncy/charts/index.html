@@ -170,13 +170,16 @@ nav{
       </div>
     </section>
 
-    <!-- Mood delta histogram -->
+    <!-- Mood delta histogram (member-gated; falls back to invitation card for non-members) -->
     <section class="section">
       <h2>Mood delta</h2>
       <div class="section-sub">When you record mood before and after, this is the change. Shape over score.</div>
-      <div class="chart-card">
-        <canvas id="mood-chart" height="280"></canvas>
-        <div id="mood-empty" class="empty" style="display:none;margin-top:1rem">Add a mood-before and a mood-after on a session to start this picture.</div>
+      <div id="mood-section">
+        <div class="chart-card" id="mood-chart-wrap" style="display:none">
+          <canvas id="mood-chart" height="280"></canvas>
+          <div id="mood-empty" class="empty" style="display:none;margin-top:1rem">Add a mood-before and a mood-after on a session to start this picture.</div>
+        </div>
+        <div id="mood-upsell"></div>
       </div>
     </section>
 
@@ -189,6 +192,25 @@ nav{
 <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.1/dist/chart.umd.min.js"></script>
 <script type="module">
 import { listLogs, getScores, getPractice } from '/assets/frqncy-practice.js';
+import { isActiveMember, renderMemberUpsell } from '/assets/frqncy-member-gate.js';
+
+// Gate the Mood-delta section. Members see the chart; non-members see an
+// invitation card. Voice-aligned per proposals/MEMBERSHIP-V0.md — never
+// "exclusive" / "premium". Frame as a deeper view, not a withheld one.
+(async () => {
+  const isMember = await isActiveMember();
+  const wrap = document.getElementById('mood-chart-wrap');
+  const upsell = document.getElementById('mood-upsell');
+  if (!wrap || !upsell) return;
+  if (isMember) {
+    wrap.style.display = '';
+  } else {
+    renderMemberUpsell(upsell, {
+      headline: 'A deeper view for members',
+      body: 'Mood-delta is one of the small extras members see. Your sessions, streak, and consistency stay free for everyone — supporters get a few more angles on the same data.',
+    });
+  }
+})();
 
 const $ = (id) => document.getElementById(id);
 const signedOut = $('signed-out');

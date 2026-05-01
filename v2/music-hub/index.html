@@ -168,6 +168,8 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Music","description":"Music as frequency, ceremony, memory. Artists, albums, playlists, and scenes that resonate with the network.","image":"https://frqncy.network/og-image.png","url":"https://frqncy.network/v2/music-hub/","mainEntityOfPage":"https://frqncy.network/v2/music-hub/","datePublished":"2026-04-25T22:15:46+08:00","dateModified":"2026-04-25T22:15:46+08:00","author":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/"},"publisher":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/","logo":{"@type":"ImageObject","url":"https://frqncy.network/favicon.svg"}}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://frqncy.network/v2/music-hub/","url":"https://frqncy.network/v2/music-hub/","hasPart":[{"@type":"WebPageElement","name":"Artists","url":"https://frqncy.network/v2/music-hub/#artists"},{"@type":"WebPageElement","name":"Albums &amp; Tracks","url":"https://frqncy.network/v2/music-hub/#albums-amp-tracks"},{"@type":"WebPageElement","name":"Playlists &amp; Mixes","url":"https://frqncy.network/v2/music-hub/#playlists-amp-mixes"},{"@type":"WebPageElement","name":"Genres, Scenes &amp; Labels","url":"https://frqncy.network/v2/music-hub/#genres-scenes-amp-labels"}]}</script>
 </head>
 <body>
 
@@ -201,7 +203,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <!-- ============================================================ -->
   <!-- ARTISTS                                                      -->
   <!-- Fill: copy an `.acard` block, edit name, meta, desc, image.  -->
-  <!-- For an image, replace the inner letter with <img src="...">. -->
+  <!-- For an image, replace the inner letter with <img src="..." decoding="async">. -->
   <!-- For an external link, change <div class="acard"> to <a>      -->
   <!-- with href="...". The .acard styling already supports both.   -->
   <!-- ============================================================ -->
@@ -209,7 +211,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="sec-head">
       <div>
         <span class="sec-eyebrow">01 · Voices</span>
-        <h2>Artists</h2>
+        <h2 id="artists">Artists</h2>
       </div>
       <p>Musicians, composers, producers — the people whose work has shaped the network's ear.</p>
     </div>
@@ -242,14 +244,14 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 
   <!-- ============================================================ -->
   <!-- ALBUMS / TRACKS                                              -->
-  <!-- Fill: each `.bcard` is one album. Cover art via <img>;       -->
+  <!-- Fill: each `.bcard` is one album. Cover art via <img loading="lazy" decoding="async">;       -->
   <!-- year shown in the .byear pill on the cover.                  -->
   <!-- ============================================================ -->
   <section id="albums">
     <div class="sec-head">
       <div>
         <span class="sec-eyebrow">02 · Records</span>
-        <h2>Albums &amp; Tracks</h2>
+        <h2 id="albums-amp-tracks">Albums &amp; Tracks</h2>
       </div>
       <p>The records — and the singular tracks — that earn a place in the canon.</p>
     </div>
@@ -291,7 +293,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="sec-head">
       <div>
         <span class="sec-eyebrow">03 · Listening</span>
-        <h2>Playlists &amp; Mixes</h2>
+        <h2 id="playlists-amp-mixes">Playlists &amp; Mixes</h2>
       </div>
       <p>Curated listens. Long-form moods, ceremonies, deep dives — built for sitting with.</p>
     </div>
@@ -335,7 +337,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     <div class="sec-head">
       <div>
         <span class="sec-eyebrow">04 · Territories</span>
-        <h2>Genres, Scenes &amp; Labels</h2>
+        <h2 id="genres-scenes-amp-labels">Genres, Scenes &amp; Labels</h2>
       </div>
       <p>The territories music is made in — the regions, the labels, the lineages.</p>
     </div>

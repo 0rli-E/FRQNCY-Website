@@ -396,8 +396,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -1003,6 +1004,21 @@ function topicPage(t) {
   const vidSection    = videoSection(t.id);
   const courseCallout = courseSection(t.id);
 
+  // Reading-time estimate. Counts words in the topic's narrative surfaces:
+  // description + the resource picks' descriptions (those are what the
+  // reader actually consumes inline). 225 wpm is the standard pace for
+  // contemplative non-fiction. Skip rendering for the thinnest pages so a
+  // "≈ 1 min read" pill on a stub doesn't read as misleading. Stub pages
+  // typically have desc-only and a few resource lines = under 100 words.
+  const narrativeWords = [
+    t.desc || '',
+    ...(res || []).map(r => (r.title || '') + ' ' + (r.desc || '')),
+  ].join(' ').trim().split(/\s+/).filter(Boolean).length;
+  const readMinutes = Math.max(1, Math.round(narrativeWords / 225));
+  const readingTimeBadge = narrativeWords >= 100
+    ? `<span class="hero-readtime" aria-label="${readMinutes} minute read">≈ ${readMinutes} min read</span>`
+    : '';
+
   // Word Illuminator deep-link — opens the Sanctuary's Illuminator panel
   // pre-seeded with the topic's word. The hash carries the term so the
   // panel can auto-open and prime its input. Pure additive — no JS on
@@ -1012,7 +1028,7 @@ function topicPage(t) {
   return head(t.label, domain.accent, t.desc, canonical, ld, t.slug) +
 nav(crumb) +
 `<div class="hero">
-  <div class="hero-eyebrow">${esc(domain.label)} &nbsp;·&nbsp; Topic</div>
+  <div class="hero-eyebrow">${esc(domain.label)} &nbsp;·&nbsp; Topic${readingTimeBadge ? ` &nbsp;·&nbsp; ${readingTimeBadge}` : ''}</div>
   <h1>${esc(t.label)}</h1>
   ${t.desc ? `<p class="hero-desc">${esc(t.desc)}</p>` : ''}
   <a class="illum-cta" href="${illumHref}" rel="noopener" aria-label="Illuminate the word ${esc(t.label)} in your Sanctuary">

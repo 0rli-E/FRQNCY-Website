@@ -1,0 +1,345 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRQNCY MCP Server — query 146 topics & 766+ resources from any AI agent</title>
+<meta name="description" content="The FRQNCY content MCP server exposes 146 curated topics and 766+ vetted resources as tools for Claude Desktop, ChatGPT, Cursor, Continue, and any MCP-compatible AI agent. Read-only, public, self-host or use ours.">
+<meta name="theme-color" content="#0B1C3D">
+<meta name="robots" content="index, follow">
+<meta name="google-site-verification" content="GOOGLE_SITE_VERIFICATION_PLACEHOLDER">
+<meta name="msvalidate.01" content="BING_VERIFICATION_PLACEHOLDER">
+<link rel="canonical" href="https://frqncy.network/mcp/">
+<meta property="og:type" content="article">
+<meta property="og:site_name" content="FRQNCY">
+<meta property="og:title" content="FRQNCY MCP Server — 146 topics + 766 resources as agent tools">
+<meta property="og:description" content="An MCP server that lets any AI agent (Claude, ChatGPT, Cursor, Continue) query FRQNCY's curated library directly.">
+<meta property="og:url" content="https://frqncy.network/mcp/">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@frqncy_network">
+<meta name="twitter:title" content="FRQNCY MCP Server">
+<meta name="twitter:description" content="146 topics + 766 resources as tools for any MCP-compatible AI agent.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="manifest" href="../manifest.json">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet">
+
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "SoftwareApplication",
+  "name": "FRQNCY Content MCP Server",
+  "alternateName": "@frqncy/mcp-content",
+  "applicationCategory": "DeveloperApplication",
+  "operatingSystem": "Node.js 20+, macOS, Linux, Windows",
+  "url": "https://frqncy.network/mcp/",
+  "downloadUrl": "https://github.com/0rli-E/frqncy-network/tree/main/mcp-servers/frqncy-content",
+  "softwareVersion": "0.1.0",
+  "license": "https://opensource.org/licenses/MIT",
+  "author": {
+    "@type": "Organization",
+    "name": "FRQNCY",
+    "url": "https://frqncy.network/"
+  },
+  "description": "An MCP (Model Context Protocol) server exposing FRQNCY's 146 curated topics and 766+ vetted resources as tools for any LLM agent. Compatible with Claude Desktop, the FRQNCY harness, Cursor, Continue, and any MCP client.",
+  "featureList": [
+    "search_topics", "get_topic", "list_topics",
+    "list_domains", "list_pillars",
+    "search_resources", "get_resource", "list_resources_for_topic",
+    "list_resources_by_type", "random_topic", "stats"
+  ],
+  "offers": {
+    "@type": "Offer",
+    "price": "0",
+    "priceCurrency": "USD"
+  },
+  "isAccessibleForFree": true
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "TechArticle",
+  "headline": "FRQNCY Content MCP Server — install, tool surface, sample queries",
+  "description": "Documentation for the public FRQNCY MCP server. Wire FRQNCY's curated library into Claude Desktop, the FRQNCY harness, Cursor, or any MCP-compatible AI agent.",
+  "url": "https://frqncy.network/mcp/",
+  "datePublished": "2026-04-29T00:00:00Z",
+  "dateModified": "2026-04-29T00:00:00Z",
+  "author": {"@type": "Organization", "name": "FRQNCY", "url": "https://frqncy.network/"},
+  "publisher": {"@type": "Organization", "name": "FRQNCY", "url": "https://frqncy.network/", "logo": {"@type": "ImageObject", "url": "https://frqncy.network/favicon.svg"}},
+  "image": "https://frqncy.network/og-image.png",
+  "about": ["Model Context Protocol", "AI agents", "MCP server", "LLM tools", "FRQNCY"]
+}
+</script>
+<script type="application/ld+json">
+{
+  "@context": "https://schema.org",
+  "@type": "BreadcrumbList",
+  "itemListElement": [
+    {"@type": "ListItem", "position": 1, "name": "FRQNCY", "item": "https://frqncy.network/"},
+    {"@type": "ListItem", "position": 2, "name": "MCP Server", "item": "https://frqncy.network/mcp/"}
+  ]
+}
+</script>
+
+<style>
+:root{--accent:#C4973A;--accent-glow:rgba(196,151,58,0.14);--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#8FA8CC;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.7}
+a{color:var(--accent);text-decoration:none}
+a:hover{opacity:0.8}
+code, pre{font-family:'JetBrains Mono',ui-monospace,SFMono-Regular,Menlo,Consolas,monospace;font-size:0.85em}
+
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.snav-badge{font-size:0.55rem;letter-spacing:0.18em;color:var(--accent);border:1px solid currentColor;padding:1px 6px;border-radius:2px;vertical-align:middle;margin-left:4px;opacity:0.8}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text);opacity:1}
+.breadcrumb .sep{opacity:0.25;font-size:0.65rem}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28);opacity:1}
+
+.hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(2rem,4vw,3rem);text-align:center;position:relative;overflow:hidden;max-width:820px;margin-left:auto;margin-right:auto}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;position:relative;z-index:1}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.4rem,6vw,4rem);font-weight:300;color:#fff;line-height:1.1;margin-bottom:1.25rem;letter-spacing:-0.01em;position:relative;z-index:1}
+.hero-desc{max-width:660px;margin:0 auto;font-size:0.96rem;color:var(--text-dim);font-weight:300;line-height:1.75;position:relative;z-index:1}
+.hero-pills{display:flex;gap:0.5rem;justify-content:center;flex-wrap:wrap;margin-top:1.5rem;position:relative;z-index:1}
+.pill{font-size:0.66rem;letter-spacing:0.15em;text-transform:uppercase;border:1px solid rgba(255,255,255,0.12);color:var(--text-dim);padding:5px 13px;border-radius:2px}
+
+main{max-width:820px;margin:0 auto;padding:1rem clamp(1.25rem,5vw,2.5rem) 5rem}
+.section{margin-bottom:3.5rem}
+.section-eyebrow{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem;padding-bottom:0.6rem;border-bottom:1px solid rgba(255,255,255,0.06);opacity:0.9}
+.section h2{font-family:'Cormorant',serif;font-size:clamp(1.6rem,3vw,2.2rem);font-weight:300;color:#fff;line-height:1.2;margin-bottom:1.25rem}
+.section h3{font-family:'Cormorant',serif;font-size:1.2rem;font-weight:400;color:#fff;margin:1.75rem 0 0.6rem}
+.section p{font-size:0.94rem;line-height:1.85;color:var(--text);margin-bottom:1.1rem}
+.section ul, .section ol{padding-left:1.4rem;margin-bottom:1.1rem}
+.section li{font-size:0.94rem;line-height:1.85;color:var(--text);margin-bottom:0.4rem}
+
+pre{background:rgba(0,0,0,0.4);border:1px solid var(--card-border);border-radius:4px;padding:1.1rem 1.25rem;overflow-x:auto;font-size:0.82rem;line-height:1.65;color:#E0E8F5;margin:1.1rem 0}
+pre code{font-size:inherit;color:inherit}
+.section code{background:rgba(255,255,255,0.05);padding:1px 6px;border-radius:2px;color:var(--gold-light)}
+pre code{background:none;padding:0}
+
+table{width:100%;border-collapse:collapse;margin:1.2rem 0;font-size:0.86rem}
+th, td{padding:0.7rem 0.85rem;text-align:left;border-bottom:1px solid var(--card-border);vertical-align:top}
+th{color:var(--accent);font-weight:500;letter-spacing:0.04em;font-size:0.78rem;text-transform:uppercase}
+td{color:var(--text)}
+td code{font-size:0.82em}
+
+.callout{background:rgba(196,151,58,0.06);border:1px solid rgba(196,151,58,0.22);border-radius:4px;padding:1.2rem 1.5rem;margin:1.5rem 0;font-size:0.92rem;line-height:1.8}
+.callout-label{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem;display:block}
+.callout p{margin-bottom:0.6rem}
+.callout p:last-child{margin-bottom:0}
+
+footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center}
+.footer-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.footer-logo{font-family:'Cormorant',serif;font-size:1rem;letter-spacing:0.25em;color:rgba(255,255,255,0.3);text-transform:uppercase}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;transition:color .2s}
+.footer-links a:hover{color:var(--text);opacity:1}
+
+@media(max-width:640px){
+  .hero{padding:3rem 1.25rem 2rem}
+  main{padding:1rem 1.25rem 4rem}
+  .breadcrumb{display:none}
+  .footer-inner{flex-direction:column;gap:1rem;text-align:center}
+  .snav-back{font-size:0.6rem;padding:4px 10px}
+  pre{font-size:0.74rem;padding:0.9rem}
+  table{font-size:0.78rem}
+  th, td{padding:0.5rem 0.45rem}
+}
+</style>
+<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+</head>
+<body>
+
+<nav class="snav">
+  <div class="snav-left">
+    <a href="/" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
+    <div class="breadcrumb"><a href="/">FRQNCY</a><span class="sep">/</span><span>MCP Server</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
+    <a href="/v2/explore.html" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Explore</a>
+    <a href="https://github.com/0rli-E/frqncy-network" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">GitHub</a>
+    <a href="/" class="snav-back">← Main</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">For AI agents</div>
+  <h1>FRQNCY MCP Server</h1>
+  <p class="hero-desc">Plug FRQNCY's 146 curated topics and 766+ vetted resources directly into Claude Desktop, the FRQNCY harness, Cursor, Continue, or any MCP-compatible AI client. Read-only, public, no auth, self-hostable.</p>
+  <div class="hero-pills">
+    <span class="pill">11 tools</span>
+    <span class="pill">MIT license</span>
+    <span class="pill">Node 20+</span>
+    <span class="pill">Free</span>
+  </div>
+</section>
+
+<main>
+
+<div class="section" id="what-it-is">
+  <div class="section-eyebrow">§1</div>
+  <h2>What it is</h2>
+
+  <p>An <a href="https://modelcontextprotocol.io/">MCP server</a> that exposes FRQNCY's editorial library as tools any AI agent can call. Instead of scraping the website to learn what FRQNCY recommends on, say, meditation, an agent calls <code>list_resources_for_topic("meditation")</code> and gets back the curated entries directly. Cleaner, faster, traceable.</p>
+
+  <p>The server is <strong>read-only</strong> — it serves the same content the public website does, just structured for agent consumption. There is no write API, no user data, no auth.</p>
+</div>
+
+<div class="section" id="why-use-it">
+  <div class="section-eyebrow">§2</div>
+  <h2>Why use it</h2>
+
+  <ul>
+    <li><strong>For agent builders:</strong> ground your AI's answers about consciousness, well-being, money, regenerative living, and adjacent subjects in FRQNCY's curated picks instead of training-data drift.</li>
+    <li><strong>For Claude Desktop / ChatGPT MCP users:</strong> ask your assistant "what's a good entry-level book on the science of meditation?" and have it answer from FRQNCY's vetted list, not best-seller lists.</li>
+    <li><strong>For researchers:</strong> programmatically query 146 topics × 766 resources without scraping HTML.</li>
+    <li><strong>For app developers:</strong> wrap the MCP server in your own product to deliver FRQNCY-quality recommendations to your users.</li>
+  </ul>
+</div>
+
+<div class="section" id="tool-surface">
+  <div class="section-eyebrow">§3</div>
+  <h2>Tool surface</h2>
+
+  <p>The server exposes 11 tools, all read-only:</p>
+
+  <table>
+    <thead>
+      <tr><th>Tool</th><th>Purpose</th></tr>
+    </thead>
+    <tbody>
+      <tr><td><code>search_topics(query, limit?)</code></td><td>Full-text search over the 146 topics</td></tr>
+      <tr><td><code>get_topic(identifier)</code></td><td>Get one topic by id, slug, or label</td></tr>
+      <tr><td><code>list_topics(domain?, pillar?, limit?)</code></td><td>List topics with optional domain/pillar filters</td></tr>
+      <tr><td><code>list_domains()</code></td><td>List the 15 distinct topic domains</td></tr>
+      <tr><td><code>list_pillars()</code></td><td>List the 6 distinct topic pillars</td></tr>
+      <tr><td><code>search_resources(query, type?, limit?)</code></td><td>Full-text search over 766+ resources</td></tr>
+      <tr><td><code>get_resource(name)</code></td><td>Get one resource by exact name</td></tr>
+      <tr><td><code>list_resources_for_topic(topic_slug, type?, limit?)</code></td><td>Resources tagged to a topic</td></tr>
+      <tr><td><code>list_resources_by_type(type, limit?)</code></td><td>Filter by type: person / book / org / podcast / film / etc.</td></tr>
+      <tr><td><code>random_topic(domain?)</code></td><td>Pick a random topic for inspiration</td></tr>
+      <tr><td><code>stats()</code></td><td>Overall counts + breakdowns by domain / pillar / type</td></tr>
+    </tbody>
+  </table>
+
+  <p>All tools return structured JSON. Schemas are declared via <a href="https://github.com/colinhacks/zod">Zod</a> in the server source.</p>
+</div>
+
+<div class="section" id="quick-start">
+  <div class="section-eyebrow">§4</div>
+  <h2>Quick start</h2>
+
+  <h3>Claude Desktop</h3>
+  <p>Edit <code>~/Library/Application Support/Claude/claude_desktop_config.json</code> (Mac) or <code>%APPDATA%\Claude\claude_desktop_config.json</code> (Windows) and add:</p>
+
+<pre><code>{
+  "mcpServers": {
+    "frqncy-content": {
+      "command": "npx",
+      "args": ["-y", "@frqncy/mcp-content"]
+    }
+  }
+}</code></pre>
+
+  <p>Restart Claude Desktop. The 11 tools will appear in the tools list. Try asking: <em>"List FRQNCY topics in the Sciences domain. Pick three and tell me their resources."</em></p>
+
+  <h3>The FRQNCY harness</h3>
+<pre><code>frqncy-harness mcp add frqncy-content npx -y @frqncy/mcp-content
+frqncy-harness mcp test frqncy-content</code></pre>
+
+  <p>You should see all 11 tools listed. Then any <code>frqncy-harness agent "..."</code> run can call them.</p>
+
+  <h3>Self-host</h3>
+<pre><code>git clone https://github.com/0rli-E/frqncy-network.git
+cd frqncy-network/mcp-servers/frqncy-content
+npm install
+node index.js</code></pre>
+
+  <p>The server reads <code>search.json</code> + <code>resources.json</code> from the FRQNCY WEBSITE root. To point at a different content directory, set <code>FRQNCY_CONTENT_DIR</code> in your environment.</p>
+</div>
+
+<div class="section" id="sample-queries">
+  <div class="section-eyebrow">§5</div>
+  <h2>Sample queries</h2>
+
+  <p>What you can ask any MCP-compatible AI once the server is wired in:</p>
+
+  <ol>
+    <li><em>"List all FRQNCY topics in the 'Network State' pillar with their resource counts."</em> Calls <code>list_topics</code> + <code>list_resources_for_topic</code>.</li>
+    <li><em>"What books does FRQNCY recommend on consciousness?"</em> Calls <code>search_resources("consciousness", type="book")</code>.</li>
+    <li><em>"Pick a random FRQNCY topic and tell me why it matters."</em> Calls <code>random_topic</code> + <code>get_topic</code>.</li>
+    <li><em>"Compare FRQNCY's resources for meditation vs breathwork."</em> Two parallel <code>list_resources_for_topic</code> calls.</li>
+    <li><em>"What people are picked across the most FRQNCY topics?"</em> A <code>list_resources_by_type("person")</code> + cross-reference. Useful for finding cross-domain teachers.</li>
+  </ol>
+</div>
+
+<div class="section" id="license-and-attribution">
+  <div class="section-eyebrow">§6</div>
+  <h2>License, rate limits, attribution</h2>
+
+  <p><strong>License:</strong> MIT. Use it however you want.</p>
+
+  <p><strong>Rate limits:</strong> there is no rate limit on the self-hosted server because the data is bundled. If FRQNCY ever runs a hosted public endpoint, reasonable per-IP limits will apply (planned: 60 req/min).</p>
+
+  <p><strong>Attribution:</strong> when surfacing FRQNCY-curated picks in your product, please credit "Powered by FRQNCY (frqncy.network)" on the result. The picks reflect editorial work; we don't enforce this beyond a polite ask, but it helps the curation moat exist.</p>
+
+  <div class="callout">
+    <span class="callout-label">Editorial standards apply</span>
+    <p>The picks served via this MCP are the same picks shown on the public website, governed by <a href="/editorial-standards/">FRQNCY's published editorial standards</a>. No paid placement. If you build a product that uses FRQNCY recommendations to drive user decisions, you inherit the trust premise — please surface the standards link too.</p>
+  </div>
+</div>
+
+<div class="section" id="how-it-fits">
+  <div class="section-eyebrow">§7</div>
+  <h2>How it fits with the rest of FRQNCY</h2>
+
+  <p>The website's <a href="/llms.txt">/llms.txt</a> + <a href="/sitemap.xml">/sitemap.xml</a> give crawlers a curated index. The MCP server is the next layer — instead of crawling, an agent <em>calls</em> the library directly. Three discovery surfaces, three audiences:</p>
+
+  <ul>
+    <li><strong>Google + Bing crawlers</strong> ↦ /sitemap.xml</li>
+    <li><strong>AI answer engines</strong> ↦ /llms.txt + /llms-full.txt</li>
+    <li><strong>Active AI agents</strong> ↦ this MCP server</li>
+  </ul>
+
+  <p>If you're building an agent that needs FRQNCY's curation as a tool, the MCP server is where you start. If you're building a content product that needs FRQNCY's library indexed, llms.txt is where you start.</p>
+</div>
+
+<div class="section" id="contact">
+  <div class="section-eyebrow">§8</div>
+  <h2>Contact</h2>
+
+  <p>Bug reports, feature requests, integrations, partnerships: <a href="mailto:hello@frqncy.network">hello@frqncy.network</a> or open an issue at <a href="https://github.com/0rli-E/frqncy-network/issues">github.com/0rli-E/frqncy-network/issues</a>.</p>
+
+  <p>For agent commerce (paid integrations, ERC-8004 identity, x402 micropayments) the FRQNCY harness has a sibling project — see <a href="https://github.com/0rli-E/frqncy-harness">@frqncy-network/harness</a>.</p>
+</div>
+
+</main>
+
+<footer>
+  <div class="footer-inner">
+    <span class="footer-logo">FRQNCY</span>
+    <div class="footer-links">
+      <a href="/v2/explore.html">Explore</a>
+      <a href="/aligned/">Aligned</a>
+      <a href="/editorial-standards/">Standards</a>
+      <a href="/about">About</a>
+    </div>
+  </div>
+  <div style="margin-top:1.5rem;font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3)">© 2026 FRQNCY · MIT licensed · MCP server is open source</div>
+</footer>
+
+</body>
+</html>

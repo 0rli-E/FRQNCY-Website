@@ -2009,7 +2009,7 @@ async function renderVision() {
     tile.className = 'vision-tile';
     const aim = img.chiefAimId ? state.chiefAims.find(a => a.id === img.chiefAimId) : null;
     tile.innerHTML = `
-      <img src="${img.dataUrl}" alt="${escape(img.caption || 'vision')}">
+      <img src="${img.dataUrl}" alt="${escape(img.caption || 'vision')}" decoding="async">
       <div class="vision-overlay">
         <input class="vision-caption" data-img-id="${img.id}" value="${escape(img.caption || '')}" placeholder="Caption…">
         <div class="vision-tile-actions">
