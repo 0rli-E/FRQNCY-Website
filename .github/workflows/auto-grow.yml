@@ -1,0 +1,45 @@
+name: Auto-grow nightly
+
+# Drafts content additions for human review. Nothing here auto-merges.
+# Per scripts/auto-grow/README.md and proposals/AUTO-GROW-LOOPS-V0.md.
+
+on:
+  schedule:
+    - cron: '0 8 * * *'  # 08:00 UTC daily
+  workflow_dispatch: {}
+
+jobs:
+  draft-suggestions:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Resource suggestions from recent NRG posts
+        run: node scripts/auto-grow/resource-suggest.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          DAYS_BACK: '7'
+
+      - name: Video ingestion from Watch playlist channels
+        run: node scripts/auto-grow/video-ingest.mjs
+
+      - name: Open PR if anything changed
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'auto-grow: nightly resource + video suggestions'
+          title: 'auto-grow nightly: review and merge selectively'
+          body: |
+            Drafted by `scripts/auto-grow/`. Review the JSON in
+            `scripts/auto-grow/output/`. Merge selectively — nothing here
+            is auto-applied.
+
+            Per `proposals/AUTO-GROW-LOOPS-V0.md`. The harness drafts;
+            humans decide.
+          branch: auto-grow/nightly
+          delete-branch: true
+          add-paths: scripts/auto-grow/output/
