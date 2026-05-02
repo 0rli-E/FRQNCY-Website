@@ -334,7 +334,7 @@
           targetEl.innerHTML = `
             <a href="/social/" style="display:inline-flex;align-items:center;gap:6px;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:#C4973A;border:1px solid rgba(196,151,58,0.35);padding:5px 12px;border-radius:2px;text-decoration:none;">
               <span style="width:6px;height:6px;border-radius:50%;background:#5BC79A;"></span>
-              <span>${escapeHtml(user.user_metadata?.username || user.email.split('@')[0])}</span>
+              <span>${escapeHtml(user.user_metadata?.username || (user.email || '').split('@')[0] || 'You')}</span>
             </a>`;
         } else {
           targetEl.innerHTML = `

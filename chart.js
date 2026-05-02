@@ -1332,10 +1332,9 @@ function _ascMc(jd, lat, lng){
   const lst = (_gmstDeg(jd) + lng + 360*10) % 360;  // local sidereal time (deg)
   const L = lst * Math.PI/180;
   const phi = lat * Math.PI/180;
-  // MC (ecliptic longitude where meridian crosses ecliptic)
-  let mc = Math.atan2(Math.sin(L), Math.cos(L)*Math.cos(eps) + 0*Math.tan(phi)*Math.sin(eps)) * 180/Math.PI;
-  // simpler: MC_lon = atan2(sin(LST), cos(LST)*cos(ε))
-  mc = Math.atan2(Math.sin(L), Math.cos(L)*Math.cos(eps)) * 180/Math.PI;
+  // MC (ecliptic longitude where meridian crosses ecliptic):
+  // MC_lon = atan2(sin(LST), cos(LST)*cos(ε))
+  let mc = Math.atan2(Math.sin(L), Math.cos(L)*Math.cos(eps)) * 180/Math.PI;
   // ASC
   let asc = Math.atan2(-Math.cos(L), Math.sin(L)*Math.cos(eps) + Math.tan(phi)*Math.sin(eps)) * 180/Math.PI;
   asc = ((asc%360)+360)%360;
