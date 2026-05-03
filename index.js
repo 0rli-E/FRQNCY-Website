@@ -3,20 +3,12 @@
     // SHARED UTILITIES
     // =====================
 
-    // Visibility — pause animations when tab is hidden (saves CPU/battery).
-    // The particle render fn lives inside an IIFE below, so we expose a
-    // resume hook on window for this handler to call. Without it, the
-    // handler used to reference an out-of-scope `animate` and threw a
-    // ReferenceError every time the user came back to the tab — particles
-    // never resumed after the first switch-away.
+    // Visibility — pause animations when tab is hidden (saves CPU/battery)
     let pageVisible = !document.hidden;
     let animRunning = false;
     document.addEventListener('visibilitychange', () => {
       pageVisible = !document.hidden;
-      if (pageVisible && !animRunning && typeof window.__frqResumeParticles === 'function') {
-        animRunning = true;
-        window.__frqResumeParticles();
-      }
+      if (pageVisible && !animRunning) { animRunning = true; requestAnimationFrame(animate); }
     });
 
     // Scroll-lock counter — prevents hamburger and subscribe overlay from
@@ -72,9 +64,6 @@
         });
         requestAnimationFrame(animate);
       }
-      // Expose a resume hook so the top-level visibilitychange handler can
-      // restart this RAF chain when the tab becomes visible again.
-      window.__frqResumeParticles = () => requestAnimationFrame(animate);
       animRunning = true;
       requestAnimationFrame(animate);
     })();
