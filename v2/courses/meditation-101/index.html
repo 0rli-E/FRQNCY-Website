@@ -228,6 +228,25 @@ nav.snav{
 .btn-nav.btn-next{border-color:rgba(255,255,255,0.18);color:var(--text)}
 .btn-nav.btn-next:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
 
+/* ── COMMUNITY CTA ───────────────────────────── */
+.community-cta{
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.10);border-left:3px solid var(--accent);
+  border-radius:6px;padding:0.95rem 1.25rem;margin-bottom:2rem;
+  text-decoration:none;color:var(--text);
+  transition:background .2s,border-color .2s,transform .15s;
+}
+.community-cta:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.20);transform:translateY(-1px);opacity:1}
+.community-cta-body{flex:1;min-width:220px;display:flex;flex-direction:column;gap:0.25rem}
+.community-cta-label{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent)}
+.community-cta-blurb{font-size:0.82rem;color:var(--text);line-height:1.5}
+.community-cta-btn{
+  flex-shrink:0;padding:8px 18px;border-radius:2px;
+  font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;
+  background:var(--accent);color:#fff;white-space:nowrap;
+}
+
 /* ── COMPLETION MODAL ────────────────────────── */
 .completion-overlay{
   position:fixed;inset:0;z-index:300;background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);
@@ -307,9 +326,6 @@ nav.snav{
 <link rel="stylesheet" href="../../../nav-dropdown.css">
 <link rel="manifest" href="../../../manifest.json">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":"Meditation 101","description":"A complete beginner's path through the science, philosophy, and practice of meditation. Move from curiosity to a daily sitting practice in five lessons.","url":"https://frqncy.network/v2/courses/meditation-101/","provider":{"@type":"Organization","name":"FRQNCY Network","url":"https://frqncy.network"},"educationalLevel":"beginner","inLanguage":"en","isAccessibleForFree":true,"numberOfLessons":5,"timeRequired":"PT53M"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"Courses","item":"https://frqncy.network/v2/courses/"},{"@type":"ListItem","position":3,"name":"Why Meditate?","item":"https://frqncy.network/v2/courses/meditation-101/"}]}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"HowTo","name":"Meditation 101","description":"A complete beginner's path through the science, philosophy, and practice of meditation. Move from curiosity to a daily sitting practice in five lessons.","image":"https://frqncy.network/og-image.png","totalTime":"PT53M","url":"https://frqncy.network/v2/courses/meditation-101/","step":[{"@type":"HowToStep","position":1,"name":"Why Meditate?","text":"A clear, modern case for meditation \u2014 what it actually does and why it matters.","timeRequired":"PT10M"},{"@type":"HowToStep","position":2,"name":"What Happens in the Brain","text":"Neuroscience explains how a consistent practice physically rewires your brain.","timeRequired":"PT14M"},{"@type":"HowToStep","position":3,"name":"The Breath as Anchor","text":"Learn controlled breathing as the foundation for any meditation practice.","timeRequired":"PT11M"},{"@type":"HowToStep","position":4,"name":"Your First Sitting","text":"Your First Sitting","timeRequired":"PT10M"},{"@type":"HowToStep","position":5,"name":"Building a Daily Practice","text":"How to make meditation a habit that sticks \u2014 timing, environment, and consistency.","timeRequired":"PT8M"}]}</script>
 </head>
 <body>
 
@@ -390,6 +406,7 @@ nav.snav{
 
   <!-- MAIN -->
   <div class="main-content" id="main-content">
+    
     
   <div class="lesson-panel" id="panel-0" role="tabpanel" aria-labelledby="nav-0">
     <div class="lesson-header">

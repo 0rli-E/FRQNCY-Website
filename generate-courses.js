@@ -69,7 +69,20 @@ function sidebarItem(l, i, prefix) {
 function lessonContent(l) {
   if (l.type === 'video') {
     const provider = getProvider(l);
+    const videoId  = lessonVideoId(l);
     const embedSrc = lessonEmbedUrl(l);
+    // Empty/missing video id — render a "coming soon" placeholder instead of a broken embed
+    if (!videoId) {
+      return `<div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
+      </div>`;
+    }
     // Use data-src for lazy loading — src set by JS when lesson becomes active
     if (provider.embeddable && embedSrc) {
       return `<div class="video-wrap">
@@ -117,6 +130,22 @@ function lessonContent(l) {
     </a>`;
   }
   return '';
+}
+
+/* ── Optional community CTA banner ── */
+function communityBanner(cm) {
+  if (!cm || !cm.url) return '';
+  const label = cm.label || 'Community';
+  const blurb = cm.blurb || '';
+  const cta   = cm.cta   || 'Join';
+  return `
+    <a class="community-cta" href="${esc(cm.url)}" target="_blank" rel="noopener">
+      <div class="community-cta-body">
+        <span class="community-cta-label">${esc(label)}</span>
+        ${blurb ? `<span class="community-cta-blurb">${esc(blurb)}</span>` : ''}
+      </div>
+      <span class="community-cta-btn">${esc(cta)} →</span>
+    </a>`;
 }
 
 /* ── Full lesson panel ── */
@@ -379,6 +408,25 @@ nav.snav{
 .btn-nav.btn-next{border-color:rgba(255,255,255,0.18);color:var(--text)}
 .btn-nav.btn-next:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
 
+/* ── COMMUNITY CTA ───────────────────────────── */
+.community-cta{
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.10);border-left:3px solid var(--accent);
+  border-radius:6px;padding:0.95rem 1.25rem;margin-bottom:2rem;
+  text-decoration:none;color:var(--text);
+  transition:background .2s,border-color .2s,transform .15s;
+}
+.community-cta:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.20);transform:translateY(-1px);opacity:1}
+.community-cta-body{flex:1;min-width:220px;display:flex;flex-direction:column;gap:0.25rem}
+.community-cta-label{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent)}
+.community-cta-blurb{font-size:0.82rem;color:var(--text);line-height:1.5}
+.community-cta-btn{
+  flex-shrink:0;padding:8px 18px;border-radius:2px;
+  font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;
+  background:var(--accent);color:#fff;white-space:nowrap;
+}
+
 /* ── COMPLETION MODAL ────────────────────────── */
 .completion-overlay{
   position:fixed;inset:0;z-index:300;background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);
@@ -498,6 +546,7 @@ nav.snav{
 
   <!-- MAIN -->
   <div class="main-content" id="main-content">
+    ${communityBanner(c.community)}
     ${c.lessons.map((l, i) => lessonPanel(l, i, total)).join('')}
   </div>
 </div>

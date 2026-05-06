@@ -97,7 +97,7 @@
     },
     {
       "id": "d-meta",
-      "label": "Metaphysics",
+      "label": "Consciousness",
       "type": "cluster",
       "r": 25,
       "desc": "The architecture of reality"
@@ -1497,6 +1497,12 @@
       "label": "Crypto Privacy",
       "type": "topic",
       "r": 12
+    },
+    {
+      "id": "d-places",
+      "label": "Places",
+      "type": "cluster",
+      "r": 23
     }
   ],
   "links": [
@@ -3175,6 +3181,10 @@
     [
       "d-money",
       "t-crypto-privacy"
+    ],
+    [
+      "network-state",
+      "d-places"
     ]
   ],
   "node_urls": {
@@ -3190,7 +3200,7 @@
     "d-nature": "nature/index.html",
     "d-business": "business/index.html",
     "d-money": "money/index.html",
-    "d-meta": "metaphysics/index.html",
+    "d-meta": "consciousness/index.html",
     "d-lifestyle": "lifestyle/index.html",
     "d-creation": "creation/index.html",
     "d-wellbeing": "wellbeing/index.html",
@@ -3421,7 +3431,8 @@
     "t-neobanks": "neobanks/index.html",
     "t-nfts": "nfts/index.html",
     "t-predictions": "predictions/index.html",
-    "t-crypto-privacy": "crypto-privacy/index.html"
+    "t-crypto-privacy": "crypto-privacy/index.html",
+    "d-places": "places/index.html"
   },
   "$last_sync": "2026-05-06",
   "$updated": "2026-04-24 — removed 4 ghost nodes (t-commodities, t-filestorage, t-stocks, t-world-models) that existed on the map but not in content.json. If you want these topics back, add them to content.json — the sync will bring them to the map automatically.",

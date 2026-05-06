@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Crypto Fundamentals — FRQNCY Courses</title>
-<meta name="description" content="Understand blockchain, Bitcoin, Ethereum, DeFi, and Web3 from first principles. Learn why decentralization matters — for money, for identity, and for building a more sovereign world.">
+<meta name="description" content="Skip the theory — set up the toolkit yourself. Open an exchange account, install your own wallets, hold your own keys, send your first transaction, and swap onchain. Each lesson is a short walkthrough you follow alongside the video.">
 <meta name="theme-color" content="#0B1C3D">
 <meta property="og:type" content="article">
 <meta property="og:title" content="Crypto Fundamentals — FRQNCY Courses">
-<meta property="og:description" content="Understand blockchain, Bitcoin, Ethereum, DeFi, and Web3 from first principles. Learn why decentralization matters — for money, for identity, and for building a more sovereign world.">
+<meta property="og:description" content="Skip the theory — set up the toolkit yourself. Open an exchange account, install your own wallets, hold your own keys, send your first transaction, and swap onchain. Each lesson is a short walkthrough you follow alongside the video.">
 <meta property="og:url" content="https://frqncy.network/v2/courses/crypto-fundamentals/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:image:width" content="1200">
@@ -228,6 +228,25 @@ nav.snav{
 .btn-nav.btn-next{border-color:rgba(255,255,255,0.18);color:var(--text)}
 .btn-nav.btn-next:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
 
+/* ── COMMUNITY CTA ───────────────────────────── */
+.community-cta{
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.10);border-left:3px solid var(--accent);
+  border-radius:6px;padding:0.95rem 1.25rem;margin-bottom:2rem;
+  text-decoration:none;color:var(--text);
+  transition:background .2s,border-color .2s,transform .15s;
+}
+.community-cta:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.20);transform:translateY(-1px);opacity:1}
+.community-cta-body{flex:1;min-width:220px;display:flex;flex-direction:column;gap:0.25rem}
+.community-cta-label{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent)}
+.community-cta-blurb{font-size:0.82rem;color:var(--text);line-height:1.5}
+.community-cta-btn{
+  flex-shrink:0;padding:8px 18px;border-radius:2px;
+  font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;
+  background:var(--accent);color:#fff;white-space:nowrap;
+}
+
 /* ── COMPLETION MODAL ────────────────────────── */
 .completion-overlay{
   position:fixed;inset:0;z-index:300;background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);
@@ -307,8 +326,6 @@ nav.snav{
 <link rel="stylesheet" href="../../../nav-dropdown.css">
 <link rel="manifest" href="../../../manifest.json">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":"Crypto Fundamentals","description":"Understand blockchain, Bitcoin, Ethereum, DeFi, and Web3 from first principles. Learn why decentralization matters \u2014 for money, for identity, and for building a more sovereign world.","url":"https://frqncy.network/v2/courses/crypto-fundamentals/","provider":{"@type":"Organization","name":"FRQNCY Network","url":"https://frqncy.network"},"educationalLevel":"intermediate","inLanguage":"en","isAccessibleForFree":true,"numberOfLessons":6,"timeRequired":"PT2H5M"}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"Courses","item":"https://frqncy.network/v2/courses/"},{"@type":"ListItem","position":3,"name":"What Is a Blockchain?","item":"https://frqncy.network/v2/courses/crypto-fundamentals/"}]}</script>
 </head>
 <body>
 
@@ -323,7 +340,7 @@ nav.snav{
   </div>
   <div class="snav-right">
     <div class="snav-progress" aria-label="Course progress">
-      <span id="nav-progress-text">0/6</span>
+      <span id="nav-progress-text">0/16</span>
       <div class="snav-pbar"><div class="snav-pfill" id="nav-pfill" style="width:0%"></div></div>
     </div>
   </div>
@@ -336,10 +353,10 @@ nav.snav{
       <div class="sidebar-accent-bar"></div>
       <div class="sidebar-course">d-tech · Beginner</div>
       <div class="sidebar-title">Crypto Fundamentals</div>
-      <div class="sidebar-meta">6 lessons · 2 hours</div>
+      <div class="sidebar-meta">16 lessons · 2 hours</div>
     </div>
     <div class="sidebar-progress">
-      <div class="sp-label"><span>Progress</span><span id="sp-text">0 / 6</span></div>
+      <div class="sp-label"><span>Progress</span><span id="sp-text">0 / 16</span></div>
       <div class="sp-bar"><div class="sp-fill" id="sp-fill" style="width:0%"></div></div>
     </div>
     <div class="lesson-list" id="lesson-list" role="tablist">
@@ -347,50 +364,130 @@ nav.snav{
     <button class="lesson-btn" data-idx="0" id="nav-0">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">What Is a Blockchain?</span>
-        <span class="lbtn-meta">Video · 20 min</span>
+        <span class="lbtn-title">Set Up Brave Browser</span>
+        <span class="lbtn-meta">Video · 2 min</span>
       </span>
       <span class="lbtn-check" id="chk-0" aria-hidden="true">✓</span>
     </button>
     <button class="lesson-btn" data-idx="1" id="nav-1">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">Bitcoin — Digital Sovereignty</span>
-        <span class="lbtn-meta">Video · 25 min</span>
+        <span class="lbtn-title">Open Your Kraken Account</span>
+        <span class="lbtn-meta">Video · 7 min</span>
       </span>
       <span class="lbtn-check" id="chk-1" aria-hidden="true">✓</span>
     </button>
     <button class="lesson-btn" data-idx="2" id="nav-2">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">Ethereum &amp; Smart Contracts</span>
-        <span class="lbtn-meta">Video · 25 min</span>
+        <span class="lbtn-title">A Quick Tour of Kraken</span>
+        <span class="lbtn-meta">Video · 3 min</span>
       </span>
       <span class="lbtn-check" id="chk-2" aria-hidden="true">✓</span>
     </button>
     <button class="lesson-btn" data-idx="3" id="nav-3">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">DeFi, DAOs &amp; the New Economy</span>
-        <span class="lbtn-meta">Video · 25 min</span>
+        <span class="lbtn-title">Install Rabby &amp; Phantom Wallets</span>
+        <span class="lbtn-meta">Video · 9 min</span>
       </span>
       <span class="lbtn-check" id="chk-3" aria-hidden="true">✓</span>
     </button>
     <button class="lesson-btn" data-idx="4" id="nav-4">
-      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg></span>
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">Reflection — What Does Decentralization Mean for You?</span>
-        <span class="lbtn-meta">Reflection · 15 min</span>
+        <span class="lbtn-title">Seed Phrase Security — Non-Negotiable</span>
+        <span class="lbtn-meta">Video · 10 min</span>
       </span>
       <span class="lbtn-check" id="chk-4" aria-hidden="true">✓</span>
     </button>
     <button class="lesson-btn" data-idx="5" id="nav-5">
-      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">Getting Started — Wallets, Security &amp; Your First Steps</span>
-        <span class="lbtn-meta">Reading · 15 min</span>
+        <span class="lbtn-title">Send and Receive Transactions</span>
+        <span class="lbtn-meta">Video · 5 min</span>
       </span>
       <span class="lbtn-check" id="chk-5" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="6" id="nav-6">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Deposit Crypto and Withdraw Fiat on Kraken</span>
+        <span class="lbtn-meta">Video · 10 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-6" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="7" id="nav-7">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Swap Onchain with Defillama</span>
+        <span class="lbtn-meta">Video · 5 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-7" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="8" id="nav-8">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Swap Onchain with Titan Exchange</span>
+        <span class="lbtn-meta">Video · 5 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-8" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="9" id="nav-9">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Common Scams — and How to Avoid Them</span>
+        <span class="lbtn-meta">Video · 10 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-9" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="10" id="nav-10">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Find Tokens with Dexscreener</span>
+        <span class="lbtn-meta">Video · 8 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-10" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="11" id="nav-11">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Get to Know Coingecko</span>
+        <span class="lbtn-meta">Video · 6 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-11" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="12" id="nav-12">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Set Up TradingView</span>
+        <span class="lbtn-meta">Video · 13 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-12" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="13" id="nav-13">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Sources on X — The Live List</span>
+        <span class="lbtn-meta">Reading · 5 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-13" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="14" id="nav-14">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Bridge Between Chains with Bungee</span>
+        <span class="lbtn-meta">Video · 5 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-14" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="15" id="nav-15">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Join the Live Channel</span>
+        <span class="lbtn-meta">Reading · Ongoing</span>
+      </span>
+      <span class="lbtn-check" id="chk-15" aria-hidden="true">✓</span>
     </button>
     </div>
   </aside>
@@ -398,15 +495,28 @@ nav.snav{
   <!-- MAIN -->
   <div class="main-content" id="main-content">
     
+    <a class="community-cta" href="https://t.me/+Rl9WA4P0V2AzYWVi" target="_blank" rel="noopener">
+      <div class="community-cta-body">
+        <span class="community-cta-label">Crypto Beginner — live channel</span>
+        <span class="community-cta-blurb">Updates, new lessons, and a place to ask questions as you work through the steps.</span>
+      </div>
+      <span class="community-cta-btn">Join the Telegram →</span>
+    </a>
+    
   <div class="lesson-panel" id="panel-0" role="tabpanel" aria-labelledby="nav-0">
     <div class="lesson-header">
-      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">20 min</span></div>
-      <h1 class="lesson-h1">What Is a Blockchain?</h1>
-      <p class="lesson-subdesc">An overview of distributed ledger technology — what blockchains are, how they work, and why they represent a fundamental shift in how we store, verify, and transfer information without intermediaries.</p>
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">2 min</span></div>
+      <h1 class="lesson-h1">Set Up Brave Browser</h1>
+      <p class="lesson-subdesc">Install Brave on your laptop and set it as your default. Brave blocks ads and trackers by default — the cleaner foundation for everything that follows.</p>
     </div>
-    <div class="video-wrap">
-        <iframe data-src="https://www.youtube.com/embed/SSo_EIwHSd4?rel=0&amp;modestbranding=1"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="What Is a Blockchain?"></iframe>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-0" onclick="markComplete(0)">Mark Complete</button>
@@ -418,13 +528,18 @@ nav.snav{
   </div>
   <div class="lesson-panel" id="panel-1" role="tabpanel" aria-labelledby="nav-1">
     <div class="lesson-header">
-      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">25 min</span></div>
-      <h1 class="lesson-h1">Bitcoin — Digital Sovereignty</h1>
-      <p class="lesson-subdesc">How Bitcoin works under the hood — mining, proof of work, the halving cycle, and why Bitcoin represents the first truly scarce digital asset.</p>
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">7 min</span></div>
+      <h1 class="lesson-h1">Open Your Kraken Account</h1>
+      <p class="lesson-subdesc">Create a Kraken account — your fiat-to-crypto on-ramp. We use Kraken because of its long track record of solvency and proof-of-reserves transparency.</p>
     </div>
-    <div class="video-wrap">
-        <iframe data-src="https://www.youtube.com/embed/41JCpzvnn_0?rel=0&amp;modestbranding=1"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Bitcoin — Digital Sovereignty"></iframe>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-1" onclick="markComplete(1)">Mark Complete</button>
@@ -436,13 +551,18 @@ nav.snav{
   </div>
   <div class="lesson-panel" id="panel-2" role="tabpanel" aria-labelledby="nav-2">
     <div class="lesson-header">
-      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">25 min</span></div>
-      <h1 class="lesson-h1">Ethereum &amp; Smart Contracts</h1>
-      <p class="lesson-subdesc">Programmable money and decentralized applications — how Ethereum extended the blockchain concept beyond currency into a world computer.</p>
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">3 min</span></div>
+      <h1 class="lesson-h1">A Quick Tour of Kraken</h1>
+      <p class="lesson-subdesc">Once your account is live, this short walkthrough orients you to the dashboard — buy, sell, deposit, withdraw, transfer.</p>
     </div>
-    <div class="video-wrap">
-        <iframe data-src="https://www.youtube.com/embed/jxLkbJozKbY?rel=0&amp;modestbranding=1"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="Ethereum &amp; Smart Contracts"></iframe>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-2" onclick="markComplete(2)">Mark Complete</button>
@@ -454,13 +574,18 @@ nav.snav{
   </div>
   <div class="lesson-panel" id="panel-3" role="tabpanel" aria-labelledby="nav-3">
     <div class="lesson-header">
-      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">25 min</span></div>
-      <h1 class="lesson-h1">DeFi, DAOs &amp; the New Economy</h1>
-      <p class="lesson-subdesc">Decentralized finance and governance — how lending, borrowing, and trading work without banks, and how DAOs rewrite the rules of collective decision-making.</p>
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">9 min</span></div>
+      <h1 class="lesson-h1">Install Rabby &amp; Phantom Wallets</h1>
+      <p class="lesson-subdesc">Two browser extensions, one workflow. Rabby for Ethereum and EVM chains. Phantom for Bitcoin, Solana, and SUI. Self-custody starts here.</p>
     </div>
-    <div class="video-wrap">
-        <iframe data-src="https://www.youtube.com/embed/DecVh-CyKQA?rel=0&amp;modestbranding=1"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="DeFi, DAOs &amp; the New Economy"></iframe>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
       </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-3" onclick="markComplete(3)">Mark Complete</button>
@@ -472,23 +597,19 @@ nav.snav{
   </div>
   <div class="lesson-panel" id="panel-4" role="tabpanel" aria-labelledby="nav-4">
     <div class="lesson-header">
-      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg> Reflection<span class="lesson-dur">15 min</span></div>
-      <h1 class="lesson-h1">Reflection — What Does Decentralization Mean for You?</h1>
-      
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">10 min</span></div>
+      <h1 class="lesson-h1">Seed Phrase Security — Non-Negotiable</h1>
+      <p class="lesson-subdesc">Your seed phrase is your money. Lose it, lose everything. Write it down on paper, never type it into a computer, never photograph it, never share it. This lesson — and doing it properly — is the difference between holding crypto and losing it.</p>
     </div>
-    <div class="reflection-box">
-      <div class="reflection-label">
-        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg> Reflection Prompt
-      </div>
-      <p class="reflection-prompt">Think about the systems you interact with daily — banking, social media, identity verification, communication. Which of these rely on centralized authorities? How would your life change if some of these systems were decentralized? What does sovereignty over your own money, data, and identity mean to you personally?</p>
-      <div class="reflection-write">
-        <textarea placeholder="Write your reflection here… (saved in your browser)" aria-label="Your reflection" id="reflect-l5"></textarea>
-        <div class="reflect-actions">
-          <span class="reflect-saved" id="saved-l5"></span>
-          <button class="reflect-clear" onclick="clearReflect('l5')">Clear</button>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
         </div>
       </div>
-    </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-4" onclick="markComplete(4)">Mark Complete</button>
       <div class="lesson-nav-btns">
@@ -499,24 +620,254 @@ nav.snav{
   </div>
   <div class="lesson-panel" id="panel-5" role="tabpanel" aria-labelledby="nav-5">
     <div class="lesson-header">
-      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg> Reading<span class="lesson-dur">15 min</span></div>
-      <h1 class="lesson-h1">Getting Started — Wallets, Security &amp; Your First Steps</h1>
-      <p class="lesson-subdesc">A practical guide to taking your first steps in crypto — setting up a wallet, understanding seed phrases and private keys, basic security practices, and how to navigate the ecosystem safely.</p>
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">5 min</span></div>
+      <h1 class="lesson-h1">Send and Receive Transactions</h1>
+      <p class="lesson-subdesc">How to send and receive in Rabby and Phantom. Reading addresses, choosing the right chain, and double-checking before you sign. Always test with a small amount first.</p>
     </div>
-    <a class="reading-card" href="#" >
-      <span class="reading-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
-      <span class="reading-body">
-        <span class="reading-title">A practical guide to taking your first steps in crypto — setting up a wallet, understanding seed phrases and private keys, basic security practices, and how to navigate the ecosystem safely.</span>
-        <span class="reading-domain">#</span>
-        <span class="reading-dur">15 min read</span>
-      </span>
-      <span class="reading-arrow">→</span>
-    </a>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
+      </div>
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-5" onclick="markComplete(5)">Mark Complete</button>
       <div class="lesson-nav-btns">
         <button class="btn-nav" id="btn-prev-5" onclick="showLesson(4)" aria-label="Previous lesson">← Prev</button>
-        <button class="btn-nav btn-next" id="btn-next-5" onclick="showLesson(6)" disabled aria-label="Next lesson">Next →</button>
+        <button class="btn-nav btn-next" id="btn-next-5" onclick="showLesson(6)" aria-label="Next lesson">Next →</button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-6" role="tabpanel" aria-labelledby="nav-6">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">10 min</span></div>
+      <h1 class="lesson-h1">Deposit Crypto and Withdraw Fiat on Kraken</h1>
+      <p class="lesson-subdesc">How money moves in and out — deposit crypto from your wallet to Kraken, withdraw fiat back to your bank, and the inverse. The bridge between traditional finance and onchain.</p>
+    </div>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
+      </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-6" onclick="markComplete(6)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-6" onclick="showLesson(5)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-6" onclick="showLesson(7)" aria-label="Next lesson">Next →</button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-7" role="tabpanel" aria-labelledby="nav-7">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">5 min</span></div>
+      <h1 class="lesson-h1">Swap Onchain with Defillama</h1>
+      <p class="lesson-subdesc">Swap.defillama.com is an aggregator of aggregators — it routes your trade across multiple DEX aggregators to find the best price. Your default for most onchain swaps.</p>
+    </div>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
+      </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-7" onclick="markComplete(7)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-7" onclick="showLesson(6)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-7" onclick="showLesson(8)" aria-label="Next lesson">Next →</button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-8" role="tabpanel" aria-labelledby="nav-8">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">5 min</span></div>
+      <h1 class="lesson-h1">Swap Onchain with Titan Exchange</h1>
+      <p class="lesson-subdesc">app.titan.exchange is a second-opinion router — sometimes Titan finds a better path than Defillama. Compare both before you swap anything significant.</p>
+    </div>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
+      </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-8" onclick="markComplete(8)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-8" onclick="showLesson(7)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-8" onclick="showLesson(9)" aria-label="Next lesson">Next →</button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-9" role="tabpanel" aria-labelledby="nav-9">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">10 min</span></div>
+      <h1 class="lesson-h1">Common Scams — and How to Avoid Them</h1>
+      <p class="lesson-subdesc">Approve-all phishing, fake support DMs, address-poisoning, drainer dApps, fake airdrops. Once you can spot the patterns you stop falling for them.</p>
+    </div>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
+      </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-9" onclick="markComplete(9)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-9" onclick="showLesson(8)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-9" onclick="showLesson(10)" aria-label="Next lesson">Next →</button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-10" role="tabpanel" aria-labelledby="nav-10">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">8 min</span></div>
+      <h1 class="lesson-h1">Find Tokens with Dexscreener</h1>
+      <p class="lesson-subdesc">Dexscreener.com is the search engine of the onchain world — every token, every pair, every chain. Filter by chain, sort by volume, watch the tape.</p>
+    </div>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
+      </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-10" onclick="markComplete(10)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-10" onclick="showLesson(9)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-10" onclick="showLesson(11)" aria-label="Next lesson">Next →</button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-11" role="tabpanel" aria-labelledby="nav-11">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">6 min</span></div>
+      <h1 class="lesson-h1">Get to Know Coingecko</h1>
+      <p class="lesson-subdesc">Coingecko is the Google of crypto market data — prices, market caps, categories, exchange rankings. The reference layer for everything you research.</p>
+    </div>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
+      </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-11" onclick="markComplete(11)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-11" onclick="showLesson(10)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-11" onclick="showLesson(12)" aria-label="Next lesson">Next →</button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-12" role="tabpanel" aria-labelledby="nav-12">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">13 min</span></div>
+      <h1 class="lesson-h1">Set Up TradingView</h1>
+      <p class="lesson-subdesc">TradingView is the standard charting tool. Create an account and learn the basics. For the deeper dive, follow up with Trade Devils' white-belt course at tradedevils.com/courses/white-belt/.</p>
+    </div>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
+      </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-12" onclick="markComplete(12)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-12" onclick="showLesson(11)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-12" onclick="showLesson(13)" aria-label="Next lesson">Next →</button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-13" role="tabpanel" aria-labelledby="nav-13">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg> Reading<span class="lesson-dur">5 min</span></div>
+      <h1 class="lesson-h1">Sources on X — The Live List</h1>
+      <p class="lesson-subdesc">Follow the curated X list. It's where signal lives — builders, researchers, traders worth reading. The list is updated over time.</p>
+    </div>
+    <a class="reading-card" href="https://x.com/i/lists/1980663486071074831" target="_blank" rel="noopener">
+      <span class="reading-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="reading-body">
+        <span class="reading-title">Follow the curated X list. It's where signal lives — builders, researchers, traders worth reading. The list is updated over time.</span>
+        <span class="reading-domain">https://x.com/i/lists/1980663486071074831</span>
+        <span class="reading-dur">5 min read</span>
+      </span>
+      <span class="reading-arrow">→</span>
+    </a>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-13" onclick="markComplete(13)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-13" onclick="showLesson(12)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-13" onclick="showLesson(14)" aria-label="Next lesson">Next →</button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-14" role="tabpanel" aria-labelledby="nav-14">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg> Video<span class="lesson-dur">5 min</span></div>
+      <h1 class="lesson-h1">Bridge Between Chains with Bungee</h1>
+      <p class="lesson-subdesc">bungee.exchange moves assets between chains — Ethereum to Solana, Base to Arbitrum, and beyond. Bridges carry more risk than swaps; learn to do it safely.</p>
+    </div>
+    <div class="video-wrap video-wrap-ext">
+        <div class="ext-video-link" aria-disabled="true">
+          <span class="ext-video-icon">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5" width="32" height="32"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg>
+          </span>
+          <span class="ext-video-label">Video coming soon</span>
+          <span class="ext-video-url">This walkthrough is being recorded — check back shortly.</span>
+        </div>
+      </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-14" onclick="markComplete(14)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-14" onclick="showLesson(13)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-14" onclick="showLesson(15)" aria-label="Next lesson">Next →</button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-15" role="tabpanel" aria-labelledby="nav-15">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg> Reading<span class="lesson-dur">Ongoing</span></div>
+      <h1 class="lesson-h1">Join the Live Channel</h1>
+      <p class="lesson-subdesc">The Crypto Beginner Telegram is where new lessons land first, where the curriculum keeps growing, and where you can ask questions as you work through the steps.</p>
+    </div>
+    <a class="reading-card" href="https://t.me/+Rl9WA4P0V2AzYWVi" target="_blank" rel="noopener">
+      <span class="reading-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="reading-body">
+        <span class="reading-title">The Crypto Beginner Telegram is where new lessons land first, where the curriculum keeps growing, and where you can ask questions as you work through the steps.</span>
+        <span class="reading-domain">https://t.me/+Rl9WA4P0V2AzYWVi</span>
+        <span class="reading-dur">Ongoing read</span>
+      </span>
+      <span class="reading-arrow">→</span>
+    </a>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-15" onclick="markComplete(15)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-15" onclick="showLesson(14)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-15" onclick="showLesson(16)" disabled aria-label="Next lesson">Next →</button>
       </div>
     </div>
   </div>
@@ -539,50 +890,130 @@ nav.snav{
     <button class="lesson-btn" data-idx="0" id="m-nav-0">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">What Is a Blockchain?</span>
-        <span class="lbtn-meta">Video · 20 min</span>
+        <span class="lbtn-title">Set Up Brave Browser</span>
+        <span class="lbtn-meta">Video · 2 min</span>
       </span>
       <span class="lbtn-check" id="m-chk-0" aria-hidden="true">✓</span>
     </button>
     <button class="lesson-btn" data-idx="1" id="m-nav-1">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">Bitcoin — Digital Sovereignty</span>
-        <span class="lbtn-meta">Video · 25 min</span>
+        <span class="lbtn-title">Open Your Kraken Account</span>
+        <span class="lbtn-meta">Video · 7 min</span>
       </span>
       <span class="lbtn-check" id="m-chk-1" aria-hidden="true">✓</span>
     </button>
     <button class="lesson-btn" data-idx="2" id="m-nav-2">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">Ethereum &amp; Smart Contracts</span>
-        <span class="lbtn-meta">Video · 25 min</span>
+        <span class="lbtn-title">A Quick Tour of Kraken</span>
+        <span class="lbtn-meta">Video · 3 min</span>
       </span>
       <span class="lbtn-check" id="m-chk-2" aria-hidden="true">✓</span>
     </button>
     <button class="lesson-btn" data-idx="3" id="m-nav-3">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">DeFi, DAOs &amp; the New Economy</span>
-        <span class="lbtn-meta">Video · 25 min</span>
+        <span class="lbtn-title">Install Rabby &amp; Phantom Wallets</span>
+        <span class="lbtn-meta">Video · 9 min</span>
       </span>
       <span class="lbtn-check" id="m-chk-3" aria-hidden="true">✓</span>
     </button>
     <button class="lesson-btn" data-idx="4" id="m-nav-4">
-      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg></span>
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">Reflection — What Does Decentralization Mean for You?</span>
-        <span class="lbtn-meta">Reflection · 15 min</span>
+        <span class="lbtn-title">Seed Phrase Security — Non-Negotiable</span>
+        <span class="lbtn-meta">Video · 10 min</span>
       </span>
       <span class="lbtn-check" id="m-chk-4" aria-hidden="true">✓</span>
     </button>
     <button class="lesson-btn" data-idx="5" id="m-nav-5">
-      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
-        <span class="lbtn-title">Getting Started — Wallets, Security &amp; Your First Steps</span>
-        <span class="lbtn-meta">Reading · 15 min</span>
+        <span class="lbtn-title">Send and Receive Transactions</span>
+        <span class="lbtn-meta">Video · 5 min</span>
       </span>
       <span class="lbtn-check" id="m-chk-5" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="6" id="m-nav-6">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Deposit Crypto and Withdraw Fiat on Kraken</span>
+        <span class="lbtn-meta">Video · 10 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-6" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="7" id="m-nav-7">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Swap Onchain with Defillama</span>
+        <span class="lbtn-meta">Video · 5 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-7" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="8" id="m-nav-8">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Swap Onchain with Titan Exchange</span>
+        <span class="lbtn-meta">Video · 5 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-8" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="9" id="m-nav-9">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Common Scams — and How to Avoid Them</span>
+        <span class="lbtn-meta">Video · 10 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-9" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="10" id="m-nav-10">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Find Tokens with Dexscreener</span>
+        <span class="lbtn-meta">Video · 8 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-10" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="11" id="m-nav-11">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Get to Know Coingecko</span>
+        <span class="lbtn-meta">Video · 6 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-11" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="12" id="m-nav-12">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Set Up TradingView</span>
+        <span class="lbtn-meta">Video · 13 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-12" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="13" id="m-nav-13">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Sources on X — The Live List</span>
+        <span class="lbtn-meta">Reading · 5 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-13" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="14" id="m-nav-14">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Bridge Between Chains with Bungee</span>
+        <span class="lbtn-meta">Video · 5 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-14" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="15" id="m-nav-15">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Join the Live Channel</span>
+        <span class="lbtn-meta">Reading · Ongoing</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-15" aria-hidden="true">✓</span>
     </button>
   </div>
 </div>
@@ -596,7 +1027,7 @@ nav.snav{
     <div class="completion-badge">
       <span class="badge-label">✓ Beginner · FRQNCY Certificate</span>
     </div>
-    <div class="completion-desc">You've completed all 6 lessons. The ideas are yours — carry them into practice.</div>
+    <div class="completion-desc">You've completed all 16 lessons. The ideas are yours — carry them into practice.</div>
     <div class="completion-btns">
       <button class="cbtn cbtn-primary" onclick="closeCompletion()">Keep Exploring</button>
       <a href="../../" class="cbtn cbtn-sec">All Courses</a>
@@ -606,10 +1037,10 @@ nav.snav{
 
 <script>
 const SLUG      = 'crypto-fundamentals';
-const LESSONS   = [{"id":"l1","title":"What Is a Blockchain?","type":"video","youtube_id":"SSo_EIwHSd4","duration":"20 min","desc":"An overview of distributed ledger technology — what blockchains are, how they work, and why they represent a fundamental shift in how we store, verify, and transfer information without intermediaries."},{"id":"l2","title":"Bitcoin — Digital Sovereignty","type":"video","youtube_id":"41JCpzvnn_0","duration":"25 min","desc":"How Bitcoin works under the hood — mining, proof of work, the halving cycle, and why Bitcoin represents the first truly scarce digital asset."},{"id":"l3","title":"Ethereum & Smart Contracts","type":"video","youtube_id":"jxLkbJozKbY","duration":"25 min","desc":"Programmable money and decentralized applications — how Ethereum extended the blockchain concept beyond currency into a world computer."},{"id":"l4","title":"DeFi, DAOs & the New Economy","type":"video","youtube_id":"DecVh-CyKQA","duration":"25 min","desc":"Decentralized finance and governance — how lending, borrowing, and trading work without banks, and how DAOs rewrite the rules of collective decision-making."},{"id":"l5","title":"Reflection — What Does Decentralization Mean for You?","type":"reflection","duration":"15 min","content":"Think about the systems you interact with daily — banking, social media, identity verification, communication. Which of these rely on centralized authorities? How would your life change if some of these systems were decentralized? What does sovereignty over your own money, data, and identity mean to you personally?"},{"id":"l6","title":"Getting Started — Wallets, Security & Your First Steps","type":"reading","url":"#","duration":"15 min","desc":"A practical guide to taking your first steps in crypto — setting up a wallet, understanding seed phrases and private keys, basic security practices, and how to navigate the ecosystem safely."}];
+const LESSONS   = [{"id":"l1","title":"Set Up Brave Browser","type":"video","youtube_id":"","duration":"2 min","desc":"Install Brave on your laptop and set it as your default. Brave blocks ads and trackers by default — the cleaner foundation for everything that follows."},{"id":"l2","title":"Open Your Kraken Account","type":"video","youtube_id":"","duration":"7 min","desc":"Create a Kraken account — your fiat-to-crypto on-ramp. We use Kraken because of its long track record of solvency and proof-of-reserves transparency."},{"id":"l3","title":"A Quick Tour of Kraken","type":"video","youtube_id":"","duration":"3 min","desc":"Once your account is live, this short walkthrough orients you to the dashboard — buy, sell, deposit, withdraw, transfer."},{"id":"l4","title":"Install Rabby & Phantom Wallets","type":"video","youtube_id":"","duration":"9 min","desc":"Two browser extensions, one workflow. Rabby for Ethereum and EVM chains. Phantom for Bitcoin, Solana, and SUI. Self-custody starts here."},{"id":"l5","title":"Seed Phrase Security — Non-Negotiable","type":"video","youtube_id":"","duration":"10 min","desc":"Your seed phrase is your money. Lose it, lose everything. Write it down on paper, never type it into a computer, never photograph it, never share it. This lesson — and doing it properly — is the difference between holding crypto and losing it."},{"id":"l6","title":"Send and Receive Transactions","type":"video","youtube_id":"","duration":"5 min","desc":"How to send and receive in Rabby and Phantom. Reading addresses, choosing the right chain, and double-checking before you sign. Always test with a small amount first."},{"id":"l7","title":"Deposit Crypto and Withdraw Fiat on Kraken","type":"video","youtube_id":"","duration":"10 min","desc":"How money moves in and out — deposit crypto from your wallet to Kraken, withdraw fiat back to your bank, and the inverse. The bridge between traditional finance and onchain."},{"id":"l8","title":"Swap Onchain with Defillama","type":"video","youtube_id":"","duration":"5 min","desc":"Swap.defillama.com is an aggregator of aggregators — it routes your trade across multiple DEX aggregators to find the best price. Your default for most onchain swaps."},{"id":"l9","title":"Swap Onchain with Titan Exchange","type":"video","youtube_id":"","duration":"5 min","desc":"app.titan.exchange is a second-opinion router — sometimes Titan finds a better path than Defillama. Compare both before you swap anything significant."},{"id":"l10","title":"Common Scams — and How to Avoid Them","type":"video","youtube_id":"","duration":"10 min","desc":"Approve-all phishing, fake support DMs, address-poisoning, drainer dApps, fake airdrops. Once you can spot the patterns you stop falling for them."},{"id":"l11","title":"Find Tokens with Dexscreener","type":"video","youtube_id":"","duration":"8 min","desc":"Dexscreener.com is the search engine of the onchain world — every token, every pair, every chain. Filter by chain, sort by volume, watch the tape."},{"id":"l12","title":"Get to Know Coingecko","type":"video","youtube_id":"","duration":"6 min","desc":"Coingecko is the Google of crypto market data — prices, market caps, categories, exchange rankings. The reference layer for everything you research."},{"id":"l13","title":"Set Up TradingView","type":"video","youtube_id":"","duration":"13 min","desc":"TradingView is the standard charting tool. Create an account and learn the basics. For the deeper dive, follow up with Trade Devils' white-belt course at tradedevils.com/courses/white-belt/."},{"id":"l14","title":"Sources on X — The Live List","type":"reading","url":"https://x.com/i/lists/1980663486071074831","duration":"5 min","desc":"Follow the curated X list. It's where signal lives — builders, researchers, traders worth reading. The list is updated over time."},{"id":"l15","title":"Bridge Between Chains with Bungee","type":"video","youtube_id":"","duration":"5 min","desc":"bungee.exchange moves assets between chains — Ethereum to Solana, Base to Arbitrum, and beyond. Bridges carry more risk than swaps; learn to do it safely."},{"id":"l16","title":"Join the Live Channel","type":"reading","url":"https://t.me/+Rl9WA4P0V2AzYWVi","duration":"Ongoing","desc":"The Crypto Beginner Telegram is where new lessons land first, where the curriculum keeps growing, and where you can ask questions as you work through the steps."}];
 const TOTAL     = LESSONS.length;
 const STORE_KEY = 'frqncy-course-' + SLUG;
-const REFLECT_IDS = ["l5"];
+const REFLECT_IDS = [];
 
 let current   = 0;
 /* localStorage is unavailable in Safari private mode (and sometimes in

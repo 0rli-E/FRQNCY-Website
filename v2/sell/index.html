@@ -4,11 +4,11 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Sell — FRQNCY Network</title>
-<meta name="description" content="Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.">
+<meta name="description" content="Commerce as transparent service — the way FRQNCY sells. Anchored on Sinek’s Golden Circle: WHY first, HOW second, WHAT last.">
 <meta name="theme-color" content="#0B1C3D">
 <meta property="og:type" content="website">
 <meta property="og:title" content="Sell — FRQNCY Network">
-<meta property="og:description" content="Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.">
+<meta property="og:description" content="Commerce as transparent service — the way FRQNCY sells. Anchored on Sinek’s Golden Circle: WHY first, HOW second, WHAT last.">
 <meta property="og:url" content="https://frqncy.network/v2/sell/">
 <meta property="og:image" content="https://frqncy.network/v2/og/sell.png">
 <meta property="og:image:width" content="1200">
@@ -16,262 +16,889 @@
 <meta property="og:site_name" content="FRQNCY">
 <meta name="twitter:card" content="summary_large_image">
 <meta name="twitter:title" content="Sell — FRQNCY Network">
-<meta name="twitter:description" content="Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.">
+<meta name="twitter:description" content="Commerce as transparent service — the way FRQNCY sells. Anchored on Sinek’s Golden Circle: WHY first, HOW second, WHAT last.">
 <meta name="twitter:image" content="https://frqncy.network/v2/og/sell.png">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="manifest" href="../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/v2/sell/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
 <style>
-:root{--accent:#D49E5A;--accent-glow:rgba(212,158,90,0.14)}
+/* ════════════════════════════════════════════════════════════════════
+   WELLBEING — Pillar.
+   "The body knows how. Wellbeing is what happens when you stop interfering."
+   ──────────────────────────────────────────────────────────────────── */
 
-*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
-:root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#8FA8CC;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08)}
-html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
-a{color:var(--accent);text-decoration:none}
-a:hover{opacity:0.8}
+:root {
+  --navy: #0B1C3D;
+  --navy-deep: #081530;
+  --navy-mid: #0D2451;
+  --gold: #C4973A;
+  --gold-light: #E0C06A;
+  --gold-soft: rgba(196, 151, 58, 0.14);
+  --cream: #F5EBD8;
+  --foam: #F5F8FB;
+  --pearl: #FFFFFF;
 
-/* NAV */
-nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between}
-.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
-.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
-.snav-logo:hover{opacity:1}
-.snav-badge{font-size:0.55rem;letter-spacing:0.18em;color:var(--accent);border:1px solid currentColor;padding:1px 6px;border-radius:2px;vertical-align:middle;margin-left:4px;opacity:0.8}
-.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
-.breadcrumb a{color:var(--text-dim);transition:color .2s}
-.breadcrumb a:hover{color:var(--text);opacity:1}
-.breadcrumb .sep{opacity:0.25;font-size:0.65rem}
-.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
-.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28);opacity:1}
+  /* Wellbeing-specific accent — vital sage / living-green */
+  --topic-accent: #C4973A;
+  --topic-accent-warm: #E0C06A;
+  --topic-soft: rgba(196, 151, 58, 0.14);
 
-/* HERO */
-.hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
-.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
-.hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
-.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
-.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
-.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
-.hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
-/* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
-   Subtle on hover, never shouts. Routes to the Sanctuary panel pre-seeded. */
-.illum-cta{display:inline-flex;align-items:center;gap:0.6rem;margin-top:1.6rem;padding:0.55rem 1.15rem;border:1px solid rgba(196,151,58,0.32);border-radius:999px;background:rgba(196,151,58,0.05);color:var(--gold,#C4973A);font-size:0.74rem;letter-spacing:0.06em;text-decoration:none;transition:border-color .2s,background .2s,color .2s;font-family:'Jost',sans-serif;font-weight:400;position:relative;z-index:1}
-.illum-cta:hover{border-color:rgba(224,192,106,0.62);background:rgba(196,151,58,0.1);color:#fff}
-.illum-cta-glyph{font-size:0.92rem;line-height:1}
-.illum-cta-text em{font-style:italic;color:var(--gold-light,#E0C06A);font-weight:400}
-.illum-cta:hover .illum-cta-text em{color:#fff}
-
-/* Topic prev/next mini-nav — chapter-book continuity at the foot of every
-   topic page. Two side-by-side links; placeholder spans keep the layout
-   stable at the boundaries. */
-.topic-prevnext{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin:3rem 0 4rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.06)}
-.topic-prevnext-link{display:flex;flex-direction:column;gap:0.4rem;padding:1.1rem 1.25rem;border:1px solid var(--card-border);border-radius:4px;background:rgba(255,255,255,0.02);text-decoration:none;color:var(--text);transition:border-color .2s,background .2s,transform .2s}
-.topic-prevnext-link:hover{border-color:rgba(196,151,58,0.32);background:rgba(255,255,255,0.045);color:var(--text);transform:translateY(-1px)}
-.topic-prevnext-link.next{align-items:flex-end;text-align:right}
-.topic-prevnext-link.disabled{visibility:hidden;pointer-events:none}
-.topic-prevnext-eyebrow{font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);opacity:0.85}
-.topic-prevnext-label{font-family:'Cormorant',serif;font-size:1.18rem;font-weight:400;color:#fff;line-height:1.3}
-@media(max-width:560px){
-  .topic-prevnext{grid-template-columns:1fr;gap:0.7rem}
-  .topic-prevnext-link.next{align-items:flex-start;text-align:left}
-  .topic-prevnext-link.disabled{display:none}
+  --serif: 'Cormorant', Georgia, serif;
+  --body: 'Jost', sans-serif;
 }
 
-/* MAIN */
-main{max-width:1080px;margin:0 auto;padding:3rem clamp(1.25rem,5vw,2.5rem) 7rem}
-section{margin-bottom:4.5rem}
-.section-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
-
-/* GRID */
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border)}
-.grid-sm{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
-
-/* NODE CARD */
-.ncard{background:var(--navy);padding:1.4rem 1.4rem 1.1rem;text-decoration:none;color:var(--text);display:block;transition:background .2s;position:relative}
-.ncard:hover{background:rgba(255,255,255,0.04);color:var(--text)}
-.ncard-type{font-size:0.54rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem;opacity:0.8}
-.ncard h3{font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.4rem;line-height:1.2}
-.ncard p{font-size:0.76rem;color:var(--text-dim);line-height:1.45}
-.ncard-arrow{position:absolute;top:1.2rem;right:1.2rem;font-size:0.7rem;color:var(--accent);opacity:0;transition:opacity .2s}
-.ncard:hover .ncard-arrow{opacity:1}
-
-/* RESOURCE CARD */
-.rcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1.25rem 1.4rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:border-color .2s,background .2s}
-.rcard:hover{border-color:rgba(255,255,255,0.14);background:rgba(255,255,255,0.05)}
-.rtype{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--navy);background:var(--accent);padding:3px 9px;border-radius:2px;font-weight:500;white-space:nowrap;line-height:1.6;margin-top:2px}
-.rinfo{min-width:0}
-.rinfo h4{font-size:0.9rem;font-weight:400;color:#fff;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;line-height:1.35}
-.rinfo p{font-size:0.76rem;color:var(--text-dim);line-height:1.55}
-.fpick{font-size:0.48rem;letter-spacing:0.15em;color:var(--gold);border:1px solid rgba(196,151,58,0.5);padding:1px 6px;border-radius:2px;flex-shrink:0;font-weight:400}
-.rlink{font-size:0.66rem;letter-spacing:0.1em;color:var(--accent);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:2px;white-space:nowrap;transition:all .2s;text-decoration:none;margin-top:1px}
-.rlink:hover{border-color:var(--accent);opacity:1}
-
-/* EMPTY */
-.empty{text-align:center;padding:3.5rem 2rem;border:1px dashed rgba(255,255,255,0.08);border-radius:4px}
-.empty p{color:var(--text-dim);font-size:0.82rem;line-height:1.7}
-
-/* FILTER TABS */
-.ftabs{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1.75rem}
-.ftab{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;padding:5px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif}
-.ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
-.ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(255,255,255,0.03)}
-
-/* RLIST */
-.rlist{display:flex;flex-direction:column;gap:0.65rem}
-
-/* PICKS CALLOUT */
-.picks-intro{font-size:0.78rem;color:var(--text-dim);margin-bottom:1.5rem;line-height:1.6;max-width:600px}
-.picks-intro strong{color:var(--gold);font-weight:400}
-
-/* VIDEO SECTION */
-.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-top:0}
-.vcard-t{
-  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
-  overflow:hidden;cursor:pointer;transition:border-color .22s,transform .22s,background .22s;
-  display:flex;flex-direction:column;
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { background: var(--navy); scroll-behavior: smooth; }
+body {
+  font-family: var(--body); font-weight: 300;
+  color: var(--foam);
+  line-height: 1.7;
+  overflow-x: hidden;
+  background: var(--navy);
 }
-.vcard-t:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.05)}
-.vcard-t:active{transform:translateY(0);transition-duration:.1s}
-.vthumb-t{position:relative;width:100%;aspect-ratio:16/9;background:#0a1428;overflow:hidden;flex-shrink:0}
-.vthumb-t img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
-.vcard-t:hover .vthumb-t img{transform:scale(1.04)}
-.vplay-t{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);transition:background .2s}
-.vcard-t:hover .vplay-t{background:rgba(0,0,0,0.38)}
-.vplay-btn-t{
-  width:40px;height:40px;border-radius:50%;
-  background:rgba(255,255,255,0.18);backdrop-filter:blur(4px);
-  border:1.5px solid rgba(255,255,255,0.35);
-  display:flex;align-items:center;justify-content:center;
-  transition:background .2s,transform .2s;
-}
-.vcard-t:hover .vplay-btn-t{background:rgba(255,255,255,0.28);transform:scale(1.1)}
-.vdur-t{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.78);color:#fff;font-family:'Jost',sans-serif;font-size:0.6rem;padding:1px 6px;border-radius:2px;letter-spacing:0.02em}
-.vpick-t{position:absolute;top:6px;left:6px;background:rgba(196,151,58,0.92);color:#0B1C3D;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;padding:2px 6px;border-radius:2px}
-.vprov-t{position:absolute;bottom:6px;left:6px;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.12em;text-transform:uppercase;padding:2px 6px;border-radius:2px}
-.vthumb-fallback-t{width:100%;height:100%;background:linear-gradient(135deg,rgba(74,122,232,0.12),rgba(196,151,58,0.08))}
-.vplay-ext-t{border-style:dashed}
-.vinfo-t{padding:0.8rem 1rem 0.9rem;flex:1;display:flex;flex-direction:column;gap:0.2rem}
-.vtitle-t{font-family:'Cormorant',serif;font-size:1rem;font-weight:400;color:#fff;line-height:1.25}
-.vchan-t{font-size:0.66rem;color:var(--text-dim)}
-/* VIDEO MODAL */
-.vmodal{
-  position:fixed;inset:0;z-index:200;
-  background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
-  display:flex;align-items:center;justify-content:center;padding:1.25rem;
-  opacity:0;pointer-events:none;transition:opacity .25s;
-}
-.vmodal.open{opacity:1;pointer-events:all}
-.vmodal-box{
-  width:100%;max-width:860px;background:#0c1e42;
-  border:1px solid rgba(255,255,255,0.1);border-radius:6px;overflow:hidden;
-  transform:translateY(10px) scale(0.98);transition:transform .25s;
-}
-.vmodal.open .vmodal-box{transform:translateY(0) scale(1)}
-.vmodal-player{width:100%;aspect-ratio:16/9}
-.vmodal-player iframe{width:100%;height:100%;border:none;display:block}
-.vmodal-footer{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07)}
-.vmodal-title{font-family:'Cormorant',serif;font-size:1.2rem;color:#fff;line-height:1.2;margin-bottom:0.15rem}
-.vmodal-chan{font-size:0.68rem;color:var(--text-dim)}
-.vmodal-close{
-  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
-  cursor:pointer;width:30px;height:30px;border-radius:50%;flex-shrink:0;
-  display:flex;align-items:center;justify-content:center;
-  color:var(--text-dim);font-size:0.95rem;transition:all .2s;
-}
-.vmodal-close:hover{color:#fff;background:rgba(255,255,255,0.12)}
-.watch-link{
-  display:inline-flex;align-items:center;gap:0.4rem;margin-top:1.1rem;
-  font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;
-  color:var(--accent);border:1px solid rgba(255,255,255,0.1);
-  padding:6px 14px;border-radius:2px;transition:border-color .2s;text-decoration:none;
-}
-.watch-link:hover{border-color:var(--accent);opacity:1}
+::selection { background: rgba(196, 151, 58, 0.4); color: var(--pearl); }
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+::-webkit-scrollbar-thumb { background: rgba(196, 151, 58, 0.4); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(196, 151, 58, 0.7); }
+a { color: var(--topic-accent-warm); text-decoration: none; transition: color 0.3s ease; }
+a:hover { color: var(--gold-light); }
 
-/* COURSE CALLOUT */
-.course-callout{
-  display:flex;align-items:center;gap:1.25rem;
-  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
-  padding:1.25rem 1.4rem;margin-bottom:0.75rem;
-  text-decoration:none;color:var(--text);transition:background .2s,border-color .2s;
-  position:relative;overflow:hidden;
+nav.snav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11, 28, 61, 0.55);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
 }
-.course-callout::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--course-accent,var(--accent))}
-.course-callout:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.14);opacity:1}
-.cc-level{font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid currentColor;flex-shrink:0;white-space:nowrap}
-.cc-body{flex:1;min-width:0}
-.cc-title{font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:0.25rem}
-.cc-meta{font-size:0.68rem;color:var(--text-dim)}
-.cc-arrow{font-size:1rem;color:var(--accent);flex-shrink:0;transition:transform .2s}
-.course-callout:hover .cc-arrow{transform:translateX(3px)}
-
-/* FOOTER */
-footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center}
-.footer-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
-.footer-logo{font-family:'Cormorant',serif;font-size:1rem;letter-spacing:0.25em;color:rgba(255,255,255,0.3);text-transform:uppercase}
-.footer-links{display:flex;gap:1.5rem}
-.footer-links a{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;transition:color .2s}
-.footer-links a:hover{color:var(--text);opacity:1}
-
-@media(max-width:640px){
-  .hero{padding:3rem 1.25rem 2.5rem}
-  main{padding:2rem 1.25rem 5rem}
-  .rcard{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
-  .rlink{grid-column:2;margin-top:0.5rem}
-  .breadcrumb{display:none}
-  .footer-inner{flex-direction:column;gap:1rem;text-align:center}
-  .vgrid{grid-template-columns:1fr 1fr;gap:0.75rem}
-  .snav-back{font-size:0.6rem;padding:4px 10px}
+.snav-left { display: flex; align-items: center; gap: 1.75rem; min-width: 0; overflow: hidden; }
+.snav-logo {
+  font-family: var(--serif); font-size: 1.1rem; letter-spacing: 0.28em;
+  color: var(--pearl); text-transform: uppercase; text-decoration: none;
+  flex-shrink: 0; opacity: 0.85; transition: opacity 0.3s, text-shadow 0.3s;
 }
-@media(max-width:400px){
-  .vgrid{grid-template-columns:1fr}
-  .rcard{grid-template-columns:1fr}
-  .rlink{grid-column:1}
-  .section-label{font-size:0.6rem}
-  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
-     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
-     header dropdown; deep-page nav stays minimal. */
-  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
-  .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
+.snav-logo:hover { opacity: 1; text-shadow: 0 0 20px rgba(196, 151, 58, 0.55); }
+.snav-badge {
+  font-size: 0.55rem; letter-spacing: 0.18em; color: var(--topic-accent-warm);
+  border: 1px solid currentColor; padding: 1px 6px; border-radius: 2px;
+  vertical-align: middle; margin-left: 4px; opacity: 0.9;
+}
+.breadcrumb {
+  font-size: 0.7rem; letter-spacing: 0.06em; color: rgba(245, 248, 251, 0.55);
+  display: flex; align-items: center; gap: 0.4rem; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.breadcrumb a { color: rgba(245, 248, 251, 0.6); transition: color 0.2s; }
+.breadcrumb a:hover { color: var(--foam); }
+.breadcrumb .sep { opacity: 0.3; }
+.snav-back {
+  font-size: 0.68rem; letter-spacing: 0.12em; color: rgba(245, 248, 251, 0.7);
+  border: 1px solid rgba(255,255,255,0.12); padding: 5px 14px; border-radius: 2px;
+  transition: all 0.3s; text-decoration: none; flex-shrink: 0; white-space: nowrap;
+}
+.snav-back:hover { color: var(--foam); border-color: rgba(196, 151, 58, 0.5); }
+
+.hero {
+  position: relative; min-height: 100vh; padding-top: 56px;
+  display: flex; align-items: center; justify-content: center;
+  overflow: hidden; background: var(--navy-deep);
+}
+.hero-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1638262052640-82e94d64664a?auto=format&fit=crop&q=85&w=2400');
+  background-size: cover; background-position: center;
+  filter: saturate(0.8) brightness(0.5) contrast(1.05);
+  transform: scale(1.04);
+  animation: heroDrift 32s ease-in-out infinite alternate;
+  z-index: 0;
+}
+@keyframes heroDrift {
+  0%   { transform: scale(1.04) translate(0, 0); }
+  100% { transform: scale(1.1) translate(-1%, -2%); }
+}
+.hero::after {
+  content: ''; position: absolute; inset: 0; z-index: 2;
+  background:
+    radial-gradient(ellipse at 30% 40%, rgba(196, 151, 58, 0.2) 0%, transparent 55%),
+    linear-gradient(to bottom, rgba(11, 28, 61, 0.4) 0%, rgba(11, 28, 61, 0.2) 30%, rgba(8, 21, 48, 0.85) 95%);
+  pointer-events: none;
+}
+.hero-inner {
+  position: relative; z-index: 3;
+  width: 100%; max-width: 1280px;
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  display: grid; grid-template-columns: 1fr auto;
+  gap: 4rem; align-items: end;
+  padding-bottom: clamp(5rem, 10vh, 8rem);
+}
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  font-size: 0.6rem; letter-spacing: 0.42em; text-transform: uppercase;
+  color: var(--topic-accent-warm); margin-bottom: 2rem; opacity: 0.95;
+}
+.hero-eyebrow::before { content: ''; display: block; width: 36px; height: 1px; background: var(--topic-accent-warm); opacity: 0.5; }
+h1.hero-title {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(4rem, 14vw, 13rem);
+  line-height: 0.88; letter-spacing: -0.04em;
+  color: var(--pearl);
+  text-shadow: 0 4px 80px rgba(11, 28, 61, 0.7);
+  margin-bottom: 2.5rem;
+}
+.hero-desc {
+  max-width: 580px;
+  font-size: clamp(1.05rem, 1.45vw, 1.25rem);
+  font-weight: 300; line-height: 1.7;
+  color: rgba(245, 248, 251, 0.88);
+}
+.hero-desc em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--topic-accent-warm); font-size: 1.1em;
+}
+.hero-quote {
+  margin-top: 2rem; padding-top: 1.5rem;
+  border-top: 1px solid rgba(196, 151, 58, 0.32);
+  max-width: 560px;
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  line-height: 1.45;
+  color: rgba(245, 248, 251, 0.78);
+}
+.hero-quote cite {
+  display: block;
+  font-family: var(--body); font-style: normal; font-weight: 300;
+  font-size: 0.6rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--topic-accent-warm); margin-top: 0.85rem; opacity: 0.9;
 }
 
+/* Hero flower-of-life signature */
+.hero-flower {
+  width: clamp(180px, 22vw, 320px);
+  aspect-ratio: 1; opacity: 0.95;
+  filter: drop-shadow(0 0 60px rgba(196, 151, 58, 0.28));
+  overflow: visible;
+}
+.flower-rotate { transform-origin: 50% 50%; animation: flowerRotate 90s linear infinite; }
+.flower-rotate-rev { transform-origin: 50% 50%; animation: flowerRotate 120s linear infinite reverse; }
+.flower-pulse-1 { transform-origin: 50% 50%; animation: flowerPulse 7s ease-in-out infinite alternate; }
+.flower-pulse-2 { transform-origin: 50% 50%; animation: flowerPulse 7s ease-in-out infinite alternate; animation-delay: 3.5s; }
+@keyframes flowerRotate { to { transform: rotate(360deg); } }
+@keyframes flowerPulse {
+  0%   { opacity: 0.45; transform: scale(0.92); }
+  100% { opacity: 1; transform: scale(1.04); }
+}
+
+.scroll-hint {
+  position: absolute; bottom: 2rem; left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.55rem; letter-spacing: 0.42em; text-transform: uppercase;
+  color: rgba(245, 248, 251, 0.55);
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  z-index: 4;
+}
+.scroll-hint::after {
+  content: ''; width: 1px; height: 36px;
+  background: linear-gradient(to bottom, rgba(245, 248, 251, 0.55), transparent);
+  animation: drip 2.6s ease-in-out infinite;
+}
+@keyframes drip {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
+  50%      { opacity: 1;   transform: scaleY(1);   transform-origin: top; }
+}
+
+.wave-divider { position: relative; width: 100%; height: 100px; overflow: hidden; pointer-events: none; }
+.wave-divider svg { position: absolute; bottom: 0; left: 0; width: 200%; height: 100%; display: block; }
+.wave-divider .w1 { animation: waveSlide 22s linear infinite; opacity: 0.55; }
+.wave-divider .w2 { animation: waveSlide 16s linear infinite reverse; opacity: 0.4; }
+.wave-divider .w3 { animation: waveSlide 30s linear infinite; opacity: 0.7; }
+@keyframes waveSlide { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }
+
+main.wellbeing-body { position: relative; background: var(--navy); padding: 0 clamp(1.5rem, 5vw, 3rem); }
+.section { max-width: 720px; margin: 0 auto; padding: clamp(5rem, 12vh, 9rem) 0; position: relative; }
+.section-wide { max-width: 1080px; }
+.section-narrow { max-width: 600px; }
+
+.label {
+  font-size: 0.58rem; letter-spacing: 0.42em; text-transform: uppercase;
+  color: var(--topic-accent-warm); margin-bottom: 2rem; opacity: 0.9;
+  display: inline-flex; align-items: center; gap: 0.7rem;
+}
+.label::before { content: ''; display: block; width: 32px; height: 1px; background: var(--topic-accent-warm); opacity: 0.5; }
+
+h2 {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height: 1.04; letter-spacing: -0.02em;
+  color: var(--pearl); margin-bottom: 2rem; max-width: 18ch;
+}
+h2 strong { font-style: normal; font-weight: 400; color: var(--topic-accent-warm); }
+h3 {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: clamp(1.3rem, 2.2vw, 1.7rem);
+  line-height: 1.2; color: var(--foam); margin-bottom: 0.85rem;
+}
+p.lede {
+  font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+  font-weight: 300; line-height: 1.65;
+  color: var(--foam); margin-bottom: 1.6rem;
+}
+p { font-size: 1.025rem; line-height: 1.85; color: rgba(245, 248, 251, 0.72); margin-bottom: 1.4rem; }
+p em { font-family: var(--serif); font-style: italic; font-weight: 400; color: var(--topic-accent-warm); font-size: 1.08em; }
+
+blockquote {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+  line-height: 1.3; letter-spacing: -0.005em;
+  color: var(--pearl);
+  padding: 2.5rem 0 2.5rem 2rem; margin: 3rem 0;
+  border-left: 1px solid rgba(196, 151, 58, 0.55);
+  max-width: 26ch;
+}
+blockquote cite {
+  display: block;
+  font-family: var(--body); font-style: normal; font-weight: 300;
+  font-size: 0.65rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--topic-accent-warm); margin-top: 1.5rem; opacity: 0.9;
+}
+
+.bleed {
+  position: relative; width: 100vw; margin-left: calc(50% - 50vw);
+  height: clamp(60vh, 90vh, 800px);
+  margin-top: clamp(4rem, 8vh, 7rem); margin-bottom: clamp(4rem, 8vh, 7rem);
+  overflow: hidden; display: flex; align-items: center; justify-content: center;
+}
+.bleed img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: cover; filter: brightness(0.6) saturate(0.95); }
+.bleed::after {
+  content: ''; position: absolute; inset: 0;
+  background: linear-gradient(180deg, rgba(11,28,61,0.5) 0%, rgba(11,28,61,0.15) 30%, rgba(11,28,61,0.15) 70%, rgba(11,28,61,0.7) 100%);
+  pointer-events: none;
+}
+.bleed-cap {
+  position: relative; z-index: 2;
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(1.6rem, 3.4vw, 2.8rem);
+  line-height: 1.3; color: var(--pearl);
+  text-align: center; max-width: 26ch; padding: 0 1.5rem;
+  text-shadow: 0 2px 30px rgba(11, 28, 61, 0.7);
+}
+.bleed-cap cite {
+  display: block;
+  font-family: var(--body); font-style: normal; font-weight: 300;
+  font-size: 0.62rem; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--topic-accent-warm); margin-top: 2rem; opacity: 0.9;
+}
+
+/* SIX PILLARS — radial layout / grid */
+.pillars {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px; overflow: hidden;
+  margin: 2.5rem 0 1rem;
+}
+.pillar {
+  background: var(--navy-mid);
+  padding: 1.6rem 1.5rem 1.5rem;
+  display: flex; flex-direction: column; gap: 0.4rem;
+  transition: background 0.4s ease;
+}
+.pillar:hover { background: rgba(15, 36, 81, 0.95); }
+.pillar-num {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: 1.5rem;
+  color: var(--topic-accent-warm); line-height: 1;
+  margin-bottom: 0.4rem;
+  opacity: 0.9;
+}
+.pillar h4 {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.4rem;
+  color: var(--foam);
+  line-height: 1.2;
+  margin-bottom: 0.4rem;
+}
+.pillar h4 strong { font-style: normal; font-weight: 500; color: var(--topic-accent-warm); }
+.pillar p {
+  font-size: 0.86rem; line-height: 1.65;
+  color: rgba(245, 248, 251, 0.72);
+  margin: 0;
+}
+.pillar-meta {
+  margin-top: 0.6rem;
+  font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+  color: var(--topic-accent-warm); opacity: 0.7;
+}
+
+/* FLOWER FEATURE — six-circle flower-of-life as the page's signature */
+.flower-feature {
+  display: grid; grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+  margin: clamp(3rem, 6vh, 5rem) 0;
+}
+.flower-feature-svg {
+  width: 100%; max-width: 480px; aspect-ratio: 1;
+  margin: 0 auto; overflow: visible;
+  filter: drop-shadow(0 0 80px rgba(196, 151, 58, 0.32));
+}
+
+/* SPLIT — modern medicine vs functional medicine */
+.split {
+  display: grid; grid-template-columns: 1fr 1fr; gap: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px; overflow: hidden;
+  margin: 3rem 0;
+}
+.split-half {
+  background: var(--navy-mid);
+  padding: clamp(1.8rem, 3vw, 2.5rem);
+  display: flex; flex-direction: column; gap: 0.9rem;
+}
+.split-half.warm {
+  background: linear-gradient(135deg, rgba(196, 151, 58, 0.10) 0%, rgba(13, 36, 81, 0.95) 70%);
+  border-right: 1px solid rgba(196, 151, 58, 0.22);
+}
+.split-eyebrow {
+  font-size: 0.55rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--topic-accent-warm); margin-bottom: 0.5rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.split-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--topic-accent-warm); opacity: 0.6; }
+.split-half h4 {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: clamp(1.6rem, 2.4vw, 2rem);
+  color: var(--foam); margin-bottom: 0.6rem; line-height: 1.2;
+}
+.split-half p { font-size: 0.95rem; margin-bottom: 0; }
+
+/* PRACTICE */
+.practice { display: grid; gap: 1.5rem; margin: 3rem 0 1rem; }
+.step {
+  display: grid; grid-template-columns: 80px 1fr; gap: 2rem;
+  padding: 1.6rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  align-items: baseline;
+}
+.step:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.step-num {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  color: var(--topic-accent-warm); opacity: 0.85; line-height: 1;
+}
+.step-body strong {
+  display: block;
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.35rem; color: var(--foam);
+  margin-bottom: 0.4rem;
+}
+.step-body p { margin-bottom: 0; max-width: 56ch; }
+
+/* PICKS */
+.picks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px; overflow: hidden;
+  margin: 3rem 0 1rem;
+}
+.pick {
+  background: var(--navy-mid); padding: 2rem 1.8rem;
+  transition: background 0.4s ease;
+  display: flex; flex-direction: column;
+}
+.pick:hover { background: rgba(13, 36, 81, 0.92); }
+.pick-eyebrow {
+  font-size: 0.55rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--topic-accent-warm); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.pick-eyebrow::before { content: ''; width: 18px; height: 1px; background: var(--topic-accent-warm); opacity: 0.6; }
+.pick h4 {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.45rem; color: var(--foam);
+  margin-bottom: 0.5rem; line-height: 1.2;
+}
+.pick p { font-size: 0.92rem; margin-bottom: 1.2rem; flex: 1; }
+.pick a.pick-link {
+  font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--topic-accent-warm); border-bottom: 1px solid currentColor;
+  padding-bottom: 2px; transition: color 0.3s, border-color 0.3s;
+  align-self: flex-start;
+}
+.pick a.pick-link:hover { color: var(--gold-light); border-color: var(--gold-light); }
+
+.closing {
+  position: relative; min-height: 80vh;
+  display: flex; align-items: center; justify-content: center;
+  text-align: center;
+  margin-top: clamp(4rem, 10vh, 8rem);
+  padding: clamp(4rem, 10vh, 8rem) 1.5rem;
+  overflow: hidden;
+}
+.closing-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1681505531034-8d67054e07f6?auto=format&fit=crop&q=85&w=2400');
+  background-size: cover; background-position: center;
+  filter: brightness(0.4) saturate(0.85);
+}
+.closing-bg::after {
+  content: ''; position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(11, 28, 61, 0.4) 30%, rgba(11, 28, 61, 0.95) 100%);
+}
+.closing-inner { position: relative; z-index: 2; max-width: 38ch; margin: 0 auto; }
+.closing p {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+  line-height: 1.45; color: var(--pearl);
+  text-shadow: 0 2px 30px rgba(11, 28, 61, 0.7);
+  margin: 0 0 1.2rem;
+}
+.closing p strong { font-style: normal; font-weight: 400; color: var(--topic-accent-warm); }
+.closing cite {
+  display: block;
+  font-family: var(--body); font-style: normal; font-weight: 300;
+  font-size: 0.62rem; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--topic-accent-warm); margin-top: 1.5rem; opacity: 0.9;
+}
+
+footer.site-foot {
+  background: var(--navy-deep);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 3rem clamp(1.25rem, 5vw, 2.5rem);
+  text-align: center; position: relative; z-index: 2;
+}
+footer.site-foot .wm {
+  font-family: var(--serif); font-weight: 300;
+  font-size: 1rem; letter-spacing: 0.32em;
+  color: rgba(245, 248, 251, 0.4); text-transform: uppercase;
+}
+footer.site-foot .legal {
+  font-size: 0.66rem; letter-spacing: 0.1em;
+  color: rgba(245, 248, 251, 0.3);
+  margin-top: 0.5rem; display: block;
+}
+
+.fade-up {
+  opacity: 0; transform: translateY(30px);
+  transition: opacity 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.fade-up.in { opacity: 1; transform: translateY(0); }
+
+@media (max-width: 760px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero-flower { width: 180px; }
+  .breadcrumb { display: none; }
+  .step { grid-template-columns: 50px 1fr; gap: 1rem; }
+  blockquote { padding-left: 1rem; font-size: 1.5rem; }
+  .split { grid-template-columns: 1fr; }
+  .split-half.warm { border-right: 0; border-bottom: 1px solid rgba(196, 151, 58, 0.22); }
+  .flower-feature { grid-template-columns: 1fr; }
+  .flower-feature-svg { max-width: 320px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .hero-bg, .scroll-hint::after,
+  .flower-rotate, .flower-rotate-rev,
+  .flower-pulse-1, .flower-pulse-2,
+  .wave-divider .w1, .wave-divider .w2, .wave-divider .w3 { animation: none; }
+  .fade-up { transition: none; opacity: 1; transform: none; }
+}
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
+<script src="../../assets/network-map.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Sell — FRQNCY Network","description":"Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.","url":"https://frqncy.network/v2/sell/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Wellbeing — The body knows how","description":"A field guide to the six pillars of vitality and the lineages worth listening to.","url":"https://frqncy.network/v2/sell/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Explore","item":"https://frqncy.network/v2/explore.html"},{"@type":"ListItem","position":3,"name":"Wellbeing","item":"https://frqncy.network/v2/sell/"}]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://frqncy.network/v2/sell/","url":"https://frqncy.network/v2/sell/","hasPart":[{"@type":"WebPageElement","name":"Five small things, repeated.","url":"https://frqncy.network/v2/sell/#five-small-things-repeated"}]}</script>
 </head>
-<body><nav class="snav">
+<body>
+
+<nav class="snav">
   <div class="snav-left">
     <a href="/v2/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
-    
+    <div class="breadcrumb">
+      <a href="/v2/explore.html">Explore</a><span class="sep">/</span>
+      <span>Wellbeing</span>
+    </div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
-    <a href="/" class="snav-back">← Main</a>
+    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
+    <a href="/books/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
+    <a href="/v2/water/" class="snav-back">Water</a>
+    <a href="/v2/music/" class="snav-back">Music</a>
+    <a href="/v2/money/" class="snav-back">Money</a>
+    <a href="/" class="snav-back">Main</a>
   </div>
-</nav><div class="hero">
-  <div class="hero-eyebrow">Pillar</div>
-  <h1>Sell</h1>
-  <p class="hero-desc">Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.</p>
-</div>
-<main>
-  <section>
-    <div class="section-label">A way of doing, not a bucket</div>
-    <p class="hero-desc" style="max-width:640px;margin:0 auto 1.25rem;text-align:center">Sell runs across every domain at FRQNCY. It shows up not as a list of topics under one heading, but as a way the work gets done — touching how every pillar, domain, and topic lives on the site.</p>
-    <p class="hero-desc" style="max-width:640px;margin:0 auto;text-align:center;opacity:0.7">More on what this looks like in practice — the choices made, the work shown — coming soon.</p>
-  </section>
-  <section>
-  <div class="section-label">FRQNCY Picks</div>
-  <div class="empty"><p>FRQNCY is curating this space.<br>Resources coming soon.</p></div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Sell · Pillar · How we exchange value</div>
+      <h1 class="hero-title">Sell</h1>
+      <p class="hero-desc">
+        We sell because vision needs capital and the public layer of the network must stay
+        free. We sell as transparent service — never as extraction. The page below is how.
+      </p>
+      <div class="hero-quote">
+        People don't buy what you do; they buy why you do it.
+        <cite>Simon Sinek · Start With Why · The Golden Circle</cite>
+      </div>
+    </div>
+
+    <!-- Six-circle flower-of-life signature -->
+    <svg class="hero-flower" viewBox="-100 -100 200 200" aria-hidden="true">
+      <defs>
+        <radialGradient id="flowerGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"  stop-color="#C4973A" stop-opacity="0.32"/>
+          <stop offset="60%" stop-color="#0B1C3D" stop-opacity="0.08"/>
+          <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="flowerEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"  stop-color="#F5F8FB" stop-opacity="0.85"/>
+          <stop offset="100%" stop-color="#C4973A" stop-opacity="0.7"/>
+        </linearGradient>
+      </defs>
+      <circle cx="0" cy="0" r="92" fill="url(#flowerGlow)"/>
+
+      <!-- Six surrounding circles + central circle -->
+      <g class="flower-rotate" stroke="url(#flowerEdge)" stroke-width="0.8" fill="rgba(196, 151, 58, 0.05)">
+        <circle cx="0" cy="-44" r="44"/>
+        <circle cx="38" cy="-22" r="44"/>
+        <circle cx="38" cy="22" r="44"/>
+        <circle cx="0" cy="44" r="44"/>
+        <circle cx="-38" cy="22" r="44"/>
+        <circle cx="-38" cy="-22" r="44"/>
+      </g>
+
+      <!-- Central anchor circle -->
+      <circle cx="0" cy="0" r="44" fill="rgba(196,151,58,0.05)"
+              stroke="rgba(196,151,58,0.45)" stroke-width="0.6"/>
+
+      <!-- Counter-rotating outer ring -->
+      <g class="flower-rotate-rev">
+        <circle cx="0" cy="0" r="78" fill="none"
+                stroke="rgba(245,248,251,0.18)" stroke-width="0.4"
+                stroke-dasharray="3 4"/>
+      </g>
+
+      <!-- Pulsing breath rings -->
+      <circle cx="0" cy="0" r="22" fill="none" stroke="rgba(196, 151, 58, 0.55)" stroke-width="0.5" class="flower-pulse-1"/>
+      <circle cx="0" cy="0" r="32" fill="none" stroke="rgba(196, 151, 58, 0.4)" stroke-width="0.4" class="flower-pulse-2"/>
+
+      <!-- Centre — the source of vitality -->
+      <circle cx="0" cy="0" r="3.5" fill="rgba(196, 151, 58, 0.95)"/>
+      <circle cx="0" cy="0" r="9" fill="none" stroke="rgba(196, 151, 58, 0.4)" stroke-width="0.3"/>
+    </svg>
+  </div>
+  <div class="scroll-hint">return</div>
+<p class="byline" style="font-family:'Jost',sans-serif;font-size:0.66rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin:1.25rem 0 0;text-align:center;line-height:1.7">Edited by <a href="/people/orlando/" style="color:var(--text-dim);border-bottom:1px solid currentColor">Orlando Eisenreich</a> · Standards: <a href="/editorial-standards/" style="color:var(--text-dim);border-bottom:1px solid currentColor">FRQNCY Editorial</a> · Updated <time datetime="2026-04-29">April 29, 2026</time></p>
 </section>
+
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 2880 100" preserveAspectRatio="none">
+    <path class="w3" fill="rgba(196, 151, 58, 0.14)" d="M0,55 C144,30 288,30 432,45 C576,60 720,72 864,55 C1008,38 1152,30 1296,45 C1440,60 1584,72 1728,55 C1872,38 2016,30 2160,45 C2304,60 2448,72 2592,55 C2736,38 2808,38 2880,45 L2880,100 L0,100 Z"/>
+    <path class="w2" fill="rgba(196, 151, 58, 0.10)" d="M0,65 C144,45 288,45 432,55 C576,65 720,75 864,65 C1008,55 1152,45 1296,55 C1440,65 1584,75 1728,65 C1872,55 2016,45 2160,55 C2304,65 2448,75 2592,65 C2736,55 2808,55 2880,60 L2880,100 L0,100 Z"/>
+    <path class="w1" fill="rgba(245, 248, 251, 0.06)" d="M0,80 C144,68 288,68 432,75 C576,82 720,88 864,80 C1008,72 1152,68 1296,75 C1440,82 1584,88 1728,80 C1872,72 2016,68 2160,75 C2304,82 2448,88 2592,80 C2736,72 2808,72 2880,76 L2880,100 L0,100 Z"/>
+  </svg>
+</div>
+
+
+<section class="section section-wide fade-up">
+  <span class="label">What we point to</span>
+  <h2>The voices that taught us <strong>this HOW.</strong></h2>
+  <p style="max-width:62ch;margin:0 0 2rem;">
+    The Golden Circle is the spine. The other voices below taught us how to sell without
+    becoming the thing we set out to replace.
+  </p>
+
+  <div class="picks">
+    <div class="pick">
+      <div class="pick-eyebrow">01 / Watch first</div>
+      <h4>How Great Leaders Inspire Action</h4>
+      <p>Simon Sinek, TED, 2009. The Golden Circle.</p>
+      <a class="pick-link" href="/v2/watch/" target="_blank" rel="noopener noreferrer">Open Watch →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">02 / Read</div>
+      <h4>Start With Why</h4>
+      <p>Simon Sinek, 2009. The book-length expansion of the talk.</p>
+      <a class="pick-link" href="https://simonsinek.com/books/start-with-why/" target="_blank" rel="noopener noreferrer">Find the book →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">03 / Persuade</div>
+      <h4>Influence: The Psychology of Persuasion</h4>
+      <p>Robert Cialdini, 1984. The six principles, used honestly.</p>
+      <a class="pick-link" href="https://archive.org/details/influencepsychol0000cial" target="_blank" rel="noopener noreferrer">Find the book →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">04 / Negotiate</div>
+      <h4>Never Split the Difference</h4>
+      <p>Chris Voss, 2016. Tactical empathy from an FBI hostage negotiator.</p>
+      <a class="pick-link" href="https://archive.org/details/never-split-the-difference" target="_blank" rel="noopener noreferrer">Find the book →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">05 / Steward</div>
+      <h4>The Berkshire Letters</h4>
+      <p>Warren Buffett, 1965–. Capital allocation as ethical practice.</p>
+      <a class="pick-link" href="https://www.berkshirehathaway.com/letters/letters.html" target="_blank" rel="noopener noreferrer">Read the letters →</a>
+    </div>
+  </div>
+</section>
+
+<section class="section section-wide fade-up">
+  <div class="quotes-grid">
+    <blockquote class="q">
+      The goal is not to do business with everybody who needs what you have. The goal is to do business with people who believe what you believe.
+      <cite>Simon Sinek · Start With Why</cite>
+    </blockquote>
+    <blockquote class="q">
+      The most important thing in communication is hearing what isn't said.
+      <cite>Peter Drucker</cite>
+    </blockquote>
+    <blockquote class="q">
+      Price is what you pay. Value is what you get.
+      <cite>Warren Buffett · Berkshire Hathaway letters</cite>
+    </blockquote>
+  </div>
+</section>
+
+<section class="section section-wide fade-up">
+  <span class="label">How it actually works</span>
+  <h2>Five non-negotiables, <strong>one method.</strong></h2>
+  <p style="max-width:62ch;margin:0 0 2rem;">
+    The Golden Circle says: lead with WHY, then HOW, then WHAT. FRQNCY's WHY is that
+    consciousness is the ground of everything and every isle of life is rethink-from-it-able.
+    The HOW of selling on FRQNCY follows from that: five operating non-negotiables, drawn
+    from <a href="/proposals/REVENUE-MODEL.md" style="color:var(--gold-light)">REVENUE-MODEL.md</a>
+    and <a href="/proposals/EDITORIAL-STANDARDS.md" style="color:var(--gold-light)">EDITORIAL-STANDARDS.md</a>,
+    that govern every commercial decision the network makes.
+  </p>
+
+  <div class="giving-pair">
+    <div class="giving-text">
+      <p>
+        <strong>1. The public layer stays free, forever.</strong> No ads on the site, ever.
+        No paywalls on read-this-on-FRQNCY content — life stories, profiles, summaries, topic
+        pages. External links are footnotes, not destinations. The gift is what builds the
+        trust; the trust is what makes any revenue surface credible.
+      </p>
+    </div>
+    <blockquote class="giving-quote">
+      The gift is what makes the trust; the trust is what makes the revenue surfaces credible.
+      <cite>FRQNCY · Revenue Model</cite>
+    </blockquote>
+  </div>
+
+  <div class="giving-pair">
+    <div class="giving-text">
+      <p>
+        <strong>2. Picks are independent of money flow.</strong> A FRQNCY pick is personally
+        vetted — someone has read the book, used the product, met the person. We never start
+        with "we could partner here" and back into a pick. Money flows are disclosed via a
+        <code>revenue_relationship</code> field (<em>null / contributor / partner / affiliate</em>) on every
+        entity. Sponsored content is not a category. The integrity test is one question:
+        would FRQNCY pick this if there were no possibility of money ever flowing from the
+        relationship?
+      </p>
+    </div>
+    <blockquote class="giving-quote">
+      Would FRQNCY pick this if there were no possibility of money ever flowing? If yes, fine. If no, decline — regardless of the financial upside.
+      <cite>FRQNCY · Editorial Standards · §7</cite>
+    </blockquote>
+  </div>
+
+  <div class="giving-pair">
+    <div class="giving-text">
+      <p>
+        <strong>3. Membership is support, not unlock.</strong> When the Sanctuary Spaces and
+        the Network membership go live, members fund the network — they don't unlock content
+        the public can't see. The same is true for courses: a free intro lesson exists for
+        anyone, and the paid tier is for the practitioner who wants the full path. We never
+        gate the teaching; we sell the depth, the cohort, the access to the room.
+      </p>
+    </div>
+    <blockquote class="giving-quote">
+      The membership offer is "support the network" — never "unlock Sanctuary features."
+      <cite>FRQNCY · Sanctuary Roadmap</cite>
+    </blockquote>
+  </div>
+
+  <p style="max-width:62ch;margin:2rem 0 0;">
+    <strong>4. Capital flows two ways and is disclosed.</strong> Money in: from courses,
+    Aligned Goods contributor relationships, eventual Space memberships, and the Fund.
+    Money out: into making and curating the public layer, into the Fund's portfolio of
+    aligned projects, into the operating budget of the Sanctuary Spaces. Every commercial
+    relationship is disclosed on the entity's profile. We do not buy our way onto other
+    sites and we do not sell our way out of editorial integrity.<br><br>
+    <strong>5. The leverage is the world model.</strong> One curated entry reaches everyone,
+    forever, at zero marginal cost. One person added to <code>people.json</code> propagates
+    across life story, books, topic-page presence, search index, and chart-personalised
+    recommendation — from one edit. One course built can be infinitely delivered. One pick
+    decision propagates everywhere automatically. This is leverage the substack-and-tip-jar
+    model never gets.
+  </p>
+</section>
+
+<section class="section section-wide fade-up" id="constellation-section">
+  <span class="label">The constellation</span>
+  <h2>Sell across the <strong>network.</strong></h2>
+  <div class="constellation-card">
+    <div id="nm-container">
+      <canvas id="nm-fx" aria-hidden="true"></canvas>
+      <svg id="nm-svg"><defs id="nm-svg-defs"></defs></svg>
+      <div id="nm-tooltip"><div class="nm-tip-title"></div><div class="nm-tip-type"></div></div>
+      <div id="nm-hint">DRAG · SCROLL TO ZOOM · CLICK TO EXPLORE</div>
+      <div id="nm-loading">✦ Loading constellation ✦</div>
+    </div>
+    <div class="constellation-cta-wrap">
+      <a href="/v2/explore.html?focus=sell" class="constellation-cta">Explore the full reach of Sell ↗</a>
+    </div>
+  </div>
+</section>
+<style>
+  .constellation-card { width: 100%; max-width: 920px; margin: 0 auto; position: relative; }
+  @keyframes nmPulse { 0%,100% { opacity: 0.4; } 50% { opacity: 1; } }
+  #nm-container {
+    position: relative; width: 100%; height: 460px; overflow: hidden;
+    border-radius: 4px;
+    background: linear-gradient(180deg, #0a1830 0%, #060f24 100%);
+    border: 1px solid rgba(196,151,58,0.18);
+    box-shadow: 0 12px 48px rgba(7,14,38,0.65);
+  }
+  #nm-fx { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+  #nm-svg { position: absolute; inset: 0; width: 100%; height: 100%; cursor: grab; z-index: 1; touch-action: none; user-select: none; }
+  #nm-svg:active { cursor: grabbing; }
+  #nm-loading {
+    position: absolute; inset: 0; display: flex; align-items: center; justify-content: center;
+    color: rgba(196,151,58,0.7); font-family: var(--body); font-size: 11px;
+    letter-spacing: 0.22em; text-transform: uppercase;
+    pointer-events: none; z-index: 4; animation: nmPulse 1.6s ease-in-out infinite;
+  }
+  #nm-tooltip {
+    position: absolute; z-index: 10;
+    background: rgba(11,28,61,0.93); border: 1px solid var(--gold, #C4973A); border-radius: 8px;
+    padding: 10px 16px; color: #fff;
+    font-family: var(--body); font-size: 12px;
+    pointer-events: none; opacity: 0; transition: opacity 0.2s;
+    max-width: 210px; backdrop-filter: blur(8px);
+  }
+  .nm-tip-title { font-family: var(--serif); font-size: 17px; color: var(--gold-light, #E0C06A); margin-bottom: 3px; }
+  .nm-tip-type  { font-size: 9px; letter-spacing: 0.16em; color: rgba(255,255,255,0.38); text-transform: uppercase; }
+  #nm-hint {
+    position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%);
+    font-size: 9px; letter-spacing: 0.18em; color: rgba(255,255,255,0.2);
+    font-family: var(--body); pointer-events: none; z-index: 5; white-space: nowrap;
+  }
+  .constellation-cta-wrap { text-align: center; margin-top: 24px; }
+  .constellation-cta {
+    display: inline-block;
+    font-family: var(--body); font-size: 11px; letter-spacing: 0.24em; text-transform: uppercase;
+    color: var(--gold-light, #E0C06A); text-decoration: none;
+    padding: 12px 22px; border: 1px solid rgba(196,151,58,0.35); border-radius: 999px;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .constellation-cta:hover { border-color: var(--gold, #C4973A); color: #fff; }
+  @media (max-width: 720px) { #nm-container { height: 380px; } }
+  .quotes-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(190px, 1fr));
+    gap: 1.6rem;
+    align-items: start;
+  }
+  .quotes-grid .q {
+    margin: 0; padding: 0 0 0 1.1rem;
+    font-size: clamp(1rem, 1.45vw, 1.35rem);
+    line-height: 1.35;
+    border-left: 1px solid rgba(196,151,58,0.5);
+    max-width: none;
+  }
+  .quotes-grid .q cite { font-size: 0.6rem; margin-top: 0.7rem; }
+  .giving-pair {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 2.5rem;
+    align-items: center;
+    margin: 1.6rem 0;
+  }
+  .giving-pair .giving-text p { margin: 0; max-width: none; }
+  .giving-pair .giving-quote { margin: 0; max-width: none; padding: 0.6rem 0 0.6rem 1.4rem; }
+  @media (max-width: 760px) {
+    .giving-pair { grid-template-columns: 1fr; gap: 1rem; margin: 1.2rem 0; }
+  }
+</style>
+<script>
+  (function(){
+    function tryInit() {
+      if (typeof FRQNCYNetworkMap === 'undefined') { setTimeout(tryInit, 50); return; }
+      var data = FRQNCYNetworkMap.filterByPillar('sell', { urlPrefix: '../../' });
+      FRQNCYNetworkMap.init({
+        nodes: data.nodes, links: data.links, urls: data.urls,
+        humans: 140, showCoreLinks: false
+      });
+    }
+    if (document.readyState === 'loading') {
+      document.addEventListener('DOMContentLoaded', tryInit);
+    } else {
+      tryInit();
+    }
+  })();
+</script>
+
+
 </main>
-<footer style="border-top:1px solid rgba(255,255,255,0.06);padding:32px clamp(1.25rem,6vw,2.5rem);text-align:center;margin-top:3rem">
-  <span style="font-family:'Cormorant',serif;font-weight:300;font-size:16px;letter-spacing:0.3em;color:rgba(255,255,255,0.5);text-transform:uppercase">FRQNCY</span>
-  <br>
-  <span style="font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-top:6px;display:inline-block">&copy; 2026 FRQNCY &middot; All frequencies reserved</span>
+
+<!-- CLOSING -->
+<section class="closing fade-up">
+  <div class="closing-bg" aria-hidden="true"></div>
+  <div class="closing-inner">
+    <blockquote style="border:0; padding:0; margin:0;">
+      Start with why.
+      <cite>Simon Sinek · The Golden Circle</cite>
+    </blockquote>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <span class="wm">FRQNCY</span>
+  <span class="legal">© 2026 · All frequencies reserved · Pillar · The artwork continues</span>
 </footer>
-</body></html>
+
+<script>
+(function () {
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>

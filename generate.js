@@ -21,7 +21,7 @@ const OUT       = path.join(ROOT, 'v2');
 // from overwriting bespoke narrative (Vision/Echo/Legion/Roadmap, etc.).
 // To intentionally regenerate one of these, remove its slug from the set,
 // or pass --force-regen-fund (etc.) — not implemented yet, add when needed.
-const BESPOKE_PILLARS = new Set(['fund']);
+const BESPOKE_PILLARS = new Set(['fund', 'sell']);
 // Commissioned pages (the artwork) — each is a unique piece, not a template.
 // See proposals/TOPIC-COMMISSION-CONTEXT-GRAPH.md for the procedure that builds them.
 // Add a slug here as soon as a page is commissioned, BEFORE the next regen run.
@@ -631,23 +631,86 @@ document.querySelectorAll('.ftab').forEach(btn=>{
 </script>`;
 
 // ── Nav / Footer ─────────────────────────────────────────────────
+// Global top-level nav (Discover/Capital/Community dropdowns) shown on every
+// generated page so users can jump anywhere from anywhere. Uses absolute
+// paths so it works at any depth (v2/[topic]/, people/[slug]/, etc.).
+// Mirrors the nav in index.html — keep them in sync when adding entries.
+const MAIN_NAV = `<nav id="main-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <a href="/about">About</a>
+      <div class="nav-dd-menu">
+        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
+        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/v2/explore.html">Discover</a>
+      <div class="nav-dd-menu">
+        <a href="/v2/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
+        <a href="/v2/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video library</span></a>
+        <a href="/v2/audio/index.html"><span class="dd-label">Audio</span><span class="dd-sub">Recordings &amp; lectures</span></a>
+        <a href="/music/"><span class="dd-label">Music Library</span><span class="dd-sub">Frequency-aligned listening</span></a>
+        <a href="/v2/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="/search"><span class="dd-label">Search</span><span class="dd-sub">Find anything</span></a>
+        <a href="/chart"><span class="dd-label">Chart Generator</span><span class="dd-sub">Map your alignment</span></a>
+        <a href="/people/"><span class="dd-label">People</span><span class="dd-sub">Teachers, founders, thinkers</span></a>
+        <a href="/books/"><span class="dd-label">Books</span><span class="dd-sub">Every book on the network</span></a>
+        <a href="/orgs/"><span class="dd-label">Organisations</span><span class="dd-sub">Aligned institutions</span></a>
+        <a href="/places/"><span class="dd-label">Places</span><span class="dd-sub">Retreats, sanctuaries, communes</span></a>
+        <a href="/media/"><span class="dd-label">Media</span><span class="dd-sub">Channels, podcasts, publications</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/v2/fund/index.html">Capital</a>
+      <div class="nav-dd-menu">
+        <a href="/v2/fund/index.html"><span class="dd-label">Fund</span><span class="dd-sub">Vision, Echo, Legion &amp; roadmap</span></a>
+        <a href="/v2/crypto/index.html"><span class="dd-label">Crypto</span><span class="dd-sub">Curated projects &amp; thesis</span></a>
+        <a href="/v2/crypto/projects.html"><span class="dd-label">Project Ratings</span><span class="dd-sub">630+ projects tiered by conviction</span></a>
+        <a href="/v2/crypto/explorer.html"><span class="dd-label">Explore by Sector</span><span class="dd-sub">Learn chapter by chapter</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/social/">Community</a>
+      <div class="nav-dd-menu">
+        <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
+        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">The social layer</span></a>
+        <a href="/space"><span class="dd-label">Community Space</span><span class="dd-sub">Coworking &amp; retreat</span></a>
+        <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access &amp; supporter status</span></a>
+        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
+      </div>
+    </li>
+    <li class="nav-search-li">
+      <form action="/search" method="get" role="search" class="nav-search">
+        <input type="search" name="q" placeholder="Search the network…" aria-label="Search the FRQNCY network" autocomplete="off">
+        <button type="submit" aria-label="Search">⌕</button>
+      </form>
+    </li>
+    <li><a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a></li>
+  </ul>
+</nav>`;
+
 function nav(crumbHtml) {
-  // Absolute paths so the nav works on any generated page regardless of
-  // depth (v2/[topic]/, people/[slug]/, books/[slug]/, etc.).
-  //
-  // 2026-04-28 (per WEBSITE-FEEDBACK item #1): collapsed the per-page chiplet
-  // row from 8 (People/Books/Orgs/Media/Music/Places/Search/← Main) to 2
-  // (Search + ← Main). Bed-hub navigation now lives in the main site header
-  // dropdown — it doesn't need to compete with the topic name on every page.
+  // The full main nav (Discover/Capital/Community) sits above a thin
+  // contextual row that holds the breadcrumb + page-specific back button.
+  // The main nav is identical across pages — sourced from MAIN_NAV — so
+  // visitors can jump anywhere from anywhere.
   const hubLinkStyle = "border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em";
-  return `<nav class="snav">
+  return `${MAIN_NAV}
+<nav class="snav">
   <div class="snav-left">
-    <a href="/v2/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
     ${crumbHtml ? `<div class="breadcrumb">${crumbHtml}</div>` : ''}
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
     <a href="/search" class="snav-back" style="${hubLinkStyle}">Search</a>
-    <a href="/" class="snav-back">← Main</a>
+    <!-- Universal "back one step" button. Falls back to the homepage when
+         the page has no history entry (e.g. opened directly from a link or
+         pasted URL) so it never strands the user. -->
+    <a href="/" class="snav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
+    <a href="/" class="snav-back">Main</a>
   </div>
 </nav>`;
 }
@@ -1072,12 +1135,25 @@ function topicPage(t) {
   // topic pages required, just a link.
   const illumHref = `/my-frqncy/dashboard/#illuminate=${encodeURIComponent(t.label)}`;
 
+  // Topic-to-hub cross-link map — when a topic has a sibling entity hub
+  // with curated content (Music topic ↔ /music/ hub, etc.), surface the
+  // hub link in the hero so the two surfaces aren't isolated.
+  const TOPIC_HUB_LINKS = {
+    'music':  { href: '/music/',  label: 'Music Library',  sub: 'Frequency-aligned listening' },
+    'books':  { href: '/books/',  label: 'Books',          sub: 'Every book on the network' },
+  };
+  const hubLink = TOPIC_HUB_LINKS[t.slug] ? `
+  <a class="topic-hub-link" href="${TOPIC_HUB_LINKS[t.slug].href}" style="display:inline-flex;align-items:center;gap:0.5rem;margin-top:1rem;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);text-decoration:none;border:1px solid rgba(196,151,58,0.4);padding:8px 16px;border-radius:2px;transition:all .2s">
+    ✦ ${TOPIC_HUB_LINKS[t.slug].label} <span style="opacity:0.55;font-size:0.62rem;letter-spacing:0.1em;text-transform:none">${TOPIC_HUB_LINKS[t.slug].sub} →</span>
+  </a>` : '';
+
   return head(t.label, domain.accent, t.desc, canonical, ld, t.slug) +
 nav(crumb) +
 `<div class="hero">
   <div class="hero-eyebrow">${esc(domain.label)} &nbsp;·&nbsp; Topic${readingTimeBadge ? ` &nbsp;·&nbsp; ${readingTimeBadge}` : ''}</div>
   <h1>${esc(t.label)}</h1>
   ${t.desc ? `<p class="hero-desc">${esc(t.desc)}</p>` : ''}
+  ${hubLink}
   <a class="illum-cta" href="${illumHref}" rel="noopener" aria-label="Illuminate the word ${esc(t.label)} in your Sanctuary">
     <span class="illum-cta-glyph" aria-hidden="true">✧</span>
     <span class="illum-cta-text">Illuminate the word <em>${esc(t.label)}</em></span>
@@ -1233,7 +1309,7 @@ function personPage(person) {
   </div>
 </section>` : '';
 
-  const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><span>People</span><span class="sep">/</span><span>${esc(person.name)}</span>`;
+  const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">People</a><span class="sep">/</span><span>${esc(person.name)}</span>`;
   const externalLink = person.url ? `<a href="${esc(person.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit ${esc((person.url||'').replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,''))} →</a>` : '';
 
   const ld = {
@@ -1909,7 +1985,11 @@ function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intr
 
   const canonical = `https://frqncy.network${canonicalPath}`;
   const defaultIntro = `${entities.length} ${label.toLowerCase()} on the FRQNCY network — ${pickCount} ✦ picks first.`;
-  const heroDesc = intro || defaultIntro;
+  // intro is treated as trusted HTML when callers pass one (so they can
+  // include cross-links to other hubs / topics); the default is plain text
+  // and gets escaped before injection.
+  const heroDescRaw = intro || null;
+  const heroDescPlain = heroDescRaw ? null : defaultIntro;
   const metaDesc = `${entities.length} ${label.toLowerCase()} curated on the FRQNCY network.`;
 
   const ld = {
@@ -1926,7 +2006,7 @@ nav(`<a href="../index.html">FRQNCY</a><span class="sep">/</span><span>${esc(lab
 `<div class="hero">
   <div class="hero-eyebrow">Network</div>
   <h1>${esc(label)}</h1>
-  <p class="hero-desc">${esc(heroDesc)}</p>
+  <p class="hero-desc">${heroDescRaw ? heroDescRaw : esc(heroDescPlain)}</p>
 </div>
 <main>
   ${showFilters && (filterChipsHtml || pickChip) ? `<div class="ftabs" style="margin-bottom:1.75rem;flex-wrap:wrap">${allChip}${pickChip}${filterChipsHtml}</div>` : ''}
@@ -2077,8 +2157,20 @@ if (MUSIC) {
     fs.writeFileSync(path.join(MUSIC_OUT, slug, 'index.html'), musicPage(mu));
     musicCount++;
   }
+  // Hub title disambiguated from the /v2/music/ topic page so the two
+  // surfaces are distinguishable in nav, breadcrumbs, and search.
+  // Intro carries a cross-link back to the topic page.
   fs.writeFileSync(path.join(MUSIC_OUT, 'index.html'),
-    entityIndexPage({ label: 'Music', eyebrow: 'Music', entities: MUSIC.music, slugFn: musicSlug, canonicalPath: '/music/', showFilters: false, titleField: 'title' }));
+    entityIndexPage({
+      label: 'Music Library',
+      eyebrow: 'Music',
+      entities: MUSIC.music,
+      slugFn: musicSlug,
+      canonicalPath: '/music/',
+      showFilters: false,
+      titleField: 'title',
+      intro: `The frequency-aligned listening library — curated tracks, tunings, and recordings the network keeps coming back to. For the philosophy of music itself, see <a href="/v2/music/" style="color:var(--gold);text-decoration:underline">Music as a topic →</a>`,
+    }));
   console.log(`  music:  ${musicCount} profiles + 1 index → ./music/`);
 }
 

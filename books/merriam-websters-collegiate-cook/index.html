@@ -244,14 +244,74 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"Merriam-Webster's Collegiate Cook","description":"The science of cooking explained as engineering. Understanding why recipes work.","url":"https://frqncy.network/books/merriam-websters-collegiate-cook/","sameAs":["https://www.altonbrown.com/pages/books"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
 </head>
-<body><nav class="snav">
+<body><nav id="main-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <a href="/about">About</a>
+      <div class="nav-dd-menu">
+        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
+        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/v2/explore.html">Discover</a>
+      <div class="nav-dd-menu">
+        <a href="/v2/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
+        <a href="/v2/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video library</span></a>
+        <a href="/v2/audio/index.html"><span class="dd-label">Audio</span><span class="dd-sub">Recordings &amp; lectures</span></a>
+        <a href="/music/"><span class="dd-label">Music Library</span><span class="dd-sub">Frequency-aligned listening</span></a>
+        <a href="/v2/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="/search"><span class="dd-label">Search</span><span class="dd-sub">Find anything</span></a>
+        <a href="/chart"><span class="dd-label">Chart Generator</span><span class="dd-sub">Map your alignment</span></a>
+        <a href="/people/"><span class="dd-label">People</span><span class="dd-sub">Teachers, founders, thinkers</span></a>
+        <a href="/books/"><span class="dd-label">Books</span><span class="dd-sub">Every book on the network</span></a>
+        <a href="/orgs/"><span class="dd-label">Organisations</span><span class="dd-sub">Aligned institutions</span></a>
+        <a href="/places/"><span class="dd-label">Places</span><span class="dd-sub">Retreats, sanctuaries, communes</span></a>
+        <a href="/media/"><span class="dd-label">Media</span><span class="dd-sub">Channels, podcasts, publications</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/v2/fund/index.html">Capital</a>
+      <div class="nav-dd-menu">
+        <a href="/v2/fund/index.html"><span class="dd-label">Fund</span><span class="dd-sub">Vision, Echo, Legion &amp; roadmap</span></a>
+        <a href="/v2/crypto/index.html"><span class="dd-label">Crypto</span><span class="dd-sub">Curated projects &amp; thesis</span></a>
+        <a href="/v2/crypto/projects.html"><span class="dd-label">Project Ratings</span><span class="dd-sub">630+ projects tiered by conviction</span></a>
+        <a href="/v2/crypto/explorer.html"><span class="dd-label">Explore by Sector</span><span class="dd-sub">Learn chapter by chapter</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/social/">Community</a>
+      <div class="nav-dd-menu">
+        <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
+        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">The social layer</span></a>
+        <a href="/space"><span class="dd-label">Community Space</span><span class="dd-sub">Coworking &amp; retreat</span></a>
+        <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access &amp; supporter status</span></a>
+        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
+      </div>
+    </li>
+    <li class="nav-search-li">
+      <form action="/search" method="get" role="search" class="nav-search">
+        <input type="search" name="q" placeholder="Search the network…" aria-label="Search the FRQNCY network" autocomplete="off">
+        <button type="submit" aria-label="Search">⌕</button>
+      </form>
+    </li>
+    <li><a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a></li>
+  </ul>
+</nav>
+<nav class="snav">
   <div class="snav-left">
-    <a href="/v2/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
     <div class="breadcrumb"><a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Books</a><span class="sep">/</span><span>Merriam-Webster&#39;s Collegiate Cook</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
-    <a href="/" class="snav-back">← Main</a>
+    <!-- Universal "back one step" button. Falls back to the homepage when
+         the page has no history entry (e.g. opened directly from a link or
+         pasted URL) so it never strands the user. -->
+    <a href="/" class="snav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
+    <a href="/" class="snav-back">Main</a>
   </div>
 </nav><div class="hero">
   <div class="hero-eyebrow">Book</div>

@@ -241,8 +241,8 @@
     "id": "c-crypto-fundamentals",
     "slug": "crypto-fundamentals",
     "title": "Crypto Fundamentals",
-    "subtitle": "Sovereignty Through Decentralization",
-    "desc": "Understand blockchain, Bitcoin, Ethereum, DeFi, and Web3 from first principles. Learn why decentralization matters — for money, for identity, and for building a more sovereign world.",
+    "subtitle": "A hands-on path to self-custody and your first onchain swap",
+    "desc": "Skip the theory — set up the toolkit yourself. Open an exchange account, install your own wallets, hold your own keys, send your first transaction, and swap onchain. Each lesson is a short walkthrough you follow alongside the video.",
     "domain": "d-tech",
     "accent": "#7B61FF",
     "level": "Beginner",
@@ -252,53 +252,140 @@
       "t-defi",
       "t-web3"
     ],
+    "community": {
+      "label": "Crypto Beginner — live channel",
+      "blurb": "Updates, new lessons, and a place to ask questions as you work through the steps.",
+      "url": "https://t.me/+Rl9WA4P0V2AzYWVi",
+      "cta": "Join the Telegram"
+    },
     "lessons": [
       {
         "id": "l1",
-        "title": "What Is a Blockchain?",
+        "title": "Set Up Brave Browser",
         "type": "video",
-        "youtube_id": "SSo_EIwHSd4",
-        "duration": "20 min",
-        "desc": "An overview of distributed ledger technology — what blockchains are, how they work, and why they represent a fundamental shift in how we store, verify, and transfer information without intermediaries."
+        "youtube_id": "",
+        "duration": "2 min",
+        "desc": "Install Brave on your laptop and set it as your default. Brave blocks ads and trackers by default — the cleaner foundation for everything that follows."
       },
       {
         "id": "l2",
-        "title": "Bitcoin — Digital Sovereignty",
+        "title": "Open Your Kraken Account",
         "type": "video",
-        "youtube_id": "41JCpzvnn_0",
-        "duration": "25 min",
-        "desc": "How Bitcoin works under the hood — mining, proof of work, the halving cycle, and why Bitcoin represents the first truly scarce digital asset."
+        "youtube_id": "",
+        "duration": "7 min",
+        "desc": "Create a Kraken account — your fiat-to-crypto on-ramp. We use Kraken because of its long track record of solvency and proof-of-reserves transparency."
       },
       {
         "id": "l3",
-        "title": "Ethereum & Smart Contracts",
+        "title": "A Quick Tour of Kraken",
         "type": "video",
-        "youtube_id": "jxLkbJozKbY",
-        "duration": "25 min",
-        "desc": "Programmable money and decentralized applications — how Ethereum extended the blockchain concept beyond currency into a world computer."
+        "youtube_id": "",
+        "duration": "3 min",
+        "desc": "Once your account is live, this short walkthrough orients you to the dashboard — buy, sell, deposit, withdraw, transfer."
       },
       {
         "id": "l4",
-        "title": "DeFi, DAOs & the New Economy",
+        "title": "Install Rabby & Phantom Wallets",
         "type": "video",
-        "youtube_id": "DecVh-CyKQA",
-        "duration": "25 min",
-        "desc": "Decentralized finance and governance — how lending, borrowing, and trading work without banks, and how DAOs rewrite the rules of collective decision-making."
+        "youtube_id": "",
+        "duration": "9 min",
+        "desc": "Two browser extensions, one workflow. Rabby for Ethereum and EVM chains. Phantom for Bitcoin, Solana, and SUI. Self-custody starts here."
       },
       {
         "id": "l5",
-        "title": "Reflection — What Does Decentralization Mean for You?",
-        "type": "reflection",
-        "duration": "15 min",
-        "content": "Think about the systems you interact with daily — banking, social media, identity verification, communication. Which of these rely on centralized authorities? How would your life change if some of these systems were decentralized? What does sovereignty over your own money, data, and identity mean to you personally?"
+        "title": "Seed Phrase Security — Non-Negotiable",
+        "type": "video",
+        "youtube_id": "",
+        "duration": "10 min",
+        "desc": "Your seed phrase is your money. Lose it, lose everything. Write it down on paper, never type it into a computer, never photograph it, never share it. This lesson — and doing it properly — is the difference between holding crypto and losing it."
       },
       {
         "id": "l6",
-        "title": "Getting Started — Wallets, Security & Your First Steps",
+        "title": "Send and Receive Transactions",
+        "type": "video",
+        "youtube_id": "",
+        "duration": "5 min",
+        "desc": "How to send and receive in Rabby and Phantom. Reading addresses, choosing the right chain, and double-checking before you sign. Always test with a small amount first."
+      },
+      {
+        "id": "l7",
+        "title": "Deposit Crypto and Withdraw Fiat on Kraken",
+        "type": "video",
+        "youtube_id": "",
+        "duration": "10 min",
+        "desc": "How money moves in and out — deposit crypto from your wallet to Kraken, withdraw fiat back to your bank, and the inverse. The bridge between traditional finance and onchain."
+      },
+      {
+        "id": "l8",
+        "title": "Swap Onchain with Defillama",
+        "type": "video",
+        "youtube_id": "",
+        "duration": "5 min",
+        "desc": "Swap.defillama.com is an aggregator of aggregators — it routes your trade across multiple DEX aggregators to find the best price. Your default for most onchain swaps."
+      },
+      {
+        "id": "l9",
+        "title": "Swap Onchain with Titan Exchange",
+        "type": "video",
+        "youtube_id": "",
+        "duration": "5 min",
+        "desc": "app.titan.exchange is a second-opinion router — sometimes Titan finds a better path than Defillama. Compare both before you swap anything significant."
+      },
+      {
+        "id": "l10",
+        "title": "Common Scams — and How to Avoid Them",
+        "type": "video",
+        "youtube_id": "",
+        "duration": "10 min",
+        "desc": "Approve-all phishing, fake support DMs, address-poisoning, drainer dApps, fake airdrops. Once you can spot the patterns you stop falling for them."
+      },
+      {
+        "id": "l11",
+        "title": "Find Tokens with Dexscreener",
+        "type": "video",
+        "youtube_id": "",
+        "duration": "8 min",
+        "desc": "Dexscreener.com is the search engine of the onchain world — every token, every pair, every chain. Filter by chain, sort by volume, watch the tape."
+      },
+      {
+        "id": "l12",
+        "title": "Get to Know Coingecko",
+        "type": "video",
+        "youtube_id": "",
+        "duration": "6 min",
+        "desc": "Coingecko is the Google of crypto market data — prices, market caps, categories, exchange rankings. The reference layer for everything you research."
+      },
+      {
+        "id": "l13",
+        "title": "Set Up TradingView",
+        "type": "video",
+        "youtube_id": "",
+        "duration": "13 min",
+        "desc": "TradingView is the standard charting tool. Create an account and learn the basics. For the deeper dive, follow up with Trade Devils' white-belt course at tradedevils.com/courses/white-belt/."
+      },
+      {
+        "id": "l14",
+        "title": "Sources on X — The Live List",
         "type": "reading",
-        "url": "#",
-        "duration": "15 min",
-        "desc": "A practical guide to taking your first steps in crypto — setting up a wallet, understanding seed phrases and private keys, basic security practices, and how to navigate the ecosystem safely."
+        "url": "https://x.com/i/lists/1980663486071074831",
+        "duration": "5 min",
+        "desc": "Follow the curated X list. It's where signal lives — builders, researchers, traders worth reading. The list is updated over time."
+      },
+      {
+        "id": "l15",
+        "title": "Bridge Between Chains with Bungee",
+        "type": "video",
+        "youtube_id": "",
+        "duration": "5 min",
+        "desc": "bungee.exchange moves assets between chains — Ethereum to Solana, Base to Arbitrum, and beyond. Bridges carry more risk than swaps; learn to do it safely."
+      },
+      {
+        "id": "l16",
+        "title": "Join the Live Channel",
+        "type": "reading",
+        "url": "https://t.me/+Rl9WA4P0V2AzYWVi",
+        "duration": "Ongoing",
+        "desc": "The Crypto Beginner Telegram is where new lessons land first, where the curriculum keeps growing, and where you can ask questions as you work through the steps."
       }
     ],
     "pricing": {

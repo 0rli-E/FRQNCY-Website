@@ -26,6 +26,8 @@
     {id:"research",label:"Research",type:"main",r:29,desc:"Exploring what isn't known yet"},
     {id:"media",label:"Media",type:"main",r:29,desc:"Spreading the signal"},
     {id:"builder",label:"Builder",type:"main",r:30,desc:"Creating products, tools, experiences"},
+    {id:"curate",label:"Curate",type:"main",r:29,desc:"Picking with care"},
+    {id:"sell",label:"Sell",type:"main",r:29,desc:"Commerce as transparent service"},
     {id:"d-sciences",label:"Sciences",type:"cluster",r:24,desc:"Empirical exploration of reality"},
     {id:"d-tech",label:"Technology",type:"cluster",r:24,desc:"Tools shaping the future"},
     {id:"d-arts",label:"Arts & Culture",type:"cluster",r:23,desc:"Expression of the human spirit"},
@@ -213,7 +215,9 @@
   ];
 
   const HOME_RAW_LINKS = [
-    ["frqncy","network-state"],["frqncy","fund"],["frqncy","education"],["frqncy","research"],["frqncy","media"],["frqncy","builder"],
+    ["frqncy","network-state"],["frqncy","fund"],["frqncy","education"],["frqncy","research"],["frqncy","media"],["frqncy","builder"],["frqncy","curate"],["frqncy","sell"],
+    ["sell","d-money"],["sell","d-business"],["sell","d-tech"],["sell","d-creation"],["sell","d-society"],
+    ["curate","d-arts"],["curate","d-communication"],["curate","d-lifestyle"],["curate","d-meta"],
     ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],["frqncy","d-nature"],["frqncy","d-business"],["frqncy","d-money"],
     ["frqncy","d-meta"],["frqncy","d-lifestyle"],["frqncy","d-creation"],["frqncy","d-wellbeing"],["frqncy","d-society"],
     ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],["network-state","d-money"],["network-state","d-creation"],
@@ -312,7 +316,7 @@
   ];
 
   const HOME_URL = {
-    "network-state":"v2/network-state/index.html","fund":"v2/fund/index.html","education":"v2/education/index.html","research":"v2/research/index.html","media":"v2/media/index.html","builder":"v2/builder/index.html",
+    "network-state":"v2/network-state/index.html","fund":"v2/fund/index.html","education":"v2/education/index.html","research":"v2/research/index.html","media":"v2/media/index.html","builder":"v2/builder/index.html","curate":"v2/curate/index.html","sell":"v2/sell/index.html",
     "d-sciences":"v2/sciences/index.html","d-tech":"v2/technology/index.html","d-arts":"v2/arts/index.html","d-nature":"v2/nature/index.html","d-business":"v2/business/index.html","d-money":"v2/money/index.html","d-meta":"v2/consciousness/index.html","d-lifestyle":"v2/lifestyle/index.html","d-creation":"v2/creation/index.html","d-wellbeing":"v2/wellbeing/index.html","d-society":"v2/society/index.html","d-communication":"v2/communication/index.html","d-energy":"v2/energy/index.html","d-food":"v2/food/index.html","d-play":"v2/play/index.html",
     "t-quantum":"v2/quantum/index.html","t-neuro":"v2/neuroscience/index.html","t-bio":"v2/biology/index.html","t-psych":"v2/psychology/index.html","t-med":"v2/medicine/index.html","t-math":"v2/mathematics/index.html","t-astrophys":"v2/astrophysics/index.html","t-ecology":"v2/ecology/index.html","t-genetics":"v2/genetics/index.html","t-chemistry":"v2/chemistry/index.html",
     "t-ai":"v2/artificial-intelligence/index.html","t-blockchain":"v2/blockchain/index.html","t-decentral":"v2/decentralized-networks/index.html","t-arvr":"v2/ar-vr/index.html","t-biotech":"v2/biotechnology/index.html","t-robotics":"v2/robotics/index.html","t-web3":"v2/web3/index.html","t-quantcomp":"v2/quantum-computing/index.html","t-cybersec":"v2/cybersecurity/index.html",
@@ -349,6 +353,49 @@
         if (c.id === domainId) c.r = 38;
         // Bump topic radii a touch in solo view (they're the only thing besides the centerpiece)
         else if (c.type === 'topic') c.r = Math.max(c.r, 16);
+        return c;
+      });
+    const links = HOME_RAW_LINKS.filter(pair =>
+      keepIds.has(pair[0]) && keepIds.has(pair[1])
+    );
+    const urls = {};
+    Object.keys(HOME_URL).forEach(id => {
+      if (keepIds.has(id)) urls[id] = urlPrefix + HOME_URL[id];
+    });
+    return { nodes, links, urls };
+  }
+
+  // ===== FILTER HELPER (pillar + linked domains + their topics, 2-hop) =====
+  // Walks pillar → domains → topics. Pillar pages embed this so the constellation
+  // shows the full graph reach of the pillar's work — every domain it serves,
+  // and every topic those domains contain.
+  function filterByPillar(pillarId, opts) {
+    opts = opts || {};
+    const urlPrefix = opts.urlPrefix || '';
+    const isDomain = id => typeof id === 'string' && id.indexOf('d-') === 0;
+    const isTopic  = id => typeof id === 'string' && id.indexOf('t-') === 0;
+
+    // Hop 1: domains directly linked to the pillar
+    const linkedDomains = new Set();
+    HOME_RAW_LINKS.forEach(pair => {
+      if (pair[0] === pillarId && isDomain(pair[1])) linkedDomains.add(pair[1]);
+      if (pair[1] === pillarId && isDomain(pair[0])) linkedDomains.add(pair[0]);
+    });
+
+    // Hop 2: topics belonging to those domains
+    const linkedTopics = new Set();
+    HOME_RAW_LINKS.forEach(pair => {
+      if (linkedDomains.has(pair[0]) && isTopic(pair[1])) linkedTopics.add(pair[1]);
+      if (linkedDomains.has(pair[1]) && isTopic(pair[0])) linkedTopics.add(pair[0]);
+    });
+
+    const keepIds = new Set([pillarId, ...linkedDomains, ...linkedTopics]);
+    const nodes = HOME_NODES
+      .filter(n => keepIds.has(n.id))
+      .map(n => {
+        const c = Object.assign({}, n);
+        if (c.id === pillarId) c.r = 42;       // centerpiece
+        else if (c.type === 'cluster') c.r = Math.max(c.r, 22); // domains a touch bigger
         return c;
       });
     const links = HOME_RAW_LINKS.filter(pair =>
@@ -728,6 +775,7 @@
   window.FRQNCYNetworkMap = {
     init: init,
     filterByDomain: filterByDomain,
+    filterByPillar: filterByPillar,
     HOME_DATA: { nodes: HOME_NODES, links: HOME_RAW_LINKS, urls: HOME_URL }
   };
 })();
