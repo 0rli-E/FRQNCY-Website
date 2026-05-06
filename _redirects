@@ -4,6 +4,9 @@
 /map              /v2/explore.html    301
 /network          /v2/explore.html    301
 
+# Privacy / data-deletion endpoint (required by Play Data Safety form)
+/delete           /delete.html        301
+
 # Canonical clean URLs — drop .html
 /about.html       /about              301
 /platform.html    /platform           301
@@ -73,3 +76,6 @@
 
 # 404 fallback — Cloudflare Pages reads this automatically
 /*                /404.html           404
+
+# Metaphysics renamed to Consciousness 2026-05-05
+/v2/metaphysics/* /v2/consciousness/:splat 301
