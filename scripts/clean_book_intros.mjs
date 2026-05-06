@@ -74,6 +74,27 @@ function looksLikeAuthorPage(s) {
     || /(this is the|the official) author (page|website) of/.test(lower);
 }
 
+function looksLikeStudyGuide(s) {
+  // Goodreads search pulls in third-party study guides whose descriptions
+  // start with "This study guide contains..." or "Includes detailed Plot Summary".
+  const lower = s.toLowerCase();
+  return /^(this )?(study guide|literature guide|cliffsnotes|sparknotes)/.test(lower)
+    || /\b(plot summary|chapter summaries? (&|and) analysis|character descriptions)\b/.test(lower)
+    || /everything you need to sharpen your knowledge/.test(lower);
+}
+
+function looksLikeBoxedSet(s) {
+  // "Sean Carroll Collection 3 Books Set" or "Listing shall be ..."
+  const lower = s.toLowerCase();
+  return /\b(\d+ books? set|book set|book collection|boxed set|complete (set|series))\b/.test(lower)
+    || /following individual books as per original/i.test(s);
+}
+
+function looksLikeSequelMisattribution(s) {
+  // "In this sequel to <Book Title>" — the description is for the SEQUEL, not the book we asked about
+  return /^in this sequel to/i.test(s);
+}
+
 function titleMatchesIntro(title, intro) {
   // Reject intro if no distinctive word from the title appears in it.
   const STOP = new Set(['the','of','a','an','and','or','to','in','on','at','for','with','by','is','are','i','ii','iii','iv','&','it','this','that','from','your','our','my']);
@@ -137,6 +158,9 @@ function clean(s, title) {
   if (looksLikePlaceholderPage(t)) return null;
   if (looksLikeSpamHijack(t)) return null;
   if (looksLikeAuthorPage(t)) return null;
+  if (looksLikeStudyGuide(t)) return null;
+  if (looksLikeBoxedSet(t)) return null;
+  if (looksLikeSequelMisattribution(t)) return null;
   if (!titleMatchesIntro(title, t)) return null;
   return t;
 }
