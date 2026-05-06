@@ -44,14 +44,22 @@ const bedFilter = (() => {
 })();
 
 // ───────────────────────── thresholds ─────────────────────────
-const BIO_FLOOR = { books: 80, people: 100 };       // chars
-const PAGE_FLOOR = { books: 120, people: 160 };     // body words
+const BIO_FLOOR = { books: 80, people: 100, orgs: 80, media: 80, music: 60, places: 80 };
+const PAGE_FLOOR = { books: 120, people: 160, orgs: 100, media: 100, music: 80, places: 100 };
 
 // ───────────────────────── load ─────────────────────────
-const loadJSON = (rel) => JSON.parse(fs.readFileSync(path.join(ROOT, rel), 'utf8'));
+const loadJSON = (rel) => {
+  const p = path.join(ROOT, rel);
+  if (!fs.existsSync(p)) return null;
+  try { return JSON.parse(fs.readFileSync(p, 'utf8')); } catch { return null; }
+};
 const content = loadJSON('content.json');
 const books = loadJSON('books.json');
 const people = loadJSON('people.json');
+const orgs = loadJSON('orgs.json');
+const media = loadJSON('media.json');
+const music = loadJSON('music.json');
+const places = loadJSON('places.json');
 
 const topicIds = new Set((content.topics || []).map(t => t.id));
 const domainIds = new Set((content.domains || []).map(d => d.id));
@@ -339,6 +347,121 @@ function l2People() {
   }
 }
 
+// ───────────────────────── generic bed evaluator (orgs / media / music / places) ─────────────────────────
+// Config-driven: reuses the same matching/integrity/depth checks for any bed
+// that follows the {id, name|title, bio, url, appears_in, picked_in, <role>}
+// shape. Books and people stay on their dedicated functions because they
+// have richer schema (intro/quote on books, life_story/channels on people).
+function genericBed({ data, key, prefix, dirName, bedLabel, nameField, roleField, roleRefField, contentTypeMatch }) {
+  if (!data || !data[key]) return;
+  const entries = data[key];
+
+  const peopleIds = new Set(people?.people?.map(p => p.id) || []);
+  const bedBySlug = new Map();
+  const bedByKey = new Map();
+  for (const e of entries) {
+    if (e.id) bedBySlug.set(e.id.replace(new RegExp(`^${prefix}-`), ''), e);
+    for (const k of bedSlugCandidates(e, prefix)) if (k) bedByKey.set(k, e);
+  }
+
+  // L0 schema
+  const seen = new Set();
+  for (const e of entries) {
+    const id = e.id || '<no-id>';
+    if (!e.id) flag('R0-MISSING', bedLabel, id, 'no id');
+    else if (!e.id.startsWith(`${prefix}-`)) flag('R0-ID-PREFIX', bedLabel, id, `id should start with "${prefix}-"`);
+    if (e.id) {
+      if (seen.has(e.id)) flag('R0-DUP-ID', bedLabel, id, 'duplicate id');
+      seen.add(e.id);
+    }
+    if (!e[nameField]) flag('R0-MISSING', bedLabel, id, `no ${nameField}`);
+    if (!e.url) flag('R0-MISSING', bedLabel, id, 'no url');
+    else if (!/^https?:\/\//i.test(e.url)) flag('R0-URL', bedLabel, id, `url not http(s): ${e.url}`);
+    if (typeof e.bio !== 'string') flag('R0-MISSING', bedLabel, id, 'bio missing or not a string');
+    if (!Array.isArray(e.appears_in)) flag('R0-TYPE', bedLabel, id, 'appears_in not an array');
+    if (!Array.isArray(e.picked_in)) flag('R0-TYPE', bedLabel, id, 'picked_in not an array');
+    if (roleRefField && roleRefField in e && typeof e[roleRefField] !== 'boolean') flag('R0-TYPE', bedLabel, id, `${roleRefField} not a boolean`);
+  }
+
+  // L1 integrity — content.json coverage + reciprocity
+  if (contentTypeMatch) {
+    const refsByRaw = new Map();
+    for (const [bucket, items] of Object.entries(content.resources || {})) {
+      for (const r of items || []) {
+        if (r.type !== contentTypeMatch) continue;
+        if (!refsByRaw.has(r.title)) refsByRaw.set(r.title, []);
+        refsByRaw.get(r.title).push({ bucket, raw: r.title, pick: !!r.frqncy_pick });
+      }
+    }
+    for (const [rawTitle, refs] of refsByRaw) {
+      let match = null;
+      for (const k of refSlugCandidates(rawTitle)) {
+        if (bedByKey.has(k)) { match = bedByKey.get(k); break; }
+      }
+      if (!match) {
+        flag('R1-COVERAGE-CONTENT', bedLabel, slugify(rawTitle), `content.json references "${rawTitle}" in ${refs.map(r => r.bucket).join(', ')} — no bed entry matches`);
+        continue;
+      }
+      const buckets = new Set(refs.map(r => r.bucket));
+      const inAppears = new Set(match.appears_in || []);
+      for (const b of buckets) {
+        if (!inAppears.has(b)) flag('R1-RECIPROCITY', bedLabel, match.id, `content.json[${b}] references this entry; bed appears_in does not include "${b}"`);
+      }
+      const pickBuckets = refs.filter(r => r.pick).map(r => r.bucket);
+      const inPicks = new Set(match.picked_in || []);
+      for (const b of pickBuckets) {
+        if (!inPicks.has(b)) flag('R1-RECIPROCITY-PICK', bedLabel, match.id, `content.json[${b}] marks frqncy_pick:true; picked_in does not include "${b}"`);
+      }
+    }
+  }
+
+  // Filesystem coverage / orphans
+  const dirs = new Set(listDirs(dirName));
+  for (const e of entries) {
+    const slug = (e.id || '').replace(new RegExp(`^${prefix}-`), '');
+    if (!slug) continue;
+    if (!dirs.has(slug)) flag('R1-COVERAGE-DIR', bedLabel, e.id, `no /${dirName}/${slug}/ directory`);
+    else if (!fs.existsSync(path.join(ROOT, dirName, slug, 'index.html'))) flag('R1-COVERAGE-DIR', bedLabel, e.id, `directory exists but no index.html`);
+  }
+  for (const d of dirs) {
+    if (!bedBySlug.has(d)) flag('R1-ORPHAN-DIR', bedLabel, `${prefix}-${d}`, `directory /${dirName}/${d}/ exists but has no bed entry`);
+  }
+
+  // Valid refs
+  for (const e of entries) {
+    for (const id of e.appears_in || []) {
+      if (!allRefIds.has(id)) flag('R1-INVALID-REF', bedLabel, e.id, `appears_in references unknown id "${id}"`);
+    }
+    for (const id of e.picked_in || []) {
+      if (!allRefIds.has(id)) flag('R1-INVALID-REF', bedLabel, e.id, `picked_in references unknown id "${id}"`);
+      if (!(e.appears_in || []).includes(id)) flag('R1-PICK-SUBSET', bedLabel, e.id, `picked_in "${id}" not in appears_in`);
+    }
+    if (roleField && e[roleRefField] === true) {
+      if (typeof e[roleField] !== 'string' || !e[roleField].startsWith('p-')) {
+        flag('R1-ROLE-RES', bedLabel, e.id, `${roleRefField}:true but ${roleField} "${e[roleField]}" is not a p- ref`);
+      } else if (!peopleIds.has(e[roleField])) {
+        flag('R1-ROLE-RES', bedLabel, e.id, `${roleField} "${e[roleField]}" not found in people bed`);
+      }
+    }
+  }
+
+  // L2 depth
+  for (const e of entries) {
+    const id = e.id || '<no-id>';
+    if (typeof e.bio === 'string' && e.bio.length < BIO_FLOOR[bedLabel]) {
+      warn('R2-BIO-STUB', bedLabel, id, `bio ${e.bio.length} chars (<${BIO_FLOOR[bedLabel]})`);
+    }
+    if (roleField && e[roleRefField] !== true && e[roleField]) {
+      warn('R2-ROLE-UNRES', bedLabel, id, `${roleField} "${e[roleField]}" not linked to people bed`);
+    }
+    const slug = (e.id || '').replace(new RegExp(`^${prefix}-`), '');
+    const wc = bodyWordCount(path.join(ROOT, dirName, slug, 'index.html'));
+    if (wc !== null && wc < PAGE_FLOOR[bedLabel]) {
+      warn('R2-PAGE-STUB', bedLabel, id, `rendered page ${wc} words (<${PAGE_FLOOR[bedLabel]})`);
+    }
+  }
+}
+
 // ───────────────────────── L3 liveness (consume only) ─────────────────────────
 function l3External() {
   const lhPath = path.join(ROOT, 'link-health.json');
@@ -360,9 +483,17 @@ function l3External() {
 // ───────────────────────── run ─────────────────────────
 const runBooks = !bedFilter || bedFilter === 'books';
 const runPeople = !bedFilter || bedFilter === 'people';
+const runOrgs = !bedFilter || bedFilter === 'orgs';
+const runMedia = !bedFilter || bedFilter === 'media';
+const runMusic = !bedFilter || bedFilter === 'music';
+const runPlaces = !bedFilter || bedFilter === 'places';
 
 if (runBooks) { l0Books(); l1Books(); l2Books(); }
 if (runPeople) { l0People(); l1People(); l2People(); }
+if (runOrgs && orgs) genericBed({ data: orgs, key: 'orgs', prefix: 'o', dirName: 'orgs', bedLabel: 'orgs', nameField: 'name', roleField: 'founder', roleRefField: 'founder_is_person_ref', contentTypeMatch: 'org' });
+if (runMedia && media) genericBed({ data: media, key: 'media', prefix: 'm', dirName: 'media', bedLabel: 'media', nameField: 'name', roleField: 'creator', roleRefField: 'creator_is_person_ref', contentTypeMatch: 'media' });
+if (runMusic && music) genericBed({ data: music, key: 'music', prefix: 'mu', dirName: 'music', bedLabel: 'music', nameField: 'title', roleField: 'artist', roleRefField: 'artist_is_person_ref', contentTypeMatch: 'music' });
+if (runPlaces && places) genericBed({ data: places, key: 'places', prefix: 'pl', dirName: 'places', bedLabel: 'places', nameField: 'name', roleField: null, roleRefField: null, contentTypeMatch: 'place' });
 if (externalMode) l3External();
 
 // ───────────────────────── render ─────────────────────────
@@ -371,16 +502,24 @@ function renderReport() {
   const watch = findings.filter(f => f.severity === 'watch');
 
   const date = new Date().toISOString().slice(0, 10);
-  const total = books.books.length + people.people.length;
+  const beds = [
+    ['books', books?.books],
+    ['people', people?.people],
+    ['orgs', orgs?.orgs],
+    ['media', media?.media],
+    ['music', music?.music],
+    ['places', places?.places],
+  ].filter(([, list]) => Array.isArray(list));
+  const total = beds.reduce((sum, [, list]) => sum + list.length, 0);
   const flaggedIds = new Set(flagged.map(f => f.id));
   const watchIds = new Set(watch.map(f => f.id));
-  const allIds = new Set([...books.books.map(b => b.id), ...people.people.map(p => p.id)]);
+  const allIds = new Set(beds.flatMap(([, list]) => list.map(e => e.id)));
   const approvedCount = [...allIds].filter(id => !flaggedIds.has(id) && !watchIds.has(id)).length;
 
   const lines = [];
-  lines.push(`# Books + People bed QA — ${date}`);
+  lines.push(`# All-bed QA — ${date}`);
   lines.push('');
-  lines.push(`**Beds:** books (${books.books.length}) · people (${people.people.length})`);
+  lines.push(`**Beds:** ${beds.map(([n, l]) => `${n} (${l.length})`).join(' · ')}`);
   lines.push(`**Findings:** ✗ ${flagged.length} hard · ⚪ ${watch.length} watch`);
   lines.push(`**Status:** ${flaggedIds.size} flagged · ${watchIds.size - [...watchIds].filter(id => flaggedIds.has(id)).length} watchlist · ${approvedCount} approved (of ${total})`);
   lines.push('');
