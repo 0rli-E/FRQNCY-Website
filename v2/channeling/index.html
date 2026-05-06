@@ -50,9 +50,8 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
-.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,19 +241,20 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Channeling — FRQNCY Picks","description":"Receiving transmission from non-physical intelligence — guides, higher selves, and entities communicating through human vessels.","url":"https://frqncy.network/v2/channeling/","numberOfItems":5,"itemListElement":[{"@type":"ListItem","position":1,"name":"Barbara Marciniak","url":"https://www.pleiadians.com","description":"Barbara Marciniak has channeled a collective of multidimensional beings from the Pleiades star system since 1988. Her book Bringers of the Dawn is one of the most widely read channeled texts ever published — a dense, demanding transmission on DNA activation, timelines, and the game being played on Earth."},{"@type":"ListItem","position":2,"name":"The Law of Attraction — Esther Hicks","url":"https://www.abrahamhicks.com/books/the-law-of-attraction/","description":"The foundational Abraham text — teachings on how consciousness creates reality, channeled through Esther Hicks over 30 years."},{"@type":"ListItem","position":3,"name":"Dolores Cannon","url":"https://dolorescannon.com","description":"Hypnotherapist, past-life regressionist, and founder of Quantum Healing Hypnosis Technique (QHHT). Across 50 years and tens of thousands of sessions she assembled one of the most coherent bodies of channeled material on Earth — Nostradamus, Jesus, starseeds, the volunteer souls, and the shift into the New Earth. Read her or don't, but you can't study this field without her."},{"@type":"ListItem","position":4,"name":"The Three Waves of Volunteers and the New Earth — Dolores Cannon","url":"https://www.ozarkmt.com/the-three-waves-of-volunteers-and-the-new-earth/","description":"Her thesis: three generational waves of advanced souls incarnated on Earth — volunteers from elsewhere — to help humanity through the dimensional shift. Compiled from thousands of QHHT sessions with strangers who independently told the same story. The foundational text on the starseed phenomenon."},{"@type":"ListItem","position":5,"name":"Esther Hicks","url":"https://www.abraham-hicks.com","description":"Channels the non-physical collective known as Abraham since 1985. With her late husband Jerry Hicks she transmitted the teachings to millions — the core source of the modern Law of Attraction tradition. Part of the FRQNCY voice lineage."}],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Research","item":"https://frqncy.network/v2/research/"},{"@type":"ListItem","position":3,"name":"Consciousness","item":"https://frqncy.network/v2/consciousness/"},{"@type":"ListItem","position":4,"name":"Channeling","item":"https://frqncy.network/v2/channeling/"}]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Channeling — FRQNCY Picks","description":"Receiving transmission from non-physical intelligence — guides, higher selves, and entities communicating through human vessels.","url":"https://frqncy.network/v2/channeling/","numberOfItems":5,"itemListElement":[{"@type":"ListItem","position":1,"name":"Barbara Marciniak","url":"https://www.pleiadians.com","description":"Barbara Marciniak has channeled a collective of multidimensional beings from the Pleiades star system since 1988. Her book Bringers of the Dawn is one of the most widely read channeled texts ever published — a dense, demanding transmission on DNA activation, timelines, and the game being played on Earth."},{"@type":"ListItem","position":2,"name":"The Law of Attraction — Esther Hicks","url":"https://www.abrahamhicks.com/books/the-law-of-attraction/","description":"The foundational Abraham text — teachings on how consciousness creates reality, channeled through Esther Hicks over 30 years."},{"@type":"ListItem","position":3,"name":"Dolores Cannon","url":"https://dolorescannon.com","description":"Hypnotherapist, past-life regressionist, and founder of Quantum Healing Hypnosis Technique (QHHT). Across 50 years and tens of thousands of sessions she assembled one of the most coherent bodies of channeled material on Earth — Nostradamus, Jesus, starseeds, the volunteer souls, and the shift into the New Earth. Read her or don't, but you can't study this field without her."},{"@type":"ListItem","position":4,"name":"The Three Waves of Volunteers and the New Earth — Dolores Cannon","url":"https://www.ozarkmt.com/the-three-waves-of-volunteers-and-the-new-earth/","description":"Her thesis: three generational waves of advanced souls incarnated on Earth — volunteers from elsewhere — to help humanity through the dimensional shift. Compiled from thousands of QHHT sessions with strangers who independently told the same story. The foundational text on the starseed phenomenon."},{"@type":"ListItem","position":5,"name":"Esther Hicks","url":"https://www.abraham-hicks.com","description":"Channels the non-physical collective known as Abraham since 1985. With her late husband Jerry Hicks she transmitted the teachings to millions — the core source of the modern Law of Attraction tradition. Part of the FRQNCY voice lineage."}],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Research","item":"https://frqncy.network/v2/research/"},{"@type":"ListItem","position":3,"name":"Metaphysics","item":"https://frqncy.network/v2/metaphysics/"},{"@type":"ListItem","position":4,"name":"Channeling","item":"https://frqncy.network/v2/channeling/"}]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Channeling","description":"Receiving transmission from non-physical intelligence \u2014 guides, higher selves, and entities communicating through human vessels.","image":"https://frqncy.network/v2/og/channeling.png","url":"https://frqncy.network/v2/channeling/","mainEntityOfPage":"https://frqncy.network/v2/channeling/","datePublished":"2026-04-10T23:26:08+08:00","dateModified":"2026-04-29T16:01:33+00:00","author":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/"},"publisher":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/","logo":{"@type":"ImageObject","url":"https://frqncy.network/favicon.svg"}}}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
     <a href="/v2/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
-    <div class="breadcrumb"><a href="../research/index.html">Research</a><span class="sep">/</span><a href="../consciousness/index.html">Consciousness</a><span class="sep">/</span><span>Channeling</span></div>
+    <div class="breadcrumb"><a href="../research/index.html">Research</a><span class="sep">/</span><a href="../metaphysics/index.html">Metaphysics</a><span class="sep">/</span><span>Channeling</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
     <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
 </nav><div class="hero">
-  <div class="hero-eyebrow">Consciousness &nbsp;·&nbsp; Topic &nbsp;·&nbsp; <span class="hero-readtime" aria-label="3 minute read">≈ 3 min read</span></div>
+  <div class="hero-eyebrow">Metaphysics &nbsp;·&nbsp; Topic</div>
   <h1>Channeling</h1>
   <p class="hero-desc">Receiving transmission from non-physical intelligence — guides, higher selves, and entities communicating through human vessels.</p>
   <a class="illum-cta" href="/my-frqncy/dashboard/#illuminate=Channeling" rel="noopener" aria-label="Illuminate the word Channeling in your Sanctuary">
@@ -842,47 +842,47 @@ document.querySelectorAll('.ftab').forEach(btn=>{
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../oneness/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; Consciousness</div>
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Metaphysics</div>
   <h3>Oneness</h3>
   <p>The non-dual understanding that all existence is one — the mystical fo…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../source/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; Consciousness</div>
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Metaphysics</div>
   <h3>Source</h3>
   <p>The origin of existence — the ground of being from which all phenomena…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../soul/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; Consciousness</div>
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Metaphysics</div>
   <h3>Soul</h3>
   <p>The individual spark of consciousness — its nature, purpose, and relat…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../akashic-records/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; Consciousness</div>
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Metaphysics</div>
   <h3>Akashic Records</h3>
   <p>The concept of a universal field containing the imprint of all events,…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../dimensions/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; Consciousness</div>
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Metaphysics</div>
   <h3>Dimensions</h3>
   <p>Beyond the three spatial dimensions — higher-dimensional reality as ex…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../synchronicity/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; Consciousness</div>
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Metaphysics</div>
   <h3>Synchronicity</h3>
   <p>Meaningful coincidence — Jung&#39;s concept of acausal connecting principl…</p>
   <span class="ncard-arrow">→</span>
 </a>
     </div>
   </section>
-  <nav class="topic-prevnext" aria-label="More in Consciousness">
-    <a class="topic-prevnext-link prev" href="../buddhism/index.html">
+  <nav class="topic-prevnext" aria-label="More in Metaphysics">
+    <a class="topic-prevnext-link prev" href="../akashic-records/index.html">
       <span class="topic-prevnext-eyebrow">← Previous</span>
-      <span class="topic-prevnext-label">Buddhism</span>
+      <span class="topic-prevnext-label">Akashic Records</span>
     </a>
     <a class="topic-prevnext-link next" href="../christianity/index.html">
       <span class="topic-prevnext-eyebrow">Next →</span>
