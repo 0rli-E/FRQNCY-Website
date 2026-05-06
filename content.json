@@ -41,6 +41,20 @@
       "label": "Builder",
       "desc": "Creating products, tools, and experiences — the hands-on arm of the network, turning ideas into things people can actually use.",
       "accent": "#00BCD4"
+    },
+    {
+      "id": "curate",
+      "slug": "curate",
+      "label": "Curate",
+      "desc": "Picking with care — sifting the world's signal from its noise so what reaches FRQNCY is honest, alive, and worth attention.",
+      "accent": "#B23B5E"
+    },
+    {
+      "id": "sell",
+      "slug": "sell",
+      "label": "Sell",
+      "desc": "Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.",
+      "accent": "#D49E5A"
     }
   ],
   "domains": [
@@ -118,11 +132,11 @@
     },
     {
       "id": "d-meta",
-      "slug": "metaphysics",
-      "label": "Metaphysics",
+      "slug": "consciousness",
+      "label": "Consciousness",
       "pillar": "research",
       "accent": "#7B4AE8",
-      "desc": "The architecture of reality — consciousness, dimensions, sacred law, and the invisible structures that underpin the visible world."
+      "desc": "The architecture of reality — what is there before what appears. Consciousness, dimensions, sacred law, and the invisible structures that underpin the visible world."
     },
     {
       "id": "d-arts",
@@ -583,7 +597,7 @@
       "id": "t-community",
       "slug": "community",
       "label": "Community",
-      "domain": "d-lifestyle",
+      "domain": "d-society",
       "desc": "The art of living together — building belonging, trust, and shared life with others."
     },
     {
@@ -1084,13 +1098,6 @@
       "desc": "A framework exploring how language, syntax, and meaning operate at a fundamental level — bridging quantum principles with the structure of consciousness and communication."
     },
     {
-      "id": "t-robert-gould",
-      "slug": "robert-jay-gould",
-      "label": "Robert Jay Gould",
-      "domain": "d-sciences",
-      "desc": "Thinker and researcher whose work sits at the intersection of consciousness, science, and the evolution of human understanding."
-    },
-    {
       "id": "t-humandesign",
       "slug": "human-design",
       "label": "Human Design",
@@ -1180,6 +1187,454 @@
       "label": "Audio",
       "domain": "d-arts",
       "desc": "Headphones, speakers, sound made with care. The hardware of how you actually hear the music, the conversation, the silence."
+    },
+    {
+      "id": "t-buddhism",
+      "slug": "buddhism",
+      "label": "Buddhism",
+      "domain": "d-meta",
+      "desc": "The teaching of awakening — how attention, ethics, and insight loosen the self enough to see clearly. From the Buddha's silence to the living lineages."
+    },
+    {
+      "id": "t-hinduism",
+      "slug": "hinduism",
+      "label": "Hinduism",
+      "domain": "d-meta",
+      "desc": "The oldest living family of traditions — the Vedas, the Upanishads, bhakti, jnana, and the many faces of the divine pointing back to one."
+    },
+    {
+      "id": "t-sufism",
+      "slug": "sufism",
+      "label": "Sufism",
+      "domain": "d-meta",
+      "desc": "The mystical heart of Islam — annihilation of the ego in the divine beloved, expressed through poetry, dance, and disciplined remembrance."
+    },
+    {
+      "id": "t-ayurveda",
+      "slug": "ayurveda",
+      "label": "Ayurveda",
+      "domain": "d-wellbeing",
+      "desc": "India's living medical tradition — diagnosing and balancing the elemental constitutions that move through every body."
+    },
+    {
+      "id": "t-tcm",
+      "slug": "traditional-chinese-medicine",
+      "label": "Traditional Chinese Medicine",
+      "domain": "d-wellbeing",
+      "desc": "Acupuncture, herbs, and meridian theory — a multi-millennial system for reading the body as a flow of qi and bringing it back into balance."
+    },
+    {
+      "id": "t-physics",
+      "slug": "physics",
+      "label": "Physics",
+      "domain": "d-sciences",
+      "desc": "The study of matter, motion, and force — from Newton's laws to relativity, the framework underneath every other physical science."
+    },
+    {
+      "id": "t-anthropology",
+      "slug": "anthropology",
+      "label": "Anthropology",
+      "domain": "d-sciences",
+      "desc": "The study of being human — culture, kinship, ritual, language. How wildly different ways of life answer the same questions."
+    },
+    {
+      "id": "t-geology",
+      "slug": "geology",
+      "label": "Earth Science",
+      "domain": "d-sciences",
+      "desc": "The deep biography of the planet — plate tectonics, mineralogy, hydrology, the slow rhythms that shaped every landscape."
+    },
+    {
+      "id": "t-hydropower",
+      "slug": "hydropower",
+      "label": "Hydropower",
+      "domain": "d-energy",
+      "desc": "Water as power — from millennia of waterwheels to modern hydro and small-scale run-of-river systems."
+    },
+    {
+      "id": "t-nuclear",
+      "slug": "nuclear-fusion",
+      "label": "Nuclear & Fusion",
+      "domain": "d-energy",
+      "desc": "Energy from the atom — the controversial legacy of fission and the slow march toward fusion as a possible clean baseload."
+    },
+    {
+      "id": "t-entrepreneurship",
+      "slug": "entrepreneurship",
+      "label": "Entrepreneurship",
+      "domain": "d-business",
+      "desc": "Starting things — finding a real problem, shipping a first version, and surviving long enough to learn what the next one should be."
+    },
+    {
+      "id": "t-leadership",
+      "slug": "leadership",
+      "label": "Leadership",
+      "domain": "d-business",
+      "desc": "Holding a direction without holding people down — the inner work and outer practice of leading something worth leading."
+    },
+    {
+      "id": "t-personal-finance",
+      "slug": "personal-finance",
+      "label": "Personal Finance",
+      "domain": "d-money",
+      "desc": "The household level of money — earning, saving, spending, debt, and the slow craft of staying free."
+    },
+    {
+      "id": "t-startups",
+      "slug": "startups",
+      "label": "Start-ups",
+      "domain": "d-business",
+      "desc": "The early company — venture-scale risk, the hunt for product-market fit, and the unreasonable energy it takes to ship a first version."
+    },
+    {
+      "id": "t-wildlife",
+      "slug": "wildlife",
+      "label": "Animals & Wildlife",
+      "domain": "d-nature",
+      "desc": "The other minds we share the planet with — behaviour, intelligence, conservation, and what it means to live alongside the wild."
+    },
+    {
+      "id": "t-writing",
+      "slug": "writing",
+      "label": "Writing",
+      "domain": "d-communication",
+      "desc": "Sentences that hold weight — the written craft, from notebooks to long-form, from lyric to argument."
+    },
+    {
+      "id": "t-literature",
+      "slug": "literature",
+      "label": "Literature",
+      "domain": "d-arts",
+      "desc": "Books that change the inside of the reader — the novels, essays, and traditions that survive their century by carrying real weight."
+    },
+    {
+      "id": "t-stocks",
+      "slug": "stocks",
+      "label": "Stocks",
+      "domain": "d-money",
+      "desc": "Equity in publicly traded companies — the public market layer of capital allocation, indexes, dividends, and the long-term arc of productive enterprise."
+    },
+    {
+      "id": "t-bonds",
+      "slug": "bonds",
+      "label": "Bonds",
+      "domain": "d-money",
+      "desc": "Debt instruments — sovereign, corporate, and municipal — and the yield curve as the deepest signal in the financial system."
+    },
+    {
+      "id": "t-etfs",
+      "slug": "etfs",
+      "label": "ETFs",
+      "domain": "d-money",
+      "desc": "Exchange-traded funds — baskets of assets bought and sold like single shares, the most efficient way most people own the market."
+    },
+    {
+      "id": "t-commodities",
+      "slug": "commodities",
+      "label": "Commodities",
+      "domain": "d-money",
+      "desc": "Raw materials traded as financial assets — the ground-truth layer beneath paper claims. Metals, energy, agriculture; what every economy ultimately runs on."
+    },
+    {
+      "id": "t-gold",
+      "slug": "gold",
+      "label": "Gold",
+      "domain": "d-money",
+      "desc": "The 5,000-year benchmark of monetary truth. Cannot be printed, cannot be debased, cannot be issued by decree. Sound money's longest-running case study."
+    },
+    {
+      "id": "t-silver",
+      "slug": "silver",
+      "label": "Silver",
+      "domain": "d-money",
+      "desc": "Gold's working-class twin — half store-of-value, half industrial necessity. The metal solar panels, electronics, and high-end optics depend on."
+    },
+    {
+      "id": "t-platinum",
+      "slug": "platinum",
+      "label": "Platinum",
+      "domain": "d-money",
+      "desc": "Rarer than gold and central to catalytic conversion, hydrogen fuel cells, and high-end industry. Where monetary scarcity meets industrial demand."
+    },
+    {
+      "id": "t-palladium",
+      "slug": "palladium",
+      "label": "Palladium",
+      "domain": "d-money",
+      "desc": "The metal in your catalytic converter — and one of the most volatile commodities in the world. A study in how supply chains create monetary phenomena."
+    },
+    {
+      "id": "t-uranium",
+      "slug": "uranium",
+      "label": "Uranium",
+      "domain": "d-money",
+      "desc": "The densest energy source we know how to use. Fueling roughly a tenth of global electricity and the centerpiece of the contested nuclear-renaissance debate."
+    },
+    {
+      "id": "t-copper",
+      "slug": "copper",
+      "label": "Copper",
+      "domain": "d-money",
+      "desc": "Doctor Copper — the metal that diagnoses the global economy. Required by every grid, every electric vehicle, every electrification path forward."
+    },
+    {
+      "id": "t-oil",
+      "slug": "oil",
+      "label": "Oil",
+      "domain": "d-money",
+      "desc": "The macro asset that connects money to geopolitics. Petrodollar architecture, OPEC dynamics, and the unwinding of the post-Bretton-Woods consensus."
+    },
+    {
+      "id": "t-lithium",
+      "slug": "lithium",
+      "label": "Lithium",
+      "domain": "d-money",
+      "desc": "The energy-transition kingmaker. Battery metal at the centre of EV economics, grid storage, and supply concentrated in Latin America's Lithium Triangle."
+    },
+    {
+      "id": "t-rare-earths",
+      "slug": "rare-earths",
+      "label": "Rare Earths",
+      "domain": "d-money",
+      "desc": "Seventeen elements your phone, your wind turbine, and your missile system all share. Mostly mined and refined in China — the geopolitical bottleneck of the digital age."
+    },
+    {
+      "id": "t-carbon-credits",
+      "slug": "carbon-credits",
+      "label": "Carbon Credits",
+      "domain": "d-money",
+      "desc": "The contested attempt to monetise the atmosphere. Compliance markets, voluntary offsets, and the open question of whether climate is something we can price."
+    },
+    {
+      "id": "t-natgas",
+      "slug": "natural-gas",
+      "label": "Natural Gas",
+      "domain": "d-money",
+      "desc": "The bridge fuel of the energy transition — and the geopolitical lever that reshapes alliances. Russia, Qatar, US shale, and the contested arc of LNG."
+    },
+    {
+      "id": "t-nickel",
+      "slug": "nickel",
+      "label": "Nickel",
+      "domain": "d-money",
+      "desc": "Battery metal. Indonesian dominance, the LME's 2022 short-squeeze suspension, and the unglamorous logistics of the EV future."
+    },
+    {
+      "id": "t-cobalt",
+      "slug": "cobalt",
+      "label": "Cobalt",
+      "domain": "d-money",
+      "desc": "Battery metal with a problem. Most of it comes from the DRC, much of that from artisanal mines. The supply-chain transparency test of the electric era."
+    },
+    {
+      "id": "t-wheat",
+      "slug": "wheat",
+      "label": "Wheat",
+      "domain": "d-money",
+      "desc": "Food security signal. War-time pricing, the Black Sea grain corridor, and how a cereal becomes a barometer of geopolitical stability."
+    },
+    {
+      "id": "t-diamonds",
+      "slug": "diamonds",
+      "label": "Diamonds",
+      "domain": "d-money",
+      "desc": "De Beers built a market on the suggestion they were rare. Lab-grown gems are unbuilding it. A study in marketing-as-monopoly and how stores of value are made."
+    },
+    {
+      "id": "t-iron",
+      "slug": "iron-ore",
+      "label": "Iron Ore",
+      "domain": "d-money",
+      "desc": "The China property-bubble proxy. The metal modernity is built from, priced to within an inch of Beijing's construction policy."
+    },
+    {
+      "id": "t-aluminum",
+      "slug": "aluminum",
+      "label": "Aluminum",
+      "domain": "d-money",
+      "desc": "Light, abundant, energy-intensive to produce. The metal of cans, planes, and grid transmission lines — a hidden energy commodity."
+    },
+    {
+      "id": "t-zinc",
+      "slug": "zinc",
+      "label": "Zinc",
+      "domain": "d-money",
+      "desc": "Galvanises steel against rust. Quietly essential, mostly invisible, traded mostly as an industrial input rather than a story."
+    },
+    {
+      "id": "t-lead",
+      "slug": "lead",
+      "label": "Lead",
+      "domain": "d-money",
+      "desc": "The metal of car batteries, ammunition, and (still) too many old pipes. Industrially essential, ethically complicated."
+    },
+    {
+      "id": "t-tin",
+      "slug": "tin",
+      "label": "Tin",
+      "domain": "d-money",
+      "desc": "The solder of every circuit board. Indonesian dominance, conflict-mineral status, the metal that holds modern electronics together."
+    },
+    {
+      "id": "t-sugar",
+      "slug": "sugar",
+      "label": "Sugar",
+      "domain": "d-money",
+      "desc": "A globally-traded crop with deep ethical roots — slavery, monoculture, modern public-health crisis. Commodity and contested substance at once."
+    },
+    {
+      "id": "t-cotton",
+      "slug": "cotton",
+      "label": "Cotton",
+      "domain": "d-money",
+      "desc": "The textile that built the modern fashion economy. Water-intensive, pesticide-intensive, and the centerpiece of fast-fashion's true cost."
+    },
+    {
+      "id": "t-hydrogen",
+      "slug": "hydrogen",
+      "label": "Hydrogen",
+      "domain": "d-money",
+      "desc": "The most abundant element, and the most argued-about energy carrier. Green, blue, grey — colours that hide very different climate maths."
+    },
+    {
+      "id": "t-bitcoin",
+      "slug": "bitcoin",
+      "label": "Bitcoin",
+      "domain": "d-money",
+      "desc": "The original. Digital scarcity, sound money, the first credible separation of money from state."
+    },
+    {
+      "id": "t-sov",
+      "slug": "sov",
+      "label": "Store of Value",
+      "domain": "d-money",
+      "desc": "Digital commodities. Where the sound-money case lives natively on-chain."
+    },
+    {
+      "id": "t-l1",
+      "slug": "l1",
+      "label": "Layer 1s",
+      "domain": "d-money",
+      "desc": "The base chains. Bitcoin, Ethereum, Solana — and the trade-offs each makes between security, decentralisation, and scale."
+    },
+    {
+      "id": "t-l2",
+      "slug": "l2",
+      "label": "Layer 2s",
+      "domain": "d-money",
+      "desc": "Scaling Ethereum. Rollups, sidechains, app-specific chains — the layer making the base layer usable."
+    },
+    {
+      "id": "t-stablecoins",
+      "slug": "stablecoins",
+      "label": "Stablecoins",
+      "domain": "d-money",
+      "desc": "Digital dollars and the rails underneath them. The fastest-growing crypto category and the regulatory front line."
+    },
+    {
+      "id": "t-rwa",
+      "slug": "rwa",
+      "label": "Real World Assets",
+      "domain": "d-money",
+      "desc": "Tokenised treasuries, real estate, private credit. Bringing the physical balance sheet on-chain."
+    },
+    {
+      "id": "t-depin",
+      "slug": "depin",
+      "label": "DePIN",
+      "domain": "d-money",
+      "desc": "Decentralised physical infrastructure. Wireless, energy grids, storage, GPUs — coordinated by tokens, not corporations."
+    },
+    {
+      "id": "t-desci",
+      "slug": "desci",
+      "label": "DeSci",
+      "domain": "d-money",
+      "desc": "Decentralised science. Funding, peer review, IP — rebuilt outside the journal-cartel model."
+    },
+    {
+      "id": "t-gamefi",
+      "slug": "gamefi",
+      "label": "GameFi",
+      "domain": "d-money",
+      "desc": "Player-owned worlds. Games where assets, identity, and progress are real, portable, and yours."
+    },
+    {
+      "id": "t-socialfi",
+      "slug": "socialfi",
+      "label": "SocialFi",
+      "domain": "d-money",
+      "desc": "Your graph, your audience, your monetisation — without the platform middleman that owns all three today."
+    },
+    {
+      "id": "t-memes",
+      "slug": "memes",
+      "label": "Memes",
+      "domain": "d-money",
+      "desc": "Cultural assets traded as financial primitives. The sharpest test of what value actually is in a fully-permissionless market."
+    },
+    {
+      "id": "t-modular",
+      "slug": "modular",
+      "label": "Modular",
+      "domain": "d-money",
+      "desc": "Blockchains decomposed into specialised layers — execution, settlement, data availability. The architectural bet on composability over monoliths."
+    },
+    {
+      "id": "t-oracles",
+      "slug": "oracles",
+      "label": "Oracles",
+      "domain": "d-money",
+      "desc": "The connective tissue between chains and reality. How smart contracts learn what's true off-chain."
+    },
+    {
+      "id": "t-staking",
+      "slug": "staking",
+      "label": "Staking",
+      "domain": "d-money",
+      "desc": "Putting capital to work securing networks. Yield that pays for the infrastructure rather than extracting from it."
+    },
+    {
+      "id": "t-deai",
+      "slug": "deai",
+      "label": "DeAI",
+      "domain": "d-money",
+      "desc": "Decentralised AI. Compute marketplaces, model coordination, on-chain inference — and the bet that AI's most consequential layer should not be owned by three companies."
+    },
+    {
+      "id": "t-icm",
+      "slug": "icm",
+      "label": "Internet Capital Markets",
+      "domain": "d-money",
+      "desc": "Fundraising, equity-like primitives, and tokenised cap tables — the slow remaking of how startups raise and how investors participate."
+    },
+    {
+      "id": "t-neobanks",
+      "slug": "neobanks",
+      "label": "Neobanks",
+      "domain": "d-money",
+      "desc": "Crypto-native banking rails. Cards, payments, and savings without the legacy correspondent-bank stack underneath."
+    },
+    {
+      "id": "t-nfts",
+      "slug": "nfts",
+      "label": "NFTs",
+      "domain": "d-money",
+      "desc": "Digital ownership as a primitive. Art, collectibles, identity, in-game assets — and the boom-bust pedagogy of all four."
+    },
+    {
+      "id": "t-predictions",
+      "slug": "predictions",
+      "label": "Prediction Markets",
+      "domain": "d-money",
+      "desc": "Crowd-sourced probability. The most efficient information aggregator humanity has built — and one of the most regulated."
+    },
+    {
+      "id": "t-crypto-privacy",
+      "slug": "crypto-privacy",
+      "label": "Crypto Privacy",
+      "domain": "d-money",
+      "desc": "Financial privacy as a right, not a permission. Monero, Zcash, ZK rollups — and the ongoing fight to keep transactions unsurveilled."
     }
   ],
   "resources": {
@@ -4872,7 +5327,7 @@
         "frqncy_pick": false
       },
       {
-        "title": "BobLazar.com",
+        "title": "Bob Lazar",
         "url": "https://www.boblazar.com",
         "type": "person",
         "desc": "Bob Lazar's official site — the man who brought Area 51 and element 115 (moscovium) to public consciousness decades before its scientific confirmation.",
@@ -4916,7 +5371,7 @@
     ],
     "t-channeling": [
       {
-        "title": "The Pleiadians — Barbara Marciniak",
+        "title": "Barbara Marciniak",
         "url": "https://www.pleiadians.com",
         "type": "person",
         "desc": "Barbara Marciniak has channeled a collective of multidimensional beings from the Pleiades star system since 1988. Her book Bringers of the Dawn is one of the most widely read channeled texts ever published — a dense, demanding transmission on DNA activation, timelines, and the game being played on Earth.",
@@ -4958,7 +5413,7 @@
         "frqncy_pick": false
       },
       {
-        "title": "Bashar — Darryl Anka",
+        "title": "Darryl Anka",
         "url": "https://www.bashar.org",
         "type": "person",
         "desc": "Darryl Anka channels Bashar, a multi-dimensional being from the future — teachings on parallel realities, permission slips, and following your highest excitement.",
@@ -5720,7 +6175,6 @@
         "frqncy_pick": false
       }
     ],
-    "t-robert-gould": [],
     "t-humandesign": [
       {
         "title": "Ra Uru Hu",
@@ -5786,7 +6240,7 @@
         "frqncy_pick": true
       },
       {
-        "title": "HD Wild — Erin Claire Jones",
+        "title": "Erin Claire Jones",
         "url": "https://www.erinclairehjones.com",
         "type": "person",
         "desc": "Brings Human Design into business, leadership, and teams. Known for making HD practical and applicable to work and relationships. Her newsletter is one of the most-read in the HD space.",

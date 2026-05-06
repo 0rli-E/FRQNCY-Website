@@ -16,7 +16,7 @@
  *   - /api/*:         pass-through (functions handle their own caching)
  */
 
-const VERSION = 'v26';
+const VERSION = 'v37';
 const SHELL_CACHE   = `frqncy-shell-${VERSION}`;
 const DATA_CACHE    = `frqncy-data-${VERSION}`;
 const RUNTIME_CACHE = 'frqncy-runtime';   // intentionally unversioned
@@ -141,8 +141,17 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // JSON data files: stale-while-revalidate against DATA_CACHE
-  if (url.pathname.endsWith('.json') && url.pathname !== '/manifest.json') {
+  // JSON + JS data files: stale-while-revalidate against DATA_CACHE.
+  // (.js was previously served cache-first from RUNTIME_CACHE, which meant
+  //  any stale snapshot — e.g. an older explore-data.js with broken
+  //  link IDs — kept being served forever to existing users even after
+  //  the source was fixed, breaking the map. SWR fixes this:
+  //  cached is served immediately for speed, and the next reload picks
+  //  up the freshly revalidated copy.)
+  if (
+    (url.pathname.endsWith('.json') && url.pathname !== '/manifest.json')
+    || url.pathname.endsWith('.js')
+  ) {
     e.respondWith(
       caches.open(DATA_CACHE).then(cache =>
         cache.match(request).then(cached => {
@@ -157,8 +166,9 @@ self.addEventListener('fetch', e => {
     return;
   }
 
-  // Static assets: cache-first against RUNTIME_CACHE (the long-lived
-  // bucket). On a release, these survive — only SHELL_CACHE rotates.
+  // Static assets (images/css/fonts): cache-first against RUNTIME_CACHE
+  // (the long-lived bucket). On a release, these survive — only
+  // SHELL_CACHE/DATA_CACHE rotate with VERSION.
   e.respondWith(
     caches.match(request).then(cached => {
       if (cached) return cached;
