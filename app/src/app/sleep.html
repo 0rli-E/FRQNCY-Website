@@ -185,6 +185,7 @@
       let tickTimer = null;
       let volumeTimer = null;
       let activeAssetId = null;
+      let htmlAudio = null;  // <audio> element fallback
 
       // --- Resource selection --------------------------------------------------
       async function readResources() {
@@ -215,6 +216,23 @@
           : null;
       }
 
+      // Bundled fallback — when resources.json has no moment-tagged audio,
+      // play the bundled tones from the web public dir. Vite copies
+      // `app/public/audio/*.mp3` into `dist/audio/` and `cap sync` puts them
+      // at `android/app/src/main/assets/public/audio/`, served at
+      // `https://localhost/audio/` by Capacitor's bridge.
+      function bundledFallback(moment) {
+        const filename = moment === 'release' ? 'default_release'
+                       : moment === 'stillness' ? 'default_stillness'
+                       : 'default_evening';  // "drift" → evening tone
+        return {
+          id: `bundled-${moment}`,
+          name: `bundled · ${moment}`,
+          url: `../audio/${filename}.mp3`,
+          moment: [moment],
+        };
+      }
+
       // --- Audio playback with volume curve -----------------------------------
       // Curve: 100% → 40% by min 22, → silence by min 45. Implemented via a 5s
       // tick that linearly interpolates volume targets. This is the JS-fallback
@@ -234,26 +252,46 @@
       }
 
       async function startPlayback(resource) {
-        if (!NativeAudio || !resource) return false;
+        if (!resource || !resource.url) return false;
+
+        // Path 1: native audio plugin (best — lock-screen controls + background-safe).
+        if (NativeAudio) {
+          try {
+            activeAssetId = `frqncy.sleep.${resource.id || Date.now()}`;
+            await NativeAudio.preload({
+              assetId: activeAssetId,
+              assetPath: resource.url,
+              audioChannelNum: 1,
+              isUrl: true,
+              volume: 1.0
+            });
+            await NativeAudio.play({ assetId: activeAssetId });
+            volumeTimer = setInterval(async () => {
+              const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+              const v = volumeForElapsed(elapsed);
+              try { await NativeAudio.setVolume({ assetId: activeAssetId, volume: v }); } catch {}
+            }, 5000);
+            return true;
+          } catch (err) {
+            console.warn('NativeAudio failed, falling back to <audio>', err);
+          }
+        }
+
+        // Path 2: HTML5 <audio> element (works without any plugin).
+        // Tradeoff: foreground-only on iOS, but acceptable for a sleep flow
+        // where the screen stays on. Loops by default.
         try {
-          activeAssetId = `frqncy.sleep.${resource.id || Date.now()}`;
-          await NativeAudio.preload({
-            assetId: activeAssetId,
-            assetPath: resource.url,
-            audioChannelNum: 1,
-            isUrl: true,
-            volume: 1.0
-          });
-          await NativeAudio.play({ assetId: activeAssetId });
-          // Volume curve tick — 5s cadence is plenty for a 45-min envelope.
-          volumeTimer = setInterval(async () => {
+          htmlAudio = new Audio(resource.url);
+          htmlAudio.loop = true;
+          htmlAudio.volume = 1.0;
+          await htmlAudio.play();
+          volumeTimer = setInterval(() => {
             const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
-            const v = volumeForElapsed(elapsed);
-            try { await NativeAudio.setVolume({ assetId: activeAssetId, volume: v }); } catch {}
+            if (htmlAudio) htmlAudio.volume = volumeForElapsed(elapsed);
           }, 5000);
           return true;
         } catch (err) {
-          console.warn('NativeAudio failed', err);
+          console.warn('HTML audio failed too', err);
           return false;
         }
       }
@@ -265,6 +303,10 @@
           try { await NativeAudio.unload({ assetId: activeAssetId }); } catch {}
         }
         activeAssetId = null;
+        if (htmlAudio) {
+          try { htmlAudio.pause(); htmlAudio.src = ''; } catch {}
+          htmlAudio = null;
+        }
       }
 
       // --- Wake-alarm linkage --------------------------------------------------
@@ -295,14 +337,15 @@
                       : DRIFT_PROMPTS;
         prompts.forEach(p => setTimeout(() => fade(sessionPrompt, p.text), p.at * 1000));
 
-        // Pick a resource matching the moment and start playback.
+        // Pick a resource matching the moment, fall back to bundled tone.
         const resources = await readResources();
         const tagFor = (m) => m === 'release' ? 'release'
                           : m === 'stillness' ? 'stillness'
                           : 'evening';
-        const picked = pickResource(resources, tagFor(moment));
-        const playing = picked ? await startPlayback(picked) : false;
+        const picked = pickResource(resources, tagFor(moment)) || bundledFallback(moment);
+        const playing = await startPlayback(picked);
         if (!playing) {
+          // Even bundled audio failed (rare — disk corruption, blocked autoplay).
           // Silent session — still useful as a timer-based meditation surface.
           fade(sessionPrompt, sessionPrompt.textContent || 'rest in the quiet.');
         }

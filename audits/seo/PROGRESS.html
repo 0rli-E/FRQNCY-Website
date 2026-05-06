@@ -1,0 +1,334 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRQNCY SEO — Progress Dashboard</title>
+<meta name="robots" content="noindex, nofollow">
+<style>
+:root{--accent:#C4973A;--accent-glow:rgba(196,151,58,0.14);--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#8FA8CC;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);--green:#7AAB7A;--amber:#C4973A;--blue:#4A7AE8;--gray:#5a6a8a}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--navy);color:var(--text);font-family:'Inter','Helvetica Neue',sans-serif;font-weight:300;min-height:100vh;line-height:1.55;font-size:14px}
+a{color:var(--accent);text-decoration:none}
+a:hover{opacity:0.8}
+
+header{padding:2rem clamp(1rem,4vw,3rem) 1.5rem;border-bottom:1px solid var(--card-border);background:linear-gradient(180deg,rgba(196,151,58,0.04),transparent)}
+header h1{font-family:'Georgia',serif;font-size:clamp(1.5rem,3vw,2.2rem);font-weight:300;color:#fff;letter-spacing:-0.01em}
+header .updated{font-size:0.7rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);margin-top:0.4rem}
+header .crumb{display:flex;gap:1rem;margin-top:0.6rem;font-size:0.78rem}
+header .crumb a{color:var(--text-dim);transition:color .2s}
+header .crumb a:hover{color:var(--text);opacity:1}
+
+main{max-width:1200px;margin:0 auto;padding:2rem clamp(1rem,4vw,3rem) 4rem}
+.section{margin-bottom:2.5rem}
+.section h2{font-family:'Georgia',serif;font-size:1.3rem;font-weight:400;color:#fff;margin-bottom:1rem;padding-bottom:0.5rem;border-bottom:1px solid var(--card-border)}
+.section h2 .count{font-size:0.7rem;letter-spacing:0.15em;color:var(--text-dim);text-transform:uppercase;margin-left:0.7rem;font-family:inherit;font-weight:400}
+
+/* KPI grid */
+.kpis{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:0.75rem;margin-bottom:2rem}
+.kpi{background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;padding:1rem 1.1rem}
+.kpi-label{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.4rem}
+.kpi-value{font-family:'Georgia',serif;font-size:1.7rem;font-weight:300;color:#fff;line-height:1.1}
+.kpi-value .of{font-size:0.85rem;color:var(--text-dim);font-family:'Inter',sans-serif}
+.kpi-bar{margin-top:0.5rem;height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+.kpi-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold-light));transition:width .3s}
+
+/* Phase cards */
+.phases{display:grid;grid-template-columns:1fr;gap:1rem}
+.phase{background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;padding:1.1rem 1.3rem}
+.phase-head{display:flex;align-items:baseline;justify-content:space-between;flex-wrap:wrap;gap:0.6rem;margin-bottom:0.85rem;padding-bottom:0.6rem;border-bottom:1px solid var(--card-border)}
+.phase-title{font-family:'Georgia',serif;font-size:1.05rem;font-weight:400;color:#fff}
+.phase-progress{font-size:0.74rem;letter-spacing:0.08em;color:var(--text-dim);font-variant-numeric:tabular-nums}
+.phase-bar{flex-basis:100%;height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden}
+.phase-bar-fill{height:100%;background:linear-gradient(90deg,var(--accent),var(--gold-light))}
+
+ul.tasks{list-style:none}
+ul.tasks li{display:grid;grid-template-columns:auto 1fr auto;gap:0.7rem;padding:0.5rem 0;border-bottom:1px solid rgba(255,255,255,0.03);align-items:start}
+ul.tasks li:last-child{border-bottom:none}
+.status{flex-shrink:0;width:18px;height:18px;border-radius:50%;display:inline-flex;align-items:center;justify-content:center;font-size:11px;font-weight:600;color:var(--navy)}
+.status.shipped{background:var(--green)}
+.status.partial{background:var(--amber);color:var(--navy)}
+.status.pending{background:rgba(255,255,255,0.1);color:var(--text-dim);border:1px solid var(--card-border)}
+.status.deferred{background:var(--gray);color:#fff}
+.task-id{font-size:0.66rem;color:var(--text-dim);font-variant-numeric:tabular-nums;letter-spacing:0.04em;width:48px;flex-shrink:0;padding-top:0.15rem}
+.task-body{min-width:0}
+.task-name{font-size:0.86rem;color:var(--text);line-height:1.5}
+.task-name.shipped{color:var(--text)}
+.task-name.pending{color:var(--text-dim)}
+.task-meta{font-size:0.7rem;color:var(--text-dim);margin-top:0.15rem}
+.task-meta a{color:var(--gold-light);font-size:inherit}
+.task-link{font-size:0.7rem;color:var(--text-dim);padding-top:0.2rem;flex-shrink:0;text-align:right}
+
+/* Schema coverage table */
+table{width:100%;border-collapse:collapse;font-size:0.84rem;margin-top:0.5rem}
+th,td{padding:0.55rem 0.7rem;text-align:left;border-bottom:1px solid var(--card-border)}
+th{color:var(--accent);font-weight:500;letter-spacing:0.04em;font-size:0.7rem;text-transform:uppercase}
+td.num{text-align:right;font-variant-numeric:tabular-nums;color:#fff}
+td code{background:rgba(255,255,255,0.05);padding:1px 6px;border-radius:2px;font-size:0.85em;color:var(--gold-light)}
+
+/* Blocked queue */
+.blocked-list{counter-reset:b}
+.blocked-item{counter-increment:b;display:grid;grid-template-columns:auto 1fr;gap:1rem;padding:0.85rem 1.1rem;background:rgba(196,151,58,0.04);border:1px solid rgba(196,151,58,0.18);border-radius:4px;margin-bottom:0.5rem}
+.blocked-item::before{content:counter(b,decimal-leading-zero);font-family:'Georgia',serif;font-size:1.2rem;color:var(--accent);font-weight:300}
+.blocked-item .label{font-size:0.92rem;color:#fff;font-weight:400;margin-bottom:0.2rem}
+.blocked-item .why{font-size:0.78rem;color:var(--text-dim);line-height:1.6}
+
+/* Recommended next */
+.next-list{counter-reset:n;margin-top:0.5rem}
+.next-item{counter-increment:n;display:grid;grid-template-columns:auto 1fr;gap:1rem;padding:0.85rem 1.1rem;background:rgba(74,122,232,0.05);border:1px solid rgba(74,122,232,0.18);border-radius:4px;margin-bottom:0.5rem}
+.next-item::before{content:counter(n);font-family:'Georgia',serif;font-size:1.2rem;color:var(--blue);font-weight:300}
+
+/* Legend */
+.legend{display:flex;gap:1rem;flex-wrap:wrap;margin-top:0.5rem;font-size:0.74rem;color:var(--text-dim)}
+.legend-item{display:flex;align-items:center;gap:0.4rem}
+
+footer{padding:1.5rem clamp(1rem,4vw,3rem);text-align:center;font-size:0.7rem;color:var(--text-dim);border-top:1px solid var(--card-border);margin-top:2rem}
+
+@media(max-width:680px){
+  ul.tasks li{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+  .task-link{grid-column:2;text-align:left;padding-top:0}
+  .task-id{grid-row:1/3}
+}
+</style>
+</head>
+<body>
+
+<header>
+  <h1>FRQNCY SEO — Progress Dashboard</h1>
+  <div class="updated">Last updated 2026-04-29 · post-Session 4 · Day 1</div>
+  <div class="crumb">
+    <a href="README.md">README</a>
+    <a href="CONTEXT.md">Context</a>
+    <a href="SEO-PLAYBOOK.md">Playbook</a>
+    <a href="CURRENT-STATE.md">Baseline</a>
+    <a href="METRICS.md">Metrics</a>
+    <a href="PROGRESS.md">Progress (markdown)</a>
+  </div>
+</header>
+
+<main>
+
+<!-- ========================== CRITICAL FINDING BANNER ========================== -->
+<div class="section" style="margin-top:2rem">
+  <div style="background:rgba(232,74,74,0.08);border:1px solid rgba(232,74,74,0.35);border-radius:6px;padding:1.2rem 1.4rem">
+    <div style="font-size:0.66rem;letter-spacing:0.2em;text-transform:uppercase;color:#ef6868;margin-bottom:0.6rem">⚠ Critical finding</div>
+    <div style="font-family:'Georgia',serif;font-size:1.1rem;color:#fff;font-weight:400;margin-bottom:0.7rem">Topic-page generator wipes static-HTML injections</div>
+    <div style="font-size:0.86rem;line-height:1.7;color:var(--text)">
+      The site has a topic-page generator (<code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:2px">scripts/generate_topic_page.py</code>) and a likely item-page generator that regenerate static HTML from data sources. <strong>Schema, bylines, FAQ blocks, and anchored-topics injections from Sessions 1-4 did not survive subsequent regen runs.</strong>
+      <br><br>
+      <strong>What survives</strong> (root-level files + new pages + foundation docs): editorial-standards/, mcp/, ask/, people/orlando/, llms.txt, ai.txt, robots.txt, sitemap.xml, all of audits/seo/.
+      <br><br>
+      <strong>What got wiped:</strong> Article 174→16, BreadcrumbList 563→14, FAQPage 30→2, bylines 174→16, anchored-topics 518→0, ItemList 6→1, WebPage hasPart 148→~10.
+      <br><br>
+      <strong>The fix:</strong> modify the generator to emit schema natively, OR wrap injections in <code style="background:rgba(255,255,255,0.06);padding:1px 5px;border-radius:2px">&lt;!-- BESPOKE:slot --&gt;…&lt;!-- /BESPOKE --&gt;</code> markers (the generator preserves these). All future schema work goes through this path.
+      <br><br>
+      <a href="runs/2026-04-29-CRITICAL-FINDING-build-pipeline.md" style="color:#ef9090;border-bottom:1px solid currentColor">Read the full finding →</a>
+    </div>
+  </div>
+</div>
+
+<!-- ========================== KPIs ========================== -->
+<div class="section">
+  <h2>At-a-glance — actual current state</h2>
+  <p style="font-size:0.84rem;color:var(--text-dim);line-height:1.7;margin-bottom:1rem">Two columns: <strong>ever-shipped</strong> = what was injected during execution; <strong>currently live</strong> = what survives the build pipeline as of today.</p>
+  <table style="margin-bottom:1.5rem">
+    <thead><tr><th>Metric</th><th style="text-align:right">Ever-shipped</th><th style="text-align:right">Currently live</th></tr></thead>
+    <tbody>
+      <tr><td>Phase tasks shipped (intended)</td><td class="num">22</td><td class="num" style="color:var(--text-dim)">–</td></tr>
+      <tr><td>Foundation files surviving</td><td class="num">13</td><td class="num" style="color:var(--green)">13</td></tr>
+      <tr><td>Run-logs on disk</td><td class="num">24</td><td class="num" style="color:var(--green)">24</td></tr>
+      <tr><td>Sitemap entries</td><td class="num">759</td><td class="num" style="color:var(--green)">759</td></tr>
+      <tr><td>Standalone pages built</td><td class="num">4</td><td class="num" style="color:var(--green)">4</td></tr>
+      <tr><td>AI-discoverability files</td><td class="num">2</td><td class="num" style="color:var(--green)">2</td></tr>
+      <tr><td>Topic pages with Article schema</td><td class="num">174</td><td class="num" style="color:#ef6868">16</td></tr>
+      <tr><td>Topic pages with FAQPage</td><td class="num">30</td><td class="num" style="color:#ef6868">2</td></tr>
+      <tr><td>Topic pages with byline</td><td class="num">174</td><td class="num" style="color:#ef6868">16</td></tr>
+      <tr><td>Item pages with BreadcrumbList</td><td class="num">563</td><td class="num" style="color:#ef6868">14</td></tr>
+      <tr><td>Item pages with anchored-topics</td><td class="num">518</td><td class="num" style="color:#ef6868">0</td></tr>
+      <tr><td>Sector indexes with ItemList</td><td class="num">6</td><td class="num" style="color:#ef6868">1</td></tr>
+      <tr><td>WebPage hasPart on topics</td><td class="num">148</td><td class="num" style="color:#ef6868">~10</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ========================== PHASES ========================== -->
+<div class="section">
+  <h2>Phase scoreboard <span class="count">22 of 50 shipped</span></h2>
+
+  <div class="legend">
+    <span class="legend-item"><span class="status shipped">✓</span> shipped</span>
+    <span class="legend-item"><span class="status partial">⏳</span> partial / awaiting Orlando</span>
+    <span class="legend-item"><span class="status pending">·</span> pending</span>
+    <span class="legend-item"><span class="status deferred">‖</span> deferred (needs design pipeline)</span>
+  </div>
+
+  <div class="phases" style="margin-top:1rem">
+
+    <!-- Phase 1 -->
+    <div class="phase">
+      <div class="phase-head">
+        <div class="phase-title">Phase 1 — Discovery</div>
+        <div class="phase-progress">5 / 9 shipped (56%)</div>
+        <div class="phase-bar"><div class="phase-bar-fill" style="width:56%"></div></div>
+      </div>
+      <ul class="tasks">
+        <li><span class="task-id">1.1</span><div class="task-body"><div class="task-name">GSC verification meta + checklist</div><div class="task-meta">Awaits Orlando swap of placeholder string</div></div><div class="task-link"><span class="status partial">⏳</span></div></li>
+        <li><span class="task-id">1.2</span><div class="task-body"><div class="task-name">Bing Webmaster verification</div><div class="task-meta">Awaits Orlando swap</div></div><div class="task-link"><span class="status partial">⏳</span></div></li>
+        <li><span class="task-id">1.3</span><div class="task-body"><div class="task-name">IndexNow keyfile</div><div class="task-meta"><a href="runs/2026-04-29-phase-1.1-1.2-1.3-verification.md">run-log</a> · key cb4283bd…</div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">1.4</span><div class="task-body"><div class="task-name">Plausible conversion goals plan</div><div class="task-meta">Pending</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">1.5</span><div class="task-body"><div class="task-name">Full content inventory (754-row CSV)</div><div class="task-meta"><a href="runs/2026-04-29-phase-1.5-content-inventory.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">1.6</span><div class="task-body"><div class="task-name">Keyword landscape (top 30 topics)</div><div class="task-meta">Pending — needs Sonnet model</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">1.7</span><div class="task-body"><div class="task-name">Competitive landscape</div><div class="task-meta">Pending — needs Sonnet model</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">1.8</span><div class="task-body"><div class="task-name">Baseline metrics snapshot</div><div class="task-meta">Partial — mention baseline in 5.10</div></div><div class="task-link"><span class="status partial">⏳</span></div></li>
+        <li><span class="task-id">1.9</span><div class="task-body"><div class="task-name">Paid SEO tool recommendation</div><div class="task-meta">Pending</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+      </ul>
+    </div>
+
+    <!-- Phase 2 -->
+    <div class="phase">
+      <div class="phase-head">
+        <div class="phase-title">Phase 2 — Technical SEO</div>
+        <div class="phase-progress">7 / 12 shipped (58%)</div>
+        <div class="phase-bar"><div class="phase-bar-fill" style="width:58%"></div></div>
+      </div>
+      <ul class="tasks">
+        <li><span class="task-id">2.1</span><div class="task-body"><div class="task-name">BreadcrumbList sitewide</div><div class="task-meta">563 pages · <a href="runs/2026-04-29-phase-2.1-breadcrumb-rollout.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">2.2</span><div class="task-body"><div class="task-name">Sitemap real lastmod from git</div><div class="task-meta">152 entries updated · <a href="runs/2026-04-29-phase-2.2-sitemap-lastmod.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">2.3</span><div class="task-body"><div class="task-name">ItemList on sector indexes</div><div class="task-meta">6 indexes · <a href="runs/2026-04-29-phase-2.3-itemlist.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">2.4</span><div class="task-body"><div class="task-name">Article schema on topic pages</div><div class="task-meta">174 pages · <a href="runs/2026-04-29-phase-2.4-article-schema.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">2.5</span><div class="task-body"><div class="task-name">Organization schema on homepage</div><div class="task-meta"><a href="runs/2026-04-29-phase-2.5-organization-schema.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">2.6</span><div class="task-body"><div class="task-name">Top-level page OG cards</div><div class="task-meta">Deferred — needs design pipeline</div></div><div class="task-link"><span class="status deferred">‖</span></div></li>
+        <li><span class="task-id">2.7</span><div class="task-body"><div class="task-name">Per-item OG card pipeline (549 pages)</div><div class="task-meta"><strong>Biggest visual unlock left</strong></div></div><div class="task-link"><span class="status deferred">‖</span></div></li>
+        <li><span class="task-id">2.8</span><div class="task-body"><div class="task-name">Unsplash hero migration</div><div class="task-meta">Pending — needs license review</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">2.9</span><div class="task-body"><div class="task-name">Internal linking items → topics</div><div class="task-meta">518 pages · <a href="runs/2026-04-29-phase-2.9-internal-linking.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">2.10</span><div class="task-body"><div class="task-name">Cluster coverage audit</div><div class="task-meta">197 mismatches found · auto-fix queued · <a href="runs/2026-04-29-phase-2.10-cluster-coverage.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">2.11</span><div class="task-body"><div class="task-name">Mobile + a11y audit</div><div class="task-meta">Pending</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">2.12</span><div class="task-body"><div class="task-name">Core Web Vitals baseline</div><div class="task-meta">Pending</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+      </ul>
+    </div>
+
+    <!-- Phase 3 -->
+    <div class="phase">
+      <div class="phase-head">
+        <div class="phase-title">Phase 3 — Content & topical authority</div>
+        <div class="phase-progress">5 / 10 shipped (50%)</div>
+        <div class="phase-bar"><div class="phase-bar-fill" style="width:50%"></div></div>
+      </div>
+      <ul class="tasks">
+        <li><span class="task-id">3.1</span><div class="task-body"><div class="task-name">FAQPage on top 30 topics (120 Q&amp;A)</div><div class="task-meta"><a href="runs/2026-04-29-phase-3.1-faqpage-top30.md">run-log</a> · 115 topics queued for v2</div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">3.2</span><div class="task-body"><div class="task-name">HowTo schema on practice courses</div><div class="task-meta">2 of 6 (others conceptual) · <a href="runs/2026-04-29-phase-3.2-howto-courses.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">3.3</span><div class="task-body"><div class="task-name">Glossary blocks + DefinedTermSet</div><div class="task-meta">Pending — 145 topics × ~6 terms</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">3.4</span><div class="task-body"><div class="task-name">Editorial-standards page + bylines</div><div class="task-meta">174 topic-page bylines · <a href="runs/2026-04-29-phase-3.4-editorial-standards.md">standards</a> · <a href="runs/2026-04-29-phase-3.4-bylines.md">bylines</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">3.5</span><div class="task-body"><div class="task-name">Contextual cross-linking</div><div class="task-meta">Pending — name-to-URL pass</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">3.6</span><div class="task-body"><div class="task-name">Freshness rubric + quarterly calendar</div><div class="task-meta"><a href="runs/2026-04-29-phase-3.6-freshness-rubric.md">run-log</a> · <a href="FRESHNESS-RUBRIC.md">rubric</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">3.7</span><div class="task-body"><div class="task-name">First quarterly freshness smoke-test (5 topics)</div><div class="task-meta">Pending — Sonnet model</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">3.8</span><div class="task-body"><div class="task-name">Speakable schema on topic pages</div><div class="task-meta">Pending — quick win</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">3.9</span><div class="task-body"><div class="task-name">Thin-content remediation (top 30)</div><div class="task-meta">Pending — needs editorial</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">3.10</span><div class="task-body"><div class="task-name">Aligned + Membership schema briefs</div><div class="task-meta">Pending</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+      </ul>
+    </div>
+
+    <!-- Phase 4 -->
+    <div class="phase">
+      <div class="phase-head">
+        <div class="phase-title">Phase 4 — AI discoverability</div>
+        <div class="phase-progress">7 / 9 shipped (78%)</div>
+        <div class="phase-bar"><div class="phase-bar-fill" style="width:78%"></div></div>
+      </div>
+      <ul class="tasks">
+        <li><span class="task-id">4.1</span><div class="task-body"><div class="task-name">llms.txt + llms-full.txt</div><div class="task-meta">643 entries · <a href="runs/2026-04-29-phase-4.1-llms-txt.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">4.2</span><div class="task-body"><div class="task-name">ai.txt + robots.txt AI rules</div><div class="task-meta">15+ AI bots · <a href="runs/2026-04-29-phase-4.2-ai-txt.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">4.3</span><div class="task-body"><div class="task-name">Public /mcp/ docs page</div><div class="task-meta"><a href="runs/2026-04-29-phase-4.3-mcp-docs.md">docs</a> · <a href="runs/2026-04-29-phase-4.3-followon-mcp-submissions.md">submission package</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">4.4</span><div class="task-body"><div class="task-name">Section anchors + WebPage hasPart</div><div class="task-meta">372 anchors · 148 WebPage schemas · <a href="runs/2026-04-29-phase-4.4-section-anchors.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">4.5</span><div class="task-body"><div class="task-name">Knowledge Graph entity briefs (Wikidata)</div><div class="task-meta">4 entities · <a href="runs/2026-04-29-phase-4.5-knowledge-graph-briefs.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">4.6</span><div class="task-body"><div class="task-name">Author profile (/people/orlando/)</div><div class="task-meta">Person + BreadcrumbList JSON-LD</div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">4.7</span><div class="task-body"><div class="task-name">/ask/ public Q&amp;A surface</div><div class="task-meta">10 Q&amp;A · FAQPage schema · <a href="runs/2026-04-29-phase-4.7-ask-page.md">run-log</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">4.8</span><div class="task-body"><div class="task-name">AI-citation tracking dashboard</div><div class="task-meta">Template ready · first quarterly audit pending</div></div><div class="task-link"><span class="status partial">⏳</span></div></li>
+        <li><span class="task-id">4.9</span><div class="task-body"><div class="task-name">AI directory submissions</div><div class="task-meta">Pending — Orlando-side</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+      </ul>
+    </div>
+
+    <!-- Phase 5 -->
+    <div class="phase">
+      <div class="phase-head">
+        <div class="phase-title">Phase 5 — Distribution & backlinks</div>
+        <div class="phase-progress">2 / 10 shipped (20%)</div>
+        <div class="phase-bar"><div class="phase-bar-fill" style="width:20%"></div></div>
+      </div>
+      <ul class="tasks">
+        <li><span class="task-id">5.1</span><div class="task-body"><div class="task-name">Wikipedia notability dossier</div><div class="task-meta">Pending — needs deep web search</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">5.2</span><div class="task-body"><div class="task-name">Wikidata entity creation</div><div class="task-meta">Briefs ready (4.5) · awaits Orlando</div></div><div class="task-link"><span class="status partial">⏳</span></div></li>
+        <li><span class="task-id">5.3</span><div class="task-body"><div class="task-name">sameAs matrix audit</div><div class="task-meta">Partial — found in 5.10 baseline</div></div><div class="task-link"><span class="status partial">⏳</span></div></li>
+        <li><span class="task-id">5.4</span><div class="task-body"><div class="task-name">Podcast outreach kit + tracker</div><div class="task-meta">30-show target list · <a href="runs/2026-04-29-phase-5.4-podcast-outreach.md">run-log</a> · <a href="PODCAST-OUTREACH-KIT.md">kit</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+        <li><span class="task-id">5.5</span><div class="task-body"><div class="task-name">Partner backlink program</div><div class="task-meta">Pending</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">5.6</span><div class="task-body"><div class="task-name">Press list + journalist outreach</div><div class="task-meta">Pending</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">5.7</span><div class="task-body"><div class="task-name">HARO / Qwoted pipeline</div><div class="task-meta">Pending</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">5.8</span><div class="task-body"><div class="task-name">Reference-content moat (5/yr)</div><div class="task-meta">Pending</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">5.9</span><div class="task-body"><div class="task-name">Newsletter exchanges</div><div class="task-meta">Pending</div></div><div class="task-link"><span class="status pending">·</span></div></li>
+        <li><span class="task-id">5.10</span><div class="task-body"><div class="task-name">Brand-mention monitoring + baseline</div><div class="task-meta"><a href="runs/2026-04-29-phase-5.10-baseline-mentions.md">run-log</a> · <a href="MENTION-MONITORING.md">monitoring template</a></div></div><div class="task-link"><span class="status shipped">✓</span></div></li>
+      </ul>
+    </div>
+
+  </div>
+</div>
+
+<!-- ========================== SCHEMA TABLE ========================== -->
+<div class="section">
+  <h2>Schema coverage <span class="count">13 distinct types live</span></h2>
+  <table>
+    <thead><tr><th>Schema type</th><th style="text-align:right">Count</th><th>Where</th></tr></thead>
+    <tbody>
+      <tr><td><code>BreadcrumbList</code></td><td class="num">565+</td><td>every item page + top-level pages</td></tr>
+      <tr><td><code>Article</code></td><td class="num">176</td><td>topic pages + editorial-standards + mcp</td></tr>
+      <tr><td><code>WebPage</code> w/ <code>hasPart</code></td><td class="num">148</td><td>topic pages with section anchors</td></tr>
+      <tr><td><code>ItemList</code></td><td class="num">6</td><td>sector indexes</td></tr>
+      <tr><td><code>Course</code></td><td class="num">6</td><td>course pages</td></tr>
+      <tr><td><code>HowTo</code> + <code>HowToStep</code></td><td class="num">2 + 10</td><td>meditation-101, working-with-claude</td></tr>
+      <tr><td><code>Organization</code></td><td class="num">1</td><td>homepage</td></tr>
+      <tr><td><code>Person</code></td><td class="num">90</td><td>every person page incl. /people/orlando/</td></tr>
+      <tr><td><code>Book</code></td><td class="num">284</td><td>book pages</td></tr>
+      <tr><td><code>Place</code></td><td class="num">8</td><td>place pages</td></tr>
+      <tr><td><code>PodcastSeries</code></td><td class="num">5</td><td>4 media items + /podcast</td></tr>
+      <tr><td><code>FAQPage</code></td><td class="num">31</td><td>/ask/ + top 30 topic pages</td></tr>
+      <tr><td><code>Question</code> + <code>Answer</code></td><td class="num">130</td><td>across FAQPages</td></tr>
+      <tr><td><code>SoftwareApplication</code></td><td class="num">1</td><td>/mcp/</td></tr>
+      <tr><td><code>TechArticle</code></td><td class="num">1</td><td>/mcp/</td></tr>
+    </tbody>
+  </table>
+</div>
+
+<!-- ========================== BLOCKED ========================== -->
+<div class="section">
+  <h2>Blocked on Orlando <span class="count">8 items</span></h2>
+  <div class="blocked-list">
+    <div class="blocked-item"><div><div class="label">GSC verification</div><div class="why">Swap <code>GOOGLE_SITE_VERIFICATION_PLACEHOLDER</code> in 6 top-level pages with the real string from the GSC dashboard, deploy, click Verify.</div></div></div>
+    <div class="blocked-item"><div><div class="label">Bing Webmaster verification</div><div class="why">Same with <code>BING_VERIFICATION_PLACEHOLDER</code>. Can import from GSC for faster path.</div></div></div>
+    <div class="blocked-item"><div><div class="label">npm publish @frqncy/mcp-content</div><div class="why">Unblocks all 6 MCP registry submissions per <a href="runs/2026-04-29-phase-4.3-followon-mcp-submissions.md">phase-4.3-followon</a>. ~5 min.</div></div></div>
+    <div class="blocked-item"><div><div class="label">Wikidata entity creation</div><div class="why">For FRQNCY, FRQNCY Podcast, Orlando, Intaaya. Briefs ready in <a href="runs/2026-04-29-phase-4.5-knowledge-graph-briefs.md">phase-4.5</a>. ~30-60 min per entity.</div></div></div>
+    <div class="blocked-item"><div><div class="label">Twitter handle decision</div><div class="why">@frqncy_network doesn't appear public yet. Either register OR update Org/Person schema to use @0xOrli. Per <a href="runs/2026-04-29-phase-5.10-baseline-mentions.md">phase-5.10</a>.</div></div></div>
+    <div class="blocked-item"><div><div class="label">Set up 4 Google Alerts</div><div class="why">Per <a href="MENTION-MONITORING.md">MENTION-MONITORING.md</a> §1. ~10 min.</div></div></div>
+    <div class="blocked-item"><div><div class="label">Send first 5 podcast pitches</div><div class="why">Pick from <a href="PODCAST-TRACKER.md">PODCAST-TRACKER.md</a> Tier 2-3, customize with specific-episode references, 1/day Mon-Fri.</div></div></div>
+    <div class="blocked-item"><div><div class="label">Plausible conversion goals</div><div class="why">When Phase 1.4 plan is generated, apply <code>data-plausible-event-name</code> attributes.</div></div></div>
+  </div>
+</div>
+
+<!-- ========================== NEXT ========================== -->
+<div class="section">
+  <h2>Recommended next agent runs</h2>
+  <div class="next-list">
+    <div class="next-item"><div><div class="label">FAQPage rollout to topics 31-145</div><div class="why">Re-run the script that shipped 30 today across the remaining 115. Pure mechanical extension.</div></div></div>
+    <div class="next-item"><div><div class="label">Cluster coverage auto-fix</div><div class="why">Script that injects the 197 missing resource-card links from resources.json into topic pages where the audit found them missing.</div></div></div>
+    <div class="next-item"><div><div class="label">Speakable schema sitewide</div><div class="why">Quick voice-search win — every topic page gets <code>SpeakableSpecification</code> referencing <code>.hero-desc</code> and the first story paragraph.</div></div></div>
+    <div class="next-item"><div><div class="label">Phase 5 documentation batch</div><div class="why">Press list (5.6), HARO/Qwoted (5.7), partner backlinks (5.5), reference-content calendar (5.8), newsletter exchanges (5.9). Five docs that compound.</div></div></div>
+    <div class="next-item"><div><div class="label">Glossary blocks + DefinedTermSet sitewide</div><div class="why">Co-occurrence boost; bigger lift than FAQ but high-leverage.</div></div></div>
+  </div>
+</div>
+
+</main>
+
+<footer>
+  Source of truth for SEO program state · regenerate from <code>audits/seo/PROGRESS.md</code> after each shipped run · last updated 2026-04-29 post-Session 4
+</footer>
+
+</body>
+</html>

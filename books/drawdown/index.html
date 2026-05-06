@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"Drawdown","description":"The most comprehensive plan to reverse global warming ever assembled — 100 solutions ranked by impact.","url":"https://frqncy.network/books/drawdown/","sameAs":["https://www.drawdown.org"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"Books","item":"https://frqncy.network/books/"},{"@type":"ListItem","position":3,"name":"Drawdown","item":"https://frqncy.network/books/drawdown/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -261,6 +261,8 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://www.drawdown.org" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>
 </div>
 <main>
+  <section class="book-intro" style="max-width:680px;margin:0 auto clamp(2rem,5vw,3.5rem);padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.96rem;line-height:1.85;color:var(--text)"><p style="margin-bottom:1.1rem">&quot;In the face of widespread fear and apathy, an international coalition of researchers, professionals, and scientists have come together to offer a set of realistic and bold solutions to climate change. One hundred techniques and practices are described here--some are well known; some you may have never heard of. They range from clean energy to educating girls in lower-income countries to land use practices that pull carbon out of the air. The solutions exist, are economically viable, and communities throughout the world are currently enacting them with skill and determination. If deployed collectively on a global scale over the next thirty years, they represent a credible path forward, not just to slow the earth&#39;s warming but to reach drawdown, that point in time when greenhouse gases in the atmosphere peak and begin to decline. These measures promise cascading benefits to human health, security, prosperity, and well-being--giving us every reason to see this planetary crisis as an opportunity to create a just and livable world&quot;</p></section>
+  
   <section>
   <div class="section-label">Appears on</div>
   <div class="grid grid-sm"><a href="/v2/energy/index.html" class="ncard">

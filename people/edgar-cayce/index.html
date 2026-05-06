@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Edgar Cayce","description":"The Sleeping Prophet — 20th-century American psychic whose trance readings produced some of the most extensive bodies of channeled material on Earth: health diagnoses, past lives, Atlantis, Jesus. His Association for Research and Enlightenment holds the archive.","url":"https://frqncy.network/people/edgar-cayce/","sameAs":["https://www.edgarcayce.org"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"People","item":"https://frqncy.network/people/"},{"@type":"ListItem","position":3,"name":"Edgar Cayce","item":"https://frqncy.network/people/edgar-cayce/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -260,7 +260,14 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://www.edgarcayce.org" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit edgarcayce.org →</a>
 </div>
 <main>
-  
+  <section>
+  <div class="section-label">Life</div>
+  <div class="life-prose" style="max-width:720px">
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Edgar Cayce was a 20th-century American whose practice centred on entering a self-induced trance state from which he would respond, at length, to questions put by attendants. These sessions — known as readings — addressed subjects ranging from medical diagnosis to theology, with Cayce reporting little conscious recall of what was said once he returned to waking. Over several decades, the transcribed sessions accumulated into one of the largest bodies of recorded material of its kind, attracting attention from people seeking health guidance as well as those drawn to its wider metaphysical claims.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">The readings ranged across three principal areas: physical health, offering diagnostic assessments and dietary guidance for individual conditions; questions of past lives and reincarnation; and accounts of ancient civilisations, principally Atlantis, alongside detailed commentary on the life of Jesus. Published works drawn from the transcripts — including collections on diet and health and a commentary on the Book of Revelation — extended the material into book form, making it accessible to readers without direct access to the archive. The resulting body of work is among the most extensively documented in its tradition.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">The Association for Research and Enlightenment holds the archive and has kept the readings in active circulation for close to a century. It publishes collections, maintains a programme of events, and supports an ongoing community of practitioners and researchers engaging with the material. Works attributed to Cayce, or compiled from his readings, remain in print and are available through the Association&#39;s collections and through general booksellers. The archive — preserved, indexed, and made publicly accessible — stands as an unusually thorough record of one practitioner&#39;s sustained output across health, history, and scriptural interpretation.</p>
+  </div>
+</section>
   <section>
   <div class="section-label">Works</div>
   <div class="rlist"><div class="rcard" data-type="book">

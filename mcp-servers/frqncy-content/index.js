@@ -45,6 +45,7 @@ const CONTENT_DIR =
   process.env.FRQNCY_CONTENT_DIR ?? resolve(__dirname, '..', '..');
 const SEARCH_JSON_PATH = join(CONTENT_DIR, 'search.json');
 const RESOURCES_JSON_PATH = join(CONTENT_DIR, 'resources.json');
+const CONTENT_JSON_PATH = join(CONTENT_DIR, 'content.json');
 
 // ────────────────────────────────────────────────────────────────────
 // Lazy-loaded data caches
@@ -52,6 +53,7 @@ const RESOURCES_JSON_PATH = join(CONTENT_DIR, 'resources.json');
 
 let topicsCache = null;
 let resourcesCache = null;
+let contentCache = null;
 
 async function loadTopics() {
   if (topicsCache) return topicsCache;
@@ -65,6 +67,13 @@ async function loadResources() {
   const raw = await fs.readFile(RESOURCES_JSON_PATH, 'utf-8');
   resourcesCache = JSON.parse(raw);
   return resourcesCache;
+}
+
+async function loadContent() {
+  if (contentCache) return contentCache;
+  const raw = await fs.readFile(CONTENT_JSON_PATH, 'utf-8');
+  contentCache = JSON.parse(raw);
+  return contentCache;
 }
 
 // ────────────────────────────────────────────────────────────────────
@@ -202,12 +211,12 @@ const TOOLS = [
   },
   {
     name: 'list_pillars',
-    description: 'List all distinct topic pillars (e.g., "Research", "Builder", "Media").',
+    description: 'List FRQNCY pillars — what FRQNCY actively does (Research, Education, Builder, Media, Fund, Network State, Curate, Sell). Pillars apply across every domain and topic; canonical source is content.json.',
     inputSchema: { type: 'object', properties: {} },
     handler: async () => {
-      const topics = await loadTopics();
-      const pillars = [...new Set(topics.map((t) => t.pillar))].sort();
-      return ok({ count: pillars.length, pillars });
+      const content = await loadContent();
+      const pillars = (content.pillars || []).map((p) => p.label);
+      return ok({ count: pillars.length, pillars, full: content.pillars || [] });
     },
   },
   {

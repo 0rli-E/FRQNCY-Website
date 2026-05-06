@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"The Language Instinct","description":"Language as a biological adaptation — how we all come pre-wired to speak. The definitive popular account.","url":"https://frqncy.network/books/the-language-instinct/","sameAs":["https://www.penguinrandomhouse.com/books/178755/the-language-instinct-by-steven-pinker/"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"Books","item":"https://frqncy.network/books/"},{"@type":"ListItem","position":3,"name":"The Language Instinct","item":"https://frqncy.network/books/the-language-instinct/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -261,6 +261,8 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://www.penguinrandomhouse.com/books/178755/the-language-instinct-by-steven-pinker/" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>
 </div>
 <main>
+  <section class="book-intro" style="max-width:680px;margin:0 auto clamp(2rem,5vw,3.5rem);padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.96rem;line-height:1.85;color:var(--text)"><p style="margin-bottom:1.1rem">From the Preface... I have never met a person who is not interested in language. I wrote this book to try to satisfy that curiosity. Language is beginning to submit to that uniquely satisfying kind of understanding that we call science, but the news has been kept a secret. For the language lover, I hope to show that there is a world of elegance and richness in quotidian speech that far outshines the local curiosities of etymologies, unusual words, and fine points of usage. For the reader of popular science, I hope to explain what is behind the recent discoveries (or, in many cases, nondiscoveries) reported in the press: universal deep structures, brainy babies, grammar genes, artifically intelligent computers, neural networks, signing chimps, talking Neanderthals, idiot savants, feral children, paradoxical brain damage, identical twins separated at birth, color pictures of the thinking brain, and the search for the mother of all languages. I also hope to answer many natural questions about languages, like why there are so many of them, why they are so hard for adults to learn, and why no one seems to know the plural of Walkman.</p></section>
+  
   <section>
   <div class="section-label">Appears on</div>
   <div class="grid grid-sm"><a href="/v2/language/index.html" class="ncard">

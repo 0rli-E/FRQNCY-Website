@@ -285,6 +285,20 @@ Goal: harness starts to feed the site with less manual input.
 
 ---
 
+## Post-Phase-3 federation extras (opportunistic, source-side first)
+
+These are off-plan federation increments that ship into the source as time and reader value allow. They don't gate any phase, but they keep the federation narrative honest while the protocol pivot itself stays deferred to Q1–Q2 2027 per `proposals/PROTOCOL-LESSONS-2026-04.md`.
+
+✓ **Bluesky timeline reader (shipped 2026-05-02 — see `proposals/BLUESKY-TIMELINE-READER.md`).** NRG can now read the connected user's Bluesky home timeline, not just publish to it. New "Federated" tab on the global feed interleaves NRG + Bluesky posts chronologically. Read-only — likes / replies / reposts go to bsky.app via permalink. NRG flips from publisher-with-side-bridge to federated reader-and-publisher. Source-side only at this point; deploys whenever the next `social-src` build runs.
+
+Candidate v1.1 follow-ups (queued, not scheduled):
+- Surface replies on cross-posted NRG posts under the NRG row (closes the asymmetry where NRG already knows the at-uri but never reads it).
+- Cursor-based pagination on the Federated tab.
+- Image embed rendering + external-link OG card preview.
+- Repost surfacing with an explicit "X reposted" badge.
+
+---
+
 ## Phase 5 — Content depth + crypto cards (Weeks 9–10: Jun 22 → Jul 5)
 
 Goal: high-priority content from IDEAS-INBOX is live; navigation and crypto-cards are sharp.

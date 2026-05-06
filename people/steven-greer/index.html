@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Steven Greer","description":"Former emergency physician who founded The Disclosure Project in 1993 — bringing hundreds of military, intelligence, and government witnesses forward to testify publicly about UFO reality. The landmark 2001 National Press Club event remains the movement's most cited inflection point.","url":"https://frqncy.network/people/steven-greer/","sameAs":["https://www.siriusdisclosure.com"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"People","item":"https://frqncy.network/people/"},{"@type":"ListItem","position":3,"name":"Steven Greer","item":"https://frqncy.network/people/steven-greer/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -260,7 +260,14 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://www.siriusdisclosure.com" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit siriusdisclosure.com →</a>
 </div>
 <main>
-  
+  <section>
+  <div class="section-label">Life</div>
+  <div class="life-prose" style="max-width:720px">
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Steven Greer trained as an emergency physician and practised medicine in the United States before redirecting his focus to questions surrounding unidentified aerial phenomena and the possibility of non-human intelligence. His medical background shaped a methodical, evidence-gathering approach to a subject that had long been dismissed at the margins of public discourse. In 1993 he founded The Disclosure Project, a research initiative built around the proposition that credible witnesses — drawn from careers in the military, intelligence services, and government — could document what official accounts had left unaddressed.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">The project&#39;s most significant public moment came in 2001, when Greer organised a briefing at the National Press Club in Washington, D.C., at which witnesses drawn from military, intelligence, and government backgrounds testified on the record before journalists. Hundreds of further testimonies were gathered in the project&#39;s archive. The event became a recurrent reference point in subsequent journalism and policy discussions around UAP transparency. His book *Unacknowledged* drew on the accumulated testimony to set the witness record in a written form that reached a wide general audience.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Greer has continued this work through the Sirius Disclosure platform, which archives decades of witness testimony and hosts resources centred on CE-5 protocols — structured methods for attempting contact with non-human intelligence through directed human consciousness. His focus has expanded to encompass the relationship between consciousness and the phenomena he investigates, as well as the political conditions that keep such material outside official acknowledgement. The full record of testimonies, protocols, and documented briefings accumulated over more than thirty years is held at siriusdisclosure.com.</p>
+  </div>
+</section>
   <section>
   <div class="section-label">Works</div>
   <div class="rlist"><div class="rcard" data-type="org">

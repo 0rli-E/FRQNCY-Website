@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Fritjof Capra","description":"Austrian-born physicist whose Tao of Physics (1975) drew the parallels between quantum physics and Eastern mysticism that a generation had been waiting for. His subsequent systems-theory work extends into ecology, biology, and economics.","url":"https://frqncy.network/people/fritjof-capra/","sameAs":["https://www.fritjofcapra.net"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"People","item":"https://frqncy.network/people/"},{"@type":"ListItem","position":3,"name":"Fritjof Capra","item":"https://frqncy.network/people/fritjof-capra/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -260,7 +260,14 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://www.fritjofcapra.net" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit fritjofcapra.net →</a>
 </div>
 <main>
-  
+  <section>
+  <div class="section-label">Life</div>
+  <div class="life-prose" style="max-width:720px">
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Fritjof Capra was born in Austria and trained as a physicist. The conceptual upheavals of twentieth-century science — quantum mechanics and relativity having displaced the classical certainties of Newtonian mechanics — opened questions about the nature of matter and reality that the discipline rarely paused to examine on its own terms. Capra&#39;s early thinking drew him toward Eastern philosophical and contemplative traditions, where he found frameworks that appeared to address precisely the relational, participatory quality that modern physics had uncovered. That intersection became the organising concern of his early writing.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">The Tao of Physics, published in 1975, drew systematic parallels between the findings of quantum and relativistic physics and the foundational concepts of Eastern philosophical and contemplative thought. The book found readers well beyond academic science, shifted how many people understood the relationship between science and philosophy, and helped open a sustained conversation about the limits of the mechanistic worldview. The Turning Point extended the project, examining how a systemic perspective might reframe the interconnected social, ecological, and economic pressures of the late twentieth century.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Capra&#39;s subsequent work moved deeper into systems theory — the study of living networks, ecological processes, and the self-organising dynamics that cut across biology, economics, and cognition. The Systems View of Life, co-authored with Luisi, synthesised this body of research into a comprehensive framework and has been adopted across disciplines ranging from microbiology and cognitive psychology to cultural anthropology and macroeconomics. His writing and public engagement continue through fritjofcapra.net, where the systems perspective he has spent decades elaborating remains the central concern.</p>
+  </div>
+</section>
   <section>
   <div class="section-label">Works</div>
   <div class="rlist"><div class="rcard" data-type="book">

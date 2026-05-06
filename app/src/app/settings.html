@@ -139,6 +139,19 @@
               <span>triple tap <em>· three taps within 2 seconds</em></span>
             </label>
           </div>
+
+          <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(245,245,245,0.06);">
+            <label class="dismiss-option" style="cursor: pointer;">
+              <input type="checkbox" id="haptic-wake" />
+              <span>
+                wake by vibration only
+                <em style="display: block; margin-top: 2px;">
+                  · for hearing-impaired users — slow rising 60-second pattern,
+                  no audio
+                </em>
+              </span>
+            </label>
+          </div>
         </div>
       </div>
 
@@ -166,10 +179,23 @@
 
       <div class="section">
         <div class="section-title">about</div>
-        <div class="row"><a href="https://frqncy.network/v2/about.html" class="link-row">about frqncy</a></div>
-        <div class="row"><a href="https://frqncy.network/v2/privacy.html" class="link-row">privacy</a></div>
+        <div style="padding: 14px 0; font-size: 13.5px; line-height: 1.65; color: rgba(245,245,245,0.78);">
+          <p style="margin-bottom: 12px;">
+            FRQNCY is a network of people building their dream life.
+            this app is the bedside companion — a wake and sleep practice
+            that treats your mornings as arrivals and your evenings as
+            arcs that end.
+          </p>
+          <p>
+            cooperation over competition. presence over metrics. the
+            gesture is the arrival.
+          </p>
+        </div>
         <div class="row"><span>version</span><span class="row-value" id="app-version">0.1.0</span></div>
         <div class="row"><span>device</span><span class="row-value" id="device-info">—</span></div>
+        <div class="row"><a href="https://frqncy.network" class="link-row" target="_blank" rel="noopener">frqncy.network ↗</a></div>
+        <div class="row"><a href="https://frqncy.network/delete" class="link-row" target="_blank" rel="noopener">delete your data</a></div>
+        <div class="row"><a href="https://frqncy.network/v2/privacy.html" class="link-row" target="_blank" rel="noopener">privacy notes</a></div>
       </div>
 
       <a class="support-link" href="https://frqncy.network/support" target="_blank" rel="noopener">
@@ -336,7 +362,7 @@
         loadDownloadsSize();
       });
 
-      // Dismiss-mode preference.
+      // Dismiss-mode preference (web-only state — read by alarm.html / wake.html).
       const DISMISS_MODE_KEY = 'frqncy.accessibility.dismiss_mode';
       function applyDismissMode() {
         let current = 'breath';
@@ -351,6 +377,33 @@
         });
       });
       applyDismissMode();
+
+      // Haptic-wake preference (must persist to native SharedPreferences so
+      // AlarmService.onStartCommand can read it). The @capacitor/preferences
+      // plugin writes to the same SharedPreferences file (CapacitorStorage)
+      // that AccessibilityPreferences.kt reads.
+      const HAPTIC_WAKE_KEY = 'frqncy.accessibility.haptic_wake';
+      const hapticToggle = document.getElementById('haptic-wake');
+      async function loadHapticPref() {
+        if (Preferences) {
+          try {
+            const { value } = await Preferences.get({ key: HAPTIC_WAKE_KEY });
+            hapticToggle.checked = value === 'true';
+            return;
+          } catch {}
+        }
+        try {
+          hapticToggle.checked = localStorage.getItem(HAPTIC_WAKE_KEY) === 'true';
+        } catch {}
+      }
+      hapticToggle.addEventListener('change', async () => {
+        const v = hapticToggle.checked ? 'true' : 'false';
+        if (Preferences) {
+          try { await Preferences.set({ key: HAPTIC_WAKE_KEY, value: v }); } catch {}
+        }
+        try { localStorage.setItem(HAPTIC_WAKE_KEY, v); } catch {}
+      });
+      loadHapticPref();
 
       // Initial hydrate.
       loadSyncStatus();

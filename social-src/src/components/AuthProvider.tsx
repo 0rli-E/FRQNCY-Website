@@ -45,6 +45,9 @@ interface Profile {
   /** Public Bluesky handle for the cross-post bridge. App password lives in
       localStorage only (see lib/atproto-bridge.ts). */
   bluesky_handle?: string | null;
+  /** Permanent founder acknowledgement — flipped server-side once the user
+      has referred 25 members. See proposals/REFERRAL-REWARDS-V0.md. */
+  founder_badge?: boolean | null;
 }
 
 interface AuthState {
@@ -92,7 +95,7 @@ async function fetchProfile(userId: string): Promise<Profile | null> {
   // Profile interface above.
   const { data, error } = await supabase
     .from('profiles')
-    .select('id, username, display_name, avatar_url, bio, encryption_public_key, signing_public_key, privy_did, wallet_address, bluesky_handle')
+    .select('id, username, display_name, avatar_url, bio, encryption_public_key, signing_public_key, privy_did, wallet_address, bluesky_handle, founder_badge')
     .eq('id', userId)
     .single();
 

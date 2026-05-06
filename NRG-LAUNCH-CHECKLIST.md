@@ -32,6 +32,7 @@ The FRQNCY social platform is now branded as **NRG · FRQNCY Social**, source-cl
 - **`useMessages`** — fetches recipient's public key, encrypts on send (`encryption_version=1`), decrypts every fetched + realtime message. Plaintext fallback for users who haven't generated a key yet (`encryption_version=0`).
 - **`ChatWindow`** — `EncryptionBanner` at the top of every conversation. Per-message decrypted/failed rendering with `[unable to decrypt]` placeholder.
 - **`EncryptionKeysPanel`** at `/social/profile/keys/` — download private key as .txt, import on a new device, or regenerate (destructive, requires typing "regenerate"). Linked from NavAuth dropdown.
+- **Group-chat creation UI (v1.1 surface):** `StartGroupConversation.tsx` is a modal triggered by "+ Start group chat" at the top of `ConversationsList` (signed-in only). Username search → up to 9 other members → inserts `conversations` + N `conversation_members` rows → navigates to `/social/messages/?cid=<id>`. `useMessages` v2 per-recipient encryption path picks up the new membership automatically — no encryption-layer changes.
 - `social-src/E2EE-NOTES.md` — full design notes, threat model, user flows for first signup / returning device / new device / lost backup / unencrypted recipient.
 
 **Architecture proposals (no code changes in those):**
@@ -56,6 +57,9 @@ The FRQNCY social platform is now branded as **NRG · FRQNCY Social**, source-cl
 - `social-src/package.json` — adds `@atproto/api ^0.13.0`.
 - `proposals/ATPROTO-BRIDGE.md` — design notes, threat model, OAuth migration path.
 - No new env vars required — the bridge is fully client-side.
+- **Federated reader (added 2026-05-02 — `proposals/BLUESKY-TIMELINE-READER.md`):** `social-src/src/lib/atproto-bridge.ts` now exports `fetchBlueskyTimeline()`; new `social-src/src/components/FederatedFeed.tsx` renders the Bluesky home timeline in NRG's visual language; `Feed.tsx` adds a "Network" / "Federated" tab strip on the global feed (visible only when Bluesky is connected). Federated tab interleaves NRG + Bluesky posts chronologically. Read-only — likes / replies / reposts go to bsky.app via permalink. Tab choice persists in `localStorage.frqncy.nrg.feed_tab`. No schema or env changes — same client-side-only contract as the publish path.
+- **Reply backflow on cross-posted NRG posts (added 2026-05-02 — same proposal, v1.1):** `supabase/migrations/016_bluesky_uri_on_posts.sql` adds `posts.bluesky_uri` + `bluesky_cid`. `api.ts::createPost` persists the AT-URI returned by `publishToBluesky` to the new column. `atproto-bridge.ts::fetchBlueskyThread()` calls the public AppView (`https://api.bsky.app`) so non-connected viewers see public replies too, with an authenticated fallback. `social-src/src/components/BlueskyReplies.tsx` renders direct replies inline beneath the PostCard on `/social/post/<id>`. Read-only — "Reply on Bluesky ↗" routes to bsky.app permalink. Caps at 50 direct replies; nested threads route to bsky.app. Fail-soft: if migration 016 isn't applied, PostView falls back to the legacy column set and just doesn't render the BlueskyReplies block.
+- **Feed bridge hint count (added 2026-05-02 — same proposal, v1.2):** `supabase/migrations/017_bluesky_reply_count.sql` adds `posts.bluesky_reply_count` + `bluesky_replies_synced_at`. `scripts/auto-grow/bluesky-counts-refresh.mjs` is wired into the nightly auto-grow GitHub Actions workflow (after video-ingest); it batch-calls `app.bsky.feed.getPosts` against the public AppView in groups of 25 URIs and writes counts back via service-role. PostCard renders "↗ N on Bluesky" when count > 0, "↗ on Bluesky" otherwise. Feed.tsx selects both 016 + 017 columns together with a session-scoped fallback. No new env vars — reuses the existing SUPABASE_URL + SUPABASE_SERVICE_ROLE_KEY GitHub Actions secrets.
 
 **Hybrid signed-message mirror — fully wired this session:**
 - `social-src/src/lib/crypto.ts` — `generateSigningKeypair`, `signPayload`, `verifySignature`, `canonicalizeForSigning`, plus `exportKeyBackup` / `importKeyBackup` / `downloadKeyBackupFile` for unified .txt backups (encryption + signing in one file).
@@ -96,7 +100,7 @@ cp -r dist/* ../social/
 
 Verify the build is clean (no Vite resolution errors). The `cp` step copies the regenerated static output into the deployed `/social/` folder.
 
-### 1. Apply Supabase migrations 002, 003, 006, 007, 008, 009, 010, 011, AND 012
+### 1. Apply Supabase migrations 002 through 016
 
 Open the Supabase SQL editor:
 <https://supabase.com/dashboard/project/vyazlspbmwmlyncdlezh/sql/new>
@@ -104,16 +108,22 @@ Open the Supabase SQL editor:
 Paste + Run each in order:
 1. `supabase/migrations/002_fix_conversation_rls.sql` (DM RLS recursion fix)
 2. `supabase/migrations/003_subscribers_charts_storage.sql` (subscribers + charts + storage buckets)
-3. `supabase/migrations/006_messaging_e2ee.sql` (E2EE columns: encryption_public_key, encrypted_content, encryption_version)
-4. `supabase/migrations/007_privy_identity.sql` (privy_did column + unique index, case-insensitive wallet_address index)
-5. `supabase/migrations/008_group_chat_encryption.sql` (message_recipients table for per-recipient ciphertexts in group chats)
-6. `supabase/migrations/009_signed_message_mirror.sql` (signing_public_key on profiles; signature + signed_payload on posts and follows — Phase 2 commitment device foundation)
-7. `supabase/migrations/010_bluesky_handle.sql` (bluesky_handle on profiles for the NRG ↔ Bluesky cross-post bridge — public column; app password lives in user localStorage only)
-8. `supabase/migrations/011_encrypted_message_media.sql` (per-recipient encrypted media chunks for group chats)
-9. `supabase/migrations/012_practice_tracker.sql` (Sanctuary practice tracker — `practice_logs` table + `practice_scores` view; RLS-locked to owner, no leaderboard surface anywhere — see proposals/PRACTICE-TRACKER.md)
-10. `supabase/migrations/013_membership_referrals.sql` (Membership v0 — `memberships` + `ref_codes` + `ref_signups`; RLS-locked, no public ranking surface, attribution-only — see proposals/MEMBERSHIP-V0.md)
+3. `supabase/migrations/004_conviction.sql` (conviction column on posts)
+4. `supabase/migrations/005_search_indexes.sql` (full-text search indexes)
+5. `supabase/migrations/006_messaging_e2ee.sql` (E2EE columns: encryption_public_key, encrypted_content, encryption_version)
+6. `supabase/migrations/007_privy_identity.sql` (privy_did column + unique index, case-insensitive wallet_address index)
+7. `supabase/migrations/008_group_chat_encryption.sql` (message_recipients table for per-recipient ciphertexts in group chats)
+8. `supabase/migrations/009_signed_message_mirror.sql` (signing_public_key on profiles; signature + signed_payload on posts and follows — Phase 2 commitment device foundation)
+9. `supabase/migrations/010_bluesky_handle.sql` (bluesky_handle on profiles for the NRG ↔ Bluesky cross-post bridge — public column; app password lives in user localStorage only)
+10. `supabase/migrations/011_encrypted_message_media.sql` (per-recipient encrypted media chunks for group chats)
+11. `supabase/migrations/012_practice_tracker.sql` (Sanctuary practice tracker — `practice_logs` table + `practice_scores` view; RLS-locked to owner, no leaderboard surface anywhere — see proposals/PRACTICE-TRACKER.md)
+12. `supabase/migrations/013_membership_referrals.sql` (Membership v0 — `memberships` + `ref_codes` + `ref_signups`; RLS-locked, no public ranking surface, attribution-only — see proposals/MEMBERSHIP-V0.md)
+13. `supabase/migrations/014_course_purchases.sql` (one-time course purchases — `course_purchases` table for the Stripe payment-mode branch in checkout-session)
+14. `supabase/migrations/015_referral_rewards.sql` (referral rewards 3/10/25 tiers — `ref_rewards` table + `profiles.founder_badge`; UNIQUE per (referrer, tier) so re-runs are idempotent. See proposals/REFERRAL-REWARDS-V0.md)
+15. `supabase/migrations/016_bluesky_uri_on_posts.sql` (reply backflow — `posts.bluesky_uri` + `posts.bluesky_cid` for the v1.1 BlueskyReplies surface on post detail. See proposals/BLUESKY-TIMELINE-READER.md)
+16. `supabase/migrations/017_bluesky_reply_count.sql` (Feed bridge hint count — `posts.bluesky_reply_count` + `bluesky_replies_synced_at`. Refreshed nightly by `scripts/auto-grow/bluesky-counts-refresh.mjs`, wired into the existing auto-grow workflow. v1.2 of the timeline reader proposal.)
 
-All ten are idempotent — safe to re-run.
+All sixteen are idempotent — safe to re-run.
 
 ### 2. Create a Privy app (5 min)
 

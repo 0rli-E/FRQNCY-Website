@@ -175,6 +175,96 @@ nav{
 .section-head h2 .glyph{color:var(--gold);font-size:1.1rem;opacity:0.7}
 .section-head .meta{color:var(--text-faint);font-size:0.7rem;letter-spacing:0.14em;text-transform:uppercase}
 
+/* ── TODAY PANEL ──
+   Morning-ritual surface at the top of the Dashboard tab. Quieter than
+   first-run, more contemplative — soft gold border + gradient, generous
+   line-height, italic Cormorant for the date. Adapts to width: stacks
+   on mobile, grids on desktop. Gentle on first land — the user shouldn't
+   feel "summoned" to do anything; the panel offers, doesn't demand. */
+.today-card{
+  border:1px solid rgba(196,151,58,0.22);
+  border-radius:4px;
+  padding:1.6rem 1.7rem 1.4rem;
+  background:linear-gradient(135deg,rgba(196,151,58,0.04) 0%,rgba(11,16,32,0.55) 70%);
+  position:relative;overflow:hidden;
+}
+.today-card::before{
+  content:"";position:absolute;top:0;right:0;width:240px;height:160px;
+  background:radial-gradient(ellipse at top right,rgba(224,192,106,0.08),transparent 70%);
+  pointer-events:none;
+}
+.today-date{
+  font-family:'Cormorant',serif;font-style:italic;font-weight:300;
+  font-size:0.78rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--gold-light);margin-bottom:1rem;
+}
+.today-intent-label{
+  font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-faint);margin-bottom:0.5rem;
+}
+.today-intent-input{
+  width:100%;background:transparent;border:none;outline:none;resize:none;
+  font-family:'Cormorant',serif;font-style:italic;font-weight:300;
+  font-size:1.5rem;color:#fff;line-height:1.45;
+  padding:0;min-height:2.5em;
+}
+.today-intent-input::placeholder{color:rgba(200,216,240,0.32)}
+.today-yesterday{
+  margin-top:1.2rem;padding-top:1rem;
+  border-top:1px dashed var(--card-border);
+  font-size:0.78rem;color:var(--text-dim);line-height:1.65;
+}
+.today-yesterday strong{color:var(--gold-light);font-weight:400;font-style:italic;font-family:'Cormorant',serif;font-size:0.95rem}
+.today-yesterday .yesterday-prompt{
+  display:block;margin-top:0.7rem;font-size:0.6rem;letter-spacing:0.22em;
+  text-transform:uppercase;color:var(--text-faint);
+}
+.today-yesterday-input{
+  width:100%;background:transparent;border:none;outline:none;resize:vertical;
+  font-family:inherit;font-size:0.85rem;color:var(--text);line-height:1.6;
+  padding:0.4rem 0;min-height:1.6em;
+}
+.today-yesterday-input::placeholder{color:var(--text-faint);font-style:italic}
+.today-glance{
+  display:grid;gap:1.4rem;margin-top:1.3rem;padding-top:1.1rem;
+  border-top:1px dashed var(--card-border);
+  grid-template-columns:1fr;
+}
+@media(min-width:680px){
+  .today-glance{grid-template-columns:1fr 1fr}
+}
+.today-glance-block .glance-label{
+  font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.5rem;display:flex;align-items:center;gap:0.4rem;
+}
+.today-glance-block .glance-list{
+  display:flex;flex-wrap:wrap;gap:0.4rem;
+}
+.today-chip{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  padding:0.32rem 0.7rem;border-radius:999px;
+  border:1px solid var(--card-border);background:rgba(255,255,255,0.025);
+  font-size:0.74rem;color:var(--text);
+}
+.today-chip.done{border-color:rgba(91,199,154,0.4);background:rgba(91,199,154,0.08);color:#5BC79A}
+.today-chip.done::before{content:"✓";font-weight:600}
+.today-glance-empty{font-size:0.74rem;color:var(--text-faint);font-style:italic}
+.today-milestones{
+  margin-top:1rem;padding-top:0.9rem;border-top:1px dashed var(--card-border);
+  display:flex;flex-direction:column;gap:0.35rem;
+}
+.today-milestone{
+  font-family:'Cormorant',serif;font-style:italic;font-size:0.95rem;
+  color:var(--gold-light);line-height:1.5;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.today-milestone .glyph{color:var(--gold)}
+.today-milestone-dismiss{
+  margin-left:auto;background:transparent;border:none;color:var(--text-faint);
+  cursor:pointer;font-size:0.85rem;font-family:inherit;padding:0 0.3rem;
+}
+.today-milestone-dismiss:hover{color:var(--text)}
+
 /* ── PRIVACY BANNER ── */
 .privacy-banner{
   display:flex;align-items:center;gap:0.7rem;
@@ -490,6 +580,15 @@ nav{
   transition:all .2s;margin-bottom:1rem;
 }
 .dropzone:hover,.dropzone.drag{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.04)}
+/* Empty state — quiet pulsing border so a first-time visitor's eye lands
+   here when the vision grid below is blank. Stops the moment any image
+   exists (rendered by toggling the .empty class from renderVision). */
+.dropzone.empty{animation:dz-pulse 3.4s ease-in-out infinite}
+@keyframes dz-pulse{
+  0%,100%{border-color:var(--card-border);box-shadow:0 0 0 0 rgba(196,151,58,0)}
+  50%    {border-color:rgba(196,151,58,0.4);box-shadow:0 0 0 4px rgba(196,151,58,0.04)}
+}
+@media(prefers-reduced-motion:reduce){.dropzone.empty{animation:none}}
 .dropzone .upload-icon{font-size:1.6rem;color:var(--gold);margin-bottom:0.4rem}
 .dropzone small{display:block;margin-top:0.4rem;font-size:0.65rem;color:var(--text-faint);letter-spacing:0.05em;text-transform:none}
 
@@ -575,10 +674,22 @@ nav{
 .toast.show{opacity:1;transform:translateX(-50%) translateY(-8px)}
 
 /* Tabs */
+/* Wrapper provides the right-edge fade hint when the tab strip overflows
+   horizontally on narrow viewports — without that gradient, users on
+   phones can't tell there are more tabs offscreen. The gradient only
+   appears when the strip actually scrolls. */
+.tabs-wrap{position:relative}
+.tabs-wrap::after{
+  content:"";position:absolute;top:0;right:0;bottom:1px;width:32px;
+  background:linear-gradient(to right,transparent,var(--navy));
+  pointer-events:none;opacity:0;transition:opacity .2s;
+}
+.tabs-wrap.scrollable::after{opacity:1}
 .tabs{
   display:flex;gap:0;border-bottom:1px solid var(--card-border);
-  margin-bottom:2rem;overflow-x:auto;
+  margin-bottom:2rem;overflow-x:auto;scroll-snap-type:x proximity;
 }
+.tabs > .tab{scroll-snap-align:start}
 .tab{
   font-family:'Jost',sans-serif;
   padding:0.85rem 1.4rem 0.85rem 1.56rem;
@@ -793,16 +904,25 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:
     <span class="save-indicator" id="save-indicator" aria-live="polite" style="margin-left:auto;font-size:0.7rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-faint);opacity:0;transition:opacity .25s">Saved</span>
   </div>
 
-  <div class="tabs" role="tablist" aria-label="Sanctuary sections">
-    <button type="button" class="tab active" data-tab="dashboard" data-key="1" role="tab" aria-selected="true" aria-keyshortcuts="1" title="Dashboard (press 1)">Dashboard</button>
-    <button type="button" class="tab" data-tab="pyramid" data-key="2" role="tab" aria-selected="false" aria-keyshortcuts="2" title="Goal Pyramid (press 2)">Goal Pyramid</button>
-    <button type="button" class="tab" data-tab="practice" data-key="3" role="tab" aria-selected="false" aria-keyshortcuts="3" title="Daily Practice (press 3)">Daily Practice</button>
-    <button type="button" class="tab" data-tab="progress" data-key="4" role="tab" aria-selected="false" aria-keyshortcuts="4" title="Progress (press 4)">Progress</button>
-    <button type="button" class="tab" data-tab="vision" data-key="5" role="tab" aria-selected="false" aria-keyshortcuts="5" title="Vision Board (press 5)">Vision Board</button>
+  <div class="tabs-wrap" id="tabs-wrap">
+    <div class="tabs" role="tablist" aria-label="Sanctuary sections">
+      <button type="button" class="tab active" data-tab="dashboard" data-key="1" role="tab" aria-selected="true" aria-keyshortcuts="1" title="Dashboard (press 1)">Dashboard</button>
+      <button type="button" class="tab" data-tab="pyramid" data-key="2" role="tab" aria-selected="false" aria-keyshortcuts="2" title="Goal Pyramid (press 2)">Goal Pyramid</button>
+      <button type="button" class="tab" data-tab="practice" data-key="3" role="tab" aria-selected="false" aria-keyshortcuts="3" title="Daily Practice (press 3)">Daily Practice</button>
+      <button type="button" class="tab" data-tab="progress" data-key="4" role="tab" aria-selected="false" aria-keyshortcuts="4" title="Progress (press 4)">Progress</button>
+      <button type="button" class="tab" data-tab="vision" data-key="5" role="tab" aria-selected="false" aria-keyshortcuts="5" title="Vision Board (press 5)">Vision Board</button>
+    </div>
   </div>
 
   <!-- ─────────────── DASHBOARD VIEW (overview) ─────────────── -->
   <div class="view active" id="view-dashboard">
+
+    <!-- Today panel — morning-ritual surface. Hidden when state is fully empty
+         (the first-run coaching takes that real estate instead). Filled in by
+         renderToday() with date, daily intention input, yesterday's reflection
+         loop, today's practice glance, this month's goals glance, and any
+         streak milestones recently passed. -->
+    <section class="section today-section" id="today-section" hidden></section>
 
     <!-- First-run coaching: shown only when state is fully empty -->
     <section class="section first-run" id="first-run" hidden>
@@ -1212,6 +1332,14 @@ const DEFAULT_STATE = {
   goals: [],         // { id, objectiveId, title, month:"YYYY-MM", completed, completedDate }
   habits: [],        // { id, name, icon, createdAt, archived }
   habitLogs: {},     // { "YYYY-MM-DD": { habitId: true } }
+  // Daily intentions — one freeform line per day. Keyed by ISO date so the
+  // Today panel can show "yesterday → reflection → today's intention" as a
+  // continuous ribbon. { "2026-04-29": { intention: "...", reflection: "..." } }
+  dailyIntentions: {},
+  // Streak milestones already acknowledged in this device, so the gentle
+  // celebration line doesn't re-fire every page load. Keyed by habitId-N
+  // (e.g. "hab-abc-30") to record the threshold reached.
+  streakMilestonesSeen: {},
   settings: { name: '' }
 };
 
@@ -1418,6 +1546,15 @@ function renderDream() {
   const ta = document.getElementById('dream-input');
   if (!ta) return;
   if (ta.value !== state.dream) ta.value = state.dream;
+  // Auto-grow on render so loaded text doesn't sit clipped behind a scroll
+  autoGrowDream();
+}
+function autoGrowDream() {
+  const ta = document.getElementById('dream-input');
+  if (!ta) return;
+  // Reset, then size to scrollHeight + a hair so the caret has room
+  ta.style.height = 'auto';
+  ta.style.height = Math.max(ta.scrollHeight + 2, 100) + 'px';
 }
 function bindDream() {
   const ta = document.getElementById('dream-input');
@@ -1426,7 +1563,10 @@ function bindDream() {
   ta.addEventListener('input', () => {
     state.dream = ta.value;
     clearTimeout(h); h = setTimeout(persist, 300);
+    autoGrowDream();
   });
+  // Initial sizing in case loadState already set the value
+  autoGrowDream();
 }
 
 /* ════════════════════════════════════════════════════════════════
@@ -1807,24 +1947,50 @@ function renderHabits(targetId='habits-quick') {
 }
 
 function promptAddHabit() {
+  // Curated palette — contemplative glyphs first, lifestyle emoji second.
+  // The user can still type anything custom (the input below the palette
+  // wins). Selected glyph mirrors into the input so the chosen state is
+  // visible and editable.
+  const PALETTE = ['◇','✦','✧','☉','☾','◯','⊙','△','◎','🪷','☘','🌅','🏋','📖','🧘','🚶','💧','🍃'];
   openModal(`
     <h3>New habit</h3>
     <p>One thing you want to do consistently. Examples: <em>Wake at 6</em>, <em>Gym</em>, <em>Read 30 min</em>, <em>Meditate</em>.</p>
     <input id="h-name" placeholder="Name your habit…" autofocus>
-    <input id="h-icon" placeholder="Emoji or symbol (optional, e.g. 🏋️ ☀️ 📖 ◇)" maxlength="2">
+    <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-faint);margin:0.7rem 0 0.4rem">Symbol</div>
+    <div id="h-icon-palette" role="radiogroup" aria-label="Habit symbol" style="display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:0.6rem">
+      ${PALETTE.map(g => `<button type="button" class="h-icon-opt" role="radio" aria-checked="false" data-glyph="${escape(g)}" style="width:34px;height:34px;border:1px solid var(--card-border);border-radius:3px;background:rgba(255,255,255,0.025);color:var(--text);font-size:1rem;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s,transform .1s">${escape(g)}</button>`).join('')}
+    </div>
+    <input id="h-icon" placeholder="Or type your own (emoji or single symbol)" maxlength="2">
     <div class="modal-actions">
       <button class="btn" onclick="closeModal()">Cancel</button>
       <button class="btn btn-gold" id="h-save">Add habit</button>
     </div>
   `);
+  // Wire the palette: clicking a glyph fills the icon input and marks selected
+  const iconInput = document.getElementById('h-icon');
+  document.querySelectorAll('#h-icon-palette .h-icon-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      document.querySelectorAll('#h-icon-palette .h-icon-opt').forEach(b => {
+        b.style.borderColor = 'var(--card-border)';
+        b.style.background = 'rgba(255,255,255,0.025)';
+        b.setAttribute('aria-checked', 'false');
+      });
+      btn.style.borderColor = 'var(--gold)';
+      btn.style.background = 'rgba(196,151,58,0.12)';
+      btn.setAttribute('aria-checked', 'true');
+      iconInput.value = btn.dataset.glyph;
+    });
+  });
+
   document.getElementById('h-save').addEventListener('click', async () => {
     const name = document.getElementById('h-name').value.trim();
     if (!name) { toast('Give it a name'); return; }
-    const icon = document.getElementById('h-icon').value.trim() || '◇';
+    const icon = iconInput.value.trim() || '◇';
     state.habits.push({ id: uid('hab'), name, icon, createdAt: todayISO(), archived: false });
     await persist();
     closeModal();
     renderHabits('habits-quick'); renderHabits('habits-full'); renderHabitHistory();
+    renderToday();
   });
   document.getElementById('h-name').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('h-save').click();
@@ -2000,6 +2166,10 @@ async function renderVision() {
   if (!el) return;
   const imgs = await store.getImages();
   el.innerHTML = '';
+  // Toggle the dropzone's empty-pulse class so a first-time visitor sees
+  // a gentle invitation; it stops the moment any image lands.
+  const dz = document.getElementById('dropzone');
+  if (dz) dz.classList.toggle('empty', imgs.length === 0);
   if (imgs.length === 0) {
     el.innerHTML = `<div class="vision-empty" style="grid-column:1/-1;column-span:all">Nothing pinned yet. Drop in the images that hold your future.</div>`;
     return;
@@ -2363,9 +2533,13 @@ illumEls.input?.addEventListener('input', () => {
   illumEls.input.style.height = Math.min(160, illumEls.input.scrollHeight) + 'px';
 });
 
-// Esc closes the panel
+// Esc closes the panel — and any open modal too. Modals are checked first
+// so a stacked Illuminator-over-modal closes the modal layer first.
 document.addEventListener('keydown', e => {
-  if (e.key === 'Escape' && illumEls.panel.classList.contains('open')) closeChatPanel();
+  if (e.key !== 'Escape') return;
+  const modalBg = document.getElementById('modal-bg');
+  if (modalBg?.classList.contains('open')) { closeModal(); return; }
+  if (illumEls.panel?.classList.contains('open')) { closeChatPanel(); return; }
 });
 
 // Number keys 1-5 jump tabs (skip when typing in inputs/textareas/contenteditable)
@@ -2436,6 +2610,7 @@ document.getElementById('import-file').addEventListener('change', async e => {
 function renderAll() {
   document.getElementById('today-date').textContent = formatDate(new Date());
   renderFirstRun();
+  renderToday();
   renderScoreboard();
   renderDream();
   renderChiefAimsEdit();
@@ -2449,6 +2624,163 @@ function renderAll() {
   if (document.querySelector('.view#view-progress.active')) {
     renderScoreChart(); renderHeatmap(); renderHitRate();
   }
+}
+
+/* ── Today panel — morning ritual surface ──────────────────────────────
+   Shows once the user has any data (after first-run dismisses). Ribbons
+   four things together: today's intention (live editable), yesterday's
+   intention + a reflection slot ("what did today serve?"), today's habits
+   at a glance, this month's goals at a glance, and any streak milestones
+   recently passed. Saves on input via the existing persist() so changes
+   sync to cloud the same way every other field does.
+*/
+function renderToday() {
+  const el = document.getElementById('today-section');
+  if (!el) return;
+  if (isStateEmpty()) { el.hidden = true; el.innerHTML = ''; return; }
+  el.hidden = false;
+
+  const today = todayISO();
+  const yesterday = (() => { const d = new Date(); d.setDate(d.getDate()-1); return dateISO(d); })();
+  if (!state.dailyIntentions) state.dailyIntentions = {};
+  const todayEntry = state.dailyIntentions[today] || {};
+  const yesterdayEntry = state.dailyIntentions[yesterday] || null;
+
+  const niceDate = formatDate(new Date()); // already imported
+
+  // Today's habits: render as chips with done state
+  const activeHabits = state.habits.filter(h => !h.archived);
+  const todayLog = state.habitLogs[today] || {};
+  const habitsBlock = activeHabits.length === 0
+    ? '<div class="today-glance-empty">No habits yet — add one in Daily Practice.</div>'
+    : '<div class="glance-list">' + activeHabits.map(h => {
+        const done = !!todayLog[h.id];
+        return `<span class="today-chip ${done ? 'done' : ''}" data-habit-id="${h.id}" role="button" tabindex="0" aria-pressed="${done ? 'true' : 'false'}" aria-label="${escape(h.name)}${done ? ', done today' : ', tap to mark done'}"><span aria-hidden="true">${escape(h.icon || '◇')}</span> ${escape(h.name)}</span>`;
+      }).join('') + '</div>';
+
+  // This month's goals
+  const thisMonth = monthISO();
+  const monthGoals = state.goals.filter(g => g.month === thisMonth);
+  const goalsBlock = monthGoals.length === 0
+    ? '<div class="today-glance-empty">No goals for this month — open the Goal Pyramid to set some.</div>'
+    : '<div class="glance-list">' + monthGoals.map(g => {
+        const done = !!g.completed;
+        return `<span class="today-chip ${done ? 'done' : ''}" data-goal-id="${g.id}" role="button" tabindex="0" aria-pressed="${done ? 'true' : 'false'}" aria-label="${escape(g.title || 'unnamed goal')}${done ? ', done' : ', tap to mark done'}">${escape(g.title || 'unnamed goal')}</span>`;
+      }).join('') + '</div>';
+
+  // Streak milestones — celebrate at 7 / 30 / 100 / 365 once per (habit, threshold).
+  const STREAK_THRESHOLDS = [7, 30, 100, 365];
+  if (!state.streakMilestonesSeen) state.streakMilestonesSeen = {};
+  const milestones = [];
+  for (const h of activeHabits) {
+    const streak = streakFor(h.id);
+    for (const t of STREAK_THRESHOLDS) {
+      if (streak >= t) {
+        const key = `${h.id}-${t}`;
+        if (!state.streakMilestonesSeen[key]) {
+          milestones.push({ habit: h, threshold: t, key });
+        }
+      }
+    }
+  }
+  // Show at most three at a time so it never feels noisy
+  const visibleMilestones = milestones.slice(0, 3);
+  const milestonesBlock = visibleMilestones.length === 0 ? '' :
+    '<div class="today-milestones">' + visibleMilestones.map(m =>
+      `<div class="today-milestone"><span class="glyph" aria-hidden="true">✦</span><span><strong>${m.threshold} days</strong> of ${escape(m.habit.name)}. Quiet, repeated devotion is the work.</span><button type="button" class="today-milestone-dismiss" data-milestone-key="${m.key}" aria-label="Acknowledge milestone">×</button></div>`
+    ).join('') + '</div>';
+
+  el.innerHTML = `
+    <div class="today-card">
+      <div class="today-date">${escape(niceDate)}</div>
+      <div class="today-intent-label">What is today's intention?</div>
+      <textarea class="today-intent-input" id="today-intent-input" rows="1" placeholder="A line that names what today serves…">${escape(todayEntry.intention || '')}</textarea>
+      ${yesterdayEntry && (yesterdayEntry.intention || yesterdayEntry.reflection) ? `
+        <div class="today-yesterday">
+          ${yesterdayEntry.intention ? `Yesterday: <strong>${escape(yesterdayEntry.intention)}</strong>` : ''}
+          <span class="yesterday-prompt">What did yesterday serve?</span>
+          <textarea class="today-yesterday-input" id="today-yesterday-input" rows="1" placeholder="A short reflection — keep it small.">${escape(yesterdayEntry.reflection || '')}</textarea>
+        </div>
+      ` : ''}
+      <div class="today-glance">
+        <div class="today-glance-block">
+          <div class="glance-label"><span aria-hidden="true">◇</span> Today's practice</div>
+          ${habitsBlock}
+        </div>
+        <div class="today-glance-block">
+          <div class="glance-label"><span aria-hidden="true">·</span> This month's goals</div>
+          ${goalsBlock}
+        </div>
+      </div>
+      ${milestonesBlock}
+    </div>
+  `;
+
+  // ── Wire interactions ─────────────────────────────────────────────
+  const intentInput = document.getElementById('today-intent-input');
+  if (intentInput) {
+    let h;
+    intentInput.addEventListener('input', () => {
+      if (!state.dailyIntentions[today]) state.dailyIntentions[today] = {};
+      state.dailyIntentions[today].intention = intentInput.value;
+      clearTimeout(h); h = setTimeout(persist, 300);
+    });
+    // Auto-grow
+    const autoGrow = () => {
+      intentInput.style.height = 'auto';
+      intentInput.style.height = intentInput.scrollHeight + 'px';
+    };
+    intentInput.addEventListener('input', autoGrow);
+    autoGrow();
+  }
+
+  const yIn = document.getElementById('today-yesterday-input');
+  if (yIn) {
+    let h2;
+    yIn.addEventListener('input', () => {
+      if (!state.dailyIntentions[yesterday]) state.dailyIntentions[yesterday] = {};
+      state.dailyIntentions[yesterday].reflection = yIn.value;
+      clearTimeout(h2); h2 = setTimeout(persist, 300);
+    });
+  }
+
+  // Habit chip tap → toggle today's log
+  el.querySelectorAll('.today-chip[data-habit-id]').forEach(chip => {
+    const fire = () => {
+      const id = chip.dataset.habitId;
+      if (!state.habitLogs[today]) state.habitLogs[today] = {};
+      state.habitLogs[today][id] = !state.habitLogs[today][id];
+      persist().then(() => { renderToday(); renderHabits('habits-quick'); renderHabits('habits-full'); renderHabitHistory(); });
+    };
+    chip.addEventListener('click', fire);
+    chip.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fire(); }
+    });
+  });
+
+  // Goal chip tap → toggle done
+  el.querySelectorAll('.today-chip[data-goal-id]').forEach(chip => {
+    const fire = () => {
+      const g = state.goals.find(x => x.id === chip.dataset.goalId);
+      if (!g) return;
+      g.completed = !g.completed;
+      g.completedDate = g.completed ? todayISO() : null;
+      persist().then(renderAll);
+      if (g.completed) toast('Goal hit. ✦');
+    };
+    chip.addEventListener('click', fire);
+    chip.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); fire(); }
+    });
+  });
+
+  // Milestone dismiss → mark seen so it doesn't re-show
+  el.querySelectorAll('.today-milestone-dismiss').forEach(btn => {
+    btn.addEventListener('click', () => {
+      state.streakMilestonesSeen[btn.dataset.milestoneKey] = true;
+      persist().then(renderToday);
+    });
+  });
 }
 
 /* ── First-run coaching panel ── */
@@ -2495,11 +2827,27 @@ function renderFirstRun() {
   });
 }
 
+// Mobile tab-overflow gradient — adds .scrollable when the tab strip needs
+// to scroll horizontally so the right-edge fade hint appears. Re-checks on
+// resize. Fade goes away the moment the user scrolls to the end.
+function syncTabsScrollable() {
+  const wrap = document.getElementById('tabs-wrap');
+  if (!wrap) return;
+  const strip = wrap.querySelector('.tabs');
+  if (!strip) return;
+  const overflow = strip.scrollWidth - strip.clientWidth;
+  const atEnd = strip.scrollLeft + strip.clientWidth >= strip.scrollWidth - 4;
+  wrap.classList.toggle('scrollable', overflow > 4 && !atEnd);
+}
+
 (async function init() {
   await loadState();
   renderAll();
   bindDream();
   bindUploads();
+  syncTabsScrollable();
+  window.addEventListener('resize', syncTabsScrollable);
+  document.querySelector('.tabs')?.addEventListener('scroll', syncTabsScrollable, { passive: true });
   // tab from hash
   const h = location.hash.replace('#','');
   if (h && ['dashboard','pyramid','practice','progress','vision'].includes(h)) switchTab(h);

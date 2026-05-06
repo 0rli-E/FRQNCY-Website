@@ -855,14 +855,35 @@ ${ldTag}
 // ── PILLAR PAGE ──────────────────────────────────────────────────
 function pillarPage(p) {
   const domains = domainsByPillar.get(p.id) || [];
-  const dcards  = domains.map(d => `<a href="../${d.slug}/index.html" class="ncard">
+  const canonical = `https://frqncy.network/v2/${p.slug}/`;
+
+  // Cross-cutting pillars (no domains tagged with this pillar as primary)
+  // — Curate, Sell, etc. — describe an operating mode that runs across every
+  // domain rather than partitioning the graph. Render a different body that
+  // says so plainly instead of an empty "Domains within X" grid.
+  const isCrossCutting = domains.length === 0;
+
+  const body = isCrossCutting
+    ? `<main>
+  <section>
+    <div class="section-label">A way of doing, not a bucket</div>
+    <p class="hero-desc" style="max-width:640px;margin:0 auto 1.25rem;text-align:center">${esc(p.label)} runs across every domain at FRQNCY. It shows up not as a list of topics under one heading, but as a way the work gets done — touching how every pillar, domain, and topic lives on the site.</p>
+    <p class="hero-desc" style="max-width:640px;margin:0 auto;text-align:center;opacity:0.7">More on what this looks like in practice — the choices made, the work shown — coming soon.</p>
+  </section>
+  ${resourceSection(p.id, 'FRQNCY Picks')}
+</main>`
+    : `<main>
+  <section>
+    <div class="section-label">Domains within ${esc(p.label)}</div>
+    <div class="grid">${domains.map(d => `<a href="../${d.slug}/index.html" class="ncard">
   <div class="ncard-type">Domain</div>
   <h3>${esc(d.label)}</h3>
   <p>${esc(d.desc || '')}</p>
   <span class="ncard-arrow">→</span>
-</a>`).join('\n');
-
-  const canonical = `https://frqncy.network/v2/${p.slug}/`;
+</a>`).join('\n')}</div>
+  </section>
+  ${resourceSection(p.id, 'FRQNCY Picks')}
+</main>`;
 
   return head(p.label, p.accent, p.desc, canonical, collectionLd(p.label, p.desc, canonical), p.slug) +
 nav('') +
@@ -871,13 +892,7 @@ nav('') +
   <h1>${esc(p.label)}</h1>
   <p class="hero-desc">${esc(p.desc)}</p>
 </div>
-<main>
-  <section>
-    <div class="section-label">Domains within ${esc(p.label)}</div>
-    <div class="grid">${dcards}</div>
-  </section>
-  ${resourceSection(p.id, 'FRQNCY Picks')}
-</main>
+${body}
 ${FOOTER}
 </body></html>`;
 }
@@ -1256,6 +1271,22 @@ function bookPage(book) {
     isPartOf: SITE_REF,
   };
 
+  // Optional editorial fields populated by enrichment pass:
+  //   intro — a paragraph (or 2-3) sourced from the book itself / publisher / archive.org
+  //   quote — { text, attribution } pulled from the book or its canonical excerpt
+  const introHtml = book.intro
+    ? `<section class="book-intro" style="max-width:680px;margin:0 auto clamp(2rem,5vw,3.5rem);padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.96rem;line-height:1.85;color:var(--text)">${
+        String(book.intro).split(/\n\n+/).map(p => `<p style="margin-bottom:1.1rem">${esc(p.trim())}</p>`).join('')
+      }</section>` : '';
+  const quoteHtml = (() => {
+    const q = book.quote;
+    if (!q) return '';
+    const text = typeof q === 'string' ? q : (q.text || '');
+    const attr = typeof q === 'object' ? (q.attribution || '') : '';
+    if (!text) return '';
+    return `<aside class="book-quote" style="max-width:580px;margin:clamp(2.5rem,6vw,4rem) auto;padding:0 clamp(1.5rem,5vw,2.5rem);text-align:center"><blockquote style="font-family:'Cormorant',serif;font-size:clamp(1.3rem,2.6vw,1.65rem);font-weight:300;line-height:1.5;color:#fff;font-style:italic;border:none;margin:0;padding:0">${esc(text)}</blockquote>${attr ? `<div style="margin-top:1rem;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)">— ${esc(attr)}</div>` : ''}</aside>`;
+  })();
+
   return head(book.title, null, book.bio, canonical, ld, null) +
 nav(crumb) +
 `<div class="hero">
@@ -1266,6 +1297,8 @@ nav(crumb) +
   ${externalLink}
 </div>
 <main>
+  ${introHtml}
+  ${quoteHtml}
   ${topicsSection}
 </main>
 ${FOOTER}

@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Book","name":"Acres of Diamonds","description":"The famous lecture given 6,000 times — the opportunity you seek is already in the field you stand on.","url":"https://frqncy.network/books/acres-of-diamonds/","sameAs":["https://www.gutenberg.org/ebooks/368"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"Books","item":"https://frqncy.network/books/"},{"@type":"ListItem","position":3,"name":"Acres of Diamonds","item":"https://frqncy.network/books/acres-of-diamonds/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -261,6 +261,8 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://www.gutenberg.org/ebooks/368" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>
 </div>
 <main>
+  <section class="book-intro" style="max-width:680px;margin:0 auto clamp(2rem,5vw,3.5rem);padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.96rem;line-height:1.85;color:var(--text)"><p style="margin-bottom:1.1rem">This stirring manifesto shows how to discover everything you need to succeed— where you least expect it.So begins one of the most famous speeches of the twentieth century, a talk that educator and minister Russell H. Conwell delivered before literally thousands of audiences before his death in 1925. In its printed version Acres of Diamonds reached millions of readers around the world. Conwell&#39;s great manifesto imparts one extraordinary lesson: All the wealth you could ever dream of, search for, or yearn after—in whatever form you wish for—exists right beneath your own feet. It is a message of determination, unconventional thinking, and positive living that came to influence a generation of motivational literature.The Success Classics edition of Acres of Diamonds also features two rare bonus works: Praying for Money and The Story of &quot;Acres of Diamonds&quot; by journalist Robert Shackleton.</p></section>
+  <aside class="book-quote" style="max-width:580px;margin:clamp(2.5rem,6vw,4rem) auto;padding:0 clamp(1.5rem,5vw,2.5rem);text-align:center"><blockquote style="font-family:'Cormorant',serif;font-size:clamp(1.3rem,2.6vw,1.65rem);font-weight:300;line-height:1.5;color:#fff;font-style:italic;border:none;margin:0;padding:0">I vowed that from that moment I would live not only my own life, but that I would also live the life of John Ring. And from that moment I have worked sixteen hours every day—eight for John Ring&#39;s work and eight hours for my own.</blockquote><div style="margin-top:1rem;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)">— Acres of Diamonds, &quot;Story of the Sword&quot;</div></aside>
   <section>
   <div class="section-label">Appears on</div>
   <div class="grid grid-sm"><a href="/v2/personal-development/index.html" class="ncard">

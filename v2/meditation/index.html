@@ -23,79 +23,607 @@
 <link rel="canonical" href="https://frqncy.network/v2/meditation/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="../_chrome/topic-base.css">
-<link rel="stylesheet" href="../_chrome/treatments/monastic.css">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
-:root {
-  --accent: #E84A8A;
-  --accent-warm: #E84A8A;
-  --accent-soft: rgba(232, 74, 138, 0.14);
+:root{--accent:#E84A8A;--accent-glow:rgba(232,74,138,0.14)}
+
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#8FA8CC;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08)}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+a:hover{opacity:0.8}
+
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.snav-badge{font-size:0.55rem;letter-spacing:0.18em;color:var(--accent);border:1px solid currentColor;padding:1px 6px;border-radius:2px;vertical-align:middle;margin-left:4px;opacity:0.8}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text);opacity:1}
+.breadcrumb .sep{opacity:0.25;font-size:0.65rem}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28);opacity:1}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
+.hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+/* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
+   Subtle on hover, never shouts. Routes to the Sanctuary panel pre-seeded. */
+.illum-cta{display:inline-flex;align-items:center;gap:0.6rem;margin-top:1.6rem;padding:0.55rem 1.15rem;border:1px solid rgba(196,151,58,0.32);border-radius:999px;background:rgba(196,151,58,0.05);color:var(--gold,#C4973A);font-size:0.74rem;letter-spacing:0.06em;text-decoration:none;transition:border-color .2s,background .2s,color .2s;font-family:'Jost',sans-serif;font-weight:400;position:relative;z-index:1}
+.illum-cta:hover{border-color:rgba(224,192,106,0.62);background:rgba(196,151,58,0.1);color:#fff}
+.illum-cta-glyph{font-size:0.92rem;line-height:1}
+.illum-cta-text em{font-style:italic;color:var(--gold-light,#E0C06A);font-weight:400}
+.illum-cta:hover .illum-cta-text em{color:#fff}
+
+/* Topic prev/next mini-nav — chapter-book continuity at the foot of every
+   topic page. Two side-by-side links; placeholder spans keep the layout
+   stable at the boundaries. */
+.topic-prevnext{display:grid;grid-template-columns:1fr 1fr;gap:0.9rem;margin:3rem 0 4rem;padding-top:2rem;border-top:1px solid rgba(255,255,255,0.06)}
+.topic-prevnext-link{display:flex;flex-direction:column;gap:0.4rem;padding:1.1rem 1.25rem;border:1px solid var(--card-border);border-radius:4px;background:rgba(255,255,255,0.02);text-decoration:none;color:var(--text);transition:border-color .2s,background .2s,transform .2s}
+.topic-prevnext-link:hover{border-color:rgba(196,151,58,0.32);background:rgba(255,255,255,0.045);color:var(--text);transform:translateY(-1px)}
+.topic-prevnext-link.next{align-items:flex-end;text-align:right}
+.topic-prevnext-link.disabled{visibility:hidden;pointer-events:none}
+.topic-prevnext-eyebrow{font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);opacity:0.85}
+.topic-prevnext-label{font-family:'Cormorant',serif;font-size:1.18rem;font-weight:400;color:#fff;line-height:1.3}
+@media(max-width:560px){
+  .topic-prevnext{grid-template-columns:1fr;gap:0.7rem}
+  .topic-prevnext-link.next{align-items:flex-start;text-align:left}
+  .topic-prevnext-link.disabled{display:none}
+}
+
+/* MAIN */
+main{max-width:1080px;margin:0 auto;padding:3rem clamp(1.25rem,5vw,2.5rem) 7rem}
+section{margin-bottom:4.5rem}
+.section-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.75rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
+
+/* GRID */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border)}
+.grid-sm{grid-template-columns:repeat(auto-fill,minmax(180px,1fr))}
+
+/* NODE CARD */
+.ncard{background:var(--navy);padding:1.4rem 1.4rem 1.1rem;text-decoration:none;color:var(--text);display:block;transition:background .2s;position:relative}
+.ncard:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.ncard-type{font-size:0.54rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent);margin-bottom:0.6rem;opacity:0.8}
+.ncard h3{font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;margin-bottom:0.4rem;line-height:1.2}
+.ncard p{font-size:0.76rem;color:var(--text-dim);line-height:1.45}
+.ncard-arrow{position:absolute;top:1.2rem;right:1.2rem;font-size:0.7rem;color:var(--accent);opacity:0;transition:opacity .2s}
+.ncard:hover .ncard-arrow{opacity:1}
+
+/* RESOURCE CARD */
+.rcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1.25rem 1.4rem;display:grid;grid-template-columns:auto 1fr auto;gap:1rem;align-items:start;transition:border-color .2s,background .2s}
+.rcard:hover{border-color:rgba(255,255,255,0.14);background:rgba(255,255,255,0.05)}
+.rtype{font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--navy);background:var(--accent);padding:3px 9px;border-radius:2px;font-weight:500;white-space:nowrap;line-height:1.6;margin-top:2px}
+.rinfo{min-width:0}
+.rinfo h4{font-size:0.9rem;font-weight:400;color:#fff;margin-bottom:0.35rem;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;line-height:1.35}
+.rinfo p{font-size:0.76rem;color:var(--text-dim);line-height:1.55}
+.fpick{font-size:0.48rem;letter-spacing:0.15em;color:var(--gold);border:1px solid rgba(196,151,58,0.5);padding:1px 6px;border-radius:2px;flex-shrink:0;font-weight:400}
+.rlink{font-size:0.66rem;letter-spacing:0.1em;color:var(--accent);border:1px solid rgba(255,255,255,0.1);padding:5px 12px;border-radius:2px;white-space:nowrap;transition:all .2s;text-decoration:none;margin-top:1px}
+.rlink:hover{border-color:var(--accent);opacity:1}
+
+/* EMPTY */
+.empty{text-align:center;padding:3.5rem 2rem;border:1px dashed rgba(255,255,255,0.08);border-radius:4px}
+.empty p{color:var(--text-dim);font-size:0.82rem;line-height:1.7}
+
+/* FILTER TABS */
+.ftabs{display:flex;gap:0.4rem;flex-wrap:wrap;margin-bottom:1.75rem}
+.ftab{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;padding:5px 14px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif}
+.ftab:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.ftab.active{border-color:var(--accent);color:var(--accent);background:rgba(255,255,255,0.03)}
+
+/* RLIST */
+.rlist{display:flex;flex-direction:column;gap:0.65rem}
+
+/* PICKS CALLOUT */
+.picks-intro{font-size:0.78rem;color:var(--text-dim);margin-bottom:1.5rem;line-height:1.6;max-width:600px}
+.picks-intro strong{color:var(--gold);font-weight:400}
+
+/* VIDEO SECTION */
+.vgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1rem;margin-top:0}
+.vcard-t{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
+  overflow:hidden;cursor:pointer;transition:border-color .22s,transform .22s,background .22s;
+  display:flex;flex-direction:column;
+}
+.vcard-t:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.05)}
+.vcard-t:active{transform:translateY(0);transition-duration:.1s}
+.vthumb-t{position:relative;width:100%;aspect-ratio:16/9;background:#0a1428;overflow:hidden;flex-shrink:0}
+.vthumb-t img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .3s}
+.vcard-t:hover .vthumb-t img{transform:scale(1.04)}
+.vplay-t{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;background:rgba(0,0,0,0.2);transition:background .2s}
+.vcard-t:hover .vplay-t{background:rgba(0,0,0,0.38)}
+.vplay-btn-t{
+  width:40px;height:40px;border-radius:50%;
+  background:rgba(255,255,255,0.18);backdrop-filter:blur(4px);
+  border:1.5px solid rgba(255,255,255,0.35);
+  display:flex;align-items:center;justify-content:center;
+  transition:background .2s,transform .2s;
+}
+.vcard-t:hover .vplay-btn-t{background:rgba(255,255,255,0.28);transform:scale(1.1)}
+.vdur-t{position:absolute;bottom:6px;right:6px;background:rgba(0,0,0,0.78);color:#fff;font-family:'Jost',sans-serif;font-size:0.6rem;padding:1px 6px;border-radius:2px;letter-spacing:0.02em}
+.vpick-t{position:absolute;top:6px;left:6px;background:rgba(196,151,58,0.92);color:#0B1C3D;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;padding:2px 6px;border-radius:2px}
+.vprov-t{position:absolute;bottom:6px;left:6px;font-family:'Jost',sans-serif;font-size:0.46rem;letter-spacing:0.12em;text-transform:uppercase;padding:2px 6px;border-radius:2px}
+.vthumb-fallback-t{width:100%;height:100%;background:linear-gradient(135deg,rgba(74,122,232,0.12),rgba(196,151,58,0.08))}
+.vplay-ext-t{border-style:dashed}
+.vinfo-t{padding:0.8rem 1rem 0.9rem;flex:1;display:flex;flex-direction:column;gap:0.2rem}
+.vtitle-t{font-family:'Cormorant',serif;font-size:1rem;font-weight:400;color:#fff;line-height:1.25}
+.vchan-t{font-size:0.66rem;color:var(--text-dim)}
+/* VIDEO MODAL */
+.vmodal{
+  position:fixed;inset:0;z-index:200;
+  background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;padding:1.25rem;
+  opacity:0;pointer-events:none;transition:opacity .25s;
+}
+.vmodal.open{opacity:1;pointer-events:all}
+.vmodal-box{
+  width:100%;max-width:860px;background:#0c1e42;
+  border:1px solid rgba(255,255,255,0.1);border-radius:6px;overflow:hidden;
+  transform:translateY(10px) scale(0.98);transition:transform .25s;
+}
+.vmodal.open .vmodal-box{transform:translateY(0) scale(1)}
+.vmodal-player{width:100%;aspect-ratio:16/9}
+.vmodal-player iframe{width:100%;height:100%;border:none;display:block}
+.vmodal-footer{display:flex;align-items:flex-start;justify-content:space-between;gap:1rem;padding:1rem 1.25rem;border-top:1px solid rgba(255,255,255,0.07)}
+.vmodal-title{font-family:'Cormorant',serif;font-size:1.2rem;color:#fff;line-height:1.2;margin-bottom:0.15rem}
+.vmodal-chan{font-size:0.68rem;color:var(--text-dim)}
+.vmodal-close{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.1);
+  cursor:pointer;width:30px;height:30px;border-radius:50%;flex-shrink:0;
+  display:flex;align-items:center;justify-content:center;
+  color:var(--text-dim);font-size:0.95rem;transition:all .2s;
+}
+.vmodal-close:hover{color:#fff;background:rgba(255,255,255,0.12)}
+.watch-link{
+  display:inline-flex;align-items:center;gap:0.4rem;margin-top:1.1rem;
+  font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--accent);border:1px solid rgba(255,255,255,0.1);
+  padding:6px 14px;border-radius:2px;transition:border-color .2s;text-decoration:none;
+}
+.watch-link:hover{border-color:var(--accent);opacity:1}
+
+/* COURSE CALLOUT */
+.course-callout{
+  display:flex;align-items:center;gap:1.25rem;
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
+  padding:1.25rem 1.4rem;margin-bottom:0.75rem;
+  text-decoration:none;color:var(--text);transition:background .2s,border-color .2s;
+  position:relative;overflow:hidden;
+}
+.course-callout::before{content:'';position:absolute;left:0;top:0;bottom:0;width:3px;background:var(--course-accent,var(--accent))}
+.course-callout:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.14);opacity:1}
+.cc-level{font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;padding:2px 8px;border-radius:2px;border:1px solid currentColor;flex-shrink:0;white-space:nowrap}
+.cc-body{flex:1;min-width:0}
+.cc-title{font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;color:#fff;line-height:1.2;margin-bottom:0.25rem}
+.cc-meta{font-size:0.68rem;color:var(--text-dim)}
+.cc-arrow{font-size:1rem;color:var(--accent);flex-shrink:0;transition:transform .2s}
+.course-callout:hover .cc-arrow{transform:translateX(3px)}
+
+/* FOOTER */
+footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center}
+.footer-inner{max-width:1080px;margin:0 auto;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.footer-logo{font-family:'Cormorant',serif;font-size:1rem;letter-spacing:0.25em;color:rgba(255,255,255,0.3);text-transform:uppercase}
+.footer-links{display:flex;gap:1.5rem}
+.footer-links a{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);text-transform:uppercase;transition:color .2s}
+.footer-links a:hover{color:var(--text);opacity:1}
+
+@media(max-width:640px){
+  .hero{padding:3rem 1.25rem 2.5rem}
+  main{padding:2rem 1.25rem 5rem}
+  .rcard{grid-template-columns:auto 1fr;grid-template-rows:auto auto}
+  .rlink{grid-column:2;margin-top:0.5rem}
+  .breadcrumb{display:none}
+  .footer-inner{flex-direction:column;gap:1rem;text-align:center}
+  .vgrid{grid-template-columns:1fr 1fr;gap:0.75rem}
+  .snav-back{font-size:0.6rem;padding:4px 10px}
+}
+@media(max-width:400px){
+  .vgrid{grid-template-columns:1fr}
+  .rcard{grid-template-columns:1fr}
+  .rlink{grid-column:1}
+  .section-label{font-size:0.6rem}
+  /* snav links — Search + ← Main only after the 2026-04-28 nav simplification.
+     Bed-hub nav (People/Books/Orgs/Media/Places) now lives in the main site
+     header dropdown; deep-page nav stays minimal. */
+  .snav > div:last-child{gap:0.4rem;justify-content:flex-end}
+  .snav-back{font-size:0.56rem;letter-spacing:0.08em;padding:3px 7px}
 }
 
 </style>
-
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script src="../../mobile-nav.js" defer></script>
 <script src="../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../nav-dropdown.css">
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Meditation","description":"The practice of conscious attention \u2014 sitting with what is, training the mind toward presence.","image":"https://frqncy.network/v2/og/meditation.png","url":"https://frqncy.network/v2/meditation/","mainEntityOfPage":"https://frqncy.network/v2/meditation/","datePublished":"2026-04-10T23:26:08+08:00","dateModified":"2026-04-30T00:28:02+08:00","author":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/"},"publisher":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/","logo":{"@type":"ImageObject","url":"https://frqncy.network/favicon.svg"}}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://frqncy.network/v2/meditation/","url":"https://frqncy.network/v2/meditation/","hasPart":[{"@type":"WebPageElement","name":"Becoming Supernatural \u2014 Dr. Joe Dispenza","url":"https://frqncy.network/v2/meditation/#becoming-supernatural-dr-joe-dispenza"},{"@type":"WebPageElement","name":"Dr. David R. Hawkins","url":"https://frqncy.network/v2/meditation/#dr-david-r-hawkins"},{"@type":"WebPageElement","name":"Intaaya","url":"https://frqncy.network/v2/meditation/#intaaya"},{"@type":"WebPageElement","name":"Waking Up \u2014 Sam Harris","url":"https://frqncy.network/v2/meditation/#waking-up-sam-harris"}]}</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Meditation — FRQNCY Picks","description":"The practice of conscious attention — sitting with what is, training the mind toward presence.","url":"https://frqncy.network/v2/meditation/","numberOfItems":3,"itemListElement":[{"@type":"ListItem","position":1,"name":"Osho","url":"https://www.osho.com","description":"One of the most prolific and radical spiritual teachers of the 20th century. Created hundreds of meditation techniques — including Dynamic Meditation — designed specifically for the modern mind. His 600+ books distil everything from Zen and Tantra to Taoism and Sufism into a single voice of absolute freedom."},{"@type":"ListItem","position":2,"name":"Waking Up — Sam Harris","url":"https://www.samharris.org/waking-up","description":"The most intellectually rigorous meditation app available. Secular, deep, and genuinely useful."},{"@type":"ListItem","position":3,"name":"Manduka PRO Yoga Mat","url":"https://www.manduka.com/","description":"The standard. Cushioned, dense, thick enough for the knees. Lifetime guarantee. The mat every serious yoga teacher recommends without thinking about it."}],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Education","item":"https://frqncy.network/v2/education/"},{"@type":"ListItem","position":3,"name":"Well-being","item":"https://frqncy.network/v2/wellbeing/"},{"@type":"ListItem","position":4,"name":"Meditation","item":"https://frqncy.network/v2/meditation/"}]}}</script>
 </head>
-<body class="t-monastic">
-
-<nav class="snav">
+<body><nav class="snav">
   <div class="snav-left">
     <a href="/v2/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
-    <div class="breadcrumb"><a href="/">FRQNCY</a><span class="sep">/</span><span>Well-being</span></div>
+    <div class="breadcrumb"><a href="../education/index.html">Education</a><span class="sep">/</span><a href="../wellbeing/index.html">Well-being</a><span class="sep">/</span><span>Meditation</span></div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
-    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
-    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
-    <a href="/aligned/" class="snav-back">Aligned</a>
+    <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
     <a href="/" class="snav-back">← Main</a>
   </div>
-</nav>
+</nav><div class="hero">
+  <div class="hero-eyebrow">Well-being &nbsp;·&nbsp; Topic &nbsp;·&nbsp; <span class="hero-readtime" aria-label="3 minute read">≈ 3 min read</span></div>
+  <h1>Meditation</h1>
+  <p class="hero-desc">The practice of conscious attention — sitting with what is, training the mind toward presence.</p>
+  <a class="illum-cta" href="/my-frqncy/dashboard/#illuminate=Meditation" rel="noopener" aria-label="Illuminate the word Meditation in your Sanctuary">
+    <span class="illum-cta-glyph" aria-hidden="true">✧</span>
+    <span class="illum-cta-text">Illuminate the word <em>Meditation</em></span>
+  </a>
+</div>
+<main>
+  <section>
+  <div class="section-label">Watch</div>
+  <div class="vgrid">
+  <div class="vcard-t" data-embed="https://www.youtube.com/embed/ZToicYcHIOU?autoplay=1&amp;rel=0&amp;modestbranding=1" data-watch="https://www.youtube.com/watch?v=ZToicYcHIOU" data-title="How to Meditate — For Beginners" data-chan="Headspace" tabindex="0" role="button" aria-label="Play How to Meditate — For Beginners">
+    <div class="vthumb-t">
+      <img src="https://img.youtube.com/vi/ZToicYcHIOU/hqdefault.jpg" alt="" loading="lazy" decoding="async">
+      <div class="vplay-t"><div class="vplay-btn-t"><svg viewBox="0 0 24 24" fill="white" width="16" height="16"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+      <span class="vdur-t">10 min</span>
+      <span class="vpick-t">FRQNCY Pick</span>
+      
+    </div>
+    <div class="vinfo-t">
+      <div class="vtitle-t">How to Meditate — For Beginners</div>
+      <div class="vchan-t">Headspace</div>
+    </div>
+  </div>
+  <div class="vcard-t" data-embed="https://www.youtube.com/embed/tw7XBKhZJh4?autoplay=1&amp;rel=0&amp;modestbranding=1" data-watch="https://www.youtube.com/watch?v=tw7XBKhZJh4" data-title="Mindfulness Meditation — Sam Harris" data-chan="Waking Up" tabindex="0" role="button" aria-label="Play Mindfulness Meditation — Sam Harris">
+    <div class="vthumb-t">
+      <img src="https://img.youtube.com/vi/tw7XBKhZJh4/hqdefault.jpg" alt="" loading="lazy" decoding="async">
+      <div class="vplay-t"><div class="vplay-btn-t"><svg viewBox="0 0 24 24" fill="white" width="16" height="16"><polygon points="5,3 19,12 5,21"/></svg></div></div>
+      <span class="vdur-t">9 min</span>
+      
+      
+    </div>
+    <div class="vinfo-t">
+      <div class="vtitle-t">Mindfulness Meditation — Sam Harris</div>
+      <div class="vchan-t">Waking Up</div>
+    </div>
+  </div></div>
+  <a href="../watch/" class="watch-link">▶ Browse All Videos</a>
+</section>
 
-<section class="hero"><img class="hero-poster" src="https://images.pexels.com/photos/6941322/pexels-photo-6941322.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" aria-hidden="true" decoding="async"><div class="hero-inner layout-split"><div><div class="hero-eyebrow">Well-being · Education</div><h1 class="hero-title">Meditation</h1><p class="hero-desc">The practice of conscious attention — sitting with what is, training the mind toward presence.
-</p></div></div><div class="scroll-hint">descend</div></section>
-
-<main class="topic-body">
-
-<section id="becoming-supernatural-dr-joe-dispenza" class="resource-block fade-up"><span class="label">Books</span><div class="rlist"><a class="rcard" href="https://drjoedispenza.com/books/becoming-supernatural" target="_blank" rel="noopener noreferrer"><span class="rtype">Book</span><div class="rinfo"><h4>Becoming Supernatural — Dr. Joe Dispenza</h4><p>How ordinary people are doing the extraordinary — Dispenza's synthesis of neuroscience, epigenetics, and meditation for healing and transformation.</p></div><span class="rlink">Visit →</span></a><a class="rcard" href="https://veritaspub.com/product/power-vs-force/" target="_blank" rel="noopener noreferrer"><span class="rtype">Book</span><div class="rinfo"><h4>Power vs. Force — Dr. David R. Hawkins</h4><p>The map of human consciousness — kinesiology research revealing that love and truth calibrate exponentially higher than fear and force.</p></div><span class="rlink">Visit →</span></a><a class="rcard" href="https://www.bobrothtm.com/book" target="_blank" rel="noopener noreferrer"><span class="rtype">Book</span><div class="rinfo"><h4>Strength in Stillness — Bob Roth</h4><p>The most accessible introduction to Transcendental Meditation — what TM is, what it does, and why CEOs, athletes, and artists swear by it.</p></div><span class="rlink">Visit →</span></a></div><a class="r-forward" href="/search.html?q=Meditation&type=book">All books on Meditation <span class="r-forward-arrow">→</span></a></section>
-<section id="dr-david-r-hawkins" class="resource-block fade-up"><span class="label">People</span><div class="rlist"><a class="rcard" href="https://veritaspub.com" target="_blank" rel="noopener noreferrer"><span class="rtype">Person</span><div class="rinfo"><h4>Dr. David R. Hawkins</h4><p>Psychiatrist and spiritual teacher who mapped the calibrated levels of human consciousness — from shame at the bottom to enlightenment at the top. His kinesiology research revealed that love and truth calibrate exponentially higher than fear and force. Essential for anyone serious about the mechanics of vibration.</p></div><span class="rlink">Visit →</span></a><a class="rcard" href="https://drjoedispenza.com" target="_blank" rel="noopener noreferrer"><span class="rtype">Person</span><div class="rinfo"><h4>Dr. Joe Dispenza</h4><p>Neuroscientist and meditation teacher whose progressive workshops document measurable physiological and psychological transformation through meditation.</p></div><span class="rlink">Visit →</span></a><a class="rcard" href="https://www.osho.com" target="_blank" rel="noopener noreferrer"><span class="rtype">Person</span><div class="rinfo"><h4>Osho</h4><p>One of the most prolific and radical spiritual teachers of the 20th century. Created hundreds of meditation techniques — including Dynamic Meditation — designed specifically for the modern mind. His 600+ books distil everything from Zen and Tantra to Taoism and Sufism into a single voice of absolute freedom.</p></div><span class="rlink">Visit →</span></a></div><a class="r-forward" href="/search.html?q=Meditation&type=person">All people on Meditation <span class="r-forward-arrow">→</span></a></section>
-
-<section id="intaaya" class="resource-block fade-up"><span class="label">Places</span><div class="rlist"><a class="rcard" href="https://intaaya.com" target="_blank" rel="noopener noreferrer"><span class="rtype">Place</span><div class="rinfo"><h4>Intaaya</h4><p>Regenerative retreat sanctuary on Nusa Penida, near Bali. Off-grid, farm-to-table, living to the rhythm of nature. A living example of the Sanctuary pillar — the physical extension of the FRQNCY network.</p></div><span class="rlink">Visit →</span></a></div><a class="r-forward" href="/search.html?q=Meditation&type=place">All places on Meditation <span class="r-forward-arrow">→</span></a></section>
-<section id="waking-up-sam-harris" class="resource-block fade-up"><span class="label">Tools &amp; media</span><div class="rlist"><a class="rcard" href="https://www.samharris.org/waking-up" target="_blank" rel="noopener noreferrer"><span class="rtype">App</span><div class="rinfo"><h4>Waking Up — Sam Harris</h4><p>The most intellectually rigorous meditation app available. Secular, deep, and genuinely useful.</p></div><span class="rlink">Visit →</span></a><a class="rcard" href="https://insighttimer.com" target="_blank" rel="noopener noreferrer"><span class="rtype">Tool</span><div class="rinfo"><h4>Insight Timer</h4><p>The world's largest free meditation library. 160,000 guided meditations from thousands of teachers.</p></div><span class="rlink">Visit →</span></a><a class="rcard" href="https://www.gaia.com" target="_blank" rel="noopener noreferrer"><span class="rtype">Platform</span><div class="rinfo"><h4>Gaia</h4><p>The streaming platform for consciousness — yoga, meditation, ancient wisdom, and the most comprehensive library of transformational and alternative content on Earth.</p></div><span class="rlink">Visit →</span></a></div><a class="r-forward" href="/search.html?q=Meditation&type=tool">All tools &amp; media on Meditation <span class="r-forward-arrow">→</span></a></section>
-<div class="bleed fade-up"><img src="https://images.pexels.com/photos/7596959/pexels-photo-7596959.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" aria-hidden="true" loading="lazy" decoding="async"><div class="bleed-cap">The present moment is the only moment available to us, and it is the door to all moments. <em>— Thich Nhat Hanh — The Miracle of Mindfulness</em>
-</div></div>
-
-</main>
-
-
-
-<footer class="site-foot">
-  <span class="wm">FRQNCY</span>
-  <span class="legal">© 2026 · Meditation · FRQNCY Network</span>
-</footer>
-
+<!-- Video modal -->
+<div class="vmodal" id="vmodal">
+  <div class="vmodal-box">
+    <div class="vmodal-player"><iframe id="vmodal-iframe" src="" allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen title="Video"></iframe></div>
+    <div class="vmodal-footer">
+      <div>
+        <div class="vmodal-title" id="vmodal-title"></div>
+        <div class="vmodal-chan" id="vmodal-chan"></div>
+      </div>
+      <button class="vmodal-close" id="vmodal-close" aria-label="Close video">✕</button>
+    </div>
+  </div>
+</div>
 <script>
-(function () {
-  if (!('IntersectionObserver' in window)) {
-    document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
-    return;
+(function(){
+  function openVid(embed,watch,title,chan){
+    if(embed){
+      document.getElementById('vmodal-title').textContent=title;
+      document.getElementById('vmodal-chan').textContent=chan?'— '+chan:'';
+      document.getElementById('vmodal-iframe').src=embed;
+      document.getElementById('vmodal').classList.add('open');
+      document.body.style.overflow='hidden';
+    } else {
+      window.open(watch,'_blank','noopener,noreferrer');
+    }
   }
-  const io = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-      if (entry.isIntersecting) {
-        entry.target.classList.add('in');
-        io.unobserve(entry.target);
-      }
-    });
-  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
-  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+  function closeVid(){
+    document.getElementById('vmodal').classList.remove('open');
+    document.getElementById('vmodal-iframe').src='';
+    document.body.style.overflow='';
+  }
+  document.querySelectorAll('.vcard-t').forEach(function(card){
+    function activate(){ openVid(card.dataset.embed, card.dataset.watch, card.dataset.title, card.dataset.chan); }
+    card.addEventListener('click', activate);
+    card.addEventListener('keydown', function(e){ if(e.key==='Enter'||e.key===' '){ e.preventDefault(); activate(); }});
+  });
+  document.getElementById('vmodal-close').addEventListener('click', closeVid);
+  document.getElementById('vmodal').addEventListener('click', function(e){ if(e.target===this) closeVid(); });
+  document.addEventListener('keydown', function(e){ if(e.key==='Escape') closeVid(); });
 })();
 </script>
-</body>
-</html>
+  <section>
+  <div class="section-label">Take a Course</div>
+  <a class="course-callout" href="../courses/meditation-101/" style="--course-accent:#3B7DD8">
+  <span class="cc-level" style="color:#3B7DD8;border-color:#3B7DD860">Beginner</span>
+  <span class="cc-body">
+    <span class="cc-title">Meditation 101</span>
+    <span class="cc-meta">5 lessons · 1.5 hours · From Stillness to Practice</span>
+  </span>
+  <span class="cc-arrow">→</span>
+</a>
+<a class="course-callout" href="../courses/conscious-living-foundations/" style="--course-accent:#C4973A">
+  <span class="cc-level" style="color:#C4973A;border-color:#C4973A60">Beginner</span>
+  <span class="cc-body">
+    <span class="cc-title">Conscious Living Foundations</span>
+    <span class="cc-meta">5 lessons · 2.5 hours · An Orientation to the FRQNCY Network</span>
+  </span>
+  <span class="cc-arrow">→</span>
+</a>
+</section>
+  <section>
+  <div class="section-label">Curated Resources</div>
+  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">20 resources &nbsp;·&nbsp; 4 teachers &nbsp;·&nbsp; 4 books &nbsp;·&nbsp; 1 place &nbsp;·&nbsp; 5 tools &nbsp;·&nbsp; 1 platform &nbsp;·&nbsp; 1 app &nbsp;·&nbsp; <span style="color:var(--gold)">3 ✦ picks</span></div>
+  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="person">person</button><button class="ftab" data-filter="app">app</button><button class="ftab" data-filter="book">book</button><button class="ftab" data-filter="tool">tool</button><button class="ftab" data-filter="platform">platform</button><button class="ftab" data-filter="music">music</button><button class="ftab" data-filter="place">place</button></div>
+  <div class="rlist"><div class="rcard" data-type="person">
+  <span class="rtype">person</span>
+  <div class="rinfo">
+    <h4><a href="/people/osho/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Osho</a> <span class="fpick">✦ FRQNCY PICK</span></h4>
+    <p>One of the most prolific and radical spiritual teachers of the 20th century. Created hundreds of meditation techniques — including Dynamic Meditation — designed specifically for the modern mind. His 600+ books distil everything from Zen and Tantra to Taoism and Sufism into a single voice of absolute freedom.</p>
+  </div>
+  <a href="https://www.osho.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="app">
+  <span class="rtype">app</span>
+  <div class="rinfo">
+    <h4>Waking Up — Sam Harris <span class="fpick">✦ FRQNCY PICK</span></h4>
+    <p>The most intellectually rigorous meditation app available. Secular, deep, and genuinely useful.</p>
+  </div>
+  <a href="https://www.samharris.org/waking-up" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/the-miracle-of-mindfulness/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">The Miracle of Mindfulness — Thich Nhat Hanh</a></h4>
+    <p>The most accessible introduction to meditation ever written. 140 pages of pure clarity.</p>
+  </div>
+  <a href="https://www.parallax.org/product/the-miracle-of-mindfulness/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="tool">
+  <span class="rtype">tool</span>
+  <div class="rinfo">
+    <h4>Insight Timer</h4>
+    <p>The world&#39;s largest free meditation library. 160,000 guided meditations from thousands of teachers.</p>
+  </div>
+  <a href="https://insighttimer.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/becoming-supernatural/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Becoming Supernatural — Dr. Joe Dispenza</a></h4>
+    <p>How ordinary people are doing the extraordinary — Dispenza&#39;s synthesis of neuroscience, epigenetics, and meditation for healing and transformation.</p>
+  </div>
+  <a href="https://drjoedispenza.com/books/becoming-supernatural" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="person">
+  <span class="rtype">person</span>
+  <div class="rinfo">
+    <h4><a href="/people/joe-dispenza/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Dr. Joe Dispenza</a></h4>
+    <p>Neuroscientist and meditation teacher whose progressive workshops document measurable physiological and psychological transformation through meditation.</p>
+  </div>
+  <a href="https://drjoedispenza.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="platform">
+  <span class="rtype">platform</span>
+  <div class="rinfo">
+    <h4>Gaia</h4>
+    <p>The streaming platform for consciousness — yoga, meditation, ancient wisdom, and the most comprehensive library of transformational and alternative content on Earth.</p>
+  </div>
+  <a href="https://www.gaia.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/strength-in-stillness/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Strength in Stillness — Bob Roth</a></h4>
+    <p>The most accessible introduction to Transcendental Meditation — what TM is, what it does, and why CEOs, athletes, and artists swear by it.</p>
+  </div>
+  <a href="https://www.bobrothtm.com/book" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/power-vs-force/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Power vs. Force — Dr. David R. Hawkins</a></h4>
+    <p>The map of human consciousness — kinesiology research revealing that love and truth calibrate exponentially higher than fear and force.</p>
+  </div>
+  <a href="https://veritaspub.com/product/power-vs-force/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="person">
+  <span class="rtype">person</span>
+  <div class="rinfo">
+    <h4><a href="/people/david-r-hawkins/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Dr. David R. Hawkins</a></h4>
+    <p>Psychiatrist and spiritual teacher who mapped the calibrated levels of human consciousness — from shame at the bottom to enlightenment at the top. His kinesiology research revealed that love and truth calibrate exponentially higher than fear and force. Essential for anyone serious about the mechanics of vibration.</p>
+  </div>
+  <a href="https://veritaspub.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="person">
+  <span class="rtype">person</span>
+  <div class="rinfo">
+    <h4><a href="/people/thich-nhat-hanh/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Thich Nhat Hanh</a></h4>
+    <p>Zen master, peace activist, and the teacher who gave the West its most accessible entry into mindfulness. His presence in a single sentence is a whole practice. One of the definitive voices of the 20th century.</p>
+  </div>
+  <a href="https://plumvillage.org" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="music">
+  <span class="rtype">music</span>
+  <div class="rinfo">
+    <h4><a href="/music/snatam-kaur/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Snatam Kaur — Live Sacred Chant</a></h4>
+    <p>American Sikh devotional singer whose live kirtan recordings have made the Aquarian sadhana mantras accessible to a global audience.</p>
+  </div>
+  <a href="https://snatamkaur.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="music">
+  <span class="rtype">music</span>
+  <div class="rinfo">
+    <h4><a href="/music/deva-premal-mantras/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Deva Premal — The Essence</a></h4>
+    <p>Sanskrit mantras set to slow, breath-paced arrangements. The most-listened mantra album of the modern era — a gateway for the Western ear into the sound traditions of the East.</p>
+  </div>
+  <a href="https://devapremalmiten.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="music">
+  <span class="rtype">music</span>
+  <div class="rinfo">
+    <h4><a href="/music/arvo-part-spiegel/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Arvo Pärt — Spiegel im Spiegel</a></h4>
+    <p>Estonian composer of sacred minimalism. Spiegel im Spiegel — Mirror in the Mirror — is eight minutes of piano and violin that have made more people cry than most films.</p>
+  </div>
+  <a href="https://www.arvopart.ee" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="music">
+  <span class="rtype">music</span>
+  <div class="rinfo">
+    <h4><a href="/music/bach-goldberg-variations/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Bach — Goldberg Variations — Johann Sebastian Bach</a></h4>
+    <p>Thirty variations on a simple aria, originally written to soothe an insomniac count. Glenn Gould recorded them twice — at twenty-two and at fifty — and the difference between the two readings is itself a teaching.</p>
+  </div>
+  <a href="https://en.wikipedia.org/wiki/Goldberg_Variations" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="place">
+  <span class="rtype">place</span>
+  <div class="rinfo">
+    <h4><a href="/places/intaaya/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Intaaya</a></h4>
+    <p>Nusa Penida, Bali, Indonesia — Regenerative retreat sanctuary on Nusa Penida, near Bali. Off-grid, farm-to-table, living to the rhythm of nature. A living example of the Sanctuary pillar — the physical extension of the FRQNCY network.</p>
+  </div>
+  <a href="https://intaaya.com" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="tool">
+  <span class="rtype">tool</span>
+  <div class="rinfo">
+    <h4>Manduka PRO Yoga Mat <span class="fpick">✦ FRQNCY PICK</span></h4>
+    <p>The standard. Cushioned, dense, thick enough for the knees. Lifetime guarantee. The mat every serious yoga teacher recommends without thinking about it.</p>
+  </div>
+  <a href="https://www.manduka.com/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="tool">
+  <span class="rtype">tool</span>
+  <div class="rinfo">
+    <h4>Halfmoon Meditation Cushion</h4>
+    <p>Zafu and zabuton set, made in Vancouver since 1980. Buckwheat fill, organic cotton, the right height for actually sitting still. Built to last decades of daily use.</p>
+  </div>
+  <a href="https://www.halfmoonyoga.com/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="tool">
+  <span class="rtype">tool</span>
+  <div class="rinfo">
+    <h4>Sandalwood Mala</h4>
+    <p>108 hand-strung sandalwood beads, traditionally used to count breaths or mantras. The simplest practice tool that has survived three thousand years for a reason.</p>
+  </div>
+  <a href="https://www.malacollective.com/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="tool">
+  <span class="rtype">tool</span>
+  <div class="rinfo">
+    <h4>Himalayan Singing Bowl</h4>
+    <p>Hand-hammered seven-metal bowl from Nepal, sourced from artisan families who have made them for generations. The sound itself is the practice.</p>
+  </div>
+  <a href="https://silvermountaintravel.com/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div></div>
+</section>
+
+<script>
+document.querySelectorAll('.ftab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.rcard').forEach(c=>{
+      c.style.display=(f==='all'||c.dataset.type===f)?'':'none';
+    });
+  });
+});
+</script>
+  <section>
+    <div class="section-label">Explore</div>
+    <div class="grid grid-sm">
+      <a href="../vibration/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 4 shared</div>
+  <h3>Vibration</h3>
+  <p>Everything is frequency — the understanding that matter, thought, and …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../sound-healing/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 2 shared</div>
+  <h3>Sound Healing</h3>
+  <p>Frequency as medicine — the use of vibration, music, and resonance to …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../breathwork/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>Breathwork</h3>
+  <p>The breath as a tool — conscious breathing practices that regulate the…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../community/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>Community</h3>
+  <p>The art of living together — building belonging, trust, and shared lif…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../eft-tapping/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>EFT &amp; Tapping</h3>
+  <p>Emotional Freedom Techniques — combining acupressure tapping with mode…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../permaculture/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>Permaculture</h3>
+  <p>Design science for sustainable human habitats — mimicking the patterns…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../somatic-therapy/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Well-being</div>
+  <h3>Somatic Therapy</h3>
+  <p>Healing stored in the body — trauma-informed approaches that work thro…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../energy-healing/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Well-being</div>
+  <h3>Energy Healing</h3>
+  <p>Working with the subtle body — reiki, acupuncture, and other modalitie…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../yoga/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Well-being</div>
+  <h3>Yoga</h3>
+  <p>The union of body, breath, and mind — one of humanity&#39;s oldest and mos…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../mental-health/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Well-being</div>
+  <h3>Mental Health</h3>
+  <p>The full spectrum of psychological wellbeing — from everyday emotional…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../kriya-yoga/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Well-being</div>
+  <h3>Kriya Yoga</h3>
+  <p>The ancient science of energy and breath — the meditation techniques t…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../siddha-yoga/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Well-being</div>
+  <h3>Siddha Yoga</h3>
+  <p>The path of grace through the Siddha lineage — shaktipat initiation, s…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+    </div>
+  </section>
+  <nav class="topic-prevnext" aria-label="More in Well-being">
+    <a class="topic-prevnext-link prev" href="../kriya-yoga/index.html">
+      <span class="topic-prevnext-eyebrow">← Previous</span>
+      <span class="topic-prevnext-label">Kriya Yoga</span>
+    </a>
+    <a class="topic-prevnext-link next" href="../mental-health/index.html">
+      <span class="topic-prevnext-eyebrow">Next →</span>
+      <span class="topic-prevnext-label">Mental Health</span>
+    </a>
+  </nav>
+</main>
+<footer style="border-top:1px solid rgba(255,255,255,0.06);padding:32px clamp(1.25rem,6vw,2.5rem);text-align:center;margin-top:3rem">
+  <span style="font-family:'Cormorant',serif;font-weight:300;font-size:16px;letter-spacing:0.3em;color:rgba(255,255,255,0.5);text-transform:uppercase">FRQNCY</span>
+  <br>
+  <span style="font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-top:6px;display:inline-block">&copy; 2026 FRQNCY &middot; All frequencies reserved</span>
+</footer>
+</body></html>

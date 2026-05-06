@@ -202,8 +202,17 @@
       ring.setAttribute('aria-label', hintText);
       hint.textContent = hintText;
 
+      // Video field toggle (bedside setting). Default ON; OFF means pure black
+      // background with the dismiss ring only — for users who want minimal
+      // visual stimulation on wake.
+      const fieldEnabled = (() => {
+        try { return localStorage.getItem('frqncy.bedside.video_field') !== '0'; }
+        catch { return true; }
+      })();
+      if (!fieldEnabled) field.style.display = 'none';
+
       if (reducedMotion) field.style.transition = 'none';
-      requestAnimationFrame(() => field.classList.add('active'));
+      if (fieldEnabled) requestAnimationFrame(() => field.classList.add('active'));
       setTimeout(() => hint.classList.add('visible'), reducedMotion ? 200 : 2000);
 
       // Breath-hold / long-press dismiss

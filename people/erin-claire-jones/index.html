@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Erin Claire Jones","description":"Brings Human Design into business, leadership, and teams. Known for making HD practical and applicable to work and relationships. Her newsletter is one of the most-read in the HD space.","url":"https://frqncy.network/people/erin-claire-jones/","sameAs":["https://www.erinclairejones.com"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"People","item":"https://frqncy.network/people/"},{"@type":"ListItem","position":3,"name":"Erin Claire Jones","item":"https://frqncy.network/people/erin-claire-jones/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -260,7 +260,14 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://www.erinclairejones.com" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit erinclairejones.com →</a>
 </div>
 <main>
-  
+  <section>
+  <div class="section-label">Life</div>
+  <div class="life-prose" style="max-width:720px">
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Erin Claire Jones built her practice around a single conviction: that Human Design could be made genuinely useful in everyday life rather than simply interesting as a theoretical system. Over the past decade she developed an approach grounded in practical application, bringing the framework into the contexts where people most often seek direction—career decisions, relationships, and the ordinary choices that accumulate into a life. Where much of the field leaned towards elaborate interpretation, her method emphasised immediate applicability, and a large following grew around that difference.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Her book How Do You Choose?, published by HarperCollins, set out the methodology in full: a hands-on guide to using Human Design for empowered decision-making across every area of life. Alongside the book, she developed coaching programmes, online courses, and personalised guides that carried the same framework to hundreds of thousands of people worldwide. The effect was to move Human Design—for many of her readers—from something they found curious to something they could act on within days of encountering it.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Jones continues to teach through her coaching practice, courses, and digital products, and her newsletter has become one of the most widely read in the Human Design space. Alongside personal alignment work, she applies the framework to business and organisational settings—leadership, team dynamics, and workplace decision-making. After a decade of consistent output, the body of work she has assembled—guides, programmes, and the HarperCollins title—now functions as one of the more substantial entry points for people approaching Human Design practically for the first time.</p>
+  </div>
+</section>
   
   
   <section>

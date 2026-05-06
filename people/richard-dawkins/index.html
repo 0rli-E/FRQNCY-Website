@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Richard Dawkins","description":"Evolutionary biologist whose Selfish Gene (1976) reshaped how we think about life, cooperation, and altruism. One of the sharpest thinkers of the gene's-eye view of biology.","url":"https://frqncy.network/people/richard-dawkins/","sameAs":["https://richarddawkins.com"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"People","item":"https://frqncy.network/people/"},{"@type":"ListItem","position":3,"name":"Richard Dawkins","item":"https://frqncy.network/people/richard-dawkins/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -260,7 +260,14 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://richarddawkins.com" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit richarddawkins.com →</a>
 </div>
 <main>
-  
+  <section>
+  <div class="section-label">Life</div>
+  <div class="life-prose" style="max-width:720px">
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Clinton Richard Dawkins trained as an ethologist before establishing himself as one of Britain&#39;s foremost evolutionary biologists. He held a fellowship at New College, Oxford, and later served as Professor for Public Understanding of Science at the same university — a post that reflected both his scientific standing and his long commitment to explaining complex biology to general audiences. His intellectual path ran from animal behaviour into the mechanics of natural selection, a shift that would define his most influential work.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">His 1976 book The Selfish Gene reframed evolutionary biology around the gene as the primary unit of selection, arguing that organisms are, in effect, vehicles for replicating genetic material. The book introduced the term &quot;meme&quot; into common use. In 1982, The Extended Phenotype extended that argument further, proposing that a gene&#39;s influence reaches beyond the body that carries it into the wider environment and even into other organisms. The Blind Watchmaker (1986) addressed creationist arguments directly, countering the analogy of a divine designer with a sustained case for cumulative natural selection.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Dawkins continued writing popular science and making regular television and radio appearances, concentrating on evolution, atheism, and the criticism of supernatural explanations for natural complexity. He received the International Cosmos Prize in 1997. The concepts he introduced — the gene&#39;s-eye view of evolution, the extended phenotype, the meme — have become standard vocabulary across biology, philosophy, and cultural commentary. His books remain in print and in wide circulation, and the arguments he shaped in the 1970s and 1980s continue to anchor debates about evolution and design.</p>
+  </div>
+</section>
   <section>
   <div class="section-label">Works</div>
   <div class="rlist"><div class="rcard" data-type="book">

@@ -506,6 +506,30 @@
       text-transform: uppercase;
       color: var(--light-mid);
     }
+    .quote-cta {
+      margin-top: 48px;
+    }
+    .quote-cta-btn {
+      display: inline-block;
+      font-family: var(--font-body);
+      font-size: 11px;
+      letter-spacing: 0.32em;
+      text-transform: uppercase;
+      font-weight: 500;
+      color: var(--gold);
+      border: 1px solid var(--gold);
+      background: transparent;
+      padding: 14px 28px;
+      text-decoration: none;
+      border-radius: 2px;
+      transition: background 0.25s ease, color 0.25s ease;
+    }
+    .quote-cta-btn:hover,
+    .quote-cta-btn:focus-visible {
+      background: var(--gold);
+      color: var(--pure-white);
+      outline: none;
+    }
 
     /* =====================
        SECTION 3: BUBBLE MAP

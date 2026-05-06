@@ -33,6 +33,25 @@
   var ENDPOINT = '/illuminator/word';
   var WORD_RE  = /^[A-Za-z0-9-]{1,30}$/;
 
+  // Member detection — dynamically import the ES module gate, falls back to
+  // false if the gate isn't available. Resolves once at boot; widgets that
+  // mount later see the resolved value via memberPromise. Per ROADMAP-90D
+  // Track 2 Week 2 + frqncy-member-gate.js voice constraints.
+  var memberPromise = (function detectMember() {
+    if (typeof window === 'undefined') return Promise.resolve(false);
+    return import('/assets/frqncy-member-gate.js')
+      .then(function (mod) {
+        if (mod && typeof mod.isActiveMember === 'function') return mod.isActiveMember();
+        return false;
+      })
+      .catch(function () {
+        // Gate module missing OR import disallowed — default to non-member.
+        // The "Deeper reading" toggle still gives anyone access to the
+        // longer version (rate-limited). No wall.
+        return false;
+      });
+  })();
+
   // ── Style injection (once) ───────────────────────────────────────
   var STYLE_ID = 'word-illuminator-widget-styles';
   function injectStyles() {
@@ -78,6 +97,20 @@
       '.wiw-deriv-row strong{color:var(--gold,#C4973A);font-weight:400;font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;margin-right:0.4rem}',
       '.wiw-prose{font-family:Cormorant,serif;font-size:1.04rem;color:var(--cream,#F5EBD8);line-height:1.65;margin-bottom:0.85rem}',
       '.wiw-question{padding:0.85rem 1.1rem;background:rgba(255,255,255,0.03);border:1px solid var(--card-border,rgba(255,255,255,0.08));border-radius:4px;font-family:Cormorant,serif;font-style:italic;color:#fff;font-size:1rem;line-height:1.5}',
+      // Deeper-reading opt-in toggle for non-members
+      '.wiw-deep{display:flex;align-items:center;gap:0.5rem;font-size:0.74rem;color:var(--text-dim,#8FA8CC);margin:0.25rem 0 0.5rem;cursor:pointer;line-height:1.4}',
+      '.wiw-deep input[type=checkbox]{accent-color:var(--gold,#C4973A);cursor:pointer}',
+      // member_deepening section — additional contemplative block
+      '.wiw-md-section{margin-top:2rem;padding-top:1.5rem;border-top:1px solid rgba(196,151,58,0.2)}',
+      '.wiw-md-h{font-family:Cormorant,serif;font-size:1.1rem !important;font-style:italic;color:var(--gold,#C4973A) !important;margin:0 0 1rem !important}',
+      '.wiw-md-essay{font-family:Cormorant,serif;font-size:1.05rem;color:var(--cream,#F5EBD8);line-height:1.75;margin-bottom:1rem}',
+      '.wiw-md-essay:last-of-type{margin-bottom:1.25rem}',
+      '.wiw-md-practice{padding:1rem 1.25rem;background:rgba(196,151,58,0.06);border-left:2px solid var(--gold,#C4973A);font-family:Cormorant,serif;color:#fff;font-size:0.98rem;line-height:1.6;border-radius:0 4px 4px 0;margin-bottom:1rem}',
+      '.wiw-md-practice-label{display:block;font-family:Jost,sans-serif;font-style:normal;font-size:0.55rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold,#C4973A);margin-bottom:0.4rem}',
+      '.wiw-md-refs{font-size:0.78rem;color:var(--text-dim,#8FA8CC);padding-top:0.5rem}',
+      '.wiw-md-refs-label{display:block;font-family:Jost,sans-serif;font-size:0.55rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold,#C4973A);margin-bottom:0.4rem}',
+      '.wiw-md-refs a{color:var(--gold,#C4973A);text-decoration:none;border-bottom:1px dotted currentColor;font-style:italic;font-family:Cormorant,serif;font-size:0.95rem}',
+      '.wiw-md-refs a:hover{border-bottom-style:solid}',
       '.wiw-question-label{font-family:Jost,sans-serif;font-style:normal;font-size:0.55rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold,#C4973A);margin-bottom:0.4rem;display:block}',
       '.wiw-meta{font-size:0.72rem;color:var(--text-dim,#8FA8CC);text-align:center;margin-top:1.25rem;font-style:italic;opacity:0.85}'
     ].join('\n');
@@ -132,6 +165,38 @@
     }).join('');
 
     var di = d.deeper_illumination || {};
+
+    // Optional member_deepening section (present when ?member=1 was sent
+    // and the model returned the additional structure). Renders as a
+    // distinct visual block beneath the standard locked schema so it
+    // never feels like a wall — the base illumination above is complete
+    // on its own; this is additional contemplation for those who want it.
+    var md = d.member_deepening;
+    var mdHtml = '';
+    if (md && (md.contemplative_essay || md.practice_invitation || (md.cross_references && md.cross_references.length))) {
+      var essayParas = (md.contemplative_essay || '').split(/\n\n+/).map(function (p) {
+        return p.trim() ? '<p class="wiw-md-essay">' + esc(p.trim()) + '</p>' : '';
+      }).join('');
+      var practice = md.practice_invitation
+        ? '<div class="wiw-md-practice"><span class="wiw-md-practice-label">A small experiment</span>' + esc(md.practice_invitation) + '</div>'
+        : '';
+      var crossRefs = (md.cross_references || []).filter(Boolean);
+      var refs = crossRefs.length
+        ? '<div class="wiw-md-refs"><span class="wiw-md-refs-label">Related illuminations</span>'
+            + crossRefs.map(function (slug) {
+                return '<a href="/v2/word-illuminator/' + encodeURIComponent(slug) + '/">' + esc(slug) + '</a>';
+              }).join(' · ')
+            + '</div>'
+        : '';
+      mdHtml =
+        '<div class="wiw-md-section">'
+        +   '<h4 class="wiw-md-h">Sit with this longer</h4>'
+        +   essayParas
+        +   practice
+        +   refs
+        + '</div>';
+    }
+
     out.innerHTML =
       '<span class="wiw-out-tag">AI illumination · working draft</span>'
       + '<h2><em>' + esc(d.word) + '</em></h2>'
@@ -153,6 +218,7 @@
       + (di.reflective_question
           ? '<div class="wiw-question"><span class="wiw-question-label">A question to reflect on</span>' + esc(di.reflective_question) + '</div>'
           : '')
+      + mdHtml
       + '<div class="wiw-meta">A working illumination — generated, not curated. The page above is the canonical reference.</div>';
     out.classList.add('visible');
   }
@@ -182,15 +248,39 @@
       +   '<input type="text" placeholder="e.g. presence, integrity, witness" maxlength="30" pattern="[A-Za-z0-9-]+" required aria-label="Word to illuminate">'
       +   '<button type="submit">Illuminate</button>'
       + '</form>'
+      // Deeper-reading toggle. Hidden until member detection resolves so
+      // members never see the toggle (the deeper version is the default
+      // for them — no friction). Non-members see it so they can opt in.
+      // Voice contract: "deeper reading" not "exclusive content"; this is
+      // a default for members, available to anyone willing to wait.
+      + '<label class="wiw-deep" style="display:none;">'
+      +   '<input type="checkbox" data-wiw-deep>'
+      +   '<span>Deeper reading — adds a contemplative essay + small practice. Slower.</span>'
+      + '</label>'
       + '<div class="wiw-status" aria-live="polite"></div>'
       + '<div class="wiw-out" aria-live="polite"></div>';
 
-    var form   = host.querySelector('form');
-    var input  = host.querySelector('input');
-    var btn    = host.querySelector('button');
-    var status = host.querySelector('.wiw-status');
-    var out    = host.querySelector('.wiw-out');
+    var form     = host.querySelector('form');
+    var input    = host.querySelector('input');
+    var btn      = host.querySelector('button');
+    var status   = host.querySelector('.wiw-status');
+    var out      = host.querySelector('.wiw-out');
     var selfLink = host.querySelector('[data-wiw-self]');
+    var deepLbl  = host.querySelector('.wiw-deep');
+    var deepBox  = host.querySelector('[data-wiw-deep]');
+
+    // Resolve member status once. Members get deep auto-on (no toggle
+    // shown). Non-members get the toggle, default-off.
+    memberPromise.then(function (isMember) {
+      if (isMember) {
+        // Member: silently set the flag. No UI surface — the deeper view
+        // is just what they get.
+        host.dataset.wiwMember = '1';
+      } else {
+        // Non-member: reveal the opt-in toggle.
+        if (deepLbl) deepLbl.style.display = '';
+      }
+    });
 
     if (selfLink && currentWord) {
       selfLink.addEventListener('click', function () {
@@ -208,12 +298,18 @@
         status.classList.add('error');
         return;
       }
-      status.textContent = 'Illuminating…';
+
+      // Decide whether to request the deeper version. Members: always.
+      // Non-members: only if they ticked the toggle.
+      var wantDeep = host.dataset.wiwMember === '1' || (deepBox && deepBox.checked);
+      var qs = '?word=' + encodeURIComponent(word) + (wantDeep ? '&member=1' : '');
+
+      status.textContent = wantDeep ? 'Illuminating — deeper reading takes a little longer…' : 'Illuminating…';
       btn.disabled = true;
       out.classList.remove('visible');
 
       try {
-        var r = await fetch(ENDPOINT + '?word=' + encodeURIComponent(word));
+        var r = await fetch(ENDPOINT + qs);
         var j = await r.json();
         if (!r.ok) throw new Error(j && j.error ? j.error : 'Request failed');
         status.textContent = '';

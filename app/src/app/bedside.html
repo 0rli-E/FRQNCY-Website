@@ -187,6 +187,126 @@
         font-size: 13px;
         font-family: inherit;
       }
+      .toast {
+        position: fixed;
+        bottom: calc(100px + env(safe-area-inset-bottom));
+        left: 50%;
+        transform: translateX(-50%) translateY(20px);
+        background: rgba(20, 20, 20, 0.96);
+        border: 1px solid rgba(232, 197, 71, 0.35);
+        color: rgba(245, 245, 245, 0.92);
+        padding: 14px 20px;
+        border-radius: 12px;
+        font-size: 13.5px;
+        line-height: 1.5;
+        max-width: 320px;
+        text-align: center;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 220ms ease, transform 320ms ease;
+        z-index: 50;
+      }
+      .toast.visible {
+        opacity: 1;
+        transform: translateX(-50%) translateY(0);
+        pointer-events: auto;
+      }
+      .toast .toast-action {
+        display: inline-block;
+        margin-left: 8px;
+        color: rgba(232, 197, 71, 0.9);
+        cursor: pointer;
+        text-decoration: underline;
+      }
+      .welcome-overlay {
+        position: fixed; inset: 0;
+        background: rgba(10, 10, 10, 0.97);
+        z-index: 200;
+        display: none;
+        align-items: center; justify-content: center;
+        padding: 24px;
+      }
+      .welcome-overlay.visible { display: flex; }
+      .welcome-card {
+        max-width: 480px;
+        width: 100%;
+        background: #141414;
+        border: 1px solid rgba(232, 197, 71, 0.18);
+        border-radius: 22px;
+        padding: 32px 26px;
+      }
+      .welcome-eyebrow {
+        font-size: 11px;
+        letter-spacing: 2.6px;
+        text-transform: lowercase;
+        color: rgba(232, 197, 71, 0.7);
+        margin-bottom: 12px;
+      }
+      .welcome-card h2 {
+        font-size: 22px;
+        font-weight: 200;
+        letter-spacing: 0.4px;
+        line-height: 1.4;
+        margin-bottom: 18px;
+        color: #f5f5f5;
+      }
+      .welcome-card p {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1.65;
+        color: rgba(245, 245, 245, 0.78);
+        margin-bottom: 14px;
+      }
+      .welcome-step {
+        display: flex;
+        align-items: flex-start;
+        gap: 12px;
+        padding: 12px 14px;
+        background: rgba(245, 245, 245, 0.03);
+        border-radius: 12px;
+        margin-bottom: 10px;
+        font-size: 13.5px;
+        line-height: 1.55;
+        color: rgba(245, 245, 245, 0.85);
+      }
+      .welcome-step .step-num {
+        min-width: 22px;
+        height: 22px;
+        border-radius: 50%;
+        background: rgba(232, 197, 71, 0.15);
+        border: 1px solid rgba(232, 197, 71, 0.45);
+        color: rgba(232, 197, 71, 0.95);
+        font-size: 11px;
+        display: flex; align-items: center; justify-content: center;
+        flex-shrink: 0;
+      }
+      .welcome-honesty {
+        margin-top: 14px;
+        padding: 14px 16px;
+        background: rgba(232, 197, 71, 0.06);
+        border: 1px solid rgba(232, 197, 71, 0.22);
+        border-radius: 12px;
+        font-size: 13px;
+        color: rgba(245, 245, 245, 0.8);
+        line-height: 1.6;
+      }
+      .welcome-honesty strong {
+        color: rgba(232, 197, 71, 0.95);
+        font-weight: 500;
+      }
+      .welcome-cta {
+        width: 100%;
+        margin-top: 22px;
+        padding: 14px;
+        background: rgba(232, 197, 71, 0.95);
+        border: none;
+        color: #0a0a0a;
+        border-radius: 14px;
+        font-size: 14px;
+        letter-spacing: 1px;
+        text-transform: lowercase;
+        -webkit-tap-highlight-color: transparent;
+      }
     </style>
   </head>
   <body>
@@ -222,6 +342,42 @@
 
       <div class="quiet-note" id="reliability-note">
         <strong>For best reliability:</strong> plug your phone in and leave FRQNCY open in Bedside Mode.
+      </div>
+    </div>
+
+    <!-- Toast for transient errors / status messages -->
+    <div class="toast" id="toast" role="status" aria-live="polite"></div>
+
+    <!-- First-run welcome overlay (shown the very first time bedside opens) -->
+    <div class="welcome-overlay" id="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
+      <div class="welcome-card">
+        <div class="welcome-eyebrow">welcome to bedside</div>
+        <h2 id="welcome-title">your phone, as a tuning fork</h2>
+        <p>
+          FRQNCY's bedside mode replaces the standard alarm clock with an
+          arrival. The audio fades in over 90 seconds. Dismissing is one
+          breath, held — not a tap, not a swipe.
+        </p>
+        <div class="welcome-step">
+          <span class="step-num">1</span>
+          <span>set a wake time and tap <em style="color: rgba(232,197,71,0.85); font-style: normal;">arm for tonight</em>.</span>
+        </div>
+        <div class="welcome-step">
+          <span class="step-num">2</span>
+          <span>plug your phone in, leave FRQNCY open, lock the screen.</span>
+        </div>
+        <div class="welcome-step">
+          <span class="step-num">3</span>
+          <span>when the tone fades in, hold the ring on screen for one breath to arrive.</span>
+        </div>
+        <div class="welcome-honesty">
+          <strong>One honest thing:</strong> phone alarms on Android can fail
+          under aggressive battery management. If yours is a Vivo, Xiaomi,
+          OnePlus, Oppo, or Samsung, FRQNCY will show you the three settings
+          that fix it the first time you arm. For a high-stakes wake, pair
+          with a backup the first week.
+        </div>
+        <button class="welcome-cta" id="welcome-cta">begin</button>
       </div>
     </div>
 
@@ -265,12 +421,61 @@
       const oemLater = document.getElementById('oem-later');
 
       const ALARM_ID = 'frqncy.morning.primary';
+      const PREWAKE_ID = 'frqncy.morning.prewake';
+      const PREWAKE_OFFSET_MIN = 15;
       const OEM_ACK_KEY = 'frqncy.bedside.oem_ack';
+      const WELCOME_ACK_KEY = 'frqncy.bedside.welcome_ack';
 
+      // Toast helper — used in place of alert() for failure paths.
+      const toast = document.getElementById('toast');
+      let toastTimer = null;
+      function showToast(message, durationMs = 4500) {
+        if (toastTimer) clearTimeout(toastTimer);
+        toast.textContent = message;
+        toast.classList.add('visible');
+        toastTimer = setTimeout(() => toast.classList.remove('visible'), durationMs);
+      }
+
+      // First-run welcome — runs once, before anything else.
+      const welcomeOverlay = document.getElementById('welcome-overlay');
+      const welcomeCta = document.getElementById('welcome-cta');
+      try {
+        if (localStorage.getItem(WELCOME_ACK_KEY) !== '1') {
+          welcomeOverlay.classList.add('visible');
+        }
+      } catch {}
+      welcomeCta.addEventListener('click', () => {
+        try { localStorage.setItem(WELCOME_ACK_KEY, '1'); } catch {}
+        welcomeOverlay.classList.remove('visible');
+      });
+
+      // Persist toggle state across launches. Each switch has a data-pref
+      // attribute that names its persistence key — we hydrate from
+      // localStorage on load and write through on change.
+      const SWITCH_PREFS = {
+        prewake: 'frqncy.bedside.prewake',
+        'video-field': 'frqncy.bedside.video_field',
+        reflection: 'frqncy.bedside.reflection',
+      };
+      // Hydrate
+      for (const [id, key] of Object.entries(SWITCH_PREFS)) {
+        const el = document.getElementById(id);
+        if (!el) continue;
+        try {
+          const stored = localStorage.getItem(key);
+          if (stored === '0') el.classList.remove('on');
+          else if (stored === '1') el.classList.add('on');
+          el.setAttribute('aria-checked', el.classList.contains('on'));
+        } catch {}
+      }
       switches.forEach(sw => {
         sw.addEventListener('click', () => {
           sw.classList.toggle('on');
           sw.setAttribute('aria-checked', sw.classList.contains('on'));
+          const key = SWITCH_PREFS[sw.id];
+          if (key) {
+            try { localStorage.setItem(key, sw.classList.contains('on') ? '1' : '0'); } catch {}
+          }
         });
       });
 
@@ -303,9 +508,14 @@
         if (armed) {
           try {
             await FrqncyAlarm.cancel({ id: ALARM_ID });
+            // Always cancel the pre-wake too — it might still be persisted
+            // even if the toggle is now off.
+            try { await FrqncyAlarm.cancel({ id: PREWAKE_ID }); } catch {}
             armed = false;
             arm.classList.remove('armed');
             arm.textContent = 'arm for tonight';
+            // Clear smart-resume marker — no armed alarm to resume to.
+            try { localStorage.removeItem('frqncy.bedside.last_arm_ts'); } catch {}
           } catch (err) {
             console.warn('cancel failed', err);
           }
@@ -321,6 +531,7 @@
         } catch {}
 
         const timestamp = nextOccurrenceTimestamp(timeInput.value || '06:45');
+        const prewakeOn = document.getElementById('prewake').classList.contains('on');
         try {
           await FrqncyAlarm.schedule({
             id: ALARM_ID,
@@ -330,9 +541,39 @@
             repeat: 'daily',
             fadeInSeconds: 90,
           });
+
+          // Two-phase pre-wake: schedule a softer alarm 15 min earlier with a
+          // long fade-in. Same daily repeat. Different label so the
+          // notification copy differs ("waking gently" vs "arrive"). Per
+          // Stream 6: borrow Loftie's pattern — a soft tone room-fill before
+          // the actual wake event.
+          if (prewakeOn) {
+            const prewakeTs = timestamp - PREWAKE_OFFSET_MIN * 60_000;
+            try {
+              await FrqncyAlarm.schedule({
+                id: PREWAKE_ID,
+                timestamp: prewakeTs,
+                moment: 'morning',
+                label: 'FRQNCY · gently',
+                repeat: 'daily',
+                fadeInSeconds: PREWAKE_OFFSET_MIN * 60, // ramp over the full 15 min
+              });
+            } catch (e) {
+              // Pre-wake is optional — don't fail the whole arm flow if it's denied.
+              console.warn('pre-wake scheduling failed', e);
+            }
+          } else {
+            // User had pre-wake on previously, then turned it off — clear stale.
+            try { await FrqncyAlarm.cancel({ id: PREWAKE_ID }); } catch {}
+          }
+
           armed = true;
           arm.classList.add('armed');
           arm.textContent = 'armed · tap to disarm';
+
+          // Record arm timestamp for the smart-resume routing in main.ts —
+          // if user opens app within 12h of arming, route directly here.
+          try { localStorage.setItem('frqncy.bedside.last_arm_ts', String(Date.now())); } catch {}
 
           // iOS: arm the silent-audio keep-alive (no-op on Android).
           try { await FrqncyAlarm.armKeepAlive(); } catch {}
@@ -341,7 +582,14 @@
           await maybeShowOemGuidance();
         } catch (err) {
           console.error('arm failed', err);
-          alert(err && err.message ? err.message : 'Could not arm alarm');
+          // Friendly fallback copy — the underlying error message is often
+          // technical (EXACT_ALARM_DENIED etc.); the toast translates.
+          const msg = (err && err.code === 'EXACT_ALARM_DENIED')
+            ? "android needs permission to fire alarms exactly on time. settings → alarms & reminders → allow for FRQNCY."
+            : (err && err.message)
+              ? `couldn't arm: ${err.message}`
+              : "couldn't arm. try again, or check permissions in settings.";
+          showToast(msg, 7000);
         }
       });
 

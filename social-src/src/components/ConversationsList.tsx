@@ -2,6 +2,7 @@ import { useState, useEffect } from 'preact/hooks';
 import { useAuth } from './AuthProvider';
 import { supabase } from '../lib/supabase';
 import ChatWindow from './ChatWindow';
+import StartGroupConversation from './StartGroupConversation';
 
 interface OtherUser {
   id: string;
@@ -35,12 +36,14 @@ export default function ConversationsList() {
   const [conversations, setConversations] = useState<ConversationRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
+  const [showStartGroup, setShowStartGroup] = useState(false);
 
-  // Honor ?c=<id> so StartConversationButton can deep-link to a conversation.
+  // Honor ?c=<id> (StartConversationButton, 1:1) and ?cid=<id>
+  // (StartGroupConversation, group chats) so either deep-link works.
   useEffect(() => {
     if (typeof window === 'undefined') return;
     const params = new URLSearchParams(window.location.search);
-    const c = params.get('c');
+    const c = params.get('c') || params.get('cid');
     if (c) setSelectedId(c);
   }, []);
 
@@ -173,10 +176,20 @@ export default function ConversationsList() {
   }
 
   return (
+    <>
     <div class="grid grid-cols-1 md:grid-cols-12 gap-0 rounded-xl border border-card-border overflow-hidden" style="min-height: 60vh;">
       {/* Conversations list */}
       <div class="md:col-span-4 bg-card-bg border-r border-card-border">
-        <div class="p-4 border-b border-card-border">
+        <div class="p-4 border-b border-card-border space-y-2">
+          {user && (
+            <button
+              type="button"
+              onClick={() => setShowStartGroup(true)}
+              class="w-full px-3 py-2 rounded-lg text-sm text-gold border border-gold/30 bg-gold/5 hover:bg-gold/15 transition-colors"
+            >
+              + Start group chat
+            </button>
+          )}
           <input
             type="search"
             placeholder="Search conversations..."
@@ -259,5 +272,9 @@ export default function ConversationsList() {
         )}
       </div>
     </div>
+    {showStartGroup && (
+      <StartGroupConversation onClose={() => setShowStartGroup(false)} />
+    )}
+    </>
   );
 }

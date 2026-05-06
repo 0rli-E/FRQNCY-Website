@@ -61,6 +61,11 @@ export interface Profile {
       password used to authenticate lives in localStorage only — never on
       FRQNCY's server. See proposals/ATPROTO-BRIDGE.md. */
   bluesky_handle: string | null;
+  /** Permanent founder acknowledgement — flipped to true by
+      functions/api/check-rewards.js once the user crosses 25 referred
+      members (per proposals/REFERRAL-REWARDS-V0.md). Surfaced as a small
+      ✦ Founder pill on ProfileCard. Personal acknowledgement, not status. */
+  founder_badge: boolean | null;
 }
 
 export interface Post {
@@ -343,9 +348,27 @@ export async function createPost(data: {
         text: p.content,
         nrgPostId: p.id,
       })
-        .then((res) => {
+        .then(async (res) => {
           if (!res.ok) {
             console.warn('[atproto] cross-post failed (non-fatal):', res.reason);
+            return;
+          }
+          // Persist the Bluesky AT-URI on the NRG row so PostView can
+          // rehydrate the Bluesky thread for reply backflow without
+          // round-tripping the bridge again. Per migration 016 +
+          // proposals/BLUESKY-TIMELINE-READER.md (v1.1). Best-effort —
+          // if the column doesn't exist yet (migration 016 not applied)
+          // we log and move on; the cross-post itself still succeeded.
+          try {
+            const { error: updErr } = await supabase
+              .from('posts')
+              .update({ bluesky_uri: res.uri, bluesky_cid: res.cid })
+              .eq('id', p.id);
+            if (updErr) {
+              console.warn('[atproto] failed to persist bluesky_uri (non-fatal — apply migration 016?):', updErr.message);
+            }
+          } catch (err) {
+            console.warn('[atproto] persist bluesky_uri threw (non-fatal):', err);
           }
         })
         .catch((err) => {

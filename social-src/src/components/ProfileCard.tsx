@@ -18,6 +18,9 @@ interface ProfileRow {
   wallet_address: string | null;
   encryption_public_key: string | null;
   signing_public_key: string | null;
+  /** Permanent founder acknowledgement — server-side flip at 25 referred
+      members. See proposals/REFERRAL-REWARDS-V0.md. */
+  founder_badge: boolean | null;
 }
 
 /** Short-form a 0x-prefixed address as `0xabcd…1234`. */
@@ -47,7 +50,7 @@ export default function ProfileCard({ username }: ProfileCardProps) {
     (async () => {
       const { data, error } = await supabase
         .from('profiles')
-        .select('id, username, display_name, avatar_url, bio, post_count, follower_count, following_count, created_at, wallet_address, encryption_public_key, signing_public_key')
+        .select('id, username, display_name, avatar_url, bio, post_count, follower_count, following_count, created_at, wallet_address, encryption_public_key, signing_public_key, founder_badge')
         .eq('username', username)
         .maybeSingle();
       if (cancelled) return;
@@ -123,7 +126,18 @@ export default function ProfileCard({ username }: ProfileCardProps) {
           )}
         </div>
 
-        <h2 class="font-heading text-2xl text-gold">{displayName}</h2>
+        <div class="flex items-center gap-2 flex-wrap">
+          <h2 class="font-heading text-2xl text-gold">{displayName}</h2>
+          {profile?.founder_badge === true && (
+            <span
+              class="inline-flex items-center gap-1 px-2 py-0.5 rounded-full bg-gold/10 border border-gold/30 text-gold text-[10px] tracking-wide"
+              title="25 members joined via this account."
+            >
+              <span aria-hidden="true">✦</span>
+              <span>Founder</span>
+            </span>
+          )}
+        </div>
         <p class="text-sm text-text-dim mt-0.5">@{profile?.username || username}</p>
 
         {profile?.bio && (

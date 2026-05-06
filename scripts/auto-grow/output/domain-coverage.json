@@ -1,0 +1,2345 @@
+{
+  "generated_at": "2026-05-03T08:25:46.044Z",
+  "model_note": "Domain validity = real-world subject scope, not topic count. Pillars = operating-mode verbs, apply across every topic.",
+  "pillar_count": 8,
+  "domain_count": 15,
+  "topic_count": 161,
+  "domains": [
+    {
+      "id": "d-society",
+      "label": "Society & Networks",
+      "desc": "Collective human systems — how people organise, govern, move, and shape the world together.",
+      "scope_intent": null,
+      "topic_count": 10,
+      "topics": [
+        {
+          "id": "t-collective",
+          "label": "Collective Intelligence",
+          "primary_pillar": "Network State"
+        },
+        {
+          "id": "t-community",
+          "label": "Community",
+          "primary_pillar": "Network State"
+        },
+        {
+          "id": "t-diaspora",
+          "label": "Diaspora",
+          "primary_pillar": "Network State"
+        },
+        {
+          "id": "t-edusystem",
+          "label": "Education Systems",
+          "primary_pillar": "Network State"
+        },
+        {
+          "id": "t-futurecity",
+          "label": "Future Cities",
+          "primary_pillar": "Network State"
+        },
+        {
+          "id": "t-governance",
+          "label": "Governance",
+          "primary_pillar": "Network State"
+        },
+        {
+          "id": "t-history",
+          "label": "History",
+          "primary_pillar": "Network State"
+        },
+        {
+          "id": "t-indigenous",
+          "label": "Indigenous Wisdom",
+          "primary_pillar": "Network State"
+        },
+        {
+          "id": "t-peace",
+          "label": "Peace",
+          "primary_pillar": "Network State"
+        },
+        {
+          "id": "t-socialmov",
+          "label": "Social Movements",
+          "primary_pillar": "Network State"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Migration & Borders",
+            "rationale": "How humans move and are blocked from moving — central to collective human systems and absent from the list."
+          },
+          {
+            "label": "Family & Kinship",
+            "rationale": "The smallest social unit; foundational to how societies organise but currently uncovered."
+          },
+          {
+            "label": "Citizenship & Sovereignty",
+            "rationale": "Passports, statelessness, the sovereign-individual frame — directly aligned with the network-state thread."
+          },
+          {
+            "label": "Civic Tech",
+            "rationale": "Tools that serve democratic participation; bridges Society & Networks with Technology."
+          },
+          {
+            "label": "Power & Politics",
+            "rationale": "How power is held and flows; History touches it but the topic itself is missing."
+          },
+          {
+            "label": "Grassroots Organising",
+            "rationale": "Distinct from Social Movements — movements are waves, organising is the method."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    },
+    {
+      "id": "d-business",
+      "label": "Business",
+      "desc": "How enterprises are built, run, and scaled — regenerative models, social enterprise, and the organisations creating real-world impact.",
+      "scope_intent": null,
+      "topic_count": 6,
+      "topics": [
+        {
+          "id": "t-circular",
+          "label": "Circular Economy",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-entrepreneurship",
+          "label": "Entrepreneurship",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-leadership",
+          "label": "Leadership",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-regenbiz",
+          "label": "Regenerative Business",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-socialent",
+          "label": "Social Enterprise",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-startups",
+          "label": "Start-ups",
+          "primary_pillar": "Fund"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Organisational Design",
+            "rationale": "How companies are structured; central craft of running a business."
+          },
+          {
+            "label": "Cooperatives & Mutuals",
+            "rationale": "Non-extractive ownership models; aligns with FRQNCY's cooperation-over-competition value."
+          },
+          {
+            "label": "Strategy",
+            "rationale": "Long-term direction-setting; one of the load-bearing crafts of business."
+          },
+          {
+            "label": "Supply Chains",
+            "rationale": "Sourcing, trade routes, ethical procurement — large omission for any serious business coverage."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    },
+    {
+      "id": "d-money",
+      "label": "Money",
+      "desc": "Capital, finance, and the new monetary systems — from conscious capital and impact investing to crypto, DeFi, and the sovereign individual.",
+      "scope_intent": null,
+      "topic_count": 8,
+      "topics": [
+        {
+          "id": "t-conscap",
+          "label": "Conscious Capital",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-crypto",
+          "label": "Cryptocurrency",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-dao",
+          "label": "DAOs",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-cards",
+          "label": "Debit & Credit Cards",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-defi",
+          "label": "DeFi",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-impact",
+          "label": "Impact Investing",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-personal-finance",
+          "label": "Personal Finance",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-wealth-mind",
+          "label": "Prosperity Mindset",
+          "primary_pillar": "Fund"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Banking",
+            "rationale": "Traditional banking versus alternatives; the legacy half of the financial story."
+          },
+          {
+            "label": "Tax & Sovereignty",
+            "rationale": "Personal taxation and jurisdictional choices; key for the sovereign-individual thread."
+          },
+          {
+            "label": "Gold & Hard Money",
+            "rationale": "Sound-money tradition outside crypto; Money domain is currently crypto-heavy."
+          },
+          {
+            "label": "Stablecoins",
+            "rationale": "The bridge layer between fiat and crypto; large gap given DeFi/DAOs are present."
+          },
+          {
+            "label": "Inflation & Monetary Policy",
+            "rationale": "Macro context for everything else in the domain; missing makes the coverage feel partial."
+          }
+        ],
+        "off_topic_flags": [
+          {
+            "topic_id": "t-wealth-mind",
+            "topic_label": "Prosperity Mindset",
+            "rationale": "Mindset / inner-game topic, not a money mechanism. Primary domain probably belongs in Lifestyle or Well-being; cross-list to Money is fine, but as primary it pollutes the financial-systems character of this domain."
+          }
+        ]
+      }
+    },
+    {
+      "id": "d-energy",
+      "label": "Energy",
+      "desc": "The forces and resources that power existence — from solar and wind to the subtle energies that move through all living systems.",
+      "scope_intent": null,
+      "topic_count": 10,
+      "topics": [
+        {
+          "id": "t-bioenergy",
+          "label": "Bioenergy",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-energypolicy",
+          "label": "Energy Policy",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-storage",
+          "label": "Energy Storage",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-geothermal",
+          "label": "Geothermal",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-gridtech",
+          "label": "Grid Technology",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-hydropower",
+          "label": "Hydropower",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-nuclear",
+          "label": "Nuclear & Fusion",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-renewable",
+          "label": "Renewable Energy",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-solar",
+          "label": "Solar",
+          "primary_pillar": "Fund"
+        },
+        {
+          "id": "t-wind",
+          "label": "Wind Energy",
+          "primary_pillar": "Fund"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Subtle Energy / Prana / Qi",
+            "rationale": "The domain description literally promises 'the subtle energies that move through all living systems' — currently zero topics deliver this half."
+          },
+          {
+            "label": "Hydrogen Economy",
+            "rationale": "Major future-energy vector; common pairing with renewables and storage."
+          },
+          {
+            "label": "Energy Sovereignty",
+            "rationale": "Household and community energy independence — fits FRQNCY's sovereign-individual editorial frame."
+          },
+          {
+            "label": "Free Energy / Tesla Tradition",
+            "rationale": "Suppressed-knowledge thread that fits FRQNCY's editorial appetite (see History topic) but is absent here."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    },
+    {
+      "id": "d-lifestyle",
+      "label": "Lifestyle",
+      "desc": "Conscious ways of living — the daily choices, rhythms, and practices that shape a life of intention.",
+      "scope_intent": null,
+      "topic_count": 13,
+      "topics": [
+        {
+          "id": "t-bodycare",
+          "label": "Body Care",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-coffee-tea",
+          "label": "Coffee & Tea",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-cookware",
+          "label": "Cookware",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-detox",
+          "label": "Detox",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-minimalism",
+          "label": "Minimalism",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-movement",
+          "label": "Movement",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-nutrition",
+          "label": "Nutrition",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-personal-dev",
+          "label": "Personal Development",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-plantmed",
+          "label": "Plant Medicine",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-sleep",
+          "label": "Sleep",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-sustliving",
+          "label": "Sustainable Living",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-tools-carry",
+          "label": "Tools & Carry",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-water",
+          "label": "Water",
+          "primary_pillar": "Education"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Travel & Pilgrimage",
+            "rationale": "Conscious travel and pilgrimage are core lifestyle themes for the FRQNCY reader; large omission."
+          },
+          {
+            "label": "Home & Sanctuary",
+            "rationale": "The physical living space as a daily-practice surface — distinct from architecture, sits squarely in lifestyle."
+          },
+          {
+            "label": "Relationships & Intimacy",
+            "rationale": "Romantic and platonic relationships are central to a life of intention; currently uncovered."
+          },
+          {
+            "label": "Daily Practice & Rituals",
+            "rationale": "The connective tissue of conscious living; the 'how to actually do it' meta-topic is missing."
+          },
+          {
+            "label": "Fasting",
+            "rationale": "Distinct from Nutrition — a deliberate practice with its own tradition."
+          },
+          {
+            "label": "Time & Attention",
+            "rationale": "How a conscious person spends their time and attention; foundational lifestyle question."
+          }
+        ],
+        "off_topic_flags": [
+          {
+            "topic_id": "t-detox",
+            "topic_label": "Detox",
+            "rationale": "Healing-modality framing; reads as Well-being primary more naturally than Lifestyle. Soft flag — defensible either way, raised so Orlando can decide."
+          },
+          {
+            "topic_id": "t-plantmed",
+            "topic_label": "Plant Medicine",
+            "rationale": "Plant medicine traditions are healing practices; primary domain probably Well-being (alongside Ayurveda, TCM). Currently here likely because of the daily-conscious-living adjacency. Soft flag."
+          }
+        ]
+      }
+    },
+    {
+      "id": "d-wellbeing",
+      "label": "Well-being",
+      "desc": "Healing and wholeness — the full spectrum of human health across body, mind, and spirit.",
+      "scope_intent": null,
+      "topic_count": 13,
+      "topics": [
+        {
+          "id": "t-ayurveda",
+          "label": "Ayurveda",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-breathwork",
+          "label": "Breathwork",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-eft",
+          "label": "EFT & Tapping",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-energyheal",
+          "label": "Energy Healing",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-kriya",
+          "label": "Kriya Yoga",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-meditation",
+          "label": "Meditation",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-mentalhlth",
+          "label": "Mental Health",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-siddha-yoga",
+          "label": "Siddha Yoga",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-somatic",
+          "label": "Somatic Therapy",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-soundheal",
+          "label": "Sound Healing",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-supplements",
+          "label": "Supplements",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-tcm",
+          "label": "Traditional Chinese Medicine",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-yoga",
+          "label": "Yoga",
+          "primary_pillar": "Education"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Trauma & Healing",
+            "rationale": "Distinct from Somatic Therapy; the broader frame of trauma and recovery is missing."
+          },
+          {
+            "label": "Sexuality & Sacred Sex",
+            "rationale": "Body/mind/spirit wholeness; legitimate Well-being topic largely uncovered in FRQNCY."
+          },
+          {
+            "label": "Nature Therapy",
+            "rationale": "Forest bathing, ecotherapy — well-evidenced healing modality, currently absent."
+          },
+          {
+            "label": "Fitness & Strength",
+            "rationale": "Physical health is half the body axis of well-being; Movement covers part but not strength/conditioning."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    },
+    {
+      "id": "d-food",
+      "label": "Food & Agriculture",
+      "desc": "Growing, sharing and consuming nourishment — the ancient and future relationship between humans and the land.",
+      "scope_intent": null,
+      "topic_count": 8,
+      "topics": [
+        {
+          "id": "t-aquaculture",
+          "label": "Aquaculture",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-cuisine",
+          "label": "Cuisine",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-fermentation",
+          "label": "Fermentation",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-foodsov",
+          "label": "Food Sovereignty",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-foodsystems",
+          "label": "Food Systems",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-permaculture",
+          "label": "Permaculture",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-regenfarm",
+          "label": "Regenerative Farming",
+          "primary_pillar": "Education"
+        },
+        {
+          "id": "t-urbanfarm",
+          "label": "Urban Farming",
+          "primary_pillar": "Education"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Foraging & Wildcrafting",
+            "rationale": "Gathering as the original food relationship; sits alongside farming, currently absent."
+          },
+          {
+            "label": "Seeds & Heirloom Varieties",
+            "rationale": "The biodiversity foundation under regenerative farming and food sovereignty."
+          },
+          {
+            "label": "Soil Science",
+            "rationale": "Underpins regenerative farming and permaculture; the topic itself is missing."
+          },
+          {
+            "label": "Hunting & Fishing",
+            "rationale": "Original human food relationships; cultural and practical, currently absent."
+          },
+          {
+            "label": "Indigenous Foodways",
+            "rationale": "Cross-pollinates with Indigenous Wisdom; food traditions of original peoples."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    },
+    {
+      "id": "d-sciences",
+      "label": "Sciences",
+      "desc": "Empirical exploration of reality — the disciplines that probe the deep structure of life, matter, and mind.",
+      "scope_intent": null,
+      "topic_count": 14,
+      "topics": [
+        {
+          "id": "t-anthropology",
+          "label": "Anthropology",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-astrophys",
+          "label": "Astrophysics",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-bio",
+          "label": "Biology",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-chemistry",
+          "label": "Chemistry",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-geology",
+          "label": "Earth Science",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-ecology",
+          "label": "Ecology",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-genetics",
+          "label": "Genetics",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-math",
+          "label": "Mathematics",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-med",
+          "label": "Medicine",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-neuro",
+          "label": "Neuroscience",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-physics",
+          "label": "Physics",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-psych",
+          "label": "Psychology",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-quantum-grammar",
+          "label": "Quantum Grammar",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-quantum",
+          "label": "Quantum Physics",
+          "primary_pillar": "Research"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Linguistics",
+            "rationale": "The science of language; cross-cuts Communication but the science itself belongs here."
+          },
+          {
+            "label": "Cognitive Science",
+            "rationale": "Distinct from Neuroscience — the interdisciplinary study of mind."
+          },
+          {
+            "label": "Pharmacology",
+            "rationale": "Distinct discipline, currently subsumed under Medicine."
+          }
+        ],
+        "off_topic_flags": [
+          {
+            "topic_id": "t-quantum-grammar",
+            "topic_label": "Quantum Grammar",
+            "rationale": "Quantum Grammar (David Wynn Miller / parse-syntax-grammar) is a fringe legal-language sovereignty system, not an empirical science. The Sciences domain promises 'empirical exploration of reality' — this topic doesn't meet that bar. Belongs in Metaphysics, Society & Networks (sovereign-individual frame), or Communication (language as power). Strong flag."
+          }
+        ]
+      }
+    },
+    {
+      "id": "d-nature",
+      "label": "Nature & Cosmos",
+      "desc": "The living systems of existence — from ecosystems and oceans to stars, cycles, and the geometry beneath it all.",
+      "scope_intent": null,
+      "topic_count": 10,
+      "topics": [
+        {
+          "id": "t-wildlife",
+          "label": "Animals & Wildlife",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-astrology",
+          "label": "Astrology",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-biodivers",
+          "label": "Biodiversity",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-climate",
+          "label": "Climate",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-cosmos",
+          "label": "Cosmos",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-efields",
+          "label": "Energy Fields",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-forests",
+          "label": "Forests",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-cycles",
+          "label": "Natural Cycles",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-oceans",
+          "label": "Oceans",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-sacredgeo",
+          "label": "Sacred Geometry",
+          "primary_pillar": "Research"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Mountains & Wilderness",
+            "rationale": "Major nature category present in every reader's mental map of nature; currently absent."
+          },
+          {
+            "label": "Rivers & Watersheds",
+            "rationale": "Companion to Oceans; freshwater systems are conspicuously missing."
+          },
+          {
+            "label": "Stars & Constellations",
+            "rationale": "Sub-topic of Cosmos but with its own deep human history; pairs with Astrology."
+          },
+          {
+            "label": "Weather & Atmosphere",
+            "rationale": "The everyday face of climate; distinct from the Climate topic."
+          },
+          {
+            "label": "Seasons & Solar Year",
+            "rationale": "Distinct from generic Natural Cycles; the calendar of nature."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    },
+    {
+      "id": "d-meta",
+      "label": "Metaphysics",
+      "desc": "The architecture of reality — consciousness, dimensions, sacred law, and the invisible structures that underpin the visible world.",
+      "scope_intent": null,
+      "topic_count": 21,
+      "topics": [
+        {
+          "id": "t-akashic",
+          "label": "Akashic Records",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-buddhism",
+          "label": "Buddhism",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-channeling",
+          "label": "Channeling",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-christianity",
+          "label": "Christianity",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-dims",
+          "label": "Dimensions",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-aliens",
+          "label": "Extraterrestrial Life",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-hinduism",
+          "label": "Hinduism",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-humandesign",
+          "label": "Human Design",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-manifestation",
+          "label": "Manifestation",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-merkaba",
+          "label": "Merkaba",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-mythology",
+          "label": "Mythology",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-nde",
+          "label": "Near-Death Experiences",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-oneness",
+          "label": "Oneness",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-remote-view",
+          "label": "Remote Viewing",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-saclaw",
+          "label": "Sacred Law",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-soul",
+          "label": "Soul",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-source",
+          "label": "Source",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-sufism",
+          "label": "Sufism",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-sync",
+          "label": "Synchronicity",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-taoism",
+          "label": "Taoism",
+          "primary_pillar": "Research"
+        },
+        {
+          "id": "t-vibration",
+          "label": "Vibration",
+          "primary_pillar": "Research"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Hermeticism",
+            "rationale": "Central to Western esoteric metaphysics; significant editorial gap."
+          },
+          {
+            "label": "Kabbalah",
+            "rationale": "Jewish mystical tradition; companion to Hermeticism in Western esotericism."
+          },
+          {
+            "label": "Reincarnation & Past Lives",
+            "rationale": "Specific metaphysical claim with strong editorial appetite at FRQNCY; missing as its own topic."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    },
+    {
+      "id": "d-arts",
+      "label": "Arts & Culture",
+      "desc": "Expression of the human spirit — music, image, story, and movement as the languages that reach where words cannot.",
+      "scope_intent": null,
+      "topic_count": 12,
+      "topics": [
+        {
+          "id": "t-archit",
+          "label": "Architecture",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-audio",
+          "label": "Audio",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-dance",
+          "label": "Dance",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-fashion",
+          "label": "Fashion",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-film",
+          "label": "Film",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-literature",
+          "label": "Literature",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-music",
+          "label": "Music",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-photo",
+          "label": "Photography",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-poetry",
+          "label": "Poetry",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-story",
+          "label": "Storytelling",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-theater",
+          "label": "Theater",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-visual",
+          "label": "Visual Art",
+          "primary_pillar": "Media"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Sculpture",
+            "rationale": "Distinct from Visual Art; major form with its own tradition."
+          },
+          {
+            "label": "Crafts & Artisanal Trades",
+            "rationale": "Woodworking, ceramics, weaving — the maker traditions; currently uncovered as a topic."
+          },
+          {
+            "label": "Design",
+            "rationale": "Graphic, industrial, type — broader than Product Design and missing as a culture topic."
+          },
+          {
+            "label": "Cultural Heritage",
+            "rationale": "Folk arts, preservation, lineage — the conservation half of culture."
+          },
+          {
+            "label": "Performance Art",
+            "rationale": "Distinct from Theater and Dance; live experimental performance as its own form."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    },
+    {
+      "id": "d-communication",
+      "label": "Communication",
+      "desc": "How humans connect and express meaning — from language and dialogue to journalism and broadcast.",
+      "scope_intent": null,
+      "topic_count": 9,
+      "topics": [
+        {
+          "id": "t-broadcasting",
+          "label": "Broadcasting",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-dialogue",
+          "label": "Dialogue",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-journalism",
+          "label": "Journalism",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-language",
+          "label": "Language",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-nvc",
+          "label": "Nonviolent Communication",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-speaking",
+          "label": "Public Speaking",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-socialmedia",
+          "label": "Social Media",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-translation",
+          "label": "Translation",
+          "primary_pillar": "Media"
+        },
+        {
+          "id": "t-writing",
+          "label": "Writing",
+          "primary_pillar": "Media"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Listening",
+            "rationale": "Counterpoint to Speaking; deserves its own topic in any serious communication domain."
+          },
+          {
+            "label": "Conflict Resolution",
+            "rationale": "Companion to Nonviolent Communication; the harder cases NVC is built for."
+          },
+          {
+            "label": "Body Language & Nonverbal",
+            "rationale": "Distinct from NVC; nonverbal communication as its own field."
+          },
+          {
+            "label": "Marketing & PR",
+            "rationale": "A communication craft FRQNCY may want to address with its own editorial frame."
+          },
+          {
+            "label": "Internet & Web",
+            "rationale": "Communication infrastructure; sits between Communication and Technology but the topic itself is missing."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    },
+    {
+      "id": "d-tech",
+      "label": "Technology",
+      "desc": "Tools shaping the future — the technologies being built now that will define how humanity lives and works.",
+      "scope_intent": null,
+      "topic_count": 11,
+      "topics": [
+        {
+          "id": "t-arvr",
+          "label": "AR / VR",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-ai",
+          "label": "Artificial Intelligence",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-biotech",
+          "label": "Biotechnology",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-blockchain",
+          "label": "Blockchain",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-cybersec",
+          "label": "Cybersecurity",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-decentral-ai",
+          "label": "Decentralised AI",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-decentral",
+          "label": "Decentralized Networks",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-privacy",
+          "label": "Privacy & Sovereignty",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-quantcomp",
+          "label": "Quantum Computing",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-robotics",
+          "label": "Robotics",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-web3",
+          "label": "Web3",
+          "primary_pillar": "Builder"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Internet of Things",
+            "rationale": "Major tech category; bridges hardware and software, currently absent."
+          },
+          {
+            "label": "Open Hardware",
+            "rationale": "Companion to Open Source on the hardware side; aligns with FRQNCY values."
+          },
+          {
+            "label": "Drones & Aerospace",
+            "rationale": "Major tech surface; absent from the current list."
+          },
+          {
+            "label": "3D Printing & Manufacturing",
+            "rationale": "Distributed manufacturing; cleanly inside Technology and missing."
+          },
+          {
+            "label": "Wearables",
+            "rationale": "Consumer-facing tech category that cross-pollinates with Well-being."
+          },
+          {
+            "label": "Software Engineering",
+            "rationale": "The practice of building software; the discipline behind most Builder topics."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    },
+    {
+      "id": "d-creation",
+      "label": "Creation",
+      "desc": "Building what has never existed — design, systems, emergence, and the act of bringing new things into the world.",
+      "scope_intent": null,
+      "topic_count": 8,
+      "topics": [
+        {
+          "id": "t-biomimicry",
+          "label": "Biomimicry",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-cocreate",
+          "label": "Co-creation",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-emergence",
+          "label": "Emergence",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-futuretech",
+          "label": "Future Tech",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-opensource",
+          "label": "Open Source",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-proddesign",
+          "label": "Product Design",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-proto",
+          "label": "Prototyping",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-systems",
+          "label": "Systems Thinking",
+          "primary_pillar": "Builder"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Craftsmanship",
+            "rationale": "Making with hands; the embodied half of creation distinct from systems and design."
+          },
+          {
+            "label": "Innovation & Invention",
+            "rationale": "Distinct from Product Design; the act of inventing as its own topic."
+          },
+          {
+            "label": "Design Thinking",
+            "rationale": "Methodology that links Creation, Communication, and Builder pillars."
+          },
+          {
+            "label": "Speculative Design / Worldbuilding",
+            "rationale": "Imagined-futures craft; deeply FRQNCY in spirit and currently uncovered."
+          },
+          {
+            "label": "Improvisation",
+            "rationale": "Creation in real time; pairs with Co-creation and Emergence."
+          },
+          {
+            "label": "Apprenticeship & Mastery",
+            "rationale": "How creative skill is transmitted; meta-topic for any creation domain."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    },
+    {
+      "id": "d-play",
+      "label": "Play & Recreation",
+      "desc": "Joy, games, sports and leisure — the parts of life that remind us existence is not just work.",
+      "scope_intent": null,
+      "topic_count": 8,
+      "topics": [
+        {
+          "id": "t-esports",
+          "label": "Esports",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-festivals",
+          "label": "Festivals & Events",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-gaming",
+          "label": "Games & Gaming",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-humor",
+          "label": "Humor & Comedy",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-leisure",
+          "label": "Leisure & Rest",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-outdoor",
+          "label": "Outdoor Adventure",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-playcreat",
+          "label": "Play & Creativity",
+          "primary_pillar": "Builder"
+        },
+        {
+          "id": "t-sports",
+          "label": "Sports",
+          "primary_pillar": "Builder"
+        }
+      ],
+      "llm_suggestions": {
+        "likely_missing": [
+          {
+            "label": "Travel & Vacation",
+            "rationale": "Major recreation surface for most readers; currently uncovered."
+          },
+          {
+            "label": "Hobbies & Collecting",
+            "rationale": "Leisure activity category distinct from sports and gaming."
+          },
+          {
+            "label": "Adventure Sports",
+            "rationale": "Distinct from generic Sports and Outdoor Adventure; extreme/edge-of-skill recreation."
+          },
+          {
+            "label": "Children's Play",
+            "rationale": "Generative play across ages; companion to Play & Creativity but with its own developmental frame."
+          },
+          {
+            "label": "Board Games & Tabletop",
+            "rationale": "Distinct from digital gaming; foundational social play form."
+          },
+          {
+            "label": "Music & Dance Festivals",
+            "rationale": "Distinct from generic Festivals & Events; the music/dance festival as a recreation form."
+          }
+        ],
+        "off_topic_flags": []
+      }
+    }
+  ],
+  "pillars": [
+    {
+      "id": "network-state",
+      "label": "Network State",
+      "desc": "The sovereign community — physical and digital spaces where a new kind of society takes root, governed by shared values rather than geography.",
+      "primary_tagged_topic_count": 10,
+      "primary_tagged_topics": [
+        {
+          "id": "t-collective",
+          "label": "Collective Intelligence",
+          "domain": "Society & Networks"
+        },
+        {
+          "id": "t-community",
+          "label": "Community",
+          "domain": "Society & Networks"
+        },
+        {
+          "id": "t-diaspora",
+          "label": "Diaspora",
+          "domain": "Society & Networks"
+        },
+        {
+          "id": "t-edusystem",
+          "label": "Education Systems",
+          "domain": "Society & Networks"
+        },
+        {
+          "id": "t-futurecity",
+          "label": "Future Cities",
+          "domain": "Society & Networks"
+        },
+        {
+          "id": "t-governance",
+          "label": "Governance",
+          "domain": "Society & Networks"
+        },
+        {
+          "id": "t-history",
+          "label": "History",
+          "domain": "Society & Networks"
+        },
+        {
+          "id": "t-indigenous",
+          "label": "Indigenous Wisdom",
+          "domain": "Society & Networks"
+        },
+        {
+          "id": "t-peace",
+          "label": "Peace",
+          "domain": "Society & Networks"
+        },
+        {
+          "id": "t-socialmov",
+          "label": "Social Movements",
+          "domain": "Society & Networks"
+        }
+      ],
+      "qa": {
+        "vision": "The sovereign community — physical and digital spaces where a new kind of society takes root, governed by shared values rather than geography.",
+        "communication": "v2/network-state/ landing page exists with vision-aligned copy. Index.html mentions 'network states' in keywords and references the concept in body copy ('a parallel society... coworking first... the network state we are becoming'). NOT surfaced as a pillar card on home or about — appears only as inline copy.",
+        "fact": "10 topics tagged primary (Collective Intelligence, Community, Diaspora, Education Systems, Future Cities, Governance, History, Indigenous Wisdom, Peace, Social Movements). v2/network-state/ page = 326 lines. No physical Sanctuary / coworking / land yet. Sanctuary nav item points to /my-frqncy/dashboard/ (the user's private dashboard, not a place).",
+        "drift_findings": [
+          {
+            "severity": "medium",
+            "kind": "communication-vs-fact",
+            "summary": "Pillar landing page + 10 topics exist, but neither home nor about surfaces Network State as a pillar card — readers won't see it as one of the load-bearing things FRQNCY does. The 'Sanctuary' card on home/about is closer to what a reader would associate with this pillar (place / community / land), but Sanctuary is not in content.json's pillars[]."
+          },
+          {
+            "severity": "medium",
+            "kind": "vision-vs-fact",
+            "summary": "Vision promises 'physical and digital spaces' — the digital half (topic graph, soon social) is real; the physical half (coworking → building → land, per home copy) is unshipped, which is fine for a vision but should be honestly framed as 'becoming' (the home copy already does this — keep that framing intact)."
+          }
+        ]
+      }
+    },
+    {
+      "id": "fund",
+      "label": "Fund",
+      "desc": "Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.",
+      "primary_tagged_topic_count": 24,
+      "primary_tagged_topics": [
+        {
+          "id": "t-bioenergy",
+          "label": "Bioenergy",
+          "domain": "Energy"
+        },
+        {
+          "id": "t-circular",
+          "label": "Circular Economy",
+          "domain": "Business"
+        },
+        {
+          "id": "t-conscap",
+          "label": "Conscious Capital",
+          "domain": "Money"
+        },
+        {
+          "id": "t-crypto",
+          "label": "Cryptocurrency",
+          "domain": "Money"
+        },
+        {
+          "id": "t-dao",
+          "label": "DAOs",
+          "domain": "Money"
+        },
+        {
+          "id": "t-cards",
+          "label": "Debit & Credit Cards",
+          "domain": "Money"
+        },
+        {
+          "id": "t-defi",
+          "label": "DeFi",
+          "domain": "Money"
+        },
+        {
+          "id": "t-energypolicy",
+          "label": "Energy Policy",
+          "domain": "Energy"
+        },
+        {
+          "id": "t-storage",
+          "label": "Energy Storage",
+          "domain": "Energy"
+        },
+        {
+          "id": "t-entrepreneurship",
+          "label": "Entrepreneurship",
+          "domain": "Business"
+        },
+        {
+          "id": "t-geothermal",
+          "label": "Geothermal",
+          "domain": "Energy"
+        },
+        {
+          "id": "t-gridtech",
+          "label": "Grid Technology",
+          "domain": "Energy"
+        },
+        {
+          "id": "t-hydropower",
+          "label": "Hydropower",
+          "domain": "Energy"
+        },
+        {
+          "id": "t-impact",
+          "label": "Impact Investing",
+          "domain": "Money"
+        },
+        {
+          "id": "t-leadership",
+          "label": "Leadership",
+          "domain": "Business"
+        },
+        {
+          "id": "t-nuclear",
+          "label": "Nuclear & Fusion",
+          "domain": "Energy"
+        },
+        {
+          "id": "t-personal-finance",
+          "label": "Personal Finance",
+          "domain": "Money"
+        },
+        {
+          "id": "t-wealth-mind",
+          "label": "Prosperity Mindset",
+          "domain": "Money"
+        },
+        {
+          "id": "t-regenbiz",
+          "label": "Regenerative Business",
+          "domain": "Business"
+        },
+        {
+          "id": "t-renewable",
+          "label": "Renewable Energy",
+          "domain": "Energy"
+        },
+        {
+          "id": "t-socialent",
+          "label": "Social Enterprise",
+          "domain": "Business"
+        },
+        {
+          "id": "t-solar",
+          "label": "Solar",
+          "domain": "Energy"
+        },
+        {
+          "id": "t-startups",
+          "label": "Start-ups",
+          "domain": "Business"
+        },
+        {
+          "id": "t-wind",
+          "label": "Wind Energy",
+          "domain": "Energy"
+        }
+      ],
+      "qa": {
+        "vision": "Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.",
+        "communication": "Strong, consistent across home + about + pillar page. Home: 'An actual fund. Money gathered, deployed into aligned projects and people. Sovereign custody.' About: 'A real fund. Sovereign custody. We invest in aligned projects and the people building them, and we fund the work of FRQNCY itself.' v2/fund/ = 493 lines (the most developed pillar page).",
+        "fact": "24 primary-tagged topics across Money, Energy, Business. Stripe payments shipped (recent commits: course one-time-payment + access ledger). No actual outbound investments yet. Vision/Echo/Legion mentioned in nav as 'roadmap' items — these aren't explained on the public surface.",
+        "drift_findings": [
+          {
+            "severity": "low",
+            "kind": "vision-vs-fact",
+            "summary": "Stripe payments currently power Education (course sales), not Fund (capital allocation). Reader sees 'Fund' framing on infrastructure that's actually serving Education. Defensible — courses generate the capital that becomes the fund — but worth being explicit about this loop in the Fund page so it doesn't read as overclaim."
+          },
+          {
+            "severity": "low",
+            "kind": "communication-internal-clarity",
+            "summary": "Nav surfaces 'Vision, Echo, Legion & roadmap' under Fund but these names aren't explained anywhere obvious to a first-time reader. Either define them on /v2/fund/ or rename to something self-explanatory."
+          }
+        ]
+      }
+    },
+    {
+      "id": "education",
+      "label": "Education",
+      "desc": "Transmitting what's known — curating the best teachers, courses, and wisdom traditions so knowledge flows to those who need it.",
+      "primary_tagged_topic_count": 34,
+      "primary_tagged_topics": [
+        {
+          "id": "t-aquaculture",
+          "label": "Aquaculture",
+          "domain": "Food & Agriculture"
+        },
+        {
+          "id": "t-ayurveda",
+          "label": "Ayurveda",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-bodycare",
+          "label": "Body Care",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-breathwork",
+          "label": "Breathwork",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-coffee-tea",
+          "label": "Coffee & Tea",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-cookware",
+          "label": "Cookware",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-cuisine",
+          "label": "Cuisine",
+          "domain": "Food & Agriculture"
+        },
+        {
+          "id": "t-detox",
+          "label": "Detox",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-eft",
+          "label": "EFT & Tapping",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-energyheal",
+          "label": "Energy Healing",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-fermentation",
+          "label": "Fermentation",
+          "domain": "Food & Agriculture"
+        },
+        {
+          "id": "t-foodsov",
+          "label": "Food Sovereignty",
+          "domain": "Food & Agriculture"
+        },
+        {
+          "id": "t-foodsystems",
+          "label": "Food Systems",
+          "domain": "Food & Agriculture"
+        },
+        {
+          "id": "t-kriya",
+          "label": "Kriya Yoga",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-meditation",
+          "label": "Meditation",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-mentalhlth",
+          "label": "Mental Health",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-minimalism",
+          "label": "Minimalism",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-movement",
+          "label": "Movement",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-nutrition",
+          "label": "Nutrition",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-permaculture",
+          "label": "Permaculture",
+          "domain": "Food & Agriculture"
+        },
+        {
+          "id": "t-personal-dev",
+          "label": "Personal Development",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-plantmed",
+          "label": "Plant Medicine",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-regenfarm",
+          "label": "Regenerative Farming",
+          "domain": "Food & Agriculture"
+        },
+        {
+          "id": "t-siddha-yoga",
+          "label": "Siddha Yoga",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-sleep",
+          "label": "Sleep",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-somatic",
+          "label": "Somatic Therapy",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-soundheal",
+          "label": "Sound Healing",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-supplements",
+          "label": "Supplements",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-sustliving",
+          "label": "Sustainable Living",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-tools-carry",
+          "label": "Tools & Carry",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-tcm",
+          "label": "Traditional Chinese Medicine",
+          "domain": "Well-being"
+        },
+        {
+          "id": "t-urbanfarm",
+          "label": "Urban Farming",
+          "domain": "Food & Agriculture"
+        },
+        {
+          "id": "t-water",
+          "label": "Water",
+          "domain": "Lifestyle"
+        },
+        {
+          "id": "t-yoga",
+          "label": "Yoga",
+          "domain": "Well-being"
+        }
+      ],
+      "qa": {
+        "vision": "Transmitting what's known — curating the best teachers, courses, and wisdom traditions so knowledge flows to those who need it.",
+        "communication": "About: 'The masters we point you to, and — in time — the ones we become. Personalised through your chart. Curated first, produced second.' Home detail card present. v2/education/ landing exists.",
+        "fact": "34 primary-tagged topics (largest pillar). Courses with Stripe payments + access ledger shipped. 'Read First' recently added. Master-curation visible across books/people/orgs. 'Personalised through your chart' is a Human Design integration claim — Human Design topic exists but the chart-personalisation feature is unclear status (verify before next pass).",
+        "drift_findings": [
+          {
+            "severity": "low",
+            "kind": "vision-vs-fact",
+            "summary": "About copy promises 'personalised through your chart' — this is an unshipped or partially-shipped feature. Either ship the chart-driven personalisation or soften the promise to 'in time, personalised' to match the framing used for Network State."
+          }
+        ]
+      }
+    },
+    {
+      "id": "research",
+      "label": "Research",
+      "desc": "Exploring what isn't known yet — mapping the edges of science, philosophy, and consciousness where the next discoveries live.",
+      "primary_tagged_topic_count": 45,
+      "primary_tagged_topics": [
+        {
+          "id": "t-akashic",
+          "label": "Akashic Records",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-wildlife",
+          "label": "Animals & Wildlife",
+          "domain": "Nature & Cosmos"
+        },
+        {
+          "id": "t-anthropology",
+          "label": "Anthropology",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-astrology",
+          "label": "Astrology",
+          "domain": "Nature & Cosmos"
+        },
+        {
+          "id": "t-astrophys",
+          "label": "Astrophysics",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-biodivers",
+          "label": "Biodiversity",
+          "domain": "Nature & Cosmos"
+        },
+        {
+          "id": "t-bio",
+          "label": "Biology",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-buddhism",
+          "label": "Buddhism",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-channeling",
+          "label": "Channeling",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-chemistry",
+          "label": "Chemistry",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-christianity",
+          "label": "Christianity",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-climate",
+          "label": "Climate",
+          "domain": "Nature & Cosmos"
+        },
+        {
+          "id": "t-cosmos",
+          "label": "Cosmos",
+          "domain": "Nature & Cosmos"
+        },
+        {
+          "id": "t-dims",
+          "label": "Dimensions",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-geology",
+          "label": "Earth Science",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-ecology",
+          "label": "Ecology",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-efields",
+          "label": "Energy Fields",
+          "domain": "Nature & Cosmos"
+        },
+        {
+          "id": "t-aliens",
+          "label": "Extraterrestrial Life",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-forests",
+          "label": "Forests",
+          "domain": "Nature & Cosmos"
+        },
+        {
+          "id": "t-genetics",
+          "label": "Genetics",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-hinduism",
+          "label": "Hinduism",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-humandesign",
+          "label": "Human Design",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-manifestation",
+          "label": "Manifestation",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-math",
+          "label": "Mathematics",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-med",
+          "label": "Medicine",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-merkaba",
+          "label": "Merkaba",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-mythology",
+          "label": "Mythology",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-cycles",
+          "label": "Natural Cycles",
+          "domain": "Nature & Cosmos"
+        },
+        {
+          "id": "t-nde",
+          "label": "Near-Death Experiences",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-neuro",
+          "label": "Neuroscience",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-oceans",
+          "label": "Oceans",
+          "domain": "Nature & Cosmos"
+        },
+        {
+          "id": "t-oneness",
+          "label": "Oneness",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-physics",
+          "label": "Physics",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-psych",
+          "label": "Psychology",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-quantum-grammar",
+          "label": "Quantum Grammar",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-quantum",
+          "label": "Quantum Physics",
+          "domain": "Sciences"
+        },
+        {
+          "id": "t-remote-view",
+          "label": "Remote Viewing",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-sacredgeo",
+          "label": "Sacred Geometry",
+          "domain": "Nature & Cosmos"
+        },
+        {
+          "id": "t-saclaw",
+          "label": "Sacred Law",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-soul",
+          "label": "Soul",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-source",
+          "label": "Source",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-sufism",
+          "label": "Sufism",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-sync",
+          "label": "Synchronicity",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-taoism",
+          "label": "Taoism",
+          "domain": "Metaphysics"
+        },
+        {
+          "id": "t-vibration",
+          "label": "Vibration",
+          "domain": "Metaphysics"
+        }
+      ],
+      "qa": {
+        "vision": "Exploring what isn't known yet — mapping the edges of science, philosophy, and consciousness where the next discoveries live.",
+        "communication": "About: 'First-principles inquiry across every isle of the network — and the isles not yet on the map. We ask what something is at its very core.' Home detail card present. v2/research/ exists.",
+        "fact": "45 primary-tagged topics (largest by count, mostly because Sciences + Nature & Cosmos + Metaphysics all default to Research). Topic pages curate existing knowledge from books/people/papers. No original research output yet.",
+        "drift_findings": [
+          {
+            "severity": "medium",
+            "kind": "vision-vs-fact",
+            "summary": "Vision says 'exploring what isn't known yet' and 'mapping the edges where the next discoveries live' — current Research output is closer to high-quality curation of existing knowledge than original frontier inquiry. Either the vision should soften to 'mapping the edges of what's known and unknown' OR Research should start producing original framings (essays, dossiers, syntheses) that earn the 'frontier inquiry' framing."
+          }
+        ]
+      }
+    },
+    {
+      "id": "media",
+      "label": "Media",
+      "desc": "Spreading the signal — amplifying the voices, stories, and art that shift perception and move culture toward something more alive.",
+      "primary_tagged_topic_count": 21,
+      "primary_tagged_topics": [
+        {
+          "id": "t-archit",
+          "label": "Architecture",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-audio",
+          "label": "Audio",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-broadcasting",
+          "label": "Broadcasting",
+          "domain": "Communication"
+        },
+        {
+          "id": "t-dance",
+          "label": "Dance",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-dialogue",
+          "label": "Dialogue",
+          "domain": "Communication"
+        },
+        {
+          "id": "t-fashion",
+          "label": "Fashion",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-film",
+          "label": "Film",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-journalism",
+          "label": "Journalism",
+          "domain": "Communication"
+        },
+        {
+          "id": "t-language",
+          "label": "Language",
+          "domain": "Communication"
+        },
+        {
+          "id": "t-literature",
+          "label": "Literature",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-music",
+          "label": "Music",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-nvc",
+          "label": "Nonviolent Communication",
+          "domain": "Communication"
+        },
+        {
+          "id": "t-photo",
+          "label": "Photography",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-poetry",
+          "label": "Poetry",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-speaking",
+          "label": "Public Speaking",
+          "domain": "Communication"
+        },
+        {
+          "id": "t-socialmedia",
+          "label": "Social Media",
+          "domain": "Communication"
+        },
+        {
+          "id": "t-story",
+          "label": "Storytelling",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-theater",
+          "label": "Theater",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-translation",
+          "label": "Translation",
+          "domain": "Communication"
+        },
+        {
+          "id": "t-visual",
+          "label": "Visual Art",
+          "domain": "Arts & Culture"
+        },
+        {
+          "id": "t-writing",
+          "label": "Writing",
+          "domain": "Communication"
+        }
+      ],
+      "qa": {
+        "vision": "Spreading the signal — amplifying the voices, stories, and art that shift perception and move culture toward something more alive.",
+        "communication": "Home: 'The voice of the network. A swarm of .frqncies all over social media, super aligned with the good in the world. Podcast. Video. Writing.' About: 'The FRQNCY podcast, YouTube, writing, and newsletter. A growing swarm of .frqncies across every isle of passion.' v2/media/ exists.",
+        "fact": "21 primary-tagged topics. podcast.html exists. Substack newsletter linked. YouTube channel claim unverified from this scan. 'Swarm of .frqncies' (sub-channels like crypto.frqncy, publicspeaking.frqncy) is referenced as a roadmap item on podcast.html — sub-channel surfaces unclear.",
+        "drift_findings": [
+          {
+            "severity": "medium",
+            "kind": "communication-vs-fact",
+            "summary": "About claims 'FRQNCY podcast, YouTube, writing, and newsletter' as if all four are actively shipping. Verify YouTube actually exists and produces; verify podcast publishes regularly. If any are aspirational, frame as 'becoming' the way Network State copy does, otherwise this reads as overclaim."
+          },
+          {
+            "severity": "low",
+            "kind": "communication-internal-clarity",
+            "summary": "'.frqncies' (channel suffix concept) is named in copy without explanation for first-time readers. Worth a one-liner gloss on the Media page."
+          }
+        ]
+      }
+    },
+    {
+      "id": "builder",
+      "label": "Builder",
+      "desc": "Creating products, tools, and experiences — the hands-on arm of the network, turning ideas into things people can actually use.",
+      "primary_tagged_topic_count": 27,
+      "primary_tagged_topics": [
+        {
+          "id": "t-arvr",
+          "label": "AR / VR",
+          "domain": "Technology"
+        },
+        {
+          "id": "t-ai",
+          "label": "Artificial Intelligence",
+          "domain": "Technology"
+        },
+        {
+          "id": "t-biomimicry",
+          "label": "Biomimicry",
+          "domain": "Creation"
+        },
+        {
+          "id": "t-biotech",
+          "label": "Biotechnology",
+          "domain": "Technology"
+        },
+        {
+          "id": "t-blockchain",
+          "label": "Blockchain",
+          "domain": "Technology"
+        },
+        {
+          "id": "t-cocreate",
+          "label": "Co-creation",
+          "domain": "Creation"
+        },
+        {
+          "id": "t-cybersec",
+          "label": "Cybersecurity",
+          "domain": "Technology"
+        },
+        {
+          "id": "t-decentral-ai",
+          "label": "Decentralised AI",
+          "domain": "Technology"
+        },
+        {
+          "id": "t-decentral",
+          "label": "Decentralized Networks",
+          "domain": "Technology"
+        },
+        {
+          "id": "t-emergence",
+          "label": "Emergence",
+          "domain": "Creation"
+        },
+        {
+          "id": "t-esports",
+          "label": "Esports",
+          "domain": "Play & Recreation"
+        },
+        {
+          "id": "t-festivals",
+          "label": "Festivals & Events",
+          "domain": "Play & Recreation"
+        },
+        {
+          "id": "t-futuretech",
+          "label": "Future Tech",
+          "domain": "Creation"
+        },
+        {
+          "id": "t-gaming",
+          "label": "Games & Gaming",
+          "domain": "Play & Recreation"
+        },
+        {
+          "id": "t-humor",
+          "label": "Humor & Comedy",
+          "domain": "Play & Recreation"
+        },
+        {
+          "id": "t-leisure",
+          "label": "Leisure & Rest",
+          "domain": "Play & Recreation"
+        },
+        {
+          "id": "t-opensource",
+          "label": "Open Source",
+          "domain": "Creation"
+        },
+        {
+          "id": "t-outdoor",
+          "label": "Outdoor Adventure",
+          "domain": "Play & Recreation"
+        },
+        {
+          "id": "t-playcreat",
+          "label": "Play & Creativity",
+          "domain": "Play & Recreation"
+        },
+        {
+          "id": "t-privacy",
+          "label": "Privacy & Sovereignty",
+          "domain": "Technology"
+        },
+        {
+          "id": "t-proddesign",
+          "label": "Product Design",
+          "domain": "Creation"
+        },
+        {
+          "id": "t-proto",
+          "label": "Prototyping",
+          "domain": "Creation"
+        },
+        {
+          "id": "t-quantcomp",
+          "label": "Quantum Computing",
+          "domain": "Technology"
+        },
+        {
+          "id": "t-robotics",
+          "label": "Robotics",
+          "domain": "Technology"
+        },
+        {
+          "id": "t-sports",
+          "label": "Sports",
+          "domain": "Play & Recreation"
+        },
+        {
+          "id": "t-systems",
+          "label": "Systems Thinking",
+          "domain": "Creation"
+        },
+        {
+          "id": "t-web3",
+          "label": "Web3",
+          "domain": "Technology"
+        }
+      ],
+      "qa": {
+        "vision": "Creating products, tools, and experiences — the hands-on arm of the network, turning ideas into things people can actually use.",
+        "communication": "About: 'Products, experiences, software, real estate — whatever the network calls for. We support what is already aligned. We build what is not yet here.' Home detail card present.",
+        "fact": "27 primary-tagged topics. Strongest fact-aligned pillar: the harness (frqncy-harness, public on GitHub), the Capacitor mobile app (alarm v0 shipped 2026-04-29), the social platform scaffold, FRQNCY content MCP server, the website itself. Real shipped surfaces.",
+        "drift_findings": [
+          {
+            "severity": "none",
+            "kind": "aligned",
+            "summary": "Vision, communication, and fact are tightly aligned. Builder is the cleanest pillar in the QA. Maintain."
+          }
+        ]
+      }
+    },
+    {
+      "id": "curate",
+      "label": "Curate",
+      "desc": "Picking with care — sifting the world's signal from its noise so what reaches FRQNCY is honest, alive, and worth attention.",
+      "primary_tagged_topic_count": 0,
+      "primary_tagged_topics": [],
+      "qa": {
+        "vision": "Picking with care — sifting the world's signal from its noise so what reaches FRQNCY is honest, alive, and worth attention.",
+        "communication": "v2/curate/ landing page exists (276 lines). NOT surfaced as a pillar card on home or about. The word 'curated' appears as adjective in copy ('766+ vetted resources... curated maps') but Curate is never named as one of FRQNCY's pillars to a reader.",
+        "fact": "0 primary-tagged topics. The actual curation activity (resources.json with 766 entries, books/people/orgs/media editorial selection, FRQNCY picks across topic pages) is real and ongoing — but it's not attributed to a named pillar surface anywhere a reader can see.",
+        "drift_findings": [
+          {
+            "severity": "high",
+            "kind": "communication-vs-fact",
+            "summary": "FRQNCY does enormous amounts of curation (the entire /people/, /books/, /orgs/, /media/, resources.json operation IS curation) — but the pillar named 'Curate' is invisible in user-facing communication. Readers won't connect what they're seeing to the named operating mode. Either: (a) add Curate as a pillar card on home + about with the resources.json work as evidence, (b) rename Curate to something already-communicated, or (c) accept it as an internal operating-mode tag and don't expect public surface."
+          },
+          {
+            "severity": "medium",
+            "kind": "fact-vs-schema",
+            "summary": "Zero primary-tagged topics is a schema artifact, not a content gap (per the many-to-many rule, Curate applies to every topic broadly). But the v2/curate/ page would benefit from explicitly listing what's been curated — books surfaced, people surfaced, the picks framework — to make the fact visible."
+          }
+        ]
+      }
+    },
+    {
+      "id": "sell",
+      "label": "Sell",
+      "desc": "Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.",
+      "primary_tagged_topic_count": 0,
+      "primary_tagged_topics": [],
+      "qa": {
+        "vision": "Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.",
+        "communication": "v2/sell/ landing page exists (276 lines). Word 'Sell' does not appear anywhere on home or about. Aligned Goods nav item exists ('the best of everything, curated') but isn't framed as Sell.",
+        "fact": "0 primary-tagged topics. Stripe payments are LIVE for course one-time-payments (recent commit: 'Stripe: add course one-time-payment mode + access ledger Phase 3 Wk 5 Fri'). Aligned Goods page exists. Selling IS happening — just framed under Education / Aligned, not under the Sell pillar.",
+        "drift_findings": [
+          {
+            "severity": "high",
+            "kind": "communication-vs-fact",
+            "summary": "FRQNCY actively sells things (courses via Stripe, planned Aligned Goods) but the pillar named 'Sell' is invisible to readers — no card on home, no card on about, the word doesn't appear in front-page copy. The infrastructure is shipped; the framing is missing."
+          },
+          {
+            "severity": "medium",
+            "kind": "vision-vs-positioning",
+            "summary": "'Sell' as a pillar name may itself be the friction — FRQNCY's editorial voice generally avoids commercial framing. Consider whether the underlying activity is better surfaced as 'Aligned Goods' or 'Marketplace' (already-used terms) rather than the bare verb 'Sell'. If keeping Sell as the canonical pillar name, the v2/sell/ page should articulate why the bare framing is intentional (transparent value exchange as an editorial value)."
+          }
+        ]
+      }
+    }
+  ],
+  "orphan_domains": [],
+  "orphan_pillars": [],
+  "global_drift_findings": [
+    {
+      "severity": "high",
+      "kind": "schema-vs-communication",
+      "summary": "About.html and home detail-cards display 6 pillars: Research, Education, Builder, Media, Fund, Sanctuary. content.json declares 8 different pillars: Network State, Fund, Education, Research, Media, Builder, Curate, Sell. 'Sanctuary' appears as a pillar in user-facing copy but is NOT in content.json. 'Network State', 'Curate', 'Sell' are in content.json but NOT shown as pillar cards anywhere. This is the single biggest drift in the system — the user-facing pillar story and the canonical schema disagree on three of eight pillars. Resolve by either: (a) adding Sanctuary to content.json pillars[] (and clarifying its relationship to Network State), (b) updating about.html + home to display Network State / Curate / Sell cards, or (c) reconciling so Sanctuary IS Network State under a different label."
+    },
+    {
+      "severity": "medium",
+      "kind": "schema-vs-communication",
+      "summary": "Sanctuary is overloaded in the site: it's a pillar card on about.html, a private-dashboard nav item (/my-frqncy/dashboard/), AND conceptually a future physical-space (per Network State copy: 'A place to think, rest, build, and meet others at your frequency'). One word, three referents. Pick a canonical meaning before the schema reconciliation above."
+    }
+  ],
+  "enriched_at": "2026-05-03T08:31:53.410Z",
+  "enrichment_model": "claude-opus-4-7 (in-conversation editorial pass)"
+}

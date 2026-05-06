@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import { supabase } from '../lib/supabase';
 import PostCard from './PostCard';
+import BlueskyReplies from './BlueskyReplies';
 
 interface PostRow {
   id: string;
@@ -15,11 +16,17 @@ interface PostRow {
   bookmarks_count: number;
   signature: string | null;
   signed_payload: string | null;
+  /** AT-URI of the Bluesky mirror when this post was cross-posted. NULL when
+      the user wasn't connected at post time, opted out, or the cross-post
+      failed. Surfaces the BlueskyReplies component when present. Per
+      migration 016 + proposals/BLUESKY-TIMELINE-READER.md (v1.1). */
+  bluesky_uri: string | null;
   profiles: {
     username: string;
     display_name: string;
     avatar_url: string | null;
     signing_public_key: string | null;
+    bluesky_handle: string | null;
   } | null;
 }
 
@@ -63,13 +70,29 @@ export default function PostView() {
     }
     let cancelled = false;
     (async () => {
-      const { data, error } = await supabase
+      // Select bluesky_uri so we can surface the federated reply backflow
+      // when present. Migration 016 adds this column — if it hasn't been
+      // applied yet the select will fail and we degrade gracefully by
+      // re-trying without it.
+      let { data, error } = await supabase
         .from('posts')
         .select(
-          'id, content, project_tag, project_tier, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, profiles!author_id(username, display_name, avatar_url, signing_public_key)'
+          'id, content, project_tag, project_tier, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, bluesky_uri, profiles!author_id(username, display_name, avatar_url, signing_public_key, bluesky_handle)'
         )
         .eq('id', postId)
         .maybeSingle();
+      if (error && /bluesky_uri|bluesky_handle/.test(error.message || '')) {
+        // Migration 010 or 016 not applied — fall back to the legacy column set.
+        const fb = await supabase
+          .from('posts')
+          .select(
+            'id, content, project_tag, project_tier, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, profiles!author_id(username, display_name, avatar_url, signing_public_key)'
+          )
+          .eq('id', postId)
+          .maybeSingle();
+        data = fb.data as any;
+        error = fb.error;
+      }
       if (cancelled) return;
       if (error || !data) {
         setNotFound(true);
@@ -149,6 +172,13 @@ export default function PostView() {
         signed_payload={post.signed_payload ?? null}
         author_signing_public_key={post.profiles?.signing_public_key ?? null}
       />
+
+      {post.bluesky_uri && (
+        <BlueskyReplies
+          bskyUri={post.bluesky_uri}
+          authorHandleHint={post.profiles?.bluesky_handle ?? null}
+        />
+      )}
     </div>
   );
 }

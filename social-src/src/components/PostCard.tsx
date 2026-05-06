@@ -44,6 +44,17 @@ interface PostCardProps {
   signed_payload?: string | null;
   /** Author's libsodium signing public key (base64). Required to verify. */
   author_signing_public_key?: string | null;
+  /** When set, this post has a Bluesky mirror — surfaces a small "↗ on
+      Bluesky" hint in the actions row that links to the post detail view
+      where BlueskyReplies will load the federated thread inline. NULL when
+      the post wasn't cross-posted (or when migration 016 isn't applied).
+      Per proposals/BLUESKY-TIMELINE-READER.md (v1.1). */
+  bluesky_uri?: string | null;
+  /** Persisted public Bluesky reply count (refreshed nightly by
+      scripts/auto-grow/bluesky-counts-refresh.mjs, migration 017). When
+      present and > 0 the hint pill shows "↗ N on Bluesky". When 0/null
+      the pill stays as "↗ on Bluesky". Per BLUESKY-TIMELINE-READER.md v1.2. */
+  bluesky_reply_count?: number | null;
 }
 
 export default function PostCard({
@@ -63,6 +74,8 @@ export default function PostCard({
   signature = null,
   signed_payload = null,
   author_signing_public_key = null,
+  bluesky_uri = null,
+  bluesky_reply_count = null,
 }: PostCardProps) {
   const { user } = useAuth();
   const [liked, setLiked] = useState(false);
@@ -424,12 +437,38 @@ export default function PostCard({
           )}
         </button>
 
+        {/* Bluesky bridge hint — visible only on the Feed (not on the post
+            detail view where BlueskyReplies already renders the thread inline).
+            Click routes to the post detail where the replies will load. The
+            count comes from posts.bluesky_reply_count, refreshed nightly by
+            the auto-grow workflow (migration 017). When the count is 0/null
+            the pill is still useful as a click-through.
+            Per proposals/BLUESKY-TIMELINE-READER.md (v1.1 + v1.2). */}
+        {bluesky_uri && id && !defaultShowComments && (
+          <a
+            href={`/social/post/${id}#bluesky`}
+            class="ml-auto text-[10px] text-text-dim hover:text-gold-light transition-colors flex items-center gap-1 px-2 py-0.5 rounded-full border border-card-border hover:border-gold/30"
+            title={
+              bluesky_reply_count && bluesky_reply_count > 0
+                ? `${bluesky_reply_count} ${bluesky_reply_count === 1 ? 'reply' : 'replies'} on Bluesky — click through to read`
+                : 'This post has a Bluesky thread — click through to read replies'
+            }
+          >
+            <span aria-hidden="true">↗</span>
+            <span>
+              {bluesky_reply_count && bluesky_reply_count > 0
+                ? `${bluesky_reply_count} on Bluesky`
+                : 'on Bluesky'}
+            </span>
+          </a>
+        )}
+
         <button
           onClick={toggleBookmark}
           disabled={bookmarkLoading}
-          class={`flex items-center gap-1.5 text-xs transition-colors ml-auto ${
-            bookmarked ? 'text-gold' : 'text-text-dim hover:text-gold-light'
-          }`}
+          class={`flex items-center gap-1.5 text-xs transition-colors ${
+            bluesky_uri && id && !defaultShowComments ? '' : 'ml-auto'
+          } ${bookmarked ? 'text-gold' : 'text-text-dim hover:text-gold-light'}`}
         >
           <svg class="w-4 h-4" fill={bookmarked ? 'currentColor' : 'none'} stroke="currentColor" viewBox="0 0 24 24">
             <path stroke-linecap="round" stroke-linejoin="round" stroke-width="1.5" d="M5 5a2 2 0 012-2h10a2 2 0 012 2v16l-7-3.5L5 21V5z" />

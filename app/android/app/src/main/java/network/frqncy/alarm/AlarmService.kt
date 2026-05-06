@@ -28,6 +28,8 @@ import android.content.Context
 import android.content.Intent
 import android.content.pm.ServiceInfo
 import android.media.AudioAttributes
+import android.media.AudioFocusRequest
+import android.media.AudioManager
 import android.media.MediaPlayer
 import android.net.Uri
 import android.os.Build
@@ -35,6 +37,9 @@ import android.os.Handler
 import android.os.IBinder
 import android.os.Looper
 import android.os.PowerManager
+import android.os.VibrationEffect
+import android.os.Vibrator
+import android.os.VibratorManager
 import android.util.Log
 import androidx.core.app.NotificationCompat
 import network.frqncy.app.R
@@ -45,6 +50,39 @@ class AlarmService : Service() {
     private var wakeLock: PowerManager.WakeLock? = null
     private val handler = Handler(Looper.getMainLooper())
     private var fadeRunnable: Runnable? = null
+    private var hapticRunnable: Runnable? = null
+    private var vibrator: Vibrator? = null
+
+    // Audio focus state
+    private var audioManager: AudioManager? = null
+    private var focusRequest: AudioFocusRequest? = null
+    private var pausedByFocusLoss = false
+
+    private val audioFocusListener = AudioManager.OnAudioFocusChangeListener { focusChange ->
+        when (focusChange) {
+            AudioManager.AUDIOFOCUS_LOSS -> {
+                // Permanent loss — another app took focus durably (e.g. user
+                // hit play on Spotify mid-alarm). Stop entirely.
+                Log.d(TAG, "AUDIOFOCUS_LOSS — stopping alarm")
+                handleStop()
+            }
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT,
+            AudioManager.AUDIOFOCUS_LOSS_TRANSIENT_CAN_DUCK -> {
+                // Phone call, brief notification — pause and remember.
+                Log.d(TAG, "AUDIOFOCUS_LOSS_TRANSIENT — pausing")
+                mediaPlayer?.runCatching { if (isPlaying) pause() }
+                pausedByFocusLoss = true
+            }
+            AudioManager.AUDIOFOCUS_GAIN -> {
+                // Call ended, transient interrupter done — resume.
+                if (pausedByFocusLoss) {
+                    Log.d(TAG, "AUDIOFOCUS_GAIN — resuming")
+                    mediaPlayer?.runCatching { if (!isPlaying) start() }
+                    pausedByFocusLoss = false
+                }
+            }
+        }
+    }
 
     override fun onBind(intent: Intent?): IBinder? = null
 
@@ -88,14 +126,26 @@ class AlarmService : Service() {
         }
 
         acquireWakeLock()
-        playAlarmTone(audioUrl, moment, fadeInSeconds)
+
+        // Hearing-impaired mode: skip audio, play a slow rising vibration
+        // pattern instead. Flag persisted in user settings (see settings.html
+        // and AccessibilityPreferences). Stream 6 priority — must always have
+        // an alternative to audio for users who can't hear it.
+        val hapticOnly = AccessibilityPreferences.isHapticWake(this)
+        if (hapticOnly) {
+            playHapticAlarm(fadeInSeconds)
+        } else {
+            playAlarmTone(audioUrl, moment, fadeInSeconds)
+        }
     }
 
     private fun handleStop() {
         stopFade()
+        stopHaptic()
         mediaPlayer?.runCatching { stop() }
         mediaPlayer?.release()
         mediaPlayer = null
+        abandonAudioFocus()
         releaseWakeLock()
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
             stopForeground(STOP_FOREGROUND_REMOVE)
@@ -110,21 +160,36 @@ class AlarmService : Service() {
         val id = intent.getStringExtra(EXTRA_ID) ?: run { handleStop(); return }
         val snoozeMinutes = intent.getIntExtra(EXTRA_SNOOZE_MINUTES, 9)
 
-        // Stop current playback, then re-arm the alarm for now + snoozeMinutes.
+        // Snooze cap — Stream 6: cap at AlarmRecord.SNOOZE_LIMIT (=2) per
+        // alarm cycle. Any further snooze attempt is silently ignored at the
+        // service level; the WebView UI surfaces "this is your third return,
+        // hold to arrive" copy and disables the snooze button.
         val store = AlarmStore(this)
         store.get(id)?.let { existing ->
+            if (existing.snoozeCount >= AlarmRecord.SNOOZE_LIMIT) {
+                Log.d(TAG, "Snooze limit reached for $id; stopping alarm without re-arm")
+                handleStop()
+                return
+            }
             val nextTs = System.currentTimeMillis() + snoozeMinutes * 60_000L
-            val updated = existing.copy(timestamp = nextTs)
+            val updated = existing.copy(
+                timestamp = nextTs,
+                snoozeCount = existing.snoozeCount + 1
+            )
             store.upsert(updated)
             FrqncyAlarmPlugin.scheduleNative(this, updated)
         }
         handleStop()
     }
 
-    private fun playAlarmTone(audioUrl: String?, @Suppress("UNUSED_PARAMETER") moment: String, fadeInSeconds: Int) {
-        // moment is reserved for Phase 3: pick the bundled morning vs evening
-        // asset based on which @drawable/raw resource matches. For v1 we always
-        // play default_morning since there's only one bundled asset.
+    private fun bundledFallbackForMoment(moment: String): Int = when (moment) {
+        "evening" -> R.raw.default_evening
+        "stillness" -> R.raw.default_stillness
+        "release" -> R.raw.default_release
+        else -> R.raw.default_morning  // morning + anything unknown
+    }
+
+    private fun playAlarmTone(audioUrl: String?, moment: String, fadeInSeconds: Int) {
         val attrs = AudioAttributes.Builder()
             .setUsage(AudioAttributes.USAGE_ALARM)
             .setContentType(AudioAttributes.CONTENT_TYPE_MUSIC)
@@ -139,13 +204,18 @@ class AlarmService : Service() {
             if (audioUrl != null) {
                 player.setDataSource(this, Uri.parse(audioUrl))
             } else {
-                // Bundled default: a 432Hz + perfect-fifth tone with a 6s breath
-                // envelope. Loops cleanly. Lives in res/raw/default_morning.mp3.
-                val rawUri = Uri.parse("android.resource://$packageName/${R.raw.default_morning}")
+                // Bundled defaults — one tone per moment:
+                //   morning   → 432Hz + perfect-fifth, 90s, breath envelope
+                //   evening   → 216Hz drone + slow tremolo
+                //   stillness → sustained 432Hz, no movement
+                //   release   → descending arc 432→324Hz over 60s
+                val rawId = bundledFallbackForMoment(moment)
+                val rawUri = Uri.parse("android.resource://$packageName/$rawId")
                 player.setDataSource(this, rawUri)
             }
             player.setVolume(0f, 0f)
             player.prepare()
+            requestAudioFocus(attrs)
             player.start()
             mediaPlayer = player
             startFadeIn(fadeInSeconds)
@@ -203,6 +273,39 @@ class AlarmService : Service() {
     private fun stopFade() {
         fadeRunnable?.let { handler.removeCallbacks(it) }
         fadeRunnable = null
+    }
+
+    private fun requestAudioFocus(attrs: AudioAttributes) {
+        val am = audioManager ?: (getSystemService(Context.AUDIO_SERVICE) as? AudioManager)?.also {
+            audioManager = it
+        } ?: return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            val req = AudioFocusRequest.Builder(AudioManager.AUDIOFOCUS_GAIN)
+                .setAudioAttributes(attrs)
+                .setOnAudioFocusChangeListener(audioFocusListener)
+                .setWillPauseWhenDucked(false)
+                .build()
+            focusRequest = req
+            am.requestAudioFocus(req)
+        } else {
+            @Suppress("DEPRECATION")
+            am.requestAudioFocus(
+                audioFocusListener,
+                AudioManager.STREAM_ALARM,
+                AudioManager.AUDIOFOCUS_GAIN
+            )
+        }
+    }
+
+    private fun abandonAudioFocus() {
+        val am = audioManager ?: return
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            focusRequest?.let { am.abandonAudioFocusRequest(it) }
+            focusRequest = null
+        } else {
+            @Suppress("DEPRECATION")
+            am.abandonAudioFocus(audioFocusListener)
+        }
     }
 
     private fun acquireWakeLock() {
@@ -263,7 +366,8 @@ class AlarmService : Service() {
         )
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
-            .setSmallIcon(android.R.drawable.ic_lock_idle_alarm)
+            .setSmallIcon(R.drawable.ic_stat_icon)
+            .setColor(0xFFE8C547.toInt()) // FRQNCY gold tint
             .setContentTitle(label)
             .setContentText("Tap to arrive")
             .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -279,11 +383,66 @@ class AlarmService : Service() {
 
     override fun onDestroy() {
         stopFade()
+        stopHaptic()
         mediaPlayer?.runCatching { stop() }
         mediaPlayer?.release()
         mediaPlayer = null
+        abandonAudioFocus()
         releaseWakeLock()
         super.onDestroy()
+    }
+
+    /**
+     * Slow rising 60-second haptic pattern. Replaces audio entirely for users
+     * who selected hearing-impaired wake mode. Pattern: short pulses every
+     * 4 seconds, increasing in amplitude over the fade-in window. Loops until
+     * the user dismisses.
+     */
+    private fun playHapticAlarm(fadeInSeconds: Int) {
+        val v = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.S) {
+            (getSystemService(Context.VIBRATOR_MANAGER_SERVICE) as? VibratorManager)
+                ?.defaultVibrator
+        } else {
+            @Suppress("DEPRECATION")
+            getSystemService(Context.VIBRATOR_SERVICE) as? Vibrator
+        } ?: run {
+            Log.w(TAG, "Device has no vibrator; haptic-only alarm cannot fire")
+            return
+        }
+        vibrator = v
+        if (!v.hasVibrator()) {
+            Log.w(TAG, "Vibrator hardware unavailable")
+            return
+        }
+
+        val totalSteps = 60 // pulses across fade window
+        val intervalMs = (fadeInSeconds.coerceAtLeast(1) * 1000L) / totalSteps
+        var step = 0
+
+        hapticRunnable = object : Runnable {
+            override fun run() {
+                step++
+                val t = step.toFloat() / totalSteps
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+                    val amplitude = (t * t * 255f).toInt().coerceIn(20, 255)
+                    val effect = VibrationEffect.createOneShot(180L, amplitude)
+                    runCatching { v.vibrate(effect) }
+                } else {
+                    @Suppress("DEPRECATION")
+                    runCatching { v.vibrate(180L) }
+                }
+                // After the ramp, keep pulsing at full amplitude until dismiss.
+                handler.postDelayed(this, if (step < totalSteps) intervalMs else 4000L)
+            }
+        }
+        handler.postDelayed(hapticRunnable!!, 200L)
+    }
+
+    private fun stopHaptic() {
+        hapticRunnable?.let { handler.removeCallbacks(it) }
+        hapticRunnable = null
+        vibrator?.runCatching { cancel() }
+        vibrator = null
     }
 
     companion object {

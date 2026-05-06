@@ -105,6 +105,22 @@
     <div class="actions">
       <button id="snooze">return · 9 min</button>
     </div>
+    <div id="snooze-final-note" style="
+      position: fixed;
+      top: calc(72px + env(safe-area-inset-top));
+      left: 24px; right: 24px;
+      text-align: center;
+      font-size: 13px;
+      font-weight: 300;
+      letter-spacing: 0.4px;
+      line-height: 1.5;
+      color: rgba(232, 197, 71, 0.85);
+      opacity: 0;
+      transition: opacity 1200ms ease 400ms;
+      pointer-events: none;
+    ">
+      this is your third return.<br/>hold to arrive.
+    </div>
     <div id="stage">
       <div id="field"></div>
       <div id="ring" aria-label="Hold to arrive">
@@ -125,6 +141,12 @@
       //      system notification UI.
       const bridge = window.FrqncyAlarmBridge;
 
+      // Snooze cap state from AlarmActivity URL params.
+      const params = new URLSearchParams(window.location.search);
+      const snoozeCount = parseInt(params.get('snoozeCount') || '0', 10);
+      const snoozeLimit = parseInt(params.get('snoozeLimit') || '2', 10);
+      const snoozesExhausted = snoozeCount >= snoozeLimit;
+
       // Accessibility: three dismiss modes per Stream 6 — breath-hold (default),
       // long-press (no breath required), triple-tap (motor accessibility).
       // Honors prefers-reduced-motion: ring fills linearly, no animation.
@@ -141,6 +163,18 @@
       const ring = document.getElementById('ring');
       const hint = document.getElementById('hint');
       const snoozeBtn = document.getElementById('snooze');
+      const snoozeFinalNote = document.getElementById('snooze-final-note');
+
+      // If the user already snoozed twice, the snooze button is gone — the
+      // gesture is the only way out. Surface that gently rather than just
+      // hiding the button silently.
+      if (snoozesExhausted) {
+        snoozeBtn.style.display = 'none';
+        setTimeout(() => snoozeFinalNote.style.opacity = '1', 200);
+      } else if (snoozeCount > 0) {
+        // Show remaining count next to snooze button
+        snoozeBtn.textContent = `return · 9 min · ${snoozeLimit - snoozeCount} left`;
+      }
 
       // ARIA labels on the ring so screen readers describe the gesture.
       ring.setAttribute('role', 'button');

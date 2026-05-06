@@ -13,9 +13,16 @@
     "dev": "npm run build && echo '\\n▶  Run: npx serve . -p 3000\\n   then open http://localhost:3000'",
     "serve": "npx serve . -p 3000",
     "lint": "node -e \"require('./content.json'); console.log('content.json ✓')\" && node -e \"require('./videos.json'); console.log('videos.json ✓')\" && node -e \"require('./courses.json'); console.log('courses.json ✓')\" && node -e \"require('./providers.json'); console.log('providers.json ✓')\" && echo 'All data files OK'",
-    "check:links": "node scripts/check-links.mjs"
+    "check:links": "node scripts/check-links.mjs",
+    "qa:beds": "node scripts/qa_beds.mjs --report",
+    "qa:beds:full": "node scripts/qa_beds.mjs --external --report",
+    "enrich:books": "node scripts/enrich_book_intros.mjs --all",
+    "enrich:quotes": "node scripts/enrich_book_quotes.mjs --limit 5",
+    "enrich:people": "node scripts/enrich_person_life_story.mjs --limit 5",
+    "link:authors": "node scripts/link_book_authors.mjs"
   },
   "dependencies": {
+    "@anthropic-ai/claude-agent-sdk": "^0.2.128",
     "sharp": "^0.34.0"
   },
   "engines": {

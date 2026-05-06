@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Roger Ebert","description":"The film critic who elevated popular movie criticism to literature. His reviews, published from 1967 until his death in 2013, remain the clearest record of what it means to watch a film with full attention and write from inside the experience.","url":"https://frqncy.network/people/roger-ebert/","sameAs":["https://www.rogerebert.com"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"People","item":"https://frqncy.network/people/"},{"@type":"ListItem","position":3,"name":"Roger Ebert","item":"https://frqncy.network/people/roger-ebert/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -260,7 +260,14 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://www.rogerebert.com" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit rogerebert.com →</a>
 </div>
 <main>
-  
+  <section>
+  <div class="section-label">Life</div>
+  <div class="life-prose" style="max-width:720px">
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Roger Ebert began writing film criticism for the *Chicago Sun-Times* in 1967, a post he would hold for the remainder of his life. He approached each film on its own terms, attending closely to what was present on screen rather than what a critic might have preferred to see, and that discipline produced a critical voice that held its shape across several decades of American cinema. His column attracted a wide general readership, extending the reach of serious film writing well beyond specialist audiences.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">In 1975 he began co-hosting a televised film review series with Gene Siskel, the film critic for the *Chicago Tribune*, a paper that was also his professional rival. The format—a head-to-head debate between two newspaper writers reviewing new releases—ran across several successive programmes through the late 1990s. The thumb gesture the pair adopted as a shorthand verdict became one of the more recognisable conventions in popular criticism, and the partnership helped establish film discussion as a viable subject for broadcast television.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Ebert continued reviewing for the *Sun-Times* until his death in 2013. Alongside his journalism he produced several book collections, among them *Roger Ebert&#39;s Movie Home Companion* and *Your Movie Sucks*, which gathered his more pointed negative notices into a single volume. The full archive of his writing, covering releases from the late 1960s onwards, remains accessible in print and online, constituting one of the more complete continuous records of English-language film criticism produced by a single writer over the latter half of the twentieth century and into the next.</p>
+  </div>
+</section>
   <section>
   <div class="section-label">Works</div>
   <div class="rlist"><div class="rcard" data-type="media">

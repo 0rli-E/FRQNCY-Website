@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Gurumayi Chidvilasananda","description":"Siddha Yoga guru and spiritual successor of Swami Muktananda, leading the Siddha Yoga path since 1982. Her teachings on the inner experience of divinity carry an unbroken living transmission.","url":"https://frqncy.network/people/gurumayi-chidvilasananda/","sameAs":["https://www.siddhayoga.org"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"People","item":"https://frqncy.network/people/"},{"@type":"ListItem","position":3,"name":"Gurumayi Chidvilasananda","item":"https://frqncy.network/people/gurumayi-chidvilasananda/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -260,7 +260,14 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://www.siddhayoga.org" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit siddhayoga.org →</a>
 </div>
 <main>
-  
+  <section>
+  <div class="section-label">Life</div>
+  <div class="life-prose" style="max-width:720px">
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Gurumayi Chidvilasananda grew up in India and came into contact with Swami Muktananda — known within the Siddha Yoga tradition as Baba Muktananda — during her formative years. She received initiation, took monastic vows, and was designated by him as his spiritual heir. Following Muktananda&#39;s death in 1982, she assumed leadership of the Siddha Yoga path, a contemplative lineage rooted in Kashmir Shaivism and centred on the direct recognition of the inner self as divine through the Guru&#39;s transmitted grace.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">At the centre of her work is shaktipat diksha — an initiatory transmission passed directly from teacher to student, considered the foundation of Siddha Yoga practice — which she confers during intensives held at ashrams in India and the United States. Her published writing, including Ashes at My Guru&#39;s Feet and Entzünde die Flamme in meinem Herzen, extends the lineage&#39;s teachings into meditations, prayers, and direct commentary on Muktananda&#39;s body of work. Under her leadership, the Siddha Yoga Foundation built a global infrastructure of meditation centres, residential ashrams, and study programmes.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Gurumayi continues to lead the Siddha Yoga path, based principally at Shree Muktananda Ashram in South Fallsburg, New York, and at Gurudev Siddha Peeth in Ganeshpuri, India. Her teachings circulate through the Foundation&#39;s publications, audio and video recordings, and online programmes, extending the work to practitioners who cannot attend residential intensives in person. The translation of her books into German, French, and other languages reflects the breadth of the community she has organised and guided since inheriting the lineage more than four decades ago.</p>
+  </div>
+</section>
   <section>
   <div class="section-label">Works</div>
   <div class="rlist"><div class="rcard" data-type="book">

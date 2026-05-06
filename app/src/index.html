@@ -81,9 +81,103 @@
         z-index: 20;
       }
       #offline-banner.show { transform: translateY(0); }
+
+      /* First-launch welcome on the home tab */
+      #home-welcome {
+        position: fixed;
+        inset: 0;
+        background: #0a0a0a;
+        z-index: 100;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px;
+        text-align: center;
+      }
+      #home-welcome.visible { display: flex; }
+      #home-welcome .mark {
+        width: 96px; height: 96px;
+        border-radius: 50%;
+        border: 1px solid rgba(232, 197, 71, 0.6);
+        margin-bottom: 32px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        position: relative;
+      }
+      #home-welcome .mark::before {
+        content: '';
+        position: absolute;
+        inset: -8px;
+        border-radius: 50%;
+        border: 0.5px solid rgba(232, 197, 71, 0.18);
+      }
+      #home-welcome .mark::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        left: 20%; right: 20%;
+        height: 1px;
+        background: rgba(232, 197, 71, 0.85);
+        transform: translateY(-0.5px);
+      }
+      #home-welcome h1 {
+        font-size: 22px;
+        font-weight: 200;
+        letter-spacing: 0.4px;
+        line-height: 1.4;
+        max-width: 320px;
+        margin-bottom: 18px;
+      }
+      #home-welcome p {
+        font-size: 14.5px;
+        font-weight: 300;
+        line-height: 1.6;
+        color: rgba(245, 245, 245, 0.7);
+        max-width: 320px;
+        margin-bottom: 32px;
+      }
+      #home-welcome .cta-row {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 320px;
+      }
+      #home-welcome button {
+        background: rgba(232, 197, 71, 0.95);
+        border: none;
+        color: #0a0a0a;
+        padding: 14px;
+        border-radius: 14px;
+        font-size: 14px;
+        letter-spacing: 0.8px;
+        text-transform: lowercase;
+        -webkit-tap-highlight-color: transparent;
+        font-family: inherit;
+      }
+      #home-welcome button.secondary {
+        background: none;
+        border: 1px solid rgba(245, 245, 245, 0.16);
+        color: rgba(245, 245, 245, 0.7);
+      }
     </style>
   </head>
   <body>
+    <!-- First-launch welcome on the home tab -->
+    <div id="home-welcome" role="dialog" aria-modal="true" aria-labelledby="home-welcome-title">
+      <div class="mark" aria-hidden="true"></div>
+      <h1 id="home-welcome-title">welcome to FRQNCY</h1>
+      <p>
+        a network of people building their dream life. start with how you wake.
+      </p>
+      <div class="cta-row">
+        <button id="home-welcome-bedside">set up my wake-up</button>
+        <button class="secondary" id="home-welcome-explore">just explore for now</button>
+      </div>
+    </div>
+
     <div id="offline-banner">Offline — showing cached content</div>
     <iframe
       id="site-frame"

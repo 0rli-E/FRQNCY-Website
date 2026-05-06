@@ -169,6 +169,330 @@ export async function publishToBluesky(
   }
 }
 
+// ─── Timeline read ──────────────────────────────────────────────────────────
+
+export interface BlueskyPost {
+  uri: string;       // at://...
+  cid: string;
+  author: { handle: string; displayName: string | null; avatar: string | null; did: string };
+  text: string;
+  createdAt: string;
+  replyCount: number;
+  repostCount: number;
+  likeCount: number;
+  externalUrl: string | null;  // for embeds
+  webUrl: string;    // bsky.app/profile/<handle>/post/<rkey>
+}
+
+interface FetchTimelineOpts {
+  limit?: number;
+  cursor?: string;
+}
+
+/**
+ * Fetch the connected user's Bluesky home timeline. Returns up to `limit`
+ * posts (default 30). Reverse chronological (newest first).
+ *
+ * Returns { ok: false, reason: 'not-connected' } if no app password is in
+ * localStorage. Best-effort — never throws; returns { ok: false, reason } on
+ * any error.
+ *
+ * Reuses the per-session BskyAgent cache from publishToBluesky so a feed
+ * scroll doesn't trigger a fresh login on every poll.
+ *
+ * v1 filtering rules — keep the surface honest and simple:
+ *   - Skip reposts (we render the original author's posts only).
+ *   - Skip orphan replies (a reply whose parent isn't shown is jarring out
+ *     of context).
+ *   - Skip embed types we don't yet render (record/recordWithMedia/video).
+ *     Text-only, image, and external-link embeds pass through.
+ *
+ * Future v1.1 will surface replies on cross-posted NRG posts under the NRG
+ * row — see proposals/BLUESKY-TIMELINE-READER.md.
+ */
+export async function fetchBlueskyTimeline(
+  opts: FetchTimelineOpts = {},
+): Promise<{ ok: true; posts: BlueskyPost[]; cursor: string | null } | { ok: false; reason: string }> {
+  if (!isBlueskyConnected()) {
+    return { ok: false, reason: 'not-connected' };
+  }
+
+  const handle = getConnectedBlueskyHandle();
+  const appPassword = getStoredAppPassword();
+  if (!handle || !appPassword) {
+    return { ok: false, reason: 'not-connected' };
+  }
+
+  const BskyAgent = await loadBskyAgentClass();
+  if (!BskyAgent) {
+    return { ok: false, reason: 'Bluesky SDK not loaded. Run `npm install @atproto/api` and rebuild.' };
+  }
+
+  try {
+    let agent = agentCache.get(handle);
+    if (!agent) {
+      agent = new BskyAgent({ service: 'https://bsky.social' });
+      const loginRes = await agent.login({ identifier: handle, password: appPassword });
+      if (!loginRes?.success) {
+        return { ok: false, reason: 'Bluesky login failed. The app password may have been revoked — reconnect at /social/profile/connections.' };
+      }
+      agentCache.set(handle, agent);
+    }
+
+    const limit = Math.min(Math.max(opts.limit ?? 30, 1), 100);
+    const res = await agent.getTimeline({ limit, cursor: opts.cursor });
+    if (!res?.data?.feed) {
+      return { ok: false, reason: 'Bluesky timeline returned no feed.' };
+    }
+
+    const posts: BlueskyPost[] = [];
+    for (const item of res.data.feed) {
+      const mapped = mapFeedItem(item);
+      if (mapped) posts.push(mapped);
+    }
+
+    return { ok: true, posts, cursor: res.data.cursor ?? null };
+  } catch (err: any) {
+    // Drop the cached agent so the next attempt re-logs in with fresh auth.
+    agentCache.delete(handle);
+    return { ok: false, reason: translateBskyError(err) };
+  }
+}
+
+/**
+ * Map an AppView feed item to our internal BlueskyPost shape, applying the
+ * v1 filtering rules. Returns null when the item should be skipped.
+ */
+function mapFeedItem(item: any): BlueskyPost | null {
+  if (!item?.post) return null;
+  // Skip reposts — `reason` is set when this feed item was reposted into the
+  // viewer's timeline by someone they follow. We render originals only.
+  if (item.reason && item.reason.$type === 'app.bsky.feed.defs#reasonRepost') return null;
+
+  const post = item.post;
+  // Skip orphan replies — reply contexts without an in-timeline parent read
+  // poorly. The native bsky.app client deduplicates these via thread view.
+  if (item.reply && !item.reply.parent) return null;
+  if (post?.record?.reply && !item.reply) return null;
+
+  // Embed filter: text-only, image, and external-link embeds are renderable
+  // in v1. Skip records / record-with-media / video for now.
+  const embed = post.embed;
+  if (embed) {
+    const t = embed.$type || '';
+    const isImage = t.includes('app.bsky.embed.images');
+    const isExternal = t.includes('app.bsky.embed.external');
+    if (!isImage && !isExternal) return null;
+  }
+
+  const author = post.author || {};
+  const handle = String(author.handle || '');
+  const did = String(author.did || '');
+  const text = String(post.record?.text || '');
+  const createdAt = String(post.record?.createdAt || post.indexedAt || new Date().toISOString());
+
+  // Pull external URL if this is an external-link embed (so we can render
+  // a small "↗ link" hint on the card).
+  let externalUrl: string | null = null;
+  if (embed && embed.$type && embed.$type.includes('app.bsky.embed.external')) {
+    externalUrl = embed?.external?.uri ?? null;
+  }
+
+  // Build the bsky.app permalink from the at-uri's rkey.
+  const rkey = parseRkeyFromUri(post.uri);
+  const webUrl = handle && rkey ? `https://bsky.app/profile/${handle}/post/${rkey}` : 'https://bsky.app';
+
+  return {
+    uri: String(post.uri || ''),
+    cid: String(post.cid || ''),
+    author: {
+      handle,
+      displayName: author.displayName ? String(author.displayName) : null,
+      avatar: author.avatar ? String(author.avatar) : null,
+      did,
+    },
+    text,
+    createdAt,
+    replyCount: Number(post.replyCount || 0),
+    repostCount: Number(post.repostCount || 0),
+    likeCount: Number(post.likeCount || 0),
+    externalUrl,
+    webUrl,
+  };
+}
+
+/** at://did:.../app.bsky.feed.post/<rkey> → <rkey> */
+function parseRkeyFromUri(uri: string | undefined): string | null {
+  if (!uri) return null;
+  const parts = uri.split('/');
+  return parts[parts.length - 1] || null;
+}
+
+/** at://<did>/app.bsky.feed.post/<rkey> → <did> */
+function parseDidFromUri(uri: string | undefined): string | null {
+  if (!uri) return null;
+  // at://did:plc:abc/app.bsky.feed.post/123  →  ['at:', '', 'did:plc:abc', ...]
+  const parts = uri.split('/');
+  return parts[2] || null;
+}
+
+// ─── Thread / reply backflow ────────────────────────────────────────────────
+
+export interface BlueskyReply {
+  uri: string;
+  cid: string;
+  author: { handle: string; displayName: string | null; avatar: string | null; did: string };
+  text: string;
+  createdAt: string;
+  likeCount: number;
+  repostCount: number;
+  webUrl: string;
+}
+
+/**
+ * Fetch the Bluesky thread for a given AT-URI and return the direct replies
+ * as a flat list (newest first). Used by NRG PostView to surface replies on
+ * cross-posted NRG posts — closes the bridge into bidirectional per
+ * proposals/BLUESKY-TIMELINE-READER.md (v1.1).
+ *
+ * Read-only — replying back to a Bluesky thread happens on bsky.app via the
+ * permalink. We never write replies through the bridge.
+ *
+ * Auth model: getPostThread is a public AppView read on bsky.social, so we
+ * try unauthenticated first (a viewer who hasn't connected their Bluesky
+ * account can still see public replies on a public NRG cross-post). If the
+ * unauthenticated read fails (rate limit, soft-blocks, etc.) and the viewer
+ * happens to be connected, we fall back to the authenticated path.
+ *
+ * v1 only surfaces direct replies (depth=1). Nested threads are read on
+ * bsky.app — this surface is "what's happening on the bridge", not a full
+ * thread reader. Filters out reposts and replies whose author has been
+ * blocked/muted/deleted (the AppView marks these with a #blockedPost or
+ * #notFoundPost type — we just skip them).
+ *
+ * Cap at 50 replies to keep the network payload sane. Anyone wanting the
+ * full thread can click through to bsky.app via the post-card permalink.
+ */
+export async function fetchBlueskyThread(
+  uri: string,
+): Promise<{ ok: true; replies: BlueskyReply[]; thread_url: string } | { ok: false; reason: string }> {
+  if (!uri || !uri.startsWith('at://')) {
+    return { ok: false, reason: 'Not a Bluesky URI.' };
+  }
+
+  const BskyAgent = await loadBskyAgentClass();
+  if (!BskyAgent) {
+    return { ok: false, reason: 'Bluesky SDK not loaded. Run `npm install @atproto/api` and rebuild.' };
+  }
+
+  // Try the unauthenticated public AppView first. This means a non-connected
+  // viewer can still see public Bluesky replies on a cross-posted NRG post.
+  const publicAgent = new BskyAgent({ service: 'https://api.bsky.app' });
+
+  let res: any;
+  try {
+    res = await publicAgent.getPostThread({ uri, depth: 1, parentHeight: 0 });
+  } catch (errPublic: any) {
+    // Public AppView refused. If the viewer is connected, retry through the
+    // authenticated agent (which gets a richer view for muted/blocked rules).
+    if (isBlueskyConnected()) {
+      const handle = getConnectedBlueskyHandle();
+      const appPassword = getStoredAppPassword();
+      if (handle && appPassword) {
+        try {
+          let agent = agentCache.get(handle);
+          if (!agent) {
+            agent = new BskyAgent({ service: 'https://bsky.social' });
+            const loginRes = await agent.login({ identifier: handle, password: appPassword });
+            if (loginRes?.success) agentCache.set(handle, agent);
+          }
+          if (agent) res = await agent.getPostThread({ uri, depth: 1, parentHeight: 0 });
+        } catch (errAuth: any) {
+          return { ok: false, reason: translateBskyError(errAuth) };
+        }
+      }
+    }
+    if (!res) return { ok: false, reason: translateBskyError(errPublic) };
+  }
+
+  const thread = res?.data?.thread;
+  if (!thread || thread.$type === 'app.bsky.feed.defs#notFoundPost') {
+    return { ok: false, reason: 'Bluesky thread not found — the original post may have been deleted.' };
+  }
+  if (thread.$type === 'app.bsky.feed.defs#blockedPost') {
+    return { ok: false, reason: 'Bluesky thread blocked.' };
+  }
+
+  const repliesRaw = Array.isArray(thread.replies) ? thread.replies : [];
+  const replies: BlueskyReply[] = [];
+  for (const item of repliesRaw) {
+    const mapped = mapThreadReply(item);
+    if (mapped) replies.push(mapped);
+    if (replies.length >= 50) break;
+  }
+  // Sort newest first — getPostThread returns oldest-first per the appview spec.
+  replies.sort((a, b) => (a.createdAt < b.createdAt ? 1 : -1));
+
+  // Build the bsky.app permalink for the parent post so the UI can offer a
+  // "Reply on Bluesky ↗" link without re-deriving it from the URI.
+  const rootHandle = String(thread.post?.author?.handle || '');
+  const rootRkey = parseRkeyFromUri(uri);
+  const thread_url = rootHandle && rootRkey
+    ? `https://bsky.app/profile/${rootHandle}/post/${rootRkey}`
+    : 'https://bsky.app';
+
+  return { ok: true, replies, thread_url };
+}
+
+function mapThreadReply(item: any): BlueskyReply | null {
+  if (!item || !item.post) return null;
+  if (item.$type === 'app.bsky.feed.defs#notFoundPost') return null;
+  if (item.$type === 'app.bsky.feed.defs#blockedPost') return null;
+
+  const post = item.post;
+  const author = post.author || {};
+  const handle = String(author.handle || '');
+  const did = String(author.did || '');
+  const text = String(post.record?.text || '');
+  const createdAt = String(post.record?.createdAt || post.indexedAt || new Date().toISOString());
+
+  const rkey = parseRkeyFromUri(post.uri);
+  const webUrl = handle && rkey ? `https://bsky.app/profile/${handle}/post/${rkey}` : 'https://bsky.app';
+
+  return {
+    uri: String(post.uri || ''),
+    cid: String(post.cid || ''),
+    author: {
+      handle,
+      displayName: author.displayName ? String(author.displayName) : null,
+      avatar: author.avatar ? String(author.avatar) : null,
+      did,
+    },
+    text,
+    createdAt,
+    likeCount: Number(post.likeCount || 0),
+    repostCount: Number(post.repostCount || 0),
+    webUrl,
+  };
+}
+
+/**
+ * Build a bsky.app permalink for a given AT-URI. Useful in UI surfaces that
+ * want a "View on Bluesky ↗" link without re-fetching the thread.
+ *
+ * Falls back to bsky.app when the URI is malformed.
+ */
+export function blueskyWebUrl(uri: string, handleHint?: string | null): string {
+  if (!uri) return 'https://bsky.app';
+  const rkey = parseRkeyFromUri(uri);
+  if (handleHint && rkey) return `https://bsky.app/profile/${handleHint}/post/${rkey}`;
+  // Fall back to the DID-based URL if we don't have a handle. bsky.app
+  // accepts both /profile/<handle>/post/<rkey> and /profile/<did>/post/<rkey>.
+  const did = parseDidFromUri(uri);
+  if (did && rkey) return `https://bsky.app/profile/${did}/post/${rkey}`;
+  return 'https://bsky.app';
+}
+
 // ─── Status helpers ─────────────────────────────────────────────────────────
 
 /** Returns the connected handle (from localStorage) or null. */

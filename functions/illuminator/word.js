@@ -13,8 +13,19 @@
  * for when a reader wants to illuminate a word that isn't on the shelf yet.
  */
 
-const MODEL      = '@cf/qwen/qwen3-30b-a3b-fp8';
-const MAX_TOKENS = 2048;
+const MODEL                 = '@cf/qwen/qwen3-30b-a3b-fp8';
+const MAX_TOKENS_DEFAULT    = 2048;
+const MAX_TOKENS_DEEP       = 3500;
+
+// Flag the worker accepts via ?member=1 OR { deep: true } body to opt into the
+// deeper version (member_deepening section appended to the locked schema).
+//
+// Why client-trusted in v0: the rate limiter (5 req/min/IP) bounds abuse, the
+// extra cost per call is small, and the voice contract is "deeper view for
+// members" not "walled deeper view". Members get it automatically via the
+// widget; non-members can opt in. If abuse shows up we can sign the flag with
+// a short-lived Supabase JWT later — premature otherwise.
+const DEEP_FLAG_KEY = 'member';
 
 // ── In-memory rate limiter — 5 req / min / IP ─────────────────────
 // Per WORD-ILLUMINATOR-AI-WORKER.md: tighter than the chat endpoint because
@@ -129,6 +140,36 @@ If you are uncertain about a specific etymological root, write "The roots sugges
 
 Output the JSON object and nothing else.`;
 
+// ── Deeper version — appends an additional `member_deepening` section ────
+// Per ROADMAP-90D-2026-05.md Track 2 Week 2 (AI HD reading length differentiation).
+// The base illumination above must remain useful and complete on its own — the
+// deeper section adds prose + a small practice experiment + cross-refs, never
+// replaces or thins out the base. Voice contract: "deeper view for members"
+// not "exclusive content".
+const SYSTEM_DEEP = SYSTEM + `
+
+ADDITIONAL DEEPENING — when this prompt is in effect, the JSON object MUST also include a top-level "member_deepening" key with this exact shape:
+
+  "member_deepening": {
+    "contemplative_essay": "<3 short paragraphs (60–90 words each, separated by \\n\\n) meditating on this word as a lived distinction. Not a definition. Not a how-to. A patient, attentive reading of what the word asks of someone in practice. Present-tense, second-person sometimes, contemplative throughout. No marketing register.>",
+    "practice_invitation": "<one specific small experiment a reader could try this week to inhabit the word. 2–4 sentences. Concrete enough to do, open enough not to be a prescription. e.g. 'For seven days, when X arises, notice Y. After each, write one sentence.' Never preachy.>",
+    "cross_references": [
+      "<word-slug-1>",
+      "<word-slug-2>",
+      "<word-slug-3>"
+    ]
+  }
+
+CROSS_REFERENCES MUST BE drawn from this whitelist of words FRQNCY has illuminated (or that complement the input naturally). Pick 2–3 that genuinely deepen the reader's contemplation of the input word, not nearest-neighbour tags:
+  discipline, sanctuary, frequency, practice, discernment, devotion, alignment, becoming, attention, presence, integrity, contemplation, inhabit, reverence, threshold
+
+If none of the whitelist words deepens the input meaningfully, return an empty array for cross_references rather than forcing it.
+
+VOICE for member_deepening (additional, never softer than the rest of the document):
+- The contemplative_essay is the most demanding voice in this entire JSON. Slow it down. No three-word jab paragraphs. Long-cadence Cormorant-italic-feeling prose.
+- The practice_invitation is the only place where a reader could be told to "do" something — keep it small and embodied, never aspirational.
+- If the input word is one of the forbidden marketing terms, the contemplative_essay should be a critical reading of how the word has been hollowed out, not a rehabilitation of it.`;
+
 // ── Parser ───────────────────────────────────────────────────────
 // The model is told to output JSON, but Qwen3 sometimes wraps it in
 // ```json fences or adds a stray sentence. Strip noise, then JSON.parse.
@@ -164,7 +205,7 @@ function validateShape(obj, word) {
   const ety = safeObj(obj.etymology, {});
   const sa  = safeObj(obj.synonyms_antonyms, {});
   const di  = safeObj(obj.deeper_illumination, {});
-  return {
+  const result = {
     word: safeStr(obj.word, word).toLowerCase(),
     definitions: safeArr(obj.definitions, []).map(d => ({
       sense:   safeStr(d?.sense, ''),
@@ -192,6 +233,24 @@ function validateShape(obj, word) {
       reflective_question: safeStr(di.reflective_question, ''),
     },
   };
+
+  // Optional member_deepening — only present when the model returned it
+  // (i.e. when SYSTEM_DEEP was used). Validated additively so the base
+  // schema is unaffected by its presence or absence.
+  const md = safeObj(obj.member_deepening, null);
+  if (md) {
+    result.member_deepening = {
+      contemplative_essay: safeStr(md.contemplative_essay, ''),
+      practice_invitation: safeStr(md.practice_invitation, ''),
+      cross_references: safeArr(md.cross_references, [])
+        .map(String)
+        .map((s) => s.toLowerCase().trim())
+        .filter((s) => /^[a-z0-9-]{1,30}$/.test(s))
+        .slice(0, 3),
+    };
+  }
+
+  return result;
 }
 
 // Markdown fallback — only used if the model returns prose despite instructions.
@@ -231,18 +290,33 @@ export function onRequestOptions({ request }) {
 export function onRequestGet(ctx) {
   const url = new URL(ctx.request.url);
   const word = url.searchParams.get('word');
-  return handle(ctx, word);
+  // Accept ?member=1, ?deep=1, or any truthy value on either key.
+  const deep = isTruthy(url.searchParams.get(DEEP_FLAG_KEY))
+            || isTruthy(url.searchParams.get('deep'));
+  return handle(ctx, word, { deep });
 }
 
 export async function onRequestPost(ctx) {
   let body;
   try { body = await ctx.request.json(); }
   catch { return jsonError('Invalid JSON body', 400, getCorsHeaders(ctx.request)); }
-  return handle(ctx, body?.word);
+  const deep = isTruthy(body?.deep) || isTruthy(body?.member);
+  return handle(ctx, body?.word, { deep });
 }
 
-async function handle({ request, env }, rawWord) {
+function isTruthy(v) {
+  if (v === true) return true;
+  if (typeof v === 'number') return v !== 0;
+  if (typeof v === 'string') {
+    const s = v.toLowerCase();
+    return s === '1' || s === 'true' || s === 'yes' || s === 'on';
+  }
+  return false;
+}
+
+async function handle({ request, env }, rawWord, opts) {
   const CORS = getCorsHeaders(request);
+  const deep = !!(opts && opts.deep);
 
   const ip = request.headers.get('CF-Connecting-IP') || request.headers.get('X-Forwarded-For');
   if (checkRateLimit(ip)) {
@@ -261,10 +335,10 @@ async function handle({ request, env }, rawWord) {
   try {
     const result = await env.AI.run(MODEL, {
       messages: [
-        { role: 'system', content: SYSTEM },
+        { role: 'system', content: deep ? SYSTEM_DEEP : SYSTEM },
         { role: 'user',   content: `Illuminate the word: ${word}` },
       ],
-      max_tokens:  MAX_TOKENS,
+      max_tokens:  deep ? MAX_TOKENS_DEEP : MAX_TOKENS_DEFAULT,
       temperature: 0.6, // slightly tighter than chat — we want structured output
     });
 
@@ -289,8 +363,10 @@ async function handle({ request, env }, rawWord) {
       status: 200,
       headers: {
         'Content-Type':  'application/json',
-        // 24h cache at the edge — illuminations are deterministic enough to share.
-        // Vary on the query so /word?word=foo and ?word=bar are independent.
+        // 24h cache at the edge. The cache key already includes the URL
+        // querystring (?word=X&member=1 vs ?word=X) so deep + standard
+        // versions cache independently. Vary kept on Origin so CORS
+        // doesn't bleed across browsers.
         'Cache-Control': 'public, max-age=86400, s-maxage=86400',
         'Vary':          'Origin',
         ...CORS,

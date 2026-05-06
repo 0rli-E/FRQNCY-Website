@@ -1,0 +1,32 @@
+<!--
+  ic_stat_icon — status-bar small icon for the alarm foreground service
+  notification and any local notifications.
+
+  Android Material guidelines: status-bar icons must be 24×24dp, white-on-
+  transparent, silhouette only (no fills, no gradients, no per-pixel color).
+  The system tints them with the accent color at runtime — so visible color
+  comes from `iconColor` in capacitor.config.ts (currently #E8C547 / FRQNCY gold).
+
+  Visual: a thin ring with a sound-wave bisecting it horizontally.
+  Same motif as the launcher, simplified to a single-color silhouette.
+-->
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="24dp"
+    android:height="24dp"
+    android:viewportWidth="24"
+    android:viewportHeight="24">
+
+    <!-- Outer ring -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.4"
+        android:fillColor="#00000000"
+        android:pathData="M 12,12 m -8,0 a 8,8 0 1,0 16,0 a 8,8 0 1,0 -16,0" />
+
+    <!-- Sound wave bisecting at y=12 -->
+    <path
+        android:strokeColor="#FFFFFF"
+        android:strokeWidth="1.4"
+        android:fillColor="#00000000"
+        android:pathData="M 5,12 Q 7.5,9 10,12 T 15,12 T 19,12" />
+</vector>

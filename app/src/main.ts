@@ -78,6 +78,52 @@ function watchBackButton() {
   });
 }
 
+// First-launch welcome + smart resume — Day 4 of the perfect-week roadmap.
+const HOME_WELCOME_KEY = 'frqncy.home.welcome_ack';
+const SMART_RESUME_HOURS = 12;
+
+function maybeShowHomeWelcome() {
+  const overlay = document.getElementById('home-welcome');
+  if (!overlay) return;
+  let acked = '0';
+  try { acked = localStorage.getItem(HOME_WELCOME_KEY) || '0'; } catch {}
+  if (acked === '1') return;
+
+  overlay.classList.add('visible');
+
+  const ackAndRoute = (route: string) => {
+    try { localStorage.setItem(HOME_WELCOME_KEY, '1'); } catch {}
+    overlay.classList.remove('visible');
+    navigate(route);
+  };
+
+  document.getElementById('home-welcome-bedside')
+    ?.addEventListener('click', () => ackAndRoute('/app/bedside.html'));
+  document.getElementById('home-welcome-explore')
+    ?.addEventListener('click', () => ackAndRoute('/v2/explore.html'));
+}
+
+/**
+ * Smart resume — if the user opens the app within SMART_RESUME_HOURS of an
+ * armed alarm, route directly to Bedside. The app behaves as a bedside
+ * companion, not a generic content browser.
+ *
+ * We detect "armed" via localStorage state set by bedside.html; safer than
+ * calling FrqncyAlarm.list() during bootstrap (which adds a permission-check
+ * hop on a slow path).
+ */
+function shouldSmartResume(): boolean {
+  try {
+    const lastArmRaw = localStorage.getItem('frqncy.bedside.last_arm_ts');
+    if (!lastArmRaw) return false;
+    const lastArm = parseInt(lastArmRaw, 10);
+    if (!Number.isFinite(lastArm)) return false;
+    const ageMs = Date.now() - lastArm;
+    const windowMs = SMART_RESUME_HOURS * 60 * 60 * 1000;
+    return ageMs >= 0 && ageMs <= windowMs;
+  } catch { return false; }
+}
+
 async function bootstrap() {
   try {
     await StatusBar.setStyle({ style: Style.Dark });
@@ -94,8 +140,16 @@ async function bootstrap() {
   // compares to cached hash, pulls updated JSON files if needed.
   initSyncManager().catch((err) => console.warn('Sync failed:', err));
 
-  // Start on home route.
-  navigate('/');
+  // Routing decision tree:
+  //   1. Has an alarm been armed in the last 12 hours? → Bedside (smart resume).
+  //   2. First-ever launch? → Home welcome overlay.
+  //   3. Otherwise → home content.
+  if (shouldSmartResume()) {
+    navigate('/app/bedside.html');
+  } else {
+    navigate('/');
+    maybeShowHomeWelcome();
+  }
 
   try {
     await SplashScreen.hide();

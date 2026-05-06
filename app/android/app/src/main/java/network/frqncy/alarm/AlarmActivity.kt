@@ -20,12 +20,24 @@ package network.frqncy.alarm
 import android.annotation.SuppressLint
 import android.app.KeyguardManager
 import android.content.Intent
+import android.graphics.Color
+import android.graphics.Typeface
 import android.os.Build
 import android.os.Bundle
+import android.os.Handler
+import android.os.Looper
+import android.util.TypedValue
+import android.view.Gravity
+import android.view.MotionEvent
+import android.view.View
 import android.view.WindowManager
 import android.webkit.JavascriptInterface
 import android.webkit.WebSettings
 import android.webkit.WebView
+import android.webkit.WebViewClient
+import android.widget.FrameLayout
+import android.widget.LinearLayout
+import android.widget.TextView
 import androidx.activity.OnBackPressedCallback
 import androidx.appcompat.app.AppCompatActivity
 import network.frqncy.app.R
@@ -35,6 +47,8 @@ class AlarmActivity : AppCompatActivity() {
     private lateinit var webView: WebView
     private var alarmId: String? = null
     private var moment: String = "morning"
+    private var webViewLoaded = false
+    private val cooldownHandler = Handler(Looper.getMainLooper())
 
     @SuppressLint("SetJavaScriptEnabled")
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -53,10 +67,36 @@ class AlarmActivity : AppCompatActivity() {
             mediaPlaybackRequiresUserGesture = false
             cacheMode = WebSettings.LOAD_DEFAULT
         }
-        webView.setBackgroundColor(android.graphics.Color.BLACK)
+        webView.setBackgroundColor(Color.BLACK)
         webView.addJavascriptInterface(Bridge(), "FrqncyAlarmBridge")
-        val url = "file:///android_asset/public/app/alarm.html?id=${alarmId ?: ""}&moment=$moment"
+
+        // Cold-start hardening: track whether alarm.html actually finished
+        // loading. After a process kill the WebView can launch but fail to
+        // render the bundled assets — in that case we fall back to a native
+        // dismiss surface so the user is never stuck looking at a black screen.
+        webView.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                webViewLoaded = true
+            }
+        }
+
+        // Surface current snooze count so alarm.html can switch copy past the cap.
+        val snoozeCount = alarmId?.let { AlarmStore(this).get(it)?.snoozeCount } ?: 0
+        val url = "file:///android_asset/public/app/alarm.html" +
+            "?id=${alarmId ?: ""}" +
+            "&moment=$moment" +
+            "&snoozeCount=$snoozeCount" +
+            "&snoozeLimit=${AlarmRecord.SNOOZE_LIMIT}"
         webView.loadUrl(url)
+
+        // 4-second timeout — if the WebView hasn't finished loading by then,
+        // overlay a native fallback dismiss surface. Keeps the user out of a
+        // black screen even on the worst cold-start path.
+        cooldownHandler.postDelayed({
+            if (!webViewLoaded) {
+                showNativeFallback()
+            }
+        }, 4_000L)
 
         // Disable back navigation while the alarm is active.
         onBackPressedDispatcher.addCallback(this, object : OnBackPressedCallback(true) {
@@ -84,6 +124,7 @@ class AlarmActivity : AppCompatActivity() {
     }
 
     override fun onDestroy() {
+        cooldownHandler.removeCallbacksAndMessages(null)
         runCatching {
             webView.loadUrl("about:blank")
             webView.stopLoading()
@@ -92,6 +133,89 @@ class AlarmActivity : AppCompatActivity() {
         }
         super.onDestroy()
     }
+
+    /**
+     * Fallback dismiss surface — used when the WebView fails to load
+     * alarm.html within 4s of activity start (process-kill recovery, asset
+     * corruption, etc.). Native LinearLayout with the same breath-hold
+     * affordance: a centered "hold to arrive" prompt and a "stop alarm"
+     * button so the user is never stuck.
+     */
+    @SuppressLint("ClickableViewAccessibility")
+    private fun showNativeFallback() {
+        val root = findViewById<FrameLayout>(android.R.id.content)
+        val container = LinearLayout(this).apply {
+            orientation = LinearLayout.VERTICAL
+            gravity = Gravity.CENTER
+            setBackgroundColor(Color.BLACK)
+            setPadding(dp(24), dp(24), dp(24), dp(24))
+        }
+
+        val title = TextView(this).apply {
+            text = "FRQNCY"
+            setTextColor(0xFFE8C547.toInt())
+            setTypeface(typeface, Typeface.NORMAL)
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
+            letterSpacing = 0.25f
+            gravity = Gravity.CENTER
+        }
+        val instr = TextView(this).apply {
+            text = "press and hold here to arrive"
+            setTextColor(0xCCF5F5F5.toInt())
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 18f)
+            gravity = Gravity.CENTER
+            setPadding(0, dp(40), 0, dp(40))
+        }
+        val stopBtn = TextView(this).apply {
+            text = "stop alarm"
+            setTextColor(0x99F5F5F5.toInt())
+            setTextSize(TypedValue.COMPLEX_UNIT_SP, 13f)
+            gravity = Gravity.CENTER
+            setPadding(dp(24), dp(12), dp(24), dp(12))
+        }
+
+        // Hold-for-6s on the instruction text dismisses the alarm.
+        var holdStart = 0L
+        instr.setOnTouchListener { _, ev ->
+            when (ev.action) {
+                MotionEvent.ACTION_DOWN -> {
+                    holdStart = System.currentTimeMillis()
+                    instr.setTextColor(0xFFE8C547.toInt())
+                    cooldownHandler.postDelayed({
+                        if (System.currentTimeMillis() - holdStart >= 5_900) {
+                            stopAlarmService(AlarmService.ACTION_STOP)
+                            finishAndRemoveTask()
+                        }
+                    }, 6_000L)
+                    true
+                }
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    holdStart = 0L
+                    instr.setTextColor(0xCCF5F5F5.toInt())
+                    true
+                }
+                else -> false
+            }
+        }
+        stopBtn.setOnClickListener {
+            stopAlarmService(AlarmService.ACTION_STOP)
+            finishAndRemoveTask()
+        }
+
+        container.addView(title)
+        container.addView(instr)
+        container.addView(stopBtn)
+
+        val lp = FrameLayout.LayoutParams(
+            FrameLayout.LayoutParams.MATCH_PARENT,
+            FrameLayout.LayoutParams.MATCH_PARENT,
+        )
+        root.addView(container, lp)
+        webView.visibility = View.GONE
+    }
+
+    private fun dp(value: Int): Int =
+        (value * resources.displayMetrics.density + 0.5f).toInt()
 
     /**
      * JavaScriptInterface exposed to alarm.html. The web page calls these

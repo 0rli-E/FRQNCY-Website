@@ -67,7 +67,13 @@ class AlarmReceiver : BroadcastReceiver() {
                 // alarm fired but the system didn't grant the alarm-clock
                 // privilege (battery saver, app-standby bucket).
                 Log.e(TAG, "Failed to start AlarmService for $id: ${e.message}", e)
-                // TODO Phase 7: report to telemetry endpoint
+                Telemetry.reportAlarmError(context, e)
+            } catch (e: SecurityException) {
+                // Plugin scheduled successfully but at fire-time the privilege
+                // was revoked (rare — usually USE_EXACT_ALARM denial after the
+                // fact). Still want to know.
+                Log.e(TAG, "SecurityException starting service for $id: ${e.message}", e)
+                Telemetry.reportAlarmError(context, e)
             }
         } finally {
             if (wakeLock.isHeld) wakeLock.release()
@@ -79,7 +85,8 @@ class AlarmReceiver : BroadcastReceiver() {
             store.delete(record.id)
             return
         }
-        val updated = record.copy(timestamp = nextTimestamp)
+        // Fresh cycle — reset snoozeCount so tomorrow's alarm starts at 0.
+        val updated = record.copy(timestamp = nextTimestamp, snoozeCount = 0)
         store.upsert(updated)
         FrqncyAlarmPlugin.scheduleNative(context, updated)
     }

@@ -1,0 +1,21 @@
+<!--
+  splash — legacy launch-window background drawable, picked up by
+  AppTheme.NoActionBarLaunch via android:background.
+
+  Layer 1: solid FRQNCY brand black.
+  Layer 2: centered brand mark (ring + wave) — the splash_brand vector.
+
+  Modern Android 12+ Splash Screen API attributes (windowSplashScreenBackground +
+  windowSplashScreenAnimatedIcon) are also set in styles.xml so the system splash
+  matches on newer devices.
+-->
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <color android:color="@color/frqncy_dark" />
+    </item>
+    <item
+        android:drawable="@drawable/splash_brand"
+        android:gravity="center"
+        android:width="160dp"
+        android:height="160dp" />
+</layer-list>

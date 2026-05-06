@@ -18,6 +18,15 @@ jobs:
         with:
           node-version: '22'
 
+      - name: Domain coverage report (lead loop, structural)
+        run: node scripts/auto-grow/domain-coverage.mjs
+
+      - name: Domain coverage LLM enrichment (v0.1)
+        run: node scripts/auto-grow/domain-coverage-enrich.mjs
+        env:
+          OPENROUTER_API_KEY: ${{ secrets.OPENROUTER_API_KEY }}
+          FRQNCY_ENRICH_MODEL: 'google/gemini-2.5-flash'
+
       - name: Resource suggestions from recent NRG posts
         run: node scripts/auto-grow/resource-suggest.mjs
         env:
@@ -28,15 +37,31 @@ jobs:
       - name: Video ingestion from Watch playlist channels
         run: node scripts/auto-grow/video-ingest.mjs
 
+      - name: Refresh Bluesky reply counts on cross-posted NRG posts
+        # Live-data step — writes counts directly to Supabase via service-role.
+        # Output JSON (scripts/auto-grow/output/bluesky-counts.json) is just a
+        # summary for human review; nothing in resources.json or content/
+        # changes here, so the PR step below picks up only the summary.
+        run: node scripts/auto-grow/bluesky-counts-refresh.mjs
+        env:
+          SUPABASE_URL: ${{ secrets.SUPABASE_URL }}
+          SUPABASE_SERVICE_ROLE_KEY: ${{ secrets.SUPABASE_SERVICE_ROLE_KEY }}
+          BSKY_BATCH_LIMIT: '200'
+
       - name: Open PR if anything changed
         uses: peter-evans/create-pull-request@v6
         with:
-          commit-message: 'auto-grow: nightly resource + video suggestions'
+          commit-message: 'auto-grow: nightly domain-coverage + resource + video + bsky-counts'
           title: 'auto-grow nightly: review and merge selectively'
           body: |
-            Drafted by `scripts/auto-grow/`. Review the JSON in
-            `scripts/auto-grow/output/`. Merge selectively — nothing here
-            is auto-applied.
+            Drafted by `scripts/auto-grow/`. Read
+            `scripts/auto-grow/output/domain-coverage.md` first — that's
+            the structural surface (domains by coverage, pillars by
+            primary-tag, orphan flags). Then review the resource and
+            video JSON. The `bluesky-counts.json` summary is a side-effect
+            log — counts were already written live to Supabase by the
+            refresh step. Merge selectively — nothing here is
+            auto-applied to source.
 
             Per `proposals/AUTO-GROW-LOOPS-V0.md`. The harness drafts;
             humans decide.

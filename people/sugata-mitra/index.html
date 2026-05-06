@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Sugata Mitra","description":"British-Indian education researcher whose Hole in the Wall experiments — placing internet-connected computers in Indian slum walls with no instruction — demonstrated that children can teach themselves almost anything, given access and each other.","url":"https://frqncy.network/people/sugata-mitra/","sameAs":["https://en.wikipedia.org/wiki/Sugata_Mitra"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"People","item":"https://frqncy.network/people/"},{"@type":"ListItem","position":3,"name":"Sugata Mitra","item":"https://frqncy.network/people/sugata-mitra/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -260,7 +260,14 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://en.wikipedia.org/wiki/Sugata_Mitra" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit en.wikipedia.org/wiki/Sugata_Mitra →</a>
 </div>
 <main>
-  
+  <section>
+  <div class="section-label">Life</div>
+  <div class="life-prose" style="max-width:720px">
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Sugata Mitra holds a doctorate in physics and worked across cognitive science and education technology — a combination credited with more than twenty-five inventions. British-Indian by background, he spent much of his career in India, where his attention shifted towards how children learn outside formal instruction. Observing the assumptions built into schooling — assumptions he traced to Victorian priorities around handwriting, arithmetic, and rote compliance — he began testing whether access to technology, without a teacher present, might open a different kind of learning.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">In 1999, Mitra set a computer in a kiosk cut into a wall in a slum in Kalkaji, Delhi, and left it available to children with no guidance. The children navigated the machine, shared what they found, and taught themselves material ranging from basic computing to topics they had no prior exposure to. He named the approach Minimally Invasive Education. The experiment was repeated across some twenty-three sites in rural India and, in 2004, in Cambodia. His 2013 TED Talk, &quot;Build a School in the Cloud,&quot; extended the research&#39;s reach internationally.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">The work developed into the SOLE (Self Organised Learning Environments) model — broad questions, collaborative inquiry, and minimal adult intervention. Mitra received the Dewang Mehta Award for Innovation in Information Technology in 2005 and the Leonardo European Corporate Learning Award in 2012. His publications include The Hole in the Wall and La escuela en la nube. His argument that schooling inherited its shape from industrial-era necessity, rather than educational principle, remains active in discussions about pedagogy, technology, and what self-directed learning might look like at scale.</p>
+  </div>
+</section>
   <section>
   <div class="section-label">Works</div>
   <div class="rlist"><div class="rcard" data-type="media">

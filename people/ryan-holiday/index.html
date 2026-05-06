@@ -50,8 +50,9 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden}
 .hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
 .hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
-.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;flex-wrap:wrap;justify-content:center}
 .hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero-readtime{font-style:italic;text-transform:none;letter-spacing:0.08em;color:var(--text-dim,#8FA8CC);font-size:0.62rem;opacity:0.75;font-family:'Cormorant',serif;font-weight:300}
 .hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5.2rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.5rem;letter-spacing:-0.01em}
 .hero-desc{max-width:560px;margin:0 auto;font-size:0.9rem;color:var(--text-dim);font-weight:300;line-height:1.75}
 /* Word Illuminator deep-link in the hero — quiet gold pill with the ✧ glyph.
@@ -242,7 +243,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <link rel="stylesheet" href="../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"Person","name":"Ryan Holiday","description":"Modern populariser of Stoic philosophy whose books (The Obstacle Is the Way, Ego Is the Enemy) and Daily Stoic newsletter have brought Marcus Aurelius and Epictetus into the hands of athletes, executives, and seekers.","url":"https://frqncy.network/people/ryan-holiday/","sameAs":["https://ryanholiday.net"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"People","item":"https://frqncy.network/people/"},{"@type":"ListItem","position":3,"name":"Ryan Holiday","item":"https://frqncy.network/people/ryan-holiday/"}]}</script>
 </head>
 <body><nav class="snav">
   <div class="snav-left">
@@ -260,7 +260,14 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
   <a href="https://ryanholiday.net" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit ryanholiday.net →</a>
 </div>
 <main>
-  
+  <section>
+  <div class="section-label">Life</div>
+  <div class="life-prose" style="max-width:720px">
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Ryan Holiday&#39;s career developed through marketing and media consultancy. His company, Brass Check, has worked with organisations including Google and Complex, as well as multiplatinum musicians and prominent authors, advising across both commercial and creative sectors. That immersion in how culture is shaped and sold informed his early writing on media and persuasion. Over time, his interests turned toward the classical Stoic tradition, and he began producing books that brought ancient ideas about adversity, ego, and conduct to a contemporary readership. He is based in Austin, Texas.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">The Obstacle Is the Way and Ego Is the Enemy brought the ideas of Marcus Aurelius and Epictetus to athletes, executives, and a broad general audience. Holiday&#39;s prose made Stoic concepts — endurance, the uses of difficulty, the costs of unchecked ambition — accessible well outside academic philosophy. Both books have been translated into more than thirty languages and covered in publications including the New York Times and Fast Company, giving the Stoic tradition a visibility in popular culture it had not had in some decades.</p>
+    <p style="margin-bottom:1.1rem;color:var(--text);opacity:0.88;line-height:1.75">Holiday has continued writing, adding Conspiracy and other titles to his catalogue, and a Daily Stoic newsletter extends his reach beyond the books. Brass Check remains active in consulting across marketing and publishing. His work circulates across more than thirty languages; the primary Stoic texts he draws on — available independently — have seen renewed popular interest alongside his interpretations. As a body of work, it occupies an unusual position: rooted in antiquity, delivered through the mechanisms of contemporary publishing and media.</p>
+  </div>
+</section>
   <section>
   <div class="section-label">Works</div>
   <div class="rlist"><div class="rcard" data-type="book">
