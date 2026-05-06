@@ -56,8 +56,12 @@ const HEADERS = {
 };
 
 // ───────────────────────── load + select ─────────────────────────
-const books = JSON.parse(fs.readFileSync(path.join(ROOT, 'books.json'), 'utf8')).books;
-const people = JSON.parse(fs.readFileSync(path.join(ROOT, 'people.json'), 'utf8')).people;
+const APPLY = args.includes('--apply');
+const booksPath = path.join(ROOT, 'books.json');
+const peoplePath = path.join(ROOT, 'people.json');
+const booksData = JSON.parse(fs.readFileSync(booksPath, 'utf8'));
+const books = booksData.books;
+const people = JSON.parse(fs.readFileSync(peoplePath, 'utf8')).people;
 const peopleById = new Map(people.map(p => [p.id, p]));
 
 // Resolve a book's author to a display string regardless of whether it's a
@@ -72,7 +76,8 @@ const targets = books.filter(b => {
   if (ONLY_ID) return b.id === ONLY_ID;
   const needsIntro = !b.intro && (TARGET === 'both' || TARGET === 'intro');
   const needsQuote = !b.quote && (TARGET === 'both' || TARGET === 'quote');
-  return needsIntro || needsQuote;
+  const needsCover = !b.image && (TARGET === 'both' || TARGET === 'cover');
+  return needsIntro || needsQuote || needsCover;
 }).slice(0, LIMIT);
 
 console.error(`Goodreads candidate fetcher: ${targets.length} book${targets.length === 1 ? '' : 's'} (target=${TARGET})\n`);
@@ -245,14 +250,40 @@ function passesQuoteGate(text, attribution, title) {
   return { pass: true };
 }
 
+// ───────────────────────── extract cover URL ─────────────────────────
+async function fetchCoverFromWork(workHtml) {
+  // schema.org JSON-LD has `"image":"https://m.media-amazon.com/images/..."`
+  const ld = workHtml.match(/<script type="application\/ld\+json"[^>]*>([\s\S]*?)<\/script>/);
+  if (ld) {
+    try {
+      const data = JSON.parse(ld[1]);
+      if (data?.image && /^https?:\/\//.test(data.image)) return data.image;
+    } catch {}
+  }
+  // og:image fallback
+  const og = workHtml.match(/<meta[^>]+property="og:image"[^>]+content="([^"]+)"/);
+  return og ? og[1] : null;
+}
+
 // ───────────────────────── per-book pipeline ─────────────────────────
 async function fetchOne(book) {
-  const out = { id: book.id, title: book.title, intro: null, quote: null, status: {} };
+  const out = { id: book.id, title: book.title, intro: null, quote: null, cover: null, status: {} };
   if (blockCount >= 3) { out.status.bail = 'too many blocks'; return out; }
 
   const workUrl = await findGoodreadsWork(book);
   if (!workUrl) { out.status.search = 'no work found'; return out; }
   out.work_url = workUrl;
+
+  // Pull the work page once, extract cover from the same fetch as a freebie.
+  // Cover is independent of TARGET — if the book lacks one, grab whatever
+  // Goodreads has, since we're already on the page.
+  if (!book.image) {
+    const workHtml = await safeText(workUrl);
+    if (workHtml) {
+      const cover = await fetchCoverFromWork(workHtml);
+      if (cover) out.cover = { url: cover, source_url: workUrl };
+    }
+  }
 
   if ((!book.intro && (TARGET === 'both' || TARGET === 'intro'))) {
     await delay(1500 + Math.random() * 1500);
@@ -287,6 +318,7 @@ for (const [i, b] of targets.entries()) {
   const flags = [];
   if (r.intro?.passed) flags.push('I✓'); else if (r.intro) flags.push('i?');
   if (r.quote?.passed) flags.push('Q✓'); else if (r.quote) flags.push('q?');
+  if (r.cover) flags.push('C✓');
   if (!r.work_url) flags.push('—');
   process.stderr.write(`${flags.join(' ')}\n`);
   results.push(r);
@@ -301,6 +333,7 @@ for (const [i, b] of targets.entries()) {
 const date = new Date().toISOString().slice(0, 10);
 const introsReady = results.filter(r => r.intro?.passed).map(r => ({ id: r.id, title: r.title, intro: r.intro.text, intro_source: r.intro.source_url }));
 const quotesReady = results.filter(r => r.quote?.passed).map(r => ({ id: r.id, title: r.title, text: r.quote.text, attribution: r.quote.attribution, source_url: r.quote.source_url }));
+const coversReady = results.filter(r => r.cover).map(r => ({ id: r.id, title: r.title, image: r.cover.url, image_source: r.cover.source_url }));
 
 const md = [];
 md.push(`# Goodreads candidates — ${date}`);
@@ -358,10 +391,24 @@ for (const r of results) {
 const dest = path.join(ROOT, 'audits', 'beds', 'runs', `${date}-goodreads-candidates.md`);
 const introsPath = path.join(ROOT, 'audits', 'beds', 'runs', `${date}-goodreads-intros.json`);
 const quotesPath = path.join(ROOT, 'audits', 'beds', 'runs', `${date}-goodreads-quotes.json`);
+const coversPath = path.join(ROOT, 'audits', 'beds', 'runs', `${date}-goodreads-covers.json`);
 fs.mkdirSync(path.dirname(dest), { recursive: true });
 fs.writeFileSync(dest, md.join('\n'));
 fs.writeFileSync(introsPath, JSON.stringify(introsReady, null, 2));
 fs.writeFileSync(quotesPath, JSON.stringify(quotesReady, null, 2));
+fs.writeFileSync(coversPath, JSON.stringify(coversReady, null, 2));
+
+// Auto-apply covers (no quality subjectivity — Goodreads JSON-LD covers are stable URLs).
+if (APPLY && coversReady.length) {
+  for (const r of coversReady) {
+    const b = booksData.books.find(b => b.id === r.id);
+    if (b) { b.image = r.image; b.image_source = r.image_source; }
+  }
+  fs.writeFileSync(booksPath, JSON.stringify(booksData, null, 2) + '\n');
+  console.error(`\nApplied ${coversReady.length} covers to books.json.`);
+}
+
 console.error(`\n→ ${path.relative(ROOT, dest)}`);
 console.error(`→ ${path.relative(ROOT, introsPath)} (${introsReady.length} intros)`);
 console.error(`→ ${path.relative(ROOT, quotesPath)} (${quotesReady.length} quotes)`);
+console.error(`→ ${path.relative(ROOT, coversPath)} (${coversReady.length} covers)`);
