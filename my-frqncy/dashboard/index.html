@@ -2010,8 +2010,11 @@ function renderHabitHistory() {
     const row = document.createElement('div');
     row.className = 'graph-card';
     row.style.marginBottom = '1rem';
+    // Today at leftmost cell, older days extending rightward — so the
+    // user's first completed day shows up at the top-left where the eye
+    // lands, and the gold trail grows left-to-right as the streak builds.
     const last30 = [];
-    for (let i = 29; i >= 0; i--) {
+    for (let i = 0; i <= 29; i++) {
       const d = new Date(); d.setDate(d.getDate() - i);
       const key = dateISO(d);
       last30.push({ date: key, done: !!state.habitLogs[key]?.[h.id], short: d.getDate() });
@@ -2113,8 +2116,12 @@ function renderHeatmap() {
   const el = document.getElementById('heatmap');
   if (!el) return;
   const today = new Date(); today.setHours(0,0,0,0);
+  // Today fills the top-left cell, older days extend rightward and then
+  // wrap down through the rows. Same rationale as the 30-day strip:
+  // a single completed day should land at the top-left where the eye
+  // lands first, not be hidden in the bottom-right corner.
   const cells = [];
-  for (let i = 53*7 - 1; i >= 0; i--) {
+  for (let i = 0; i < 53*7; i++) {
     const d = new Date(today); d.setDate(d.getDate() - i);
     const key = dateISO(d);
     const log = state.habitLogs[key] || {};
