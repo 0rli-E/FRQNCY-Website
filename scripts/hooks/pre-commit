@@ -1,0 +1,47 @@
+#!/usr/bin/env bash
+# BESPOKE-LOCK guard.
+#
+# Aborts the commit if a staged v2/**/index.html had the BESPOKE-LOCK marker
+# in HEAD but the staged version no longer does. That signature is the exact
+# regen-clobber regression we've hit twice (2026-05-06, 2026-05-09).
+#
+# Bypass for legitimate intentional removal:
+#   BESPOKE_GUARD_OVERRIDE=1 git commit ...
+#
+# Install (one-time, per clone):
+#   cp scripts/hooks/pre-commit .git/hooks/pre-commit
+#   chmod +x .git/hooks/pre-commit
+
+if [ "${BESPOKE_GUARD_OVERRIDE:-0}" = "1" ]; then
+  echo "[pre-commit] BESPOKE_GUARD_OVERRIDE=1 — bespoke-lock guard skipped"
+  exit 0
+fi
+
+violations=()
+
+while IFS= read -r f; do
+  [ -z "$f" ] && continue
+  # Only check files that exist in HEAD (skip new adds).
+  git cat-file -e "HEAD:$f" 2>/dev/null || continue
+  if git show "HEAD:$f" 2>/dev/null | grep -q "BESPOKE-LOCK"; then
+    if ! git show ":$f" 2>/dev/null | grep -q "BESPOKE-LOCK"; then
+      violations+=("$f")
+    fi
+  fi
+done < <(git diff --cached --name-only --diff-filter=AM | grep -E '^v2/.*/index\.html$' || true)
+
+if [ "${#violations[@]}" -gt 0 ]; then
+  echo
+  echo "[pre-commit] BESPOKE-LOCK guard tripped — ${#violations[@]} file(s):"
+  for f in "${violations[@]}"; do echo "  - $f"; done
+  echo
+  echo "These pages had the BESPOKE-LOCK marker in HEAD but the staged version"
+  echo "removed it. That's the regen-clobber regression — generate.js (or a"
+  echo "similar tool) likely overwrote a hand-shaped page."
+  echo
+  echo "Inspect with:  git diff --cached"
+  echo "Bypass with:   BESPOKE_GUARD_OVERRIDE=1 git commit ..."
+  exit 1
+fi
+
+exit 0

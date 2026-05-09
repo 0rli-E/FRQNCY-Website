@@ -10,6 +10,24 @@ const path = require('path');
 
 const ROOT      = __dirname;
 const DATA      = JSON.parse(fs.readFileSync(path.join(ROOT, 'content.json'),   'utf8'));
+
+// In-file BESPOKE-LOCK marker — primary signal that a page is hand-shaped.
+// A page that contains this string anywhere in its first KB will not be
+// overwritten by generate.js, regardless of BESPOKE_* set membership. The
+// marker travels with the page, so it can never desync from a slug list.
+// To intentionally regenerate a marked page, edit the file and remove the
+// marker (then run again).
+const BESPOKE_LOCK_MARKER = 'BESPOKE-LOCK';
+function hasBespokeLock(filePath) {
+  try {
+    if (!fs.existsSync(filePath)) return false;
+    const fd = fs.openSync(filePath, 'r');
+    const buf = Buffer.alloc(1024);
+    const n = fs.readSync(fd, buf, 0, 1024, 0);
+    fs.closeSync(fd);
+    return buf.slice(0, n).toString('utf8').includes(BESPOKE_LOCK_MARKER);
+  } catch { return false; }
+}
 const VIDEOS    = JSON.parse(fs.readFileSync(path.join(ROOT, 'videos.json'),    'utf8'));
 const COURSES   = JSON.parse(fs.readFileSync(path.join(ROOT, 'courses.json'),   'utf8'));
 const PROVIDERS = JSON.parse(fs.readFileSync(path.join(ROOT, 'providers.json'), 'utf8'));
@@ -1878,30 +1896,45 @@ lintVoice();
 let count = 0;
 
 for (const p of DATA.pillars) {
+  const fp = path.join(OUT, p.slug, 'index.html');
   if (BESPOKE_PILLARS.has(p.slug)) {
-    console.log(`  skip pillar ${p.slug} — bespoke page (see BESPOKE_PILLARS in generate.js)`);
+    console.log(`  skip pillar ${p.slug} — bespoke (set)`);
+    continue;
+  }
+  if (hasBespokeLock(fp)) {
+    console.log(`  skip pillar ${p.slug} — bespoke (BESPOKE-LOCK marker)`);
     continue;
   }
   mkdirp(path.join(OUT, p.slug));
-  fs.writeFileSync(path.join(OUT, p.slug, 'index.html'), pillarPage(p));
+  fs.writeFileSync(fp, pillarPage(p));
   count++;
 }
 for (const d of DATA.domains) {
+  const fp = path.join(OUT, d.slug, 'index.html');
   if (BESPOKE_DOMAINS.has(d.slug)) {
-    console.log(`  skip domain ${d.slug} — bespoke page`);
+    console.log(`  skip domain ${d.slug} — bespoke (set)`);
+    continue;
+  }
+  if (hasBespokeLock(fp)) {
+    console.log(`  skip domain ${d.slug} — bespoke (BESPOKE-LOCK marker)`);
     continue;
   }
   mkdirp(path.join(OUT, d.slug));
-  fs.writeFileSync(path.join(OUT, d.slug, 'index.html'), domainPage(d));
+  fs.writeFileSync(fp, domainPage(d));
   count++;
 }
 for (const t of DATA.topics) {
+  const fp = path.join(OUT, t.slug, 'index.html');
   if (BESPOKE_TOPICS.has(t.slug)) {
-    console.log(`  skip topic ${t.slug} — bespoke page`);
+    console.log(`  skip topic ${t.slug} — bespoke (set)`);
+    continue;
+  }
+  if (hasBespokeLock(fp)) {
+    console.log(`  skip topic ${t.slug} — bespoke (BESPOKE-LOCK marker)`);
     continue;
   }
   mkdirp(path.join(OUT, t.slug));
-  fs.writeFileSync(path.join(OUT, t.slug, 'index.html'), topicPage(t));
+  fs.writeFileSync(fp, topicPage(t));
   count++;
 }
 
