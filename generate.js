@@ -39,7 +39,7 @@ const OUT       = path.join(ROOT, 'v2');
 // from overwriting bespoke narrative (Vision/Echo/Legion/Roadmap, etc.).
 // To intentionally regenerate one of these, remove its slug from the set,
 // or pass --force-regen-fund (etc.) — not implemented yet, add when needed.
-const BESPOKE_PILLARS = new Set(['fund', 'sell', 'curate']);
+const BESPOKE_PILLARS = new Set(['fund', 'sell', 'curate', 'builder', 'research', 'media', 'education', 'network-state']);
 // Commissioned pages (the artwork) — each is a unique piece, not a template.
 // See proposals/TOPIC-COMMISSION-CONTEXT-GRAPH.md for the procedure that builds them.
 // Add a slug here as soon as a page is commissioned, BEFORE the next regen run.
