@@ -39,7 +39,7 @@ const OUT       = path.join(ROOT, 'v2');
 // from overwriting bespoke narrative (Vision/Echo/Legion/Roadmap, etc.).
 // To intentionally regenerate one of these, remove its slug from the set,
 // or pass --force-regen-fund (etc.) — not implemented yet, add when needed.
-const BESPOKE_PILLARS = new Set(['fund', 'sell']);
+const BESPOKE_PILLARS = new Set(['fund', 'sell', 'curate']);
 // Commissioned pages (the artwork) — each is a unique piece, not a template.
 // See proposals/TOPIC-COMMISSION-CONTEXT-GRAPH.md for the procedure that builds them.
 // Add a slug here as soon as a page is commissioned, BEFORE the next regen run.
@@ -1377,13 +1377,21 @@ function bookPage(book) {
   const slug = bookSlug(book);
   const canonical = `https://frqncy.network/books/${slug}/`;
 
-  // Resolve author — if p-id link, grab the Person for display + link
+  // Resolve author — string or array of p-ids when author_is_person_ref:true
   let authorHtml = '';
   if (book.author_is_person_ref && PEOPLE) {
-    const person = PEOPLE.people.find(p => p.id === book.author);
-    if (person) {
-      const pslug = personSlug(person);
-      authorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By <a href="/people/${esc(pslug)}/" style="color:var(--accent);border-bottom:1px solid rgba(255,255,255,0.18);text-decoration:none">${esc(person.name)}</a></div>`;
+    const refs = Array.isArray(book.author) ? book.author : [book.author];
+    const links = refs
+      .map(id => PEOPLE.people.find(p => p.id === id))
+      .filter(Boolean)
+      .map(person => `<a href="/people/${esc(personSlug(person))}/" style="color:var(--accent);border-bottom:1px solid rgba(255,255,255,0.18);text-decoration:none">${esc(person.name)}</a>`);
+    if (links.length) {
+      const joined = links.length === 1
+        ? links[0]
+        : links.length === 2
+          ? `${links[0]} & ${links[1]}`
+          : `${links.slice(0, -1).join(', ')} & ${links[links.length - 1]}`;
+      authorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By ${joined}</div>`;
     }
   } else if (typeof book.author === 'string') {
     authorHtml = `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">By ${esc(book.author)}</div>`;
