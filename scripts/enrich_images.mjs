@@ -43,8 +43,9 @@ const peopleData = JSON.parse(fs.readFileSync(peoplePath, 'utf8'));
 const peopleById = new Map(peopleData.people.map(p => [p.id, p]));
 
 function authorDisplay(book) {
-  if (book.author_is_person_ref === true && typeof book.author === 'string') {
-    return peopleById.get(book.author)?.name || '';
+  if (book.author_is_person_ref === true) {
+    const refs = Array.isArray(book.author) ? book.author : [book.author];
+    return refs.map(id => peopleById.get(id)?.name).filter(Boolean).join(' & ');
   }
   return typeof book.author === 'string' ? book.author : '';
 }

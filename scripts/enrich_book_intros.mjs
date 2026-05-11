@@ -63,6 +63,15 @@ if (APPLY_FILE) {
 }
 
 const books = JSON.parse(fs.readFileSync(path.join(ROOT, 'books.json'), 'utf8'));
+const people = JSON.parse(fs.readFileSync(path.join(ROOT, 'people.json'), 'utf8'));
+const peopleById = new Map(people.people.map(p => [p.id, p]));
+function authorDisplay(book) {
+  if (book.author_is_person_ref === true) {
+    const refs = Array.isArray(book.author) ? book.author : [book.author];
+    return refs.map(id => peopleById.get(id)?.name).filter(Boolean).join(' & ');
+  }
+  return typeof book.author === 'string' ? book.author : '';
+}
 
 // ───────────────────────── targets ─────────────────────────
 function bodyWords(slug) {
@@ -76,6 +85,7 @@ function bodyWords(slug) {
 
 const targets = books.books.filter(b => {
   if (ONLY_ID) return b.id === ONLY_ID;
+  if (!b.intro) return true;
   const slug = (b.id || '').replace(/^b-/, '');
   const words = bodyWords(slug);
   return (b.bio?.length ?? 0) < BIO_FLOOR || (words !== null && words < PAGE_FLOOR);
@@ -126,7 +136,7 @@ async function fromCanonical(book) {
 
 // ───────────────────────── source 2: Open Library ─────────────────────────
 async function fromOpenLibrary(book) {
-  const author = typeof book.author === 'string' && !book.author_is_person_ref ? book.author : '';
+  const author = authorDisplay(book);
   const q = `title=${encodeURIComponent(book.title)}${author ? `&author=${encodeURIComponent(author.split('&')[0].split(',')[0].split(' (')[0].trim())}` : ''}&limit=3`;
   const search = await safeJSON(`https://openlibrary.org/search.json?${q}`);
   if (!search.ok || !search.data.docs?.length) return { source: 'openlibrary', text: '', note: search.error || 'no results' };
@@ -147,7 +157,7 @@ async function fromOpenLibrary(book) {
 
 // ───────────────────────── source 3: Internet Archive ─────────────────────────
 async function fromInternetArchive(book) {
-  const author = typeof book.author === 'string' && !book.author_is_person_ref ? book.author : '';
+  const author = authorDisplay(book);
   const q = `title:("${book.title.replace(/"/g, '')}")${author ? ` AND creator:("${author.split('&')[0].split(',')[0].split(' (')[0].trim().replace(/"/g, '')}")` : ''} AND mediatype:texts`;
   const r = await safeJSON(`https://archive.org/advancedsearch.php?q=${encodeURIComponent(q)}&fl[]=identifier&fl[]=title&fl[]=creator&fl[]=description&fl[]=format&rows=3&output=json`);
   if (!r.ok || !r.data?.response?.docs?.length) return { source: 'archive_org', text: '', note: r.error || 'no results' };
@@ -159,7 +169,7 @@ async function fromInternetArchive(book) {
 
 // ───────────────────────── source 4: Amazon search URL (queued, not scraped) ─────────────────────────
 function amazonSearchUrl(book) {
-  const author = typeof book.author === 'string' && !book.author_is_person_ref ? book.author : '';
+  const author = authorDisplay(book);
   const q = `${book.title} ${author}`.trim();
   return `https://www.amazon.com/s?k=${encodeURIComponent(q)}&i=stripbooks`;
 }
@@ -176,7 +186,7 @@ async function enrich(book) {
     id: book.id,
     slug,
     title: book.title,
-    author: typeof book.author === 'string' ? book.author : `→ ${book.author}`,
+    author: authorDisplay(book) || (typeof book.author === 'string' ? book.author : ''),
     current_bio: book.bio || '',
     sources: [c, ol, ia].filter(s => s.text || s.url),
     amazon_search: amazonSearchUrl(book),

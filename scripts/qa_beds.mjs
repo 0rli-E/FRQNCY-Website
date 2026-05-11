@@ -232,14 +232,16 @@ function l1Books() {
     }
   }
 
-  // 7. Author resolution where claimed
+  // 7. Author resolution where claimed (string OR array of p- refs for co-authored books)
   const peopleIds = new Set(people.people.map(p => p.id));
   for (const b of books.books) {
-    if (b.author_is_person_ref === true) {
-      if (typeof b.author !== 'string' || !b.author.startsWith('p-')) {
-        flag('R1-AUTHOR-RES', 'books', b.id, `author_is_person_ref:true but author "${b.author}" is not a p- ref`);
-      } else if (!peopleIds.has(b.author)) {
-        flag('R1-AUTHOR-RES', 'books', b.id, `author "${b.author}" not found in people bed`);
+    if (b.author_is_person_ref !== true) continue;
+    const refs = Array.isArray(b.author) ? b.author : [b.author];
+    for (const ref of refs) {
+      if (typeof ref !== 'string' || !ref.startsWith('p-')) {
+        flag('R1-AUTHOR-RES', 'books', b.id, `author_is_person_ref:true but ref "${ref}" is not a p- id`);
+      } else if (!peopleIds.has(ref)) {
+        flag('R1-AUTHOR-RES', 'books', b.id, `author "${ref}" not found in people bed`);
       }
     }
   }

@@ -67,6 +67,15 @@ console.error('Using @anthropic-ai/claude-agent-sdk (Claude Code auth)\n');
 
 // ───────────────────────── load + select ─────────────────────────
 const books = JSON.parse(fs.readFileSync(path.join(ROOT, 'books.json'), 'utf8'));
+const people = JSON.parse(fs.readFileSync(path.join(ROOT, 'people.json'), 'utf8'));
+const peopleById = new Map(people.people.map(p => [p.id, p]));
+function authorDisplay(book) {
+  if (book.author_is_person_ref === true) {
+    const refs = Array.isArray(book.author) ? book.author : [book.author];
+    return refs.map(id => peopleById.get(id)?.name).filter(Boolean).join(' & ');
+  }
+  return typeof book.author === 'string' ? book.author : '';
+}
 const targets = books.books.filter(b => {
   if (ONLY_ID) return b.id === ONLY_ID;
   return !b.quote;
@@ -89,7 +98,7 @@ async function safeFetch(url, opts = {}) {
 }
 
 async function findArchiveCandidates(book) {
-  const author = typeof book.author === 'string' && !book.author_is_person_ref ? book.author : '';
+  const author = authorDisplay(book);
   const titleQ = book.title.replace(/[":]/g, ' ').replace(/\s+/g, ' ').trim();
   const authorQ = author ? author.split('&')[0].split(',')[0].split(' (')[0].trim().replace(/[":]/g, ' ').trim() : '';
   // Filter out collections that can't be fully downloaded (in-library only).
@@ -143,7 +152,7 @@ async function askForQuote(book, excerpt) {
 
 Respond with ONLY valid JSON: {"quote": "...", "attribution": "..."} where attribution is the book title (and chapter or page if discernible). If no suitable quote exists in the excerpt, respond with {"quote": "", "attribution": ""}.`;
 
-  const user = `Book: ${book.title}\nAuthor: ${typeof book.author === 'string' ? book.author : '—'}\n\nExcerpt:\n\n${excerpt}`;
+  const user = `Book: ${book.title}\nAuthor: ${authorDisplay(book) || '—'}\n\nExcerpt:\n\n${excerpt}`;
 
   for (let attempt = 0; attempt <= MAX_RETRIES; attempt++) {
     try {
