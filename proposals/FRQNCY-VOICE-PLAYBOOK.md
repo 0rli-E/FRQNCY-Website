@@ -441,14 +441,7 @@ Every auto-generated topic page (`/v2/<topic>/`) currently opens with eyebrow + 
 
 ### Resolved (2026-04-28)
 
-1. **The "love and light" boundary in public copy** — *Resolved, with one carve-out (2026-05-08).* Use sparingly across the site only inside paragraphs where the philosophical frame is already established (Substack email model). Removed from the home meta description and the about hero sub. Never the first substantive line a reader encounters. Add subtle moments elsewhere where it earns its place.
-
-   **Carve-out**: the email subscribe overlay (`#subscribe-overlay h2.subscribe-headline`) intentionally keeps the original copy:
-
-   > You are *love* and light.
-   > Remember. Create. Receive the next dispatch.
-
-   This is the most emotionally-charged moment of the homepage, lands well in the founder's judgment, and is treated as an approved exception. Any future voice-audit run should leave this string alone. (Approved 2026-05-08.)
+1. **The "love and light" boundary in public copy** — *Resolved.* Use sparingly across the site only inside paragraphs where the philosophical frame is already established (Substack email model). Removed from the home meta description, the subscribe overlay h2, and the about hero sub. Never the first substantive line a reader encounters. Add subtle moments elsewhere where it earns its place.
 
 2. **"Built on the Foundations of Oneness"** — *Resolved.* Replaced as the home hero. New locked hero is `H1: "A network of people, building their dream life." / Sub: "We invite you to find yourself."` "Built on the Foundations of Oneness" can remain as a structural anchor (footer concept, section title) where the philosophical frame has already done its work.
 

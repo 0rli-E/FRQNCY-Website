@@ -31,7 +31,7 @@
        pointing to the now-removed t-trauma node) was getting `node not found:
        t-trauma` from d3 and the map never rendered. Bumping this query string
        on every regeneration of explore-data.js forces a fresh fetch. -->
-  <script src="./explore-data.js?v=2026-05-06a"></script>
+  <script src="./explore-data.js?v=2026-05-08a"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Explore the Network — FRQNCY","description":"Navigate 134 topics across 6 pillars of conscious living. An interactive map of the FRQNCY Network.","url":"https://frqncy.network/v2/explore.html","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -537,9 +537,38 @@ const sim=d3.forceSimulation(NODES)
       case 'cluster': return -400; default: return -130;
     }
   }).theta(0.9))
-  .force('center',d3.forceCenter(W/2,H/2).strength(0.04))
+  .force('center',d3.forceCenter(W/2,H/2).strength(0.16))
   .force('collide',d3.forceCollide(d=>d.r+8).strength(0.6).iterations(1))
-  .alphaDecay(0.03).velocityDecay(0.45);
+  .alphaDecay(0.022).velocityDecay(0.45);
+
+/* Autofit safety net: once the simulation has cooled, compute the bounding
+ * box of all nodes and apply a translate+scale on zoomG so the entire
+ * cloud always fits inside the viewport. Earlier the map could end up
+ * squished into the top-left corner (centroid ~(176,76) on a 1710×859
+ * viewport) because forceCenter at strength 0.04 couldn't fully recenter
+ * 198 nodes with two isolated pillars (curate, sell) dragging the
+ * centroid off-axis. Strength is now 0.16 + this hard autofit. */
+sim.on('end.__autofit', () => {
+  try {
+    let minX = Infinity, minY = Infinity, maxX = -Infinity, maxY = -Infinity;
+    for (const n of NODES) {
+      const pad = (n.r || 6) + 12;
+      if (n.x - pad < minX) minX = n.x - pad;
+      if (n.y - pad < minY) minY = n.y - pad;
+      if (n.x + pad > maxX) maxX = n.x + pad;
+      if (n.y + pad > maxY) maxY = n.y + pad;
+    }
+    const cw = maxX - minX, ch = maxY - minY;
+    const margin = 40;
+    const k = Math.min((W - margin*2) / cw, (H - margin*2) / ch, 1.0);
+    const tx = (W - cw*k) / 2 - minX*k;
+    const ty = (H - ch*k) / 2 - minY*k;
+    const t = d3.zoomIdentity.translate(tx, ty).scale(k);
+    svg.transition().duration(800).call(d3.zoom().transform, t);
+    zoomG.transition().duration(800).attr('transform', t.toString());
+    zoomState = t;
+  } catch (e) { console.warn('[explore] autofit failed', e); }
+});
 
 /* Node map for fast canvas lookup */
 const nodeById={};
