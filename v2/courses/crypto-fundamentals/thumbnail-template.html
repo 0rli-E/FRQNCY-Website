@@ -1,0 +1,230 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>FRQNCY · Crypto Fundamentals — Thumbnail Builder</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+  html,body{font-family:'Jost',sans-serif;background:#0a0a0a;color:#888;min-height:100vh}
+  .controls{
+    max-width:1280px;margin:24px auto;padding:14px 18px;
+    background:#111;border:1px solid #222;border-radius:6px;
+    display:flex;gap:1rem;align-items:center;flex-wrap:wrap;color:#ccc;font-size:13px;
+  }
+  .controls select{
+    background:#1a1a1a;color:#fff;border:1px solid #333;padding:8px 12px;
+    font-family:inherit;font-size:14px;border-radius:3px;cursor:pointer;
+  }
+  .controls .hint{color:#888;font-size:12px}
+  .controls kbd{background:#222;padding:2px 6px;border-radius:3px;font-size:11px;color:#aaa;border:1px solid #333}
+
+  /* ── THUMBNAIL CANVAS ── */
+  .thumb-wrap{display:flex;justify-content:center;padding:0 24px 60px}
+  .thumb{
+    width:1280px;height:720px;
+    background:#0B1C3D;
+    color:#fff;
+    position:relative;overflow:hidden;
+    box-shadow:0 8px 60px rgba(0,0,0,0.6);
+    flex-shrink:0;
+  }
+  /* Background gradient + particle field */
+  .thumb::before{
+    content:'';position:absolute;inset:0;
+    background:
+      radial-gradient(ellipse at 75% 20%, rgba(123,97,255,0.18) 0%, transparent 55%),
+      radial-gradient(ellipse at 20% 80%, rgba(196,151,58,0.08) 0%, transparent 60%);
+    pointer-events:none;
+  }
+  /* Big watermark behind everything */
+  .thumb-watermark{
+    position:absolute;left:-30px;bottom:-220px;
+    font-family:'Cormorant',serif;font-weight:300;
+    font-size:780px;line-height:0.85;letter-spacing:-0.04em;
+    color:rgba(255,255,255,0.025);
+    pointer-events:none;user-select:none;
+    white-space:nowrap;
+  }
+  /* Side accent stripe */
+  .thumb-stripe{
+    position:absolute;left:64px;top:64px;bottom:64px;
+    width:3px;background:#7B61FF;border-radius:2px;
+  }
+  /* Eyebrow */
+  .thumb-eyebrow{
+    position:absolute;left:96px;top:96px;
+    font-size:20px;letter-spacing:0.36em;text-transform:uppercase;
+    color:#7B61FF;font-weight:400;
+  }
+  /* Lesson number badge */
+  .thumb-num{
+    position:absolute;right:96px;top:96px;
+    font-family:'Cormorant',serif;font-size:96px;font-weight:300;line-height:1;
+    color:rgba(255,255,255,0.18);font-style:italic;
+  }
+  /* Title block */
+  .thumb-title-wrap{
+    position:absolute;left:96px;right:96px;top:50%;transform:translateY(-50%);
+    max-width:1000px;
+  }
+  .thumb-title{
+    font-family:'Cormorant',serif;
+    font-size:140px;line-height:1.02;font-weight:300;
+    color:#fff;margin-bottom:20px;
+    letter-spacing:-0.01em;
+  }
+  .thumb-title.long{font-size:108px}
+  .thumb-title.very-long{font-size:88px}
+  .thumb-sub{
+    font-size:26px;color:rgba(200,216,240,0.75);font-weight:300;
+    letter-spacing:0.01em;
+    max-width:880px;line-height:1.45;
+    border-top:1px solid rgba(255,255,255,0.12);padding-top:18px;
+    margin-top:20px;
+  }
+  /* Footer band */
+  .thumb-footer{
+    position:absolute;left:96px;right:96px;bottom:64px;
+    display:flex;align-items:flex-end;justify-content:space-between;
+    gap:1rem;
+  }
+  .thumb-brand{
+    font-family:'Cormorant',serif;font-weight:400;
+    font-size:36px;letter-spacing:0.32em;text-transform:uppercase;
+    color:#fff;
+  }
+  .thumb-brand-sub{
+    font-size:14px;letter-spacing:0.22em;text-transform:uppercase;
+    color:rgba(200,216,240,0.5);margin-top:8px;
+  }
+  .thumb-meta{
+    display:flex;flex-direction:column;align-items:flex-end;gap:6px;
+    font-size:16px;letter-spacing:0.18em;text-transform:uppercase;
+    color:rgba(200,216,240,0.6);
+  }
+  .thumb-meta-pill{
+    background:rgba(123,97,255,0.18);
+    border:1px solid rgba(123,97,255,0.4);
+    color:#C8B5FF;
+    padding:6px 14px;border-radius:2px;
+    font-size:13px;letter-spacing:0.2em;
+  }
+  /* Print-style export hint */
+  .export-hint{
+    max-width:1280px;margin:14px auto;padding:0 24px;
+    font-size:12px;color:#666;line-height:1.5;
+  }
+  @media print{
+    body{background:#0B1C3D}
+    .controls,.export-hint{display:none}
+    .thumb-wrap{padding:0}
+    .thumb{box-shadow:none}
+  }
+</style>
+</head>
+<body>
+
+<div class="controls">
+  <label>Lesson: <select id="lessonSelect"></select></label>
+  <span class="hint">Take a 1280×720 screenshot of the dark area below — <kbd>Cmd</kbd>+<kbd>Shift</kbd>+<kbd>4</kbd> on Mac (drag the box), or use the Windows Snipping Tool. Or print to PDF and crop.</span>
+</div>
+
+<div class="thumb-wrap">
+  <div class="thumb" id="thumb">
+    <div class="thumb-watermark">F</div>
+    <div class="thumb-stripe"></div>
+    <div class="thumb-eyebrow" id="eyebrow"></div>
+    <div class="thumb-num" id="num"></div>
+    <div class="thumb-title-wrap">
+      <div class="thumb-title" id="title"></div>
+      <div class="thumb-sub" id="sub"></div>
+    </div>
+    <div class="thumb-footer">
+      <div>
+        <div class="thumb-brand">FRQNCY</div>
+        <div class="thumb-brand-sub">frqncy.network</div>
+      </div>
+      <div class="thumb-meta">
+        <div class="thumb-meta-pill" id="pill"></div>
+        <div id="duration"></div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="export-hint">
+  Tip: if you'd rather print all 12 to a single PDF, open the browser print dialog (<kbd>Cmd</kbd>+<kbd>P</kbd>), set page size to landscape A4 or custom 1280×720, and print each one.
+</div>
+
+<script>
+const LESSONS = [
+  { n: '01', title: 'Set Up Brave Browser',                sub: 'A privacy-first browser — the foundation everything else sits on.',          dur: '~ 2 min' },
+  { n: '02', title: 'Open + Tour Your Kraken Account',     sub: 'Sign up, verify, fund, and learn the dashboard in one walkthrough.',           dur: '~ 7 min' },
+  { n: '03', title: 'Install Rabby & Phantom',             sub: 'EVM wallet + BTC/Solana/SUI wallet. This is where self-custody starts.',         dur: '~ 9 min' },
+  { n: '04', title: 'Seed Phrase Security',                sub: 'Your phrase is your money. Paper only. Never typed, photographed, or shared.',   dur: '~ 10 min' },
+  { n: '05', title: 'Send & Receive',                      sub: 'Reading addresses, choosing chains, the small-amount test rule.',                dur: '~ 5 min' },
+  { n: '06', title: 'Deposit Crypto, Withdraw Fiat',       sub: 'How money moves in and out of Kraken. The bridge to and from your bank.',       dur: '~ 10 min' },
+  { n: '07', title: 'Swap Onchain with Defillama',         sub: 'Aggregator of aggregators. Your default for most onchain swaps.',                dur: '~ 5 min' },
+  { n: '08', title: 'Swap Onchain with Titan',             sub: 'Second-opinion router on Solana. Sometimes Titan finds the better path.',         dur: '~ 5 min' },
+  { n: '09', title: 'Common Scams — and How to Avoid Them', sub: 'Phishing, drainers, fake support, address poisoning. Spot the patterns.',  dur: '~ 10 min' },
+  { n: '10', title: 'Find Tokens with Dexscreener',        sub: 'The search engine of the onchain world — every token, every chain.',         dur: '~ 8 min' },
+  { n: '11', title: 'Get to Know Coingecko',               sub: 'The reference layer for prices, categories, and exchange rankings.',             dur: '~ 6 min' },
+  { n: '12', title: 'Set Up TradingView',                  sub: 'The standard charting tool. Account, layouts, indicators worth knowing.',        dur: '~ 13 min' },
+  { n: '13', title: 'Sources on X — The Live List',        sub: 'Builders, researchers, traders worth reading. The list keeps growing.',           dur: '~ 5 min' },
+  { n: '14', title: 'Bridge Between Chains with Bungee',   sub: 'Move assets across chains safely. Bridges carry more risk than swaps.',          dur: '~ 5 min' },
+  { n: '15', title: 'Join the Live Channel',               sub: 'Where new lessons land first and questions get answered.',                       dur: 'ongoing' },
+];
+
+const select = document.getElementById('lessonSelect');
+LESSONS.forEach((l, i) => {
+  const opt = document.createElement('option');
+  opt.value = i;
+  opt.textContent = `${l.n} — ${l.title}`;
+  select.appendChild(opt);
+});
+
+function render(idx) {
+  const l = LESSONS[idx];
+  document.getElementById('eyebrow').textContent = `———  Crypto Fundamentals`;
+  document.getElementById('num').textContent = l.n;
+  const titleEl = document.getElementById('title');
+  titleEl.textContent = l.title;
+  // Auto-shrink long titles so they fit comfortably
+  titleEl.classList.remove('long', 'very-long');
+  if (l.title.length > 28)      titleEl.classList.add('long');
+  if (l.title.length > 38)      titleEl.classList.add('very-long');
+  document.getElementById('sub').textContent = l.sub;
+  document.getElementById('pill').textContent = `Lesson ${parseInt(l.n, 10)} of 16`;
+  document.getElementById('duration').textContent = l.dur;
+  document.title = `Thumbnail · ${l.n} — ${l.title}`;
+  // Sync URL so screenshots are easy to bookmark per-lesson
+  history.replaceState(null, '', `?lesson=${idx + 1}`);
+}
+
+select.addEventListener('change', e => render(parseInt(e.target.value, 10)));
+
+// Initial render — honour ?lesson=N if present
+const params = new URLSearchParams(location.search);
+const startIdx = Math.max(0, Math.min(LESSONS.length - 1, (parseInt(params.get('lesson'), 10) || 1) - 1));
+select.value = startIdx;
+render(startIdx);
+
+// Keyboard: arrow keys to navigate
+document.addEventListener('keydown', e => {
+  if (e.target.tagName === 'SELECT') return;
+  if (e.key === 'ArrowRight' || e.key === 'ArrowDown') {
+    const next = Math.min(LESSONS.length - 1, parseInt(select.value, 10) + 1);
+    select.value = next; render(next);
+  }
+  if (e.key === 'ArrowLeft' || e.key === 'ArrowUp') {
+    const prev = Math.max(0, parseInt(select.value, 10) - 1);
+    select.value = prev; render(prev);
+  }
+});
+</script>
+
+</body>
+</html>

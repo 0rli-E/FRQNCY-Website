@@ -25,30 +25,31 @@ For each lesson:
 
 While `youtube_id` is empty, the lesson renders a "Video coming soon" placeholder card — safe to ship public.
 
-## Lesson → video map
+## Lesson → video map (updated after upload)
+
+15 lessons total. 11 of them have your filmed videos; 2 are supplements (4 + 9); 2 are reading lessons (13 + 15).
 
 | # | Lesson | Source video |
 |---|---|---|
-| 1 | Set Up Brave Browser | TG Step 1 — Brave install (Windows) |
-| 2 | Open Your Kraken Account | TG Step 2 — Kraken account setup (06:37) |
-| 3 | A Quick Tour of Kraken | TG Step 2 — short Kraken intro |
-| 4 | Install Rabby & Phantom Wallets | TG Step 3 — Rabby + Phantom (09:04) |
-| 5 | Seed Phrase Security — Non-Negotiable | **Supplement.** Recommended public sources: Whiteboard Crypto on seed phrases, Andreas Antonopoulos "Bitcoin Security Model". Or film your own. |
-| 6 | Send and Receive Transactions | TG Step 4 — Rabby + Phantom send/receive (04:32) |
-| 7 | Deposit Crypto and Withdraw Fiat on Kraken | TG Step 5 — Kraken deposit/withdraw (10:13) |
-| 8 | Swap Onchain with Defillama | TG Step 6 — Defillama swap video (04:43) |
-| 9 | Swap Onchain with Titan Exchange | TG Step 6 — Titan swap video (05:59) |
-| 10 | Common Scams — and How to Avoid Them | **Supplement.** Recommended public sources: Coin Bureau on crypto scams, Whiteboard Crypto on phishing/drainers. Or film your own. |
-| 11 | Find Tokens with Dexscreener | TG Step 7 — Dexscreener intro (07:37) |
-| 12 | Get to Know Coingecko | TG Step 8 — Coingecko (06:17) |
-| 13 | Set Up TradingView | TG Step 9 — TradingView (13:25) |
-| 14 | Sources on X — The Live List | Reading lesson — already wired to your X list URL. No video needed. |
-| 15 | Bridge Between Chains with Bungee | TG Step 11 — Bungee bridge (05:04) |
-| 16 | Join the Live Channel | Reading lesson — already wired to the Telegram channel. No video needed. |
+| 1 | Set Up Brave Browser | `Brave Download.mov` (1m31s) |
+| 2 | Open + Tour Your Kraken Account | `Kraken Intro.mp4` (6m37s) — covers signup + dashboard tour |
+| 3 | Install Rabby & Phantom Wallets | `Wallet Setup.mp4` (9m04s) |
+| 4 | Seed Phrase Security — Non-Negotiable | **Supplement.** Recommended public sources: Whiteboard Crypto on seed phrases, Andreas Antonopoulos "Bitcoin Security Model". Or film your own. |
+| 5 | Send and Receive Transactions | `Sending and Receiving.mov` (4m32s) |
+| 6 | Deposit Crypto and Withdraw Fiat on Kraken | `Kraken Deposit and Withdrawal.mov` (10m13s) |
+| 7 | Swap Onchain with Defillama | `Swap.defillama.com.mov` (5m59s) |
+| 8 | Swap Onchain with Titan Exchange | `Solana Dex Aggregator.mov` (4m43s) — confirmed Titan via app.titan.exchange URL |
+| 9 | Common Scams — and How to Avoid Them | **Supplement.** Recommended public sources: Coin Bureau on crypto scams, Whiteboard Crypto on phishing/drainers. Or film your own. |
+| 10 | Find Tokens with Dexscreener | `Dexscreener Intro.mov` (7m37s) |
+| 11 | Get to Know Coingecko | `Coingecko Intro.mov` (6m17s) |
+| 12 | Set Up TradingView | `Tradingview Intro.mov` (13m25s) |
+| 13 | Sources on X — The Live List | Reading lesson — already wired to your X list URL. No video needed. |
+| 14 | Bridge Between Chains with Bungee | `Bungee Bridging intro.mov` (5m04s) |
+| 15 | Join the Live Channel | Reading lesson — already wired to the Telegram channel. No video needed. |
 
 ## Two supplement decisions to make
 
-Lessons 5 (Seed Phrase Security) and 10 (Common Scams) are not in your TG sequence. They're the two biggest gaps in any beginner crypto curriculum, so I slotted them in. Three options for each:
+Lessons 4 (Seed Phrase Security) and 9 (Common Scams) are not in your TG sequence. They're the two biggest gaps in any beginner crypto curriculum, so I slotted them in. Three options for each:
 
 - **Film your own** (recommended — keeps voice consistent, plus more authority for the Telegram channel).
 - **Embed a public video** — set `youtube_id` to the video ID of a Whiteboard Crypto / Coin Bureau / Andreas Antonopoulos talk you trust. Crediting in the description is good practice.

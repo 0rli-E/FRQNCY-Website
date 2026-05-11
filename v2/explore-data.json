@@ -1503,6 +1503,13 @@
       "label": "Places",
       "type": "cluster",
       "r": 23
+    },
+    {
+      "id": "p-essencia",
+      "label": "Essência",
+      "type": "topic",
+      "r": 14,
+      "desc": "An off-grid regenerative eco-village and holistic healing center on the wild Atlantic coast of southern Portugal. Essência runs as an intentional community curating retreats, courses, and a Healing Center alongside daily life — a natural laboratory for self-exploration, individual realisation, and collective healing. Sustainable living, ecovillage practice, and community living shown as one continuous discipline rather than three separate trends."
     }
   ],
   "links": [
@@ -3185,6 +3192,18 @@
     [
       "network-state",
       "d-places"
+    ],
+    [
+      "p-essencia",
+      "t-sustliving"
+    ],
+    [
+      "p-essencia",
+      "t-community"
+    ],
+    [
+      "p-essencia",
+      "t-permaculture"
     ]
   ],
   "node_urls": {
@@ -3432,9 +3451,10 @@
     "t-nfts": "nfts/index.html",
     "t-predictions": "predictions/index.html",
     "t-crypto-privacy": "crypto-privacy/index.html",
-    "d-places": "places/index.html"
+    "d-places": "places/index.html",
+    "p-essencia": "https://essencia.life/"
   },
-  "$last_sync": "2026-05-06",
+  "$last_sync": "2026-05-11",
   "$updated": "2026-04-24 — removed 4 ghost nodes (t-commodities, t-filestorage, t-stocks, t-world-models) that existed on the map but not in content.json. If you want these topics back, add them to content.json — the sync will bring them to the map automatically.",
   "$ghost_nodes": [
     {

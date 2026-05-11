@@ -1653,7 +1653,17 @@ function placePage(place) {
 </section>` : '';
 
   const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Places</a><span class="sep">/</span><span>${esc(place.name)}</span>`;
-  const externalLink = place.url ? `<a href="${esc(place.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>` : '';
+  // External links — website + Instagram (when set). Instagram value can be
+  // either a full URL or a bare @handle; normalise to a URL for the anchor.
+  const igRaw = place.instagram || place.instagram_url || '';
+  const igUrl = igRaw
+    ? (/^https?:\/\//i.test(igRaw) ? igRaw : 'https://www.instagram.com/' + igRaw.replace(/^@/, '').trim())
+    : '';
+  const externalLinks = [
+    place.url ? `<a href="${esc(place.url)}" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>` : '',
+    igUrl ? `<a href="${esc(igUrl)}" target="_blank" rel="noopener noreferrer" class="rlink">Instagram ↗</a>` : '',
+  ].filter(Boolean).join(' &nbsp;·&nbsp; ');
+  const externalLink = externalLinks ? `<div style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center">${externalLinks}</div>` : '';
   const locationHtml = place.location ? `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">${esc(place.location)}</div>` : '';
 
   const ld = {
