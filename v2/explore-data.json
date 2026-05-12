@@ -1559,6 +1559,84 @@
       "label": "Network Schools",
       "type": "topic",
       "r": 12
+    },
+    {
+      "id": "d-curation",
+      "label": "Curation",
+      "type": "cluster",
+      "r": 23
+    },
+    {
+      "id": "d-commerce",
+      "label": "Commerce",
+      "type": "cluster",
+      "r": 23
+    },
+    {
+      "id": "t-curation-craft",
+      "label": "Curation Craft",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-aligned-goods-topic",
+      "label": "Aligned Goods",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-discernment",
+      "label": "Discernment",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-editorial-line",
+      "label": "Editorial Line",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-criticism",
+      "label": "Criticism",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-storefronts",
+      "label": "Storefronts",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-marketplaces",
+      "label": "Marketplaces",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-affiliates",
+      "label": "Affiliates",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-membership",
+      "label": "Membership",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-referrals",
+      "label": "Referrals",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-donations",
+      "label": "Donations & Tipping",
+      "type": "topic",
+      "r": 12
     }
   ],
   "links": [
@@ -3289,6 +3367,58 @@
     [
       "d-society",
       "t-netschools"
+    ],
+    [
+      "curate",
+      "d-curation"
+    ],
+    [
+      "sell",
+      "d-commerce"
+    ],
+    [
+      "d-curation",
+      "t-curation-craft"
+    ],
+    [
+      "d-curation",
+      "t-aligned-goods-topic"
+    ],
+    [
+      "d-curation",
+      "t-discernment"
+    ],
+    [
+      "d-curation",
+      "t-editorial-line"
+    ],
+    [
+      "d-curation",
+      "t-criticism"
+    ],
+    [
+      "d-commerce",
+      "t-storefronts"
+    ],
+    [
+      "d-commerce",
+      "t-marketplaces"
+    ],
+    [
+      "d-commerce",
+      "t-affiliates"
+    ],
+    [
+      "d-commerce",
+      "t-membership"
+    ],
+    [
+      "d-commerce",
+      "t-referrals"
+    ],
+    [
+      "d-commerce",
+      "t-donations"
     ]
   ],
   "node_urls": {
@@ -3545,7 +3675,20 @@
     "t-charter-cities": "charter-cities/index.html",
     "t-homeschooling": "homeschooling/index.html",
     "t-ai-agent-law": "ai-agent-law/index.html",
-    "t-netschools": "network-schools/index.html"
+    "t-netschools": "network-schools/index.html",
+    "d-curation": "curation/index.html",
+    "d-commerce": "commerce/index.html",
+    "t-curation-craft": "curation-craft/index.html",
+    "t-aligned-goods-topic": "aligned-goods-topic/index.html",
+    "t-discernment": "discernment/index.html",
+    "t-editorial-line": "editorial-line/index.html",
+    "t-criticism": "criticism/index.html",
+    "t-storefronts": "storefronts/index.html",
+    "t-marketplaces": "marketplaces/index.html",
+    "t-affiliates": "affiliates/index.html",
+    "t-membership": "membership/index.html",
+    "t-referrals": "referrals/index.html",
+    "t-donations": "donations/index.html"
   },
   "$last_sync": "2026-05-12",
   "$updated": "2026-04-24 — removed 4 ghost nodes (t-commodities, t-filestorage, t-stocks, t-world-models) that existed on the map but not in content.json. If you want these topics back, add them to content.json — the sync will bring them to the map automatically.",
