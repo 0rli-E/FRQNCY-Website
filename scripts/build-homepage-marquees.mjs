@@ -89,7 +89,7 @@ function pillarLabelFor(t) {
 
 // --- Build pools ------------------------------------------------------------
 
-const bookPool = shuffle(books.filter(b => b.image && b.picked_in?.length), 11).slice(0, 24)
+const bookPool = shuffle(books.filter(b => b.image && b.picked_in?.length), 11).slice(0, 6)
   .map(b => {
     let author = '';
     if (b.author_is_person_ref && peopleById.has(b.author)) author = peopleById.get(b.author).name;
@@ -114,7 +114,7 @@ for (const [topicId, vids] of Object.entries(videosObj)) {
     allVideos.push({ topic: t, v });
   }
 }
-const videoPool = shuffle(allVideos, 23).slice(0, 22).map(({ topic, v }) =>
+const videoPool = shuffle(allVideos, 23).slice(0, 6).map(({ topic, v }) =>
   card({
     kind: 'video',
     eyebrow: v.channel || topic.label,
@@ -124,7 +124,7 @@ const videoPool = shuffle(allVideos, 23).slice(0, 22).map(({ topic, v }) =>
   })
 );
 
-const peoplePool = shuffle(people.filter(p => p.image), 31).slice(0, 14).map(p =>
+const peoplePool = shuffle(people.filter(p => p.image), 31).slice(0, 5).map(p =>
   card({
     kind: 'person',
     eyebrow: 'Person',
@@ -136,10 +136,7 @@ const peoplePool = shuffle(people.filter(p => p.image), 31).slice(0, 14).map(p =
 
 // Topics — text-only cards
 const handpickedTopicIds = [
-  't-conscap','t-meditation','t-source','t-networkstates','t-charter-cities',
-  't-abilities','t-bitcoin','t-soundheal','t-permaculture','t-remote-view',
-  't-etiquette','t-homeschooling','t-design','t-leadership','t-tax-sov',
-  't-netschools','t-ai-agent-law','t-eft',
+  't-source','t-networkstates','t-charter-cities','t-abilities','t-meditation',
 ];
 const topicPool = handpickedTopicIds.map(id => topicById.get(id)).filter(Boolean).map(t =>
   card({
@@ -154,7 +151,7 @@ const topicPool = handpickedTopicIds.map(id => topicById.get(id)).filter(Boolean
 // Films — text-only cards (no images in bed)
 const filmKeywords = ['film','movie','documentary','feature','docuseries'];
 const films = media.filter(m => filmKeywords.some(k => (m.bio || '').toLowerCase().includes(k)));
-const filmPool = shuffle(films, 41).slice(0, 8).map(m => {
+const filmPool = shuffle(films, 41).slice(0, 4).map(m => {
   let creator = '';
   if (m.creator_is_person_ref && peopleById.has(m.creator)) creator = peopleById.get(m.creator).name;
   else if (typeof m.creator === 'string') creator = m.creator;
@@ -168,7 +165,7 @@ const filmPool = shuffle(films, 41).slice(0, 8).map(m => {
 });
 
 // Places — text-only cards
-const placePool = shuffle(places, 53).slice(0, 6).map(pl =>
+const placePool = shuffle(places, 53).slice(0, 4).map(pl =>
   card({
     kind: 'place',
     eyebrow: pl.location || 'Place',
@@ -204,13 +201,13 @@ for (let i = 1; i < stream.length; i += 8) {
 
 // Cap at ~72 — long enough that the loop never feels short, short enough that
 // the doubled track stays under ~144 cards in the DOM.
-const finalCards = stream.slice(0, 72);
+const finalCards = stream.slice(0, 24);
 // Duplicate for seamless -50% animation.
 const track = finalCards.concat(finalCards).join('');
 
 const generatedBlock =
   `<div class="mq-shelf">` +
-    `<div class="mq-track" style="--mq-speed:140s">${track}</div>` +
+    `<div class="mq-track" style="--mq-speed:260s">${track}</div>` +
   `</div>`;
 
 // --- Inject ----------------------------------------------------------------
