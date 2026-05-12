@@ -1,0 +1,106 @@
+{
+  "$schema_version": 1,
+  "$purpose": "First-class research / studies / discoveries bed for FRQNCY. Each entry represents a peer-reviewed paper, working paper, replication, or notable scientific result that bears directly on a FRQNCY topic. Distinct from media (videos) and books — the bed for primary research.",
+  "$generated": "2026-05-12",
+  "$updated": "2026-05-12",
+  "$schema_notes": "Each entry has: id (s-<slug>), title, authors (array of names — person_refs only when the author has a p- entry on the network), year, journal_or_venue, url (DOI preferred), bio (FRQNCY-voice summary of what was found and why it matters), appears_in (array of topic ids), picked_in (which topics flag this as a FRQNCY pick), tier ('replicated' | 'single-study' | 'theoretical' | 'meta-analysis').",
+  "$conventions": "Bio answers two questions: what did they find, and what does it mean for the topic. Skip methods detail unless the method is the point. Keep under 80 words.",
+  "studies": [
+    {
+      "id": "s-mctaggart-intention-experiments",
+      "title": "The Intention Experiment Series",
+      "authors": ["Lynne McTaggart", "Gary Schwartz", "et al."],
+      "year": 2007,
+      "journal_or_venue": "Multiple replications, summarised in The Intention Experiment (2007) and follow-ups",
+      "url": "https://lynnemctaggart.com/the-intention-experiments/",
+      "bio": "Large-scale distributed studies measuring whether focused group intention can produce measurable effects on plants, water structure, and human physiology. Effects observed across multiple iterations, generally small but statistically significant. Whether the mechanism is what the participants believe is open — the regularity of the effect is harder to dismiss.",
+      "appears_in": ["t-mentalhlth","t-source","t-meditation"],
+      "picked_in": [],
+      "tier": "single-study"
+    },
+    {
+      "id": "s-radin-presentiment",
+      "title": "Predictive Physiological Anticipation Preceding Seemingly Unpredictable Stimuli: A Meta-Analysis",
+      "authors": ["Julia Mossbridge", "Patrizio Tressoldi", "Jessica Utts"],
+      "year": 2012,
+      "journal_or_venue": "Frontiers in Psychology",
+      "url": "https://doi.org/10.3389/fpsyg.2012.00390",
+      "bio": "Meta-analysis of 26 experiments measuring whether human physiology (skin conductance, heart rate, pupil dilation) responds to emotionally charged stimuli before they're presented. Combined effect size small but consistent across labs. The strongest case in the open literature for some form of measurable presentiment.",
+      "appears_in": ["t-mentalhlth","t-abilities","t-remote-view"],
+      "picked_in": ["t-abilities"],
+      "tier": "meta-analysis"
+    },
+    {
+      "id": "s-davidson-meditation-brain",
+      "title": "Long-term meditators self-induce high-amplitude gamma synchrony during mental practice",
+      "authors": ["Antoine Lutz", "Richard J. Davidson", "et al."],
+      "year": 2004,
+      "journal_or_venue": "PNAS",
+      "url": "https://doi.org/10.1073/pnas.0407401101",
+      "bio": "EEG study of long-term Tibetan Buddhist practitioners showing gamma-band activity at amplitudes not previously documented in healthy adults during compassion meditation. One of the foundational results connecting contemplative practice to measurable neural signatures.",
+      "appears_in": ["t-meditation","t-neuroscience","t-mentalhlth"],
+      "picked_in": ["t-meditation"],
+      "tier": "replicated"
+    },
+    {
+      "id": "s-emoto-water-crystallography",
+      "title": "Studies on the structure of water crystals under directed intention",
+      "authors": ["Masaru Emoto"],
+      "year": 2003,
+      "journal_or_venue": "Self-published / Office Masaru Emoto",
+      "url": "https://emotopeaceproject.net/",
+      "bio": "Photographic studies claiming that water crystals form in patterns responsive to spoken or written intention. Methodology has not been independently replicated under controlled conditions and the results are widely contested. Included here for cultural significance — Emoto's claims shaped a generation of consciousness discourse — not as scientific consensus.",
+      "appears_in": ["t-water","t-source"],
+      "picked_in": [],
+      "tier": "single-study"
+    },
+    {
+      "id": "s-callahan-tft-efficacy",
+      "title": "Thought Field Therapy: Soldiers and Refugees Following the Rwanda Genocide",
+      "authors": ["Caroline Sakai", "Suzanne Connolly", "Paul Oas"],
+      "year": 2010,
+      "journal_or_venue": "Traumatology",
+      "url": "https://doi.org/10.1177/1534765609347550",
+      "bio": "Field study of TFT applied to Rwandan genocide survivors. Significant reductions in PTSD symptoms reported and sustained at follow-up. Methodological limits acknowledged in the paper. The most-cited applied study from the Callahan lineage of tapping protocols.",
+      "appears_in": ["t-eft","t-trauma","t-mentalhlth"],
+      "picked_in": [],
+      "tier": "single-study"
+    },
+    {
+      "id": "s-hrv-coherence-mccraty",
+      "title": "Heart-Brain Coherence and Its Effects on Health",
+      "authors": ["Rollin McCraty", "et al."],
+      "year": 2009,
+      "journal_or_venue": "HeartMath Institute / multiple peer-reviewed",
+      "url": "https://www.heartmath.org/research/research-library/",
+      "bio": "Body of work on heart-rate variability coherence as a measurable correlate of emotional state. Cleanest result: induced coherence states correlate with improved cognitive performance and immune markers. The bridge between the biofeedback world and the meditation literature.",
+      "appears_in": ["t-mentalhlth","t-meditation","t-bio"],
+      "picked_in": [],
+      "tier": "replicated"
+    },
+    {
+      "id": "s-targ-puthoff-remote-viewing",
+      "title": "Information Transmission Under Conditions of Sensory Shielding",
+      "authors": ["Russell Targ", "Harold Puthoff"],
+      "year": 1974,
+      "journal_or_venue": "Nature",
+      "url": "https://www.nature.com/articles/251602a0",
+      "bio": "The original Stanford Research Institute remote-viewing paper. Reported above-chance accuracy in describing remote target locations across multiple trials. Foundational reference for the CIA's Stargate Project and subsequent research — celebrated and contested in equal measure.",
+      "appears_in": ["t-remote-view","t-abilities","t-mentalhlth"],
+      "picked_in": ["t-remote-view"],
+      "tier": "single-study"
+    },
+    {
+      "id": "s-watanabe-monkey-island",
+      "title": "Pre-cultural behaviour of Japanese macaques",
+      "authors": ["Masao Kawai", "et al."],
+      "year": 1965,
+      "journal_or_venue": "Primates",
+      "url": "https://doi.org/10.1007/BF01794457",
+      "bio": "The actual paper underneath the '100th monkey' framing. Documented the spread of sweet-potato-washing behaviour among macaques on Koshima Island. The 'critical mass jump' folklore is layered on by Lyall Watson decades later — the original data shows behavioural diffusion, not telepathy. Included so the FRQNCY framing carries its provenance honestly.",
+      "appears_in": ["t-source","t-anthropology"],
+      "picked_in": [],
+      "tier": "single-study"
+    }
+  ]
+}
