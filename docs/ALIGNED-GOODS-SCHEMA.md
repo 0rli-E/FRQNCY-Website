@@ -44,7 +44,7 @@ The new layer extends — does not replace — that file. Same record per resour
 
 Three small notes on the choices:
 
-- **`category` is parallel to `domain`, not a replacement.** Domain is the conceptual web (Money, Sciences, Consciousness). Category is the practical "department store" view. A water filter belongs to the topic *Water* (domain Sciences) **and** the category *nourishment*. Two views over the same record.
+- **`category` is parallel to `domain`, not a replacement.** Domain is the conceptual web (Money, Sciences, Metaphysics). Category is the practical "department store" view. A water filter belongs to the topic *Water* (domain Sciences) **and** the category *nourishment*. Two views over the same record.
 - **`tier` separates curation strength from existence.** `referenced` = mentioned because it's relevant to a topic. `aligned` = we'd recommend it. `pick` = FRQNCY pick, we use it ourselves.
 - **`vendor` is a list, not a single URL.** Many goods have multiple legitimate places to buy (brand site, EU reseller, crypto-accepting store). Each gets its own row with its own affiliate state and region.
 
