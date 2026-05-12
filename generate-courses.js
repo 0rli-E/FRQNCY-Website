@@ -83,11 +83,25 @@ function lessonContent(l) {
         </div>
       </div>`;
     }
-    // Use data-src for lazy loading — src set by JS when lesson becomes active
+    // Facade: show the YouTube thumbnail + play button. JS swaps to a real iframe on click.
+    // This loads instantly, looks identical to the watch page, and only pulls the video player
+    // once the viewer actually clicks play.
     if (provider.embeddable && embedSrc) {
-      return `<div class="video-wrap">
-        <iframe data-src="${esc(embedSrc)}"
-          src="" allow="autoplay; encrypted-media; picture-in-picture" allowfullscreen title="${esc(l.title)}"></iframe>
+      const thumbUrl = (provider.thumbnail_url || '').replace('{id}', videoId);
+      const autoplayEmbed = (provider.embed_autoplay || provider.embed_url || '').replace('{id}', videoId);
+      return `<div class="video-wrap video-facade"
+        style="background-image:url('${esc(thumbUrl)}')"
+        data-embed="${esc(autoplayEmbed)}"
+        data-title="${esc(l.title)}"
+        onclick="playVideo(this)"
+        role="button" tabindex="0"
+        aria-label="Play video: ${esc(l.title)}">
+        <button class="video-play-btn" aria-label="Play" type="button" onclick="event.stopPropagation();playVideo(this.parentElement)">
+          <svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true">
+            <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/>
+            <path d="M45 24 27 14v20" fill="#fff"/>
+          </svg>
+        </button>
       </div>`;
     }
     // Non-embeddable provider (e.g. Gaia) — render as a link card
@@ -360,13 +374,28 @@ nav.snav{
   position:relative;
 }
 .video-wrap iframe{width:100%;height:100%;border:none;display:block}
-/* Loading state */
-.video-wrap::before{
-  content:'';position:absolute;inset:0;
-  background:linear-gradient(135deg,#0a1428,#0d1f44);
-  transition:opacity .3s;pointer-events:none;
+/* Facade — shows YouTube thumbnail + play button until clicked */
+.video-facade{
+  cursor:pointer;
+  background-size:cover;background-position:center;background-repeat:no-repeat;
+  background-color:#000;
 }
-.video-wrap.loaded::before{opacity:0}
+.video-facade::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.18) 65%,rgba(0,0,0,0.55) 100%);
+  pointer-events:none;transition:opacity .25s;
+}
+.video-facade:hover::after{opacity:0.6}
+.video-play-btn{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:none;border:none;padding:0;cursor:pointer;
+  filter:drop-shadow(0 4px 14px rgba(0,0,0,0.5));
+  transition:transform .2s ease, filter .2s ease;
+  z-index:2;
+}
+.video-facade:hover .video-play-btn,
+.video-facade:focus-visible .video-play-btn{transform:translate(-50%,-50%) scale(1.08);filter:drop-shadow(0 6px 18px rgba(0,0,0,0.55)) brightness(1.05)}
+.video-facade:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
 /* External provider link (non-embeddable, e.g. Gaia) */
 .video-wrap-ext{aspect-ratio:unset;height:auto;min-height:120px;display:flex;align-items:center;justify-content:center;padding:2rem}
 .video-wrap-ext::before{display:none}
@@ -722,32 +751,72 @@ function updateSidebar() {
   if (mlt && LESSONS[current]) mlt.textContent = (current + 1) + '. ' + LESSONS[current].title;
 }
 
+/* ── Facade ↔ iframe swap (per-video) ── */
+function playVideo(wrap) {
+  if (!wrap || !wrap.classList.contains('video-facade')) return;
+  const embed = wrap.dataset.embed;
+  const title = wrap.dataset.title || 'Video';
+  if (!embed) return;
+  // Remember the facade state so we can restore on lesson switch
+  wrap.dataset.facadeBg = wrap.style.backgroundImage;
+  wrap.innerHTML = '';
+  const iframe = document.createElement('iframe');
+  iframe.src = embed;
+  iframe.title = title;
+  iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+  iframe.allowFullscreen = true;
+  iframe.setAttribute('data-played', '1');
+  wrap.appendChild(iframe);
+  wrap.classList.remove('video-facade');
+  wrap.classList.add('loaded');
+  wrap.removeAttribute('onclick');
+  wrap.removeAttribute('role');
+  wrap.removeAttribute('tabindex');
+  wrap.style.backgroundImage = '';
+}
+function restoreFacade(wrap) {
+  if (!wrap || !wrap.dataset || !wrap.dataset.embed) return;
+  const title = wrap.dataset.title || 'Video';
+  const bg    = wrap.dataset.facadeBg || '';
+  wrap.innerHTML = '<button class="video-play-btn" aria-label="Play" type="button" onclick="event.stopPropagation();playVideo(this.parentElement)">'
+    + '<svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true">'
+    + '<path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/>'
+    + '<path d="M45 24 27 14v20" fill="#fff"/>'
+    + '</svg></button>';
+  wrap.classList.add('video-facade');
+  wrap.classList.remove('loaded');
+  wrap.style.backgroundImage = bg;
+  wrap.setAttribute('onclick', 'playVideo(this)');
+  wrap.setAttribute('role', 'button');
+  wrap.setAttribute('tabindex', '0');
+  wrap.setAttribute('aria-label', 'Play video: ' + title);
+}
+// Keyboard support — Enter/Space on a focused facade plays the video
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('video-facade')) {
+    e.preventDefault();
+    playVideo(e.target);
+  }
+});
+
 /* ── Lesson switching ── */
 function showLesson(idx) {
   if (idx < 0 || idx >= TOTAL) return;
 
-  // Pause the leaving lesson's iframe (if any)
+  // Stop the leaving lesson's video (if any) — restore facade so audio stops
   const leavingPanel = document.getElementById('panel-' + current);
   if (leavingPanel) {
-    const iframe = leavingPanel.querySelector('iframe');
-    if (iframe) iframe.removeAttribute('src');
+    const playingIframe = leavingPanel.querySelector('.video-wrap > iframe[data-played]');
+    if (playingIframe) restoreFacade(playingIframe.parentElement);
   }
 
   // Activate new panel
   document.querySelectorAll('.lesson-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
   current = idx;
 
-  // Load this lesson's iframe (lazy)
+  // Lesson activation — facade is already rendered, video loads on click
   const panel = document.getElementById('panel-' + idx);
   if (panel) {
-    const iframe = panel.querySelector('iframe[data-src]');
-    // Use getAttribute('src') — iframe.src property resolves empty/missing src to the page URL,
-    // so a truthy check on iframe.src would always pass and skip the assignment.
-    if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
-      iframe.setAttribute('src', iframe.dataset.src);
-      const wrap = iframe.closest('.video-wrap');
-      if (wrap) iframe.addEventListener('load', () => wrap.classList.add('loaded'), { once: true });
-    }
     // Load reflection text
     const lesson = LESSONS[idx];
     if (lesson && lesson.type === 'reflection' && lesson.id) {
