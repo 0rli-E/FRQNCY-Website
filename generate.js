@@ -888,8 +888,8 @@ function head(title, accent, desc = '', canonical = '', jsonLd = null, ogImageSl
 <meta name="twitter:title" content="${safeTitle} — FRQNCY Network">
 <meta name="twitter:description" content="${metaDesc}">
 <meta name="twitter:image" content="${ogImage}">
-<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="manifest" href="../../manifest.json">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="manifest" href="/manifest.json">
 <link rel="canonical" href="${url}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -899,9 +899,9 @@ function head(title, accent, desc = '', canonical = '', jsonLd = null, ogImageSl
 ${CSS}
 </style>
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
-<script src="../../mobile-nav.js" defer></script>
-<script src="../../chat-widget.js" defer></script>
-<link rel="stylesheet" href="../../nav-dropdown.css">
+<script src="/mobile-nav.js" defer></script>
+<script src="/chat-widget.js" defer></script>
+<link rel="stylesheet" href="/nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 ${ldTag}
 </head>

@@ -697,7 +697,7 @@ nav.snav{
   <div class="snav-left">
     <a href="../../../" class="snav-logo">FRQNCY</a>
     <div class="breadcrumb">
-      <a href="../../">Courses</a>
+      <a href="../">Courses</a>
       <span class="sep">›</span>
       <span>${esc(c.title)}</span>
     </div>
@@ -763,7 +763,7 @@ nav.snav{
     <div class="completion-desc">You've completed all ${total} lessons. The ideas are yours — carry them into practice.</div>
     <div class="completion-btns">
       <button class="cbtn cbtn-primary" onclick="closeCompletion()">Keep Exploring</button>
-      <a href="../../" class="cbtn cbtn-sec">All Courses</a>
+      <a href="../" class="cbtn cbtn-sec">All Courses</a>
     </div>
   </div>
 </div>
@@ -811,10 +811,13 @@ function clearReflect(id) {
 function updateProgress() {
   const done = completed.size;
   const pct  = TOTAL ? Math.round((done / TOTAL) * 100) : 0;
-  document.getElementById('nav-progress-text').textContent = done + '/' + TOTAL;
-  document.getElementById('nav-pfill').style.width = pct + '%';
-  document.getElementById('sp-text').textContent = done + ' / ' + TOTAL;
-  document.getElementById('sp-fill').style.width = pct + '%';
+  // Null-safe — the custom course-page top nav may be replaced by the global FRQNCY nav
+  // on some build paths, so guard every lookup.
+  const set = (id, prop, val) => { const el = document.getElementById(id); if (el) { if (prop === 'text') el.textContent = val; else el.style[prop] = val; } };
+  set('nav-progress-text', 'text', done + '/' + TOTAL);
+  set('nav-pfill',         'width', pct + '%');
+  set('sp-text',           'text', done + ' / ' + TOTAL);
+  set('sp-fill',           'width', pct + '%');
 }
 
 /* ── Sidebar state ── */
