@@ -328,6 +328,30 @@
       margin-top: 2px;
     }
 
+    /* Hero tagline — one-sentence explainer added 2026-05-11 (task #40).
+       Three short clauses that ladder under the wordmark in italic Cormorant.
+       Fades in just after the wordmark so the hero still breathes. */
+    .intro-tagline {
+      position: relative;
+      z-index: 4;
+      max-width: 640px;
+      margin: 28px auto 0;
+      padding: 0 24px;
+      font-family: var(--font-display);
+      font-style: italic;
+      font-weight: 300;
+      font-size: clamp(14px, 1.6vw, 18px);
+      line-height: 1.7;
+      letter-spacing: 0.04em;
+      color: var(--light-mid);
+      text-align: center;
+      opacity: 0;
+      animation: wordmarkReveal 1.2s ease-out 3.4s forwards;
+    }
+    .intro-tagline span {
+      display: block;
+    }
+
     .scroll-hint {
       position: absolute;
       bottom: 44px;
