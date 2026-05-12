@@ -1,21 +1,18 @@
 #!/usr/bin/env node
 // scripts/build-homepage-marquees.mjs
 //
-// Generates a SINGLE mixed marquee row for the homepage — books, videos,
-// people, films, places, topics all in one rotating shelf. Twitch-style
-// compact image-forward cards with text below.
+// Single mixed marquee. ALL cards same size, ALL cards have real pictures.
 //
-// Output goes between the ▼▼ FRQNCY_MARQUEE_SHELVES ▲▲ markers in index.html.
+// Image resolution per kind:
+//   book   → b.image (openlibrary covers)
+//   video  → https://img.youtube.com/vi/<id>/hqdefault.jpg
+//   person → p.image
+//   place  → pl.image (added 2026-05-12)
+//   film   → if media URL is YouTube → derive thumbnail; else creator's photo
+//   topic  → walk picked_in/appears_in, return the first entity's image
 //
-// Image strategy:
-//   - books   → b.image (openlibrary covers)
-//   - videos  → https://img.youtube.com/vi/<id>/hqdefault.jpg
-//   - people  → p.image where present
-//   - films/places/topics → text-only fallback card with a gradient backdrop
-//
-// Usage:
-//   node scripts/build-homepage-marquees.mjs
-//   node scripts/build-homepage-marquees.mjs --check
+// Any item that can't resolve a real image is filtered out (no gradient
+// fallbacks). User explicitly requested "pictures for all of them".
 
 import fs from 'node:fs';
 import path from 'node:path';
@@ -37,11 +34,8 @@ function shuffle(arr, seed = 42) {
 
 function esc(s) {
   return String(s ?? '')
-    .replace(/&/g, '&amp;')
-    .replace(/</g, '&lt;')
-    .replace(/>/g, '&gt;')
-    .replace(/"/g, '&quot;')
-    .replace(/'/g, '&#39;');
+    .replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;')
+    .replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
 function trimTo(s, max) {
@@ -51,17 +45,13 @@ function trimTo(s, max) {
 }
 
 function card({ kind, eyebrow, title, image, href }) {
-  const eyebrowHtml = eyebrow
-    ? `<span class="mq-eyebrow">${esc(eyebrow)}</span>`
-    : '';
-  const titleHtml = `<span class="mq-title">${esc(trimTo(title, 70))}</span>`;
-  const imgHtml = image
-    ? `<span class="mq-img"><img src="${esc(image)}" alt="" loading="lazy" decoding="async"></span>`
-    : `<span class="mq-img mq-img-fallback" data-kind="${esc(kind)}"><span class="mq-img-label">${esc(eyebrow || kind || '')}</span></span>`;
   return (
     `<a class="mq-card mq-kind-${esc(kind)}" href="${esc(href)}">` +
-      imgHtml +
-      `<span class="mq-meta">${eyebrowHtml}${titleHtml}</span>` +
+      `<span class="mq-img"><img src="${esc(image)}" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span>` +
+      `<span class="mq-meta">` +
+        (eyebrow ? `<span class="mq-eyebrow">${esc(eyebrow)}</span>` : '') +
+        `<span class="mq-title">${esc(trimTo(title, 64))}</span>` +
+      `</span>` +
     `</a>`
   );
 }
@@ -78,18 +68,85 @@ const peopleById = new Map(people.map(p => [p.id, p]));
 
 const topics = content.topics;
 const topicById = new Map(topics.map(t => [t.id, t]));
-const domainById = new Map(content.domains.map(d => [d.id, d]));
-const pillarById = new Map(content.pillars.map(p => [p.id, p]));
-function pillarLabelFor(t) {
-  const d = domainById.get(t.domain);
-  if (!d) return '';
-  const p = pillarById.get(d.pillar);
-  return p?.label || '';
+const placeById = new Map(places.map(pl => [pl.id, pl]));
+const bookById = new Map(books.map(b => [b.id, b]));
+const mediaById = new Map(media.map(m => [m.id, m]));
+
+// --- Image helpers ----------------------------------------------------------
+
+function ytIdFromUrl(url) {
+  if (!url) return null;
+  const m = url.match(/(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([A-Za-z0-9_-]{11})/);
+  return m ? m[1] : null;
+}
+
+function ytThumb(id) {
+  return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
+}
+
+function imageForEntity(entityId) {
+  if (typeof entityId !== 'string') return null;
+  if (entityId.startsWith('b-')) {
+    const b = bookById.get(entityId);
+    return b?.image || null;
+  }
+  if (entityId.startsWith('p-')) {
+    const p = peopleById.get(entityId);
+    return p?.image || null;
+  }
+  if (entityId.startsWith('pl-')) {
+    const pl = placeById.get(entityId);
+    return pl?.image || null;
+  }
+  if (entityId.startsWith('m-')) {
+    const m = mediaById.get(entityId);
+    if (!m) return null;
+    if (m.image) return m.image;
+    const yt = ytIdFromUrl(m.url);
+    if (yt) return ytThumb(yt);
+    // Use creator photo as last resort
+    if (m.creator_is_person_ref && peopleById.has(m.creator)) {
+      const c = peopleById.get(m.creator);
+      return c?.image || null;
+    }
+    return null;
+  }
+  return null;
+}
+
+// For topics: walk picked_in (preferred), then appears_in across all beds
+// and return the first entity that resolves to an image URL.
+function imageForTopic(topicId) {
+  const candidatePools = [
+    books,
+    people.filter(p => p.image),
+    places,
+    media,
+  ];
+  // Pass 1: picked_in (FRQNCY's top picks)
+  for (const pool of candidatePools) {
+    for (const e of pool) {
+      if (Array.isArray(e.picked_in) && e.picked_in.includes(topicId)) {
+        const img = imageForEntity(e.id);
+        if (img) return img;
+      }
+    }
+  }
+  // Pass 2: appears_in (broader pool)
+  for (const pool of candidatePools) {
+    for (const e of pool) {
+      if (Array.isArray(e.appears_in) && e.appears_in.includes(topicId)) {
+        const img = imageForEntity(e.id);
+        if (img) return img;
+      }
+    }
+  }
+  return null;
 }
 
 // --- Build pools ------------------------------------------------------------
 
-const bookPool = shuffle(books.filter(b => b.image && b.picked_in?.length), 11).slice(0, 3)
+const bookPool = shuffle(books.filter(b => b.image && b.picked_in?.length), 11).slice(0, 4)
   .map(b => {
     let author = '';
     if (b.author_is_person_ref && peopleById.has(b.author)) author = peopleById.get(b.author).name;
@@ -103,7 +160,7 @@ const bookPool = shuffle(books.filter(b => b.image && b.picked_in?.length), 11).
     });
   });
 
-// Videos: keyed by topic.
+// Videos
 const allVideos = [];
 for (const [topicId, vids] of Object.entries(videosObj)) {
   if (!Array.isArray(vids)) continue;
@@ -119,12 +176,12 @@ const videoPool = shuffle(allVideos, 23).slice(0, 3).map(({ topic, v }) =>
     kind: 'video',
     eyebrow: v.channel || topic.label,
     title: v.title,
-    image: `https://img.youtube.com/vi/${v.youtube_id}/hqdefault.jpg`,
+    image: ytThumb(v.youtube_id),
     href: `/v2/watch/index.html#${encodeURIComponent(v.youtube_id)}`,
   })
 );
 
-const peoplePool = shuffle(people.filter(p => p.image), 31).slice(0, 2).map(p =>
+const peoplePool = shuffle(people.filter(p => p.image), 31).slice(0, 3).map(p =>
   card({
     kind: 'person',
     eyebrow: 'Person',
@@ -134,75 +191,69 @@ const peoplePool = shuffle(people.filter(p => p.image), 31).slice(0, 2).map(p =>
   })
 );
 
-// Topics — text-only cards
+// Topics — only include if we can find a representative image
 const handpickedTopicIds = [
-  't-source','t-networkstates','t-abilities',
+  't-source','t-meditation','t-networkstates','t-charter-cities','t-abilities','t-conscap',
 ];
-const topicPool = handpickedTopicIds.map(id => topicById.get(id)).filter(Boolean).map(t =>
-  card({
+const topicPool = [];
+for (const id of handpickedTopicIds) {
+  const t = topicById.get(id);
+  if (!t) continue;
+  const img = imageForTopic(id);
+  if (!img) continue;  // Skip if no representative image
+  topicPool.push(card({
     kind: 'topic',
-    eyebrow: pillarLabelFor(t) || 'Topic',
+    eyebrow: 'Topic',
     title: t.label,
-    image: null,
+    image: img,
     href: `/v2/${t.slug || t.id.replace(/^t-/, '')}/`,
-  })
-);
+  }));
+  if (topicPool.length >= 3) break;
+}
 
-// Films — text-only cards (no images in bed)
+// Films — only include if we can resolve an image
 const filmKeywords = ['film','movie','documentary','feature','docuseries'];
 const films = media.filter(m => filmKeywords.some(k => (m.bio || '').toLowerCase().includes(k)));
-const filmPool = shuffle(films, 41).slice(0, 2).map(m => {
+const filmCards = [];
+for (const m of shuffle(films, 41)) {
+  const img = imageForEntity(m.id);
+  if (!img) continue;
   let creator = '';
   if (m.creator_is_person_ref && peopleById.has(m.creator)) creator = peopleById.get(m.creator).name;
   else if (typeof m.creator === 'string') creator = m.creator;
-  return card({
+  filmCards.push(card({
     kind: 'film',
     eyebrow: creator || 'Film',
     title: m.name,
-    image: null,
+    image: img,
     href: `/media/${m.id.replace(/^m-/, '')}/`,
-  });
-});
+  }));
+  if (filmCards.length >= 2) break;
+}
 
-// Places — text-only cards
-const placePool = shuffle(places, 53).slice(0, 2).map(pl =>
+// Places
+const placePool = shuffle(places.filter(pl => pl.image), 53).slice(0, 3).map(pl =>
   card({
     kind: 'place',
     eyebrow: pl.location || 'Place',
     title: pl.name,
-    image: null,
+    image: pl.image,
     href: `/places/${pl.id.replace(/^pl-/, '')}/`,
   })
 );
 
 // --- Interleave -------------------------------------------------------------
-// Round-robin merge with image-forward weighting (books + videos first), then
-// people, then text-only types. Shuffle the assembled stream lightly so kinds
-// don't clump.
 function interleave(...streams) {
   const out = [];
-  const lens = streams.map(s => s.length);
-  const max = Math.max(...lens);
+  const max = Math.max(...streams.map(s => s.length));
   for (let i = 0; i < max; i++) {
     for (const s of streams) if (i < s.length) out.push(s[i]);
   }
   return out;
 }
-const stream = interleave(bookPool, videoPool, peoplePool, topicPool, filmPool, placePool);
-// Light shuffle while preserving cadence — swap 12% of adjacent positions.
-let seed = 71;
-for (let i = 1; i < stream.length; i += 8) {
-  seed = (seed * 9301 + 49297) % 233280;
-  const j = i + (seed % 3 === 0 ? -1 : 1);
-  if (j > 0 && j < stream.length) {
-    [stream[i], stream[j]] = [stream[j], stream[i]];
-  }
-}
+const stream = interleave(bookPool, videoPool, peoplePool, placePool, topicPool, filmCards);
 
-// Cap at ~72 — long enough that the loop never feels short, short enough that
-// the doubled track stays under ~144 cards in the DOM.
-const finalCards = stream.slice(0, 14);
-// Duplicate for seamless -50% animation.
+const finalCards = stream;
 const track = finalCards.concat(finalCards).join('');
 
 const generatedBlock =
@@ -210,7 +261,7 @@ const generatedBlock =
     `<div class="mq-track" style="--mq-speed:420s">${track}</div>` +
   `</div>`;
 
-// --- Inject ----------------------------------------------------------------
+// --- Inject ---------------------------------------------------------------
 const HOMEPAGE = path.join(ROOT, 'index.html');
 const homepage = fs.readFileSync(HOMEPAGE, 'utf8');
 
@@ -230,15 +281,14 @@ const updated = before + '\n' + generatedBlock + '\n    ' + after;
 
 if (process.argv.includes('--check')) {
   if (homepage === updated) {
-    console.log('✓ Homepage marquee in sync.');
+    console.log('✓ Marquee in sync.');
     process.exit(0);
   } else {
-    console.error('✗ Homepage marquee stale. Run: node scripts/build-homepage-marquees.mjs');
+    console.error('✗ Marquee stale. Run: node scripts/build-homepage-marquees.mjs');
     process.exit(1);
   }
 }
 
 fs.writeFileSync(HOMEPAGE, updated, 'utf8');
-
-console.log(`✓ Mixed marquee rebuilt (${finalCards.length} cards, doubled to ${finalCards.length * 2}).`);
-console.log(`  Books: ${bookPool.length} · Videos: ${videoPool.length} · People: ${peoplePool.length} · Topics: ${topicPool.length} · Films: ${filmPool.length} · Places: ${placePool.length}`);
+console.log(`✓ Mixed marquee rebuilt (${finalCards.length} cards, doubled to ${finalCards.length*2}).`);
+console.log(`  Books: ${bookPool.length} · Videos: ${videoPool.length} · People: ${peoplePool.length} · Places: ${placePool.length} · Topics: ${topicPool.length} · Films: ${filmCards.length}`);
