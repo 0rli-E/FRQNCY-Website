@@ -130,27 +130,12 @@ import { createClient } from 'https://cdn.jsdelivr.net/npm/@supabase/supabase-js
     }
   }
 
-  /** Render logged-out state */
+  /** Render logged-out state — Sign In button suppressed per task #15.
+   *  Logged-out users see the same nav as everyone else; auth happens
+   *  via the My FRQNCY entry on inner pages or the dashboard route. */
   function renderLoggedOut() {
     clearAuthUI();
-
-    const link = document.createElement('a');
-    link.href = '/social/login';
-    link.className = 'frq-auth-signin';
-    link.setAttribute('data-frq-auth', 'signin');
-    link.textContent = 'Sign In';
-
-    if (snavRight) {
-      // V2 nav — add as a snav-link style element
-      link.classList.add('snav-link');
-      snavRight.appendChild(link);
-    } else if (navLinks) {
-      // Main nav — add as <li>
-      const li = document.createElement('li');
-      li.setAttribute('data-frq-auth', 'signin-li');
-      li.appendChild(link);
-      navLinks.appendChild(li);
-    }
+    // Intentionally no UI here. Was: a 'Sign In' link injected into the nav.
   }
 
   /** Remove any pre-existing static "Sign In" link */

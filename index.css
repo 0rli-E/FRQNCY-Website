@@ -186,12 +186,16 @@
       height: 100vh;
       height: 100dvh;
       background: #050810;
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: center;
+      display: flex !important;
+      flex-direction: column !important;
+      align-items: center !important;
+      justify-content: center !important;
       overflow: hidden;
     }
+    /* Re-centre the wordmark within the column. The padding-left compensation
+       interacts oddly with flex column; absorb it into a wrapper-style margin. */
+    #light-intro .intro-wordmark { margin: 0 auto; }
+    #light-intro .intro-tagline { margin: 28px auto 0 !important; color: #8A9AB8 !important; }
 
     /* The orb */
     .light-orb {
@@ -533,26 +537,28 @@
     .quote-cta {
       margin-top: 48px;
     }
-    .quote-cta-btn {
-      display: inline-block;
-      font-family: var(--font-body);
-      font-size: 11px;
-      letter-spacing: 0.32em;
-      text-transform: uppercase;
-      font-weight: 500;
-      color: var(--gold);
-      border: 1px solid var(--gold);
-      background: transparent;
-      padding: 14px 28px;
-      text-decoration: none;
-      border-radius: 2px;
-      transition: background 0.25s ease, color 0.25s ease;
+    .quote-cta-btn,
+    a.quote-cta-btn {
+      display: inline-block !important;
+      font-family: var(--font-body) !important;
+      font-size: 12px !important;
+      letter-spacing: 0.32em !important;
+      text-transform: uppercase !important;
+      font-weight: 500 !important;
+      color: #C4973A !important;
+      border: 1px solid #C4973A !important;
+      background: transparent !important;
+      padding: 14px 32px !important;
+      text-decoration: none !important;
+      border-radius: 2px !important;
+      transition: background 0.25s ease, color 0.25s ease !important;
     }
     .quote-cta-btn:hover,
+    a.quote-cta-btn:hover,
     .quote-cta-btn:focus-visible {
-      background: var(--gold);
-      color: var(--pure-white);
-      outline: none;
+      background: #C4973A !important;
+      color: #FFFFFF !important;
+      outline: none !important;
     }
 
     /* =====================
