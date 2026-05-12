@@ -208,11 +208,12 @@
       }
     });
 
-    // Trigger overlay after the user has actually engaged — one full viewport
-    // of scroll (was 55%, which fired on a single phone thumb swipe before
-    // the visitor had read anything).
+    // Trigger overlay only after the visitor has engaged with the proposition.
+    // History: 55% fired on a single phone-thumb swipe; 100% still ambushed
+    // visitors before they'd seen any value prop. 300% lets them scroll past
+    // the bubble map (section 3) before the modal locks the page.
     window.addEventListener('scroll', function () {
-      if (!subscribeShown && window.scrollY > window.innerHeight * 1.0) {
+      if (!subscribeShown && window.scrollY > window.innerHeight * 3.0) {
         showSubscribe();
         subscribeShown = true;
       }
