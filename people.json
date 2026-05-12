@@ -2,7 +2,7 @@
   "$schema_version": 6,
   "$purpose": "Draft first-class people list for FRQNCY. This is a PROPOSAL — not wired into the live site. Review, push back on anything wrong, and we refine.",
   "$generated": "2026-04-24",
-  "$updated": "2026-05-12T09:17:06Z",
+  "$updated": "2026-05-12T09:25:27Z",
   "$source": "Extracted from content.json — every resource with type:'person' (25 rows, 23 unique people after deduping Rupert Spira and Osho who each appeared twice).",
   "$reconciliation_notes": "Channeling humans now carry a 'channels' array listing the entities they channel, each with name and description. This keeps the human as the canonical person while giving the channeled entity its own structure — easy to migrate to a standalone channels.json later if we want.",
   "people": [
@@ -1208,7 +1208,9 @@
       "url": "https://drjoedispenza.com",
       "bio": "Neuroscientist and meditation teacher whose progressive workshops document measurable physiological and psychological transformation through meditation.",
       "appears_in": [
-        "t-meditation"
+        "t-meditation",
+        "t-mentalhlth",
+        "t-source"
       ],
       "picked_in": [],
       "life_story": [
