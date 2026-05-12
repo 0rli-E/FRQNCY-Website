@@ -1523,6 +1523,36 @@
       "type": "topic",
       "r": 14,
       "desc": "On the radar — restaurant Orlando wants on the network. Location, cuisine, and the link to the FRQNCY ethos to be filled in once details arrive. Placeholder so the page can be hand-shaped properly."
+    },
+    {
+      "id": "t-etiquette",
+      "label": "Etiquette",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-tax-sov",
+      "label": "Tax & Sovereignty",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-charter-cities",
+      "label": "Charter Cities",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-homeschooling",
+      "label": "Homeschooling",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-ai-agent-law",
+      "label": "AI Agent Law",
+      "type": "topic",
+      "r": 12
     }
   ],
   "links": [
@@ -3229,6 +3259,26 @@
     [
       "p-merlins",
       "t-foodsystems"
+    ],
+    [
+      "d-communication",
+      "t-etiquette"
+    ],
+    [
+      "d-society",
+      "t-tax-sov"
+    ],
+    [
+      "d-society",
+      "t-charter-cities"
+    ],
+    [
+      "d-society",
+      "t-homeschooling"
+    ],
+    [
+      "d-tech",
+      "t-ai-agent-law"
     ]
   ],
   "node_urls": {
@@ -3479,7 +3529,12 @@
     "d-places": "places/index.html",
     "p-essencia": "https://essencia.life/",
     "t-networkstates": "network-states/index.html",
-    "p-merlins": ""
+    "p-merlins": "",
+    "t-etiquette": "etiquette/index.html",
+    "t-tax-sov": "tax-sovereignty/index.html",
+    "t-charter-cities": "charter-cities/index.html",
+    "t-homeschooling": "homeschooling/index.html",
+    "t-ai-agent-law": "ai-agent-law/index.html"
   },
   "$last_sync": "2026-05-12",
   "$updated": "2026-04-24 — removed 4 ghost nodes (t-commodities, t-filestorage, t-stocks, t-world-models) that existed on the map but not in content.json. If you want these topics back, add them to content.json — the sync will bring them to the map automatically.",
