@@ -1,8 +1,8 @@
 {
   "$schema_version": 1,
   "$purpose": "First-class places list for FRQNCY — physical venues where practices happen. Retreats, sanctuaries, spaces, future FRQNCY venues.",
-  "$generated": "2026-04-24",
-  "$source": "Extracted from v2/explore.html (places block). Currently seeds: Intaaya.",
+  "$generated": "2026-05-12",
+  "$source": "Seeded from v2/explore.html (places block) + /places/<slug>/index.html pages. Covers Intaaya, Essência, plus 7 sweep entries (Auroville, Esalen, Findhorn, Monroe Institute, Plum Village, Schumacher College, Tassajara) backfilled 2026-05-12 from existing /places/ pages and v2/explore-data.json edges.",
   "$id_prefix": "pl- (places) to avoid collision with p- (people), b- (books), o- (orgs), m- (media). The older explore.html uses p- for places; that legacy reference will be migrated in a follow-up pass.",
   "$schema": {
     "id": "Stable identifier, 'pl-' prefix",
@@ -56,6 +56,109 @@
         "t-sustliving",
         "t-community"
       ]
+    },
+    {
+      "id": "pl-auroville",
+      "name": "Auroville",
+      "url": "https://auroville.org",
+      "location": "Tamil Nadu, southern India",
+      "bio": "A universal city in southern India, founded 1968 to embody human unity. Inspired by Sri Aurobindo and The Mother, endorsed by UNESCO. A half-century-long experiment in voluntary, post-national community — where the network-state question is already a built environment, not a thesis.",
+      "appears_in": [
+        "t-community",
+        "t-permaculture",
+        "d-lifestyle",
+        "network-state"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "pl-esalen",
+      "name": "Esalen Institute",
+      "url": "https://www.esalen.org",
+      "location": "Big Sur, California, USA",
+      "bio": "Founded 1962 on the cliffs of Big Sur. The hub of the human potential movement — where Gestalt, somatics, encounter groups, and east-meets-west consciousness work were forged. Hot springs, workshops, retreats. Much of the modern wellness vocabulary was first written down here.",
+      "appears_in": [
+        "t-meditation",
+        "t-soundheal",
+        "t-breathwork",
+        "t-yoga",
+        "d-wellbeing",
+        "d-lifestyle"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "pl-findhorn",
+      "name": "Findhorn Foundation",
+      "url": "https://www.findhorn.org",
+      "location": "Moray coast, Scotland",
+      "bio": "A spiritual community and ecovillage on the Scottish coast, founded 1962. Famed for the early gardens grown 'in cooperation with the intelligence of nature,' now a working model of regenerative living — half a century of evidence that ecovillage practice is a long game, not a season.",
+      "appears_in": [
+        "t-permaculture",
+        "t-community",
+        "d-nature",
+        "d-lifestyle"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "pl-monroe-institute",
+      "name": "The Monroe Institute",
+      "url": "https://www.monroeinstitute.org",
+      "location": "Faber, Virginia, USA",
+      "bio": "Founded 1971 in the Blue Ridge foothills of Virginia. The world's leading institute for structured exploration of consciousness — home of Hemi-Sync audio technology and the Gateway Voyage program. States beyond ordinary waking taught as skills, not visited as accidents.",
+      "appears_in": [
+        "t-abilities",
+        "t-remote-view",
+        "t-meditation",
+        "t-soundheal",
+        "t-akashic",
+        "d-meta"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "pl-plum-village",
+      "name": "Plum Village",
+      "url": "https://plumvillage.org",
+      "location": "Dordogne, southern France",
+      "bio": "Thich Nhat Hanh's mindfulness practice centre, founded 1982 in the south of France. The home of Engaged Buddhism in the West — slow walks, silent meals, the bell of mindfulness pulling attention back to the body across an afternoon.",
+      "appears_in": [
+        "t-meditation",
+        "t-community",
+        "d-wellbeing",
+        "d-lifestyle"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "pl-schumacher-college",
+      "name": "Schumacher College",
+      "url": "https://campus.dartington.org/schumacher-college/",
+      "location": "Dartington, Devon, England",
+      "bio": "A holistic learning centre founded 1990 on the Dartington estate in Devon. Named for E.F. Schumacher, author of Small Is Beautiful. Ecology, systems thinking, regenerative economics — taught with hands in the soil and a curriculum that treats head and body as one instrument.",
+      "appears_in": [
+        "t-ecology",
+        "t-permaculture",
+        "t-community",
+        "d-nature"
+      ],
+      "picked_in": []
+    },
+    {
+      "id": "pl-tassajara",
+      "name": "Tassajara Zen Mountain Center",
+      "url": "https://www.sfzc.org/tassajara-zen-mountain-center",
+      "location": "Carmel Valley, California, USA",
+      "bio": "The first Zen Buddhist monastery established in the West, founded 1967 in a remote Big Sur canyon. Hot springs, silence, traditional Soto Zen training. Home of the Tassajara Bread Book — and proof that monastic form translates without losing what made it work in the original.",
+      "appears_in": [
+        "t-meditation",
+        "t-community",
+        "d-wellbeing",
+        "d-lifestyle",
+        "d-nature"
+      ],
+      "picked_in": []
     }
   ]
 }

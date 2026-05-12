@@ -452,7 +452,7 @@ Every auto-generated topic page (`/v2/<topic>/`) currently opens with eyebrow + 
 
 2. **"Built on the Foundations of Oneness"** — *Resolved.* Replaced as the home hero. New locked hero is `H1: "A network of people, building their dream life." / Sub: "We invite you to find yourself."` "Built on the Foundations of Oneness" can remain as a structural anchor (footer concept, section title) where the philosophical frame has already done its work.
 
-3. **"FRQNCY makes the unable able"** — *Rejected.* Listed as homepage primary tagline in EDITORIAL-VALUES-V2.md but Orlando rejected it 2026-04-28 as offensive — positions readers as incomplete, violates abundance + remembrance frame. Don't use anywhere. Update or remove from EDITORIAL-VALUES-V2.md next time that doc is touched.
+3. **"FRQNCY makes the unable able"** — *Carved out (revised 2026-05-11).* Originally rejected 2026-04-28 as positioning readers as incomplete. Re-instated by Orlando 2026-05-11 with a different read: *able / unable* is not a statement about a reader's capability deficit but about whether conditions, tools, network, and surfaced opportunity are present for what a person already is. "Unable able" = re-membering, not adding. Tagline stays in `index.html` footer + `about.html`. **Required pairing:** a short explainer surface on the About page (or a dedicated `/standard/` page that the footer line links to) that names this frame so the line earns its meaning rather than landing as bare aphorism. Voice-audit runs should leave this string alone once the explainer ships. Same carve-out class as the "love and light" subscribe overlay (Resolved Q1).
 
 ### Medium Priority (improves quality)
 

@@ -244,7 +244,23 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">{"@context":"https://schema.org","@type":"CreativeWork","name":"The Story of Film: An Odyssey","description":"Mark Cousins' 15-hour documentary history of cinema. The most comprehensive film education ever committed to screen.","url":"https://frqncy.network/media/the-story-of-film-an-odyssey/","sameAs":["https://www.imdb.com/title/tt1606375/"],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
 </head>
-<body><nav id="main-nav" aria-label="Main navigation">
+<body><!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
+<style data-frqncy-header-critical>
+/* Critical inline CSS for #main-nav — prevents the search-FOUC and the nav-untyled-flash. Full styles live in nav-dropdown.css. */
+#main-nav{position:sticky;top:0;width:100%;z-index:500;padding:18px clamp(20px,4vw,60px);display:flex;align-items:center;justify-content:space-between;background:rgba(11,28,61,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);font-family:'Jost',system-ui,sans-serif}
+#main-nav .nav-logo{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:22px;letter-spacing:.38em;color:#fff;text-decoration:none;text-transform:uppercase}
+#main-nav .nav-links{display:flex;gap:32px;list-style:none;margin:0;padding:0;align-items:center}
+#main-nav .nav-links a{font-size:11px;letter-spacing:.24em;text-transform:uppercase;color:rgba(255,255,255,.85);text-decoration:none;display:inline-flex;align-items:center;min-height:32px}
+#main-nav .nav-cta-gold{border:1px solid rgba(196,151,58,.45);border-radius:2px;padding:5px 13px;color:#E0C06A!important}
+#main-nav .nav-search{display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:2px}
+#main-nav .nav-search input{background:transparent;border:0;outline:0;color:#fff;font:inherit;font-size:11px;letter-spacing:.16em;width:clamp(140px,18vw,240px);padding:6px 10px}
+#main-nav .nav-search input::placeholder{color:rgba(255,255,255,.45)}
+#main-nav .nav-search button{background:transparent;border:0;color:rgba(255,255,255,.6);font-size:14px;padding:4px 10px;cursor:pointer}
+#main-nav .nav-back{font-size:10px;letter-spacing:.18em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:6px 10px;border-radius:2px;text-decoration:none}
+#main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+@media(max-width:720px){#main-nav .nav-links{display:none}}
+</style>
+<nav id="main-nav" aria-label="Main navigation">
   <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
   <ul class="nav-links">
     <li class="nav-dd">
@@ -264,7 +280,6 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
         <a href="/v2/audio/index.html"><span class="dd-label">Audio</span><span class="dd-sub">Recordings &amp; lectures</span></a>
         <a href="/music/"><span class="dd-label">Music Library</span><span class="dd-sub">Frequency-aligned listening</span></a>
         <a href="/v2/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
-        <a href="/search"><span class="dd-label">Search</span><span class="dd-sub">Find anything</span></a>
         <a href="/chart"><span class="dd-label">Chart Generator</span><span class="dd-sub">Map your alignment</span></a>
         <a href="/people/"><span class="dd-label">People</span><span class="dd-sub">Teachers, founders, thinkers</span></a>
         <a href="/books/"><span class="dd-label">Books</span><span class="dd-sub">Every book on the network</span></a>
@@ -294,13 +309,17 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
     </li>
     <li class="nav-search-li">
       <form action="/search" method="get" role="search" class="nav-search">
-        <input type="search" name="q" placeholder="Search the network…" aria-label="Search the FRQNCY network" autocomplete="off">
+        <input type="text" role="searchbox" name="q" placeholder="Search the network…" aria-label="Search the FRQNCY network" autocomplete="off">
         <button type="submit" aria-label="Search">⌕</button>
       </form>
+    </li>
+    <li>
+      <a href="/" class="nav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
     </li>
     <li><a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a></li>
   </ul>
 </nav>
+<!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
 <nav class="snav">
   <div class="snav-left">
     <div class="breadcrumb"><a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Media</a><span class="sep">/</span><span>The Story of Film: An Odyssey</span></div>

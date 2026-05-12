@@ -39,6 +39,21 @@ function safeAccent(hex) {
   return (typeof hex === 'string' && /^#(?:[0-9a-f]{3}|[0-9a-f]{6})$/i.test(hex)) ? hex : DEFAULT_COURSE_ACCENT;
 }
 
+// Convert "5 min" / "10 min" / "2 hours" / "1.5 hours" to ISO-8601 duration (PT5M, PT2H, PT1H30M).
+function durationToISO(s) {
+  if (!s) return 'PT0M';
+  const m = String(s).match(/(\d+(?:\.\d+)?)\s*(hour|hr|h|min|m)/i);
+  if (!m) return 'PT0M';
+  const n = parseFloat(m[1]);
+  const unit = m[2].toLowerCase();
+  if (unit.startsWith('h')) {
+    const hours = Math.floor(n);
+    const mins  = Math.round((n - hours) * 60);
+    return 'PT' + hours + 'H' + (mins ? mins + 'M' : '');
+  }
+  return 'PT' + Math.round(n) + 'M';
+}
+
 function lessonTypeIcon(type) {
   if (type === 'video')      return `<svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg>`;
   if (type === 'reflection') return `<svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg>`;
@@ -87,15 +102,21 @@ function lessonContent(l) {
     // This loads instantly, looks identical to the watch page, and only pulls the video player
     // once the viewer actually clicks play.
     if (provider.embeddable && embedSrc) {
-      const thumbUrl = (provider.thumbnail_url || '').replace('{id}', videoId);
+      // YouTube hosts thumbs at multiple sizes; maxresdefault (1280x720) isn't always generated
+      // for very fresh uploads, so fall back to hqdefault (480x360) on error.
+      const thumbMax = 'https://img.youtube.com/vi/' + videoId + '/maxresdefault.jpg';
+      const thumbHq  = 'https://img.youtube.com/vi/' + videoId + '/hqdefault.jpg';
       const autoplayEmbed = (provider.embed_autoplay || provider.embed_url || '').replace('{id}', videoId);
       return `<div class="video-wrap video-facade"
-        style="background-image:url('${esc(thumbUrl)}')"
         data-embed="${esc(autoplayEmbed)}"
         data-title="${esc(l.title)}"
+        data-thumb-fallback="${esc(thumbHq)}"
         onclick="playVideo(this)"
         role="button" tabindex="0"
         aria-label="Play video: ${esc(l.title)}">
+        <img class="video-facade-thumb" src="${esc(thumbMax)}"
+             onerror="this.onerror=null;this.src=this.parentElement.dataset.thumbFallback"
+             alt="" loading="lazy" decoding="async" />
         <button class="video-play-btn" aria-label="Play" type="button" onclick="event.stopPropagation();playVideo(this.parentElement)">
           <svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true">
             <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/>
@@ -236,6 +257,55 @@ function buildPage(c) {
   const reflectIds   = c.lessons.filter(l => l.type === 'reflection').map(l => l.id || '').filter(Boolean);
   const reflectJSON  = JSON.stringify(reflectIds);
   const total        = c.lessons.length;
+  const courseUrl    = 'https://frqncy.network/v2/courses/' + c.slug + '/';
+  const uploadDate   = new Date().toISOString().slice(0, 10);
+
+  // Per-lesson VideoObject schemas (only for videos with an actual id)
+  const videoSchemas = c.lessons
+    .filter(l => l.type === 'video' && lessonVideoId(l))
+    .map(l => {
+      const vid = lessonVideoId(l);
+      return {
+        '@type': 'VideoObject',
+        'name': l.title,
+        'description': l.desc || c.desc,
+        'thumbnailUrl': ['https://img.youtube.com/vi/' + vid + '/maxresdefault.jpg'],
+        'uploadDate': uploadDate,
+        'embedUrl': lessonEmbedUrl(l),
+        'contentUrl': (getProvider(l).watch_url || '').replace('{id}', vid),
+        'duration': durationToISO(l.duration),
+        'inLanguage': 'en',
+        'isFamilyFriendly': true,
+        'publisher': { '@type': 'Organization', 'name': 'FRQNCY Network', 'url': 'https://frqncy.network' }
+      };
+    });
+
+  const courseSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'Course',
+    'name': c.title,
+    'description': c.desc,
+    'url': courseUrl,
+    'provider': { '@type': 'Organization', 'name': 'FRQNCY Network', 'url': 'https://frqncy.network' },
+    'educationalLevel': (c.level || '').toLowerCase(),
+    'inLanguage': 'en',
+    'isAccessibleForFree': !c.pricing || c.pricing.model === 'free',
+    'numberOfLessons': total,
+    'timeRequired': durationToISO(c.duration),
+    'hasPart': videoSchemas
+  };
+
+  const breadcrumbSchema = {
+    '@context': 'https://schema.org',
+    '@type': 'BreadcrumbList',
+    'itemListElement': [
+      { '@type': 'ListItem', 'position': 1, 'name': 'FRQNCY',  'item': 'https://frqncy.network/' },
+      { '@type': 'ListItem', 'position': 2, 'name': 'Courses', 'item': 'https://frqncy.network/v2/courses/' },
+      { '@type': 'ListItem', 'position': 3, 'name': c.title,   'item': courseUrl }
+    ]
+  };
+
+  const schemaJson = JSON.stringify(courseSchema) + '</script>\n<script type="application/ld+json">' + JSON.stringify(breadcrumbSchema);
 
   return `<!DOCTYPE html>
 <html lang="en">
@@ -258,6 +328,11 @@ function buildPage(c) {
 <link rel="canonical" href="https://frqncy.network/v2/courses/${esc(c.slug)}/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.youtube-nocookie.com">
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="dns-prefetch" href="https://i.ytimg.com">
+<link rel="dns-prefetch" href="https://img.youtube.com">
+<link rel="dns-prefetch" href="https://www.googlevideo.com">
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
@@ -375,10 +450,11 @@ nav.snav{
 }
 .video-wrap iframe{width:100%;height:100%;border:none;display:block}
 /* Facade — shows YouTube thumbnail + play button until clicked */
-.video-facade{
-  cursor:pointer;
-  background-size:cover;background-position:center;background-repeat:no-repeat;
-  background-color:#000;
+.video-facade{cursor:pointer;background-color:#000}
+.video-facade-thumb{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;
+  user-select:none;-webkit-user-drag:none;pointer-events:none;
 }
 .video-facade::after{
   content:'';position:absolute;inset:0;
@@ -613,6 +689,7 @@ nav.snav{
 <link rel="stylesheet" href="../../../nav-dropdown.css">
 <link rel="manifest" href="../../../manifest.json">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script type="application/ld+json">${schemaJson}</script>
 </head>
 <body>
 
@@ -757,8 +834,9 @@ function playVideo(wrap) {
   const embed = wrap.dataset.embed;
   const title = wrap.dataset.title || 'Video';
   if (!embed) return;
-  // Remember the facade state so we can restore on lesson switch
-  wrap.dataset.facadeBg = wrap.style.backgroundImage;
+  // Remember the thumbnail src so we can restore on lesson switch (image may have fallen back to hq)
+  const currentThumb = wrap.querySelector('.video-facade-thumb');
+  if (currentThumb) wrap.dataset.facadeThumb = currentThumb.src;
   wrap.innerHTML = '';
   const iframe = document.createElement('iframe');
   iframe.src = embed;
@@ -772,20 +850,19 @@ function playVideo(wrap) {
   wrap.removeAttribute('onclick');
   wrap.removeAttribute('role');
   wrap.removeAttribute('tabindex');
-  wrap.style.backgroundImage = '';
 }
 function restoreFacade(wrap) {
   if (!wrap || !wrap.dataset || !wrap.dataset.embed) return;
   const title = wrap.dataset.title || 'Video';
-  const bg    = wrap.dataset.facadeBg || '';
-  wrap.innerHTML = '<button class="video-play-btn" aria-label="Play" type="button" onclick="event.stopPropagation();playVideo(this.parentElement)">'
+  const thumb = wrap.dataset.facadeThumb || wrap.dataset.thumbFallback || '';
+  wrap.innerHTML = '<img class="video-facade-thumb" src="' + thumb + '" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=this.parentElement.dataset.thumbFallback"/>'
+    + '<button class="video-play-btn" aria-label="Play" type="button" onclick="event.stopPropagation();playVideo(this.parentElement)">'
     + '<svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true">'
     + '<path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/>'
     + '<path d="M45 24 27 14v20" fill="#fff"/>'
     + '</svg></button>';
   wrap.classList.add('video-facade');
   wrap.classList.remove('loaded');
-  wrap.style.backgroundImage = bg;
   wrap.setAttribute('onclick', 'playVideo(this)');
   wrap.setAttribute('role', 'button');
   wrap.setAttribute('tabindex', '0');

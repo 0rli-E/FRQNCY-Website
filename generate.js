@@ -649,67 +649,10 @@ document.querySelectorAll('.ftab').forEach(btn=>{
 </script>`;
 
 // ── Nav / Footer ─────────────────────────────────────────────────
-// Global top-level nav (Discover/Capital/Community dropdowns) shown on every
-// generated page so users can jump anywhere from anywhere. Uses absolute
-// paths so it works at any depth (v2/[topic]/, people/[slug]/, etc.).
-// Mirrors the nav in index.html — keep them in sync when adding entries.
-const MAIN_NAV = `<nav id="main-nav" aria-label="Main navigation">
-  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
-  <ul class="nav-links">
-    <li class="nav-dd">
-      <a href="/about">About</a>
-      <div class="nav-dd-menu">
-        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
-        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
-        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
-      </div>
-    </li>
-    <li class="nav-dd">
-      <a href="/v2/explore.html">Discover</a>
-      <div class="nav-dd-menu">
-        <a href="/v2/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
-        <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
-        <a href="/v2/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video library</span></a>
-        <a href="/v2/audio/index.html"><span class="dd-label">Audio</span><span class="dd-sub">Recordings &amp; lectures</span></a>
-        <a href="/music/"><span class="dd-label">Music Library</span><span class="dd-sub">Frequency-aligned listening</span></a>
-        <a href="/v2/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
-        <a href="/search"><span class="dd-label">Search</span><span class="dd-sub">Find anything</span></a>
-        <a href="/chart"><span class="dd-label">Chart Generator</span><span class="dd-sub">Map your alignment</span></a>
-        <a href="/people/"><span class="dd-label">People</span><span class="dd-sub">Teachers, founders, thinkers</span></a>
-        <a href="/books/"><span class="dd-label">Books</span><span class="dd-sub">Every book on the network</span></a>
-        <a href="/orgs/"><span class="dd-label">Organisations</span><span class="dd-sub">Aligned institutions</span></a>
-        <a href="/places/"><span class="dd-label">Places</span><span class="dd-sub">Retreats, sanctuaries, communes</span></a>
-        <a href="/media/"><span class="dd-label">Media</span><span class="dd-sub">Channels, podcasts, publications</span></a>
-      </div>
-    </li>
-    <li class="nav-dd">
-      <a href="/v2/fund/index.html">Capital</a>
-      <div class="nav-dd-menu">
-        <a href="/v2/fund/index.html"><span class="dd-label">Fund</span><span class="dd-sub">Vision, Echo, Legion &amp; roadmap</span></a>
-        <a href="/v2/crypto/index.html"><span class="dd-label">Crypto</span><span class="dd-sub">Curated projects &amp; thesis</span></a>
-        <a href="/v2/crypto/projects.html"><span class="dd-label">Project Ratings</span><span class="dd-sub">630+ projects tiered by conviction</span></a>
-        <a href="/v2/crypto/explorer.html"><span class="dd-label">Explore by Sector</span><span class="dd-sub">Learn chapter by chapter</span></a>
-      </div>
-    </li>
-    <li class="nav-dd">
-      <a href="/social/">Community</a>
-      <div class="nav-dd-menu">
-        <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
-        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">The social layer</span></a>
-        <a href="/space"><span class="dd-label">Community Space</span><span class="dd-sub">Coworking &amp; retreat</span></a>
-        <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access &amp; supporter status</span></a>
-        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
-      </div>
-    </li>
-    <li class="nav-search-li">
-      <form action="/search" method="get" role="search" class="nav-search">
-        <input type="search" name="q" placeholder="Search the network…" aria-label="Search the FRQNCY network" autocomplete="off">
-        <button type="submit" aria-label="Search">⌕</button>
-      </form>
-    </li>
-    <li><a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a></li>
-  </ul>
-</nav>`;
+// Global header — single source of truth is `_chrome/global-header.html`.
+// Run `node scripts/sync-headers.mjs` after editing that file to propagate to
+// all bespoke (non-generator) pages. Generators read it on every build.
+const MAIN_NAV = fs.readFileSync(path.join(ROOT, '_chrome', 'global-header.html'), 'utf8').trimEnd();
 
 function nav(crumbHtml) {
   // The full main nav (Discover/Capital/Community) sits above a thin
