@@ -81,7 +81,7 @@ function sidebarItem(l, i, prefix) {
 }
 
 /* ── Content panel for a single lesson ── */
-function lessonContent(l, idx) {
+function lessonContent(l) {
   if (l.type === 'video') {
     const provider = getProvider(l);
     const videoId  = lessonVideoId(l);
@@ -116,7 +116,7 @@ function lessonContent(l, idx) {
         aria-label="Play video: ${esc(l.title)}">
         <img class="video-facade-thumb" src="${esc(thumbMax)}"
              onerror="this.onerror=null;this.src=this.parentElement.dataset.thumbFallback"
-             alt="" ${idx === 0 ? 'loading="eager" fetchpriority="high"' : 'loading="lazy" decoding="async"'} />
+             alt="" loading="lazy" decoding="async" />
         <button class="video-play-btn" aria-label="Play" type="button" onclick="event.stopPropagation();playVideo(this.parentElement)">
           <svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true">
             <path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/>
@@ -227,28 +227,10 @@ function discussPanel(l, cm) {
   </div>`;
 }
 
-/* ── Related topics chips — links into the FRQNCY network ── */
-function relatedTopicsPanel(course) {
-  if (!course || !course.topics || !course.topics.length) return '';
-  const chips = course.topics.map(tid => {
-    const slug = String(tid).replace(/^t-/, '');
-    const label = slug.replace(/-/g, ' ');
-    return `<a class="related-chip" href="/v2/${esc(slug)}/">${esc(label)}</a>`;
-  }).join('');
-  return `
-  <div class="related-topics">
-    <span class="related-label">Explore on the network</span>
-    <div class="related-chips">${chips}</div>
-  </div>`;
-}
-
 /* ── Full lesson panel ── */
-function lessonPanel(l, i, lessons, community, course) {
-  const total   = lessons.length;
+function lessonPanel(l, i, total, community) {
   const isFirst = i === 0;
   const isLast  = i === total - 1;
-  const next    = lessons[i + 1];
-  const nextLabel = next ? `Next <span class="btn-next-arrow">→</span> <span class="btn-next-title">${esc(next.title)}</span>` : 'Next →';
   return `
   <div class="lesson-panel" id="panel-${i}" role="tabpanel" aria-labelledby="nav-${i}">
     <div class="lesson-header">
@@ -256,14 +238,13 @@ function lessonPanel(l, i, lessons, community, course) {
       <h1 class="lesson-h1">${esc(l.title)}</h1>
       ${l.desc ? `<p class="lesson-subdesc">${esc(l.desc)}</p>` : ''}
     </div>
-    ${lessonContent(l, i)}
+    ${lessonContent(l)}
     ${discussPanel(l, community)}
-    ${relatedTopicsPanel(course)}
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-${i}" onclick="markComplete(${i})">Mark Complete</button>
       <div class="lesson-nav-btns">
         <button class="btn-nav" id="btn-prev-${i}" onclick="showLesson(${i - 1})"${isFirst ? ' disabled' : ''} aria-label="Previous lesson">← Prev</button>
-        <button class="btn-nav btn-next" id="btn-next-${i}" onclick="showLesson(${i + 1})"${isLast ? ' disabled' : ''} aria-label="Next lesson">${nextLabel}</button>
+        <button class="btn-nav btn-next" id="btn-next-${i}" onclick="showLesson(${i + 1})"${isLast ? ' disabled' : ''} aria-label="Next lesson">Next →</button>
       </div>
     </div>
   </div>`;
@@ -576,73 +557,6 @@ nav.snav{
 .btn-nav:disabled{opacity:0.2;cursor:not-allowed}
 .btn-nav.btn-next{border-color:rgba(255,255,255,0.18);color:var(--text)}
 .btn-nav.btn-next:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
-.btn-next-arrow{opacity:0.7;margin:0 0.2em}
-.btn-next-title{
-  font-size:0.6rem;letter-spacing:0.06em;text-transform:none;
-  font-weight:300;opacity:0.85;
-  display:inline-block;max-width:220px;overflow:hidden;
-  white-space:nowrap;text-overflow:ellipsis;vertical-align:bottom;
-}
-@media(max-width:768px){.btn-next-title{display:none}}
-
-/* ── RELATED TOPICS (per lesson) ──────────────── */
-.related-topics{
-  max-width:820px;margin:1.2rem 0 0;
-  padding:1rem 1.25rem;
-  background:rgba(255,255,255,0.02);
-  border:1px dashed rgba(255,255,255,0.08);
-  border-radius:6px;
-}
-.related-label{
-  display:block;font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;
-  color:var(--text-dim);margin-bottom:0.6rem;
-}
-.related-chips{display:flex;flex-wrap:wrap;gap:0.4rem}
-.related-chip{
-  display:inline-block;padding:5px 12px;
-  font-size:0.72rem;letter-spacing:0.04em;text-transform:lowercase;
-  background:rgba(255,255,255,0.04);
-  border:1px solid rgba(255,255,255,0.1);
-  border-radius:18px;color:var(--text);text-decoration:none;
-  transition:background .15s,border-color .15s,color .15s;
-}
-.related-chip:hover{background:rgba(123,97,255,0.08);border-color:var(--accent);color:var(--accent);opacity:1}
-
-/* ── KEYBOARD HINTS (bottom of main content) ─── */
-.kbd-hint{
-  margin:3rem 0 1rem;max-width:820px;
-  font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;
-  color:var(--text-dim);text-align:center;opacity:0.6;
-}
-.kbd-hint kbd{
-  display:inline-block;background:rgba(255,255,255,0.06);
-  border:1px solid rgba(255,255,255,0.12);border-radius:3px;
-  padding:1px 6px;margin:0 2px;
-  font-family:'Jost',sans-serif;font-size:0.6rem;
-  letter-spacing:0;text-transform:none;color:var(--text);
-}
-@media(max-width:768px){.kbd-hint{display:none}}
-
-/* ── RETURN TOAST ──────────────────────────────── */
-.return-toast{
-  position:fixed;bottom:24px;right:24px;z-index:200;
-  max-width:340px;display:flex;align-items:center;gap:0.9rem;
-  background:rgba(13,31,68,0.96);backdrop-filter:blur(12px);
-  border:1px solid rgba(255,255,255,0.12);border-left:3px solid var(--accent);
-  border-radius:6px;padding:0.9rem 1.05rem;
-  box-shadow:0 12px 36px rgba(0,0,0,0.4);
-  transform:translateY(20px);opacity:0;pointer-events:none;
-  transition:transform .3s ease,opacity .3s ease;
-}
-.return-toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
-.return-toast-body{flex:1;min-width:0}
-.return-toast-title{font-size:0.66rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:0.25rem}
-.return-toast-sub{font-size:0.78rem;color:var(--text);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
-.return-toast-close{
-  flex-shrink:0;background:none;border:none;color:var(--text-dim);
-  font-size:1.05rem;cursor:pointer;padding:2px 4px;line-height:1;
-}
-.return-toast-close:hover{color:var(--text)}
 
 /* ── COMMUNITY CTA ───────────────────────────── */
 .community-cta{
@@ -817,23 +731,11 @@ nav.snav{
   <!-- MAIN -->
   <div class="main-content" id="main-content">
     ${communityBanner(c.community)}
-    ${c.lessons.map((l, i) => lessonPanel(l, i, c.lessons, c.community, c)).join('')}
-    <div class="kbd-hint" aria-hidden="true">
-      <kbd>←</kbd> <kbd>→</kbd> previous / next · <kbd>M</kbd> mark complete
-    </div>
+    ${c.lessons.map((l, i) => lessonPanel(l, i, total, c.community)).join('')}
   </div>
 </div>
 
 <!-- MOBILE BOTTOM BAR -->
-<!-- RETURN TOAST -->
-<div class="return-toast" id="return-toast" role="status" aria-live="polite">
-  <div class="return-toast-body">
-    <div class="return-toast-title">Picking up where you left off</div>
-    <div class="return-toast-sub" id="return-toast-sub"></div>
-  </div>
-  <button class="return-toast-close" onclick="closeReturnToast()" aria-label="Dismiss">×</button>
-</div>
-
 <div class="mobile-overlay" id="mobile-overlay" onclick="closeMobileSidebar()"></div>
 <div class="mobile-bar" id="mobile-bar">
   <span class="mobile-lesson-title" id="mobile-lesson-title">Lesson 1</span>
@@ -858,11 +760,10 @@ nav.snav{
     <div class="completion-badge">
       <span class="badge-label">✓ ${esc(c.level)} · FRQNCY Certificate</span>
     </div>
-    <div class="completion-desc">You've completed all ${total} lessons. The ideas are yours — carry them into practice. If this helped, you can support the network so we can keep making them.</div>
+    <div class="completion-desc">You've completed all ${total} lessons. The ideas are yours — carry them into practice.</div>
     <div class="completion-btns">
-      <a href="/membership/" class="cbtn cbtn-primary">Support the Network</a>
+      <button class="cbtn cbtn-primary" onclick="closeCompletion()">Keep Exploring</button>
       <a href="../" class="cbtn cbtn-sec">All Courses</a>
-      <button class="cbtn cbtn-sec" onclick="closeCompletion()">Close</button>
     </div>
   </div>
 </div>
@@ -941,7 +842,6 @@ function playVideo(wrap) {
   if (currentThumb) wrap.dataset.facadeThumb = currentThumb.src;
   wrap.innerHTML = '';
   const iframe = document.createElement('iframe');
-  iframe.id = 'yt-' + Math.random().toString(36).slice(2, 9);
   iframe.src = embed;
   iframe.title = title;
   iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
@@ -953,13 +853,6 @@ function playVideo(wrap) {
   wrap.removeAttribute('onclick');
   wrap.removeAttribute('role');
   wrap.removeAttribute('tabindex');
-  // Auto-mark-complete: register this iframe with YouTube's IFrame API
-  const panel = wrap.closest('.lesson-panel');
-  const lessonIdx = panel ? parseInt(panel.id.replace('panel-', ''), 10) : -1;
-  if (lessonIdx >= 0) {
-    loadYTApi();
-    bindYTPlayer(iframe, lessonIdx);
-  }
 }
 function restoreFacade(wrap) {
   if (!wrap || !wrap.dataset || !wrap.dataset.embed) return;
@@ -1026,112 +919,8 @@ function showLesson(idx) {
 
   updateSidebar();
   updateCompleteBtn();
-  updateMetaForLesson(LESSONS[idx]);
-  // Reflect lesson position in the URL hash so people can deep-link / share
-  try { history.replaceState(null, '', '#l' + (idx + 1)); } catch (_) {}
   window.scrollTo({ top: 56, behavior: 'smooth' });
   closeMobileSidebar();
-}
-
-/* ── Update OG meta + document title when lesson changes ── */
-function updateMetaForLesson(lesson) {
-  if (!lesson) return;
-  const base = ${JSON.stringify(c.title)};
-  document.title = lesson.title + ' — ' + base;
-  const setMeta = (sel, val) => {
-    const el = document.querySelector(sel);
-    if (el && val != null) el.setAttribute('content', val);
-  };
-  setMeta('meta[property="og:title"]', lesson.title + ' — ' + base);
-  setMeta('meta[property="og:description"]', lesson.desc || lesson.content || '');
-  if (lesson.type === 'video') {
-    const vid = lesson.youtube_id || lesson.video_id || '';
-    if (vid) setMeta('meta[property="og:image"]', 'https://img.youtube.com/vi/' + vid + '/maxresdefault.jpg');
-  }
-}
-
-/* ── Site-wide completion flag (read by other FRQNCY surfaces) ── */
-function markCourseFinished() {
-  try {
-    const key = 'frqncy.completed_courses';
-    const list = JSON.parse(localStorage.getItem(key) || '[]');
-    if (!list.includes(SLUG)) {
-      list.push(SLUG);
-      localStorage.setItem(key, JSON.stringify(list));
-    }
-  } catch (_) {}
-}
-
-/* ── YouTube IFrame API — auto-mark complete on video end ── */
-let _ytApiState = 'idle';
-let _pendingPlayers = [];
-function loadYTApi() {
-  if (_ytApiState !== 'idle') return;
-  _ytApiState = 'loading';
-  const s = document.createElement('script');
-  s.src = 'https://www.youtube.com/iframe_api';
-  s.async = true;
-  document.head.appendChild(s);
-}
-window.onYouTubeIframeAPIReady = function() {
-  _ytApiState = 'ready';
-  _pendingPlayers.splice(0).forEach(item => bindYTPlayer(item.iframe, item.lessonIdx));
-};
-function bindYTPlayer(iframe, lessonIdx) {
-  if (_ytApiState !== 'ready' || !window.YT || !window.YT.Player) {
-    _pendingPlayers.push({iframe, lessonIdx});
-    return;
-  }
-  try {
-    new YT.Player(iframe, {
-      events: {
-        onStateChange: function(e) {
-          if (e.data === 0 && !completed.has(lessonIdx)) {
-            markComplete(lessonIdx);
-          }
-        }
-      }
-    });
-  } catch (_) {}
-}
-
-/* ── Hover-preload — warm the video CDN as soon as user shows intent ── */
-let _videoPreconnected = false;
-function preconnectVideoCDN() {
-  if (_videoPreconnected) return;
-  _videoPreconnected = true;
-  ['https://www.googlevideo.com', 'https://i.ytimg.com'].forEach(url => {
-    if (document.querySelector('link[rel="preconnect"][href="' + url + '"]')) return;
-    const l = document.createElement('link');
-    l.rel = 'preconnect';
-    l.href = url;
-    l.crossOrigin = 'anonymous';
-    document.head.appendChild(l);
-  });
-}
-document.addEventListener('mouseover', e => {
-  const t = e.target;
-  if (t && t.closest && t.closest('.video-facade')) preconnectVideoCDN();
-}, { passive: true, once: false });
-
-/* ── Return toast — first time a returning user lands, suggest resume ── */
-function maybeShowReturnToast() {
-  if (completed.size === 0 || completed.size === TOTAL) return;
-  if (_ls('get', STORE_KEY + ':seen-return-toast') === '1') return;
-  const next = LESSONS[current];
-  if (!next) return;
-  const sub = document.getElementById('return-toast-sub');
-  if (sub) sub.textContent = 'Lesson ' + (current + 1) + ' — ' + next.title;
-  setTimeout(() => {
-    const t = document.getElementById('return-toast');
-    if (t) t.classList.add('show');
-    _ls('set', STORE_KEY + ':seen-return-toast', '1');
-  }, 600);
-  setTimeout(closeReturnToast, 8000);
-}
-function closeReturnToast() {
-  const t = document.getElementById('return-toast');
-  if (t) t.classList.remove('show');
 }
 
 /* ── Complete button ── */
@@ -1166,7 +955,6 @@ function markComplete(idx) {
     if (idx < TOTAL - 1) {
       setTimeout(() => showLesson(idx + 1), 800);
     } else if (completed.size === TOTAL) {
-      markCourseFinished();
       setTimeout(() => document.getElementById('completion').classList.add('open'), 600);
     }
   }
@@ -1197,12 +985,9 @@ document.addEventListener('keydown', e => {
 
 /* ── Keyboard nav ── */
 document.addEventListener('keydown', e => {
-  const tag = document.activeElement && document.activeElement.tagName;
-  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
-  if (e.metaKey || e.ctrlKey) return;
-  if (e.key === 'ArrowRight') { e.preventDefault(); showLesson(current + 1); }
-  if (e.key === 'ArrowLeft')  { e.preventDefault(); showLesson(current - 1); }
-  if (e.key === 'm' || e.key === 'M') { e.preventDefault(); markComplete(current); }
+  if (['INPUT', 'TEXTAREA'].includes(document.activeElement.tagName)) return;
+  if (e.altKey && e.key === 'ArrowRight') showLesson(current + 1);
+  if (e.altKey && e.key === 'ArrowLeft')  showLesson(current - 1);
 });
 
 /* ── Wire sidebar buttons ── */
@@ -1213,17 +998,8 @@ document.querySelectorAll('.lesson-btn').forEach((btn, i) => {
 /* ── Init ── */
 updateProgress();
 updateSidebar();
-function pickInitialLesson() {
-  const hashMatch = (location.hash || '').match(/^#l(\d+)$/i);
-  if (hashMatch) {
-    const n = parseInt(hashMatch[1], 10) - 1;
-    if (n >= 0 && n < TOTAL) return n;
-  }
-  const firstIncomplete = [...Array(TOTAL).keys()].find(i => !completed.has(i));
-  return firstIncomplete !== undefined ? firstIncomplete : 0;
-}
-showLesson(pickInitialLesson());
-maybeShowReturnToast();
+const firstIncomplete = [...Array(TOTAL).keys()].find(i => !completed.has(i));
+showLesson(firstIncomplete !== undefined ? firstIncomplete : 0);
 </script>
 </body>
 </html>`;
