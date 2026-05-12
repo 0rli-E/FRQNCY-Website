@@ -1902,7 +1902,7 @@ for (const t of DATA.topics) {
 // ── Helper: entity index page builder (one alphabetical grid of cards) ──
 function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intro, showFilters = true }) {
   // For each entity, derive the set of pillars it touches. A person teaching
-  // topics across Well-being and Metaphysics shows under BOTH Education and
+  // topics across Well-being and Consciousness shows under BOTH Education and
   // Research filters. Appears_in can contain topic, domain, or pillar ids —
   // walk each to its ancestor pillar(s).
   const domainById = new Map(DATA.domains.map(d => [d.id, d]));
