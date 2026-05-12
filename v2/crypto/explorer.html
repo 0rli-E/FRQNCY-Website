@@ -180,6 +180,8 @@ main{max-width:1100px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5re
 #main-nav .nav-search button{background:transparent;border:0;color:rgba(255,255,255,.6);font-size:13px;padding:4px 9px;cursor:pointer}
 #main-nav .nav-back{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:2px;text-decoration:none}
 #main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+#main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
+#main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
 body.frqncy-home #main-nav .nav-back{display:none}
 #main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important}
 #main-nav .nav-dd-menu a .dd-label,#main-nav .nav-dd-menu a .dd-sub{display:block !important;text-align:center !important;width:100% !important}
@@ -201,6 +203,7 @@ body.frqncy-home #main-nav .nav-back{display:none}
       <div class="nav-dd-menu">
         <a href="/v2/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
         <a href="/v2/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
+        <a href="/v2/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
         <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
         <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
         <a href="/people/"><span class="dd-label">Browse</span><span class="dd-sub">People · Books · Orgs · Places</span></a>
@@ -219,6 +222,7 @@ body.frqncy-home #main-nav .nav-back{display:none}
         <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
         <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">Social layer</span></a>
         <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access</span></a>
+        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
       </div>
     </li>
     <li class="nav-search-li">
@@ -229,6 +233,9 @@ body.frqncy-home #main-nav .nav-back{display:none}
     </li>
     <li>
       <a href="/" class="nav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
+    </li>
+    <li>
+      <a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a>
     </li>
   </ul>
 </nav>
