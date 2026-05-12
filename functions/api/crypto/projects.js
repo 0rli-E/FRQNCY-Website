@@ -252,11 +252,9 @@ export async function onRequest(context) {
       }
 
       if (!payload) {
+        console.error('crypto/projects failed:', err);
         return new Response(
-          JSON.stringify({
-            error: "Service temporarily unavailable",
-            detail: err.message,
-          }),
+          JSON.stringify({ error: "Service temporarily unavailable" }),
           { status: 503, headers: { ...cors, "Content-Type": "application/json" } }
         );
       }

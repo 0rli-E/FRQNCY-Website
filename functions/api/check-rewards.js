@@ -26,6 +26,30 @@ const ALLOWED_ORIGINS = [
   'https://www.frqncy.network',
 ];
 
+// ── In-memory IP rate limit ────────────────────────────────────────
+// 10 req/min per IP. Same pattern as subscribe.js / chat.js / etc.
+// Per-isolate only (Workers don't share state); KV/DO is the real fix.
+// Without this, anyone with a UUID could probe ref_signups counts in a tight
+// loop or force premature reward grants for an arbitrary user.
+const RATE_WINDOW_MS = 60_000;
+const RATE_MAX       = 10;
+const rateBuckets    = new Map();
+
+function checkRateLimit(ip) {
+  if (!ip) return true; // fail-closed
+  const now = Date.now();
+  let bucket = rateBuckets.get(ip);
+  if (!bucket || now >= bucket.resetAt) {
+    bucket = { count: 0, resetAt: now + RATE_WINDOW_MS };
+    rateBuckets.set(ip, bucket);
+  }
+  bucket.count++;
+  if (rateBuckets.size > 1000) {
+    for (const [k, v] of rateBuckets) { if (now >= v.resetAt) rateBuckets.delete(k); }
+  }
+  return bucket.count > RATE_MAX;
+}
+
 function isAllowedOrigin(o) {
   if (!o) return false;
   if (ALLOWED_ORIGINS.includes(o)) return true;
@@ -78,6 +102,12 @@ export async function onRequestOptions({ request }) {
 
 export async function onRequestPost({ request, env }) {
   const origin = request.headers.get('origin') || '';
+
+  // Rate limit (per-IP, per-isolate)
+  const ip = request.headers.get('cf-connecting-ip') || request.headers.get('x-forwarded-for') || '';
+  if (checkRateLimit(ip)) {
+    return json({ error: 'Too many requests, slow down a moment.' }, 429, origin);
+  }
 
   if (!env.PUBLIC_SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) {
     return json({ error: 'Rewards service not configured.' }, 503, origin);

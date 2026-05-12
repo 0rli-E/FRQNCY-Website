@@ -155,7 +155,8 @@ export async function onRequestGet({ request, env }) {
       },
     });
   } catch (err) {
-    return jsonError(`Export failed: ${err.message ?? 'unknown error'}`, 500);
+    console.error('Export failed:', err);
+    return jsonError('Export failed. Please try again.', 500);
   }
 }
 

@@ -164,11 +164,9 @@ export async function onRequest(context) {
         } catch (_) {}
       }
       if (!payload) {
+        console.error('crypto/market failed:', err);
         return new Response(
-          JSON.stringify({
-            error: "Market data temporarily unavailable",
-            detail: err.message,
-          }),
+          JSON.stringify({ error: "Market data temporarily unavailable" }),
           { status: 503, headers: { ...cors, "Content-Type": "application/json" } }
         );
       }
