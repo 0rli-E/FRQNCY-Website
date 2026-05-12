@@ -2,7 +2,7 @@
   "$schema_version": 6,
   "$purpose": "Draft first-class people list for FRQNCY. This is a PROPOSAL — not wired into the live site. Review, push back on anything wrong, and we refine.",
   "$generated": "2026-04-24",
-  "$updated": "2026-05-09",
+  "$updated": "2026-05-12T09:14:03Z",
   "$source": "Extracted from content.json — every resource with type:'person' (25 rows, 23 unique people after deduping Rupert Spira and Osho who each appeared twice).",
   "$reconciliation_notes": "Channeling humans now carry a 'channels' array listing the entities they channel, each with name and description. This keeps the human as the canonical person while giving the channeled entity its own structure — easy to migrate to a standalone channels.json later if we want.",
   "people": [
@@ -4515,7 +4515,9 @@
         "t-leadership",
         "t-history"
       ],
-      "picked_in": []
+      "picked_in": [],
+      "_url_source": "curated",
+      "_url_confidence": "high"
     },
     {
       "id": "p-jim-rohn",
@@ -4574,7 +4576,8 @@
         "t-akashic",
         "t-oneness",
         "t-dims",
-        "t-channeling"
+        "t-channeling",
+        "t-abilities"
       ],
       "picked_in": [
         "t-akashic"
@@ -4624,11 +4627,24 @@
       "appears_in": [
         "t-efields",
         "t-channeling",
-        "t-soundheal"
+        "t-soundheal",
+        "t-abilities"
       ],
       "picked_in": [
         "t-efields"
       ]
+    },
+    {
+      "id": "p-laura-abioli",
+      "name": "Laura Abioli",
+      "url": "",
+      "bio": "Operator in the network-state and frontier-community space. Associated with the Infinita ecosystem, working at the intersection of longevity, jurisdiction design, and the practical logistics of new cities. Profile being expanded as her work surfaces.",
+      "appears_in": [
+        "t-networkstates"
+      ],
+      "picked_in": [],
+      "_url_source": "pending",
+      "_url_confidence": "low"
     }
   ]
 }

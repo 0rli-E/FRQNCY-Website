@@ -1510,6 +1510,19 @@
       "type": "topic",
       "r": 14,
       "desc": "An off-grid regenerative eco-village and holistic healing center on the wild Atlantic coast of southern Portugal. Essência runs as an intentional community curating retreats, courses, and a Healing Center alongside daily life — a natural laboratory for self-exploration, individual realisation, and collective healing. Sustainable living, ecovillage practice, and community living shown as one continuous discipline rather than three separate trends."
+    },
+    {
+      "id": "t-networkstates",
+      "label": "Network States",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "p-merlins",
+      "label": "Merlin's",
+      "type": "topic",
+      "r": 14,
+      "desc": "On the radar — restaurant Orlando wants on the network. Location, cuisine, and the link to the FRQNCY ethos to be filled in once details arrive. Placeholder so the page can be hand-shaped properly."
     }
   ],
   "links": [
@@ -3204,6 +3217,18 @@
     [
       "p-essencia",
       "t-permaculture"
+    ],
+    [
+      "d-meta",
+      "t-abilities"
+    ],
+    [
+      "d-society",
+      "t-networkstates"
+    ],
+    [
+      "p-merlins",
+      "t-foodsystems"
     ]
   ],
   "node_urls": {
@@ -3452,7 +3477,9 @@
     "t-predictions": "predictions/index.html",
     "t-crypto-privacy": "crypto-privacy/index.html",
     "d-places": "places/index.html",
-    "p-essencia": "https://essencia.life/"
+    "p-essencia": "https://essencia.life/",
+    "t-networkstates": "network-states/index.html",
+    "p-merlins": ""
   },
   "$last_sync": "2026-05-12",
   "$updated": "2026-04-24 — removed 4 ghost nodes (t-commodities, t-filestorage, t-stocks, t-world-models) that existed on the map but not in content.json. If you want these topics back, add them to content.json — the sync will bring them to the map automatically.",
@@ -3465,11 +3492,6 @@
     {
       "id": "p-frqncy-space",
       "label": "The FRQNCY Space",
-      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
-    },
-    {
-      "id": "t-abilities",
-      "label": "Abilities",
       "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
     },
     {
