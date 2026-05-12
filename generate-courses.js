@@ -148,8 +148,52 @@ function communityBanner(cm) {
     </a>`;
 }
 
+/* ── Per-lesson discuss panel — points at YouTube comments + community ── */
+function discussPanel(l, cm) {
+  const ytLink = l.type === 'video' && lessonVideoId(l)
+    ? (getProvider(l).watch_url || '').replace('{id}', lessonVideoId(l))
+    : '';
+  const cmUrl  = cm && cm.url ? cm.url : '';
+  const cmLabel = (cm && cm.label) || 'the community';
+  // Nothing to show if neither link exists
+  if (!ytLink && !cmUrl) return '';
+
+  const links = [];
+  if (ytLink) {
+    links.push(`<a class="discuss-link discuss-link-primary" href="${esc(ytLink)}" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="currentColor"><path d="M21.6 6.2a3 3 0 00-2.1-2.1C17.5 3.5 12 3.5 12 3.5s-5.5 0-7.5.6A3 3 0 002.4 6.2C1.8 8.2 1.8 12 1.8 12s0 3.8.6 5.8a3 3 0 002.1 2.1c2 .6 7.5.6 7.5.6s5.5 0 7.5-.6a3 3 0 002.1-2.1c.6-2 .6-5.8.6-5.8s0-3.8-.6-5.8zM10 15.5v-7l5.5 3.5L10 15.5z"/></svg>
+      <span class="discuss-link-body">
+        <span class="discuss-link-title">Comment on YouTube</span>
+        <span class="discuss-link-sub">Join the conversation under the video</span>
+      </span>
+      <span class="discuss-link-arrow">→</span>
+    </a>`);
+  }
+  if (cmUrl) {
+    links.push(`<a class="discuss-link" href="${esc(cmUrl)}" target="_blank" rel="noopener">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 11.5a8.4 8.4 0 01-.9 3.8 8.5 8.5 0 01-7.6 4.7 8.4 8.4 0 01-3.8-.9L3 21l1.9-5.7a8.4 8.4 0 01-.9-3.8 8.5 8.5 0 014.7-7.6 8.4 8.4 0 013.8-.9h.5a8.5 8.5 0 018 8v.5z"/></svg>
+      <span class="discuss-link-body">
+        <span class="discuss-link-title">Ask questions in ${esc(cmLabel)}</span>
+        <span class="discuss-link-sub">Live channel — updates, Q&A, new lessons land first</span>
+      </span>
+      <span class="discuss-link-arrow">→</span>
+    </a>`);
+  }
+
+  return `
+  <div class="discuss-panel">
+    <div class="discuss-panel-header">
+      <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15a2 2 0 01-2 2H7l-4 4V5a2 2 0 012-2h14a2 2 0 012 2z"/></svg>
+      <span>Discuss this lesson</span>
+    </div>
+    <div class="discuss-panel-links">
+      ${links.join('')}
+    </div>
+  </div>`;
+}
+
 /* ── Full lesson panel ── */
-function lessonPanel(l, i, total) {
+function lessonPanel(l, i, total, community) {
   const isFirst = i === 0;
   const isLast  = i === total - 1;
   return `
@@ -160,6 +204,7 @@ function lessonPanel(l, i, total) {
       ${l.desc ? `<p class="lesson-subdesc">${esc(l.desc)}</p>` : ''}
     </div>
     ${lessonContent(l)}
+    ${discussPanel(l, community)}
     <div class="lesson-actions">
       <button class="btn-complete" id="btn-complete-${i}" onclick="markComplete(${i})">Mark Complete</button>
       <div class="lesson-nav-btns">
@@ -427,6 +472,39 @@ nav.snav{
   background:var(--accent);color:#fff;white-space:nowrap;
 }
 
+/* ── DISCUSS PANEL (per lesson) ───────────────── */
+.discuss-panel{
+  max-width:820px;margin:2rem 0 0;
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;padding:1.2rem 1.4rem 1.3rem;
+}
+.discuss-panel-header{
+  display:flex;align-items:center;gap:0.5rem;
+  font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:0.9rem;
+}
+.discuss-panel-header svg{color:var(--accent);opacity:0.7;flex-shrink:0}
+.discuss-panel-links{display:flex;flex-direction:column;gap:0.5rem}
+.discuss-link{
+  display:flex;align-items:center;gap:0.85rem;
+  padding:0.75rem 1rem;border-radius:4px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  text-decoration:none;color:var(--text);
+  transition:background .15s,border-color .15s,transform .15s;
+}
+.discuss-link:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.14);opacity:1;transform:translateY(-1px)}
+.discuss-link svg{color:var(--text-dim);flex-shrink:0;transition:color .15s}
+.discuss-link:hover svg{color:var(--accent)}
+.discuss-link-primary{border-color:rgba(255,255,255,0.14)}
+.discuss-link-primary svg{color:#FF4040}
+.discuss-link-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:0.1rem}
+.discuss-link-title{font-size:0.86rem;color:var(--text);line-height:1.3}
+.discuss-link-sub{font-size:0.66rem;color:var(--text-dim);letter-spacing:0.02em}
+.discuss-link-arrow{color:var(--text-dim);font-size:1rem;flex-shrink:0;transition:color .15s,transform .15s}
+.discuss-link:hover .discuss-link-arrow{color:var(--accent);transform:translateX(3px)}
+
 /* ── COMPLETION MODAL ────────────────────────── */
 .completion-overlay{
   position:fixed;inset:0;z-index:300;background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);
@@ -547,7 +625,7 @@ nav.snav{
   <!-- MAIN -->
   <div class="main-content" id="main-content">
     ${communityBanner(c.community)}
-    ${c.lessons.map((l, i) => lessonPanel(l, i, total)).join('')}
+    ${c.lessons.map((l, i) => lessonPanel(l, i, total, c.community)).join('')}
   </div>
 </div>
 
@@ -652,7 +730,7 @@ function showLesson(idx) {
   const leavingPanel = document.getElementById('panel-' + current);
   if (leavingPanel) {
     const iframe = leavingPanel.querySelector('iframe');
-    if (iframe) iframe.src = '';
+    if (iframe) iframe.removeAttribute('src');
   }
 
   // Activate new panel
@@ -663,8 +741,10 @@ function showLesson(idx) {
   const panel = document.getElementById('panel-' + idx);
   if (panel) {
     const iframe = panel.querySelector('iframe[data-src]');
-    if (iframe && iframe.dataset.src && !iframe.src) {
-      iframe.src = iframe.dataset.src;
+    // Use getAttribute('src') — iframe.src property resolves empty/missing src to the page URL,
+    // so a truthy check on iframe.src would always pass and skip the assignment.
+    if (iframe && iframe.dataset.src && !iframe.getAttribute('src')) {
+      iframe.setAttribute('src', iframe.dataset.src);
       const wrap = iframe.closest('.video-wrap');
       if (wrap) iframe.addEventListener('load', () => wrap.classList.add('loaded'), { once: true });
     }
