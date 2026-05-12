@@ -837,8 +837,6 @@ function clearReflect(id) {
 function updateProgress() {
   const done = completed.size;
   const pct  = TOTAL ? Math.round((done / TOTAL) * 100) : 0;
-  document.getElementById('nav-progress-text').textContent = done + '/' + TOTAL;
-  document.getElementById('nav-pfill').style.width = pct + '%';
   document.getElementById('sp-text').textContent = done + ' / ' + TOTAL;
   document.getElementById('sp-fill').style.width = pct + '%';
 }
