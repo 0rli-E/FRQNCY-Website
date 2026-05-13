@@ -210,10 +210,13 @@
 
     // Trigger overlay only after the visitor has engaged with the proposition.
     // History: 55% fired on a single phone-thumb swipe; 100% still ambushed
-    // visitors before they'd seen any value prop. 300% lets them scroll past
-    // the bubble map (section 3) before the modal locks the page.
+    // visitors before they'd seen any value prop; 300% still fired before the
+    // bubble map on common viewports (1440×900 → 2700px which lands mid-marquees).
+    // 600% lets them scroll past bubble + details + contact (whole homepage)
+    // before the modal interrupts — visitor sees every section, including the
+    // inline contact-section subscribe form, before the overlay asks again.
     window.addEventListener('scroll', function () {
-      if (!subscribeShown && window.scrollY > window.innerHeight * 3.0) {
+      if (!subscribeShown && window.scrollY > window.innerHeight * 6.0) {
         showSubscribe();
         subscribeShown = true;
       }
