@@ -1,0 +1,957 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Project Ratings — FRQNCY Crypto</title>
+<meta name="description" content="630+ projects rated by conviction. Diamond, Gold, Silver, Utility. Stated plainly so you can decide where to stand.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Project Ratings — FRQNCY Crypto">
+<meta property="og:description" content="630+ projects rated by conviction. Diamond, Gold, Silver, Utility. Stated plainly.">
+<meta property="og:url" content="https://frqncy.network/crypto/projects.html">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Project Ratings — FRQNCY Crypto">
+<meta name="twitter:description" content="630+ projects rated by conviction. Diamond, Gold, Silver, Utility. Stated plainly.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/crypto/projects.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="fetch" href="/api/crypto/projects" crossorigin>
+<link rel="preload" as="fetch" href="/api/crypto/market" crossorigin>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Project Ratings — FRQNCY Crypto","description":"630+ projects rated by conviction. Diamond, Gold, Silver, Utility. Stated plainly.","url":"https://frqncy.network/crypto/projects.html","isPartOf":{"@type":"WebSite","name":"FRQNCY","url":"https://frqncy.network/"}}
+</script>
+<script src="_market.js" defer></script>
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--navy-deep:#081530;
+  --gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;
+  --card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);
+  --accent:#7B61FF;
+  --tier-s:#C4973A;--tier-a:#7B61FF;--tier-b:#4A9AE8;
+  --tier-c:#7090B8;--tier-d:#5A6A7A;--tier-e:#4A5260;--tier-f:#3A3F48;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{text-decoration:none;color:var(--accent)}
+a:hover{opacity:0.85}
+
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text)}
+.breadcrumb .sep{opacity:0.25}
+.snav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.snav-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);transition:color .2s;white-space:nowrap}
+.snav-link:hover{color:var(--text)}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(2.5rem,5vw,4rem) clamp(1.25rem,5vw,2.5rem) 1.5rem;text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(123,97,255,0.12) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:0.8rem}
+.hero-desc{max-width:600px;margin:0 auto;font-size:0.84rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+.disclaimer{max-width:640px;margin:1rem auto 0;text-align:center;font-size:0.66rem;color:var(--text-dim);opacity:0.5;line-height:1.6}
+
+/* ═══════════════════════════════════════════════════════════════
+   TIER STRIP — the main browsing interface
+   ═══════════════════════════════════════════════════════════════ */
+.tier-strip{
+  position:sticky;top:56px;z-index:90;
+  background:rgba(11,28,61,0.96);backdrop-filter:blur(14px);-webkit-backdrop-filter:blur(14px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:0.9rem clamp(1.25rem,4vw,2.5rem);
+}
+.tier-strip-inner{max-width:1200px;margin:0 auto;display:flex;flex-direction:column;gap:0.7rem}
+.tier-tabs{display:flex;gap:0;border-radius:4px;overflow:hidden;border:1px solid rgba(255,255,255,0.08)}
+.tier-tab{
+  flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:0.15rem;
+  padding:0.6rem 0.5rem;cursor:pointer;transition:all .2s;
+  background:transparent;border:none;border-right:1px solid rgba(255,255,255,0.06);
+  font-family:'Jost',sans-serif;position:relative;min-width:0;
+}
+.tier-tab:last-child{border-right:none}
+.tier-tab:hover{background:rgba(255,255,255,0.04)}
+.tier-tab.active{background:rgba(255,255,255,0.06)}
+.tier-tab.active::after{content:'';position:absolute;bottom:0;left:15%;right:15%;height:2px;border-radius:1px}
+.tier-tab[data-tier="all"].active::after{background:var(--accent)}
+.tier-tab[data-tier="S"].active::after{background:var(--tier-s)}
+.tier-tab[data-tier="A"].active::after{background:var(--tier-a)}
+.tier-tab[data-tier="B"].active::after{background:var(--tier-b)}
+.tier-tab[data-tier="C"].active::after{background:var(--tier-c)}
+.tier-tab[data-tier="D"].active::after{background:var(--tier-d)}
+.tier-tab[data-tier="E"].active::after{background:var(--tier-e)}
+.tier-tab[data-tier="F"].active::after{background:var(--tier-f)}
+.tier-tab-letter{font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;line-height:1;color:#fff}
+.tier-tab-label{font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis;max-width:100%}
+.tier-tab-count{font-size:0.56rem;color:var(--text-dim);font-weight:400;line-height:1}
+.tier-tab[data-tier="S"] .tier-tab-letter{color:var(--tier-s)}
+.tier-tab[data-tier="A"] .tier-tab-letter{color:var(--tier-a)}
+.tier-tab[data-tier="B"] .tier-tab-letter{color:var(--tier-b)}
+.tier-tab[data-tier="C"] .tier-tab-letter{color:var(--tier-c)}
+.tier-tab[data-tier="D"] .tier-tab-letter{color:var(--tier-d)}
+.tier-tab[data-tier="E"] .tier-tab-letter{color:var(--tier-e)}
+.tier-tab[data-tier="F"] .tier-tab-letter{color:var(--tier-f)}
+
+/* Search + secondary filters */
+.controls-row{display:flex;gap:0.6rem;align-items:center;flex-wrap:wrap}
+.search-box{
+  flex:1;min-width:200px;position:relative;
+}
+.search-box input{
+  width:100%;background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);border-radius:4px;
+  padding:0.55rem 0.75rem 0.55rem 2.2rem;
+  font-family:'Jost',sans-serif;font-size:0.78rem;font-weight:300;
+  color:var(--text);outline:none;transition:border-color .2s;
+}
+.search-box input::placeholder{color:var(--text-dim);opacity:0.6}
+.search-box input:focus{border-color:rgba(123,97,255,0.4)}
+.search-box svg{position:absolute;left:0.7rem;top:50%;transform:translateY(-50%);width:14px;height:14px;color:var(--text-dim);pointer-events:none}
+.filter-pills{display:flex;gap:0.3rem;flex-wrap:wrap;flex:1;min-width:0}
+.fpill{
+  font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;
+  padding:4px 10px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;
+  cursor:pointer;color:var(--text-dim);background:none;
+  transition:all .2s;font-family:'Jost',sans-serif;white-space:nowrap;
+}
+.fpill:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.fpill.active{border-color:var(--accent);color:var(--accent);background:rgba(123,97,255,0.06)}
+/* View toggle */
+.view-toggle{display:flex;gap:0;border:1px solid rgba(255,255,255,0.1);border-radius:3px;overflow:hidden;flex-shrink:0}
+.view-btn{background:none;border:none;border-right:1px solid rgba(255,255,255,0.08);color:var(--text-dim);padding:5px 8px;cursor:pointer;transition:all .2s;display:flex;align-items:center}
+.view-btn:last-child{border-right:none}
+.view-btn:hover{background:rgba(255,255,255,0.04);color:var(--text)}
+.view-btn.active{background:rgba(123,97,255,0.08);color:var(--accent)}
+.view-btn svg{width:14px;height:14px}
+/* Sort */
+.sort-select{
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);
+  border-radius:3px;color:var(--text-dim);font-family:'Jost',sans-serif;
+  font-size:0.6rem;letter-spacing:0.08em;padding:4px 8px;cursor:pointer;
+  outline:none;flex-shrink:0;
+}
+.sort-select option{background:var(--navy);color:var(--text)}
+.result-count{font-size:0.6rem;color:var(--text-dim);letter-spacing:0.08em;flex-shrink:0;white-space:nowrap}
+
+/* ═══════════════════════════════════════════════════════════════
+   CONTENT AREA
+   ═══════════════════════════════════════════════════════════════ */
+main{max-width:1200px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5rem}
+
+/* GRID VIEW */
+.project-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+
+/* LIST VIEW */
+.project-list{display:flex;flex-direction:column;gap:0.5rem}
+
+/* TIER SECTION */
+.tier-section{margin-bottom:2rem}
+.tier-section:last-child{margin-bottom:0}
+.tier-header{display:flex;align-items:center;gap:0.65rem;margin-bottom:1rem;padding-bottom:0.6rem;border-bottom:1px solid rgba(255,255,255,0.05)}
+.tier-dot{width:10px;height:10px;border-radius:2px;flex-shrink:0}
+.tier-header h2{font-family:'Cormorant',serif;font-size:1.35rem;font-weight:300;color:#fff}
+.tier-header .tier-count{font-size:0.58rem;letter-spacing:0.12em;color:var(--text-dim);margin-left:auto}
+
+/* ── GRID CARD ──────────────────────────────────────────────── */
+.pcard{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;
+  overflow:hidden;display:flex;flex-direction:column;
+  transition:border-color .22s,transform .22s,background .22s;
+}
+.pcard:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-2px);background:rgba(255,255,255,0.06)}
+.pcard-top{height:3px;flex-shrink:0}
+.pcard-body{padding:1.25rem 1.25rem 1rem;flex:1;display:flex;flex-direction:column;gap:0.4rem}
+.pcard-header{display:flex;align-items:center;gap:0.75rem}
+.pcard-icon{width:40px;height:40px;border-radius:8px;display:flex;align-items:center;justify-content:center;font-size:0.95rem;font-weight:500;color:#fff;flex-shrink:0;font-family:'Cormorant',serif}
+.pcard-info{flex:1;min-width:0}
+.pcard-name{font-family:'Cormorant',serif;font-size:1.2rem;font-weight:400;color:#fff;line-height:1.15;display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.pcard-ticker{font-size:0.54rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim)}
+.tier-badge{font-size:0.44rem;letter-spacing:0.14em;text-transform:uppercase;padding:2px 7px;border-radius:2px;font-weight:400;border:1px solid;white-space:nowrap}
+.tier-badge.S{color:var(--tier-s);border-color:rgba(196,151,58,0.5);background:rgba(196,151,58,0.08)}
+.tier-badge.A{color:var(--tier-a);border-color:rgba(123,97,255,0.4);background:rgba(123,97,255,0.06)}
+.tier-badge.B{color:var(--tier-b);border-color:rgba(74,154,232,0.3);background:rgba(74,154,232,0.05)}
+.tier-badge.C{color:var(--tier-c);border-color:rgba(112,144,184,0.25);background:rgba(112,144,184,0.04)}
+.tier-badge.D{color:var(--tier-d);border-color:rgba(90,106,122,0.3);background:rgba(90,106,122,0.05)}
+.tier-badge.E{color:var(--tier-e);border-color:rgba(74,82,96,0.3);background:rgba(74,82,96,0.05)}
+.tier-badge.F{color:var(--tier-f);border-color:rgba(58,63,72,0.3);background:rgba(58,63,72,0.05)}
+.pcard-meta{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap}
+.pcard-chain{font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim)}
+.pcard-mcap{font-size:0.48rem;letter-spacing:0.12em;text-transform:uppercase;padding:1px 6px;border-radius:2px;border:1px solid rgba(255,255,255,0.08);color:var(--text-dim)}
+.pcard-tags{display:flex;gap:0.25rem;flex-wrap:wrap}
+.ptag{font-size:0.46rem;letter-spacing:0.12em;text-transform:uppercase;padding:2px 6px;border-radius:2px;border:1px solid rgba(123,97,255,0.2);color:var(--accent);background:rgba(123,97,255,0.04)}
+.pcard-desc{font-size:0.74rem;color:var(--text-dim);line-height:1.55;display:-webkit-box;-webkit-line-clamp:3;-webkit-box-orient:vertical;overflow:hidden}
+.pcard-thesis{font-size:0.7rem;color:var(--text);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.pcard-thesis strong{font-weight:400;color:var(--gold);font-size:0.5rem;letter-spacing:0.12em;text-transform:uppercase;display:block;margin-bottom:0.1rem}
+.pcard-footer{margin-top:auto;padding:0.65rem 1.25rem;border-top:1px solid rgba(255,255,255,0.06);display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.pcard-flink{font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);transition:color .2s}
+.pcard-flink:hover{color:var(--accent)}
+.pcard-flink.primary{color:var(--accent)}
+
+/* ── LIST ROW ───────────────────────────────────────────────── */
+.lrow{
+  display:grid;grid-template-columns:3px 40px 1fr auto auto auto;
+  gap:0.75rem;align-items:center;
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;
+  padding:0.65rem 1rem 0.65rem 0;overflow:hidden;
+  transition:border-color .2s,background .2s;
+}
+.lrow:hover{border-color:rgba(255,255,255,0.16);background:rgba(255,255,255,0.05)}
+.lrow-accent{height:100%;border-radius:3px 0 0 3px}
+.lrow-icon{width:36px;height:36px;border-radius:6px;display:flex;align-items:center;justify-content:center;font-size:0.85rem;font-weight:500;color:#fff;font-family:'Cormorant',serif}
+.lrow-main{min-width:0}
+.lrow-name{font-family:'Cormorant',serif;font-size:1.05rem;font-weight:400;color:#fff;line-height:1.15;display:flex;align-items:center;gap:0.4rem;flex-wrap:wrap}
+.lrow-sub{font-size:0.58rem;color:var(--text-dim);display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-top:0.1rem}
+.lrow-sub span{white-space:nowrap}
+.lrow-cat{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap}
+.lrow-chain{font-size:0.5rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);white-space:nowrap}
+.lrow-link{font-size:0.56rem;letter-spacing:0.08em;color:var(--accent);white-space:nowrap;transition:opacity .2s}
+.lrow-link:hover{opacity:0.8}
+
+/* PRIORITY SECTION — selected tier shown first */
+.priority-divider{
+  max-width:1200px;margin:2rem 0 1.5rem;padding:0.6rem 0;
+  display:flex;align-items:center;gap:1rem;
+  font-size:0.58rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);opacity:0.6;
+}
+.priority-divider::before,.priority-divider::after{content:'';flex:1;height:1px;background:rgba(255,255,255,0.06)}
+
+/* EMPTY */
+.empty{text-align:center;padding:4rem 2rem;color:var(--text-dim);font-size:0.84rem}
+
+/* SYNC NOTE */
+.sync-note{max-width:1200px;margin:1.5rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.56rem;color:var(--text-dim);opacity:0.5;text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:0.5rem}
+.refresh-btn{background:none;border:1px solid rgba(255,255,255,0.1);color:var(--text-dim);font-size:0.56rem;letter-spacing:0.08em;padding:3px 10px;border-radius:2px;cursor:pointer;transition:all .2s;font-family:'Jost',sans-serif}
+.refresh-btn:hover{border-color:rgba(255,255,255,0.3);color:var(--text)}
+.refresh-btn:disabled{opacity:0.4;cursor:wait}
+
+/* LOADING */
+.loading-skeleton{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:1rem}
+.skel-card{background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;height:180px;position:relative;overflow:hidden}
+.skel-card::after{content:'';position:absolute;inset:0;background:linear-gradient(90deg,transparent,rgba(255,255,255,0.03),transparent);animation:shimmer 1.5s infinite}
+@keyframes shimmer{0%{transform:translateX(-100%)}100%{transform:translateX(100%)}}
+
+@media(max-width:720px){
+  .project-grid{grid-template-columns:1fr}
+  .tier-tabs{flex-wrap:wrap}
+  .tier-tab{min-width:calc(25% - 1px);flex:0 0 auto;min-height:44px}
+  .controls-row{gap:0.4rem}
+  .search-box{min-width:100%}
+  .filter-pills{order:3;width:100%}
+  .fpill{min-height:28px;padding:5px 10px}
+  .lrow{grid-template-columns:3px 32px 1fr auto;gap:0.5rem}
+  .lrow-cat,.lrow-chain{display:none}
+}
+@media(max-width:400px){
+  .tier-tab{min-width:calc(33.333% - 1px)}
+  .lrow{grid-template-columns:3px 1fr auto}
+  .lrow-icon{display:none}
+}
+</style>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+</head>
+<body>
+
+<!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
+<style data-frqncy-header-critical>
+/* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
+#main-nav{position:sticky;top:0;width:100%;z-index:500;padding:14px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;background:rgba(11,28,61,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);font-family:'Jost',system-ui,sans-serif}
+#main-nav .nav-logo{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:20px;letter-spacing:.34em;color:#fff;text-decoration:none;text-transform:uppercase}
+#main-nav .nav-links{display:flex;gap:22px;list-style:none;margin:0;padding:0;align-items:center}
+#main-nav .nav-links a{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);text-decoration:none;display:inline-flex;align-items:center;min-height:30px}
+#main-nav .nav-search{display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:2px}
+#main-nav .nav-search input{background:transparent;border:0;outline:0;color:#fff;font:inherit;font-size:10.5px;letter-spacing:.14em;width:clamp(120px,14vw,180px);padding:5px 9px}
+#main-nav .nav-search input::placeholder{color:rgba(255,255,255,.45)}
+#main-nav .nav-search button{background:transparent;border:0;color:rgba(255,255,255,.6);font-size:13px;padding:4px 9px;cursor:pointer}
+#main-nav .nav-back{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:2px;text-decoration:none}
+#main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+#main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
+#main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
+body.frqncy-home #main-nav .nav-back{display:none}
+#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important}
+#main-nav .nav-dd-menu a .dd-label,#main-nav .nav-dd-menu a .dd-sub{display:block !important;text-align:center !important;width:100% !important}
+@media(max-width:720px){#main-nav .nav-links{display:none}}
+</style>
+<nav id="main-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <a href="/about">About</a>
+      <div class="nav-dd-menu">
+        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
+        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/explore.html">Discover</a>
+      <div class="nav-dd-menu">
+        <a href="/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
+        <a href="/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
+        <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
+        <a href="/people/"><span class="dd-label">Browse</span><span class="dd-sub">People · Books · Orgs · Places</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/social/">Community</a>
+      <div class="nav-dd-menu">
+        <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
+        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">Social layer</span></a>
+        <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access</span></a>
+        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
+      </div>
+    </li>
+    <li class="nav-search-li">
+      <form action="/search" method="get" role="search" class="nav-search">
+        <input type="text" role="searchbox" name="q" placeholder="Search…" aria-label="Search the FRQNCY network" autocomplete="off">
+        <button type="submit" aria-label="Search">⌕</button>
+      </form>
+    </li>
+    <li>
+      <a href="/" class="nav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
+    </li>
+    <li>
+      <a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a>
+    </li>
+  </ul>
+</nav>
+<script>
+  // Tag the homepage so CSS can hide the back button there (it's redundant on /).
+  (function(){
+    try {
+      var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
+      if (isHome) document.body.classList.add('frqncy-home');
+    } catch(_) {}
+  })();
+</script>
+<!-- Tiny floating Donate button — bottom-right on every page. Click opens a
+     popover with the EVM + SOL wallet addresses; the full /donate page link
+     sits at the top of the popover. -->
+<style data-frqncy-donate>
+  #frq-donate-btn{position:fixed;right:18px;bottom:18px;z-index:480;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
+  #frq-donate-btn:hover{background:#C4973A;color:#fff;transform:translateY(-1px)}
+  #frq-donate-btn .heart{margin-right:6px;display:inline-block}
+  #frq-donate-pop{position:fixed;right:18px;bottom:64px;z-index:481;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
+  #frq-donate-pop.open{display:block}
+  #frq-donate-pop .frq-pop-title{font-family:'Cormorant',Georgia,serif;font-size:18px;font-weight:400;color:#0B1C3D;margin-bottom:4px}
+  #frq-donate-pop .frq-pop-sub{font-size:11px;color:#8A9AB8;margin-bottom:14px;line-height:1.5}
+  #frq-donate-pop .frq-pop-sub a{color:#C4973A;text-decoration:none}
+  #frq-donate-pop .frq-w-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#C4973A;font-weight:500;margin-top:10px;display:block}
+  #frq-donate-pop .frq-w-addr{font-family:'SFMono-Regular',Menlo,monospace;font-size:11px;color:#0B1C3D;background:#F8FAFC;border:1px solid rgba(11,28,61,.08);padding:8px 10px;border-radius:3px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;word-break:break-all}
+  #frq-donate-pop .frq-w-copy{flex:0 0 auto;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#C4973A;background:transparent;border:1px solid rgba(196,151,58,.5);padding:3px 8px;border-radius:2px;cursor:pointer;font-family:inherit}
+  #frq-donate-pop .frq-w-copy:hover{background:#C4973A;color:#fff}
+  #frq-donate-pop .frq-pop-foot{margin-top:14px;padding-top:12px;border-top:1px solid rgba(11,28,61,.06);font-size:10px;letter-spacing:.06em;color:#8A9AB8;line-height:1.5}
+  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:12px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:54px}}
+</style>
+<button id="frq-donate-btn" type="button" aria-haspopup="dialog" aria-controls="frq-donate-pop" aria-label="Support FRQNCY">
+  <span class="heart" aria-hidden="true">♥</span>Donate
+</button>
+<div id="frq-donate-pop" role="dialog" aria-label="FRQNCY donation wallets">
+  <div class="frq-pop-title">Support FRQNCY</div>
+  <div class="frq-pop-sub">Full details + fiat options on <a href="/donate">/donate</a>.</div>
+  <span class="frq-w-label">EVM · ETH / Base / Arbitrum (USDC, ETH)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="evm">0xPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="evm">Copy</button>
+  </div>
+  <span class="frq-w-label">Solana (SOL / USDC-SPL)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="sol">SOLPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="sol">Copy</button>
+  </div>
+  <div class="frq-pop-foot">Wallets are placeholders until the FRQNY treasury multi-sig goes live. See the crypto stack spec.</div>
+</div>
+<script>
+  (function(){
+    var btn = document.getElementById('frq-donate-btn');
+    var pop = document.getElementById('frq-donate-pop');
+    if (!btn || !pop) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      pop.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!pop.contains(e.target) && e.target !== btn) pop.classList.remove('open');
+    });
+    pop.addEventListener('click', function(e){
+      var t = e.target;
+      if (t && t.dataset && t.dataset.frqCopy) {
+        var which = t.dataset.frqCopy;
+        var addrEl = pop.querySelector('[data-frq-addr="' + which + '"]');
+        if (!addrEl) return;
+        var text = addrEl.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function(){
+            var orig = t.textContent;
+            t.textContent = 'Copied';
+            setTimeout(function(){ t.textContent = orig; }, 1200);
+          });
+        }
+      }
+    });
+  })();
+</script>
+<!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
+
+<section class="hero">
+  <div class="hero-eyebrow">crypto.frqncy · Ratings</div>
+  <h1>Conviction, Stated Plainly</h1>
+  <p class="hero-desc">Every project read in front of you, then rated. Diamond for the ones built to last. Gold, Silver, Utility for the rest. No hedging. No financial advice — you still do your own work, but the homework is shown.</p>
+  <p class="disclaimer">Not financial advice. Conviction is conviction. You decide.</p>
+</section>
+
+<!-- ═══════════════════════════════════════════════════════════════
+     STICKY TIER STRIP + CONTROLS
+     ═══════════════════════════════════════════════════════════════ -->
+<div class="tier-strip">
+  <div class="tier-strip-inner">
+
+    <!-- Tier tabs — the primary browsing axis -->
+    <div class="tier-tabs" id="tier-tabs" role="tablist">
+      <button class="tier-tab active" data-tier="all" role="tab" aria-selected="true">
+        <span class="tier-tab-letter">All</span>
+        <span class="tier-tab-count" id="count-all">—</span>
+      </button>
+      <button class="tier-tab" data-tier="S" role="tab">
+        <span class="tier-tab-letter">S</span>
+        <span class="tier-tab-label">Diamond</span>
+        <span class="tier-tab-count" id="count-S">—</span>
+      </button>
+      <button class="tier-tab" data-tier="A" role="tab">
+        <span class="tier-tab-letter">A</span>
+        <span class="tier-tab-label">Gold</span>
+        <span class="tier-tab-count" id="count-A">—</span>
+      </button>
+      <button class="tier-tab" data-tier="B" role="tab">
+        <span class="tier-tab-letter">B</span>
+        <span class="tier-tab-label">Silver</span>
+        <span class="tier-tab-count" id="count-B">—</span>
+      </button>
+      <button class="tier-tab" data-tier="C" role="tab">
+        <span class="tier-tab-letter">C</span>
+        <span class="tier-tab-label">Utility</span>
+        <span class="tier-tab-count" id="count-C">—</span>
+      </button>
+      <button class="tier-tab" data-tier="D" role="tab">
+        <span class="tier-tab-letter">D</span>
+        <span class="tier-tab-label">Speculative</span>
+        <span class="tier-tab-count" id="count-D">—</span>
+      </button>
+      <button class="tier-tab" data-tier="E" role="tab">
+        <span class="tier-tab-letter">E</span>
+        <span class="tier-tab-label">Caution</span>
+        <span class="tier-tab-count" id="count-E">—</span>
+      </button>
+      <button class="tier-tab" data-tier="F" role="tab">
+        <span class="tier-tab-letter">F</span>
+        <span class="tier-tab-label">Avoid</span>
+        <span class="tier-tab-count" id="count-F">—</span>
+      </button>
+    </div>
+
+    <!-- Search + category filter + view toggle -->
+    <div class="controls-row">
+      <div class="search-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><circle cx="11" cy="11" r="8"/><path d="m21 21-4.35-4.35"/></svg>
+        <label for="search" class="sr-only" style="position:absolute;left:-9999px">Search projects</label>
+        <input type="text" id="search" placeholder="Search projects, tickers, chains..." autocomplete="off" spellcheck="false" aria-label="Search projects, tickers, chains">
+      </div>
+      <div class="filter-pills" id="cat-pills"></div>
+      <select class="sort-select" id="sort-select" aria-label="Sort projects">
+        <option value="tier">Sort: Tier</option>
+        <option value="name">Sort: A → Z</option>
+        <option value="name-desc">Sort: Z → A</option>
+        <option value="category">Sort: Category</option>
+      </select>
+      <div class="view-toggle" role="group" aria-label="View mode">
+        <button class="view-btn active" data-view="grid" title="Grid view" aria-label="Grid view" aria-pressed="true">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
+        </button>
+        <button class="view-btn" data-view="list" title="List view" aria-label="List view" aria-pressed="false">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" aria-hidden="true"><path d="M8 6h13M8 12h13M8 18h13M3 6h.01M3 12h.01M3 18h.01"/></svg>
+        </button>
+      </div>
+      <span class="result-count" id="result-count"></span>
+    </div>
+
+  </div>
+</div>
+
+<main id="content">
+  <div class="loading-skeleton">
+    <div class="skel-card"></div><div class="skel-card"></div><div class="skel-card"></div>
+    <div class="skel-card"></div><div class="skel-card"></div><div class="skel-card"></div>
+  </div>
+</main>
+
+<div class="sync-note" id="sync-note">
+  <button id="refresh-btn" class="refresh-btn" onclick="refreshData()" title="Refresh from Notion" aria-label="Refresh project data from Notion">&#8635; Refresh</button>
+  <span id="sync-text" aria-live="polite"></span>
+</div>
+
+<script>
+/* ════════════════════════════════════════════════════════════════
+   DATA & CONFIG
+   ════════════════════════════════════════════════════════════════ */
+let ALL_PROJECTS = [];
+const TIER_ORDER = ['S','A','B','C','D','E','F','NR',''];
+const TIER_COLORS = {S:'#C4973A',A:'#7B61FF',B:'#4A9AE8',C:'#7090B8',D:'#5A6A7A',E:'#4A5260',F:'#3A3F48',NR:'#4A5568','':'#4A5568'};
+const TIER_NAMES = {S:'Diamond',A:'Gold',B:'Silver',C:'Utility',D:'Speculative',E:'Caution',F:'Avoid',NR:'Unrated','':'Unrated'};
+
+/* State */
+let activeTier = 'all';
+let activeCat = 'all';
+let searchQuery = '';
+let sortMode = 'tier';
+let viewMode = 'grid';
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+/* Extract CoinGecko coin id from a CoinGecko URL.
+   e.g. https://www.coingecko.com/en/coins/bitcoin → "bitcoin" */
+function cgIdFromUrl(url) {
+  if (!url) return '';
+  const m = String(url).match(/\/coins\/([^/?#]+)/);
+  return m ? m[1].toLowerCase() : '';
+}
+
+/* ════════════════════════════════════════════════════════════════
+   TIER TABS — click handler
+   ════════════════════════════════════════════════════════════════ */
+document.getElementById('tier-tabs').addEventListener('click', e => {
+  const tab = e.target.closest('.tier-tab');
+  if (!tab) return;
+  document.querySelectorAll('.tier-tab').forEach(t => { t.classList.remove('active'); t.setAttribute('aria-selected','false'); });
+  tab.classList.add('active');
+  tab.setAttribute('aria-selected','true');
+  activeTier = tab.dataset.tier;
+  render();
+});
+
+/* ════════════════════════════════════════════════════════════════
+   SEARCH — debounced
+   ════════════════════════════════════════════════════════════════ */
+let searchTimer;
+document.getElementById('search').addEventListener('input', e => {
+  clearTimeout(searchTimer);
+  searchTimer = setTimeout(() => { searchQuery = e.target.value.trim().toLowerCase(); render(); }, 150);
+});
+
+/* ════════════════════════════════════════════════════════════════
+   SORT
+   ════════════════════════════════════════════════════════════════ */
+document.getElementById('sort-select').addEventListener('change', e => {
+  sortMode = e.target.value;
+  render();
+});
+
+/* ════════════════════════════════════════════════════════════════
+   VIEW TOGGLE
+   ════════════════════════════════════════════════════════════════ */
+document.querySelector('.view-toggle').addEventListener('click', e => {
+  const btn = e.target.closest('.view-btn');
+  if (!btn) return;
+  document.querySelectorAll('.view-btn').forEach(b => { b.classList.remove('active'); b.setAttribute('aria-pressed','false'); });
+  btn.classList.add('active');
+  btn.setAttribute('aria-pressed','true');
+  viewMode = btn.dataset.view;
+  render();
+});
+
+/* ════════════════════════════════════════════════════════════════
+   CATEGORY PILLS
+   ════════════════════════════════════════════════════════════════ */
+function buildCatPills(projects) {
+  const cats = [...new Set(projects.map(p => p.category).filter(Boolean))].sort();
+  const container = document.getElementById('cat-pills');
+  container.innerHTML = '';
+  const allPill = mk('button','fpill active');
+  allPill.textContent = 'All';
+  allPill.dataset.cat = 'all';
+  container.appendChild(allPill);
+  for (const cat of cats.slice(0, 15)) { // Top 15 categories
+    const pill = mk('button','fpill');
+    pill.textContent = cat;
+    pill.dataset.cat = cat;
+    container.appendChild(pill);
+  }
+  container.addEventListener('click', e => {
+    const pill = e.target.closest('.fpill');
+    if (!pill) return;
+    container.querySelectorAll('.fpill').forEach(p => p.classList.remove('active'));
+    pill.classList.add('active');
+    activeCat = pill.dataset.cat;
+    render();
+  });
+}
+
+function mk(tag, cls) { const el = document.createElement(tag); el.className = cls; return el; }
+
+/* ════════════════════════════════════════════════════════════════
+   UPDATE TIER COUNTS
+   ════════════════════════════════════════════════════════════════ */
+function updateCounts(projects) {
+  const counts = {};
+  for (const p of projects) {
+    const t = p.tier || '';
+    counts[t] = (counts[t] || 0) + 1;
+  }
+  document.getElementById('count-all').textContent = projects.length;
+  for (const tier of ['S','A','B','C','D','E','F']) {
+    const el = document.getElementById('count-' + tier);
+    if (el) el.textContent = counts[tier] || 0;
+  }
+}
+
+/* ════════════════════════════════════════════════════════════════
+   RENDER
+   ════════════════════════════════════════════════════════════════ */
+function render() {
+  const container = document.getElementById('content');
+
+  /* Filter by search + category (NOT tier — tier is handled by priority layout) */
+  let filtered = ALL_PROJECTS.filter(p => {
+    if (activeCat !== 'all' && p.category !== activeCat) return false;
+    if (searchQuery) {
+      const hay = (p.name + ' ' + p.ticker + ' ' + p.chain + ' ' + p.category + ' ' + p.desc).toLowerCase();
+      if (!hay.includes(searchQuery)) return false;
+    }
+    return true;
+  });
+
+  /* Sort */
+  filtered = sortProjects(filtered, sortMode);
+
+  /* Split into priority (selected tier) and rest */
+  let priority = [];
+  let rest = [];
+  if (activeTier !== 'all') {
+    priority = filtered.filter(p => (p.tier || '') === activeTier);
+    rest = filtered.filter(p => (p.tier || '') !== activeTier);
+  } else {
+    priority = filtered;
+    rest = [];
+  }
+
+  /* Result count */
+  const total = priority.length + rest.length;
+  document.getElementById('result-count').textContent = total + ' project' + (total !== 1 ? 's' : '') + (activeTier !== 'all' ? ' · ' + priority.length + ' ' + (TIER_NAMES[activeTier]||activeTier) : '');
+
+  if (!total) {
+    container.innerHTML = '<div class="empty">No projects match your filters. Try broadening your search.</div>';
+    return;
+  }
+
+  container.innerHTML = '';
+
+  if (viewMode === 'list') {
+    renderList(container, priority, rest);
+  } else {
+    renderGrid(container, priority, rest);
+  }
+
+  // Repaint any live market prices onto newly-rendered cards
+  if (window.FRQNCY_MARKET && typeof window.FRQNCY_MARKET.repaint === 'function') {
+    window.FRQNCY_MARKET.repaint();
+  }
+}
+
+function sortProjects(arr, mode) {
+  const copy = [...arr];
+  if (mode === 'name') return copy.sort((a,b) => a.name.localeCompare(b.name));
+  if (mode === 'name-desc') return copy.sort((a,b) => b.name.localeCompare(a.name));
+  if (mode === 'category') return copy.sort((a,b) => (a.category||'').localeCompare(b.category||'') || TIER_ORDER.indexOf(a.tier||'') - TIER_ORDER.indexOf(b.tier||''));
+  // Default: tier
+  return copy.sort((a,b) => TIER_ORDER.indexOf(a.tier||'') - TIER_ORDER.indexOf(b.tier||'') || a.name.localeCompare(b.name));
+}
+
+/* ── GRID VIEW ──────────────────────────────────────────────── */
+function renderGrid(container, priority, rest) {
+  /* Render priority projects */
+  if (activeTier !== 'all' && priority.length) {
+    /* Single tier selected — show as flat grid (they're all the same tier) */
+    const grid = mk('div','project-grid');
+    for (const p of priority) grid.appendChild(makeGridCard(p));
+    container.appendChild(grid);
+  } else if (sortMode === 'tier') {
+    /* All tiers, sort by tier — group by tier headers */
+    for (const tier of TIER_ORDER) {
+      const group = priority.filter(p => (p.tier||'') === tier);
+      if (!group.length) continue;
+      const section = mk('div','tier-section');
+      section.innerHTML = `<div class="tier-header"><div class="tier-dot" style="background:${TIER_COLORS[tier]}"></div><h2>${esc(TIER_NAMES[tier])}</h2><span class="tier-count">${group.length}</span></div>`;
+      const grid = mk('div','project-grid');
+      for (const p of group) grid.appendChild(makeGridCard(p));
+      section.appendChild(grid);
+      container.appendChild(section);
+    }
+  } else {
+    const grid = mk('div','project-grid');
+    for (const p of priority) grid.appendChild(makeGridCard(p));
+    container.appendChild(grid);
+  }
+
+  /* Render remaining projects (other tiers) below a divider */
+  if (rest.length) {
+    const divider = mk('div','priority-divider');
+    divider.textContent = 'Other tiers';
+    container.appendChild(divider);
+
+    if (sortMode === 'tier') {
+      for (const tier of TIER_ORDER) {
+        const group = rest.filter(p => (p.tier||'') === tier);
+        if (!group.length) continue;
+        const section = mk('div','tier-section');
+        section.innerHTML = `<div class="tier-header"><div class="tier-dot" style="background:${TIER_COLORS[tier]}"></div><h2>${esc(TIER_NAMES[tier])}</h2><span class="tier-count">${group.length}</span></div>`;
+        const grid = mk('div','project-grid');
+        for (const p of group) grid.appendChild(makeGridCard(p));
+        section.appendChild(grid);
+        container.appendChild(section);
+      }
+    } else {
+      const grid = mk('div','project-grid');
+      for (const p of rest) grid.appendChild(makeGridCard(p));
+      container.appendChild(grid);
+    }
+  }
+}
+
+function makeGridCard(p) {
+  const card = mk('div','pcard');
+  const init = p.name.slice(0,2).toUpperCase();
+  const tierColor = TIER_COLORS[p.tier] || TIER_COLORS[''];
+  const accent = p.accent || '#7B61FF';
+
+  const cgid = cgIdFromUrl(p.coingecko);
+  if (cgid) card.setAttribute('data-cgid', cgid);
+
+  let linksHtml = '';
+  if (p.coingecko) linksHtml += `<a href="${esc(p.coingecko)}" target="_blank" rel="noopener noreferrer" class="pcard-flink primary">CoinGecko →</a>`;
+
+  card.innerHTML = `
+    <div class="pcard-top" style="background:${tierColor}"></div>
+    <div class="pcard-body">
+      <div class="pcard-header">
+        <div class="pcard-icon" style="background:linear-gradient(135deg,${accent}40,${accent}20);border:1px solid ${accent}50">${init}</div>
+        <div class="pcard-info">
+          <div class="pcard-name">${esc(p.name)} <span class="tier-badge ${p.tier||''}">${esc(p.tier ? TIER_NAMES[p.tier] : 'Unrated')}</span></div>
+          <div class="pcard-ticker">${esc(p.ticker)}${p.chain ? ' · '+esc(p.chain) : ''}</div>
+        </div>
+      </div>
+      ${p.category ? `<div class="pcard-tags"><span class="ptag">${esc(p.category)}</span></div>` : ''}
+      ${p.desc ? `<div class="pcard-desc">${esc(p.desc)}</div>` : ''}
+      ${p.thesis ? `<div class="pcard-thesis"><strong>Conviction</strong>${esc(p.thesis)}</div>` : ''}
+    </div>
+    ${linksHtml ? `<div class="pcard-footer">${linksHtml}</div>` : ''}
+  `;
+  return card;
+}
+
+/* ── LIST VIEW ──────────────────────────────────────────────── */
+function renderList(container, priority, rest) {
+  function renderListGroup(items, parent) {
+    if (sortMode === 'tier' && activeTier === 'all') {
+      for (const tier of TIER_ORDER) {
+        const group = items.filter(p => (p.tier||'') === tier);
+        if (!group.length) continue;
+        const section = mk('div','tier-section');
+        section.innerHTML = `<div class="tier-header"><div class="tier-dot" style="background:${TIER_COLORS[tier]}"></div><h2>${esc(TIER_NAMES[tier])}</h2><span class="tier-count">${group.length}</span></div>`;
+        const list = mk('div','project-list');
+        for (const p of group) list.appendChild(makeListRow(p));
+        section.appendChild(list);
+        parent.appendChild(section);
+      }
+    } else {
+      const list = mk('div','project-list');
+      for (const p of items) list.appendChild(makeListRow(p));
+      parent.appendChild(list);
+    }
+  }
+
+  renderListGroup(priority, container);
+
+  if (rest.length) {
+    const divider = mk('div','priority-divider');
+    divider.textContent = 'Other tiers';
+    container.appendChild(divider);
+    renderListGroup(rest, container);
+  }
+}
+
+function makeListRow(p) {
+  const row = mk('div','lrow');
+  const tierColor = TIER_COLORS[p.tier] || TIER_COLORS[''];
+  const accent = p.accent || '#7B61FF';
+  const init = p.name.slice(0,2).toUpperCase();
+  // Note: live prices are only painted on grid cards (.pcard). The list row's
+  // fixed 6-column grid makes inline price insertion tricky — keeping list view
+  // text-only so the grid layout stays stable.
+
+  row.innerHTML = `
+    <div class="lrow-accent" style="background:${tierColor}"></div>
+    <div class="lrow-icon" style="background:linear-gradient(135deg,${accent}40,${accent}20);border:1px solid ${accent}40">${init}</div>
+    <div class="lrow-main">
+      <div class="lrow-name">${esc(p.name)} ${p.ticker ? `<span style="font-family:Jost;font-size:0.56rem;letter-spacing:0.12em;color:var(--text-dim)">${esc(p.ticker)}</span>` : ''} <span class="tier-badge ${p.tier||''}">${esc(p.tier||'NR')}</span></div>
+      <div class="lrow-sub">${p.chain ? `<span>${esc(p.chain)}</span>` : ''}${p.mcap ? ` <span>· ${esc(p.mcap)}</span>` : ''}</div>
+    </div>
+    <span class="lrow-cat">${esc(p.category||'')}</span>
+    <span class="lrow-chain">${esc(p.chain||'')}</span>
+    ${p.coingecko ? `<a href="${esc(p.coingecko)}" target="_blank" rel="noopener noreferrer" class="lrow-link">CoinGecko →</a>` : '<span></span>'}
+  `;
+  return row;
+}
+
+/* ════════════════════════════════════════════════════════════════
+   DATA LOADING — Fast: localStorage → static JSON → API upgrade
+   ════════════════════════════════════════════════════════════════ */
+const LS_KEY = 'frqncy_crypto_projects';
+const LS_MAX_AGE = 30 * 60 * 1000; // 30 min
+
+function mapApiProjects(data) {
+  return data.projects.map(p => ({
+    name: p.name,
+    ticker: p.symbol || '',
+    tier: p.tier || '',
+    category: p.category || '',
+    chain: p.type || '',
+    mcap: p.mcap || '',
+    desc: p.thesis || '',
+    thesis: p.conviction || '',
+    coingecko: p.coingecko || '',
+    accent: p.accent || '#7B61FF',
+  }));
+}
+
+function saveToLocal(projects, lastSync, source) {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      ts: Date.now(), lastSync, projects, source
+    }));
+  } catch(_) { /* quota exceeded — ignore */ }
+}
+
+function loadFromLocal() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return null;
+    const data = JSON.parse(raw);
+    if (Date.now() - data.ts > LS_MAX_AGE) return null;
+    return data;
+  } catch(_) { return null; }
+}
+
+function updateSyncNote(source, lastSync) {
+  const el = document.getElementById('sync-text');
+  const label = source === 'api' ? 'Live from Notion' : source === 'cache' ? 'Cached' : 'Offline';
+  el.textContent = label + ' · ' + (lastSync ? new Date(lastSync).toLocaleString() : 'unknown');
+}
+
+function hydrateUI(projects, lastSync, source) {
+  ALL_PROJECTS = projects;
+  updateCounts(ALL_PROJECTS);
+  buildCatPills(ALL_PROJECTS);
+  applyHashTier();
+  render();
+  updateSyncNote(source, lastSync);
+}
+
+function applyHashTier() {
+  const hash = location.hash.replace('#','').toUpperCase();
+  if (hash && TIER_ORDER.includes(hash)) {
+    activeTier = hash;
+    document.querySelectorAll('.tier-tab').forEach(t => {
+      t.classList.toggle('active', t.dataset.tier === hash);
+      t.setAttribute('aria-selected', t.dataset.tier === hash ? 'true' : 'false');
+    });
+  }
+}
+
+async function loadData() {
+  let rendered = false;
+
+  /* ── Step 1: Instant paint from localStorage ────────────── */
+  const local = loadFromLocal();
+  if (local && local.projects && local.projects.length) {
+    hydrateUI(local.projects, local.lastSync, 'cache');
+    rendered = true;
+  }
+
+  /* ── Step 2: If no local cache, load static JSON for fast first paint */
+  if (!rendered) {
+    try {
+      const res = await fetch('crypto-projects.json');
+      if (res.ok) {
+        const data = await res.json();
+        const projects = data.projects || [];
+        if (projects.length) {
+          hydrateUI(projects, data.lastSync, 'offline');
+          saveToLocal(projects, data.lastSync, 'offline');
+          rendered = true;
+        }
+      }
+    } catch(_) { /* continue to API */ }
+  }
+
+  /* ── Step 3: Upgrade from live API in background ────────── */
+  try {
+    const res = await fetch('/api/crypto/projects');
+    if (!res.ok) throw new Error('API ' + res.status);
+    const data = await res.json();
+    const projects = mapApiProjects(data);
+    if (projects.length) {
+      hydrateUI(projects, data.lastSync, 'api');
+      saveToLocal(projects, data.lastSync, 'api');
+      rendered = true;
+    }
+  } catch(_) {
+    /* API failed — if we already rendered from cache/JSON, that's fine */
+    if (!rendered) {
+      document.getElementById('content').innerHTML = '<div class="empty">Failed to load projects. <button onclick="loadData()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></div>';
+    }
+  }
+}
+
+async function refreshData() {
+  const btn = document.getElementById('refresh-btn');
+  btn.disabled = true;
+  btn.textContent = '\u21BB Refreshing\u2026';
+  try {
+    const res = await fetch('/api/crypto/projects?refresh=true');
+    if (!res.ok) throw new Error('Refresh failed');
+    const data = await res.json();
+    const projects = mapApiProjects(data);
+    hydrateUI(projects, data.lastSync, 'api');
+    saveToLocal(projects, data.lastSync, 'api');
+  } catch {
+    document.getElementById('sync-text').textContent = 'Refresh failed — showing cached data';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '\u21BB Refresh';
+  }
+}
+
+loadData();
+</script>
+</body>
+</html>

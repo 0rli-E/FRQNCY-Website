@@ -138,17 +138,17 @@
       }
       var fallbackLinks = [
         { label: 'Home', href: base + 'index.html' },
-        { label: 'Explore', href: base + 'v2/explore.html' },
-        { label: 'Watch', href: base + 'v2/watch/index.html' },
-        { label: 'Courses', href: base + 'v2/courses/index.html' },
+        { label: 'Explore', href: base + 'explore.html' },
+        { label: 'Watch', href: base + 'watch/index.html' },
+        { label: 'Courses', href: base + 'courses/index.html' },
         { label: 'Search', href: base + 'search.html' },
         { label: 'About', href: base + 'about.html' },
         { label: 'Podcast', href: base + 'podcast.html' },
         { label: 'Space', href: base + 'space.html' },
         { label: 'Chart', href: base + 'chart.html' },
-        { label: 'People', href: base + 'v2/people/index.html' },
-        { label: 'Crypto', href: base + 'v2/crypto/index.html' },
-        { label: 'Fund', href: base + 'v2/fund/index.html' },
+        { label: 'People', href: base + 'people/index.html' },
+        { label: 'Crypto', href: base + 'crypto/index.html' },
+        { label: 'Fund', href: base + 'fund/index.html' },
         { label: 'My FRQNCY', href: base + 'my-frqncy.html' }
       ];
       fallbackLinks.forEach(function(item) {

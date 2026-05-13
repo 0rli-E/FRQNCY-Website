@@ -508,8 +508,8 @@ Every auto-generated topic page (`/v2/<topic>/`) currently opens with eyebrow + 
 | 5 | index.html | OPERATIONAL (live site) | High | Hero structure, meta description (flagged for fix) |
 | 6 | about.html | OPERATIONAL (live site) | High | Hero, pillars, team section (mixed quality) |
 | 7 | start-here.html | OPERATIONAL (live site) | High | Most grounded copy currently shipping |
-| 8 | v2/fund/index.html | OPERATIONAL (live site, bespoke) | High | Cleanest single-phrase positioning on the site |
-| 9 | v2/decentralised-ai/, /oneness/, /peace/ | OPERATIONAL (auto-generated) | Medium (template) | The structural voice gap to close |
+| 8 | fund/index.html | OPERATIONAL (live site, bespoke) | High | Cleanest single-phrase positioning on the site |
+| 9 | decentralised-ai/, /oneness/, /peace/ | OPERATIONAL (auto-generated) | Medium (template) | The structural voice gap to close |
 | 10 | my-frqncy.html | OPERATIONAL (live site) | High | Best micro-copy on the site (constellation metaphor) |
 | 11 | proposals/VISION-1H-DEMO.md | STRATEGIC | High | North-star framing, "the site reads like a book" |
 | 12 | proposals/REVENUE-MODEL.md | STRATEGIC (policy) | High | Editorial standards as precondition; load-bearing free layer |

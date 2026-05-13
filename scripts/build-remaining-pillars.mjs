@@ -1,14 +1,14 @@
 #!/usr/bin/env node
 // Builds the 6 remaining canonical pillar pages from the Sell scaffold.
 //
-// Reads v2/sell/index.html, applies pillar-specific substitutions per the
-// PILLARS config below, writes to v2/<slug>/index.html. Each output gets
+// Reads sell/index.html, applies pillar-specific substitutions per the
+// PILLARS config below, writes to <slug>/index.html. Each output gets
 // the BESPOKE-LOCK marker (inherited from sell) so generate.js will leave
 // it alone.
 //
 // Run: node scripts/build-remaining-pillars.mjs
 //
-// To rebuild a single pillar: edit its config + delete v2/<slug>/index.html
+// To rebuild a single pillar: edit its config + delete <slug>/index.html
 // then re-run. Existing files are overwritten.
 
 import { promises as fs } from 'node:fs';
@@ -16,7 +16,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
-const sellSrc = await fs.readFile(path.join(ROOT, 'v2/sell/index.html'), 'utf8');
+const sellSrc = await fs.readFile(path.join(ROOT, 'sell/index.html'), 'utf8');
 const TODAY = '2026-05-09';
 const TODAY_HUMAN = 'May 9, 2026';
 
@@ -28,9 +28,9 @@ const M = {
    ──────────────────────────────────────────────────────────────────── */`,
   accentCssComment: `  /* Wellbeing-specific accent — vital sage / living-green */`,
   bodyClass: `main.wellbeing-body { position: relative; background: var(--navy); padding: 0 clamp(1.5rem, 5vw, 3rem); }`,
-  ldJson: `<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Wellbeing — The body knows how","description":"A field guide to the six pillars of vitality and the lineages worth listening to.","url":"https://frqncy.network/v2/sell/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Explore","item":"https://frqncy.network/v2/explore.html"},{"@type":"ListItem","position":3,"name":"Wellbeing","item":"https://frqncy.network/v2/sell/"}]}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://frqncy.network/v2/sell/","url":"https://frqncy.network/v2/sell/","hasPart":[{"@type":"WebPageElement","name":"Five small things, repeated.","url":"https://frqncy.network/v2/sell/#five-small-things-repeated"}]}</script>`,
-  breadcrumb: `      <a href="/v2/explore.html">Explore</a><span class="sep">/</span>
+  ldJson: `<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Wellbeing — The body knows how","description":"A field guide to the six pillars of vitality and the lineages worth listening to.","url":"https://frqncy.network/sell/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Explore","item":"https://frqncy.network/explore.html"},{"@type":"ListItem","position":3,"name":"Wellbeing","item":"https://frqncy.network/sell/"}]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://frqncy.network/sell/","url":"https://frqncy.network/sell/","hasPart":[{"@type":"WebPageElement","name":"Five small things, repeated.","url":"https://frqncy.network/sell/#five-small-things-repeated"}]}</script>`,
+  breadcrumb: `      <a href="/explore.html">Explore</a><span class="sep">/</span>
       <span>Wellbeing</span>`,
   hero: `      <div class="hero-eyebrow">Sell · Pillar · How we exchange value</div>
       <h1 class="hero-title">Sell</h1>
@@ -56,7 +56,7 @@ const M = {
       <div class="pick-eyebrow">01 / Watch first</div>
       <h4>How Great Leaders Inspire Action</h4>
       <p>Simon Sinek, TED, 2009. The Golden Circle.</p>
-      <a class="pick-link" href="/v2/watch/" target="_blank" rel="noopener noreferrer">Open Watch →</a>
+      <a class="pick-link" href="/watch/" target="_blank" rel="noopener noreferrer">Open Watch →</a>
     </div>
 
     <div class="pick">
@@ -179,7 +179,7 @@ const M = {
   </p>
 </section>`,
   constellationHeading: `Sell across the <strong>network.</strong>`,
-  constellationCta: `      <a href="/v2/explore.html?focus=sell" class="constellation-cta">Explore the full reach of Sell ↗</a>`,
+  constellationCta: `      <a href="/explore.html?focus=sell" class="constellation-cta">Explore the full reach of Sell ↗</a>`,
   closing: `    <blockquote style="border:0; padding:0; margin:0;">
       Start with why.
       <cite>Simon Sinek · The Golden Circle</cite>
@@ -266,8 +266,8 @@ function renderClosing({ text, cite }) {
 }
 
 function renderLdJson({ slug, title, articleHeadline, articleDesc, breadcrumbName, hasPartName, hasPartAnchor }) {
-  return `<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":${JSON.stringify(articleHeadline)},"description":${JSON.stringify(articleDesc)},"url":"https://frqncy.network/v2/${slug}/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Explore","item":"https://frqncy.network/v2/explore.html"},{"@type":"ListItem","position":3,"name":${JSON.stringify(breadcrumbName)},"item":"https://frqncy.network/v2/${slug}/"}]}}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://frqncy.network/v2/${slug}/","url":"https://frqncy.network/v2/${slug}/","hasPart":[{"@type":"WebPageElement","name":${JSON.stringify(hasPartName)},"url":"https://frqncy.network/v2/${slug}/#${hasPartAnchor}"}]}</script>`;
+  return `<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":${JSON.stringify(articleHeadline)},"description":${JSON.stringify(articleDesc)},"url":"https://frqncy.network/${slug}/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Explore","item":"https://frqncy.network/explore.html"},{"@type":"ListItem","position":3,"name":${JSON.stringify(breadcrumbName)},"item":"https://frqncy.network/${slug}/"}]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://frqncy.network/${slug}/","url":"https://frqncy.network/${slug}/","hasPart":[{"@type":"WebPageElement","name":${JSON.stringify(hasPartName)},"url":"https://frqncy.network/${slug}/#${hasPartAnchor}"}]}</script>`;
 }
 
 // ── Pillar configs ───────────────────────────────────────────────────────
@@ -649,7 +649,7 @@ function applyPillar(slug, cfg) {
   out = out.replace(M.ldJson, newLdJson);
 
   // Breadcrumb nav.
-  const newBreadcrumb = `      <a href="/v2/explore.html">Explore</a><span class="sep">/</span>
+  const newBreadcrumb = `      <a href="/explore.html">Explore</a><span class="sep">/</span>
       <span>${cfg.breadcrumbName}</span>`;
   if (!out.includes(M.breadcrumb)) throw new Error(`[${slug}] breadcrumb marker not found`);
   out = out.replace(M.breadcrumb, newBreadcrumb);
@@ -685,7 +685,7 @@ function applyPillar(slug, cfg) {
   out = out.replace(M.constellationHeading, newConstellationHeading);
 
   // Constellation CTA.
-  const newConstellationCta = `      <a href="/v2/explore.html?focus=${slug}" class="constellation-cta">Explore the full reach of ${cfg.title} ↗</a>`;
+  const newConstellationCta = `      <a href="/explore.html?focus=${slug}" class="constellation-cta">Explore the full reach of ${cfg.title} ↗</a>`;
   if (!out.includes(M.constellationCta)) throw new Error(`[${slug}] constellationCta marker not found`);
   out = out.replace(M.constellationCta, newConstellationCta);
 
@@ -704,8 +704,8 @@ function applyPillar(slug, cfg) {
 
   // Whole-file URL/title/asset replacements (AFTER block swaps, because some
   // sell URLs were inside the original markers).
-  out = out.replaceAll('https://frqncy.network/v2/sell/', `https://frqncy.network/v2/${slug}/`);
-  out = out.replaceAll('/v2/og/sell.png', `/v2/og/${slug}.png`);
+  out = out.replaceAll('https://frqncy.network/sell/', `https://frqncy.network/${slug}/`);
+  out = out.replaceAll('/og/sell.png', `/og/${slug}.png`);
   out = out.replaceAll('Sell — FRQNCY Network', `${cfg.title} — FRQNCY Network`);
   out = out.replaceAll(
     "Commerce as transparent service — the way FRQNCY sells. Anchored on Sinek’s Golden Circle: WHY first, HOW second, WHAT last.",

@@ -52,19 +52,19 @@ Free access lives on GoldSilver.com and the official YouTube playlist: https://w
 Paste-ready entries matching the existing schema. Topic placement follows the convention used by other Money-domain entries (cryptocurrency, conscious-capital, prosperity-mindset).
 
 ```json
-{"type":"person","name":"Mike Maloney","desc":"Monetary historian and educator whose Hidden Secrets of Money series and Guide to Investing in Gold and Silver have introduced millions to the distinction between money and currency, the seven attributes of money, and the long arc of empire and inflation.","url":"/people/mike-maloney/","topicSlug":"cryptocurrency","topicLabel":"Cryptocurrency","topicUrl":"/v2/cryptocurrency/","domain":"Money","domainSlug":"money","external":"https://goldsilver.com"}
+{"type":"person","name":"Mike Maloney","desc":"Monetary historian and educator whose Hidden Secrets of Money series and Guide to Investing in Gold and Silver have introduced millions to the distinction between money and currency, the seven attributes of money, and the long arc of empire and inflation.","url":"/people/mike-maloney/","topicSlug":"cryptocurrency","topicLabel":"Cryptocurrency","topicUrl":"/cryptocurrency/","domain":"Money","domainSlug":"money","external":"https://goldsilver.com"}
 ```
 
 ```json
-{"type":"media","name":"Hidden Secrets of Money","desc":"Mike Maloney's free ten-episode documentary series on monetary history — the difference between money and currency, the seven stages of empire, and how every fiat system in history has reverted to its intrinsic value.","url":"/media/hidden-secrets-of-money/","topicSlug":"cryptocurrency","topicLabel":"Cryptocurrency","topicUrl":"/v2/cryptocurrency/","domain":"Money","domainSlug":"money","external":"https://goldsilver.com/hidden-secrets/"}
+{"type":"media","name":"Hidden Secrets of Money","desc":"Mike Maloney's free ten-episode documentary series on monetary history — the difference between money and currency, the seven stages of empire, and how every fiat system in history has reverted to its intrinsic value.","url":"/media/hidden-secrets-of-money/","topicSlug":"cryptocurrency","topicLabel":"Cryptocurrency","topicUrl":"/cryptocurrency/","domain":"Money","domainSlug":"money","external":"https://goldsilver.com/hidden-secrets/"}
 ```
 
 ```json
-{"type":"book","name":"Guide to Investing in Gold and Silver — Mike Maloney","desc":"The textbook companion to Hidden Secrets of Money. Explains the seven attributes of money, the boom-bust cycle, and the historical case for precious metals as a store of value across collapsing currency regimes.","url":"/books/guide-to-investing-in-gold-and-silver/","topicSlug":"cryptocurrency","topicLabel":"Cryptocurrency","topicUrl":"/v2/cryptocurrency/","domain":"Money","domainSlug":"money","external":"https://goldsilver.com/books/"}
+{"type":"book","name":"Guide to Investing in Gold and Silver — Mike Maloney","desc":"The textbook companion to Hidden Secrets of Money. Explains the seven attributes of money, the boom-bust cycle, and the historical case for precious metals as a store of value across collapsing currency regimes.","url":"/books/guide-to-investing-in-gold-and-silver/","topicSlug":"cryptocurrency","topicLabel":"Cryptocurrency","topicUrl":"/cryptocurrency/","domain":"Money","domainSlug":"money","external":"https://goldsilver.com/books/"}
 ```
 
 ```json
-{"type":"website","name":"GoldSilver.com","desc":"Mike Maloney's education platform and bullion dealership. Free home of the Hidden Secrets of Money series, articles on monetary history, and tools for tracking the ratios between gold, silver, and fiat.","url":"https://goldsilver.com","topicSlug":"cryptocurrency","topicLabel":"Cryptocurrency","topicUrl":"/v2/cryptocurrency/","domain":"Money","domainSlug":"money"}
+{"type":"website","name":"GoldSilver.com","desc":"Mike Maloney's education platform and bullion dealership. Free home of the Hidden Secrets of Money series, articles on monetary history, and tools for tracking the ratios between gold, silver, and fiat.","url":"https://goldsilver.com","topicSlug":"cryptocurrency","topicLabel":"Cryptocurrency","topicUrl":"/cryptocurrency/","domain":"Money","domainSlug":"money"}
 ```
 
 Optional next-step additions worth considering as separate entries: Lyn Alden's *Broken Money* (book), Saifedean Ammous's *The Bitcoin Standard* (book) — both treat Maloney's framework alongside the Bitcoin thesis and would round out the Money shelf without duplicating the goldbug angle.

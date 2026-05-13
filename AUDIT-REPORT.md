@@ -176,13 +176,13 @@ chat-widget.js
 sw.js
 functions/api/subscribe.js
 robots.txt
-v2/open-source/index.html
+open-source/index.html
 books/the-cathedral-and-the-bazaar/index.html
 social/space/research/index.html
 my-frqncy.html
 search.html
 chart.html
-v2/explore.html
+explore.html
 podcast.html  (from prior turn — Norman Co-Founder)
 ```
 
@@ -202,7 +202,7 @@ A11y:
 - search/chart: 44px tap targets on mobile + focus-visible rings
 
 Visual:
-- v2/explore: legend contrast 4.3:1 → 8:1 (passes WCAG AA)
+- explore: legend contrast 4.3:1 → 8:1 (passes WCAG AA)
 - chart form: autocomplete attrs
 
 Mixed content:

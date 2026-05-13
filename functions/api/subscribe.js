@@ -226,7 +226,7 @@ function welcomeEmailHTML(email) {
           <p>The next dispatch will reach you when it's ready. In the meantime, the network is open. Wander it.</p>
         </td></tr>
         <tr><td align="center" style="padding:8px 0 32px 0;">
-          <a href="https://frqncy.network/v2/explore.html" style="display:inline-block;background:transparent;border:1px solid rgba(196,151,58,0.5);color:#C4973A;text-decoration:none;padding:12px 28px;border-radius:2px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Explore the network</a>
+          <a href="https://frqncy.network/explore.html" style="display:inline-block;background:transparent;border:1px solid rgba(196,151,58,0.5);color:#C4973A;text-decoration:none;padding:12px 28px;border-radius:2px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Explore the network</a>
         </td></tr>
         <tr><td style="border-top:1px solid rgba(255,255,255,0.08);padding-top:20px;color:#4A6280;font-size:11px;letter-spacing:0.06em;text-align:center;">
           <p style="margin:0 0 6px 0;">© 2026 FRQNCY · All frequencies reserved</p>
@@ -246,7 +246,7 @@ function welcomeEmailText(email) {
     'Welcome to FRQNCY — a network for people who remember.',
     '',
     'The next dispatch will reach you when it is ready.',
-    'In the meantime, wander the network: https://frqncy.network/v2/explore.html',
+    'In the meantime, wander the network: https://frqncy.network/explore.html',
     '',
     '— FRQNCY',
     '',

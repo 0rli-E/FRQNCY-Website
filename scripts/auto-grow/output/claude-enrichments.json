@@ -178,8 +178,8 @@
 
     "network-state": {
       "vision": "The sovereign community — physical and digital spaces where a new kind of society takes root, governed by shared values rather than geography.",
-      "communication": "v2/network-state/ landing page exists with vision-aligned copy. Index.html mentions 'network states' in keywords and references the concept in body copy ('a parallel society... coworking first... the network state we are becoming'). NOT surfaced as a pillar card on home or about — appears only as inline copy.",
-      "fact": "10 topics tagged primary (Collective Intelligence, Community, Diaspora, Education Systems, Future Cities, Governance, History, Indigenous Wisdom, Peace, Social Movements). v2/network-state/ page = 326 lines. No physical Sanctuary / coworking / land yet. Sanctuary nav item points to /my-frqncy/dashboard/ (the user's private dashboard, not a place).",
+      "communication": "network-state/ landing page exists with vision-aligned copy. Index.html mentions 'network states' in keywords and references the concept in body copy ('a parallel society... coworking first... the network state we are becoming'). NOT surfaced as a pillar card on home or about — appears only as inline copy.",
+      "fact": "10 topics tagged primary (Collective Intelligence, Community, Diaspora, Education Systems, Future Cities, Governance, History, Indigenous Wisdom, Peace, Social Movements). network-state/ page = 326 lines. No physical Sanctuary / coworking / land yet. Sanctuary nav item points to /my-frqncy/dashboard/ (the user's private dashboard, not a place).",
       "drift_findings": [
         { "severity": "medium", "kind": "communication-vs-fact", "summary": "Pillar landing page + 10 topics exist, but neither home nor about surfaces Network State as a pillar card — readers won't see it as one of the load-bearing things FRQNCY does. The 'Sanctuary' card on home/about is closer to what a reader would associate with this pillar (place / community / land), but Sanctuary is not in content.json's pillars[]." },
         { "severity": "medium", "kind": "vision-vs-fact", "summary": "Vision promises 'physical and digital spaces' — the digital half (topic graph, soon social) is real; the physical half (coworking → building → land, per home copy) is unshipped, which is fine for a vision but should be honestly framed as 'becoming' (the home copy already does this — keep that framing intact)." }
@@ -188,17 +188,17 @@
 
     "fund": {
       "vision": "Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.",
-      "communication": "Strong, consistent across home + about + pillar page. Home: 'An actual fund. Money gathered, deployed into aligned projects and people. Sovereign custody.' About: 'A real fund. Sovereign custody. We invest in aligned projects and the people building them, and we fund the work of FRQNCY itself.' v2/fund/ = 493 lines (the most developed pillar page).",
+      "communication": "Strong, consistent across home + about + pillar page. Home: 'An actual fund. Money gathered, deployed into aligned projects and people. Sovereign custody.' About: 'A real fund. Sovereign custody. We invest in aligned projects and the people building them, and we fund the work of FRQNCY itself.' fund/ = 493 lines (the most developed pillar page).",
       "fact": "24 primary-tagged topics across Money, Energy, Business. Stripe payments shipped (recent commits: course one-time-payment + access ledger). No actual outbound investments yet. Vision/Echo/Legion mentioned in nav as 'roadmap' items — these aren't explained on the public surface.",
       "drift_findings": [
         { "severity": "low", "kind": "vision-vs-fact", "summary": "Stripe payments currently power Education (course sales), not Fund (capital allocation). Reader sees 'Fund' framing on infrastructure that's actually serving Education. Defensible — courses generate the capital that becomes the fund — but worth being explicit about this loop in the Fund page so it doesn't read as overclaim." },
-        { "severity": "low", "kind": "communication-internal-clarity", "summary": "Nav surfaces 'Vision, Echo, Legion & roadmap' under Fund but these names aren't explained anywhere obvious to a first-time reader. Either define them on /v2/fund/ or rename to something self-explanatory." }
+        { "severity": "low", "kind": "communication-internal-clarity", "summary": "Nav surfaces 'Vision, Echo, Legion & roadmap' under Fund but these names aren't explained anywhere obvious to a first-time reader. Either define them on /fund/ or rename to something self-explanatory." }
       ]
     },
 
     "education": {
       "vision": "Transmitting what's known — curating the best teachers, courses, and wisdom traditions so knowledge flows to those who need it.",
-      "communication": "About: 'The masters we point you to, and — in time — the ones we become. Personalised through your chart. Curated first, produced second.' Home detail card present. v2/education/ landing exists.",
+      "communication": "About: 'The masters we point you to, and — in time — the ones we become. Personalised through your chart. Curated first, produced second.' Home detail card present. education/ landing exists.",
       "fact": "34 primary-tagged topics (largest pillar). Courses with Stripe payments + access ledger shipped. 'Read First' recently added. Master-curation visible across books/people/orgs. 'Personalised through your chart' is a Human Design integration claim — Human Design topic exists but the chart-personalisation feature is unclear status (verify before next pass).",
       "drift_findings": [
         { "severity": "low", "kind": "vision-vs-fact", "summary": "About copy promises 'personalised through your chart' — this is an unshipped or partially-shipped feature. Either ship the chart-driven personalisation or soften the promise to 'in time, personalised' to match the framing used for Network State." }
@@ -207,7 +207,7 @@
 
     "research": {
       "vision": "Exploring what isn't known yet — mapping the edges of science, philosophy, and consciousness where the next discoveries live.",
-      "communication": "About: 'First-principles inquiry across every isle of the network — and the isles not yet on the map. We ask what something is at its very core.' Home detail card present. v2/research/ exists.",
+      "communication": "About: 'First-principles inquiry across every isle of the network — and the isles not yet on the map. We ask what something is at its very core.' Home detail card present. research/ exists.",
       "fact": "45 primary-tagged topics (largest by count, mostly because Sciences + Nature & Cosmos + Metaphysics all default to Research). Topic pages curate existing knowledge from books/people/papers. No original research output yet.",
       "drift_findings": [
         { "severity": "medium", "kind": "vision-vs-fact", "summary": "Vision says 'exploring what isn't known yet' and 'mapping the edges where the next discoveries live' — current Research output is closer to high-quality curation of existing knowledge than original frontier inquiry. Either the vision should soften to 'mapping the edges of what's known and unknown' OR Research should start producing original framings (essays, dossiers, syntheses) that earn the 'frontier inquiry' framing." }
@@ -216,7 +216,7 @@
 
     "media": {
       "vision": "Spreading the signal — amplifying the voices, stories, and art that shift perception and move culture toward something more alive.",
-      "communication": "Home: 'The voice of the network. A swarm of .frqncies all over social media, super aligned with the good in the world. Podcast. Video. Writing.' About: 'The FRQNCY podcast, YouTube, writing, and newsletter. A growing swarm of .frqncies across every isle of passion.' v2/media/ exists.",
+      "communication": "Home: 'The voice of the network. A swarm of .frqncies all over social media, super aligned with the good in the world. Podcast. Video. Writing.' About: 'The FRQNCY podcast, YouTube, writing, and newsletter. A growing swarm of .frqncies across every isle of passion.' broadcast/ exists.",
       "fact": "21 primary-tagged topics. podcast.html exists. Substack newsletter linked. YouTube channel claim unverified from this scan. 'Swarm of .frqncies' (sub-channels like crypto.frqncy, publicspeaking.frqncy) is referenced as a roadmap item on podcast.html — sub-channel surfaces unclear.",
       "drift_findings": [
         { "severity": "medium", "kind": "communication-vs-fact", "summary": "About claims 'FRQNCY podcast, YouTube, writing, and newsletter' as if all four are actively shipping. Verify YouTube actually exists and produces; verify podcast publishes regularly. If any are aspirational, frame as 'becoming' the way Network State copy does, otherwise this reads as overclaim." },
@@ -235,21 +235,21 @@
 
     "curate": {
       "vision": "Picking with care — sifting the world's signal from its noise so what reaches FRQNCY is honest, alive, and worth attention.",
-      "communication": "v2/curate/ landing page exists (276 lines). NOT surfaced as a pillar card on home or about. The word 'curated' appears as adjective in copy ('766+ vetted resources... curated maps') but Curate is never named as one of FRQNCY's pillars to a reader.",
+      "communication": "curate/ landing page exists (276 lines). NOT surfaced as a pillar card on home or about. The word 'curated' appears as adjective in copy ('766+ vetted resources... curated maps') but Curate is never named as one of FRQNCY's pillars to a reader.",
       "fact": "0 primary-tagged topics. The actual curation activity (resources.json with 766 entries, books/people/orgs/media editorial selection, FRQNCY picks across topic pages) is real and ongoing — but it's not attributed to a named pillar surface anywhere a reader can see.",
       "drift_findings": [
         { "severity": "high", "kind": "communication-vs-fact", "summary": "FRQNCY does enormous amounts of curation (the entire /people/, /books/, /orgs/, /media/, resources.json operation IS curation) — but the pillar named 'Curate' is invisible in user-facing communication. Readers won't connect what they're seeing to the named operating mode. Either: (a) add Curate as a pillar card on home + about with the resources.json work as evidence, (b) rename Curate to something already-communicated, or (c) accept it as an internal operating-mode tag and don't expect public surface." },
-        { "severity": "medium", "kind": "fact-vs-schema", "summary": "Zero primary-tagged topics is a schema artifact, not a content gap (per the many-to-many rule, Curate applies to every topic broadly). But the v2/curate/ page would benefit from explicitly listing what's been curated — books surfaced, people surfaced, the picks framework — to make the fact visible." }
+        { "severity": "medium", "kind": "fact-vs-schema", "summary": "Zero primary-tagged topics is a schema artifact, not a content gap (per the many-to-many rule, Curate applies to every topic broadly). But the curate/ page would benefit from explicitly listing what's been curated — books surfaced, people surfaced, the picks framework — to make the fact visible." }
       ]
     },
 
     "sell": {
       "vision": "Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.",
-      "communication": "v2/sell/ landing page exists (276 lines). Word 'Sell' does not appear anywhere on home or about. Aligned Goods nav item exists ('the best of everything, curated') but isn't framed as Sell.",
+      "communication": "sell/ landing page exists (276 lines). Word 'Sell' does not appear anywhere on home or about. Aligned Goods nav item exists ('the best of everything, curated') but isn't framed as Sell.",
       "fact": "0 primary-tagged topics. Stripe payments are LIVE for course one-time-payments (recent commit: 'Stripe: add course one-time-payment mode + access ledger Phase 3 Wk 5 Fri'). Aligned Goods page exists. Selling IS happening — just framed under Education / Aligned, not under the Sell pillar.",
       "drift_findings": [
         { "severity": "high", "kind": "communication-vs-fact", "summary": "FRQNCY actively sells things (courses via Stripe, planned Aligned Goods) but the pillar named 'Sell' is invisible to readers — no card on home, no card on about, the word doesn't appear in front-page copy. The infrastructure is shipped; the framing is missing." },
-        { "severity": "medium", "kind": "vision-vs-positioning", "summary": "'Sell' as a pillar name may itself be the friction — FRQNCY's editorial voice generally avoids commercial framing. Consider whether the underlying activity is better surfaced as 'Aligned Goods' or 'Marketplace' (already-used terms) rather than the bare verb 'Sell'. If keeping Sell as the canonical pillar name, the v2/sell/ page should articulate why the bare framing is intentional (transparent value exchange as an editorial value)." }
+        { "severity": "medium", "kind": "vision-vs-positioning", "summary": "'Sell' as a pillar name may itself be the friction — FRQNCY's editorial voice generally avoids commercial framing. Consider whether the underlying activity is better surfaced as 'Aligned Goods' or 'Marketplace' (already-used terms) rather than the bare verb 'Sell'. If keeping Sell as the canonical pillar name, the sell/ page should articulate why the bare framing is intentional (transparent value exchange as an editorial value)." }
       ]
     }
   },

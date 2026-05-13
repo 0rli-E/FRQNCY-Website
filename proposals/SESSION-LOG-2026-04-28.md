@@ -24,7 +24,7 @@ podcast.html            — "Themes We Sit With" section
 space.html              — "Lecture Series" card
 videos.json             — t-neville key (20 videos)
 playlists.json          — pl-neville added to c-teachers
-v2/watch/index.html     — INLINE_PLAYLISTS rebuilt to mirror playlists.json
+watch/index.html     — INLINE_PLAYLISTS rebuilt to mirror playlists.json
 ```
 
 To ship from the terminal:
@@ -32,7 +32,7 @@ To ship from the terminal:
 ```bash
 cd ~/Documents/Claude/Projects/FRQNCY\ WEBSITE
 rm -f .git/HEAD.lock .git/index.lock
-git add about.html podcast.html space.html videos.json playlists.json v2/watch/index.html
+git add about.html podcast.html space.html videos.json playlists.json watch/index.html
 git commit -m "Watch: add Neville Goddard as 6th teacher with 20 latest videos; add brand mantras + lecture themes"
 git push
 ```

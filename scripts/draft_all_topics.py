@@ -1,7 +1,7 @@
 #!/usr/bin/env python3
 """
 Draft minimal-but-complete YAML briefs for every non-locked topic in
-search.json. Each YAML produces an HTML page in v2/<slug>/index.html
+search.json. Each YAML produces an HTML page in <slug>/index.html
 when run through scripts/generate_topic_page.py.
 
 ═══════════════════════════════════════════════════════════════════════
@@ -886,9 +886,9 @@ bespoke:
 linking:
   breadcrumb:
     - {{ label: FRQNCY, url: "/" }}
-    - {{ label: "{domain_q}", url: "/v2/{domain_slug}/" }}
-  canonical: https://frqncy.network/v2/{slug}/
-  og_image: https://frqncy.network/v2/og/{slug}.png
+    - {{ label: "{domain_q}", url: "/{domain_slug}/" }}
+  canonical: https://frqncy.network/{slug}/
+  og_image: https://frqncy.network/og/{slug}.png
 """
 
 TOPIC_IDX: dict[str, int] = {}

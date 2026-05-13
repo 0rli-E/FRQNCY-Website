@@ -56,8 +56,8 @@ const DATA_PRECACHE = [
   '/search.json',
   '/entities.json',
   '/resources.json',
-  '/v2/explore-data.json',
-  '/v2/explore-data.js',
+  '/explore-data.json',
+  '/explore-data.js',
 ];
 
 // ── Install: pre-cache the app shell + the data set ────────────────

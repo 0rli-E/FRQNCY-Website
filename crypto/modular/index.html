@@ -1,0 +1,475 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Modular & Data Availability — FRQNCY Crypto</title>
+<meta name="description" content="Splitting a blockchain into separate execution, settlement, consensus, and data-availability layers. Optimising each independently. Composing them on demand. The modular thesis says the monolithic chain has always been an artefact of constraint, not design.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Modular & Data Availability — FRQNCY Crypto">
+<meta property="og:description" content="Splitting a blockchain into separate execution, settlement, consensus, and data-availability layers. Optimising each independently. Composing them on demand. The modular thesis says the monolithic chain has always been an artefact of constraint, not design.">
+<meta property="og:url" content="https://frqncy.network/crypto/modular/">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Modular & Data Availability — FRQNCY Crypto">
+<meta name="twitter:description" content="Splitting a blockchain into separate execution, settlement, consensus, and data-availability layers. Optimising each independently. Composing them on demand. The modular thesis says the monolithic chain has always been an artefact of constraint, not design.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
+<link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="manifest" href="../../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/crypto/modular/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="/crypto/_artwork.css">
+<style>
+  :root {
+    --sector-accent: #7C3AED;
+    --sector-warm:   #9C66F2;
+    --sector-soft:   rgba(124, 58, 237, 0.16);
+    --sector-warm-soft: rgba(124, 58, 237, 0.3);
+    --sector-bg:     rgba(124, 58, 237, 0.06);
+    --sector-pattern: linear-gradient(45deg, var(--sector-soft) 25%, transparent 25%),linear-gradient(-45deg, var(--sector-soft) 25%, transparent 25%);
+    --sector-pattern-size: 44px 44px;
+    --sector-pattern-opacity: 0.05;
+  }
+  .hero-bg { background-image: url('https://celestia.org/meta/og-image-default.jpg'); --hero-filter: saturate(0.7) brightness(0.42) contrast(1.2) hue-rotate(8deg); }
+  .closing-bg { background-image: url('https://framerusercontent.com/images/Fcf9YlD6gzrW8VXAi7tIURE7zww.png'); }
+</style>
+<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="../../../mobile-nav.js" defer></script>
+<script src="../../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../../nav-dropdown.css">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Modular & Data Availability — FRQNCY Crypto","description":"Splitting a blockchain into separate execution, settlement, consensus, and data-availability layers. Optimising each independently. Composing them on demand. The modular thesis says the monolithic chain has always been an artefact of constraint, not design.","url":"https://frqncy.network/crypto/modular/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Crypto","item":"https://frqncy.network/crypto/"},{"@type":"ListItem","position":3,"name":"Modular & Data Availability","item":"https://frqncy.network/crypto/modular/"}]}}</script>
+</head>
+<body>
+
+<nav class="snav">
+  <div class="snav-left">
+    <a href="/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">CRYPTO</span></a>
+    <div class="breadcrumb">
+      <a href="/crypto/">Crypto</a><span class="sep">/</span>
+      <span>Modular & Data Availability</span>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
+    <a href="/crypto/" class="snav-back">← Crypto hub</a>
+    <a href="/fund/" class="snav-back">Fund</a>
+    <a href="/" class="snav-back">Main</a>
+  </div>
+</nav>
+
+<section class="hero">
+  <div class="hero-bg" aria-hidden="true"></div>
+  <div class="hero-inner layout-split-right">
+    <div>
+      <div class="hero-ghost" aria-hidden="true">Modular</div>
+      <div class="hero-eyebrow">Sector · Modular · Unbundling the monolith</div>
+      <h1 class="hero-title t-mid">Modular</h1>
+      <div class="hero-stats"><div><span class="hero-stat-num">5 DA layers</span><span class="hero-stat-lbl">Live</span></div><div><span class="hero-stat-num">$3B+</span><span class="hero-stat-lbl">Modular TVL</span></div><div><span class="hero-stat-num">Oct 2023</span><span class="hero-stat-lbl">Celestia mainnet</span></div></div>
+      <p class="hero-desc">Splitting a blockchain into separate execution, settlement, consensus, and data-availability layers. Optimising each independently. Composing them on demand. The modular thesis says the monolithic chain has always been an artefact of constraint, not design.</p>
+      <div class="hero-quote">
+        The next billion users won't fit on one chain. Modularity is the only honest answer.
+        <cite>Mustafa Al-Bassam · Celestia whitepaper, 2019</cite>
+      </div>
+    </div>
+    <svg class="hero-glyph" viewBox="-100 -100 200 200" aria-hidden="true">
+  <defs>
+    <radialGradient id="gGlow_modular" cx="50%" cy="50%" r="50%">
+      <stop offset="0%"  stop-color="var(--sector-accent)" stop-opacity="0.32"/>
+      <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+    </radialGradient>
+  </defs>
+  <circle cx="0" cy="0" r="92" fill="url(#gGlow_modular)"/>
+  <circle cx="0" cy="0" r="60" stroke="var(--sector-accent)" stroke-width="0.3"
+          fill="none" stroke-dasharray="1 4" opacity="0.4" class="glyph-rotate-rev"/>
+  <g class="glyph-pulse-1">
+    <polygon points="0,-16 14,-8 14,8 0,16 -14,8 -14,-8"
+             fill="var(--sector-accent)" opacity="0.5"
+             stroke="var(--sector-warm)" stroke-width="0.8"/>
+    <circle cx="0" cy="0" r="4" fill="var(--sector-warm)"/>
+  </g>
+  <g class="glyph-rotate">
+    <g transform="translate(0, -60)">
+      <polygon points="-12,-8 12,-8 12,8 -12,8" fill="var(--sector-soft)"
+               stroke="var(--sector-accent)" stroke-width="0.7"/>
+      <polygon points="-12,-8 -8,-12 16,-12 12,-8" fill="var(--sector-accent)" opacity="0.4"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <polygon points="12,-8 16,-12 16,4 12,8" fill="var(--sector-accent)" opacity="0.6"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <text x="0" y="2" text-anchor="middle" font-family="Georgia,serif"
+            font-size="7" letter-spacing="1.5" fill="var(--sector-warm)">DA</text>
+    </g>
+    <g transform="translate(60, 0)">
+      <polygon points="-12,-8 12,-8 12,8 -12,8" fill="var(--sector-soft)"
+               stroke="var(--sector-accent)" stroke-width="0.7"/>
+      <polygon points="-12,-8 -8,-12 16,-12 12,-8" fill="var(--sector-accent)" opacity="0.4"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <polygon points="12,-8 16,-12 16,4 12,8" fill="var(--sector-accent)" opacity="0.6"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <text x="0" y="2" text-anchor="middle" font-family="Georgia,serif"
+            font-size="6" letter-spacing="1" fill="var(--sector-warm)">EXEC</text>
+    </g>
+    <g transform="translate(0, 60)">
+      <polygon points="-12,-8 12,-8 12,8 -12,8" fill="var(--sector-soft)"
+               stroke="var(--sector-accent)" stroke-width="0.7"/>
+      <polygon points="-12,-8 -8,-12 16,-12 12,-8" fill="var(--sector-accent)" opacity="0.4"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <polygon points="12,-8 16,-12 16,4 12,8" fill="var(--sector-accent)" opacity="0.6"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <text x="0" y="2" text-anchor="middle" font-family="Georgia,serif"
+            font-size="6" letter-spacing="1" fill="var(--sector-warm)">SET</text>
+    </g>
+    <g transform="translate(-60, 0)">
+      <polygon points="-12,-8 12,-8 12,8 -12,8" fill="var(--sector-soft)"
+               stroke="var(--sector-accent)" stroke-width="0.7"/>
+      <polygon points="-12,-8 -8,-12 16,-12 12,-8" fill="var(--sector-accent)" opacity="0.4"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <polygon points="12,-8 16,-12 16,4 12,8" fill="var(--sector-accent)" opacity="0.6"
+               stroke="var(--sector-accent)" stroke-width="0.5"/>
+      <text x="0" y="2" text-anchor="middle" font-family="Georgia,serif"
+            font-size="6" letter-spacing="1" fill="var(--sector-warm)">CON</text>
+    </g>
+  </g>
+  <g stroke="var(--sector-warm)" stroke-width="0.4" opacity="0.5" class="glyph-pulse-2">
+    <line x1="0" y1="-44" x2="0" y2="-16"/><line x1="44" y1="0"  x2="16" y2="0"/>
+    <line x1="0" y1="44"  x2="0" y2="16"/><line x1="-44" y1="0" x2="-16" y2="0"/>
+  </g>
+</svg>
+  </div>
+  <div class="scroll-hint">descend</div>
+</section>
+
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 2880 100" preserveAspectRatio="none">
+    <path class="w3" fill="rgba(124, 58, 237, 0.16)" d="M0,55 C144,30 288,30 432,45 C576,60 720,72 864,55 C1008,38 1152,30 1296,45 C1440,60 1584,72 1728,55 C1872,38 2016,30 2160,45 C2304,60 2448,72 2592,55 C2736,38 2808,38 2880,45 L2880,100 L0,100 Z"/>
+    <path class="w2" fill="rgba(124, 58, 237, 0.1)" d="M0,65 C144,45 288,45 432,55 C576,65 720,75 864,65 C1008,55 1152,45 1296,55 C1440,65 1584,75 1728,65 C1872,55 2016,45 2160,55 C2304,65 2448,75 2592,65 C2736,55 2808,55 2880,60 L2880,100 L0,100 Z"/>
+    <path class="w1" fill="rgba(245, 248, 251, 0.06)" d="M0,80 C144,68 288,68 432,75 C576,82 720,88 864,80 C1008,72 1152,68 1296,75 C1440,82 1584,88 1728,80 C1872,72 2016,68 2160,75 C2304,82 2448,88 2592,80 C2736,72 2808,72 2880,76 L2880,100 L0,100 Z"/>
+  </svg>
+</div>
+
+<main class="sector-body">
+
+<!-- PRELUDE -->
+<section class="section section-narrow fade-up">
+  <p>Modularity is the architectural counter-thesis to monolithic chains. Mustafa Al-Bassam's LazyLedger paper in 2019 — which became Celestia — argued that a blockchain's job is consensus and data availability, not execution. Celestia mainnet went live October 2023 with TIA airdropped to ETH stakers, IBC users, and Cosmos contributors. The pitch is clean: rollups post their data to Celestia, get cheap DA, and bring their own execution environment. Data availability sampling (DAS) lets light nodes verify availability with logarithmic resources. The design is elegant; whether the market wants it is a different question.</p>
+<p>EigenDA — built by EigenLabs on top of EigenLayer's restaked ETH — is the institutional alternative. Same problem (DA), different security model (restaked ETH instead of TIA-staked). Avail spun out of Polygon and runs its own DA layer with similar primitives. NearDA piggybacks on Near's existing chain. Polygon CDK, Arbitrum Orbit, OP Stack — every L2 platform now lets builders pick their DA layer at launch time. The DA market is small in dollars and structurally important to the rollup-centric Ethereum thesis.</p>
+<p>The honest debate is whether modular wins. Solana's Anatoly argues that the integrated stack is faster and cheaper at the application layer, that latency between modules is the dealbreaker, and that monolithic execution will out-iterate modular composition. The Celestia and Ethereum camps argue that sovereign rollups with cheap DA scale beyond what any monolith can support, that specialization beats integration at scale, and that the next billion users will run on chains we haven't named yet. Both sides are betting real treasuries on the answer. The next three years tell us who's right.</p>
+</section>
+
+<!-- BLEED -->
+<div class="bleed fade-up">
+  <img src="https://celestia.org/meta/og-image-default.jpg" alt="" decoding="async">
+  <div class="bleed-cap">A chain, <em>unbundled.</em></div>
+</div>
+
+<!-- DOWNLOAD CANON — locally-hosted canonical text + SHA-256 verify -->
+
+
+<!-- SEMINAL TEXT — the founding document per sector with excerpt + link -->
+<section class="section section-narrow fade-up">
+  <span class="label">The seminal text</span>
+  <h2>The <strong>founding</strong> document.</h2>
+  <article class="seminal">
+    <header class="seminal-head">
+      <div class="seminal-title">LazyLedger: A Distributed Data Availability Ledger</div>
+      <div class="seminal-meta">Mustafa Al-Bassam · 2019</div>
+    </header>
+    <blockquote class="seminal-quote">We propose LazyLedger, a design for distributed ledgers where the consensus layer&#x27;s only role is to order and guarantee the availability of transaction data. Application logic — the rules for what makes a transaction valid — is enforced by clients themselves rather than by the consensus protocol. This separation of concerns lets the consensus layer scale by doing less.</blockquote>
+    <a class="seminal-link" href="https://arxiv.org/abs/1905.09274" target="_blank" rel="noopener noreferrer">LazyLedger paper · arXiv →</a>
+  </article>
+</section>
+
+<!-- COUNTER-BOX — rubric's "Pointed" anchor: objection + falsification -->
+<aside class="counter-box fade-up">
+  <div class="cb-tag">What would change our mind</div>
+  <p>Solana&#x27;s argument is that the integrated stack is faster, cheaper, and that latency between modules is a tax modular chains can&#x27;t pay. If consumer apps prefer the monolith, modular wins infrastructure and loses users.</p>
+  <p><strong>Falsification:</strong> We update if Celestia + EigenDA blob volume stalls, if no AAA application ships on a modular DA layer, or if app-chain fragmentation causes UX collapse the abstraction layer can&#x27;t fix.</p>
+</aside>
+
+<!-- TECH INSIDE THIS SECTOR — native protocols + brief explainers -->
+<section class="section section-wide fade-up">
+  <span class="label">Unbundling the monolithic chain</span>
+  <h2>Five components of the modular stack.</h2>
+  <p style="max-width: 60ch;">The modular thesis: a blockchain does four jobs — execution, settlement, consensus, data availability — and there&#x27;s no reason a single chain has to do all four. Mustafa Al-Bassam&#x27;s 2019 LazyLedger paper articulated the split. Celestia made it a network. EigenDA and Avail made it a market. Sovereign rollups proved settlement is optional. The bet is that specialization wins, and that DA bandwidth is the scarce resource the next decade fights over.</p>
+  <div class="tech-grid"><div class="tech-card"><span class="tech-card-tag">Modular DA layer</span><div class="tech-card-head"><div class="tech-card-name">Celestia</div><div class="tech-card-year">2023</div></div><p>Celestia is the first production data availability layer. It does one job: order data and guarantee it was published. Mustafa Al-Bassam, Ismail Khoffi, and John Adler shipped mainnet October 2023. Light nodes use Data Availability Sampling — randomly downloading small chunks to probabilistically verify the full dataset is available — which scales DA bandwidth with the number of light nodes rather than against it. Rollups post blob data to Celestia and inherit DA security without paying Ethereum&#x27;s premium. The clearest &#x27;do one thing well&#x27; bet in crypto infrastructure.</p></div><div class="tech-card"><span class="tech-card-tag">Restaked DA</span><div class="tech-card-head"><div class="tech-card-name">EigenDA</div><div class="tech-card-year">2024</div></div><p>EigenDA is a data availability service built on EigenLayer — restaked ETH securing an AVS that signs over data blobs. Operators run DA nodes; restakers delegate ETH to them; if operators sign for unavailable data, they get slashed. Throughput targets are aggressive (10MB/s+), and the trust model is restaked Ethereum stake rather than a sovereign token. Mantle and several Arbitrum Orbit chains use it. The pitch: DA-as-a-service that inherits Ethereum&#x27;s economic security through restaking rather than competing with it.</p></div><div class="tech-card"><span class="tech-card-tag">Polygon-spinout DA</span><div class="tech-card-head"><div class="tech-card-name">Avail</div><div class="tech-card-year">2024</div></div><p>Avail spun out of Polygon in 2023 and shipped mainnet in 2024 as a standalone DA layer. KZG commitments plus erasure coding plus light-client DAS — same fundamental architecture as Celestia, different validator set and different go-to-market. Anurag Arjun (ex-Polygon co-founder) leads. Avail Nexus pitches a unified rollup hub layered on top. The DA market is now a three-way race for blob throughput: Ethereum blobs (4844), Celestia, EigenDA, Avail. Pricing pressure across all of them is real.</p></div><div class="tech-card"><span class="tech-card-tag">Settlement-free rollup</span><div class="tech-card-head"><div class="tech-card-name">Sovereign rollups</div><div class="tech-card-year">2023</div></div><p>A sovereign rollup posts data to a DA layer but settles within its own social consensus — no smart contract on a base chain enshrines the canonical state. Users running full nodes (or watching light clients) decide which fork is real. Pioneered conceptually by Adler and Al-Bassam, made practical by the Rollkit framework on Celestia. The trade-off: no enforced bridge to a settlement chain, but full sovereignty over upgrades and forks. Closer to how Bitcoin and Ethereum actually work than to traditional smart-contract rollups.</p></div><div class="tech-card"><span class="tech-card-tag">Cryptographic primitive</span><div class="tech-card-head"><div class="tech-card-name">Data Availability Sampling</div><div class="tech-card-year">2019 (paper)</div></div><p>DAS is the cryptographic primitive that makes modular DA scale. A block is encoded with a 2D Reed-Solomon erasure code; light nodes randomly sample a few chunks; if the sampling succeeds across enough nodes, the data is provably available with overwhelming probability. Al-Bassam, Sonnino, and Buterin&#x27;s 2018-2019 work formalized it. The genius: throughput scales with the number of light nodes rather than asking each one to download everything. Ethereum&#x27;s danksharding roadmap, Celestia, and Avail all converge on this primitive.</p></div></div>
+</section>
+
+<!-- WORKING SET -->
+<section class="section section-wide fade-up">
+  <span class="label">Working set</span>
+  <h2>Projects we <strong>actually watch.</strong></h2>
+  <p style="max-width: 60ch;">
+    Conviction is stated as conviction; you decide what to do with it. Tiers below — Core,
+    Conviction, Watch, Speculative — reflect how much of FRQNCY's attention each project
+    currently earns, not a recommendation to buy.
+  </p>
+
+  <div class="ticker-rail"><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#7C3AED30,#7C3AED10);border:1px solid #7C3AED55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/avail.svg" alt="Avail" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#7C3AED">AV</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#7C3AED">AVAIL</span><span class="tk-name">Avail</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#7C3AED30,#7C3AED10);border:1px solid #7C3AED55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/tia.svg" alt="Celestia" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#7C3AED">CE</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#7C3AED">TIA</span><span class="tk-name">Celestia</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#7C3AED30,#7C3AED10);border:1px solid #7C3AED55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/dym.svg" alt="Dymension" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#7C3AED">DY</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#7C3AED">DYM</span><span class="tk-name">Dymension</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#7C3AED30,#7C3AED10);border:1px solid #7C3AED55;color:#7C3AED">EI</span><span class="tk-meta"><span class="tk-ticker" style="color:#7C3AED"></span><span class="tk-name">EigenDA</span></span></span><span class="tk-card"><span class="tk-avatar" style="background:linear-gradient(135deg,#7C3AED30,#7C3AED10);border:1px solid #7C3AED55"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/manta.svg" alt="Manta Network" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="tk-fallback" style="display:none;color:#7C3AED">MA</span></span><span class="tk-meta"><span class="tk-ticker" style="color:#7C3AED">MANTA</span><span class="tk-name">Manta Network</span></span></span></div><div class="desk-note fade-up">
+  <span class="dn-date">29.04</span>
+  <span>Celestia blob volume hits new highs. EigenDA throughput targets meet first production load. Avail Nexus rolls out unified rollup hub. The DA market is now a three-way fight on price and security model.</span>
+  <span class="dn-tag">desk</span>
+</div><div class="tier-bar"><button class="ttab active" data-tier="all">All<span class="ct">8</span></button><button class="ttab" data-tier="watch">watch<span class="ct">8</span></button></div><div class="projects-grid" id="projects"><article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#7C3AED"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#7C3AED40,#7C3AED20);border:1px solid #7C3AED50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/avail.svg" alt="Avail" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">AV</span></div>
+      <div class="project-meta">
+        <div class="project-name">Avail</div>
+        <div class="project-ticker">AVAIL</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#7C3AED"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#7C3AED40,#7C3AED20);border:1px solid #7C3AED50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/tia.svg" alt="Celestia" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">CE</span></div>
+      <div class="project-meta">
+        <div class="project-name">Celestia</div>
+        <div class="project-ticker">TIA</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#7C3AED"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#7C3AED40,#7C3AED20);border:1px solid #7C3AED50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/dym.svg" alt="Dymension" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">DY</span></div>
+      <div class="project-meta">
+        <div class="project-name">Dymension</div>
+        <div class="project-ticker">DYM</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#7C3AED"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#7C3AED40,#7C3AED20);border:1px solid #7C3AED50">EI</div>
+      <div class="project-meta">
+        <div class="project-name">EigenDA</div>
+        <div class="project-ticker"></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#7C3AED"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#7C3AED40,#7C3AED20);border:1px solid #7C3AED50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/manta.svg" alt="Manta Network" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">MA</span></div>
+      <div class="project-meta">
+        <div class="project-name">Manta Network</div>
+        <div class="project-ticker">MANTA</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#00EC97"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#00EC9740,#00EC9720);border:1px solid #00EC9750"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/near.svg" alt="NEAR" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">NE</span></div>
+      <div class="project-meta">
+        <div class="project-name">NEAR</div>
+        <div class="project-ticker">NEAR  ·  <span class="project-chain">NEAR</span></div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"><span class="ptag">Infrastructure</span><span class="ptag">L1</span></div>
+    <div class="project-desc">A sharded Layer 1 blockchain with a focus on usability. Human-readable accounts, gas-free onboarding, and chain abstraction for seamless multi-chain UX.</div>
+    <div class="project-why"><strong>Why FRQNCY watches this</strong>NEAR&#x27;s thesis is that Web3 must be invisible. Chain abstraction and account aggregation put the user first — sovereignty without complexity.</div>
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><a class="project-link" href="https://near.org" target="_blank" rel="noopener noreferrer">near.org →</a><a class="project-aux" href="https://x.com/NEARProtocol" target="_blank" rel="noopener noreferrer" title="Twitter">𝕏</a><a class="project-aux" href="https://docs.near.org" target="_blank" rel="noopener noreferrer" title="Docs">docs</a></span>
+    <span class="project-cat">Infrastructure</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#7C3AED"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#7C3AED40,#7C3AED20);border:1px solid #7C3AED50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/pol.svg" alt="Polygon" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">PO</span></div>
+      <div class="project-meta">
+        <div class="project-name">Polygon</div>
+        <div class="project-ticker">POL</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article>
+<article class="project" data-tier="watch">
+  <div class="project-accent" style="background:#7C3AED"></div>
+  <div class="project-body">
+    <div class="project-head">
+      <div class="project-icon" style="background:linear-gradient(135deg,#7C3AED40,#7C3AED20);border:1px solid #7C3AED50"><img src="https://cdn.jsdelivr.net/gh/spothq/cryptocurrency-icons@master/svg/color/saga.svg" alt="Saga" loading="lazy" onerror="this.style.display='none';this.nextElementSibling.style.display='flex'"><span class="project-icon-fallback" style="display:none">SA</span></div>
+      <div class="project-meta">
+        <div class="project-name">Saga</div>
+        <div class="project-ticker">SAGA</div>
+      </div>
+      <span class="project-tier tier-watch">watch</span>
+    </div>
+    <div class="project-tags"></div>
+    <div class="project-desc"></div>
+    
+  </div>
+  <div class="project-foot">
+    <span class="project-foot-links"><span class="project-cat" style="opacity:0.4">no website</span></span>
+    <span class="project-cat">Crypto</span>
+  </div>
+</article></div>
+</section>
+
+<!-- PRACTICE -->
+<section class="section fade-up">
+  <span class="label">A practice</span>
+  <h2>Five small things, repeated.</h2>
+  <p>
+    Conviction is theatre without practice. Five steps that turn the thesis above into something
+    the body actually does, not just something the mind agrees with.
+  </p>
+  <div class="practice"><div class="step"><div class="step-num">i</div>
+<div class="step-body"><strong>Run a Celestia light node.</strong><p>Sync the chain, sample data availability. Feel what DAS actually verifies.</p></div></div>
+<div class="step"><div class="step-num">ii</div>
+<div class="step-body"><strong>Spin up a sovereign rollup.</strong><p>Use Rollkit, Sovereign SDK, or Dymension RollApps. Post data to Celestia. Build the chain in a weekend.</p></div></div>
+<div class="step"><div class="step-num">iii</div>
+<div class="step-body"><strong>Compare DA costs across layers.</strong><p>Post 1MB to Celestia, EigenDA, Avail, and Ethereum blobs. The fee differences are the modular thesis in numbers.</p></div></div>
+<div class="step"><div class="step-num">iv</div>
+<div class="step-body"><strong>Read the Celestia whitepaper.</strong><p>Mustafa's data-availability sampling argument is the most important modular-thesis primitive.</p></div></div>
+<div class="step"><div class="step-num">v</div>
+<div class="step-body"><strong>Bridge between two sovereign rollups.</strong><p>Use IBC or a shared sequencer. Notice what cross-rollup composability requires.</p></div></div></div>
+</section>
+
+<!-- CTA -->
+<section class="section fade-up">
+  <div class="cta">
+    <h3>Two doors. <em>Pick one.</em></h3>
+    <p>The Crypto hub is the index of all sectors and the freedom-technology frame they share. The Fund is what happens when the same conviction gets put to work on behalf of the network.</p>
+    <div class="cta-buttons">
+      <a href="/crypto/" class="cta-btn primary">Crypto Hub</a>
+      <a href="/fund/" class="cta-btn secondary">FRQNCY Fund →</a>
+    </div>
+  </div>
+</section>
+
+</main>
+
+<section class="closing fade-up">
+  <div class="closing-bg" aria-hidden="true"></div>
+  <div class="closing-inner">
+    <p>
+      Specialization beats integration at scale.<br>
+      Consensus, data availability, execution — separable, composable, replaceable.<br>
+      The next billion users run on chains we haven't named yet.
+    </p>
+    <p style="font-size: clamp(1.5rem, 2.6vw, 2.2rem); margin-top: 1.4rem;">
+      <strong>Modularity is a values bet.</strong>
+    </p>
+    <cite>FRQNCY · Crypto</cite>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <span class="wm">FRQNCY · CRYPTO</span>
+  <span class="legal">© 2026 · All frequencies reserved · Sector · Modular & Data Availability</span>
+</footer>
+
+<script>
+// Tier filter
+document.querySelectorAll('[data-tier]').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('[data-tier]').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const f = btn.dataset.tier;
+    document.querySelectorAll('.project').forEach(card => {
+      card.style.display = (f === 'all' || card.dataset.tier === f) ? '' : 'none';
+    });
+  });
+});
+
+// Fade-up reveal + typewriter-quote trigger
+(function () {
+  // Hero quote: clip-path reveal once when hero scrolls into view
+  const heroQuote = document.querySelector('.hero .hero-quote');
+  if (heroQuote && 'IntersectionObserver' in window) {
+    const qio = new IntersectionObserver((entries) => {
+      entries.forEach(e => {
+        if (e.isIntersecting) { heroQuote.classList.add('in-view'); qio.disconnect(); }
+      });
+    }, { threshold: 0.4 });
+    qio.observe(heroQuote);
+  } else if (heroQuote) {
+    heroQuote.classList.add('in-view');
+  }
+
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+})();
+</script>
+</body>
+</html>

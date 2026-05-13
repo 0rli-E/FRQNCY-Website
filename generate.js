@@ -31,7 +31,7 @@ function hasBespokeLock(filePath) {
 const VIDEOS    = JSON.parse(fs.readFileSync(path.join(ROOT, 'videos.json'),    'utf8'));
 const COURSES   = JSON.parse(fs.readFileSync(path.join(ROOT, 'courses.json'),   'utf8'));
 const PROVIDERS = JSON.parse(fs.readFileSync(path.join(ROOT, 'providers.json'), 'utf8'));
-const OUT       = path.join(ROOT, 'v2');
+const OUT       = ROOT;
 
 // ── Bespoke pages — DO NOT REGENERATE ────────────────────────────
 // These slugs have hand-shaped pages whose content does not come from the
@@ -872,9 +872,9 @@ function head(title, accent, desc = '', canonical = '', jsonLd = null, ogImageSl
   const glow     = hexToRgba(safe, 0.14);
   const safeTitle = esc(title);
   const metaDesc = esc((desc || `Explore ${title} — curated resources, FRQNCY Picks, and the best thinkers in this space. Part of the FRQNCY conscious living network.`).slice(0, 155));
-  const url      = canonical || 'https://frqncy.network/v2/';
+  const url      = canonical || 'https://frqncy.network/';
   const ogImage  = ogImageSlug
-    ? `https://frqncy.network/v2/og/${ogImageSlug}.png`
+    ? `https://frqncy.network/og/${ogImageSlug}.png`
     : 'https://frqncy.network/og-image.png';
   const ldTag    = jsonLd ? `<script type="application/ld+json">${JSON.stringify(jsonLd)}</script>` : '';
   return `<!DOCTYPE html>
@@ -976,7 +976,7 @@ function pillarBooksSection(pillarId) {
 
 function pillarPage(p) {
   const domains = domainsByPillar.get(p.id) || [];
-  const canonical = `https://frqncy.network/v2/${p.slug}/`;
+  const canonical = `https://frqncy.network/${p.slug}/`;
 
   // Cross-cutting pillars (no domains tagged with this pillar as primary)
   // — Curate, Sell, etc. — describe an operating mode that runs across every
@@ -1033,7 +1033,7 @@ function domainPage(d) {
 </a>`).join('\n');
 
   const crumb    = `<a href="../${pillar.slug}/index.html">${esc(pillar.label)}</a><span class="sep">/</span><span>${esc(d.label)}</span>`;
-  const canonical = `https://frqncy.network/v2/${d.slug}/`;
+  const canonical = `https://frqncy.network/${d.slug}/`;
 
   return head(d.label, d.accent, d.desc, canonical, collectionLd(d.label, d.desc, canonical), d.slug) +
 nav(crumb) +
@@ -1107,7 +1107,7 @@ function topicPage(t) {
     </a>` : `<span class="topic-prevnext-link disabled" aria-hidden="true"></span>`}
   </nav>` : '';
 
-  const canonical = `https://frqncy.network/v2/${t.slug}/`;
+  const canonical = `https://frqncy.network/${t.slug}/`;
   // Single resourcesFor() call — reused for both JSON-LD and the resource section
   const res   = resourcesFor(t.id);
   const picks = res.filter(r => r.frqncy_pick);
@@ -1130,8 +1130,8 @@ function topicPage(t) {
       '@type': 'BreadcrumbList',
       itemListElement: [
         { '@type': 'ListItem', position: 1, name: 'FRQNCY', item: 'https://frqncy.network' },
-        { '@type': 'ListItem', position: 2, name: pillar.label, item: `https://frqncy.network/v2/${pillar.slug}/` },
-        { '@type': 'ListItem', position: 3, name: domain.label, item: `https://frqncy.network/v2/${domain.slug}/` },
+        { '@type': 'ListItem', position: 2, name: pillar.label, item: `https://frqncy.network/${pillar.slug}/` },
+        { '@type': 'ListItem', position: 3, name: domain.label, item: `https://frqncy.network/${domain.slug}/` },
         { '@type': 'ListItem', position: 4, name: t.label, item: canonical },
       ],
     },
@@ -1200,7 +1200,7 @@ ${FOOTER}
 
 // ── PERSON PAGE ──────────────────────────────────────────────────
 // Renders a dedicated page for each person in the people bed.
-// URL: /people/[slug]/ — two levels deep like v2/[topic]/, same asset paths.
+// URL: /people/[slug]/ — two levels deep like [topic]/, same asset paths.
 // Page shows: hero (name + bio + external link), their works (books, orgs,
 // media), any channels, and the topics they appear on.
 function personSlug(person) {
@@ -1705,7 +1705,7 @@ ${FOOTER}
 }
 
 // ── EXPLORE-DATA SYNC ────────────────────────────────────────────
-// Keep v2/explore-data.json in sync with content.json + places.json.
+// Keep explore-data.json in sync with content.json + places.json.
 // Preserves hand-curated map topology (cross-pillar links, map-specific
 // short descs, radius sizes) while adding any new entities automatically.
 // Flags ghost entries (in the map but not in content/places) for review.
@@ -2218,7 +2218,7 @@ if (MUSIC) {
     fs.writeFileSync(path.join(MUSIC_OUT, slug, 'index.html'), musicPage(mu));
     musicCount++;
   }
-  // Hub title disambiguated from the /v2/music/ topic page so the two
+  // Hub title disambiguated from the /music-topic/ topic page so the two
   // surfaces are distinguishable in nav, breadcrumbs, and search.
   // Intro carries a cross-link back to the topic page.
   fs.writeFileSync(path.join(MUSIC_OUT, 'index.html'),
@@ -2230,7 +2230,7 @@ if (MUSIC) {
       canonicalPath: '/music/',
       showFilters: false,
       titleField: 'title',
-      intro: `The frequency-aligned listening library — curated tracks, tunings, and recordings the network keeps coming back to. For the philosophy of music itself, see <a href="/v2/music/" style="color:var(--gold);text-decoration:underline">Music as a topic →</a>`,
+      intro: `The frequency-aligned listening library — curated tracks, tunings, and recordings the network keeps coming back to. For the philosophy of music itself, see <a href="/music-topic/" style="color:var(--gold);text-decoration:underline">Music as a topic →</a>`,
     }));
   console.log(`  music:  ${musicCount} profiles + 1 index → ./music/`);
 }
@@ -2266,10 +2266,10 @@ const sitemapEntries = [
   { loc: 'https://frqncy.network/search',          priority: '0.8', freq: 'weekly'  },
   { loc: 'https://frqncy.network/my-frqncy',       priority: '0.7', freq: 'monthly' },
   { loc: 'https://frqncy.network/aligned/',        priority: '0.8', freq: 'weekly'  },
-  { loc: 'https://frqncy.network/v2/explore.html', priority: '0.9', freq: 'weekly'  },
-  ...DATA.pillars.map(p => ({ loc: `https://frqncy.network/v2/${p.slug}/`, priority: '0.8', freq: 'weekly'  })),
-  ...DATA.domains.map(d => ({ loc: `https://frqncy.network/v2/${d.slug}/`, priority: '0.7', freq: 'weekly'  })),
-  ...DATA.topics.map(t  => ({ loc: `https://frqncy.network/v2/${t.slug}/`, priority: '0.6', freq: 'monthly' })),
+  { loc: 'https://frqncy.network/explore.html', priority: '0.9', freq: 'weekly'  },
+  ...DATA.pillars.map(p => ({ loc: `https://frqncy.network/${p.slug}/`, priority: '0.8', freq: 'weekly'  })),
+  ...DATA.domains.map(d => ({ loc: `https://frqncy.network/${d.slug}/`, priority: '0.7', freq: 'weekly'  })),
+  ...DATA.topics.map(t  => ({ loc: `https://frqncy.network/${t.slug}/`, priority: '0.6', freq: 'monthly' })),
   ...(PEOPLE ? [{ loc: 'https://frqncy.network/people/', priority: '0.7', freq: 'weekly' }] : []),
   ...(PEOPLE ? PEOPLE.people.map(p => ({ loc: `https://frqncy.network/people/${personSlug(p)}/`, priority: '0.5', freq: 'monthly' })) : []),
   ...(BOOKS  ? [{ loc: 'https://frqncy.network/books/',  priority: '0.7', freq: 'weekly' }]  : []),

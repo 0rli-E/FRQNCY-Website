@@ -33,7 +33,7 @@ Pure structural tasks (schema injection from existing prose) can use flash:
 **Critical:** the Q&A entries must be REAL questions readers actually ask, with substantive answers. Do not invent FAQ entries to game schema; that's the path to spam-classifier flags.
 
 ```
-Read /Users/orli/Documents/Claude/Projects/FRQNCY\ WEBSITE/audits/seo/runs/2026-04-29-keyword-landscape.md (the Phase 1 deliverable) and pull the top 30 priority topics with their People Also Ask questions. For each topic, also read the topic page at /v2/<slug>/index.html — extract any existing Q&A material, eyebrow questions, or section headers that are already framed as questions.
+Read /Users/orli/Documents/Claude/Projects/FRQNCY\ WEBSITE/audits/seo/runs/2026-04-29-keyword-landscape.md (the Phase 1 deliverable) and pull the top 30 priority topics with their People Also Ask questions. For each topic, also read the topic page at /<slug>/index.html — extract any existing Q&A material, eyebrow questions, or section headers that are already framed as questions.
 
 For each of the 30 topics:
 1. Identify 5-8 real questions: from PAA, from natural questions a reader would ask, from existing page content. Do NOT invent commercial-intent questions like "where to buy meditation cushions"; FRQNCY's voice is editorial.
@@ -53,7 +53,7 @@ Write a per-topic log to ~/Documents/Claude/Projects/FRQNCY\ WEBSITE/audits/seo/
 **Why:** `meditation-101` and `working-with-claude` are HowTo-shaped content (step-by-step practice). Adding HowTo schema unlocks step-by-step rich results in SERPs.
 
 ```
-Read /Users/orli/Documents/Claude/Projects/FRQNCY\ WEBSITE/v2/courses/meditation-101/index.html and v2/courses/working-with-claude/index.html. Each has a lesson list with class="lesson-h1" headings. For each course:
+Read /Users/orli/Documents/Claude/Projects/FRQNCY\ WEBSITE/v2/courses/meditation-101/index.html and courses/working-with-claude/index.html. Each has a lesson list with class="lesson-h1" headings. For each course:
 1. Extract the lesson titles in order.
 2. Extract a 1-2 sentence description of what the lesson teaches (from the lesson body's first paragraph).
 3. Build a JSON-LD block with @type HowTo and step[] containing {@type: HowToStep, name, text, position}. Add totalTime (use the course's existing timeRequired). Reuse the existing course's name, description, image. Inject as a SECOND JSON-LD block after the existing Course schema; both are valid simultaneously per Google.
@@ -61,7 +61,7 @@ Read /Users/orli/Documents/Claude/Projects/FRQNCY\ WEBSITE/v2/courses/meditation
 Skip courses that don't fit the HowTo shape (e.g., crypto-fundamentals is more conceptual than step-by-step). Write to ~/Documents/Claude/Projects/FRQNCY\ WEBSITE/audits/seo/runs/2026-MM-DD-howto-rollout.md.
 ```
 
-**Verification:** Rich Results test on /v2/courses/meditation-101/ shows both Course and HowTo detected.
+**Verification:** Rich Results test on /courses/meditation-101/ shows both Course and HowTo detected.
 
 ---
 
@@ -90,7 +90,7 @@ Process the topics in batches of 20 to keep the runs manageable. Run-log per bat
 ```
 Step 1 — Publish editorial standards: copy /Users/orli/Documents/Claude/Projects/FRQNCY\ WEBSITE/proposals/EDITORIAL-STANDARDS.md to /editorial-standards/index.html (build a simple page using the FRQNCY chrome). Add proper meta, canonical, JSON-LD CreativeWork schema. Add to sitemap.xml. Verify with curl after deploy.
 
-Step 2 — Add bylines: for each topic page under v2/<slug>/, add a visible byline element after the hero, before the main content: <p class="byline">Edited by <a href="/people/orlando/">Orlando Eisenreich</a> · Standards: <a href="/editorial-standards/">FRQNCY Editorial</a> · Last updated <time datetime="<ISO>"><human date></time></p>. Style the byline using existing Jost font small caps style. Pull the dateModified from the Article JSON-LD that was added in Phase 2.4.
+Step 2 — Add bylines: for each topic page under <slug>/, add a visible byline element after the hero, before the main content: <p class="byline">Edited by <a href="/people/orlando/">Orlando Eisenreich</a> · Standards: <a href="/editorial-standards/">FRQNCY Editorial</a> · Last updated <time datetime="<ISO>"><human date></time></p>. Style the byline using existing Jost font small caps style. Pull the dateModified from the Article JSON-LD that was added in Phase 2.4.
 
 Run-log to ~/Documents/Claude/Projects/FRQNCY\ WEBSITE/audits/seo/runs/2026-MM-DD-bylines.md.
 ```
@@ -108,7 +108,7 @@ Run-log to ~/Documents/Claude/Projects/FRQNCY\ WEBSITE/audits/seo/runs/2026-MM-D
 ```
 Build a name-to-URL map by walking /Users/orli/Documents/Claude/Projects/FRQNCY\ WEBSITE/{books,people,orgs,media,places}/*/index.html and extracting each page's <h1> name and canonical URL. Construct exact-match patterns like {name: "Carl Jung", url: "/people/carl-jung/"}.
 
-For each topic page under v2/<slug>/index.html: scan the prose inside <main> (skip nav, footer). Find first-mention occurrences of any name from the map; replace the literal text with an <a href> link. Rules: (1) only the FIRST mention per page gets linked, (2) skip text already inside an <a>, <h1>, <h2>, <h3>, (3) skip if the name appears inside a class="resource-list" already (the resource list links it explicitly). Limit to exact case-sensitive matches to avoid false positives ("blink" the verb vs "Blink" the book title).
+For each topic page under <slug>/index.html: scan the prose inside <main> (skip nav, footer). Find first-mention occurrences of any name from the map; replace the literal text with an <a href> link. Rules: (1) only the FIRST mention per page gets linked, (2) skip text already inside an <a>, <h1>, <h2>, <h3>, (3) skip if the name appears inside a class="resource-list" already (the resource list links it explicitly). Limit to exact case-sensitive matches to avoid false positives ("blink" the verb vs "Blink" the book title).
 
 Dry-run first: write a per-topic preview to ~/Documents/Claude/Projects/FRQNCY\ WEBSITE/audits/seo/runs/2026-MM-DD-contextual-linking-dryrun.md showing topic-slug | proposed-changes (count) | sample-3-snippets-with-context. Orlando reviews. Then a follow-up task ships.
 ```
@@ -140,7 +140,7 @@ Then schedule the first quarterly review pass — pick 5 topics for an initial s
 **Use Sonnet for this — real editorial work.**
 
 ```
-Pick 5 topics from the quarterly calendar's Q1 list (any 5 of the fast-moving ones). For each topic at /v2/<slug>/index.html: read the page in full. Apply the rubric from /Users/orli/Documents/Claude/Projects/FRQNCY\ WEBSITE/audits/seo/FRESHNESS-RUBRIC.md. Specifically:
+Pick 5 topics from the quarterly calendar's Q1 list (any 5 of the fast-moving ones). For each topic at /<slug>/index.html: read the page in full. Apply the rubric from /Users/orli/Documents/Claude/Projects/FRQNCY\ WEBSITE/audits/seo/FRESHNESS-RUBRIC.md. Specifically:
 - Does the meta description still accurately describe the topic? Tighten if not.
 - Are the 5-7 most-cited resources still the right top picks? web_search for "<topic> 2026" and identify 1-3 new candidate resources to consider; do NOT add them, just note them.
 - Is the explainer prose dated? Look for any factual claim that's stale (e.g., "as of 2023", obsolete numbers).

@@ -96,7 +96,7 @@ For each one, answer in one sentence each: **what it does**, **who it's for**, a
 **3.1 — Network State**
 - What it does: ›
 - Who it's for: ›
-- What it currently maps to on the site (Space? Community? /v2/network-state?): ›
+- What it currently maps to on the site (Space? Community? /network-state?): ›
 - Is "Network State" still the right name, or is it borrowed from Balaji in a way that's now distracting? ›
 
 **3.2 — Fund**

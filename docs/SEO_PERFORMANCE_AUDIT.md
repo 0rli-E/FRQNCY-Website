@@ -20,7 +20,7 @@ FRQNCY is in better SEO shape than most static sites of its size. Meta tags, Ope
 6. **Self-host Cormorant + Jost as WOFF2** and preload (High, M) — removes Google Fonts render-blocking chain; adds ~100-300 ms to FCP on slow networks.
 7. **Ensure `display=swap` is on every Google Fonts URL** (High, S) — index.html uses it but many pages silently rely on inline `<style>` without it; verify.
 8. **Add `Review`/`ItemList` with `offers`/`url`** on `/v2/crypto/projects.html`** (High, M) — crypto curation page is a ranking candidate for "curated crypto projects" long-tail; currently no Schema.
-9. **Add homepage links to the 6 top pillar pages** (High, S) — turn the "Four Pillars" section in index.html into actual `<a>` links to `/v2/network-state/`, `/v2/fund/`, `/v2/research/`, `/v2/media/`, `/v2/builder/`, `/v2/society/`.
+9. **Add homepage links to the 6 top pillar pages** (High, S) — turn the "Four Pillars" section in index.html into actual `<a>` links to `/v2/network-state/`, `/v2/fund/`, `/v2/research/`, `/broadcast/`, `/v2/builder/`, `/v2/society/`.
 10. **Replace `og:image` PNGs with pre-sized 1200×630 WebP variants where bandwidth-limited audiences matter** (Nice-to-have, M) — purely a CWV + social crawl speed nudge.
 
 ---
@@ -42,10 +42,10 @@ FRQNCY is in better SEO shape than most static sites of its size. Meta tags, Ope
 | `v2/crypto/index.html` | "Crypto — FRQNCY Network" | Good | Full (generic OG image — no topic variant) | Full | Yes | **A-** |
 | `v2/crypto/projects.html` | "Project Curation — FRQNCY Crypto" | Good | Full (generic OG) | Full | Yes | **A-** |
 
-**What works:** consistent template, all pages declare title/description/canonical/OG/Twitter; topic pages under `/v2/` get per-topic OG images from `/v2/og/*.png`. Descriptions are on-brand and under 160 chars.
+**What works:** consistent template, all pages declare title/description/canonical/OG/Twitter; topic pages under `/v2/` get per-topic OG images from `/og/*.png`. Descriptions are on-brand and under 160 chars.
 
 **Minor gaps:**
-- `og:image:width`/`height` dimensions are declared on only 5 sampled pages (`start-here.html`, `v2/media/`, `v2/translation/`, `v2/renewable-energy/`, `v2/fund/`, and most `/v2/<topic>/`). Add to all top-level pages for LinkedIn/Slack rendering reliability. Effort: S.
+- `og:image:width`/`height` dimensions are declared on only 5 sampled pages (`start-here.html`, `broadcast/`, `v2/translation/`, `v2/renewable-energy/`, `v2/fund/`, and most `/v2/<topic>/`). Add to all top-level pages for LinkedIn/Slack rendering reliability. Effort: S.
 - Crypto section (`v2/crypto/index.html`, `/projects.html`, `/explorer.html`) uses the generic `og-image.png`. Purpose-built OG images for these three would sharpen crypto-audience acquisition. Effort: M.
 
 ---
@@ -82,7 +82,7 @@ The site is lighter on raster imagery than it appears. Across all top-level HTML
 
 - **`alt` attributes**: all 15 `<img>` tags have `alt=` declared. Note: several `alt=""` (empty) on YouTube thumbs — this is semantically correct when the thumbnail is decorative next to the video title, so not a bug.
 - **`loading="lazy"`**: present on all 15 tags. Good.
-- **Modern formats (webp/avif)**: **0 occurrences** site-wide. All OG images and thumbs are PNG or JPG. OG images on social platforms are re-encoded server-side so this matters less; but the `/v2/og/*.png` files could be sibling-served as WebP for when social previewers support it, and favicon is an SVG (already modern).
+- **Modern formats (webp/avif)**: **0 occurrences** site-wide. All OG images and thumbs are PNG or JPG. OG images on social platforms are re-encoded server-side so this matters less; but the `/og/*.png` files could be sibling-served as WebP for when social previewers support it, and favicon is an SVG (already modern).
 - **Dimensions / explicit `width`×`height`**: spot-checked the podcast and meditation pages — dimensions are not declared on YouTube thumbnails, which can cause minor CLS. Effort to fix: S (add `width="480" height="360"` to all `img.youtube.com/vi/*/hqdefault.jpg`).
 
 ### Recommendation
@@ -256,7 +256,7 @@ This is genuinely well-executed and is FRQNCY's hidden SEO moat. Example from `v
 |---|---|---|---|---|---|
 | H1 | Heading hierarchy skip h1→h3 | `/start-here.html` lines 181,190,199 | Semantic/accessibility loss; SERP snippet quality | Change step `<h3>` to `<h2>` | **S** |
 | H2 | No "Related Topics" block on topic pages | All `/v2/<topic>/index.html` | Orphans ~90 niche pages from internal PageRank | Script: for each topic, pick 3-5 related from `search.json` co-tags; inject block before page footer | **M** |
-| H3 | Homepage "Four Pillars" cards are not linked | `/index.html` lines 162-183 | Wastes homepage authority | Wrap each `.detail-card` in `<a href="v2/<pillar>/">` | **S** |
+| H3 | Homepage "Four Pillars" cards are not linked | `/index.html` lines 162-183 | Wastes homepage authority | Wrap each `.detail-card` in `<a href="<pillar>/">` | **S** |
 | H4 | Sitemap missing 4 course pages + potentially others | `/sitemap.xml` | Pages won't be discovered promptly | Add entries for `/v2/courses/{meditation-101,quantum-reality,quantum-grammar,conscious-living-foundations}/`; consider automating | **S** |
 | H5 | Google Fonts render-blocking, not self-hosted | All pages | Adds 100-300 ms to FCP on slow networks | Self-host Cormorant + Jost WOFF2; `<link rel="preload" as="font" crossorigin>`; remove external fonts.googleapis.com chain | **M** |
 | H6 | No schema on `/v2/crypto/projects.html` | `/v2/crypto/projects.html` | Missed rich result on a high-intent page | Add `ItemList` with per-project `Product`/`Thing` items (and `Review`/`AggregateRating` if tier = rating) | **M** |
@@ -272,7 +272,7 @@ This is genuinely well-executed and is FRQNCY's hidden SEO moat. Example from `v
 | N2 | Project-to-topic cross-links | `/v2/crypto/projects.html` | Internal link graph density | For each project, link its category chip to the matching `/v2/<topic>/` page | **M** |
 | N3 | No `AboutPage` schema | `/about.html` | Small rich result eligibility | Add `AboutPage` with `mainEntity: Organization` | **S** |
 | N4 | Automated sitemap regeneration | build pipeline | Drift prevention | Add `build-sitemap.js` to walk the HTML tree and output `sitemap.xml` at deploy time | **M** |
-| N5 | WebP variants of OG images | `/og-image.png`, `/v2/og/*.png` | Marginal bandwidth savings | Sibling-serve `.webp`; leave `.png` as OG image URL (Facebook/Twitter don't support WebP yet) | **M** |
+| N5 | WebP variants of OG images | `/og-image.png`, `/og/*.png` | Marginal bandwidth savings | Sibling-serve `.webp`; leave `.png` as OG image URL (Facebook/Twitter don't support WebP yet) | **M** |
 | N6 | `Disallow: /chart-v2/` in robots.txt | `/robots.txt` | Hide internal calibration tool from indexes | One-line addition if confirmed internal | **S** |
 | N7 | Consider `hreflang` for any future locales | all HTML | Future-proofing | Not needed until multi-locale ships | — |
 | N8 | `schema.org/Person` pages for teachers | `/v2/people/index.html` + per-person pages | Knowledge graph eligibility | Add `Person` JSON-LD once individual teacher pages ship | **L** |

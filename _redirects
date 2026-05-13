@@ -82,3 +82,12 @@
 
 # Metaphysics renamed to Consciousness 2026-05-05
 /v2/metaphysics/* /v2/consciousness/:splat 301
+
+# /v2/ prefix removed 2026-05-12 — every old path 301s to its new home.
+/v2/media/*          /broadcast/:splat        301
+/v2/music/*          /music-topic/:splat      301
+/v2/places/*         /places-domain/:splat    301
+/v2/explore.html     /explore.html            301
+/v2/explore-data.js  /explore-data.js         301
+/v2/explore-data.json /explore-data.json      301
+/v2/*                /:splat                  301

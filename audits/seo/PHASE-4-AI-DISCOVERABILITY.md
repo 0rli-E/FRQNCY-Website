@@ -41,7 +41,7 @@ FRQNCY is shaped *exactly* for this. The 146 topic pages with curated picks, the
 Build /Users/orli/Documents/Claude/Projects/FRQNCY\ WEBSITE/llms.txt following the spec at https://llmstxt.org/. Top section: H1 with "FRQNCY", then a > blockquote summarizing the site (one paragraph from /audits/seo/CONTEXT.md §1). Then sections grouped by content type:
 
 ## Topics
-- [<topic-title>](https://frqncy.network/v2/<slug>/): <one-line summary from the page's meta description>
+- [<topic-title>](https://frqncy.network/<slug>/): <one-line summary from the page's meta description>
 ... (all 146 topic pages)
 
 ## Books

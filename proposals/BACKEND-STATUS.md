@@ -227,7 +227,7 @@ Three states a topic page can be in:
 - [ ] Set `PUBLIC_SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY` in Cloudflare Pages env (Production + Preview).
 - [ ] (Optional) Add `RESEND_API_KEY` + `RESEND_FROM` for welcome emails.
 - [ ] Set `AI` binding in Cloudflare Pages for the chat widget (one click).
-- [ ] Push current uncommitted work (M places/index.html, M v2/explore-data.json, several `places/*` new dirs) before Phase 1 Day 2 work begins.
+- [ ] Push current uncommitted work (M places/index.html, M explore-data.json, several `places/*` new dirs) before Phase 1 Day 2 work begins.
 
 ## Surprises that contradict prior audit
 

@@ -189,10 +189,10 @@ cd ~/Documents/Claude/Projects/FRQNCY\ WEBSITE
 ```
 
 ```
-frqncy-harness agent "Commission Topic 0004 — Crypto. Seed: 'freedom technology.' Follow proposals/TOPIC-COMMISSION-CONTEXT-GRAPH.md. Add 'crypto' to BESPOKE_TOPICS in generate.js BEFORE writing. Replace v2/crypto/index.html with a unique commissioned piece. Voice-pass per proposals/FRQNCY-VOICE-PLAYBOOK.md before finishing." --model claude-sdk/claude-opus-4-6 --yolo
+frqncy-harness agent "Commission Topic 0004 — Crypto. Seed: 'freedom technology.' Follow proposals/TOPIC-COMMISSION-CONTEXT-GRAPH.md. Add 'crypto' to BESPOKE_TOPICS in generate.js BEFORE writing. Replace crypto/index.html with a unique commissioned piece. Voice-pass per proposals/FRQNCY-VOICE-PLAYBOOK.md before finishing." --model claude-sdk/claude-opus-4-6 --yolo
 ```
 
-This will run for several minutes, do research, write the page, voice-check it. Review the diff with `git diff v2/crypto/index.html` afterwards.
+This will run for several minutes, do research, write the page, voice-check it. Review the diff with `git diff crypto/index.html` afterwards.
 
 ---
 

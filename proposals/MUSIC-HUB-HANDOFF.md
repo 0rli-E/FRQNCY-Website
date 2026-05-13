@@ -5,13 +5,13 @@
 
 ## What this is
 
-A new top-level music hub at `v2/music-hub/` modeled after the crypto hub. Hosts artists, albums, playlists, and genre/scene/label sub-navigation. The existing `v2/music/` topic page (curated books + tools) is untouched and now linked from the new hub as a companion "Topic Page" reference.
+A new top-level music hub at `v2/music-hub/` modeled after the crypto hub. Hosts artists, albums, playlists, and genre/scene/label sub-navigation. The existing `music-topic/` topic page (curated books + tools) is untouched and now linked from the new hub as a companion "Topic Page" reference.
 
 ## Why two music pages
 
 Per the user's choice when offered three options:
 
-- `v2/music/` — topic page in the network graph. Curated resources (books, tools). Has an entry in `search.json`. Stays as-is.
+- `music-topic/` — topic page in the network graph. Curated resources (books, tools). Has an entry in `search.json`. Stays as-is.
 - `v2/music-hub/` — listening hub. Artists, albums, playlists, genres. The "music itself" rather than what's been written about it.
 
 The CTA at the bottom of the hub points back to the topic page so they cross-link.
@@ -23,7 +23,7 @@ The CTA at the bottom of the hub points back to the topic page so they cross-lin
 | `v2/music-hub/index.html` | **Created.** Full hub scaffold, ~395 lines, single-file vanilla HTML/CSS, no build step. |
 | `v2/explore.html` | Added `<a href="music-hub/index.html">Music</a>` to the top nav between Watch and Courses (line ~343). |
 
-Nothing else. No JSON edits. No changes to `v2/music/` topic page.
+Nothing else. No JSON edits. No changes to `music-topic/` topic page.
 
 ## Page structure
 

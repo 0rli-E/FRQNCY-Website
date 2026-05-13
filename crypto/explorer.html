@@ -1,0 +1,732 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Explore by Sector — FRQNCY Crypto</title>
+<meta name="description" content="The crypto map, chapter by chapter. Learn what each sector does, then meet the projects inside it — rated by conviction.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Explore by Sector — FRQNCY Crypto">
+<meta property="og:description" content="The crypto map, chapter by chapter. Learn what each sector does, then meet the projects inside it.">
+<meta property="og:url" content="https://frqncy.network/crypto/explorer.html">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Explore by Sector — FRQNCY Crypto">
+<meta name="twitter:description" content="The crypto map, chapter by chapter. Learn what each sector does, then meet the projects inside it.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/crypto/explorer.html">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<link rel="preload" as="fetch" href="/api/crypto/projects" crossorigin>
+<link rel="preload" as="fetch" href="/api/crypto/market" crossorigin>
+<script type="application/ld+json">
+{"@context":"https://schema.org","@type":"CollectionPage","name":"Explore by Sector — FRQNCY Crypto","description":"The crypto map, chapter by chapter. Learn what each sector does, then meet the projects inside it.","url":"https://frqncy.network/crypto/explorer.html","isPartOf":{"@type":"WebSite","name":"FRQNCY","url":"https://frqncy.network/"}}
+</script>
+<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<script src="_market.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
+  --card-border:rgba(255,255,255,0.08);--accent:#7B61FF;
+  --tier-s:#C4973A;--tier-a:#7B61FF;--tier-b:#4A9AE8;--tier-c:#7090B8;--tier-d:#5A6A7A;--tier-e:#4A5260;--tier-f:#3A3F48;
+}
+html{scroll-behavior:smooth}
+body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{text-decoration:none;color:var(--accent)}
+a:hover{opacity:0.85}
+
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text)}
+.breadcrumb .sep{opacity:0.25}
+.snav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.snav-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);transition:color .2s;white-space:nowrap}
+.snav-link:hover{color:var(--text)}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(2.5rem,5vw,4rem) clamp(1.25rem,5vw,2.5rem) clamp(1.5rem,3vw,2rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(123,97,255,0.12) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2rem,5vw,3.5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:0.8rem}
+.hero-desc{max-width:640px;margin:0 auto;font-size:0.84rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+
+/* TIER LEGEND */
+.tier-legend{max-width:900px;margin:1.5rem auto 0;display:flex;justify-content:center;gap:1.25rem;flex-wrap:wrap;padding:0 1rem}
+.tier-legend-item{display:flex;align-items:center;gap:0.35rem;font-size:0.56rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim)}
+.tier-legend-pip{width:10px;height:10px;border-radius:2px}
+
+/* STICKY CHAPTER NAV */
+.chapter-nav{position:sticky;top:56px;z-index:90;background:rgba(11,28,61,0.95);backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0.6rem clamp(1.25rem,4vw,2.5rem);display:flex;align-items:center;gap:0.5rem;overflow-x:auto;-webkit-overflow-scrolling:touch;scrollbar-width:none}
+.chapter-nav::-webkit-scrollbar{display:none}
+.chapter-nav-label{font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);flex-shrink:0;margin-right:0.25rem}
+.cpill{font-size:0.58rem;letter-spacing:0.1em;text-transform:uppercase;padding:4px 12px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;cursor:pointer;color:var(--text-dim);background:none;transition:all .2s;font-family:'Jost',sans-serif;white-space:nowrap;flex-shrink:0}
+.cpill:hover{border-color:rgba(255,255,255,0.22);color:var(--text)}
+.cpill.active{border-color:var(--accent);color:var(--accent);background:rgba(123,97,255,0.06)}
+.cpill.tier-pill{margin-left:auto}
+.tier-divider{width:1px;height:16px;background:rgba(255,255,255,0.1);flex-shrink:0;margin:0 0.25rem}
+.cpill.tier-active{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.06)}
+
+/* CHAPTERS */
+main{max-width:1100px;margin:0 auto;padding:1.5rem clamp(1.25rem,5vw,2.5rem) 5rem}
+
+.chapter{margin-bottom:0.75rem;border:1px solid var(--card-border);border-radius:6px;overflow:hidden;transition:border-color .25s}
+.chapter.open{border-color:rgba(255,255,255,0.12)}
+
+.chapter-header{display:flex;align-items:center;gap:1rem;padding:1.2rem 1.5rem;cursor:pointer;transition:background .2s;user-select:none}
+.chapter-header:hover{background:rgba(255,255,255,0.03)}
+.chapter-icon{font-size:1.5rem;flex-shrink:0;width:36px;text-align:center}
+.chapter-title{font-family:'Cormorant',serif;font-size:1.4rem;font-weight:400;color:#fff;flex:1}
+.chapter-count{font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);padding:2px 10px;border:1px solid rgba(255,255,255,0.08);border-radius:2px}
+.chapter-arrow{font-size:0.7rem;color:var(--text-dim);transition:transform .3s;flex-shrink:0}
+.chapter.open .chapter-arrow{transform:rotate(180deg)}
+
+.chapter-body{display:none;padding:0 1.5rem 1.5rem}
+.chapter.open .chapter-body{display:block}
+
+.chapter-intro{font-size:0.82rem;color:var(--text-dim);line-height:1.75;max-width:700px;margin-bottom:1.5rem;padding-left:0.25rem;border-left:2px solid rgba(123,97,255,0.2)}
+.chapter-intro{padding-left:1rem}
+
+/* PROJECT CARDS GRID */
+.pgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:0.75rem}
+
+.pcard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1rem 1rem 0.8rem;display:flex;flex-direction:column;gap:0.35rem;transition:all .25s;position:relative;border-left:3px solid var(--tier-c)}
+.pcard:hover{border-color:rgba(255,255,255,0.18);background:rgba(255,255,255,0.06);transform:translateY(-2px)}
+.pcard[data-tier="S"]{border-left-color:var(--tier-s)}
+.pcard[data-tier="A"]{border-left-color:var(--tier-a)}
+.pcard[data-tier="B"]{border-left-color:var(--tier-b)}
+.pcard[data-tier="C"]{border-left-color:var(--tier-c)}
+.pcard[data-tier="D"]{border-left-color:var(--tier-d)}
+.pcard[data-tier="E"]{border-left-color:var(--tier-e)}
+.pcard[data-tier="F"]{border-left-color:var(--tier-f)}
+
+.pcard-top{display:flex;align-items:center;justify-content:space-between;gap:0.5rem}
+.pcard-name{font-family:'Cormorant',serif;font-size:1.1rem;font-weight:400;color:#fff;line-height:1.15;text-transform:capitalize}
+.pcard-tier{font-size:0.48rem;letter-spacing:0.16em;text-transform:uppercase;padding:2px 7px;border-radius:2px;font-weight:400;border:1px solid;white-space:nowrap}
+.pcard-tier[data-tier="S"]{color:var(--tier-s);border-color:rgba(196,151,58,0.4);background:rgba(196,151,58,0.08)}
+.pcard-tier[data-tier="A"]{color:var(--tier-a);border-color:rgba(123,97,255,0.35);background:rgba(123,97,255,0.06)}
+.pcard-tier[data-tier="B"]{color:var(--tier-b);border-color:rgba(74,154,232,0.3);background:rgba(74,154,232,0.05)}
+.pcard-tier[data-tier="C"]{color:var(--tier-c);border-color:rgba(112,144,184,0.25);background:rgba(112,144,184,0.04)}
+.pcard-tier[data-tier="D"]{color:var(--tier-d);border-color:rgba(90,106,122,0.3);background:rgba(90,106,122,0.05)}
+.pcard-tier[data-tier="E"]{color:var(--tier-e);border-color:rgba(74,82,96,0.3);background:rgba(74,82,96,0.05)}
+.pcard-tier[data-tier="F"]{color:var(--tier-f);border-color:rgba(58,63,72,0.3);background:rgba(58,63,72,0.05)}
+
+.pcard-symbol{font-size:0.56rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim)}
+.pcard-meta{display:flex;align-items:center;gap:0.5rem;flex-wrap:wrap;margin-top:0.15rem}
+.pcard-tag{font-size:0.46rem;letter-spacing:0.12em;text-transform:uppercase;padding:1px 6px;border-radius:2px;border:1px solid rgba(255,255,255,0.08);color:var(--text-dim)}
+.pcard-notes{font-size:0.72rem;color:var(--text-dim);line-height:1.55;margin-top:0.2rem}
+.pcard-coingecko{font-size:0.56rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--accent);margin-top:auto;padding-top:0.4rem}
+
+/* TIER FILTER — hide non-matching cards, collapse empty chapters */
+.pcard.filter-hidden{display:none}
+.chapter.filter-hidden{display:none}
+.tier-filter-active .chapter-count{opacity:0.6}
+.tier-filter-active .cpill[data-chapter]{opacity:0.5}
+.tier-filter-active .cpill[data-chapter].has-match{opacity:1}
+
+/* EMPTY */
+.empty-chapter{text-align:center;padding:2rem;font-size:0.8rem;color:var(--text-dim);opacity:0.6}
+
+/* DISCLAIMER */
+.disclaimer{max-width:640px;margin:0 auto 1.5rem;text-align:center;font-size:0.68rem;color:var(--text-dim);opacity:0.6;line-height:1.6;padding:0 1.25rem}
+
+/* SYNC NOTE & REFRESH */
+.sync-note{max-width:1100px;margin:1.5rem auto 0;padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.58rem;color:var(--text-dim);opacity:0.5;text-align:right;display:flex;align-items:center;justify-content:flex-end;gap:0.5rem}
+.refresh-btn{background:none;border:1px solid rgba(255,255,255,0.1);color:var(--text-dim);font-size:0.58rem;letter-spacing:0.1em;padding:3px 10px;border-radius:2px;cursor:pointer;transition:all .2s;font-family:'Jost',sans-serif;margin-right:0.5rem}
+.refresh-btn:hover{border-color:rgba(255,255,255,0.3);color:var(--text)}
+.refresh-btn:disabled{opacity:0.4;cursor:wait}
+
+@media(max-width:600px){
+  .pgrid{grid-template-columns:1fr 1fr}
+  .chapter-header{padding:1rem 1.2rem}
+  .chapter-body{padding:0 1.2rem 1.2rem}
+  .chapter-title{font-size:1.15rem}
+  .tier-legend{gap:0.6rem}
+}
+@media(max-width:400px){
+  .pgrid{grid-template-columns:1fr}
+}
+</style>
+</head>
+<body>
+
+<!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
+<style data-frqncy-header-critical>
+/* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
+#main-nav{position:sticky;top:0;width:100%;z-index:500;padding:14px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;background:rgba(11,28,61,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);font-family:'Jost',system-ui,sans-serif}
+#main-nav .nav-logo{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:20px;letter-spacing:.34em;color:#fff;text-decoration:none;text-transform:uppercase}
+#main-nav .nav-links{display:flex;gap:22px;list-style:none;margin:0;padding:0;align-items:center}
+#main-nav .nav-links a{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);text-decoration:none;display:inline-flex;align-items:center;min-height:30px}
+#main-nav .nav-search{display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:2px}
+#main-nav .nav-search input{background:transparent;border:0;outline:0;color:#fff;font:inherit;font-size:10.5px;letter-spacing:.14em;width:clamp(120px,14vw,180px);padding:5px 9px}
+#main-nav .nav-search input::placeholder{color:rgba(255,255,255,.45)}
+#main-nav .nav-search button{background:transparent;border:0;color:rgba(255,255,255,.6);font-size:13px;padding:4px 9px;cursor:pointer}
+#main-nav .nav-back{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:2px;text-decoration:none}
+#main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+#main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
+#main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
+body.frqncy-home #main-nav .nav-back{display:none}
+#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important}
+#main-nav .nav-dd-menu a .dd-label,#main-nav .nav-dd-menu a .dd-sub{display:block !important;text-align:center !important;width:100% !important}
+@media(max-width:720px){#main-nav .nav-links{display:none}}
+</style>
+<nav id="main-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <a href="/about">About</a>
+      <div class="nav-dd-menu">
+        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
+        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/explore.html">Discover</a>
+      <div class="nav-dd-menu">
+        <a href="/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
+        <a href="/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
+        <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
+        <a href="/people/"><span class="dd-label">Browse</span><span class="dd-sub">People · Books · Orgs · Places</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/social/">Community</a>
+      <div class="nav-dd-menu">
+        <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
+        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">Social layer</span></a>
+        <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access</span></a>
+        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
+      </div>
+    </li>
+    <li class="nav-search-li">
+      <form action="/search" method="get" role="search" class="nav-search">
+        <input type="text" role="searchbox" name="q" placeholder="Search…" aria-label="Search the FRQNCY network" autocomplete="off">
+        <button type="submit" aria-label="Search">⌕</button>
+      </form>
+    </li>
+    <li>
+      <a href="/" class="nav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
+    </li>
+    <li>
+      <a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a>
+    </li>
+  </ul>
+</nav>
+<script>
+  // Tag the homepage so CSS can hide the back button there (it's redundant on /).
+  (function(){
+    try {
+      var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
+      if (isHome) document.body.classList.add('frqncy-home');
+    } catch(_) {}
+  })();
+</script>
+<!-- Tiny floating Donate button — bottom-right on every page. Click opens a
+     popover with the EVM + SOL wallet addresses; the full /donate page link
+     sits at the top of the popover. -->
+<style data-frqncy-donate>
+  #frq-donate-btn{position:fixed;right:18px;bottom:18px;z-index:480;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
+  #frq-donate-btn:hover{background:#C4973A;color:#fff;transform:translateY(-1px)}
+  #frq-donate-btn .heart{margin-right:6px;display:inline-block}
+  #frq-donate-pop{position:fixed;right:18px;bottom:64px;z-index:481;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
+  #frq-donate-pop.open{display:block}
+  #frq-donate-pop .frq-pop-title{font-family:'Cormorant',Georgia,serif;font-size:18px;font-weight:400;color:#0B1C3D;margin-bottom:4px}
+  #frq-donate-pop .frq-pop-sub{font-size:11px;color:#8A9AB8;margin-bottom:14px;line-height:1.5}
+  #frq-donate-pop .frq-pop-sub a{color:#C4973A;text-decoration:none}
+  #frq-donate-pop .frq-w-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#C4973A;font-weight:500;margin-top:10px;display:block}
+  #frq-donate-pop .frq-w-addr{font-family:'SFMono-Regular',Menlo,monospace;font-size:11px;color:#0B1C3D;background:#F8FAFC;border:1px solid rgba(11,28,61,.08);padding:8px 10px;border-radius:3px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;word-break:break-all}
+  #frq-donate-pop .frq-w-copy{flex:0 0 auto;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#C4973A;background:transparent;border:1px solid rgba(196,151,58,.5);padding:3px 8px;border-radius:2px;cursor:pointer;font-family:inherit}
+  #frq-donate-pop .frq-w-copy:hover{background:#C4973A;color:#fff}
+  #frq-donate-pop .frq-pop-foot{margin-top:14px;padding-top:12px;border-top:1px solid rgba(11,28,61,.06);font-size:10px;letter-spacing:.06em;color:#8A9AB8;line-height:1.5}
+  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:12px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:54px}}
+</style>
+<button id="frq-donate-btn" type="button" aria-haspopup="dialog" aria-controls="frq-donate-pop" aria-label="Support FRQNCY">
+  <span class="heart" aria-hidden="true">♥</span>Donate
+</button>
+<div id="frq-donate-pop" role="dialog" aria-label="FRQNCY donation wallets">
+  <div class="frq-pop-title">Support FRQNCY</div>
+  <div class="frq-pop-sub">Full details + fiat options on <a href="/donate">/donate</a>.</div>
+  <span class="frq-w-label">EVM · ETH / Base / Arbitrum (USDC, ETH)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="evm">0xPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="evm">Copy</button>
+  </div>
+  <span class="frq-w-label">Solana (SOL / USDC-SPL)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="sol">SOLPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="sol">Copy</button>
+  </div>
+  <div class="frq-pop-foot">Wallets are placeholders until the FRQNY treasury multi-sig goes live. See the crypto stack spec.</div>
+</div>
+<script>
+  (function(){
+    var btn = document.getElementById('frq-donate-btn');
+    var pop = document.getElementById('frq-donate-pop');
+    if (!btn || !pop) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      pop.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!pop.contains(e.target) && e.target !== btn) pop.classList.remove('open');
+    });
+    pop.addEventListener('click', function(e){
+      var t = e.target;
+      if (t && t.dataset && t.dataset.frqCopy) {
+        var which = t.dataset.frqCopy;
+        var addrEl = pop.querySelector('[data-frq-addr="' + which + '"]');
+        if (!addrEl) return;
+        var text = addrEl.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function(){
+            var orig = t.textContent;
+            t.textContent = 'Copied';
+            setTimeout(function(){ t.textContent = orig; }, 1200);
+          });
+        }
+      }
+    });
+  })();
+</script>
+<!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
+
+<section class="hero">
+  <div class="hero-eyebrow">crypto.frqncy · Sectors</div>
+  <h1>The Map, Chapter by Chapter</h1>
+  <p class="hero-desc">Crypto is vast. So walk it one room at a time. Each sector explained in plain language first. Then the projects inside it — rated, so you can see where conviction sits.</p>
+  <div class="tier-legend">
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-s)"></div>S — Diamond</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-a)"></div>A — Gold</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-b)"></div>B — Silver</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-c)"></div>C — Utility</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-d)"></div>D — Speculative</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-e)"></div>E — Caution</div>
+    <div class="tier-legend-item"><div class="tier-legend-pip" style="background:var(--tier-f)"></div>F — Avoid</div>
+  </div>
+</section>
+
+<p class="disclaimer">Not financial advice. Tier ratings reflect FRQNCY's philosophical and technical conviction — always do your own research.</p>
+
+<div class="chapter-nav" id="chapter-nav" role="navigation" aria-label="Chapter navigation">
+  <span class="chapter-nav-label">Chapters</span>
+  <!-- pills injected by JS -->
+</div>
+
+<main id="chapters">
+  <!-- chapters injected by JS -->
+</main>
+
+<div class="sync-note" id="sync-note">
+  <button id="refresh-btn" class="refresh-btn" onclick="refreshData()" title="Refresh from Notion" aria-label="Refresh project data from Notion">&#8635; Refresh</button>
+  <span id="sync-text" aria-live="polite"></span>
+</div>
+
+<script>
+/* ── DATA ────────────────────────────────────────────────────────────── */
+let CHAPTERS = [];
+
+const TIER_ORDER = ['S','A','B','C','D','E','F'];
+const TIER_LABELS = {S:'💎 S',A:'🥇 A',B:'🥈 B',C:'⚙️ C',D:'🪙 D',E:'🧱 E',F:'🗑️ F'};
+
+const CHAPTER_ORDER = [
+  "Store of Value", "Smart Contract Platforms", "Layer 2 Solutions",
+  "DeFi Protocols", "Stablecoins", "AI & Blockchain", "Meme Coins",
+  "Privacy", "Payments", "Oracles & Infrastructure", "Gaming & Metaverse",
+  "DeSci & Longevity", "SocialFi & Identity", "Bridges & Interoperability",
+  "Internet Capital Markets", "Prediction Markets", "Real World Assets", "Other"
+];
+
+function esc(s){return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;')}
+
+/* Extract CoinGecko coin id from a CoinGecko URL.
+   e.g. https://www.coingecko.com/en/coins/bitcoin → "bitcoin" */
+function cgIdFromUrl(url) {
+  if (!url) return '';
+  const m = String(url).match(/\/coins\/([^/?#]+)/);
+  return m ? m[1].toLowerCase() : '';
+}
+
+/* ── STATE ──────────────────────────────────────────────────────────── */
+let openChapter = null;
+let activeTierFilter = null;
+
+/* ── BUILD NAV ──────────────────────────────────────────────────────── */
+function buildChapterNav() {
+  const nav = document.getElementById('chapter-nav');
+  nav.innerHTML = '';
+
+  const chLabel = document.createElement('span');
+  chLabel.className = 'chapter-nav-label';
+  chLabel.textContent = 'Chapters';
+  nav.appendChild(chLabel);
+
+  for (const ch of CHAPTERS) {
+    const pill = document.createElement('button');
+    pill.className = 'cpill';
+    pill.dataset.chapter = ch.id;
+    pill.textContent = ch.title;
+    pill.addEventListener('click', () => toggleChapter(ch.id));
+    nav.appendChild(pill);
+  }
+
+  // tier filter divider + label + pills
+  const divider = document.createElement('div');
+  divider.className = 'tier-divider';
+  nav.appendChild(divider);
+
+  const tierLabel = document.createElement('span');
+  tierLabel.className = 'chapter-nav-label';
+  tierLabel.textContent = 'Filter by tier';
+  nav.appendChild(tierLabel);
+
+  for (const tier of TIER_ORDER) {
+    const pill = document.createElement('button');
+    pill.className = 'cpill tier-pill';
+    pill.dataset.tierfilter = tier;
+    pill.textContent = TIER_LABELS[tier];
+    pill.addEventListener('click', () => toggleTierFilter(tier));
+    nav.appendChild(pill);
+  }
+}
+
+/* ── BUILD CHAPTERS (UI) ───────────────────────────────────────────── */
+function buildUI() {
+  const container = document.getElementById('chapters');
+  container.innerHTML = '';
+  for (const ch of CHAPTERS) {
+    const section = document.createElement('div');
+    section.className = 'chapter';
+    section.id = 'ch-' + ch.id;
+
+    // Sort projects by tier
+    const sorted = [...ch.projects].sort((a,b) => TIER_ORDER.indexOf(a.t) - TIER_ORDER.indexOf(b.t));
+
+    section.innerHTML = `
+      <div class="chapter-header" data-chapter="${ch.id}" tabindex="0" role="button">
+        <div class="chapter-icon">${ch.icon}</div>
+        <div class="chapter-title">${esc(ch.title)}</div>
+        <span class="chapter-count">${ch.projects.length} project${ch.projects.length !== 1 ? 's' : ''}</span>
+        <div class="chapter-arrow">▼</div>
+      </div>
+      <div class="chapter-body">
+        <div class="chapter-intro">${esc(ch.intro)}</div>
+        <div class="pgrid">
+          ${sorted.map(p => makeCard(p)).join('')}
+        </div>
+      </div>
+    `;
+
+    section.querySelector('.chapter-header').addEventListener('click', () => toggleChapter(ch.id));
+    section.querySelector('.chapter-header').addEventListener('keydown', (e) => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); toggleChapter(ch.id); }
+    });
+    container.appendChild(section);
+  }
+}
+
+function makeCard(p) {
+  const tierLabel = TIER_LABELS[p.t] || p.t;
+  const metaTags = [];
+  if (p.type) metaTags.push(p.type);
+  if (p.mc) metaTags.push(p.mc);
+  if (p.cat) metaTags.push(p.cat);
+  const cgid = cgIdFromUrl(p.cg);
+
+  return `
+    <div class="pcard" data-tier="${esc(p.t)}"${cgid ? ` data-cgid="${esc(cgid)}"` : ''}>
+      <div class="pcard-top">
+        <div class="pcard-name">${esc(p.n)}</div>
+        <div class="pcard-tier" data-tier="${esc(p.t)}">${esc(tierLabel)}</div>
+      </div>
+      ${p.s ? `<div class="pcard-symbol">${esc(p.s)}</div>` : ''}
+      <div class="pcard-meta">
+        ${metaTags.map(t => `<span class="pcard-tag">${esc(t)}</span>`).join('')}
+      </div>
+      ${p.note ? `<div class="pcard-notes">${esc(p.note)}</div>` : ''}
+      ${p.cg ? `<a href="${esc(p.cg)}" target="_blank" rel="noopener noreferrer" class="pcard-coingecko">CoinGecko →</a>` : ''}
+    </div>
+  `;
+}
+
+/* ── INTERACTIONS ───────────────────────────────────────────────────── */
+function toggleChapter(id) {
+  const target = document.getElementById('ch-' + id);
+  const wasOpen = target.classList.contains('open');
+
+  // Close all
+  document.querySelectorAll('.chapter.open').forEach(ch => ch.classList.remove('open'));
+  document.querySelectorAll('.cpill[data-chapter]').forEach(p => p.classList.remove('active'));
+
+  if (!wasOpen) {
+    target.classList.add('open');
+    openChapter = id;
+    // Highlight nav pill
+    const pill = document.querySelector(`.cpill[data-chapter="${id}"]`);
+    if (pill) pill.classList.add('active');
+    // Scroll into view with offset
+    setTimeout(() => {
+      const rect = target.getBoundingClientRect();
+      const offset = 120; // nav + chapter-nav height
+      if (rect.top < offset || rect.top > window.innerHeight * 0.5) {
+        window.scrollTo({top: window.scrollY + rect.top - offset, behavior: 'smooth'});
+      }
+    }, 50);
+  } else {
+    openChapter = null;
+  }
+}
+
+function toggleTierFilter(tier) {
+  const tierPills = document.querySelectorAll('.cpill[data-tierfilter]');
+  const chapterPills = document.querySelectorAll('.cpill[data-chapter]');
+  const body = document.body;
+
+  if (activeTierFilter === tier) {
+    // ── DEACTIVATE — restore full view ─────────────────
+    activeTierFilter = null;
+    body.classList.remove('tier-filter-active');
+    tierPills.forEach(p => p.classList.remove('tier-active'));
+    chapterPills.forEach(p => p.classList.remove('has-match'));
+    document.querySelectorAll('.pcard.filter-hidden').forEach(c => c.classList.remove('filter-hidden'));
+    document.querySelectorAll('.chapter.filter-hidden').forEach(c => c.classList.remove('filter-hidden'));
+    restoreChapterCounts();
+    // Collapse all, then re-open the original openChapter (or the first one)
+    document.querySelectorAll('.chapter.open').forEach(c => c.classList.remove('open'));
+    chapterPills.forEach(p => p.classList.remove('active'));
+    const reopen = openChapter || (CHAPTERS[0] && CHAPTERS[0].id);
+    if (reopen) {
+      const target = document.getElementById('ch-' + reopen);
+      if (target) target.classList.add('open');
+      const pill = document.querySelector(`.cpill[data-chapter="${reopen}"]`);
+      if (pill) pill.classList.add('active');
+    }
+    return;
+  }
+
+  // ── ACTIVATE — hide non-matching, expand chapters with matches ───
+  activeTierFilter = tier;
+  body.classList.add('tier-filter-active');
+  tierPills.forEach(p => p.classList.toggle('tier-active', p.dataset.tierfilter === tier));
+
+  // For each chapter: hide non-matching cards; if chapter has zero matches, hide it;
+  // otherwise expand it so matches are visible immediately.
+  document.querySelectorAll('.chapter').forEach(ch => {
+    const cards = ch.querySelectorAll('.pcard');
+    let matches = 0;
+    cards.forEach(c => {
+      const match = c.dataset.tier === tier;
+      c.classList.toggle('filter-hidden', !match);
+      if (match) matches++;
+    });
+    ch.classList.toggle('filter-hidden', matches === 0);
+    ch.classList.toggle('open', matches > 0);
+    // Update the chapter count badge to reflect filtered count
+    const badge = ch.querySelector('.chapter-count');
+    if (badge) badge.textContent = matches + ' match' + (matches !== 1 ? 'es' : '');
+    // Mark chapter pills that have matches
+    const pill = document.querySelector(`.cpill[data-chapter="${ch.id.replace(/^ch-/,'')}"]`);
+    if (pill) pill.classList.toggle('has-match', matches > 0);
+  });
+
+  // Scroll to first visible chapter so user sees results
+  const firstVisible = document.querySelector('.chapter:not(.filter-hidden)');
+  if (firstVisible) {
+    setTimeout(() => {
+      const rect = firstVisible.getBoundingClientRect();
+      const offset = 140;
+      if (rect.top < offset || rect.top > window.innerHeight * 0.5) {
+        window.scrollTo({top: window.scrollY + rect.top - offset, behavior: 'smooth'});
+      }
+    }, 50);
+  }
+}
+
+/* Restore chapter count badges after deactivating filter */
+function restoreChapterCounts() {
+  for (const ch of CHAPTERS) {
+    const el = document.getElementById('ch-' + ch.id);
+    if (!el) continue;
+    const badge = el.querySelector('.chapter-count');
+    if (badge) badge.textContent = ch.projects.length + ' project' + (ch.projects.length !== 1 ? 's' : '');
+  }
+}
+
+/* ── SYNC NOTE ─────────────────────────────────────────────────────── */
+function updateSyncNote(data) {
+  const syncText = document.getElementById('sync-text');
+  if (data.cached) {
+    syncText.textContent = 'Cached \u00B7 Last sync ' + new Date(data.lastSync).toLocaleString();
+  } else {
+    syncText.textContent = 'Live from Notion \u00B7 ' + new Date(data.lastSync).toLocaleString();
+  }
+}
+
+/* ── PAYLOAD → CHAPTERS ──────────────────────────────────────────── */
+function buildChaptersFromPayload(data) {
+  const chapterMap = {};
+
+  // Initialize chapters with metadata from API
+  for (const name of CHAPTER_ORDER) {
+    if (data.chapters && data.chapters[name]) {
+      chapterMap[name] = {
+        id: name.toLowerCase().replace(/[^a-z0-9]+/g, '-'),
+        icon: data.chapters[name].icon,
+        title: name,
+        intro: data.chapters[name].intro,
+        projects: []
+      };
+    }
+  }
+
+  // Ensure "Other" always exists as fallback
+  if (!chapterMap['Other']) {
+    chapterMap['Other'] = { id: 'other', icon: '\uD83D\uDCE6', title: 'Other', intro: 'Projects that don\'t fit neatly into a single sector.', projects: [] };
+  }
+
+  // Sort projects into chapters
+  for (const p of data.projects) {
+    const ch = p.chapter || 'Other';
+    if (!chapterMap[ch]) chapterMap[ch] = chapterMap['Other'];
+    chapterMap[ch].projects.push({
+      n: p.name,
+      s: p.symbol || '',
+      t: p.tier || '',
+      type: p.type || '',
+      mc: p.mcap || '',
+      cat: p.category || '',
+      cg: p.coingecko || '',
+      note: p.notes || ''
+    });
+  }
+
+  const chapters = CHAPTER_ORDER
+    .filter(name => chapterMap[name] && chapterMap[name].projects.length > 0)
+    .map(name => chapterMap[name]);
+
+  // Also add any chapters from the API not in CHAPTER_ORDER
+  if (data.chapters) {
+    for (const name of Object.keys(data.chapters)) {
+      if (!CHAPTER_ORDER.includes(name) && chapterMap[name] && chapterMap[name].projects.length > 0) {
+        chapters.push(chapterMap[name]);
+      }
+    }
+  }
+  return chapters;
+}
+
+function hydrate(data, source) {
+  CHAPTERS = buildChaptersFromPayload(data);
+  buildUI();
+  buildChapterNav();
+  updateSyncNote({ ...data, cached: source !== 'api' });
+
+  // Open first chapter by default (or hash-targeted)
+  const hash = location.hash.replace('#','');
+  const target = hash && CHAPTERS.find(c => c.id === hash);
+  if (target) {
+    toggleChapter(target.id);
+  } else if (CHAPTERS.length > 0) {
+    toggleChapter(CHAPTERS[0].id);
+  }
+
+  // If the market script has already fetched prices, repaint fresh cards.
+  if (window.FRQNCY_MARKET && typeof window.FRQNCY_MARKET.repaint === 'function') {
+    window.FRQNCY_MARKET.repaint();
+  }
+}
+
+/* ── LOCAL CACHE ─────────────────────────────────────────────────── */
+const LS_KEY = 'frqncy_crypto_explorer_v1';
+const LS_MAX_AGE = 30 * 60 * 1000; // 30 min
+
+function saveLocal(data) {
+  try {
+    localStorage.setItem(LS_KEY, JSON.stringify({
+      ts: Date.now(),
+      data: { projects: data.projects, chapters: data.chapters, lastSync: data.lastSync }
+    }));
+  } catch(_) { /* quota — ignore */ }
+}
+
+function loadLocal() {
+  try {
+    const raw = localStorage.getItem(LS_KEY);
+    if (!raw) return null;
+    const { ts, data } = JSON.parse(raw);
+    if (!data || !data.projects) return null;
+    if (Date.now() - ts > LS_MAX_AGE) return { data, stale: true };
+    return { data, stale: false };
+  } catch(_) { return null; }
+}
+
+/* ── LOAD DATA — cache-first, then live upgrade ──────────────────── */
+async function loadData() {
+  // 1. Instant paint from localStorage if we have it
+  const cached = loadLocal();
+  let painted = false;
+  if (cached && cached.data.projects && cached.data.projects.length) {
+    hydrate(cached.data, 'cache');
+    painted = true;
+  } else {
+    document.getElementById('chapters').innerHTML = '<div style="text-align:center;padding:4rem;color:var(--text-dim)">Loading projects\u2026</div>';
+  }
+
+  // 2. Live upgrade from API in the background
+  try {
+    const res = await fetch('/api/crypto/projects');
+    if (!res.ok) throw new Error('API failed');
+    const data = await res.json();
+    hydrate(data, 'api');
+    saveLocal(data);
+  } catch (e) {
+    if (!painted) {
+      document.getElementById('chapters').innerHTML = '<div style="text-align:center;padding:4rem;color:var(--text-dim)">Failed to load projects. <button onclick="loadData()" style="color:var(--accent);background:none;border:none;cursor:pointer;text-decoration:underline">Retry</button></div>';
+    }
+    // if we already have a cached paint, silently keep it
+  }
+}
+
+async function refreshData() {
+  const btn = document.getElementById('refresh-btn');
+  btn.disabled = true;
+  btn.textContent = '\u21BB Refreshing\u2026';
+  try {
+    const res = await fetch('/api/crypto/projects?refresh=true');
+    if (!res.ok) throw new Error('Refresh failed');
+    const data = await res.json();
+    hydrate(data, 'api');
+    saveLocal(data);
+  } catch (e) {
+    document.getElementById('sync-text').textContent = 'Refresh failed \u2014 showing cached data';
+  } finally {
+    btn.disabled = false;
+    btn.textContent = '\u21BB Refresh';
+  }
+}
+
+/* ── INIT ───────────────────────────────────────────────────────────── */
+loadData();
+</script>
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+</body>
+</html>

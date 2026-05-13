@@ -10,12 +10,12 @@ FRQNCY is a topic graph for consciousness — a curated public library of 146 to
 
 ```
 /                          — homepage, hero + pillar grid + featured topics + chart calculator
-/v2/explore.html           — the 146-topic discovery surface (the main entry to topic pages)
-/v2/<topic-slug>/          — 146 topic pages (e.g., /v2/meditation/, /v2/conscious-capital/)
-/v2/courses/               — 6 courses (intentionally separate from topics)
-/v2/courses/<course-slug>/ — individual course pages with lesson lists
-/v2/watch/                 — Watch library (skip; being worked on separately)
-/v2/og/<slug>.png          — per-topic OG card (1200×630, generated)
+/explore.html           — the 146-topic discovery surface (the main entry to topic pages)
+/<topic-slug>/          — 146 topic pages (e.g., /meditation/, /conscious-capital/)
+/courses/               — 6 courses (intentionally separate from topics)
+/courses/<course-slug>/ — individual course pages with lesson lists
+/watch/                 — Watch library (skip; being worked on separately)
+/og/<slug>.png          — per-topic OG card (1200×630, generated)
 
 /books/                    — 284 book pages
 /people/                   — 89 people pages

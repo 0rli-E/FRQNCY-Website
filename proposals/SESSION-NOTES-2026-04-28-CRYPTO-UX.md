@@ -115,11 +115,11 @@ If you see stale `.git/index.lock` or `.git/HEAD.lock`, that's the same issue â€
 ## Quick verification commands the next agent can run
 
 ```
-node -e "new Function(require('fs').readFileSync('v2/crypto/_market.js','utf8'))" && echo OK
-grep -c "data-cgid" v2/crypto/explorer.html v2/crypto/projects.html
-grep -c "FRQNCY_MARKET" v2/crypto/_market.js v2/crypto/projects.html v2/crypto/explorer.html
-grep -c "filter-hidden" v2/crypto/explorer.html
-grep -c "two-ways" v2/crypto/index.html
+node -e "new Function(require('fs').readFileSync('crypto/_market.js','utf8'))" && echo OK
+grep -c "data-cgid" crypto/explorer.html crypto/projects.html
+grep -c "FRQNCY_MARKET" crypto/_market.js crypto/projects.html crypto/explorer.html
+grep -c "filter-hidden" crypto/explorer.html
+grep -c "two-ways" crypto/index.html
 ```
 
 All five greps should return non-zero counts. Syntax check should print `OK`.

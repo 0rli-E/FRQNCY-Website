@@ -101,9 +101,9 @@ NEW:
   /audits/seo/runs/2026-04-29-SESSION-3-SUMMARY.md (this file)
 
 MODIFIED:
-  /v2/<topic>/index.html × 174  (+ byline element in hero)
-  /v2/courses/meditation-101/index.html  (+ HowTo schema)
-  /v2/courses/working-with-claude/index.html  (+ HowTo schema)
+  /<topic>/index.html × 174  (+ byline element in hero)
+  /courses/meditation-101/index.html  (+ HowTo schema)
+  /courses/working-with-claude/index.html  (+ HowTo schema)
   /books/<slug>/index.html × 284 + people × 89 + orgs × 102 + media × 74 + places × 8
     Total 518 modified with anchored-topics block (40 orphans skipped per resources.json mapping)
   /sitemap.xml (+1 entry: /people/orlando/, now 745 entries)
@@ -114,16 +114,16 @@ MODIFIED:
 
 ```bash
 # Bylines on every topic page
-curl -s https://frqncy.network/v2/meditation/ | grep -c 'class="byline"'  # 1
-curl -s https://frqncy.network/v2/meditation/ | grep -c 'editorial-standards'  # ≥1
+curl -s https://frqncy.network/meditation/ | grep -c 'class="byline"'  # 1
+curl -s https://frqncy.network/meditation/ | grep -c 'editorial-standards'  # ≥1
 
 # Orlando page
 curl -sI https://frqncy.network/people/orlando/  # 200
 curl -s https://frqncy.network/people/orlando/ | grep -oE '"@type":"[^"]+"' | sort -u
 
 # HowTo on practice courses
-curl -s https://frqncy.network/v2/courses/meditation-101/ | grep -c '"@type":"HowTo"'  # 1
-curl -s https://frqncy.network/v2/courses/meditation-101/ | grep -c '"@type":"HowToStep"'  # 5
+curl -s https://frqncy.network/courses/meditation-101/ | grep -c '"@type":"HowTo"'  # 1
+curl -s https://frqncy.network/courses/meditation-101/ | grep -c '"@type":"HowToStep"'  # 5
 
 # Anchored-topics on item pages
 curl -s https://frqncy.network/books/blink/ | grep -c 'class="anchored-topics"'  # 1

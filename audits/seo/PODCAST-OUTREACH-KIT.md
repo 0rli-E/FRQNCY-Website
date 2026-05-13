@@ -89,7 +89,7 @@ The harness layer underneath the network represents the same thesis applied to A
 
 - **Headshot:** [Orlando supplies — needed before pitching]
 - **Logo:** /favicon.svg (1:1 SVG; can be exported PNG at 512×512 if hosts request)
-- **Site screenshots:** the homepage, /v2/explore.html (the topic graph), a representative topic page like /v2/meditation/ — useful for show notes art
+- **Site screenshots:** the homepage, /explore.html (the topic graph), a representative topic page like /meditation/ — useful for show notes art
 - **Sample episode that hosts can reference:** [link the FRQNCY Podcast's first episode here once published, as Orlando's hosting style]
 
 ### Sample sound bites

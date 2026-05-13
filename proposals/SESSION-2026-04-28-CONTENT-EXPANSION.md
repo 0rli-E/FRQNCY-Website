@@ -77,9 +77,9 @@ The search bar on `/v2/explore.html` previously only queried `search.json` (topi
 proposals/VISION-1H-DEMO.md              (new — north star)
 proposals/SESSION-2026-04-28-CONTENT-EXPANSION.md  (this file)
 
-v2/world-models/index.html               (new)
-v2/abilities/index.html                  (new)
-v2/spirituality/index.html               (new)
+world-models/index.html               (new)
+abilities/index.html                  (new)
+spirituality/index.html               (new)
 
 places/esalen/index.html                 (new)
 places/findhorn/index.html               (new)
@@ -90,20 +90,20 @@ places/schumacher-college/index.html     (new)
 places/monroe-institute/index.html       (new)
 places/index.html                        (rebuilt grid)
 
-v2/visual-art/index.html                 (Kush + artwork filter)
-v2/audio/index.html                      (Listen section + Strangest Secret)
-v2/artificial-intelligence/index.html    (Sub-topics section: World Models + Decentralised AI)
-v2/crypto/index.html                     (merged in cryptocurrency content)
-v2/cryptocurrency/index.html             (redirect → undone by user — full page is back)
-v2/money/, v2/blockchain/, v2/defi/,
-v2/dao/, v2/cards/, v2/conscious-capital/,
-v2/stocks/, v2/commodities/,
-v2/impact-investing/, v2/prosperity-mindset/  (link updates, all → /v2/crypto/)
+visual-art/index.html                 (Kush + artwork filter)
+audio/index.html                      (Listen section + Strangest Secret)
+artificial-intelligence/index.html    (Sub-topics section: World Models + Decentralised AI)
+crypto/index.html                     (merged in cryptocurrency content)
+cryptocurrency/index.html             (redirect → undone by user — full page is back)
+money/, blockchain/, defi/,
+dao/, cards/, conscious-capital/,
+stocks/, commodities/,
+impact-investing/, prosperity-mindset/  (link updates, all → /crypto/)
 
-v2/explore.html                          (search bar now queries resources.json too)
-v2/explore-data.json                     (new place + topic nodes, link bumps,
+explore.html                          (search bar now queries resources.json too)
+explore-data.json                     (new place + topic nodes, link bumps,
                                           t-garyspivey removed, t-crypto label/url)
-v2/watch/index.html                      (TOPIC_LABELS + INLINE_VIDEOS +
+watch/index.html                      (TOPIC_LABELS + INLINE_VIDEOS +
                                           INLINE_PLAYLISTS — new shelves +
                                           Spivey/Braden moves)
 

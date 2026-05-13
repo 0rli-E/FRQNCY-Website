@@ -523,7 +523,7 @@ SECTOR_DOWNLOAD: dict[str, dict] = {
         "pages": 9,
         "size_kb": 180,
         "format": "PDF",
-        "local_url": "/v2/crypto/bitcoin/bitcoin.pdf",
+        "local_url": "/crypto/bitcoin/bitcoin.pdf",
         "primary_url": "https://bitcoin.org/bitcoin.pdf",
         "primary_label": "bitcoin.org",
         "sha256": "b1674191a88ec5cdd733e4240a81803105dc412d6c6708d53ab94fc248f4f553",

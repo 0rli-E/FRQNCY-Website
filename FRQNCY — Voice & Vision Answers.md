@@ -759,7 +759,7 @@ Remaining: Section 3 (pillars), Section 4 (pages), Section 5 (audience), Section
 
 - `v2/education/index.html` — meta descriptions rewritten. Hero eyebrow → "Pillar · Learn". Hero-desc rewritten in locked voice. New **"The On-Ramp"** section block added before the domains grid: chart generation in one click (Human Design / Gene Keys / birth chart), read back in plain language, teachers curated to type, certification after mastery. Positions the chart as the entry door to Education.
 
-- `v2/media/index.html` — meta descriptions rewritten. Hero eyebrow → "Pillar · Broadcast". Hero-desc rewritten ("The voice of the network. A swarm of .frqncies…"). New **"The .frqncy Layer"** section with code-styled `xyz.frqncy` / `.eth` comparison. `crypto.frqncy` and `publicspeaking.frqncy` named as the first two channels. Establishes the naming architecture.
+- `broadcast/index.html` — meta descriptions rewritten. Hero eyebrow → "Pillar · Broadcast". Hero-desc rewritten ("The voice of the network. A swarm of .frqncies…"). New **"The .frqncy Layer"** section with code-styled `xyz.frqncy` / `.eth` comparison. `crypto.frqncy` and `publicspeaking.frqncy` named as the first two channels. Establishes the naming architecture.
 
 - `v2/builder/index.html` — meta descriptions rewritten. Hero eyebrow → "Pillar · Make". Hero-desc rewritten ("Products, tools, experiences. Aligned projects supported. FRQNCY-native things built."). New **"How It Works"** block with two tracks: (1) support aligned projects from the outside, (2) build FRQNCY-native things inside the network.
 
@@ -825,7 +825,7 @@ Hits reviewed and kept:
 | 01 Know | `v2/research/index.html` | Pillar · Know | The Method |
 | 02 Learn | `v2/education/index.html` | Pillar · Learn | The On-Ramp |
 | 03 Make | `v2/builder/index.html` | Pillar · Make | How It Works |
-| 04 Broadcast | `v2/media/index.html` | Pillar · Broadcast | The .frqncy Layer |
+| 04 Broadcast | `broadcast/index.html` | Pillar · Broadcast | The .frqncy Layer |
 | 05 Fuel | `v2/fund/index.html` | Pillar · Fuel | Actual Fund |
 | 06 Inhabit | `v2/network-state/` (Sanctuary) | Pillar · Inhabit | Sanctuary framing |
 | Crypto | `v2/crypto/index.html` | crypto.frqncy | — |

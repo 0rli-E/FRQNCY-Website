@@ -423,11 +423,11 @@ body.frqncy-home #main-nav .nav-back{display:none}
       </div>
     </li>
     <li class="nav-dd">
-      <a href="/v2/explore.html">Discover</a>
+      <a href="/explore.html">Discover</a>
       <div class="nav-dd-menu">
-        <a href="/v2/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
-        <a href="/v2/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
-        <a href="/v2/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
+        <a href="/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
         <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
         <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
         <a href="/people/"><span class="dd-label">Browse</span><span class="dd-sub">People · Books · Orgs · Places</span></a>
@@ -547,12 +547,12 @@ body.frqncy-home #main-nav .nav-back{display:none}
       </div>
     </li>
     <li class="nav-dd">
-      <a href="v2/explore.html">Discover</a>
+      <a href="explore.html">Discover</a>
       <div class="nav-dd-menu">
-        <a href="v2/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
-        <a href="v2/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video library</span></a>
-        <a href="v2/audio/index.html"><span class="dd-label">Audio</span><span class="dd-sub">Recordings & lectures</span></a>
-        <a href="v2/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video library</span></a>
+        <a href="audio/index.html"><span class="dd-label">Audio</span><span class="dd-sub">Recordings & lectures</span></a>
+        <a href="courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
         <a href="/search"><span class="dd-label">Search</span><span class="dd-sub">Find anything</span></a>
         <a href="/chart"><span class="dd-label">Chart Generator</span><span class="dd-sub">Map your alignment</span></a>
         <a href="/people/"><span class="dd-label">Network</span><span class="dd-sub">People, books, orgs, media, places</span></a>
@@ -1512,7 +1512,7 @@ function renderResult({ topicNodes, resourceNodes, teachers, startPick }, name) 
 }
 
 // ── Visited topics ────────────────────────────────────────────────────
-// Sourced from localStorage (chat-widget.js increments on each /v2/<slug>/
+// Sourced from localStorage (chat-widget.js increments on each /<slug>/
 // page load). When the user is logged in we also merge cloud state in.
 function getVisitedSet() {
   try {
@@ -1549,7 +1549,7 @@ function setPathDone(set) {
 //   1. unvisited + not-marked-done first
 //   2. then visited
 //   3. then explicitly marked done (rendered struck-through)
-// Each tile links to /v2/<slug>/. Visiting a topic auto-marks it via the
+// Each tile links to /<slug>/. Visiting a topic auto-marks it via the
 // chat-widget.js tracker — the user comes back to a check next time.
 function renderLearningPath(topicNodes) {
   const host = document.getElementById('learning-path');
@@ -1575,7 +1575,7 @@ function renderLearningPath(topicNodes) {
   });
   const steps = decorated.slice(0, 5);
 
-  const url = t => '/v2/' + encodeURIComponent(t.slug) + '/';
+  const url = t => '/' + encodeURIComponent(t.slug) + '/';
   host.innerHTML = steps.map((s, i) => {
     const t = s.topic;
     const stateLabel = s.done

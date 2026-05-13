@@ -16,7 +16,6 @@ import { Network } from '@capacitor/network';
 import { App } from '@capacitor/app';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
-import { Browser } from '@capacitor/browser';
 import { initSyncManager } from './lib/sync-manager';
 
 const frame = document.getElementById('site-frame') as HTMLIFrameElement;
@@ -60,11 +59,11 @@ function navigate(route: string) {
 }
 
 async function openExternal(url: string) {
-  try {
-    await Browser.open({ url, presentationStyle: 'popover' });
-  } catch {
-    window.open(url, '_blank', 'noopener');
-  }
+  // Stay in the app's top-level WebView. Capacitor's allowNavigation list
+  // (frqncy.network + *.frqncy.network) permits this in-place navigation —
+  // no new tab, no separate browser overlay. Back gesture returns to the app
+  // shell. In dev (vite), this just navigates the same tab.
+  window.location.href = url;
 }
 
 tabs.forEach((tab) => {
@@ -140,9 +139,13 @@ const SMART_RESUME_HOURS = 12;
 
 /**
  * Smart resume — if the user opens the app within SMART_RESUME_HOURS of an
- * armed alarm, route directly to Bedside.
+ * armed alarm, route directly to Bedside. Only fires on real Capacitor builds;
+ * in browser dev (no native bridge) we always land on Home so the rest of the
+ * app is reachable.
  */
 function shouldSmartResume(): boolean {
+  const onDevice = !!(window as any).Capacitor?.isNativePlatform?.();
+  if (!onDevice) return false;
   try {
     const lastArmRaw = localStorage.getItem('frqncy.bedside.last_arm_ts');
     if (!lastArmRaw) return false;

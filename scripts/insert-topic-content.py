@@ -3,7 +3,7 @@
 insert-topic-content.py — bulk-insert content blocks into topic-page stubs.
 
 Reads CONTENT_BLOCKS (slug -> html string) from a JSON file and inserts each
-block at the standard location in v2/<slug>/index.html (after <main> and
+block at the standard location in <slug>/index.html (after <main> and
 before the first <section> with "Curated Resources").
 
 Usage:
@@ -24,7 +24,7 @@ PLAIN_MARKER = '<main>\n  \n  \n  <section>\n  <div class="section-label">Curate
 COURSE_MARKER_PRE = '<main>\n  \n  <section>\n  <div class="section-label">Take a Course</div>'
 
 def patch(slug, html_block):
-    p = Path(f'v2/{slug}/index.html')
+    p = Path(f'{slug}/index.html')
     if not p.exists():
         return f'  ! {slug}: file not found'
     text = p.read_text(encoding='utf-8')

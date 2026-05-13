@@ -1,6 +1,6 @@
 #!/usr/bin/env node
 // generate-watch.js — inlines videos.json + playlists.json data into
-// v2/watch/index.html so the watch hub works on file:// protocol without
+// watch/index.html so the watch hub works on file:// protocol without
 // a local server.
 // Run: node generate-watch.js
 // (also called by: npm run build:watch)
@@ -75,7 +75,7 @@ if (html.includes(MARKER_START)) {
 fs.writeFileSync(TEMPLATE_PATH, html, 'utf8');
 const collectionCount = PLAYLISTS.collections?.length || 0;
 const playlistCount = (PLAYLISTS.collections || []).reduce((n, c) => n + (c.playlists?.length || 0), 0);
-console.log(`✓  v2/watch/index.html (${allVideos.length} videos, ${playlistCount} playlists across ${collectionCount} collections inlined)`);
+console.log(`✓  watch/index.html (${allVideos.length} videos, ${playlistCount} playlists across ${collectionCount} collections inlined)`);
 
 function escapeRegExp(s) {
   return s.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');

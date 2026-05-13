@@ -30,7 +30,7 @@ print(f"Topic pages on disk: {len(topic_slugs_on_disk)}")
 # Cross-check
 for slug, res_list in by_topic.items():
     if slug not in topic_slugs_on_disk:
-        # Topic referenced in resources.json but no v2/<slug>/ page on disk
+        # Topic referenced in resources.json but no <slug>/ page on disk
         missing_links.append(("__NO_TOPIC_PAGE__", slug, ""))
         continue
     page_path = f"{base}/v2/{slug}/index.html"

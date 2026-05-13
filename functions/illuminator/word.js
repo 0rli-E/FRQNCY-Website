@@ -9,7 +9,7 @@
  * Uses Cloudflare Workers AI — same Qwen3 model as /illuminator/chat.
  *
  * NOTE: This is the *exploration* endpoint. The 6 hand-curated illuminations
- * under /v2/word-illuminator/<word>/ remain the gold standard. The worker is
+ * under /word-illuminator/<word>/ remain the gold standard. The worker is
  * for when a reader wants to illuminate a word that isn't on the shelf yet.
  */
 

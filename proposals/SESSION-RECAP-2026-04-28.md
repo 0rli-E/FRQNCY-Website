@@ -116,4 +116,4 @@ The git index lock was held by Cowork's auto-commit hook for most of this sessio
 
 The Fund page edits (`v2/fund/index.html`) were already swept into commit `20a78f6` mid-session.
 
-The 60+ unstaged files in `git status` are regen drift from a `node generate.js` test run earlier in the session — not from intentional editing. `git checkout v2/` resets them. They're left unstaged on purpose so they don't pollute the intentional commits.
+The 60+ unstaged files in `git status` are regen drift from a `node generate.js` test run earlier in the session — not from intentional editing. `git checkout ` resets them. They're left unstaged on purpose so they don't pollute the intentional commits.

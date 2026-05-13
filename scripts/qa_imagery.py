@@ -229,7 +229,7 @@ def head_check(url: str) -> bool:
     """Check that a URL serves a real image. Retries once on transient failure."""
     if not url:
         return False
-    if url.startswith("/v2/"):
+    if url.startswith("/"):
         return (ROOT / url.lstrip("/")).exists()
     import urllib.request
     headers = {"User-Agent": "Mozilla/5.0 FRQNCY-QA/1.0"}
@@ -257,7 +257,7 @@ def _local_data_url(url: str) -> str:
 
 def image_block_anthropic(url: str) -> dict:
     """Anthropic content block from a URL or local path."""
-    if url.startswith("/v2/"):
+    if url.startswith("/"):
         path = ROOT / url.lstrip("/")
         data = path.read_bytes()
         ext = path.suffix.lower().lstrip(".")
@@ -273,7 +273,7 @@ def image_block_anthropic(url: str) -> dict:
 
 def image_block_openai(url: str) -> dict:
     """OpenAI/OpenRouter content block — always image_url with data URL for local files."""
-    if url.startswith("/v2/"):
+    if url.startswith("/"):
         return {"type": "image_url", "image_url": {"url": _local_data_url(url)}}
     return {"type": "image_url", "image_url": {"url": url}}
 
@@ -317,7 +317,7 @@ def load_client() -> tuple[object, str, str]:
 def _cache_image(url: str) -> Path:
     """Download a URL to ~/.frqncy-qa-cache/<hash>.<ext>; return local path.
     Local /v2/_chrome/imagery/ paths are returned unchanged."""
-    if url.startswith("/v2/"):
+    if url.startswith("/"):
         return ROOT / url.lstrip("/")
     QA_IMAGE_CACHE.mkdir(parents=True, exist_ok=True)
     h = hashlib.sha1(url.encode()).hexdigest()[:16]

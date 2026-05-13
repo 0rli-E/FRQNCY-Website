@@ -86,7 +86,7 @@ Quick checklist applied to the proposed meta:
 
 - `index.html` line 136 — subscribe overlay headline "You are *love* and light." (CTA moment, surrounding context earns it)
 - `index.html` lines 154–158 — quote section "Built on the foundations of oneness… the light dominates everything we experience and know." (earned philosophical context)
-- All v2/<topic>/ contemplative content where "love and light" / "the light" / "oneness" appear as concepts, not as marketing flavour
+- All <topic>/ contemplative content where "love and light" / "the light" / "oneness" appear as concepts, not as marketing flavour
 - The Substack re-engagement email (uses the phrase mid-body where it's earned)
 
 ## Recommendation

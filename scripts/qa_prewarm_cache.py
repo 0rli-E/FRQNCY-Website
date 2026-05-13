@@ -33,12 +33,12 @@ def collect_urls() -> set[str]:
         except Exception:
             continue
         hero = (brief.get("hero") or {}).get("media", {}).get("poster_url")
-        if hero and not hero.startswith("/v2/"):
+        if hero and not hero.startswith("/"):
             urls.add(hero)
         for s in brief.get("sections") or []:
             if s.get("module") == "bleed" and s.get("image_url"):
                 u = s["image_url"]
-                if not u.startswith("/v2/"):
+                if not u.startswith("/"):
                     urls.add(u)
     return urls
 

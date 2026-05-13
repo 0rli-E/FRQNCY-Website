@@ -56,9 +56,9 @@ for (const d of data.domains) {
 
 lines.push('');
 lines.push('--- SITE NAVIGATION ---');
-lines.push('Home: / | Explore map: /v2/explore.html | Start Here: /start-here.html');
+lines.push('Home: / | Explore map: /explore.html | Start Here: /start-here.html');
 lines.push('About FRQNCY: /about.html | Platform: /platform.html | Podcast: /podcast.html | Space: /space.html');
-lines.push('Each topic has its own page at /v2/[topic-slug]/');
+lines.push('Each topic has its own page at /[topic-slug]/');
 
 const kb = lines.join('\n');
 

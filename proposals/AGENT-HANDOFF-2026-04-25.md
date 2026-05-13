@@ -17,12 +17,12 @@ The site is bed-driven. The eight beds are the source of truth. `generate.js` re
 
 ```
 Beds (edit these)              →  Generated artifacts                    →  Public pages
-├─ people.json (89)               ├─ entities.json (620)                    ├─ /v2/<topic>/  (159)
+├─ people.json (89)               ├─ entities.json (620)                    ├─ /<topic>/  (159)
 ├─ books.json (284)               ├─ resources.json (766)                   ├─ /people/<slug>/  (89)
 ├─ orgs.json (102)                ├─ search.json (146 topics)               ├─ /books/<slug>/  (284)
 ├─ media.json (74)                └─ sitemap.xml (742 URLs)                 ├─ /orgs/, /media/, /music/, /places/
 ├─ music.json (8) — NEW in 2026-04-25                                       ├─ /aligned/  (curated picks page)
-├─ places.json (1)                                                          └─ /v2/courses/<slug>/
+├─ places.json (1)                                                          └─ /courses/<slug>/
 ├─ aligned-goods.json (56) — overlay                                          plus /search, /my-frqncy, /chart, /about, /platform, /podcast, /space
 └─ courses.json (6)
 ```

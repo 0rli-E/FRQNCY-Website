@@ -1,5 +1,5 @@
 #!/usr/bin/env node
-// generate-courses.js — builds v2/courses/{slug}/index.html for each course in courses.json
+// generate-courses.js — builds courses/{slug}/index.html for each course in courses.json
 // Run: node generate-courses.js
 
 const fs   = require('fs');
@@ -233,7 +233,7 @@ function relatedTopicsPanel(course) {
   const chips = course.topics.map(tid => {
     const slug = String(tid).replace(/^t-/, '');
     const label = slug.replace(/-/g, ' ');
-    return `<a class="related-chip" href="/v2/${esc(slug)}/">${esc(label)}</a>`;
+    return `<a class="related-chip" href="/${esc(slug)}/">${esc(label)}</a>`;
   }).join('');
   return `
   <div class="related-topics">
@@ -276,7 +276,7 @@ function buildPage(c) {
   const reflectIds   = c.lessons.filter(l => l.type === 'reflection').map(l => l.id || '').filter(Boolean);
   const reflectJSON  = JSON.stringify(reflectIds);
   const total        = c.lessons.length;
-  const courseUrl    = 'https://frqncy.network/v2/courses/' + c.slug + '/';
+  const courseUrl    = 'https://frqncy.network/courses/' + c.slug + '/';
   const uploadDate   = new Date().toISOString().slice(0, 10);
 
   // Per-lesson VideoObject schemas (only for videos with an actual id)
@@ -319,7 +319,7 @@ function buildPage(c) {
     '@type': 'BreadcrumbList',
     'itemListElement': [
       { '@type': 'ListItem', 'position': 1, 'name': 'FRQNCY',  'item': 'https://frqncy.network/' },
-      { '@type': 'ListItem', 'position': 2, 'name': 'Courses', 'item': 'https://frqncy.network/v2/courses/' },
+      { '@type': 'ListItem', 'position': 2, 'name': 'Courses', 'item': 'https://frqncy.network/courses/' },
       { '@type': 'ListItem', 'position': 3, 'name': c.title,   'item': courseUrl }
     ]
   };
@@ -337,14 +337,14 @@ function buildPage(c) {
 <meta property="og:type" content="article">
 <meta property="og:title" content="${esc(c.title)} — FRQNCY Courses">
 <meta property="og:description" content="${esc(c.desc)}">
-<meta property="og:url" content="https://frqncy.network/v2/courses/${esc(c.slug)}/">
+<meta property="og:url" content="https://frqncy.network/courses/${esc(c.slug)}/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:image:width" content="1200">
 <meta property="og:image:height" content="630">
 <meta property="og:site_name" content="FRQNCY">
 <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="manifest" href="../../../manifest.json">
-<link rel="canonical" href="https://frqncy.network/v2/courses/${esc(c.slug)}/">
+<link rel="canonical" href="https://frqncy.network/courses/${esc(c.slug)}/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://www.youtube-nocookie.com">
@@ -1229,7 +1229,7 @@ maybeShowReturnToast();
 </html>`;
 }
 
-/* ── Hub page (v2/courses/index.html) ── */
+/* ── Hub page (courses/index.html) ── */
 function buildHubPage(courses) {
   const DOMAIN_LABELS = {
     'd-wellbeing':'Wellbeing','d-sciences':'Sciences','d-lifestyle':'Lifestyle',
@@ -1260,12 +1260,12 @@ function buildHubPage(courses) {
 <meta property="og:type" content="website">
 <meta property="og:title" content="Courses — FRQNCY Network">
 <meta property="og:description" content="Structured learning paths across consciousness, science, and wellbeing.">
-<meta property="og:url" content="https://frqncy.network/v2/courses/">
+<meta property="og:url" content="https://frqncy.network/courses/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:site_name" content="FRQNCY">
 <link rel="icon" type="image/svg+xml" href="../../favicon.svg">
 <link rel="manifest" href="../../manifest.json">
-<link rel="canonical" href="https://frqncy.network/v2/courses/">
+<link rel="canonical" href="https://frqncy.network/courses/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -1443,10 +1443,10 @@ for (const c of courses) {
   const outDir = path.join(ROOT, 'v2', 'courses', c.slug);
   fs.mkdirSync(outDir, { recursive: true });
   fs.writeFileSync(path.join(outDir, 'index.html'), buildPage(c), 'utf8');
-  console.log(`✓  v2/courses/${c.slug}/index.html`);
+  console.log(`✓  courses/${c.slug}/index.html`);
 }
 
 // Hub page — always regenerated, inline data, no fetch() dependency
 fs.writeFileSync(path.join(ROOT, 'v2', 'courses', 'index.html'), buildHubPage(courses), 'utf8');
-console.log(`✓  v2/courses/index.html (hub)`);
+console.log(`✓  courses/index.html (hub)`);
 console.log(`\nGenerated ${courses.length} course pages + hub.`);

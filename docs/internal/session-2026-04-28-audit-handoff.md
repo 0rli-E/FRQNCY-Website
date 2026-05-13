@@ -51,7 +51,7 @@ User asked: "go through all pages and fix bugs and UI / UX issues. Find the erro
 
 Bug-hunt (5):
 - Core HTML pages (index, search, my-frqncy, chart, podcast, about, courses, start-here, 404, etc.)
-- v2/ topic pages + special pages (explore, courses, crypto/explorer, gene-keys, open-source)
+-  topic pages + special pages (explore, courses, crypto/explorer, gene-keys, open-source)
 - All client + build JS files
 - Cloudflare Workers + data files (`functions/api/*`, search.json, resources.json, sitemap.xml, _headers, _redirects, manifest.json, sw.js, package.json)
 - Mobile UX + WCAG 2.1 AA cross-cutting review
@@ -137,13 +137,13 @@ chat-widget.js
 sw.js
 functions/api/subscribe.js
 robots.txt
-v2/open-source/index.html
+open-source/index.html
 books/the-cathedral-and-the-bazaar/index.html
 social/space/research/index.html
 my-frqncy.html
 search.html
 chart.html
-v2/explore.html
+explore.html
 podcast.html         (Norman as Co-Founder)
 AUDIT-REPORT.md      (rewritten with this pass's results)
 docs/internal/session-2026-04-28-audit-handoff.md   (this file)
@@ -173,9 +173,9 @@ docs/internal/session-2026-04-28-audit-handoff.md   (this file)
 ```bash
 rm -f .git/index.lock .git/HEAD.lock
 git add chat-widget.js sw.js functions/api/subscribe.js robots.txt \
-        v2/open-source/index.html books/the-cathedral-and-the-bazaar/index.html \
+        open-source/index.html books/the-cathedral-and-the-bazaar/index.html \
         social/space/research/index.html my-frqncy.html search.html chart.html \
-        v2/explore.html podcast.html AUDIT-REPORT.md \
+        explore.html podcast.html AUDIT-REPORT.md \
         docs/internal/session-2026-04-28-audit-handoff.md
 git commit -m "audit: security, a11y, mobile UX pass
 
@@ -185,7 +185,7 @@ cache.add(); robots.txt blocks internal paths.
 A11y: my-frqncy constellation aria-label + choice-tile keyboard support.
 
 Mobile: 44px tap targets + focus rings on search/chart.
-Visual: v2/explore legend contrast 4.3:1 to 8:1 (AA).
+Visual: explore legend contrast 4.3:1 to 8:1 (AA).
 Mixed content: catb.org + righto.com upgraded to https.
 
 podcast: Norman Gräter listed as Co-Founder."

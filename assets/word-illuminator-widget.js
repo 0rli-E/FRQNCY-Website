@@ -2,7 +2,7 @@
  * Word Illuminator — shared widget
  *
  * Drop-in for the six hand-curated illumination pages
- * (/v2/word-illuminator/{discipline,sanctuary,frequency,practice,discernment,devotion}/).
+ * (/word-illuminator/{discipline,sanctuary,frequency,practice,discernment,devotion}/).
  *
  * Adds a "Try another word" panel after the curated content. The reader can:
  *   - run the live worker against the page's own word (compare hand-written
@@ -127,7 +127,7 @@
   // Detect the page's word from a few likely sources, in order:
   //   1. data-current-word attribute on the placeholder
   //   2. <body data-illuminator-word>
-  //   3. last segment of /v2/word-illuminator/<word>/
+  //   3. last segment of /word-illuminator/<word>/
   // Returns null if undetected (widget still works for arbitrary input).
   function detectCurrentWord(host) {
     var fromHost = host && host.getAttribute && host.getAttribute('data-current-word');
@@ -184,7 +184,7 @@
       var refs = crossRefs.length
         ? '<div class="wiw-md-refs"><span class="wiw-md-refs-label">Related illuminations</span>'
             + crossRefs.map(function (slug) {
-                return '<a href="/v2/word-illuminator/' + encodeURIComponent(slug) + '/">' + esc(slug) + '</a>';
+                return '<a href="/word-illuminator/' + encodeURIComponent(slug) + '/">' + esc(slug) + '</a>';
               }).join(' · ')
             + '</div>'
         : '';

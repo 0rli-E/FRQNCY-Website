@@ -135,7 +135,7 @@ Open the affected pages in a browser. Check that:
 If any of these fail, swap the photo. Iterate until the page reads.
 
 ```bash
-open v2/<slug>/index.html
+open <slug>/index.html
 ```
 
 ---
@@ -183,7 +183,7 @@ python3 -c "
 import re, glob
 from collections import Counter
 urls = []
-for path in glob.glob('v2/*/index.html'):
+for path in glob.glob('*/index.html'):
     if path.count('/') > 3: continue
     txt = open(path).read()
     for u in re.findall(r'https://(?:images\.unsplash\.com|images\.pexels\.com)/[^\s\"\\']+', txt):

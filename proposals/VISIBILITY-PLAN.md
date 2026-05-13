@@ -85,7 +85,7 @@ By now there's content compounding. Now the work is to spread it.
 | Google organic | Foundation laid; needs content depth + backlinks to compound |
 | Bing / DuckDuckGo | Same as Google, lower priority |
 | Perplexity / ChatGPT / Claude | Phase 4 AI-discoverability work shipped; needs continued mentioning |
-| YouTube (via /v2/watch/) | Auto-ingest spec ready; once running, channel-level discovery |
+| YouTube (via /watch/) | Auto-ingest spec ready; once running, channel-level discovery |
 
 ---
 

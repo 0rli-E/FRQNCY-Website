@@ -97,7 +97,7 @@ ambiguous cases to the user.
 
 | Topic | Reason | Cleanup |
 |---|---|---|
-| `trauma` | "remove trauma as a topic in the frqncy network" | search.json entry removed (146→145 topics); 3 trauma resources re-tagged to `somatic-therapy`; v2/trauma/ + data/topics/trauma.yaml deleted; entities.json t-trauma stripped; v2/explore-data.json node removed; quote and override entries commented out in draft script with retirement note |
+| `trauma` | "remove trauma as a topic in the frqncy network" | search.json entry removed (146→145 topics); 3 trauma resources re-tagged to `somatic-therapy`; trauma/ + data/topics/trauma.yaml deleted; entities.json t-trauma stripped; explore-data.json node removed; quote and override entries commented out in draft script with retirement note |
 
 ### Pages opened but not commented (presumed pending re-review)
 

@@ -4,7 +4,7 @@
  * Run:  node build-og.js
  * Also run automatically via GitHub Actions before generate.js
  *
- * Output: ./v2/og/[slug].png  (150 images + 1 default og-image.png)
+ * Output: ./og/[slug].png  (150 images + 1 default og-image.png)
  * Requires: sharp (global install at /usr/local/lib/node_modules_global/...)
  */
 

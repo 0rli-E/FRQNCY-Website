@@ -9,20 +9,20 @@ Each task below is a self-contained prompt you can paste directly into Codex. Ru
 ```
 Repository: github.com/0rli-E/FRQNCY-Website
 Local path: /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE
-Scope: v2/ topic pages ONLY
+Scope:  topic pages ONLY
 
-You are working on the FRQNCY website — a static HTML/CSS/JS site with no build step. The project lives at /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE. The repo root contains index.html, search.html, and other top-level pages. Topic pages live at v2/[topic-slug]/index.html.
+You are working on the FRQNCY website — a static HTML/CSS/JS site with no build step. The project lives at /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE. The repo root contains index.html, search.html, and other top-level pages. Topic pages live at [topic-slug]/index.html.
 
 YOUR SANDBOX — files you MAY read:
-- v2/[topic-slug]/index.html — the 152 topic pages
+- [topic-slug]/index.html — the 152 topic pages
 
 DO NOT touch these files under any circumstances:
 - index.html, search.html, my-frqncy.html, about.html, start-here.html, platform.html, podcast.html, space.html, chart.html, 404.html
-- v2/explore.html
-- v2/watch/**
-- v2/courses/**
-- v2/builder/**
-- v2/fund/**
+- explore.html
+- watch/**
+- courses/**
+- builder/**
+- fund/**
 - v2/og/**
 - search.json, resources.json
 - Any .css, .js, or .json files in the root
@@ -39,7 +39,7 @@ For every .rcard across all 152 topic pages, extract the href from the .rlink an
 
 Rules:
 1. Do NOT modify any HTML files — this is a read-only audit
-2. Only read files matching the pattern v2/*/index.html where * is a topic slug (not courses, watch, builder, fund, or og)
+2. Only read files matching the pattern */index.html where * is a topic slug (not courses, watch, builder, fund, or og)
 3. Output only the link-audit.md report file
 4. Use a 10-second timeout per request
 5. When finished, report the total number of links checked, how many are healthy, how many redirect, and how many are broken
@@ -52,20 +52,20 @@ Rules:
 ```
 Repository: github.com/0rli-E/FRQNCY-Website
 Local path: /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE
-Scope: v2/ topic pages ONLY
+Scope:  topic pages ONLY
 
-You are working on the FRQNCY website — a static HTML/CSS/JS site with no build step. The project lives at /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE. The repo root contains index.html, search.html, and other top-level pages. Topic pages live at v2/[topic-slug]/index.html.
+You are working on the FRQNCY website — a static HTML/CSS/JS site with no build step. The project lives at /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE. The repo root contains index.html, search.html, and other top-level pages. Topic pages live at [topic-slug]/index.html.
 
 YOUR SANDBOX — files you MAY edit:
-- v2/[topic-slug]/index.html — the 152 topic pages only
+- [topic-slug]/index.html — the 152 topic pages only
 
 DO NOT touch these files under any circumstances:
 - index.html, search.html, my-frqncy.html, about.html, start-here.html, platform.html, podcast.html, space.html, chart.html, 404.html
-- v2/explore.html
-- v2/watch/**
-- v2/courses/**
-- v2/builder/**
-- v2/fund/**
+- explore.html
+- watch/**
+- courses/**
+- builder/**
+- fund/**
 - v2/og/**
 - search.json, resources.json
 - Any .css, .js, or .json files in the root
@@ -78,12 +78,12 @@ The structure of every topic page is identical:
 YOUR TASK:
 Each topic page should have these meta tags in the <head>:
 
-  <meta property="og:image" content="https://frqncy.network/v2/og/[slug].png">
+  <meta property="og:image" content="https://frqncy.network/og/[slug].png">
   <meta property="og:image:width" content="1200">
   <meta property="og:image:height" content="630">
-  <meta name="twitter:image" content="https://frqncy.network/v2/og/[slug].png">
+  <meta name="twitter:image" content="https://frqncy.network/og/[slug].png">
 
-Where [slug] matches the folder name (e.g. v2/aliens/ → aliens.png).
+Where [slug] matches the folder name (e.g. aliens/ → aliens.png).
 
 Audit all 152 topic pages. For each page:
 - If the og:image tag is missing, add it after the existing og:description tag
@@ -92,7 +92,7 @@ Audit all 152 topic pages. For each page:
 - First check that v2/og/[slug].png actually exists. For any topic where the OG image file does not exist, leave a comment <!-- TODO: missing og image for [slug] --> instead of adding a broken tag
 
 Rules:
-1. Only modify files matching the pattern v2/*/index.html where * is a topic slug (not courses, watch, builder, fund, or og)
+1. Only modify files matching the pattern */index.html where * is a topic slug (not courses, watch, builder, fund, or og)
 2. Do not change any CSS custom properties, class names, or DOM structure
 3. Only edit within the <head> section — do not touch <body> content
 4. Before finishing, count how many files you modified and list them
@@ -105,20 +105,20 @@ Rules:
 ```
 Repository: github.com/0rli-E/FRQNCY-Website
 Local path: /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE
-Scope: v2/ topic pages ONLY
+Scope:  topic pages ONLY
 
-You are working on the FRQNCY website — a static HTML/CSS/JS site with no build step. The project lives at /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE. The repo root contains index.html, search.html, and other top-level pages. Topic pages live at v2/[topic-slug]/index.html.
+You are working on the FRQNCY website — a static HTML/CSS/JS site with no build step. The project lives at /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE. The repo root contains index.html, search.html, and other top-level pages. Topic pages live at [topic-slug]/index.html.
 
 YOUR SANDBOX — files you MAY edit:
-- v2/[topic-slug]/index.html — the 152 topic pages only
+- [topic-slug]/index.html — the 152 topic pages only
 
 DO NOT touch these files under any circumstances:
 - index.html, search.html, my-frqncy.html, about.html, start-here.html, platform.html, podcast.html, space.html, chart.html, 404.html
-- v2/explore.html
-- v2/watch/**
-- v2/courses/**
-- v2/builder/**
-- v2/fund/**
+- explore.html
+- watch/**
+- courses/**
+- builder/**
+- fund/**
 - v2/og/**
 - search.json, resources.json
 - Any .css, .js, or .json files in the root
@@ -142,7 +142,7 @@ Add accessibility attributes across all 152 topic pages. For each page:
 5. Any <img> tags found in topic pages: ensure they have a non-empty alt attribute. If alt is missing, use the closest heading text as the alt value.
 
 Rules:
-1. Only modify files matching the pattern v2/*/index.html where * is a topic slug (not courses, watch, builder, fund, or og)
+1. Only modify files matching the pattern */index.html where * is a topic slug (not courses, watch, builder, fund, or og)
 2. Do not change any CSS custom properties, class names, or DOM structure — only add aria-* attributes and role attributes
 3. Do not change any visible text or styling
 4. Before finishing, count how many files you modified and report the total number of aria attributes added
@@ -155,20 +155,20 @@ Rules:
 ```
 Repository: github.com/0rli-E/FRQNCY-Website
 Local path: /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE
-Scope: v2/ topic pages ONLY
+Scope:  topic pages ONLY
 
-You are working on the FRQNCY website — a static HTML/CSS/JS site with no build step. The project lives at /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE. The repo root contains index.html, search.html, and other top-level pages. Topic pages live at v2/[topic-slug]/index.html.
+You are working on the FRQNCY website — a static HTML/CSS/JS site with no build step. The project lives at /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE. The repo root contains index.html, search.html, and other top-level pages. Topic pages live at [topic-slug]/index.html.
 
 YOUR SANDBOX — files you MAY edit:
-- v2/[topic-slug]/index.html — the 152 topic pages only
+- [topic-slug]/index.html — the 152 topic pages only
 
 DO NOT touch these files under any circumstances:
 - index.html, search.html, my-frqncy.html, about.html, start-here.html, platform.html, podcast.html, space.html, chart.html, 404.html
-- v2/explore.html
-- v2/watch/**
-- v2/courses/**
-- v2/builder/**
-- v2/fund/**
+- explore.html
+- watch/**
+- courses/**
+- builder/**
+- fund/**
 - v2/og/**
 - search.json, resources.json
 - Any .css, .js, or .json files in the root
@@ -196,7 +196,7 @@ For each of the 152 topic pages:
 7. Ensure the JSON is valid (proper escaping, no trailing commas)
 
 Rules:
-1. Only modify files matching the pattern v2/*/index.html where * is a topic slug (not courses, watch, builder, fund, or og)
+1. Only modify files matching the pattern */index.html where * is a topic slug (not courses, watch, builder, fund, or og)
 2. Only edit within <script type="application/ld+json"> blocks — do not touch anything else
 3. Do not add new JSON-LD blocks if one already exists — fix the existing one
 4. Before finishing, list every file where you made a change and what you fixed (e.g. "aliens: fixed mismatched description")
@@ -209,20 +209,20 @@ Rules:
 ```
 Repository: github.com/0rli-E/FRQNCY-Website
 Local path: /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE
-Scope: v2/ topic pages ONLY
+Scope:  topic pages ONLY
 
-You are working on the FRQNCY website — a static HTML/CSS/JS site with no build step. The project lives at /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE. The repo root contains index.html, search.html, and other top-level pages. Topic pages live at v2/[topic-slug]/index.html.
+You are working on the FRQNCY website — a static HTML/CSS/JS site with no build step. The project lives at /Users/orli/Documents/Claude/Projects/FRQNCY WEBSITE. The repo root contains index.html, search.html, and other top-level pages. Topic pages live at [topic-slug]/index.html.
 
 YOUR SANDBOX — files you MAY edit:
-- v2/[topic-slug]/index.html — the 152 topic pages only
+- [topic-slug]/index.html — the 152 topic pages only
 
 DO NOT touch these files under any circumstances:
 - index.html, search.html, my-frqncy.html, about.html, start-here.html, platform.html, podcast.html, space.html, chart.html, 404.html
-- v2/explore.html
-- v2/watch/**
-- v2/courses/**
-- v2/builder/**
-- v2/fund/**
+- explore.html
+- watch/**
+- courses/**
+- builder/**
+- fund/**
 - v2/og/**
 - search.json, resources.json
 - Any .css, .js, or .json files in the root
@@ -245,7 +245,7 @@ Across all 152 topic pages:
 Output a changelog as name-fixes.md in the project root with columns: topic slug, old h4 text, new h4 text, source URL you used to determine the name.
 
 Rules:
-1. Only modify files matching the pattern v2/*/index.html where * is a topic slug (not courses, watch, builder, fund, or og)
+1. Only modify files matching the pattern */index.html where * is a topic slug (not courses, watch, builder, fund, or og)
 2. Only change the text inside <h4> tags within .rcard[data-type="person"] — nothing else
 3. If you cannot confidently determine the person's real name from the URL, leave it unchanged and note it in the changelog as "SKIPPED — could not determine name"
 4. Before finishing, count how many names you fixed and list them all

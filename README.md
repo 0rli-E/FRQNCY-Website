@@ -20,7 +20,7 @@ A consciousness-practice content, social, and mobile platform.
 ```
 FRQNCY WEBSITE/
 ├── index.html                  ← Main landing page
-├── v2/
+├── 
 │   ├── explore.html            ← Topic graph spine
 │   ├── watch/                  ← Video curation
 │   ├── courses/                ← Generated course pages

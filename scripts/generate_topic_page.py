@@ -3,7 +3,7 @@
 FRQNCY · Generic topic page generator.
 
 Reads a per-topic brief at data/topics/<slug>.yaml and writes
-v2/<slug>/index.html, applying the right treatment overlay and
+<slug>/index.html, applying the right treatment overlay and
 composing the modules from v2/_chrome/topic-base.css.
 
 Source of truth: the YAML brief. The HTML can be re-derived at any
@@ -40,7 +40,7 @@ ROOT = Path(__file__).resolve().parent.parent
 GLOBAL_HEADER_HTML = (ROOT / "_chrome" / "global-header.html").read_text().rstrip()
 TOPICS_DIR = ROOT / "data" / "topics"
 BED_DIR = ROOT / "data"
-OUT_DIR = ROOT / "v2"
+OUT_DIR = ROOT / ""
 TREATMENTS_DIR_REL = "../_chrome/treatments"
 BASE_CSS_REL = "../_chrome/topic-base.css"
 
@@ -52,9 +52,9 @@ LOCKED_TOPICS: set[str] = {
     "watch",
     "cryptocurrency",
     "crypto",
-    # Crypto sub-hubs are under /v2/crypto/<sector>/ and are managed
+    # Crypto sub-hubs are under /crypto/<sector>/ and are managed
     # by scripts/generate_crypto_subhubs.py; this generator does not
-    # touch the /v2/<slug>/ shells for those sectors either.
+    # touch the /<slug>/ shells for those sectors either.
 }
 
 BESPOKE_BLOCK_RE = re.compile(

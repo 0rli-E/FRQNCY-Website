@@ -1,0 +1,1261 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Working with Claude — FRQNCY Courses</title>
+<meta name="description" content="Most people use AI like a vending machine. Claude is built to work like a thoughtful collaborator. This short course teaches the prompting, the boundaries, and the practices that turn the tool into a real thinking partner.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Working with Claude — FRQNCY Courses">
+<meta property="og:description" content="Most people use AI like a vending machine. Claude is built to work like a thoughtful collaborator. This short course teaches the prompting, the boundaries, and the practices that turn the tool into a real thinking partner.">
+<meta property="og:url" content="https://frqncy.network/courses/working-with-claude/">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="FRQNCY">
+<link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
+<link rel="manifest" href="../../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/courses/working-with-claude/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://www.youtube-nocookie.com">
+<link rel="preconnect" href="https://www.youtube.com">
+<link rel="dns-prefetch" href="https://i.ytimg.com">
+<link rel="dns-prefetch" href="https://img.youtube.com">
+<link rel="dns-prefetch" href="https://www.googlevideo.com">
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-dark:#08152e;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
+  --card-border:rgba(255,255,255,0.08);--accent:#7B4AE8;--sidebar-w:290px;
+}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{text-decoration:none;color:var(--accent)}
+a:hover{opacity:0.8}
+button{cursor:pointer;font-family:'Jost',sans-serif}
+
+/* ── NAV ─────────────────────────────────────── */
+nav.snav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  padding:0 clamp(1rem,3vw,2rem);height:56px;
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+}
+.snav-left{display:flex;align-items:center;gap:1.5rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.breadcrumb{font-size:0.68rem;letter-spacing:0.04em;color:var(--text-dim);display:flex;align-items:center;gap:0.3rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text)}
+.breadcrumb .sep{opacity:0.22}
+.snav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.snav-progress{font-size:0.62rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.55rem}
+.snav-pbar{width:72px;height:2px;background:rgba(255,255,255,0.1);border-radius:1px;overflow:hidden}
+.snav-pfill{height:100%;background:var(--accent);border-radius:1px;transition:width .4s ease}
+
+/* ── LAYOUT ──────────────────────────────────── */
+.layout{margin-top:56px;display:flex;min-height:calc(100vh - 56px)}
+
+/* ── SIDEBAR ─────────────────────────────────── */
+.sidebar{
+  width:var(--sidebar-w);flex-shrink:0;
+  border-right:1px solid rgba(255,255,255,0.06);
+  background:rgba(8,21,46,0.8);
+  display:flex;flex-direction:column;
+  position:sticky;top:56px;height:calc(100vh - 56px);overflow-y:auto;
+  scrollbar-width:thin;scrollbar-color:rgba(255,255,255,0.1) transparent;
+}
+.sidebar-head{
+  padding:1.25rem 1.25rem 0.9rem;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  position:sticky;top:0;background:rgba(8,21,46,0.96);z-index:1;
+}
+.sidebar-accent-bar{height:3px;background:var(--accent);border-radius:2px;margin-bottom:1rem;opacity:0.7}
+.sidebar-course{font-size:0.53rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--accent);margin-bottom:0.35rem}
+.sidebar-title{font-family:'Cormorant',serif;font-size:1.05rem;font-weight:400;color:#fff;line-height:1.2}
+.sidebar-meta{font-size:0.63rem;color:var(--text-dim);margin-top:0.3rem}
+
+/* Overall progress bar in sidebar */
+.sidebar-progress{padding:0.8rem 1.25rem;border-bottom:1px solid rgba(255,255,255,0.04)}
+.sp-label{display:flex;justify-content:space-between;font-size:0.6rem;letter-spacing:0.06em;color:var(--text-dim);margin-bottom:5px}
+.sp-bar{height:3px;background:rgba(255,255,255,0.08);border-radius:2px;overflow:hidden}
+.sp-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s ease}
+
+.lesson-list{padding:0.4rem 0;flex:1}
+
+.lesson-btn{
+  width:100%;display:flex;align-items:center;gap:0.7rem;
+  padding:0.7rem 1.1rem 0.7rem 1rem;
+  border:none;background:none;color:var(--text);
+  text-align:left;transition:background .15s;
+  border-left:2px solid transparent;
+  position:relative;
+}
+.lesson-btn:hover{background:rgba(255,255,255,0.04)}
+.lesson-btn.active{background:rgba(255,255,255,0.06);border-left-color:var(--accent)}
+.lesson-btn.done{background:rgba(255,255,255,0.02)}
+.lbtn-icon{color:var(--accent);opacity:0.5;flex-shrink:0;width:16px;display:flex;align-items:center;justify-content:center}
+.lesson-btn.active .lbtn-icon{opacity:0.9}
+.lbtn-body{flex:1;min-width:0}
+.lbtn-title{display:block;font-size:0.8rem;color:#fff;line-height:1.3;margin-bottom:0.1rem}
+.lesson-btn.done .lbtn-title{opacity:0.45;text-decoration:line-through;text-decoration-color:rgba(255,255,255,0.2)}
+.lbtn-meta{font-size:0.6rem;color:var(--text-dim);letter-spacing:0.04em}
+.lbtn-check{font-size:0.65rem;color:var(--accent);opacity:0;flex-shrink:0;transition:opacity .25s;font-weight:500}
+.lesson-btn.done .lbtn-check{opacity:1}
+
+/* ── MAIN CONTENT ────────────────────────────── */
+.main-content{flex:1;min-width:0;padding:2.5rem clamp(1.25rem,4vw,2.5rem) 6rem;max-width:900px}
+
+/* ── LESSON PANEL ────────────────────────────── */
+.lesson-panel{display:none}
+.lesson-panel.active{display:block;animation:fadeUp .25s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:translateY(0)}}
+
+.lesson-header{margin-bottom:2rem}
+.lesson-eyebrow{
+  display:inline-flex;align-items:center;gap:0.45rem;
+  font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:0.8rem;
+}
+.lesson-dur{
+  margin-left:0.5rem;padding-left:0.6rem;
+  border-left:1px solid rgba(255,255,255,0.15);
+  color:var(--text-dim);
+}
+.lesson-h1{
+  font-family:'Cormorant',serif;font-size:clamp(1.9rem,4vw,2.9rem);
+  font-weight:300;color:#fff;line-height:1.08;
+}
+.lesson-subdesc{margin-top:0.8rem;font-size:0.86rem;color:var(--text-dim);line-height:1.7;max-width:600px}
+
+/* ── VIDEO ───────────────────────────────────── */
+.video-wrap{
+  width:100%;max-width:820px;aspect-ratio:16/9;
+  background:#000;border-radius:4px;overflow:hidden;
+  margin-bottom:2rem;border:1px solid rgba(255,255,255,0.08);
+  position:relative;
+}
+.video-wrap iframe{width:100%;height:100%;border:none;display:block}
+/* Facade — shows YouTube thumbnail + play button until clicked */
+.video-facade{cursor:pointer;background-color:#000}
+.video-facade-thumb{
+  position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;display:block;
+  user-select:none;-webkit-user-drag:none;pointer-events:none;
+}
+.video-facade::after{
+  content:'';position:absolute;inset:0;
+  background:linear-gradient(180deg,transparent 0%,rgba(0,0,0,0.18) 65%,rgba(0,0,0,0.55) 100%);
+  pointer-events:none;transition:opacity .25s;
+}
+.video-facade:hover::after{opacity:0.6}
+.video-play-btn{
+  position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  background:none;border:none;padding:0;cursor:pointer;
+  filter:drop-shadow(0 4px 14px rgba(0,0,0,0.5));
+  transition:transform .2s ease, filter .2s ease;
+  z-index:2;
+}
+.video-facade:hover .video-play-btn,
+.video-facade:focus-visible .video-play-btn{transform:translate(-50%,-50%) scale(1.08);filter:drop-shadow(0 6px 18px rgba(0,0,0,0.55)) brightness(1.05)}
+.video-facade:focus-visible{outline:2px solid var(--accent);outline-offset:4px}
+/* External provider link (non-embeddable, e.g. Gaia) */
+.video-wrap-ext{aspect-ratio:unset;height:auto;min-height:120px;display:flex;align-items:center;justify-content:center;padding:2rem}
+.video-wrap-ext::before{display:none}
+.ext-video-link{display:flex;flex-direction:column;align-items:center;gap:0.75rem;text-decoration:none;color:var(--text);text-align:center;transition:opacity .2s}
+.ext-video-link:hover{opacity:0.75}
+.ext-video-icon{width:64px;height:64px;border-radius:50%;background:rgba(255,255,255,0.06);border:1px solid rgba(255,255,255,0.12);display:flex;align-items:center;justify-content:center;color:var(--text-dim)}
+.ext-video-label{font-family:'Cormorant',serif;font-size:1.1rem;font-weight:400;color:#fff}
+.ext-video-url{font-size:0.65rem;letter-spacing:0.06em;color:var(--text-dim)}
+
+/* ── REFLECTION ──────────────────────────────── */
+.reflection-box{
+  max-width:680px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;padding:1.6rem 1.8rem;margin-bottom:2rem;
+  border-left:3px solid var(--accent);
+}
+.reflection-label{
+  display:flex;align-items:center;gap:0.4rem;
+  font-size:0.54rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);
+  margin-bottom:0.9rem;
+}
+.reflection-prompt{font-size:0.9rem;color:var(--text);line-height:1.85;margin-bottom:1.4rem}
+.reflection-write{margin-top:1.2rem;border-top:1px solid rgba(255,255,255,0.06);padding-top:1.2rem}
+.reflection-write label{display:block;font-size:0.56rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.6rem}
+.reflection-write textarea{
+  width:100%;min-height:120px;resize:vertical;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.1);border-radius:4px;
+  padding:0.9rem 1rem;color:var(--text);
+  font-family:'Jost',sans-serif;font-size:0.84rem;font-weight:300;line-height:1.65;
+  outline:none;transition:border-color .2s;
+}
+.reflection-write textarea::placeholder{color:rgba(255,255,255,0.22)}
+.reflection-write textarea:focus{border-color:rgba(255,255,255,0.22)}
+.reflect-actions{display:flex;align-items:center;justify-content:space-between;margin-top:0.5rem}
+.reflect-saved{font-size:0.64rem;color:var(--accent);letter-spacing:0.06em;opacity:0;transition:opacity .3s}
+.reflect-saved.show{opacity:1}
+.reflect-clear{background:none;border:none;font-size:0.62rem;letter-spacing:0.1em;color:var(--text-dim);cursor:pointer;transition:color .2s;padding:0}
+.reflect-clear:hover{color:var(--text)}
+
+/* ── READING ─────────────────────────────────── */
+.reading-card{
+  max-width:620px;display:flex;align-items:center;gap:1.2rem;
+  background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;padding:1.4rem 1.6rem;margin-bottom:2rem;
+  color:var(--text);transition:background .2s,border-color .2s;
+}
+.reading-card:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.16);opacity:1}
+.reading-icon{color:var(--accent);opacity:0.65;flex-shrink:0}
+.reading-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:0.25rem}
+.reading-title{font-size:0.88rem;color:#fff;line-height:1.35}
+.reading-domain{font-size:0.66rem;color:var(--text-dim);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.reading-dur{font-size:0.62rem;color:var(--accent);letter-spacing:0.06em}
+.reading-arrow{color:var(--accent);font-size:1.1rem;flex-shrink:0;transition:transform .2s}
+.reading-card:hover .reading-arrow{transform:translateX(3px)}
+
+/* ── LESSON ACTIONS ──────────────────────────── */
+.lesson-actions{
+  display:flex;align-items:center;justify-content:space-between;gap:1rem;
+  margin-top:2.5rem;padding-top:1.5rem;
+  border-top:1px solid rgba(255,255,255,0.06);
+  flex-wrap:wrap;
+}
+.btn-complete{
+  padding:10px 26px;border-radius:2px;
+  font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;border:none;
+  background:var(--accent);color:#fff;transition:opacity .2s,background .2s,transform .15s;
+}
+.btn-complete:hover{opacity:0.88;transform:translateY(-1px)}
+.btn-complete:active{transform:translateY(0)}
+.btn-complete.done-state{
+  background:rgba(255,255,255,0.07);color:var(--text-dim);
+  border:1px solid rgba(255,255,255,0.1);
+}
+.lesson-nav-btns{display:flex;gap:0.6rem}
+.btn-nav{
+  padding:9px 18px;border-radius:2px;
+  font-size:0.66rem;letter-spacing:0.12em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,0.12);background:none;color:var(--text-dim);
+  transition:all .2s;
+}
+.btn-nav:hover:not(:disabled){border-color:rgba(255,255,255,0.28);color:var(--text)}
+.btn-nav:disabled{opacity:0.2;cursor:not-allowed}
+.btn-nav.btn-next{border-color:rgba(255,255,255,0.18);color:var(--text)}
+.btn-nav.btn-next:hover:not(:disabled){border-color:var(--accent);color:var(--accent)}
+.btn-next-arrow{opacity:0.7;margin:0 0.2em}
+.btn-next-title{
+  font-size:0.6rem;letter-spacing:0.06em;text-transform:none;
+  font-weight:300;opacity:0.85;
+  display:inline-block;max-width:220px;overflow:hidden;
+  white-space:nowrap;text-overflow:ellipsis;vertical-align:bottom;
+}
+@media(max-width:768px){.btn-next-title{display:none}}
+
+/* ── RELATED TOPICS (per lesson) ──────────────── */
+.related-topics{
+  max-width:820px;margin:1.2rem 0 0;
+  padding:1rem 1.25rem;
+  background:rgba(255,255,255,0.02);
+  border:1px dashed rgba(255,255,255,0.08);
+  border-radius:6px;
+}
+.related-label{
+  display:block;font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:0.6rem;
+}
+.related-chips{display:flex;flex-wrap:wrap;gap:0.4rem}
+.related-chip{
+  display:inline-block;padding:5px 12px;
+  font-size:0.72rem;letter-spacing:0.04em;text-transform:lowercase;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.1);
+  border-radius:18px;color:var(--text);text-decoration:none;
+  transition:background .15s,border-color .15s,color .15s;
+}
+.related-chip:hover{background:rgba(123,97,255,0.08);border-color:var(--accent);color:var(--accent);opacity:1}
+
+/* ── KEYBOARD HINTS (bottom of main content) ─── */
+.kbd-hint{
+  margin:3rem 0 1rem;max-width:820px;
+  font-size:0.62rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--text-dim);text-align:center;opacity:0.6;
+}
+.kbd-hint kbd{
+  display:inline-block;background:rgba(255,255,255,0.06);
+  border:1px solid rgba(255,255,255,0.12);border-radius:3px;
+  padding:1px 6px;margin:0 2px;
+  font-family:'Jost',sans-serif;font-size:0.6rem;
+  letter-spacing:0;text-transform:none;color:var(--text);
+}
+@media(max-width:768px){.kbd-hint{display:none}}
+
+/* ── RETURN TOAST ──────────────────────────────── */
+.return-toast{
+  position:fixed;bottom:24px;right:24px;z-index:200;
+  max-width:340px;display:flex;align-items:center;gap:0.9rem;
+  background:rgba(13,31,68,0.96);backdrop-filter:blur(12px);
+  border:1px solid rgba(255,255,255,0.12);border-left:3px solid var(--accent);
+  border-radius:6px;padding:0.9rem 1.05rem;
+  box-shadow:0 12px 36px rgba(0,0,0,0.4);
+  transform:translateY(20px);opacity:0;pointer-events:none;
+  transition:transform .3s ease,opacity .3s ease;
+}
+.return-toast.show{transform:translateY(0);opacity:1;pointer-events:auto}
+.return-toast-body{flex:1;min-width:0}
+.return-toast-title{font-size:0.66rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--accent);margin-bottom:0.25rem}
+.return-toast-sub{font-size:0.78rem;color:var(--text);line-height:1.35;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+.return-toast-close{
+  flex-shrink:0;background:none;border:none;color:var(--text-dim);
+  font-size:1.05rem;cursor:pointer;padding:2px 4px;line-height:1;
+}
+.return-toast-close:hover{color:var(--text)}
+
+/* ── COMMUNITY CTA ───────────────────────────── */
+.community-cta{
+  display:flex;align-items:center;gap:1rem;flex-wrap:wrap;
+  background:rgba(255,255,255,0.04);
+  border:1px solid rgba(255,255,255,0.10);border-left:3px solid var(--accent);
+  border-radius:6px;padding:0.95rem 1.25rem;margin-bottom:2rem;
+  text-decoration:none;color:var(--text);
+  transition:background .2s,border-color .2s,transform .15s;
+}
+.community-cta:hover{background:rgba(255,255,255,0.07);border-color:rgba(255,255,255,0.20);transform:translateY(-1px);opacity:1}
+.community-cta-body{flex:1;min-width:220px;display:flex;flex-direction:column;gap:0.25rem}
+.community-cta-label{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--accent)}
+.community-cta-blurb{font-size:0.82rem;color:var(--text);line-height:1.5}
+.community-cta-btn{
+  flex-shrink:0;padding:8px 18px;border-radius:2px;
+  font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;
+  background:var(--accent);color:#fff;white-space:nowrap;
+}
+
+/* ── DISCUSS PANEL (per lesson) ───────────────── */
+.discuss-panel{
+  max-width:820px;margin:2rem 0 0;
+  background:rgba(255,255,255,0.025);
+  border:1px solid rgba(255,255,255,0.08);
+  border-radius:6px;padding:1.2rem 1.4rem 1.3rem;
+}
+.discuss-panel-header{
+  display:flex;align-items:center;gap:0.5rem;
+  font-size:0.56rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-dim);margin-bottom:0.9rem;
+}
+.discuss-panel-header svg{color:var(--accent);opacity:0.7;flex-shrink:0}
+.discuss-panel-links{display:flex;flex-direction:column;gap:0.5rem}
+.discuss-link{
+  display:flex;align-items:center;gap:0.85rem;
+  padding:0.75rem 1rem;border-radius:4px;
+  background:rgba(255,255,255,0.03);
+  border:1px solid rgba(255,255,255,0.06);
+  text-decoration:none;color:var(--text);
+  transition:background .15s,border-color .15s,transform .15s;
+}
+.discuss-link:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.14);opacity:1;transform:translateY(-1px)}
+.discuss-link svg{color:var(--text-dim);flex-shrink:0;transition:color .15s}
+.discuss-link:hover svg{color:var(--accent)}
+.discuss-link-primary{border-color:rgba(255,255,255,0.14)}
+.discuss-link-primary svg{color:#FF4040}
+.discuss-link-body{flex:1;min-width:0;display:flex;flex-direction:column;gap:0.1rem}
+.discuss-link-title{font-size:0.86rem;color:var(--text);line-height:1.3}
+.discuss-link-sub{font-size:0.66rem;color:var(--text-dim);letter-spacing:0.02em}
+.discuss-link-arrow{color:var(--text-dim);font-size:1rem;flex-shrink:0;transition:color .15s,transform .15s}
+.discuss-link:hover .discuss-link-arrow{color:var(--accent);transform:translateX(3px)}
+
+/* ── COMPLETION MODAL ────────────────────────── */
+.completion-overlay{
+  position:fixed;inset:0;z-index:300;background:rgba(5,12,28,0.94);backdrop-filter:blur(14px);
+  display:flex;align-items:center;justify-content:center;padding:1.5rem;
+  opacity:0;pointer-events:none;transition:opacity .3s;
+}
+.completion-overlay.open{opacity:1;pointer-events:all}
+.completion-box{
+  max-width:440px;width:100%;text-align:center;
+  background:#0d1f44;border:1px solid rgba(196,151,58,0.25);border-radius:8px;
+  padding:3rem 2.5rem;
+  transform:translateY(16px) scale(0.97);transition:transform .3s;
+}
+.completion-overlay.open .completion-box{transform:translateY(0) scale(1)}
+.completion-icon{font-size:2.8rem;margin-bottom:1.2rem;line-height:1;color:var(--gold)}
+.completion-title{font-family:'Cormorant',serif;font-size:2rem;font-weight:300;color:#fff;margin-bottom:0.5rem}
+.completion-course{font-size:0.84rem;color:var(--text-dim);margin-bottom:1.5rem}
+.completion-badge{
+  display:inline-flex;align-items:center;gap:0.5rem;
+  border:1px solid rgba(196,151,58,0.4);border-radius:4px;
+  padding:0.5rem 1.1rem;margin-bottom:1.8rem;
+  background:rgba(196,151,58,0.07);
+}
+.badge-label{font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)}
+.completion-desc{font-size:0.8rem;color:var(--text-dim);line-height:1.7;margin-bottom:2rem}
+.completion-btns{display:flex;gap:0.7rem;justify-content:center;flex-wrap:wrap}
+.cbtn{padding:10px 22px;border-radius:2px;font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;cursor:pointer;transition:all .2s}
+.cbtn-primary{background:var(--accent);color:#fff;border:none}
+.cbtn-primary:hover{opacity:0.85}
+.cbtn-sec{background:none;color:var(--text-dim);border:1px solid rgba(255,255,255,0.12)}
+.cbtn-sec:hover{border-color:rgba(255,255,255,0.28);color:var(--text)}
+
+/* ── MOBILE ──────────────────────────────────── */
+.mobile-overlay{display:none;position:fixed;inset:0;z-index:49;background:rgba(0,0,0,0.5)}
+.mobile-overlay.open{display:block}
+.mobile-bar{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:50;
+  background:rgba(11,28,61,0.98);border-top:1px solid rgba(255,255,255,0.08);
+  padding:0.7rem 1.25rem;gap:0.75rem;align-items:center;
+}
+.mobile-lesson-title{flex:1;min-width:0;font-size:0.78rem;color:#fff;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.mobile-lessons-btn{
+  background:var(--accent);color:#fff;border:none;
+  padding:7px 14px;border-radius:2px;font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
+  flex-shrink:0;white-space:nowrap;
+}
+.mobile-sidebar{
+  display:none;position:fixed;bottom:0;left:0;right:0;z-index:60;
+  background:#0c1e42;border-top:1px solid rgba(255,255,255,0.1);
+  max-height:60vh;overflow-y:auto;
+  transform:translateY(100%);transition:transform .3s ease;
+}
+.mobile-sidebar.open{transform:translateY(0)}
+.mobile-sidebar-head{
+  padding:1rem 1.25rem 0.75rem;display:flex;align-items:center;justify-content:space-between;
+  border-bottom:1px solid rgba(255,255,255,0.06);
+  position:sticky;top:0;background:#0c1e42;
+}
+.mobile-sidebar-head span{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+.mobile-sidebar-close{background:none;border:none;color:var(--text-dim);font-size:1.2rem;cursor:pointer;line-height:1;padding:2px}
+
+@media(max-width:768px){
+  .sidebar{display:none}
+  .main-content{padding:1.5rem 1.25rem 7rem}
+  .mobile-bar{display:flex}
+  .lesson-actions{flex-direction:column;align-items:flex-start}
+  .lesson-nav-btns{width:100%;justify-content:space-between}
+  .btn-complete{width:100%;text-align:center}
+  .snav-pbar{width:50px}
+  .breadcrumb{max-width:120px}
+  .video-wrap{max-width:100%}
+  .reflection-box,.reading-card{max-width:100%}
+}
+</style>
+<script src="../../../mobile-nav.js" defer></script>
+<script src="../../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../../nav-dropdown.css">
+<link rel="manifest" href="../../../manifest.json">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Course","name":"Working with Claude","description":"Most people use AI like a vending machine. Claude is built to work like a thoughtful collaborator. This short course teaches the prompting, the boundaries, and the practices that turn the tool into a real thinking partner.","url":"https://frqncy.network/courses/working-with-claude/","provider":{"@type":"Organization","name":"FRQNCY Network","url":"https://frqncy.network"},"educationalLevel":"beginner","inLanguage":"en","isAccessibleForFree":true,"numberOfLessons":5,"timeRequired":"PT1H","hasPart":[]}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network/"},{"@type":"ListItem","position":2,"name":"Courses","item":"https://frqncy.network/courses/"},{"@type":"ListItem","position":3,"name":"Working with Claude","item":"https://frqncy.network/courses/working-with-claude/"}]}</script>
+</head>
+<body>
+
+<!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
+<style data-frqncy-header-critical>
+/* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
+#main-nav{position:sticky;top:0;width:100%;z-index:500;padding:14px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;background:rgba(11,28,61,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);font-family:'Jost',system-ui,sans-serif}
+#main-nav .nav-logo{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:20px;letter-spacing:.34em;color:#fff;text-decoration:none;text-transform:uppercase}
+#main-nav .nav-links{display:flex;gap:22px;list-style:none;margin:0;padding:0;align-items:center}
+#main-nav .nav-links a{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);text-decoration:none;display:inline-flex;align-items:center;min-height:30px}
+#main-nav .nav-search{display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:2px}
+#main-nav .nav-search input{background:transparent;border:0;outline:0;color:#fff;font:inherit;font-size:10.5px;letter-spacing:.14em;width:clamp(120px,14vw,180px);padding:5px 9px}
+#main-nav .nav-search input::placeholder{color:rgba(255,255,255,.45)}
+#main-nav .nav-search button{background:transparent;border:0;color:rgba(255,255,255,.6);font-size:13px;padding:4px 9px;cursor:pointer}
+#main-nav .nav-back{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:2px;text-decoration:none}
+#main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+#main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
+#main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
+body.frqncy-home #main-nav .nav-back{display:none}
+#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important}
+#main-nav .nav-dd-menu a .dd-label,#main-nav .nav-dd-menu a .dd-sub{display:block !important;text-align:center !important;width:100% !important}
+@media(max-width:720px){#main-nav .nav-links{display:none}}
+</style>
+<nav id="main-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <a href="/about">About</a>
+      <div class="nav-dd-menu">
+        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
+        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/explore.html">Discover</a>
+      <div class="nav-dd-menu">
+        <a href="/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
+        <a href="/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
+        <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
+        <a href="/people/"><span class="dd-label">Browse</span><span class="dd-sub">People · Books · Orgs · Places</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/social/">Community</a>
+      <div class="nav-dd-menu">
+        <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
+        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">Social layer</span></a>
+        <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access</span></a>
+        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
+      </div>
+    </li>
+    <li class="nav-search-li">
+      <form action="/search" method="get" role="search" class="nav-search">
+        <input type="text" role="searchbox" name="q" placeholder="Search…" aria-label="Search the FRQNCY network" autocomplete="off">
+        <button type="submit" aria-label="Search">⌕</button>
+      </form>
+    </li>
+    <li>
+      <a href="/" class="nav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
+    </li>
+    <li>
+      <a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a>
+    </li>
+  </ul>
+</nav>
+<script>
+  // Tag the homepage so CSS can hide the back button there (it's redundant on /).
+  (function(){
+    try {
+      var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
+      if (isHome) document.body.classList.add('frqncy-home');
+    } catch(_) {}
+  })();
+</script>
+<!-- Tiny floating Donate button — bottom-right on every page. Click opens a
+     popover with the EVM + SOL wallet addresses; the full /donate page link
+     sits at the top of the popover. -->
+<style data-frqncy-donate>
+  #frq-donate-btn{position:fixed;right:18px;bottom:18px;z-index:480;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
+  #frq-donate-btn:hover{background:#C4973A;color:#fff;transform:translateY(-1px)}
+  #frq-donate-btn .heart{margin-right:6px;display:inline-block}
+  #frq-donate-pop{position:fixed;right:18px;bottom:64px;z-index:481;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
+  #frq-donate-pop.open{display:block}
+  #frq-donate-pop .frq-pop-title{font-family:'Cormorant',Georgia,serif;font-size:18px;font-weight:400;color:#0B1C3D;margin-bottom:4px}
+  #frq-donate-pop .frq-pop-sub{font-size:11px;color:#8A9AB8;margin-bottom:14px;line-height:1.5}
+  #frq-donate-pop .frq-pop-sub a{color:#C4973A;text-decoration:none}
+  #frq-donate-pop .frq-w-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#C4973A;font-weight:500;margin-top:10px;display:block}
+  #frq-donate-pop .frq-w-addr{font-family:'SFMono-Regular',Menlo,monospace;font-size:11px;color:#0B1C3D;background:#F8FAFC;border:1px solid rgba(11,28,61,.08);padding:8px 10px;border-radius:3px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;word-break:break-all}
+  #frq-donate-pop .frq-w-copy{flex:0 0 auto;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#C4973A;background:transparent;border:1px solid rgba(196,151,58,.5);padding:3px 8px;border-radius:2px;cursor:pointer;font-family:inherit}
+  #frq-donate-pop .frq-w-copy:hover{background:#C4973A;color:#fff}
+  #frq-donate-pop .frq-pop-foot{margin-top:14px;padding-top:12px;border-top:1px solid rgba(11,28,61,.06);font-size:10px;letter-spacing:.06em;color:#8A9AB8;line-height:1.5}
+  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:12px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:54px}}
+</style>
+<button id="frq-donate-btn" type="button" aria-haspopup="dialog" aria-controls="frq-donate-pop" aria-label="Support FRQNCY">
+  <span class="heart" aria-hidden="true">♥</span>Donate
+</button>
+<div id="frq-donate-pop" role="dialog" aria-label="FRQNCY donation wallets">
+  <div class="frq-pop-title">Support FRQNCY</div>
+  <div class="frq-pop-sub">Full details + fiat options on <a href="/donate">/donate</a>.</div>
+  <span class="frq-w-label">EVM · ETH / Base / Arbitrum (USDC, ETH)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="evm">0xPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="evm">Copy</button>
+  </div>
+  <span class="frq-w-label">Solana (SOL / USDC-SPL)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="sol">SOLPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="sol">Copy</button>
+  </div>
+  <div class="frq-pop-foot">Wallets are placeholders until the FRQNY treasury multi-sig goes live. See the crypto stack spec.</div>
+</div>
+<script>
+  (function(){
+    var btn = document.getElementById('frq-donate-btn');
+    var pop = document.getElementById('frq-donate-pop');
+    if (!btn || !pop) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      pop.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!pop.contains(e.target) && e.target !== btn) pop.classList.remove('open');
+    });
+    pop.addEventListener('click', function(e){
+      var t = e.target;
+      if (t && t.dataset && t.dataset.frqCopy) {
+        var which = t.dataset.frqCopy;
+        var addrEl = pop.querySelector('[data-frq-addr="' + which + '"]');
+        if (!addrEl) return;
+        var text = addrEl.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function(){
+            var orig = t.textContent;
+            t.textContent = 'Copied';
+            setTimeout(function(){ t.textContent = orig; }, 1200);
+          });
+        }
+      }
+    });
+  })();
+</script>
+<!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
+
+<div class="layout">
+  <!-- SIDEBAR -->
+  <aside class="sidebar" id="sidebar" aria-label="Course lessons">
+    <div class="sidebar-head">
+      <div class="sidebar-accent-bar"></div>
+      <div class="sidebar-course">d-tech · Beginner</div>
+      <div class="sidebar-title">Working with Claude</div>
+      <div class="sidebar-meta">5 lessons · 1 hour</div>
+    </div>
+    <div class="sidebar-progress">
+      <div class="sp-label"><span>Progress</span><span id="sp-text">0 / 5</span></div>
+      <div class="sp-bar"><div class="sp-fill" id="sp-fill" style="width:0%"></div></div>
+    </div>
+    <div class="lesson-list" id="lesson-list" role="tablist">
+      
+    <button class="lesson-btn" data-idx="0" id="nav-0">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Why Claude is Different</span>
+        <span class="lbtn-meta">Reading · 8 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-0" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="1" id="nav-1">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">How to Prompt Well</span>
+        <span class="lbtn-meta">Reading · 15 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-1" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="2" id="nav-2">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Claude in Practice</span>
+        <span class="lbtn-meta">Reflection · 15 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-2" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="3" id="nav-3">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Limits, Bias, and Hallucination</span>
+        <span class="lbtn-meta">Reading · 12 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-3" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="4" id="nav-4">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Building a Practice</span>
+        <span class="lbtn-meta">Reflection · 10 min</span>
+      </span>
+      <span class="lbtn-check" id="chk-4" aria-hidden="true">✓</span>
+    </button>
+    </div>
+  </aside>
+
+  <!-- MAIN -->
+  <div class="main-content" id="main-content">
+    
+    
+  <div class="lesson-panel" id="panel-0" role="tabpanel" aria-labelledby="nav-0">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg> Reading<span class="lesson-dur">8 min</span></div>
+      <h1 class="lesson-h1">Why Claude is Different</h1>
+      <p class="lesson-subdesc">The model card and the safety-first design philosophy that distinguishes Claude from other frontier AIs.</p>
+    </div>
+    <a class="reading-card" href="https://www.anthropic.com/claude" target="_blank" rel="noopener">
+      <span class="reading-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="reading-body">
+        <span class="reading-title">The model card and the safety-first design philosophy that distinguishes Claude from other frontier AIs.</span>
+        <span class="reading-domain">https://www.anthropic.com/claude</span>
+        <span class="reading-dur">8 min read</span>
+      </span>
+      <span class="reading-arrow">→</span>
+    </a>
+    
+    
+  <div class="related-topics">
+    <span class="related-label">Explore on the network</span>
+    <div class="related-chips"><a class="related-chip" href="/ai/">ai</a></div>
+  </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-0" onclick="markComplete(0)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-0" onclick="showLesson(-1)" disabled aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-0" onclick="showLesson(1)" aria-label="Next lesson">Next <span class="btn-next-arrow">→</span> <span class="btn-next-title">How to Prompt Well</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-1" role="tabpanel" aria-labelledby="nav-1">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg> Reading<span class="lesson-dur">15 min</span></div>
+      <h1 class="lesson-h1">How to Prompt Well</h1>
+      <p class="lesson-subdesc">Anthropic's own guide to writing prompts that get the best out of the model.</p>
+    </div>
+    <a class="reading-card" href="https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview" target="_blank" rel="noopener">
+      <span class="reading-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="reading-body">
+        <span class="reading-title">Anthropic's own guide to writing prompts that get the best out of the model.</span>
+        <span class="reading-domain">https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview</span>
+        <span class="reading-dur">15 min read</span>
+      </span>
+      <span class="reading-arrow">→</span>
+    </a>
+    
+    
+  <div class="related-topics">
+    <span class="related-label">Explore on the network</span>
+    <div class="related-chips"><a class="related-chip" href="/ai/">ai</a></div>
+  </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-1" onclick="markComplete(1)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-1" onclick="showLesson(0)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-1" onclick="showLesson(2)" aria-label="Next lesson">Next <span class="btn-next-arrow">→</span> <span class="btn-next-title">Claude in Practice</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-2" role="tabpanel" aria-labelledby="nav-2">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg> Reflection<span class="lesson-dur">15 min</span></div>
+      <h1 class="lesson-h1">Claude in Practice</h1>
+      
+    </div>
+    <div class="reflection-box">
+      <div class="reflection-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg> Reflection Prompt
+      </div>
+      <p class="reflection-prompt">Pick one task you do every week — research, writing, planning. Run it through Claude. Where does it help, where does it not, where do you need to push back? Write down what you learned.</p>
+      <div class="reflection-write">
+        <textarea placeholder="Write your reflection here… (saved in your browser)" aria-label="Your reflection" id="reflect-l3"></textarea>
+        <div class="reflect-actions">
+          <span class="reflect-saved" id="saved-l3"></span>
+          <button class="reflect-clear" onclick="clearReflect('l3')">Clear</button>
+        </div>
+      </div>
+    </div>
+    
+    
+  <div class="related-topics">
+    <span class="related-label">Explore on the network</span>
+    <div class="related-chips"><a class="related-chip" href="/ai/">ai</a></div>
+  </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-2" onclick="markComplete(2)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-2" onclick="showLesson(1)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-2" onclick="showLesson(3)" aria-label="Next lesson">Next <span class="btn-next-arrow">→</span> <span class="btn-next-title">Limits, Bias, and Hallucination</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-3" role="tabpanel" aria-labelledby="nav-3">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg> Reading<span class="lesson-dur">12 min</span></div>
+      <h1 class="lesson-h1">Limits, Bias, and Hallucination</h1>
+      <p class="lesson-subdesc">Where the model is unreliable and how to catch it. Includes Anthropic's public research on alignment and interpretability.</p>
+    </div>
+    <a class="reading-card" href="https://www.anthropic.com/research" target="_blank" rel="noopener">
+      <span class="reading-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="reading-body">
+        <span class="reading-title">Where the model is unreliable and how to catch it. Includes Anthropic's public research on alignment and interpretability.</span>
+        <span class="reading-domain">https://www.anthropic.com/research</span>
+        <span class="reading-dur">12 min read</span>
+      </span>
+      <span class="reading-arrow">→</span>
+    </a>
+    
+    
+  <div class="related-topics">
+    <span class="related-label">Explore on the network</span>
+    <div class="related-chips"><a class="related-chip" href="/ai/">ai</a></div>
+  </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-3" onclick="markComplete(3)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-3" onclick="showLesson(2)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-3" onclick="showLesson(4)" aria-label="Next lesson">Next <span class="btn-next-arrow">→</span> <span class="btn-next-title">Building a Practice</span></button>
+      </div>
+    </div>
+  </div>
+  <div class="lesson-panel" id="panel-4" role="tabpanel" aria-labelledby="nav-4">
+    <div class="lesson-header">
+      <div class="lesson-eyebrow"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg> Reflection<span class="lesson-dur">10 min</span></div>
+      <h1 class="lesson-h1">Building a Practice</h1>
+      
+    </div>
+    <div class="reflection-box">
+      <div class="reflection-label">
+        <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg> Reflection Prompt
+      </div>
+      <p class="reflection-prompt">Most people use Claude for one-off tasks. The compound returns come from using it as a steady thinking partner. Set up one regular use — daily writing review, weekly research synthesis, fortnightly strategic reflection. Stick with it for a month.</p>
+      <div class="reflection-write">
+        <textarea placeholder="Write your reflection here… (saved in your browser)" aria-label="Your reflection" id="reflect-l5"></textarea>
+        <div class="reflect-actions">
+          <span class="reflect-saved" id="saved-l5"></span>
+          <button class="reflect-clear" onclick="clearReflect('l5')">Clear</button>
+        </div>
+      </div>
+    </div>
+    
+    
+  <div class="related-topics">
+    <span class="related-label">Explore on the network</span>
+    <div class="related-chips"><a class="related-chip" href="/ai/">ai</a></div>
+  </div>
+    <div class="lesson-actions">
+      <button class="btn-complete" id="btn-complete-4" onclick="markComplete(4)">Mark Complete</button>
+      <div class="lesson-nav-btns">
+        <button class="btn-nav" id="btn-prev-4" onclick="showLesson(3)" aria-label="Previous lesson">← Prev</button>
+        <button class="btn-nav btn-next" id="btn-next-4" onclick="showLesson(5)" disabled aria-label="Next lesson">Next →</button>
+      </div>
+    </div>
+  </div>
+    <div class="kbd-hint" aria-hidden="true">
+      <kbd>←</kbd> <kbd>→</kbd> previous / next · <kbd>M</kbd> mark complete
+    </div>
+  </div>
+</div>
+
+<!-- MOBILE BOTTOM BAR -->
+<!-- RETURN TOAST -->
+<div class="return-toast" id="return-toast" role="status" aria-live="polite">
+  <div class="return-toast-body">
+    <div class="return-toast-title">Picking up where you left off</div>
+    <div class="return-toast-sub" id="return-toast-sub"></div>
+  </div>
+  <button class="return-toast-close" onclick="closeReturnToast()" aria-label="Dismiss">×</button>
+</div>
+
+<div class="mobile-overlay" id="mobile-overlay" onclick="closeMobileSidebar()"></div>
+<div class="mobile-bar" id="mobile-bar">
+  <span class="mobile-lesson-title" id="mobile-lesson-title">Lesson 1</span>
+  <button class="mobile-lessons-btn" onclick="openMobileSidebar()">All Lessons</button>
+</div>
+<div class="mobile-sidebar" id="mobile-sidebar" aria-label="Lessons menu">
+  <div class="mobile-sidebar-head">
+    <span>Lessons</span>
+    <button class="mobile-sidebar-close" onclick="closeMobileSidebar()" aria-label="Close">✕</button>
+  </div>
+  <div class="lesson-list" id="mobile-lesson-list">
+    
+    <button class="lesson-btn" data-idx="0" id="m-nav-0">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Why Claude is Different</span>
+        <span class="lbtn-meta">Reading · 8 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-0" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="1" id="m-nav-1">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">How to Prompt Well</span>
+        <span class="lbtn-meta">Reading · 15 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-1" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="2" id="m-nav-2">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Claude in Practice</span>
+        <span class="lbtn-meta">Reflection · 15 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-2" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="3" id="m-nav-3">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M2 3h6a4 4 0 014 4v14a3 3 0 00-3-3H2z"/><path d="M22 3h-6a4 4 0 00-4 4v14a3 3 0 013-3h7z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Limits, Bias, and Hallucination</span>
+        <span class="lbtn-meta">Reading · 12 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-3" aria-hidden="true">✓</span>
+    </button>
+    <button class="lesson-btn" data-idx="4" id="m-nav-4">
+      <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><path d="M12 20h9M16.5 3.5a2.121 2.121 0 013 3L7 19l-4 1 1-4z"/></svg></span>
+      <span class="lbtn-body">
+        <span class="lbtn-title">Building a Practice</span>
+        <span class="lbtn-meta">Reflection · 10 min</span>
+      </span>
+      <span class="lbtn-check" id="m-chk-4" aria-hidden="true">✓</span>
+    </button>
+  </div>
+</div>
+
+<!-- COMPLETION MODAL -->
+<div class="completion-overlay" id="completion" role="dialog" aria-modal="true" aria-labelledby="completion-title">
+  <div class="completion-box">
+    <div class="completion-icon">✦</div>
+    <div class="completion-title" id="completion-title">Course Complete</div>
+    <div class="completion-course">Working with Claude</div>
+    <div class="completion-badge">
+      <span class="badge-label">✓ Beginner · FRQNCY Certificate</span>
+    </div>
+    <div class="completion-desc">You've completed all 5 lessons. The ideas are yours — carry them into practice. If this helped, you can support the network so we can keep making them.</div>
+    <div class="completion-btns">
+      <a href="/membership/" class="cbtn cbtn-primary">Support the Network</a>
+      <a href="../" class="cbtn cbtn-sec">All Courses</a>
+      <button class="cbtn cbtn-sec" onclick="closeCompletion()">Close</button>
+    </div>
+  </div>
+</div>
+
+<script>
+const SLUG      = 'working-with-claude';
+const LESSONS   = [{"id":"l1","title":"Why Claude is Different","type":"reading","url":"https://www.anthropic.com/claude","duration":"8 min","desc":"The model card and the safety-first design philosophy that distinguishes Claude from other frontier AIs."},{"id":"l2","title":"How to Prompt Well","type":"reading","url":"https://docs.anthropic.com/en/docs/build-with-claude/prompt-engineering/overview","duration":"15 min","desc":"Anthropic's own guide to writing prompts that get the best out of the model."},{"id":"l3","title":"Claude in Practice","type":"reflection","duration":"15 min","content":"Pick one task you do every week — research, writing, planning. Run it through Claude. Where does it help, where does it not, where do you need to push back? Write down what you learned."},{"id":"l4","title":"Limits, Bias, and Hallucination","type":"reading","url":"https://www.anthropic.com/research","duration":"12 min","desc":"Where the model is unreliable and how to catch it. Includes Anthropic's public research on alignment and interpretability."},{"id":"l5","title":"Building a Practice","type":"reflection","duration":"10 min","content":"Most people use Claude for one-off tasks. The compound returns come from using it as a steady thinking partner. Set up one regular use — daily writing review, weekly research synthesis, fortnightly strategic reflection. Stick with it for a month."}];
+const TOTAL     = LESSONS.length;
+const STORE_KEY = 'frqncy-course-' + SLUG;
+const REFLECT_IDS = ["l3","l5"];
+
+let current   = 0;
+/* localStorage is unavailable in Safari private mode (and sometimes in
+ * embedded webviews). Wrapping every access in try/catch keeps the
+ * course page interactive in those environments — progress just won't
+ * persist across reloads. */
+function _ls(op, key, val) {
+  try {
+    if (op === 'get')    return localStorage.getItem(key);
+    if (op === 'set')    return localStorage.setItem(key, val);
+    if (op === 'remove') return localStorage.removeItem(key);
+  } catch (_) { return null; }
+}
+let completed = (() => {
+  try { return new Set(JSON.parse(_ls('get', STORE_KEY) || '[]')); }
+  catch (_) { return new Set(); }
+})();
+
+/* ── Persistence ── */
+function save() { _ls('set', STORE_KEY, JSON.stringify([...completed])); }
+
+function saveReflection(id, text) {
+  _ls('set', 'frqncy-reflect-' + id, text);
+}
+function loadReflection(id) {
+  return _ls('get', 'frqncy-reflect-' + id) || '';
+}
+function clearReflect(id) {
+  _ls('remove', 'frqncy-reflect-' + id);
+  const ta = document.getElementById('reflect-' + id);
+  if (ta) ta.value = '';
+}
+
+/* ── Progress UI ── */
+function updateProgress() {
+  const done = completed.size;
+  const pct  = TOTAL ? Math.round((done / TOTAL) * 100) : 0;
+  // Null-safe — the custom course-page top nav may be replaced by the global FRQNCY nav
+  // on some build paths, so guard every lookup.
+  const set = (id, prop, val) => { const el = document.getElementById(id); if (el) { if (prop === 'text') el.textContent = val; else el.style[prop] = val; } };
+  set('nav-progress-text', 'text', done + '/' + TOTAL);
+  set('nav-pfill',         'width', pct + '%');
+  set('sp-text',           'text', done + ' / ' + TOTAL);
+  set('sp-fill',           'width', pct + '%');
+}
+
+/* ── Sidebar state ── */
+function updateSidebar() {
+  document.querySelectorAll('.lesson-btn').forEach((btn, i) => {
+    btn.classList.toggle('active', i === current);
+    btn.classList.toggle('done', completed.has(i));
+  });
+  // Mobile lesson title
+  const mlt = document.getElementById('mobile-lesson-title');
+  if (mlt && LESSONS[current]) mlt.textContent = (current + 1) + '. ' + LESSONS[current].title;
+}
+
+/* ── Facade ↔ iframe swap (per-video) ── */
+function playVideo(wrap) {
+  if (!wrap || !wrap.classList.contains('video-facade')) return;
+  const embed = wrap.dataset.embed;
+  const title = wrap.dataset.title || 'Video';
+  if (!embed) return;
+  // Remember the thumbnail src so we can restore on lesson switch (image may have fallen back to hq)
+  const currentThumb = wrap.querySelector('.video-facade-thumb');
+  if (currentThumb) wrap.dataset.facadeThumb = currentThumb.src;
+  wrap.innerHTML = '';
+  const iframe = document.createElement('iframe');
+  iframe.id = 'yt-' + Math.random().toString(36).slice(2, 9);
+  iframe.src = embed;
+  iframe.title = title;
+  iframe.allow = 'autoplay; encrypted-media; picture-in-picture';
+  iframe.allowFullscreen = true;
+  iframe.setAttribute('data-played', '1');
+  wrap.appendChild(iframe);
+  wrap.classList.remove('video-facade');
+  wrap.classList.add('loaded');
+  wrap.removeAttribute('onclick');
+  wrap.removeAttribute('role');
+  wrap.removeAttribute('tabindex');
+  // Auto-mark-complete: register this iframe with YouTube's IFrame API
+  const panel = wrap.closest('.lesson-panel');
+  const lessonIdx = panel ? parseInt(panel.id.replace('panel-', ''), 10) : -1;
+  if (lessonIdx >= 0) {
+    loadYTApi();
+    bindYTPlayer(iframe, lessonIdx);
+  }
+}
+function restoreFacade(wrap) {
+  if (!wrap || !wrap.dataset || !wrap.dataset.embed) return;
+  const title = wrap.dataset.title || 'Video';
+  const thumb = wrap.dataset.facadeThumb || wrap.dataset.thumbFallback || '';
+  wrap.innerHTML = '<img class="video-facade-thumb" src="' + thumb + '" alt="" loading="lazy" decoding="async" onerror="this.onerror=null;this.src=this.parentElement.dataset.thumbFallback"/>'
+    + '<button class="video-play-btn" aria-label="Play" type="button" onclick="event.stopPropagation();playVideo(this.parentElement)">'
+    + '<svg viewBox="0 0 68 48" width="68" height="48" aria-hidden="true">'
+    + '<path d="M66.52 7.74c-.78-2.93-2.49-5.41-5.42-6.19C55.79.13 34 0 34 0S12.21.13 6.9 1.55c-2.93.78-4.63 3.26-5.42 6.19C.06 13.05 0 24 0 24s.06 10.95 1.48 16.26c.78 2.93 2.49 5.41 5.42 6.19C12.21 47.87 34 48 34 48s21.79-.13 27.1-1.55c2.93-.78 4.64-3.26 5.42-6.19C67.94 34.95 68 24 68 24s-.06-10.95-1.48-16.26z" fill="#f00"/>'
+    + '<path d="M45 24 27 14v20" fill="#fff"/>'
+    + '</svg></button>';
+  wrap.classList.add('video-facade');
+  wrap.classList.remove('loaded');
+  wrap.setAttribute('onclick', 'playVideo(this)');
+  wrap.setAttribute('role', 'button');
+  wrap.setAttribute('tabindex', '0');
+  wrap.setAttribute('aria-label', 'Play video: ' + title);
+}
+// Keyboard support — Enter/Space on a focused facade plays the video
+document.addEventListener('keydown', e => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('video-facade')) {
+    e.preventDefault();
+    playVideo(e.target);
+  }
+});
+
+/* ── Lesson switching ── */
+function showLesson(idx) {
+  if (idx < 0 || idx >= TOTAL) return;
+
+  // Stop the leaving lesson's video (if any) — restore facade so audio stops
+  const leavingPanel = document.getElementById('panel-' + current);
+  if (leavingPanel) {
+    const playingIframe = leavingPanel.querySelector('.video-wrap > iframe[data-played]');
+    if (playingIframe) restoreFacade(playingIframe.parentElement);
+  }
+
+  // Activate new panel
+  document.querySelectorAll('.lesson-panel').forEach((p, i) => p.classList.toggle('active', i === idx));
+  current = idx;
+
+  // Lesson activation — facade is already rendered, video loads on click
+  const panel = document.getElementById('panel-' + idx);
+  if (panel) {
+    // Load reflection text
+    const lesson = LESSONS[idx];
+    if (lesson && lesson.type === 'reflection' && lesson.id) {
+      const ta = document.getElementById('reflect-' + lesson.id);
+      if (ta && !ta._wired) {
+        ta.value = loadReflection(lesson.id);
+        ta._wired = true;
+        let saveTimer;
+        ta.addEventListener('input', () => {
+          clearTimeout(saveTimer);
+          saveTimer = setTimeout(() => {
+            saveReflection(lesson.id, ta.value);
+            const savedEl = document.getElementById('saved-' + lesson.id);
+            if (savedEl) { savedEl.textContent = '✓ Saved'; savedEl.classList.add('show'); setTimeout(() => savedEl.classList.remove('show'), 2000); }
+          }, 800);
+        });
+      }
+    }
+  }
+
+  updateSidebar();
+  updateCompleteBtn();
+  updateMetaForLesson(LESSONS[idx]);
+  // Reflect lesson position in the URL hash so people can deep-link / share
+  try { history.replaceState(null, '', '#l' + (idx + 1)); } catch (_) {}
+  window.scrollTo({ top: 56, behavior: 'smooth' });
+  closeMobileSidebar();
+}
+
+/* ── Update OG meta + document title when lesson changes ── */
+function updateMetaForLesson(lesson) {
+  if (!lesson) return;
+  const base = "Working with Claude";
+  document.title = lesson.title + ' — ' + base;
+  const setMeta = (sel, val) => {
+    const el = document.querySelector(sel);
+    if (el && val != null) el.setAttribute('content', val);
+  };
+  setMeta('meta[property="og:title"]', lesson.title + ' — ' + base);
+  setMeta('meta[property="og:description"]', lesson.desc || lesson.content || '');
+  if (lesson.type === 'video') {
+    const vid = lesson.youtube_id || lesson.video_id || '';
+    if (vid) setMeta('meta[property="og:image"]', 'https://img.youtube.com/vi/' + vid + '/maxresdefault.jpg');
+  }
+}
+
+/* ── Site-wide completion flag (read by other FRQNCY surfaces) ── */
+function markCourseFinished() {
+  try {
+    const key = 'frqncy.completed_courses';
+    const list = JSON.parse(localStorage.getItem(key) || '[]');
+    if (!list.includes(SLUG)) {
+      list.push(SLUG);
+      localStorage.setItem(key, JSON.stringify(list));
+    }
+  } catch (_) {}
+}
+
+/* ── YouTube IFrame API — auto-mark complete on video end ── */
+let _ytApiState = 'idle';
+let _pendingPlayers = [];
+function loadYTApi() {
+  if (_ytApiState !== 'idle') return;
+  _ytApiState = 'loading';
+  const s = document.createElement('script');
+  s.src = 'https://www.youtube.com/iframe_api';
+  s.async = true;
+  document.head.appendChild(s);
+}
+window.onYouTubeIframeAPIReady = function() {
+  _ytApiState = 'ready';
+  _pendingPlayers.splice(0).forEach(item => bindYTPlayer(item.iframe, item.lessonIdx));
+};
+function bindYTPlayer(iframe, lessonIdx) {
+  if (_ytApiState !== 'ready' || !window.YT || !window.YT.Player) {
+    _pendingPlayers.push({iframe, lessonIdx});
+    return;
+  }
+  try {
+    new YT.Player(iframe, {
+      events: {
+        onStateChange: function(e) {
+          if (e.data === 0 && !completed.has(lessonIdx)) {
+            markComplete(lessonIdx);
+          }
+        }
+      }
+    });
+  } catch (_) {}
+}
+
+/* ── Hover-preload — warm the video CDN as soon as user shows intent ── */
+let _videoPreconnected = false;
+function preconnectVideoCDN() {
+  if (_videoPreconnected) return;
+  _videoPreconnected = true;
+  ['https://www.googlevideo.com', 'https://i.ytimg.com'].forEach(url => {
+    if (document.querySelector('link[rel="preconnect"][href="' + url + '"]')) return;
+    const l = document.createElement('link');
+    l.rel = 'preconnect';
+    l.href = url;
+    l.crossOrigin = 'anonymous';
+    document.head.appendChild(l);
+  });
+}
+document.addEventListener('mouseover', e => {
+  const t = e.target;
+  if (t && t.closest && t.closest('.video-facade')) preconnectVideoCDN();
+}, { passive: true, once: false });
+
+/* ── Return toast — first time a returning user lands, suggest resume ── */
+function maybeShowReturnToast() {
+  if (completed.size === 0 || completed.size === TOTAL) return;
+  if (_ls('get', STORE_KEY + ':seen-return-toast') === '1') return;
+  const next = LESSONS[current];
+  if (!next) return;
+  const sub = document.getElementById('return-toast-sub');
+  if (sub) sub.textContent = 'Lesson ' + (current + 1) + ' — ' + next.title;
+  setTimeout(() => {
+    const t = document.getElementById('return-toast');
+    if (t) t.classList.add('show');
+    _ls('set', STORE_KEY + ':seen-return-toast', '1');
+  }, 600);
+  setTimeout(closeReturnToast, 8000);
+}
+function closeReturnToast() {
+  const t = document.getElementById('return-toast');
+  if (t) t.classList.remove('show');
+}
+
+/* ── Complete button ── */
+function updateCompleteBtn() {
+  const btn = document.getElementById('btn-complete-' + current);
+  if (!btn) return;
+  const done = completed.has(current);
+  btn.textContent = done ? '✓ Completed' : 'Mark Complete';
+  btn.classList.toggle('done-state', done);
+
+  const prev = document.getElementById('btn-prev-' + current);
+  const next = document.getElementById('btn-next-' + current);
+  if (prev) prev.disabled = current === 0;
+  if (next) next.disabled = current === TOTAL - 1;
+}
+
+function markComplete(idx) {
+  if (completed.has(idx)) {
+    completed.delete(idx);
+    save();
+    updateProgress();
+    updateCompleteBtn();
+    updateSidebar();
+  } else {
+    completed.add(idx);
+    save();
+    updateProgress();
+    updateCompleteBtn();
+    updateSidebar();
+
+    // Auto-advance to next lesson after a beat
+    if (idx < TOTAL - 1) {
+      setTimeout(() => showLesson(idx + 1), 800);
+    } else if (completed.size === TOTAL) {
+      markCourseFinished();
+      setTimeout(() => document.getElementById('completion').classList.add('open'), 600);
+    }
+  }
+}
+
+/* ── Mobile sidebar ── */
+function openMobileSidebar() {
+  document.getElementById('mobile-sidebar').classList.add('open');
+  document.getElementById('mobile-overlay').classList.add('open');
+  document.body.style.overflow = 'hidden';
+}
+function closeMobileSidebar() {
+  document.getElementById('mobile-sidebar').classList.remove('open');
+  document.getElementById('mobile-overlay').classList.remove('open');
+  document.body.style.overflow = '';
+}
+
+/* ── Completion modal ── */
+function closeCompletion() {
+  document.getElementById('completion').classList.remove('open');
+}
+document.getElementById('completion').addEventListener('click', e => {
+  if (e.target === document.getElementById('completion')) closeCompletion();
+});
+document.addEventListener('keydown', e => {
+  if (e.key === 'Escape') closeCompletion();
+});
+
+/* ── Keyboard nav ── */
+document.addEventListener('keydown', e => {
+  const tag = document.activeElement && document.activeElement.tagName;
+  if (tag === 'INPUT' || tag === 'TEXTAREA') return;
+  if (e.metaKey || e.ctrlKey) return;
+  if (e.key === 'ArrowRight') { e.preventDefault(); showLesson(current + 1); }
+  if (e.key === 'ArrowLeft')  { e.preventDefault(); showLesson(current - 1); }
+  if (e.key === 'm' || e.key === 'M') { e.preventDefault(); markComplete(current); }
+});
+
+/* ── Wire sidebar buttons ── */
+document.querySelectorAll('.lesson-btn').forEach((btn, i) => {
+  btn.addEventListener('click', () => showLesson(i));
+});
+
+/* ── Init ── */
+updateProgress();
+updateSidebar();
+function pickInitialLesson() {
+  const hashMatch = (location.hash || '').match(/^#l(d+)$/i);
+  if (hashMatch) {
+    const n = parseInt(hashMatch[1], 10) - 1;
+    if (n >= 0 && n < TOTAL) return n;
+  }
+  const firstIncomplete = [...Array(TOTAL).keys()].find(i => !completed.has(i));
+  return firstIncomplete !== undefined ? firstIncomplete : 0;
+}
+showLesson(pickInitialLesson());
+maybeShowReturnToast();
+</script>
+</body>
+</html>

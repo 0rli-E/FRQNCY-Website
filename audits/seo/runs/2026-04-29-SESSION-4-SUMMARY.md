@@ -66,7 +66,7 @@ NEW:
   /audits/seo/runs/2026-04-29-SESSION-4-SUMMARY.md (this file)
 
 MODIFIED:
-  /v2/<top-30-topic>/index.html × 30 (+ FAQPage JSON-LD + visible <details> Q&A block)
+  /<top-30-topic>/index.html × 30 (+ FAQPage JSON-LD + visible <details> Q&A block)
   ~/Library/Application Support/Claude/.../memory/project_frqncy_seo.md
 ```
 
@@ -104,7 +104,7 @@ curl -s https://frqncy.network/people/orlando/ | grep -oE '"@type":"[^"]+"' | so
 # Should show: BreadcrumbList, ImageObject, ListItem, Organization, Person
 ```
 
-Test on https://search.google.com/test/rich-results?url=https://frqncy.network/v2/meditation/ — FAQPage + Article + BreadcrumbList + Course (none on this page) all should validate.
+Test on https://search.google.com/test/rich-results?url=https://frqncy.network/meditation/ — FAQPage + Article + BreadcrumbList + Course (none on this page) all should validate.
 
 ## Four-session totals (the day)
 

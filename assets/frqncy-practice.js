@@ -25,7 +25,7 @@
 //
 // Hand-picked. Voice-aligned. Each `framing` ≈10 words, declarative,
 // present-tense, plain speech about non-plain things. `topicSlug` links to
-// /v2/<slug>/ when a topic page exists for the practice.
+// /<slug>/ when a topic page exists for the practice.
 
 export const CURATED_PRACTICES = [
   {

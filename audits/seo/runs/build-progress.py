@@ -76,11 +76,11 @@ def count_schema(at_type: str, glob_pattern: str) -> int:
 
 print("\nSchema rollout coverage:")
 for at_type, label, pattern in [
-    ("Article", "Article (topic + standards + mcp)", "v2/*/index.html"),
+    ("Article", "Article (topic + standards + mcp)", "*/index.html"),
     ("BreadcrumbList", "BreadcrumbList (item pages)", "{books,people,orgs,media,places,v2/courses}/*/index.html"),
-    ("FAQPage", "FAQPage (topic + ask)", "v2/*/index.html"),
-    ("HowTo", "HowTo (courses)", "v2/courses/*/index.html"),
-    ("WebPage", "WebPage hasPart (topics)", "v2/*/index.html"),
+    ("FAQPage", "FAQPage (topic + ask)", "*/index.html"),
+    ("HowTo", "HowTo (courses)", "courses/*/index.html"),
+    ("WebPage", "WebPage hasPart (topics)", "*/index.html"),
     ("PodcastSeries", "PodcastSeries (media)", "media/*/index.html"),
 ]:
     if "{" in pattern:

@@ -6,12 +6,12 @@ Each sub-hub becomes its own commissioned piece:
   - Cormorant + Jost typography, navy + gold + sector accent palette
   - Hero with sector glyph signature (SVG), eyebrow, italic h1, descriptor, quote
   - Editorial prelude
-  - Sector projects grid (filtered + tier-grouped from v2/crypto/crypto-projects.json)
+  - Sector projects grid (filtered + tier-grouped from crypto/crypto-projects.json)
   - Bleed image
   - Five-step practice
   - CTA banner (Crypto hub + Fund)
   - Closing seed line
-  - Shared chrome via /v2/crypto/_artwork.css
+  - Shared chrome via /crypto/_artwork.css
 
 Run:  python3 scripts/generate_crypto_subhubs.py
 """
@@ -1529,7 +1529,7 @@ def render_page(slug: str, cfg: dict) -> str:
 <meta property="og:type" content="website">
 <meta property="og:title" content="{title} — FRQNCY Crypto">
 <meta property="og:description" content="{esc(desc)}">
-<meta property="og:url" content="https://frqncy.network/v2/crypto/{slug}/">
+<meta property="og:url" content="https://frqncy.network/crypto/{slug}/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:site_name" content="FRQNCY">
 <meta name="twitter:card" content="summary_large_image">
@@ -1538,12 +1538,12 @@ def render_page(slug: str, cfg: dict) -> str:
 <meta name="twitter:image" content="https://frqncy.network/og-image.png">
 <link rel="icon" type="image/svg+xml" href="../../../favicon.svg">
 <link rel="manifest" href="../../../manifest.json">
-<link rel="canonical" href="https://frqncy.network/v2/crypto/{slug}/">
+<link rel="canonical" href="https://frqncy.network/crypto/{slug}/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="preconnect" href="https://images.unsplash.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="/v2/crypto/_artwork.css">
+<link rel="stylesheet" href="/crypto/_artwork.css">
 <style>
   :root {{
     --sector-accent: {accent};
@@ -1563,21 +1563,21 @@ def render_page(slug: str, cfg: dict) -> str:
 <script src="../../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../../nav-dropdown.css">
 <script>if('serviceWorker' in navigator){{window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}}</script>
-<script type="application/ld+json">{{"@context":"https://schema.org","@type":"CollectionPage","name":"{title} — FRQNCY Crypto","description":"{esc(desc)}","url":"https://frqncy.network/v2/crypto/{slug}/","isPartOf":{{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}},"breadcrumb":{{"@type":"BreadcrumbList","itemListElement":[{{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"}},{{"@type":"ListItem","position":2,"name":"Crypto","item":"https://frqncy.network/v2/crypto/"}},{{"@type":"ListItem","position":3,"name":"{title}","item":"https://frqncy.network/v2/crypto/{slug}/"}}]}}}}</script>
+<script type="application/ld+json">{{"@context":"https://schema.org","@type":"CollectionPage","name":"{title} — FRQNCY Crypto","description":"{esc(desc)}","url":"https://frqncy.network/crypto/{slug}/","isPartOf":{{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}},"breadcrumb":{{"@type":"BreadcrumbList","itemListElement":[{{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"}},{{"@type":"ListItem","position":2,"name":"Crypto","item":"https://frqncy.network/crypto/"}},{{"@type":"ListItem","position":3,"name":"{title}","item":"https://frqncy.network/crypto/{slug}/"}}]}}}}</script>
 </head>
 <body>
 
 <nav class="snav">
   <div class="snav-left">
-    <a href="/v2/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">CRYPTO</span></a>
+    <a href="/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">CRYPTO</span></a>
     <div class="breadcrumb">
-      <a href="/v2/crypto/">Crypto</a><span class="sep">/</span>
+      <a href="/crypto/">Crypto</a><span class="sep">/</span>
       <span>{title}</span>
     </div>
   </div>
   <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
-    <a href="/v2/crypto/" class="snav-back">← Crypto hub</a>
-    <a href="/v2/fund/" class="snav-back">Fund</a>
+    <a href="/crypto/" class="snav-back">← Crypto hub</a>
+    <a href="/fund/" class="snav-back">Fund</a>
     <a href="/" class="snav-back">Main</a>
   </div>
 </nav>
@@ -1658,8 +1658,8 @@ def render_page(slug: str, cfg: dict) -> str:
     <h3>Two doors. <em>Pick one.</em></h3>
     <p>The Crypto hub is the index of all sectors and the freedom-technology frame they share. The Fund is what happens when the same conviction gets put to work on behalf of the network.</p>
     <div class="cta-buttons">
-      <a href="/v2/crypto/" class="cta-btn primary">Crypto Hub</a>
-      <a href="/v2/fund/" class="cta-btn secondary">FRQNCY Fund →</a>
+      <a href="/crypto/" class="cta-btn primary">Crypto Hub</a>
+      <a href="/fund/" class="cta-btn secondary">FRQNCY Fund →</a>
     </div>
   </div>
 </section>
@@ -1731,7 +1731,7 @@ def main() -> None:
         n_projects = len(filter_for(slug, cfg))
         print(f"  {slug:13s}  {n_projects:>3d} projects  → {path.relative_to(ROOT)}")
         written += 1
-    print(f"\n✓ Wrote {written} sector hubs in /v2/crypto/")
+    print(f"\n✓ Wrote {written} sector hubs in /crypto/")
 
 
 if __name__ == "__main__":

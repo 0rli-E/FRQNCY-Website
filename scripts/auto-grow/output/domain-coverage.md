@@ -430,9 +430,9 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 
 **Vision:** The sovereign community — physical and digital spaces where a new kind of society takes root, governed by shared values rather than geography.
 
-**Communication:** v2/network-state/ landing page exists with vision-aligned copy. Index.html mentions 'network states' in keywords and references the concept in body copy ('a parallel society... coworking first... the network state we are becoming'). NOT surfaced as a pillar card on home or about — appears only as inline copy.
+**Communication:** network-state/ landing page exists with vision-aligned copy. Index.html mentions 'network states' in keywords and references the concept in body copy ('a parallel society... coworking first... the network state we are becoming'). NOT surfaced as a pillar card on home or about — appears only as inline copy.
 
-**Fact:** 10 topics tagged primary (Collective Intelligence, Community, Diaspora, Education Systems, Future Cities, Governance, History, Indigenous Wisdom, Peace, Social Movements). v2/network-state/ page = 326 lines. No physical Sanctuary / coworking / land yet. Sanctuary nav item points to /my-frqncy/dashboard/ (the user's private dashboard, not a place).
+**Fact:** 10 topics tagged primary (Collective Intelligence, Community, Diaspora, Education Systems, Future Cities, Governance, History, Indigenous Wisdom, Peace, Social Movements). network-state/ page = 326 lines. No physical Sanctuary / coworking / land yet. Sanctuary nav item points to /my-frqncy/dashboard/ (the user's private dashboard, not a place).
 
 **Drift findings:**
   - [medium] _communication-vs-fact_ — Pillar landing page + 10 topics exist, but neither home nor about surfaces Network State as a pillar card — readers won't see it as one of the load-bearing things FRQNCY does. The 'Sanctuary' card on home/about is closer to what a reader would associate with this pillar (place / community / land), but Sanctuary is not in content.json's pillars[].
@@ -469,13 +469,13 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 
 **Vision:** Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.
 
-**Communication:** Strong, consistent across home + about + pillar page. Home: 'An actual fund. Money gathered, deployed into aligned projects and people. Sovereign custody.' About: 'A real fund. Sovereign custody. We invest in aligned projects and the people building them, and we fund the work of FRQNCY itself.' v2/fund/ = 493 lines (the most developed pillar page).
+**Communication:** Strong, consistent across home + about + pillar page. Home: 'An actual fund. Money gathered, deployed into aligned projects and people. Sovereign custody.' About: 'A real fund. Sovereign custody. We invest in aligned projects and the people building them, and we fund the work of FRQNCY itself.' fund/ = 493 lines (the most developed pillar page).
 
 **Fact:** 24 primary-tagged topics across Money, Energy, Business. Stripe payments shipped (recent commits: course one-time-payment + access ledger). No actual outbound investments yet. Vision/Echo/Legion mentioned in nav as 'roadmap' items — these aren't explained on the public surface.
 
 **Drift findings:**
   - [low] _vision-vs-fact_ — Stripe payments currently power Education (course sales), not Fund (capital allocation). Reader sees 'Fund' framing on infrastructure that's actually serving Education. Defensible — courses generate the capital that becomes the fund — but worth being explicit about this loop in the Fund page so it doesn't read as overclaim.
-  - [low] _communication-internal-clarity_ — Nav surfaces 'Vision, Echo, Legion & roadmap' under Fund but these names aren't explained anywhere obvious to a first-time reader. Either define them on /v2/fund/ or rename to something self-explanatory.
+  - [low] _communication-internal-clarity_ — Nav surfaces 'Vision, Echo, Legion & roadmap' under Fund but these names aren't explained anywhere obvious to a first-time reader. Either define them on /fund/ or rename to something self-explanatory.
 
 ### Education — 34 primary-tagged topics
 
@@ -518,7 +518,7 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 
 **Vision:** Transmitting what's known — curating the best teachers, courses, and wisdom traditions so knowledge flows to those who need it.
 
-**Communication:** About: 'The masters we point you to, and — in time — the ones we become. Personalised through your chart. Curated first, produced second.' Home detail card present. v2/education/ landing exists.
+**Communication:** About: 'The masters we point you to, and — in time — the ones we become. Personalised through your chart. Curated first, produced second.' Home detail card present. education/ landing exists.
 
 **Fact:** 34 primary-tagged topics (largest pillar). Courses with Stripe payments + access ledger shipped. 'Read First' recently added. Master-curation visible across books/people/orgs. 'Personalised through your chart' is a Human Design integration claim — Human Design topic exists but the chart-personalisation feature is unclear status (verify before next pass).
 
@@ -577,7 +577,7 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 
 **Vision:** Exploring what isn't known yet — mapping the edges of science, philosophy, and consciousness where the next discoveries live.
 
-**Communication:** About: 'First-principles inquiry across every isle of the network — and the isles not yet on the map. We ask what something is at its very core.' Home detail card present. v2/research/ exists.
+**Communication:** About: 'First-principles inquiry across every isle of the network — and the isles not yet on the map. We ask what something is at its very core.' Home detail card present. research/ exists.
 
 **Fact:** 45 primary-tagged topics (largest by count, mostly because Sciences + Nature & Cosmos + Metaphysics all default to Research). Topic pages curate existing knowledge from books/people/papers. No original research output yet.
 
@@ -612,7 +612,7 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 
 **Vision:** Spreading the signal — amplifying the voices, stories, and art that shift perception and move culture toward something more alive.
 
-**Communication:** Home: 'The voice of the network. A swarm of .frqncies all over social media, super aligned with the good in the world. Podcast. Video. Writing.' About: 'The FRQNCY podcast, YouTube, writing, and newsletter. A growing swarm of .frqncies across every isle of passion.' v2/media/ exists.
+**Communication:** Home: 'The voice of the network. A swarm of .frqncies all over social media, super aligned with the good in the world. Podcast. Video. Writing.' About: 'The FRQNCY podcast, YouTube, writing, and newsletter. A growing swarm of .frqncies across every isle of passion.' broadcast/ exists.
 
 **Fact:** 21 primary-tagged topics. podcast.html exists. Substack newsletter linked. YouTube channel claim unverified from this scan. 'Swarm of .frqncies' (sub-channels like crypto.frqncy, publicspeaking.frqncy) is referenced as a roadmap item on podcast.html — sub-channel surfaces unclear.
 
@@ -669,13 +669,13 @@ _No topics carry this pillar as primary._
 
 **Vision:** Picking with care — sifting the world's signal from its noise so what reaches FRQNCY is honest, alive, and worth attention.
 
-**Communication:** v2/curate/ landing page exists (276 lines). NOT surfaced as a pillar card on home or about. The word 'curated' appears as adjective in copy ('766+ vetted resources... curated maps') but Curate is never named as one of FRQNCY's pillars to a reader.
+**Communication:** curate/ landing page exists (276 lines). NOT surfaced as a pillar card on home or about. The word 'curated' appears as adjective in copy ('766+ vetted resources... curated maps') but Curate is never named as one of FRQNCY's pillars to a reader.
 
 **Fact:** 0 primary-tagged topics. The actual curation activity (resources.json with 766 entries, books/people/orgs/media editorial selection, FRQNCY picks across topic pages) is real and ongoing — but it's not attributed to a named pillar surface anywhere a reader can see.
 
 **Drift findings:**
   - [high] _communication-vs-fact_ — FRQNCY does enormous amounts of curation (the entire /people/, /books/, /orgs/, /media/, resources.json operation IS curation) — but the pillar named 'Curate' is invisible in user-facing communication. Readers won't connect what they're seeing to the named operating mode. Either: (a) add Curate as a pillar card on home + about with the resources.json work as evidence, (b) rename Curate to something already-communicated, or (c) accept it as an internal operating-mode tag and don't expect public surface.
-  - [medium] _fact-vs-schema_ — Zero primary-tagged topics is a schema artifact, not a content gap (per the many-to-many rule, Curate applies to every topic broadly). But the v2/curate/ page would benefit from explicitly listing what's been curated — books surfaced, people surfaced, the picks framework — to make the fact visible.
+  - [medium] _fact-vs-schema_ — Zero primary-tagged topics is a schema artifact, not a content gap (per the many-to-many rule, Curate applies to every topic broadly). But the curate/ page would benefit from explicitly listing what's been curated — books surfaced, people surfaced, the picks framework — to make the fact visible.
 
 ### Sell — 0 primary-tagged topics
 
@@ -685,13 +685,13 @@ _No topics carry this pillar as primary._
 
 **Vision:** Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.
 
-**Communication:** v2/sell/ landing page exists (276 lines). Word 'Sell' does not appear anywhere on home or about. Aligned Goods nav item exists ('the best of everything, curated') but isn't framed as Sell.
+**Communication:** sell/ landing page exists (276 lines). Word 'Sell' does not appear anywhere on home or about. Aligned Goods nav item exists ('the best of everything, curated') but isn't framed as Sell.
 
 **Fact:** 0 primary-tagged topics. Stripe payments are LIVE for course one-time-payments (recent commit: 'Stripe: add course one-time-payment mode + access ledger Phase 3 Wk 5 Fri'). Aligned Goods page exists. Selling IS happening — just framed under Education / Aligned, not under the Sell pillar.
 
 **Drift findings:**
   - [high] _communication-vs-fact_ — FRQNCY actively sells things (courses via Stripe, planned Aligned Goods) but the pillar named 'Sell' is invisible to readers — no card on home, no card on about, the word doesn't appear in front-page copy. The infrastructure is shipped; the framing is missing.
-  - [medium] _vision-vs-positioning_ — 'Sell' as a pillar name may itself be the friction — FRQNCY's editorial voice generally avoids commercial framing. Consider whether the underlying activity is better surfaced as 'Aligned Goods' or 'Marketplace' (already-used terms) rather than the bare verb 'Sell'. If keeping Sell as the canonical pillar name, the v2/sell/ page should articulate why the bare framing is intentional (transparent value exchange as an editorial value).
+  - [medium] _vision-vs-positioning_ — 'Sell' as a pillar name may itself be the friction — FRQNCY's editorial voice generally avoids commercial framing. Consider whether the underlying activity is better surfaced as 'Aligned Goods' or 'Marketplace' (already-used terms) rather than the bare verb 'Sell'. If keeping Sell as the canonical pillar name, the sell/ page should articulate why the bare framing is intentional (transparent value exchange as an editorial value).
 
 ## Global drift findings
 

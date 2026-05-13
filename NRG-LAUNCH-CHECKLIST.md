@@ -17,8 +17,8 @@ The FRQNCY social platform is now branded as **NRG · FRQNCY Social**, source-cl
 - Logo wordmark renders FRQNCY + NRG.
 - Breadcrumb: FRQNCY / NRG.
 - Footer: `© 2026 FRQNCY Network. A network of people, building their dream life.`
-- Mock "Trending Topics" sidebar replaced with **Recent commissions** linking to /v2/water/, /v2/music/, /v2/money/, /v2/wellbeing/.
-- Mock "Suggested People" sidebar replaced with **Teachers we read** (Neville, Osho, Sadhguru, Sai Maa, Trudeau) linking to /v2/explore.html#p-... (real people-bed IDs verified against `people.json`).
+- Mock "Trending Topics" sidebar replaced with **Recent commissions** linking to /water/, /music-topic/, /money/, /wellbeing/.
+- Mock "Suggested People" sidebar replaced with **Teachers we read** (Neville, Osho, Sadhguru, Sai Maa, Trudeau) linking to /explore.html#p-... (real people-bed IDs verified against `people.json`).
 
 **Editorial compliance:**
 - `social-src/src/pages/leaderboard.astro` — deleted.
@@ -207,7 +207,7 @@ Rebrand & wiring fixes (prior session):
   CommentForm routed through api.createComment for notifications;
   Feed.tsx denormalized counters replace broken aggregates.
 - Brand: 'NRG · FRQNCY Social' everywhere; logo + breadcrumb + footer aligned;
-  mock sidebars replaced with real /v2/ commission links + people-bed teachers.
+  mock sidebars replaced with real / commission links + people-bed teachers.
 - Editorial: leaderboard.astro + ConvictionLeaderboard.tsx deleted; /social/leaderboard/ removed from deploy.
 
 E2EE messaging primitives:

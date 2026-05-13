@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Word Illuminator — FRQNCY Network</title>
+<meta name="description" content="A tool inside FRQNCY that deepens understanding of single words — definitions, etymology, derivatives, and the interpretive layer that ties each word back to lived practice.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Word Illuminator — FRQNCY Network">
+<meta property="og:description" content="A tool inside FRQNCY that deepens understanding of single words.">
+<meta property="og:url" content="https://frqncy.network/word-illuminator/">
+<meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Word Illuminator — FRQNCY Network">
+<meta name="twitter:description" content="A tool inside FRQNCY that deepens understanding of single words.">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/word-illuminator/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--gold-soft:rgba(196,151,58,0.14);--cream:#F5EBD8;--text:#C8D8F0;--text-dim:#8FA8CC;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08)}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.65}
+a{color:var(--gold);text-decoration:none;transition:opacity .2s}
+a:hover{opacity:0.8}
+
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85}
+.snav-logo:hover{opacity:1}
+.snav-badge{font-size:0.55rem;letter-spacing:0.18em;color:var(--gold);border:1px solid currentColor;padding:1px 6px;border-radius:2px;vertical-align:middle;margin-left:4px;opacity:0.8}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breadcrumb a{color:var(--text-dim)}
+.breadcrumb .sep{opacity:0.25;font-size:0.65rem}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28);opacity:1}
+
+.hero{margin-top:56px;padding:clamp(4rem,9vw,7rem) clamp(1.25rem,5vw,2.5rem) clamp(2.5rem,5vw,4rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--gold-soft) 0%,transparent 55%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:24px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.8rem,7vw,5.5rem);font-weight:300;color:#fff;line-height:1.06;margin-bottom:1.5rem;letter-spacing:-0.01em;font-style:italic}
+.hero-desc{max-width:620px;margin:0 auto;font-size:0.95rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+
+main{max-width:920px;margin:0 auto;padding:3rem clamp(1.25rem,5vw,2.5rem) 7rem}
+section{margin-bottom:4.5rem}
+.section-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05);opacity:0.9}
+.section h2{font-family:'Cormorant',serif;font-size:clamp(1.6rem,3vw,2.1rem);font-weight:400;color:#fff;margin-bottom:1.25rem;line-height:1.3}
+.section p{margin-bottom:1rem;color:var(--text)}
+.section p.dim{color:var(--text-dim)}
+
+.tiers{display:grid;grid-template-columns:1fr;gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border)}
+.tier{background:var(--navy);padding:1.25rem 1.4rem}
+.tier-head{display:flex;align-items:baseline;gap:0.75rem;margin-bottom:0.5rem;flex-wrap:wrap}
+.tier-num{font-family:'Cormorant',serif;font-size:1.1rem;font-style:italic;color:var(--gold)}
+.tier-name{font-size:0.78rem;font-weight:500;color:#fff;letter-spacing:0.04em}
+.tier-purpose{font-size:0.7rem;color:var(--text-dim);margin-left:auto}
+.tier-sources{font-size:0.78rem;color:var(--text-dim);line-height:1.6}
+
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:1px;border:1px solid var(--card-border);border-radius:4px;overflow:hidden;background:var(--card-border)}
+.wcard{background:var(--navy);padding:1.5rem 1.4rem 1.25rem;text-decoration:none;color:var(--text);display:block;position:relative}
+.wcard:hover{background:rgba(255,255,255,0.04);color:var(--text);opacity:1}
+.wcard h3{font-family:'Cormorant',serif;font-size:1.6rem;font-weight:400;font-style:italic;color:#fff;margin-bottom:0.5rem;line-height:1.2}
+.wcard p{font-size:0.78rem;color:var(--text-dim);line-height:1.55}
+.wcard-arrow{position:absolute;top:1.4rem;right:1.4rem;font-size:0.75rem;color:var(--gold);opacity:0.5}
+.wcard:hover .wcard-arrow{opacity:1}
+
+.note{padding:1.25rem 1.4rem;border-left:2px solid var(--gold);background:var(--gold-soft);border-radius:0 4px 4px 0;font-size:0.85rem;color:var(--text);line-height:1.7;margin:1.5rem 0}
+
+/* Illuminate-any-word search box */
+.illum-search{margin-bottom:2rem;padding:1.5rem 1.5rem 1.5rem;border:1px solid var(--card-border);border-radius:4px;background:var(--card-bg)}
+.illum-search-label{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;display:block}
+.illum-search-row{display:flex;gap:0.5rem;flex-wrap:wrap}
+.illum-search input{flex:1;min-width:200px;background:var(--navy);color:#fff;border:1px solid var(--card-border);border-radius:3px;padding:0.7rem 0.9rem;font-family:'Cormorant',serif;font-style:italic;font-size:1.1rem;outline:none}
+.illum-search input:focus{border-color:var(--gold)}
+.illum-search button{background:var(--gold);color:var(--navy);border:none;border-radius:3px;padding:0.7rem 1.4rem;font-family:'Jost',sans-serif;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;font-weight:500;cursor:pointer;transition:opacity .2s}
+.illum-search button:hover{opacity:0.85}
+.illum-search button:disabled{opacity:0.4;cursor:not-allowed}
+.illum-search-help{font-size:0.72rem;color:var(--text-dim);margin-top:0.6rem;line-height:1.5}
+.illum-search-help em{font-family:'Cormorant',serif;font-style:italic;color:var(--cream)}
+
+/* Rendered illumination block (mirrors the per-word page styles, scoped) */
+.illum-out{display:none;margin-top:2rem;padding:0;border-top:1px solid var(--card-border)}
+.illum-out.visible{display:block}
+.illum-out h2{font-family:'Cormorant',serif;font-size:clamp(2rem,4.5vw,3rem);font-weight:300;font-style:italic;color:#fff;margin:2rem 0 1.5rem;text-align:center}
+.illum-out .io-section{margin-bottom:2.5rem}
+.illum-out .io-num{font-family:'Cormorant',serif;font-style:italic;font-size:0.95rem;color:var(--gold);margin-bottom:0.4rem;display:inline-block}
+.illum-out .io-h{font-family:'Cormorant',serif;font-size:1.5rem;font-weight:400;color:#fff;margin-bottom:1rem}
+.illum-out .io-def{margin-bottom:1.1rem;padding-left:1.25rem;border-left:1px solid rgba(196,151,58,0.25)}
+.illum-out .io-def-meaning{color:#fff}
+.illum-out .io-def-ex{font-size:0.85rem;color:var(--text-dim);font-family:'Cormorant',serif;font-style:italic;margin-top:0.3rem}
+.illum-out .io-def-ex::before{content:'— ';color:var(--gold);opacity:0.6}
+.illum-out .io-roots{white-space:pre-line;color:var(--text);margin-bottom:1rem;line-height:1.7}
+.illum-out .io-essence{margin-top:1.25rem;padding:1rem 1.25rem;background:var(--gold-soft);border-left:2px solid var(--gold);border-radius:0 4px 4px 0;font-family:'Cormorant',serif;font-style:italic;color:#fff;line-height:1.6}
+.illum-out .io-essence-label{font-family:'Jost',sans-serif;font-style:normal;font-size:0.55rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;display:block}
+.illum-out .io-syn-grid{display:grid;grid-template-columns:1fr;gap:0.75rem}
+@media(min-width:600px){.illum-out .io-syn-grid{grid-template-columns:1fr 1fr}}
+.illum-out .io-syn-block{padding:0.9rem 1.1rem;border:1px solid var(--card-border);border-radius:4px}
+.illum-out .io-syn-label{font-size:0.55rem;letter-spacing:0.24em;text-transform:uppercase;color:var(--gold);margin-bottom:0.45rem;display:block}
+.illum-out .io-deriv{margin-bottom:1.4rem;padding-bottom:1.2rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.illum-out .io-deriv:last-child{border-bottom:none}
+.illum-out .io-deriv-head{font-family:'Cormorant',serif;font-style:italic;color:#fff;font-size:1.25rem;margin-bottom:0.5rem}
+.illum-out .io-deriv-head .pos{font-family:'Jost',sans-serif;font-style:normal;font-size:0.65rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin-left:0.5rem}
+.illum-out .io-deriv-row{font-size:0.85rem;color:var(--text);margin-bottom:0.35rem;line-height:1.55}
+.illum-out .io-deriv-row strong{color:var(--gold);font-weight:400;font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;margin-right:0.5rem;display:inline-block;min-width:70px}
+.illum-out .io-prose{font-family:'Cormorant',serif;font-size:1.1rem;line-height:1.7;color:var(--cream);margin-bottom:1.25rem}
+.illum-out .io-question{padding:1.1rem 1.3rem;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);border-radius:4px;font-family:'Cormorant',serif;font-style:italic;font-size:1.05rem;color:#fff;line-height:1.5}
+.illum-out .io-question-label{font-family:'Jost',sans-serif;font-style:normal;font-size:0.55rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem;display:block}
+.illum-out .io-meta{font-size:0.7rem;color:var(--text-dim);text-align:center;margin-top:1.5rem;letter-spacing:0.04em;font-style:italic}
+.illum-status{font-size:0.78rem;color:var(--text-dim);margin-top:0.75rem;min-height:1.2em}
+.illum-status.error{color:#E89B6B}
+
+footer{border-top:1px solid rgba(255,255,255,0.06);padding:32px clamp(1.25rem,6vw,2.5rem);text-align:center;margin-top:3rem}
+footer .wm{font-family:'Cormorant',serif;font-weight:300;font-size:16px;letter-spacing:0.3em;color:rgba(255,255,255,0.5);text-transform:uppercase}
+footer .copy{font-size:11px;letter-spacing:0.08em;color:rgba(255,255,255,0.3);margin-top:6px;display:inline-block}
+</style>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Word Illuminator","description":"A tool inside FRQNCY that deepens understanding of single words \u2014 definitions, etymology, derivatives, and the interpretive layer that ties each word back to lived practice.","image":"https://frqncy.network/og-image.png","url":"https://frqncy.network/word-illuminator/","mainEntityOfPage":"https://frqncy.network/word-illuminator/","datePublished":"2026-04-28T19:23:59+08:00","dateModified":"2026-04-29T23:19:24+08:00","author":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/"},"publisher":{"@type":"Organization","name":"FRQNCY","url":"https://frqncy.network/","logo":{"@type":"ImageObject","url":"https://frqncy.network/favicon.svg"}}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://frqncy.network/word-illuminator/","url":"https://frqncy.network/word-illuminator/","hasPart":[{"@type":"WebPageElement","name":"Synthesised, not scraped","url":"https://frqncy.network/word-illuminator/#synthesised-not-scraped"},{"@type":"WebPageElement","name":"Five tiers of reference","url":"https://frqncy.network/word-illuminator/#five-tiers-of-reference"},{"@type":"WebPageElement","name":"Try one not on the shelf","url":"https://frqncy.network/word-illuminator/#try-one-not-on-the-shelf"},{"@type":"WebPageElement","name":"Six words to begin","url":"https://frqncy.network/word-illuminator/#six-words-to-begin"},{"@type":"WebPageElement","name":"The shelf grows over time","url":"https://frqncy.network/word-illuminator/#the-shelf-grows-over-time"}]}</script>
+</head>
+<body>
+<nav class="snav">
+  <div class="snav-left">
+    <a href="/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
+    <div class="breadcrumb"><a href="/">FRQNCY</a><span class="sep">/</span><span>Word Illuminator</span></div>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
+    <a href="/search" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Search</a>
+    <a href="/" class="snav-back">← Main</a>
+  </div>
+</nav>
+
+<div class="hero">
+  <div class="hero-eyebrow">Tool</div>
+  <h1>Word Illuminator</h1>
+  <p class="hero-desc">Single words, fully attended to. Definitions, etymology, derivatives, and the interpretive layer that connects the word to lived practice. Each illumination is a small map of how a word actually works in the world.</p>
+</div>
+
+<main>
+
+<section>
+  <div class="section-label">How it works</div>
+  <h2 id="synthesised-not-scraped">Synthesised, not scraped</h2>
+  <p>An illumination resembles what a careful editor would write after holding a word against four traditions of reference at once — current usage, historical etymology, classical roots, and the philosophical writing on meaning. The output is structured to read top-down: definitions first, then etymology, then synonyms, then the word family, then the deeper layer at the bottom for readers who want it.</p>
+  <p class="dim">Same disclosure principle as a well-edited Wikipedia article. Grounded in the tradition. Not copy-pasted from any one source.</p>
+</section>
+
+<section>
+  <div class="section-label">Source set</div>
+  <h2 id="five-tiers-of-reference">Five tiers of reference</h2>
+  <div class="tiers">
+    <div class="tier">
+      <div class="tier-head"><span class="tier-num">I</span><span class="tier-name">Authoritative dictionaries</span><span class="tier-purpose">current meanings + usage</span></div>
+      <div class="tier-sources">Oxford English Dictionary · Merriam-Webster · Cambridge · Collins</div>
+    </div>
+    <div class="tier">
+      <div class="tier-head"><span class="tier-num">II</span><span class="tier-name">Etymology &amp; word origins</span><span class="tier-purpose">roots + historical shifts</span></div>
+      <div class="tier-sources">Etymonline · Klein's Comprehensive Etymological Dictionary · Oxford Dictionary of English Etymology</div>
+    </div>
+    <div class="tier">
+      <div class="tier-head"><span class="tier-num">III</span><span class="tier-name">Classical lexicons</span><span class="tier-purpose">deep origins</span></div>
+      <div class="tier-sources">Lewis &amp; Short Latin Dictionary · Liddell-Scott-Jones Greek-English Lexicon · Proto-Indo-European root studies</div>
+    </div>
+    <div class="tier">
+      <div class="tier-head"><span class="tier-num">IV</span><span class="tier-name">Usage &amp; style</span><span class="tier-purpose">how to deploy the word well</span></div>
+      <div class="tier-sources">The Elements of Style (Strunk &amp; White) · Garner's Modern English Usage</div>
+    </div>
+    <div class="tier">
+      <div class="tier-head"><span class="tier-num">V</span><span class="tier-name">Philosophical &amp; interpretive</span><span class="tier-purpose">the deeper layer, used sparingly</span></div>
+      <div class="tier-sources">Aristotle · Wittgenstein · humanistic writing on meaning and language</div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">Illuminate any word</div>
+  <h2 id="try-one-not-on-the-shelf">Try one not on the shelf</h2>
+  <div class="illum-search">
+    <span class="illum-search-label">Word</span>
+    <form class="illum-search-row" id="illum-form" autocomplete="off">
+      <input type="text" id="illum-input" placeholder="e.g. presence, integrity, witness" maxlength="30" pattern="[A-Za-z0-9-]+" required>
+      <button type="submit" id="illum-btn">Illuminate</button>
+    </form>
+    <p class="illum-search-help">A working illumination — <em>not</em> the curated shelf below. The six pages beneath are the gold-standard hand-written references; this is for exploring a word the shelf hasn't reached yet.</p>
+    <div class="illum-status" id="illum-status" aria-live="polite"></div>
+  </div>
+  <div class="illum-out" id="illum-out" aria-live="polite"></div>
+</section>
+
+<section>
+  <div class="section-label">First illuminations</div>
+  <h2 id="six-words-to-begin">Six words to begin</h2>
+  <div class="grid">
+    <a href="discipline/" class="wcard">
+      <h3>Discipline</h3>
+      <p>Devotion to learning. Not control — alignment.</p>
+      <span class="wcard-arrow">→</span>
+    </a>
+    <a href="sanctuary/" class="wcard">
+      <h3>Sanctuary</h3>
+      <p>The held place. Where consciousness can land without performance.</p>
+      <span class="wcard-arrow">→</span>
+    </a>
+    <a href="frequency/" class="wcard">
+      <h3>Frequency</h3>
+      <p>Both wave and signature. The shape of what something is, vibrating.</p>
+      <span class="wcard-arrow">→</span>
+    </a>
+    <a href="practice/" class="wcard">
+      <h3>Practice</h3>
+      <p>The act, the discipline, the doing-toward-craft. Repeated, never finished.</p>
+      <span class="wcard-arrow">→</span>
+    </a>
+    <a href="discernment/" class="wcard">
+      <h3>Discernment</h3>
+      <p>The faculty that separates. Sees what is from what merely appears.</p>
+      <span class="wcard-arrow">→</span>
+    </a>
+    <a href="devotion/" class="wcard">
+      <h3>Devotion</h3>
+      <p>The vow underneath the practice. Love acting as discipline.</p>
+      <span class="wcard-arrow">→</span>
+    </a>
+  </div>
+</section>
+
+<section>
+  <div class="section-label">What's coming</div>
+  <h2 id="the-shelf-grows-over-time">The shelf grows over time</h2>
+  <p>More illuminations get written when a word warrants attention. Candidates queued: <em>presence</em>, <em>integrity</em>, <em>sovereignty</em>, <em>conviction</em>, <em>remembrance</em>, <em>alignment</em>, <em>contemplation</em>, <em>witness</em>, <em>silence</em>, <em>truth</em>. Each becomes its own page. Each one stays. The shelf is the teaching.</p>
+  <div class="note">
+    Word Illuminator is a tool — but every illumination is a static page on FRQNCY. They are not generated on demand and discarded. They live on the site and link to the topics, books, and people in the network that hold the same word's weight.
+  </div>
+</section>
+
+</main>
+
+<footer>
+  <span class="wm">FRQNCY</span><br>
+  <span class="copy">&copy; 2026 FRQNCY &middot; All frequencies reserved</span>
+</footer>
+
+<script>
+(function(){
+  const form   = document.getElementById('illum-form');
+  const input  = document.getElementById('illum-input');
+  const btn    = document.getElementById('illum-btn');
+  const status = document.getElementById('illum-status');
+  const out    = document.getElementById('illum-out');
+  if (!form) return;
+
+  const esc = s => String(s ?? '').replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+  function render(d) {
+    const defs = (d.definitions || []).map((x, i) =>
+      `<div class="io-def"><span class="io-def-meaning"><em style="color:var(--gold);font-style:italic">${i+1}.</em> ${esc(x.sense)}</span>${x.example ? `<div class="io-def-ex">${esc(x.example)}</div>` : ''}</div>`
+    ).join('');
+
+    const ety = d.etymology || {};
+    const etymBlock = `
+      ${ety.roots ? `<div class="io-roots">${esc(ety.roots)}</div>` : ''}
+      ${ety.evolution ? `<p style="color:var(--text);margin-bottom:1rem;line-height:1.7">${esc(ety.evolution)}</p>` : ''}
+      ${ety.earliest_essence ? `<div class="io-essence"><span class="io-essence-label">Earliest essence</span>${esc(ety.earliest_essence)}</div>` : ''}
+    `;
+
+    const sa = d.synonyms_antonyms || {};
+    const synBlock = `
+      <div class="io-syn-grid">
+        <div class="io-syn-block"><span class="io-syn-label">Synonyms</span>${(sa.synonyms || []).map(esc).join(' &middot; ')}</div>
+        <div class="io-syn-block"><span class="io-syn-label">Antonyms</span>${(sa.antonyms || []).map(esc).join(' &middot; ')}</div>
+      </div>
+    `;
+
+    const derivs = (d.derivatives || []).map(x => `
+      <div class="io-deriv">
+        <div class="io-deriv-head">${esc(x.word)}${x.part_of_speech ? `<span class="pos">${esc(x.part_of_speech)}</span>` : ''}</div>
+        ${x.definition ? `<div class="io-deriv-row"><strong>Definition</strong>${esc(x.definition)}</div>` : ''}
+        ${x.example ? `<div class="io-deriv-row"><strong>Example</strong><em style="font-family:Cormorant,serif;font-style:italic;color:var(--text-dim)">${esc(x.example)}</em></div>` : ''}
+        ${(x.synonyms||[]).length ? `<div class="io-deriv-row"><strong>Synonyms</strong>${x.synonyms.map(esc).join(', ')}</div>` : ''}
+        ${(x.antonyms||[]).length ? `<div class="io-deriv-row"><strong>Antonyms</strong>${x.antonyms.map(esc).join(', ')}</div>` : ''}
+      </div>
+    `).join('');
+
+    const di = d.deeper_illumination || {};
+    const deeper = `
+      ${di.prose ? `<p class="io-prose">${esc(di.prose)}</p>` : ''}
+      ${di.reflective_question ? `<div class="io-question"><span class="io-question-label">A question to reflect on</span>${esc(di.reflective_question)}</div>` : ''}
+    `;
+
+    out.innerHTML = `
+      <h2><em>${esc(d.word)}</em></h2>
+      <div class="io-section"><span class="io-num">i.</span><div class="io-h">Definitions</div>${defs}</div>
+      <div class="io-section"><span class="io-num">ii.</span><div class="io-h">Etymology</div>${etymBlock}</div>
+      <div class="io-section"><span class="io-num">iii.</span><div class="io-h">Synonyms &amp; antonyms</div>${synBlock}</div>
+      <div class="io-section"><span class="io-num">iv.</span><div class="io-h">Derivatives</div>${derivs}</div>
+      <div class="io-section"><span class="io-num">v.</span><div class="io-h">Deeper illumination</div>${deeper}</div>
+      <div class="io-meta">A working illumination — generated, not curated. The shelf below is the canonical reference.</div>
+    `;
+    out.classList.add('visible');
+  }
+
+  form.addEventListener('submit', async e => {
+    e.preventDefault();
+    const word = input.value.trim().toLowerCase();
+    if (!/^[A-Za-z0-9-]{1,30}$/.test(word)) {
+      status.textContent = 'Letters, numbers, and hyphens only — up to 30 characters.';
+      status.classList.add('error');
+      return;
+    }
+    status.classList.remove('error');
+    status.textContent = 'Illuminating…';
+    btn.disabled = true;
+    out.classList.remove('visible');
+
+    try {
+      const r = await fetch(`/illuminator/word?word=${encodeURIComponent(word)}`);
+      const j = await r.json();
+      if (!r.ok) throw new Error(j.error || 'Request failed');
+      status.textContent = '';
+      render(j);
+      out.scrollIntoView({behavior:'smooth', block:'start'});
+    } catch (err) {
+      status.classList.add('error');
+      status.textContent = err.message || 'The Illuminator is resting — try again in a moment.';
+    } finally {
+      btn.disabled = false;
+    }
+  });
+})();
+</script>
+
+</body>
+</html>

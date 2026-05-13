@@ -383,7 +383,7 @@ If you (the next agent) are working through Cowork on this folder, you can also 
 - MODIFIED: `index.html` (meta/og/twitter descriptions — Orlando subsequently overrode with his own copy, kept)
 - MODIFIED: `generate.js` (collapsed topic-page chiplet row 8 → 2)
 - MODIFIED: `v2/fund/index.html` (hand-edited to drop chiplets)
-- REGENERATED: all 146 v2/<topic>/index.html via `node generate.js`
+- REGENERATED: all 146 <topic>/index.html via `node generate.js`
 - NEW: `v2/word-illuminator/index.html`
 - NEW: `v2/word-illuminator/discipline/index.html`
 - NEW: `v2/word-illuminator/sanctuary/index.html`

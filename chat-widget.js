@@ -12,7 +12,7 @@
   window.__frqncyChatInit = true;
 
   /* ── Topic visit tracker ─────────────────────────────────────────
-     Lightweight: any page at /v2/<slug>/ adds <slug> to a localStorage
+     Lightweight: any page at /<slug>/ adds <slug> to a localStorage
      set the My FRQNCY constellation reads to mark topics as "visited"
      and to surface the next unvisited next-step in the learning path.
      Runs once per page load. Anonymous-only — cloud bridging happens
@@ -293,7 +293,7 @@
         return `<a href="${safeHref}"${isInternal ? '' : ' target="_blank" rel="noopener noreferrer"'} class="fc-link">${label}</a>`;
       })
 
-    //    Auto-linkify bare FRQNCY paths like /v2/human-design/ that aren't already inside an <a>
+    //    Auto-linkify bare FRQNCY paths like /human-design/ that aren't already inside an <a>
     //    Uses capture-group workaround instead of lookbehind for Safari < 16.4 compat
       .replace(/(["=])?(\/(v2\/[a-z0-9-]+(?:\/[a-z0-9-]*)*\/?|[a-z0-9-]+\.html))/g, (match, prefix, path) => {
         if (prefix) return match; // preceded by " or =, skip

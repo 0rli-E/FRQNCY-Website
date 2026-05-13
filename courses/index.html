@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Courses — FRQNCY Network</title>
+<meta name="description" content="Structured learning paths across consciousness, science, and wellbeing. The FRQNCY Course Library.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Courses — FRQNCY Network">
+<meta property="og:description" content="Structured learning paths across consciousness, science, and wellbeing.">
+<meta property="og:url" content="https://frqncy.network/courses/">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:site_name" content="FRQNCY">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/courses/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.04);
+  --card-border:rgba(255,255,255,0.08);--accent:#4A7AE8;
+}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{text-decoration:none}
+
+/* NAV */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between;gap:1rem}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text)}
+.breadcrumb .sep{opacity:0.25}
+.snav-right{display:flex;align-items:center;gap:1rem;flex-shrink:0}
+.snav-link{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);transition:color .2s;white-space:nowrap}
+.snav-link:hover{color:var(--text)}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28)}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(3rem,7vw,5rem) clamp(1.25rem,5vw,2.5rem) clamp(2rem,4vw,3.5rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(196,151,58,0.1) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.2rem}
+.hero-desc{max-width:520px;margin:0 auto;font-size:0.88rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+
+/* GRID */
+main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
+.courses-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+
+/* COURSE CARD */
+.ccard{
+  background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;
+  overflow:hidden;display:flex;flex-direction:column;
+  transition:border-color .25s,transform .25s,background .25s;
+  text-decoration:none;color:var(--text);
+}
+.ccard:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-3px);background:rgba(255,255,255,0.06)}
+.ccard-top{height:5px;flex-shrink:0}
+.ccard-body{padding:1.6rem 1.6rem 1.4rem;flex:1;display:flex;flex-direction:column;gap:0.6rem}
+.ccard-meta{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.clevel{font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;padding:3px 9px;border-radius:2px;font-weight:400;border:1px solid currentColor}
+.cdomain{font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+.ctitle{font-family:'Cormorant',serif;font-size:1.55rem;font-weight:400;color:#fff;line-height:1.15}
+.csubtitle{font-size:0.72rem;color:var(--text-dim);font-style:italic;margin-top:-0.2rem}
+.cdesc{font-size:0.8rem;color:var(--text-dim);line-height:1.65;margin-top:0.2rem}
+.ccard-footer{margin-top:auto;padding-top:1.2rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(255,255,255,0.06)}
+.cstats{display:flex;gap:1rem}
+.cstat{font-size:0.64rem;letter-spacing:0.06em;color:var(--text-dim)}
+.cstat strong{color:var(--text);font-weight:400}
+.cprogress-wrap{flex:1;max-width:120px}
+.cprogress-bar{height:2px;background:rgba(255,255,255,0.08);border-radius:1px;overflow:hidden;margin-bottom:4px}
+.cprogress-fill{height:100%;border-radius:1px;transition:width .3s}
+.cprogress-label{font-size:0.56rem;letter-spacing:0.1em;color:var(--text-dim)}
+.cstart-btn{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:inherit;opacity:0.6;transition:opacity .2s;white-space:nowrap}
+.ccard:hover .cstart-btn{opacity:1}
+.cbadge{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;background:rgba(196,151,58,0.15);border:1px solid rgba(196,151,58,0.4);color:var(--gold);padding:2px 8px;border-radius:2px}
+
+/* EMPTY */
+.empty{text-align:center;padding:5rem 2rem;color:var(--text-dim);font-size:0.86rem}
+
+@media(max-width:600px){.courses-grid{grid-template-columns:1fr}}
+</style>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<link rel="manifest" href="../../manifest.json">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+</head>
+<body>
+
+<!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
+<style data-frqncy-header-critical>
+/* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
+#main-nav{position:sticky;top:0;width:100%;z-index:500;padding:14px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;background:rgba(11,28,61,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);font-family:'Jost',system-ui,sans-serif}
+#main-nav .nav-logo{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:20px;letter-spacing:.34em;color:#fff;text-decoration:none;text-transform:uppercase}
+#main-nav .nav-links{display:flex;gap:22px;list-style:none;margin:0;padding:0;align-items:center}
+#main-nav .nav-links a{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);text-decoration:none;display:inline-flex;align-items:center;min-height:30px}
+#main-nav .nav-search{display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:2px}
+#main-nav .nav-search input{background:transparent;border:0;outline:0;color:#fff;font:inherit;font-size:10.5px;letter-spacing:.14em;width:clamp(120px,14vw,180px);padding:5px 9px}
+#main-nav .nav-search input::placeholder{color:rgba(255,255,255,.45)}
+#main-nav .nav-search button{background:transparent;border:0;color:rgba(255,255,255,.6);font-size:13px;padding:4px 9px;cursor:pointer}
+#main-nav .nav-back{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:2px;text-decoration:none}
+#main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+#main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
+#main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
+body.frqncy-home #main-nav .nav-back{display:none}
+#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important}
+#main-nav .nav-dd-menu a .dd-label,#main-nav .nav-dd-menu a .dd-sub{display:block !important;text-align:center !important;width:100% !important}
+@media(max-width:720px){#main-nav .nav-links{display:none}}
+</style>
+<nav id="main-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <a href="/about">About</a>
+      <div class="nav-dd-menu">
+        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
+        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/explore.html">Discover</a>
+      <div class="nav-dd-menu">
+        <a href="/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
+        <a href="/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
+        <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
+        <a href="/people/"><span class="dd-label">Browse</span><span class="dd-sub">People · Books · Orgs · Places</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/social/">Community</a>
+      <div class="nav-dd-menu">
+        <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
+        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">Social layer</span></a>
+        <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access</span></a>
+        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
+      </div>
+    </li>
+    <li class="nav-search-li">
+      <form action="/search" method="get" role="search" class="nav-search">
+        <input type="text" role="searchbox" name="q" placeholder="Search…" aria-label="Search the FRQNCY network" autocomplete="off">
+        <button type="submit" aria-label="Search">⌕</button>
+      </form>
+    </li>
+    <li>
+      <a href="/" class="nav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
+    </li>
+    <li>
+      <a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a>
+    </li>
+  </ul>
+</nav>
+<script>
+  // Tag the homepage so CSS can hide the back button there (it's redundant on /).
+  (function(){
+    try {
+      var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
+      if (isHome) document.body.classList.add('frqncy-home');
+    } catch(_) {}
+  })();
+</script>
+<!-- Tiny floating Donate button — bottom-right on every page. Click opens a
+     popover with the EVM + SOL wallet addresses; the full /donate page link
+     sits at the top of the popover. -->
+<style data-frqncy-donate>
+  #frq-donate-btn{position:fixed;right:18px;bottom:18px;z-index:480;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
+  #frq-donate-btn:hover{background:#C4973A;color:#fff;transform:translateY(-1px)}
+  #frq-donate-btn .heart{margin-right:6px;display:inline-block}
+  #frq-donate-pop{position:fixed;right:18px;bottom:64px;z-index:481;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
+  #frq-donate-pop.open{display:block}
+  #frq-donate-pop .frq-pop-title{font-family:'Cormorant',Georgia,serif;font-size:18px;font-weight:400;color:#0B1C3D;margin-bottom:4px}
+  #frq-donate-pop .frq-pop-sub{font-size:11px;color:#8A9AB8;margin-bottom:14px;line-height:1.5}
+  #frq-donate-pop .frq-pop-sub a{color:#C4973A;text-decoration:none}
+  #frq-donate-pop .frq-w-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#C4973A;font-weight:500;margin-top:10px;display:block}
+  #frq-donate-pop .frq-w-addr{font-family:'SFMono-Regular',Menlo,monospace;font-size:11px;color:#0B1C3D;background:#F8FAFC;border:1px solid rgba(11,28,61,.08);padding:8px 10px;border-radius:3px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;word-break:break-all}
+  #frq-donate-pop .frq-w-copy{flex:0 0 auto;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#C4973A;background:transparent;border:1px solid rgba(196,151,58,.5);padding:3px 8px;border-radius:2px;cursor:pointer;font-family:inherit}
+  #frq-donate-pop .frq-w-copy:hover{background:#C4973A;color:#fff}
+  #frq-donate-pop .frq-pop-foot{margin-top:14px;padding-top:12px;border-top:1px solid rgba(11,28,61,.06);font-size:10px;letter-spacing:.06em;color:#8A9AB8;line-height:1.5}
+  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:12px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:54px}}
+</style>
+<button id="frq-donate-btn" type="button" aria-haspopup="dialog" aria-controls="frq-donate-pop" aria-label="Support FRQNCY">
+  <span class="heart" aria-hidden="true">♥</span>Donate
+</button>
+<div id="frq-donate-pop" role="dialog" aria-label="FRQNCY donation wallets">
+  <div class="frq-pop-title">Support FRQNCY</div>
+  <div class="frq-pop-sub">Full details + fiat options on <a href="/donate">/donate</a>.</div>
+  <span class="frq-w-label">EVM · ETH / Base / Arbitrum (USDC, ETH)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="evm">0xPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="evm">Copy</button>
+  </div>
+  <span class="frq-w-label">Solana (SOL / USDC-SPL)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="sol">SOLPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="sol">Copy</button>
+  </div>
+  <div class="frq-pop-foot">Wallets are placeholders until the FRQNY treasury multi-sig goes live. See the crypto stack spec.</div>
+</div>
+<script>
+  (function(){
+    var btn = document.getElementById('frq-donate-btn');
+    var pop = document.getElementById('frq-donate-pop');
+    if (!btn || !pop) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      pop.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!pop.contains(e.target) && e.target !== btn) pop.classList.remove('open');
+    });
+    pop.addEventListener('click', function(e){
+      var t = e.target;
+      if (t && t.dataset && t.dataset.frqCopy) {
+        var which = t.dataset.frqCopy;
+        var addrEl = pop.querySelector('[data-frq-addr="' + which + '"]');
+        if (!addrEl) return;
+        var text = addrEl.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function(){
+            var orig = t.textContent;
+            t.textContent = 'Copied';
+            setTimeout(function(){ t.textContent = orig; }, 1200);
+          });
+        }
+      }
+    });
+  })();
+</script>
+<!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
+
+<section class="hero">
+  <div class="hero-eyebrow">Learning Paths</div>
+  <h1>Courses</h1>
+  <p class="hero-desc">Structured paths through the ideas, practices, and sciences that matter most. Each course combines video, reflection, and reading.</p>
+</section>
+
+<main>
+  <div class="courses-grid" id="grid"></div>
+</main>
+
+<script>
+const DOMAIN_LABELS = {"d-wellbeing":"Wellbeing","d-sciences":"Sciences","d-lifestyle":"Lifestyle","d-consciousness":"Consciousness","d-society":"Society","d-creativity":"Creativity"};
+// Courses data is inlined at build time — no fetch() needed, works locally too
+const COURSES = [{"slug":"meditation-101","title":"Meditation 101","subtitle":"From Stillness to Practice","desc":"A complete beginner's path through the science, philosophy, and practice of meditation. Move from curiosity to a daily sitting practice in five lessons.","level":"Beginner","domain":"d-wellbeing","duration":"1.5 hours","accent":"#3B7DD8","lessons":[{"id":"l1","title":"Why Meditate?","type":"video"},{"id":"l2","title":"What Happens in the Brain","type":"video"},{"id":"l3","title":"The Breath as Anchor","type":"video"},{"id":"l4","title":"Your First Sitting","type":"reflection"},{"id":"l5","title":"Building a Daily Practice","type":"reading"}]},{"slug":"quantum-reality","title":"Quantum Reality","subtitle":"Physics at the Edge of the Known","desc":"A guided journey through quantum mechanics — from the double slit experiment to quantum fields and what it all means for consciousness and reality.","level":"Intermediate","domain":"d-sciences","duration":"2 hours","accent":"#4A7AE8","lessons":[{"id":"l1","title":"The Double Slit Experiment","type":"video"},{"id":"l2","title":"Quantum Fields — What Everything Is Made Of","type":"video"},{"id":"l3","title":"Reflection — What Does Quantum Mean for You?","type":"reflection"},{"id":"l4","title":"Consciousness and the Quantum — The Open Question","type":"reading"}]},{"slug":"conscious-living-foundations","title":"Conscious Living Foundations","subtitle":"An Orientation to the FRQNCY Network","desc":"A cross-domain introduction to conscious living — covering the pillars of the FRQNCY network: consciousness, well-being, society, and creative action.","level":"Beginner","domain":"d-lifestyle","duration":"2.5 hours","accent":"#C4973A","lessons":[{"id":"l1","title":"What is Conscious Living?","type":"reflection"},{"id":"l2","title":"The Science of Manifestation","type":"video"},{"id":"l3","title":"Vibration & Frequency","type":"video"},{"id":"l4","title":"Daily Practice — Morning Intention","type":"reflection"},{"id":"l5","title":"Finding Your Network","type":"reading"}]},{"slug":"quantum-grammar","title":"Quantum Grammar","subtitle":"The Hidden Structure of Language & Law","desc":"Explore how syntax and sentence construction shape reality, commerce, and sovereignty. Discover the mathematical structure behind contracts, statutes, and the language that binds.","level":"Intermediate","domain":"d-society","duration":"2.5 hours","accent":"#E87A4A","lessons":[{"id":"l1","title":"What Is Quantum Grammar?","type":"video"},{"id":"l2","title":"The Syntax of Control — How Language Binds","type":"video"},{"id":"l3","title":"Correct-Sentence-Structure Communication Parse-Syntax","type":"video"},{"id":"l4","title":"Reflection — Deconstructing a Contract","type":"reflection"},{"id":"l5","title":"Language, Law & Sovereignty — The Bigger Picture","type":"reading"}]},{"slug":"crypto-fundamentals","title":"Crypto Fundamentals","subtitle":"A hands-on path to self-custody and your first onchain swap","desc":"Skip the theory — set up the toolkit yourself. Open an exchange account, install your own wallets, hold your own keys, send your first transaction, and swap onchain. Each lesson is a short walkthrough you follow alongside the video.","level":"Beginner","domain":"d-tech","duration":"2 hours","accent":"#7B61FF","lessons":[{"id":"l1","title":"Set Up Brave Browser","type":"video"},{"id":"l2","title":"Open + Tour Your Kraken Account","type":"video"},{"id":"l3","title":"Install Rabby & Phantom Wallets","type":"video"},{"id":"l4","title":"Seed Phrase Security — Non-Negotiable","type":"video"},{"id":"l5","title":"Send and Receive Transactions","type":"video"},{"id":"l6","title":"Deposit Crypto and Withdraw Fiat on Kraken","type":"video"},{"id":"l7","title":"Swap Onchain with Defillama","type":"video"},{"id":"l8","title":"Swap Onchain with Titan Exchange","type":"video"},{"id":"l9","title":"Common Scams — and How to Avoid Them","type":"video"},{"id":"l10","title":"Find Tokens with Dexscreener","type":"video"},{"id":"l11","title":"Get to Know Coingecko","type":"video"},{"id":"l12","title":"Set Up TradingView","type":"video"},{"id":"l13","title":"Sources on X — The Live List","type":"reading"},{"id":"l14","title":"Bridge Between Chains with Bungee","type":"video"},{"id":"l15","title":"Join the Live Channel","type":"reading"}]},{"slug":"working-with-claude","title":"Working with Claude","subtitle":"A FRQNCY guide to using Anthropic Claude with intention","desc":"Most people use AI like a vending machine. Claude is built to work like a thoughtful collaborator. This short course teaches the prompting, the boundaries, and the practices that turn the tool into a real thinking partner.","level":"Beginner","domain":"d-tech","duration":"1 hour","accent":"#7B4AE8","lessons":[{"id":"l1","title":"Why Claude is Different","type":"reading"},{"id":"l2","title":"How to Prompt Well","type":"reading"},{"id":"l3","title":"Claude in Practice","type":"reflection"},{"id":"l4","title":"Limits, Bias, and Hallucination","type":"reading"},{"id":"l5","title":"Building a Practice","type":"reflection"}]}];
+
+function getProgress(slug, lessons) {
+  try {
+    const completed = JSON.parse(localStorage.getItem('frqncy-course-' + slug) || '[]');
+    return { done: completed.length, total: lessons.length };
+  } catch(e) {
+    return { done: 0, total: lessons.length };
+  }
+}
+
+function esc(s) {
+  return String(s||'').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;').replace(/"/g,'&quot;');
+}
+
+function makeCard(c) {
+  const { done, total } = getProgress(c.slug, c.lessons);
+  const pct      = total ? Math.round((done / total) * 100) : 0;
+  const complete = done === total && total > 0;
+
+  const a = document.createElement('a');
+  a.className = 'ccard';
+  // Use explicit index.html — works on both file:// and web servers
+  a.href = c.slug + '/index.html';
+  a.innerHTML = `
+    <div class="ccard-top" style="background:${c.accent}"></div>
+    <div class="ccard-body">
+      <div class="ccard-meta">
+        <span class="clevel" style="color:${c.accent};border-color:${c.accent}40">${esc(c.level)}</span>
+        <span class="cdomain">${esc(DOMAIN_LABELS[c.domain] || c.domain)}</span>
+        ${complete ? '<span class="cbadge">✓ Completed</span>' : ''}
+      </div>
+      <div class="ctitle">${esc(c.title)}</div>
+      ${c.subtitle ? `<div class="csubtitle">${esc(c.subtitle)}</div>` : ''}
+      ${c.desc ? `<div class="cdesc">${esc(c.desc)}</div>` : ''}
+      <div class="ccard-footer">
+        <div class="cstats">
+          <div class="cstat"><strong>${total}</strong> lessons</div>
+          <div class="cstat"><strong>${esc(c.duration)}</strong></div>
+        </div>
+        ${pct > 0 ? `
+          <div class="cprogress-wrap">
+            <div class="cprogress-bar"><div class="cprogress-fill" style="width:${pct}%;background:${c.accent}"></div></div>
+            <div class="cprogress-label">${done}/${total} complete</div>
+          </div>
+        ` : `<span class="cstart-btn">${done > 0 ? 'Continue →' : 'Start →'}</span>`}
+      </div>
+    </div>
+  `;
+  return a;
+}
+
+const grid = document.getElementById('grid');
+if (!COURSES.length) {
+  grid.innerHTML = '<div class="empty">No courses available yet.</div>';
+} else {
+  for (const c of COURSES) grid.appendChild(makeCard(c));
+}
+</script>
+</body>
+</html>

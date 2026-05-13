@@ -1,0 +1,1467 @@
+<!DOCTYPE html>
+<!-- BESPOKE-LOCK: hand-shaped page, generate.js will not regenerate -->
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Water — FRQNCY Network</title>
+<meta name="description" content="The element that carries information. What we drink, what we are made of, and what listens. Crystals in motion — Topic 0001 of 146.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Water — FRQNCY Network">
+<meta property="og:description" content="The element that carries information. What we drink, what we are made of, and what listens.">
+<meta property="og:url" content="https://frqncy.network/water/">
+<meta property="og:image" content="https://frqncy.network/og/water.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Water — FRQNCY Network">
+<meta name="twitter:description" content="The element that carries information.">
+<meta name="twitter:image" content="https://frqncy.network/og/water.png">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/water/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://images.unsplash.com" crossorigin>
+<link rel="preconnect" href="https://videos.pexels.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+/* ════════════════════════════════════════════════════════════════════
+   WATER — Topic 0001 of 146.
+   "Be water, my friend." — Bruce Lee
+   The whole network is mostly water. So is the body reading it.
+   ──────────────────────────────────────────────────────────────────── */
+
+:root {
+  /* Network palette — strict gold + navy + cream + foam */
+  --navy: #0B1C3D;
+  --navy-deep: #081530;
+  --navy-mid: #0D2451;
+  --gold: #C4973A;
+  --gold-light: #E0C06A;
+  --gold-soft: rgba(196, 151, 58, 0.14);
+  --cream: #F5EBD8;
+  --foam: #F5F8FB;
+  --pearl: #FFFFFF;
+  --water-blue: #4A7AB5;
+  --water-soft: #7BA0CC;
+
+  /* Type */
+  --serif: 'Cormorant', Georgia, serif;
+  --body: 'Jost', sans-serif;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+html { background: var(--navy); scroll-behavior: smooth; }
+
+body {
+  font-family: var(--body);
+  font-weight: 300;
+  color: var(--foam);
+  line-height: 1.7;
+  overflow-x: hidden;
+  background: var(--navy);
+}
+
+::selection { background: rgba(196, 151, 58, 0.4); color: var(--pearl); }
+
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: rgba(255,255,255,0.02); }
+::-webkit-scrollbar-thumb { background: rgba(196,151,58,0.35); border-radius: 2px; }
+::-webkit-scrollbar-thumb:hover { background: rgba(196,151,58,0.6); }
+
+a { color: var(--water-soft); text-decoration: none; transition: color 0.3s ease; }
+a:hover { color: var(--gold-light); }
+
+/* ──────────────── NAV ──────────────── */
+nav.snav {
+  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+  background: rgba(11, 28, 61, 0.55);
+  backdrop-filter: blur(22px) saturate(140%);
+  -webkit-backdrop-filter: blur(22px) saturate(140%);
+  border-bottom: 1px solid rgba(255,255,255,0.06);
+  padding: 0 clamp(1.25rem, 4vw, 2.5rem);
+  height: 56px;
+  display: flex; align-items: center; justify-content: space-between;
+}
+.snav-left { display: flex; align-items: center; gap: 1.75rem; min-width: 0; overflow: hidden; }
+.snav-logo {
+  font-family: var(--serif); font-size: 1.1rem; letter-spacing: 0.28em;
+  color: var(--pearl); text-transform: uppercase; text-decoration: none;
+  flex-shrink: 0; opacity: 0.85; transition: opacity 0.3s, text-shadow 0.3s;
+}
+.snav-logo:hover { opacity: 1; text-shadow: 0 0 20px rgba(196,151,58,0.5); }
+.snav-badge {
+  font-size: 0.55rem; letter-spacing: 0.18em; color: var(--gold);
+  border: 1px solid currentColor; padding: 1px 6px; border-radius: 2px;
+  vertical-align: middle; margin-left: 4px; opacity: 0.85;
+}
+.breadcrumb {
+  font-size: 0.7rem; letter-spacing: 0.06em; color: rgba(245, 248, 251, 0.55);
+  display: flex; align-items: center; gap: 0.4rem; white-space: nowrap;
+  overflow: hidden; text-overflow: ellipsis;
+}
+.breadcrumb a { color: rgba(245, 248, 251, 0.6); transition: color 0.2s; }
+.breadcrumb a:hover { color: var(--foam); }
+.breadcrumb .sep { opacity: 0.3; }
+.snav-back {
+  font-size: 0.68rem; letter-spacing: 0.12em; color: rgba(245, 248, 251, 0.7);
+  border: 1px solid rgba(255,255,255,0.12); padding: 5px 14px; border-radius: 2px;
+  transition: all 0.3s; text-decoration: none; flex-shrink: 0; white-space: nowrap;
+}
+.snav-back:hover { color: var(--foam); border-color: rgba(196,151,58,0.4); }
+
+/* ──────────────── HERO with 4K looping video ──────────────── */
+.hero {
+  position: relative;
+  min-height: 100vh;
+  margin-top: 0;
+  padding-top: 56px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+  background: var(--navy-deep);
+}
+
+.hero-video, .hero-poster {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  object-position: center;
+}
+.hero-video {
+  z-index: 1;
+  filter: saturate(0.85) brightness(0.65) contrast(1.05);
+}
+.hero-poster {
+  z-index: 0;
+  filter: saturate(0.85) brightness(0.6) contrast(1.05);
+}
+.hero::after {
+  content: '';
+  position: absolute; inset: 0; z-index: 2;
+  background:
+    radial-gradient(ellipse at 50% 30%, rgba(74, 122, 181, 0.18) 0%, transparent 55%),
+    linear-gradient(to bottom, rgba(11, 28, 61, 0.35) 0%, rgba(11, 28, 61, 0.2) 30%, rgba(8, 21, 48, 0.85) 95%);
+  pointer-events: none;
+}
+
+.hero-inner {
+  position: relative; z-index: 3;
+  width: 100%;
+  max-width: 1280px;
+  padding: 0 clamp(1.5rem, 5vw, 4rem);
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 4rem;
+  align-items: end;
+  padding-bottom: clamp(5rem, 10vh, 8rem);
+}
+
+.hero-eyebrow {
+  display: inline-flex; align-items: center; gap: 0.7rem;
+  font-size: 0.6rem; letter-spacing: 0.42em; text-transform: uppercase;
+  color: var(--gold-light); margin-bottom: 2rem; opacity: 0.92;
+}
+.hero-eyebrow::before {
+  content: ''; display: block; width: 36px; height: 1px;
+  background: var(--gold-light); opacity: 0.5;
+}
+
+h1.hero-title {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(5rem, 18vw, 17rem);
+  line-height: 0.85;
+  letter-spacing: -0.04em;
+  color: var(--pearl);
+  text-shadow: 0 4px 80px rgba(11, 28, 61, 0.7);
+  margin-bottom: 2.5rem;
+}
+
+.hero-desc {
+  max-width: 560px;
+  font-size: clamp(1.05rem, 1.45vw, 1.25rem);
+  font-weight: 300;
+  line-height: 1.7;
+  color: rgba(245, 248, 251, 0.88);
+}
+.hero-desc em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold-light);
+  font-size: 1.1em;
+}
+
+.hero-quote {
+  margin-top: 2rem;
+  padding-top: 1.5rem;
+  border-top: 1px solid rgba(196, 151, 58, 0.25);
+  max-width: 540px;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.1rem, 1.5vw, 1.35rem);
+  line-height: 1.45;
+  color: rgba(245, 248, 251, 0.78);
+}
+.hero-quote cite {
+  display: block;
+  font-family: var(--body);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 0.6rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-top: 0.85rem;
+  opacity: 0.85;
+}
+
+/* The hexagonal water-crystal SVG */
+.hero-crystal {
+  width: clamp(180px, 22vw, 320px);
+  aspect-ratio: 1;
+  opacity: 0.9;
+  filter: drop-shadow(0 0 50px rgba(196, 151, 58, 0.18));
+}
+.hero-crystal-spin { transform-origin: 50% 50%; animation: crystalSpin 70s linear infinite; }
+.hero-crystal-breathe { transform-origin: 50% 50%; animation: crystalBreathe 6s ease-in-out infinite alternate; }
+.cf-spin { transform-origin: 0 0; animation: crystalSpin 80s linear infinite; }
+.cf-breathe { transform-origin: 0 0; animation: crystalBreathe 7s ease-in-out infinite alternate; }
+.cf-glow-pulse { transform-origin: 0 0; animation: glowPulse 5s ease-in-out infinite alternate; }
+@keyframes crystalSpin { to { transform: rotate(360deg); } }
+@keyframes crystalBreathe {
+  0%   { transform: scale(0.95); opacity: 0.55; }
+  100% { transform: scale(1.05); opacity: 1; }
+}
+@keyframes glowPulse {
+  0%   { transform: scale(0.85); opacity: 0.5; }
+  100% { transform: scale(1.15); opacity: 1; }
+}
+
+.scroll-hint {
+  position: absolute;
+  bottom: 2rem;
+  left: 50%;
+  transform: translateX(-50%);
+  font-size: 0.55rem; letter-spacing: 0.42em; text-transform: uppercase;
+  color: rgba(245, 248, 251, 0.55);
+  display: flex; flex-direction: column; align-items: center; gap: 0.6rem;
+  z-index: 4;
+}
+.scroll-hint::after {
+  content: ''; width: 1px; height: 36px;
+  background: linear-gradient(to bottom, rgba(245, 248, 251, 0.55), transparent);
+  animation: drip 2.6s ease-in-out infinite;
+}
+@keyframes drip {
+  0%, 100% { opacity: 0.3; transform: scaleY(0.6); transform-origin: top; }
+  50%      { opacity: 1;   transform: scaleY(1);   transform-origin: top; }
+}
+
+/* ──────────────── ANIMATED WAVE DIVIDERS ──────────────── */
+.wave-divider {
+  position: relative;
+  width: 100%;
+  height: 120px;
+  overflow: hidden;
+  margin: 0;
+  pointer-events: none;
+}
+.wave-divider svg {
+  position: absolute;
+  bottom: 0;
+  left: 0;
+  width: 200%;
+  height: 100%;
+  display: block;
+}
+.wave-divider .w1 { animation: waveSlide 24s linear infinite; opacity: 0.5; }
+.wave-divider .w2 { animation: waveSlide 18s linear infinite reverse; opacity: 0.35; }
+.wave-divider .w3 { animation: waveSlide 32s linear infinite;         opacity: 0.7; }
+@keyframes waveSlide {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+/* ──────────────── BODY ──────────────── */
+main.water-body {
+  position: relative;
+  background: var(--navy);
+  padding: 0 clamp(1.5rem, 5vw, 3rem);
+}
+
+.section {
+  max-width: 720px;
+  margin: 0 auto;
+  padding: clamp(5rem, 12vh, 9rem) 0;
+  position: relative;
+}
+.section-wide   { max-width: 1080px; }
+.section-narrow { max-width: 600px; }
+
+.label {
+  font-size: 0.58rem;
+  letter-spacing: 0.42em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-bottom: 2rem;
+  opacity: 0.9;
+  display: inline-flex; align-items: center; gap: 0.7rem;
+}
+.label::before {
+  content: ''; display: block; width: 32px; height: 1px;
+  background: var(--gold-light); opacity: 0.5;
+}
+
+h2 {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(2.4rem, 6vw, 4.6rem);
+  line-height: 1.04;
+  letter-spacing: -0.02em;
+  color: var(--pearl);
+  margin-bottom: 2rem;
+  max-width: 18ch;
+}
+h2 strong {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--gold-light);
+}
+
+p.lede {
+  font-size: clamp(1.15rem, 1.5vw, 1.4rem);
+  font-weight: 300;
+  line-height: 1.65;
+  color: var(--foam);
+  margin-bottom: 1.6rem;
+}
+p {
+  font-size: 1.025rem;
+  line-height: 1.85;
+  color: rgba(245, 248, 251, 0.72);
+  margin-bottom: 1.4rem;
+}
+p em {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 400;
+  color: var(--gold-light);
+  font-size: 1.08em;
+}
+
+blockquote {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3.2vw, 2.6rem);
+  line-height: 1.3;
+  letter-spacing: -0.005em;
+  color: var(--pearl);
+  padding: 2.5rem 0 2.5rem 2rem;
+  margin: 3rem 0;
+  border-left: 1px solid rgba(196, 151, 58, 0.5);
+  max-width: 26ch;
+}
+blockquote cite {
+  display: block;
+  font-family: var(--body);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 0.65rem;
+  letter-spacing: 0.32em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-top: 1.5rem;
+  opacity: 0.85;
+}
+
+/* ──────────────── BLEED — full-width cinematic image with quote ──────────────── */
+.bleed {
+  position: relative;
+  width: 100vw;
+  margin-left: calc(50% - 50vw);
+  height: clamp(60vh, 90vh, 800px);
+  margin-top: clamp(4rem, 8vh, 7rem);
+  margin-bottom: clamp(4rem, 8vh, 7rem);
+  overflow: hidden;
+  display: flex; align-items: center; justify-content: center;
+}
+.bleed img {
+  position: absolute; inset: 0;
+  width: 100%; height: 100%;
+  object-fit: cover;
+  filter: brightness(0.65) saturate(0.95);
+  transition: transform 18s ease;
+}
+.bleed::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: linear-gradient(
+    180deg,
+    rgba(11, 28, 61, 0.5) 0%,
+    rgba(11, 28, 61, 0.15) 30%,
+    rgba(11, 28, 61, 0.15) 70%,
+    rgba(11, 28, 61, 0.65) 100%
+  );
+  pointer-events: none;
+}
+.bleed-cap {
+  position: relative; z-index: 2;
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.6rem, 3.4vw, 2.8rem);
+  line-height: 1.3;
+  color: var(--pearl);
+  text-align: center;
+  max-width: 26ch;
+  padding: 0 1.5rem;
+  text-shadow: 0 2px 30px rgba(11, 28, 61, 0.7);
+}
+.bleed-cap cite {
+  display: block;
+  font-family: var(--body);
+  font-style: normal;
+  font-weight: 300;
+  font-size: 0.62rem;
+  letter-spacing: 0.4em;
+  text-transform: uppercase;
+  color: var(--gold-light);
+  margin-top: 2rem;
+  opacity: 0.9;
+}
+
+/* ──────────────── CRYSTAL FEATURE — Pollack section centerpiece ──────────────── */
+.crystal-feature {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: clamp(2rem, 6vw, 5rem);
+  align-items: center;
+  margin: clamp(3rem, 6vh, 5rem) 0;
+}
+.crystal-feature-svg {
+  width: 100%;
+  max-width: 480px;
+  aspect-ratio: 1;
+  margin: 0 auto;
+  overflow: visible;
+  filter: drop-shadow(0 0 80px rgba(196, 151, 58, 0.28));
+}
+
+/* ──────────────── THREE LAYERS — descent grid ──────────────── */
+.descent {
+  display: grid;
+  gap: 0;
+  margin: 4rem 0;
+}
+.layer {
+  position: relative;
+  padding: clamp(3rem, 6vh, 5rem) clamp(2rem, 5vw, 4rem);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-bottom: 0;
+}
+.layer:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.layer:nth-child(1) { background: rgba(74, 122, 181, 0.04); }
+.layer:nth-child(2) { background: rgba(74, 122, 181, 0.07); }
+.layer:nth-child(3) {
+  background: linear-gradient(135deg, rgba(196, 151, 58, 0.08) 0%, rgba(74, 122, 181, 0.06) 60%);
+  border: 1px solid rgba(196, 151, 58, 0.22);
+}
+.layer-head {
+  display: flex; align-items: baseline; gap: 1.5rem;
+  margin-bottom: 1.5rem;
+  flex-wrap: wrap;
+}
+.layer-num {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(2.4rem, 4vw, 3.4rem);
+  line-height: 1; color: var(--gold-light); opacity: 0.85;
+}
+.layer-num em { font-size: 0.42em; opacity: 0.6; vertical-align: 0.5em; padding-right: 0.5em; }
+.layer-title {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(1.6rem, 2.8vw, 2.2rem); color: var(--foam);
+}
+.layer-title strong { font-style: normal; font-weight: 400; color: var(--gold-light); }
+.layer p { max-width: 60ch; }
+.layer p:last-child { margin-bottom: 0; }
+
+.ms-callout {
+  display: grid;
+  grid-template-columns: 90px 1fr;
+  gap: 1.5rem;
+  margin-top: 1.6rem;
+  padding: 1.5rem 1.6rem;
+  background: rgba(196, 151, 58, 0.05);
+  border: 1px solid rgba(196, 151, 58, 0.2);
+  border-radius: 4px;
+  align-items: start;
+}
+.ms-label {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(1.7rem, 2.6vw, 2.2rem);
+  color: var(--gold-light);
+  line-height: 1; padding-top: 0.2rem;
+}
+.ms-body {
+  font-size: 0.95rem;
+  color: rgba(245, 248, 251, 0.8);
+  line-height: 1.7;
+}
+.ms-body strong { color: var(--foam); font-weight: 400; }
+.ms-scale {
+  list-style: none;
+  margin: 1rem 0;
+  padding: 0;
+  display: grid;
+  gap: 0.4rem;
+}
+.ms-scale li {
+  display: grid;
+  grid-template-columns: 1fr auto;
+  gap: 1rem;
+  padding: 0.45rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.05);
+  font-size: 0.86rem;
+}
+.ms-scale li:last-child { border-bottom: 0; }
+.ms-scale li > span:last-child {
+  color: var(--gold-light);
+  font-family: var(--body); font-weight: 400;
+  letter-spacing: 0.04em;
+  white-space: nowrap;
+}
+.ms-body em {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  color: var(--foam);
+}
+
+/* Forms grid */
+.forms-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(180px, 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 2.5rem 0 1rem;
+}
+.form-cell {
+  background: var(--navy-mid);
+  padding: 1.35rem 1.4rem;
+  transition: background 0.4s ease;
+}
+.form-cell:hover { background: rgba(15, 36, 81, 0.95); }
+.form-cell-eyebrow {
+  font-size: 0.5rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold-light); opacity: 0.85;
+  margin-bottom: 0.6rem;
+}
+.form-cell h4 {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.25rem;
+  color: var(--foam);
+  margin-bottom: 0.4rem;
+  line-height: 1.2;
+}
+.form-cell p {
+  font-size: 0.82rem; line-height: 1.6;
+  color: rgba(245, 248, 251, 0.65);
+  margin: 0;
+}
+
+/* ──────────────── PRACTICE ──────────────── */
+.practice {
+  display: grid;
+  gap: 1.5rem;
+  margin: 3rem 0 1rem;
+}
+.step {
+  display: grid;
+  grid-template-columns: 80px 1fr;
+  gap: 2rem;
+  padding: 1.6rem 0;
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  align-items: baseline;
+}
+.step:last-child { border-bottom: 1px solid rgba(255, 255, 255, 0.06); }
+.step-num {
+  font-family: var(--serif); font-style: italic; font-weight: 300;
+  font-size: clamp(2rem, 3vw, 2.6rem);
+  color: var(--gold-light); opacity: 0.85; line-height: 1;
+}
+.step-body strong {
+  display: block;
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.35rem;
+  color: var(--foam);
+  margin-bottom: 0.4rem;
+}
+.step-body p { margin-bottom: 0; max-width: 56ch; }
+
+/* ──────────────── PICKS ──────────────── */
+.picks {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+  gap: 1px;
+  background: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.08);
+  border-radius: 2px;
+  overflow: hidden;
+  margin: 3rem 0 1rem;
+}
+.pick {
+  background: var(--navy-mid);
+  padding: 2rem 1.8rem;
+  position: relative;
+  transition: background 0.4s ease;
+  display: flex;
+  flex-direction: column;
+}
+.pick:hover { background: rgba(13, 36, 81, 0.92); }
+.pick-eyebrow {
+  font-size: 0.55rem; letter-spacing: 0.32em; text-transform: uppercase;
+  color: var(--gold-light); margin-bottom: 1rem;
+  display: flex; align-items: center; gap: 0.6rem;
+}
+.pick-eyebrow::before {
+  content: ''; width: 18px; height: 1px;
+  background: var(--gold-light); opacity: 0.6;
+}
+.pick h4 {
+  font-family: var(--serif); font-style: italic; font-weight: 400;
+  font-size: 1.45rem;
+  color: var(--foam);
+  margin-bottom: 0.5rem;
+  line-height: 1.2;
+}
+.pick p {
+  font-size: 0.92rem; margin-bottom: 1.2rem;
+  flex: 1;
+}
+.pick a.pick-link {
+  font-size: 0.62rem; letter-spacing: 0.22em; text-transform: uppercase;
+  color: var(--gold-light); border-bottom: 1px solid currentColor;
+  padding-bottom: 2px;
+  transition: color 0.3s, border-color 0.3s;
+  align-self: flex-start;
+}
+.pick a.pick-link:hover { color: var(--gold); border-color: var(--gold); }
+
+/* ──────────────── CLOSING ──────────────── */
+.closing {
+  position: relative;
+  min-height: 80vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  margin-top: clamp(4rem, 10vh, 8rem);
+  padding: clamp(4rem, 10vh, 8rem) 1.5rem;
+  overflow: hidden;
+}
+.closing-bg {
+  position: absolute; inset: 0;
+  background-image: url('https://images.unsplash.com/photo-1418489098061-ce87b5dc3aee?auto=format&fit=crop&q=85&w=2400');
+  background-size: cover;
+  background-position: center;
+  filter: brightness(0.45) saturate(0.9);
+}
+.closing-bg::after {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse at center, rgba(11, 28, 61, 0.35) 30%, rgba(11, 28, 61, 0.95) 100%);
+}
+.closing-inner {
+  position: relative; z-index: 2;
+  max-width: 38ch;
+  margin: 0 auto;
+}
+.closing p {
+  font-family: var(--serif);
+  font-style: italic;
+  font-weight: 300;
+  font-size: clamp(1.5rem, 2.6vw, 2.2rem);
+  line-height: 1.45;
+  color: var(--pearl);
+  text-shadow: 0 2px 30px rgba(11, 28, 61, 0.7);
+  margin: 0 0 1.2rem;
+}
+.closing p strong {
+  font-style: normal;
+  font-weight: 400;
+  color: var(--gold-light);
+}
+.closing cite {
+  display: block;
+  font-family: var(--body); font-style: normal; font-weight: 300;
+  font-size: 0.62rem; letter-spacing: 0.4em; text-transform: uppercase;
+  color: var(--gold-light);
+  margin-top: 1.5rem;
+  opacity: 0.9;
+}
+
+/* ──────────────── FOOTER ──────────────── */
+footer.site-foot {
+  background: var(--navy-deep);
+  border-top: 1px solid rgba(255, 255, 255, 0.06);
+  padding: 3rem clamp(1.25rem, 5vw, 2.5rem);
+  text-align: center;
+  position: relative;
+  z-index: 2;
+}
+footer.site-foot .wm {
+  font-family: var(--serif); font-weight: 300;
+  font-size: 1rem; letter-spacing: 0.32em;
+  color: rgba(245, 248, 251, 0.4);
+  text-transform: uppercase;
+}
+footer.site-foot .legal {
+  font-size: 0.66rem; letter-spacing: 0.1em;
+  color: rgba(245, 248, 251, 0.3);
+  margin-top: 0.5rem; display: block;
+}
+
+/* ──────────────── REVEAL ON SCROLL ──────────────── */
+.fade-up {
+  opacity: 0;
+  transform: translateY(30px);
+  transition: opacity 1.2s cubic-bezier(0.22, 0.61, 0.36, 1),
+              transform 1.2s cubic-bezier(0.22, 0.61, 0.36, 1);
+}
+.fade-up.in {
+  opacity: 1;
+  transform: translateY(0);
+}
+
+/* ──────────────── RESPONSIVE ──────────────── */
+@media (max-width: 760px) {
+  .hero-inner { grid-template-columns: 1fr; gap: 2.5rem; }
+  .hero-crystal { width: 160px; }
+  .breadcrumb { display: none; }
+  .step { grid-template-columns: 50px 1fr; gap: 1rem; }
+  blockquote { padding-left: 1rem; font-size: 1.5rem; }
+  .layer-head { gap: 0.8rem; }
+  .crystal-feature { grid-template-columns: 1fr; }
+  .crystal-feature-svg { max-width: 280px; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .hero-video,
+  .hero-crystal-spin, .hero-crystal-breathe,
+  .cf-spin, .cf-breathe, .cf-glow-pulse,
+  .scroll-hint::after,
+  .wave-divider .w1, .wave-divider .w2, .wave-divider .w3 {
+    animation: none;
+  }
+  .fade-up { transition: none; opacity: 1; transform: none; }
+}
+</style>
+<script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"Article","headline":"Water — The element that carries information","description":"Crystals in motion. What we drink, what we are made of, and what listens. Topic 0001 of 146.","url":"https://frqncy.network/water/","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Education","item":"https://frqncy.network/education/"},{"@type":"ListItem","position":3,"name":"Lifestyle","item":"https://frqncy.network/lifestyle/"},{"@type":"ListItem","position":4,"name":"Water","item":"https://frqncy.network/water/"}]}}</script>
+
+<!-- Reusable inline SVG: hexagonal water-crystal lattice -->
+<svg width="0" height="0" style="position:absolute" aria-hidden="true">
+  <defs>
+    <symbol id="water-crystal" viewBox="-100 -100 200 200">
+      <radialGradient id="crystalFill" cx="50%" cy="40%" r="60%">
+        <stop offset="0%"  stop-color="#F5F8FB" stop-opacity="0.4"/>
+        <stop offset="60%" stop-color="#4A7AB5" stop-opacity="0.2"/>
+        <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+      </radialGradient>
+      <linearGradient id="crystalEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+        <stop offset="0%"  stop-color="#F5F8FB" stop-opacity="0.85"/>
+        <stop offset="100%" stop-color="#C4973A" stop-opacity="0.65"/>
+      </linearGradient>
+      <g class="hero-crystal-spin">
+        <g class="hero-crystal-breathe">
+          <polygon points="0,-80 69,-40 69,40 0,80 -69,40 -69,-40"
+                   fill="url(#crystalFill)"
+                   stroke="url(#crystalEdge)" stroke-width="0.6" stroke-linejoin="round"/>
+          <polygon points="0,-46 40,-23 40,23 0,46 -40,23 -40,-23"
+                   fill="none"
+                   stroke="rgba(245, 248, 251, 0.55)" stroke-width="0.4"
+                   transform="rotate(30)"/>
+          <g fill="rgba(245, 248, 251, 0.9)">
+            <circle cx="0"   cy="-80" r="2.4"/>
+            <circle cx="69"  cy="-40" r="2.4"/>
+            <circle cx="69"  cy="40"  r="2.4"/>
+            <circle cx="0"   cy="80"  r="2.4"/>
+            <circle cx="-69" cy="40"  r="2.4"/>
+            <circle cx="-69" cy="-40" r="2.4"/>
+          </g>
+          <g stroke="rgba(196, 151, 58, 0.45)" stroke-width="0.3" fill="none">
+            <line x1="0" y1="-80" x2="0"   y2="80"/>
+            <line x1="-69" y1="-40" x2="69"  y2="40"/>
+            <line x1="-69" y1="40"  x2="69"  y2="-40"/>
+          </g>
+          <circle cx="0" cy="0" r="3" fill="rgba(196, 151, 58, 0.95)"/>
+          <circle cx="0" cy="0" r="9" fill="none" stroke="rgba(196, 151, 58, 0.4)" stroke-width="0.3"/>
+        </g>
+      </g>
+    </symbol>
+  </defs>
+</svg>
+
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"WebPage","@id":"https://frqncy.network/water/","url":"https://frqncy.network/water/","hasPart":[{"@type":"WebPageElement","name":"Five small things, repeated.","url":"https://frqncy.network/water/#five-small-things-repeated"}]}</script>
+</head>
+<body>
+
+<nav class="snav">
+  <div class="snav-left">
+    <a href="/explore.html" class="snav-logo">FRQNCY<span class="snav-badge">NETWORK</span></a>
+    <div class="breadcrumb">
+      <a href="../education/index.html">Education</a><span class="sep">/</span>
+      <a href="../lifestyle/index.html">Lifestyle</a><span class="sep">/</span>
+      <span>Water</span>
+    </div>
+  </div>
+  <div style="display:flex;align-items:center;gap:0.75rem;flex-shrink:0">
+    <a href="/people/" class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">People</a>
+    <a href="/books/"  class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Books</a>
+    <a href="/orgs/"   class="snav-back" style="border:none;padding:0;font-size:0.64rem;letter-spacing:0.12em">Orgs</a>
+    <a href="/aligned/" class="snav-back">Aligned</a>
+    <a href="/" class="snav-back">← Main</a>
+  </div>
+</nav>
+
+<!-- ════════════════════════════════════════════════════
+     HERO — 4K looping ocean video. Cinematic surface.
+     ════════════════════════════════════════════════════ -->
+<section class="hero">
+  <img class="hero-poster"
+       src="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&q=85&w=2400"
+       alt="Ocean wave at golden hour"
+       aria-hidden="true" decoding="async">
+  <video class="hero-video" autoplay muted loop playsinline preload="metadata"
+         poster="https://images.unsplash.com/photo-1500375592092-40eb2168fd21?auto=format&fit=crop&q=85&w=2400"
+         aria-hidden="true">
+    <source src="https://videos.pexels.com/video-files/1409899/1409899-uhd_3840_2160_25fps.mp4" type="video/mp4">
+  </video>
+
+  <div class="hero-inner">
+    <div>
+      <div class="hero-eyebrow">Lifestyle · Topic 0001 of 146 · The artwork begins</div>
+      <h1 class="hero-title">Water</h1>
+      <p class="hero-desc">
+        The element that carries information. <em>What we drink, what we are made of, and what listens.</em>
+      </p>
+      <div class="hero-quote">
+        Empty your mind. Be formless, shapeless — like water. <em>Be water, my friend.</em>
+        <cite>Bruce Lee</cite>
+      </div>
+    </div>
+    <svg class="hero-crystal" aria-hidden="true"><use href="#water-crystal"/></svg>
+  </div>
+  <div class="scroll-hint">descend</div>
+<p class="byline" style="font-family:'Jost',sans-serif;font-size:0.66rem;letter-spacing:0.1em;text-transform:uppercase;color:var(--text-dim);margin:1.25rem 0 0;text-align:center;line-height:1.7">Edited by <a href="/people/orlando/" style="color:var(--text-dim);border-bottom:1px solid currentColor">Orlando Eisenreich</a> · Standards: <a href="/editorial-standards/" style="color:var(--text-dim);border-bottom:1px solid currentColor">FRQNCY Editorial</a> · Updated <time datetime="2026-04-29">April 29, 2026</time></p>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     WAVE DIVIDER — first wave
+     ════════════════════════════════════════════════════ -->
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 2880 120" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+    <path class="w3" fill="rgba(74, 122, 181, 0.18)"
+          d="M0,80 C240,30 480,30 720,55 C960,80 1200,100 1440,80 C1680,60 1920,30 2160,55 C2400,80 2640,100 2880,80 L2880,120 L0,120 Z"/>
+    <path class="w2" fill="rgba(196, 151, 58, 0.10)"
+          d="M0,90 C240,60 480,60 720,75 C960,90 1200,105 1440,90 C1680,75 1920,60 2160,75 C2400,90 2640,105 2880,90 L2880,120 L0,120 Z"/>
+    <path class="w1" fill="rgba(245, 248, 251, 0.08)"
+          d="M0,100 C240,80 480,80 720,90 C960,100 1200,110 1440,100 C1680,90 1920,80 2160,90 C2400,100 2640,110 2880,100 L2880,120 L0,120 Z"/>
+  </svg>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     PRELUDE — the opening prose, anchored by Lao Tzu
+     ════════════════════════════════════════════════════ -->
+<main class="water-body">
+
+<section class="section section-narrow fade-up">
+  <p class="lede">
+    Most of what you are made of has been somewhere else first — in a glacier, a cloud,
+    the inside of a redwood, the body of an animal that drank from a river you've never seen.
+    Water is the only material in your daily life that has a memory of every shape it has ever held.
+  </p>
+  <p>
+    Here is what's worth remembering about it. What it does. How to relate to it. What serious
+    researchers have observed when they paid attention. Where the science ends and the experiment begins.
+  </p>
+  <blockquote>
+    Nothing in the world is as soft and yielding as water. Yet for dissolving the hard and inflexible,
+    nothing can surpass it.
+    <cite>Lao Tzu · Tao Te Ching, Verse 78</cite>
+  </blockquote>
+</section>
+
+<div class="bleed fade-up">
+  <img src="https://images.unsplash.com/photo-1518837695005-2083093ee35b?auto=format&fit=crop&q=85&w=2400"
+       alt="Sunlight refracting through deep ocean water" loading="lazy" decoding="async">
+  <div class="bleed-cap">
+    Water remembers everything that has ever touched it.
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     I — THE FOURTH PHASE — Pollack
+     ════════════════════════════════════════════════════ -->
+<section class="section fade-up">
+  <span class="label">I · The fourth phase</span>
+  <h2><strong>Crystals</strong> in motion.</h2>
+  <p class="lede">
+    For most of modern science, water has had three phases — solid, liquid, vapour. Then in 2013,
+    Gerald Pollack, a bioengineer at the University of Washington, published a book arguing for
+    a fourth.
+  </p>
+  <p>
+    He called it <em>EZ water</em> — exclusion-zone water. Place a hydrophilic surface (a gel, a
+    clean root, the inside of a blood vessel) in contact with ordinary water and a structured layer
+    forms next to it. Hexagonal. More ordered than the bulk around it. Capable of excluding solutes
+    and holding a slight negative charge. It behaves less like a liquid and more like an ice that
+    hasn't frozen — closer in geometry to crystal than to flowing water. It's powered by infrared
+    light, which is everywhere — including, abundantly, the inside of your body.
+  </p>
+
+  <div class="crystal-feature">
+    <svg class="crystal-feature-svg" viewBox="-100 -100 200 200" aria-hidden="true">
+      <defs>
+        <radialGradient id="cfFill" cx="50%" cy="40%" r="60%">
+          <stop offset="0%"  stop-color="#F5F8FB" stop-opacity="0.5"/>
+          <stop offset="50%" stop-color="#4A7AB5" stop-opacity="0.28"/>
+          <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+        </radialGradient>
+        <linearGradient id="cfEdge" x1="0%" y1="0%" x2="100%" y2="100%">
+          <stop offset="0%"  stop-color="#F5F8FB" stop-opacity="0.95"/>
+          <stop offset="100%" stop-color="#C4973A" stop-opacity="0.75"/>
+        </linearGradient>
+        <radialGradient id="cfGlow" cx="50%" cy="50%" r="50%">
+          <stop offset="0%"  stop-color="#C4973A" stop-opacity="0.32"/>
+          <stop offset="60%" stop-color="#4A7AB5" stop-opacity="0.12"/>
+          <stop offset="100%" stop-color="#0B1C3D" stop-opacity="0"/>
+        </radialGradient>
+      </defs>
+      <!-- Pulsing glow halo -->
+      <circle cx="0" cy="0" r="95" fill="url(#cfGlow)" class="cf-glow-pulse"/>
+      <g class="cf-spin">
+        <g class="cf-breathe">
+          <polygon points="0,-80 69,-40 69,40 0,80 -69,40 -69,-40"
+                   fill="url(#cfFill)"
+                   stroke="url(#cfEdge)" stroke-width="0.8" stroke-linejoin="round"/>
+          <polygon points="0,-46 40,-23 40,23 0,46 -40,23 -40,-23"
+                   fill="none"
+                   stroke="rgba(245, 248, 251, 0.6)" stroke-width="0.5"
+                   transform="rotate(30)"/>
+          <g fill="rgba(245, 248, 251, 0.95)">
+            <circle cx="0"   cy="-80" r="2.8"/>
+            <circle cx="69"  cy="-40" r="2.8"/>
+            <circle cx="69"  cy="40"  r="2.8"/>
+            <circle cx="0"   cy="80"  r="2.8"/>
+            <circle cx="-69" cy="40"  r="2.8"/>
+            <circle cx="-69" cy="-40" r="2.8"/>
+          </g>
+          <g stroke="rgba(196, 151, 58, 0.5)" stroke-width="0.4" fill="none">
+            <line x1="0" y1="-80" x2="0"   y2="80"/>
+            <line x1="-69" y1="-40" x2="69"  y2="40"/>
+            <line x1="-69" y1="40"  x2="69"  y2="-40"/>
+          </g>
+          <circle cx="0" cy="0" r="3.5" fill="rgba(196, 151, 58, 0.98)"/>
+          <circle cx="0" cy="0" r="11" fill="none" stroke="rgba(196, 151, 58, 0.45)" stroke-width="0.4"/>
+        </g>
+      </g>
+    </svg>
+    <blockquote style="margin: 0; border-left: 0; padding: 0; max-width: 100%;">
+      Water is structured, charged, and alive.
+      <cite>Gerald Pollack</cite>
+    </blockquote>
+  </div>
+
+  <p>
+    The implications are large. Cellular hydration is not a matter of quantity alone — the geometry
+    of the water inside us is doing real work. Every interface between tissue and water runs on a
+    structured layer that bulk-water chemistry does not predict. Mainstream science is mixed on
+    Pollack's full picture. Mainstream science has been wrong about water before. Worth watching.
+  </p>
+</section>
+
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 2880 120" preserveAspectRatio="none">
+    <path class="w3" fill="rgba(74, 122, 181, 0.16)" d="M0,70 C240,30 480,30 720,55 C960,80 1200,90 1440,70 C1680,50 1920,30 2160,55 C2400,80 2640,90 2880,70 L2880,120 L0,120 Z"/>
+    <path class="w2" fill="rgba(196, 151, 58, 0.10)" d="M0,90 C240,70 480,70 720,80 C960,90 1200,100 1440,90 C1680,80 1920,70 2160,80 C2400,90 2640,100 2880,90 L2880,120 L0,120 Z"/>
+    <path class="w1" fill="rgba(245, 248, 251, 0.08)" d="M0,100 C240,90 480,90 720,95 C960,100 1200,105 1440,100 C1680,95 1920,90 2160,95 C2400,100 2640,105 2880,100 L2880,120 L0,120 Z"/>
+  </svg>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     II — THE VORTEX — Schauberger
+     ════════════════════════════════════════════════════ -->
+<section class="section fade-up">
+  <span class="label">II · The vortex</span>
+  <h2>Before the laboratory <strong>named it,</strong> a forester was watching.</h2>
+  <p>
+    Half a century before Pollack put a name on the fourth phase, an Austrian forester named
+    Viktor Schauberger was making the same observation in the field. He spent his life watching
+    streams in the Alps and noticed that the most alive water — the kind trout could leap up,
+    the kind a body felt different drinking from — moved in a particular way. It vortexed. It
+    spiralled. It stayed cool, kept itself in the shadow of forest canopy, drew oxygen down with
+    it as it descended.
+  </p>
+  <blockquote>
+    Comprehend and copy nature.
+    <cite>Viktor Schauberger</cite>
+  </blockquote>
+  <p>
+    His framework — implosion rather than explosion, suction rather than pressure, inward spirals
+    as the natural movement of energetic systems — was widely dismissed in his lifetime. It's now
+    being recovered piecemeal: by people building vortex water-filtration systems, by structural-water
+    researchers, by engineers who notice that almost everything nature does well moves in a curve
+    rather than a straight line.
+  </p>
+  <p>
+    The lesson he kept giving. Water does not want to flow in pipes. It wants to spiral.
+    It wants temperature gradients. It wants shade and movement and the company of the minerals
+    it grew up around. Modern water infrastructure is built against every one of these preferences.
+    The cost shows up downstream — in our cells.
+  </p>
+</section>
+
+<div class="bleed fade-up">
+  <img src="https://images.unsplash.com/photo-1502082553048-f009c37129b9?auto=format&fit=crop&q=85&w=2400"
+       alt="Concentric ripples on still water surface" loading="lazy" decoding="async">
+  <div class="bleed-cap">
+    Implosion, not explosion.<br>
+    The shape water chooses when nobody is forcing it.
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     FORMS — the same substance, many shapes
+     ════════════════════════════════════════════════════ -->
+<section class="section section-wide fade-up">
+  <span class="label">The forms</span>
+  <h2>One substance, <strong>many shapes.</strong></h2>
+  <p style="max-width: 60ch;">
+    Most science textbooks teach three states. Reality has more — both in the laboratory and in
+    the river. The same H₂O takes different geometries depending on temperature, pressure,
+    surface, and stillness. Each form behaves differently. Each one is doing something specific.
+  </p>
+
+  <h3 style="margin-top: 2.5rem; font-size: 0.62rem; letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold-light); font-family: var(--body); font-style: normal; font-weight: 400; opacity: 0.85;">— States</h3>
+  <div class="forms-grid">
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Solid</div>
+      <h4>Ice</h4>
+      <p>Crystalline lattice. Less dense than the liquid that produced it — the rare exception that lets lakes freeze from the top down and life survive underneath.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Liquid</div>
+      <h4>The everyday</h4>
+      <p>Loose hydrogen-bonded clusters constantly forming and breaking. Anomalous in dozens of ways. The most-used substance on Earth and the least-understood.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Vapour</div>
+      <h4>Steam, mist, fog</h4>
+      <p>Free molecules in air. The way water travels around the planet, around your kitchen, around the inside of your lungs.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Plasma</div>
+      <h4>Supercritical</h4>
+      <p>Above 374°C and 220 bar — neither liquid nor vapour. Used in industrial extraction, found near deep-sea vents. Rare on the surface, common deeper in.</p>
+    </div>
+    <div class="form-cell" style="background: linear-gradient(135deg, rgba(196,151,58,0.10) 0%, rgba(74,122,181,0.08) 60%); border: 1px solid rgba(196, 151, 58, 0.2);">
+      <div class="form-cell-eyebrow" style="color: var(--gold);">Fourth phase · EZ</div>
+      <h4>Structured</h4>
+      <p>The hexagonal lattice Pollack named — exclusion-zone water against hydrophilic surfaces. Powered by infrared light. Possibly the most consequential of all of them.</p>
+    </div>
+  </div>
+
+  <h3 style="margin-top: 3rem; font-size: 0.62rem; letter-spacing: 0.42em; text-transform: uppercase; color: var(--gold-light); font-family: var(--body); font-style: normal; font-weight: 400; opacity: 0.85;">— Sources in nature</h3>
+  <div class="forms-grid">
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Spring</h4>
+      <p>Filtered through rock for years, sometimes centuries. Mineralised by the geology it travelled through. The water human bodies evolved on.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Rain</h4>
+      <p>Distilled by evaporation, re-charged on the way down through the atmosphere. Soft, low-mineral, alive in a different way from spring.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Snow &amp; glacier</h4>
+      <p>Slow rain. Held in crystal for years or millennia. Some of the cleanest fresh water remaining on the planet, melting fast.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Dew &amp; mist</h4>
+      <p>Atmospheric water condensing onto leaves overnight. Forests collect it. The ancient Mediterranean and Atacama still farm it.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>River</h4>
+      <p>Spring water in motion, gathering minerals and information from every metre it travels. Schauberger's living water — when allowed to spiral and shade.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Aquifer</h4>
+      <p>Underground reserves, often ancient. The world's largest fresh-water bank — and the one being drained fastest by industrial agriculture.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Ocean</h4>
+      <p>97% of the planet's water. The salt makes it undrinkable; the mineral richness makes it foundational. Every body's blood plasma is roughly seawater minus a few salts.</p>
+    </div>
+    <div class="form-cell">
+      <div class="form-cell-eyebrow">Source</div>
+      <h4>Living tissue</h4>
+      <p>The water in cells. ~60% of you, by mass. Hydrating the body is partly drinking; partly sleeping, eating fruit, resting in shade, breathing slowly.</p>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     III — THE WAVE — Thich Nhat Hanh interlude
+     ════════════════════════════════════════════════════ -->
+<section class="section section-narrow fade-up" style="text-align:center;">
+  <span class="label" style="justify-content:center; display:flex;">An interlude</span>
+  <blockquote style="border-left:0; padding: 0; margin: 0 auto; text-align:center; max-width: 26ch; font-size: clamp(2rem, 4vw, 3.4rem);">
+    Enlightenment for a wave is the moment the wave realizes it is water.
+    <cite>Thich Nhat Hanh</cite>
+  </blockquote>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     IV — THE CRYSTAL — Emoto, honest framing
+     ════════════════════════════════════════════════════ -->
+<section class="section fade-up">
+  <span class="label">III · The crystal</span>
+  <h2><strong>Beautiful</strong> contested photographs.</h2>
+  <p>
+    No discussion of water can quite avoid the work of Masaru Emoto. The Japanese researcher
+    spent decades photographing the crystals that form when water is frozen slowly under
+    different conditions — exposed to music, words, silence, prayer, fluorescent light. The
+    images he produced — symmetrical and feathered when the water was treated kindly, fragmented
+    and irregular when it wasn't — became some of the most-circulated photographs in the
+    consciousness-and-water conversation.
+  </p>
+  <p>
+    Mainstream science was not gentle. Emoto's protocols lacked rigorous controls. The results
+    were not independently reproduced under blinded conditions. The interpretations went well
+    beyond what the data supported. None of that is in dispute. What is also true: the photographs
+    themselves are remarkable. Water genuinely forms different crystal patterns under different
+    physical conditions. The underlying intuition — water responds to the environment in which it
+    is held — is not absurd.
+  </p>
+  <p>
+    Take the photographs as art, not proof. Hold the question they ask. Does the substance of
+    which we are mostly made remember more than chemistry alone accounts for? Do not insist on
+    an answer the data does not give yet.
+  </p>
+</section>
+
+<div class="wave-divider" aria-hidden="true">
+  <svg viewBox="0 0 2880 120" preserveAspectRatio="none">
+    <path class="w3" fill="rgba(74, 122, 181, 0.18)" d="M0,80 C240,40 480,40 720,60 C960,80 1200,95 1440,80 C1680,65 1920,40 2160,60 C2400,80 2640,95 2880,80 L2880,120 L0,120 Z"/>
+    <path class="w2" fill="rgba(196, 151, 58, 0.12)" d="M0,90 C240,65 480,65 720,80 C960,95 1200,105 1440,90 C1680,75 1920,65 2160,80 C2400,95 2640,105 2880,90 L2880,120 L0,120 Z"/>
+    <path class="w1" fill="rgba(245, 248, 251, 0.07)" d="M0,100 C240,85 480,85 720,93 C960,100 1200,108 1440,100 C1680,92 1920,85 2160,93 C2400,100 2640,108 2880,100 L2880,120 L0,120 Z"/>
+  </svg>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     V — THREE LAYERS OF QUALITY
+     ════════════════════════════════════════════════════ -->
+<section class="section section-wide fade-up">
+  <span class="label">Three layers of quality</span>
+  <h2>Water gets <strong>better</strong> in three steps. Most filtration only handles the first.</h2>
+  <p style="max-width: 60ch;">
+    The honest practical question, downstream of the science: what should you actually drink?
+    Three nested layers, each more demanding than the last. Most water you encounter handles
+    layer one. A small minority handles layer two. Layer three is where the interesting work is.
+  </p>
+
+  <div class="descent">
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num"><em>I</em>&thinsp;Surface</span>
+        <span class="layer-title"><strong>Contamination.</strong> What's in the water that shouldn't be.</span>
+      </div>
+      <p>
+        Tap water in most developed countries is regulated for safety, not vitality. Chlorine,
+        chloramine, fluoride at municipal-level dosing, agricultural runoff, pharmaceutical
+        traces, microplastics, residual heavy metals, sometimes elevated PFAS. Reverse-osmosis
+        (RO) filtration removes most of these. A whole-house carbon-block system handles the
+        chlorine in your shower water — also a meaningful exposure path. This is the floor.
+      </p>
+    </div>
+
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num"><em>II</em>&thinsp;Mid-depth</span>
+        <span class="layer-title"><strong>Mineralisation.</strong> What was in the water that should be.</span>
+      </div>
+      <p>
+        RO strips minerals along with contaminants. Drinking pure RO long-term gradually
+        demineralises the body. Re-mineralisation — natural-source minerals, post-filter
+        cartridges, a pinch of Celtic or Himalayan salt in the first glass of the day — restores
+        calcium, magnesium, potassium, sodium, trace minerals. The body absorbs minerals from
+        water more efficiently than from food. Most filtration setups skip this layer entirely.
+      </p>
+      <div class="ms-callout">
+        <div class="ms-label">μS / cm</div>
+        <div class="ms-body">
+          <strong>Microsiemens per centimetre</strong> — the practical reading you can take with a
+          twenty-dollar TDS meter. It measures conductivity, which tracks dissolved minerals.
+          A useful map:
+          <ul class="ms-scale">
+            <li><span>Distilled / fresh RO</span><span>~0–10 μS/cm</span></li>
+            <li><span>Re-mineralised RO (good)</span><span>50–200 μS/cm</span></li>
+            <li><span>Soft spring water (Lauretana)</span><span>~14 μS/cm</span></li>
+            <li><span>Hard spring water (Evian)</span><span>~580 μS/cm</span></li>
+            <li><span>Typical municipal tap</span><span>200–800 μS/cm</span></li>
+            <li><span>Hard tap or bore</span><span>800–2000+ μS/cm</span></li>
+            <li><span>Sea water</span><span>~50,000 μS/cm</span></li>
+          </ul>
+          The reading does not tell you <em>which</em> minerals are dissolved. It tells you how much.
+          Pair it with knowing where the water came from.
+        </div>
+      </div>
+    </div>
+
+    <div class="layer">
+      <div class="layer-head">
+        <span class="layer-num"><em>III</em>&thinsp;Depth</span>
+        <span class="layer-title"><strong>Structure.</strong> The contested but interesting layer.</span>
+      </div>
+      <p>
+        Pollack's exclusion-zone water. Schauberger's vortex hydraulics. Emoto's photographs.
+        All gesturing at the same proposition: water carries order beyond H₂O molecules, and that
+        order matters. Modern instrumentation has not validated every claim. Some are speculative.
+        Some are robust. Take the laboratory work where it lands. Treat your drinking water as
+        more than a chemical formula. Honour the traditions that figured out the
+        spring-water-versus-piped-water taste before anyone could measure why.
+      </p>
+    </div>
+  </div>
+</section>
+
+<div class="bleed fade-up">
+  <img src="https://images.unsplash.com/photo-1432405972618-c60b0225b8f9?auto=format&fit=crop&q=85&w=2400"
+       alt="Looking up through deep blue ocean water toward the surface" loading="lazy" decoding="async">
+  <div class="bleed-cap">
+    Depth carries pressure. <em>Pressure carries information.</em>
+  </div>
+</div>
+
+<!-- ════════════════════════════════════════════════════
+     VI — THE PRACTICE
+     ════════════════════════════════════════════════════ -->
+<section class="section fade-up">
+  <span class="label">A practice</span>
+  <h2 id="five-small-things-repeated">Five small things, repeated.</h2>
+  <p>
+    None of the science settles every question. The practice doesn't have to wait for it.
+    Five small things that almost every serious water tradition agrees on, that almost every
+    water-quality study supports, and that take roughly a week to install in a life:
+  </p>
+
+  <div class="practice">
+    <div class="step">
+      <div class="step-num">i</div>
+      <div class="step-body">
+        <strong>Filter at home.</strong>
+        <p>RO with re-mineralisation is the practical floor. Whole-house carbon for the shower if you can.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">ii</div>
+      <div class="step-body">
+        <strong>Glass and steel only.</strong>
+        <p>Avoid plastic bottles, especially warm ones. Avoid plastic kettles. The microplastic load is real and avoidable.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">iii</div>
+      <div class="step-body">
+        <strong>Mineralise the first glass.</strong>
+        <p>A pinch of unrefined sea salt — Celtic, Himalayan, Atlantic — in the first water of the day. Real spring water when you can find it.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">iv</div>
+      <div class="step-body">
+        <strong>Drink consciously.</strong>
+        <p>Sip, don't gulp. The Japanese habit of acknowledging water with a moment of attention before drinking is not just ceremony. The body absorbs slow water differently.</p>
+      </div>
+    </div>
+    <div class="step">
+      <div class="step-num">v</div>
+      <div class="step-body">
+        <strong>Notice what changes.</strong>
+        <p>One month of clean, mineralised, structurally-aware water reveals how much fatigue and "I don't drink enough" was actually water that wasn't worth drinking.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ════════════════════════════════════════════════════
+     VII — PICKS — mankind-aligned
+     ════════════════════════════════════════════════════ -->
+<section class="section section-wide fade-up">
+  <span class="label">FRQNCY picks</span>
+  <h2>Tools and texts, deeply <strong>vetted.</strong></h2>
+  <p style="max-width: 60ch;">
+    A small list, kept honest. Each entry below has either lived in real homes long enough to
+    have an opinion about, or has been read carefully enough to vouch for. See
+    <a href="/aligned/">Aligned Goods</a> for the full curated list and the
+    <a href="/proposals/EDITORIAL-STANDARDS.md">editorial standards</a> that govern how a pick gets made.
+  </p>
+
+  <div class="picks">
+    <div class="pick">
+      <div class="pick-eyebrow">Filtration · ✦ pick</div>
+      <h4>Eva Water</h4>
+      <p>
+        Structured-water purification at home. RO removes the contamination, then a re-mineralisation
+        and structuring stage restores molecular coherence. The closest a domestic appliance gets to
+        drinking from a real spring.
+      </p>
+      <a class="pick-link" href="https://eva.water/" target="_blank" rel="noopener noreferrer">Visit Eva Water →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Vessel</div>
+      <h4>Klean Kanteen</h4>
+      <p>
+        Steel water bottle. No plastic, no liner, no microplastics into your day. Climate-neutral certified.
+        The one bottle that earns the years of use it gets — and the only way to keep your filtration work
+        intact between home and wherever you're going.
+      </p>
+      <a class="pick-link" href="https://www.kleankanteen.com/" target="_blank" rel="noopener noreferrer">Visit Klean Kanteen →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Book</div>
+      <h4>The Fourth Phase of Water</h4>
+      <p>
+        Gerald Pollack, 2013. The clearest exposition of EZ water and what it implies for biology.
+        Technical but readable. One of the most consequential science books of the last decade.
+        Worth slow reading.
+      </p>
+      <a class="pick-link" href="https://www.ebnerandsons.com/products/the-fourth-phase-of-water-book-by-dr-gerald-pollack" target="_blank" rel="noopener noreferrer">Find the book →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Spring water</div>
+      <h4>Lauretana &amp; Mountain Valley</h4>
+      <p>
+        Two of the cleanest commercial spring waters available. Lauretana from the Italian Alps —
+        among the lowest mineral profiles measured. Mountain Valley from Arkansas — bottled at
+        source in glass since 1871. Imperfect substitutes for a real spring, but real ones.
+      </p>
+      <a class="pick-link" href="https://www.lauretana.com/en/" target="_blank" rel="noopener noreferrer">Visit Lauretana →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Book</div>
+      <h4>Living Water</h4>
+      <p>
+        Olof Alexandersson's biography of Viktor Schauberger. The clearest English-language entry
+        into Schauberger's work and the framework of implosion, vortex, and natural water movement.
+        Out of print in places — worth the hunt.
+      </p>
+      <a class="pick-link" href="https://www.goodreads.com/book/show/686081.Living_Water" target="_blank" rel="noopener noreferrer">Find the book →</a>
+    </div>
+
+    <div class="pick">
+      <div class="pick-eyebrow">Book</div>
+      <h4>The Hidden Messages in Water</h4>
+      <p>
+        Masaru Emoto's photographs, presented as the author intended. Take the science with the
+        scepticism it deserves. Take the images as art, and as a question worth sitting with.
+        A beautiful book either way.
+      </p>
+      <a class="pick-link" href="https://www.goodreads.com/book/show/40345.The_Hidden_Messages_in_Water" target="_blank" rel="noopener noreferrer">Find the book →</a>
+    </div>
+  </div>
+
+  <p style="max-width: 60ch; margin-top: 2.5rem; font-size: 0.92rem; color: rgba(245, 248, 251, 0.62);">
+    More water-related entries — filtration tools, bottles, related reading — sit on the broader
+    <a href="/aligned/">Aligned Goods</a> shelf, with the
+    <a href="/proposals/EDITORIAL-STANDARDS.md">editorial standards</a> visible per entry. The
+    short list above is what we'd recommend first.
+  </p>
+</section>
+
+</main>
+
+<!-- ════════════════════════════════════════════════════
+     CLOSING — Bruce Lee in full. The shape water takes.
+     ════════════════════════════════════════════════════ -->
+<section class="closing fade-up">
+  <div class="closing-bg" aria-hidden="true"></div>
+  <div class="closing-inner">
+    <p>
+      You put water in a cup, it becomes the cup.<br>
+      You put water in a bottle, it becomes the bottle.<br>
+      You put it in a teapot, it becomes the teapot.<br>
+      <em>Water can flow, or it can crash.</em>
+    </p>
+    <p style="font-size: clamp(1.8rem, 3vw, 2.6rem); margin-top: 1.5rem;">
+      <strong>Be water,</strong> my friend.
+    </p>
+    <cite>Bruce Lee</cite>
+  </div>
+</section>
+
+<footer class="site-foot">
+  <span class="wm">FRQNCY</span>
+  <span class="legal">© 2026 · All frequencies reserved · Topic 0001 of 146 · The artwork begins</span>
+</footer>
+
+<script>
+// Reveal-on-scroll. Sections rise gently like bubbles surfacing.
+(function () {
+  if (!('IntersectionObserver' in window)) {
+    document.querySelectorAll('.fade-up').forEach(el => el.classList.add('in'));
+    return;
+  }
+  const io = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        entry.target.classList.add('in');
+        io.unobserve(entry.target);
+      }
+    });
+  }, { rootMargin: '0px 0px -10% 0px', threshold: 0.05 });
+  document.querySelectorAll('.fade-up').forEach(el => io.observe(el));
+})();
+
+// Pause hero video when off-screen to save bandwidth
+(function () {
+  const video = document.querySelector('.hero-video');
+  if (!video) return;
+  const ob = new IntersectionObserver((entries) => {
+    entries.forEach(e => {
+      if (e.isIntersecting) video.play().catch(() => {});
+      else video.pause();
+    });
+  }, { threshold: 0 });
+  ob.observe(video);
+})();
+</script>
+</body>
+</html>

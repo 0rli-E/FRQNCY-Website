@@ -3,7 +3,7 @@
  * FRQNCY — Notion → crypto-projects.json sync script
  *
  * Pulls crypto project data from a Notion database and generates
- * the JSON file that powers the /v2/crypto/projects.html page.
+ * the JSON file that powers the /crypto/projects.html page.
  *
  * ─── SETUP ───────────────────────────────────────────────────
  *

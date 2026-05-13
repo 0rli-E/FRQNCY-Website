@@ -13,7 +13,7 @@
 | 200 | **1,016** |
 | Non-200 | **0** |
 
-Every URL in `sitemap.xml` resolves with `HTTP 200`. No 404s, no 5xx, no infinite redirects. The 308 trailing-slash redirects on `/v2/<page>.html → /v2/<page>` are followed correctly under `-L`.
+Every URL in `sitemap.xml` resolves with `HTTP 200`. No 404s, no 5xx, no infinite redirects. The 308 trailing-slash redirects on `/v2/<page>.html → /<page>` are followed correctly under `-L`.
 
 ## 2 · Render audit (Puppeteer) — ten surfaces
 
@@ -22,12 +22,12 @@ Cold load via headless Chromium, viewport 1440×900, `waitUntil: networkidle0`, 
 | Surface | Status | Load ms | Body words | JS errors |
 |---|---|---|---|---|
 | home | 200 | 3,047 | 1,679 | 0 |
-| /v2/explore | 200 | 1,386 | 3,785 | 0 |
-| /v2/money | 200 | 2,593 | 3,967 | 0 |
-| /v2/wellbeing | 200 | 1,411 | 3,951 | 0 |
-| /v2/fund | 200 | 1,021 | 4,168 | 0 |
-| /v2/crypto | 200 | 1,297 | 7,413 | 0 |
-| /v2/courses/crypto-fundamentals | 200 | 979 | 4,082 | **1** |
+| /explore | 200 | 1,386 | 3,785 | 0 |
+| /money | 200 | 2,593 | 3,967 | 0 |
+| /wellbeing | 200 | 1,411 | 3,951 | 0 |
+| /fund | 200 | 1,021 | 4,168 | 0 |
+| /crypto | 200 | 1,297 | 7,413 | 0 |
+| /courses/crypto-fundamentals | 200 | 979 | 4,082 | **1** |
 | /places/essencia | 200 | 976 | 1,364 | 0 |
 | /chart | 200 | 1,091 | 2,103 | 0 |
 | /my-frqncy | 200 | 926 | 7,098 | 0 |
@@ -42,7 +42,7 @@ Home page is the slowest cold-load at 3.0s — that's the d3 CDN fetch plus the 
 
 **Severity:** P0 (every visitor to a course page sees a JS exception in console; progress UI partially broken).
 
-**Symptom:** Stack trace from `https://frqncy.network/v2/courses/crypto-fundamentals/`:
+**Symptom:** Stack trace from `https://frqncy.network/courses/crypto-fundamentals/`:
 
 ```
 TypeError: Cannot set properties of null (setting 'textContent')
@@ -195,7 +195,7 @@ The preload tag fires, but the request mode doesn't match the actual script-tag 
 
 ## 4 · Confirmed non-issues
 
-- **Sitemap integrity:** 1,016 / 1,016 = 200. All 308 trailing-slash redirects (`/v2/foo.html → /v2/foo`) work cleanly.
+- **Sitemap integrity:** 1,016 / 1,016 = 200. All 308 trailing-slash redirects (`/v2/foo.html → /foo`) work cleanly.
 - **Home constellation:** 194 nodes / 363 links / 0 orphans / t-privacy present / `g.node` count 194 / 149,486 opaque canvas pixels / 0 JS errors. The blank-map bug from 2026-05-11 is fully resolved post-`?v=2026-05-11a` cache-buster deploy.
 - **Service-worker version:** sw.js v40 live. PRECACHE list correct; DATA_CACHE rotation expected on next activation.
 - **Asset moves:** `/scratch/*` returns 404 as intended (`_redirects` + `robots.txt` Disallow both in place).

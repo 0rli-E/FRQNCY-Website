@@ -50,7 +50,7 @@ Two parallel tracks, one mission. The **website** is the public face — the top
 - `/v2/explore.html` — interactive force-directed graph of the network
 - `/v2/watch/` — video library
 - `/v2/courses/` — 6 long-form courses
-- `/music/` · `/v2/music/` · `/v2/concerts/` — three-leg music surface
+- `/music/` · `/music-topic/` · `/v2/concerts/` — three-leg music surface
 - `/v2/fund/` · `/v2/crypto/` · `/v2/crypto/projects.html` · `/v2/crypto/explorer.html` — capital pillar pages
 - `/podcast` — the FRQNCY podcast page
 - `/social/` (NRG) — social layer (auth + feed, Astro-built)

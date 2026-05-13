@@ -38,7 +38,7 @@ The crypto rabbit hole you went down? It is still here — living inside Fund an
 
 **What is built so far:**
 
-A living network map you can walk through → [frqncy.network/v2/explore.html](https://frqncy.network/v2/explore.html)
+A living network map you can walk through → [frqncy.network/v2/explore.html](https://frqncy.network/explore.html)
 
 Curated resources across 118 topics. Each one vetted, written on, with FRQNCY Picks where we have strong conviction.
 
@@ -54,7 +54,7 @@ Either way — it was good to have had you here, even briefly.
 
 — The FRQNCY Team
 
-[Walk the network →](https://frqncy.network/v2/explore.html)
+[Walk the network →](https://frqncy.network/explore.html)
 
 ---
 

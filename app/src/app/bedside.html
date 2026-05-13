@@ -14,6 +14,32 @@
         font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
         overflow-y: auto;
         overscroll-behavior: none;
+        transition: background 1200ms ease;
+      }
+
+      /* Bedside mode — once armed, the page calms. Background deepens to a
+         near-black navy. Non-essential chrome (toggles, sleep entry, footer
+         note, practice link, h1) fades to ~30% to reduce stimulation while
+         the time + disarm affordance stay prominent. Adapted from Apple's
+         Sleep Focus and Android Bedtime patterns. */
+      body.bedside-armed { background: #060f24; }
+      body.bedside-armed h1,
+      body.bedside-armed .toggle-row,
+      body.bedside-armed .sleep-entry,
+      body.bedside-armed .quiet-note,
+      body.bedside-armed .practice-link {
+        opacity: 0.32;
+        transition: opacity 1200ms ease;
+      }
+      body.bedside-armed .toggle-row:hover,
+      body.bedside-armed .toggle-row:focus-within,
+      body.bedside-armed .sleep-entry:hover,
+      body.bedside-armed .sleep-entry:focus-within {
+        opacity: 1;
+      }
+      body.bedside-armed .alarm-card {
+        border-color: rgba(196, 151, 58, 0.32);
+        background: linear-gradient(145deg, rgba(196, 151, 58, 0.06), rgba(196, 151, 58, 0.01));
       }
       .wrap {
         padding: calc(24px + env(safe-area-inset-top)) 24px calc(80px + env(safe-area-inset-bottom));
@@ -274,8 +300,10 @@
         background: rgba(11, 28, 61, 0.97);
         z-index: 200;
         display: none;
-        align-items: center; justify-content: center;
+        align-items: flex-start; justify-content: center;
         padding: 24px;
+        overflow-y: auto;
+        overscroll-behavior: contain;
       }
       .welcome-overlay.visible { display: flex; }
       .welcome-card {
@@ -284,7 +312,8 @@
         background: #13264F;
         border: 1px solid rgba(196, 151, 58, 0.18);
         border-radius: 22px;
-        padding: 32px 26px;
+        padding: 28px 22px;
+        margin: auto 0;  /* vertically center when content fits */
       }
       .welcome-eyebrow {
         font-size: 11px;
@@ -506,9 +535,14 @@
           welcomeOverlay.classList.add('visible');
         }
       } catch {}
-      welcomeCta.addEventListener('click', () => {
+      function dismissWelcome() {
         try { localStorage.setItem(WELCOME_ACK_KEY, '1'); } catch {}
         welcomeOverlay.classList.remove('visible');
+      }
+      welcomeCta.addEventListener('click', dismissWelcome);
+      // Tap outside the card also dismisses — common modal pattern.
+      welcomeOverlay.addEventListener('click', (e) => {
+        if (e.target === welcomeOverlay) dismissWelcome();
       });
 
       // Persist toggle state across launches. Each switch has a data-pref
@@ -601,6 +635,7 @@
           armed = !armed;
           arm.classList.toggle('armed', armed);
           arm.textContent = armed ? 'armed · tap to disarm' : 'arm for tonight';
+          document.body.classList.toggle('bedside-armed', armed);
           updateCountdown();
           return;
         }
@@ -614,6 +649,7 @@
             armed = false;
             arm.classList.remove('armed');
             arm.textContent = 'arm for tonight';
+            document.body.classList.remove('bedside-armed');
             // Clear smart-resume marker — no armed alarm to resume to.
             try { localStorage.removeItem('frqncy.bedside.last_arm_ts'); } catch {}
             updateCountdown();
@@ -671,6 +707,7 @@
           armed = true;
           arm.classList.add('armed');
           arm.textContent = 'armed · tap to disarm';
+          document.body.classList.add('bedside-armed');
           updateCountdown();
 
           // Record arm timestamp for the smart-resume routing in main.ts —
@@ -748,6 +785,7 @@
             armed = true;
             arm.classList.add('armed');
             arm.textContent = 'armed · tap to disarm';
+            document.body.classList.add('bedside-armed');
             const d = new Date(existing.timestamp);
             const hh = String(d.getHours()).padStart(2, '0');
             const mm = String(d.getMinutes()).padStart(2, '0');

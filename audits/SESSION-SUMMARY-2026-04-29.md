@@ -2,11 +2,11 @@
 
 Scope: every published sector except topics, watch, and the active-development zone (social, my-frqncy, app, music, frqncy-os, harness-proposals).
 
-Sectors covered: places (8), v2/courses (6), membership (1), books (284), people (89), media (74), orgs (102). Plus sitemap.xml.
+Sectors covered: places (8), courses (6), membership (1), books (284), people (89), media (74), orgs (102). Plus sitemap.xml.
 
 ## What was fixed
 
-### v2/courses — Course JSON-LD added to all 6 courses
+### courses — Course JSON-LD added to all 6 courses
 
 Every course now has a schema.org `Course` block with name, description, url, provider (FRQNCY Network), educationalLevel, inLanguage, isAccessibleForFree, numberOfLessons, and timeRequired (ISO 8601 duration computed from per-lesson durations).
 
@@ -30,7 +30,7 @@ Why this matters: Google indexes Course schema for the Courses search panel; wit
 | Sector | Was | Added | Now |
 | --- | --- | --- | --- |
 | places | 1 of 8 | 7 | 8 of 8 |
-| v2/courses | 0 | 7 (index + 6 courses) | full |
+| courses | 0 | 7 (index + 6 courses) | full |
 | membership | 0 | 1 | 1 |
 
 Total entries: 742 → 757. XML validated.
@@ -85,12 +85,12 @@ Probably intentional minimalism in the design, but worth noting: no cover image 
 ## Files modified
 
 ```
-v2/courses/conscious-living-foundations/index.html  (+1 jsonld block)
-v2/courses/crypto-fundamentals/index.html           (+1 jsonld block)
-v2/courses/meditation-101/index.html                (+1 jsonld block)
-v2/courses/quantum-grammar/index.html               (+1 jsonld block)
-v2/courses/quantum-reality/index.html               (+1 jsonld block)
-v2/courses/working-with-claude/index.html           (+1 jsonld block)
+courses/conscious-living-foundations/index.html  (+1 jsonld block)
+courses/crypto-fundamentals/index.html           (+1 jsonld block)
+courses/meditation-101/index.html                (+1 jsonld block)
+courses/quantum-grammar/index.html               (+1 jsonld block)
+courses/quantum-reality/index.html               (+1 jsonld block)
+courses/working-with-claude/index.html           (+1 jsonld block)
 media/bankless/index.html                           (CreativeWork → PodcastSeries)
 media/huberman-lab/index.html                       (CreativeWork → PodcastSeries)
 media/robots-podcast/index.html                     (CreativeWork → PodcastSeries)
@@ -105,6 +105,6 @@ audits/SESSION-SUMMARY-2026-04-29.md                (new — this file)
 
 Verify on the live site after deploy:
 1. `curl -s https://frqncy.network/sitemap.xml | grep -c '<url>'` should show 757
-2. Run a Google Rich Results test on `https://frqncy.network/v2/courses/meditation-101/` — should detect the Course schema
+2. Run a Google Rich Results test on `https://frqncy.network/courses/meditation-101/` — should detect the Course schema
 3. Run the same on `https://frqncy.network/media/huberman-lab/` — should detect PodcastSeries
 4. Hand the og:image gap to flash with a per-sector image-generation prompt; that's the next-biggest SEO unlock available.

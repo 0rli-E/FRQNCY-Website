@@ -8,7 +8,7 @@ This is the honest "where we are right now" snapshot. Don't trust feels — thes
 
 **Schema.org coverage on item pages.** Every item page in books (284), people (89), media (74), orgs (102), places (8) has correct JSON-LD with the right `@type`: Book, Person, CreativeWork (or PodcastSeries for the 4 confirmed podcasts), Organization, Place. As of 2026-04-29, all 6 courses have proper `Course` schema with computed durations. The homepage carries `WebSite` schema with a `SearchAction` declared (search-box rich result eligible).
 
-**Per-topic OG cards.** 173 of 177 topic pages reference a per-topic 1200×630 PNG at `/v2/og/<slug>.png`. The OG generation pipeline already exists; only 4 topic pages still use the generic placeholder. This is excellent compared to the rest of the site.
+**Per-topic OG cards.** 173 of 177 topic pages reference a per-topic 1200×630 PNG at `/og/<slug>.png`. The OG generation pipeline already exists; only 4 topic pages still use the generic placeholder. This is excellent compared to the rest of the site.
 
 **robots.txt is production-grade.** Disallows the right things — `/proposals/`, `/docs/`, `/scripts/`, `/CLAUDE.md`, `/AUDIT-REPORT.md`, archived versions, and the private app routes. References the sitemap correctly. Doesn't accidentally noindex anything important.
 
@@ -46,7 +46,7 @@ This is the honest "where we are right now" snapshot. Don't trust feels — thes
 
 **Internal linking is sparse between topic pages and item pages.** A topic page lists its curated resources, but the inverse isn't always true: a book page often doesn't link back to the topic(s) that anchor it. Cross-linking is the cheapest way to deepen topical authority. Phase 3.
 
-**Hero images on topic pages are external Unsplash URLs.** Externally hosted, not optimized for the page, and a third-party dependency. Migrating to self-hosted CDN-served images (or the existing `/v2/og/` PNGs as page heroes) would fix LCP and remove the external dep. Phase 2.
+**Hero images on topic pages are external Unsplash URLs.** Externally hosted, not optimized for the page, and a third-party dependency. Migrating to self-hosted CDN-served images (or the existing `/og/` PNGs as page heroes) would fix LCP and remove the external dep. Phase 2.
 
 **Plausible is wired but no SEO conversion goals are defined.** Plausible can track outbound clicks, signups, file downloads — none of those are configured. Phase 1.
 

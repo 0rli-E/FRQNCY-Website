@@ -50,7 +50,7 @@ Live channel → t.me/+Rl9WA4P0V2AzYWVi
 Top of every description:
 
 ```
-📚 Full free course → https://frqncy.network/v2/courses/crypto-fundamentals/
+📚 Full free course → https://frqncy.network/courses/crypto-fundamentals/
 💬 Crypto Beginner Telegram (live updates + Q&A) → https://t.me/+Rl9WA4P0V2AzYWVi
 ```
 
@@ -84,7 +84,7 @@ First step in the practical crypto onboarding: install Brave and make it your de
 • Why a privacy-first browser matters for crypto
 
 — Next lesson —
-#2 Open + Tour Your Kraken Account → https://frqncy.network/v2/courses/crypto-fundamentals/
+#2 Open + Tour Your Kraken Account → https://frqncy.network/courses/crypto-fundamentals/
 ```
 
 **Tags:**
@@ -117,7 +117,7 @@ Open a Kraken account and learn your way around the dashboard in one go. Kraken 
 • Reading your balances and order history
 
 — Next lesson —
-#3 Install Rabby & Phantom Wallets → https://frqncy.network/v2/courses/crypto-fundamentals/
+#3 Install Rabby & Phantom Wallets → https://frqncy.network/courses/crypto-fundamentals/
 ```
 
 **Tags:**
@@ -151,7 +151,7 @@ Two browser extensions, one workflow. Rabby for Ethereum and EVM chains. Phantom
 ⚠️ Before you do anything else: write down your seed phrase on paper. Never type it into a computer, never photograph it, never share it. Lesson #4 covers seed-phrase security in depth.
 
 — Next lesson —
-#4 Seed Phrase Security → https://frqncy.network/v2/courses/crypto-fundamentals/
+#4 Seed Phrase Security → https://frqncy.network/courses/crypto-fundamentals/
 ```
 
 **Tags:**
@@ -186,7 +186,7 @@ How to send and receive crypto in Rabby and Phantom. Reading addresses, choosing
 • The small-amount test send rule
 
 — Next lesson —
-#6 Deposit Crypto + Withdraw Fiat on Kraken → https://frqncy.network/v2/courses/crypto-fundamentals/
+#6 Deposit Crypto + Withdraw Fiat on Kraken → https://frqncy.network/courses/crypto-fundamentals/
 ```
 
 **Tags:**
@@ -218,7 +218,7 @@ How money moves in and out — deposit crypto from your wallet to Kraken, withdr
 • Network fees — what they are and how to choose
 
 — Next lesson —
-#7 Swap Onchain with Defillama → https://frqncy.network/v2/courses/crypto-fundamentals/
+#7 Swap Onchain with Defillama → https://frqncy.network/courses/crypto-fundamentals/
 ```
 
 **Tags:**
@@ -250,7 +250,7 @@ swap.defillama.com is an aggregator of aggregators — it routes your trade acro
 • When to use it vs. Titan (next lesson)
 
 — Next lesson —
-#8 Swap Onchain with Titan Exchange → https://frqncy.network/v2/courses/crypto-fundamentals/
+#8 Swap Onchain with Titan Exchange → https://frqncy.network/courses/crypto-fundamentals/
 ```
 
 **Tags:**
@@ -282,7 +282,7 @@ app.titan.exchange is your second-opinion router on Solana — sometimes Titan f
 • Slippage + MEV protection settings
 
 — Next lesson —
-#9 Common Scams (and how to avoid them) → https://frqncy.network/v2/courses/crypto-fundamentals/
+#9 Common Scams (and how to avoid them) → https://frqncy.network/courses/crypto-fundamentals/
 ```
 
 **Tags:**
@@ -316,7 +316,7 @@ Dexscreener.com is the search engine of the onchain world — every token, every
 • Saving watchlists
 
 — Next lesson —
-#11 Get to Know Coingecko → https://frqncy.network/v2/courses/crypto-fundamentals/
+#11 Get to Know Coingecko → https://frqncy.network/courses/crypto-fundamentals/
 ```
 
 **Tags:**
@@ -348,7 +348,7 @@ Coingecko is the Google of crypto market data — prices, market caps, categorie
 • Building a watchlist
 
 — Next lesson —
-#12 Set Up TradingView → https://frqncy.network/v2/courses/crypto-fundamentals/
+#12 Set Up TradingView → https://frqncy.network/courses/crypto-fundamentals/
 ```
 
 **Tags:**
@@ -383,7 +383,7 @@ TradingView is the standard charting tool — every trader you'll see on X is re
 🥋 Deeper dive (free): tradedevils.com/courses/white-belt/
 
 — Next lesson —
-#13 Sources on X → https://frqncy.network/v2/courses/crypto-fundamentals/
+#13 Sources on X → https://frqncy.network/courses/crypto-fundamentals/
 ```
 
 **Tags:**

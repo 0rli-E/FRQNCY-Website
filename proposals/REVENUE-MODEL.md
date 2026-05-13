@@ -102,7 +102,7 @@ Five plausible. None require breaking the principle above.
 
 ### 5. Fund pillar
 
-**State:** Conceptual. /v2/fund/ page exists. No deal flow tracking yet.
+**State:** Conceptual. /fund/ page exists. No deal flow tracking yet.
 
 **Mechanic:**
 - A small fund vehicle (LLC or DAO) invests in conscious-business companies the network surfaces.

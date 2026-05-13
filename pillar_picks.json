@@ -1,6 +1,6 @@
 {
   "$schema_version": 1,
-  "$purpose": "Curated 6-book picks per pillar — the *six books a person should read to understand this pillar*. Higher bar than domain-level picks. Used by the generator to render a 'FRQNCY picks for this pillar' section on each /v2/<pillar>/ page (task #65). The picks below are the working draft. Books that exist in books.json are referenced by id; books not yet in the bed are referenced by title + author + url as a stub for future bed entry.",
+  "$purpose": "Curated 6-book picks per pillar — the *six books a person should read to understand this pillar*. Higher bar than domain-level picks. Used by the generator to render a 'FRQNCY picks for this pillar' section on each /<pillar>/ page (task #65). The picks below are the working draft. Books that exist in books.json are referenced by id; books not yet in the bed are referenced by title + author + url as a stub for future bed entry.",
   "$generated": "2026-05-12",
   "$updated": "2026-05-12",
   "$status": "Draft — picks ratified by user, but implementation pending. Books-not-yet-in-bed need full entries (bio, quote, intro, image) before the pillar pages can render them.",
@@ -73,7 +73,7 @@
   "implementation_notes": {
     "next_step": "Add the 38 missing books to books.json with full FRQNCY-voice bios, quotes, intros, and cover images. Then update generate.js pillarPage() to render a 'FRQNCY picks for this pillar' section that reads from pillar_picks.json and falls back to dynamic top-6-by-pick-count if a pillar entry is missing.",
     "implementation_blocker": "Adding 38 books with proper editorial treatment is ~2 hours of curated writing. Best done as its own batch.",
-    "render_target": "/v2/<pillar>/ — between the hero and the topics grid",
+    "render_target": "/<pillar>/ — between the hero and the topics grid",
     "schema_version_compat": "Compatible with books.json v6 schema. Stub entries (in_bed: false) carry enough info for the generator to render a placeholder card while the bed entry is being written."
   }
 }

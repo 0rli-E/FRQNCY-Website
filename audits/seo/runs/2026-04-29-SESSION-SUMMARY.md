@@ -26,13 +26,13 @@ This is the consolidated summary of every SEO change shipped in this session. Ev
 
 ### Phase 2 — Technical SEO
 
-1. **BreadcrumbList sitewide (563 pages)** — every item page in books, people, places, media, orgs, v2/courses now carries BreadcrumbList JSON-LD. Three-level: FRQNCY → Sector → Item. Eligible for SERP breadcrumb display, replacing the URL string. Run log: `2026-04-29-phase-2.1-breadcrumb-rollout.md`.
+1. **BreadcrumbList sitewide (563 pages)** — every item page in books, people, places, media, orgs, courses now carries BreadcrumbList JSON-LD. Three-level: FRQNCY → Sector → Item. Eligible for SERP breadcrumb display, replacing the URL string. Run log: `2026-04-29-phase-2.1-breadcrumb-rollout.md`.
 
 2. **Real sitemap lastmod (152 entries updated)** — replaced the 2026-04-29 placeholder with git-tracked `last commit ISO date` per file. 589 entries that already happened to be 2026-04-29 are accurate (those files genuinely changed today). XML validates. Run log: `2026-04-29-phase-2.2-sitemap-lastmod.md`.
 
-3. **ItemList schema on 6 sector indexes** — books, people, places, media, orgs, v2/courses. Aligned skipped (no items yet). Each carries a numbered list of all items in the sector for SERP carousel eligibility. Run log: `2026-04-29-phase-2.3-itemlist.md`.
+3. **ItemList schema on 6 sector indexes** — books, people, places, media, orgs, courses. Aligned skipped (no items yet). Each carries a numbered list of all items in the sector for SERP carousel eligibility. Run log: `2026-04-29-phase-2.3-itemlist.md`.
 
-4. **Article schema on 174 topic pages** — normalized format across all v2/<topic>/ pages with `headline`, `description`, `image`, `datePublished` (from earliest git commit), `dateModified` (latest), `author: Organization (FRQNCY)`, `publisher`, `mainEntityOfPage`. 33 pages got the schema added; 141 already had it under a slightly different format. Run log: `2026-04-29-phase-2.4-article-schema.md`.
+4. **Article schema on 174 topic pages** — normalized format across all <topic>/ pages with `headline`, `description`, `image`, `datePublished` (from earliest git commit), `dateModified` (latest), `author: Organization (FRQNCY)`, `publisher`, `mainEntityOfPage`. 33 pages got the schema added; 141 already had it under a slightly different format. Run log: `2026-04-29-phase-2.4-article-schema.md`.
 
 5. **Organization schema on homepage** — added a second JSON-LD block alongside the existing WebSite schema. Includes logo (favicon.svg), founder (Orlando Eisenreich linked to /people/orlando/), foundingDate (2024), areaServed, knowsAbout (10 topical strengths), sameAs (Twitter only — Phase 5 expands), publishingPrinciples (link to /editorial-standards/). Foundation for Google Knowledge Graph. Run log: `2026-04-29-phase-2.5-organization-schema.md`.
 
@@ -42,7 +42,7 @@ This is the consolidated summary of every SEO change shipped in this session. Ev
 
 7. **ai.txt + robots.txt mirroring** — explicit AI-crawler policy. Allowed: ClaudeBot, anthropic-ai, GPTBot, ChatGPT-User, OAI-SearchBot, PerplexityBot, Google-Extended, Applebot-Extended, cohere-ai, CCBot, FacebookBot, MistralAI-User, Diffbot. Disallowed: Bytespider. Sitewide disallow on private routes (my-frqncy/dashboard, social/login, audits/, proposals/, etc.). robots.txt mirrors the AI-bot UA rules and references both llms.txt and ai.txt. Run log: `2026-04-29-phase-4.2-ai-txt.md`.
 
-8. **Section anchors + WebPage hasPart on topic pages** — 372 `<section class="resource-block">` elements got stable id attributes derived from their first heading or link slug, and 148 topic pages got a `WebPage` JSON-LD with `hasPart[]` listing the citable section URLs. Pattern: `https://frqncy.network/v2/meditation/#waking-up-sam-harris` is now a real deep link. AI engines can cite individual curated resources. Run log: `2026-04-29-phase-4.4-section-anchors.md`.
+8. **Section anchors + WebPage hasPart on topic pages** — 372 `<section class="resource-block">` elements got stable id attributes derived from their first heading or link slug, and 148 topic pages got a `WebPage` JSON-LD with `hasPart[]` listing the citable section URLs. Pattern: `https://frqncy.network/meditation/#waking-up-sam-harris` is now a real deep link. AI engines can cite individual curated resources. Run log: `2026-04-29-phase-4.4-section-anchors.md`.
 
 ### Phase 1 — Discovery scaffolding
 
@@ -133,18 +133,18 @@ curl -s https://frqncy.network/cb4283bd575faacde2dd9ce4de81db74.txt
 curl -s https://frqncy.network/sitemap.xml | grep -c "<lastmod>"
 
 # Schema on a representative topic page
-curl -s https://frqncy.network/v2/meditation/ | grep -c "application/ld+json"
+curl -s https://frqncy.network/meditation/ | grep -c "application/ld+json"
 # Should return 4: WebSite/Organization aren't on this page, but Article + BreadcrumbList + WebPage + (FAQPage when Phase 3 ships)
 
 # Organization schema on home
 curl -s https://frqncy.network/ | grep -A1 '"@type": "Organization"' | head -3
 
 # Google Rich Results test
-# https://search.google.com/test/rich-results?url=https://frqncy.network/v2/meditation/
+# https://search.google.com/test/rich-results?url=https://frqncy.network/meditation/
 # https://search.google.com/test/rich-results?url=https://frqncy.network/
 
 # Schema.org validator
-# https://validator.schema.org/?url=https://frqncy.network/v2/meditation/
+# https://validator.schema.org/?url=https://frqncy.network/meditation/
 ```
 
 ## Files modified (high-level)
@@ -172,14 +172,14 @@ MODIFIED:
   /places/index.html                             (+ ItemList JSON-LD; n=8)
   /media/index.html                              (+ ItemList JSON-LD; n=74)
   /orgs/index.html                               (+ ItemList JSON-LD; n=102)
-  /v2/courses/index.html                         (+ ItemList JSON-LD; n=6)
+  /courses/index.html                         (+ ItemList JSON-LD; n=6)
   /books/<slug>/index.html  × 284                (+ BreadcrumbList JSON-LD)
   /people/<slug>/index.html × 89                 (+ BreadcrumbList JSON-LD)
   /places/<slug>/index.html × 8                  (+ BreadcrumbList JSON-LD)
   /media/<slug>/index.html  × 74                 (+ BreadcrumbList JSON-LD)
   /orgs/<slug>/index.html   × 102                (+ BreadcrumbList JSON-LD)
-  /v2/courses/<slug>/index.html × 6              (+ BreadcrumbList JSON-LD)
-  /v2/<topic>/index.html    × 174                (+ Article JSON-LD where missing,
+  /courses/<slug>/index.html × 6              (+ BreadcrumbList JSON-LD)
+  /<topic>/index.html    × 174                (+ Article JSON-LD where missing,
                                                     + WebPage hasPart on 148,
                                                     + section ids on 372 resource blocks)
 ```

@@ -108,6 +108,67 @@
         letter-spacing: 1.6px;
         color: rgba(245, 245, 245, 0.26);
       }
+      /* Wind-down gate */
+      .settle {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #060f24;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 1000ms ease;
+      }
+      .settle.visible { opacity: 1; pointer-events: auto; }
+      .settle-content {
+        max-width: 360px;
+        padding: 24px;
+        text-align: center;
+      }
+      .settle-eyebrow {
+        font-size: 11px;
+        letter-spacing: 2.4px;
+        text-transform: lowercase;
+        color: rgba(196, 151, 58, 0.7);
+        margin-bottom: 18px;
+      }
+      .settle-title {
+        font-size: 32px;
+        font-weight: 100;
+        letter-spacing: 0.4px;
+        margin-bottom: 14px;
+        color: rgba(245, 245, 245, 0.92);
+      }
+      .settle-lede {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1.6;
+        color: rgba(245, 245, 245, 0.6);
+        margin-bottom: 36px;
+      }
+      .settle-cta {
+        padding: 14px 36px;
+        background: none;
+        border: 1px solid rgba(196, 151, 58, 0.5);
+        color: rgba(196, 151, 58, 0.9);
+        border-radius: 999px;
+        font-size: 13px;
+        letter-spacing: 1.6px;
+        text-transform: lowercase;
+        font-family: inherit;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: background 280ms ease, color 280ms ease;
+      }
+      .settle-cta:hover, .settle-cta:active {
+        background: rgba(196, 151, 58, 0.95);
+        color: #0B1C3D;
+      }
+      .settle-close {
+        background: none;
+      }
+
       .close-dot {
         position: fixed;
         top: calc(16px + env(safe-area-inset-top));
@@ -149,17 +210,29 @@
 
       <div class="option" data-moment="stillness" data-duration="20">
         <div class="option-name">stillness</div>
-        <div class="option-desc">silence with occasional breath. nothing to follow.</div>
+        <div class="option-desc">sit with what's here. silence with occasional breath.</div>
       </div>
 
       <div class="option" data-moment="release" data-duration="12">
-        <div class="option-name">release the day</div>
-        <div class="option-desc">three spoken prompts, long silences. nothing to answer.</div>
+        <div class="option-name">release</div>
+        <div class="option-desc">let the day go. three prompts, long silences in between.</div>
       </div>
 
       <div class="option" data-moment="evening" data-duration="45">
-        <div class="option-name">let me drift</div>
-        <div class="option-desc">ambient soundscape, fades to silence over 45 minutes.</div>
+        <div class="option-name">drift</div>
+        <div class="option-desc">fall asleep without trying. ambience that fades over 45 min.</div>
+      </div>
+    </div>
+
+    <!-- Wind-down gate: shown between picking a session and its actual start.
+         Borrowed from Headspace sleepcasts — a moment to land before content. -->
+    <div class="settle" id="settle" aria-hidden="true">
+      <button class="close-dot settle-close" id="settle-close" aria-label="Back">×</button>
+      <div class="settle-content">
+        <div class="settle-eyebrow" id="settle-eyebrow"></div>
+        <h2 class="settle-title">settle in.</h2>
+        <p class="settle-lede">no rush. when you're ready, tap.</p>
+        <button class="settle-cta" id="settle-cta">begin</button>
       </div>
     </div>
 
@@ -451,11 +524,42 @@
         });
       }
 
+      const settle = document.getElementById('settle');
+      const settleEyebrow = document.getElementById('settle-eyebrow');
+      const settleCta = document.getElementById('settle-cta');
+      const settleClose = document.getElementById('settle-close');
+      let pendingSession = null;  // { moment, duration } awaiting "begin"
+
+      function openSettle(moment, duration) {
+        pendingSession = { moment, duration };
+        settleEyebrow.textContent = moment === 'release' ? 'release the day'
+                                  : moment === 'stillness' ? 'stillness'
+                                  : 'let me drift';
+        chooser.classList.add('hidden');
+        settle.classList.add('visible');
+        settle.setAttribute('aria-hidden', 'false');
+      }
+      function closeSettle() {
+        pendingSession = null;
+        settle.classList.remove('visible');
+        settle.setAttribute('aria-hidden', 'true');
+        chooser.classList.remove('hidden');
+      }
+      settleCta.addEventListener('click', () => {
+        if (!pendingSession) return;
+        const { moment, duration } = pendingSession;
+        settle.classList.remove('visible');
+        settle.setAttribute('aria-hidden', 'true');
+        pendingSession = null;
+        startSession(moment, duration);
+      });
+      settleClose.addEventListener('click', closeSettle);
+
       document.querySelectorAll('.option').forEach(btn => {
         btn.addEventListener('click', () => {
           const moment = btn.dataset.moment;
           const duration = parseInt(btn.dataset.duration, 10);
-          startSession(moment, duration);
+          openSettle(moment, duration);
         });
       });
 

@@ -44,7 +44,7 @@ A full review pass across the website repo and the harness repo. Three parallel 
 
 **`build-kb.js` re-runs on every commit even when `content.json` untouched.** Wastes ~1 s per local build. Smart-build wrapper (`scripts/build-smart.js`) that diffs `git status --name-only` and runs only the affected sub-builders would cut local build cycles 50–60%.
 
-**OG images served as PNG only — no WebP/AVIF.** ~14 MB total across `/v2/og/*.png`. Social platforms cache aggressively (Twitter/LinkedIn for weeks). Adding WebP variants via `sharp().webp({ quality: 75 })` saves 30% bandwidth on every share. AVIF saves ~50%. Moderate effort; risk is social caching during transition (mitigation: serve both for 2-4 weeks, then sunset PNG).
+**OG images served as PNG only — no WebP/AVIF.** ~14 MB total across `/og/*.png`. Social platforms cache aggressively (Twitter/LinkedIn for weeks). Adding WebP variants via `sharp().webp({ quality: 75 })` saves 30% bandwidth on every share. AVIF saves ~50%. Moderate effort; risk is social caching during transition (mitigation: serve both for 2-4 weeks, then sunset PNG).
 
 **Service worker cache version is monotonic numeric (`frqncy-v23`).** Every release invalidates the entire cache including unchanged assets. Switching to content-hash versioning (per-file or bundle hash) preserves unchanged files between deploys. Saves 50–200 KB per repeat visit. Documented in AUDIT-REPORT.md as P5; ship in a focused session.
 
