@@ -46,6 +46,23 @@
         font-weight: 100;
         letter-spacing: -1.5px;
         line-height: 1;
+        background: none;
+        border: 0;
+        padding: 0;
+        color: inherit;
+        font-family: inherit;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: opacity 160ms ease;
+      }
+      .time-display:active { opacity: 0.6; }
+      .time-countdown {
+        margin-top: 8px;
+        font-size: 12.5px;
+        font-weight: 300;
+        letter-spacing: 0.6px;
+        color: rgba(196, 151, 58, 0.85);
+        min-height: 18px;
       }
       .time-edit {
         background: none;
@@ -65,10 +82,26 @@
       .toggle-row {
         display: flex; align-items: center; justify-content: space-between;
         padding: 18px 0;
+        gap: 16px;
         border-top: 1px solid rgba(245, 245, 245, 0.06);
       }
       .toggle-row:first-of-type { border-top: 0; }
-      .toggle-label { font-size: 15px; }
+      .toggle-text {
+        display: flex;
+        flex-direction: column;
+        gap: 3px;
+        min-width: 0;
+      }
+      .toggle-label {
+        font-size: 14.5px;
+        color: rgba(245, 245, 245, 0.92);
+      }
+      .toggle-sub {
+        font-size: 12px;
+        font-weight: 300;
+        line-height: 1.4;
+        color: rgba(245, 245, 245, 0.5);
+      }
       .switch {
         width: 48px; height: 28px;
         background: rgba(245, 245, 245, 0.12);
@@ -104,6 +137,24 @@
       .arm-btn.armed {
         background: rgba(196, 151, 58, 0.95);
         color: #0B1C3D;
+      }
+      .practice-link {
+        display: block;
+        width: 100%;
+        margin-top: 10px;
+        padding: 10px;
+        background: none;
+        border: 0;
+        color: rgba(245, 245, 245, 0.42);
+        font-size: 12px;
+        letter-spacing: 0.6px;
+        font-family: inherit;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        transition: color 180ms ease;
+      }
+      .practice-link:hover, .practice-link:active {
+        color: rgba(196, 151, 58, 0.9);
       }
       .quiet-note {
         padding: 16px 20px;
@@ -315,25 +366,36 @@
 
       <div class="alarm-card">
         <div class="time-row">
-          <div class="time-display" id="time-display">06:45</div>
-          <input type="time" id="time-input" value="06:45" />
+          <button class="time-display" id="time-display" type="button" aria-label="Change wake time">06:45</button>
+          <input type="time" id="time-input" value="06:45" aria-label="Wake time" />
         </div>
         <div class="time-meta" id="time-meta">morning · fade-in 90s</div>
+        <div class="time-countdown" id="time-countdown" aria-live="polite"></div>
 
         <div class="toggle-row">
-          <span class="toggle-label">gentle pre-wake (15 min)</span>
+          <div class="toggle-text">
+            <span class="toggle-label">gentle pre-wake</span>
+            <span class="toggle-sub">a soft tone room-fills 15 min before wake</span>
+          </div>
           <div class="switch on" id="prewake" role="switch" aria-checked="true"></div>
         </div>
         <div class="toggle-row">
-          <span class="toggle-label">video field</span>
+          <div class="toggle-text">
+            <span class="toggle-label">video field</span>
+            <span class="toggle-sub">a faint golden gradient on the wake screen</span>
+          </div>
           <div class="switch on" id="video-field" role="switch" aria-checked="true"></div>
         </div>
         <div class="toggle-row">
-          <span class="toggle-label">post-wake reflection</span>
+          <div class="toggle-text">
+            <span class="toggle-label">post-wake reflection</span>
+            <span class="toggle-sub">one question after arriving — no answer needed</span>
+          </div>
           <div class="switch on" id="reflection" role="switch" aria-checked="true"></div>
         </div>
 
         <button class="arm-btn" id="arm">arm for tonight</button>
+        <button class="practice-link" id="practice" type="button">practice the dismiss gesture →</button>
       </div>
 
       <div class="sleep-entry">
@@ -482,7 +544,44 @@
       // Two-way bind the time input <-> display.
       timeInput.addEventListener('input', () => {
         timeDisplay.textContent = timeInput.value || '06:45';
+        // Editing the time un-arms visually, since the persisted alarm still
+        // points at the old time until the user re-arms.
+        if (armed) updateCountdown();
       });
+
+      // Tapping the big time itself opens the time picker — discoverable,
+      // doesn't require hitting the small "edit" pill.
+      timeDisplay.addEventListener('click', () => {
+        // showPicker exists on Chrome/Edge/Android WebView. Fallback: focus.
+        if (typeof timeInput.showPicker === 'function') {
+          try { timeInput.showPicker(); return; } catch {}
+        }
+        timeInput.focus();
+        timeInput.click();
+      });
+
+      // Live countdown when armed: "in 8h 23m" beneath the time.
+      const countdownEl = document.getElementById('time-countdown');
+      let countdownTimer = null;
+      function nextOccurrenceFromInput() {
+        return nextOccurrenceTimestamp(timeInput.value || '06:45');
+      }
+      function renderCountdown() {
+        if (!armed) { countdownEl.textContent = ''; return; }
+        const ms = nextOccurrenceFromInput() - Date.now();
+        if (ms <= 0) { countdownEl.textContent = 'firing'; return; }
+        const totalMin = Math.floor(ms / 60_000);
+        const h = Math.floor(totalMin / 60);
+        const m = totalMin % 60;
+        countdownEl.textContent = h > 0
+          ? `in ${h}h ${m}m`
+          : `in ${m}m`;
+      }
+      function updateCountdown() {
+        renderCountdown();
+        if (countdownTimer) clearInterval(countdownTimer);
+        if (armed) countdownTimer = setInterval(renderCountdown, 30_000);
+      }
 
       function nextOccurrenceTimestamp(hhmm) {
         const [h, m] = hhmm.split(':').map(n => parseInt(n, 10));
@@ -502,6 +601,7 @@
           armed = !armed;
           arm.classList.toggle('armed', armed);
           arm.textContent = armed ? 'armed · tap to disarm' : 'arm for tonight';
+          updateCountdown();
           return;
         }
 
@@ -516,6 +616,7 @@
             arm.textContent = 'arm for tonight';
             // Clear smart-resume marker — no armed alarm to resume to.
             try { localStorage.removeItem('frqncy.bedside.last_arm_ts'); } catch {}
+            updateCountdown();
           } catch (err) {
             console.warn('cancel failed', err);
           }
@@ -570,6 +671,7 @@
           armed = true;
           arm.classList.add('armed');
           arm.textContent = 'armed · tap to disarm';
+          updateCountdown();
 
           // Record arm timestamp for the smart-resume routing in main.ts —
           // if user opens app within 12h of arming, route directly here.
@@ -629,6 +731,13 @@
         window.location.href = './sleep.html';
       });
 
+      // Practice mode — opens alarm.html with ?preview=1 so it skips bridge
+      // calls and lets the user rehearse the breath-hold gesture without
+      // actually arming or firing anything.
+      document.getElementById('practice').addEventListener('click', () => {
+        window.location.href = './alarm.html?preview=1&snoozeCount=0&snoozeLimit=0';
+      });
+
       // Sync UI state with persisted alarm on load.
       (async function hydrate() {
         if (!FrqncyAlarm) return;
@@ -644,6 +753,7 @@
             const mm = String(d.getMinutes()).padStart(2, '0');
             timeInput.value = `${hh}:${mm}`;
             timeDisplay.textContent = `${hh}:${mm}`;
+            updateCountdown();
           }
         } catch {}
       })();

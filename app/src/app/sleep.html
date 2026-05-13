@@ -123,6 +123,24 @@
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
       }
+      .pause-pill {
+        position: fixed;
+        bottom: calc(80px + env(safe-area-inset-bottom));
+        left: 50%;
+        transform: translateX(-50%);
+        font-size: 11.5px;
+        letter-spacing: 1.6px;
+        color: rgba(245, 245, 245, 0.36);
+        text-transform: lowercase;
+        pointer-events: none;
+        opacity: 0;
+        transition: opacity 280ms ease;
+      }
+      .pause-pill.visible { opacity: 1; }
+      .session-content {
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
     </style>
   </head>
   <body>
@@ -147,11 +165,12 @@
 
     <div class="session" id="session" aria-hidden="true">
       <button class="close-dot" id="close-dot" aria-label="End session">×</button>
-      <div class="session-content">
+      <div class="session-content" id="session-content" role="button" aria-label="Tap to pause">
         <div class="session-moment" id="session-moment"></div>
         <div class="session-prompt" id="session-prompt"></div>
         <div class="session-timer" id="session-timer"></div>
       </div>
+      <div class="pause-pill" id="pause-pill" aria-live="polite">tap to resume</div>
     </div>
 
     <script type="module">
@@ -182,10 +201,19 @@
       const FrqncyAlarm = getPlugin('FrqncyAlarm');
 
       let sessionStart = 0;
+      let pausedAt = 0;          // ms timestamp when paused; 0 = playing
+      let pausedAccum = 0;       // total ms spent paused (excluded from elapsed)
       let tickTimer = null;
       let volumeTimer = null;
       let activeAssetId = null;
       let htmlAudio = null;  // <audio> element fallback
+
+      // Effective elapsed = wall-clock since start minus accumulated pauses.
+      // While paused, "now" is frozen at pausedAt so volume/timer hold still.
+      function elapsedMs() {
+        const now = pausedAt > 0 ? pausedAt : Date.now();
+        return now - sessionStart - pausedAccum;
+      }
 
       // --- Resource selection --------------------------------------------------
       async function readResources() {
@@ -267,7 +295,8 @@
             });
             await NativeAudio.play({ assetId: activeAssetId });
             volumeTimer = setInterval(async () => {
-              const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+              if (pausedAt > 0) return;
+              const elapsed = Math.floor(elapsedMs() / 1000);
               const v = volumeForElapsed(elapsed);
               try { await NativeAudio.setVolume({ assetId: activeAssetId, volume: v }); } catch {}
             }, 5000);
@@ -286,7 +315,8 @@
           htmlAudio.volume = 1.0;
           await htmlAudio.play();
           volumeTimer = setInterval(() => {
-            const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+            if (pausedAt > 0) return;
+            const elapsed = Math.floor(elapsedMs() / 1000);
             if (htmlAudio) htmlAudio.volume = volumeForElapsed(elapsed);
           }, 5000);
           return true;
@@ -354,13 +384,16 @@
         armWakeKeepAlive();
 
         tickTimer = setInterval(() => {
-          const elapsed = Math.floor((Date.now() - sessionStart) / 1000);
+          if (pausedAt > 0) return;
+          const elapsed = Math.floor(elapsedMs() / 1000);
           const remainingMin = Math.max(0, durationMin - Math.floor(elapsed / 60));
           sessionTimer.textContent = remainingMin > 0
             ? `${remainingMin} min · fade to silence`
             : 'resting';
           if (remainingMin === 0 && elapsed > durationMin * 60 + 30) endSession();
         }, 10000);
+
+        wirePauseToggle();
       }
 
       function fade(el, text) {
@@ -381,6 +414,41 @@
           chooser.classList.remove('hidden');
           window.location.href = '../index.html';
         }, 1200);
+      }
+
+      const sessionContent = document.getElementById('session-content');
+      const pausePill = document.getElementById('pause-pill');
+
+      function setPaused(p) {
+        if (p && pausedAt === 0) {
+          pausedAt = Date.now();
+          // Pause audio
+          if (NativeAudio && activeAssetId) {
+            try { NativeAudio.pause({ assetId: activeAssetId }); } catch {}
+          }
+          if (htmlAudio) { try { htmlAudio.pause(); } catch {} }
+          pausePill.textContent = 'tap to resume';
+          pausePill.classList.add('visible');
+          sessionContent.setAttribute('aria-label', 'Tap to resume');
+        } else if (!p && pausedAt > 0) {
+          pausedAccum += Date.now() - pausedAt;
+          pausedAt = 0;
+          if (NativeAudio && activeAssetId) {
+            try { NativeAudio.play({ assetId: activeAssetId }); } catch {}
+          }
+          if (htmlAudio) { try { htmlAudio.play(); } catch {} }
+          pausePill.classList.remove('visible');
+          sessionContent.setAttribute('aria-label', 'Tap to pause');
+        }
+      }
+      function wirePauseToggle() {
+        sessionContent.addEventListener('click', () => setPaused(pausedAt === 0));
+        sessionContent.addEventListener('keydown', (e) => {
+          if (e.key === ' ' || e.key === 'Enter') {
+            e.preventDefault();
+            setPaused(pausedAt === 0);
+          }
+        });
       }
 
       document.querySelectorAll('.option').forEach(btn => {

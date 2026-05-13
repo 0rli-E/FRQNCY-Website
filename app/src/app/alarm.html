@@ -146,6 +146,9 @@
       const snoozeCount = parseInt(params.get('snoozeCount') || '0', 10);
       const snoozeLimit = parseInt(params.get('snoozeLimit') || '2', 10);
       const snoozesExhausted = snoozeCount >= snoozeLimit;
+      // Preview mode: launched from bedside's "practice the gesture" link.
+      // Skips bridge calls; arrive() returns to bedside, snooze is hidden.
+      const previewMode = params.get('preview') === '1';
 
       // Accessibility: three dismiss modes per Stream 6 — breath-hold (default),
       // long-press (no breath required), triple-tap (motor accessibility).
@@ -168,7 +171,12 @@
       // If the user already snoozed twice, the snooze button is gone — the
       // gesture is the only way out. Surface that gently rather than just
       // hiding the button silently.
-      if (snoozesExhausted) {
+      if (previewMode) {
+        // In preview, hide snooze entirely and show a hint that this is practice.
+        snoozeBtn.style.display = 'none';
+        snoozeFinalNote.textContent = 'practice mode — hold to feel the gesture.';
+        setTimeout(() => snoozeFinalNote.style.opacity = '1', 200);
+      } else if (snoozesExhausted) {
         snoozeBtn.style.display = 'none';
         setTimeout(() => snoozeFinalNote.style.opacity = '1', 200);
       } else if (snoozeCount > 0) {
@@ -266,6 +274,11 @@
         holdStart = null;
         ring.classList.remove('holding');
         if (navigator.vibrate) navigator.vibrate([30, 60, 30]);
+        if (previewMode) {
+          // Return to bedside — the practice run is complete.
+          window.location.replace('./bedside.html');
+          return;
+        }
         if (bridge && typeof bridge.openWake === 'function') {
           bridge.openWake();
         } else {

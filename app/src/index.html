@@ -18,18 +18,28 @@
       }
 
       /* Shared stage for native surfaces (home, explore) and the iframe shell
-         used by local /app/* routes. Only one is visible at a time. */
+         used by local /app/* routes. Only one is visible at a time. Surfaces
+         fade between states; the hidden state takes itself out of the layout
+         and tab order via visibility/pointer-events. */
       .surface {
         position: fixed;
         top: env(safe-area-inset-top);
         right: 0;
         bottom: calc(60px + env(safe-area-inset-bottom));
         left: 0;
-        display: none;
         overflow-y: auto;
         overscroll-behavior: contain;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 200ms ease, visibility 0s linear 200ms;
       }
-      .surface.visible { display: block; }
+      .surface.visible {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: opacity 200ms ease;
+      }
 
       #site-frame {
         position: fixed;
@@ -40,9 +50,17 @@
         width: 100%;
         border: 0;
         background: #0B1C3D;
-        display: none;
+        opacity: 0;
+        visibility: hidden;
+        pointer-events: none;
+        transition: opacity 200ms ease, visibility 0s linear 200ms;
       }
-      #site-frame.visible { display: block; }
+      #site-frame.visible {
+        opacity: 1;
+        visibility: visible;
+        pointer-events: auto;
+        transition: opacity 200ms ease;
+      }
 
       #tab-bar {
         position: fixed;
