@@ -97,14 +97,27 @@ Read these before changing anything structural:
 
 ## What's currently in motion
 
-As of 2026-04-27:
+As of 2026-05-13:
 
-1. **90-day execution plan** is locked in `proposals/EXECUTION-PLAN-90D.md` (window: 2026-04-27 → 2026-07-26, solo, ~$100 budget). Phase 1 = stand up every scaffolded surface; Future Roadmap appendix lists capital-blocked items.
-2. **FRQNCY content MCP server** (`mcp-servers/frqncy-content/`). 11 tools: search_topics, get_topic, list_topics, list_domains, list_pillars, search_resources, get_resource, list_resources_for_topic, list_resources_by_type, random_topic, stats. Not auto-wired into harness — add via `frqncy-harness mcp add`.
-3. **Trace data** preserved at `~/.frqncy-harness/traces/`. Mirror to a private repo via a manually-configured git remote.
-4. **Open ideas** for FRQNCY work via the harness — see `proposals/HARNESS-USE-CASES.md`.
+1. **FRQNCY mobile app is source-complete and waiting on APK build** at `app/`. Capacitor 7 hybrid, all 8 Kotlin classes + 4 supporting Kotlin files compile clean against API 35 + AppCompat 1.7 + Capacitor 7.6.2 (empirically verified with kotlinc). Web bundle synced into `android/app/src/main/assets/public/`. Branded splash + launcher + notification icons. 4 bundled audio variants (morning/evening/stillness/release). First-launch home welcome, two-phase pre-wake, snooze cap at 2, accessibility (3 dismiss modes + haptic-only wake), error toasts, smart resume, audio focus recovery, telemetry endpoint live in `functions/api/alarm-error.js`. **READ FIRST:** `app/docs/SHIPPING-2026-04-29.md` for the latest state and the to-APK terminal commands. `app/docs/PERFECT-WEEK-ROADMAP-2026-05-03.md` for the day-by-day delivery log.
+2. **90-day execution plan** locked in `proposals/EXECUTION-PLAN-90D.md` (window: 2026-04-27 → 2026-07-26, solo, ~$100 budget).
+3. **FRQNCY content MCP server** (`mcp-servers/frqncy-content/`). 11 tools. Add to harness via `frqncy-harness mcp add`.
+4. **Trace data** preserved at `~/.frqncy-harness/traces/`.
 
 ## How to do common tasks
+
+**Resume FRQNCY app work in Claude Code:**
+First read `app/docs/SHIPPING-2026-04-29.md` for state and `app/docs/PERFECT-WEEK-ROADMAP-2026-05-03.md` for the day-by-day delivery log. Then check `app/docs/CONTINUE-IN-CLAUDE-CODE.md` for the entry-point prompt. Slash commands at `.claude/commands/` cover the common dev loops (`/app-build`, `/app-sync`, `/app-verify`, `/app-apk`).
+
+**Build the Android APK (Orlando, in terminal):**
+```bash
+cd ~/Documents/Claude/Projects/FRQNCY\ WEBSITE/app
+rm -rf node_modules package-lock.json
+npm install
+npm run cap:sync
+npx cap open android
+```
+Then in Studio: ▶ on a connected phone or Build → Build APK(s). Output at `android/app/build/outputs/apk/debug/app-debug.apk`.
 
 **Add a new topic to FRQNCY's explore page:**
 Edit `search.json` (add a new entry following the schema of existing topics), then update `v2/explore.html` accordingly.

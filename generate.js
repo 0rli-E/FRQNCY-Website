@@ -99,6 +99,14 @@ const ORGS   = loadBed('orgs.json');
 const MEDIA  = loadBed('media.json');
 const PLACES = loadBed('places.json');
 const MUSIC  = loadBed('music.json');
+// Pillar-pick mapping: 6 books per pillar (#65). Loaded once; rendered in
+// pillarPage() via pillarBooksSection(). If a pick references a b- id that
+// exists in the bed, we use the bed entry's image, author, etc. Stubs
+// (in_bed: false) render with the metadata from pillar_picks.json itself.
+const PILLAR_PICKS = (() => {
+  try { return JSON.parse(fs.readFileSync(path.join(ROOT, 'pillar_picks.json'), 'utf8')); }
+  catch { return null; }
+})();
 
 // Aligned Goods overlay — curated tools/products/texts living at /aligned/.
 // Entries declare topicSlugs (mapped to topic ids below) so they flow into
@@ -910,6 +918,62 @@ ${ldTag}
 }
 
 // ── PILLAR PAGE ──────────────────────────────────────────────────
+// Render the 6-books-per-pillar section from pillar_picks.json (#65).
+// Reads pillar_picks.json by pillar id; resolves books either from BOOKS bed
+// (when an entry has book_id) or from inline metadata (stub entries).
+function pillarBooksSection(pillarId) {
+  if (!PILLAR_PICKS || !PILLAR_PICKS.picks) return '';
+  const picks = PILLAR_PICKS.picks[pillarId];
+  if (!Array.isArray(picks) || !picks.length) return '';
+  const bookById = BOOKS ? new Map(BOOKS.books.map(b => [b.id, b])) : new Map();
+  const peopleById = PEOPLE ? new Map(PEOPLE.people.map(p => [p.id, p])) : new Map();
+
+  const cards = picks.map(pk => {
+    const bed = pk.book_id ? bookById.get(pk.book_id) : null;
+    const title = bed?.title || pk.title || '';
+    if (!title) return '';
+    let author = pk.author || '';
+    if (bed) {
+      if (bed.author_is_person_ref && peopleById.has(bed.author)) author = peopleById.get(bed.author).name;
+      else if (typeof bed.author === 'string') author = bed.author;
+    }
+    const image = bed?.image || '';
+    const href = bed ? `/books/${bed.id.replace(/^b-/, '')}/` : (pk.url || '#');
+    const targetAttr = bed ? '' : ' target="_blank" rel="noopener"';
+    const imgHtml = image
+      ? `<img src="${esc(image)}" alt="" loading="lazy" decoding="async">`
+      : `<span class="pp-img-fallback"><span>${esc(author || 'Book')}</span></span>`;
+    return `<a class="pp-card" href="${esc(href)}"${targetAttr}>
+      <span class="pp-img">${imgHtml}</span>
+      <span class="pp-meta">
+        ${author ? `<span class="pp-eyebrow">By ${esc(author)}</span>` : ''}
+        <span class="pp-title">${esc(title)}</span>
+      </span>
+    </a>`;
+  }).filter(Boolean).join('\n');
+
+  return `<section class="pillar-picks-section" aria-label="FRQNCY book picks for this pillar">
+    <style>
+      .pillar-picks-section{margin:48px 0 8px}
+      .pillar-picks-section .section-label{font-size:10px;letter-spacing:.32em;text-transform:uppercase;color:#C4973A;margin-bottom:14px;font-weight:500}
+      .pillar-picks-section h2.pp-h{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:clamp(22px,2.6vw,30px);margin-bottom:24px;color:#0B1C3D}
+      .pp-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(180px,1fr));gap:18px}
+      .pp-card{display:flex;flex-direction:column;text-decoration:none;color:inherit;transition:transform .2s}
+      .pp-card:hover{transform:translateY(-2px)}
+      .pp-img{display:block;width:100%;aspect-ratio:2/3;overflow:hidden;border-radius:3px;background:#F8FAFC;border:1px solid rgba(11,28,61,.06)}
+      .pp-img img{width:100%;height:100%;object-fit:cover;display:block}
+      .pp-img-fallback{display:flex;align-items:center;justify-content:center;width:100%;height:100%;background:linear-gradient(135deg,#152E7A 0%,#0B1C3D 100%);padding:14px}
+      .pp-img-fallback span{font-size:11px;letter-spacing:.18em;text-transform:uppercase;color:rgba(224,192,106,.8);text-align:center;font-weight:500}
+      .pp-meta{display:block;padding:10px 0 0}
+      .pp-eyebrow{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:#8A9AB8;margin-bottom:3px}
+      .pp-title{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;font-family:'Cormorant',Georgia,serif;font-weight:400;font-size:16px;color:#0B1C3D;line-height:1.25}
+    </style>
+    <div class="section-label">Six books for ${esc((DATA.pillars.find(p=>p.id===pillarId)||{}).label || pillarId)}</div>
+    <h2 class="pp-h">FRQNCY picks</h2>
+    <div class="pp-grid">${cards}</div>
+  </section>`;
+}
+
 function pillarPage(p) {
   const domains = domainsByPillar.get(p.id) || [];
   const canonical = `https://frqncy.network/v2/${p.slug}/`;
@@ -927,6 +991,7 @@ function pillarPage(p) {
     <p class="hero-desc" style="max-width:640px;margin:0 auto 1.25rem;text-align:center">${esc(p.label)} runs across every domain at FRQNCY. It shows up not as a list of topics under one heading, but as a way the work gets done — touching how every pillar, domain, and topic lives on the site.</p>
     <p class="hero-desc" style="max-width:640px;margin:0 auto;text-align:center;opacity:0.7">More on what this looks like in practice — the choices made, the work shown — coming soon.</p>
   </section>
+  ${pillarBooksSection(p.id)}
   ${resourceSection(p.id, 'FRQNCY Picks')}
 </main>`
     : `<main>
@@ -939,6 +1004,7 @@ function pillarPage(p) {
   <span class="ncard-arrow">→</span>
 </a>`).join('\n')}</div>
   </section>
+  ${pillarBooksSection(p.id)}
   ${resourceSection(p.id, 'FRQNCY Picks')}
 </main>`;
 

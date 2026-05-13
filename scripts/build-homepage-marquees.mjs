@@ -84,19 +84,68 @@ function ytThumb(id) {
   return `https://img.youtube.com/vi/${id}/hqdefault.jpg`;
 }
 
+// Read the first content image from a built static page.
+// Used to keep the marquee tile picture in lock-step with the page's hero
+// art — the user's "use the first pic of the page as picture" rule.
+// We skip data:/svg icons and obviously-decorative ones via simple heuristics.
+function imageFromPageFile(href) {
+  if (!href || typeof href !== 'string') return null;
+  // Translate a site path → local file. Strips leading "/", appends index.html
+  // if it ends with "/". Anchors (#…) are stripped.
+  const clean = href.split('#')[0].split('?')[0].replace(/^\//, '');
+  const candidate = clean.endsWith('/') ? clean + 'index.html' : clean;
+  const filePath = path.join(ROOT, candidate);
+  let html;
+  try { html = fs.readFileSync(filePath, 'utf8'); } catch { return null; }
+  // Heuristic: prefer hero-poster, then first <img src=...> after <main>/<body>.
+  const heroMatch = html.match(/<img[^>]*class="[^"]*hero-poster[^"]*"[^>]*src="([^"]+)"/i)
+    || html.match(/<img[^>]*src="([^"]+)"[^>]*class="[^"]*hero-poster[^"]*"/i);
+  if (heroMatch) return decodeAmp(heroMatch[1]);
+  // Look past the <main> tag (skips header/logo). If no <main>, use full HTML.
+  const body = html.split(/<main\b/i)[1] || html;
+  const re = /<img\b[^>]*\bsrc="([^"]+)"/gi;
+  let m;
+  while ((m = re.exec(body))) {
+    const url = decodeAmp(m[1]);
+    if (!url) continue;
+    if (url.startsWith('data:')) continue;
+    if (/favicon|logo|icon|sprite/i.test(url)) continue;
+    if (url.endsWith('.svg')) continue;
+    return url;
+  }
+  return null;
+}
+
+function decodeAmp(s) {
+  return String(s || '').replace(/&amp;/g, '&').replace(/&quot;/g, '"');
+}
+
 function imageForEntity(entityId) {
   if (typeof entityId !== 'string') return null;
+  // Map entity id → built page path (used for first-pic-of-page fallback).
+  const pageFor = (id) => {
+    if (id.startsWith('b-'))  return `/books/${id.slice(2)}/`;
+    if (id.startsWith('p-'))  return `/people/${id.slice(2)}/`;
+    if (id.startsWith('pl-')) return `/places/${id.slice(3)}/`;
+    if (id.startsWith('m-'))  return `/media/${id.slice(2)}/`;
+    return null;
+  };
+  const fromPage = () => {
+    const href = pageFor(entityId);
+    return href ? imageFromPageFile(href) : null;
+  };
+
   if (entityId.startsWith('b-')) {
     const b = bookById.get(entityId);
-    return b?.image || null;
+    return b?.image || fromPage();
   }
   if (entityId.startsWith('p-')) {
     const p = peopleById.get(entityId);
-    return p?.image || null;
+    return p?.image || fromPage();
   }
   if (entityId.startsWith('pl-')) {
     const pl = placeById.get(entityId);
-    return pl?.image || null;
+    return pl?.image || fromPage();
   }
   if (entityId.startsWith('m-')) {
     const m = mediaById.get(entityId);
@@ -104,19 +153,27 @@ function imageForEntity(entityId) {
     if (m.image) return m.image;
     const yt = ytIdFromUrl(m.url);
     if (yt) return ytThumb(yt);
-    // Use creator photo as last resort
+    // Use creator photo, then page-image as last resorts.
     if (m.creator_is_person_ref && peopleById.has(m.creator)) {
       const c = peopleById.get(m.creator);
-      return c?.image || null;
+      if (c?.image) return c.image;
     }
-    return null;
+    return fromPage();
   }
   return null;
 }
 
-// For topics: walk picked_in (preferred), then appears_in across all beds
-// and return the first entity that resolves to an image URL.
+// For topics: first try the topic page's own hero poster (the "first pic of
+// the page" rule — keeps the marquee visually consistent with what readers
+// actually see when they click through). Fall back to walking picked_in then
+// appears_in across the beds.
 function imageForTopic(topicId) {
+  const t = topicById.get(topicId);
+  if (t) {
+    const slug = t.slug || topicId.replace(/^t-/, '');
+    const fromPage = imageFromPageFile(`/v2/${slug}/`);
+    if (fromPage) return fromPage;
+  }
   const candidatePools = [
     books,
     people.filter(p => p.image),
@@ -191,16 +248,24 @@ const peoplePool = shuffle(people.filter(p => p.image), 31).slice(0, 3).map(p =>
   })
 );
 
-// Topics — only include if we can find a representative image
+// Topics — pull in a broader set. Each tile uses the topic page's own hero
+// art (via imageForTopic), so they read as standalone tiles rather than
+// borrowed covers. Six handpicked plus a topped-up shuffle so the marquee
+// always has variety even if some are missing pages.
 const handpickedTopicIds = [
   't-source','t-meditation','t-networkstates','t-charter-cities','t-abilities','t-conscap',
+  't-bitcoin','t-conscious-living','t-flow','t-sound-healing','t-permaculture','t-ai-alignment',
 ];
+const TOPIC_TARGET = 6;
 const topicPool = [];
+const seenTopicIds = new Set();
 for (const id of handpickedTopicIds) {
+  if (topicPool.length >= TOPIC_TARGET) break;
   const t = topicById.get(id);
   if (!t) continue;
   const img = imageForTopic(id);
-  if (!img) continue;  // Skip if no representative image
+  if (!img) continue;
+  seenTopicIds.add(id);
   topicPool.push(card({
     kind: 'topic',
     eyebrow: 'Topic',
@@ -208,7 +273,22 @@ for (const id of handpickedTopicIds) {
     image: img,
     href: `/v2/${t.slug || t.id.replace(/^t-/, '')}/`,
   }));
-  if (topicPool.length >= 3) break;
+}
+// Top up from a shuffled remainder so we always reach the target if possible.
+if (topicPool.length < TOPIC_TARGET) {
+  const remainder = shuffle(topics.filter(t => !seenTopicIds.has(t.id)), 67);
+  for (const t of remainder) {
+    if (topicPool.length >= TOPIC_TARGET) break;
+    const img = imageForTopic(t.id);
+    if (!img) continue;
+    topicPool.push(card({
+      kind: 'topic',
+      eyebrow: 'Topic',
+      title: t.label,
+      image: img,
+      href: `/v2/${t.slug || t.id.replace(/^t-/, '')}/`,
+    }));
+  }
 }
 
 // Films — only include if we can resolve an image

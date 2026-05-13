@@ -724,6 +724,73 @@ body.frqncy-home #main-nav .nav-back{display:none}
     } catch(_) {}
   })();
 </script>
+<!-- Tiny floating Donate button — bottom-right on every page. Click opens a
+     popover with the EVM + SOL wallet addresses; the full /donate page link
+     sits at the top of the popover. -->
+<style data-frqncy-donate>
+  #frq-donate-btn{position:fixed;right:18px;bottom:18px;z-index:480;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
+  #frq-donate-btn:hover{background:#C4973A;color:#fff;transform:translateY(-1px)}
+  #frq-donate-btn .heart{margin-right:6px;display:inline-block}
+  #frq-donate-pop{position:fixed;right:18px;bottom:64px;z-index:481;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
+  #frq-donate-pop.open{display:block}
+  #frq-donate-pop .frq-pop-title{font-family:'Cormorant',Georgia,serif;font-size:18px;font-weight:400;color:#0B1C3D;margin-bottom:4px}
+  #frq-donate-pop .frq-pop-sub{font-size:11px;color:#8A9AB8;margin-bottom:14px;line-height:1.5}
+  #frq-donate-pop .frq-pop-sub a{color:#C4973A;text-decoration:none}
+  #frq-donate-pop .frq-w-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#C4973A;font-weight:500;margin-top:10px;display:block}
+  #frq-donate-pop .frq-w-addr{font-family:'SFMono-Regular',Menlo,monospace;font-size:11px;color:#0B1C3D;background:#F8FAFC;border:1px solid rgba(11,28,61,.08);padding:8px 10px;border-radius:3px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;word-break:break-all}
+  #frq-donate-pop .frq-w-copy{flex:0 0 auto;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#C4973A;background:transparent;border:1px solid rgba(196,151,58,.5);padding:3px 8px;border-radius:2px;cursor:pointer;font-family:inherit}
+  #frq-donate-pop .frq-w-copy:hover{background:#C4973A;color:#fff}
+  #frq-donate-pop .frq-pop-foot{margin-top:14px;padding-top:12px;border-top:1px solid rgba(11,28,61,.06);font-size:10px;letter-spacing:.06em;color:#8A9AB8;line-height:1.5}
+  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:12px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:54px}}
+</style>
+<button id="frq-donate-btn" type="button" aria-haspopup="dialog" aria-controls="frq-donate-pop" aria-label="Support FRQNCY">
+  <span class="heart" aria-hidden="true">♥</span>Donate
+</button>
+<div id="frq-donate-pop" role="dialog" aria-label="FRQNCY donation wallets">
+  <div class="frq-pop-title">Support FRQNCY</div>
+  <div class="frq-pop-sub">Full details + fiat options on <a href="/donate">/donate</a>.</div>
+  <span class="frq-w-label">EVM · ETH / Base / Arbitrum (USDC, ETH)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="evm">0xPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="evm">Copy</button>
+  </div>
+  <span class="frq-w-label">Solana (SOL / USDC-SPL)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="sol">SOLPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="sol">Copy</button>
+  </div>
+  <div class="frq-pop-foot">Wallets are placeholders until the FRQNY treasury multi-sig goes live. See the crypto stack spec.</div>
+</div>
+<script>
+  (function(){
+    var btn = document.getElementById('frq-donate-btn');
+    var pop = document.getElementById('frq-donate-pop');
+    if (!btn || !pop) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      pop.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!pop.contains(e.target) && e.target !== btn) pop.classList.remove('open');
+    });
+    pop.addEventListener('click', function(e){
+      var t = e.target;
+      if (t && t.dataset && t.dataset.frqCopy) {
+        var which = t.dataset.frqCopy;
+        var addrEl = pop.querySelector('[data-frq-addr="' + which + '"]');
+        if (!addrEl) return;
+        var text = addrEl.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function(){
+            var orig = t.textContent;
+            t.textContent = 'Copied';
+            setTimeout(function(){ t.textContent = orig; }, 1200);
+          });
+        }
+      }
+    });
+  })();
+</script>
 <!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
 
 
