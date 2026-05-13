@@ -366,9 +366,21 @@
 #main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
 #main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
 body.frqncy-home #main-nav .nav-back{display:none}
-#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important}
-#main-nav .nav-dd-menu a .dd-label,#main-nav .nav-dd-menu a .dd-sub{display:block !important;text-align:center !important;width:100% !important}
-@media(max-width:720px){#main-nav .nav-links{display:none}}
+/* Dropdown panel — inlined so the styling ships with every page, including
+   social/NRG pages that don't load nav-dropdown.css. */
+#main-nav .nav-dd{position:relative}
+#main-nav .nav-dd > a{display:inline-flex;align-items:center;gap:4px}
+#main-nav .nav-dd > a::after{content:'';display:inline-block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:3.5px solid currentColor;opacity:.5;transition:opacity .2s,transform .2s}
+#main-nav .nav-dd:hover > a::after,#main-nav .nav-dd:focus-within > a::after{opacity:1;transform:rotate(180deg)}
+#main-nav .nav-dd-menu{position:absolute;top:calc(100% + 12px);left:50%;min-width:200px;background:rgba(11,28,61,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px rgba(0,0,0,.3);padding:8px 0;opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-4px);transition:opacity .2s,visibility .2s,transform .2s;z-index:600}
+#main-nav .nav-dd:hover .nav-dd-menu,#main-nav .nav-dd:focus-within .nav-dd-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+#main-nav .nav-dd-menu::before{content:'';position:absolute;top:-14px;left:0;right:0;height:14px}
+#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important;padding:10px 24px !important;text-decoration:none;transition:background .15s;font-size:11px !important;letter-spacing:.22em !important;text-transform:uppercase !important;font-weight:300 !important;font-family:'Jost',sans-serif !important;color:rgba(255,255,255,.85) !important;min-height:0}
+#main-nav .nav-dd-menu a:hover{background:rgba(196,151,58,.12)}
+#main-nav .nav-dd-menu a:hover .dd-label{color:#E0C06A}
+#main-nav .nav-dd-menu .dd-label{display:block !important;width:100% !important;text-align:center !important;font-weight:400 !important;color:rgba(255,255,255,.9);transition:color .15s;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+#main-nav .nav-dd-menu .dd-sub{display:block !important;width:100% !important;text-align:center !important;font-size:9px !important;letter-spacing:.12em !important;color:rgba(255,255,255,.45);margin-top:2px;font-weight:300 !important;text-transform:none !important}
+@media(max-width:720px){#main-nav .nav-links{display:none}#main-nav .nav-dd-menu{display:none !important}}
 </style>
 <nav id="main-nav" aria-label="Main navigation">
   <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
