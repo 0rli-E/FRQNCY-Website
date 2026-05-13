@@ -53,6 +53,7 @@ const BESPOKE_DOMAINS = new Set([
   'money', 'wellbeing', 'consciousness', 'sciences', 'nature',
   'lifestyle', 'business', 'energy', 'food', 'society',
   'communication', 'technology', 'creation', 'arts', 'play',
+  'places',
 ]);
 // 'cryptocurrency' is a redirect stub merged into the 'crypto' hub — keep it
 // short. 'audio' carries a hand-injected listening section (Strangest Secret
