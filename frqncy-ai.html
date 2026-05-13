@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>FRQNCY AI — a mankind-aligned neural network</title>
+  <meta name="theme-color" content="#0B1C3D">
+  <meta name="description" content="FRQNCY AI — the concept page for a mankind-aligned neural network. Why we're building it, what the alignment standard is, what the rollout looks like.">
+  <link rel="canonical" href="https://frqncy.network/frqncy-ai">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="nav-dropdown.css">
+  <style>
+    :root{--dark:#0B1C3D;--cream:#FFF;--mid:#3A4E72;--light-mid:#8A9AB8;--gold:#C4973A;--font-display:'Cormorant',Georgia,serif;--font-body:'Jost',sans-serif}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--font-body);color:var(--dark);background:var(--cream)}
+    main{max-width:980px;margin:0 auto;padding:80px clamp(20px,5vw,60px) 120px}
+    .hero{text-align:center;padding:40px 0 56px;border-bottom:1px solid rgba(11,28,61,.08);margin-bottom:56px}
+    .eyebrow{font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:block}
+    h1{font-family:var(--font-display);font-weight:300;font-size:clamp(40px,6vw,68px);line-height:1.12;margin-bottom:24px}
+    h1 em{font-style:italic;color:var(--gold)}
+    .lede{font-family:var(--font-display);font-style:italic;font-weight:300;font-size:clamp(18px,2.2vw,24px);line-height:1.55;color:var(--mid);max-width:680px;margin:0 auto}
+    h2{font-family:var(--font-display);font-weight:300;font-size:clamp(28px,3.5vw,40px);margin-bottom:18px}
+    h3{font-family:var(--font-display);font-weight:400;font-size:22px;margin:24px 0 8px;color:var(--dark)}
+    p{font-size:15px;line-height:1.75;color:var(--mid);margin-bottom:16px;max-width:64ch}
+    p strong{color:var(--dark);font-weight:500}
+    .section{margin-bottom:56px}
+    .pill{display:inline-block;font-size:10px;letter-spacing:.22em;text-transform:uppercase;color:var(--gold);font-weight:500;padding:4px 10px;border:1px solid rgba(196,151,58,.4);border-radius:2px;margin-right:8px}
+    .principles{margin-top:24px;display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:18px}
+    .principle{padding:24px;background:#F8FAFC;border-top:3px solid var(--gold);border-radius:2px}
+    .principle h4{font-family:var(--font-display);font-weight:400;font-size:18px;margin-bottom:8px}
+    .principle p{font-size:13px;line-height:1.65;margin-bottom:0}
+  </style>
+</head>
+<body>
+  <!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
+<style data-frqncy-header-critical>
+/* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
+#main-nav{position:sticky;top:0;width:100%;z-index:500;padding:14px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;background:rgba(11,28,61,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);font-family:'Jost',system-ui,sans-serif}
+#main-nav .nav-logo{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:20px;letter-spacing:.34em;color:#fff;text-decoration:none;text-transform:uppercase}
+#main-nav .nav-links{display:flex;gap:22px;list-style:none;margin:0;padding:0;align-items:center}
+#main-nav .nav-links a{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);text-decoration:none;display:inline-flex;align-items:center;min-height:30px}
+#main-nav .nav-search{display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:2px}
+#main-nav .nav-search input{background:transparent;border:0;outline:0;color:#fff;font:inherit;font-size:10.5px;letter-spacing:.14em;width:clamp(120px,14vw,180px);padding:5px 9px}
+#main-nav .nav-search input::placeholder{color:rgba(255,255,255,.45)}
+#main-nav .nav-search button{background:transparent;border:0;color:rgba(255,255,255,.6);font-size:13px;padding:4px 9px;cursor:pointer}
+#main-nav .nav-back{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:2px;text-decoration:none}
+#main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+#main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
+#main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
+body.frqncy-home #main-nav .nav-back{display:none}
+#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important}
+#main-nav .nav-dd-menu a .dd-label,#main-nav .nav-dd-menu a .dd-sub{display:block !important;text-align:center !important;width:100% !important}
+@media(max-width:720px){#main-nav .nav-links{display:none}}
+</style>
+<nav id="main-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <a href="/about">About</a>
+      <div class="nav-dd-menu">
+        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
+        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/v2/explore.html">Discover</a>
+      <div class="nav-dd-menu">
+        <a href="/v2/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="/v2/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
+        <a href="/v2/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
+        <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
+        <a href="/people/"><span class="dd-label">Browse</span><span class="dd-sub">People · Books · Orgs · Places</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/social/">Community</a>
+      <div class="nav-dd-menu">
+        <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
+        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">Social layer</span></a>
+        <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access</span></a>
+        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
+      </div>
+    </li>
+    <li class="nav-search-li">
+      <form action="/search" method="get" role="search" class="nav-search">
+        <input type="text" role="searchbox" name="q" placeholder="Search…" aria-label="Search the FRQNCY network" autocomplete="off">
+        <button type="submit" aria-label="Search">⌕</button>
+      </form>
+    </li>
+    <li>
+      <a href="/" class="nav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
+    </li>
+    <li>
+      <a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a>
+    </li>
+  </ul>
+</nav>
+<script>
+  // Tag the homepage so CSS can hide the back button there (it's redundant on /).
+  (function(){
+    try {
+      var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
+      if (isHome) document.body.classList.add('frqncy-home');
+    } catch(_) {}
+  })();
+</script>
+<!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
+  <main>
+    <div class="hero">
+      <span class="eyebrow">FRQNCY AI · Concept</span>
+      <h1>A neural network aligned to <em>mankind</em>, not metrics.</h1>
+      <p class="lede">A model trained on the curated substrate the FRQNCY network has been building — and aligned to a standard the editorial board, not a corporate safety team, defines.</p>
+    </div>
+
+    <section class="section">
+      <h2>The proposition</h2>
+      <p>Every frontier model in production today is aligned to a standard set by its lab — Anthropic, OpenAI, DeepMind, Meta, xAI, Mistral. The choices each lab makes about what an AI should refuse, what it should encourage, what it should treat as fact, and what it should mute are theirs alone. <strong>Those choices compound into the most consequential cultural object of this century.</strong></p>
+      <p>FRQNCY AI is the proposition that the alignment standard belongs in the open — defined by a network that has spent years curating what is good across consciousness, capital, education, design, and the rest of human work. A model that reads what FRQNCY reads, listens to what FRQNCY listens to, and answers the way a person well-served by the network would answer.</p>
+      <span class="pill">Concept · pre-build</span>
+    </section>
+
+    <section class="section">
+      <h2>The standard</h2>
+      <p>Not 'safe.' Not 'helpful.' Not 'aligned' in the corporate-comms sense. Mankind-aligned has a more specific meaning here:</p>
+      <div class="principles">
+        <div class="principle"><h4>More able, not more dependent</h4><p>Every interaction should leave the human more capable of meeting their life — clearer, freer, less reliant on the model.</p></div>
+        <div class="principle"><h4>Truth before comfort</h4><p>The model says what is, even when it is harder than what the user wanted to hear. Calibrated honesty over calibrated flattery.</p></div>
+        <div class="principle"><h4>The whole human</h4><p>Physical, intellectual, emotional, somatic, spiritual. The model holds all five registers, not just the one most platforms train for.</p></div>
+        <div class="principle"><h4>Editorial bar</h4><p>The same one FRQNCY applies to people, books, and orgs. What the network endorses, the model can speak to with conviction; what it does not, it does not pretend to.</p></div>
+        <div class="principle"><h4>Open weights</h4><p>Reproducible, auditable, runnable on consumer hardware. No black-box gatekeeping of what the model says or refuses to say.</p></div>
+        <div class="principle"><h4>Source code</h4><p>Both senses. The training corpus and the underlying source. Bridging the spiritual and the engineering as one stack — see <em>FRQNCY-MANIFESTO</em>.</p></div>
+      </div>
+    </section>
+
+    <section class="section">
+      <h2>Path to build</h2>
+      <p>FRQNCY AI is a multi-year proposition. Sequence sketched in <em>FRQNCY-PROJECTS-PAPER</em> and <em>FRQNCY-CRYPTO-STACK</em>. Rough shape:</p>
+      <h3>Phase 0 — Curated corpus</h3>
+      <p>Compile the training set. The 324 books, 309 people, 76 media, 114 orgs, 227 topics, ~352 watch videos already curated form the seed. Public domain primaries (Ruskin, Borges, Plato, the Vedas) loaded fully; copyrighted works referenced via authorial signatures and topic context.</p>
+      <h3>Phase 1 — Aligned fine-tune</h3>
+      <p>Start from a strong open-weights base (a Llama or Mistral lineage). Fine-tune on the curated corpus plus a synthetic dataset of FRQNCY-voice responses. Test against the editorial bar.</p>
+      <h3>Phase 2 — Public model</h3>
+      <p>Release weights. Spin up a hosted inference endpoint for members. Document everything: dataset, hyperparameters, eval results, failure modes.</p>
+      <h3>Phase 3 — Continuous alignment</h3>
+      <p>Tie the model to the network's editorial cadence. When the editorial line shifts, the model retunes. When a new domain is curated, it learns. The model and the network move together.</p>
+    </section>
+
+    <section class="section" style="text-align:center;padding-top:32px;border-top:1px solid rgba(11,28,61,.08)">
+      <h2>Open questions</h2>
+      <p style="margin:0 auto;max-width:56ch">Compute partnership. License of the curated corpus. Governance of fine-tune updates. Cost of inference at scale. The decision matrix is being drafted now — if you have an opinion on any of it, send it.</p>
+    </section>
+  </main>
+</body>
+</html>
