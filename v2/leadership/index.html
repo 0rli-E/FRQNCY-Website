@@ -242,7 +242,7 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 <script src="/chat-widget.js" defer></script>
 <link rel="stylesheet" href="/nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Leadership — FRQNCY Picks","description":"Holding a direction without holding people down — the inner work and outer practice of leading something worth leading.","url":"https://frqncy.network/v2/leadership/","numberOfItems":0,"itemListElement":[],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Fund","item":"https://frqncy.network/v2/fund/"},{"@type":"ListItem","position":3,"name":"Business","item":"https://frqncy.network/v2/business/"},{"@type":"ListItem","position":4,"name":"Leadership","item":"https://frqncy.network/v2/leadership/"}]}}</script>
+<script type="application/ld+json">{"@context":"https://schema.org","@type":"ItemList","name":"Leadership — FRQNCY Picks","description":"Holding a direction without holding people down — the inner work and outer practice of leading something worth leading.","url":"https://frqncy.network/v2/leadership/","numberOfItems":1,"itemListElement":[{"@type":"ListItem","position":1,"name":"Young Presidents' Organization","url":"https://www.ypo.org/","description":"Global peer-to-peer network for chief executives — admission gated on running a company that's already at scale, not on signalling. Forum format: small confidential groups that meet monthly, structured to make the loneliest job a little less lonely. 30,000+ members across 142 countries."}],"isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"},"breadcrumb":{"@type":"BreadcrumbList","itemListElement":[{"@type":"ListItem","position":1,"name":"FRQNCY","item":"https://frqncy.network"},{"@type":"ListItem","position":2,"name":"Fund","item":"https://frqncy.network/v2/fund/"},{"@type":"ListItem","position":3,"name":"Business","item":"https://frqncy.network/v2/business/"},{"@type":"ListItem","position":4,"name":"Leadership","item":"https://frqncy.network/v2/leadership/"}]}}</script>
 </head>
 <body><!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
 <style data-frqncy-header-critical>
@@ -346,8 +346,8 @@ body.frqncy-home #main-nav .nav-back{display:none}
   
   <section>
   <div class="section-label">Curated Resources</div>
-  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">3 resources &nbsp;·&nbsp; 2 teachers &nbsp;·&nbsp; 1 book</div>
-  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="person">person</button><button class="ftab" data-filter="book">book</button></div>
+  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">4 resources &nbsp;·&nbsp; 2 teachers &nbsp;·&nbsp; 1 book &nbsp;·&nbsp; 1 org &nbsp;·&nbsp; <span style="color:var(--gold)">1 ✦ pick</span></div>
+  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="person">person</button><button class="ftab" data-filter="book">book</button><button class="ftab" data-filter="org">org</button></div>
   <div class="rlist"><div class="rcard" data-type="person">
   <span class="rtype">person</span>
   <div class="rinfo">
@@ -371,6 +371,14 @@ body.frqncy-home #main-nav .nav-back{display:none}
     <p>Robert Moses built and unbuilt New York for forty years. Caro&#39;s biography is a 1,200-page study of how one curator of power, with no elected office, shaped the physical and political fabric of a city. Read it for what attention to detail looks like at the scale of a lifetime — and what curation costs when applied without conscience.</p>
   </div>
   <a href="https://www.penguinrandomhouse.com/books/87144/the-power-broker-by-robert-a-caro/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="org">
+  <span class="rtype">org</span>
+  <div class="rinfo">
+    <h4><a href="/orgs/ypo/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Young Presidents&#39; Organization</a> <span class="fpick">✦ FRQNCY PICK</span></h4>
+    <p>Global peer-to-peer network for chief executives — admission gated on running a company that&#39;s already at scale, not on signalling. Forum format: small confidential groups that meet monthly, structured to make the loneliest job a little less lonely. 30,000+ members across 142 countries.</p>
+  </div>
+  <a href="https://www.ypo.org/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
 </div></div>
 </section>
 
@@ -389,22 +397,28 @@ document.querySelectorAll('.ftab').forEach(btn=>{
   <section>
     <div class="section-label">Explore</div>
     <div class="grid grid-sm">
-      <a href="../history/index.html" class="ncard">
+      <a href="../entrepreneurship/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 2 shared</div>
+  <h3>Entrepreneurship</h3>
+  <p>Starting things — finding a real problem, shipping a first version, an…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../history/index.html" class="ncard">
   <div class="ncard-type">Topic &nbsp;·&nbsp; 2 shared</div>
   <h3>History</h3>
   <p>The suppressed and forgotten chapters of human civilisation — lost cul…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../community/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>Community</h3>
+  <p>The art of living together — building belonging, trust, and shared lif…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../curation-craft/index.html" class="ncard">
   <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
   <h3>Curation Craft</h3>
   <p>The actual practice of choosing well. How a serious curator reads, wat…</p>
-  <span class="ncard-arrow">→</span>
-</a>
-<a href="../entrepreneurship/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
-  <h3>Entrepreneurship</h3>
-  <p>Starting things — finding a real problem, shipping a first version, an…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../personal-development/index.html" class="ncard">

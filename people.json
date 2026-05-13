@@ -2,7 +2,7 @@
   "$schema_version": 6,
   "$purpose": "Draft first-class people list for FRQNCY. This is a PROPOSAL — not wired into the live site. Review, push back on anything wrong, and we refine.",
   "$generated": "2026-04-24",
-  "$updated": "2026-05-12T09:25:27Z",
+  "$updated": "2026-05-13T02:45:39Z",
   "$source": "Extracted from content.json — every resource with type:'person' (25 rows, 23 unique people after deduping Rupert Spira and Osho who each appeared twice).",
   "$reconciliation_notes": "Channeling humans now carry a 'channels' array listing the entities they channel, each with name and description. This keeps the human as the canonical person while giving the channeled entity its own structure — easy to migrate to a standalone channels.json later if we want.",
   "people": [
@@ -4658,6 +4658,42 @@
       ],
       "picked_in": [
         "t-etiquette"
+      ],
+      "_url_source": "official",
+      "_url_confidence": "high"
+    },
+    {
+      "id": "p-shi-heng-yi",
+      "name": "Shi Heng Yi",
+      "url": "https://shihengyionline.com/",
+      "bio": "Shaolin master and headmaster of the Shaolin Temple Europe. Trains a small lineage in body, mind, and breath the way the order has trained for centuries — and broadcasts it to millions via Shi Heng Yi Online. The clearest contemporary teacher of discipline as a path to consciousness.",
+      "appears_in": [
+        "t-meditation",
+        "t-movement",
+        "t-personal-dev",
+        "t-breathwork"
+      ],
+      "picked_in": [
+        "t-meditation"
+      ],
+      "_url_source": "official",
+      "_url_confidence": "high"
+    },
+    {
+      "id": "p-mike-maloney",
+      "name": "Mike Maloney",
+      "url": "https://goldsilver.com/",
+      "bio": "Precious-metals investor and educator. Author of *Guide to Investing in Gold and Silver* (Robert Kiyosaki's Rich Dad series) and creator of the *Hidden Secrets of Money* documentary series, which has done more to teach mainstream audiences how the monetary system actually works than any institution has tried to. Runs GoldSilver.com.",
+      "appears_in": [
+        "t-gold",
+        "t-silver",
+        "t-bitcoin",
+        "t-personal-finance",
+        "t-conscap"
+      ],
+      "picked_in": [
+        "t-gold",
+        "t-silver"
       ],
       "_url_source": "official",
       "_url_confidence": "high"
