@@ -2,7 +2,8 @@
  * /api/check-rewards — Recompute and grant referral rewards (Phase 3 Wk 6).
  *
  * POST /api/check-rewards
- * Body: { user_id }
+ * Headers: Authorization: Bearer <supabase-access-token>  (required)
+ * Body:    { user_id }  (optional; must match authed user if present)
  * Returns: { granted: [...], current_member_count: N }
  *
  * Counts the user's ref_signups with became_member=true and grants any of the
@@ -11,10 +12,18 @@
  *   - 10 → gathering_invite  (logged; operator emails the invite manually for v0)
  *   - 25 → founder_badge     (sets profiles.founder_badge = true)
  *
- * Uses service-role to bypass RLS for the upsert. Idempotent — re-running
- * never double-grants because of the UNIQUE (referrer_id, tier) constraint.
+ * Auth: Bearer-token JWT verified against Supabase /auth/v1/user before any DB
+ * read. The authenticated user.id is the source of truth — body.user_id is
+ * accepted but must match (back-compat with older callers). This prevents the
+ * 2026-05-12 finding where anyone with a UUID could probe ref_signups counts
+ * or force premature reward grants for an arbitrary user.
  *
- * Required env: PUBLIC_SUPABASE_URL, SUPABASE_SERVICE_ROLE_KEY.
+ * Uses service-role to bypass RLS for the upsert (the rewards table is
+ * service-role-only). Idempotent — re-running never double-grants because of
+ * the UNIQUE (referrer_id, tier) constraint.
+ *
+ * Required env: PUBLIC_SUPABASE_URL, PUBLIC_SUPABASE_ANON_KEY,
+ *               SUPABASE_SERVICE_ROLE_KEY.
  *
  * Per CLAUDE.md cooperation rule: rewards are personal acknowledgements,
  * not public ranking. The badge appears on the user's own profile only.
@@ -109,16 +118,56 @@ export async function onRequestPost({ request, env }) {
     return json({ error: 'Too many requests, slow down a moment.' }, 429, origin);
   }
 
-  if (!env.PUBLIC_SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY) {
+  if (!env.PUBLIC_SUPABASE_URL || !env.SUPABASE_SERVICE_ROLE_KEY || !env.PUBLIC_SUPABASE_ANON_KEY) {
     return json({ error: 'Rewards service not configured.' }, 503, origin);
+  }
+
+  // ── Auth: Bearer-token verification via Supabase /auth/v1/user ─────
+  // Without this, anyone with a UUID could probe ref_signups counts in a
+  // tight loop or force premature reward grants for an arbitrary user.
+  // Reject early if no token, invalid token, or user.id doesn't match the
+  // body — same UUID could otherwise leak the rate-limited bucket from
+  // multiple sessions.
+  const authHeader = request.headers.get('authorization') || '';
+  const tokenMatch = authHeader.match(/^Bearer\s+(.+)$/i);
+  if (!tokenMatch) {
+    return json({ error: 'Authentication required.' }, 401, origin);
+  }
+  const accessToken = tokenMatch[1];
+
+  let authedUserId;
+  try {
+    const authResp = await fetch(`${env.PUBLIC_SUPABASE_URL}/auth/v1/user`, {
+      headers: {
+        apikey: env.PUBLIC_SUPABASE_ANON_KEY,
+        Authorization: `Bearer ${accessToken}`,
+      },
+    });
+    if (!authResp.ok) {
+      return json({ error: 'Invalid or expired session.' }, 401, origin);
+    }
+    const u = await authResp.json();
+    authedUserId = u && u.id;
+  } catch (err) {
+    console.error('Token verification failed:', err);
+    return json({ error: 'Could not verify session.' }, 502, origin);
+  }
+  if (!authedUserId || !UUID_RE.test(authedUserId)) {
+    return json({ error: 'Invalid session.' }, 401, origin);
   }
 
   let body;
   try { body = await request.json(); }
   catch { return json({ error: 'Invalid JSON.' }, 400, origin); }
 
-  const userId = String(body.user_id || '').trim();
-  if (!UUID_RE.test(userId)) return json({ error: 'user_id must be a UUID.' }, 400, origin);
+  // Body still accepts user_id for backward compatibility, but the
+  // server uses the authenticated user's id as the source of truth.
+  // If body.user_id is present and doesn't match, reject loudly.
+  const bodyUserId = String(body.user_id || '').trim();
+  if (bodyUserId && bodyUserId !== authedUserId) {
+    return json({ error: 'user_id does not match authenticated session.' }, 403, origin);
+  }
+  const userId = authedUserId;
 
   try {
     // 1. Count this user's ref_signups where became_member = true.

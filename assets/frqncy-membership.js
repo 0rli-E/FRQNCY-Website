@@ -294,12 +294,18 @@ export async function getMyRewards() {
 export async function checkAndGrantRewards() {
   try {
     const c = await client();
-    const { data: { user } } = await c.auth.getUser();
-    if (!user) return null;
+    const { data: { session } } = await c.auth.getSession();
+    if (!session || !session.access_token || !session.user) return null;
     const res = await fetch('/api/check-rewards', {
       method: 'POST',
-      headers: { 'content-type': 'application/json' },
-      body: JSON.stringify({ user_id: user.id }),
+      headers: {
+        'content-type': 'application/json',
+        // Server verifies this Bearer token against Supabase /auth/v1/user
+        // before any DB read. user_id in the body is accepted for back-compat
+        // but the authed user.id is the source of truth.
+        'Authorization': `Bearer ${session.access_token}`,
+      },
+      body: JSON.stringify({ user_id: session.user.id }),
     });
     if (!res.ok) return null;
     return await res.json();
