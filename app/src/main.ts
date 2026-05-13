@@ -1,41 +1,70 @@
 /**
  * FRQNCY app entry point.
  *
- * Hybrid router: decides whether to load frqncy.network (live) or a local HTML
- * file from the Capacitor bundle (offline-capable, native-plugin-enabled).
+ * Three surfaces, one shell:
+ *   - "/"        → native Home surface (#home-screen)
+ *   - "/explore" → native Explore surface (#explore-screen)
+ *   - "/app/*"   → local HTML rendered inside the iframe (same-origin, no CSP issue)
  *
- * Rules:
- *   - Routes starting with /app/ are ALWAYS local.
- *   - Everything else loads from https://frqncy.network.
- *   - If the device is offline, local cached content is shown where possible.
+ * External links (frqncy.network content) open via Capacitor's Browser plugin
+ * on device, or window.open() in dev. We deliberately do NOT iframe the live
+ * site: production CSP sets `frame-ancestors 'none'` which blocks any framing
+ * from the app origin.
  */
 
 import { Network } from '@capacitor/network';
 import { App } from '@capacitor/app';
 import { StatusBar, Style } from '@capacitor/status-bar';
 import { SplashScreen } from '@capacitor/splash-screen';
+import { Browser } from '@capacitor/browser';
 import { initSyncManager } from './lib/sync-manager';
 
-const LIVE_ORIGIN = 'https://frqncy.network';
-
 const frame = document.getElementById('site-frame') as HTMLIFrameElement;
+const homeScreen = document.getElementById('home-screen') as HTMLElement;
+const exploreScreen = document.getElementById('explore-screen') as HTMLElement;
 const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.tab'));
 const offlineBanner = document.getElementById('offline-banner') as HTMLDivElement;
 
-function resolveUrl(route: string): string {
-  if (route.startsWith('/app/')) {
-    // Local bundle — resolved by Capacitor's custom scheme on device,
-    // served from Vite dev server in development.
-    return route.replace(/^\//, './');
-  }
-  return `${LIVE_ORIGIN}${route}`;
+function showSurface(which: 'home' | 'explore' | 'frame') {
+  homeScreen.classList.toggle('visible', which === 'home');
+  exploreScreen.classList.toggle('visible', which === 'explore');
+  frame.classList.toggle('visible', which === 'frame');
 }
 
-function navigate(route: string) {
-  frame.src = resolveUrl(route);
+function setActiveTab(route: string) {
   tabs.forEach((tab) => {
     tab.classList.toggle('active', tab.dataset.route === route);
   });
+}
+
+function navigate(route: string) {
+  if (route === '/') {
+    showSurface('home');
+    setActiveTab('/');
+    return;
+  }
+  if (route === '/explore') {
+    showSurface('explore');
+    setActiveTab('/explore');
+    return;
+  }
+  if (route.startsWith('/app/')) {
+    frame.src = route.replace(/^\//, './');
+    showSurface('frame');
+    setActiveTab(route);
+    return;
+  }
+  // Fallback: any unrecognized route routes home.
+  showSurface('home');
+  setActiveTab('/');
+}
+
+async function openExternal(url: string) {
+  try {
+    await Browser.open({ url, presentationStyle: 'popover' });
+  } catch {
+    window.open(url, '_blank', 'noopener');
+  }
 }
 
 tabs.forEach((tab) => {
@@ -43,6 +72,22 @@ tabs.forEach((tab) => {
     const route = tab.dataset.route!;
     navigate(route);
   });
+});
+
+// Surface-internal CTAs: anything with [data-route] navigates internally,
+// anything with [data-external] opens in the in-app browser.
+document.body.addEventListener('click', (ev) => {
+  const target = (ev.target as HTMLElement).closest<HTMLElement>('[data-route], [data-external]');
+  if (!target) return;
+  const route = target.dataset.route;
+  const external = target.dataset.external;
+  if (route) {
+    ev.preventDefault();
+    navigate(route);
+  } else if (external) {
+    ev.preventDefault();
+    openExternal(external);
+  }
 });
 
 // Handle offline state.
@@ -58,7 +103,6 @@ async function watchNetwork() {
 function watchDeepLinks() {
   App.addListener('appUrlOpen', (event) => {
     const url = new URL(event.url);
-    // frqncy://wake?session=abc -> /app/wake.html?session=abc
     if (url.protocol === 'frqncy:') {
       const route = `/app/${url.hostname}.html${url.search}`;
       navigate(route);
@@ -69,48 +113,34 @@ function watchDeepLinks() {
 // Handle Android hardware back button.
 function watchBackButton() {
   App.addListener('backButton', () => {
-    const iframe = frame.contentWindow;
-    if (iframe && iframe.history.length > 1) {
-      iframe.history.back();
-    } else {
+    // If we're in the iframe (local /app/*), give its history a chance.
+    // Same-origin so reading history.length is safe.
+    if (frame.classList.contains('visible')) {
+      try {
+        const iframe = frame.contentWindow;
+        if (iframe && iframe.history.length > 1) {
+          iframe.history.back();
+          return;
+        }
+      } catch { /* fall through */ }
+      navigate('/');
+      return;
+    }
+    // Already on a native surface — exit if home, route home otherwise.
+    const activeTab = tabs.find((t) => t.classList.contains('active'));
+    if (!activeTab || activeTab.dataset.route === '/') {
       App.exitApp();
+    } else {
+      navigate('/');
     }
   });
 }
 
-// First-launch welcome + smart resume — Day 4 of the perfect-week roadmap.
-const HOME_WELCOME_KEY = 'frqncy.home.welcome_ack';
 const SMART_RESUME_HOURS = 12;
-
-function maybeShowHomeWelcome() {
-  const overlay = document.getElementById('home-welcome');
-  if (!overlay) return;
-  let acked = '0';
-  try { acked = localStorage.getItem(HOME_WELCOME_KEY) || '0'; } catch {}
-  if (acked === '1') return;
-
-  overlay.classList.add('visible');
-
-  const ackAndRoute = (route: string) => {
-    try { localStorage.setItem(HOME_WELCOME_KEY, '1'); } catch {}
-    overlay.classList.remove('visible');
-    navigate(route);
-  };
-
-  document.getElementById('home-welcome-bedside')
-    ?.addEventListener('click', () => ackAndRoute('/app/bedside.html'));
-  document.getElementById('home-welcome-explore')
-    ?.addEventListener('click', () => ackAndRoute('/v2/explore.html'));
-}
 
 /**
  * Smart resume — if the user opens the app within SMART_RESUME_HOURS of an
- * armed alarm, route directly to Bedside. The app behaves as a bedside
- * companion, not a generic content browser.
- *
- * We detect "armed" via localStorage state set by bedside.html; safer than
- * calling FrqncyAlarm.list() during bootstrap (which adds a permission-check
- * hop on a slow path).
+ * armed alarm, route directly to Bedside.
  */
 function shouldSmartResume(): boolean {
   try {
@@ -121,13 +151,15 @@ function shouldSmartResume(): boolean {
     const ageMs = Date.now() - lastArm;
     const windowMs = SMART_RESUME_HOURS * 60 * 60 * 1000;
     return ageMs >= 0 && ageMs <= windowMs;
-  } catch { return false; }
+  } catch {
+    return false;
+  }
 }
 
 async function bootstrap() {
   try {
     await StatusBar.setStyle({ style: Style.Dark });
-    await StatusBar.setBackgroundColor({ color: '#0a0a0a' });
+    await StatusBar.setBackgroundColor({ color: '#0B1C3D' });
   } catch {
     /* StatusBar only available on device. */
   }
@@ -136,19 +168,12 @@ async function bootstrap() {
   watchDeepLinks();
   watchBackButton();
 
-  // Kick off content sync in the background — fetches /content-version.json,
-  // compares to cached hash, pulls updated JSON files if needed.
   initSyncManager().catch((err) => console.warn('Sync failed:', err));
 
-  // Routing decision tree:
-  //   1. Has an alarm been armed in the last 12 hours? → Bedside (smart resume).
-  //   2. First-ever launch? → Home welcome overlay.
-  //   3. Otherwise → home content.
   if (shouldSmartResume()) {
     navigate('/app/bedside.html');
   } else {
     navigate('/');
-    maybeShowHomeWelcome();
   }
 
   try {

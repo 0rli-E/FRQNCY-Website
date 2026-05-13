@@ -25,11 +25,11 @@ const config: CapacitorConfig = {
   ios: {
     contentInset: 'never',
     limitsNavigationsToAppBoundDomains: false,
-    backgroundColor: '#0a0a0a',
+    backgroundColor: '#0B1C3D',
   },
 
   android: {
-    backgroundColor: '#0a0a0a',
+    backgroundColor: '#0B1C3D',
     allowMixedContent: false,
     captureInput: true,
     webContentsDebuggingEnabled: false,
@@ -38,14 +38,14 @@ const config: CapacitorConfig = {
   plugins: {
     SplashScreen: {
       launchShowDuration: 1200,
-      backgroundColor: '#0a0a0a',
+      backgroundColor: '#0B1C3D',
       androidSplashResourceName: 'splash',
       androidScaleType: 'CENTER_CROP',
       showSpinner: false,
     },
     LocalNotifications: {
       smallIcon: 'ic_stat_icon',
-      iconColor: '#e8c547',
+      iconColor: '#C4973A',
       sound: 'morning.caf',
     },
     CapacitorSQLite: {

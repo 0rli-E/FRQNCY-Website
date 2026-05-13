@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#0B1C3D" />
     <title>FRQNCY · Bedside</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       html, body {
         width: 100%; height: 100%;
-        background: #0a0a0a;
+        background: #0B1C3D;
         color: #f5f5f5;
         font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
         overflow-y: auto;
@@ -30,8 +30,8 @@
       }
       .alarm-card {
         padding: 24px 20px;
-        background: linear-gradient(145deg, rgba(232, 197, 71, 0.10), rgba(232, 197, 71, 0.02));
-        border: 1px solid rgba(232, 197, 71, 0.16);
+        background: linear-gradient(145deg, rgba(196, 151, 58, 0.10), rgba(196, 151, 58, 0.02));
+        border: 1px solid rgba(196, 151, 58, 0.16);
         border-radius: 24px;
         margin-bottom: 20px;
       }
@@ -77,7 +77,7 @@
         cursor: pointer;
         transition: background 220ms ease;
       }
-      .switch.on { background: rgba(232, 197, 71, 0.9); }
+      .switch.on { background: rgba(196, 151, 58, 0.9); }
       .switch::after {
         content: '';
         position: absolute;
@@ -91,9 +91,9 @@
       .arm-btn {
         width: 100%;
         padding: 18px;
-        background: rgba(232, 197, 71, 0.18);
-        border: 1px solid rgba(232, 197, 71, 0.5);
-        color: #e8c547;
+        background: rgba(196, 151, 58, 0.18);
+        border: 1px solid rgba(196, 151, 58, 0.5);
+        color: #C4973A;
         border-radius: 16px;
         font-size: 15px;
         letter-spacing: 1.4px;
@@ -102,8 +102,8 @@
         -webkit-tap-highlight-color: transparent;
       }
       .arm-btn.armed {
-        background: rgba(232, 197, 71, 0.95);
-        color: #0a0a0a;
+        background: rgba(196, 151, 58, 0.95);
+        color: #0B1C3D;
       }
       .quiet-note {
         padding: 16px 20px;
@@ -129,7 +129,7 @@
       }
       .oem-overlay {
         position: fixed; inset: 0;
-        background: rgba(10, 10, 10, 0.96);
+        background: rgba(11, 28, 61, 0.96);
         z-index: 100;
         display: none;
         align-items: center; justify-content: center;
@@ -138,7 +138,7 @@
       .oem-overlay.visible { display: flex; }
       .oem-card {
         max-width: 460px;
-        background: #141414;
+        background: #13264F;
         border: 1px solid rgba(245, 245, 245, 0.08);
         border-radius: 20px;
         padding: 28px 24px;
@@ -148,7 +148,7 @@
         font-weight: 300;
         letter-spacing: 0.5px;
         margin-bottom: 12px;
-        color: #e8c547;
+        color: #C4973A;
       }
       .oem-card p {
         font-size: 14px;
@@ -169,9 +169,9 @@
         -webkit-tap-highlight-color: transparent;
       }
       .oem-card .ok {
-        background: rgba(232, 197, 71, 0.95);
+        background: rgba(196, 151, 58, 0.95);
         border: none;
-        color: #0a0a0a;
+        color: #0B1C3D;
       }
       .oem-card .later {
         background: none;
@@ -192,8 +192,8 @@
         bottom: calc(100px + env(safe-area-inset-bottom));
         left: 50%;
         transform: translateX(-50%) translateY(20px);
-        background: rgba(20, 20, 20, 0.96);
-        border: 1px solid rgba(232, 197, 71, 0.35);
+        background: rgba(19, 38, 79, 0.96);
+        border: 1px solid rgba(196, 151, 58, 0.35);
         color: rgba(245, 245, 245, 0.92);
         padding: 14px 20px;
         border-radius: 12px;
@@ -214,13 +214,13 @@
       .toast .toast-action {
         display: inline-block;
         margin-left: 8px;
-        color: rgba(232, 197, 71, 0.9);
+        color: rgba(196, 151, 58, 0.9);
         cursor: pointer;
         text-decoration: underline;
       }
       .welcome-overlay {
         position: fixed; inset: 0;
-        background: rgba(10, 10, 10, 0.97);
+        background: rgba(11, 28, 61, 0.97);
         z-index: 200;
         display: none;
         align-items: center; justify-content: center;
@@ -230,8 +230,8 @@
       .welcome-card {
         max-width: 480px;
         width: 100%;
-        background: #141414;
-        border: 1px solid rgba(232, 197, 71, 0.18);
+        background: #13264F;
+        border: 1px solid rgba(196, 151, 58, 0.18);
         border-radius: 22px;
         padding: 32px 26px;
       }
@@ -239,7 +239,7 @@
         font-size: 11px;
         letter-spacing: 2.6px;
         text-transform: lowercase;
-        color: rgba(232, 197, 71, 0.7);
+        color: rgba(196, 151, 58, 0.7);
         margin-bottom: 12px;
       }
       .welcome-card h2 {
@@ -273,9 +273,9 @@
         min-width: 22px;
         height: 22px;
         border-radius: 50%;
-        background: rgba(232, 197, 71, 0.15);
-        border: 1px solid rgba(232, 197, 71, 0.45);
-        color: rgba(232, 197, 71, 0.95);
+        background: rgba(196, 151, 58, 0.15);
+        border: 1px solid rgba(196, 151, 58, 0.45);
+        color: rgba(196, 151, 58, 0.95);
         font-size: 11px;
         display: flex; align-items: center; justify-content: center;
         flex-shrink: 0;
@@ -283,24 +283,24 @@
       .welcome-honesty {
         margin-top: 14px;
         padding: 14px 16px;
-        background: rgba(232, 197, 71, 0.06);
-        border: 1px solid rgba(232, 197, 71, 0.22);
+        background: rgba(196, 151, 58, 0.06);
+        border: 1px solid rgba(196, 151, 58, 0.22);
         border-radius: 12px;
         font-size: 13px;
         color: rgba(245, 245, 245, 0.8);
         line-height: 1.6;
       }
       .welcome-honesty strong {
-        color: rgba(232, 197, 71, 0.95);
+        color: rgba(196, 151, 58, 0.95);
         font-weight: 500;
       }
       .welcome-cta {
         width: 100%;
         margin-top: 22px;
         padding: 14px;
-        background: rgba(232, 197, 71, 0.95);
+        background: rgba(196, 151, 58, 0.95);
         border: none;
-        color: #0a0a0a;
+        color: #0B1C3D;
         border-radius: 14px;
         font-size: 14px;
         letter-spacing: 1px;
@@ -360,7 +360,7 @@
         </p>
         <div class="welcome-step">
           <span class="step-num">1</span>
-          <span>set a wake time and tap <em style="color: rgba(232,197,71,0.85); font-style: normal;">arm for tonight</em>.</span>
+          <span>set a wake time and tap <em style="color: rgba(196, 151, 58, 0.9); font-style: normal;">arm for tonight</em>.</span>
         </div>
         <div class="welcome-step">
           <span class="step-num">2</span>

@@ -1,0 +1,33 @@
+// .claude/settings.local.json patch — add these entries to "permissions.allow"
+//
+// These let Claude Code run the social-platform dev loop without prompting
+// for each command. Conservative scope — only the commands needed for build,
+// deploy, smoke tests, and migration audits.
+//
+// To apply: open .claude/settings.local.json, find the "permissions.allow"
+// array, and add the entries below that aren't already present. Most of the
+// generic bash entries (grep, ls, cat, etc.) are already broadly allowed via
+// the existing config.
+
+[
+  "Bash(npm install:*)",
+  "Bash(npm run build:*)",
+  "Bash(npm run dev:*)",
+  "Bash(npm test:*)",
+  "Bash(cp:*)",
+  "Bash(rm -rf node_modules*)",
+  "Bash(rm -rf dist*)",
+  "Bash(rm -rf social-src/node_modules*)",
+  "Bash(rm -rf social-src/dist*)",
+  "Bash(rm -rf social/*)",
+  "Bash(curl:*)",
+  "Bash(jq:*)",
+  "Bash(gh run list:*)",
+  "Bash(gh workflow run:*)",
+  "Bash(node scripts/auto-grow/*:*)",
+  "Bash(node scripts/verify-export.mjs:*)",
+  "Bash(echo:*)",
+  "Bash(printenv:*)",
+  "Edit",
+  "Write"
+]

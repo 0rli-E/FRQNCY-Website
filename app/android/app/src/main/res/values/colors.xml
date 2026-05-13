@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="utf-8"?>
 <!--
-  FRQNCY brand palette. Used by AppTheme in styles.xml + various tinting
-  hooks (notification icon, status bar, splash background).
-
-  Values picked to match the web side at frqncy.network and the index.css
-  tokens — gold accent (#E8C547), dark base (#0A0A0A), ivory text (#F5F5F5).
+  FRQNCY brand palette. Matches assets/site.css tokens on the website:
+  navy #0B1C3D (primary background / brand), gold #C4973A (accent), gold-bright
+  #E0B058 (hover / armed state). Used by AppTheme, the alarm-window theme, the
+  notification small icon tint, and the splash background.
 -->
 <resources>
     <!-- AppTheme requirements -->
-    <color name="colorPrimary">#0A0A0A</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#E8C547</color>
+    <color name="colorPrimary">#0B1C3D</color>
+    <color name="colorPrimaryDark">#0B1C3D</color>
+    <color name="colorAccent">#C4973A</color>
 
     <!-- Brand semantic tokens, available everywhere -->
-    <color name="frqncy_dark">#0A0A0A</color>
-    <color name="frqncy_dark_alt">#141414</color>
-    <color name="frqncy_gold">#E8C547</color>
+    <color name="frqncy_dark">#0B1C3D</color>
+    <color name="frqncy_dark_alt">#13264F</color>
+    <color name="frqncy_gold">#C4973A</color>
+    <color name="frqncy_gold_bright">#E0B058</color>
     <color name="frqncy_ivory">#F5F5F5</color>
     <color name="frqncy_ivory_dim">#A0A0A0</color>
 </resources>

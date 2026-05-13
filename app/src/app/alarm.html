@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#0B1C3D" />
     <title>FRQNCY · Waking</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       html, body {
         width: 100%; height: 100%;
-        background: #000;
+        background: #0B1C3D;
         color: #f5f5f5;
         font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
         overflow: hidden;
@@ -24,7 +24,7 @@
       }
       #field {
         position: absolute; inset: 0;
-        background: radial-gradient(circle at 50% 45%, rgba(232, 197, 71, 0.22) 0%, rgba(0,0,0,0.95) 60%);
+        background: radial-gradient(circle at 50% 45%, rgba(196, 151, 58, 0.22) 0%, rgba(11, 28, 61, 0.98) 60%);
         opacity: 0;
         transition: opacity 60s linear;
         pointer-events: none;
@@ -42,18 +42,18 @@
         position: absolute;
         inset: -1px;
         border-radius: 50%;
-        border: 1px solid rgba(232, 197, 71, 0);
+        border: 1px solid rgba(196, 151, 58, 0);
         transition: border-color 400ms ease, transform 400ms ease;
         transform: scale(1);
       }
       #ring.holding::before {
-        border-color: rgba(232, 197, 71, 0.9);
+        border-color: rgba(196, 151, 58, 0.9);
         transform: scale(1.08);
       }
       #progress { position: absolute; inset: -6px; border-radius: 50%; pointer-events: none; }
       #progress circle {
         fill: none;
-        stroke: rgba(232, 197, 71, 0.85);
+        stroke: rgba(196, 151, 58, 0.85);
         stroke-width: 1.5;
         transform: rotate(-90deg);
         transform-origin: center;
@@ -114,7 +114,7 @@
       font-weight: 300;
       letter-spacing: 0.4px;
       line-height: 1.5;
-      color: rgba(232, 197, 71, 0.85);
+      color: rgba(196, 151, 58, 0.85);
       opacity: 0;
       transition: opacity 1200ms ease 400ms;
       pointer-events: none;
@@ -258,7 +258,12 @@
         }
       });
 
+      let arrived = false;
       function arrive() {
+        if (arrived) return;
+        arrived = true;
+        clearTimeout(holdTimer);
+        holdStart = null;
         ring.classList.remove('holding');
         if (navigator.vibrate) navigator.vibrate([30, 60, 30]);
         if (bridge && typeof bridge.openWake === 'function') {

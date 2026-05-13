@@ -3,32 +3,47 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-    <meta name="theme-color" content="#0a0a0a" />
+    <meta name="theme-color" content="#0B1C3D" />
     <title>FRQNCY</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       html, body {
         width: 100%;
         height: 100%;
-        background: #0a0a0a;
+        background: #0B1C3D;
         color: #f5f5f5;
         font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', system-ui, sans-serif;
         overflow: hidden;
         overscroll-behavior: none;
       }
+
+      /* Shared stage for native surfaces (home, explore) and the iframe shell
+         used by local /app/* routes. Only one is visible at a time. */
+      .surface {
+        position: fixed;
+        top: env(safe-area-inset-top);
+        right: 0;
+        bottom: calc(60px + env(safe-area-inset-bottom));
+        left: 0;
+        display: none;
+        overflow-y: auto;
+        overscroll-behavior: contain;
+      }
+      .surface.visible { display: block; }
+
       #site-frame {
         position: fixed;
-        inset: 0;
+        top: env(safe-area-inset-top);
+        right: 0;
+        bottom: calc(60px + env(safe-area-inset-bottom));
+        left: 0;
         width: 100%;
-        height: 100%;
         border: 0;
-        background: #0a0a0a;
+        background: #0B1C3D;
+        display: none;
       }
-      /* Safe areas for notch / home indicator */
-      #site-frame {
-        padding-top: env(safe-area-inset-top);
-        padding-bottom: env(safe-area-inset-bottom);
-      }
+      #site-frame.visible { display: block; }
+
       #tab-bar {
         position: fixed;
         bottom: 0;
@@ -36,7 +51,7 @@
         right: 0;
         height: calc(60px + env(safe-area-inset-bottom));
         padding-bottom: env(safe-area-inset-bottom);
-        background: rgba(10, 10, 10, 0.92);
+        background: rgba(11, 28, 61, 0.92);
         backdrop-filter: blur(20px);
         -webkit-backdrop-filter: blur(20px);
         border-top: 0.5px solid rgba(255, 255, 255, 0.08);
@@ -45,7 +60,6 @@
         justify-content: space-around;
         z-index: 10;
       }
-      #site-frame { bottom: calc(60px + env(safe-area-inset-bottom)); }
       .tab {
         flex: 1;
         display: flex;
@@ -63,8 +77,9 @@
         cursor: pointer;
         transition: color 180ms ease;
         -webkit-tap-highlight-color: transparent;
+        font-family: inherit;
       }
-      .tab.active { color: #e8c547; }
+      .tab.active { color: #C4973A; }
       .tab-icon { font-size: 20px; line-height: 1; }
       #offline-banner {
         position: fixed;
@@ -72,8 +87,8 @@
         left: 0;
         right: 0;
         padding: 10px 16px;
-        background: rgba(232, 197, 71, 0.12);
-        color: #e8c547;
+        background: rgba(196, 151, 58, 0.12);
+        color: #C4973A;
         font-size: 13px;
         text-align: center;
         transform: translateY(-100%);
@@ -82,73 +97,62 @@
       }
       #offline-banner.show { transform: translateY(0); }
 
-      /* First-launch welcome on the home tab */
-      #home-welcome {
-        position: fixed;
-        inset: 0;
-        background: #0a0a0a;
-        z-index: 100;
-        display: none;
-        flex-direction: column;
-        align-items: center;
-        justify-content: center;
-        padding: 32px;
+      /* --- Native home surface ------------------------------------------- */
+      .home-wrap {
+        padding: 48px 24px 32px;
+        max-width: 480px;
+        margin: 0 auto;
         text-align: center;
       }
-      #home-welcome.visible { display: flex; }
-      #home-welcome .mark {
-        width: 96px; height: 96px;
+      .brand-mark {
+        width: 88px; height: 88px;
         border-radius: 50%;
-        border: 1px solid rgba(232, 197, 71, 0.6);
-        margin-bottom: 32px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        border: 1px solid rgba(196, 151, 58, 0.6);
+        margin: 0 auto 28px;
         position: relative;
       }
-      #home-welcome .mark::before {
+      .brand-mark::before {
         content: '';
         position: absolute;
         inset: -8px;
         border-radius: 50%;
-        border: 0.5px solid rgba(232, 197, 71, 0.18);
+        border: 0.5px solid rgba(196, 151, 58, 0.18);
       }
-      #home-welcome .mark::after {
+      .brand-mark::after {
         content: '';
         position: absolute;
         top: 50%;
         left: 20%; right: 20%;
         height: 1px;
-        background: rgba(232, 197, 71, 0.85);
+        background: rgba(196, 151, 58, 0.85);
         transform: translateY(-0.5px);
       }
-      #home-welcome h1 {
+      .home-title {
         font-size: 22px;
         font-weight: 200;
         letter-spacing: 0.4px;
         line-height: 1.4;
-        max-width: 320px;
-        margin-bottom: 18px;
+        margin-bottom: 14px;
       }
-      #home-welcome p {
+      .home-lede {
         font-size: 14.5px;
         font-weight: 300;
-        line-height: 1.6;
-        color: rgba(245, 245, 245, 0.7);
-        max-width: 320px;
-        margin-bottom: 32px;
+        line-height: 1.65;
+        color: rgba(245, 245, 245, 0.72);
+        max-width: 340px;
+        margin: 0 auto 32px;
       }
-      #home-welcome .cta-row {
+      .cta-stack {
         display: flex;
         flex-direction: column;
         gap: 10px;
-        width: 100%;
-        max-width: 320px;
+        max-width: 340px;
+        margin: 0 auto;
       }
-      #home-welcome button {
-        background: rgba(232, 197, 71, 0.95);
+      .cta-stack button, .cta-stack a {
+        background: rgba(196, 151, 58, 0.95);
         border: none;
-        color: #0a0a0a;
+        color: #0B1C3D;
         padding: 14px;
         border-radius: 14px;
         font-size: 14px;
@@ -156,41 +160,179 @@
         text-transform: lowercase;
         -webkit-tap-highlight-color: transparent;
         font-family: inherit;
+        text-decoration: none;
+        text-align: center;
+        cursor: pointer;
       }
-      #home-welcome button.secondary {
+      .cta-stack .secondary {
         background: none;
         border: 1px solid rgba(245, 245, 245, 0.16);
-        color: rgba(245, 245, 245, 0.7);
+        color: rgba(245, 245, 245, 0.78);
+      }
+
+      .home-cards {
+        margin-top: 36px;
+        display: flex;
+        flex-direction: column;
+        gap: 12px;
+        max-width: 380px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .home-card {
+        text-align: left;
+        padding: 16px 18px;
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 14px;
+        cursor: pointer;
+        transition: background 180ms ease, border-color 180ms ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .home-card:hover, .home-card:active {
+        background: rgba(255, 255, 255, 0.06);
+        border-color: rgba(196, 151, 58, 0.35);
+      }
+      .home-card .home-card-eyebrow {
+        font-size: 10.5px;
+        letter-spacing: 1.8px;
+        color: rgba(196, 151, 58, 0.85);
+        text-transform: lowercase;
+        margin-bottom: 6px;
+      }
+      .home-card .home-card-title {
+        font-size: 15px;
+        font-weight: 400;
+        color: rgba(245, 245, 245, 0.92);
+        margin-bottom: 4px;
+      }
+      .home-card .home-card-desc {
+        font-size: 12.5px;
+        font-weight: 300;
+        line-height: 1.5;
+        color: rgba(245, 245, 245, 0.55);
+      }
+
+      /* --- Native explore surface ---------------------------------------- */
+      .explore-wrap {
+        padding: 48px 24px 32px;
+        max-width: 520px;
+        margin: 0 auto;
+      }
+      .explore-eyebrow {
+        font-size: 11px;
+        letter-spacing: 2.4px;
+        color: rgba(245, 245, 245, 0.42);
+        text-transform: lowercase;
+        margin-bottom: 12px;
+        text-align: center;
+      }
+      .explore-title {
+        font-size: 22px;
+        font-weight: 200;
+        letter-spacing: 0.4px;
+        line-height: 1.4;
+        margin-bottom: 14px;
+        text-align: center;
+      }
+      .explore-lede {
+        font-size: 14px;
+        font-weight: 300;
+        line-height: 1.65;
+        color: rgba(245, 245, 245, 0.68);
+        text-align: center;
+        margin-bottom: 32px;
       }
     </style>
   </head>
   <body>
-    <!-- First-launch welcome on the home tab -->
-    <div id="home-welcome" role="dialog" aria-modal="true" aria-labelledby="home-welcome-title">
-      <div class="mark" aria-hidden="true"></div>
-      <h1 id="home-welcome-title">welcome to FRQNCY</h1>
-      <p>
-        a network of people building their dream life. start with how you wake.
-      </p>
-      <div class="cta-row">
-        <button id="home-welcome-bedside">set up my wake-up</button>
-        <button class="secondary" id="home-welcome-explore">just explore for now</button>
-      </div>
-    </div>
-
     <div id="offline-banner">Offline — showing cached content</div>
+
+    <!-- Native home surface -->
+    <main id="home-screen" class="surface" role="region" aria-label="Home">
+      <div class="home-wrap">
+        <div class="brand-mark" aria-hidden="true"></div>
+        <h1 class="home-title">welcome to FRQNCY</h1>
+        <p class="home-lede">
+          a network of people building their dream life. start with how you wake.
+        </p>
+        <div class="cta-stack">
+          <button data-route="/app/bedside.html">set up my wake-up</button>
+          <button class="secondary" data-external="https://frqncy.network/">open frqncy.network</button>
+        </div>
+
+        <div class="home-cards">
+          <button class="home-card" data-route="/app/bedside.html">
+            <div class="home-card-eyebrow">tonight</div>
+            <div class="home-card-title">arm tomorrow's wake</div>
+            <div class="home-card-desc">set a time. the alarm fades in over 90 seconds. dismissing is one breath, held.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/v2/explore.html">
+            <div class="home-card-eyebrow">explore</div>
+            <div class="home-card-title">the FRQNCY topic graph</div>
+            <div class="home-card-desc">146 topics across consciousness, money, wellbeing, decentralisation, and more.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/support">
+            <div class="home-card-eyebrow">support</div>
+            <div class="home-card-title">support FRQNCY ◇</div>
+            <div class="home-card-desc">help keep this independent. no ads, no tracking, no rankings.</div>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Native explore surface -->
+    <main id="explore-screen" class="surface" role="region" aria-label="Explore">
+      <div class="explore-wrap">
+        <div class="explore-eyebrow">explore</div>
+        <h1 class="explore-title">browse FRQNCY</h1>
+        <p class="explore-lede">
+          the long-form content lives on the website. tap any of these to open it.
+        </p>
+        <div class="home-cards" style="margin-top: 8px;">
+          <button class="home-card" data-external="https://frqncy.network/v2/explore.html">
+            <div class="home-card-eyebrow">topic graph</div>
+            <div class="home-card-title">all 146 topics</div>
+            <div class="home-card-desc">the FRQNCY constellation — every topic, every domain, every pillar.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/v2/money/">
+            <div class="home-card-eyebrow">money</div>
+            <div class="home-card-title">five teachers, one law</div>
+            <div class="home-card-desc">Clason, Hill, Wattles, Kiyosaki, Maloney — what they actually said.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/v2/wellbeing/">
+            <div class="home-card-eyebrow">wellbeing</div>
+            <div class="home-card-title">the wellbeing canon</div>
+            <div class="home-card-desc">breath, movement, sleep, presence — the canonical FRQNCY take.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/v2/metaphysics/">
+            <div class="home-card-eyebrow">metaphysics</div>
+            <div class="home-card-title">consciousness practice</div>
+            <div class="home-card-desc">awareness, attention, the experiments that make a life feel awake.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/people/">
+            <div class="home-card-eyebrow">people</div>
+            <div class="home-card-title">the FRQNCY field</div>
+            <div class="home-card-desc">teachers, builders, founders — who actually moved the needle.</div>
+          </button>
+        </div>
+      </div>
+    </main>
+
+    <!-- Iframe shell — used ONLY for local /app/* routes (same-origin, no CSP). -->
     <iframe
       id="site-frame"
       src="about:blank"
       allow="autoplay; fullscreen; picture-in-picture; camera; microphone"
       allowfullscreen
     ></iframe>
+
     <nav id="tab-bar" role="tablist">
       <button class="tab active" data-route="/" role="tab">
         <span class="tab-icon">◎</span>
         <span>Home</span>
       </button>
-      <button class="tab" data-route="/v2/explore.html" role="tab">
+      <button class="tab" data-route="/explore" role="tab">
         <span class="tab-icon">◈</span>
         <span>Explore</span>
       </button>

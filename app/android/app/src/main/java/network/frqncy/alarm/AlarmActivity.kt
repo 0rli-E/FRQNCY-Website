@@ -147,13 +147,13 @@ class AlarmActivity : AppCompatActivity() {
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
-            setBackgroundColor(Color.BLACK)
+            setBackgroundColor(0xFF0B1C3D.toInt()) // FRQNCY navy
             setPadding(dp(24), dp(24), dp(24), dp(24))
         }
 
         val title = TextView(this).apply {
             text = "FRQNCY"
-            setTextColor(0xFFE8C547.toInt())
+            setTextColor(0xFFC4973A.toInt())
             setTypeface(typeface, Typeface.NORMAL)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)
             letterSpacing = 0.25f
@@ -180,7 +180,7 @@ class AlarmActivity : AppCompatActivity() {
             when (ev.action) {
                 MotionEvent.ACTION_DOWN -> {
                     holdStart = System.currentTimeMillis()
-                    instr.setTextColor(0xFFE8C547.toInt())
+                    instr.setTextColor(0xFFC4973A.toInt())
                     cooldownHandler.postDelayed({
                         if (System.currentTimeMillis() - holdStart >= 5_900) {
                             stopAlarmService(AlarmService.ACTION_STOP)

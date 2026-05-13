@@ -84,6 +84,8 @@ Read these before changing anything structural:
 - `proposals/HARNESS-RESEARCH-NOTES.md` — five-agent research dump (VC theses, Hermes, frontier-lab essays)
 - `proposals/HARNESS-TOOLS-INVESTIGATION.md` — Skills, Hooks, Caveman, Graphiti+Neo4j, DeAI providers — recommendations
 - `proposals/REVENUE-MODEL.md` — five revenue surfaces (Aligned, Courses, Referrals, Sanctuary, Fund)
+- `proposals/SANCTUARY-ROADMAP.md` — Sanctuary-specific phases + principles + what-stays-out-forever. Required reading before any Sanctuary work.
+- `my-frqncy/dashboard/CLAUDE.md` — Sanctuary-scoped orientation: file shape, state schema, voice rules, render conventions, slash commands. Claude Code reads this automatically when you cd into that directory.
 - `proposals/EDITORIAL-STANDARDS.md` — what makes a FRQNCY pick, conflict-of-interest disclosure, who can mark a pick
 - `proposals/EDITORIAL-VALUES-V2.md` — slogans, voice, posture (slogan-level supersedes this CLAUDE.md)
 - `proposals/FRQNCY-VOICE-PLAYBOOK.md` — canonical voice guide (read before writing any user-facing copy)

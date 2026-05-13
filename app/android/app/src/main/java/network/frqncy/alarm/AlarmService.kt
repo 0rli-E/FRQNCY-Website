@@ -367,7 +367,7 @@ class AlarmService : Service() {
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_stat_icon)
-            .setColor(0xFFE8C547.toInt()) // FRQNCY gold tint
+            .setColor(0xFFC4973A.toInt()) // FRQNCY gold tint
             .setContentTitle(label)
             .setContentText("Tap to arrive")
             .setPriority(NotificationCompat.PRIORITY_MAX)

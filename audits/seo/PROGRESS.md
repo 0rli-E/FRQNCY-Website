@@ -1,7 +1,20 @@
 # FRQNCY SEO — Progress Dashboard
 
-**Last updated:** 2026-04-29 (post-Session 4 + critical-finding revision)
-**Auto-update with:** `python3 audits/seo/runs/build-progress.py` (script ships in this folder)
+**Last updated:** 2026-05-13
+**Auto-update with:** `python3 audits/seo/runs/build-progress.py`
+
+---
+
+## Strategic anchor (read this FIRST)
+
+The strategic source of truth for the visibility / SEO program is now **[`/proposals/VISIBILITY-PLAN.md`](../../proposals/VISIBILITY-PLAN.md)** (Orlando, 2026-05-12). It consolidates the 5-phase audits/seo/ work into a 90-day plan organized around 5 visibility sources (organic search · podcasts · cross-platform mentions · network effects · direct reach).
+
+Companion docs in proposals/:
+- [`/proposals/PODCAST-OUTREACH-PLAN.md`](../../proposals/PODCAST-OUTREACH-PLAN.md) — the operational layer on top of `audits/seo/PODCAST-OUTREACH-KIT.md`
+- [`/proposals/TELEGRAM-CHANNEL-LAUNCH.md`](../../proposals/TELEGRAM-CHANNEL-LAUNCH.md) — Telegram channel playbook
+- [`/proposals/FRQNCY-V1-ROADMAP.md`](../../proposals/FRQNCY-V1-ROADMAP.md) — broader product roadmap
+
+This dashboard is the implementation-state view; the plan is the strategy view. Read both.
 
 ---
 

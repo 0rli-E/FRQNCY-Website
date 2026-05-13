@@ -3,13 +3,13 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
-    <meta name="theme-color" content="#000000" />
+    <meta name="theme-color" content="#0B1C3D" />
     <title>FRQNCY · Wake</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       html, body {
         width: 100%; height: 100%;
-        background: #000;
+        background: #0B1C3D;
         color: #f5f5f5;
         font-family: -apple-system, BlinkMacSystemFont, system-ui, sans-serif;
         overflow: hidden;
@@ -28,7 +28,7 @@
       #field {
         position: absolute;
         inset: 0;
-        background: radial-gradient(circle at 50% 45%, rgba(232, 197, 71, 0.18) 0%, rgba(0,0,0,0.95) 60%);
+        background: radial-gradient(circle at 50% 45%, rgba(196, 151, 58, 0.18) 0%, rgba(11, 28, 61, 0.98) 60%);
         opacity: 0;
         transition: opacity 90s linear;  /* 90s fade-in per spec */
         pointer-events: none;
@@ -50,12 +50,12 @@
         position: absolute;
         inset: -1px;
         border-radius: 50%;
-        border: 1px solid rgba(232, 197, 71, 0.0);
+        border: 1px solid rgba(196, 151, 58, 0.0);
         transition: border-color 400ms ease, transform 400ms ease;
         transform: scale(1);
       }
       #ring.holding::before {
-        border-color: rgba(232, 197, 71, 0.9);
+        border-color: rgba(196, 151, 58, 0.9);
         transform: scale(1.08);
       }
       #progress {
@@ -66,7 +66,7 @@
       }
       #progress circle {
         fill: none;
-        stroke: rgba(232, 197, 71, 0.85);
+        stroke: rgba(196, 151, 58, 0.85);
         stroke-width: 1.5;
         transform: rotate(-90deg);
         transform-origin: center;
@@ -101,7 +101,7 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        background: #000;
+        background: #0B1C3D;
         opacity: 0;
         pointer-events: none;
         transition: opacity 1200ms ease;
@@ -263,7 +263,12 @@
         }
       });
 
+      let arrived = false;
       function arrive() {
+        if (arrived) return;
+        arrived = true;
+        clearTimeout(holdTimer);
+        holdStart = null;
         ring.classList.remove('holding');
         if (navigator.vibrate) navigator.vibrate([30, 60, 30]);
         promptText.textContent = REFLECTIONS[Math.floor(Math.random() * REFLECTIONS.length)];
@@ -317,6 +322,16 @@
         return fallback.length > 0 ? fallback[Math.floor(Math.random() * fallback.length)] : null;
       }
 
+      let activeMovementAssetId = null;
+
+      async function stopMovement() {
+        if (NativeAudio && activeMovementAssetId) {
+          try { await NativeAudio.stop({ assetId: activeMovementAssetId }); } catch {}
+          try { await NativeAudio.unload({ assetId: activeMovementAssetId }); } catch {}
+        }
+        activeMovementAssetId = null;
+      }
+
       async function playMovement() {
         const resources = await readResources();
         if (!resources) {
@@ -329,19 +344,17 @@
           return;
         }
 
-        // If we have a native audio plugin AND the URL is direct audio, play
-        // through it (lock-screen controls, background-safe). Otherwise open
-        // the resource page so the user can engage with it externally.
         const isDirectAudio = pick.url && /\.(mp3|m4a|wav)(\?|$)/i.test(pick.url);
         if (NativeAudio && isDirectAudio) {
           try {
-            const id = `frqncy.morning.${pick.id || Date.now()}`;
-            await NativeAudio.preload({ assetId: id, assetPath: pick.url, audioChannelNum: 1, isUrl: true });
-            await NativeAudio.play({ assetId: id });
+            activeMovementAssetId = `frqncy.morning.${pick.id || Date.now()}`;
+            await NativeAudio.preload({ assetId: activeMovementAssetId, assetPath: pick.url, audioChannelNum: 1, isUrl: true });
+            await NativeAudio.play({ assetId: activeMovementAssetId });
             promptText.textContent = `playing: ${pick.name || 'morning practice'}`;
             return;
           } catch (err) {
             console.warn('NativeAudio play failed, falling back to browser', err);
+            activeMovementAssetId = null;
           }
         }
 
@@ -355,9 +368,13 @@
       }
 
       movementBtn.addEventListener('click', playMovement);
-      closeBtn.addEventListener('click', () => {
+      closeBtn.addEventListener('click', async () => {
+        await stopMovement();
         window.location.href = '../index.html';
       });
+      // Page-hide also kills audio — covers system back gesture, app backgrounding,
+      // and tab switches in dev preview.
+      window.addEventListener('pagehide', () => { stopMovement(); });
     </script>
   </body>
 </html>
