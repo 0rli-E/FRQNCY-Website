@@ -45,3 +45,9 @@ FRQNCY-Reading-List.docx
 *.secret
 
 supabase/.temp/
+
+# Playwright MCP temp artifacts (per-session logs + page snapshots)
+.playwright-mcp/
+
+# Ad-hoc screenshots taken during dev review (Playwright `filename: app-*.png`)
+/app-*.png
