@@ -287,13 +287,6 @@ body.frqncy-home #main-nav .nav-back{display:none}
       </div>
     </li>
     <li class="nav-dd">
-      <a href="/v2/fund/index.html">Capital</a>
-      <div class="nav-dd-menu">
-        <a href="/v2/fund/index.html"><span class="dd-label">Fund</span><span class="dd-sub">Vision, Echo, Legion</span></a>
-        <a href="/v2/crypto/index.html"><span class="dd-label">Crypto</span><span class="dd-sub">Projects, ratings &amp; thesis</span></a>
-      </div>
-    </li>
-    <li class="nav-dd">
       <a href="/social/">Community</a>
       <div class="nav-dd-menu">
         <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
@@ -353,12 +346,40 @@ body.frqncy-home #main-nav .nav-back{display:none}
   
   <section>
   <div class="section-label">Curated Resources</div>
-  <div class="empty"><p>FRQNCY is curating this space.<br>Resources coming soon.</p></div>
+  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">1 resource &nbsp;·&nbsp; 1 book</div>
+  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="book">book</button></div>
+  <div class="rlist"><div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/duty-free-art/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Duty Free Art — Hito Steyerl</a></h4>
+    <p>Steyerl on what art has become inside global capital — a portable, tax-advantaged asset class, often warehoused in airport free ports. Sharp, funny, terrifying. The criticism FRQNCY&#39;s editorial line should be read against.</p>
+  </div>
+  <a href="https://www.versobooks.com/products/207-duty-free-art" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div></div>
 </section>
+
+<script>
+document.querySelectorAll('.ftab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.rcard').forEach(c=>{
+      c.style.display=(f==='all'||c.dataset.type===f)?'':'none';
+    });
+  });
+});
+</script>
   <section>
     <div class="section-label">Explore</div>
     <div class="grid grid-sm">
-      <a href="../curation-craft/index.html" class="ncard">
+      <a href="../visual-art/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>Visual Art</h3>
+  <p>Painting, sculpture, installation, and image — art that speaks through…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../curation-craft/index.html" class="ncard">
   <div class="ncard-type">Topic &nbsp;·&nbsp; Curation</div>
   <h3>Curation Craft</h3>
   <p>The actual practice of choosing well. How a serious curator reads, wat…</p>

@@ -287,13 +287,6 @@ body.frqncy-home #main-nav .nav-back{display:none}
       </div>
     </li>
     <li class="nav-dd">
-      <a href="/v2/fund/index.html">Capital</a>
-      <div class="nav-dd-menu">
-        <a href="/v2/fund/index.html"><span class="dd-label">Fund</span><span class="dd-sub">Vision, Echo, Legion</span></a>
-        <a href="/v2/crypto/index.html"><span class="dd-label">Crypto</span><span class="dd-sub">Projects, ratings &amp; thesis</span></a>
-      </div>
-    </li>
-    <li class="nav-dd">
       <a href="/social/">Community</a>
       <div class="nav-dd-menu">
         <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
@@ -353,12 +346,46 @@ body.frqncy-home #main-nav .nav-back{display:none}
   
   <section>
   <div class="section-label">Curated Resources</div>
-  <div class="empty"><p>FRQNCY is curating this space.<br>Resources coming soon.</p></div>
+  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">1 resource &nbsp;·&nbsp; 1 book</div>
+  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="book">book</button></div>
+  <div class="rlist"><div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/the-bitcoin-standard/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">The Bitcoin Standard — Saifedean Ammous</a></h4>
+    <p>Ammous on why hard money mattered, how it was lost, and what Bitcoin restores. The clearest single-volume case for digital scarcity as a corrective to the monetary regime of the last hundred years.</p>
+  </div>
+  <a href="https://www.wiley.com/en-us/The+Bitcoin+Standard%3A+The+Decentralized+Alternative+to+Central+Banking-p-9781119473862" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div></div>
 </section>
+
+<script>
+document.querySelectorAll('.ftab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.rcard').forEach(c=>{
+      c.style.display=(f==='all'||c.dataset.type===f)?'':'none';
+    });
+  });
+});
+</script>
   <section>
     <div class="section-label">Explore</div>
     <div class="grid grid-sm">
-      <a href="../defi/index.html" class="ncard">
+      <a href="../bitcoin/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>Bitcoin</h3>
+  <p>The original. Digital scarcity, sound money, the first credible separa…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../conscious-capital/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>Conscious Capital</h3>
+  <p>Investment and finance as a force for good — capital aligned with valu…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../defi/index.html" class="ncard">
   <div class="ncard-type">Topic &nbsp;·&nbsp; Money</div>
   <h3>DeFi</h3>
   <p>Decentralised Finance — financial instruments and markets built on blo…</p>
@@ -368,12 +395,6 @@ body.frqncy-home #main-nav .nav-back{display:none}
   <div class="ncard-type">Topic &nbsp;·&nbsp; Money</div>
   <h3>Impact Investing</h3>
   <p>Capital directed toward measurable social and environmental outcomes a…</p>
-  <span class="ncard-arrow">→</span>
-</a>
-<a href="../conscious-capital/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; Money</div>
-  <h3>Conscious Capital</h3>
-  <p>Investment and finance as a force for good — capital aligned with valu…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../dao/index.html" class="ncard">
@@ -392,6 +413,12 @@ body.frqncy-home #main-nav .nav-back{display:none}
   <div class="ncard-type">Topic &nbsp;·&nbsp; Money</div>
   <h3>Prosperity Mindset</h3>
   <p>Wealth as a state of consciousness first — the philosophy, psychology,…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../cards/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Money</div>
+  <h3>Debit &amp; Credit Cards</h3>
+  <p>Cards that move with intention. Built for travel, for sovereignty, or …</p>
   <span class="ncard-arrow">→</span>
 </a>
     </div>

@@ -287,13 +287,6 @@ body.frqncy-home #main-nav .nav-back{display:none}
       </div>
     </li>
     <li class="nav-dd">
-      <a href="/v2/fund/index.html">Capital</a>
-      <div class="nav-dd-menu">
-        <a href="/v2/fund/index.html"><span class="dd-label">Fund</span><span class="dd-sub">Vision, Echo, Legion</span></a>
-        <a href="/v2/crypto/index.html"><span class="dd-label">Crypto</span><span class="dd-sub">Projects, ratings &amp; thesis</span></a>
-      </div>
-    </li>
-    <li class="nav-dd">
       <a href="/social/">Community</a>
       <div class="nav-dd-menu">
         <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
@@ -353,12 +346,40 @@ body.frqncy-home #main-nav .nav-back{display:none}
   
   <section>
   <div class="section-label">Curated Resources</div>
-  <div class="empty"><p>FRQNCY is curating this space.<br>Resources coming soon.</p></div>
+  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">1 resource &nbsp;·&nbsp; 1 book</div>
+  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="book">book</button></div>
+  <div class="rlist"><div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/zero-to-one/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Zero to One — Peter Thiel</a></h4>
+    <p>Thiel&#39;s argument that progress comes from going from zero to one — building things that did not exist — and that most of what is called innovation is one-to-many copying. The book founders read before raising.</p>
+  </div>
+  <a href="https://www.penguinrandomhouse.com/books/231833/zero-to-one-by-peter-thiel-with-blake-masters/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div></div>
 </section>
+
+<script>
+document.querySelectorAll('.ftab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.rcard').forEach(c=>{
+      c.style.display=(f==='all'||c.dataset.type===f)?'':'none';
+    });
+  });
+});
+</script>
   <section>
     <div class="section-label">Explore</div>
     <div class="grid grid-sm">
-      <a href="../social-enterprise/index.html" class="ncard">
+      <a href="../entrepreneurship/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>Entrepreneurship</h3>
+  <p>Starting things — finding a real problem, shipping a first version, an…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../social-enterprise/index.html" class="ncard">
   <div class="ncard-type">Topic &nbsp;·&nbsp; Business</div>
   <h3>Social Enterprise</h3>
   <p>Business models that put mission first — companies designed to serve p…</p>
@@ -374,12 +395,6 @@ body.frqncy-home #main-nav .nav-back{display:none}
   <div class="ncard-type">Topic &nbsp;·&nbsp; Business</div>
   <h3>Regenerative Business</h3>
   <p>Companies that give back more than they take — business as a restorati…</p>
-  <span class="ncard-arrow">→</span>
-</a>
-<a href="../entrepreneurship/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; Business</div>
-  <h3>Entrepreneurship</h3>
-  <p>Starting things — finding a real problem, shipping a first version, an…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../leadership/index.html" class="ncard">

@@ -287,13 +287,6 @@ body.frqncy-home #main-nav .nav-back{display:none}
       </div>
     </li>
     <li class="nav-dd">
-      <a href="/v2/fund/index.html">Capital</a>
-      <div class="nav-dd-menu">
-        <a href="/v2/fund/index.html"><span class="dd-label">Fund</span><span class="dd-sub">Vision, Echo, Legion</span></a>
-        <a href="/v2/crypto/index.html"><span class="dd-label">Crypto</span><span class="dd-sub">Projects, ratings &amp; thesis</span></a>
-      </div>
-    </li>
-    <li class="nav-dd">
       <a href="/social/">Community</a>
       <div class="nav-dd-menu">
         <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
@@ -339,7 +332,7 @@ body.frqncy-home #main-nav .nav-back{display:none}
     <a href="/" class="snav-back">Main</a>
   </div>
 </nav><div class="hero">
-  <div class="hero-eyebrow">Money &nbsp;·&nbsp; Topic</div>
+  <div class="hero-eyebrow">Money &nbsp;·&nbsp; Topic &nbsp;·&nbsp; <span class="hero-readtime" aria-label="1 minute read">≈ 1 min read</span></div>
   <h1>Stocks</h1>
   <p class="hero-desc">Equity in publicly traded companies — the public market layer of capital allocation, indexes, dividends, and the long-term arc of productive enterprise.</p>
   
@@ -353,27 +346,77 @@ body.frqncy-home #main-nav .nav-back{display:none}
   
   <section>
   <div class="section-label">Curated Resources</div>
-  <div class="empty"><p>FRQNCY is curating this space.<br>Resources coming soon.</p></div>
+  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">3 resources &nbsp;·&nbsp; 3 books</div>
+  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="book">book</button></div>
+  <div class="rlist"><div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/the-most-important-thing/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">The Most Important Thing — Howard Marks</a></h4>
+    <p>Twenty essays by the co-founder of Oaktree on what actually matters in investing — second-level thinking, the cost of being right alone, the asymmetry of risk and reward. The clearest mind on capital allocation operating today.</p>
+  </div>
+  <a href="https://cup.columbia.edu/book/the-most-important-thing/9780231153683" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/extraordinary-popular-delusions/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Extraordinary Popular Delusions and the Madness of Crowds — Charles Mackay</a></h4>
+    <p>Mackay&#39;s 1841 anatomy of speculative manias — tulips, the South Sea Bubble, alchemy, witch hunts. Read it during any bubble; the patterns rhyme. Required immunisation for anyone deploying capital.</p>
+  </div>
+  <a href="https://archive.org/details/extraordinarypop00mack" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div>
+<div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/the-intelligent-investor/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">The Intelligent Investor — Benjamin Graham</a></h4>
+    <p>Graham&#39;s 1949 textbook, the one Buffett still calls the best book on investing. Mr. Market, margin of safety, the difference between speculation and investment. The cleanest single source for value discipline.</p>
+  </div>
+  <a href="https://www.harpercollins.com/products/the-intelligent-investor-rev-ed-benjamin-graham" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div></div>
 </section>
+
+<script>
+document.querySelectorAll('.ftab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.rcard').forEach(c=>{
+      c.style.display=(f==='all'||c.dataset.type===f)?'':'none';
+    });
+  });
+});
+</script>
   <section>
     <div class="section-label">Explore</div>
     <div class="grid grid-sm">
-      <a href="../defi/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; Money</div>
-  <h3>DeFi</h3>
-  <p>Decentralised Finance — financial instruments and markets built on blo…</p>
+      <a href="../conscious-capital/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>Conscious Capital</h3>
+  <p>Investment and finance as a force for good — capital aligned with valu…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../history/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>History</h3>
+  <p>The suppressed and forgotten chapters of human civilisation — lost cul…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../impact-investing/index.html" class="ncard">
-  <div class="ncard-type">Topic &nbsp;·&nbsp; Money</div>
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
   <h3>Impact Investing</h3>
   <p>Capital directed toward measurable social and environmental outcomes a…</p>
   <span class="ncard-arrow">→</span>
 </a>
-<a href="../conscious-capital/index.html" class="ncard">
+<a href="../personal-finance/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>Personal Finance</h3>
+  <p>The household level of money — earning, saving, spending, debt, and th…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../defi/index.html" class="ncard">
   <div class="ncard-type">Topic &nbsp;·&nbsp; Money</div>
-  <h3>Conscious Capital</h3>
-  <p>Investment and finance as a force for good — capital aligned with valu…</p>
+  <h3>DeFi</h3>
+  <p>Decentralised Finance — financial instruments and markets built on blo…</p>
   <span class="ncard-arrow">→</span>
 </a>
 <a href="../dao/index.html" class="ncard">
@@ -392,6 +435,18 @@ body.frqncy-home #main-nav .nav-back{display:none}
   <div class="ncard-type">Topic &nbsp;·&nbsp; Money</div>
   <h3>Prosperity Mindset</h3>
   <p>Wealth as a state of consciousness first — the philosophy, psychology,…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../cards/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Money</div>
+  <h3>Debit &amp; Credit Cards</h3>
+  <p>Cards that move with intention. Built for travel, for sovereignty, or …</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../bonds/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; Money</div>
+  <h3>Bonds</h3>
+  <p>Debt instruments — sovereign, corporate, and municipal — and the yield…</p>
   <span class="ncard-arrow">→</span>
 </a>
     </div>

@@ -287,13 +287,6 @@ body.frqncy-home #main-nav .nav-back{display:none}
       </div>
     </li>
     <li class="nav-dd">
-      <a href="/v2/fund/index.html">Capital</a>
-      <div class="nav-dd-menu">
-        <a href="/v2/fund/index.html"><span class="dd-label">Fund</span><span class="dd-sub">Vision, Echo, Legion</span></a>
-        <a href="/v2/crypto/index.html"><span class="dd-label">Crypto</span><span class="dd-sub">Projects, ratings &amp; thesis</span></a>
-      </div>
-    </li>
-    <li class="nav-dd">
       <a href="/social/">Community</a>
       <div class="nav-dd-menu">
         <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
@@ -353,12 +346,46 @@ body.frqncy-home #main-nav .nav-back{display:none}
   
   <section>
   <div class="section-label">Curated Resources</div>
-  <div class="empty"><p>FRQNCY is curating this space.<br>Resources coming soon.</p></div>
+  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">1 resource &nbsp;·&nbsp; 1 book</div>
+  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="book">book</button></div>
+  <div class="rlist"><div class="rcard" data-type="book">
+  <span class="rtype">book</span>
+  <div class="rinfo">
+    <h4><a href="/books/albions-seed/" style="color:inherit;text-decoration:none;border-bottom:1px solid rgba(255,255,255,0.18)">Albion&#39;s Seed — David Hackett Fischer</a></h4>
+    <p>Fischer&#39;s 900-page argument that four distinct British folkways — Puritan, Cavalier, Quaker, Scotch-Irish — set the cultural DNA of four American regions, and that those patterns still run the country. Required reading for anyone serious about new cultures: you have to know what came before to build what comes next.</p>
+  </div>
+  <a href="https://global.oup.com/academic/product/albions-seed-9780195069051" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div></div>
 </section>
+
+<script>
+document.querySelectorAll('.ftab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.rcard').forEach(c=>{
+      c.style.display=(f==='all'||c.dataset.type===f)?'':'none';
+    });
+  });
+});
+</script>
   <section>
     <div class="section-label">Explore</div>
     <div class="grid grid-sm">
-      <a href="../quantum/index.html" class="ncard">
+      <a href="../history/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>History</h3>
+  <p>The suppressed and forgotten chapters of human civilisation — lost cul…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../network-states/index.html" class="ncard">
+  <div class="ncard-type">Topic &nbsp;·&nbsp; 1 shared</div>
+  <h3>Network States</h3>
+  <p>Distributed digital communities forming the political and economic sub…</p>
+  <span class="ncard-arrow">→</span>
+</a>
+<a href="../quantum/index.html" class="ncard">
   <div class="ncard-type">Topic &nbsp;·&nbsp; Sciences</div>
   <h3>Quantum Physics</h3>
   <p>The behaviour of matter and energy at the smallest scales — where real…</p>
