@@ -623,8 +623,8 @@ def render_page(brief: dict) -> str:
 <meta name="twitter:title" content="{_html.escape(title)}">
 <meta name="twitter:description" content="{_html.escape(desc)}">
 <meta name="twitter:image" content="{_html.escape(og_image)}">
-<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
-<link rel="manifest" href="../../manifest.json">
+<link rel="icon" type="image/svg+xml" href="../favicon.svg">
+<link rel="manifest" href="../manifest.json">
 <link rel="canonical" href="{_html.escape(canonical)}">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -641,9 +641,9 @@ def render_page(brief: dict) -> str:
 </style>
 {head_extra}
 <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
-<script src="../../mobile-nav.js" defer></script>
-<script src="../../chat-widget.js" defer></script>
-<link rel="stylesheet" href="../../nav-dropdown.css">
+<script src="../mobile-nav.js" defer></script>
+<script src="../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../nav-dropdown.css">
 </head>
 <body class="{body_class}">
 

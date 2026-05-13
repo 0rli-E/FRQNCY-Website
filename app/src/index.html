@@ -45,9 +45,11 @@
         position: fixed;
         top: env(safe-area-inset-top);
         right: 0;
-        bottom: calc(60px + env(safe-area-inset-bottom));
         left: 0;
         width: 100%;
+        /* Iframes don't auto-stretch via top+bottom like divs do — explicit
+           height calc is required or they collapse to the HTML default 150px. */
+        height: calc(100vh - 60px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
         border: 0;
         background: #0B1C3D;
         opacity: 0;

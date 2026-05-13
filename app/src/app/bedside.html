@@ -439,35 +439,15 @@
     <!-- Toast for transient errors / status messages -->
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
-    <!-- First-run welcome overlay (shown the very first time bedside opens) -->
+    <!-- First-run welcome — kept short. Detailed reliability copy stays on the
+         page in the quiet-note + OEM modal so it doesn't gate first use. -->
     <div class="welcome-overlay" id="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-title">
       <div class="welcome-card">
         <div class="welcome-eyebrow">welcome to bedside</div>
-        <h2 id="welcome-title">your phone, as a tuning fork</h2>
+        <h2 id="welcome-title">a softer way to wake.</h2>
         <p>
-          FRQNCY's bedside mode replaces the standard alarm clock with an
-          arrival. The audio fades in over 90 seconds. Dismissing is one
-          breath, held — not a tap, not a swipe.
+          set a time. the tone fades in over 90 seconds. dismissing the alarm is one breath, held — not a tap, not a swipe.
         </p>
-        <div class="welcome-step">
-          <span class="step-num">1</span>
-          <span>set a wake time and tap <em style="color: rgba(196, 151, 58, 0.9); font-style: normal;">arm for tonight</em>.</span>
-        </div>
-        <div class="welcome-step">
-          <span class="step-num">2</span>
-          <span>plug your phone in, leave FRQNCY open, lock the screen.</span>
-        </div>
-        <div class="welcome-step">
-          <span class="step-num">3</span>
-          <span>when the tone fades in, hold the ring on screen for one breath to arrive.</span>
-        </div>
-        <div class="welcome-honesty">
-          <strong>One honest thing:</strong> phone alarms on Android can fail
-          under aggressive battery management. If yours is a Vivo, Xiaomi,
-          OnePlus, Oppo, or Samsung, FRQNCY will show you the three settings
-          that fix it the first time you arm. For a high-stakes wake, pair
-          with a backup the first week.
-        </div>
         <button class="welcome-cta" id="welcome-cta">begin</button>
       </div>
     </div>

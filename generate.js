@@ -2313,7 +2313,7 @@ const searchIndex = DATA.topics.map(t => {
     accent:        domain.accent,
     picks:         res.filter(r => r.frqncy_pick).map(r => r.title).slice(0, 5),
     resourceCount: res.length,
-    url:           `/v2/${t.slug}/`,
+    url: `/${t.slug}/`,
   };
 });
 
@@ -2424,7 +2424,7 @@ for (const co of COURSES) {
     id: co.id,
     name: co.title,
     desc: (co.desc || co.subtitle || '').slice(0, 200),
-    url: `/v2/courses/${co.slug}/`,
+    url: `/courses/${co.slug}/`,
     external: '',
     topics: (co.topics || []).filter(x => x.startsWith('t-')),
     pick: false,
@@ -2471,7 +2471,7 @@ function emitResource(entity, typeLabel, topicId, overrides = {}) {
     url: entity.url || '',
     topicSlug: t.slug,
     topicLabel: t.label,
-    topicUrl: `/v2/${t.slug}/`,
+    topicUrl: `/${t.slug}/`,
     domain: dom ? dom.label : '',
     domainSlug: dom ? dom.slug : '',
     ...overrides,

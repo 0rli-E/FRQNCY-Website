@@ -72,7 +72,7 @@ const TARGETS = [
 try {
   for (const d of fs.readdirSync('courses', { withFileTypes: true })) {
     if (d.isDirectory()) {
-      const p = `v2/courses/${d.name}/index.html`;
+      const p = `courses/${d.name}/index.html`;
       if (fs.existsSync(p)) TARGETS.push(p);
     }
   }
@@ -84,10 +84,10 @@ try {
 // without touching the bespoke topic body. Any <slug>/index.html that has
 // the FRQNCY_GLOBAL_HEADER marker gets the latest canonical.
 try {
-  for (const d of fs.readdirSync('v2', { withFileTypes: true })) {
+  for (const d of fs.readdirSync('.', { withFileTypes: true })) {
     if (!d.isDirectory()) continue;
     if (d.name === 'courses') continue; // handled above
-    const p = `v2/${d.name}/index.html`;
+    const p = `${d.name}/index.html`;
     if (!fs.existsSync(p)) continue;
     try {
       const content = fs.readFileSync(p, 'utf8');
@@ -104,7 +104,7 @@ try {
 // Bespoke domain pages (15) — hand-shaped, locked from generate.js regen via
 // BESPOKE_DOMAINS, so they need direct sync.
 for (const slug of ['money','wellbeing','consciousness','sciences','nature','lifestyle','business','energy','food','society','communication','technology','creation','arts','play']) {
-  const p = `v2/${slug}/index.html`;
+  const p = `${slug}/index.html`;
   if (fs.existsSync(p)) TARGETS.push(p);
 }
 

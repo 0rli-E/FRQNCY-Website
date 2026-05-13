@@ -322,7 +322,7 @@ function addPersonFraming(person) {
     id:      person.id,
     slug,
     name:    person.name,
-    url:     `/v2/explore.html#${person.id}`,
+    url:     `/explore.html#${person.id}`,
     framing: words || 'a teacher worth reading at this design.',
   };
 }
