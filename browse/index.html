@@ -87,17 +87,48 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 .footer-nudge a{color:var(--gold);border-bottom:1px solid rgba(196,151,58,0.3);transition:border-color .2s}
 .footer-nudge a:hover{border-color:var(--gold)}
 
+/* UNIFIED SEARCH / ASK INPUT (hero) */
+.hero-search{margin:1.5rem auto 0;max-width:560px;position:relative}
+.hero-search input{width:100%;padding:18px 22px 18px 52px;background:rgba(255,255,255,0.04);border:1px solid rgba(196,151,58,0.25);border-radius:14px;color:#fff;font-family:inherit;font-size:1rem;font-weight:300;letter-spacing:0.01em;outline:none;transition:border-color .2s ease,background .2s ease}
+.hero-search input::placeholder{color:rgba(245,245,245,0.42);font-weight:300}
+.hero-search input:focus{border-color:rgba(196,151,58,0.55);background:rgba(255,255,255,0.06)}
+.hero-search svg{position:absolute;left:18px;top:50%;transform:translateY(-50%);width:18px;height:18px;color:rgba(196,151,58,0.65);pointer-events:none}
+.hero-search-hint{margin-top:0.95rem;font-size:0.7rem;color:rgba(196,151,58,0.55);letter-spacing:0.16em;text-align:center;text-transform:uppercase;font-weight:400}
+
+/* SEARCH RESULTS STATE */
+body[data-search-active="1"] .browse-catalog{display:none}
+.search-state{display:none}
+body[data-search-active="1"] .search-state{display:block}
+.search-results-wrap{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem) 6rem}
+.search-meta{font-size:0.78rem;color:var(--text-dim);margin-bottom:1.6rem;padding-bottom:1rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.search-meta strong{color:var(--text);font-weight:400}
+.search-empty{padding:3rem 1.5rem;text-align:center;color:var(--text-dim);font-size:0.9rem;font-style:italic;font-family:'Cormorant',serif}
+.search-group{margin-top:2.2rem}
+.search-group:first-child{margin-top:0}
+.search-group-title{font-family:'Cormorant',serif;font-size:0.7rem;letter-spacing:0.36em;text-transform:uppercase;color:var(--accent);margin-bottom:1.1rem;padding-bottom:0.7rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.result-list{display:grid;grid-template-columns:repeat(auto-fill,minmax(280px,1fr));gap:10px}
+.result-item{display:block;padding:14px 16px;background:rgba(255,255,255,0.025);border:1px solid var(--card-border);border-radius:10px;color:inherit;text-decoration:none;transition:background .2s ease,border-color .2s ease}
+.result-item:hover{background:rgba(255,255,255,0.05);border-color:rgba(196,151,58,0.32);opacity:1}
+.result-kind{font-size:0.58rem;letter-spacing:0.24em;color:var(--gold);text-transform:uppercase;margin-bottom:0.35rem;font-weight:400}
+.result-title{font-family:'Cormorant',serif;font-size:1.05rem;color:#fff;line-height:1.3;margin-bottom:0.25rem;font-weight:400}
+.result-desc{font-size:0.76rem;color:var(--text-dim);line-height:1.5}
+.result-title mark,.result-desc mark,.result-kind mark{background:rgba(196,151,58,0.28);color:inherit;padding:0 2px;border-radius:2px}
+
 /* MOBILE */
 @media (max-width:520px){
   .hero{padding:3.5rem 1.25rem 2rem}
   .hero h1{font-size:2.4rem}
   .hero-desc{font-size:0.88rem}
+  .hero-search input{padding:15px 18px 15px 46px;font-size:0.95rem}
+  .hero-search svg{left:14px;width:16px;height:16px}
+  .hero-search-hint{font-size:0.62rem;letter-spacing:0.12em}
   .card-grid{grid-template-columns:1fr;gap:10px}
   .card{padding:18px 18px 16px}
   .card-title{font-size:1.15rem}
   .pill-grid{grid-template-columns:repeat(2,1fr);gap:7px}
   .pill{padding:11px 13px;font-size:0.78rem}
   .browse-wrap{padding:0 1.25rem 4rem}
+  .result-list{grid-template-columns:1fr}
 }
 </style>
 </head>
@@ -116,12 +147,26 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
 </nav>
 
 <section class="hero">
-  <div class="hero-eyebrow">browse</div>
+  <div class="hero-eyebrow">discover</div>
   <h1>The FRQNCY Network</h1>
-  <p class="hero-desc">Everything FRQNCY publishes — the canon, the people, the practices, the social layer, the constellation. Start anywhere; the field is connected.</p>
+  <p class="hero-desc">Everything FRQNCY publishes — searchable, browseable, askable. The whole field, one input.</p>
+
+  <div class="hero-search">
+    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+    <input id="browse-search" type="search" placeholder="Search the network — or ask a question…" autocomplete="off" aria-label="Search topics, people, books, resources, or ask a question">
+  </div>
+  <p class="hero-search-hint">146 topics · 311 people · 317 books · 766 resources</p>
 </section>
 
-<main class="browse-wrap">
+<!-- Search results render here when input has content; catalog hides via body[data-search-active]. -->
+<div class="search-state">
+  <div class="search-results-wrap">
+    <div id="search-meta" class="search-meta"></div>
+    <div id="search-results"></div>
+  </div>
+</div>
+
+<main class="browse-wrap browse-catalog">
 
   <!-- your space — private surfaces -->
   <section class="section">
@@ -288,6 +333,165 @@ nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,6
   </div>
 
 </main>
+
+<script>
+(function(){
+  var input = document.getElementById('browse-search');
+  var resultsWrap = document.getElementById('search-results');
+  var meta = document.getElementById('search-meta');
+  if(!input || !resultsWrap) return;
+
+  var topics = [];
+  var resources = [];
+  var loaded = false;
+
+  function load(){
+    if(loaded) return Promise.resolve();
+    loaded = true;
+    return Promise.all([
+      fetch('/search.json').then(function(r){return r.json();}).catch(function(){return [];}),
+      fetch('/resources.json').then(function(r){return r.json();}).catch(function(){return [];})
+    ]).then(function(arr){
+      var t = arr[0], r = arr[1];
+      topics = Array.isArray(t) ? t : (t && Array.isArray(t.topics) ? t.topics : []);
+      resources = Array.isArray(r) ? r : (r && Array.isArray(r.resources) ? r.resources : []);
+    });
+  }
+
+  // Index the static catalog cards + pills already in the DOM
+  var catalogItems = [];
+  Array.prototype.forEach.call(document.querySelectorAll('.browse-catalog .card'), function(el){
+    var title = (el.querySelector('.card-title') || {}).textContent || '';
+    var desc = (el.querySelector('.card-desc') || {}).textContent || '';
+    var eyebrow = (el.querySelector('.card-eyebrow') || {}).textContent || '';
+    catalogItems.push({
+      title: title.trim(),
+      desc: desc.trim(),
+      kind: eyebrow.trim(),
+      url: el.getAttribute('href')
+    });
+  });
+  Array.prototype.forEach.call(document.querySelectorAll('.browse-catalog .pill'), function(el){
+    var section = el.closest('.section');
+    var kind = section ? (section.querySelector('.section-eyebrow').textContent || '').trim().toLowerCase() : 'category';
+    catalogItems.push({
+      title: el.textContent.trim(),
+      desc: '',
+      kind: kind,
+      url: el.getAttribute('href')
+    });
+  });
+
+  function escapeHtml(s){ return String(s||'').replace(/[&<>"']/g, function(c){return ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'})[c];}); }
+  function highlight(s, q){
+    if(!q) return escapeHtml(s);
+    var escaped = escapeHtml(s);
+    var re = new RegExp('(' + q.replace(/[-\/\\^$*+?.()|[\]{}]/g, '\\$&') + ')', 'gi');
+    return escaped.replace(re, '<mark>$1</mark>');
+  }
+
+  function search(q){
+    q = String(q || '').trim().toLowerCase();
+    if(!q){
+      document.body.removeAttribute('data-search-active');
+      input.removeAttribute('aria-expanded');
+      return;
+    }
+    document.body.setAttribute('data-search-active', '1');
+    input.setAttribute('aria-expanded', 'true');
+
+    var catMatches = catalogItems.filter(function(it){
+      var hay = (it.title + ' ' + it.desc + ' ' + it.kind).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    }).slice(0, 24);
+
+    var topMatches = topics.filter(function(t){
+      var hay = ((t.label||t.name||'') + ' ' + (t.desc||t.description||'') + ' ' + (t.domain||'')).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    }).slice(0, 24);
+
+    var resMatches = resources.filter(function(r){
+      var hay = ((r.name||'') + ' ' + (r.desc||'') + ' ' + (r.type||'') + ' ' + (r.topicLabel||'')).toLowerCase();
+      return hay.indexOf(q) !== -1;
+    }).slice(0, 30);
+
+    var total = catMatches.length + topMatches.length + resMatches.length;
+    meta.innerHTML = total === 0 ? '' :
+      '<strong>' + total + '</strong> match' + (total === 1 ? '' : 'es') +
+      ' for <strong>"' + escapeHtml(q) + '"</strong>';
+
+    var html = '';
+    if(total === 0){
+      html = '<div class="search-empty">No matches yet. Try a topic, person, or idea — "money", "Sadhguru", "regenerative", "consciousness".</div>';
+    } else {
+      if(catMatches.length){
+        html += '<div class="search-group"><div class="search-group-title">In the network</div><div class="result-list">' +
+          catMatches.map(function(c){
+            return '<a class="result-item" href="' + escapeHtml(c.url) + '">' +
+              '<div class="result-kind">' + highlight(c.kind, q) + '</div>' +
+              '<div class="result-title">' + highlight(c.title, q) + '</div>' +
+              (c.desc ? '<div class="result-desc">' + highlight(c.desc.slice(0, 140), q) + '</div>' : '') +
+            '</a>';
+          }).join('') + '</div></div>';
+      }
+      if(topMatches.length){
+        html += '<div class="search-group"><div class="search-group-title">Topics</div><div class="result-list">' +
+          topMatches.map(function(t){
+            var label = t.label || t.name || '(topic)';
+            var url = t.url || ('/' + (t.slug || ''));
+            var desc = t.desc || t.description || '';
+            return '<a class="result-item" href="' + escapeHtml(url) + '">' +
+              '<div class="result-kind">topic' + (t.domain ? ' · ' + escapeHtml(t.domain) : '') + '</div>' +
+              '<div class="result-title">' + highlight(label, q) + '</div>' +
+              (desc ? '<div class="result-desc">' + highlight(desc.slice(0, 140), q) + '</div>' : '') +
+            '</a>';
+          }).join('') + '</div></div>';
+      }
+      if(resMatches.length){
+        html += '<div class="search-group"><div class="search-group-title">Resources</div><div class="result-list">' +
+          resMatches.map(function(r){
+            var url = r.url || '#';
+            var kind = r.type || 'resource';
+            var external = url.indexOf('http') === 0;
+            return '<a class="result-item" href="' + escapeHtml(url) + '"' +
+              (external ? ' target="_blank" rel="noopener noreferrer"' : '') + '>' +
+              '<div class="result-kind">' + escapeHtml(kind) + (r.topicLabel ? ' · ' + escapeHtml(r.topicLabel) : '') + '</div>' +
+              '<div class="result-title">' + highlight(r.name || '(resource)', q) + '</div>' +
+              (r.desc ? '<div class="result-desc">' + highlight(r.desc.slice(0, 140), q) + '</div>' : '') +
+            '</a>';
+          }).join('') + '</div></div>';
+      }
+    }
+    resultsWrap.innerHTML = html;
+  }
+
+  var timer = null;
+  input.addEventListener('input', function(e){
+    load().then(function(){
+      clearTimeout(timer);
+      timer = setTimeout(function(){ search(e.target.value); }, 60);
+    });
+  });
+
+  input.addEventListener('keydown', function(e){
+    if(e.key === 'Enter'){
+      e.preventDefault();
+      load().then(function(){ search(input.value); });
+    }
+    if(e.key === 'Escape'){
+      input.value = '';
+      search('');
+    }
+  });
+
+  // Prefill from ?q= param (so /search → /browse?q= works seamlessly)
+  var urlQ = new URL(window.location.href).searchParams.get('q');
+  if(urlQ){
+    input.value = urlQ;
+    load().then(function(){ search(urlQ); });
+  }
+})();
+</script>
 
 </body>
 </html>
