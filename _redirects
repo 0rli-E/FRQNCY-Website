@@ -1,8 +1,8 @@
 # Clean URL redirects — Cloudflare Pages
-# Redirect /explore → the v2 map
-/explore          /v2/explore.html    301
-/map              /v2/explore.html    301
-/network          /v2/explore.html    301
+# Redirect /explore → the map (now at root, was /v2/explore.html pre-refactor)
+/explore          /explore.html       301
+/map              /explore.html       301
+/network          /explore.html       301
 
 # Privacy / data-deletion endpoint (required by Play Data Safety form)
 /delete           /delete.html        301
@@ -20,9 +20,9 @@
 # Redirect /vision → about
 /vision           /about              301
 
-# Redirect old /v2 root to explore
-/v2               /v2/explore.html    301
-/v2/              /v2/explore.html    301
+# Redirect old /v2 root to explore (post-refactor: /v2/ no longer exists)
+/v2               /explore.html       301
+/v2/              /explore.html       301
 
 # Block access to internal docs and build scripts
 /CHATBOT-SETUP.md       /404.html 404

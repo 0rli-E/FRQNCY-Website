@@ -19,8 +19,8 @@
   <meta name="twitter:description" content="Navigate 134 topics across 6 pillars of conscious living.">
   <meta name="twitter:image" content="https://frqncy.network/og-image.png">
   <link rel="canonical" href="https://frqncy.network/explore.html">
-  <link rel="icon" type="image/svg+xml" href="../favicon.svg">
-  <link rel="manifest" href="../manifest.json">
+  <link rel="icon" type="image/svg+xml" href="./favicon.svg">
+  <link rel="manifest" href="./manifest.json">
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
@@ -344,9 +344,9 @@
     }
   </style>
   <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
-<script src="../mobile-nav.js" defer></script>
-<script src="../chat-widget.js" defer></script>
-<link rel="stylesheet" href="../nav-dropdown.css">
+<script src="./mobile-nav.js" defer></script>
+<script src="./chat-widget.js" defer></script>
+<link rel="stylesheet" href="./nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </head>
 <body>
@@ -509,13 +509,13 @@ body.frqncy-home #main-nav .nav-back{display:none}
 
 
 <nav class="explore-nav" style="position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.95);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between;">
-  <a href="../index.html" class="snav-logo" style="font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;opacity:0.85;">FRQNCY</a>
+  <a href="./index.html" class="snav-logo" style="font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;opacity:0.85;">FRQNCY</a>
   <div style="display:flex;align-items:center;gap:1rem;">
     <a href="watch/index.html" style="font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s;">Watch</a>
     <a href="music-hub/index.html" style="font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s;">Music</a>
     <a href="courses/index.html" style="font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s;">Courses</a>
-    <a href="../search.html" style="font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s;">Search</a>
-    <a href="../index.html" style="font-size:0.68rem;letter-spacing:0.1em;color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;text-decoration:none;transition:all .2s;white-space:nowrap;">← Home</a>
+    <a href="./search.html" style="font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);text-decoration:none;transition:color .2s;">Search</a>
+    <a href="./index.html" style="font-size:0.68rem;letter-spacing:0.1em;color:rgba(255,255,255,0.55);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;text-decoration:none;transition:all .2s;white-space:nowrap;">← Home</a>
   </div>
 </nav>
 
@@ -847,8 +847,8 @@ const searchResults=document.getElementById('search-results');
 // Load rich search indexes (topics + resources)
 let SEARCH_INDEX=[];
 let RESOURCE_INDEX=[];
-fetch('../search.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(data=>{ SEARCH_INDEX=data; }).catch(()=>{ /* search will use graph-only fallback */ });
-fetch('../resources.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(data=>{ RESOURCE_INDEX=data; }).catch(()=>{});
+fetch('./search.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(data=>{ SEARCH_INDEX=data; }).catch(()=>{ /* search will use graph-only fallback */ });
+fetch('./resources.json').then(r=>{ if(!r.ok) throw new Error(r.status); return r.json(); }).then(data=>{ RESOURCE_INDEX=data; }).catch(()=>{});
 
 function scoreMatch(item, q){
   let score=0;
