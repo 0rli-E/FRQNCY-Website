@@ -1,0 +1,156 @@
+---
+// Bluesky OAuth callback handler.
+//
+// Mounted at /social/profile/bluesky-callback/. The Bluesky auth server
+// redirects here with ?code=…&state=… (and DPoP nonce in the response).
+// We hand the full URL to completeBlueskyOAuth() which:
+//   1. Reads PKCE verifier from BrowserOAuthClient's IDB store
+//   2. Exchanges code for DPoP-bound access + refresh tokens
+//   3. Persists session marker to localStorage
+//   4. Returns the resolved handle so we can write profiles.bluesky_handle
+//
+// This page is transient — no nav, no chrome. On success or failure we
+// redirect back to /social/profile/connections/ with a query-flash so the
+// connections panel can render the right message.
+//
+// Why no SocialLayout: that pulls in nav + chrome we don't want on a
+// transient redirect target. A minimal HTML shell matches the "loading…"
+// placeholder UX of Statusphere / Whitewind reference implementations.
+---
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connecting to Bluesky… · FRQNCY</title>
+    <meta name="robots" content="noindex" />
+    <style>
+      html, body {
+        margin: 0;
+        padding: 0;
+        background: #0b1c3d;
+        color: #f5f3e8;
+        font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+        height: 100%;
+      }
+      .wrap {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        min-height: 100vh;
+        text-align: center;
+        padding: 24px;
+      }
+      .card {
+        max-width: 28rem;
+      }
+      h1 {
+        font-size: 1.25rem;
+        font-weight: 500;
+        color: #c4973a;
+        margin: 0 0 0.5rem 0;
+      }
+      p {
+        font-size: 0.875rem;
+        color: rgba(245, 243, 232, 0.6);
+        margin: 0;
+      }
+      .err {
+        color: #fca5a5;
+      }
+      .spinner {
+        width: 32px;
+        height: 32px;
+        border: 2px solid rgba(196, 151, 58, 0.2);
+        border-top-color: #c4973a;
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+        margin: 0 auto 1.25rem;
+      }
+      @keyframes spin {
+        to { transform: rotate(360deg); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="wrap">
+      <div class="card">
+        <div class="spinner" id="spinner"></div>
+        <h1 id="title">Completing Bluesky sign-in…</h1>
+        <p id="msg">Exchanging authorization code for tokens. This should take a moment.</p>
+      </div>
+    </div>
+
+    <script>
+      // Astro bundles this <script> block as a JS module. Bare imports get
+      // resolved against the src tree at build time — same path the
+      // ConnectionsPanel uses.
+      import { completeBlueskyOAuth } from '../../lib/atproto-bridge';
+      import { supabase } from '../../lib/supabase';
+
+      const titleEl = document.getElementById('title') as HTMLElement;
+      const msgEl = document.getElementById('msg') as HTMLElement;
+      const spinnerEl = document.getElementById('spinner') as HTMLElement;
+
+      function redirectWithFlash(ok: boolean, detail?: string) {
+        const base = '/social/profile/connections/';
+        const params = new URLSearchParams();
+        if (ok) {
+          params.set('bsky', 'connected');
+          if (detail) params.set('handle', detail);
+        } else {
+          params.set('bsky', 'error');
+          if (detail) params.set('reason', detail);
+        }
+        window.location.replace(base + '?' + params.toString());
+      }
+
+      (async () => {
+        try {
+          const result = await completeBlueskyOAuth(window.location.href);
+          if (result.ok) {
+            titleEl.textContent = 'Connected.';
+            msgEl.textContent = 'Redirecting back to your connections…';
+            spinnerEl.style.display = 'none';
+
+            // Best-effort: write the handle to profiles.bluesky_handle so
+            // the rest of NRG can show it. Failures are non-fatal — the
+            // localStorage session is the source of truth for posting.
+            try {
+              const { data: { user } } = await supabase.auth.getUser();
+              if (user && result.handle) {
+                const { error } = await supabase
+                  .from('profiles')
+                  .update({ bluesky_handle: result.handle })
+                  .eq('id', user.id);
+                if (error) {
+                  console.warn(
+                    '[bluesky-callback] bluesky_handle update failed:',
+                    error.message,
+                  );
+                }
+              }
+            } catch (err) {
+              console.warn('[bluesky-callback] profile update skipped:', err);
+            }
+
+            redirectWithFlash(true, result.handle);
+          } else {
+            titleEl.textContent = 'Could not complete sign-in.';
+            msgEl.textContent = result.error || 'Unknown error.';
+            msgEl.classList.add('err');
+            spinnerEl.style.display = 'none';
+            setTimeout(() => redirectWithFlash(false, result.error), 2500);
+          }
+        } catch (err: any) {
+          titleEl.textContent = 'Could not complete sign-in.';
+          const message = err?.message || 'Unknown error.';
+          msgEl.textContent = message;
+          msgEl.classList.add('err');
+          spinnerEl.style.display = 'none';
+          setTimeout(() => redirectWithFlash(false, message), 2500);
+        }
+      })();
+    </script>
+  </body>
+</html>

@@ -68,7 +68,11 @@ let oauthAgentCache: { agent: any; did: string; handle: string } | null = null;
 async function loadBrowserOAuthClientClass(): Promise<any | null> {
   try {
     // @ts-ignore — package isn't in package.json yet (Tier-2 #7 deployment item).
-    const mod = await import('@atproto/oauth-client-browser');
+    // Use a runtime variable so rollup doesn't try to statically resolve the
+    // bare specifier — the import will throw at runtime when the dep isn't
+    // installed, caught below.
+    const oauthClientModuleName = '@atproto/oauth-client-browser';
+    const mod = await import(/* @vite-ignore */ oauthClientModuleName);
     return mod.BrowserOAuthClient ?? mod.default?.BrowserOAuthClient ?? null;
   } catch (err) {
     console.warn(
