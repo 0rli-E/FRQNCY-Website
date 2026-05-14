@@ -512,6 +512,54 @@ export async function createPost(data: {
           console.warn('[atproto] cross-post threw (non-fatal):', err);
         });
     }
+
+    // Nostr publish — opt-in per profiles.nostr_publish_enabled (migration
+    // 021). The secp256k1 private key never leaves the user's localStorage;
+    // we load it here, sign client-side, and WebSocket-publish to the
+    // default relay set (relay.damus.io, nos.lol, relay.snort.social).
+    //
+    // Fail-soft on every step: if the profile lookup fails, the flag is
+    // off, the key is missing, the @noble/curves dep isn't installed yet,
+    // or any relay rejects — we swallow with console.warn. Never blocks
+    // the user-visible post action. Per proposals/NRG-EXPERT-CRITIQUE-
+    // 2026-05-14.md (Tier-2 fix #11).
+    void (async () => {
+      try {
+        const profileResp = await supabase
+          .from('profiles')
+          .select('nostr_pubkey, nostr_publish_enabled')
+          .eq('id', p.author_id)
+          .maybeSingle();
+        const profile = profileResp.data as
+          | { nostr_pubkey: string | null; nostr_publish_enabled: boolean | null }
+          | null;
+        if (!profile?.nostr_publish_enabled || !profile.nostr_pubkey) return;
+        const privKey =
+          typeof localStorage !== 'undefined'
+            ? localStorage.getItem('frqncy.nrg.nostr.privkey')
+            : null;
+        if (!privKey) return;
+        const { publishNrgPostAsNote } = await import('./nostr-publish');
+        const res = await publishNrgPostAsNote(privKey, {
+          content: p.content,
+          created_at_ms: new Date(p.created_at).getTime(),
+          link_url: p.link_url ?? null,
+          project_tag: p.project_tag ?? null,
+          media_urls: p.media_urls ?? [],
+          nrg_url: `https://frqncy.network/social/post/${p.id}`,
+        });
+        if (!res.ok) {
+          console.warn('[nostr-publish] failed:', res.reason);
+        } else if (res.relayResults.succeeded === 0) {
+          console.warn(
+            '[nostr-publish] no relays accepted the event:',
+            res.relayResults.results
+          );
+        }
+      } catch (e) {
+        console.warn('[nostr-publish] threw (non-fatal):', e);
+      }
+    })();
   }
 
   return post as Post;

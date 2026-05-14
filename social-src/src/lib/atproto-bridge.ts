@@ -26,6 +26,360 @@
 const HANDLE_KEY = 'frqncy.nrg.atproto.handle';
 const APP_PASSWORD_KEY = 'frqncy.nrg.atproto.app_password';
 
+// ─── OAuth (Tier-2 #7) ──────────────────────────────────────────────────────
+//
+// The 2026 standard for ATProto auth is OAuth + DPoP. The reference client
+// is @atproto/oauth-client-browser (a separate package from @atproto/api).
+// It's NOT in package.json yet — we dynamically import so the build stays
+// clean. Once Orlando runs `npm install @atproto/oauth-client-browser` and
+// deploys the client metadata JSON, the OAuth button starts working.
+//
+// Storage:
+//   sessionStorage 'frqncy.nrg.atproto.oauth.pending'  — { handle, ts }
+//     ephemeral hint so the callback page can show "completing as @x".
+//     The PKCE verifier + nonce are managed internally by
+//     BrowserOAuthClient's IndexedDB store, not here.
+//   localStorage   'frqncy.nrg.atproto.oauth.session'   — { did, handle, ts }
+//     marker that an OAuth session exists. The actual DPoP-bound tokens
+//     live in BrowserOAuthClient's IndexedDB store.
+//
+// The marker pattern (rather than mirroring the session blob) avoids a
+// split-brain where our localStorage thinks we're connected but the SDK's
+// session store has expired/rotated. isOAuthConnected() returns true only
+// if both the marker exists AND BrowserOAuthClient.restore() succeeds.
+const OAUTH_PENDING_KEY = 'frqncy.nrg.atproto.oauth.pending';
+const OAUTH_SESSION_KEY = 'frqncy.nrg.atproto.oauth.session';
+
+const OAUTH_CLIENT_METADATA_URL =
+  'https://frqncy.network/profile/bluesky-oauth-client.json';
+const OAUTH_REDIRECT_URI =
+  'https://frqncy.network/social/profile/bluesky-callback/';
+
+// Module-level cache: the loaded BrowserOAuthClient instance + the live Agent
+// derived from the active OAuth session. Both reset on disconnect.
+let oauthClientPromise: Promise<any> | null = null;
+let oauthAgentCache: { agent: any; did: string; handle: string } | null = null;
+
+/**
+ * Lazily load @atproto/oauth-client-browser. Returns null if the package
+ * isn't installed — the UI can detect this and disable the OAuth button
+ * with a tooltip rather than blowing up.
+ */
+async function loadBrowserOAuthClientClass(): Promise<any | null> {
+  try {
+    // @ts-ignore — package isn't in package.json yet (Tier-2 #7 deployment item).
+    const mod = await import('@atproto/oauth-client-browser');
+    return mod.BrowserOAuthClient ?? mod.default?.BrowserOAuthClient ?? null;
+  } catch (err) {
+    console.warn(
+      '[atproto] @atproto/oauth-client-browser not installed; OAuth disabled. ' +
+        'See proposals/NRG-EXPERT-CRITIQUE-2026-05-14.md Tier 2 #7.',
+      err,
+    );
+    return null;
+  }
+}
+
+/**
+ * Return (and memoize) a configured BrowserOAuthClient. Returns null if the
+ * SDK isn't installed.
+ */
+async function getOAuthClient(): Promise<any | null> {
+  if (oauthClientPromise) return oauthClientPromise;
+  oauthClientPromise = (async () => {
+    const BrowserOAuthClient = await loadBrowserOAuthClientClass();
+    if (!BrowserOAuthClient) return null;
+    try {
+      const client = await BrowserOAuthClient.load({
+        clientId: OAUTH_CLIENT_METADATA_URL,
+        handleResolver: 'https://bsky.social/',
+      });
+      return client;
+    } catch (err) {
+      console.warn('[atproto] BrowserOAuthClient.load failed:', err);
+      return null;
+    }
+  })();
+  return oauthClientPromise;
+}
+
+/**
+ * Returns true if there's an OAuth session marker in localStorage. The
+ * actual session blob lives in the SDK's IndexedDB store — a false positive
+ * (marker present, IDB session gone) is harmless: the next authenticated
+ * call will fall through and the user will see a "reconnect" prompt.
+ */
+export function isOAuthConnected(): boolean {
+  if (typeof window === 'undefined') return false;
+  try {
+    return !!window.localStorage.getItem(OAUTH_SESSION_KEY);
+  } catch {
+    return false;
+  }
+}
+
+/** Returns the OAuth handle from the marker, or null. */
+function getOAuthHandle(): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(OAUTH_SESSION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return typeof parsed?.handle === 'string' ? parsed.handle : null;
+  } catch {
+    return null;
+  }
+}
+
+/** Returns the OAuth DID from the marker, or null. */
+function getOAuthDid(): string | null {
+  if (typeof window === 'undefined') return null;
+  try {
+    const raw = window.localStorage.getItem(OAUTH_SESSION_KEY);
+    if (!raw) return null;
+    const parsed = JSON.parse(raw);
+    return typeof parsed?.did === 'string' ? parsed.did : null;
+  } catch {
+    return null;
+  }
+}
+
+/**
+ * Restore the OAuth session into a live Agent. Returns null on any failure
+ * (SDK missing, session expired, refresh denied). Callers should fall back
+ * to the legacy app-password path when this returns null.
+ */
+async function getOAuthAgent(): Promise<{ agent: any; did: string; handle: string } | null> {
+  if (oauthAgentCache) return oauthAgentCache;
+  if (!isOAuthConnected()) return null;
+  const did = getOAuthDid();
+  const handle = getOAuthHandle();
+  if (!did || !handle) return null;
+
+  const client = await getOAuthClient();
+  if (!client) return null;
+
+  try {
+    const session = await client.restore(did);
+    if (!session) return null;
+    // @atproto/api's Agent accepts an OAuth session directly (DPoP-bound).
+    const mod = await import('@atproto/api');
+    const AgentClass = mod.Agent ?? mod.default?.Agent;
+    if (!AgentClass) return null;
+    const agent = new AgentClass(session);
+    oauthAgentCache = { agent, did, handle };
+    return oauthAgentCache;
+  } catch (err) {
+    console.warn('[atproto] OAuth session restore failed:', err);
+    return null;
+  }
+}
+
+/**
+ * Initiate the OAuth authorization flow. Builds the authorization URL with
+ * the PKCE challenge (handled internally by BrowserOAuthClient), stashes a
+ * pending-marker in sessionStorage, and full-page-redirects to the auth
+ * server. Returns ok:false on pre-redirect failure (no SDK, bad handle,
+ * network refusal).
+ *
+ * DEPLOYMENT REQUIREMENT — before this flow works end-to-end:
+ * 1. Run `npm install @atproto/oauth-client-browser` in social-src/.
+ * 2. Create social/profile/bluesky-oauth-client.json with the OAuth client
+ *    metadata (client_id, redirect_uris, scope, grant_types, response_types,
+ *    application_type='web', token_endpoint_auth_method='none' for public
+ *    client). See https://atproto.com/specs/oauth for the exact schema.
+ * 3. Add `https://frqncy.network/social/profile/bluesky-callback/` to the
+ *    redirect_uris array.
+ * 4. The metadata URL must be public AND resolve to the JSON (set the
+ *    Content-Type to application/json).
+ * Until done, this OAuth flow will fail at the auth-server fetch step.
+ * The legacy app-password path keeps working in the meantime.
+ */
+export async function connectBlueskyOAuth(
+  handle: string,
+): Promise<{ ok: boolean; error?: string }> {
+  const normalized = normalizeHandle(handle);
+  if (!normalized) {
+    return { ok: false, error: 'Enter your Bluesky handle (e.g. alice.bsky.social).' };
+  }
+
+  const client = await getOAuthClient();
+  if (!client) {
+    return {
+      ok: false,
+      error:
+        'OAuth client lib not installed — see proposal Tier 2 #7. The legacy app-password flow below still works.',
+    };
+  }
+
+  try {
+    // Stash a hint so the callback page can render "completing as @x".
+    if (typeof window !== 'undefined') {
+      try {
+        window.sessionStorage.setItem(
+          OAUTH_PENDING_KEY,
+          JSON.stringify({ handle: normalized, ts: Date.now() }),
+        );
+      } catch {
+        // sessionStorage write can fail in private mode — non-fatal,
+        // the callback page just won't show the "completing as" hint.
+      }
+    }
+
+    // BrowserOAuthClient.authorize() returns the authorization URL with
+    // the PKCE challenge embedded. The verifier is stored in IDB.
+    const url: URL = await client.authorize(normalized, {
+      // Defensive: pass redirect_uri explicitly so it matches the metadata.
+      // BrowserOAuthClient picks the first redirect_uri from metadata by
+      // default; this is a safety net if the metadata gets edited.
+      // (Field is ignored if the SDK build rejects it.)
+      redirect_uri: OAUTH_REDIRECT_URI,
+    } as any);
+
+    if (typeof window !== 'undefined') {
+      window.location.assign(typeof url === 'string' ? url : url.toString());
+    }
+    return { ok: true };
+  } catch (err: any) {
+    // Clean up the pending marker — no in-flight flow.
+    if (typeof window !== 'undefined') {
+      try {
+        window.sessionStorage.removeItem(OAUTH_PENDING_KEY);
+      } catch {
+        /* non-fatal */
+      }
+    }
+    const msg =
+      err?.message ||
+      'Bluesky OAuth could not start. Check that the client metadata JSON is deployed and reachable.';
+    return { ok: false, error: msg };
+  }
+}
+
+/**
+ * Complete the OAuth flow on return from the auth server. Called from the
+ * callback page. Exchanges the code for DPoP-bound tokens (via
+ * BrowserOAuthClient.init), persists the session marker to localStorage,
+ * clears the pending sessionStorage entry, and returns the handle + DID.
+ *
+ * The actual session blob lives in the SDK's IndexedDB store — we only
+ * mirror handle+DID into localStorage as a fast-path flag.
+ */
+export async function completeBlueskyOAuth(
+  callbackUrl: string,
+): Promise<{ ok: boolean; handle?: string; did?: string; error?: string }> {
+  void callbackUrl; // BrowserOAuthClient reads window.location.href internally.
+
+  const client = await getOAuthClient();
+  if (!client) {
+    return {
+      ok: false,
+      error: 'OAuth client lib not installed — see proposal Tier 2 #7',
+    };
+  }
+
+  try {
+    // init() reads the URL hash/query, validates state + PKCE, and exchanges
+    // the code for tokens. Returns { session, state } on a fresh callback.
+    const result = await client.init();
+    if (!result || !result.session) {
+      return { ok: false, error: 'OAuth callback returned no session.' };
+    }
+    const session = result.session;
+    const did: string = String(session.did || '');
+    if (!did) {
+      return { ok: false, error: 'OAuth session has no DID.' };
+    }
+
+    // Resolve the handle. The session exposes it on .sub or via a profile
+    // lookup — prefer the pending-marker hint if it matches the DID, else
+    // fall back to com.atproto.identity.resolveHandle on the agent.
+    let handle: string | null = null;
+    try {
+      const mod = await import('@atproto/api');
+      const AgentClass = mod.Agent ?? mod.default?.Agent;
+      if (AgentClass) {
+        const agent = new AgentClass(session);
+        // getProfile is cheaper than resolveHandle for a known DID.
+        const prof = await agent.getProfile({ actor: did });
+        if (prof?.data?.handle) handle = String(prof.data.handle);
+      }
+    } catch (err) {
+      console.warn('[atproto] post-OAuth getProfile failed:', err);
+    }
+
+    // Last-resort fallback: pending-marker handle.
+    if (!handle && typeof window !== 'undefined') {
+      try {
+        const raw = window.sessionStorage.getItem(OAUTH_PENDING_KEY);
+        if (raw) {
+          const parsed = JSON.parse(raw);
+          if (typeof parsed?.handle === 'string') handle = parsed.handle;
+        }
+      } catch {
+        /* non-fatal */
+      }
+    }
+
+    if (!handle) {
+      handle = did; // Worst case: surface the DID. Caller can still disconnect.
+    }
+
+    // Persist the marker. The actual tokens live in the SDK's IDB store.
+    if (typeof window !== 'undefined') {
+      try {
+        window.localStorage.setItem(
+          OAUTH_SESSION_KEY,
+          JSON.stringify({ did, handle, ts: Date.now() }),
+        );
+        window.sessionStorage.removeItem(OAUTH_PENDING_KEY);
+      } catch (err) {
+        console.warn('[atproto] failed to persist OAuth session marker:', err);
+      }
+    }
+
+    return { ok: true, handle, did };
+  } catch (err: any) {
+    if (typeof window !== 'undefined') {
+      try {
+        window.sessionStorage.removeItem(OAUTH_PENDING_KEY);
+      } catch {
+        /* non-fatal */
+      }
+    }
+    const msg = err?.message || 'OAuth completion failed.';
+    return { ok: false, error: msg };
+  }
+}
+
+/**
+ * Revoke OAuth tokens (best-effort) and clear the localStorage marker +
+ * pending sessionStorage. Idempotent — safe to call when not connected.
+ */
+export async function disconnectBlueskyOAuth(): Promise<void> {
+  // Best-effort token revocation via BrowserOAuthClient.revoke(did).
+  try {
+    const did = getOAuthDid();
+    if (did) {
+      const client = await getOAuthClient();
+      if (client && typeof client.revoke === 'function') {
+        await client.revoke(did);
+      }
+    }
+  } catch (err) {
+    console.warn('[atproto] OAuth token revocation failed (continuing with local cleanup):', err);
+  }
+
+  oauthAgentCache = null;
+  if (typeof window === 'undefined') return;
+  try {
+    window.localStorage.removeItem(OAUTH_SESSION_KEY);
+    window.sessionStorage.removeItem(OAUTH_PENDING_KEY);
+  } catch {
+    /* non-fatal */
+  }
+}
+
 // Lazily-loaded BskyAgent to avoid importing the SDK on every page (and so
 // builds without @atproto/api installed don't crash). The module-level cache
 // keys agents by handle so repeated publishToBluesky calls reuse the session.
@@ -170,13 +524,37 @@ export async function publishToBluesky(
     return { ok: false, reason: 'not-connected' };
   }
 
+  const text = composePostText(opts.text, opts.nrgPostId, opts.appendFooter !== false);
+
+  // Prefer the OAuth (DPoP-bound) agent when available. Falls back to the
+  // legacy app-password path on any failure to keep existing users working.
+  if (isOAuthConnected()) {
+    const oauth = await getOAuthAgent();
+    if (oauth) {
+      try {
+        const res = await oauth.agent.post({
+          text,
+          createdAt: new Date().toISOString(),
+        });
+        if (!res?.uri || !res?.cid) {
+          return { ok: false, reason: 'Bluesky post returned no URI.' };
+        }
+        return { ok: true, uri: res.uri, cid: res.cid };
+      } catch (err: any) {
+        // Drop the cached OAuth agent so the next attempt re-restores.
+        oauthAgentCache = null;
+        return { ok: false, reason: translateBskyError(err) };
+      }
+    }
+    // OAuth marker present but agent restore failed — fall through to
+    // app-password if the user happens to still have one configured.
+  }
+
   const handle = getConnectedBlueskyHandle();
   const appPassword = getStoredAppPassword();
   if (!handle || !appPassword) {
     return { ok: false, reason: 'not-connected' };
   }
-
-  const text = composePostText(opts.text, opts.nrgPostId, opts.appendFooter !== false);
 
   const BskyAgent = await loadBskyAgentClass();
   if (!BskyAgent) {
@@ -257,6 +635,43 @@ export async function fetchBlueskyTimeline(
     return { ok: false, reason: 'not-connected' };
   }
 
+  const limit = Math.min(Math.max(opts.limit ?? 30, 1), 100);
+  const cacheKey = `${limit}:${opts.cursor ?? ''}`;
+  const cached = timelineCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) {
+    return { ok: true, posts: cached.value.posts, cursor: cached.value.cursor };
+  }
+
+  // Prefer the OAuth (DPoP-bound) agent. On any restore failure, fall through
+  // to the legacy app-password path if credentials are still stored.
+  if (isOAuthConnected()) {
+    const oauth = await getOAuthAgent();
+    if (oauth) {
+      try {
+        const res = await oauth.agent.getTimeline({ limit, cursor: opts.cursor });
+        if (!res?.data?.feed) {
+          return { ok: false, reason: 'Bluesky timeline returned no feed.' };
+        }
+        const posts: BlueskyPost[] = [];
+        for (const item of res.data.feed) {
+          const mapped = mapFeedItem(item);
+          if (mapped) posts.push(mapped);
+        }
+        const cursor = res.data.cursor ?? null;
+        timelineCache.set(cacheKey, {
+          value: { posts, cursor },
+          expiresAt: Date.now() + CACHE_TTL_MS,
+        });
+        return { ok: true, posts, cursor };
+      } catch (err: any) {
+        oauthAgentCache = null;
+        // Don't fall through — the OAuth user is logically connected; surface
+        // the error rather than silently trying a (likely stale) app-password.
+        return { ok: false, reason: translateBskyError(err) };
+      }
+    }
+  }
+
   const handle = getConnectedBlueskyHandle();
   const appPassword = getStoredAppPassword();
   if (!handle || !appPassword) {
@@ -266,13 +681,6 @@ export async function fetchBlueskyTimeline(
   const BskyAgent = await loadBskyAgentClass();
   if (!BskyAgent) {
     return { ok: false, reason: 'Bluesky SDK not loaded. Run `npm install @atproto/api` and rebuild.' };
-  }
-
-  const limit = Math.min(Math.max(opts.limit ?? 30, 1), 100);
-  const cacheKey = `${limit}:${opts.cursor ?? ''}`;
-  const cached = timelineCache.get(cacheKey);
-  if (cached && cached.expiresAt > Date.now()) {
-    return { ok: true, posts: cached.value.posts, cursor: cached.value.cursor };
   }
 
   try {
@@ -452,20 +860,36 @@ export async function fetchBlueskyThread(
   } catch (errPublic: any) {
     // Public AppView refused. If the viewer is connected, retry through the
     // authenticated agent (which gets a richer view for muted/blocked rules).
+    // Prefer the OAuth-bound agent, then fall back to the app-password agent.
     if (isBlueskyConnected()) {
-      const handle = getConnectedBlueskyHandle();
-      const appPassword = getStoredAppPassword();
-      if (handle && appPassword) {
+      // OAuth path first.
+      if (isOAuthConnected()) {
         try {
-          let agent = agentCache.get(handle);
-          if (!agent) {
-            agent = new BskyAgent({ service: 'https://bsky.social' });
-            const loginRes = await agent.login({ identifier: handle, password: appPassword });
-            if (loginRes?.success) agentCache.set(handle, agent);
+          const oauth = await getOAuthAgent();
+          if (oauth) {
+            res = await oauth.agent.getPostThread({ uri, depth: 1, parentHeight: 0 });
           }
-          if (agent) res = await agent.getPostThread({ uri, depth: 1, parentHeight: 0 });
         } catch (errAuth: any) {
-          return { ok: false, reason: translateBskyError(errAuth) };
+          oauthAgentCache = null;
+          // fall through to app-password retry below; if that also fails we'll
+          // surface the original public error.
+        }
+      }
+      if (!res) {
+        const handle = getConnectedBlueskyHandle();
+        const appPassword = getStoredAppPassword();
+        if (handle && appPassword) {
+          try {
+            let agent = agentCache.get(handle);
+            if (!agent) {
+              agent = new BskyAgent({ service: 'https://bsky.social' });
+              const loginRes = await agent.login({ identifier: handle, password: appPassword });
+              if (loginRes?.success) agentCache.set(handle, agent);
+            }
+            if (agent) res = await agent.getPostThread({ uri, depth: 1, parentHeight: 0 });
+          } catch (errAuth: any) {
+            return { ok: false, reason: translateBskyError(errAuth) };
+          }
         }
       }
     }
@@ -557,9 +981,13 @@ export function blueskyWebUrl(uri: string, handleHint?: string | null): string {
 
 // ─── Status helpers ─────────────────────────────────────────────────────────
 
-/** Returns the connected handle (from localStorage) or null. */
+/** Returns the connected handle — OAuth session preferred, then legacy
+ *  app-password handle, else null. */
 export function getConnectedBlueskyHandle(): string | null {
   if (typeof window === 'undefined') return null;
+  // Prefer the OAuth handle when present.
+  const oauthHandle = getOAuthHandle();
+  if (oauthHandle) return oauthHandle;
   try {
     return window.localStorage.getItem(HANDLE_KEY);
   } catch {
@@ -567,9 +995,11 @@ export function getConnectedBlueskyHandle(): string | null {
   }
 }
 
-/** Returns true if the user has a Bluesky app password in localStorage. */
+/** Returns true if EITHER an OAuth session OR the legacy app-password is
+ *  present in localStorage. */
 export function isBlueskyConnected(): boolean {
   if (typeof window === 'undefined') return false;
+  if (isOAuthConnected()) return true;
   try {
     return (
       !!window.localStorage.getItem(HANDLE_KEY) &&
@@ -580,9 +1010,16 @@ export function isBlueskyConnected(): boolean {
   }
 }
 
-/** Wipes the localStorage app password + handle. Does NOT clear the
-    profile's bluesky_handle column (caller decides whether to do that). */
+/** Wipes BOTH the OAuth session marker AND the legacy app-password + handle.
+ *  Idempotent — calling when only one is present is safe. Does NOT clear the
+ *  profile's bluesky_handle column (caller decides whether to do that). */
 export function disconnectBluesky(): void {
+  // Fire-and-forget OAuth revocation (async). Local cleanup runs immediately
+  // below so the UI can flip to "not connected" without waiting on the
+  // network round-trip.
+  if (isOAuthConnected()) {
+    void disconnectBlueskyOAuth();
+  }
   if (typeof window === 'undefined') return;
   try {
     const handle = window.localStorage.getItem(HANDLE_KEY);

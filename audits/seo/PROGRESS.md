@@ -1,6 +1,6 @@
 # FRQNCY SEO — Progress Dashboard
 
-**Last updated:** 2026-05-13 (post parallel-agent run · Phase 5.3, 5.5, 5.8 landed)
+**Last updated:** 2026-05-13 (post parallel-agent run #2 · Phase 5 documentation surface 100% shipped)
 **Auto-update with:** `python3 audits/seo/runs/build-progress.py`
 
 ---

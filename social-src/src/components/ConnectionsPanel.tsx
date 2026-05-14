@@ -18,6 +18,7 @@ import { useAuth } from './AuthProvider';
 import { supabase } from '../lib/supabase';
 import {
   connectBluesky,
+  connectBlueskyOAuth,
   disconnectBluesky,
   getConnectedBlueskyHandle,
   isBlueskyConnected,
@@ -32,6 +33,11 @@ export default function ConnectionsPanel() {
   // Bluesky form state.
   const [bskyHandle, setBskyHandle] = useState('');
   const [bskyAppPassword, setBskyAppPassword] = useState('');
+
+  // OAuth flow state.
+  const [oauthHandle, setOauthHandle] = useState('');
+  const [oauthBusy, setOauthBusy] = useState(false);
+  const [showLegacy, setShowLegacy] = useState(false);
 
   // Connection status — derived from localStorage on mount + after actions.
   const [connectedHandle, setConnectedHandle] = useState<string | null>(null);
@@ -59,6 +65,29 @@ export default function ConnectionsPanel() {
     setMessage(msg);
     setIsError(error);
     setTimeout(() => setMessage(''), 8000);
+  };
+
+  const handleOAuthConnect = async (e: Event) => {
+    e.preventDefault();
+    if (oauthBusy) return;
+    const handle = oauthHandle.trim();
+    if (!handle) {
+      flash('Enter your Bluesky handle (e.g. alice.bsky.social).', true);
+      return;
+    }
+    setOauthBusy(true);
+    try {
+      // This redirects the page on success. We only surface an error on
+      // pre-redirect failure (SDK missing, metadata unreachable, bad handle).
+      const result = await connectBlueskyOAuth(handle);
+      if (!result.ok) {
+        flash(result.error || 'Could not start Bluesky OAuth.', true);
+      }
+    } catch (err: any) {
+      flash(err?.message || 'Bluesky OAuth failed.', true);
+    } finally {
+      setOauthBusy(false);
+    }
   };
 
   const handleConnect = async (e: Event) => {
@@ -170,50 +199,90 @@ export default function ConnectionsPanel() {
             </div>
           </div>
         ) : (
-          <form onSubmit={handleConnect} class="space-y-3">
-            <p class="text-xs text-text-dim leading-relaxed">
-              Generate an app password at{' '}
-              <a
-                href="https://bsky.app/settings/app-passwords"
-                target="_blank"
-                rel="noopener noreferrer"
-                class="text-gold hover:text-gold-light underline"
+          <div class="space-y-4">
+            {/* OAuth flow — recommended path. Redirects out to Bluesky's auth
+                server, returns to /social/profile/bluesky-callback/. */}
+            <form onSubmit={handleOAuthConnect} class="space-y-3">
+              <p class="text-xs text-text-dim leading-relaxed">
+                Sign in with Bluesky directly. You'll be redirected to bsky.app
+                to authorize FRQNCY, then sent back here. No password lives in
+                this browser — tokens are DPoP-bound and scoped to posting only.
+              </p>
+              <div>
+                <label class="block text-xs text-text-dim mb-1">Bluesky handle</label>
+                <input
+                  type="text"
+                  value={oauthHandle}
+                  onInput={(e) => setOauthHandle((e.target as HTMLInputElement).value)}
+                  placeholder="alice.bsky.social"
+                  disabled={oauthBusy}
+                  class="w-full bg-navy-mid border border-card-border rounded-lg px-3 py-2 text-sm text-text placeholder-text-dim/60 focus:outline-none focus:border-gold/40"
+                />
+              </div>
+              <button
+                type="submit"
+                disabled={oauthBusy || !oauthHandle.trim()}
+                class="px-4 py-2 rounded-lg bg-gold text-navy text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
               >
-                bsky.app/settings/app-passwords
-              </a>
-              . Don't paste your main password — app passwords are revocable and limited to specific apps.
-            </p>
-            <div>
-              <label class="block text-xs text-text-dim mb-1">Bluesky handle</label>
-              <input
-                type="text"
-                value={bskyHandle}
-                onInput={(e) => setBskyHandle((e.target as HTMLInputElement).value)}
-                placeholder="alice.bsky.social"
-                disabled={busy}
-                class="w-full bg-navy-mid border border-card-border rounded-lg px-3 py-2 text-sm text-text placeholder-text-dim/60 focus:outline-none focus:border-gold/40"
-              />
-            </div>
-            <div>
-              <label class="block text-xs text-text-dim mb-1">App password</label>
-              <input
-                type="password"
-                value={bskyAppPassword}
-                onInput={(e) => setBskyAppPassword((e.target as HTMLInputElement).value)}
-                placeholder="xxxx-xxxx-xxxx-xxxx"
-                disabled={busy}
-                autoComplete="off"
-                class="w-full bg-navy-mid border border-card-border rounded-lg px-3 py-2 text-sm text-text placeholder-text-dim/60 focus:outline-none focus:border-gold/40 font-mono"
-              />
-            </div>
-            <button
-              type="submit"
-              disabled={busy || !bskyHandle.trim() || !bskyAppPassword.trim()}
-              class="px-4 py-2 rounded-lg bg-gold text-navy text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
-            >
-              {busy ? 'Connecting…' : 'Connect Bluesky'}
-            </button>
-          </form>
+                {oauthBusy ? 'Redirecting…' : 'Connect with Bluesky OAuth (recommended)'}
+              </button>
+            </form>
+
+            {/* Legacy app-password fallback — collapsed by default to nudge
+                new users toward OAuth. Existing connections (those already in
+                localStorage) bypass this entire branch via isConnected. */}
+            <details class="border-t border-card-border/40 pt-3" open={showLegacy} onToggle={(e) => setShowLegacy((e.target as HTMLDetailsElement).open)}>
+              <summary class="text-xs text-text-dim cursor-pointer hover:text-text">
+                Legacy — app password (not recommended)
+              </summary>
+              <form onSubmit={handleConnect} class="space-y-3 mt-3">
+                <p class="text-xs text-text-dim leading-relaxed">
+                  App passwords are unscoped — a leak grants full posting +
+                  DM-read + repo-management. Use only if OAuth is unavailable
+                  for your PDS. Generate one at{' '}
+                  <a
+                    href="https://bsky.app/settings/app-passwords"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    class="text-gold hover:text-gold-light underline"
+                  >
+                    bsky.app/settings/app-passwords
+                  </a>
+                  .
+                </p>
+                <div>
+                  <label class="block text-xs text-text-dim mb-1">Bluesky handle</label>
+                  <input
+                    type="text"
+                    value={bskyHandle}
+                    onInput={(e) => setBskyHandle((e.target as HTMLInputElement).value)}
+                    placeholder="alice.bsky.social"
+                    disabled={busy}
+                    class="w-full bg-navy-mid border border-card-border rounded-lg px-3 py-2 text-sm text-text placeholder-text-dim/60 focus:outline-none focus:border-gold/40"
+                  />
+                </div>
+                <div>
+                  <label class="block text-xs text-text-dim mb-1">App password</label>
+                  <input
+                    type="password"
+                    value={bskyAppPassword}
+                    onInput={(e) => setBskyAppPassword((e.target as HTMLInputElement).value)}
+                    placeholder="xxxx-xxxx-xxxx-xxxx"
+                    disabled={busy}
+                    autoComplete="off"
+                    class="w-full bg-navy-mid border border-card-border rounded-lg px-3 py-2 text-sm text-text placeholder-text-dim/60 focus:outline-none focus:border-gold/40 font-mono"
+                  />
+                </div>
+                <button
+                  type="submit"
+                  disabled={busy || !bskyHandle.trim() || !bskyAppPassword.trim()}
+                  class="px-4 py-2 rounded-lg border border-card-border text-text-dim text-sm font-medium hover:bg-navy-mid/40 transition-colors disabled:opacity-30 disabled:cursor-not-allowed"
+                >
+                  {busy ? 'Connecting…' : 'Connect with app password'}
+                </button>
+              </form>
+            </details>
+          </div>
         )}
       </div>
 

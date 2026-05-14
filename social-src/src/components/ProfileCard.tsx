@@ -1,5 +1,6 @@
 import { useState, useEffect } from 'preact/hooks';
 import { supabase } from '../lib/supabase';
+import { useAuth } from './AuthProvider';
 
 interface ProfileCardProps {
   username: string;
@@ -23,6 +24,33 @@ interface ProfileRow {
   founder_badge: boolean | null;
 }
 
+/** A single Ed25519 signer authorised under this profile. Source: migration
+    020_per_device_signer_keys.sql. Tier-3 will add custody-signed attestation
+    columns; for now the table is INSERT/UPDATE gated only by auth.uid(). */
+interface SigningKeyRow {
+  id: string;
+  public_key: string;
+  device_label: string | null;
+  created_at: string;
+}
+
+/** "3 minutes ago" / "yesterday" / "May 14" for the device list. Short-form;
+    falls back to the locale date for anything older than a week. */
+function relativeTime(iso: string): string {
+  try {
+    const then = new Date(iso).getTime();
+    const now = Date.now();
+    const diffSec = Math.max(0, Math.floor((now - then) / 1000));
+    if (diffSec < 60) return 'just now';
+    if (diffSec < 3600) return `${Math.floor(diffSec / 60)}m ago`;
+    if (diffSec < 86400) return `${Math.floor(diffSec / 3600)}h ago`;
+    if (diffSec < 604800) return `${Math.floor(diffSec / 86400)}d ago`;
+    return new Date(iso).toLocaleDateString('en-US', { month: 'short', day: 'numeric' });
+  } catch {
+    return '';
+  }
+}
+
 /** Short-form a 0x-prefixed address as `0xabcd…1234`. */
 function shortAddress(addr: string): string {
   if (!addr) return '';
@@ -40,10 +68,17 @@ function monthYear(iso: string): string {
 }
 
 export default function ProfileCard({ username }: ProfileCardProps) {
+  const { user } = useAuth();
   const [profile, setProfile] = useState<ProfileRow | null>(null);
   const [loading, setLoading] = useState(true);
   const [notFound, setNotFound] = useState(false);
   const [walletCopied, setWalletCopied] = useState(false);
+  /** Active signing keys for the viewed profile. Only populated when the
+      viewer is the profile owner (per RLS on signing_keys, SELECT is gated to
+      profile_id = auth.uid()). `null` = not yet fetched; `[]` = fetched and
+      empty. `'legacy'` = migration 020 not applied (table missing); show the
+      one-device fallback. */
+  const [devices, setDevices] = useState<SigningKeyRow[] | 'legacy' | null>(null);
 
   useEffect(() => {
     let cancelled = false;
@@ -65,6 +100,44 @@ export default function ProfileCard({ username }: ProfileCardProps) {
       cancelled = true;
     };
   }, [username]);
+
+  // Device list — only when the viewer is the profile owner. The SELECT RLS
+  // policy on signing_keys (migration 020) already enforces this server-side,
+  // but we skip the query entirely when ids don't match to avoid an extra
+  // round trip on every profile view. Fails soft if the table doesn't exist
+  // yet (legacy environments where migration 020 hasn't run).
+  useEffect(() => {
+    if (!profile || !user || profile.id !== user.id) {
+      setDevices(null);
+      return;
+    }
+    let cancelled = false;
+    (async () => {
+      const { data, error } = await supabase
+        .from('signing_keys')
+        .select('id, public_key, device_label, created_at')
+        .eq('profile_id', profile.id)
+        .is('revoked_at', null)
+        .order('created_at', { ascending: false });
+      if (cancelled) return;
+      if (error) {
+        // PGRST205 = "Could not find the table 'public.signing_keys'" — the
+        // migration hasn't been applied. Render the legacy one-device line.
+        const code = (error as { code?: string }).code;
+        if (code === 'PGRST205' || code === '42P01') {
+          setDevices('legacy');
+        } else {
+          // Any other error: keep the section hidden. Don't leak details.
+          setDevices(null);
+        }
+      } else {
+        setDevices((data || []) as SigningKeyRow[]);
+      }
+    })();
+    return () => {
+      cancelled = true;
+    };
+  }, [profile, user]);
 
   const copyWallet = async () => {
     if (!profile?.wallet_address) return;
@@ -205,6 +278,62 @@ export default function ProfileCard({ username }: ProfileCardProps) {
               )}
             </div>
           </div>
+
+          {/* Authorised devices — Tier-2 foundation for per-device signers
+              (migration 020). Only renders for the profile owner (RLS gated).
+              Tier-3 ships the actual /social/profile/keys/ management page;
+              the link below is a stub until then. */}
+          {devices !== null && profile && user && profile.id === user.id && (
+            <div class="mt-4 pt-3 border-t border-card-border/40">
+              {devices === 'legacy' ? (
+                <div class="flex items-center justify-between gap-3 text-xs">
+                  <span class="text-text-dim">Devices</span>
+                  <span class="text-text-dim">1 — this browser <span class="text-text-dim/60">(legacy)</span></span>
+                </div>
+              ) : (
+                <>
+                  <div class="flex items-center justify-between gap-3 text-xs mb-1.5">
+                    <span class="text-text-dim">Authorised devices</span>
+                    <span class="text-text">{devices.length || 1}</span>
+                  </div>
+                  {/* Most-recently-created entry is rendered as "this browser"
+                      if its public_key matches profiles.signing_public_key
+                      (the currently active signer, migration 009). For users
+                      that have only been seeded by migration 020 there is
+                      exactly one row and the match is trivially true. */}
+                  {devices.length > 0 ? (
+                    <ul class="space-y-1 text-xs">
+                      {devices.slice(0, 1).map((d) => {
+                        const isThis = !!profile?.signing_public_key && d.public_key === profile.signing_public_key;
+                        return (
+                          <li key={d.id} class="flex items-center justify-between gap-3">
+                            <span class="text-text">
+                              {d.device_label || 'Unnamed device'}
+                              {isThis && <span class="text-text-dim"> — this browser</span>}
+                            </span>
+                            <span class="text-text-dim/70">added {relativeTime(d.created_at)}</span>
+                          </li>
+                        );
+                      })}
+                      {devices.length > 1 && (
+                        <li class="text-text-dim">
+                          + {devices.length - 1} other device{devices.length - 1 === 1 ? '' : 's'}
+                        </li>
+                      )}
+                    </ul>
+                  ) : (
+                    <p class="text-xs text-text-dim/70 italic">No signer registered yet.</p>
+                  )}
+                  <a
+                    href="/social/profile/keys/"
+                    class="block mt-2 text-xs text-gold/80 hover:text-gold transition-colors"
+                  >
+                    Manage devices →
+                  </a>
+                </>
+              )}
+            </div>
+          )}
 
           {/* Export */}
           <a

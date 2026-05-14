@@ -11,6 +11,7 @@ import {
   generateSigningKeypair,
   loadSigningPrivateKeyLocal,
   saveSigningPrivateKeyLocal,
+  derivePublicKeyDidKey,
 } from '../lib/crypto';
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -49,12 +50,40 @@ interface Profile {
   /** Permanent founder acknowledgement — flipped server-side once the user
       has referred 25 members. See proposals/REFERRAL-REWARDS-V0.md. */
   founder_badge?: boolean | null;
+  /** Canonical did:key identifier derived from signing_public_key (round-2
+      onchain-pivot column). Populated when the user explicitly sets up
+      secure DMs via setupSecureDMs(); see proposals/NRG-ONCHAIN-PIVOT.md. */
+  did?: string | null;
 }
+
+/**
+ * Crypto-identity state for a single axis (encryption or signing).
+ *
+ *   'ready'                    — privkey in localStorage + pubkey on profile.
+ *   'not-set-up'               — neither side has anything yet. User is a new
+ *                                signup or an existing user who never opened
+ *                                DMs. Tier-2 gate: only generate when the
+ *                                user explicitly opts in via setupSecureDMs().
+ *   'new-device-import-needed' — pubkey on profile but no privkey locally.
+ *                                The user signed in from a new device (or
+ *                                cleared browser data). The UI should prompt
+ *                                for a backup import — generating a fresh
+ *                                key would orphan every past message.
+ *   'unknown'                  — initial state before the auth load resolves
+ *                                or while signed out.
+ */
+export type CryptoIdentityStatus =
+  | 'ready'
+  | 'not-set-up'
+  | 'new-device-import-needed'
+  | 'unknown';
 
 interface AuthState {
   user: User | null;
   profile: Profile | null;
   loading: boolean;
+  encryptionStatus: CryptoIdentityStatus;
+  signingStatus: CryptoIdentityStatus;
 }
 
 type Listener = (state: AuthState) => void;
@@ -79,7 +108,13 @@ function readSessionFromStorage(): User | null {
   }
 }
 
-let state: AuthState = { user: null, profile: null, loading: true };
+let state: AuthState = {
+  user: null,
+  profile: null,
+  loading: true,
+  encryptionStatus: 'unknown',
+  signingStatus: 'unknown',
+};
 const listeners = new Set<Listener>();
 let initialized = false;
 
@@ -94,32 +129,82 @@ async function fetchProfile(userId: string): Promise<Profile | null> {
   // the column already existing — when migration 010 hasn't been run, the
   // select will fail and we fall through. Keep this list aligned with the
   // Profile interface above.
-  const { data, error } = await supabase
+  //
+  // `did` is the round-2 onchain-pivot column. If migration hasn't run yet,
+  // this select fails and we retry without it so the rest of the profile
+  // still loads (matches the bluesky_handle pattern above).
+  let { data, error } = await supabase
     .from('profiles')
-    .select('id, username, display_name, avatar_url, bio, encryption_public_key, signing_public_key, privy_did, wallet_address, bluesky_handle, founder_badge')
+    .select('id, username, display_name, avatar_url, bio, encryption_public_key, signing_public_key, privy_did, wallet_address, bluesky_handle, founder_badge, did')
     .eq('id', userId)
     .single();
+
+  if (error) {
+    const retry = await supabase
+      .from('profiles')
+      .select('id, username, display_name, avatar_url, bio, encryption_public_key, signing_public_key, privy_did, wallet_address, bluesky_handle, founder_badge')
+      .eq('id', userId)
+      .single();
+    data = retry.data;
+    error = retry.error;
+  }
 
   if (error || !data) return null;
   return data as Profile;
 }
 
 /**
+ * Derive crypto-identity status from local + remote state without doing any
+ * generation. Tier-2 fix #12: replaces the auto-generate behavior on load.
+ */
+function computeEncryptionStatus(profile: Profile | null): CryptoIdentityStatus {
+  const localPriv = loadPrivateKeyLocal();
+  const remotePub = profile?.encryption_public_key ?? null;
+  if (localPriv && remotePub) return 'ready';
+  if (remotePub && !localPriv) return 'new-device-import-needed';
+  if (localPriv && !remotePub) {
+    // Edge case: localStorage has a key but remote pubkey is missing.
+    // Treat as ready for status purposes — setupSecureDMs() will re-derive
+    // and push the pubkey up via the existing round-1 recovery path.
+    return 'ready';
+  }
+  return 'not-set-up';
+}
+
+function computeSigningStatus(profile: Profile | null): CryptoIdentityStatus {
+  const localPriv = loadSigningPrivateKeyLocal();
+  const remotePub = profile?.signing_public_key ?? null;
+  if (localPriv && remotePub) return 'ready';
+  if (remotePub && !localPriv) return 'new-device-import-needed';
+  if (localPriv && !remotePub) return 'ready'; // see note above
+  return 'not-set-up';
+}
+
+/**
  * Ensure the signed-in user has a libsodium messaging keypair.
  *
- * Called on every signed-in load. Idempotent — if the user already has both
- * a private key in localStorage AND a public key on their profile, this is a
- * no-op. Otherwise:
+ * Tier-2 fix #12 (2026-05-14): NO LONGER called on every signed-in load.
+ * The auto-generate-on-signup behavior was unacceptable consent UX — users
+ * who never opened DMs were silently issued cryptographic identities they
+ * couldn't recover. This function now runs only via the explicit
+ * setupSecureDMs() entry point, which is gated behind a user action in
+ * <SetupSecureDMs />.
+ *
+ * Behaviour preserved (idempotent):
+ *
+ *   - localStorage privkey + remote pubkey already set → no-op.
  *
  *   - profile.encryption_public_key set, but no localStorage private key:
- *     this is a NEW DEVICE. We don't generate a fresh key (that would orphan
- *     all past messages). Surface the state so the UI can prompt for an
- *     import. Caller decides what to do.
+ *     NEW DEVICE. We don't generate a fresh key (that would orphan all
+ *     past messages). Caller should route the user through the backup
+ *     import flow instead.
  *
- *   - localStorage has a key but profile doesn't: rare race on signup. Push
- *     the public key to profile.
+ *   - localStorage has a key but profile doesn't: rare race on signup, or
+ *     the profile row lost its pubkey. DERIVE the pubkey from the local
+ *     private key (round-1 fix — never regenerate over an existing
+ *     identity) and push it up.
  *
- *   - Neither exists: first signup. Generate a keypair, save private key
+ *   - Neither exists: first opt-in. Generate a keypair, save private key
  *     locally, push public key to profile.
  */
 async function ensureEncryptionKeypair(userId: string, profile: Profile | null) {
@@ -190,14 +275,13 @@ async function ensureEncryptionKeypair(userId: string, profile: Profile | null) 
  * Ensure the signed-in user has a libsodium Ed25519 signing keypair for the
  * hybrid signed-message mirror (per proposals/NRG-ONCHAIN-PIVOT.md section 7).
  *
- * Same idempotent pattern as ensureEncryptionKeypair. Generates only if BOTH
- * the localStorage key and the profile public key are missing — never
- * regenerates over an existing identity (would invalidate every past
- * signature).
+ * Same idempotent pattern as ensureEncryptionKeypair, and same Tier-2 gating
+ * (2026-05-14): no longer called on every signed-in load. Runs only via the
+ * explicit setupSecureDMs() entry point.
  *
- * Until api.ts is wired to actually sign posts + follows, this just makes
- * sure the key exists and is portable. The signing happens in the next
- * session — schema is already open (migration 009).
+ * Generates only if BOTH the localStorage key and the profile public key are
+ * missing — never regenerates over an existing identity (would invalidate
+ * every past signature).
  */
 async function ensureSigningKeypair(userId: string, profile: Profile | null) {
   try {
@@ -259,6 +343,92 @@ async function ensureSigningKeypair(userId: string, profile: Profile | null) {
   }
 }
 
+/**
+ * Module-level implementation of setupSecureDMs — explicit, user-initiated
+ * crypto-identity setup. Tier-2 fix #12 entry point. Returns a clean result
+ * object so the calling UI can render a generating / done / error step
+ * without parsing exceptions.
+ *
+ * Steps:
+ *   1. Encryption: if status is 'not-set-up', run ensureEncryptionKeypair.
+ *   2. Signing:    if status is 'not-set-up', run ensureSigningKeypair.
+ *   3. Derive a did:key from the (now-present) signing pubkey and push it
+ *      to profiles.did. Tolerates the column being absent (migration not
+ *      yet run) — logs a warning and continues.
+ *   4. Recompute status fields from the fresh profile and broadcast.
+ *
+ * NOT idempotent in the loud sense — calling it when status is already
+ * 'ready' on both axes is fine (each ensure* short-circuits), but the
+ * did-derivation step still runs, which keeps things consistent for users
+ * who first set up keys before the round-2 column existed.
+ */
+async function setupSecureDMsImpl(): Promise<{ ok: boolean; error?: string }> {
+  const user = state.user;
+  if (!user) return { ok: false, error: 'Not signed in.' };
+
+  try {
+    const beforeProfile = state.profile;
+    const encStatus = computeEncryptionStatus(beforeProfile);
+    const sigStatus = computeSigningStatus(beforeProfile);
+
+    if (encStatus === 'new-device-import-needed') {
+      return {
+        ok: false,
+        error:
+          'This account already has encryption keys on the server, but no private key on this device. Import your backup instead of generating new keys — generating would orphan every past message.',
+      };
+    }
+    if (sigStatus === 'new-device-import-needed') {
+      return {
+        ok: false,
+        error:
+          'This account already has signing keys on the server, but no private key on this device. Import your backup instead of generating new keys — generating would invalidate every past signature.',
+      };
+    }
+
+    await ensureEncryptionKeypair(user.id, beforeProfile);
+    // ensureEncryptionKeypair may have mutated module state.profile via
+    // setState() — read the latest snapshot before running signing.
+    await ensureSigningKeypair(user.id, state.profile);
+
+    // Populate profiles.did from the freshly-set signing pubkey. The brief
+    // notes this hasn't been wired anywhere else yet, so this is the
+    // canonical site to do it. Tolerates the column being absent.
+    const latestProfile = state.profile;
+    const signingPub = latestProfile?.signing_public_key ?? null;
+    if (signingPub) {
+      try {
+        const didKey = await derivePublicKeyDidKey(signingPub);
+        const { error: didErr } = await supabase
+          .from('profiles')
+          .update({ did: didKey })
+          .eq('id', user.id);
+        if (didErr) {
+          console.warn(
+            '[did:key] failed to save did to profile (column may not exist yet):',
+            didErr.message,
+          );
+        } else if (latestProfile) {
+          setState({ profile: { ...latestProfile, did: didKey } });
+        }
+      } catch (derivErr) {
+        console.warn('[did:key] derive failed (non-fatal):', derivErr);
+      }
+    }
+
+    // Recompute statuses against whatever the ensure* paths left us with.
+    setState({
+      encryptionStatus: computeEncryptionStatus(state.profile),
+      signingStatus: computeSigningStatus(state.profile),
+    });
+
+    return { ok: true };
+  } catch (err) {
+    const msg = err instanceof Error ? err.message : String(err);
+    return { ok: false, error: msg };
+  }
+}
+
 function initAuthOnce() {
   if (initialized) return;
   if (typeof window === 'undefined') return;
@@ -266,14 +436,30 @@ function initAuthOnce() {
 
   // Read session synchronously from storage — no lock contention, no hang.
   const user = readSessionFromStorage();
-  state = { user, profile: null, loading: false };
+  state = {
+    user,
+    profile: null,
+    loading: false,
+    // Status stays 'unknown' until the profile has loaded. UI should treat
+    // 'unknown' as "wait" rather than "not set up" to avoid flashing the
+    // setup CTA for existing healthy users while their profile is in-flight.
+    encryptionStatus: 'unknown',
+    signingStatus: 'unknown',
+  };
   // Fetch profile in background; UI can render composer/nav immediately.
   if (user) {
     fetchProfile(user.id).then((profile) => {
-      if (profile) setState({ profile });
-      // Ensure messaging + signing keypairs exist. Runs once per signed-in load.
-      ensureEncryptionKeypair(user.id, profile);
-      ensureSigningKeypair(user.id, profile);
+      // Tier-2 fix #12 (2026-05-14): no longer auto-generate keys here.
+      // Compute crypto-identity status only. Users who already auto-
+      // generated keys in prior sessions will resolve to status='ready'
+      // (their localStorage privkey + remote pubkey are both intact), so
+      // existing users see no change. NEW signups will sit in 'not-set-up'
+      // until they explicitly run setupSecureDMs() via <SetupSecureDMs />.
+      setState({
+        profile: profile ?? null,
+        encryptionStatus: computeEncryptionStatus(profile),
+        signingStatus: computeSigningStatus(profile),
+      });
     });
     // If the user just returned from a Privy magic-link, finish the bridge.
     handlePrivyReturnIfPending(user.id).catch((err) =>
@@ -285,10 +471,16 @@ function initAuthOnce() {
   supabase.auth.onAuthStateChange(async (_event, session) => {
     const u = session?.user ?? null;
     const p = u ? await fetchProfile(u.id) : null;
-    setState({ user: u, profile: p, loading: false });
+    setState({
+      user: u,
+      profile: p,
+      loading: false,
+      encryptionStatus: u ? computeEncryptionStatus(p) : 'unknown',
+      signingStatus: u ? computeSigningStatus(p) : 'unknown',
+    });
     if (u) {
-      ensureEncryptionKeypair(u.id, p);
-      ensureSigningKeypair(u.id, p);
+      // Tier-2 fix #12: do NOT call ensureEncryptionKeypair / ensureSigningKeypair
+      // here. They are now reached only via setupSecureDMsImpl().
       handlePrivyReturnIfPending(u.id).catch((err) =>
         console.warn('[privy] return-bridge patch failed:', err),
       );
@@ -312,13 +504,38 @@ export function useAuth() {
 
   const signOut = async () => {
     await supabase.auth.signOut();
-    setState({ user: null, profile: null, loading: false });
+    setState({
+      user: null,
+      profile: null,
+      loading: false,
+      encryptionStatus: 'unknown',
+      signingStatus: 'unknown',
+    });
   };
 
   return {
     user: snapshot.user,
     profile: snapshot.profile,
     loading: snapshot.loading,
+    /**
+     * Crypto-identity status, computed lazily from local + remote state.
+     * See CryptoIdentityStatus for the meaning of each value.
+     *
+     * UI rules:
+     *   - 'unknown'                  → wait, don't render anything decisive.
+     *   - 'ready'                    → composer can encrypt; show no banner.
+     *   - 'not-set-up'               → render <SetupSecureDMs /> (or banner).
+     *   - 'new-device-import-needed' → prompt for backup import, NOT setup.
+     */
+    encryptionStatus: snapshot.encryptionStatus,
+    signingStatus: snapshot.signingStatus,
+    /**
+     * Explicit, user-initiated crypto-identity setup. Tier-2 fix #12 entry
+     * point — the only path that generates messaging + signing keys. Safe
+     * to call when status is already 'ready' (no-op on the keypair side,
+     * still ensures profiles.did is populated).
+     */
+    setupSecureDMs: setupSecureDMsImpl,
     signOut,
   };
 }

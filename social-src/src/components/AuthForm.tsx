@@ -43,7 +43,10 @@ export default function AuthForm() {
           const newUserId = data?.user?.id;
           const storedRef = localStorage.getItem('frqncy.ref_code');
           if (newUserId && storedRef) {
-            const { attributeSignup } = await import('/assets/frqncy-membership.js' as any);
+            // Runtime-resolved URL: keep the path out of rollup's static-analysis
+            // so the dist build doesn't try to bundle this public-folder asset.
+            const membershipModuleUrl = `${window.location.origin}/assets/frqncy-membership.js`;
+            const { attributeSignup } = await import(/* @vite-ignore */ membershipModuleUrl);
             // Fire-and-forget. attributeSignup is defensive and never throws.
             attributeSignup(storedRef, newUserId).catch(() => {});
           }

@@ -399,3 +399,283 @@ export function importKeyBackup(json: string): { ok: true } | { ok: false; reaso
     return { ok: false, reason: `Backup parse failed: ${err?.message ?? 'unknown error'}` };
   }
 }
+
+// ─────────────────────────────────────────────────────────────────────────────
+// v2 passphrase-wrapped backup — Argon2id-derived symmetric key + secretbox.
+//
+// Why this exists: the v1 backup is a plaintext JSON file containing BOTH the
+// X25519 messaging private key AND the Ed25519 signing private key in base64.
+// Anyone who reads that file can decrypt every DM AND impersonate the user
+// (sign posts as them, given a session). Users in the wild WILL email it to
+// themselves (gmail = custodian), paste into iCloud Notes (Apple = custodian),
+// or drop it in Google Drive — all of which defeat the point of E2EE.
+//
+// Mitigation: wrap the inner JSON with a libsodium `secretbox` (XSalsa20-Poly1305)
+// keyed by a 32-byte symmetric key derived from a user-chosen passphrase via
+// `crypto_pwhash` (Argon2id). The wrapped blob is safe to send through any
+// channel the user pleases — only the passphrase unlocks it.
+//
+// Parameter choice: INTERACTIVE limits (OPSLIMIT_INTERACTIVE / MEMLIMIT_INTERACTIVE).
+// libsodium's documented recommendation for interactive login flows — ~1 second
+// on a phone, ~64 MiB RAM. MODERATE would be ~0.7s on a desktop but 3+ seconds
+// on a mid-range Android, which is hostile UX for a backup restore. SENSITIVE
+// is reserved for offline disk encryption, not in-browser flows.
+//
+// Trade-off vs Nostr's NIP-49 (scrypt + ChaCha20-Poly1305): functionally
+// equivalent; Argon2id is the modern preferred KDF (PHC winner). We don't
+// claim NIP-49 wire compatibility — this is FRQNCY's own format, marked v: 2.
+// ─────────────────────────────────────────────────────────────────────────────
+
+export interface PassphraseWrappedBackup {
+  /** Version 2 = passphrase-wrapped. v1 was plaintext JSON. */
+  v: 2;
+  /** ISO timestamp when the backup was produced. */
+  exported_at: string;
+  /** base64 — Argon2id salt (16 random bytes). */
+  salt: string;
+  /** libsodium ops limit used during derivation. */
+  opslimit: number;
+  /** libsodium memory limit used during derivation. */
+  memlimit: number;
+  /** base64 — XSalsa20-Poly1305 nonce (24 random bytes). */
+  nonce: string;
+  /** base64 — secretbox ciphertext of the canonical-JSON inner keys. */
+  ciphertext: string;
+}
+
+interface InnerKeyMaterial {
+  encryption_private_key_b64: string;
+  signing_private_key_b64: string;
+  encryption_public_key_b64?: string;
+  signing_public_key_b64?: string;
+}
+
+/**
+ * Derive a 32-byte symmetric key from a passphrase using Argon2id.
+ * `salt` must be exactly `crypto_pwhash_SALTBYTES` (16) bytes.
+ */
+async function deriveKeyFromPassphrase(
+  passphrase: string,
+  salt: Uint8Array,
+  opslimit: number,
+  memlimit: number,
+): Promise<Uint8Array> {
+  const so = await ensureSodium();
+  return so.crypto_pwhash(
+    so.crypto_secretbox_KEYBYTES, // 32
+    passphrase,
+    salt,
+    opslimit,
+    memlimit,
+    so.crypto_pwhash_ALG_ARGON2ID13,
+  );
+}
+
+/**
+ * Wrap the user's keypairs into a passphrase-encrypted v2 backup blob.
+ * The returned object is safe to JSON-serialize and download as a file.
+ *
+ * The inner keys are canonicalized via `canonicalizeForSigning` before
+ * encryption so the byte layout is deterministic (useful if we ever want
+ * to hash a wrapped backup for integrity-check / dedup).
+ */
+export async function wrapKeysWithPassphrase(
+  keys: {
+    encryption_private_key_b64: string;
+    signing_private_key_b64: string;
+    encryption_public_key_b64?: string;
+    signing_public_key_b64?: string;
+  },
+  passphrase: string,
+): Promise<PassphraseWrappedBackup> {
+  if (typeof passphrase !== 'string' || passphrase.length === 0) {
+    throw new Error('wrapKeysWithPassphrase: passphrase must be a non-empty string');
+  }
+  const so = await ensureSodium();
+  const opslimit = so.crypto_pwhash_OPSLIMIT_INTERACTIVE;
+  const memlimit = so.crypto_pwhash_MEMLIMIT_INTERACTIVE;
+  const salt = so.randombytes_buf(so.crypto_pwhash_SALTBYTES); // 16 bytes
+  const nonce = so.randombytes_buf(so.crypto_secretbox_NONCEBYTES); // 24 bytes
+  const key = await deriveKeyFromPassphrase(passphrase, salt, opslimit, memlimit);
+  const innerJson = canonicalizeForSigning(keys);
+  const ciphertext = so.crypto_secretbox_easy(innerJson, nonce, key);
+  return {
+    v: 2,
+    exported_at: new Date().toISOString(),
+    salt: so.to_base64(salt, so.base64_variants.ORIGINAL),
+    opslimit,
+    memlimit,
+    nonce: so.to_base64(nonce, so.base64_variants.ORIGINAL),
+    ciphertext: so.to_base64(ciphertext, so.base64_variants.ORIGINAL),
+  };
+}
+
+/**
+ * Decrypt a v2 backup blob with the passphrase used to produce it.
+ * Throws on wrong passphrase, corrupted blob, or malformed parameters.
+ */
+export async function unwrapKeysWithPassphrase(
+  blob: PassphraseWrappedBackup,
+  passphrase: string,
+): Promise<InnerKeyMaterial> {
+  if (!isPassphraseWrappedBackup(blob)) {
+    throw new Error('unwrapKeysWithPassphrase: blob is not a valid v2 backup');
+  }
+  if (typeof passphrase !== 'string' || passphrase.length === 0) {
+    throw new Error('unwrapKeysWithPassphrase: passphrase must be a non-empty string');
+  }
+  const so = await ensureSodium();
+  let salt: Uint8Array;
+  let nonce: Uint8Array;
+  let ciphertext: Uint8Array;
+  try {
+    salt = so.from_base64(blob.salt, so.base64_variants.ORIGINAL);
+    nonce = so.from_base64(blob.nonce, so.base64_variants.ORIGINAL);
+    ciphertext = so.from_base64(blob.ciphertext, so.base64_variants.ORIGINAL);
+  } catch (err: any) {
+    throw new Error(`unwrapKeysWithPassphrase: malformed base64 fields (${err?.message ?? 'unknown'})`);
+  }
+  if (salt.length !== so.crypto_pwhash_SALTBYTES) {
+    throw new Error(
+      `unwrapKeysWithPassphrase: salt length ${salt.length} != expected ${so.crypto_pwhash_SALTBYTES}`,
+    );
+  }
+  if (nonce.length !== so.crypto_secretbox_NONCEBYTES) {
+    throw new Error(
+      `unwrapKeysWithPassphrase: nonce length ${nonce.length} != expected ${so.crypto_secretbox_NONCEBYTES}`,
+    );
+  }
+  const key = await deriveKeyFromPassphrase(passphrase, salt, blob.opslimit, blob.memlimit);
+  let plaintextBytes: Uint8Array;
+  try {
+    plaintextBytes = so.crypto_secretbox_open_easy(ciphertext, nonce, key);
+  } catch (_err) {
+    // libsodium throws on auth failure — wrong passphrase or tampered blob.
+    throw new Error('Decryption failed — wrong passphrase, or backup file corrupted.');
+  }
+  const plaintext = new TextDecoder().decode(plaintextBytes);
+  let parsed: any;
+  try {
+    parsed = JSON.parse(plaintext);
+  } catch (err: any) {
+    throw new Error(`unwrapKeysWithPassphrase: inner JSON parse failed (${err?.message ?? 'unknown'})`);
+  }
+  if (!parsed || typeof parsed.encryption_private_key_b64 !== 'string') {
+    throw new Error('unwrapKeysWithPassphrase: inner payload missing encryption_private_key_b64');
+  }
+  if (typeof parsed.signing_private_key_b64 !== 'string') {
+    throw new Error('unwrapKeysWithPassphrase: inner payload missing signing_private_key_b64');
+  }
+  return {
+    encryption_private_key_b64: parsed.encryption_private_key_b64,
+    signing_private_key_b64: parsed.signing_private_key_b64,
+    encryption_public_key_b64:
+      typeof parsed.encryption_public_key_b64 === 'string' ? parsed.encryption_public_key_b64 : undefined,
+    signing_public_key_b64:
+      typeof parsed.signing_public_key_b64 === 'string' ? parsed.signing_public_key_b64 : undefined,
+  };
+}
+
+/** Type guard: true if `parsed` looks like a v2 passphrase-wrapped backup. */
+export function isPassphraseWrappedBackup(parsed: unknown): parsed is PassphraseWrappedBackup {
+  if (!parsed || typeof parsed !== 'object') return false;
+  const p = parsed as Record<string, unknown>;
+  return (
+    p.v === 2 &&
+    typeof p.exported_at === 'string' &&
+    typeof p.salt === 'string' &&
+    typeof p.opslimit === 'number' &&
+    typeof p.memlimit === 'number' &&
+    typeof p.nonce === 'string' &&
+    typeof p.ciphertext === 'string'
+  );
+}
+
+/**
+ * Produce a v2 passphrase-wrapped backup JSON string from the currently-stored
+ * keys in localStorage. Returns null if no encryption private key is present.
+ *
+ * Note: we ship empty-string for `signing_private_key_b64` if the user has no
+ * signing key locally — the inner schema treats it as required, but consumers
+ * (`unwrapKeysWithPassphrase`) accept empty strings as "no signing key
+ * available". This is the same lenient policy as the v1 backup.
+ */
+export async function exportPassphraseBackup(
+  passphrase: string,
+  publicKeys?: { encryption_public_key_b64?: string; signing_public_key_b64?: string },
+): Promise<string | null> {
+  const enc = loadPrivateKeyLocal();
+  if (!enc) return null;
+  const sign = loadSigningPrivateKeyLocal() ?? '';
+  const blob = await wrapKeysWithPassphrase(
+    {
+      encryption_private_key_b64: enc,
+      signing_private_key_b64: sign,
+      encryption_public_key_b64: publicKeys?.encryption_public_key_b64,
+      signing_public_key_b64: publicKeys?.signing_public_key_b64,
+    },
+    passphrase,
+  );
+  return JSON.stringify(blob, null, 2);
+}
+
+/**
+ * Trigger a browser download of a v2 passphrase-wrapped backup. Returns
+ * `true` if the file was emitted, `false` if no private key was found
+ * locally. Throws on encryption errors (caller should surface the message).
+ */
+export async function downloadPassphraseBackupFile(
+  username: string,
+  passphrase: string,
+  publicKeys?: { encryption_public_key_b64?: string; signing_public_key_b64?: string },
+): Promise<boolean> {
+  if (typeof window === 'undefined') return false;
+  const json = await exportPassphraseBackup(passphrase, publicKeys);
+  if (!json) return false;
+  const safeUsername = username || 'frqncy';
+  const blob = new Blob(
+    [
+      `# FRQNCY NRG — passphrase-encrypted key backup (v2)\n`,
+      `# User: ${safeUsername}\n`,
+      `# Date: ${new Date().toISOString()}\n`,
+      `# This file is encrypted with the passphrase you chose.\n`,
+      `# You will need that passphrase to restore your keys on a new device.\n`,
+      `# FRQNCY cannot recover the passphrase — keep it somewhere safe.\n`,
+      `\n`,
+      `${json}\n`,
+    ].join(''),
+    { type: 'application/json' },
+  );
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  const date = new Date().toISOString().slice(0, 10);
+  a.download = `frqncy-nrg-backup-${safeUsername}-${date}.frqbak`;
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+  URL.revokeObjectURL(url);
+  return true;
+}
+
+/**
+ * Parse + decrypt a v2 backup JSON string with the user's passphrase. The
+ * returned object contains the raw private keys (and optionally pubkeys) —
+ * callers are responsible for cross-checking the derived pubkeys against
+ * the profile's stored pubkeys before persisting to localStorage.
+ */
+export async function importPassphraseBackup(
+  json: string,
+  passphrase: string,
+): Promise<InnerKeyMaterial> {
+  let parsed: unknown;
+  try {
+    parsed = JSON.parse(json);
+  } catch (err: any) {
+    throw new Error(`Backup parse failed: ${err?.message ?? 'unknown error'}`);
+  }
+  if (!isPassphraseWrappedBackup(parsed)) {
+    throw new Error('This file is not a v2 passphrase-encrypted backup.');
+  }
+  return unwrapKeysWithPassphrase(parsed, passphrase);
+}

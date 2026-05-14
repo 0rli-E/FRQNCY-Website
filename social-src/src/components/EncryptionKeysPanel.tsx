@@ -25,8 +25,34 @@ import {
   loadPrivateKeyLocal,
   saveSigningPrivateKeyLocal,
   loadSigningPrivateKeyLocal,
-  downloadKeyBackupFile,
+  downloadPassphraseBackupFile,
+  importPassphraseBackup,
+  isPassphraseWrappedBackup,
 } from '../lib/crypto';
+
+// Minimum passphrase length — short enough to be memorable, long enough that
+// brute-forcing past Argon2id INTERACTIVE limits is infeasible for casual
+// attackers. Users who want stronger should be guided by the strength meter.
+const MIN_PASSPHRASE_LEN = 12;
+
+/**
+ * Lightweight passphrase strength meter — returns a 0..4 score and a label.
+ * Not a substitute for zxcvbn; just enough signal to nudge users away from
+ * "password123". We weight length heavily because Argon2id makes a 16+ char
+ * passphrase astronomically harder to brute-force than a short one.
+ */
+function passphraseStrength(pass: string): { score: 0 | 1 | 2 | 3 | 4; label: string } {
+  if (!pass) return { score: 0, label: 'empty' };
+  let score = 0;
+  if (pass.length >= 8) score++;
+  if (pass.length >= 12) score++;
+  if (pass.length >= 20) score++;
+  if (/[a-z]/.test(pass) && /[A-Z]/.test(pass) && /[0-9]/.test(pass)) score++;
+  if (/[^A-Za-z0-9]/.test(pass)) score++;
+  const clamped = Math.min(4, score) as 0 | 1 | 2 | 3 | 4;
+  const labels = ['empty', 'very weak', 'weak', 'fair', 'strong', 'very strong'];
+  return { score: clamped, label: labels[Math.min(clamped + 1, labels.length - 1)] };
+}
 
 // localStorage flag set when the user has actually downloaded a backup OR
 // imported a backup file (both prove they have a copy somewhere). Read by
@@ -40,6 +66,22 @@ export default function EncryptionKeysPanel() {
   const [busy, setBusy] = useState(false);
   const [message, setMessage] = useState('');
   const [isError, setIsError] = useState(false);
+
+  // Backup passphrase modal — opened by "Download backup". Two password
+  // inputs (passphrase + confirm) and a strength meter. Closed without
+  // emitting a file if the user cancels.
+  const [backupModalOpen, setBackupModalOpen] = useState(false);
+  const [backupPass, setBackupPass] = useState('');
+  const [backupPassConfirm, setBackupPassConfirm] = useState('');
+  const [backupModalError, setBackupModalError] = useState('');
+
+  // Import passphrase modal — opened when the user picks a v2 backup file.
+  // Holds the parsed (still-encrypted) blob + the user's typed passphrase.
+  const [importModalOpen, setImportModalOpen] = useState(false);
+  const [importPass, setImportPass] = useState('');
+  const [importModalError, setImportModalError] = useState('');
+  // Pending parsed v2 blob waiting for passphrase decryption.
+  const [pendingImportBlob, setPendingImportBlob] = useState<any | null>(null);
 
   useEffect(() => {
     setHasLocalKey(!!loadPrivateKeyLocal());
@@ -79,21 +121,139 @@ export default function EncryptionKeysPanel() {
     setTimeout(() => setMessage(''), 6000);
   };
 
+  // "Download backup" — open the passphrase modal. Actual file emission
+  // happens in handleConfirmBackup once the user types + confirms a passphrase.
   const handleDownload = () => {
-    const username = profile?.username || 'frqncy';
-    const ok = downloadKeyBackupFile(username);
-    if (!ok) {
+    if (!hasLocalKey) {
       flash('No private key in this browser to download.', true);
       return;
     }
-    // Mark backup as acknowledged — user actually has a copy of the file.
-    // Clears the amber dot in NavAuth and the welcome modal's nag state.
-    try {
-      window.localStorage.setItem(BACKUP_ACK_LS_KEY, '1');
-    } catch (_) {
-      // localStorage write can fail in private mode — non-fatal.
+    setBackupPass('');
+    setBackupPassConfirm('');
+    setBackupModalError('');
+    setBackupModalOpen(true);
+  };
+
+  const handleCancelBackup = () => {
+    setBackupModalOpen(false);
+    setBackupPass('');
+    setBackupPassConfirm('');
+    setBackupModalError('');
+  };
+
+  const handleConfirmBackup = async () => {
+    setBackupModalError('');
+    if (backupPass.length < MIN_PASSPHRASE_LEN) {
+      setBackupModalError(`Passphrase must be at least ${MIN_PASSPHRASE_LEN} characters.`);
+      return;
     }
-    flash('Downloaded. Store this file like a password.');
+    if (backupPass !== backupPassConfirm) {
+      setBackupModalError('Passphrases do not match.');
+      return;
+    }
+    setBusy(true);
+    try {
+      const username = profile?.username || 'frqncy';
+      const ok = await downloadPassphraseBackupFile(username, backupPass, {
+        encryption_public_key_b64: remotePub ?? undefined,
+        signing_public_key_b64: remoteSigningPub ?? undefined,
+      });
+      if (!ok) {
+        setBackupModalError('No private key in this browser to download.');
+        return;
+      }
+      // Mark backup acknowledged — user has the encrypted file. Clears the
+      // amber dot in NavAuth and the welcome modal's nag state.
+      try {
+        window.localStorage.setItem(BACKUP_ACK_LS_KEY, '1');
+      } catch (_) {
+        // localStorage write can fail in private mode — non-fatal.
+      }
+      // Clear inputs before unmounting the modal so passphrase isn't left in
+      // component state any longer than necessary.
+      setBackupPass('');
+      setBackupPassConfirm('');
+      setBackupModalOpen(false);
+      flash('Encrypted backup downloaded. Store the passphrase somewhere safe — FRQNCY cannot recover it.');
+    } catch (err: any) {
+      setBackupModalError(err?.message ?? 'Backup failed.');
+    } finally {
+      setBusy(false);
+    }
+  };
+
+  // Shared validator: given a candidate `encPrivB64` (+ optional `signPrivB64`),
+  // derive the matching pubkeys and confirm they line up with the profile's
+  // stored pubkeys. Returns `{ derivedEncPubB64, derivedSignPubB64 }` on
+  // success or null after surfacing an error via flash().
+  const validateAndPersistInnerKeys = async (
+    encPrivB64: string,
+    signPrivB64: string | null,
+    profileEncPub: string | null,
+    profileSignPub: string | null,
+  ): Promise<boolean> => {
+    const so = await ensureSodium();
+
+    let derivedEncPubB64: string;
+    try {
+      const encPrivBytes = so.from_base64(encPrivB64, so.base64_variants.ORIGINAL);
+      const derivedEncPub = so.crypto_scalarmult_base(encPrivBytes);
+      derivedEncPubB64 = so.to_base64(derivedEncPub, so.base64_variants.ORIGINAL);
+    } catch (err: any) {
+      flash(`Could not parse encryption private key: ${err?.message ?? 'invalid key bytes'}`, true);
+      return false;
+    }
+
+    const encCorrupted = !profileEncPub;
+    if (!encCorrupted && derivedEncPubB64 !== profileEncPub) {
+      flash(
+        'This backup belongs to a different account. Imported public key does not match this profile\'s stored public key. If you want to use a different identity, log in to that account first.',
+        true,
+      );
+      return false;
+    }
+
+    let derivedSignPubB64: string | null = null;
+    if (signPrivB64) {
+      try {
+        const signPrivBytes = so.from_base64(signPrivB64, so.base64_variants.ORIGINAL);
+        const derivedSignPub = so.crypto_sign_ed25519_sk_to_pk(signPrivBytes);
+        derivedSignPubB64 = so.to_base64(derivedSignPub, so.base64_variants.ORIGINAL);
+      } catch (err: any) {
+        flash(`Could not parse signing private key: ${err?.message ?? 'invalid key bytes'}`, true);
+        return false;
+      }
+      if (profileSignPub && derivedSignPubB64 !== profileSignPub) {
+        flash(
+          'This backup belongs to a different account. Imported signing public key does not match this profile\'s stored signing public key. If you want to use a different identity, log in to that account first.',
+          true,
+        );
+        return false;
+      }
+    }
+
+    savePrivateKeyLocal(encPrivB64);
+    if (signPrivB64) {
+      saveSigningPrivateKeyLocal(signPrivB64);
+    }
+
+    // If the profile was missing its pubkey(s), write the derived one(s) up.
+    const profileUpdate: Record<string, string> = {};
+    if (!profileEncPub) profileUpdate.encryption_public_key = derivedEncPubB64;
+    if (!profileSignPub && derivedSignPubB64) profileUpdate.signing_public_key = derivedSignPubB64;
+    if (Object.keys(profileUpdate).length > 0 && user) {
+      const { error: upErr } = await supabase
+        .from('profiles')
+        .update(profileUpdate)
+        .eq('id', user.id);
+      if (upErr) {
+        console.warn('[encryption] failed to write derived pubkey(s) to profile:', upErr.message);
+      }
+    }
+
+    setHasLocalKey(true);
+    try { window.localStorage.setItem(BACKUP_ACK_LS_KEY, '1'); } catch (_) {}
+    return true;
   };
 
   const handleImport = async (e: Event) => {
@@ -103,15 +263,14 @@ export default function EncryptionKeysPanel() {
     setBusy(true);
     try {
       const text = await file.text();
-      // Strip header comments — the body should be either a JSON KeyBackupV1
-      // (current format) or a single base64 line (legacy single-key format).
+      // Strip header comments — the body should be either a JSON backup
+      // (v1 plaintext or v2 passphrase-wrapped) or a single base64 line
+      // (legacy single-key format).
       const stripped = text
         .split('\n')
         .filter((l) => !l.trim().startsWith('#') && !l.trim().startsWith('```'))
         .join('\n')
         .trim();
-
-      const so = await ensureSodium();
 
       // Pull the latest pubkeys from the profile so a stale auth snapshot
       // can't let a mismatched backup slip through.
@@ -131,7 +290,7 @@ export default function EncryptionKeysPanel() {
         // Non-fatal — fall back to the snapshot from useAuth().
       }
 
-      // Try the unified JSON backup first.
+      // JSON path — could be v1 (plaintext) or v2 (passphrase-wrapped).
       if (stripped.startsWith('{')) {
         let parsed: any;
         try {
@@ -140,6 +299,18 @@ export default function EncryptionKeysPanel() {
           flash(`Backup parse failed: ${err?.message ?? 'unknown error'}`, true);
           return;
         }
+
+        // v2 — passphrase-wrapped. Hand off to the import passphrase modal;
+        // validation against profile pubkeys happens in handleConfirmImport
+        // once we can decrypt the payload.
+        if (isPassphraseWrappedBackup(parsed)) {
+          setPendingImportBlob(parsed);
+          setImportPass('');
+          setImportModalError('');
+          setImportModalOpen(true);
+          return;
+        }
+
         if (parsed?.v !== 1) {
           flash(`Unsupported backup version: ${parsed?.v}`, true);
           return;
@@ -151,74 +322,14 @@ export default function EncryptionKeysPanel() {
           return;
         }
 
-        // Derive the encryption pubkey from the imported private key and
-        // compare against what the profile holds. If they don't match, this
-        // backup belongs to a different account — refuse to overwrite.
-        let derivedEncPubB64: string;
-        try {
-          const encPrivBytes = so.from_base64(encPrivB64, so.base64_variants.ORIGINAL);
-          const derivedEncPub = so.crypto_scalarmult_base(encPrivBytes);
-          derivedEncPubB64 = so.to_base64(derivedEncPub, so.base64_variants.ORIGINAL);
-        } catch (err: any) {
-          flash(`Could not parse encryption private key: ${err?.message ?? 'invalid key bytes'}`, true);
-          return;
-        }
-
-        const encCorrupted = !profileEncPub;
-        if (!encCorrupted && derivedEncPubB64 !== profileEncPub) {
-          flash(
-            'This backup belongs to a different account. Imported public key does not match this profile\'s stored public key. If you want to use a different identity, log in to that account first.',
-            true,
-          );
-          return;
-        }
-
-        // Same check for signing key when the backup includes one.
-        let derivedSignPubB64: string | null = null;
-        if (signPrivB64) {
-          try {
-            const signPrivBytes = so.from_base64(signPrivB64, so.base64_variants.ORIGINAL);
-            const derivedSignPub = so.crypto_sign_ed25519_sk_to_pk(signPrivBytes);
-            derivedSignPubB64 = so.to_base64(derivedSignPub, so.base64_variants.ORIGINAL);
-          } catch (err: any) {
-            flash(`Could not parse signing private key: ${err?.message ?? 'invalid key bytes'}`, true);
-            return;
-          }
-          if (profileSignPub && derivedSignPubB64 !== profileSignPub) {
-            flash(
-              'This backup belongs to a different account. Imported signing public key does not match this profile\'s stored signing public key. If you want to use a different identity, log in to that account first.',
-              true,
-            );
-            return;
-          }
-        }
-
-        // Validation passed — safe to write.
-        savePrivateKeyLocal(encPrivB64);
-        if (signPrivB64) {
-          saveSigningPrivateKeyLocal(signPrivB64);
-        }
-
-        // If the profile was missing its pubkey(s), write the derived one(s)
-        // up — this is the "restoring on a fresh / corrupted profile" case.
-        const profileUpdate: Record<string, string> = {};
-        if (!profileEncPub) profileUpdate.encryption_public_key = derivedEncPubB64;
-        if (!profileSignPub && derivedSignPubB64) profileUpdate.signing_public_key = derivedSignPubB64;
-        if (Object.keys(profileUpdate).length > 0) {
-          const { error: upErr } = await supabase
-            .from('profiles')
-            .update(profileUpdate)
-            .eq('id', user.id);
-          if (upErr) {
-            console.warn('[encryption] failed to write derived pubkey(s) to profile:', upErr.message);
-          }
-        }
-
-        setHasLocalKey(true);
-        // Importing a backup proves the user has a copy of the file in
-        // their possession — count it as acknowledgement.
-        try { window.localStorage.setItem(BACKUP_ACK_LS_KEY, '1'); } catch (_) {}
-        flash('Keys imported (encryption + signing). Refresh /social/messages/ to decrypt past messages.');
+        const ok = await validateAndPersistInnerKeys(
+          encPrivB64,
+          signPrivB64,
+          profileEncPub,
+          profileSignPub,
+        );
+        if (!ok) return;
+        flash('Keys imported (legacy plaintext backup). This backup was created before passphrase encryption was added — consider downloading a fresh encrypted backup now. Refresh /social/messages/ to decrypt past messages.');
         return;
       }
 
@@ -228,49 +339,91 @@ export default function EncryptionKeysPanel() {
         .map((l) => l.trim())
         .find((l) => /^[A-Za-z0-9+/=_-]{40,}$/.test(l));
       if (!candidate) {
-        flash('Could not find a valid key in that file. Upload the .txt FRQNCY gave you.', true);
+        flash('Could not find a valid key in that file. Upload the backup file FRQNCY gave you.', true);
         return;
       }
 
-      // Validate the legacy single-key import the same way.
-      let derivedEncPubB64: string;
-      try {
-        const encPrivBytes = so.from_base64(candidate, so.base64_variants.ORIGINAL);
-        const derivedEncPub = so.crypto_scalarmult_base(encPrivBytes);
-        derivedEncPubB64 = so.to_base64(derivedEncPub, so.base64_variants.ORIGINAL);
-      } catch (err: any) {
-        flash(`Could not parse encryption private key: ${err?.message ?? 'invalid key bytes'}`, true);
-        return;
-      }
-
-      if (profileEncPub && derivedEncPubB64 !== profileEncPub) {
-        flash(
-          'This backup belongs to a different account. Imported public key does not match this profile\'s stored public key. If you want to use a different identity, log in to that account first.',
-          true,
-        );
-        return;
-      }
-
-      savePrivateKeyLocal(candidate);
-
-      if (!profileEncPub) {
-        const { error: upErr } = await supabase
-          .from('profiles')
-          .update({ encryption_public_key: derivedEncPubB64 })
-          .eq('id', user.id);
-        if (upErr) {
-          console.warn('[encryption] failed to write derived pubkey to profile:', upErr.message);
-        }
-      }
-
-      setHasLocalKey(true);
-      try { window.localStorage.setItem(BACKUP_ACK_LS_KEY, '1'); } catch (_) {}
+      const ok = await validateAndPersistInnerKeys(
+        candidate,
+        null,
+        profileEncPub,
+        profileSignPub,
+      );
+      if (!ok) return;
       flash('Encryption key imported (legacy backup — no signing key found). Past encrypted messages should now decrypt.');
     } catch (err: any) {
       flash(err?.message || 'Import failed.', true);
     } finally {
       setBusy(false);
       input.value = '';
+    }
+  };
+
+  const handleCancelImport = () => {
+    setImportModalOpen(false);
+    setImportPass('');
+    setImportModalError('');
+    setPendingImportBlob(null);
+  };
+
+  const handleConfirmImport = async () => {
+    setImportModalError('');
+    if (!pendingImportBlob) {
+      setImportModalError('No backup loaded.');
+      return;
+    }
+    if (!importPass) {
+      setImportModalError('Enter the passphrase used when this backup was created.');
+      return;
+    }
+    setBusy(true);
+    try {
+      let inner;
+      try {
+        // The import library exposes a JSON-string entrypoint; we already
+        // parsed, so call wrap/unwrap directly via re-serialization. Easier
+        // than threading a second helper for the already-parsed-blob case.
+        inner = await importPassphraseBackup(JSON.stringify(pendingImportBlob), importPass);
+      } catch (err: any) {
+        // Most common path: wrong passphrase. Keep modal open so user can retry.
+        setImportModalError(err?.message ?? 'Decryption failed.');
+        return;
+      }
+
+      // Pull current profile pubkeys fresh — same defensive read as in handleImport.
+      let profileEncPub: string | null = remotePub;
+      let profileSignPub: string | null = remoteSigningPub;
+      try {
+        const { data, error: fetchErr } = await supabase
+          .from('profiles')
+          .select('encryption_public_key, signing_public_key')
+          .eq('id', user.id)
+          .single();
+        if (!fetchErr && data) {
+          profileEncPub = (data as any).encryption_public_key ?? null;
+          profileSignPub = (data as any).signing_public_key ?? null;
+        }
+      } catch (_) {
+        // Non-fatal.
+      }
+
+      const ok = await validateAndPersistInnerKeys(
+        inner.encryption_private_key_b64,
+        inner.signing_private_key_b64 || null,
+        profileEncPub,
+        profileSignPub,
+      );
+      if (!ok) {
+        // validator surfaces its own error message via flash() — close the
+        // modal so that flash is visible.
+        handleCancelImport();
+        return;
+      }
+
+      handleCancelImport();
+      flash('Keys imported (encryption + signing). Refresh /social/messages/ to decrypt past messages.');
+    } finally {
+      setBusy(false);
     }
   };
 
@@ -341,7 +494,7 @@ export default function EncryptionKeysPanel() {
         <div>
           <h3 class="font-heading text-lg text-gold mb-1">1. Download backup</h3>
           <p class="text-xs text-text-dim mb-3">
-            Saves your private key as a .txt. Store it like a password — anyone with this file can read every encrypted message you receive on FRQNCY.
+            Encrypts your keys with a passphrase you choose, then downloads the encrypted file. Safe to email to yourself, store in iCloud / Drive, or print — without the passphrase the file is useless.
           </p>
           <button
             type="button"
@@ -349,18 +502,18 @@ export default function EncryptionKeysPanel() {
             disabled={!hasLocalKey || busy}
             class="px-4 py-2 rounded-lg bg-gold text-navy text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
           >
-            Download private key
+            Download encrypted backup
           </button>
         </div>
 
         <div class="border-t border-card-border pt-5">
           <h3 class="font-heading text-lg text-gold mb-1">2. Import on a new device</h3>
           <p class="text-xs text-text-dim mb-3">
-            Already have the .txt from another browser or device? Upload it here to decrypt past messages on this one.
+            Already have your backup file from another browser or device? Upload it here to decrypt past messages on this one. We'll ask for the passphrase if the backup is encrypted.
           </p>
           <input
             type="file"
-            accept=".txt,text/plain"
+            accept=".txt,.json,.frqbak,text/plain,application/json"
             onChange={handleImport}
             disabled={busy}
             class="block text-xs text-text-dim file:mr-3 file:px-3 file:py-2 file:rounded-lg file:border-0 file:bg-navy-mid file:text-text file:text-xs file:hover:bg-navy-mid/80 file:cursor-pointer"
@@ -409,9 +562,173 @@ export default function EncryptionKeysPanel() {
           NRG uses libsodium sealed boxes — your messages are encrypted in your browser before they leave your device. The server stores ciphertext only. Only your private key can decrypt.
         </p>
         <p class="mt-2">
-          v1 has no forward secrecy: compromising your private key reveals every past message. v2 will add Signal-style ratcheting. See{' '}
+          Backups are wrapped with Argon2id-derived encryption using a passphrase you choose. FRQNCY never sees the passphrase and cannot recover it. v1 has no forward secrecy: compromising your private key reveals every past message. v2 will add Signal-style ratcheting. See{' '}
           <a href="https://github.com/0rli-E/frqncy-website/blob/main/social-src/E2EE-NOTES.md" class="underline hover:text-gold">E2EE-NOTES.md</a>.
         </p>
+      </div>
+
+      {backupModalOpen && (
+        <BackupPassphraseModal
+          passphrase={backupPass}
+          confirm={backupPassConfirm}
+          error={backupModalError}
+          busy={busy}
+          onPassphrase={setBackupPass}
+          onConfirm={setBackupPassConfirm}
+          onCancel={handleCancelBackup}
+          onSubmit={handleConfirmBackup}
+        />
+      )}
+
+      {importModalOpen && (
+        <ImportPassphraseModal
+          passphrase={importPass}
+          error={importModalError}
+          busy={busy}
+          onPassphrase={setImportPass}
+          onCancel={handleCancelImport}
+          onSubmit={handleConfirmImport}
+        />
+      )}
+    </div>
+  );
+}
+
+interface BackupPassphraseModalProps {
+  passphrase: string;
+  confirm: string;
+  error: string;
+  busy: boolean;
+  onPassphrase: (v: string) => void;
+  onConfirm: (v: string) => void;
+  onCancel: () => void;
+  onSubmit: () => void;
+}
+
+function BackupPassphraseModal({
+  passphrase,
+  confirm,
+  error,
+  busy,
+  onPassphrase,
+  onConfirm,
+  onCancel,
+  onSubmit,
+}: BackupPassphraseModalProps) {
+  const strength = passphraseStrength(passphrase);
+  const meterColor = ['bg-red-500', 'bg-red-400', 'bg-amber-400', 'bg-gold', 'bg-emerald-400'][strength.score];
+  const canSubmit = passphrase.length >= MIN_PASSPHRASE_LEN && passphrase === confirm && !busy;
+  return (
+    <div class="fixed inset-0 bg-navy/80 backdrop-blur-sm z-[100] px-4 flex items-start justify-center pt-24">
+      <div class="max-w-md w-full rounded-xl bg-card-bg border border-card-border p-6">
+        <h3 class="font-heading text-lg text-gold mb-2">Choose a backup passphrase</h3>
+        <p class="text-xs text-text-dim leading-relaxed mb-4">
+          You'll need this passphrase to restore your keys on a new device.{' '}
+          <strong class="text-amber-200">FRQNCY cannot recover this passphrase if you forget it.</strong> Use a password manager.
+        </p>
+        <label class="block text-xs text-text-dim mb-1">Passphrase (min {MIN_PASSPHRASE_LEN} chars)</label>
+        <input
+          type="password"
+          value={passphrase}
+          onInput={(e) => onPassphrase((e.target as HTMLInputElement).value)}
+          autoComplete="new-password"
+          class="w-full bg-navy-mid border border-card-border rounded-lg px-3 py-2 text-sm text-text placeholder-text-dim focus:outline-none focus:border-gold/40 mb-2"
+          placeholder="A strong passphrase…"
+        />
+        <div class="h-1 rounded-full bg-navy-mid mb-1 overflow-hidden">
+          <div class={`h-full ${meterColor} transition-all`} style={{ width: `${(strength.score / 4) * 100}%` }} />
+        </div>
+        <p class="text-xs text-text-dim mb-3">Strength: {strength.label}</p>
+
+        <label class="block text-xs text-text-dim mb-1">Confirm passphrase</label>
+        <input
+          type="password"
+          value={confirm}
+          onInput={(e) => onConfirm((e.target as HTMLInputElement).value)}
+          autoComplete="new-password"
+          class="w-full bg-navy-mid border border-card-border rounded-lg px-3 py-2 text-sm text-text placeholder-text-dim focus:outline-none focus:border-gold/40 mb-3"
+          placeholder="Type it again"
+        />
+
+        {error && <p class="text-xs text-red-400 mb-3">{error}</p>}
+
+        <div class="flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={busy}
+            class="px-4 py-2 text-text-dim text-sm hover:text-text transition-colors disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={onSubmit}
+            disabled={!canSubmit}
+            class="px-4 py-2 rounded-lg bg-gold text-navy text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {busy ? 'Encrypting…' : 'Download encrypted backup'}
+          </button>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+interface ImportPassphraseModalProps {
+  passphrase: string;
+  error: string;
+  busy: boolean;
+  onPassphrase: (v: string) => void;
+  onCancel: () => void;
+  onSubmit: () => void;
+}
+
+function ImportPassphraseModal({
+  passphrase,
+  error,
+  busy,
+  onPassphrase,
+  onCancel,
+  onSubmit,
+}: ImportPassphraseModalProps) {
+  return (
+    <div class="fixed inset-0 bg-navy/80 backdrop-blur-sm z-[100] px-4 flex items-start justify-center pt-24">
+      <div class="max-w-md w-full rounded-xl bg-card-bg border border-card-border p-6">
+        <h3 class="font-heading text-lg text-gold mb-2">Enter backup passphrase</h3>
+        <p class="text-xs text-text-dim leading-relaxed mb-4">
+          Enter the passphrase you chose when this backup was created. FRQNCY cannot recover it for you.
+        </p>
+        <input
+          type="password"
+          value={passphrase}
+          onInput={(e) => onPassphrase((e.target as HTMLInputElement).value)}
+          autoComplete="current-password"
+          class="w-full bg-navy-mid border border-card-border rounded-lg px-3 py-2 text-sm text-text placeholder-text-dim focus:outline-none focus:border-gold/40 mb-3"
+          placeholder="Passphrase"
+          onKeyDown={(e) => { if ((e as KeyboardEvent).key === 'Enter' && !busy) onSubmit(); }}
+        />
+
+        {error && <p class="text-xs text-red-400 mb-3">{error}</p>}
+
+        <div class="flex justify-end gap-2">
+          <button
+            type="button"
+            onClick={onCancel}
+            disabled={busy}
+            class="px-4 py-2 text-text-dim text-sm hover:text-text transition-colors disabled:opacity-50"
+          >
+            Cancel
+          </button>
+          <button
+            type="button"
+            onClick={onSubmit}
+            disabled={busy || !passphrase}
+            class="px-4 py-2 rounded-lg bg-gold text-navy text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+          >
+            {busy ? 'Decrypting…' : 'Decrypt + import'}
+          </button>
+        </div>
       </div>
     </div>
   );

@@ -22,10 +22,26 @@
 
 import { useState, useEffect } from 'preact/hooks';
 import { useAuth } from './AuthProvider';
-import { downloadKeyBackupFile, loadPrivateKeyLocal } from '../lib/crypto';
+import { downloadPassphraseBackupFile, loadPrivateKeyLocal } from '../lib/crypto';
 
 const WELCOMED_LS_KEY = 'frqncy.nrg.welcomed';
 const BACKUP_ACK_LS_KEY = 'frqncy.nrg.backup_acknowledged';
+
+// Mirrors EncryptionKeysPanel — keep these in sync if you change either.
+const MIN_PASSPHRASE_LEN = 12;
+
+function passphraseStrength(pass: string): { score: 0 | 1 | 2 | 3 | 4; label: string } {
+  if (!pass) return { score: 0, label: 'empty' };
+  let score = 0;
+  if (pass.length >= 8) score++;
+  if (pass.length >= 12) score++;
+  if (pass.length >= 20) score++;
+  if (/[a-z]/.test(pass) && /[A-Z]/.test(pass) && /[0-9]/.test(pass)) score++;
+  if (/[^A-Za-z0-9]/.test(pass)) score++;
+  const clamped = Math.min(4, score) as 0 | 1 | 2 | 3 | 4;
+  const labels = ['empty', 'very weak', 'weak', 'fair', 'strong', 'very strong'];
+  return { score: clamped, label: labels[Math.min(clamped + 1, labels.length - 1)] };
+}
 
 function readFlag(key: string): boolean {
   if (typeof window === 'undefined') return false;
@@ -53,6 +69,14 @@ export default function FirstRunWelcome() {
   const [visible, setVisible] = useState(false);
   const [hasLocalKey, setHasLocalKey] = useState(false);
 
+  // Passphrase prompt — opens when the user clicks "Download backup file".
+  // Backing out of this modal = "skip for now" (welcomed without backup ack).
+  const [passModalOpen, setPassModalOpen] = useState(false);
+  const [pass, setPass] = useState('');
+  const [passConfirm, setPassConfirm] = useState('');
+  const [passError, setPassError] = useState('');
+  const [busy, setBusy] = useState(false);
+
   useEffect(() => {
     setHasLocalKey(!!loadPrivateKeyLocal());
   }, [user]);
@@ -69,19 +93,64 @@ export default function FirstRunWelcome() {
 
   if (!visible) return null;
 
+  // "Download backup" — open the passphrase prompt. File emission happens
+  // in handleConfirmPass once the user types + confirms a passphrase.
   const handleDownload = () => {
-    const username = profile?.username || 'frqncy';
-    const ok = downloadKeyBackupFile(username);
-    if (!ok) {
-      // No private key in this browser yet — rare; just close so we don't
-      // block the user. They'll see the keys panel later if they need it.
-      setFlag(WELCOMED_LS_KEY);
-      setVisible(false);
+    setPass('');
+    setPassConfirm('');
+    setPassError('');
+    setPassModalOpen(true);
+  };
+
+  // Backing out of the passphrase prompt counts as "skip for now": the user
+  // saw the welcome, so set welcomed=1, but they didn't actually produce a
+  // backup, so leave backup_acknowledged unset and let the amber dot nag.
+  const handleCancelPass = () => {
+    setPassModalOpen(false);
+    setPass('');
+    setPassConfirm('');
+    setPassError('');
+    setFlag(WELCOMED_LS_KEY);
+    setVisible(false);
+  };
+
+  const handleConfirmPass = async () => {
+    setPassError('');
+    if (pass.length < MIN_PASSPHRASE_LEN) {
+      setPassError(`Passphrase must be at least ${MIN_PASSPHRASE_LEN} characters.`);
       return;
     }
-    setFlag(WELCOMED_LS_KEY);
-    setFlag(BACKUP_ACK_LS_KEY);
-    setVisible(false);
+    if (pass !== passConfirm) {
+      setPassError('Passphrases do not match.');
+      return;
+    }
+    setBusy(true);
+    try {
+      const username = profile?.username || 'frqncy';
+      const ok = await downloadPassphraseBackupFile(username, pass, {
+        encryption_public_key_b64: (profile as any)?.encryption_public_key ?? undefined,
+        signing_public_key_b64: (profile as any)?.signing_public_key ?? undefined,
+      });
+      if (!ok) {
+        // No private key in this browser yet — rare. Close the prompt and
+        // mark welcomed so we don't block; the keys panel will be available
+        // for them later.
+        setFlag(WELCOMED_LS_KEY);
+        setPassModalOpen(false);
+        setVisible(false);
+        return;
+      }
+      setFlag(WELCOMED_LS_KEY);
+      setFlag(BACKUP_ACK_LS_KEY);
+      setPass('');
+      setPassConfirm('');
+      setPassModalOpen(false);
+      setVisible(false);
+    } catch (err: any) {
+      setPassError(err?.message ?? 'Backup failed.');
+    } finally {
+      setBusy(false);
+    }
   };
 
   const handleAlreadyHave = () => {
@@ -95,6 +164,74 @@ export default function FirstRunWelcome() {
     // Intentionally do NOT set backup_acknowledged — the amber dot stays.
     setVisible(false);
   };
+
+  // Once the user clicks "Download backup file" we swap the welcome card for
+  // a passphrase-prompt card in the same modal frame. Cancelling that prompt
+  // counts as "skip for now" (see handleCancelPass).
+  if (passModalOpen) {
+    const strength = passphraseStrength(pass);
+    const meterColor = ['bg-red-500', 'bg-red-400', 'bg-amber-400', 'bg-gold', 'bg-emerald-400'][strength.score];
+    const canSubmit = pass.length >= MIN_PASSPHRASE_LEN && pass === passConfirm && !busy;
+    return (
+      <div class="fixed inset-0 bg-navy/80 backdrop-blur-sm z-[100] px-4">
+        <div class="max-w-md mx-auto mt-32 rounded-xl bg-card-bg border border-card-border p-8">
+          <h2 class="font-heading text-xl text-gold mb-2">Choose a backup passphrase</h2>
+          <p class="text-sm text-text leading-relaxed mb-2">
+            We're about to encrypt your keys with a passphrase you choose, then download the encrypted file.
+          </p>
+          <p class="text-xs text-text-dim leading-relaxed mb-4">
+            You'll need this passphrase to restore on a new device.{' '}
+            <strong class="text-amber-200">FRQNCY cannot recover it if you forget.</strong> Use a password manager.
+          </p>
+
+          <label class="block text-xs text-text-dim mb-1">Passphrase (min {MIN_PASSPHRASE_LEN} chars)</label>
+          <input
+            type="password"
+            value={pass}
+            onInput={(e) => setPass((e.target as HTMLInputElement).value)}
+            autoComplete="new-password"
+            class="w-full bg-navy-mid border border-card-border rounded-lg px-3 py-2 text-sm text-text placeholder-text-dim focus:outline-none focus:border-gold/40 mb-2"
+            placeholder="A strong passphrase…"
+          />
+          <div class="h-1 rounded-full bg-navy-mid mb-1 overflow-hidden">
+            <div class={`h-full ${meterColor} transition-all`} style={{ width: `${(strength.score / 4) * 100}%` }} />
+          </div>
+          <p class="text-xs text-text-dim mb-3">Strength: {strength.label}</p>
+
+          <label class="block text-xs text-text-dim mb-1">Confirm passphrase</label>
+          <input
+            type="password"
+            value={passConfirm}
+            onInput={(e) => setPassConfirm((e.target as HTMLInputElement).value)}
+            autoComplete="new-password"
+            class="w-full bg-navy-mid border border-card-border rounded-lg px-3 py-2 text-sm text-text placeholder-text-dim focus:outline-none focus:border-gold/40 mb-3"
+            placeholder="Type it again"
+          />
+
+          {passError && <p class="text-xs text-red-400 mb-3">{passError}</p>}
+
+          <div class="flex flex-col sm:flex-row gap-2 justify-end">
+            <button
+              type="button"
+              onClick={handleCancelPass}
+              disabled={busy}
+              class="px-4 py-2 rounded-full text-text-dim text-sm hover:text-text transition-colors disabled:opacity-50"
+            >
+              Skip for now
+            </button>
+            <button
+              type="button"
+              onClick={handleConfirmPass}
+              disabled={!canSubmit}
+              class="px-4 py-2 rounded-full bg-gold text-navy text-sm font-medium hover:bg-gold-light transition-colors disabled:opacity-50 disabled:cursor-not-allowed"
+            >
+              {busy ? 'Encrypting…' : 'Download encrypted backup'}
+            </button>
+          </div>
+        </div>
+      </div>
+    );
+  }
 
   return (
     <div class="fixed inset-0 bg-navy/80 backdrop-blur-sm z-[100] px-4">
@@ -118,7 +255,7 @@ export default function FirstRunWelcome() {
           </li>
         </ul>
         <p class="text-xs text-text-dim leading-relaxed mb-6">
-          The keys live in this browser. If you clear your data without backing them up, your encrypted messages can't be recovered. Take a moment to download a backup.
+          The keys live in this browser. If you clear your data without backing them up, your encrypted messages can't be recovered. Take a moment to download an encrypted backup — you'll choose a passphrase only you know.
         </p>
         <div class="flex flex-col sm:flex-row gap-2">
           <button
