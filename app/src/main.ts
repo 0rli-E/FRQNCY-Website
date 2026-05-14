@@ -25,14 +25,26 @@ const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.tab'));
 const offlineBanner = document.getElementById('offline-banner') as HTMLDivElement;
 const loadingBar = document.getElementById('loading-bar') as HTMLDivElement;
 
-// Show loading bar whenever the iframe src changes and we're about to load,
-// hide on the load event. Single source of truth so both /app/* and external
-// nav use the same indicator.
-frame.addEventListener('load', () => {
-  loadingBar.classList.remove('loading');
-});
+// Loading bar: shown when iframe src changes, hidden on `load` (success or
+// error pages still fire load), and force-hidden by an 8s timeout in case
+// the WebView never fires load for a cross-origin failure. The user is never
+// stranded with a pulsing bar.
+let loadingTimer: number | null = null;
+frame.addEventListener('load', stopLoading);
+frame.addEventListener('error', stopLoading);
 function startLoading() {
   loadingBar.classList.add('loading');
+  if (loadingTimer) window.clearTimeout(loadingTimer);
+  loadingTimer = window.setTimeout(() => {
+    stopLoading();
+    // Silent — the iframe will either be on the page or showing a blank/CSP
+    // error. We don't want to surface a noisy banner; offline-banner already
+    // covers the obvious case.
+  }, 8000);
+}
+function stopLoading() {
+  loadingBar.classList.remove('loading');
+  if (loadingTimer) { window.clearTimeout(loadingTimer); loadingTimer = null; }
 }
 
 function showSurface(which: 'home' | 'explore' | 'frame') {
@@ -59,8 +71,13 @@ function navigate(route: string) {
     return;
   }
   if (route.startsWith('/app/')) {
-    startLoading();
-    frame.src = route.replace(/^\//, './');
+    const resolvedSrc = new URL(route.replace(/^\//, './'), window.location.href).toString();
+    // Skip reload if the iframe is already on this URL — preserves in-page
+    // state (form input, scroll position) when the user tabs away and back.
+    if (frame.src !== resolvedSrc) {
+      startLoading();
+      frame.src = resolvedSrc;
+    }
     showSurface('frame');
     setActiveTab(route);
     return;
@@ -79,8 +96,11 @@ function openExternal(url: string, tabRoute?: string) {
   // Append ?embed=1 — the global header on frqncy.network reads this and adds
   // body.frqncy-embed which hides the site's #main-nav and the floating donate
   // button. The app's own tab bar becomes the only persistent chrome.
-  startLoading();
-  frame.src = withEmbed(url);
+  const target = withEmbed(url);
+  if (frame.src !== target) {
+    startLoading();
+    frame.src = target;
+  }
   showSurface('frame');
   // Keep the originating tab visually active so the user knows which section
   // they're inside. Caller can pass an explicit route, or we infer from the

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0B1C3D" />
     <title>FRQNCY · Wake</title>
     <style>
@@ -86,6 +86,10 @@
         transition: stroke-dashoffset 6000ms linear;
       }
       #ring.holding #progress circle { stroke-dashoffset: 0; }
+      #ring:focus-visible {
+        outline: 2px solid rgba(196, 151, 58, 0.9);
+        outline-offset: 8px;
+      }
       .inner {
         text-align: center;
         font-weight: 200;
@@ -184,10 +188,17 @@
         -webkit-tap-highlight-color: transparent;
         transition: color 180ms ease, border-color 180ms ease;
       }
-      .next button:hover, .next button:focus-visible {
+      .next button:hover {
         color: rgba(196, 151, 58, 0.95);
         border-color: rgba(196, 151, 58, 0.5);
-        outline: none;
+      }
+      .next button:focus-visible {
+        color: rgba(196, 151, 58, 0.95);
+        outline: 2px solid rgba(196, 151, 58, 0.9);
+        outline-offset: 2px;
+      }
+      .reflection-field:focus-visible {
+        outline: none;  /* the border-color change is the indicator */
       }
     </style>
   </head>

@@ -437,12 +437,30 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
   // Tag the homepage so CSS can hide the back button there (it's redundant on /).
   // Also tag embed mode (page loaded inside the FRQNCY mobile app iframe)
   // so CSS can hide the global nav / donate button — the app provides its own chrome.
+  // In embed mode, preserve ?embed=1 across same-origin internal navigations
+  // so the chrome stays hidden as the user moves through the site.
   (function(){
     try {
       var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
       if (isHome) document.body.classList.add('frqncy-home');
       var params = new URLSearchParams(location.search);
-      if (params.get('embed') === '1') document.body.classList.add('frqncy-embed');
+      var isEmbed = (params.get('embed') === '1');
+      if (isEmbed) {
+        document.body.classList.add('frqncy-embed');
+        // Intercept clicks on internal links and re-append embed=1 if missing.
+        document.addEventListener('click', function(ev){
+          var a = ev.target && ev.target.closest && ev.target.closest('a[href]');
+          if (!a) return;
+          var href = a.getAttribute('href') || '';
+          // Skip externals, fragments, mailto/tel, and links already carrying embed.
+          if (/^(https?:|mailto:|tel:|#)/.test(href) && !/^https?:\/\/(www\.)?frqncy\.network/.test(href)) return;
+          if (href.indexOf('embed=1') !== -1) return;
+          if (a.target && a.target !== '' && a.target !== '_self') return;
+          ev.preventDefault();
+          var sep = href.indexOf('?') === -1 ? '?' : '&';
+          location.href = href + sep + 'embed=1';
+        }, true);
+      }
     } catch(_) {}
   })();
 </script>

@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0B1C3D" />
     <title>FRQNCY · Sleep</title>
     <style>
@@ -48,10 +48,17 @@
         border-radius: 20px;
         text-align: center;
         cursor: pointer;
-        transition: background 220ms ease, transform 220ms ease;
+        transition: background 220ms ease, transform 220ms ease, border-color 220ms ease;
         -webkit-tap-highlight-color: transparent;
+        color: inherit;
+        font-family: inherit;
+        display: block;
       }
       .option:active { background: rgba(245, 245, 245, 0.08); transform: scale(0.98); }
+      .option:focus-visible {
+        outline: 2px solid rgba(196, 151, 58, 0.9);
+        outline-offset: 3px;
+      }
       .option-name {
         font-size: 20px;
         font-weight: 200;
@@ -173,16 +180,20 @@
         position: fixed;
         top: calc(16px + env(safe-area-inset-top));
         right: 16px;
-        width: 32px; height: 32px;
+        width: 44px; height: 44px;
         border-radius: 50%;
         background: none;
         border: 1px solid rgba(245, 245, 245, 0.12);
         color: rgba(245, 245, 245, 0.48);
         font-size: 16px;
-        line-height: 30px;
+        font-family: inherit;
         text-align: center;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+      }
+      .close-dot:focus-visible, .settle-cta:focus-visible {
+        outline: 2px solid rgba(196, 151, 58, 0.9);
+        outline-offset: 2px;
       }
       .pause-pill {
         position: fixed;
@@ -208,20 +219,20 @@
     <div class="chooser" id="chooser">
       <div class="chooser-title">tonight</div>
 
-      <div class="option" data-moment="stillness" data-duration="20">
+      <button type="button" class="option" data-moment="stillness" data-duration="20">
         <div class="option-name">stillness</div>
         <div class="option-desc">sit with what's here. silence with occasional breath.</div>
-      </div>
+      </button>
 
-      <div class="option" data-moment="release" data-duration="12">
+      <button type="button" class="option" data-moment="release" data-duration="12">
         <div class="option-name">release</div>
         <div class="option-desc">let the day go. three prompts, long silences in between.</div>
-      </div>
+      </button>
 
-      <div class="option" data-moment="evening" data-duration="45">
+      <button type="button" class="option" data-moment="drift" data-duration="45">
         <div class="option-name">drift</div>
         <div class="option-desc">fall asleep without trying. ambience that fades over 45 min.</div>
-      </div>
+      </button>
     </div>
 
     <!-- Wind-down gate: shown between picking a session and its actual start.
@@ -438,14 +449,15 @@
         const prompts = moment === 'release' ? RELEASE_PROMPTS
                       : moment === 'stillness' ? STILLNESS_PROMPTS
                       : DRIFT_PROMPTS;
+        // 'drift' (45-min ambience) maps to the 'evening' tag in
+        // resources.json — set this once here so the rest of the
+        // session logic stays consistent.
+        const audioMoment = moment === 'drift' ? 'evening' : moment;
         prompts.forEach(p => setTimeout(() => fade(sessionPrompt, p.text), p.at * 1000));
 
         // Pick a resource matching the moment, fall back to bundled tone.
         const resources = await readResources();
-        const tagFor = (m) => m === 'release' ? 'release'
-                          : m === 'stillness' ? 'stillness'
-                          : 'evening';
-        const picked = pickResource(resources, tagFor(moment)) || bundledFallback(moment);
+        const picked = pickResource(resources, audioMoment) || bundledFallback(audioMoment);
         const playing = await startPlayback(picked);
         if (!playing) {
           // Even bundled audio failed (rare — disk corruption, blocked autoplay).
@@ -534,7 +546,7 @@
         pendingSession = { moment, duration };
         settleEyebrow.textContent = moment === 'release' ? 'release the day'
                                   : moment === 'stillness' ? 'stillness'
-                                  : 'let me drift';
+                                  : 'drift';
         chooser.classList.add('hidden');
         settle.classList.add('visible');
         settle.setAttribute('aria-hidden', 'false');

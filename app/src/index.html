@@ -2,7 +2,7 @@
 <html lang="en">
   <head>
     <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover, user-scalable=no" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0B1C3D" />
     <title>FRQNCY</title>
     <style>
@@ -100,7 +100,17 @@
         font-family: inherit;
       }
       .tab.active { color: #C4973A; }
+      .tab:focus-visible {
+        outline: 2px solid rgba(196, 151, 58, 0.9);
+        outline-offset: -4px;
+        color: #C4973A;
+      }
       .tab-icon { font-size: 20px; line-height: 1; }
+      .cta-stack button:focus-visible, .cta-stack a:focus-visible,
+      .home-card:focus-visible {
+        outline: 2px solid rgba(196, 151, 58, 0.9);
+        outline-offset: 3px;
+      }
       #offline-banner {
         position: fixed;
         top: env(safe-area-inset-top);
@@ -112,10 +122,16 @@
         font-size: 13px;
         text-align: center;
         transform: translateY(-100%);
-        transition: transform 240ms ease;
+        opacity: 0;
+        pointer-events: none;
+        transition: transform 240ms ease, opacity 240ms ease;
         z-index: 20;
       }
-      #offline-banner.show { transform: translateY(0); }
+      #offline-banner.show {
+        transform: translateY(0);
+        opacity: 1;
+        pointer-events: auto;
+      }
 
       /* Iframe loading bar — slim gold progress strip that appears the moment
          a frqncy.network page begins loading and fades on load. The
@@ -140,7 +156,7 @@
         inset: 0;
         background: linear-gradient(90deg, transparent, #C4973A, transparent);
         transform: translateX(-100%);
-        animation: loading-slide 1.4s ease-in-out infinite;
+        animation: loading-slide 800ms ease-in-out infinite;
       }
       @keyframes loading-slide {
         0% { transform: translateX(-100%); }
@@ -163,6 +179,7 @@
         border: 1px solid rgba(196, 151, 58, 0.6);
         margin: 0 auto 28px;
         position: relative;
+        animation: brand-breathe 6s ease-in-out infinite;
       }
       .brand-mark::before {
         content: '';
@@ -170,6 +187,7 @@
         inset: -8px;
         border-radius: 50%;
         border: 0.5px solid rgba(196, 151, 58, 0.18);
+        animation: brand-halo 6s ease-in-out infinite;
       }
       .brand-mark::after {
         content: '';
@@ -179,6 +197,17 @@
         height: 1px;
         background: rgba(196, 151, 58, 0.85);
         transform: translateY(-0.5px);
+      }
+      @keyframes brand-breathe {
+        0%, 100% { opacity: 0.85; }
+        50%      { opacity: 1; }
+      }
+      @keyframes brand-halo {
+        0%, 100% { transform: scale(1);    opacity: 0.6; }
+        50%      { transform: scale(1.06); opacity: 1;   }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .brand-mark, .brand-mark::before { animation: none; }
       }
       .home-title {
         font-size: 22px;
@@ -337,19 +366,18 @@
         </p>
         <div class="cta-stack">
           <button data-route="/app/bedside.html">set up my wake-up</button>
-          <button class="secondary" data-external="https://frqncy.network/my-frqncy/dashboard/">open my sanctuary</button>
         </div>
 
         <div class="home-cards">
           <button class="home-card" data-route="/app/bedside.html">
             <div class="home-card-eyebrow">tonight</div>
-            <div class="home-card-title">arm tomorrow's wake</div>
+            <div class="home-card-title">tomorrow's wake</div>
             <div class="home-card-desc">set a time. the alarm fades in over 90 seconds. dismissing is one breath, held.</div>
           </button>
           <button class="home-card" data-external="https://frqncy.network/my-frqncy/dashboard/">
             <div class="home-card-eyebrow">sanctuary</div>
             <div class="home-card-title">your private dashboard</div>
-            <div class="home-card-desc">practice log, charts, your daily path. only visible to you.</div>
+            <div class="home-card-desc">practice log, mood charts, daily path. local-first, only visible to you.</div>
           </button>
           <button class="home-card" data-external="https://frqncy.network/social/">
             <div class="home-card-eyebrow">nrg</div>
@@ -358,7 +386,7 @@
           </button>
           <button class="home-card" data-external="https://frqncy.network/explore.html">
             <div class="home-card-eyebrow">explore</div>
-            <div class="home-card-title">the FRQNCY topic graph</div>
+            <div class="home-card-title">the topic graph</div>
             <div class="home-card-desc">146 topics across consciousness, money, wellbeing, decentralisation, and more.</div>
           </button>
         </div>
@@ -368,10 +396,10 @@
     <!-- Native explore surface -->
     <main id="explore-screen" class="surface" role="region" aria-label="Explore" data-tab-context="/explore">
       <div class="explore-wrap">
-        <div class="explore-eyebrow">browse FRQNCY</div>
-        <h1 class="explore-title">the whole network, in here.</h1>
+        <div class="explore-eyebrow">browse</div>
+        <h1 class="explore-title">the FRQNCY network.</h1>
         <p class="explore-lede">
-          everything FRQNCY ever published, framed inside the app. nothing leaves to a browser.
+          everything FRQNCY publishes — the library, the people, the sanctuary, the social layer.
         </p>
 
         <div class="section-label">your space</div>
@@ -443,21 +471,21 @@
     ></iframe>
 
     <nav id="tab-bar" role="tablist">
-      <button class="tab active" data-route="/" role="tab">
-        <span class="tab-icon">◎</span>
-        <span>Home</span>
+      <button class="tab active" data-route="/" role="tab" aria-label="Home">
+        <span class="tab-icon" aria-hidden="true">◎</span>
+        <span>home</span>
       </button>
-      <button class="tab" data-route="/explore" role="tab">
-        <span class="tab-icon">◈</span>
-        <span>Explore</span>
+      <button class="tab" data-route="/explore" role="tab" aria-label="Explore">
+        <span class="tab-icon" aria-hidden="true">◈</span>
+        <span>explore</span>
       </button>
-      <button class="tab" data-route="/app/bedside.html" role="tab">
-        <span class="tab-icon">☾</span>
-        <span>Bedside</span>
+      <button class="tab" data-route="/app/bedside.html" role="tab" aria-label="Bedside">
+        <span class="tab-icon" aria-hidden="true">☾</span>
+        <span>bedside</span>
       </button>
-      <button class="tab" data-route="/app/settings.html" role="tab">
-        <span class="tab-icon">◇</span>
-        <span>You</span>
+      <button class="tab" data-route="/app/settings.html" role="tab" aria-label="You">
+        <span class="tab-icon" aria-hidden="true">◇</span>
+        <span>you</span>
       </button>
     </nav>
     <script type="module" src="./main.ts"></script>
