@@ -18,13 +18,13 @@ import { useState, useEffect } from 'preact/hooks';
 import { useAuth } from './AuthProvider';
 import { supabase } from '../lib/supabase';
 import {
+  ensureSodium,
   generateMessagingKeypair,
   generateSigningKeypair,
   savePrivateKeyLocal,
   loadPrivateKeyLocal,
   saveSigningPrivateKeyLocal,
   loadSigningPrivateKeyLocal,
-  importKeyBackup,
   downloadKeyBackupFile,
 } from '../lib/crypto';
 
@@ -111,13 +111,109 @@ export default function EncryptionKeysPanel() {
         .join('\n')
         .trim();
 
+      const so = await ensureSodium();
+
+      // Pull the latest pubkeys from the profile so a stale auth snapshot
+      // can't let a mismatched backup slip through.
+      let profileEncPub: string | null = remotePub;
+      let profileSignPub: string | null = remoteSigningPub;
+      try {
+        const { data, error: fetchErr } = await supabase
+          .from('profiles')
+          .select('encryption_public_key, signing_public_key')
+          .eq('id', user.id)
+          .single();
+        if (!fetchErr && data) {
+          profileEncPub = (data as any).encryption_public_key ?? null;
+          profileSignPub = (data as any).signing_public_key ?? null;
+        }
+      } catch (_) {
+        // Non-fatal — fall back to the snapshot from useAuth().
+      }
+
       // Try the unified JSON backup first.
       if (stripped.startsWith('{')) {
-        const result = importKeyBackup(stripped);
-        if (!result.ok) {
-          flash(result.reason, true);
+        let parsed: any;
+        try {
+          parsed = JSON.parse(stripped);
+        } catch (err: any) {
+          flash(`Backup parse failed: ${err?.message ?? 'unknown error'}`, true);
           return;
         }
+        if (parsed?.v !== 1) {
+          flash(`Unsupported backup version: ${parsed?.v}`, true);
+          return;
+        }
+        const encPrivB64 = parsed.encryption_private_key_b64;
+        const signPrivB64 = parsed.signing_private_key_b64 ?? null;
+        if (!encPrivB64) {
+          flash('Backup missing encryption_private_key_b64', true);
+          return;
+        }
+
+        // Derive the encryption pubkey from the imported private key and
+        // compare against what the profile holds. If they don't match, this
+        // backup belongs to a different account — refuse to overwrite.
+        let derivedEncPubB64: string;
+        try {
+          const encPrivBytes = so.from_base64(encPrivB64, so.base64_variants.ORIGINAL);
+          const derivedEncPub = so.crypto_scalarmult_base(encPrivBytes);
+          derivedEncPubB64 = so.to_base64(derivedEncPub, so.base64_variants.ORIGINAL);
+        } catch (err: any) {
+          flash(`Could not parse encryption private key: ${err?.message ?? 'invalid key bytes'}`, true);
+          return;
+        }
+
+        const encCorrupted = !profileEncPub;
+        if (!encCorrupted && derivedEncPubB64 !== profileEncPub) {
+          flash(
+            'This backup belongs to a different account. Imported public key does not match this profile\'s stored public key. If you want to use a different identity, log in to that account first.',
+            true,
+          );
+          return;
+        }
+
+        // Same check for signing key when the backup includes one.
+        let derivedSignPubB64: string | null = null;
+        if (signPrivB64) {
+          try {
+            const signPrivBytes = so.from_base64(signPrivB64, so.base64_variants.ORIGINAL);
+            const derivedSignPub = so.crypto_sign_ed25519_sk_to_pk(signPrivBytes);
+            derivedSignPubB64 = so.to_base64(derivedSignPub, so.base64_variants.ORIGINAL);
+          } catch (err: any) {
+            flash(`Could not parse signing private key: ${err?.message ?? 'invalid key bytes'}`, true);
+            return;
+          }
+          if (profileSignPub && derivedSignPubB64 !== profileSignPub) {
+            flash(
+              'This backup belongs to a different account. Imported signing public key does not match this profile\'s stored signing public key. If you want to use a different identity, log in to that account first.',
+              true,
+            );
+            return;
+          }
+        }
+
+        // Validation passed — safe to write.
+        savePrivateKeyLocal(encPrivB64);
+        if (signPrivB64) {
+          saveSigningPrivateKeyLocal(signPrivB64);
+        }
+
+        // If the profile was missing its pubkey(s), write the derived one(s)
+        // up — this is the "restoring on a fresh / corrupted profile" case.
+        const profileUpdate: Record<string, string> = {};
+        if (!profileEncPub) profileUpdate.encryption_public_key = derivedEncPubB64;
+        if (!profileSignPub && derivedSignPubB64) profileUpdate.signing_public_key = derivedSignPubB64;
+        if (Object.keys(profileUpdate).length > 0) {
+          const { error: upErr } = await supabase
+            .from('profiles')
+            .update(profileUpdate)
+            .eq('id', user.id);
+          if (upErr) {
+            console.warn('[encryption] failed to write derived pubkey(s) to profile:', upErr.message);
+          }
+        }
+
         setHasLocalKey(true);
         // Importing a backup proves the user has a copy of the file in
         // their possession — count it as acknowledgement.
@@ -135,7 +231,38 @@ export default function EncryptionKeysPanel() {
         flash('Could not find a valid key in that file. Upload the .txt FRQNCY gave you.', true);
         return;
       }
+
+      // Validate the legacy single-key import the same way.
+      let derivedEncPubB64: string;
+      try {
+        const encPrivBytes = so.from_base64(candidate, so.base64_variants.ORIGINAL);
+        const derivedEncPub = so.crypto_scalarmult_base(encPrivBytes);
+        derivedEncPubB64 = so.to_base64(derivedEncPub, so.base64_variants.ORIGINAL);
+      } catch (err: any) {
+        flash(`Could not parse encryption private key: ${err?.message ?? 'invalid key bytes'}`, true);
+        return;
+      }
+
+      if (profileEncPub && derivedEncPubB64 !== profileEncPub) {
+        flash(
+          'This backup belongs to a different account. Imported public key does not match this profile\'s stored public key. If you want to use a different identity, log in to that account first.',
+          true,
+        );
+        return;
+      }
+
       savePrivateKeyLocal(candidate);
+
+      if (!profileEncPub) {
+        const { error: upErr } = await supabase
+          .from('profiles')
+          .update({ encryption_public_key: derivedEncPubB64 })
+          .eq('id', user.id);
+        if (upErr) {
+          console.warn('[encryption] failed to write derived pubkey to profile:', upErr.message);
+        }
+      }
+
       setHasLocalKey(true);
       try { window.localStorage.setItem(BACKUP_ACK_LS_KEY, '1'); } catch (_) {}
       flash('Encryption key imported (legacy backup — no signing key found). Past encrypted messages should now decrypt.');

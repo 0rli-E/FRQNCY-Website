@@ -40,7 +40,7 @@ export default function FollowButton({ username }: FollowButtonProps) {
     const checkFollow = async () => {
       const { data } = await supabase
         .from('follows')
-        .select('id')
+        .select('follower_id')
         .eq('follower_id', user.id)
         .eq('following_id', targetUserId)
         .maybeSingle();

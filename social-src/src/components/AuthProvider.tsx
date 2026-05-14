@@ -4,6 +4,7 @@ import { supabase } from '../lib/supabase';
 import type { User } from '@supabase/supabase-js';
 import { handlePrivyReturnIfPending } from '../lib/privy-bridge';
 import {
+  ensureSodium,
   generateMessagingKeypair,
   loadPrivateKeyLocal,
   savePrivateKeyLocal,
@@ -136,13 +137,36 @@ async function ensureEncryptionKeypair(userId: string, profile: Profile | null) 
     }
 
     if (localPriv && !remotePub) {
-      // Push existing local key up. This shouldn't normally happen but we
-      // recover gracefully: derive the public key from the private key would
-      // require sodium APIs we don't expose; simpler to regenerate cleanly.
-      // For now we just regenerate.
+      // Push existing local key up. This happens when the profile row lost
+      // its public key (rare race on signup, or a manual DB edit) but the
+      // user's localStorage still holds the working private key. DO NOT
+      // regenerate — that would orphan every past message encrypted to the
+      // old derivable pubkey. Instead, derive the pubkey from the local
+      // private key (same math libsodium uses inside crypto_box_keypair)
+      // and push that up.
+      try {
+        const so = await ensureSodium();
+        const privBytes = so.from_base64(localPriv, so.base64_variants.ORIGINAL);
+        const derivedPub = so.crypto_scalarmult_base(privBytes);
+        const derivedPubB64 = so.to_base64(derivedPub, so.base64_variants.ORIGINAL);
+        const { error } = await supabase
+          .from('profiles')
+          .update({ encryption_public_key: derivedPubB64 })
+          .eq('id', userId);
+        if (error) {
+          console.warn('[encryption] failed to save derived public key to profile:', error.message);
+        } else {
+          setState({
+            profile: profile ? { ...profile, encryption_public_key: derivedPubB64 } : null,
+          });
+        }
+      } catch (derivErr) {
+        console.warn('[encryption] failed to derive public key from local private key:', derivErr);
+      }
+      return;
     }
 
-    // First-time generation.
+    // First-time generation — only reached when neither localPriv nor remotePub exists.
     const { publicKeyB64, privateKeyB64 } = await generateMessagingKeypair();
     savePrivateKeyLocal(privateKeyB64);
     const { error } = await supabase
@@ -188,6 +212,34 @@ async function ensureSigningKeypair(userId: string, profile: Profile | null) {
     }
 
     if (!remotePub) {
+      if (localPriv) {
+        // Same recovery as encryption: profile lost its pubkey but the local
+        // private key is still good. Regenerating would invalidate every
+        // past signature. Derive the Ed25519 pubkey from the local private
+        // key (sk_to_pk) and push it up instead.
+        try {
+          const so = await ensureSodium();
+          const privBytes = so.from_base64(localPriv, so.base64_variants.ORIGINAL);
+          const derivedPub = so.crypto_sign_ed25519_sk_to_pk(privBytes);
+          const derivedPubB64 = so.to_base64(derivedPub, so.base64_variants.ORIGINAL);
+          const { error } = await supabase
+            .from('profiles')
+            .update({ signing_public_key: derivedPubB64 })
+            .eq('id', userId);
+          if (error) {
+            console.warn('[signing] failed to save derived signing public key to profile:', error.message);
+          } else {
+            setState({
+              profile: profile ? { ...profile, signing_public_key: derivedPubB64 } : null,
+            });
+          }
+        } catch (derivErr) {
+          console.warn('[signing] failed to derive signing public key from local private key:', derivErr);
+        }
+        return;
+      }
+
+      // First-time generation — neither side has anything.
       const { publicKeyB64, privateKeyB64 } = await generateSigningKeypair();
       saveSigningPrivateKeyLocal(privateKeyB64);
       const { error } = await supabase

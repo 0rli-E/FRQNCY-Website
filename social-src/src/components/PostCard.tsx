@@ -126,13 +126,13 @@ export default function PostCard({
       const [likeResult, bookmarkResult] = await Promise.all([
         supabase
           .from('likes')
-          .select('id')
+          .select('user_id')
           .eq('user_id', user.id)
           .eq('post_id', id)
           .maybeSingle(),
         supabase
           .from('bookmarks')
-          .select('id')
+          .select('user_id')
           .eq('user_id', user.id)
           .eq('post_id', id)
           .maybeSingle(),

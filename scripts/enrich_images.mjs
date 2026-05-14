@@ -10,7 +10,10 @@
  * People — fetches portraits from Open Library author records:
  *   1. Search /search/authors.json by name → take top hit
  *   2. Fetch /authors/<key>.json → extract photos[0]
- *   3. Build URL: https://covers.openlibrary.org/a/id/<photoId>-L.jpg
+ *   3. Build URL: https://covers.openlibrary.org/a/olid/<authorKey>-L.jpg
+ *      (NOT /a/id/<photoId> — that endpoint returns BOOK COVERS keyed
+ *       by photo-ID and seeded the bed with the wrong content in earlier
+ *       runs. See memory `project_openlibrary_photo_endpoint.md`.)
  *
  * No Wikipedia. Open Library covers API is designed for hot-linking (no rate
  * limit, no auth) so we store the URL on the bed entry directly rather than
