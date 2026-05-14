@@ -49,5 +49,12 @@ supabase/.temp/
 # Playwright MCP temp artifacts (per-session logs + page snapshots)
 .playwright-mcp/
 
-# Ad-hoc screenshots taken during dev review (Playwright `filename: app-*.png`)
+# Ad-hoc screenshots taken during dev review (Playwright `filename: …png`).
+# These accumulate at repo root from agent UX reviews and shouldn't ship.
 /app-*.png
+/alarm-*.png
+/bedside-*.png
+/settings-*.png
+/sleep-*.png
+/wake-*.png
+/*-390x844.png
