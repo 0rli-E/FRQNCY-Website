@@ -260,9 +260,27 @@ footer{border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem clamp(1.25rem,
 #main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
 #main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
 body.frqncy-home #main-nav .nav-back{display:none}
-#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important}
-#main-nav .nav-dd-menu a .dd-label,#main-nav .nav-dd-menu a .dd-sub{display:block !important;text-align:center !important;width:100% !important}
-@media(max-width:720px){#main-nav .nav-links{display:none}}
+/* Dropdown panel — inlined so the styling ships with every page, including
+   social/NRG pages that don't load nav-dropdown.css. */
+#main-nav .nav-dd{position:relative}
+#main-nav .nav-dd > a{display:inline-flex;align-items:center;gap:4px}
+#main-nav .nav-dd > a::after{content:'';display:inline-block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:3.5px solid currentColor;opacity:.5;transition:opacity .2s,transform .2s}
+#main-nav .nav-dd:hover > a::after,#main-nav .nav-dd:focus-within > a::after{opacity:1;transform:rotate(180deg)}
+#main-nav .nav-dd-menu{position:absolute;top:calc(100% + 12px);left:50%;min-width:200px;background:rgba(11,28,61,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px rgba(0,0,0,.3);padding:8px 0;opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-4px);transition:opacity .2s,visibility .2s,transform .2s;z-index:600}
+#main-nav .nav-dd:hover .nav-dd-menu,#main-nav .nav-dd:focus-within .nav-dd-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+#main-nav .nav-dd-menu::before{content:'';position:absolute;top:-14px;left:0;right:0;height:14px}
+#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important;padding:10px 24px !important;text-decoration:none;transition:background .15s;font-size:11px !important;letter-spacing:.22em !important;text-transform:uppercase !important;font-weight:300 !important;font-family:'Jost',sans-serif !important;color:rgba(255,255,255,.85) !important;min-height:0}
+#main-nav .nav-dd-menu a:hover{background:rgba(196,151,58,.12)}
+#main-nav .nav-dd-menu a:hover .dd-label{color:#E0C06A}
+#main-nav .nav-dd-menu .dd-label{display:block !important;width:100% !important;text-align:center !important;font-weight:400 !important;color:rgba(255,255,255,.9);transition:color .15s;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+#main-nav .nav-dd-menu .dd-sub{display:block !important;width:100% !important;text-align:center !important;font-size:9px !important;letter-spacing:.12em !important;color:rgba(255,255,255,.45);margin-top:2px;font-weight:300 !important;text-transform:none !important}
+@media(max-width:720px){#main-nav .nav-links{display:none}#main-nav .nav-dd-menu{display:none !important}}
+/* Embed mode — when the page loads inside the FRQNCY mobile app's iframe shell
+   (URL has ?embed=1), hide the global nav and the floating donate button so
+   the app's own tab bar is the only persistent chrome. The page's body-level
+   navs (e.g. /my-frqncy/dashboard's own tab strip) stay intact. */
+body.frqncy-embed #main-nav{display:none !important}
+body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none !important}
 </style>
 <nav id="main-nav" aria-label="Main navigation">
   <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
@@ -276,14 +294,14 @@ body.frqncy-home #main-nav .nav-back{display:none}
       </div>
     </li>
     <li class="nav-dd">
-      <a href="/explore.html">Discover</a>
+      <a href="/explore">Discover</a>
       <div class="nav-dd-menu">
-        <a href="/explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="/explore"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
         <a href="/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
         <a href="/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
         <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
         <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
-        <a href="/people/"><span class="dd-label">Browse</span><span class="dd-sub">People · Books · Orgs · Places</span></a>
+        <a href="/browse"><span class="dd-label">Browse</span><span class="dd-sub">Everything FRQNCY publishes</span></a>
       </div>
     </li>
     <li class="nav-dd">
@@ -311,10 +329,32 @@ body.frqncy-home #main-nav .nav-back{display:none}
 </nav>
 <script>
   // Tag the homepage so CSS can hide the back button there (it's redundant on /).
+  // Also tag embed mode (page loaded inside the FRQNCY mobile app iframe)
+  // so CSS can hide the global nav / donate button — the app provides its own chrome.
+  // In embed mode, preserve ?embed=1 across same-origin internal navigations
+  // so the chrome stays hidden as the user moves through the site.
   (function(){
     try {
       var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
       if (isHome) document.body.classList.add('frqncy-home');
+      var params = new URLSearchParams(location.search);
+      var isEmbed = (params.get('embed') === '1');
+      if (isEmbed) {
+        document.body.classList.add('frqncy-embed');
+        // Intercept clicks on internal links and re-append embed=1 if missing.
+        document.addEventListener('click', function(ev){
+          var a = ev.target && ev.target.closest && ev.target.closest('a[href]');
+          if (!a) return;
+          var href = a.getAttribute('href') || '';
+          // Skip externals, fragments, mailto/tel, and links already carrying embed.
+          if (/^(https?:|mailto:|tel:|#)/.test(href) && !/^https?:\/\/(www\.)?frqncy\.network/.test(href)) return;
+          if (href.indexOf('embed=1') !== -1) return;
+          if (a.target && a.target !== '' && a.target !== '_self') return;
+          ev.preventDefault();
+          var sep = href.indexOf('?') === -1 ? '?' : '&';
+          location.href = href + sep + 'embed=1';
+        }, true);
+      }
     } catch(_) {}
   })();
 </script>
@@ -322,10 +362,12 @@ body.frqncy-home #main-nav .nav-back{display:none}
      popover with the EVM + SOL wallet addresses; the full /donate page link
      sits at the top of the popover. -->
 <style data-frqncy-donate>
-  #frq-donate-btn{position:fixed;right:18px;bottom:18px;z-index:480;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
+  /* Stacks above the AI chat button (chat is bottom:24px, ~56px tall, z-index:9998).
+     Donate sits at bottom:95px so it clears the AI floater. */
+  #frq-donate-btn{position:fixed;right:18px;bottom:95px;z-index:9997;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
   #frq-donate-btn:hover{background:#C4973A;color:#fff;transform:translateY(-1px)}
   #frq-donate-btn .heart{margin-right:6px;display:inline-block}
-  #frq-donate-pop{position:fixed;right:18px;bottom:64px;z-index:481;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
+  #frq-donate-pop{position:fixed;right:18px;bottom:145px;z-index:9998;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
   #frq-donate-pop.open{display:block}
   #frq-donate-pop .frq-pop-title{font-family:'Cormorant',Georgia,serif;font-size:18px;font-weight:400;color:#0B1C3D;margin-bottom:4px}
   #frq-donate-pop .frq-pop-sub{font-size:11px;color:#8A9AB8;margin-bottom:14px;line-height:1.5}
@@ -335,7 +377,7 @@ body.frqncy-home #main-nav .nav-back{display:none}
   #frq-donate-pop .frq-w-copy{flex:0 0 auto;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#C4973A;background:transparent;border:1px solid rgba(196,151,58,.5);padding:3px 8px;border-radius:2px;cursor:pointer;font-family:inherit}
   #frq-donate-pop .frq-w-copy:hover{background:#C4973A;color:#fff}
   #frq-donate-pop .frq-pop-foot{margin-top:14px;padding-top:12px;border-top:1px solid rgba(11,28,61,.06);font-size:10px;letter-spacing:.06em;color:#8A9AB8;line-height:1.5}
-  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:12px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:54px}}
+  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:80px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:128px}}
 </style>
 <button id="frq-donate-btn" type="button" aria-haspopup="dialog" aria-controls="frq-donate-pop" aria-label="Support FRQNCY">
   <span class="heart" aria-hidden="true">♥</span>Donate
@@ -408,7 +450,7 @@ body.frqncy-home #main-nav .nav-back{display:none}
 </div>
 <main>
   <section class="book-intro" style="max-width:680px;margin:0 auto clamp(2rem,5vw,3.5rem);padding:0 clamp(1.25rem,5vw,2.5rem);font-size:0.96rem;line-height:1.85;color:var(--text)"><p style="margin-bottom:1.1rem">Neville Goddard was a writer, speaker and mystic. He taught various self-help methods for testing his own claim that the human imagination is omnificent, therefore God. He achieved popularity by reinterpreting the Bible and the poetry of William Blake.</p></section>
-  
+  <aside class="book-quote" style="max-width:580px;margin:clamp(2.5rem,6vw,4rem) auto;padding:0 clamp(1.5rem,5vw,2.5rem);text-align:center"><blockquote style="font-family:'Cormorant',serif;font-size:clamp(1.3rem,2.6vw,1.65rem);font-weight:300;line-height:1.5;color:#fff;font-style:italic;border:none;margin:0;padding:0">You can create nothing, but your assumption determines what portion of creation you will experience.</blockquote><div style="margin-top:1rem;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)">— Neville Goddard: The Complete Reader — Neville Goddard</div></aside>
   <section>
   <div class="section-label">Appears on</div>
   <div class="grid grid-sm"><a href="/v2/manifestation/index.html" class="ncard">

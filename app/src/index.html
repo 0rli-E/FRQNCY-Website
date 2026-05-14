@@ -589,6 +589,65 @@
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       }
       .section-label:first-of-type { margin-top: 8px; }
+
+      /* Compact pill grid — used for "browse by domain" + "browse by pillar"
+         where ~18-26 entries would be too many full-size home-cards. Two
+         columns at 390px, title only, same tap/pending semantics as home-card. */
+      .pill-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 8px;
+        margin-top: 8px;
+        max-width: 380px;
+        margin-left: auto;
+        margin-right: auto;
+      }
+      .pill-card {
+        text-align: left;
+        padding: 12px 14px;
+        background: rgba(255, 255, 255, 0.03);
+        border: 1px solid rgba(255, 255, 255, 0.06);
+        border-radius: 10px;
+        cursor: pointer;
+        transition: background 180ms ease, border-color 180ms ease, transform 140ms ease;
+        -webkit-tap-highlight-color: transparent;
+        font-family: inherit;
+        width: 100%;
+        position: relative;
+        font-size: 13px;
+        font-weight: 400;
+        color: rgba(245, 245, 245, 0.88);
+        text-transform: lowercase;
+        letter-spacing: 0.2px;
+      }
+      @media (hover: hover) {
+        .pill-card:hover {
+          background: rgba(255, 255, 255, 0.06);
+          border-color: rgba(196, 151, 58, 0.35);
+        }
+      }
+      .pill-card:active {
+        background: rgba(196, 151, 58, 0.08);
+        border-color: rgba(196, 151, 58, 0.45);
+        transform: scale(0.985);
+        transition: background 0s, border-color 0s, transform 80ms ease;
+      }
+      .pill-card.pending {
+        background: rgba(196, 151, 58, 0.06);
+        border-color: rgba(196, 151, 58, 0.30);
+      }
+      .pill-card.pending::after {
+        content: '';
+        position: absolute;
+        top: 50%;
+        right: 12px;
+        width: 4px;
+        height: 4px;
+        margin-top: -2px;
+        border-radius: 50%;
+        background: rgba(196, 151, 58, 0.85);
+        animation: card-pending-pulse 1.2s ease-in-out infinite;
+      }
     </style>
   </head>
   <body>
@@ -652,9 +711,10 @@
         <div class="explore-eyebrow">browse</div>
         <h1 class="explore-title">the frqncy network.</h1>
         <p class="explore-lede">
-          everything frqncy publishes — the library, the people, the sanctuary, the social layer.
+          everything frqncy publishes — the canon, the people, the practices, the social layer, the constellation.
         </p>
 
+        <!-- your space — private surfaces -->
         <div class="section-label">your space</div>
         <div class="home-cards" style="margin-top: 8px;">
           <button class="home-card" data-external="https://frqncy.network/my-frqncy/dashboard/">
@@ -674,22 +734,43 @@
           </button>
         </div>
 
-        <div class="section-label">the network</div>
+        <!-- the canon — every curated bed -->
+        <div class="section-label">the canon</div>
         <div class="home-cards" style="margin-top: 8px;">
-          <button class="home-card" data-external="https://frqncy.network/social/">
-            <div class="home-card-eyebrow">nrg</div>
-            <div class="home-card-title">the social layer</div>
-            <div class="home-card-desc">frqncy's federated social network. posts, replies, bluesky timeline. no leaderboards.</div>
+          <button class="home-card" data-external="https://frqncy.network/people/">
+            <div class="home-card-eyebrow">people</div>
+            <div class="home-card-title">the frqncy field</div>
+            <div class="home-card-desc">teachers, builders, founders — who actually moved the needle.</div>
           </button>
-          <button class="home-card" data-external="https://frqncy.network/explore">
-            <div class="home-card-eyebrow">topic graph</div>
-            <div class="home-card-title">all 146 topics</div>
-            <div class="home-card-desc">the frqncy constellation — every topic, every domain, every pillar.</div>
+          <button class="home-card" data-external="https://frqncy.network/books/">
+            <div class="home-card-eyebrow">books</div>
+            <div class="home-card-title">the library</div>
+            <div class="home-card-desc">curated reading across every domain — with the quotes that mattered.</div>
           </button>
+          <button class="home-card" data-external="https://frqncy.network/orgs/">
+            <div class="home-card-eyebrow">orgs</div>
+            <div class="home-card-title">organisations doing the work</div>
+            <div class="home-card-desc">labs, schools, funds, collectives — institutions worth knowing.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/media/">
+            <div class="home-card-eyebrow">media</div>
+            <div class="home-card-title">films, talks, conversations</div>
+            <div class="home-card-desc">documentaries and recorded conversations across the frqncy field.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/places/">
+            <div class="home-card-eyebrow">places</div>
+            <div class="home-card-title">where it lives in the world</div>
+            <div class="home-card-desc">retreats, sanctuaries, bookshops, communities — physical anchors.</div>
+          </button>
+        </div>
+
+        <!-- experiences — what you do with frqncy -->
+        <div class="section-label">experiences</div>
+        <div class="home-cards" style="margin-top: 8px;">
           <button class="home-card" data-external="https://frqncy.network/watch/">
             <div class="home-card-eyebrow">watch</div>
             <div class="home-card-title">video + audio library</div>
-            <div class="home-card-desc">curated talks, films, conversations across the frqncy field.</div>
+            <div class="home-card-desc">curated talks, films, long-form conversations.</div>
           </button>
           <button class="home-card" data-external="https://frqncy.network/courses/">
             <div class="home-card-eyebrow">courses</div>
@@ -701,16 +782,82 @@
             <div class="home-card-title">frequency-aligned listening</div>
             <div class="home-card-desc">432Hz, perfect-fifth, sound-bath. for sleep, focus, presence.</div>
           </button>
+          <button class="home-card" data-external="https://frqncy.network/podcast">
+            <div class="home-card-eyebrow">podcast</div>
+            <div class="home-card-title">the long room</div>
+            <div class="home-card-desc">extended conversations on consciousness, money, design, building.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/events">
+            <div class="home-card-eyebrow">events</div>
+            <div class="home-card-title">gatherings + circles</div>
+            <div class="home-card-desc">retreats, salons, frqncy circles — when the field meets in person.</div>
+          </button>
+        </div>
+
+        <!-- community — social + commercial layers -->
+        <div class="section-label">community</div>
+        <div class="home-cards" style="margin-top: 8px;">
+          <button class="home-card" data-external="https://frqncy.network/social/">
+            <div class="home-card-eyebrow">nrg</div>
+            <div class="home-card-title">the social layer</div>
+            <div class="home-card-desc">frqncy's federated social network. posts, replies, bluesky timeline. no leaderboards.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/newsletter">
+            <div class="home-card-eyebrow">newsletter</div>
+            <div class="home-card-title">monthly transmission</div>
+            <div class="home-card-desc">what we read, what we built, what's coming. plain prose, no growth-hack copy.</div>
+          </button>
           <button class="home-card" data-external="https://frqncy.network/aligned/">
-            <div class="home-card-eyebrow">aligned goods</div>
+            <div class="home-card-eyebrow">aligned</div>
             <div class="home-card-title">the best of everything, curated</div>
             <div class="home-card-desc">tools, books, gear, supplements — what's actually worth using.</div>
           </button>
-          <button class="home-card" data-external="https://frqncy.network/people/">
-            <div class="home-card-eyebrow">people</div>
-            <div class="home-card-title">the frqncy field</div>
-            <div class="home-card-desc">teachers, builders, founders — who actually moved the needle.</div>
+        </div>
+
+        <!-- the topic graph — single hero card -->
+        <div class="section-label">the topic graph</div>
+        <div class="home-cards" style="margin-top: 8px;">
+          <button class="home-card" data-external="https://frqncy.network/explore">
+            <div class="home-card-eyebrow">explore</div>
+            <div class="home-card-title">the constellation</div>
+            <div class="home-card-desc">all 146 topics, every domain, every pillar — visual map of the field.</div>
           </button>
+        </div>
+
+        <!-- browse by domain — 18 compact pills -->
+        <div class="section-label">browse by domain</div>
+        <div class="pill-grid">
+          <button class="pill-card" data-external="https://frqncy.network/consciousness/">consciousness</button>
+          <button class="pill-card" data-external="https://frqncy.network/wellbeing/">well-being</button>
+          <button class="pill-card" data-external="https://frqncy.network/money/">money</button>
+          <button class="pill-card" data-external="https://frqncy.network/sciences/">sciences</button>
+          <button class="pill-card" data-external="https://frqncy.network/society/">society</button>
+          <button class="pill-card" data-external="https://frqncy.network/communication/">communication</button>
+          <button class="pill-card" data-external="https://frqncy.network/arts/">arts &amp; culture</button>
+          <button class="pill-card" data-external="https://frqncy.network/business/">business</button>
+          <button class="pill-card" data-external="https://frqncy.network/food/">food &amp; agriculture</button>
+          <button class="pill-card" data-external="https://frqncy.network/energy/">energy</button>
+          <button class="pill-card" data-external="https://frqncy.network/nature/">nature &amp; cosmos</button>
+          <button class="pill-card" data-external="https://frqncy.network/technology/">technology</button>
+          <button class="pill-card" data-external="https://frqncy.network/creation/">creation</button>
+          <button class="pill-card" data-external="https://frqncy.network/places/">places</button>
+          <button class="pill-card" data-external="https://frqncy.network/play/">play &amp; recreation</button>
+          <button class="pill-card" data-external="https://frqncy.network/lifestyle/">lifestyle</button>
+          <button class="pill-card" data-external="https://frqncy.network/commerce/">commerce</button>
+          <button class="pill-card" data-external="https://frqncy.network/curation/">curation</button>
+        </div>
+
+        <!-- browse by pillar — 8 compact pills (the HOW layer) -->
+        <div class="section-label">browse by pillar</div>
+        <div class="pill-grid">
+          <button class="pill-card" data-external="https://frqncy.network/curate/">curate</button>
+          <button class="pill-card" data-external="https://frqncy.network/education/">educate</button>
+          <button class="pill-card" data-external="https://frqncy.network/research/">research</button>
+          <button class="pill-card" data-external="https://frqncy.network/broadcast/">broadcast</button>
+          <button class="pill-card" data-external="https://frqncy.network/sell/">sell</button>
+          <button class="pill-card" data-external="https://frqncy.network/fund/">fund</button>
+          <button class="pill-card" data-external="https://frqncy.network/builder/">build</button>
+          <button class="pill-card" data-external="https://frqncy.network/network-state/">settle</button>
         </div>
       </div>
     </main>
