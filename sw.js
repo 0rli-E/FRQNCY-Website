@@ -41,7 +41,7 @@ const PRECACHE = [
   '/my-frqncy.html',
   '/chart.html',
   '/start-here.html',
-  '/browse.html',
+  '/browse/index.html',
   // Entity hub indexes — added with the world-model expansion
   '/people/index.html',
   '/books/index.html',

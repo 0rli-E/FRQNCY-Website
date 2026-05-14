@@ -1,0 +1,293 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Browse — FRQNCY Network</title>
+<meta name="description" content="Everything FRQNCY publishes — the canon, the people, the practices, the social layer, the constellation. Browse the full network.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:type" content="website">
+<meta property="og:title" content="Browse — FRQNCY Network">
+<meta property="og:description" content="Everything FRQNCY publishes — the canon, the people, the practices, the social layer, the constellation.">
+<meta property="og:url" content="https://frqncy.network/browse">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="FRQNCY">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Browse — FRQNCY Network">
+<meta name="twitter:description" content="Everything FRQNCY publishes — the canon, the people, the practices, the social layer.">
+<meta name="twitter:image" content="https://frqncy.network/og-image.png">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://frqncy.network/browse">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#8FA8CC;--card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);--accent:#C4973A;--accent-glow:rgba(196,151,58,0.14)}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{color:var(--accent);text-decoration:none}
+a:hover{opacity:0.85}
+
+/* NAV — same shape as entity-hub pages */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,0.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between}
+.snav-left{display:flex;align-items:center;gap:1.75rem;min-width:0;overflow:hidden}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;text-decoration:none;flex-shrink:0;opacity:0.85;transition:opacity .2s}
+.snav-logo:hover{opacity:1}
+.breadcrumb{font-size:0.7rem;letter-spacing:0.06em;color:var(--text-dim);display:flex;align-items:center;gap:0.35rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.breadcrumb a{color:var(--text-dim);transition:color .2s}
+.breadcrumb a:hover{color:var(--text);opacity:1}
+.breadcrumb .sep{opacity:0.25;font-size:0.65rem}
+.snav-back{font-size:0.68rem;letter-spacing:0.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,0.1);padding:5px 14px;border-radius:2px;transition:all .2s;text-decoration:none;flex-shrink:0;white-space:nowrap}
+.snav-back:hover{color:var(--text);border-color:rgba(255,255,255,0.28);opacity:1}
+
+/* HERO */
+.hero{margin-top:56px;padding:clamp(3.5rem,8vw,6rem) clamp(1.25rem,5vw,2.5rem) clamp(2.5rem,5vw,4rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%);pointer-events:none}
+.hero::after{content:'';position:absolute;bottom:0;left:50%;transform:translateX(-50%);width:1px;height:40px;background:linear-gradient(to bottom,rgba(255,255,255,0.08),transparent)}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--accent);margin-bottom:1.25rem;justify-content:center}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,7vw,5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.25rem;letter-spacing:-0.01em}
+.hero-desc{max-width:620px;margin:0 auto;font-size:0.95rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+
+/* SECTIONS */
+.browse-wrap{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2.5rem) 6rem}
+.section{margin-top:clamp(2.5rem,4vw,3.5rem)}
+.section-eyebrow{font-family:'Cormorant',serif;font-size:0.7rem;letter-spacing:0.36em;text-transform:uppercase;color:var(--accent);margin-bottom:1.4rem;padding-bottom:0.85rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+
+/* CARD GRID (full-size cards: your space, canon, experiences, community, constellation) */
+.card-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:14px}
+.card{display:block;padding:22px 22px 20px;background:var(--card-bg);border:1px solid var(--card-border);border-radius:14px;transition:background .2s ease,border-color .2s ease,transform .14s ease;color:inherit;text-decoration:none;position:relative;overflow:hidden}
+.card::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 0% 0%,rgba(196,151,58,0.06) 0%,transparent 60%);opacity:0;transition:opacity .25s ease;pointer-events:none}
+.card:hover{background:rgba(255,255,255,0.06);border-color:rgba(196,151,58,0.32);opacity:1}
+.card:hover::before{opacity:1}
+.card:active{transform:scale(0.992);transition:transform .08s ease}
+.card-eyebrow{font-size:0.62rem;letter-spacing:0.24em;color:var(--gold);text-transform:lowercase;margin-bottom:0.55rem;font-weight:400}
+.card-title{font-family:'Cormorant',serif;font-size:1.35rem;font-weight:400;color:#fff;line-height:1.25;margin-bottom:0.55rem;letter-spacing:-0.005em}
+.card-desc{font-size:0.82rem;font-weight:300;line-height:1.6;color:var(--text-dim)}
+
+/* HERO CARD — the single constellation card spans the full row, larger */
+.card-hero{padding:32px 32px 28px;background:linear-gradient(135deg,rgba(196,151,58,0.10) 0%,rgba(255,255,255,0.04) 60%);border-color:rgba(196,151,58,0.25)}
+.card-hero .card-title{font-size:1.75rem}
+.card-hero .card-desc{font-size:0.9rem;max-width:560px}
+
+/* PILL GRID (browse-by-domain + browse-by-pillar) */
+.pill-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:8px}
+.pill{display:flex;align-items:center;justify-content:space-between;padding:12px 16px;background:rgba(255,255,255,0.025);border:1px solid var(--card-border);border-radius:10px;color:var(--text);text-decoration:none;font-size:0.84rem;font-weight:400;letter-spacing:0.02em;transition:background .2s ease,border-color .2s ease,color .2s ease;text-transform:lowercase}
+.pill::after{content:'→';color:var(--gold);opacity:0;font-size:0.85rem;transition:opacity .2s ease,transform .2s ease}
+.pill:hover{background:rgba(255,255,255,0.05);border-color:rgba(196,151,58,0.32);color:#fff;opacity:1}
+.pill:hover::after{opacity:1;transform:translateX(2px)}
+.pill:active{transform:scale(0.985);transition:transform .08s ease}
+
+/* FOOTER NUDGE */
+.footer-nudge{margin-top:clamp(3rem,6vw,5rem);padding:2rem 1.5rem;text-align:center;border-top:1px solid rgba(255,255,255,0.06)}
+.footer-nudge p{font-size:0.78rem;color:var(--text-dim);max-width:520px;margin:0 auto;font-weight:300;line-height:1.7}
+.footer-nudge a{color:var(--gold);border-bottom:1px solid rgba(196,151,58,0.3);transition:border-color .2s}
+.footer-nudge a:hover{border-color:var(--gold)}
+
+/* MOBILE */
+@media (max-width:520px){
+  .hero{padding:3.5rem 1.25rem 2rem}
+  .hero h1{font-size:2.4rem}
+  .hero-desc{font-size:0.88rem}
+  .card-grid{grid-template-columns:1fr;gap:10px}
+  .card{padding:18px 18px 16px}
+  .card-title{font-size:1.15rem}
+  .pill-grid{grid-template-columns:repeat(2,1fr);gap:7px}
+  .pill{padding:11px 13px;font-size:0.78rem}
+  .browse-wrap{padding:0 1.25rem 4rem}
+}
+</style>
+</head>
+<body>
+
+<nav class="snav" aria-label="Primary">
+  <div class="snav-left">
+    <a href="/" class="snav-logo">FRQNCY</a>
+    <div class="breadcrumb">
+      <a href="/">Home</a>
+      <span class="sep">›</span>
+      <span>Browse</span>
+    </div>
+  </div>
+  <a href="/" class="snav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
+</nav>
+
+<section class="hero">
+  <div class="hero-eyebrow">browse</div>
+  <h1>The FRQNCY Network</h1>
+  <p class="hero-desc">Everything FRQNCY publishes — the canon, the people, the practices, the social layer, the constellation. Start anywhere; the field is connected.</p>
+</section>
+
+<main class="browse-wrap">
+
+  <!-- your space — private surfaces -->
+  <section class="section">
+    <h2 class="section-eyebrow">Your space</h2>
+    <div class="card-grid">
+      <a class="card" href="/my-frqncy/dashboard/">
+        <div class="card-eyebrow">sanctuary</div>
+        <div class="card-title">Your private dashboard</div>
+        <div class="card-desc">Practice log, mood charts, your daily path. Local-first, only visible to you.</div>
+      </a>
+      <a class="card" href="/my-frqncy">
+        <div class="card-eyebrow">my frqncy</div>
+        <div class="card-title">Birth data + your design</div>
+        <div class="card-desc">Human design chart, gates, alignment with FRQNCY's topic graph.</div>
+      </a>
+      <a class="card" href="/membership/">
+        <div class="card-eyebrow">membership</div>
+        <div class="card-title">Network access</div>
+        <div class="card-desc">Support FRQNCY, unlock the deeper layers, your referral code.</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- the canon — every curated bed -->
+  <section class="section">
+    <h2 class="section-eyebrow">The canon</h2>
+    <div class="card-grid">
+      <a class="card" href="/people/">
+        <div class="card-eyebrow">people</div>
+        <div class="card-title">The FRQNCY field</div>
+        <div class="card-desc">Teachers, builders, founders — who actually moved the needle.</div>
+      </a>
+      <a class="card" href="/books/">
+        <div class="card-eyebrow">books</div>
+        <div class="card-title">The library</div>
+        <div class="card-desc">Curated reading across every domain — with the quotes that mattered.</div>
+      </a>
+      <a class="card" href="/orgs/">
+        <div class="card-eyebrow">orgs</div>
+        <div class="card-title">Organisations doing the work</div>
+        <div class="card-desc">Labs, schools, funds, collectives — institutions worth knowing.</div>
+      </a>
+      <a class="card" href="/media/">
+        <div class="card-eyebrow">media</div>
+        <div class="card-title">Films, talks, conversations</div>
+        <div class="card-desc">Documentaries and recorded conversations across the FRQNCY field.</div>
+      </a>
+      <a class="card" href="/places/">
+        <div class="card-eyebrow">places</div>
+        <div class="card-title">Where it lives in the world</div>
+        <div class="card-desc">Retreats, sanctuaries, bookshops, communities — physical anchors.</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- experiences — what you do with frqncy -->
+  <section class="section">
+    <h2 class="section-eyebrow">Experiences</h2>
+    <div class="card-grid">
+      <a class="card" href="/watch/">
+        <div class="card-eyebrow">watch</div>
+        <div class="card-title">Video + audio library</div>
+        <div class="card-desc">Curated talks, films, long-form conversations.</div>
+      </a>
+      <a class="card" href="/courses/">
+        <div class="card-eyebrow">courses</div>
+        <div class="card-title">Learn deeper</div>
+        <div class="card-desc">Structured paths through the canon. Multi-week, self-paced.</div>
+      </a>
+      <a class="card" href="/music/">
+        <div class="card-eyebrow">music</div>
+        <div class="card-title">Frequency-aligned listening</div>
+        <div class="card-desc">432Hz, perfect-fifth, sound-bath. For sleep, focus, presence.</div>
+      </a>
+      <a class="card" href="/podcast">
+        <div class="card-eyebrow">podcast</div>
+        <div class="card-title">The long room</div>
+        <div class="card-desc">Extended conversations on consciousness, money, design, building.</div>
+      </a>
+      <a class="card" href="/events">
+        <div class="card-eyebrow">events</div>
+        <div class="card-title">Gatherings + circles</div>
+        <div class="card-desc">Retreats, salons, FRQNCY circles — when the field meets in person.</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- community — social + commercial layers -->
+  <section class="section">
+    <h2 class="section-eyebrow">Community</h2>
+    <div class="card-grid">
+      <a class="card" href="/social/">
+        <div class="card-eyebrow">nrg</div>
+        <div class="card-title">The social layer</div>
+        <div class="card-desc">FRQNCY's federated social network. Posts, replies, Bluesky timeline. No leaderboards.</div>
+      </a>
+      <a class="card" href="/newsletter">
+        <div class="card-eyebrow">newsletter</div>
+        <div class="card-title">Monthly transmission</div>
+        <div class="card-desc">What we read, what we built, what's coming. Plain prose, no growth-hack copy.</div>
+      </a>
+      <a class="card" href="/aligned/">
+        <div class="card-eyebrow">aligned</div>
+        <div class="card-title">The best of everything, curated</div>
+        <div class="card-desc">Tools, books, gear, supplements — what's actually worth using.</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- the topic graph — single hero card -->
+  <section class="section">
+    <h2 class="section-eyebrow">The topic graph</h2>
+    <div class="card-grid">
+      <a class="card card-hero" href="/explore" style="grid-column:1/-1">
+        <div class="card-eyebrow">explore</div>
+        <div class="card-title">The constellation</div>
+        <div class="card-desc">All 146 topics, every domain, every pillar — visual map of the field. Zoom, pan, search, follow the connections.</div>
+      </a>
+    </div>
+  </section>
+
+  <!-- browse by domain — 18 compact pills -->
+  <section class="section">
+    <h2 class="section-eyebrow">Browse by domain</h2>
+    <div class="pill-grid">
+      <a class="pill" href="/consciousness/">consciousness</a>
+      <a class="pill" href="/wellbeing/">well-being</a>
+      <a class="pill" href="/money/">money</a>
+      <a class="pill" href="/sciences/">sciences</a>
+      <a class="pill" href="/society/">society</a>
+      <a class="pill" href="/communication/">communication</a>
+      <a class="pill" href="/arts/">arts &amp; culture</a>
+      <a class="pill" href="/business/">business</a>
+      <a class="pill" href="/food/">food &amp; agriculture</a>
+      <a class="pill" href="/energy/">energy</a>
+      <a class="pill" href="/nature/">nature &amp; cosmos</a>
+      <a class="pill" href="/technology/">technology</a>
+      <a class="pill" href="/creation/">creation</a>
+      <a class="pill" href="/places/">places</a>
+      <a class="pill" href="/play/">play &amp; recreation</a>
+      <a class="pill" href="/lifestyle/">lifestyle</a>
+      <a class="pill" href="/commerce/">commerce</a>
+      <a class="pill" href="/curation/">curation</a>
+    </div>
+  </section>
+
+  <!-- browse by pillar — 8 compact pills (the HOW layer) -->
+  <section class="section">
+    <h2 class="section-eyebrow">Browse by pillar</h2>
+    <div class="pill-grid">
+      <a class="pill" href="/curate/">curate</a>
+      <a class="pill" href="/education/">educate</a>
+      <a class="pill" href="/research/">research</a>
+      <a class="pill" href="/broadcast/">broadcast</a>
+      <a class="pill" href="/sell/">sell</a>
+      <a class="pill" href="/fund/">fund</a>
+      <a class="pill" href="/builder/">build</a>
+      <a class="pill" href="/network-state/">settle</a>
+    </div>
+  </section>
+
+  <div class="footer-nudge">
+    <p>New to FRQNCY? <a href="/start-here">Start here</a> — a guided introduction. Or open the <a href="/explore">topic graph</a> and follow what catches.</p>
+  </div>
+
+</main>
+
+</body>
+</html>
