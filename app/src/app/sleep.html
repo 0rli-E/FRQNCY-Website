@@ -89,6 +89,12 @@
       .session.dimming {
         background: #060f24;  /* warm near-black, reached by minute 4 */
       }
+      /* While paused, freeze the long background-warming transition so the
+         visual age of the room matches the audible age of the session
+         (review edge-case #3). Without this, a pause-at-min-2 / resume-at-
+         min-30 leaves the screen 14% deep into a 4-min warm even though
+         the user only heard 2 min of session. */
+      .session.paused { transition: opacity 1200ms ease 600ms, background 0s linear; }
       .session-content {
         text-align: center;
         padding: 24px;
@@ -194,6 +200,14 @@
       .close-dot:focus-visible, .settle-cta:focus-visible {
         outline: 2px solid rgba(196, 151, 58, 0.9);
         outline-offset: 2px;
+      }
+      /* Keyboard users need a visible focus indicator on the tap-to-pause
+         affordance — without it, Tab lands on the prompt area silently
+         (review a11y, focus visibility). */
+      .session-content:focus-visible {
+        outline: 2px solid rgba(196, 151, 58, 0.7);
+        outline-offset: 6px;
+        border-radius: 12px;
       }
       .pause-pill {
         position: fixed;
@@ -310,6 +324,7 @@
       const NativeAudio = getPlugin('NativeAudio') || getPlugin('CapacitorMediaSession');
       const FrqncyAlarm = getPlugin('FrqncyAlarm');
 
+      let sessionActive = false; // gates pause toggle while chooser/settle on screen
       let sessionStart = 0;
       let pausedAt = 0;          // ms timestamp when paused; 0 = playing
       let pausedAccum = 0;       // total ms spent paused (excluded from elapsed)
@@ -317,6 +332,12 @@
       let volumeTimer = null;
       let activeAssetId = null;
       let htmlAudio = null;  // <audio> element fallback
+      // If the OS audio-focus is lost (incoming call, another app starts
+      // audio) the WebView is backgrounded and visibilitychange fires hidden.
+      // We pause on hidden and DON'T auto-resume on visible — calling
+      // play() during an active phone call gets denied by the OS and would
+      // also fight the user's intent. They tap to resume when ready.
+      let pausedByVisibility = false;
 
       // Effective elapsed = wall-clock since start minus accumulated pauses.
       // While paused, "now" is frozen at pausedAt so volume/timer hold still.
@@ -444,10 +465,26 @@
         // Path 2: HTML5 <audio> element (works without any plugin).
         // Tradeoff: foreground-only on iOS, but acceptable for a sleep flow
         // where the screen stays on. Loops by default.
+        // Safari autoplay rules: <audio>.play() can reject silently if no
+        // user gesture chain — startSession is invoked from a click handler
+        // synchronously, so the gesture context is intact at this point.
+        // We still catch the rejection and surface a silent-session fallback.
         try {
           htmlAudio = new Audio(resource.url);
           htmlAudio.loop = true;
           htmlAudio.volume = 1.0;
+          // Mid-session decoder failure or network stall: log + give up
+          // gracefully — the timer surface still runs as a silent meditation.
+          htmlAudio.addEventListener('error', (e) => {
+            console.warn('htmlAudio error mid-session', e);
+            try { htmlAudio && htmlAudio.pause(); } catch {}
+          });
+          // 'stalled' or 'ended' shouldn't fire (loop=true), but if they
+          // do, attempt one re-load instead of leaving the user in silence.
+          htmlAudio.addEventListener('stalled', () => {
+            console.warn('htmlAudio stalled, attempting recovery');
+            try { htmlAudio.load(); htmlAudio.play().catch(() => {}); } catch {}
+          });
           await htmlAudio.play();
           volumeTimer = setInterval(() => {
             if (pausedAt > 0) return;
@@ -457,6 +494,8 @@
           return true;
         } catch (err) {
           console.warn('HTML audio failed too', err);
+          // Clean up the half-constructed <audio> so it can't leak handlers.
+          if (htmlAudio) { try { htmlAudio.src = ''; } catch {} htmlAudio = null; }
           return false;
         }
       }
@@ -499,6 +538,13 @@
         // region sits inside an aria-hidden subtree and is silent.
         session.setAttribute('aria-hidden', 'false');
         setTimeout(() => session.classList.add('dimming'), 100);
+        // Pause toggle is now gated by `sessionActive` (wired once at script
+        // init, see below). Flip it on after the visible/dimming class lands
+        // so the first tap doesn't pre-pause an inactive session.
+        sessionActive = true;
+        // Reset pause bookkeeping in case a prior session left state behind.
+        pausedAt = 0; pausedAccum = 0; pausedByVisibility = false;
+        session.classList.remove('paused');
 
         sessionMoment.textContent = moment;
         sessionStart = Date.now();
@@ -542,8 +588,6 @@
             : 'resting';
           if (remainingMin === 0 && elapsed > durationMin * 60 + 30) endSession();
         }, 10000);
-
-        wirePauseToggle();
       }
 
       // Fade the prompt and swap text. Because `#session-prompt` is
@@ -563,10 +607,19 @@
         }, 1400);
       }
 
+      let ending = false;
       async function endSession() {
-        clearInterval(tickTimer);
-        await stopPlayback();
-        await disarmWakeKeepAlive();
+        if (ending) return;  // re-entrancy guard — double-tap on close-dot
+        ending = true;
+        sessionActive = false;
+        clearInterval(tickTimer); tickTimer = null;
+        // Race-wrap stopPlayback in a 1200ms timeout so a hung NativeAudio
+        // unload (decoder still draining) can't strand the user inside the
+        // dimmed session screen indefinitely (review edge-case #18).
+        const stopPromise = stopPlayback().catch((e) => console.warn('stopPlayback err', e));
+        const stopGuard = new Promise(res => setTimeout(res, 1200));
+        await Promise.race([stopPromise, stopGuard]);
+        await disarmWakeKeepAlive().catch(() => {});
         // Quiet farewell: show "thanks for sitting." for 1.5s before
         // navigating home. Tested in mind: a hard cut back to the home
         // screen ends the practice on a UI event; this one sentence
@@ -594,6 +647,9 @@
       function setPaused(p) {
         if (p && pausedAt === 0) {
           pausedAt = Date.now();
+          // Freeze the slow background-warming transition so visual age
+          // tracks audible age (edge-case #3).
+          session.classList.add('paused');
           // Pause audio
           if (NativeAudio && activeAssetId) {
             try { NativeAudio.pause({ assetId: activeAssetId }); } catch {}
@@ -610,23 +666,60 @@
         } else if (!p && pausedAt > 0) {
           pausedAccum += Date.now() - pausedAt;
           pausedAt = 0;
+          pausedByVisibility = false;
+          session.classList.remove('paused');
           if (NativeAudio && activeAssetId) {
             try { NativeAudio.play({ assetId: activeAssetId }); } catch {}
           }
-          if (htmlAudio) { try { htmlAudio.play(); } catch {} }
+          // htmlAudio.play() returns a Promise that can reject if Safari's
+          // autoplay heuristic has flipped (rare during a tap-driven resume,
+          // possible after a long phone-call interruption). Swallow.
+          if (htmlAudio) { try { const p = htmlAudio.play(); if (p && p.catch) p.catch(() => {}); } catch {} }
           pausePill.classList.remove('visible');
           sessionContent.setAttribute('aria-label', 'Tap to pause');
         }
       }
-      function wirePauseToggle() {
-        sessionContent.addEventListener('click', () => setPaused(pausedAt === 0));
-        sessionContent.addEventListener('keydown', (e) => {
-          if (e.key === ' ' || e.key === 'Enter') {
-            e.preventDefault();
-            setPaused(pausedAt === 0);
-          }
-        });
-      }
+      // Wire pause toggle ONCE at script init; gate on sessionActive so taps
+      // on the still-invisible session screen (during the chooser → settle
+      // → start transition) can't accidentally pre-pause (review edge-case
+      // #17 — leaked listeners on repeat startSession).
+      sessionContent.addEventListener('click', () => {
+        if (!sessionActive) return;
+        setPaused(pausedAt === 0);
+      });
+      sessionContent.addEventListener('keydown', (e) => {
+        if (!sessionActive) return;
+        if (e.key === ' ' || e.key === 'Enter') {
+          e.preventDefault();
+          setPaused(pausedAt === 0);
+        }
+      });
+
+      // OS audio-focus interruption (incoming call, Siri, another app starts
+      // music). The WebView fires visibilitychange→hidden when backgrounded
+      // and Page Visibility API is the cross-platform signal we can use
+      // without a dedicated audio-focus plugin. On hidden we auto-pause; on
+      // visible we mark the session paused-by-visibility so the user resumes
+      // explicitly. This preserves elapsed-time accounting (pausedAccum) and
+      // keeps the audio in a consistent paused state until they tap.
+      document.addEventListener('visibilitychange', () => {
+        if (!sessionActive) return;
+        if (document.visibilityState === 'hidden' && pausedAt === 0) {
+          pausedByVisibility = true;
+          setPaused(true);
+        }
+        // On 'visible' do NOT auto-resume — leaves the session in the same
+        // calm "paused · tap to resume" state the user would see after a
+        // manual pause. The OS may also deny play() if focus hasn't returned
+        // yet, and a silent failure here would desync UI state.
+      });
+      // pagehide is the terminal lifecycle event on iOS WKWebView when the
+      // app is suspended. Stop audio defensively so it can't keep playing
+      // headless after the WebView is purged.
+      window.addEventListener('pagehide', () => {
+        if (!sessionActive) return;
+        try { stopPlayback(); } catch {}
+      });
 
       const settle = document.getElementById('settle');
       const settleEyebrow = document.getElementById('settle-eyebrow');
@@ -643,6 +736,14 @@
         chooser.setAttribute('aria-hidden', 'true');
         settle.classList.add('visible');
         settle.setAttribute('aria-hidden', 'false');
+        // Move focus to "begin" so a keyboard / screen-reader user lands on
+        // the primary action. preventScroll keeps the page calm — no jump.
+        // Defer one rAF so the .visible transition is committed and the
+        // element is actually focusable (display/opacity-locked elements
+        // refuse focus in some engines).
+        requestAnimationFrame(() => {
+          try { settleCta.focus({ preventScroll: true }); } catch { settleCta.focus(); }
+        });
       }
       function closeSettle() {
         pendingSession = null;

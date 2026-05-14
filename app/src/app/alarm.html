@@ -70,12 +70,20 @@
         transform-origin: center;
         stroke-dasharray: 832;
         stroke-dashoffset: 832;
+        /* Default (idle / snap-back) — quick 320ms ease-out: when the user
+           releases mid-hold, the gold fill retracts crisply instead of
+           crawling back over 6s. Edge case from review #05.
+           When .holding is applied below we override to the slow 6s curve
+           that matches the breath-pace animation. */
+        transition: stroke-dashoffset 320ms ease-out;
+      }
+      #ring.holding #progress circle {
+        stroke-dashoffset: 0;
         /* Easing matches the breath-pace ring so the two motions agree:
            slow at start + apex, faster through the middle. Linear made the
            progress race ahead of the breath at t=1.5s and lag at t=3s. */
         transition: stroke-dashoffset 6000ms cubic-bezier(0.42, 0, 0.58, 1);
       }
-      #ring.holding #progress circle { stroke-dashoffset: 0; }
       .inner {
         text-align: center;
         font-weight: 200;
@@ -104,17 +112,26 @@
         display: flex; gap: 8px;
       }
       .actions button {
-        background: rgba(245, 245, 245, 0.06);
-        border: 1px solid rgba(245, 245, 245, 0.14);
-        color: rgba(245, 245, 245, 0.7);
-        padding: 10px 18px;
-        min-height: 44px;
+        /* Snooze button on the live alarm surface — sized for a groggy 6am
+           thumb: 13.5px text, comfortable 22px horizontal padding, 48px
+           min-height (above the 44pt iOS HIG floor). Pill style preserves the
+           "quiet escape hatch" posture without shrinking to chip-scale. */
+        background: rgba(245, 245, 245, 0.08);
+        border: 1px solid rgba(245, 245, 245, 0.18);
+        color: rgba(245, 245, 245, 0.82);
+        padding: 12px 22px;
+        min-height: 48px;
         border-radius: 999px;
-        font-size: 12px;
-        letter-spacing: 0.6px;
+        font-size: 13.5px;
+        letter-spacing: 0.4px;
         font-family: inherit;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+        transition: transform 120ms ease, background 220ms ease;
+      }
+      .actions button:active {
+        transform: scale(0.965);
+        background: rgba(245, 245, 245, 0.12);
       }
       .actions button:focus-visible, #ring:focus-visible {
         outline: 2px solid rgba(196, 151, 58, 0.9);
@@ -127,19 +144,28 @@
         position: fixed;
         top: calc(20px + env(safe-area-inset-top));
         left: 16px;
-        background: rgba(245, 245, 245, 0.06);
-        border: 1px solid rgba(245, 245, 245, 0.14);
-        color: rgba(245, 245, 245, 0.7);
-        padding: 10px 18px;
-        min-height: 44px;
+        /* Match the snooze-button visual language: same min-height + padding
+           so the two top-bar pills feel like siblings in practice mode. */
+        background: rgba(245, 245, 245, 0.08);
+        border: 1px solid rgba(245, 245, 245, 0.18);
+        color: rgba(245, 245, 245, 0.82);
+        padding: 12px 22px;
+        min-height: 48px;
+        display: none;
+        align-items: center;
+        gap: 6px;
         border-radius: 999px;
-        font-size: 12px;
-        letter-spacing: 0.6px;
+        font-size: 13.5px;
+        letter-spacing: 0.4px;
         font-family: inherit;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
-        display: none;
         z-index: 5;
+        transition: transform 120ms ease, background 220ms ease;
+      }
+      .practice-exit:active {
+        transform: scale(0.965);
+        background: rgba(245, 245, 245, 0.12);
       }
       .practice-exit:focus-visible {
         outline: 2px solid rgba(196, 151, 58, 0.9);

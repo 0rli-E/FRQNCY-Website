@@ -24,7 +24,7 @@
          labels legible in a dim room without losing the "calmed" feel.
          Adapted from Apple's Sleep Focus and Android Bedtime patterns. */
       body.bedside-armed { background: #060f24; }
-      body.bedside-armed h1,
+      body.bedside-armed .eyebrow,
       body.bedside-armed .toggle-row,
       body.bedside-armed .sleep-entry,
       body.bedside-armed .quiet-note,
@@ -47,7 +47,11 @@
         max-width: 520px;
         margin: 0 auto;
       }
-      h1 {
+      /* Page eyebrow — small grey caps above the alarm card. Not the H1
+         (the 06:45 time-display is the semantic heading via aria-labelledby
+         on the wrap, so heading-rotor navigation lands on the page's
+         primary content, not the eyebrow). */
+      .eyebrow {
         font-size: 13px;
         font-weight: 300;
         letter-spacing: 2.4px;
@@ -136,7 +140,11 @@
       }
       .switch {
         width: 48px; height: 28px;
-        background: rgba(245, 245, 245, 0.12);
+        /* Off-state lifts from 0.12 → 0.22 alpha to clear the WCAG 1.4.11
+           non-text contrast floor (1.2:1 → ~2.2:1 vs navy; combined with the
+           knob's white fill at 100% alpha the control as a whole reads as
+           interactive). */
+        background: rgba(245, 245, 245, 0.22);
         border-radius: 14px;
         position: relative;
         cursor: pointer;
@@ -147,6 +155,7 @@
         outline: 2px solid rgba(196, 151, 58, 0.9);
         outline-offset: 3px;
       }
+      .switch:active { transform: scale(0.96); }
       .switch.on { background: rgba(196, 151, 58, 0.9); }
       .switch::after {
         content: '';
@@ -155,7 +164,13 @@
         width: 22px; height: 22px;
         background: #fff;
         border-radius: 50%;
-        transition: transform 220ms ease;
+        /* Soft shadow under the knob so it reads as a physical thumb, not a
+           flat dot. Same shadow language as iOS UISwitch. */
+        box-shadow: 0 1px 2px rgba(0, 0, 0, 0.25), 0 0 0 0.5px rgba(0, 0, 0, 0.08);
+        /* Spring overshoot easing — feels like the iOS toggle's micro-bounce
+           at the end of the slide. 280ms gives the spring room to settle
+           without dragging the perceived response time. */
+        transition: transform 280ms cubic-bezier(0.34, 1.56, 0.64, 1);
       }
       .switch.on::after { transform: translateX(20px); }
       .arm-btn {
@@ -221,13 +236,39 @@
       .sleep-entry { display: flex; gap: 12px; margin-top: 24px; }
       .sleep-entry button {
         flex: 1;
-        padding: 16px;
+        /* Min-height 56px so the secondary CTA reads as a button, not a card,
+           and meets 2.5.5 AAA. Inner flex distributes label + chevron. */
+        min-height: 56px;
+        padding: 14px 18px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 12px;
         background: rgba(245, 245, 245, 0.04);
-        border: 1px solid rgba(245, 245, 245, 0.08);
+        border: 1px solid rgba(245, 245, 245, 0.12);
         color: rgba(245, 245, 245, 0.85);
         border-radius: 14px;
-        font-size: 13.5px;
+        font-size: 14px;
+        font-family: inherit;
+        letter-spacing: 0.4px;
+        cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+        transition: transform 90ms ease, background 220ms ease, border-color 220ms ease;
+      }
+      .sleep-entry button:active {
+        transform: scale(0.985);
+        background: rgba(245, 245, 245, 0.07);
+        border-color: rgba(245, 245, 245, 0.2);
+      }
+      .sleep-entry button:focus-visible {
+        outline: 2px solid rgba(196, 151, 58, 0.9);
+        outline-offset: 2px;
+      }
+      .sleep-entry .chevron {
+        color: rgba(245, 245, 245, 0.42);
+        font-size: 16px;
+        font-weight: 200;
+        line-height: 1;
       }
       .oem-overlay {
         position: fixed; inset: 0;
@@ -463,11 +504,13 @@
   </head>
   <body>
     <div class="wrap">
-      <h1>bedside</h1>
+      <p class="eyebrow">bedside</p>
 
       <div class="alarm-card">
         <div class="time-row">
-          <button class="time-display" id="time-display" type="button" aria-label="Change wake time">06:45</button>
+          <button class="time-display" id="time-display" type="button"
+                  role="heading" aria-level="1"
+                  aria-label="Wake time 06:45 — tap to change">06:45</button>
           <input type="time" id="time-input" value="06:45" aria-label="Wake time" />
         </div>
         <div class="time-meta" id="time-meta">morning · fade-in 90s</div>
@@ -500,7 +543,10 @@
       </div>
 
       <div class="sleep-entry">
-        <button id="to-sleep">tonight's session</button>
+        <button id="to-sleep" type="button">
+          <span>tonight's session</span>
+          <span class="chevron" aria-hidden="true">›</span>
+        </button>
       </div>
 
       <div class="quiet-note" id="reliability-note">
@@ -580,14 +626,12 @@
         toastTimer = setTimeout(() => toast.classList.remove('visible'), durationMs);
       }
 
-      // First-run welcome — runs once, before anything else.
+      // First-run welcome — modal is defined below, opened at the bottom of
+      // script init so the call site reaches the declared makeModal()/welcomeModal
+      // bindings (avoiding a silent TDZ throw under the previous try/catch).
       const welcomeOverlay = document.getElementById('welcome-overlay');
       const welcomeCta = document.getElementById('welcome-cta');
-      try {
-        if (localStorage.getItem(WELCOME_ACK_KEY) !== '1') {
-          welcomeModal.open();
-        }
-      } catch {}
+
       // Generic modal helper — focus trap + restore + Esc close + tap-outside.
       // Used by both the welcome overlay and the OEM overlay below.
       function makeModal(overlayEl, cardSelector, onClose) {
@@ -639,6 +683,13 @@
       }
       welcomeCta.addEventListener('click', dismissWelcome);
 
+      // Open the first-run welcome NOW that makeModal + welcomeModal are bound.
+      try {
+        if (localStorage.getItem(WELCOME_ACK_KEY) !== '1') {
+          welcomeModal.open();
+        }
+      } catch {}
+
       // Persist toggle state across launches. Each switch has a data-pref
       // attribute that names its persistence key — we hydrate from
       // localStorage on load and write through on change.
@@ -661,6 +712,10 @@
       function toggleSwitch(sw) {
         sw.classList.toggle('on');
         sw.setAttribute('aria-checked', sw.classList.contains('on'));
+        // Micro-haptic on toggle — closes the no-confirmation gap flagged in
+        // interaction review #12. 8ms is below the perceptible-as-pulse
+        // threshold on web; reads as a tap echo, not a vibration.
+        try { if (navigator.vibrate) navigator.vibrate(8); } catch {}
         const key = SWITCH_PREFS[sw.id];
         if (key) {
           try { localStorage.setItem(key, sw.classList.contains('on') ? '1' : '0'); } catch {}
@@ -676,9 +731,16 @@
         });
       });
 
-      // Two-way bind the time input <-> display.
+      // Two-way bind the time input <-> display. Keep the aria-label in sync
+      // so screen readers announce the current value when the heading-rotor
+      // lands on the time-display (it's role="heading" aria-level="1").
+      function syncTimeAria() {
+        const v = timeInput.value || '06:45';
+        timeDisplay.textContent = v;
+        timeDisplay.setAttribute('aria-label', `Wake time ${v} — tap to change`);
+      }
       timeInput.addEventListener('input', () => {
-        timeDisplay.textContent = timeInput.value || '06:45';
+        syncTimeAria();
         // Editing the time un-arms visually, since the persisted alarm still
         // points at the old time until the user re-arms.
         if (armed) updateCountdown();
@@ -950,7 +1012,7 @@
             const hh = String(d.getHours()).padStart(2, '0');
             const mm = String(d.getMinutes()).padStart(2, '0');
             timeInput.value = `${hh}:${mm}`;
-            timeDisplay.textContent = `${hh}:${mm}`;
+            syncTimeAria();
             updateCountdown();
           }
         } catch {}

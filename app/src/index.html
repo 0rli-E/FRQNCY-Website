@@ -20,10 +20,12 @@
       /* Shared stage for native surfaces (home, explore) and the iframe shell
          used by local /app/* routes. Only one is visible at a time. Surfaces
          fade between states; the hidden state takes itself out of the layout
-         and tab order via visibility/pointer-events. */
+         and tab order via visibility/pointer-events.
+         Cubic-bezier easing + a 2px scale-up on entry makes the swap read as
+         deliberate motion instead of a snap (was 200ms linear opacity-only —
+         02-interaction #2). */
       .surface {
         position: fixed;
-        top: env(safe-area-inset-top);
         right: 0;
         bottom: calc(60px + env(safe-area-inset-bottom));
         left: 0;
@@ -32,36 +34,48 @@
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transition: opacity 200ms ease, visibility 0s linear 200ms;
+        transform: scale(0.992);
+        transform-origin: center 35%;
+        transition: opacity 280ms cubic-bezier(0.32, 0.72, 0, 1),
+                    transform 280ms cubic-bezier(0.32, 0.72, 0, 1),
+                    visibility 0s linear 280ms,
+                    top 320ms cubic-bezier(0.32, 0.72, 0, 1);
       }
       .surface.visible {
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
-        transition: opacity 200ms ease;
+        transform: scale(1);
+        transition: opacity 280ms cubic-bezier(0.32, 0.72, 0, 1),
+                    transform 280ms cubic-bezier(0.32, 0.72, 0, 1);
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .surface { transform: none; transition: opacity 160ms linear, visibility 0s linear 160ms; }
+        .surface.visible { transform: none; transition: opacity 160ms linear; }
       }
 
       #site-frame {
         position: fixed;
-        top: env(safe-area-inset-top);
         right: 0;
         left: 0;
         width: 100%;
         /* Iframes don't auto-stretch via top+bottom like divs do — explicit
            height calc is required or they collapse to the HTML default 150px. */
-        height: calc(100vh - 60px - env(safe-area-inset-top) - env(safe-area-inset-bottom));
         border: 0;
         background: #0B1C3D;
         opacity: 0;
         visibility: hidden;
         pointer-events: none;
-        transition: opacity 200ms ease, visibility 0s linear 200ms;
+        transition: opacity 280ms cubic-bezier(0.32, 0.72, 0, 1),
+                    visibility 0s linear 280ms,
+                    top 320ms cubic-bezier(0.32, 0.72, 0, 1),
+                    height 320ms cubic-bezier(0.32, 0.72, 0, 1);
       }
       #site-frame.visible {
         opacity: 1;
         visibility: visible;
         pointer-events: auto;
-        transition: opacity 200ms ease;
+        transition: opacity 280ms cubic-bezier(0.32, 0.72, 0, 1);
       }
 
       #tab-bar {
@@ -143,59 +157,217 @@
         outline: 2px solid rgba(196, 151, 58, 0.9);
         outline-offset: 3px;
       }
+      /* Offline status pill — quieter than the original full-width gold-on-tint
+         banner so it doesn't compete with the brand mark on the first 32px of
+         Home. Centered pill at white-6% / white-72% with a tiny gold dot, role
+         is announced politely to screen readers. Closes 01-visual #4 + 04-a11y
+         #9 + 02-interaction #24 (surface shifts down when banner is visible). */
       #offline-banner {
         position: fixed;
-        top: env(safe-area-inset-top);
-        left: 0;
-        right: 0;
-        padding: 10px 16px;
-        background: rgba(196, 151, 58, 0.12);
-        color: #C4973A;
-        font-size: 13px;
+        top: calc(env(safe-area-inset-top) + 8px);
+        left: 50%;
+        padding: 7px 14px 7px 28px;
+        background: rgba(255, 255, 255, 0.07);
+        border: 0.5px solid rgba(255, 255, 255, 0.10);
+        border-radius: 999px;
+        color: rgba(245, 245, 245, 0.78);
+        font-size: 11.5px;
+        font-weight: 400;
+        letter-spacing: 0.2px;
         text-align: center;
-        transform: translateY(-100%);
+        transform: translate(-50%, calc(-100% - 12px));
         opacity: 0;
         pointer-events: none;
-        transition: transform 240ms ease, opacity 240ms ease;
+        transition: transform 320ms cubic-bezier(0.32, 0.72, 0, 1),
+                    opacity 240ms ease;
         z-index: 20;
+        backdrop-filter: blur(12px);
+        -webkit-backdrop-filter: blur(12px);
+        white-space: nowrap;
+        max-width: calc(100% - 32px);
+      }
+      #offline-banner::before {
+        content: '';
+        position: absolute;
+        left: 12px;
+        top: 50%;
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: rgba(196, 151, 58, 0.85);
+        transform: translateY(-50%);
+        animation: offline-pulse 2.4s ease-in-out infinite;
       }
       #offline-banner.show {
-        transform: translateY(0);
+        transform: translate(-50%, 0);
         opacity: 1;
         pointer-events: auto;
       }
+      @keyframes offline-pulse {
+        0%, 100% { opacity: 0.5; }
+        50%      { opacity: 1;   }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #offline-banner::before { animation: none; opacity: 0.85; }
+        #offline-banner { transition: opacity 160ms linear; transform: translate(-50%, 0); }
+        #offline-banner:not(.show) { opacity: 0; pointer-events: none; }
+      }
+      /* When offline, nudge surface + frame down 36px so the pill doesn't
+         overlap page chrome. The top/height shift uses its own animation
+         (independent from the surface fade) so it stays smooth. */
+      .surface, #site-frame {
+        --offline-shift: 0px;
+      }
+      body.offline .surface,
+      body.offline #site-frame {
+        --offline-shift: 36px;
+      }
+      .surface {
+        top: calc(env(safe-area-inset-top) + var(--offline-shift));
+      }
+      #site-frame {
+        top: calc(env(safe-area-inset-top) + var(--offline-shift));
+        height: calc(100vh - 60px - var(--offline-shift) - env(safe-area-inset-top) - env(safe-area-inset-bottom));
+      }
 
       /* Iframe loading bar — slim gold progress strip that appears the moment
-         a frqncy.network page begins loading and fades on load. The
-         indeterminate animation runs while loading, then a 240ms fade-out
-         clears it once the iframe load event fires. */
+         a frqncy.network page begins loading and fades on load. The fade-in
+         is instant (the bar must visibly land); the fade-out is a slow 480ms
+         linger so fast loads still register as "something happened" rather
+         than reading as a flash. Closes 02-interaction #3 / #23.
+         Top sits under the offline banner so the two don't fight for the
+         same band. */
       #loading-bar {
         position: fixed;
-        top: env(safe-area-inset-top);
+        top: calc(env(safe-area-inset-top) + var(--offline-shift, 0px));
         left: 0;
         right: 0;
         height: 2px;
         background: transparent;
         z-index: 30;
         opacity: 0;
-        transition: opacity 240ms ease;
+        transition: opacity 480ms ease;
         pointer-events: none;
       }
-      #loading-bar.loading { opacity: 1; }
+      body.offline #loading-bar { --offline-shift: 36px; }
+      #loading-bar.loading {
+        opacity: 1;
+        transition: opacity 0s;
+      }
       #loading-bar::before {
         content: '';
         position: absolute;
         inset: 0;
         background: linear-gradient(90deg, transparent, #C4973A, transparent);
         transform: translateX(-100%);
-        animation: loading-slide 800ms ease-in-out infinite;
+        animation: loading-slide 1100ms ease-in-out infinite;
       }
       @keyframes loading-slide {
-        0% { transform: translateX(-100%); }
+        0%   { transform: translateX(-100%); }
         100% { transform: translateX(100%); }
       }
       @media (prefers-reduced-motion: reduce) {
         #loading-bar::before { animation: none; background: #C4973A; transform: none; }
+      }
+
+      /* Iframe error fallback — surfaces only when main.ts's 8s timeout fires
+         on a real failure (offline / CSP block / DNS fail). Replaces the gold-
+         navy void the user used to see. The "open in browser" affordance and
+         the "try again" button restore agency. Closes 02-interaction #4 +
+         05-edge-cases #1 (visible-side companion to the timeout already in
+         main.ts). */
+      #frame-error {
+        position: fixed;
+        top: calc(env(safe-area-inset-top) + var(--offline-shift, 0px));
+        left: 0;
+        right: 0;
+        bottom: calc(60px + env(safe-area-inset-bottom));
+        z-index: 25;
+        display: none;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        padding: 32px 28px;
+        background: #0B1C3D;
+        color: rgba(245, 245, 245, 0.78);
+        text-align: center;
+        opacity: 0;
+        transition: opacity 240ms ease;
+      }
+      #frame-error.visible {
+        display: flex;
+        opacity: 1;
+      }
+      .frame-error-mark {
+        width: 48px;
+        height: 48px;
+        border-radius: 50%;
+        border: 1px solid rgba(196, 151, 58, 0.42);
+        margin-bottom: 22px;
+        position: relative;
+      }
+      .frame-error-mark::after {
+        content: '';
+        position: absolute;
+        top: calc(50% - 0.5px);
+        left: 22%; right: 22%;
+        height: 1px;
+        background: rgba(196, 151, 58, 0.55);
+      }
+      .frame-error-eyebrow {
+        font-size: 10.5px;
+        letter-spacing: 2.0px;
+        text-transform: lowercase;
+        color: rgba(196, 151, 58, 0.85);
+        margin-bottom: 10px;
+      }
+      .frame-error-title {
+        font-size: 18px;
+        font-weight: 300;
+        line-height: 1.4;
+        color: rgba(245, 245, 245, 0.92);
+        margin-bottom: 10px;
+        max-width: 280px;
+      }
+      .frame-error-body {
+        font-size: 13px;
+        font-weight: 300;
+        line-height: 1.6;
+        color: rgba(245, 245, 245, 0.62);
+        max-width: 300px;
+        margin-bottom: 26px;
+      }
+      .frame-error-actions {
+        display: flex;
+        flex-direction: column;
+        gap: 10px;
+        width: 100%;
+        max-width: 280px;
+      }
+      .frame-error-actions button {
+        background: none;
+        border: 1px solid rgba(245, 245, 245, 0.16);
+        color: rgba(245, 245, 245, 0.85);
+        padding: 13px 16px;
+        border-radius: 14px;
+        font-size: 14px;
+        letter-spacing: 0.2px;
+        text-transform: lowercase;
+        font-family: inherit;
+        cursor: pointer;
+        min-height: 44px;
+        transition: background 180ms ease, border-color 180ms ease, transform 140ms ease;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .frame-error-actions button.primary {
+        background: rgba(196, 151, 58, 0.95);
+        border-color: rgba(196, 151, 58, 0.95);
+        color: #0B1C3D;
+      }
+      .frame-error-actions button:active { transform: scale(0.985); }
+      .frame-error-actions button:focus-visible {
+        outline: 2px solid rgba(196, 151, 58, 0.9);
+        outline-offset: 3px;
       }
 
       /* --- Native home surface ------------------------------------------- */
@@ -269,11 +441,14 @@
         background: rgba(196, 151, 58, 0.95);
         border: none;
         color: #0B1C3D;
-        padding: 14px;
+        padding: 15px 14px;
         border-radius: 14px;
-        font-size: 14px;
-        letter-spacing: 0.8px;
+        font-size: 15px;
+        font-weight: 500;
+        letter-spacing: 0.2px;
+        line-height: 1.2;
         text-transform: lowercase;
+        min-height: 50px;
         -webkit-tap-highlight-color: transparent;
         font-family: inherit;
         text-decoration: none;
@@ -314,19 +489,48 @@
         font-family: inherit;
         width: 100%;
       }
-      .home-card:hover {
-        background: rgba(255, 255, 255, 0.06);
-        border-color: rgba(196, 151, 58, 0.35);
+      @media (hover: hover) {
+        .home-card:hover {
+          background: rgba(255, 255, 255, 0.06);
+          border-color: rgba(196, 151, 58, 0.35);
+        }
       }
       .home-card:active {
         background: rgba(196, 151, 58, 0.08);
         border-color: rgba(196, 151, 58, 0.45);
         transform: scale(0.985);
+        transition: background 0s, border-color 0s, transform 80ms ease;
+      }
+      /* Tapped + waiting for the surface to load — gold eyebrow tints slightly
+         and a tiny gold dot pulses against the right edge. Cleared on the
+         iframe's load event (via main.ts) or on tab change. */
+      .home-card.pending {
+        background: rgba(196, 151, 58, 0.06);
+        border-color: rgba(196, 151, 58, 0.30);
+      }
+      .home-card.pending::after {
+        content: '';
+        position: absolute;
+        top: 22px;
+        right: 18px;
+        width: 5px;
+        height: 5px;
+        border-radius: 50%;
+        background: rgba(196, 151, 58, 0.85);
+        animation: card-pending-pulse 1.2s ease-in-out infinite;
+      }
+      .home-card { position: relative; }
+      @keyframes card-pending-pulse {
+        0%, 100% { opacity: 0.3; transform: scale(0.85); }
+        50%      { opacity: 1;   transform: scale(1);    }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        .home-card.pending::after { animation: none; opacity: 0.85; }
       }
       .home-card .home-card-eyebrow {
-        font-size: 10.5px;
+        font-size: 11px;
         letter-spacing: 2.0px;
-        color: rgba(196, 151, 58, 0.85);
+        color: rgba(196, 151, 58, 0.9);
         text-transform: lowercase;
         margin-bottom: 8px;
       }
@@ -388,8 +592,22 @@
     </style>
   </head>
   <body>
-    <div id="offline-banner">Offline — showing cached content</div>
+    <div id="offline-banner" role="status" aria-live="polite">offline · using cached content</div>
     <div id="loading-bar" aria-hidden="true"></div>
+
+    <!-- Iframe-error fallback: shown by main.ts when the 8s load timeout
+         fires on a real network failure or CSP block. Replaces the silent
+         gold-navy void with copy + recovery actions. -->
+    <div id="frame-error" role="alert" aria-live="assertive" aria-hidden="true">
+      <div class="frame-error-mark" aria-hidden="true"></div>
+      <div class="frame-error-eyebrow">slow signal</div>
+      <h2 class="frame-error-title">this corner of the network isn't loading.</h2>
+      <p class="frame-error-body">your connection paused, or the page is taking a moment. no rush — try again, or come back to it later.</p>
+      <div class="frame-error-actions">
+        <button class="primary" id="frame-error-retry" type="button">try again</button>
+        <button id="frame-error-home" type="button">back to home</button>
+      </div>
+    </div>
 
     <!-- Native home surface -->
     <main id="home-screen" class="surface" role="region" aria-label="Home" data-tab-context="/">
@@ -501,12 +719,13 @@
     <iframe
       id="site-frame"
       src="about:blank"
+      title="frqncy network — in-app browser"
       allow="autoplay; fullscreen; picture-in-picture; camera; microphone"
       allowfullscreen
     ></iframe>
 
     <nav id="tab-bar" role="tablist" aria-label="Primary">
-      <button class="tab active" data-route="/" role="tab" aria-label="Home">
+      <button class="tab active" data-route="/" role="tab" aria-label="Home" aria-selected="true">
         <span class="tab-icon" aria-hidden="true">
           <!-- Home: circle with a centered horizontal bar (echoes the brand mark) -->
           <svg viewBox="0 0 24 24" focusable="false">
@@ -516,7 +735,7 @@
         </span>
         <span>home</span>
       </button>
-      <button class="tab" data-route="/explore" role="tab" aria-label="Explore">
+      <button class="tab" data-route="/explore" role="tab" aria-label="Explore" aria-selected="false">
         <span class="tab-icon" aria-hidden="true">
           <!-- Explore: constellation / dot-grid of five nodes linked by light lines -->
           <svg viewBox="0 0 24 24" focusable="false">
@@ -533,7 +752,7 @@
         </span>
         <span>explore</span>
       </button>
-      <button class="tab" data-route="/app/bedside.html" role="tab" aria-label="Bedside">
+      <button class="tab" data-route="/app/bedside.html" role="tab" aria-label="Bedside" aria-selected="false">
         <span class="tab-icon" aria-hidden="true">
           <!-- Bedside: crescent moon (geometric, calm) -->
           <svg viewBox="0 0 24 24" focusable="false">
@@ -542,7 +761,7 @@
         </span>
         <span>bedside</span>
       </button>
-      <button class="tab" data-route="/app/settings.html" role="tab" aria-label="You">
+      <button class="tab" data-route="/app/settings.html" role="tab" aria-label="You" aria-selected="false">
         <span class="tab-icon" aria-hidden="true">
           <!-- You: diamond outline with a centered dot -->
           <svg viewBox="0 0 24 24" focusable="false">
@@ -553,6 +772,141 @@
         <span>you</span>
       </button>
     </nav>
+    <!-- Shell-level polish wiring. Kept in index.html (not main.ts) because
+         it's pure-DOM glue that ships with the static shell and doesn't need
+         module imports:
+           - Mirrors .tab.active → aria-selected for the tabs (a11y rotor).
+           - Mirrors #offline-banner.show → body.offline (drives the surface
+             shift declared in CSS).
+           - Adds .pending to home-cards on tap, clears on iframe load /
+             surface change (loaded-state animation, closes 01-visual #12
+             "card pressed/loaded animation").
+           - Wires #frame-error: shown after the 8s load timeout in main.ts
+             clears the loading bar without a successful load; offers retry
+             or back-to-home. -->
+    <script>
+      (function () {
+        // tab aria-selected mirror
+        var tabBar = document.getElementById('tab-bar');
+        if (tabBar) {
+          new MutationObserver(function () {
+            tabBar.querySelectorAll('.tab').forEach(function (t) {
+              t.setAttribute('aria-selected', t.classList.contains('active') ? 'true' : 'false');
+            });
+          }).observe(tabBar, { attributes: true, subtree: true, attributeFilter: ['class'] });
+        }
+
+        // offline body class mirror
+        var banner = document.getElementById('offline-banner');
+        if (banner) {
+          var sync = function () { document.body.classList.toggle('offline', banner.classList.contains('show')); };
+          new MutationObserver(sync).observe(banner, { attributes: true, attributeFilter: ['class'] });
+          sync();
+        }
+
+        // Home-card pending state — gold-tinted "tap accepted, loading" feel.
+        // Cleared once the iframe loads, or after a 4s safety cap, or when
+        // the user moves to a different surface.
+        var pendingCard = null;
+        var pendingTimer = null;
+        function clearPending() {
+          if (pendingCard) pendingCard.classList.remove('pending');
+          pendingCard = null;
+          if (pendingTimer) { clearTimeout(pendingTimer); pendingTimer = null; }
+        }
+        document.body.addEventListener('click', function (ev) {
+          var card = ev.target.closest && ev.target.closest('.home-card');
+          if (!card) return;
+          // Only external cards take time to load; internal /app/* routes are
+          // near-instant so a pending state would just flash.
+          if (!card.dataset.external) return;
+          clearPending();
+          pendingCard = card;
+          card.classList.add('pending');
+          pendingTimer = setTimeout(clearPending, 4000);
+        });
+        var frame = document.getElementById('site-frame');
+        if (frame) {
+          frame.addEventListener('load', clearPending);
+          frame.addEventListener('error', clearPending);
+        }
+        // If user navigates away from the surface that contains the pending
+        // card, clear it. Drive off tab clicks.
+        document.querySelectorAll('.tab').forEach(function (tab) {
+          tab.addEventListener('click', clearPending);
+        });
+
+        // Frame-error overlay: shown when the iframe loading bar's 8s safety
+        // timeout fires without a successful load. main.ts already removes
+        // .loading from the bar at that point; we just listen for the class
+        // mutation and check whether the iframe ever reached "ready" state.
+        var frameError = document.getElementById('frame-error');
+        var loadingBar = document.getElementById('loading-bar');
+        var loadStartTs = 0;
+        var iframeLoadedSinceStart = false;
+        if (frame && loadingBar && frameError) {
+          frame.addEventListener('load', function () {
+            // about:blank counts as a load; only flag a real one if src is
+            // not the empty placeholder.
+            if (frame.src && frame.src !== 'about:blank' && !frame.src.endsWith('about:blank')) {
+              iframeLoadedSinceStart = true;
+              hideFrameError();
+            }
+          });
+          new MutationObserver(function (records) {
+            records.forEach(function (r) {
+              if (r.attributeName !== 'class') return;
+              var nowLoading = loadingBar.classList.contains('loading');
+              if (nowLoading) {
+                loadStartTs = Date.now();
+                iframeLoadedSinceStart = false;
+                hideFrameError();
+              } else if (loadStartTs) {
+                // .loading was just removed. If main.ts removed it via the 8s
+                // timeout AND the iframe never fired a real load, surface the
+                // error UI. The threshold (7.5s) gives main.ts's 8s timer a
+                // small margin so a successful 7.9s load doesn't show an
+                // error post-hoc.
+                var elapsed = Date.now() - loadStartTs;
+                loadStartTs = 0;
+                if (elapsed >= 7500 && !iframeLoadedSinceStart) {
+                  showFrameError();
+                }
+              }
+            });
+          }).observe(loadingBar, { attributes: true, attributeFilter: ['class'] });
+
+          var retry = document.getElementById('frame-error-retry');
+          var goHome = document.getElementById('frame-error-home');
+          if (retry) retry.addEventListener('click', function () {
+            // Force a reload of whatever the iframe was pointed at.
+            var src = frame.src;
+            hideFrameError();
+            if (src && src !== 'about:blank') {
+              // Toggling to about:blank then back kicks WebKit into a real reload.
+              frame.src = 'about:blank';
+              setTimeout(function () { frame.src = src; }, 50);
+            }
+          });
+          if (goHome) goHome.addEventListener('click', function () {
+            hideFrameError();
+            var homeTab = document.querySelector('.tab[data-route="/"]');
+            if (homeTab) homeTab.click();
+          });
+        }
+        function showFrameError() {
+          if (!frameError) return;
+          frameError.classList.add('visible');
+          frameError.setAttribute('aria-hidden', 'false');
+        }
+        function hideFrameError() {
+          if (!frameError) return;
+          frameError.classList.remove('visible');
+          frameError.setAttribute('aria-hidden', 'true');
+        }
+      })();
+    </script>
+
     <script type="module" src="./main.ts"></script>
   </body>
 </html>

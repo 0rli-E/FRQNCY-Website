@@ -447,6 +447,23 @@
         if (saveTimer) clearTimeout(saveTimer);
         saveTimer = setTimeout(() => persistReflection(reflectionField.value), 800);
       });
+      // Flush-on-exit: blur and pagehide (system back, app suspension, tab
+      // close, OS swipe-up) all need to commit any pending debounced text.
+      // Without this, a user who types fast then walks away within 800ms
+      // loses what they wrote — the carry-on / move-with-me buttons already
+      // persist, but those aren't the only exit paths (system back gesture,
+      // notification tap, OS killing the WebView).
+      function flushReflection() {
+        if (saveTimer) { clearTimeout(saveTimer); saveTimer = null; }
+        persistReflection(reflectionField.value);
+      }
+      reflectionField.addEventListener('blur', flushReflection);
+      window.addEventListener('pagehide', flushReflection);
+      // visibilitychange covers Android's app-backgrounding which doesn't
+      // always fire pagehide before the WebView is suspended.
+      document.addEventListener('visibilitychange', () => {
+        if (document.visibilityState === 'hidden') flushReflection();
+      });
 
       let arrived = false;
       function arrive() {
@@ -589,7 +606,10 @@
 
       movementBtn.addEventListener('click', () => {
         if (movementBtn.disabled) return;
-        persistReflection(reflectionField.value);
+        // Use the flush helper so any pending debounce is cleared too —
+        // prevents a stale 800ms-late write from clobbering whatever the
+        // movement session ends up persisting later.
+        flushReflection();
         playMovement();
       });
 
@@ -603,7 +623,7 @@
         if (closing) return;
         closing = true;
         closeBtn.disabled = true;
-        persistReflection(reflectionField.value);
+        flushReflection();
         try { await stopMovement(); } catch {}
         window.location.href = '../index.html';
       });

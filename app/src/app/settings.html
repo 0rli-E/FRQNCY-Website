@@ -18,11 +18,25 @@
         max-width: 520px;
         margin: 0 auto;
       }
-      h1 {
+      /* Visually-hidden semantic h1 — gives screen-reader rotor a landmark
+         without competing with the visual eyebrow. Per a11y review #17
+         (heading hierarchy broken across surfaces). */
+      h1.sr-only {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+      .eyebrow {
         font-size: 13px;
         font-weight: 300;
         letter-spacing: 2.4px;
-        color: rgba(245, 245, 245, 0.4);
+        color: rgba(245, 245, 245, 0.62);
         text-transform: lowercase;
         margin-bottom: 18px;
       }
@@ -35,7 +49,7 @@
       .section-title {
         font-size: 12.5px;
         letter-spacing: 1.6px;
-        color: rgba(245, 245, 245, 0.44);
+        color: rgba(245, 245, 245, 0.7);
         text-transform: lowercase;
         margin-bottom: 12px;
       }
@@ -49,12 +63,20 @@
       }
       .row:first-of-type { border-top: 0; }
       .row-value {
-        color: rgba(245, 245, 245, 0.5);
+        color: rgba(245, 245, 245, 0.78);
         font-size: 13px;
         text-align: right;
       }
+      /* Granted / denied: distinguished by both hue AND a leading glyph so
+         deuteranopes don't have to read the salmon-vs-gold difference alone
+         (a11y review finding #14). */
       .row-value.granted { color: rgba(196, 151, 58, 0.95); }
-      .row-value.denied { color: rgba(255, 120, 120, 0.85); }
+      .row-value.denied { color: rgba(255, 140, 140, 0.95); }
+      .row-value .state-glyph {
+        display: inline-block;
+        margin-right: 4px;
+        font-weight: 500;
+      }
       .link-row {
         display: flex;
         align-items: center;
@@ -74,12 +96,12 @@
         padding: 14px 0 16px;
         font-size: 13.5px;
         line-height: 1.65;
-        color: rgba(245, 245, 245, 0.78);
+        color: rgba(245, 245, 245, 0.82);
       }
       .about-copy p { margin-bottom: 12px; }
       .about-copy p:last-child { margin-bottom: 0; }
       .about-creed {
-        color: rgba(196, 151, 58, 0.78);
+        color: rgba(196, 151, 58, 0.92);
         font-size: 12.5px;
         letter-spacing: 0.2px;
       }
@@ -96,6 +118,17 @@
         font-family: inherit;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+      }
+      /* Full-width variant — used on the permissions row so the primary action
+         doesn't read as a tiny pill at the right edge of a full-width card
+         (visual review finding #17). */
+      .action-button-full {
+        width: 100%;
+        padding: 12px 18px;
+      }
+      .action-button[aria-busy="true"] {
+        opacity: 0.6;
+        cursor: progress;
       }
       .action-button:focus-visible,
       .dismiss-option:focus-within {
@@ -128,30 +161,31 @@
   </head>
   <body>
     <div class="wrap">
-      <h1>you</h1>
+      <h1 class="sr-only">You — settings</h1>
+      <p class="eyebrow" aria-hidden="true">you</p>
 
       <div class="section">
         <div class="section-title">content</div>
         <div class="row"><span>last synced</span><span class="row-value" id="last-synced">—</span></div>
-        <div class="row"><span>cached</span><span class="row-value" id="downloads">0 MB</span></div>
+        <div class="row"><span>cached</span><span class="row-value" id="downloads">—</span></div>
       </div>
 
-      <div class="section">
-        <div class="section-title">wake & sleep permissions</div>
+      <div class="section" role="group" aria-labelledby="perms-title">
+        <div class="section-title" id="perms-title">wake & sleep permissions</div>
         <div class="row">
           <span>notifications</span>
-          <span class="row-value" id="perm-notifications">checking</span>
+          <span class="row-value" id="perm-notifications" aria-live="polite">checking</span>
         </div>
         <div class="row">
           <span>exact alarm</span>
-          <span class="row-value" id="perm-exact">checking</span>
+          <span class="row-value" id="perm-exact" aria-live="polite">checking</span>
         </div>
         <div class="row">
           <span>full-screen wake</span>
-          <span class="row-value" id="perm-fullscreen">checking</span>
+          <span class="row-value" id="perm-fullscreen" aria-live="polite">checking</span>
         </div>
-        <div class="row" style="justify-content: flex-end;">
-          <button class="action-button" id="open-perms">request permissions</button>
+        <div class="row" style="justify-content: stretch; border-top: 0; padding-top: 14px;">
+          <button class="action-button action-button-full" id="open-perms">request permissions</button>
         </div>
       </div>
 
@@ -250,13 +284,11 @@
         <div class="section-title">about</div>
         <div class="about-copy">
           <p>
-            FRQNCY is a network of people building their dream life. this
-            app is the bedside companion — mornings as arrivals, evenings
-            as arcs that end.
+            frqncy is a network of people building their dream life.
+            this app is the bedside part. wake softer. sleep slower.
           </p>
           <p class="about-creed">
-            cooperation over competition. presence over metrics. the
-            gesture is the arrival.
+            cooperation over competition. presence over metrics.
           </p>
         </div>
         <div class="row"><span>version</span><span class="row-value" id="app-version">0.1.0</span></div>
@@ -291,9 +323,9 @@
         class="support-link"
         href="https://frqncy.network/support"
         data-external="https://frqncy.network/support"
-        aria-label="support FRQNCY (opens in app)"
+        aria-label="support frqncy (opens in app)"
       >
-        support frqncy <span aria-hidden="true">&#9826;</span>
+        support frqncy
       </a>
     </div>
 
@@ -355,8 +387,11 @@
       }
 
       async function loadDownloadsSize() {
+        // Browser dev: no Filesystem bridge → no real cached content. Show
+        // an em dash instead of a misleading "0 MB" (which on device means
+        // "we checked and found nothing", a meaningfully different state).
         if (!Filesystem) {
-          downloadsEl.textContent = '0 MB';
+          downloadsEl.textContent = '—';
           return;
         }
         try {
@@ -377,23 +412,40 @@
           const mb = totalBytes / (1024 * 1024);
           downloadsEl.textContent = mb < 0.1 ? '< 0.1 MB' : `${mb.toFixed(1)} MB`;
         } catch {
-          downloadsEl.textContent = '0 MB';
+          downloadsEl.textContent = '—';
         }
       }
 
       function statusToText(status) {
-        if (status === 'granted') return { text: 'granted', cls: 'granted' };
-        if (status === 'denied') return { text: 'denied', cls: 'denied' };
-        if (status === 'not-needed') return { text: 'not needed', cls: '' };
-        if (status === 'not-applicable') return { text: '—', cls: '' };
-        return { text: status || '—', cls: '' };
+        if (status === 'granted') return { text: 'granted', cls: 'granted', glyph: '✓' };
+        if (status === 'denied') return { text: 'denied', cls: 'denied', glyph: '✗' };
+        if (status === 'not-needed') return { text: 'not needed', cls: '', glyph: '' };
+        if (status === 'not-applicable') return { text: '—', cls: '', glyph: '' };
+        if (status === 'prompt') return { text: 'not asked', cls: '', glyph: '' };
+        return { text: status || '—', cls: '', glyph: '' };
       }
 
       function applyStatus(el, status) {
         const s = statusToText(status);
-        el.textContent = s.text;
         el.classList.remove('granted', 'denied');
+        if (s.glyph) {
+          el.innerHTML = `<span class="state-glyph" aria-hidden="true">${s.glyph}</span>${s.text}`;
+        } else {
+          el.textContent = s.text;
+        }
         if (s.cls) el.classList.add(s.cls);
+      }
+
+      // Show "unavailable" if checkPermissions hangs or rejects. Without this,
+      // a plugin error left the three rows stuck on "checking" forever — the
+      // user has no signal that the bridge is broken vs. still resolving.
+      function markPermsUnavailable() {
+        [permNotifications, permExact, permFullscreen].forEach((el) => {
+          if (el.textContent === 'checking') {
+            el.textContent = 'unavailable';
+            el.classList.remove('granted', 'denied');
+          }
+        });
       }
 
       async function loadPermissions() {
@@ -403,22 +455,44 @@
           permFullscreen.textContent = '— (dev)';
           return;
         }
+        // Race checkPermissions against an 8s timeout. If the native call
+        // never resolves (plugin missing, bridge crashed, OEM weirdness),
+        // the rows fall through to "unavailable" instead of staying stuck.
+        let timedOut = false;
+        const timeoutId = window.setTimeout(() => {
+          timedOut = true;
+          markPermsUnavailable();
+        }, 8000);
         try {
           const status = await FrqncyAlarm.checkPermissions();
+          if (timedOut) return; // timeout already wrote the unavailable state
           applyStatus(permNotifications, status.notifications);
           applyStatus(permExact, status.exactAlarm);
           applyStatus(permFullscreen, status.fullScreen);
         } catch (err) {
           console.warn('checkPermissions failed', err);
+          markPermsUnavailable();
+        } finally {
+          window.clearTimeout(timeoutId);
         }
       }
 
+      let permsRequestInFlight = false;
       openPerms.addEventListener('click', async () => {
         if (!FrqncyAlarm) return;
+        if (permsRequestInFlight) return; // guard double-tap
+        permsRequestInFlight = true;
+        openPerms.setAttribute('aria-busy', 'true');
         try {
           await FrqncyAlarm.requestPermissions();
           await loadPermissions();
-        } catch {}
+        } catch (err) {
+          console.warn('requestPermissions failed', err);
+          markPermsUnavailable();
+        } finally {
+          permsRequestInFlight = false;
+          openPerms.removeAttribute('aria-busy');
+        }
       });
 
       async function loadDeviceInfo() {
