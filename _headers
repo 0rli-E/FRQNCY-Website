@@ -1,10 +1,15 @@
 /*
   # Security headers — applied to every response
-  X-Frame-Options: DENY
+  # X-Frame-Options dropped 2026-05-14 in favor of CSP frame-ancestors,
+  # which supports per-origin allow-listing (XFO only supports DENY/SAMEORIGIN).
   X-Content-Type-Options: nosniff
   Referrer-Policy: strict-origin-when-cross-origin
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://plausible.io https://*.workers.dev https://*.supabase.co wss://*.supabase.co https://cloudflareinsights.com; frame-src https://www.youtube.com https://player.vimeo.com https://www.gaia.com; frame-ancestors 'none'
+  # frame-ancestors permits FRQNCY's own Capacitor mobile app to embed live site
+  # content in its iframe shell: https://localhost (Android), capacitor://localhost
+  # (iOS), http://localhost:5173 (vite dev preview). Risk is negligible — only
+  # device-local origins, no public web origin can frame the site.
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' https://plausible.io https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://plausible.io https://*.workers.dev https://*.supabase.co wss://*.supabase.co https://cloudflareinsights.com; frame-src https://www.youtube.com https://player.vimeo.com https://www.gaia.com; frame-ancestors 'self' https://localhost capacitor://localhost http://localhost:5173
 
 # Favicon + manifest — cache forever (immutable per deploy)
 /favicon.svg
