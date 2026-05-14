@@ -23,6 +23,17 @@ const homeScreen = document.getElementById('home-screen') as HTMLElement;
 const exploreScreen = document.getElementById('explore-screen') as HTMLElement;
 const tabs = Array.from(document.querySelectorAll<HTMLButtonElement>('.tab'));
 const offlineBanner = document.getElementById('offline-banner') as HTMLDivElement;
+const loadingBar = document.getElementById('loading-bar') as HTMLDivElement;
+
+// Show loading bar whenever the iframe src changes and we're about to load,
+// hide on the load event. Single source of truth so both /app/* and external
+// nav use the same indicator.
+frame.addEventListener('load', () => {
+  loadingBar.classList.remove('loading');
+});
+function startLoading() {
+  loadingBar.classList.add('loading');
+}
 
 function showSurface(which: 'home' | 'explore' | 'frame') {
   homeScreen.classList.toggle('visible', which === 'home');
@@ -48,6 +59,7 @@ function navigate(route: string) {
     return;
   }
   if (route.startsWith('/app/')) {
+    startLoading();
     frame.src = route.replace(/^\//, './');
     showSurface('frame');
     setActiveTab(route);
@@ -63,12 +75,28 @@ function openExternal(url: string, tabRoute?: string) {
   // frame-ancestors permits https://localhost / capacitor://localhost / vite
   // dev origin to embed frqncy.network, so the tab bar stays visible while
   // the user browses Sanctuary / My FRQNCY / Social / etc. inside the frame.
-  frame.src = url;
+  //
+  // Append ?embed=1 — the global header on frqncy.network reads this and adds
+  // body.frqncy-embed which hides the site's #main-nav and the floating donate
+  // button. The app's own tab bar becomes the only persistent chrome.
+  startLoading();
+  frame.src = withEmbed(url);
   showSurface('frame');
   // Keep the originating tab visually active so the user knows which section
   // they're inside. Caller can pass an explicit route, or we infer from the
   // currently-active tab if one is set.
   if (tabRoute) setActiveTab(tabRoute);
+}
+
+function withEmbed(url: string): string {
+  try {
+    const u = new URL(url);
+    if (!u.searchParams.has('embed')) u.searchParams.set('embed', '1');
+    return u.toString();
+  } catch {
+    // Relative URL or malformed — append manually.
+    return url + (url.includes('?') ? '&' : '?') + 'embed=1';
+  }
 }
 
 tabs.forEach((tab) => {

@@ -49,7 +49,7 @@ nav{
 
 /* ── LAYOUT ── */
 .wrap{max-width:980px;margin:0 auto;padding:2rem clamp(1rem,3vw,2rem)}
-.hero{margin:0.5rem 0 2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--card-border)}
+.hero{margin:0.5rem 0 2rem;padding-bottom:1.5rem;border-bottom:1px solid var(--card-border);text-align:center}
 .hero h1{
   font-family:'Cormorant',serif;font-weight:300;
   font-size:clamp(2.2rem,5vw,3.4rem);color:#fff;letter-spacing:0.02em;
@@ -58,7 +58,7 @@ nav{
 .hero h1 em{font-style:italic;color:var(--gold-light);font-weight:400}
 .hero .sub{
   color:var(--text-dim);font-size:0.9rem;margin-top:0.7rem;letter-spacing:0.03em;
-  max-width:54ch;line-height:1.55;
+  max-width:54ch;line-height:1.55;margin-left:auto;margin-right:auto;
 }
 
 /* ── BUTTON ── */
@@ -266,6 +266,12 @@ body.frqncy-home #main-nav .nav-back{display:none}
 #main-nav .nav-dd-menu .dd-label{display:block !important;width:100% !important;text-align:center !important;font-weight:400 !important;color:rgba(255,255,255,.9);transition:color .15s;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
 #main-nav .nav-dd-menu .dd-sub{display:block !important;width:100% !important;text-align:center !important;font-size:9px !important;letter-spacing:.12em !important;color:rgba(255,255,255,.45);margin-top:2px;font-weight:300 !important;text-transform:none !important}
 @media(max-width:720px){#main-nav .nav-links{display:none}#main-nav .nav-dd-menu{display:none !important}}
+/* Embed mode — when the page loads inside the FRQNCY mobile app's iframe shell
+   (URL has ?embed=1), hide the global nav and the floating donate button so
+   the app's own tab bar is the only persistent chrome. The page's body-level
+   navs (e.g. /my-frqncy/dashboard's own tab strip) stay intact. */
+body.frqncy-embed #main-nav{display:none !important}
+body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none !important}
 </style>
 <nav id="main-nav" aria-label="Main navigation">
   <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
@@ -314,10 +320,14 @@ body.frqncy-home #main-nav .nav-back{display:none}
 </nav>
 <script>
   // Tag the homepage so CSS can hide the back button there (it's redundant on /).
+  // Also tag embed mode (page loaded inside the FRQNCY mobile app iframe)
+  // so CSS can hide the global nav / donate button — the app provides its own chrome.
   (function(){
     try {
       var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
       if (isHome) document.body.classList.add('frqncy-home');
+      var params = new URLSearchParams(location.search);
+      if (params.get('embed') === '1') document.body.classList.add('frqncy-embed');
     } catch(_) {}
   })();
 </script>
@@ -325,10 +335,12 @@ body.frqncy-home #main-nav .nav-back{display:none}
      popover with the EVM + SOL wallet addresses; the full /donate page link
      sits at the top of the popover. -->
 <style data-frqncy-donate>
-  #frq-donate-btn{position:fixed;right:18px;bottom:18px;z-index:480;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
+  /* Stacks above the AI chat button (chat is bottom:24px, ~56px tall, z-index:9998).
+     Donate sits at bottom:95px so it clears the AI floater. */
+  #frq-donate-btn{position:fixed;right:18px;bottom:95px;z-index:9997;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
   #frq-donate-btn:hover{background:#C4973A;color:#fff;transform:translateY(-1px)}
   #frq-donate-btn .heart{margin-right:6px;display:inline-block}
-  #frq-donate-pop{position:fixed;right:18px;bottom:64px;z-index:481;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
+  #frq-donate-pop{position:fixed;right:18px;bottom:145px;z-index:9998;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
   #frq-donate-pop.open{display:block}
   #frq-donate-pop .frq-pop-title{font-family:'Cormorant',Georgia,serif;font-size:18px;font-weight:400;color:#0B1C3D;margin-bottom:4px}
   #frq-donate-pop .frq-pop-sub{font-size:11px;color:#8A9AB8;margin-bottom:14px;line-height:1.5}
@@ -338,7 +350,7 @@ body.frqncy-home #main-nav .nav-back{display:none}
   #frq-donate-pop .frq-w-copy{flex:0 0 auto;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#C4973A;background:transparent;border:1px solid rgba(196,151,58,.5);padding:3px 8px;border-radius:2px;cursor:pointer;font-family:inherit}
   #frq-donate-pop .frq-w-copy:hover{background:#C4973A;color:#fff}
   #frq-donate-pop .frq-pop-foot{margin-top:14px;padding-top:12px;border-top:1px solid rgba(11,28,61,.06);font-size:10px;letter-spacing:.06em;color:#8A9AB8;line-height:1.5}
-  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:12px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:54px}}
+  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:80px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:128px}}
 </style>
 <button id="frq-donate-btn" type="button" aria-haspopup="dialog" aria-controls="frq-donate-pop" aria-label="Support FRQNCY">
   <span class="heart" aria-hidden="true">♥</span>Donate

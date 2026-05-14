@@ -210,6 +210,12 @@ body.frqncy-home #main-nav .nav-back{display:none}
 #main-nav .nav-dd-menu .dd-label{display:block !important;width:100% !important;text-align:center !important;font-weight:400 !important;color:rgba(255,255,255,.9);transition:color .15s;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
 #main-nav .nav-dd-menu .dd-sub{display:block !important;width:100% !important;text-align:center !important;font-size:9px !important;letter-spacing:.12em !important;color:rgba(255,255,255,.45);margin-top:2px;font-weight:300 !important;text-transform:none !important}
 @media(max-width:720px){#main-nav .nav-links{display:none}#main-nav .nav-dd-menu{display:none !important}}
+/* Embed mode — when the page loads inside the FRQNCY mobile app's iframe shell
+   (URL has ?embed=1), hide the global nav and the floating donate button so
+   the app's own tab bar is the only persistent chrome. The page's body-level
+   navs (e.g. /my-frqncy/dashboard's own tab strip) stay intact. */
+body.frqncy-embed #main-nav{display:none !important}
+body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none !important}
 </style>
 <nav id="main-nav" aria-label="Main navigation">
   <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
@@ -258,10 +264,14 @@ body.frqncy-home #main-nav .nav-back{display:none}
 </nav>
 <script>
   // Tag the homepage so CSS can hide the back button there (it's redundant on /).
+  // Also tag embed mode (page loaded inside the FRQNCY mobile app iframe)
+  // so CSS can hide the global nav / donate button — the app provides its own chrome.
   (function(){
     try {
       var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
       if (isHome) document.body.classList.add('frqncy-home');
+      var params = new URLSearchParams(location.search);
+      if (params.get('embed') === '1') document.body.classList.add('frqncy-embed');
     } catch(_) {}
   })();
 </script>

@@ -117,6 +117,39 @@
       }
       #offline-banner.show { transform: translateY(0); }
 
+      /* Iframe loading bar — slim gold progress strip that appears the moment
+         a frqncy.network page begins loading and fades on load. The
+         indeterminate animation runs while loading, then a 240ms fade-out
+         clears it once the iframe load event fires. */
+      #loading-bar {
+        position: fixed;
+        top: env(safe-area-inset-top);
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: transparent;
+        z-index: 30;
+        opacity: 0;
+        transition: opacity 240ms ease;
+        pointer-events: none;
+      }
+      #loading-bar.loading { opacity: 1; }
+      #loading-bar::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(90deg, transparent, #C4973A, transparent);
+        transform: translateX(-100%);
+        animation: loading-slide 1.4s ease-in-out infinite;
+      }
+      @keyframes loading-slide {
+        0% { transform: translateX(-100%); }
+        100% { transform: translateX(100%); }
+      }
+      @media (prefers-reduced-motion: reduce) {
+        #loading-bar::before { animation: none; background: #C4973A; transform: none; }
+      }
+
       /* --- Native home surface ------------------------------------------- */
       .home-wrap {
         padding: 48px 24px 32px;
@@ -183,11 +216,18 @@
         text-decoration: none;
         text-align: center;
         cursor: pointer;
+        transition: transform 140ms ease, background 180ms ease;
       }
+      .cta-stack button:active, .cta-stack a:active { transform: scale(0.985); }
       .cta-stack .secondary {
         background: none;
         border: 1px solid rgba(245, 245, 245, 0.16);
         color: rgba(245, 245, 245, 0.78);
+      }
+      .cta-stack .secondary:active {
+        background: rgba(196, 151, 58, 0.08);
+        border-color: rgba(196, 151, 58, 0.45);
+        color: rgba(196, 151, 58, 0.95);
       }
 
       .home-cards {
@@ -206,12 +246,19 @@
         border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 14px;
         cursor: pointer;
-        transition: background 180ms ease, border-color 180ms ease;
+        transition: background 180ms ease, border-color 180ms ease, transform 140ms ease;
         -webkit-tap-highlight-color: transparent;
+        font-family: inherit;
+        width: 100%;
       }
-      .home-card:hover, .home-card:active {
+      .home-card:hover {
         background: rgba(255, 255, 255, 0.06);
         border-color: rgba(196, 151, 58, 0.35);
+      }
+      .home-card:active {
+        background: rgba(196, 151, 58, 0.08);
+        border-color: rgba(196, 151, 58, 0.45);
+        transform: scale(0.985);
       }
       .home-card .home-card-eyebrow {
         font-size: 10.5px;
@@ -278,6 +325,7 @@
   </head>
   <body>
     <div id="offline-banner">Offline — showing cached content</div>
+    <div id="loading-bar" aria-hidden="true"></div>
 
     <!-- Native home surface -->
     <main id="home-screen" class="surface" role="region" aria-label="Home" data-tab-context="/">
