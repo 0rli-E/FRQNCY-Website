@@ -164,19 +164,152 @@ export async function verifySignature(
  * Canonicalize a record for signing. Sorts object keys and uses stable JSON
  * stringification so the verifier reproduces exactly the same bytes the
  * signer signed. Arrays preserve order. Nested objects are canonicalized
- * recursively.
+ * recursively. String values AND object keys are NFC-normalized so a
+ * non-JS verifier (ATProto/Farcaster/Nostr) sees the same Unicode bytes
+ * the signer saw — otherwise an attacker who slips an NFD-form key past
+ * sort breaks verification.
+ *
+ * NOTE: approximate-RFC-8785 (JCS) — close but bespoke. Number edge cases
+ * (NaN, Infinity, 1.0 vs 1, -0 vs 0) follow JS default `JSON.stringify`
+ * behavior, which diverges from JCS for these values. Don't sign records
+ * containing untrusted numeric edge cases until we adopt a full JCS library.
  */
 export function canonicalizeForSigning(record: unknown): string {
   return JSON.stringify(record, function replacer(_key: string, value: unknown) {
+    if (typeof value === 'string') {
+      return value.normalize('NFC');
+    }
     if (value && typeof value === 'object' && !Array.isArray(value)) {
+      const src = value as Record<string, unknown>;
+      // NFC-normalize keys before sorting so NFD vs NFC forms collapse to
+      // the same canonical key. If two distinct keys normalize to the same
+      // NFC form, last-write-wins (callers shouldn't pass such records).
+      const normalizedEntries: Array<[string, unknown]> = Object.keys(src).map((k) => [
+        k.normalize('NFC'),
+        src[k],
+      ]);
+      normalizedEntries.sort((a, b) => (a[0] < b[0] ? -1 : a[0] > b[0] ? 1 : 0));
       const sorted: Record<string, unknown> = {};
-      for (const k of Object.keys(value as Record<string, unknown>).sort()) {
-        sorted[k] = (value as Record<string, unknown>)[k];
+      for (const [k, v] of normalizedEntries) {
+        sorted[k] = v;
       }
       return sorted;
     }
     return value;
   });
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// did:key derivation (Ed25519 → did:key:z...) and domain-separated signing.
+//
+// Per W3C did:key spec, an Ed25519 public key is encoded as:
+//   multicodec prefix (0xed 0x01) || 32 raw pubkey bytes  → base58btc → 'z' prefix
+//
+// This gives every NRG signing key a stable DID anchor that ATProto / any
+// did-aware verifier can resolve back to the raw pubkey. Deterministic:
+// same pubkey always produces the same DID string.
+// ─────────────────────────────────────────────────────────────────────────────
+
+const BASE58_BTC_ALPHABET =
+  '123456789ABCDEFGHJKLMNPQRSTUVWXYZabcdefghijkmnopqrstuvwxyz';
+
+/**
+ * Minimal base58btc encoder (Bitcoin alphabet). Pure JS, no deps.
+ * Uses BigInt for the divmod loop. Preserves leading zero-bytes as '1's
+ * per base58 convention.
+ */
+function base58btcEncode(bytes: Uint8Array): string {
+  if (bytes.length === 0) return '';
+  // Count leading zero bytes → leading '1' characters.
+  let zeros = 0;
+  while (zeros < bytes.length && bytes[zeros] === 0) zeros++;
+  // Convert remaining bytes to BigInt.
+  let n = 0n;
+  for (let i = 0; i < bytes.length; i++) {
+    n = (n << 8n) | BigInt(bytes[i]);
+  }
+  let out = '';
+  const base = 58n;
+  while (n > 0n) {
+    const rem = Number(n % base);
+    n = n / base;
+    out = BASE58_BTC_ALPHABET[rem] + out;
+  }
+  // Prepend leading-zero-byte placeholders.
+  for (let i = 0; i < zeros; i++) {
+    out = BASE58_BTC_ALPHABET[0] + out;
+  }
+  return out;
+}
+
+/**
+ * Derive a did:key DID from an Ed25519 signing public key.
+ *
+ * Deterministic: the same `signingPublicKeyB64` always produces the same DID
+ * string. Spec: https://w3c-ccg.github.io/did-method-key/ — Ed25519 multicodec
+ * 0xed01, base58btc multibase prefix 'z'.
+ *
+ * @param signingPublicKeyB64 base64-encoded 32-byte Ed25519 public key (as
+ *   returned by `generateSigningKeypair`).
+ * @returns canonical did:key string, e.g. 'did:key:z6Mki...'
+ */
+export async function derivePublicKeyDidKey(signingPublicKeyB64: string): Promise<string> {
+  const so = await ensureSodium();
+  const pk = so.from_base64(signingPublicKeyB64, so.base64_variants.ORIGINAL);
+  if (pk.length !== 32) {
+    throw new Error(
+      `derivePublicKeyDidKey: expected 32-byte Ed25519 public key, got ${pk.length}`,
+    );
+  }
+  // Multicodec prefix: 0xed 0x01 (Ed25519 public key, varint-encoded 0xed).
+  const prefixed = new Uint8Array(34);
+  prefixed[0] = 0xed;
+  prefixed[1] = 0x01;
+  prefixed.set(pk, 2);
+  return 'did:key:z' + base58btcEncode(prefixed);
+}
+
+/**
+ * Domain separator for FRQNCY NRG signatures. Every signed payload is wrapped
+ * with `{ network: FRQNCY_SIGNING_DOMAIN, ...payload }` before canonicalization,
+ * so the same record signed for FRQNCY can't be replayed on a fork or
+ * post-migration namespace. Bump the version suffix if the signing semantics
+ * ever change.
+ */
+export const FRQNCY_SIGNING_DOMAIN = 'frqncy.nrg.v1';
+
+/**
+ * Sign a payload object with the user's Ed25519 private key, wrapping it with
+ * the FRQNCY domain separator first.
+ *
+ * Returns BOTH the base64 signature AND the exact canonical JSON bytes that
+ * were signed (`signedPayload`) — callers should persist `signedPayload`
+ * verbatim so any future verifier can reproduce the input without having to
+ * re-canonicalize (which is the load-bearing detail for cross-implementation
+ * verification).
+ */
+export async function signPayloadWithDomain(
+  privateKeyB64: string,
+  payload: object,
+): Promise<{ signature: string; signedPayload: string }> {
+  const wrapped = { network: FRQNCY_SIGNING_DOMAIN, ...(payload as Record<string, unknown>) };
+  const signedPayload = canonicalizeForSigning(wrapped);
+  const signature = await signPayload(signedPayload, privateKeyB64);
+  return { signature, signedPayload };
+}
+
+/**
+ * Verify a signature produced by `signPayloadWithDomain`. The verifier does
+ * NOT re-wrap with the domain — it verifies the bytes as stored, so any
+ * downstream consumer that handed us a canonical JSON string + signature pair
+ * gets a byte-exact check.
+ */
+export async function verifyPayloadWithDomain(
+  publicKeyB64: string,
+  signedPayload: string,
+  signatureB64: string,
+): Promise<boolean> {
+  return verifySignature(signedPayload, signatureB64, publicKeyB64);
 }
 
 // ─────────────────────────────────────────────────────────────────────────────

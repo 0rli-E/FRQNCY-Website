@@ -5,6 +5,9 @@ import {
   encryptToPublicKey,
   decryptFromSealedBox,
   loadPrivateKeyLocal,
+  loadSigningPrivateKeyLocal,
+  signPayload,
+  verifySignature,
 } from './crypto';
 import { encryptFileForRecipients, decryptFileWithOwnKey } from './encrypted-upload';
 
@@ -18,6 +21,18 @@ export interface MessageRow {
   encrypted_content?: string | null;
   /** 0 = plaintext (legacy), 1 = libsodium sealed box in encrypted_content (1:1), 2 = per-recipient sealed boxes in message_recipients (group-capable). */
   encryption_version?: number | null;
+  /**
+   * Sender's Ed25519 signature (base64) over the canonical bytes of
+   * `${version_tag}|${conversation_id}|${id}|${ciphertext_or_ref}|${recipient_ref}|${created_at}`.
+   * Closes the sender-anonymity hole in sealed-box DMs — without this a
+   * Supabase admin could rewrite `sender_id` and the recipient would have
+   * no crypto-layer proof of authorship.
+   *
+   * Null/missing on legacy rows written before migration 019.
+   */
+  sender_signature?: string | null;
+  /** 0 (or NULL) = unsigned legacy row, 1 = current scheme (see `sender_signature`). */
+  sender_signature_version?: number | null;
   media_url: string | null;
   created_at: string;
   sender?: {
@@ -30,6 +45,16 @@ export interface MessageRow {
   _decrypted?: string | null;
   /** Renderer status — 'plaintext' | 'decrypted' | 'failed' | 'pending'. */
   _state?: 'plaintext' | 'decrypted' | 'failed' | 'pending';
+  /**
+   * Sender-authentication status — a SEPARATE axis from `_state` (decryption).
+   *   • 'authenticated' — sender_signature verified against sender's signing pubkey.
+   *   • 'unauthenticated' — signature present but failed to verify. Surface a warning.
+   *   • 'legacy' — pre-fix row (no signature). No assertion either way; render
+   *     normally but UI may want to show a quiet "unsigned legacy" indicator.
+   *   • 'unknown' — signature present but sender's signing pubkey couldn't be
+   *     resolved (e.g. they haven't generated one yet). Treat like 'legacy'.
+   */
+  _authState?: 'authenticated' | 'unauthenticated' | 'legacy' | 'unknown';
   // ── encrypted media (v1.2) ──────────────────────────────────────────────
   /** Path in the dm-media bucket: `<conversation_id>/<message_id>`. NULL when no attachment. */
   encrypted_media_path?: string | null;
@@ -52,6 +77,49 @@ interface UseMessagesResult {
   isEncrypted: boolean;
   /** Surfaces "your device is missing a key" / "recipient has no key yet" states. */
   encryptionStatus: 'ready' | 'no-own-key' | 'recipient-no-key' | 'unknown';
+}
+
+// ─────────────────────────────────────────────────────────────────────────────
+// Canonical bytes for sender_signature (version 1).
+//
+// Pipe-delimited, in this exact order — both sender and recipient MUST
+// produce byte-identical strings or the signature won't verify:
+//
+//   "v1|<conv_id>|<msg_id>|<ciphertext_or_ref>|<recipient_ref>|<created_at>"
+//
+// Where:
+//   • <ciphertext_or_ref> is `encrypted_content` for encryption_version=1 (the
+//     full sealed-box ciphertext, base64). For encryption_version=2 it's a
+//     deterministic concatenation of every per-recipient ciphertext, sorted
+//     by recipient_id — this binds the ENTIRE envelope so a malicious admin
+//     can't swap one recipient's ciphertext for forged content and have the
+//     sender's signature still cover it.
+//   • <recipient_ref> is the recipient's encryption pubkey (b64) for v1.
+//     For v2 it's the sorted-by-recipient_id comma-joined list of recipient
+//     user_ids — same idea: bind the group membership at send time.
+//   • <created_at> is the server's `created_at` ISO timestamp as returned by
+//     the post-INSERT SELECT. The signature is produced AFTER the row exists
+//     so we can quote the server-assigned timestamp verbatim.
+//
+// The "v1" prefix is a signature-format version (NOT the encryption version)
+// so we can change the canonicalization scheme later without breaking old
+// signatures — bump `sender_signature_version` to 2+ and switch on it.
+// ─────────────────────────────────────────────────────────────────────────────
+function canonicalizeForSenderSig(parts: {
+  conversationId: string;
+  messageId: string;
+  ciphertextRef: string;
+  recipientRef: string;
+  createdAt: string;
+}): string {
+  return [
+    'v1',
+    parts.conversationId,
+    parts.messageId,
+    parts.ciphertextRef,
+    parts.recipientRef,
+    parts.createdAt,
+  ].join('|');
 }
 
 // ─────────────────────────────────────────────────────────────────────────────
@@ -97,6 +165,14 @@ export function useMessages(conversationId: string | null): UseMessagesResult {
   const [encStatus, setEncStatus] = useState<UseMessagesResult['encryptionStatus']>('unknown');
 
   const profileCacheRef = useRef<Record<string, MessageRow['sender']>>({});
+  /**
+   * Cache of senders' Ed25519 signing public keys, keyed by user_id. Amortizes
+   * the profiles.signing_public_key lookup across the messages list — a long
+   * 1:1 thread typically has only 2 senders, so this collapses N queries to 2.
+   * `null` means "we checked and the sender has no signing key on file" so
+   * we don't refetch.
+   */
+  const signingPubKeyCacheRef = useRef<Record<string, string | null>>({});
   /**
    * Cache of decrypted media object URLs keyed by message.id. Persists across
    * re-renders so we don't re-download + re-decrypt the same blob on every
@@ -172,50 +248,118 @@ export function useMessages(conversationId: string | null): UseMessagesResult {
 
   // Decrypt a single row (idempotent). For v2 rows the per-recipient ciphertext
   // is fetched from message_recipients on demand. Returns the row with
-  // _decrypted + _state populated.
+  // _decrypted + _state populated, plus _authState reflecting sender-signature
+  // verification (independent axis from decryption — a row can be decrypted
+  // but unauthenticated, or vice versa).
   const decryptRow = useCallback(async (row: MessageRow): Promise<MessageRow> => {
     if (row._state) return row; // Already processed.
 
     const ownPriv = loadPrivateKeyLocal();
     const ownPub = (profile as any)?.encryption_public_key as string | null | undefined;
 
+    // ── Resolve sender-auth state up front so every return path carries it.
+    //     v2 needs all the message_recipients rows to canonicalize anyway, so
+    //     for v2 we capture them here and reuse below for decrypt.
+    const computeAuthState = async (
+      ciphertextRef: string,
+      recipientRef: string,
+    ): Promise<MessageRow['_authState']> => {
+      // No signature column populated → legacy row, pre-migration-019 or older.
+      if (!row.sender_signature_version || row.sender_signature_version === 0) {
+        return 'legacy';
+      }
+      if (row.sender_signature_version !== 1 || !row.sender_signature) {
+        return 'legacy';
+      }
+      // Need sender's Ed25519 signing pubkey to verify. Pulled from profiles
+      // and cached per-hook-instance so a 50-message thread doesn't make 50
+      // identical lookups (typically 2 distinct senders in a 1:1).
+      let signingPubKey: string | null | undefined =
+        signingPubKeyCacheRef.current[row.sender_id];
+      if (signingPubKey === undefined) {
+        const { data: senderProfile } = await supabase
+          .from('profiles')
+          .select('signing_public_key')
+          .eq('id', row.sender_id)
+          .maybeSingle();
+        signingPubKey =
+          (senderProfile as { signing_public_key: string | null } | null)?.signing_public_key ??
+          null;
+        signingPubKeyCacheRef.current[row.sender_id] = signingPubKey;
+      }
+      if (!signingPubKey) {
+        // Sender has no signing key on file — can't make an assertion.
+        return 'unknown';
+      }
+      const canonical = canonicalizeForSenderSig({
+        conversationId: row.conversation_id,
+        messageId: row.id,
+        ciphertextRef,
+        recipientRef,
+        createdAt: row.created_at,
+      });
+      const ok = await verifySignature(canonical, row.sender_signature, signingPubKey);
+      return ok ? 'authenticated' : 'unauthenticated';
+    };
+
     // v1: sealed box in messages.encrypted_content (1:1).
     if (row.encryption_version === 1 && row.encrypted_content) {
       if (!ownPriv || !ownPub) {
-        return { ...row, _state: 'failed', _decrypted: null };
+        // Can't decrypt — but we can still answer the auth question for the UI.
+        // (Sender-auth is independent of whether THIS device has the priv key.)
+        const _authState = await computeAuthState(row.encrypted_content, ownPub ?? '');
+        return { ...row, _state: 'failed', _decrypted: null, _authState };
       }
+      // For v1 the recipient_ref is our own (recipient's) encryption pubkey —
+      // that's what the sender quoted at sign time, since we ARE the only
+      // recipient on a v1 row.
+      const _authState = await computeAuthState(row.encrypted_content, ownPub);
       const plaintext = await decryptFromSealedBox(row.encrypted_content, ownPub, ownPriv);
       return plaintext === null
-        ? { ...row, _state: 'failed', _decrypted: null }
-        : { ...row, _state: 'decrypted', _decrypted: plaintext };
+        ? { ...row, _state: 'failed', _decrypted: null, _authState }
+        : { ...row, _state: 'decrypted', _decrypted: plaintext, _authState };
     }
 
     // v2: per-recipient sealed boxes in message_recipients (group-capable).
     if (row.encryption_version === 2) {
       if (!ownPriv || !ownPub || !user) {
-        return { ...row, _state: 'failed', _decrypted: null };
+        return { ...row, _state: 'failed', _decrypted: null, _authState: 'unknown' };
       }
-      const { data: recipientRow } = await supabase
+      // Pull ALL recipient rows (not just our own) — we need the full set to
+      // reconstruct the canonical bytes the sender signed. The own-recipient
+      // ciphertext is extracted from this same list, so this isn't a strict
+      // extra query: it replaces the prior single-row fetch.
+      const { data: allRecipientRows } = await supabase
         .from('message_recipients')
-        .select('encrypted_content')
-        .eq('message_id', row.id)
-        .eq('recipient_id', user.id)
-        .maybeSingle();
-      const ciphertext = (recipientRow as { encrypted_content: string } | null)?.encrypted_content;
-      if (!ciphertext) {
+        .select('recipient_id, encrypted_content')
+        .eq('message_id', row.id);
+      const recipientRows =
+        (allRecipientRows as Array<{ recipient_id: string; encrypted_content: string }> | null) ??
+        [];
+      // Stable order by recipient_id — both sender and verifier must produce
+      // the same string.
+      const sortedRecipients = [...recipientRows].sort((a, b) =>
+        a.recipient_id < b.recipient_id ? -1 : a.recipient_id > b.recipient_id ? 1 : 0,
+      );
+      const ciphertextRef = sortedRecipients.map((r) => r.encrypted_content).join(',');
+      const recipientRef = sortedRecipients.map((r) => r.recipient_id).join(',');
+      const _authState = await computeAuthState(ciphertextRef, recipientRef);
+
+      const myRow = recipientRows.find((r) => r.recipient_id === user.id);
+      if (!myRow) {
         // No row addressed to this user. Either we're the sender (we won't
         // typically hit this path because send() short-circuits with the known
         // plaintext) or membership changed. Either way: can't decrypt.
-        return { ...row, _state: 'failed', _decrypted: null };
+        return { ...row, _state: 'failed', _decrypted: null, _authState };
       }
-      const plaintext = await decryptFromSealedBox(ciphertext, ownPub, ownPriv);
+      const plaintext = await decryptFromSealedBox(myRow.encrypted_content, ownPub, ownPriv);
       return plaintext === null
-        ? { ...row, _state: 'failed', _decrypted: null }
-        : { ...row, _state: 'decrypted', _decrypted: plaintext };
+        ? { ...row, _state: 'failed', _decrypted: null, _authState }
+        : { ...row, _state: 'decrypted', _decrypted: plaintext, _authState };
     }
 
     // Legacy plaintext or no-encryption row.
-    return { ...row, _state: 'plaintext', _decrypted: row.content };
+    return { ...row, _state: 'plaintext', _decrypted: row.content, _authState: 'legacy' };
   }, [profile, user]);
 
   // Initial fetch + decrypt
@@ -231,13 +375,29 @@ export function useMessages(conversationId: string | null): UseMessagesResult {
     setError(null);
 
     (async () => {
-      const { data, error: fetchErr } = await supabase
+      // Try the SELECT that includes sender_signature columns first; if
+      // migration 019 hasn't landed in this environment yet, Postgrest will
+      // return a "column does not exist" error and we transparently fall
+      // back to the pre-019 SELECT. Older rows just look 'legacy' to the
+      // auth-state code path, which is the correct outcome.
+      let fetchResp = await supabase
         .from('messages')
         .select(
-          'id, conversation_id, sender_id, content, encrypted_content, encryption_version, media_url, encrypted_media_path, encrypted_media_mime, encrypted_media_size, created_at, sender:profiles!sender_id(id, username, display_name, avatar_url)'
+          'id, conversation_id, sender_id, content, encrypted_content, encryption_version, sender_signature, sender_signature_version, media_url, encrypted_media_path, encrypted_media_mime, encrypted_media_size, created_at, sender:profiles!sender_id(id, username, display_name, avatar_url)'
         )
         .eq('conversation_id', conversationId)
         .order('created_at', { ascending: true });
+
+      if (fetchResp.error && /sender_signature/i.test(fetchResp.error.message)) {
+        fetchResp = await supabase
+          .from('messages')
+          .select(
+            'id, conversation_id, sender_id, content, encrypted_content, encryption_version, media_url, encrypted_media_path, encrypted_media_mime, encrypted_media_size, created_at, sender:profiles!sender_id(id, username, display_name, avatar_url)'
+          )
+          .eq('conversation_id', conversationId)
+          .order('created_at', { ascending: true });
+      }
+      const { data, error: fetchErr } = fetchResp;
 
       if (cancelled) return;
 
@@ -394,6 +554,57 @@ export function useMessages(conversationId: string | null): UseMessagesResult {
           });
         }
       )
+      .on(
+        'postgres_changes',
+        {
+          event: 'UPDATE',
+          schema: 'public',
+          table: 'messages',
+          filter: `conversation_id=eq.${conversationId}`,
+        },
+        async (payload) => {
+          // The sender's signature is written via a follow-up UPDATE after
+          // the initial INSERT (see `send`). Recipients may already have the
+          // unsigned INSERT in their list with _authState='legacy' — when
+          // the UPDATE lands we re-run verification so the UI flips to
+          // 'authenticated' without a manual refresh. Also covers the
+          // (rarer) encrypted_media_path UPDATE for attachments.
+          const updated = payload.new as MessageRow;
+          let hasIt = false;
+          setMessages((prev) => {
+            hasIt = prev.some((m) => m.id === updated.id);
+            return prev;
+          });
+          if (!hasIt) return;
+          // Only re-verify if the signature columns changed — cheap-out on
+          // unrelated updates (e.g. encrypted_media_path) which don't affect
+          // _authState. Clearing _state forces decryptRow to re-run the
+          // signature check on the freshly-attached signature.
+          const sigChangedToSomething =
+            !!updated.sender_signature_version && updated.sender_signature_version > 0;
+          if (!sigChangedToSomething) return;
+          // Pull existing local row so we don't drop _decrypted on the floor.
+          let existing: MessageRow | undefined;
+          setMessages((prev) => {
+            existing = prev.find((m) => m.id === updated.id);
+            return prev;
+          });
+          if (!existing) return;
+          const merged: MessageRow = {
+            ...existing,
+            sender_signature: updated.sender_signature ?? existing.sender_signature ?? null,
+            sender_signature_version:
+              updated.sender_signature_version ?? existing.sender_signature_version ?? null,
+            // Clear _state so decryptRow doesn't early-return on idempotency.
+            _state: undefined,
+            _authState: undefined,
+          };
+          const reprocessed = await decryptRow(merged);
+          setMessages((prev) =>
+            prev.map((m) => (m.id === updated.id ? reprocessed : m)),
+          );
+        }
+      )
       .subscribe();
 
     return () => {
@@ -467,13 +678,27 @@ export function useMessages(conversationId: string | null): UseMessagesResult {
         insertPayload.encryption_version = 0;
       }
 
-      const { data, error: insertErr } = await supabase
+      // Same migration-019 fallback as the initial fetch — if sender_signature
+      // columns aren't deployed yet we transparently degrade to the pre-019
+      // SELECT shape. The signing UPDATE below is wrapped in its own
+      // try/catch so a missing column there is also non-fatal.
+      let insertResp = await supabase
         .from('messages')
         .insert(insertPayload)
         .select(
-          'id, conversation_id, sender_id, content, encrypted_content, encryption_version, media_url, encrypted_media_path, encrypted_media_mime, encrypted_media_size, created_at, sender:profiles!sender_id(id, username, display_name, avatar_url)'
+          'id, conversation_id, sender_id, content, encrypted_content, encryption_version, sender_signature, sender_signature_version, media_url, encrypted_media_path, encrypted_media_mime, encrypted_media_size, created_at, sender:profiles!sender_id(id, username, display_name, avatar_url)'
         )
         .single();
+      if (insertResp.error && /sender_signature/i.test(insertResp.error.message)) {
+        insertResp = await supabase
+          .from('messages')
+          .insert(insertPayload)
+          .select(
+            'id, conversation_id, sender_id, content, encrypted_content, encryption_version, media_url, encrypted_media_path, encrypted_media_mime, encrypted_media_size, created_at, sender:profiles!sender_id(id, username, display_name, avatar_url)'
+          )
+          .single();
+      }
+      const { data, error: insertErr } = insertResp;
 
       if (insertErr) {
         setError(insertErr.message);
@@ -565,10 +790,94 @@ export function useMessages(conversationId: string | null): UseMessagesResult {
         }
       }
 
+      // ── Sender signature (sender-auth via Ed25519) ─────────────────────────
+      // Sealed-box ciphertext is sender-anonymous at the crypto layer —
+      // nothing in the bytes binds them to the sender_id Supabase recorded.
+      // A malicious admin who can write to the DB could rewrite sender_id;
+      // the recipient would have zero crypto-layer proof of authorship.
+      //
+      // Closing that hole: sign canonical bytes over the message envelope
+      // with the sender's existing Ed25519 signing key, store on the row.
+      // Best-effort — if the signing key is missing locally, the column
+      // doesn't exist yet (pre-migration-019), or the UPDATE fails for any
+      // other reason, the message still ships. Recipients will simply see
+      // _authState='legacy' (or 'unknown') instead of 'authenticated'.
+      let appliedSignature: string | null = null;
+      let appliedSignatureVersion: number | null = null;
+      try {
+        const signingPriv = loadSigningPrivateKeyLocal();
+        if (!signingPriv) {
+          // First-launch users may not have an Ed25519 keypair yet — quiet log,
+          // not an error. AuthProvider.ensureSigningKeypair backfills these
+          // over time as users open the keys panel.
+          console.warn(
+            '[useMessages] no signing private key — sending unsigned DM (legacy-grade auth)',
+          );
+        } else if (canEncrypt) {
+          // Only encrypted rows (v1/v2) get signed. Plaintext fallback rows
+          // are already not-confidential; signing them adds little value and
+          // we'd have to canonicalize a different shape. Skip.
+          let ciphertextRef = '';
+          let recipientRef = '';
+          if (useGroupPath) {
+            // v2: bind ALL recipient ciphertexts + the full recipient_id set.
+            // Sorted by recipient_id so verifier reproduces the same string.
+            const sortedFanout = [...groupCiphertexts].sort((a, b) =>
+              a.recipientId < b.recipientId ? -1 : a.recipientId > b.recipientId ? 1 : 0,
+            );
+            ciphertextRef = sortedFanout.map((r) => r.ciphertext).join(',');
+            recipientRef = sortedFanout.map((r) => r.recipientId).join(',');
+          } else {
+            // v1: encrypted_content + recipient pubkey (b64).
+            const [, recipientPubKey] = recipientEntries[0];
+            ciphertextRef = (row.encrypted_content as string | null) ?? '';
+            recipientRef = recipientPubKey;
+          }
+          const canonical = canonicalizeForSenderSig({
+            conversationId: row.conversation_id,
+            messageId: row.id,
+            ciphertextRef,
+            recipientRef,
+            createdAt: row.created_at,
+          });
+          const sig = await signPayload(canonical, signingPriv);
+          // Persist on the row. If migration 019 isn't applied this UPDATE
+          // will error on the unknown column — we catch and degrade.
+          const { error: sigErr } = await supabase
+            .from('messages')
+            .update({ sender_signature: sig, sender_signature_version: 1 })
+            .eq('id', row.id);
+          if (sigErr) {
+            // Quiet log + continue. Recipient will see this as 'legacy'.
+            console.warn(
+              '[useMessages] sender_signature UPDATE failed (non-fatal — apply migration 019?):',
+              sigErr.message,
+            );
+          } else {
+            appliedSignature = sig;
+            appliedSignatureVersion = 1;
+          }
+        }
+      } catch (sigBlockErr: any) {
+        console.warn(
+          '[useMessages] sender-signature block threw (non-fatal):',
+          sigBlockErr?.message ?? sigBlockErr,
+        );
+      }
+      if (appliedSignature !== null) {
+        row.sender_signature = appliedSignature;
+        row.sender_signature_version = appliedSignatureVersion;
+      }
+
       // We just sent it, so we know the plaintext — short-circuit decryption.
+      // We're the sender, so sender-auth is trivially satisfied for the local
+      // copy: 'authenticated' if we actually signed, else 'legacy' (matches
+      // what a receiver of this row would compute if they re-fetched it).
+      const localAuthState: MessageRow['_authState'] =
+        appliedSignatureVersion === 1 ? 'authenticated' : 'legacy';
       const baseDecrypted: MessageRow = canEncrypt
-        ? { ...row, _state: 'decrypted', _decrypted: trimmed || null }
-        : { ...row, _state: 'plaintext', _decrypted: trimmed || null };
+        ? { ...row, _state: 'decrypted', _decrypted: trimmed || null, _authState: localAuthState }
+        : { ...row, _state: 'plaintext', _decrypted: trimmed || null, _authState: 'legacy' };
       const decrypted: MessageRow = attachment
         ? {
             ...baseDecrypted,

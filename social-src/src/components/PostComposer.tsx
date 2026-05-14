@@ -1,7 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { useAuth } from './AuthProvider';
-import { supabase } from '../lib/supabase';
-import type { Post } from '../lib/api';
+import { createPost } from '../lib/api';
 import ProjectPicker from './ProjectPicker';
 import ConvictionToggle, { type Conviction } from './ConvictionToggle';
 import type { Project } from '../lib/projects';
@@ -10,7 +9,6 @@ import { notifyMentions } from '../lib/mention-notify';
 import {
   getConnectedBlueskyHandle,
   isBlueskyConnected,
-  publishToBluesky,
 } from '../lib/atproto-bridge';
 
 const CROSSPOST_DEFAULT_LS_KEY = 'frqncy.nrg.atproto.crosspost_default';
@@ -55,11 +53,6 @@ function useDebouncedCallback<T extends (...args: any[]) => void>(fn: T, ms: num
 interface PostComposerProps {
   onPost?: () => void;
 }
-
-// Tracks whether the `conviction` column exists on posts. We optimistically
-// try to insert it; on the first schema error we flip this flag and retry
-// without it. This lets the UI ship before the migration is applied.
-let convictionColumnMissing = false;
 
 export default function PostComposer({ onPost }: PostComposerProps) {
   const { user, profile, loading } = useAuth();
@@ -190,49 +183,38 @@ export default function PostComposer({ onPost }: PostComposerProps) {
       // user typed a free-text tag, persist that as the channel — so the topic
       // they wrote about is queryable + the post lands in /social/channel/<tag>.
       const fallbackTag = tags[0]?.trim();
-      const basePayload: Record<string, any> = {
+      const projectTag = project?.name ?? (fallbackTag || undefined);
+
+      // Persist the cross-post preference BEFORE the network call so the
+      // checkbox stickiness doesn't depend on a successful post.
+      if (bskyConnected) {
+        writeCrosspostDefault(crosspostBsky);
+      }
+
+      // Route the insert + Bluesky cross-post + signed-mirror through
+      // api.ts::createPost. That function owns:
+      //   - signRowFireAndForget (so composer-originated posts get signed)
+      //   - the Bluesky publish + bluesky_uri/cid write-back (so reply-count
+      //     refresh sees the AT-URI and "↗ N on Bluesky" can render)
+      //   - the conviction-column-missing schema fallback
+      // Direct supabase.from('posts').insert(...) here bypassed all three.
+      const post = await createPost({
         author_id: user.id,
         content: content.trim(),
         media_urls: [],
-        link_url: linkPreview?.url ?? null,
-        link_preview: linkPreview ?? null,
-        project_tag: project?.name ?? (fallbackTag || null),
-        project_tier: project?.tier ?? null,
-      };
+        link_url: linkPreview?.url ?? undefined,
+        link_preview: linkPreview ?? undefined,
+        project_tag: projectTag,
+        project_tier: project?.tier ?? undefined,
+        // Only meaningful when a project is tagged — createPost drops it
+        // otherwise. Send the user's stance through as-is.
+        conviction: project && conviction ? conviction : null,
+        // Explicit per-post crosspost intent. createPost defaults to true
+        // when isBlueskyConnected(); we pass the checkbox state so the
+        // composer's "off for this one" preference wins.
+        crosspostToBluesky: bskyConnected ? crosspostBsky : false,
+      });
 
-      // Only include conviction when a project is tagged. Sending it for
-      // untagged posts is noise.
-      const payload =
-        project && conviction && !convictionColumnMissing
-          ? { ...basePayload, conviction }
-          : basePayload;
-
-      let insert = await supabase
-        .from('posts')
-        .insert(payload)
-        .select('*, author:profiles!posts_author_id_fkey(*)')
-        .single();
-
-      // If the conviction column doesn't exist yet, retry without it.
-      if (
-        insert.error &&
-        !convictionColumnMissing &&
-        /conviction/i.test(insert.error.message || '')
-      ) {
-        console.warn(
-          '[PostComposer] conviction column missing — falling back. ' +
-            'Run supabase/migrations/002_conviction.sql to enable it.',
-        );
-        convictionColumnMissing = true;
-        insert = await supabase
-          .from('posts')
-          .insert(basePayload)
-          .select('*, author:profiles!posts_author_id_fkey(*)')
-          .single();
-      }
-
-      if (insert.error) throw new Error(insert.error.message);
-      const post = insert.data as Post | null;
       if (!post) throw new Error('Post creation returned null');
 
       // post_count on profiles is maintained by the handle_post_count
@@ -247,28 +229,6 @@ export default function PostComposer({ onPost }: PostComposerProps) {
         refType: 'post',
         refId: post.id,
       });
-
-      // Bluesky cross-post — fire-and-forget. Mirror this post to the user's
-      // connected Bluesky account if they have one and the toggle is on.
-      // Per proposals/ATPROTO-BRIDGE.md. Failures are logged, never thrown —
-      // a Bluesky outage must NOT block the local NRG post.
-      if (bskyConnected && crosspostBsky) {
-        writeCrosspostDefault(true);
-        void publishToBluesky({
-          text: post.content,
-          nrgPostId: post.id,
-        })
-          .then((res) => {
-            if (!res.ok) {
-              console.warn('[atproto] cross-post failed (non-fatal):', res.reason);
-            }
-          })
-          .catch((err) => {
-            console.warn('[atproto] cross-post threw (non-fatal):', err);
-          });
-      } else if (bskyConnected && !crosspostBsky) {
-        writeCrosspostDefault(false);
-      }
 
       setContent('');
       setTags([]);

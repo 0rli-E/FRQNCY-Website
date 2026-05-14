@@ -32,6 +32,33 @@ const APP_PASSWORD_KEY = 'frqncy.nrg.atproto.app_password';
 type AnyAgent = any;
 const agentCache = new Map<string, AnyAgent>();
 
+// ─── Read-side TTL cache ────────────────────────────────────────────────────
+//
+// Bluesky's public AppView (api.bsky.app) rate-limits at ~3000 req / 5min per
+// IP. At 1000+ visitors sharing a Cloudflare egress IP, every Feed.tsx tab
+// switch back to Federated + every BlueskyReplies mount can rate-limit the
+// entire CF range. A 60s session-scoped TTL absorbs the spam without
+// surfacing stale-data complaints (well below the 5min RL window).
+//
+// Cache is per-tab (module-level Map), not cross-tab. clearBlueskyCache()
+// is the explicit invalidator — call after a fresh cross-post so the next
+// timeline fetch sees the new entry.
+type CacheEntry<T> = { value: T; expiresAt: number };
+const CACHE_TTL_MS = 60_000; // 60s — Bluesky AppView rate-limit window is 5min, 60s is well below
+type TimelineCacheValue = { posts: BlueskyPost[]; cursor: string | null };
+type ThreadCacheValue = { replies: BlueskyReply[]; thread_url: string };
+const timelineCache = new Map<string, CacheEntry<TimelineCacheValue>>();
+const threadCache = new Map<string, CacheEntry<ThreadCacheValue>>();
+
+/**
+ * Empty both read-side caches (timeline + thread). Call after a fresh
+ * cross-post or any mutation that should invalidate cached reads.
+ */
+export function clearBlueskyCache(): void {
+  timelineCache.clear();
+  threadCache.clear();
+}
+
 async function loadBskyAgentClass(): Promise<any | null> {
   try {
     // Dynamic import so projects without the dep installed don't fail to
@@ -40,7 +67,7 @@ async function loadBskyAgentClass(): Promise<any | null> {
     const mod = await import('@atproto/api');
     return mod.BskyAgent ?? mod.default?.BskyAgent ?? null;
   } catch (err) {
-    console.warn('[atproto] @atproto/api import failed — bridge disabled:', err);
+    console.warn('[atproto] @atproto/api not installed; Bluesky bridge disabled', err);
     return null;
   }
 }
@@ -53,6 +80,18 @@ interface ConnectInput {
   userId: string;
 }
 
+// DEPRECATED PATH — app-password authentication
+//
+// This flow stores the user's app password in localStorage. App passwords are
+// revocable but unscoped — a leak gives full posting + DM-read + repo-mgmt
+// scope. The 2026 standard is OAuth + DPoP (GA in @atproto/api since late
+// 2024).
+//
+// Migration plan: see proposals/NRG-EXPERT-CRITIQUE-2026-05-14.md (Tier 2,
+// item 7). Until OAuth lands, the current code stays for backward compat
+// with users who already connected; no NEW connections should use this path
+// after the OAuth flow ships. Surface a "Use OAuth" CTA in ConnectionsPanel
+// at that point.
 /**
  * Test a handle + app password by attempting a login. On success, persists
  * the handle to profiles.bluesky_handle and the app password to localStorage.
@@ -68,6 +107,7 @@ interface ConnectInput {
 export async function connectBluesky(
   opts: ConnectInput,
 ): Promise<{ ok: true; did: string } | { ok: false; reason: string }> {
+  console.warn('[atproto] connectBluesky: app-password auth is deprecated. OAuth migration pending.');
   const handle = normalizeHandle(opts.handle);
   const appPassword = opts.appPassword.trim();
 
@@ -228,6 +268,13 @@ export async function fetchBlueskyTimeline(
     return { ok: false, reason: 'Bluesky SDK not loaded. Run `npm install @atproto/api` and rebuild.' };
   }
 
+  const limit = Math.min(Math.max(opts.limit ?? 30, 1), 100);
+  const cacheKey = `${limit}:${opts.cursor ?? ''}`;
+  const cached = timelineCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) {
+    return { ok: true, posts: cached.value.posts, cursor: cached.value.cursor };
+  }
+
   try {
     let agent = agentCache.get(handle);
     if (!agent) {
@@ -239,7 +286,6 @@ export async function fetchBlueskyTimeline(
       agentCache.set(handle, agent);
     }
 
-    const limit = Math.min(Math.max(opts.limit ?? 30, 1), 100);
     const res = await agent.getTimeline({ limit, cursor: opts.cursor });
     if (!res?.data?.feed) {
       return { ok: false, reason: 'Bluesky timeline returned no feed.' };
@@ -251,7 +297,13 @@ export async function fetchBlueskyTimeline(
       if (mapped) posts.push(mapped);
     }
 
-    return { ok: true, posts, cursor: res.data.cursor ?? null };
+    const cursor = res.data.cursor ?? null;
+    // Cache on success only — let next call retry on error.
+    timelineCache.set(cacheKey, {
+      value: { posts, cursor },
+      expiresAt: Date.now() + CACHE_TTL_MS,
+    });
+    return { ok: true, posts, cursor };
   } catch (err: any) {
     // Drop the cached agent so the next attempt re-logs in with fresh auth.
     agentCache.delete(handle);
@@ -380,6 +432,11 @@ export async function fetchBlueskyThread(
     return { ok: false, reason: 'Not a Bluesky URI.' };
   }
 
+  const cached = threadCache.get(uri);
+  if (cached && cached.expiresAt > Date.now()) {
+    return { ok: true, replies: cached.value.replies, thread_url: cached.value.thread_url };
+  }
+
   const BskyAgent = await loadBskyAgentClass();
   if (!BskyAgent) {
     return { ok: false, reason: 'Bluesky SDK not loaded. Run `npm install @atproto/api` and rebuild.' };
@@ -441,6 +498,11 @@ export async function fetchBlueskyThread(
     ? `https://bsky.app/profile/${rootHandle}/post/${rootRkey}`
     : 'https://bsky.app';
 
+  // Cache on success only — let next call retry on error.
+  threadCache.set(uri, {
+    value: { replies, thread_url },
+    expiresAt: Date.now() + CACHE_TTL_MS,
+  });
   return { ok: true, replies, thread_url };
 }
 

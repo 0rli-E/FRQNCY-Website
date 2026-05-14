@@ -1,8 +1,9 @@
 import { supabase } from './supabase';
 import {
-  canonicalizeForSigning,
   loadSigningPrivateKeyLocal,
-  signPayload,
+  FRQNCY_SIGNING_DOMAIN,
+  derivePublicKeyDidKey,
+  signPayloadWithDomain,
 } from './crypto';
 import { isBlueskyConnected, publishToBluesky } from './atproto-bridge';
 import { notifyMentions } from './mention-notify';
@@ -11,6 +12,14 @@ import { notifyMentions } from './mention-notify';
 // Per proposals/HYBRID-SIGNED-MIRROR.md. Best-effort signing on post + follow
 // creation. If the signing key is missing (new device, lost), the row ships
 // unsigned and verifiers skip it. Never blocks the user-visible action.
+//
+// Domain-separated as of 2026-05-14: every payload is wrapped with
+// `{ network: FRQNCY_SIGNING_DOMAIN, ... }` before canonicalization via
+// `signPayloadWithDomain`. This makes signatures non-portable across
+// future FRQNCY forks/migrations (replay-safety per the Farcaster audit).
+// Each payload also carries a `did: did:key:z6Mk...` derived from the
+// author's signing public key (ATProto / Onchain audits) and a `$type`
+// NSID hint for Phase 3 ATProto Lexicon mapping.
 
 async function signRowFireAndForget(
   table: 'posts' | 'follows',
@@ -20,10 +29,14 @@ async function signRowFireAndForget(
   try {
     const signingPriv = loadSigningPrivateKeyLocal();
     if (!signingPriv) return;
-    const payload = canonicalizeForSigning(recordToSign);
-    const signature = await signPayload(payload, signingPriv);
+    const { signature, signedPayload } = await signPayloadWithDomain(
+      signingPriv,
+      recordToSign,
+    );
 
-    let q = supabase.from(table).update({ signature, signed_payload: payload });
+    let q = supabase
+      .from(table)
+      .update({ signature, signed_payload: signedPayload });
     const clauses = Array.isArray(matchClause) ? matchClause : [matchClause];
     for (const c of clauses) q = q.eq(c.col, c.val);
     const { error } = await q;
@@ -34,6 +47,66 @@ async function signRowFireAndForget(
     console.warn(`[mirror] ${table} signing threw (non-fatal):`, err);
   }
 }
+
+/**
+ * Return the caller's canonical FRQNCY DID (`did:key:z6Mk...`) derived from
+ * their on-profile signing public key, or `null` if the user has no signing
+ * key yet (legacy account, key never generated, or profile row missing).
+ *
+ * Useful for UI surfaces that want to show the user their portable identifier
+ * — the same DID is what gets embedded in every signed post and follow
+ * payload, and what an external verifier would use to look up the user's
+ * public key for verification.
+ *
+ * Reads from the profile rather than recomputing locally so it works on
+ * devices that don't hold the private key (e.g. read-only sessions). If
+ * a Phase 3 ATProto migration adds a richer DID document, this is the
+ * function to extend — callers shouldn't synthesize the DID themselves.
+ */
+export async function getMyDidKey(userId: string): Promise<string | null> {
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('signing_public_key')
+      .eq('id', userId)
+      .single();
+    if (error || !data?.signing_public_key) return null;
+    return derivePublicKeyDidKey(data.signing_public_key as string);
+  } catch (err) {
+    console.warn('[getMyDidKey] threw (non-fatal):', err);
+    return null;
+  }
+}
+
+/**
+ * Best-effort fetch of a signing public key + derived DID for the given
+ * profile id. Returns nulls on miss so callers can decide whether to sign
+ * with the legacy (no-DID) payload shape or skip signing entirely.
+ *
+ * NOTE: this is local to the mirror helpers — UI surfaces should use
+ * `getMyDidKey` which doesn't leak the pubkey through its return value.
+ */
+async function loadSignerIdentity(
+  userId: string,
+): Promise<{ signingPublicKey: string; did: string } | null> {
+  try {
+    const { data, error } = await supabase
+      .from('profiles')
+      .select('signing_public_key')
+      .eq('id', userId)
+      .single();
+    if (error || !data?.signing_public_key) return null;
+    const pk = data.signing_public_key as string;
+    return { signingPublicKey: pk, did: derivePublicKeyDidKey(pk) };
+  } catch {
+    return null;
+  }
+}
+
+// Silence unused-import warnings for the domain constant — it's re-exported
+// for callers that want to introspect the signing domain (e.g. external
+// verifiers in tests) without re-importing from crypto.ts.
+export { FRQNCY_SIGNING_DOMAIN };
 
 // ─── Types ──────────────────────────────────────────────────────────────────
 
@@ -279,6 +352,11 @@ export async function getProjectPosts(
   return (data ?? []) as Post[];
 }
 
+// Tracks whether the `conviction` column exists on posts. We optimistically
+// try to insert it; on the first schema error we flip this flag and retry
+// without it. Lets the UI ship before migration 002_conviction.sql is applied.
+let convictionColumnMissing = false;
+
 export async function createPost(data: {
   author_id: string;
   content: string;
@@ -287,24 +365,57 @@ export async function createPost(data: {
   link_preview?: any;
   project_tag?: string;
   project_tier?: string;
+  /** Personal stance on the tagged project. Self-expression, not a score —
+      only meaningful when project_tag is set. Persisted in the `conviction`
+      column when migration 002 is applied; silently dropped on older
+      schemas via the convictionColumnMissing fallback. */
+  conviction?: 'bullish' | 'neutral' | 'bearish' | null;
   /** Whether to mirror this post to the user's connected Bluesky account.
       Defaults to true when the user has a connection, false otherwise.
       Pass false explicitly from the composer to suppress for one post. */
   crosspostToBluesky?: boolean;
 }): Promise<Post | null> {
-  const { data: post, error } = await supabase
+  const baseInsert: Record<string, any> = {
+    author_id: data.author_id,
+    content: data.content,
+    media_urls: data.media_urls ?? [],
+    link_url: data.link_url ?? null,
+    link_preview: data.link_preview ?? null,
+    project_tag: data.project_tag ?? null,
+    project_tier: data.project_tier ?? null,
+  };
+
+  // Only include conviction when a project is tagged AND the column exists.
+  // Sending it for untagged posts is noise; sending it on an older schema
+  // throws a column-missing error which we recover from below.
+  const insertWithConviction =
+    data.project_tag && data.conviction && !convictionColumnMissing
+      ? { ...baseInsert, conviction: data.conviction }
+      : baseInsert;
+
+  let { data: post, error } = await supabase
     .from('posts')
-    .insert({
-      author_id: data.author_id,
-      content: data.content,
-      media_urls: data.media_urls ?? [],
-      link_url: data.link_url ?? null,
-      link_preview: data.link_preview ?? null,
-      project_tag: data.project_tag ?? null,
-      project_tier: data.project_tier ?? null,
-    })
+    .insert(insertWithConviction)
     .select('*, author:profiles!posts_author_id_fkey(*)')
     .single();
+
+  // Fallback: if the conviction column doesn't exist yet, retry without it.
+  if (
+    error &&
+    !convictionColumnMissing &&
+    /conviction/i.test(error.message || '')
+  ) {
+    console.warn(
+      '[createPost] conviction column missing — falling back. ' +
+        'Run supabase/migrations/002_conviction.sql to enable it.',
+    );
+    convictionColumnMissing = true;
+    ({ data: post, error } = await supabase
+      .from('posts')
+      .insert(baseInsert)
+      .select('*, author:profiles!posts_author_id_fkey(*)')
+      .single());
+  }
 
   if (error) {
     console.error('createPost error:', error.message);
@@ -317,23 +428,49 @@ export async function createPost(data: {
   // Hybrid signed-message mirror — sign the canonical post record so it's
   // portable to any future protocol. Best-effort: never blocks the user
   // experience. Per proposals/HYBRID-SIGNED-MIRROR.md.
+  //
+  // Payload carries TWO type fields by design:
+  //   - `type: 'frqncy.post.v1'`  → legacy, what verifiers read today
+  //   - `$type: 'xyz.frqncy.feed.post.v1'`  → ATProto-shaped NSID for the
+  //      Phase 3 Lexicon migration. Costs nothing to emit now, future-
+  //      proofs the record. Per ATProto-expert audit.
+  // Also injects `did: did:key:z6Mk...` derived from the author's signing
+  // public key (Onchain + ATProto audits) so the signed record carries its
+  // own canonical identity claim — verifiers don't need to look up the
+  // author by Supabase id to resolve "who signed this".
   if (post) {
-    const p = post as Post;
-    void signRowFireAndForget(
-      'posts',
-      { col: 'id', val: p.id },
-      {
-        type: 'frqncy.post.v1',
-        id: p.id,
-        author_id: p.author_id,
-        content: p.content,
-        project_tag: p.project_tag,
-        project_tier: p.project_tier,
-        media_urls: p.media_urls ?? [],
-        link_url: p.link_url ?? null,
-        created_at: p.created_at,
-      },
-    );
+    const p = post as Post & { conviction?: string | null };
+    // Best-effort identity load. If the profile lookup fails or the user
+    // has no signing pubkey on file, we still sign (signRowFireAndForget
+    // gates on the local PRIVATE key) but omit the `did` — verifiers can
+    // fall back to looking up the pubkey by author_id.
+    void (async () => {
+      const id = await loadSignerIdentity(p.author_id);
+      await signRowFireAndForget(
+        'posts',
+        { col: 'id', val: p.id },
+        {
+          // Legacy + ATProto-shaped type tags (both emitted).
+          type: 'frqncy.post.v1',
+          $type: 'xyz.frqncy.feed.post.v1',
+          ...(id ? { did: id.did } : {}),
+          id: p.id,
+          author_id: p.author_id,
+          content: p.content,
+          project_tag: p.project_tag,
+          project_tier: p.project_tier,
+          // Include conviction in the canonical signed payload so flipping
+          // bullish↔neutral↔bearish doesn't bypass signature verification.
+          // canonicalizeForSigning sorts keys recursively, so source order
+          // here is cosmetic. Null on older-schema rows where the column
+          // doesn't exist — preserves verification on legacy posts.
+          conviction: p.conviction ?? null,
+          media_urls: p.media_urls ?? [],
+          link_url: p.link_url ?? null,
+          created_at: p.created_at,
+        },
+      );
+    })();
 
     // Bluesky cross-post — best-effort, never blocks the post's local return.
     // Default behaviour: mirror if the user has a connection. Composer can
@@ -436,9 +573,10 @@ export async function toggleLike(
 }
 
 export async function isLiked(userId: string, postId: string): Promise<boolean> {
+  // likes PK is composite (user_id, post_id) — no `id` column exists.
   const { data, error } = await supabase
     .from('likes')
-    .select('id')
+    .select('user_id')
     .eq('user_id', userId)
     .eq('post_id', postId)
     .maybeSingle();
@@ -478,9 +616,10 @@ export async function toggleBookmark(
 }
 
 export async function isBookmarked(userId: string, postId: string): Promise<boolean> {
+  // bookmarks PK is composite (user_id, post_id) — no `id` column exists.
   const { data, error } = await supabase
     .from('bookmarks')
-    .select('id')
+    .select('user_id')
     .eq('user_id', userId)
     .eq('post_id', postId)
     .maybeSingle();
@@ -500,9 +639,14 @@ export async function followUser(
 ): Promise<boolean> {
   if (followerId === followingId) return false;
 
-  const { error } = await supabase
+  // Select the inserted row back so we can sign the canonical record using
+  // the server-stamped `created_at`. Signing a client-generated timestamp
+  // diverges from the row's actual created_at and breaks verification.
+  const { data: follow, error } = await supabase
     .from('follows')
-    .insert({ follower_id: followerId, following_id: followingId });
+    .insert({ follower_id: followerId, following_id: followingId })
+    .select('*')
+    .single();
 
   if (error) {
     console.error('followUser error:', error.message);
@@ -521,20 +665,34 @@ export async function followUser(
 
   // Hybrid signed-message mirror — sign the follow record so the social
   // graph is portable to any future protocol. Best-effort, never blocks.
-  // Per proposals/HYBRID-SIGNED-MIRROR.md.
-  void signRowFireAndForget(
-    'follows',
-    [
-      { col: 'follower_id', val: followerId },
-      { col: 'following_id', val: followingId },
-    ],
-    {
-      type: 'frqncy.follow.v1',
-      follower_id: followerId,
-      following_id: followingId,
-      created_at: new Date().toISOString(),
-    },
-  );
+  // Per proposals/HYBRID-SIGNED-MIRROR.md. Uses the server-stored
+  // created_at from the row Supabase just returned (NOT a client-side
+  // new Date() — that would drift from the row by the request RTT and
+  // make every signature fail verification).
+  //
+  // Payload shape mirrors createPost — legacy `type` + ATProto-shaped
+  // `$type` NSID + `did:key` identity claim derived from the follower's
+  // signing pubkey. See createPost above for the rationale.
+  if (follow) {
+    void (async () => {
+      const id = await loadSignerIdentity(followerId);
+      await signRowFireAndForget(
+        'follows',
+        [
+          { col: 'follower_id', val: followerId },
+          { col: 'following_id', val: followingId },
+        ],
+        {
+          type: 'frqncy.follow.v1',
+          $type: 'xyz.frqncy.graph.follow.v1',
+          ...(id ? { did: id.did } : {}),
+          follower_id: followerId,
+          following_id: followingId,
+          created_at: (follow as { created_at: string }).created_at,
+        },
+      );
+    })();
+  }
 
   return true;
 }
@@ -564,9 +722,10 @@ export async function isFollowing(
   followerId: string,
   followingId: string
 ): Promise<boolean> {
+  // follows PK is composite (follower_id, following_id) — no `id` column exists.
   const { data, error } = await supabase
     .from('follows')
-    .select('id')
+    .select('follower_id')
     .eq('follower_id', followerId)
     .eq('following_id', followingId)
     .maybeSingle();
