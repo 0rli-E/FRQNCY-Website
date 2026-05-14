@@ -111,11 +111,15 @@ async function findPersonPortrait(person) {
   if (!doc?.key) return null;
   const author = await safeJSON(`https://openlibrary.org/authors/${doc.key}.json`);
   const photos = author?.photos || [];
-  for (const id of photos) {
-    if (id < 0) continue;       // -1 = no photo placeholder
-    const url = `https://covers.openlibrary.org/a/id/${id}-L.jpg`;
-    if (await verifyCover(url)) return { url, source: `https://openlibrary.org/authors/${doc.key}` };
-  }
+  // Only proceed if photos[] contains at least one positive integer — that's
+  // the signal an actual author photo exists. Without this check, attempting
+  // /a/olid/<key>-L.jpg can still 200 with a generic placeholder.
+  if (!photos.some(id => typeof id === 'number' && id > 0)) return null;
+  // Use the AUTHOR endpoint /a/olid/<key>, NOT /a/id/<photo-id>.
+  // /a/id/ serves BOOK COVERS keyed by photo-ID; /a/olid/ serves the author
+  // portrait keyed by the OL author key (e.g., OL12345A).
+  const url = `https://covers.openlibrary.org/a/olid/${doc.key}-L.jpg`;
+  if (await verifyCover(url)) return { url, source: `https://openlibrary.org/authors/${doc.key}` };
   return null;
 }
 
