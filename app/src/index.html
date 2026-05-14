@@ -263,13 +263,24 @@
         text-align: center;
         margin-bottom: 32px;
       }
+      .section-label {
+        font-size: 11px;
+        letter-spacing: 2.4px;
+        text-transform: lowercase;
+        color: rgba(196, 151, 58, 0.7);
+        margin-top: 32px;
+        margin-bottom: 6px;
+        padding-bottom: 6px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.06);
+      }
+      .section-label:first-of-type { margin-top: 8px; }
     </style>
   </head>
   <body>
     <div id="offline-banner">Offline — showing cached content</div>
 
     <!-- Native home surface -->
-    <main id="home-screen" class="surface" role="region" aria-label="Home">
+    <main id="home-screen" class="surface" role="region" aria-label="Home" data-tab-context="/">
       <div class="home-wrap">
         <div class="brand-mark" aria-hidden="true"></div>
         <h1 class="home-title">welcome to FRQNCY</h1>
@@ -278,7 +289,7 @@
         </p>
         <div class="cta-stack">
           <button data-route="/app/bedside.html">set up my wake-up</button>
-          <button class="secondary" data-external="https://frqncy.network/">open frqncy.network</button>
+          <button class="secondary" data-external="https://frqncy.network/my-frqncy/dashboard/">open my sanctuary</button>
         </div>
 
         <div class="home-cards">
@@ -287,48 +298,84 @@
             <div class="home-card-title">arm tomorrow's wake</div>
             <div class="home-card-desc">set a time. the alarm fades in over 90 seconds. dismissing is one breath, held.</div>
           </button>
-          <button class="home-card" data-external="https://frqncy.network/v2/explore.html">
+          <button class="home-card" data-external="https://frqncy.network/my-frqncy/dashboard/">
+            <div class="home-card-eyebrow">sanctuary</div>
+            <div class="home-card-title">your private dashboard</div>
+            <div class="home-card-desc">practice log, charts, your daily path. only visible to you.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/social/">
+            <div class="home-card-eyebrow">nrg</div>
+            <div class="home-card-title">the social layer</div>
+            <div class="home-card-desc">posts, replies, federated bluesky timeline. no rankings, no streaks.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/explore.html">
             <div class="home-card-eyebrow">explore</div>
             <div class="home-card-title">the FRQNCY topic graph</div>
             <div class="home-card-desc">146 topics across consciousness, money, wellbeing, decentralisation, and more.</div>
-          </button>
-          <button class="home-card" data-external="https://frqncy.network/support">
-            <div class="home-card-eyebrow">support</div>
-            <div class="home-card-title">support FRQNCY ◇</div>
-            <div class="home-card-desc">help keep this independent. no ads, no tracking, no rankings.</div>
           </button>
         </div>
       </div>
     </main>
 
     <!-- Native explore surface -->
-    <main id="explore-screen" class="surface" role="region" aria-label="Explore">
+    <main id="explore-screen" class="surface" role="region" aria-label="Explore" data-tab-context="/explore">
       <div class="explore-wrap">
-        <div class="explore-eyebrow">explore</div>
-        <h1 class="explore-title">browse FRQNCY</h1>
+        <div class="explore-eyebrow">browse FRQNCY</div>
+        <h1 class="explore-title">the whole network, in here.</h1>
         <p class="explore-lede">
-          the long-form content lives on the website. tap any of these to open it.
+          everything FRQNCY ever published, framed inside the app. nothing leaves to a browser.
         </p>
+
+        <div class="section-label">your space</div>
         <div class="home-cards" style="margin-top: 8px;">
-          <button class="home-card" data-external="https://frqncy.network/v2/explore.html">
+          <button class="home-card" data-external="https://frqncy.network/my-frqncy/dashboard/">
+            <div class="home-card-eyebrow">sanctuary</div>
+            <div class="home-card-title">your private dashboard</div>
+            <div class="home-card-desc">practice log, mood charts, your daily path. local-first, only visible to you.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/my-frqncy">
+            <div class="home-card-eyebrow">my frqncy</div>
+            <div class="home-card-title">birth data + your design</div>
+            <div class="home-card-desc">human design chart, gates, alignment with FRQNCY's topic graph.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/membership/">
+            <div class="home-card-eyebrow">membership</div>
+            <div class="home-card-title">network access</div>
+            <div class="home-card-desc">support FRQNCY, unlock the deeper layers, your referral code.</div>
+          </button>
+        </div>
+
+        <div class="section-label">the network</div>
+        <div class="home-cards" style="margin-top: 8px;">
+          <button class="home-card" data-external="https://frqncy.network/social/">
+            <div class="home-card-eyebrow">nrg</div>
+            <div class="home-card-title">the social layer</div>
+            <div class="home-card-desc">FRQNCY's federated social network. posts, replies, bluesky timeline. no leaderboards.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/explore.html">
             <div class="home-card-eyebrow">topic graph</div>
             <div class="home-card-title">all 146 topics</div>
             <div class="home-card-desc">the FRQNCY constellation — every topic, every domain, every pillar.</div>
           </button>
-          <button class="home-card" data-external="https://frqncy.network/v2/money/">
-            <div class="home-card-eyebrow">money</div>
-            <div class="home-card-title">five teachers, one law</div>
-            <div class="home-card-desc">Clason, Hill, Wattles, Kiyosaki, Maloney — what they actually said.</div>
+          <button class="home-card" data-external="https://frqncy.network/watch/">
+            <div class="home-card-eyebrow">watch</div>
+            <div class="home-card-title">video + audio library</div>
+            <div class="home-card-desc">curated talks, films, conversations across the FRQNCY field.</div>
           </button>
-          <button class="home-card" data-external="https://frqncy.network/v2/wellbeing/">
-            <div class="home-card-eyebrow">wellbeing</div>
-            <div class="home-card-title">the wellbeing canon</div>
-            <div class="home-card-desc">breath, movement, sleep, presence — the canonical FRQNCY take.</div>
+          <button class="home-card" data-external="https://frqncy.network/courses/">
+            <div class="home-card-eyebrow">courses</div>
+            <div class="home-card-title">learn deeper</div>
+            <div class="home-card-desc">structured paths through the canon. multi-week, self-paced.</div>
           </button>
-          <button class="home-card" data-external="https://frqncy.network/v2/metaphysics/">
-            <div class="home-card-eyebrow">metaphysics</div>
-            <div class="home-card-title">consciousness practice</div>
-            <div class="home-card-desc">awareness, attention, the experiments that make a life feel awake.</div>
+          <button class="home-card" data-external="https://frqncy.network/music/">
+            <div class="home-card-eyebrow">music</div>
+            <div class="home-card-title">frequency-aligned listening</div>
+            <div class="home-card-desc">432Hz, perfect-fifth, sound-bath. for sleep, focus, presence.</div>
+          </button>
+          <button class="home-card" data-external="https://frqncy.network/aligned/">
+            <div class="home-card-eyebrow">aligned goods</div>
+            <div class="home-card-title">the best of everything, curated</div>
+            <div class="home-card-desc">tools, books, gear, supplements — what's actually worth using.</div>
           </button>
           <button class="home-card" data-external="https://frqncy.network/people/">
             <div class="home-card-eyebrow">people</div>

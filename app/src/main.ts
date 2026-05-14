@@ -1,15 +1,15 @@
 /**
  * FRQNCY app entry point.
  *
- * Three surfaces, one shell:
- *   - "/"        → native Home surface (#home-screen)
- *   - "/explore" → native Explore surface (#explore-screen)
- *   - "/app/*"   → local HTML rendered inside the iframe (same-origin, no CSP issue)
+ * Surfaces:
+ *   - "/"               → native Home (#home-screen)
+ *   - "/explore"        → native Explore launcher (#explore-screen)
+ *   - "/app/*"          → local HTML in the iframe (same-origin)
+ *   - external URLs     → live site in the iframe (frqncy.network allow-listed
+ *                          in production CSP frame-ancestors as of 2026-05-14)
  *
- * External links (frqncy.network content) open via Capacitor's Browser plugin
- * on device, or window.open() in dev. We deliberately do NOT iframe the live
- * site: production CSP sets `frame-ancestors 'none'` which blocks any framing
- * from the app origin.
+ * The tab bar stays visible across all surfaces, including while browsing
+ * Sanctuary / My FRQNCY / Social inside the iframe.
  */
 
 import { Network } from '@capacitor/network';
@@ -58,12 +58,17 @@ function navigate(route: string) {
   setActiveTab('/');
 }
 
-async function openExternal(url: string) {
-  // Stay in the app's top-level WebView. Capacitor's allowNavigation list
-  // (frqncy.network + *.frqncy.network) permits this in-place navigation —
-  // no new tab, no separate browser overlay. Back gesture returns to the app
-  // shell. In dev (vite), this just navigates the same tab.
-  window.location.href = url;
+function openExternal(url: string, tabRoute?: string) {
+  // Load the live-site URL into the app's iframe shell. Production CSP
+  // frame-ancestors permits https://localhost / capacitor://localhost / vite
+  // dev origin to embed frqncy.network, so the tab bar stays visible while
+  // the user browses Sanctuary / My FRQNCY / Social / etc. inside the frame.
+  frame.src = url;
+  showSurface('frame');
+  // Keep the originating tab visually active so the user knows which section
+  // they're inside. Caller can pass an explicit route, or we infer from the
+  // currently-active tab if one is set.
+  if (tabRoute) setActiveTab(tabRoute);
 }
 
 tabs.forEach((tab) => {
@@ -85,7 +90,11 @@ document.body.addEventListener('click', (ev) => {
     navigate(route);
   } else if (external) {
     ev.preventDefault();
-    openExternal(external);
+    // If the link sits inside a surface that has a primary tab, keep that
+    // tab highlighted while the user reads. Otherwise leave whichever tab
+    // was active.
+    const tabRoute = target.closest<HTMLElement>('[data-tab-context]')?.dataset.tabContext;
+    openExternal(external, tabRoute);
   }
 });
 
@@ -112,17 +121,31 @@ function watchDeepLinks() {
 // Handle Android hardware back button.
 function watchBackButton() {
   App.addListener('backButton', () => {
-    // If we're in the iframe (local /app/*), give its history a chance.
-    // Same-origin so reading history.length is safe.
+    // Iframe visible — try to go back inside it first. For same-origin frames
+    // we can read history.length safely; for cross-origin (frqncy.network) we
+    // can't, but history.back() may still work or may silently no-op. Wrapped
+    // in try/catch so a SecurityError doesn't crash us out to App.exitApp.
     if (frame.classList.contains('visible')) {
+      let wentBack = false;
       try {
         const iframe = frame.contentWindow;
-        if (iframe && iframe.history.length > 1) {
-          iframe.history.back();
-          return;
+        if (iframe) {
+          // Same-origin check via lengths read.
+          try {
+            if (iframe.history.length > 1) {
+              iframe.history.back();
+              wentBack = true;
+            }
+          } catch {
+            // Cross-origin — try blind back() anyway.
+            try { iframe.history.back(); wentBack = true; } catch { /* no-op */ }
+          }
         }
       } catch { /* fall through */ }
-      navigate('/');
+      if (wentBack) return;
+      // No deeper history — return to the calling surface (active tab).
+      const activeTab = tabs.find((t) => t.classList.contains('active'));
+      navigate(activeTab?.dataset.route ?? '/');
       return;
     }
     // Already on a native surface — exit if home, route home otherwise.
