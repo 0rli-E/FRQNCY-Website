@@ -56,15 +56,40 @@
       .row-value.granted { color: rgba(196, 151, 58, 0.95); }
       .row-value.denied { color: rgba(255, 120, 120, 0.85); }
       .link-row {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        width: 100%;
+        min-height: 44px;
         color: rgba(196, 151, 58, 0.9);
         text-decoration: none;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .link-row:focus-visible {
+        outline: 2px solid rgba(196, 151, 58, 0.9);
+        outline-offset: 2px;
+        border-radius: 4px;
+      }
+      .about-copy {
+        padding: 14px 0 16px;
+        font-size: 13.5px;
+        line-height: 1.65;
+        color: rgba(245, 245, 245, 0.78);
+      }
+      .about-copy p { margin-bottom: 12px; }
+      .about-copy p:last-child { margin-bottom: 0; }
+      .about-creed {
+        color: rgba(196, 151, 58, 0.78);
+        font-size: 12.5px;
+        letter-spacing: 0.2px;
       }
       .action-button {
         background: none;
         border: 1px solid rgba(196, 151, 58, 0.5);
         color: rgba(196, 151, 58, 0.9);
-        padding: 10px 16px;
+        padding: 10px 18px;
         min-height: 44px;
+        min-width: 44px;
         border-radius: 999px;
         font-size: 12px;
         letter-spacing: 0.6px;
@@ -78,9 +103,13 @@
         outline-offset: 2px;
       }
       .support-link {
-        display: block;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 8px;
         margin-top: 24px;
-        padding: 16px;
+        padding: 18px;
+        min-height: 56px;
         text-align: center;
         background: linear-gradient(145deg, rgba(196, 151, 58, 0.10), rgba(196, 151, 58, 0.02));
         border: 1px solid rgba(196, 151, 58, 0.3);
@@ -89,6 +118,11 @@
         text-decoration: none;
         font-size: 14px;
         letter-spacing: 0.6px;
+        -webkit-tap-highlight-color: transparent;
+      }
+      .support-link:focus-visible {
+        outline: 2px solid rgba(196, 151, 58, 0.9);
+        outline-offset: 2px;
       }
     </style>
   </head>
@@ -129,29 +163,35 @@
             the same arrival.
           </span>
           <div id="dismiss-modes" style="display: flex; flex-direction: column; gap: 8px; margin-top: 6px;">
-            <label class="dismiss-option" data-mode="breath">
-              <input type="radio" name="dismiss" value="breath" />
-              <span>breath hold <em>· 6 seconds, default</em></span>
+            <label class="dismiss-option" data-mode="breath" for="dismiss-breath">
+              <input type="radio" name="dismiss" value="breath" id="dismiss-breath" aria-describedby="dismiss-breath-desc" />
+              <span class="dismiss-option-text">
+                <span class="dismiss-option-name">breath hold</span>
+                <span class="dismiss-option-desc" id="dismiss-breath-desc">six seconds, default</span>
+              </span>
             </label>
-            <label class="dismiss-option" data-mode="long-press">
-              <input type="radio" name="dismiss" value="long-press" />
-              <span>long press <em>· same hold, no breath cue</em></span>
+            <label class="dismiss-option" data-mode="long-press" for="dismiss-long-press">
+              <input type="radio" name="dismiss" value="long-press" id="dismiss-long-press" aria-describedby="dismiss-long-press-desc" />
+              <span class="dismiss-option-text">
+                <span class="dismiss-option-name">long press</span>
+                <span class="dismiss-option-desc" id="dismiss-long-press-desc">same hold, no breath cue</span>
+              </span>
             </label>
-            <label class="dismiss-option" data-mode="triple-tap">
-              <input type="radio" name="dismiss" value="triple-tap" />
-              <span>triple tap <em>· three taps within 2 seconds</em></span>
+            <label class="dismiss-option" data-mode="triple-tap" for="dismiss-triple-tap">
+              <input type="radio" name="dismiss" value="triple-tap" id="dismiss-triple-tap" aria-describedby="dismiss-triple-tap-desc" />
+              <span class="dismiss-option-text">
+                <span class="dismiss-option-name">triple tap</span>
+                <span class="dismiss-option-desc" id="dismiss-triple-tap-desc">three taps within two seconds</span>
+              </span>
             </label>
           </div>
 
           <div style="margin-top: 16px; padding-top: 14px; border-top: 1px solid rgba(245,245,245,0.06);">
-            <label class="dismiss-option" style="cursor: pointer;">
-              <input type="checkbox" id="haptic-wake" />
-              <span>
-                wake by vibration only
-                <em style="display: block; margin-top: 2px;">
-                  · for hearing-impaired users — slow rising 60-second pattern,
-                  no audio
-                </em>
+            <label class="dismiss-option" for="haptic-wake">
+              <input type="checkbox" id="haptic-wake" aria-describedby="haptic-wake-desc" />
+              <span class="dismiss-option-text">
+                <span class="dismiss-option-name">wake by vibration only</span>
+                <span class="dismiss-option-desc" id="haptic-wake-desc">for hearing-impaired users — slow rising 60-second pattern, no audio</span>
               </span>
             </label>
           </div>
@@ -162,8 +202,9 @@
         .dismiss-option {
           display: flex;
           align-items: flex-start;
-          gap: 10px;
-          padding: 10px 12px;
+          gap: 12px;
+          padding: 12px 14px;
+          min-height: 44px;
           background: rgba(245, 245, 245, 0.03);
           border: 1px solid rgba(245, 245, 245, 0.08);
           border-radius: 10px;
@@ -172,37 +213,87 @@
           line-height: 1.5;
           -webkit-tap-highlight-color: transparent;
         }
-        .dismiss-option em { color: rgba(245, 245, 245, 0.5); font-style: normal; }
+        .dismiss-option-text {
+          display: flex;
+          flex-direction: column;
+          gap: 2px;
+          flex: 1;
+        }
+        .dismiss-option-name {
+          color: rgba(245, 245, 245, 0.92);
+          font-size: 14px;
+          letter-spacing: 0.1px;
+        }
+        .dismiss-option-desc {
+          color: rgba(245, 245, 245, 0.55);
+          font-size: 12.5px;
+          line-height: 1.45;
+        }
         .dismiss-option:has(input:checked) {
           border-color: rgba(196, 151, 58, 0.45);
           background: rgba(196, 151, 58, 0.06);
         }
-        .dismiss-option input { accent-color: #C4973A; margin-top: 2px; }
+        .dismiss-option:has(input:checked) .dismiss-option-name {
+          color: #C4973A;
+        }
+        .dismiss-option input {
+          accent-color: #C4973A;
+          margin-top: 3px;
+          width: 18px;
+          height: 18px;
+          flex-shrink: 0;
+        }
+        .dismiss-option input:disabled { opacity: 0.45; }
       </style>
 
       <div class="section">
         <div class="section-title">about</div>
-        <div style="padding: 14px 0; font-size: 13.5px; line-height: 1.65; color: rgba(245,245,245,0.78);">
-          <p style="margin-bottom: 12px;">
-            FRQNCY is a network of people building their dream life.
-            this app is the bedside companion — a wake and sleep practice
-            that treats your mornings as arrivals and your evenings as
-            arcs that end.
-          </p>
+        <div class="about-copy">
           <p>
+            FRQNCY is a network of people building their dream life. this
+            app is the bedside companion — mornings as arrivals, evenings
+            as arcs that end.
+          </p>
+          <p class="about-creed">
             cooperation over competition. presence over metrics. the
             gesture is the arrival.
           </p>
         </div>
         <div class="row"><span>version</span><span class="row-value" id="app-version">0.1.0</span></div>
         <div class="row"><span>device</span><span class="row-value" id="device-info">—</span></div>
-        <div class="row"><a href="https://frqncy.network" class="link-row" target="_blank" rel="noopener">frqncy.network ↗</a></div>
-        <div class="row"><a href="https://frqncy.network/delete" class="link-row" target="_blank" rel="noopener">delete your data</a></div>
-        <div class="row"><a href="https://frqncy.network/v2/privacy.html" class="link-row" target="_blank" rel="noopener">privacy notes</a></div>
+        <div class="row">
+          <a
+            href="https://frqncy.network"
+            class="link-row"
+            data-external="https://frqncy.network"
+            aria-label="frqncy.network (opens in app)"
+          >frqncy.network <span aria-hidden="true">&rarr;</span></a>
+        </div>
+        <div class="row">
+          <a
+            href="https://frqncy.network/delete"
+            class="link-row"
+            data-external="https://frqncy.network/delete"
+            aria-label="delete your data (opens in app)"
+          >delete your data <span aria-hidden="true">&rarr;</span></a>
+        </div>
+        <div class="row">
+          <a
+            href="https://frqncy.network/v2/privacy.html"
+            class="link-row"
+            data-external="https://frqncy.network/v2/privacy.html"
+            aria-label="privacy notes (opens in app)"
+          >privacy notes <span aria-hidden="true">&rarr;</span></a>
+        </div>
       </div>
 
-      <a class="support-link" href="https://frqncy.network/support" target="_blank" rel="noopener">
-        support frqncy ◇
+      <a
+        class="support-link"
+        href="https://frqncy.network/support"
+        data-external="https://frqncy.network/support"
+        aria-label="support FRQNCY (opens in app)"
+      >
+        support frqncy <span aria-hidden="true">&#9826;</span>
       </a>
     </div>
 
@@ -365,21 +456,66 @@
         loadDownloadsSize();
       });
 
-      // Dismiss-mode preference (web-only state — read by alarm.html / wake.html).
+      // Dismiss-mode preference. Persisted to BOTH Capacitor.Preferences
+      // (native SharedPreferences — survives Android "Clear cache") AND
+      // localStorage (read by alarm.html / wake.html at module load).
+      //
+      // Read order: Preferences first (durable). On miss, migrate from
+      // localStorage so users upgrading from the localStorage-only build
+      // don't silently get demoted back to the 6-second breath default —
+      // critical for accessibility users on long-press / triple-tap.
       const DISMISS_MODE_KEY = 'frqncy.accessibility.dismiss_mode';
-      function applyDismissMode() {
-        let current = 'breath';
-        try { current = localStorage.getItem(DISMISS_MODE_KEY) || 'breath'; } catch {}
-        document.querySelectorAll('input[name="dismiss"]').forEach(input => {
-          input.checked = (input.value === current);
+      const dismissInputs = Array.from(document.querySelectorAll('input[name="dismiss"]'));
+
+      function setDismissChecked(mode) {
+        dismissInputs.forEach(input => {
+          input.checked = (input.value === mode);
         });
       }
-      document.querySelectorAll('input[name="dismiss"]').forEach(input => {
-        input.addEventListener('change', () => {
-          try { localStorage.setItem(DISMISS_MODE_KEY, input.value); } catch {}
+      function setDismissEnabled(enabled) {
+        dismissInputs.forEach(input => {
+          if (enabled) input.removeAttribute('disabled');
+          else input.setAttribute('disabled', '');
+        });
+      }
+      async function loadDismissMode() {
+        setDismissEnabled(false);
+        let current = null;
+        if (Preferences) {
+          try {
+            const { value } = await Preferences.get({ key: DISMISS_MODE_KEY });
+            if (value) current = value;
+          } catch {}
+        }
+        if (!current) {
+          // Migration path: localStorage may hold the only copy from a
+          // previous build. Read it and write back to Preferences so the
+          // next "Clear cache" doesn't lose it.
+          try {
+            const ls = localStorage.getItem(DISMISS_MODE_KEY);
+            if (ls) {
+              current = ls;
+              if (Preferences) {
+                try { await Preferences.set({ key: DISMISS_MODE_KEY, value: ls }); } catch {}
+              }
+            }
+          } catch {}
+        }
+        if (!current) current = 'breath';
+        setDismissChecked(current);
+        setDismissEnabled(true);
+      }
+      dismissInputs.forEach(input => {
+        input.addEventListener('change', async () => {
+          if (!input.checked) return;
+          const v = input.value;
+          if (Preferences) {
+            try { await Preferences.set({ key: DISMISS_MODE_KEY, value: v }); } catch {}
+          }
+          try { localStorage.setItem(DISMISS_MODE_KEY, v); } catch {}
         });
       });
-      applyDismissMode();
+      loadDismissMode();
 
       // Haptic-wake preference (must persist to native SharedPreferences so
       // AlarmService.onStartCommand can read it). The @capacitor/preferences
@@ -388,16 +524,30 @@
       const HAPTIC_WAKE_KEY = 'frqncy.accessibility.haptic_wake';
       const hapticToggle = document.getElementById('haptic-wake');
       async function loadHapticPref() {
+        // Disable until load resolves to prevent the write-before-read race
+        // (per edge-cases finding #12).
+        hapticToggle.setAttribute('disabled', '');
+        let resolved = null;
         if (Preferences) {
           try {
             const { value } = await Preferences.get({ key: HAPTIC_WAKE_KEY });
-            hapticToggle.checked = value === 'true';
-            return;
+            if (value !== null && value !== undefined) resolved = value === 'true';
           } catch {}
         }
-        try {
-          hapticToggle.checked = localStorage.getItem(HAPTIC_WAKE_KEY) === 'true';
-        } catch {}
+        if (resolved === null) {
+          // Migration path: localStorage-only previous build.
+          try {
+            const ls = localStorage.getItem(HAPTIC_WAKE_KEY);
+            if (ls !== null) {
+              resolved = ls === 'true';
+              if (Preferences) {
+                try { await Preferences.set({ key: HAPTIC_WAKE_KEY, value: ls }); } catch {}
+              }
+            }
+          } catch {}
+        }
+        hapticToggle.checked = resolved === true;
+        hapticToggle.removeAttribute('disabled');
       }
       hapticToggle.addEventListener('change', async () => {
         const v = hapticToggle.checked ? 'true' : 'false';

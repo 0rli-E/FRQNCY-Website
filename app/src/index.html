@@ -81,31 +81,63 @@
         z-index: 10;
       }
       .tab {
+        position: relative;
         flex: 1;
         display: flex;
         flex-direction: column;
         align-items: center;
         justify-content: center;
-        gap: 3px;
+        gap: 4px;
         background: none;
         border: 0;
         color: rgba(245, 245, 245, 0.55);
-        font-size: 10.5px;
+        font-size: 11px;
         font-weight: 500;
         letter-spacing: 0.3px;
         height: 60px;
         cursor: pointer;
-        transition: color 180ms ease;
+        transition: color 180ms ease, transform 120ms ease, opacity 120ms ease;
         -webkit-tap-highlight-color: transparent;
         font-family: inherit;
       }
-      .tab.active { color: #C4973A; }
+      .tab.active { color: rgba(196, 151, 58, 0.95); }
+      .tab:active { transform: scale(0.94); opacity: 0.7; transition: none; }
       .tab:focus-visible {
         outline: 2px solid rgba(196, 151, 58, 0.9);
         outline-offset: -4px;
         color: #C4973A;
       }
-      .tab-icon { font-size: 20px; line-height: 1; }
+      /* Subtle active indicator — 4px gold dot above the active tab */
+      .tab::before {
+        content: '';
+        position: absolute;
+        top: 6px;
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: #C4973A;
+        opacity: 0;
+        transition: opacity 180ms ease;
+      }
+      .tab.active::before { opacity: 0.85; }
+      .tab-icon {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        width: 24px;
+        height: 24px;
+        line-height: 1;
+      }
+      .tab-icon svg {
+        width: 24px;
+        height: 24px;
+        display: block;
+        stroke: currentColor;
+        fill: none;
+        stroke-width: 1.6;
+        stroke-linecap: round;
+        stroke-linejoin: round;
+      }
       .cta-stack button:focus-visible, .cta-stack a:focus-visible,
       .home-card:focus-visible {
         outline: 2px solid rgba(196, 151, 58, 0.9);
@@ -176,27 +208,29 @@
       .brand-mark {
         width: 88px; height: 88px;
         border-radius: 50%;
-        border: 1px solid rgba(196, 151, 58, 0.6);
-        margin: 0 auto 28px;
+        border: 1px solid rgba(196, 151, 58, 0.55);
+        margin: 0 auto 32px;
         position: relative;
         animation: brand-breathe 6s ease-in-out infinite;
       }
       .brand-mark::before {
         content: '';
         position: absolute;
-        inset: -8px;
+        inset: -5px;
         border-radius: 50%;
-        border: 0.5px solid rgba(196, 151, 58, 0.18);
+        border: 0.5px solid rgba(196, 151, 58, 0.14);
         animation: brand-halo 6s ease-in-out infinite;
       }
+      /* Thin tuning-fork bar — lifted a hair above center, lower opacity,
+         half-pixel hairline so it reads as a horizon/fork bar rather than a
+         "no entry" strike-through. */
       .brand-mark::after {
         content: '';
         position: absolute;
-        top: 50%;
-        left: 20%; right: 20%;
-        height: 1px;
-        background: rgba(196, 151, 58, 0.85);
-        transform: translateY(-0.5px);
+        top: calc(50% - 3px);
+        left: 26%; right: 26%;
+        height: 0.5px;
+        background: rgba(196, 151, 58, 0.42);
       }
       @keyframes brand-breathe {
         0%, 100% { opacity: 0.85; }
@@ -263,14 +297,14 @@
         margin-top: 36px;
         display: flex;
         flex-direction: column;
-        gap: 12px;
+        gap: 10px;
         max-width: 380px;
         margin-left: auto;
         margin-right: auto;
       }
       .home-card {
         text-align: left;
-        padding: 16px 18px;
+        padding: 18px 18px 16px;
         background: rgba(255, 255, 255, 0.04);
         border: 1px solid rgba(255, 255, 255, 0.06);
         border-radius: 14px;
@@ -291,22 +325,23 @@
       }
       .home-card .home-card-eyebrow {
         font-size: 10.5px;
-        letter-spacing: 1.8px;
+        letter-spacing: 2.0px;
         color: rgba(196, 151, 58, 0.85);
         text-transform: lowercase;
-        margin-bottom: 6px;
+        margin-bottom: 8px;
       }
       .home-card .home-card-title {
         font-size: 15px;
         font-weight: 400;
         color: rgba(245, 245, 245, 0.92);
-        margin-bottom: 4px;
+        line-height: 1.35;
+        margin-bottom: 6px;
       }
       .home-card .home-card-desc {
         font-size: 12.5px;
         font-weight: 300;
-        line-height: 1.5;
-        color: rgba(245, 245, 245, 0.55);
+        line-height: 1.55;
+        color: rgba(245, 245, 245, 0.62);
       }
 
       /* --- Native explore surface ---------------------------------------- */
@@ -318,9 +353,9 @@
       .explore-eyebrow {
         font-size: 11px;
         letter-spacing: 2.4px;
-        color: rgba(245, 245, 245, 0.42);
+        color: rgba(196, 151, 58, 0.85);
         text-transform: lowercase;
-        margin-bottom: 12px;
+        margin-bottom: 14px;
         text-align: center;
       }
       .explore-title {
@@ -340,13 +375,13 @@
         margin-bottom: 32px;
       }
       .section-label {
-        font-size: 11px;
-        letter-spacing: 2.4px;
+        font-size: 10.5px;
+        letter-spacing: 2.0px;
         text-transform: lowercase;
-        color: rgba(196, 151, 58, 0.7);
+        color: rgba(196, 151, 58, 0.85);
         margin-top: 32px;
-        margin-bottom: 6px;
-        padding-bottom: 6px;
+        margin-bottom: 10px;
+        padding-bottom: 8px;
         border-bottom: 1px solid rgba(255, 255, 255, 0.06);
       }
       .section-label:first-of-type { margin-top: 8px; }
@@ -360,7 +395,7 @@
     <main id="home-screen" class="surface" role="region" aria-label="Home" data-tab-context="/">
       <div class="home-wrap">
         <div class="brand-mark" aria-hidden="true"></div>
-        <h1 class="home-title">welcome to FRQNCY</h1>
+        <h1 class="home-title">welcome to frqncy</h1>
         <p class="home-lede">
           a network of people building their dream life. start with how you wake.
         </p>
@@ -397,9 +432,9 @@
     <main id="explore-screen" class="surface" role="region" aria-label="Explore" data-tab-context="/explore">
       <div class="explore-wrap">
         <div class="explore-eyebrow">browse</div>
-        <h1 class="explore-title">the FRQNCY network.</h1>
+        <h1 class="explore-title">the frqncy network.</h1>
         <p class="explore-lede">
-          everything FRQNCY publishes — the library, the people, the sanctuary, the social layer.
+          everything frqncy publishes — the library, the people, the sanctuary, the social layer.
         </p>
 
         <div class="section-label">your space</div>
@@ -412,12 +447,12 @@
           <button class="home-card" data-external="https://frqncy.network/my-frqncy">
             <div class="home-card-eyebrow">my frqncy</div>
             <div class="home-card-title">birth data + your design</div>
-            <div class="home-card-desc">human design chart, gates, alignment with FRQNCY's topic graph.</div>
+            <div class="home-card-desc">human design chart, gates, alignment with frqncy's topic graph.</div>
           </button>
           <button class="home-card" data-external="https://frqncy.network/membership/">
             <div class="home-card-eyebrow">membership</div>
             <div class="home-card-title">network access</div>
-            <div class="home-card-desc">support FRQNCY, unlock the deeper layers, your referral code.</div>
+            <div class="home-card-desc">support frqncy, unlock the deeper layers, your referral code.</div>
           </button>
         </div>
 
@@ -426,17 +461,17 @@
           <button class="home-card" data-external="https://frqncy.network/social/">
             <div class="home-card-eyebrow">nrg</div>
             <div class="home-card-title">the social layer</div>
-            <div class="home-card-desc">FRQNCY's federated social network. posts, replies, bluesky timeline. no leaderboards.</div>
+            <div class="home-card-desc">frqncy's federated social network. posts, replies, bluesky timeline. no leaderboards.</div>
           </button>
           <button class="home-card" data-external="https://frqncy.network/explore.html">
             <div class="home-card-eyebrow">topic graph</div>
             <div class="home-card-title">all 146 topics</div>
-            <div class="home-card-desc">the FRQNCY constellation — every topic, every domain, every pillar.</div>
+            <div class="home-card-desc">the frqncy constellation — every topic, every domain, every pillar.</div>
           </button>
           <button class="home-card" data-external="https://frqncy.network/watch/">
             <div class="home-card-eyebrow">watch</div>
             <div class="home-card-title">video + audio library</div>
-            <div class="home-card-desc">curated talks, films, conversations across the FRQNCY field.</div>
+            <div class="home-card-desc">curated talks, films, conversations across the frqncy field.</div>
           </button>
           <button class="home-card" data-external="https://frqncy.network/courses/">
             <div class="home-card-eyebrow">courses</div>
@@ -455,7 +490,7 @@
           </button>
           <button class="home-card" data-external="https://frqncy.network/people/">
             <div class="home-card-eyebrow">people</div>
-            <div class="home-card-title">the FRQNCY field</div>
+            <div class="home-card-title">the frqncy field</div>
             <div class="home-card-desc">teachers, builders, founders — who actually moved the needle.</div>
           </button>
         </div>
@@ -470,21 +505,51 @@
       allowfullscreen
     ></iframe>
 
-    <nav id="tab-bar" role="tablist">
+    <nav id="tab-bar" role="tablist" aria-label="Primary">
       <button class="tab active" data-route="/" role="tab" aria-label="Home">
-        <span class="tab-icon" aria-hidden="true">◎</span>
+        <span class="tab-icon" aria-hidden="true">
+          <!-- Home: circle with a centered horizontal bar (echoes the brand mark) -->
+          <svg viewBox="0 0 24 24" focusable="false">
+            <circle cx="12" cy="12" r="8.4" />
+            <line x1="6.4" y1="12" x2="17.6" y2="12" />
+          </svg>
+        </span>
         <span>home</span>
       </button>
       <button class="tab" data-route="/explore" role="tab" aria-label="Explore">
-        <span class="tab-icon" aria-hidden="true">◈</span>
+        <span class="tab-icon" aria-hidden="true">
+          <!-- Explore: constellation / dot-grid of five nodes linked by light lines -->
+          <svg viewBox="0 0 24 24" focusable="false">
+            <line x1="6" y1="6" x2="12" y2="12" />
+            <line x1="12" y1="12" x2="18" y2="6.5" />
+            <line x1="12" y1="12" x2="6.5" y2="18" />
+            <line x1="12" y1="12" x2="18" y2="17.5" />
+            <circle cx="6" cy="6" r="1.4" fill="currentColor" stroke="none" />
+            <circle cx="18" cy="6.5" r="1.4" fill="currentColor" stroke="none" />
+            <circle cx="12" cy="12" r="1.7" fill="currentColor" stroke="none" />
+            <circle cx="6.5" cy="18" r="1.4" fill="currentColor" stroke="none" />
+            <circle cx="18" cy="17.5" r="1.4" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
         <span>explore</span>
       </button>
       <button class="tab" data-route="/app/bedside.html" role="tab" aria-label="Bedside">
-        <span class="tab-icon" aria-hidden="true">☾</span>
+        <span class="tab-icon" aria-hidden="true">
+          <!-- Bedside: crescent moon (geometric, calm) -->
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M17.5 15.6A7.4 7.4 0 0 1 8.4 6.5a7.4 7.4 0 1 0 9.1 9.1z" />
+          </svg>
+        </span>
         <span>bedside</span>
       </button>
       <button class="tab" data-route="/app/settings.html" role="tab" aria-label="You">
-        <span class="tab-icon" aria-hidden="true">◇</span>
+        <span class="tab-icon" aria-hidden="true">
+          <!-- You: diamond outline with a centered dot -->
+          <svg viewBox="0 0 24 24" focusable="false">
+            <path d="M12 3.6 20.4 12 12 20.4 3.6 12z" />
+            <circle cx="12" cy="12" r="1.4" fill="currentColor" stroke="none" />
+          </svg>
+        </span>
         <span>you</span>
       </button>
     </nav>

@@ -199,24 +199,49 @@
         position: fixed;
         bottom: calc(80px + env(safe-area-inset-bottom));
         left: 50%;
-        transform: translateX(-50%);
-        font-size: 11.5px;
-        letter-spacing: 1.6px;
-        color: rgba(245, 245, 245, 0.36);
+        transform: translateX(-50%) scale(0.96);
+        font-size: 13px;
+        letter-spacing: 1.4px;
+        color: rgba(245, 245, 245, 0.62);
         text-transform: lowercase;
         pointer-events: none;
         opacity: 0;
-        transition: opacity 280ms ease;
+        transition: opacity 200ms ease, transform 200ms ease;
       }
-      .pause-pill.visible { opacity: 1; }
+      .pause-pill.visible {
+        opacity: 1;
+        transform: translateX(-50%) scale(1);
+      }
       .session-content {
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
+        transition: opacity 220ms ease;
       }
+      .session-content:active { opacity: 0.6; transition: none; }
+      /* Quiet farewell sentence before navigation home. */
+      .session-farewell {
+        position: fixed;
+        inset: 0;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        background: #060f24;
+        color: rgba(245, 245, 245, 0.78);
+        font-size: 22px;
+        font-weight: 200;
+        letter-spacing: 0.4px;
+        text-align: center;
+        padding: 24px;
+        opacity: 0;
+        pointer-events: none;
+        transition: opacity 800ms ease;
+        z-index: 10;
+      }
+      .session-farewell.visible { opacity: 1; pointer-events: auto; }
     </style>
   </head>
   <body>
-    <div class="chooser" id="chooser">
+    <div class="chooser" id="chooser" aria-hidden="false">
       <div class="chooser-title">tonight</div>
 
       <button type="button" class="option" data-moment="stillness" data-duration="20">
@@ -249,12 +274,13 @@
 
     <div class="session" id="session" aria-hidden="true">
       <button class="close-dot" id="close-dot" aria-label="End session">×</button>
-      <div class="session-content" id="session-content" role="button" aria-label="Tap to pause">
+      <div class="session-content" id="session-content" role="button" tabindex="0" aria-label="Tap to pause">
         <div class="session-moment" id="session-moment"></div>
-        <div class="session-prompt" id="session-prompt"></div>
-        <div class="session-timer" id="session-timer"></div>
+        <div class="session-prompt" id="session-prompt" aria-live="polite" aria-atomic="true"></div>
+        <div class="session-timer" id="session-timer" aria-hidden="true"></div>
       </div>
-      <div class="pause-pill" id="pause-pill" aria-live="polite">tap to resume</div>
+      <div class="pause-pill" id="pause-pill" role="status" aria-live="polite">paused &middot; tap to resume</div>
+      <div class="session-farewell" id="session-farewell" role="status" aria-live="polite" aria-hidden="true">thanks for sitting.</div>
     </div>
 
     <script type="module">
@@ -318,14 +344,39 @@
         return null;
       }
 
+      // Last-picked memory: avoid repeating the same audio file two
+      // sessions in a row for the same moment. With a small pool (e.g.,
+      // only 2-3 release tracks) pure random often repeats — the user
+      // hears "the same one again" and the variety promise breaks. We
+      // store one slug per moment in localStorage and exclude it from
+      // the candidate pool when picking. If a moment has only one file,
+      // we fall through and play it anyway (something > nothing).
+      const LAST_PICKED_KEY = 'frqncy.sleep.lastPicked';  // { [moment]: url }
+      function readLastPicked() {
+        try { return JSON.parse(localStorage.getItem(LAST_PICKED_KEY) || '{}'); }
+        catch { return {}; }
+      }
+      function writeLastPicked(moment, url) {
+        try {
+          const all = readLastPicked();
+          all[moment] = url;
+          localStorage.setItem(LAST_PICKED_KEY, JSON.stringify(all));
+        } catch {}
+      }
       function pickResource(resources, moment) {
         const candidates = (resources || []).filter(r =>
           Array.isArray(r.moment) && r.moment.includes(moment) &&
           r.url && /\.(mp3|m4a|wav)(\?|$)/i.test(r.url)
         );
-        return candidates.length > 0
-          ? candidates[Math.floor(Math.random() * candidates.length)]
-          : null;
+        if (candidates.length === 0) return null;
+        const lastUrl = readLastPicked()[moment];
+        const fresh = candidates.length > 1
+          ? candidates.filter(r => r.url !== lastUrl)
+          : candidates;
+        const pool = fresh.length > 0 ? fresh : candidates;
+        const chosen = pool[Math.floor(Math.random() * pool.length)];
+        if (chosen && chosen.url) writeLastPicked(moment, chosen.url);
+        return chosen;
       }
 
       // Bundled fallback — when resources.json has no moment-tagged audio,
@@ -440,7 +491,13 @@
       // --- Session lifecycle ---------------------------------------------------
       async function startSession(moment, durationMin) {
         chooser.classList.add('hidden');
+        chooser.setAttribute('aria-hidden', 'true');
         session.classList.add('visible');
+        // aria-hidden lifecycle: session was hidden at load; flip on
+        // when visible so the aria-live prompt rotations are actually
+        // announced by VoiceOver/TalkBack. Without this, the live
+        // region sits inside an aria-hidden subtree and is silent.
+        session.setAttribute('aria-hidden', 'false');
         setTimeout(() => session.classList.add('dimming'), 100);
 
         sessionMoment.textContent = moment;
@@ -468,6 +525,14 @@
         // Arm iOS keep-alive so a morning alarm can ring through the night.
         armWakeKeepAlive();
 
+        // Timer tick stays at 10s with minute-granular display the whole
+        // way down. Considered: 1s tick for the final minute to give a
+        // visible countdown. Rejected: digit-flipping is "watching the
+        // clock" energy — the opposite of drift. Headspace sleepcasts,
+        // Calm sessions, and Endel all hide or de-emphasize time as
+        // the session approaches end. We keep low-stim. The timer is
+        // also `aria-hidden="true"` on the element so screen readers
+        // don't announce remaining-time changes.
         tickTimer = setInterval(() => {
           if (pausedAt > 0) return;
           const elapsed = Math.floor(elapsedMs() / 1000);
@@ -481,6 +546,14 @@
         wirePauseToggle();
       }
 
+      // Fade the prompt and swap text. Because `#session-prompt` is
+      // `aria-live="polite" aria-atomic="true"`, mutating textContent
+      // queues a single announcement of the new prompt — the screen-
+      // reader user hears the rotation even though they don't see the
+      // fade. The 1400ms hidden window between fade-out and text swap
+      // is fine for AT: VoiceOver/TalkBack debounce live-region
+      // updates anyway, and the new text becomes visible and read
+      // together.
       function fade(el, text) {
         el.style.transition = 'opacity 1400ms ease';
         el.style.opacity = '0';
@@ -494,11 +567,25 @@
         clearInterval(tickTimer);
         await stopPlayback();
         await disarmWakeKeepAlive();
+        // Quiet farewell: show "thanks for sitting." for 1.5s before
+        // navigating home. Tested in mind: a hard cut back to the home
+        // screen ends the practice on a UI event; this one sentence
+        // ends it on a felt one. Headspace and Oak both close with a
+        // sentence; Calm closes with a chime. Closer to Headspace.
+        const farewell = document.getElementById('session-farewell');
+        if (farewell) {
+          farewell.classList.add('visible');
+          farewell.setAttribute('aria-hidden', 'false');
+        }
+        // Hide the session content beneath the farewell so the prompt
+        // doesn't bleed through during the 1.5s.
         session.classList.remove('visible');
+        session.setAttribute('aria-hidden', 'true');
         setTimeout(() => {
           chooser.classList.remove('hidden');
+          chooser.setAttribute('aria-hidden', 'false');
           window.location.href = '../index.html';
-        }, 1200);
+        }, 1500);
       }
 
       const sessionContent = document.getElementById('session-content');
@@ -512,9 +599,14 @@
             try { NativeAudio.pause({ assetId: activeAssetId }); } catch {}
           }
           if (htmlAudio) { try { htmlAudio.pause(); } catch {} }
-          pausePill.textContent = 'tap to resume';
+          // Copy reads as state-with-action rather than a lone
+          // instruction. "tap to resume" alone parsed as a command;
+          // "paused · tap to resume" parses as "where you are · what
+          // you can do" — closer to how iOS Now Playing reads a
+          // paused track ("Paused" + scrubber).
+          pausePill.innerHTML = 'paused &middot; tap to resume';
           pausePill.classList.add('visible');
-          sessionContent.setAttribute('aria-label', 'Tap to resume');
+          sessionContent.setAttribute('aria-label', 'Paused. Tap to resume.');
         } else if (!p && pausedAt > 0) {
           pausedAccum += Date.now() - pausedAt;
           pausedAt = 0;
@@ -548,6 +640,7 @@
                                   : moment === 'stillness' ? 'stillness'
                                   : 'drift';
         chooser.classList.add('hidden');
+        chooser.setAttribute('aria-hidden', 'true');
         settle.classList.add('visible');
         settle.setAttribute('aria-hidden', 'false');
       }
@@ -556,7 +649,22 @@
         settle.classList.remove('visible');
         settle.setAttribute('aria-hidden', 'true');
         chooser.classList.remove('hidden');
+        chooser.setAttribute('aria-hidden', 'false');
       }
+      // Settle gate: simple tap, not long-press.
+      // Considered: 1.5s hold-to-begin (like Endel's hold-to-enter or
+      // the Oura "tap and hold to start"). Decision: stay with tap.
+      // Reasons:
+      //   1. The Settle gate itself IS the wind-down pause — adding a
+      //      gesture-on-top-of-a-gesture asks the user to wind down
+      //      while performing input, which fights the calm.
+      //   2. Long-press has invisible state. A drowsy user who lifts
+      //      a fraction early gets nothing and assumes the app is
+      //      broken. The Headspace pattern is also tap-to-begin.
+      //   3. The screen is already low-stim — there's no urgency to
+      //      slow the user down further.
+      // If we ever do add a hold, it should be on the chooser cards
+      // (one decision boundary), not here (a second one).
       settleCta.addEventListener('click', () => {
         if (!pendingSession) return;
         const { moment, duration } = pendingSession;

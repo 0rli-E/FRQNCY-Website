@@ -139,34 +139,51 @@
       }
       .reflection-field {
         width: 100%;
-        min-height: 140px;
+        min-height: 168px;
         background: rgba(255, 255, 255, 0.04);
-        border: 1px solid rgba(255, 255, 255, 0.08);
+        /* Faint pre-focus gold tint to read as "input, not card" (review #14). */
+        border: 1px solid rgba(196, 151, 58, 0.16);
         border-radius: 14px;
         color: rgba(245, 245, 245, 0.92);
         font-family: inherit;
-        font-size: 15.5px;
+        font-size: 16px;
         font-weight: 300;
-        line-height: 1.55;
-        padding: 16px;
+        letter-spacing: 0.1px;
+        line-height: 1.6;
+        padding: 18px;
         resize: none;
         outline: none;
-        transition: border-color 200ms ease, background 200ms ease;
+        transition: border-color 200ms ease, background 200ms ease, box-shadow 200ms ease;
         text-align: left;
       }
-      .reflection-field:focus {
-        border-color: rgba(196, 151, 58, 0.45);
+      .reflection-field:focus,
+      .reflection-field:focus-visible {
+        border-color: rgba(196, 151, 58, 0.55);
         background: rgba(255, 255, 255, 0.06);
+        /* Soft halo so keyboard users + low-contrast environments see focus
+           unambiguously (review #15, WCAG 2.4.7). */
+        box-shadow: 0 0 0 2px rgba(196, 151, 58, 0.18);
       }
       .reflection-field::placeholder {
-        color: rgba(245, 245, 245, 0.32);
-        font-style: italic;
+        /* Drop italic (review #22 visual-brand); lift contrast (review #14). */
+        color: rgba(245, 245, 245, 0.5);
+        font-style: normal;
+      }
+      .reflection-field:disabled {
+        opacity: 0.4;
+        cursor: default;
       }
       .reflection-note {
         margin-top: 10px;
-        font-size: 11.5px;
+        /* Raised from 11.5 / 0.4 to clear WCAG 1.4.3 (review a11y #4). */
+        font-size: 12px;
         letter-spacing: 0.4px;
-        color: rgba(245, 245, 245, 0.4);
+        color: rgba(245, 245, 245, 0.62);
+      }
+      .reflection-note.soft {
+        margin-top: 4px;
+        color: rgba(245, 245, 245, 0.42);
+        font-style: normal;
       }
       .next {
         margin-top: 32px;
@@ -192,13 +209,22 @@
         color: rgba(196, 151, 58, 0.95);
         border-color: rgba(196, 151, 58, 0.5);
       }
+      .next button:active {
+        transform: scale(0.985);
+        opacity: 0.85;
+      }
       .next button:focus-visible {
         color: rgba(196, 151, 58, 0.95);
         outline: 2px solid rgba(196, 151, 58, 0.9);
         outline-offset: 2px;
       }
-      .reflection-field:focus-visible {
-        outline: none;  /* the border-color change is the indicator */
+      .next button[aria-busy="true"] {
+        opacity: 0.55;
+        pointer-events: none;
+      }
+      .next button[disabled] {
+        opacity: 0.35;
+        pointer-events: none;
       }
     </style>
   </head>
@@ -216,20 +242,28 @@
       <div class="hint" id="hint">hold for one breath</div>
     </div>
 
-    <div class="prompt-screen" id="prompt-screen" aria-hidden="true">
+    <div class="prompt-screen" id="prompt-screen" role="region" aria-label="Morning reflection" aria-hidden="true">
       <div class="prompt-inner">
-        <div class="prompt" id="prompt-text">what wants your attention today?</div>
+        <h1 class="prompt" id="prompt-text">what wants your attention today?</h1>
         <textarea
           class="reflection-field"
           id="reflection-field"
-          placeholder="anything · or nothing"
-          aria-label="Morning reflection"
+          placeholder="anything, or nothing"
+          aria-labelledby="prompt-text"
+          autocomplete="off"
+          autocorrect="off"
+          autocapitalize="sentences"
+          spellcheck="false"
+          enterkeyhint="done"
           rows="5"
+          disabled
+          aria-disabled="true"
         ></textarea>
-        <div class="reflection-note">private. saved on this device. never shown back to you.</div>
+        <div class="reflection-note">private. saved on this phone only. never shown back to you.</div>
+        <div class="reflection-note soft">yours to keep, or let go.</div>
         <div class="next">
-          <button id="movement">move with me · 3 min</button>
-          <button id="close">carry on</button>
+          <button id="movement" type="button">move with me · 3 min</button>
+          <button id="close" type="button">carry on</button>
         </div>
       </div>
     </div>
@@ -256,6 +290,33 @@
         'what are you grateful to meet again?',
         'where is your softness?',
       ];
+
+      // Pick a reflection prompt, excluding the one shown last time so the
+      // same prompt doesn't appear two mornings in a row. Stored locally; if
+      // storage is unavailable we just fall back to a uniform random pick.
+      const LAST_PROMPT_KEY = 'frqncy.wake.last_prompt_idx';
+      function pickReflectionIndex() {
+        let last = -1;
+        try {
+          const raw = localStorage.getItem(LAST_PROMPT_KEY);
+          if (raw !== null) {
+            const n = parseInt(raw, 10);
+            if (Number.isFinite(n) && n >= 0 && n < REFLECTIONS.length) last = n;
+          }
+        } catch {}
+        const pool = REFLECTIONS.length;
+        if (pool <= 1) return 0;
+        let idx = Math.floor(Math.random() * (pool - (last >= 0 ? 1 : 0)));
+        if (last >= 0 && idx >= last) idx += 1;
+        try { localStorage.setItem(LAST_PROMPT_KEY, String(idx)); } catch {}
+        return idx;
+      }
+      // Pick on page load so the prompt is stable for this morning's session
+      // (no surprise change between arrive-time and the user reading it). The
+      // prompt-screen is invisible until arrive() so the user only sees it
+      // once they've crossed the breath-hold.
+      const chosenPromptIdx = pickReflectionIndex();
+      const chosenPrompt = REFLECTIONS[chosenPromptIdx];
 
       // Accessibility: three dismiss modes per Stream 6.
       const DISMISS_MODE_KEY = 'frqncy.accessibility.dismiss_mode';
@@ -294,18 +355,28 @@
       // Breath-hold / long-press dismiss
       let holdStart = null;
       let holdTimer = null;
+      let activePointerId = null;
       function onStart(e) {
+        // Honor only the first active pointer — a second finger landing
+        // mid-hold otherwise orphans the first setTimeout (review #16).
+        if (activePointerId !== null) return;
         e.preventDefault();
+        activePointerId = e.pointerId != null ? e.pointerId : 'mouse';
+        if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
         holdStart = Date.now();
         ring.classList.add('holding');
         if (navigator.vibrate) navigator.vibrate(8);
         holdTimer = setTimeout(arrive, 6000);
       }
-      function onEnd() {
-        if (!holdStart) return;
+      function onEnd(e) {
+        // Only the originally-tracked pointer releases the hold.
+        if (e && e.pointerId != null && activePointerId !== null
+            && activePointerId !== 'mouse' && e.pointerId !== activePointerId) return;
+        if (!holdStart) { activePointerId = null; return; }
         ring.classList.remove('holding');
-        clearTimeout(holdTimer);
+        if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
         holdStart = null;
+        activePointerId = null;
       }
 
       // Triple-tap dismiss
@@ -346,11 +417,21 @@
         try { return JSON.parse(localStorage.getItem(REFLECTION_LOG_KEY) || '[]'); }
         catch { return []; }
       }
+      function todayLocal() {
+        // Use the user's LOCAL calendar day — toISOString() snaps to UTC and
+        // overwrites the wrong day for users east of UTC reflecting late at
+        // night (review edge-case #13).
+        const d = new Date();
+        const y = d.getFullYear();
+        const m = String(d.getMonth() + 1).padStart(2, '0');
+        const day = String(d.getDate()).padStart(2, '0');
+        return `${y}-${m}-${day}`;
+      }
       function persistReflection(text) {
         const trimmed = (text || '').trim();
         if (!trimmed) return;
         const log = loadReflectionLog();
-        const today = new Date().toISOString().slice(0, 10);
+        const today = todayLocal();
         // One entry per day — overwrite if the user edits during the same morning.
         const idx = log.findIndex(e => e.date === today);
         const entry = { date: today, ts: Date.now(), text: trimmed };
@@ -371,12 +452,23 @@
       function arrive() {
         if (arrived) return;
         arrived = true;
-        clearTimeout(holdTimer);
+        if (holdTimer) { clearTimeout(holdTimer); holdTimer = null; }
         holdStart = null;
+        activePointerId = null;
         ring.classList.remove('holding');
         if (navigator.vibrate) navigator.vibrate([30, 60, 30]);
-        promptText.textContent = REFLECTIONS[Math.floor(Math.random() * REFLECTIONS.length)];
+        // Prompt was picked at page-load (chosenPrompt) so the random choice
+        // can't change underneath the user between gesture and reveal.
+        promptText.textContent = chosenPrompt;
         promptScreen.classList.add('visible');
+        promptScreen.setAttribute('aria-hidden', 'false');
+        // Enable the textarea now that the user has crossed the breath-hold.
+        // Until this point it's `disabled` so a stray touch during the hold
+        // (e.g. resting fingers on the device while the prompt screen is
+        // still invisible behind pointer-events:none) can't steal focus or
+        // raise the keyboard mid-arrival.
+        reflectionField.removeAttribute('disabled');
+        reflectionField.removeAttribute('aria-disabled');
         // Don't autofocus — that yanks attention to a textarea before the user
         // has read the prompt. They'll tap when ready.
       }
@@ -438,15 +530,35 @@
         activeMovementAssetId = null;
       }
 
+      const movementDefaultLabel = movementBtn.textContent;
+      function setMovementState(state, label) {
+        // states: 'idle' | 'loading' | 'playing' | 'error'
+        movementBtn.dataset.state = state;
+        if (label !== undefined) movementBtn.textContent = label;
+        if (state === 'loading') {
+          movementBtn.setAttribute('aria-busy', 'true');
+          movementBtn.disabled = true;
+        } else {
+          movementBtn.removeAttribute('aria-busy');
+          movementBtn.disabled = false;
+        }
+      }
+
       async function playMovement() {
-        const resources = await readResources();
+        setMovementState('loading', 'loading…');
+        let resources = null;
+        try { resources = await readResources(); } catch {}
         if (!resources) {
-          window.location.href = '../index.html';
+          setMovementState('error', 'no practice available · carry on');
+          // Brief pause so the user reads the failure, then surface a retry
+          // affordance by restoring the idle label.
+          setTimeout(() => setMovementState('idle', movementDefaultLabel), 2400);
           return;
         }
         const pick = pickMorning(resources);
         if (!pick) {
-          window.location.href = '../index.html';
+          setMovementState('error', 'no practice available · carry on');
+          setTimeout(() => setMovementState('idle', movementDefaultLabel), 2400);
           return;
         }
 
@@ -456,7 +568,7 @@
             activeMovementAssetId = `frqncy.morning.${pick.id || Date.now()}`;
             await NativeAudio.preload({ assetId: activeMovementAssetId, assetPath: pick.url, audioChannelNum: 1, isUrl: true });
             await NativeAudio.play({ assetId: activeMovementAssetId });
-            promptText.textContent = `playing: ${pick.name || 'morning practice'}`;
+            setMovementState('playing', `playing · ${pick.name || 'morning practice'}`);
             return;
           } catch (err) {
             console.warn('NativeAudio play failed, falling back to browser', err);
@@ -467,19 +579,32 @@
         if (Browser) {
           try {
             await Browser.open({ url: pick.url, presentationStyle: 'popover' });
+            setMovementState('idle', movementDefaultLabel);
             return;
           } catch {}
         }
-        window.open(pick.url, '_blank');
+        try { window.open(pick.url, '_blank'); } catch {}
+        setMovementState('idle', movementDefaultLabel);
       }
 
       movementBtn.addEventListener('click', () => {
+        if (movementBtn.disabled) return;
         persistReflection(reflectionField.value);
         playMovement();
       });
+
+      // "carry on" — route back via the standard in-app navigation. wake.html
+      // is its own top-level Capacitor page (not iframed; the home iframe lives
+      // in index.html and we are not inside it here), so location.href is the
+      // correct navigation path back to the launcher. We guard against double-
+      // taps so the cleanup-then-navigate sequence runs exactly once.
+      let closing = false;
       closeBtn.addEventListener('click', async () => {
+        if (closing) return;
+        closing = true;
+        closeBtn.disabled = true;
         persistReflection(reflectionField.value);
-        await stopMovement();
+        try { await stopMovement(); } catch {}
         window.location.href = '../index.html';
       });
       // Page-hide also kills audio — covers system back gesture, app backgrounding,

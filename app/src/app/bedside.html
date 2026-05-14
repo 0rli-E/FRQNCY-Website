@@ -19,16 +19,17 @@
 
       /* Bedside mode — once armed, the page calms. Background deepens to a
          near-black navy. Non-essential chrome (toggles, sleep entry, footer
-         note, practice link, h1) fades to ~30% to reduce stimulation while
-         the time + disarm affordance stay prominent. Adapted from Apple's
-         Sleep Focus and Android Bedtime patterns. */
+         note, practice link, h1) fades to ~40% to reduce stimulation while
+         the time + disarm affordance stay prominent. 40% (was 32%) keeps
+         labels legible in a dim room without losing the "calmed" feel.
+         Adapted from Apple's Sleep Focus and Android Bedtime patterns. */
       body.bedside-armed { background: #060f24; }
       body.bedside-armed h1,
       body.bedside-armed .toggle-row,
       body.bedside-armed .sleep-entry,
       body.bedside-armed .quiet-note,
       body.bedside-armed .practice-link {
-        opacity: 0.32;
+        opacity: 0.40;
         transition: opacity 1200ms ease;
       }
       body.bedside-armed .toggle-row:hover,
@@ -74,14 +75,19 @@
         line-height: 1;
         background: none;
         border: 0;
-        padding: 0;
+        padding: 0 0 2px;
         color: inherit;
         font-family: inherit;
         cursor: pointer;
         -webkit-tap-highlight-color: transparent;
-        transition: opacity 160ms ease;
+        /* Subtle dotted underline is the tap affordance — calmer than an
+           edit icon, more discoverable than nothing. Drawn under the digits
+           via border-bottom so it sits flush with the baseline. */
+        border-bottom: 1px dotted rgba(245, 245, 245, 0.28);
+        transition: transform 90ms ease, border-color 240ms ease;
       }
-      .time-display:active { opacity: 0.6; }
+      .time-display:active { transform: scale(0.97); border-bottom-color: rgba(196, 151, 58, 0.7); }
+      body.bedside-armed .time-display { border-bottom-color: rgba(245, 245, 245, 0.14); }
       .time-countdown {
         margin-top: 8px;
         font-size: 12.5px;
@@ -252,6 +258,46 @@
         line-height: 1.6;
         color: rgba(245, 245, 245, 0.78);
         margin-bottom: 14px;
+      }
+      .oem-card ol.oem-steps {
+        margin: 0 0 14px;
+        padding: 0;
+        list-style: none;
+        counter-reset: oem-step;
+      }
+      .oem-card ol.oem-steps li {
+        counter-increment: oem-step;
+        position: relative;
+        padding: 10px 12px 10px 36px;
+        margin-bottom: 6px;
+        background: rgba(245, 245, 245, 0.03);
+        border-radius: 10px;
+        font-size: 13.5px;
+        font-weight: 300;
+        line-height: 1.5;
+        color: rgba(245, 245, 245, 0.85);
+      }
+      .oem-card ol.oem-steps li::before {
+        content: counter(oem-step);
+        position: absolute;
+        top: 10px;
+        left: 10px;
+        width: 20px;
+        height: 20px;
+        border-radius: 50%;
+        background: rgba(196, 151, 58, 0.14);
+        border: 1px solid rgba(196, 151, 58, 0.42);
+        color: rgba(196, 151, 58, 0.95);
+        font-size: 11px;
+        line-height: 18px;
+        text-align: center;
+      }
+      .oem-card .oem-footnote {
+        font-size: 12px;
+        font-weight: 300;
+        color: rgba(245, 245, 245, 0.5);
+        line-height: 1.5;
+        margin-bottom: 0;
       }
       .oem-card .actions {
         display: flex; gap: 12px; margin-top: 20px;
@@ -458,7 +504,7 @@
       </div>
 
       <div class="quiet-note" id="reliability-note">
-        <strong>For best reliability:</strong> plug your phone in and leave FRQNCY open in Bedside Mode.
+        <strong>for reliable wake:</strong> plug in your phone and leave frqncy open in bedside mode overnight.
       </div>
     </div>
 
@@ -466,27 +512,28 @@
     <div class="toast" id="toast" role="status" aria-live="polite"></div>
 
     <!-- First-run welcome — kept short. Detailed reliability copy stays on the
-         page in the quiet-note + OEM modal so it doesn't gate first use. -->
+         page in the quiet-note + OEM modal so it doesn't gate first use.
+         Voice: lowercase, no duplicate phrasing with the home card's preview. -->
     <div class="welcome-overlay" id="welcome-overlay" role="dialog" aria-modal="true" aria-labelledby="welcome-title" aria-hidden="true">
       <div class="welcome-card">
         <div class="welcome-eyebrow">welcome to bedside</div>
         <h2 id="welcome-title">a softer way to wake.</h2>
         <p>
-          set a time. the tone fades in over 90 seconds. dismissing the alarm is one breath, held — not a tap, not a swipe.
+          set a time. the tone fades in. dismissing is one breath, held — not a tap.
         </p>
         <button class="welcome-cta" id="welcome-cta">begin</button>
       </div>
     </div>
 
-    <!-- OEM guidance overlay (shown on first arm on Android, hidden on iOS) -->
+    <!-- OEM guidance overlay (shown on first arm on Android, hidden on iOS).
+         Body is built dynamically from FrqncyAlarm.getOemGuidance() — the
+         instruction string is split into an ordered list. -->
     <div class="oem-overlay" id="oem-overlay" role="dialog" aria-modal="true" aria-labelledby="oem-title" aria-hidden="true">
       <div class="oem-card">
-        <h2 id="oem-title">a quick setting on your phone</h2>
-        <p id="oem-text">…</p>
-        <p style="font-size: 12px; color: rgba(245, 245, 245, 0.5);">
-          Phone alarms on Android can fail under aggressive battery management.
-          One-time setup keeps FRQNCY reliable.
-        </p>
+        <h2 id="oem-title">one-time setup</h2>
+        <p id="oem-text">your phone throttles background apps. these steps keep frqncy reliable overnight.</p>
+        <ol class="oem-steps" id="oem-steps"></ol>
+        <p class="oem-footnote">takes about a minute. you only do it once.</p>
         <div class="actions">
           <button class="later" id="oem-later">later</button>
           <button class="ok" id="oem-ok">open settings</button>
@@ -661,9 +708,12 @@
         const totalMin = Math.floor(ms / 60_000);
         const h = Math.floor(totalMin / 60);
         const m = totalMin % 60;
-        countdownEl.textContent = h > 0
-          ? `in ${h}h ${m}m`
-          : `in ${m}m`;
+        // Show the actual fire time first ("at 06:45") then the relative
+        // window ("· in 8h 23m"). Two anchors so a drowsy glance gets both
+        // pieces of information without re-deriving one from the other.
+        const fireTime = timeInput.value || '06:45';
+        const rel = h > 0 ? `in ${h}h ${m}m` : `in ${m}m`;
+        countdownEl.textContent = `at ${fireTime} · ${rel}`;
       }
       function updateCountdown() {
         renderCountdown();
@@ -800,23 +850,64 @@
         }
       }
 
+      // Split a manufacturer instruction string into an ordered list of steps.
+      // The native plugin returns sentences like:
+      //   "On Samsung: open Settings → Battery → ... . Add FRQNCY. Also: ..."
+      // We strip the "On <oem>:" prefix and split on sentence breaks so each
+      // step stands alone in the modal's <ol>. Falls back to a one-item list
+      // for unrecognised shapes.
+      function parseOemSteps(raw) {
+        if (!raw || typeof raw !== 'string') return [];
+        // Strip leading "On <Brand>:" / "On <Brand>/<Brand>:" prefix.
+        const stripped = raw.replace(/^on [^:]+:\s*/i, '').trim();
+        // Split on ". " but keep "Settings → Apps → ..." intact (no period
+        // inside arrows). Trim trailing period; keep "Also:" as its own item.
+        const parts = stripped
+          .split(/\.\s+(?=[A-Z])/)
+          .map(s => s.replace(/\.+$/, '').trim())
+          .filter(Boolean);
+        return parts;
+      }
+
       async function maybeShowOemGuidance() {
         if (!FrqncyAlarm) return;
         if (localStorage.getItem(OEM_ACK_KEY) === '1') return;
         try {
           const guidance = await FrqncyAlarm.getOemGuidance();
-          // iOS returns isAggressive=false — show the iOS-specific note in the
-          // reliability footer rather than as a modal.
+          // iOS / friendly Androids return isAggressive=false — keep the
+          // page's default reliability note (no manufacturer-specific copy
+          // needed) and ack so we don't ask again.
           if (!guidance.isAggressive) {
-            const note = document.getElementById('reliability-note');
-            if (note) {
-              note.innerHTML = `<strong>For best reliability:</strong> ${guidance.instructions}`;
-            }
             localStorage.setItem(OEM_ACK_KEY, '1');
             return;
           }
-          oemTitle.textContent = `${guidance.manufacturer.toLowerCase()} keeps strict watch on background apps`;
-          oemText.textContent = guidance.instructions;
+          const brand = (guidance.manufacturer || 'your phone').toLowerCase();
+          oemTitle.textContent = `one-time setup for ${brand}`;
+          oemText.textContent = `${brand} throttles background apps. these steps keep frqncy reliable overnight.`;
+          // Build the <ol> from the parsed sentences.
+          const stepsEl = document.getElementById('oem-steps');
+          if (stepsEl) {
+            stepsEl.innerHTML = '';
+            const steps = parseOemSteps(guidance.instructions);
+            if (steps.length === 0) {
+              // Fallback: render the raw instructions as a single item.
+              const li = document.createElement('li');
+              li.textContent = guidance.instructions || 'open phone settings and allow frqncy to run in the background.';
+              stepsEl.appendChild(li);
+            } else {
+              steps.forEach(text => {
+                const li = document.createElement('li');
+                li.textContent = text;
+                stepsEl.appendChild(li);
+              });
+            }
+          }
+          // After the user has acked once, the page-level reliability note
+          // becomes OEM-aware: name the manufacturer so they know it applies.
+          const note = document.getElementById('reliability-note');
+          if (note) {
+            note.innerHTML = `<strong>for reliable wake on ${brand}:</strong> keep frqncy open in bedside mode overnight, plugged in.`;
+          }
           oemModal.open();
         } catch {}
       }

@@ -70,7 +70,10 @@
         transform-origin: center;
         stroke-dasharray: 832;
         stroke-dashoffset: 832;
-        transition: stroke-dashoffset 6000ms linear;
+        /* Easing matches the breath-pace ring so the two motions agree:
+           slow at start + apex, faster through the middle. Linear made the
+           progress race ahead of the breath at t=1.5s and lag at t=3s. */
+        transition: stroke-dashoffset 6000ms cubic-bezier(0.42, 0, 0.58, 1);
       }
       #ring.holding #progress circle { stroke-dashoffset: 0; }
       .inner {
@@ -117,13 +120,39 @@
         outline: 2px solid rgba(196, 151, 58, 0.9);
         outline-offset: 4px;
       }
+      /* Practice-mode escape — mirrors the snooze button on the opposite
+         corner so a user can leave the rehearsal without completing the
+         6s hold. Hidden by default; shown only when ?preview=1. */
+      .practice-exit {
+        position: fixed;
+        top: calc(20px + env(safe-area-inset-top));
+        left: 16px;
+        background: rgba(245, 245, 245, 0.06);
+        border: 1px solid rgba(245, 245, 245, 0.14);
+        color: rgba(245, 245, 245, 0.7);
+        padding: 10px 18px;
+        min-height: 44px;
+        border-radius: 999px;
+        font-size: 12px;
+        letter-spacing: 0.6px;
+        font-family: inherit;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+        display: none;
+        z-index: 5;
+      }
+      .practice-exit:focus-visible {
+        outline: 2px solid rgba(196, 151, 58, 0.9);
+        outline-offset: 4px;
+      }
     </style>
   </head>
   <body>
+    <button class="practice-exit" id="practice-exit" type="button" aria-label="Back to bedside">← bedside</button>
     <div class="actions">
       <button id="snooze">return · 9 min</button>
     </div>
-    <div id="snooze-final-note" style="
+    <div id="snooze-final-note" role="status" aria-live="polite" style="
       position: fixed;
       top: calc(72px + env(safe-area-inset-top));
       left: 24px; right: 24px;
@@ -137,7 +166,7 @@
       transition: opacity 1200ms ease 400ms;
       pointer-events: none;
     ">
-      this is your third return.<br/>hold to arrive.
+      this is the third. hold to arrive.
     </div>
     <div id="stage">
       <div id="field"></div>
@@ -185,14 +214,19 @@
       const hint = document.getElementById('hint');
       const snoozeBtn = document.getElementById('snooze');
       const snoozeFinalNote = document.getElementById('snooze-final-note');
+      const practiceExit = document.getElementById('practice-exit');
 
       // If the user already snoozed twice, the snooze button is gone — the
       // gesture is the only way out. Surface that gently rather than just
       // hiding the button silently.
       if (previewMode) {
-        // In preview, hide snooze entirely and show a hint that this is practice.
+        // In preview, hide snooze entirely and show a clearer hint: this is
+        // rehearsal, nothing is armed, and there's a visible exit. The
+        // "← bedside" button (top-left) gives them a way out without
+        // completing the 6s breath-hold.
         snoozeBtn.style.display = 'none';
-        snoozeFinalNote.textContent = 'practice mode — hold to feel the gesture.';
+        practiceExit.style.display = 'inline-flex';
+        snoozeFinalNote.innerHTML = 'rehearsing the dismiss gesture.<br/>nothing is armed.';
         setTimeout(() => snoozeFinalNote.style.opacity = '1', 200);
       } else if (snoozesExhausted) {
         snoozeBtn.style.display = 'none';
@@ -201,6 +235,11 @@
         // Show remaining count next to snooze button
         snoozeBtn.textContent = `return · 9 min · ${snoozeLimit - snoozeCount} left`;
       }
+
+      // Practice-mode escape hatch — returns to bedside without firing arrive().
+      practiceExit.addEventListener('click', () => {
+        window.location.replace('./bedside.html');
+      });
 
       // ARIA labels on the ring so screen readers describe the gesture.
       ring.setAttribute('role', 'button');
