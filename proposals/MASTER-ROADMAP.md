@@ -21,6 +21,50 @@ Status legend:
 
 ---
 
+## From the notebook — handwritten Roadmap page (2026-05-15)
+
+*Verbatim transcription of Orlando's handwritten "Roadmap" page. Preserved as written, including abbreviations, original spelling, and sketch notes. Do not edit this section — interpretation and slotting into the layered roadmap happens below.*
+
+**Left column**
+
+- A place for truth, honesty and alignment • We integrate on top of all relevant chains and sit on top of them
+- Research • supporting the passionate unrelenting dreamers
+- FRQNCY ZPC becomes more autonomous
+- support energy independence and eco villages  *(sketch: a flowing wavy line from "eco villages" leading into the word "FRQNCY")*
+
+- FRQNCY crypto curation
+- Roadmap
+- Crypto onboarding "___"
+
+- Podcast with amazing guests
+- Referral network
+
+- Mankind aligned neural Network
+- Aligned goods
+- Research papers
+- Stable coin
+
+**Right column**
+
+- NRG and Community Roadmap
+- My FRQNCY Roadmap → chart integration
+- Social Media Roadmap  *(small face / smiley sketches in the margin)*
+- Shool like training grounds
+- Funding Research and supporting mankind aligned projects based on impact and KPIs
+- with all different Roadmaps spawning and plugging in
+- FRQNCY lives from its Monetary income
+- Crypto token
+- FRQNCY Janus called "___" finishing touches veto council
+- FRQNCY LP's
+- Courses for people to Learn
+- Harness that powers the World tree
+- AI managing Fund all topics
+- Physical settlement
+
+*(Top of page margin reads "Relationship" — appears to be a header from the previous page bleeding in, not part of this list.)*
+
+---
+
 ## Layer 0 — Platform foundation
 
 These are the things that have to keep working. If any of them break, everything else on the network gets harder.
