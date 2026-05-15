@@ -1,0 +1,797 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRQNCY · World Tree · v6 Crystal</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #050810; }
+#bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+#tree-svg   { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; }
+.eyebrow {
+  position: absolute; top: 22px; left: 30px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase;
+  color: rgba(196,151,58,0.55); pointer-events: none; z-index: 10;
+}
+.eyebrow span { color: rgba(168,216,234,0.60); }
+#nm-tooltip {
+  position: absolute; pointer-events: none; opacity: 0;
+  background: rgba(5,8,16,0.92);
+  border: 1px solid rgba(138,43,226,0.35);
+  border-radius: 2px; padding: 9px 13px;
+  font-family: 'Jost', sans-serif; font-size: 12.5px; color: #F0F4FF;
+  transition: opacity 0.12s; max-width: 240px;
+  backdrop-filter: blur(6px);
+  z-index: 100;
+}
+.tip-title { font-family: 'Cormorant', serif; font-style: italic; font-size: 17px; margin-bottom: 4px; color: #fff; }
+.tip-type  { font-size: 10px; letter-spacing: 0.12em; opacity: 0.55; text-transform: uppercase; color: #A8D8EA; }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<svg id="tree-svg"></svg>
+<div class="eyebrow">FRQNCY · <span>World Tree</span> · v6 Crystal</div>
+<div id="nm-tooltip"><div class="tip-title"></div><div class="tip-type"></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+/* ===================================================================
+   FRQNCY World Tree v6 — Crystal Growth
+   Crystal lattice structure, prismatic refractions, mineral palette
+   =================================================================== */
+
+// ─── DATA ─────────────────────────────────────────────────────────────────────
+// 8 domains, 6 topics each (octagonal layout = clean crystal geometry)
+const BRANCHES = [
+  {
+    id:"d-meta", label:"Consciousness", desc:"The architecture of reality",
+    topics:[
+      {id:"t-oneness",   label:"Oneness"},
+      {id:"t-source",    label:"Source Energy"},
+      {id:"t-vibration", label:"Vibration"},
+      {id:"t-sacredgeo", label:"Sacred Geometry"},
+      {id:"t-akashic",   label:"Akashic Records"},
+      {id:"t-merkaba",   label:"Merkaba"},
+    ]
+  },
+  {
+    id:"d-sciences", label:"Sciences", desc:"Empirical exploration of reality",
+    topics:[
+      {id:"t-quantum",  label:"Quantum Physics"},
+      {id:"t-neuro",    label:"Neuroscience"},
+      {id:"t-astrophys",label:"Astrophysics"},
+      {id:"t-bio",      label:"Biology"},
+      {id:"t-psych",    label:"Psychology"},
+      {id:"t-ecology",  label:"Ecology"},
+    ]
+  },
+  {
+    id:"d-tech", label:"Technology", desc:"Tools shaping the future",
+    topics:[
+      {id:"t-ai",        label:"Artificial Intelligence"},
+      {id:"t-blockchain",label:"Blockchain"},
+      {id:"t-web3",      label:"Web3"},
+      {id:"t-decentral", label:"Decentralized Networks"},
+      {id:"t-biotech",   label:"Biotechnology"},
+      {id:"t-robotics",  label:"Robotics"},
+    ]
+  },
+  {
+    id:"d-arts", label:"Arts & Culture", desc:"Expression of the human spirit",
+    topics:[
+      {id:"t-music",  label:"Music"},
+      {id:"t-visual", label:"Visual Art"},
+      {id:"t-film",   label:"Film"},
+      {id:"t-poetry", label:"Poetry"},
+      {id:"t-story",  label:"Storytelling"},
+      {id:"t-archit", label:"Architecture"},
+    ]
+  },
+  {
+    id:"d-nature", label:"Nature & Cosmos", desc:"The living systems of existence",
+    topics:[
+      {id:"t-forests",  label:"Forests"},
+      {id:"t-oceans",   label:"Oceans"},
+      {id:"t-cosmos",   label:"Stars & Planets"},
+      {id:"t-climate",  label:"Climate"},
+      {id:"t-biodivers",label:"Biodiversity"},
+      {id:"t-cycles",   label:"Seasons & Cycles"},
+    ]
+  },
+  {
+    id:"d-money", label:"Money", desc:"Capital, crypto, and the new financial layer",
+    topics:[
+      {id:"t-crypto",  label:"Cryptocurrency"},
+      {id:"t-bitcoin", label:"Bitcoin"},
+      {id:"t-defi",    label:"DeFi"},
+      {id:"t-impact",  label:"Impact Investing"},
+      {id:"t-conscap", label:"Conscious Capital"},
+      {id:"t-gold",    label:"Gold"},
+    ]
+  },
+  {
+    id:"d-wellbeing", label:"Well-being", desc:"Healing and wholeness",
+    topics:[
+      {id:"t-meditation",label:"Meditation"},
+      {id:"t-breathwork",label:"Breathwork"},
+      {id:"t-soundheal", label:"Sound Healing"},
+      {id:"t-yoga",      label:"Yoga"},
+      {id:"t-somatic",   label:"Somatic Therapy"},
+      {id:"t-energyheal",label:"Energy Healing"},
+    ]
+  },
+  {
+    id:"d-society", label:"Society", desc:"Collective human systems",
+    topics:[
+      {id:"t-governance",label:"Governance"},
+      {id:"t-indigenous",label:"Indigenous Wisdom"},
+      {id:"t-collective",label:"Collective Intelligence"},
+      {id:"t-peace",     label:"Peace Building"},
+      {id:"t-socialmov", label:"Social Movements"},
+      {id:"t-community", label:"Community"},
+    ]
+  },
+];
+
+// ─── CRYSTAL PALETTE ──────────────────────────────────────────────────────────
+const PALETTE = {
+  bg:         '#050810',
+  quartz:     '#F0F4FF',
+  amethyst1:  '#8A2BE2',
+  amethyst2:  '#2A0050',
+  amethyst3:  '#6A1BAD',
+  citrine1:   '#FFD700',
+  citrine2:   '#C4973A',
+  citrine3:   '#A06818',
+  rose:       'rgba(255,105,180,0.28)',
+  smoky1:     '#2A1F3D',
+  smoky2:     '#0D0818',
+  ice:        '#A8D8EA',
+  iceGlow:    'rgba(168,216,234,0.18)',
+};
+
+// ─── CANVAS / SVG SETUP ───────────────────────────────────────────────────────
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx    = bgCanvas.getContext('2d');
+const svgEl    = document.getElementById('tree-svg');
+const svg      = d3.select(svgEl);
+
+let CW, CH, cx, cy;
+let builtNodes = [], builtLinks = [], particles = [];
+let lastSpawn = 0;
+let hovered = null;
+
+// ─── GEOMETRY HELPERS ─────────────────────────────────────────────────────────
+// Snap angle to nearest 30° or 45° increment (crystal lattice directions)
+function snapAngle(angle) {
+  // Use 45° snaps (octagonal crystal system)
+  const step = Math.PI / 4;
+  return Math.round(angle / step) * step;
+}
+
+// Get a kinked path: straight line to a "kink point" at fixed angle, then straight to target
+// This creates the crystal lattice growth pattern
+function crystalPath(x1, y1, x2, y2, bi) {
+  const dx = x2 - x1, dy = y2 - y1;
+  const dist = Math.sqrt(dx*dx + dy*dy);
+  // Pick kink ratio along the path
+  const kinkT = 0.45 + (bi % 3) * 0.08;
+  // Midpoint offset: snap to axis
+  const rawAngle = Math.atan2(dy, dx);
+  const snapped = snapAngle(rawAngle);
+  // Kink point: go along snapped axis then correct
+  const kx = x1 + Math.cos(snapped) * dist * kinkT;
+  const ky = y1 + Math.sin(snapped) * dist * kinkT;
+  return { kx, ky };
+}
+
+// Build a hexagon polygon points string (for domain nodes)
+function hexPoints(cx, cy, r, rotation) {
+  rotation = rotation || 0;
+  const pts = [];
+  for (let i = 0; i < 6; i++) {
+    const a = (Math.PI / 3) * i + rotation;
+    pts.push(`${(cx + Math.cos(a) * r).toFixed(1)},${(cy + Math.sin(a) * r).toFixed(1)}`);
+  }
+  return pts.join(' ');
+}
+
+// Build an elongated diamond / crystal point polygon (for topic nodes)
+function crystalPointPolygon(cx, cy, r, angle) {
+  // Tall diamond: elongated along the radial direction
+  const longR = r * 2.0;  // elongated axis
+  const shortR = r * 1.2; // narrow axis
+  const perp = angle + Math.PI / 2;
+  const pts = [
+    [cx + Math.cos(angle) * longR,  cy + Math.sin(angle) * longR],
+    [cx + Math.cos(perp)  * shortR, cy + Math.sin(perp)  * shortR],
+    [cx - Math.cos(angle) * longR,  cy - Math.sin(angle) * longR],
+    [cx - Math.cos(perp)  * shortR, cy - Math.sin(perp)  * shortR],
+  ];
+  return pts.map(p => `${p[0].toFixed(1)},${p[1].toFixed(1)}`).join(' ');
+}
+
+// ─── LAYOUT ───────────────────────────────────────────────────────────────────
+function buildLayout() {
+  const dim  = Math.min(CW, CH);
+  const R1   = dim * 0.225;   // domain radius (tighter for crystal cluster feel)
+  const R2   = dim * 0.415;   // topic radius
+  const N    = BRANCHES.length; // 8 — octagonal
+  const SPREAD = Math.PI * 0.28; // topic arc half-spread
+
+  builtNodes = [];
+  builtLinks = [];
+  particles  = [];
+
+  // Core — citrine master crystal
+  const core = {
+    id:"frqncy", label:"FRQNCY", type:"core", r:52,
+    desc:"The living network of consciousness", x:cx, y:cy,
+    angle: 0
+  };
+  builtNodes.push(core);
+
+  BRANCHES.forEach((branch, bi) => {
+    // Octagonal positions: 8 even steps, starting straight up
+    const baseAngle = (bi / N) * Math.PI * 2 - Math.PI / 2;
+
+    // Domain node
+    const dx = cx + Math.cos(baseAngle) * R1;
+    const dy = cy + Math.sin(baseAngle) * R1;
+
+    // Crystal kink path core → domain
+    const { kx, ky } = crystalPath(cx, cy, dx, dy, bi);
+
+    const domainNode = {
+      id: branch.id, label: branch.label, type:"cluster", r:24,
+      desc: branch.desc, x: dx, y: dy,
+      angle: baseAngle,
+      kx, ky  // kink point for the crystal path
+    };
+    builtNodes.push(domainNode);
+    builtLinks.push({ source: core, target: domainNode, level: 0, kx, ky });
+
+    // Topic nodes: tight crystal cluster around domain
+    const nt = branch.topics.length;
+    branch.topics.forEach((topic, ti) => {
+      // Arrange in a tight fan. Crystal growth: topics cluster tightly around domain
+      const tAngle = baseAngle - SPREAD/2 + (ti / (nt - 1 || 1)) * SPREAD;
+      const tx = cx + Math.cos(tAngle) * R2;
+      const ty = cy + Math.sin(tAngle) * R2;
+
+      // Crystal kink path domain → topic
+      const { kx: tkx, ky: tky } = crystalPath(dx, dy, tx, ty, ti);
+
+      const topicNode = {
+        id: topic.id, label: topic.label, type:"topic", r:13,
+        x: tx, y: ty,
+        angle: tAngle,
+        domainAngle: baseAngle,
+        kx: tkx, ky: tky
+      };
+      builtNodes.push(topicNode);
+      builtLinks.push({ source: domainNode, target: topicNode, level: 1, kx: tkx, ky: tky });
+    });
+  });
+}
+
+// ─── SVG RENDERING ────────────────────────────────────────────────────────────
+function renderSVG() {
+  svg.selectAll('*').remove();
+
+  const defs = svg.append('defs');
+
+  // Core gradient: citrine gold
+  const gCore = defs.append('radialGradient').attr('id','g-core').attr('cx','38%').attr('cy','28%');
+  gCore.append('stop').attr('offset','0%').attr('stop-color','#F4DC88');
+  gCore.append('stop').attr('offset','55%').attr('stop-color','#C4973A');
+  gCore.append('stop').attr('offset','100%').attr('stop-color','#A06818');
+
+  // Domain gradient: amethyst deep
+  const gDomain = defs.append('radialGradient').attr('id','g-domain').attr('cx','35%').attr('cy','28%');
+  gDomain.append('stop').attr('offset','0%').attr('stop-color','#6A1BAD');
+  gDomain.append('stop').attr('offset','100%').attr('stop-color','#2A0050');
+
+  // Topic gradient: smoky quartz
+  const gTopic = defs.append('radialGradient').attr('id','g-topic').attr('cx','38%').attr('cy','30%');
+  gTopic.append('stop').attr('offset','0%').attr('stop-color','#2A1F3D');
+  gTopic.append('stop').attr('offset','100%').attr('stop-color','#0D0818');
+
+  // Core facet gradient (hexagon face)
+  const gCoreFacet = defs.append('radialGradient').attr('id','g-core-facet').attr('cx','40%').attr('cy','30%');
+  gCoreFacet.append('stop').attr('offset','0%').attr('stop-color','rgba(255,220,120,0.32)');
+  gCoreFacet.append('stop').attr('offset','70%').attr('stop-color','rgba(196,151,58,0.10)');
+  gCoreFacet.append('stop').attr('offset','100%').attr('stop-color','rgba(100,60,10,0.02)');
+
+  // Domain facet gradient (hexagon face)
+  const gDomainFacet = defs.append('radialGradient').attr('id','g-domain-facet').attr('cx','38%').attr('cy','28%');
+  gDomainFacet.append('stop').attr('offset','0%').attr('stop-color','rgba(160,80,255,0.28)');
+  gDomainFacet.append('stop').attr('offset','70%').attr('stop-color','rgba(80,20,160,0.10)');
+  gDomainFacet.append('stop').attr('offset','100%').attr('stop-color','rgba(20,5,50,0.02)');
+
+  // Topic crystal point gradient
+  const gTopicFacet = defs.append('radialGradient').attr('id','g-topic-facet').attr('cx','38%').attr('cy','28%');
+  gTopicFacet.append('stop').attr('offset','0%').attr('stop-color','rgba(80,40,120,0.22)');
+  gTopicFacet.append('stop').attr('offset','100%').attr('stop-color','rgba(13,8,24,0.02)');
+
+  // Glow filter for core
+  const fGlow = defs.append('filter').attr('id','f-core-glow')
+    .attr('x','-80%').attr('y','-80%').attr('width','260%').attr('height','260%');
+  fGlow.append('feGaussianBlur').attr('stdDeviation','12').attr('result','blur');
+  const m1 = fGlow.append('feMerge');
+  m1.append('feMergeNode').attr('in','blur');
+  m1.append('feMergeNode').attr('in','SourceGraphic');
+
+  // Glow filter for domains
+  const fDomGlow = defs.append('filter').attr('id','f-dom-glow')
+    .attr('x','-60%').attr('y','-60%').attr('width','220%').attr('height','220%');
+  fDomGlow.append('feGaussianBlur').attr('stdDeviation','7').attr('result','blur');
+  const m2 = fDomGlow.append('feMerge');
+  m2.append('feMergeNode').attr('in','blur');
+  m2.append('feMergeNode').attr('in','SourceGraphic');
+
+  // Glow filter for topics (subtle)
+  const fTopGlow = defs.append('filter').attr('id','f-top-glow')
+    .attr('x','-50%').attr('y','-50%').attr('width','200%').attr('height','200%');
+  fTopGlow.append('feGaussianBlur').attr('stdDeviation','4').attr('result','blur');
+  const m3 = fTopGlow.append('feMerge');
+  m3.append('feMergeNode').attr('in','blur');
+  m3.append('feMergeNode').attr('in','SourceGraphic');
+
+  // ── Crystal branches (straight-line kink paths) ──
+  const branchG = svg.append('g').attr('class','branches');
+
+  builtLinks.forEach((link, li) => {
+    const s = link.source, t = link.target;
+    // Two-segment kinked crystal path: S → kink → T
+    const pathD = `M${s.x.toFixed(1)},${s.y.toFixed(1)} L${link.kx.toFixed(1)},${link.ky.toFixed(1)} L${t.x.toFixed(1)},${t.y.toFixed(1)}`;
+
+    // Shadow / outer line (wider, darker)
+    branchG.append('path')
+      .attr('class', `branch branch-${t.id}`)
+      .attr('d', pathD)
+      .attr('fill', 'none')
+      .attr('stroke', link.level === 0 ? 'rgba(138,43,226,0.35)' : 'rgba(80,20,140,0.22)')
+      .attr('stroke-width', link.level === 0 ? 7 : 3)
+      .attr('stroke-linecap', 'square')
+      .attr('stroke-linejoin', 'miter');
+
+    // Inner highlight line (thinner, brighter)
+    branchG.append('path')
+      .attr('class', `branch-inner branch-inner-${t.id}`)
+      .attr('d', pathD)
+      .attr('fill', 'none')
+      .attr('stroke', link.level === 0 ? 'rgba(168,216,234,0.45)' : 'rgba(168,216,234,0.18)')
+      .attr('stroke-width', link.level === 0 ? 1.5 : 0.7)
+      .attr('stroke-linecap', 'square')
+      .attr('stroke-linejoin', 'miter');
+  });
+
+  // ── Facet shapes (draw before circles) ──
+  const facetG = svg.append('g').attr('class','facets');
+
+  builtNodes.forEach(n => {
+    if (n.type === 'core') {
+      // Large hexagon behind core — citrine crystal face
+      const rotation = Math.PI / 12; // 15° tilt
+      facetG.append('polygon')
+        .attr('points', hexPoints(n.x, n.y, n.r * 2.2, rotation))
+        .attr('fill', 'url(#g-core-facet)')
+        .attr('stroke', 'rgba(196,151,58,0.38)')
+        .attr('stroke-width', '0.8');
+
+      // Second inner hexagon (crystal faceting)
+      facetG.append('polygon')
+        .attr('points', hexPoints(n.x, n.y, n.r * 1.55, rotation + Math.PI/6))
+        .attr('fill', 'none')
+        .attr('stroke', 'rgba(255,220,100,0.22)')
+        .attr('stroke-width', '0.5');
+
+    } else if (n.type === 'cluster') {
+      // Hexagon behind domain node — amethyst crystal face
+      const rotation = n.angle + Math.PI / 12;
+      facetG.append('polygon')
+        .attr('points', hexPoints(n.x, n.y, n.r * 2.0, rotation))
+        .attr('fill', 'url(#g-domain-facet)')
+        .attr('stroke', 'rgba(138,43,226,0.32)')
+        .attr('stroke-width', '0.6');
+
+      // Inner smaller hexagon
+      facetG.append('polygon')
+        .attr('points', hexPoints(n.x, n.y, n.r * 1.3, rotation + Math.PI/6))
+        .attr('fill', 'none')
+        .attr('stroke', 'rgba(168,100,255,0.20)')
+        .attr('stroke-width', '0.4');
+
+    } else if (n.type === 'topic') {
+      // Elongated diamond / crystal point behind topic
+      facetG.append('polygon')
+        .attr('points', crystalPointPolygon(n.x, n.y, n.r, n.domainAngle))
+        .attr('fill', 'url(#g-topic-facet)')
+        .attr('stroke', 'rgba(80,40,140,0.35)')
+        .attr('stroke-width', '0.5');
+    }
+  });
+
+  // ── Node circles ──
+  const nodeG = svg.append('g').attr('class','nodes');
+  const groups = nodeG.selectAll('g.node')
+    .data(builtNodes)
+    .join('g')
+    .attr('class', d => `node node-${d.id}`)
+    .attr('transform', d => `translate(${d.x},${d.y})`)
+    .style('cursor', 'default');
+
+  // Core node
+  groups.filter(d => d.type === 'core')
+    .append('circle')
+    .attr('r', d => d.r)
+    .attr('fill', 'url(#g-core)')
+    .attr('stroke', '#E0C06A')
+    .attr('stroke-width', 2.5)
+    .attr('filter', 'url(#f-core-glow)');
+
+  // Domain nodes
+  groups.filter(d => d.type === 'cluster')
+    .append('circle')
+    .attr('r', d => d.r)
+    .attr('fill', 'url(#g-domain)')
+    .attr('stroke', '#8A2BE2')
+    .attr('stroke-width', 1.5)
+    .attr('filter', 'url(#f-dom-glow)');
+
+  // Topic nodes
+  groups.filter(d => d.type === 'topic')
+    .append('circle')
+    .attr('r', d => d.r)
+    .attr('fill', 'url(#g-topic)')
+    .attr('stroke', 'rgba(138,43,226,0.60)')
+    .attr('stroke-width', 0.8)
+    .attr('filter', 'url(#f-top-glow)');
+
+  // ── Labels ──
+  groups.append('text')
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'central')
+    .attr('fill', d =>
+      d.type === 'core'    ? '#0A1220' :
+      d.type === 'cluster' ? '#E8D0FF' :
+      'rgba(200,210,240,0.82)')
+    .attr('font-family', d =>
+      d.type === 'core' ? 'Cormorant,Georgia,serif' : "'Jost',sans-serif")
+    .attr('font-size', d =>
+      d.type === 'core' ? '15px' : d.type === 'cluster' ? '9.5px' : '8px')
+    .attr('font-weight', d => d.type === 'core' ? '500' : d.type === 'cluster' ? '400' : '300')
+    .attr('letter-spacing', d => d.type === 'core' ? '0.18em' : d.type === 'cluster' ? '0.06em' : '0.04em')
+    .attr('pointer-events', 'none')
+    .each(function(d) {
+      const el = d3.select(this);
+      if ((d.type === 'topic' || d.type === 'cluster') && d.label.length > 13) {
+        const words = d.label.split(' ');
+        const mid = Math.ceil(words.length / 2);
+        el.append('tspan').attr('x',0).attr('dy','-0.5em').text(words.slice(0,mid).join(' '));
+        el.append('tspan').attr('x',0).attr('dy','1em').text(words.slice(mid).join(' '));
+      } else {
+        el.text(d.label);
+      }
+    });
+
+  // ── Hover interaction ──
+  const tip = document.getElementById('nm-tooltip');
+
+  groups
+    .on('mouseover', function(e, d) {
+      hovered = d;
+      // Dim non-connected nodes
+      const connectedIds = new Set([d.id]);
+      builtLinks.forEach(l => {
+        if (l.source.id === d.id) connectedIds.add(l.target.id);
+        if (l.target.id === d.id) connectedIds.add(l.source.id);
+      });
+      // Fade branches and nodes not connected
+      svg.selectAll('.branch').style('opacity', function() {
+        const cls = this.getAttribute('class');
+        if (!cls) return 0.08;
+        const matchId = [...connectedIds].some(id => cls.includes(`branch-${id}`));
+        return matchId ? 1 : 0.08;
+      });
+      svg.selectAll('.branch-inner').style('opacity', function() {
+        const cls = this.getAttribute('class');
+        if (!cls) return 0.04;
+        const matchId = [...connectedIds].some(id => cls.includes(`branch-inner-${id}`));
+        return matchId ? 1 : 0.04;
+      });
+      svg.selectAll('.node').style('opacity', function() {
+        const cls = this.getAttribute('class');
+        if (!cls) return 0.08;
+        const matchId = [...connectedIds].some(id => cls.includes(`node-${id}`));
+        return matchId ? 1 : 0.08;
+      });
+
+      // Tooltip
+      if (tip) {
+        tip.querySelector('.tip-title').textContent = d.label;
+        tip.querySelector('.tip-type').textContent =
+          (d.desc ? d.desc + ' · ' : '') +
+          ({core:'FRQNCY CORE', cluster:'DOMAIN', topic:'TOPIC'}[d.type] || '');
+        tip.style.opacity = '1';
+      }
+    })
+    .on('mousemove', e => {
+      if (!tip) return;
+      tip.style.left = (e.clientX + 16) + 'px';
+      tip.style.top  = (e.clientY - 16) + 'px';
+    })
+    .on('mouseout', () => {
+      hovered = null;
+      svg.selectAll('.branch').style('opacity', null);
+      svg.selectAll('.branch-inner').style('opacity', null);
+      svg.selectAll('.node').style('opacity', null);
+      if (tip) tip.style.opacity = '0';
+    });
+}
+
+// ─── BACKGROUND CRYSTAL FORMATIONS ───────────────────────────────────────────
+// Large faint crystal outline polygons at corners / edges
+function drawBackgroundCrystals(ts) {
+  const formations = [
+    // [cx%, cy%, points, rotation]
+    { cx: 0.05, cy: 0.10, points: 7, r: 180, rotation: 0.3, pulse: 0.8 },
+    { cx: 0.95, cy: 0.08, points: 6, r: 140, rotation: 1.1, pulse: 1.2 },
+    { cx: 0.92, cy: 0.88, points: 8, r: 200, rotation: 0.5, pulse: 0.6 },
+    { cx: 0.08, cy: 0.85, points: 6, r: 160, rotation: 0.9, pulse: 1.0 },
+    { cx: 0.50, cy: 0.03, points: 5, r: 110, rotation: 0.2, pulse: 1.4 },
+    { cx: 0.50, cy: 0.97, points: 7, r: 130, rotation: 0.7, pulse: 0.9 },
+  ];
+
+  formations.forEach(f => {
+    const fcx = f.cx * CW, fcy = f.cy * CH;
+    const pulsed = f.r * (1 + 0.02 * Math.sin(ts * 0.0003 * f.pulse));
+    bgCtx.beginPath();
+    for (let i = 0; i < f.points; i++) {
+      const a = (Math.PI * 2 / f.points) * i + f.rotation;
+      const px = fcx + Math.cos(a) * pulsed;
+      const py = fcy + Math.sin(a) * pulsed;
+      if (i === 0) bgCtx.moveTo(px, py);
+      else bgCtx.lineTo(px, py);
+    }
+    bgCtx.closePath();
+    bgCtx.strokeStyle = 'rgba(138,43,226,0.04)';
+    bgCtx.lineWidth = 1;
+    bgCtx.stroke();
+
+    // Inner facet lines
+    for (let i = 0; i < f.points; i++) {
+      const a = (Math.PI * 2 / f.points) * i + f.rotation;
+      bgCtx.beginPath();
+      bgCtx.moveTo(fcx, fcy);
+      bgCtx.lineTo(fcx + Math.cos(a) * pulsed * 0.6, fcy + Math.sin(a) * pulsed * 0.6);
+      bgCtx.strokeStyle = 'rgba(168,216,234,0.025)';
+      bgCtx.lineWidth = 0.5;
+      bgCtx.stroke();
+    }
+  });
+}
+
+// ─── IRIDESCENT SHIMMER ───────────────────────────────────────────────────────
+let shimmerAngle = 0;
+function drawShimmer(ts) {
+  shimmerAngle = (ts * 0.00008) % (Math.PI * 2);
+
+  // Rotating rainbow gradient at very low opacity
+  const gradX1 = cx + Math.cos(shimmerAngle) * CW * 0.7;
+  const gradY1 = cy + Math.sin(shimmerAngle) * CH * 0.7;
+  const gradX2 = cx + Math.cos(shimmerAngle + Math.PI) * CW * 0.7;
+  const gradY2 = cy + Math.sin(shimmerAngle + Math.PI) * CH * 0.7;
+
+  const shimmer = bgCtx.createLinearGradient(gradX1, gradY1, gradX2, gradY2);
+  shimmer.addColorStop(0.0,  'rgba(138,43,226,0.028)');  // amethyst
+  shimmer.addColorStop(0.16, 'rgba(168,216,234,0.022)'); // ice blue
+  shimmer.addColorStop(0.32, 'rgba(107,203,119,0.018)'); // mint
+  shimmer.addColorStop(0.48, 'rgba(255,215,0,0.020)');   // citrine
+  shimmer.addColorStop(0.64, 'rgba(255,105,180,0.016)'); // rose
+  shimmer.addColorStop(0.80, 'rgba(138,43,226,0.022)');  // back to amethyst
+  shimmer.addColorStop(1.0,  'rgba(168,216,234,0.020)');
+
+  bgCtx.fillStyle = shimmer;
+  bgCtx.fillRect(0, 0, CW, CH);
+}
+
+// ─── PRISMATIC LIGHT RAYS FROM CORE ──────────────────────────────────────────
+function drawLightRays(ts) {
+  const core = builtNodes.find(n => n.type === 'core');
+  if (!core) return;
+
+  const N = 8;
+  for (let i = 0; i < N; i++) {
+    const angle = (i / N) * Math.PI * 2;
+    const rayLen = Math.max(CW, CH) * 0.8;
+    const rayEndX = core.x + Math.cos(angle) * rayLen;
+    const rayEndY = core.y + Math.sin(angle) * rayLen;
+
+    // Hue cycles per ray, offset by time
+    const hue = ((i / N) * 360 + ts * 0.01) % 360;
+    const pulse = 0.5 + 0.5 * Math.sin(ts * 0.0008 + i * 0.9);
+
+    const rayGrad = bgCtx.createLinearGradient(core.x, core.y, rayEndX, rayEndY);
+    rayGrad.addColorStop(0,   `hsla(${hue},90%,75%,${(0.18 * pulse).toFixed(3)})`);
+    rayGrad.addColorStop(0.2, `hsla(${(hue+30)%360},90%,70%,${(0.06 * pulse).toFixed(3)})`);
+    rayGrad.addColorStop(0.5, `hsla(${(hue+80)%360},90%,70%,${(0.025 * pulse).toFixed(3)})`);
+    rayGrad.addColorStop(1,   `hsla(${(hue+160)%360},90%,70%,0)`);
+
+    bgCtx.beginPath();
+    bgCtx.moveTo(core.x, core.y);
+    bgCtx.lineTo(rayEndX, rayEndY);
+    bgCtx.strokeStyle = rayGrad;
+    bgCtx.lineWidth = 1.2;
+    bgCtx.stroke();
+  }
+}
+
+// ─── NODE GLOWS (canvas layer) ────────────────────────────────────────────────
+function drawNodeGlows(ts) {
+  builtNodes.forEach(n => {
+    if (n.type === 'core') {
+      // Citrine pulse glow
+      const pulse = 0.8 + 0.2 * Math.sin(ts * 0.001);
+      const gr = bgCtx.createRadialGradient(n.x, n.y, n.r * 0.6, n.x, n.y, n.r * 3.5 * pulse);
+      gr.addColorStop(0,   'rgba(255,215,0,0.28)');
+      gr.addColorStop(0.4, 'rgba(196,151,58,0.10)');
+      gr.addColorStop(0.7, 'rgba(196,151,58,0.03)');
+      gr.addColorStop(1,   'rgba(196,151,58,0)');
+      bgCtx.fillStyle = gr;
+      bgCtx.beginPath();
+      bgCtx.arc(n.x, n.y, n.r * 3.5 * pulse, 0, Math.PI * 2);
+      bgCtx.fill();
+
+    } else if (n.type === 'cluster') {
+      // Amethyst glow
+      const pulse = 0.85 + 0.15 * Math.sin(ts * 0.0007 + n.angle * 2);
+      const gr = bgCtx.createRadialGradient(n.x, n.y, n.r * 0.5, n.x, n.y, n.r * 2.8 * pulse);
+      gr.addColorStop(0,   'rgba(138,43,226,0.22)');
+      gr.addColorStop(0.5, 'rgba(80,10,160,0.07)');
+      gr.addColorStop(1,   'rgba(40,0,80,0)');
+      bgCtx.fillStyle = gr;
+      bgCtx.beginPath();
+      bgCtx.arc(n.x, n.y, n.r * 2.8 * pulse, 0, Math.PI * 2);
+      bgCtx.fill();
+
+    } else if (n.type === 'topic') {
+      // Ice blue micro-glow
+      const pulse = 0.9 + 0.1 * Math.sin(ts * 0.0012 + n.angle * 3);
+      const gr = bgCtx.createRadialGradient(n.x, n.y, n.r * 0.4, n.x, n.y, n.r * 2.2 * pulse);
+      gr.addColorStop(0,   'rgba(168,216,234,0.16)');
+      gr.addColorStop(0.5, 'rgba(80,40,140,0.05)');
+      gr.addColorStop(1,   'rgba(40,0,80,0)');
+      bgCtx.fillStyle = gr;
+      bgCtx.beginPath();
+      bgCtx.arc(n.x, n.y, n.r * 2.2 * pulse, 0, Math.PI * 2);
+      bgCtx.fill();
+    }
+  });
+}
+
+// ─── PARTICLE SYSTEM — Prismatic refractions ──────────────────────────────────
+function spawnParticle() {
+  if (particles.length > 180 || !builtLinks.length) return;
+  const link = builtLinks[Math.floor(Math.random() * builtLinks.length)];
+  particles.push({
+    sx: link.source.x, sy: link.source.y,
+    kx: link.kx,       ky: link.ky,
+    tx: link.target.x, ty: link.target.y,
+    prog: 0,
+    speed: 0.006 + Math.random() * 0.008,
+    level: link.level,
+    hueOffset: Math.random() * 360,
+    size: link.level === 0 ? (1.8 + Math.random() * 0.8) : (1.0 + Math.random() * 0.5),
+  });
+}
+
+// Interpolate along kinked path (two-segment)
+function kinkPathPoint(sx, sy, kx, ky, tx, ty, t) {
+  // First half: source → kink, second half: kink → target
+  if (t < 0.5) {
+    const u = t * 2;
+    return {
+      x: sx + (kx - sx) * u,
+      y: sy + (ky - sy) * u
+    };
+  } else {
+    const u = (t - 0.5) * 2;
+    return {
+      x: kx + (tx - kx) * u,
+      y: ky + (ty - ky) * u
+    };
+  }
+}
+
+// ─── RENDER LOOP ──────────────────────────────────────────────────────────────
+const STARS = Array.from({length: 160}, () => ({
+  rx: Math.random(), ry: Math.random(),
+  r:  Math.random() * 1.1 + 0.15,
+  base:  Math.random() * 0.30 + 0.06,
+  phase: Math.random() * Math.PI * 2,
+  speed: 0.4 + Math.random() * 0.8,
+}));
+
+function render(ts) {
+  requestAnimationFrame(render);
+  bgCtx.clearRect(0, 0, CW, CH);
+
+  // ── Solid dark base ──
+  bgCtx.fillStyle = '#050810';
+  bgCtx.fillRect(0, 0, CW, CH);
+
+  // ── Iridescent shimmer layer ──
+  drawShimmer(ts);
+
+  // ── Background crystal formations ──
+  drawBackgroundCrystals(ts);
+
+  // ── Stars (subtle, fewer than v1 — crystals are the star) ──
+  const t = ts * 0.00045;
+  STARS.forEach(s => {
+    const a = s.base * (0.60 + 0.40 * Math.sin(t * s.speed + s.phase));
+    bgCtx.fillStyle = `rgba(200,220,255,${a.toFixed(3)})`;
+    bgCtx.beginPath();
+    bgCtx.arc(s.rx * CW, s.ry * CH, s.r, 0, Math.PI * 2);
+    bgCtx.fill();
+  });
+
+  if (!builtNodes.length) { requestAnimationFrame(render); return; }
+
+  // ── Prismatic rays from core ──
+  drawLightRays(ts);
+
+  // ── Node glows ──
+  drawNodeGlows(ts);
+
+  // ── Particles ──
+  if (ts - lastSpawn > 110) { spawnParticle(); lastSpawn = ts; }
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.prog += p.speed;
+    if (p.prog >= 1) { particles.splice(i, 1); continue; }
+
+    const pt = kinkPathPoint(p.sx, p.sy, p.kx, p.ky, p.tx, p.ty, p.prog);
+    const fade = Math.min(p.prog * 6, 1) * Math.min((1 - p.prog) * 6, 1);
+
+    // Prismatic color shift: hue increases with progress (R→G→B→V cycle)
+    const hue = (p.hueOffset + p.prog * 300) % 360;
+    const alpha = (p.level === 0 ? 0.90 : 0.70) * fade;
+
+    bgCtx.fillStyle = `hsla(${hue.toFixed(0)},90%,72%,${alpha.toFixed(3)})`;
+    bgCtx.beginPath();
+    bgCtx.arc(pt.x, pt.y, p.size, 0, Math.PI * 2);
+    bgCtx.fill();
+
+    // Tiny bright core on each particle
+    bgCtx.fillStyle = `rgba(255,255,255,${(alpha * 0.6).toFixed(3)})`;
+    bgCtx.beginPath();
+    bgCtx.arc(pt.x, pt.y, p.size * 0.35, 0, Math.PI * 2);
+    bgCtx.fill();
+  }
+}
+
+// ─── RESIZE + BOOT ────────────────────────────────────────────────────────────
+function resize() {
+  CW = bgCanvas.width  = window.innerWidth;
+  CH = bgCanvas.height = window.innerHeight;
+  cx = CW / 2;
+  cy = CH / 2;
+  buildLayout();
+  renderSVG();
+}
+
+window.addEventListener('resize', resize, { passive: true });
+resize();
+requestAnimationFrame(render);
+</script>
+</body>
+</html>

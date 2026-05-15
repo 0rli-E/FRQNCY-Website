@@ -1,0 +1,887 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRQNCY · World Tree · v3 Sacred Geometry</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #060C1E; }
+
+#bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 1; }
+#sacred-bg  { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; z-index: 0; }
+#tree-svg   { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; z-index: 2; }
+
+.eyebrow {
+  position: absolute; top: 22px; left: 30px; z-index: 10;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase;
+  color: rgba(212,175,55,0.55); pointer-events: none;
+}
+.eyebrow span { color: rgba(201,149,108,0.65); }
+
+#nm-tooltip {
+  position: absolute; pointer-events: none; opacity: 0; z-index: 20;
+  background: rgba(6,12,30,0.94);
+  border: 1px solid rgba(212,175,55,0.32);
+  border-radius: 2px; padding: 9px 14px;
+  font-family: 'Jost', sans-serif; font-size: 12px; color: #F8F4FF;
+  transition: opacity 0.14s; max-width: 240px;
+  backdrop-filter: blur(6px);
+}
+.tip-title { font-family: 'Cormorant', serif; font-style: italic; font-size: 17px; margin-bottom: 4px; color: #fff; }
+.tip-type  { font-size: 9.5px; letter-spacing: 0.12em; opacity: 0.55; text-transform: uppercase; }
+
+/* Rotating background geometry */
+@keyframes slow-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(360deg); }
+}
+#geo-rotate-group {
+  transform-origin: 50% 50%;
+  animation: slow-rotate 240s linear infinite;
+}
+
+/* Outer dot ring */
+@keyframes counter-rotate {
+  from { transform: rotate(0deg); }
+  to   { transform: rotate(-360deg); }
+}
+#outer-dot-ring {
+  transform-origin: 50% 50%;
+  animation: slow-rotate 180s linear infinite;
+}
+</style>
+</head>
+<body>
+
+<!-- Sacred geometry background (non-interactive, rotating layer) -->
+<svg id="sacred-bg" viewBox="0 0 1200 800" preserveAspectRatio="xMidYMid slice" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <pattern id="flower-of-life" x="0" y="0" width="120" height="103.92" patternUnits="userSpaceOnUse">
+      <!-- Flower of Life cell: 7 overlapping circles on hex grid -->
+      <circle cx="60" cy="51.96" r="34.64" fill="none" stroke="#4A6AAA" stroke-width="0.4"/>
+      <circle cx="94.64" cy="31.96" r="34.64" fill="none" stroke="#4A6AAA" stroke-width="0.4"/>
+      <circle cx="94.64" cy="71.96" r="34.64" fill="none" stroke="#4A6AAA" stroke-width="0.4"/>
+      <circle cx="60" cy="91.96" r="34.64" fill="none" stroke="#4A6AAA" stroke-width="0.4"/>
+      <circle cx="25.36" cy="71.96" r="34.64" fill="none" stroke="#4A6AAA" stroke-width="0.4"/>
+      <circle cx="25.36" cy="31.96" r="34.64" fill="none" stroke="#4A6AAA" stroke-width="0.4"/>
+      <circle cx="60" cy="11.96" r="34.64" fill="none" stroke="#4A6AAA" stroke-width="0.4"/>
+    </pattern>
+    <radialGradient id="fog-mask" cx="50%" cy="50%" r="55%">
+      <stop offset="0%"   stop-color="#060C1E" stop-opacity="0"/>
+      <stop offset="60%"  stop-color="#060C1E" stop-opacity="0"/>
+      <stop offset="100%" stop-color="#060C1E" stop-opacity="1"/>
+    </radialGradient>
+  </defs>
+
+  <!-- Flower of Life tiling -->
+  <rect width="1200" height="800" fill="url(#flower-of-life)" opacity="0.04"/>
+  <!-- Fade edges -->
+  <rect width="1200" height="800" fill="url(#fog-mask)"/>
+
+  <!-- Rotating geometry group (Metatron's Cube + Sri Yantra-ish outlines) -->
+  <g id="geo-rotate-group" style="transform-origin:600px 400px">
+    <!-- Metatron outer circles (13-circle system) -->
+    <g stroke="#1A2A5A" stroke-width="0.5" fill="none" opacity="0.6">
+      <!-- Fruit of Life — 13 circles -->
+      <circle cx="600" cy="400" r="110"/>
+      <circle cx="600" cy="400" r="220"/>
+      <circle cx="600" cy="400" r="330"/>
+      <!-- Metatron connecting lines — all 78 connections approximated as star polygons -->
+      <!-- Inner hexagram lines -->
+      <line x1="600" y1="290" x2="695.4" y2="455"/>
+      <line x1="695.4" y1="455" x2="504.6" y2="455"/>
+      <line x1="504.6" y1="455" x2="600" y2="290"/>
+      <line x1="600" y1="510" x2="695.4" y2="345"/>
+      <line x1="695.4" y1="345" x2="504.6" y2="345"/>
+      <line x1="504.6" y1="345" x2="600" y2="510"/>
+      <!-- Mid hexagram lines -->
+      <line x1="600" y1="180" x2="790.5" y2="510"/>
+      <line x1="790.5" y1="510" x2="409.5" y2="510"/>
+      <line x1="409.5" y1="510" x2="600" y2="180"/>
+      <line x1="600" y1="620" x2="790.5" y2="290"/>
+      <line x1="790.5" y1="290" x2="409.5" y2="290"/>
+      <line x1="409.5" y1="290" x2="600" y2="620"/>
+      <!-- Outer ring dodecagon -->
+      <polygon points="
+        600,70  686.6,105 753.6,170 779.6,256 762.3,346
+        710,420  630,469  544,469  462,420  437.7,346
+        420.4,256 446.4,170 513.4,105
+      " stroke="#1A2A5A" stroke-width="0.4" fill="none"/>
+    </g>
+
+    <!-- Sri Yantra-ish triangular layering -->
+    <g stroke="#1A2A5A" stroke-width="0.35" fill="none" opacity="0.5">
+      <!-- Upward triangles -->
+      <polygon points="600,220 780,530 420,530"/>
+      <polygon points="600,250 760,520 440,520"/>
+      <polygon points="600,280 740,510 460,510"/>
+      <polygon points="600,310 720,500 480,500"/>
+      <!-- Downward triangles -->
+      <polygon points="600,580 780,270 420,270"/>
+      <polygon points="600,560 760,280 440,280"/>
+      <polygon points="600,540 740,290 460,290"/>
+      <polygon points="600,520 720,300 480,300"/>
+    </g>
+
+    <!-- Phi spiral guide circles (very faint) -->
+    <g stroke="#D4AF37" stroke-width="0.25" fill="none" opacity="0.08">
+      <circle cx="600" cy="400" r="34"/>
+      <circle cx="600" cy="400" r="55"/>
+      <circle cx="600" cy="400" r="89"/>
+      <circle cx="600" cy="400" r="144"/>
+      <circle cx="600" cy="400" r="233"/>
+      <circle cx="600" cy="400" r="377"/>
+    </g>
+  </g>
+
+  <!-- Outer rotating dot ring -->
+  <g id="outer-dot-ring" style="transform-origin:600px 400px">
+    <!-- 60 dots at radius ~370px -->
+    <g fill="#D4AF37" opacity="0.18">
+    </g>
+  </g>
+</svg>
+
+<canvas id="bg-canvas"></canvas>
+<svg id="tree-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+<div class="eyebrow">FRQNCY · <span>World Tree</span> · v3 · Sacred Geometry</div>
+<div id="nm-tooltip"><div class="tip-title"></div><div class="tip-type"></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+/* =========================================================================
+   FRQNCY World Tree v3 — Sacred Geometry Mandala
+   Palette: navy #060C1E · sacred gold #D4AF37 · rose gold #C9956C
+            blues #213E88→#3062C8 · iridescent white #F8F4FF
+   ========================================================================= */
+
+const PHI = 1.6180339887;
+
+// ─── 8 DOMAIN BRANCHES (6 topics each) ────────────────────────────────────
+const BRANCHES = [
+  {
+    id:"d-meta", label:"Consciousness", desc:"The architecture of reality",
+    topics:[
+      {id:"t-oneness",   label:"Oneness"},
+      {id:"t-source",    label:"Source Energy"},
+      {id:"t-vibration", label:"Vibration"},
+      {id:"t-sacredgeo", label:"Sacred Geometry"},
+      {id:"t-akashic",   label:"Akashic Records"},
+      {id:"t-merkaba",   label:"Merkaba"},
+    ]
+  },
+  {
+    id:"d-sciences", label:"Sciences", desc:"Empirical exploration of reality",
+    topics:[
+      {id:"t-quantum",   label:"Quantum Physics"},
+      {id:"t-neuro",     label:"Neuroscience"},
+      {id:"t-astrophys", label:"Astrophysics"},
+      {id:"t-bio",       label:"Biology"},
+      {id:"t-psych",     label:"Psychology"},
+      {id:"t-ecology",   label:"Ecology"},
+    ]
+  },
+  {
+    id:"d-tech", label:"Technology", desc:"Tools shaping the future",
+    topics:[
+      {id:"t-ai",        label:"Artificial Intelligence"},
+      {id:"t-blockchain",label:"Blockchain"},
+      {id:"t-web3",      label:"Web3"},
+      {id:"t-decentral", label:"Decentralized Networks"},
+      {id:"t-biotech",   label:"Biotechnology"},
+      {id:"t-robotics",  label:"Robotics"},
+    ]
+  },
+  {
+    id:"d-arts", label:"Arts & Culture", desc:"Expression of the human spirit",
+    topics:[
+      {id:"t-music",  label:"Music"},
+      {id:"t-visual", label:"Visual Art"},
+      {id:"t-film",   label:"Film"},
+      {id:"t-poetry", label:"Poetry"},
+      {id:"t-story",  label:"Storytelling"},
+      {id:"t-archit", label:"Architecture"},
+    ]
+  },
+  {
+    id:"d-nature", label:"Nature & Cosmos", desc:"The living systems of existence",
+    topics:[
+      {id:"t-forests",   label:"Forests"},
+      {id:"t-oceans",    label:"Oceans"},
+      {id:"t-cosmos",    label:"Stars & Planets"},
+      {id:"t-climate",   label:"Climate"},
+      {id:"t-biodivers", label:"Biodiversity"},
+      {id:"t-cycles",    label:"Seasons & Cycles"},
+    ]
+  },
+  {
+    id:"d-money", label:"Money", desc:"Capital, crypto, and the new financial layer",
+    topics:[
+      {id:"t-crypto",  label:"Cryptocurrency"},
+      {id:"t-bitcoin", label:"Bitcoin"},
+      {id:"t-defi",    label:"DeFi"},
+      {id:"t-impact",  label:"Impact Investing"},
+      {id:"t-conscap", label:"Conscious Capital"},
+      {id:"t-gold",    label:"Gold"},
+    ]
+  },
+  {
+    id:"d-wellbeing", label:"Well-being", desc:"Healing and wholeness",
+    topics:[
+      {id:"t-meditation",label:"Meditation"},
+      {id:"t-breathwork",label:"Breathwork"},
+      {id:"t-soundheal", label:"Sound Healing"},
+      {id:"t-yoga",      label:"Yoga"},
+      {id:"t-somatic",   label:"Somatic Therapy"},
+      {id:"t-energyheal",label:"Energy Healing"},
+    ]
+  },
+  {
+    id:"d-society", label:"Society", desc:"Collective human systems",
+    topics:[
+      {id:"t-governance",label:"Governance"},
+      {id:"t-indigenous",label:"Indigenous Wisdom"},
+      {id:"t-collective",label:"Collective Intelligence"},
+      {id:"t-peace",     label:"Peace Building"},
+      {id:"t-socialmov", label:"Social Movements"},
+      {id:"t-community", label:"Community"},
+    ]
+  },
+];
+
+// Topic shapes: cycle through triangle, square, hexagon for variety
+const TOPIC_SHAPES = ['triangle','square','hexagon','triangle','hexagon','square'];
+
+// ─── CANVAS / SVG REFS ──────────────────────────────────────────────────────
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx    = bgCanvas.getContext('2d');
+const svgEl    = document.getElementById('tree-svg');
+const svg      = d3.select(svgEl);
+
+let CW, CH, cx, cy;
+let builtNodes = [], builtLinks = [];
+let particles = [];
+let lastSpawn = 0;
+
+// ─── RESIZE ─────────────────────────────────────────────────────────────────
+function resize() {
+  CW = bgCanvas.width  = window.innerWidth;
+  CH = bgCanvas.height = window.innerHeight;
+  cx = CW / 2;
+  cy = CH / 2;
+
+  // Reposition the sacred-bg SVG viewBox center
+  const sacredBg = document.getElementById('sacred-bg');
+  sacredBg.setAttribute('viewBox', `0 0 ${CW} ${CH}`);
+  repositionGeo();
+
+  buildLayout();
+  renderSVG();
+}
+window.addEventListener('resize', resize, { passive: true });
+
+// ─── REPOSITION METATRON CENTER ─────────────────────────────────────────────
+function repositionGeo() {
+  // Update the geo group transform-origin to match actual center
+  const geoGroup = document.getElementById('geo-rotate-group');
+  const dotRing  = document.getElementById('outer-dot-ring');
+  if (geoGroup) {
+    geoGroup.style.transformOrigin = `${cx}px ${cy}px`;
+    // Update the SVG defs pattern center reference
+    updateGeoElements(cx, cy);
+  }
+  if (dotRing) {
+    dotRing.style.transformOrigin = `${cx}px ${cy}px`;
+  }
+}
+
+function updateGeoElements(ocx, ocy) {
+  // Replace the entire geo-rotate-group with centered geometry
+  const sacredBg = document.getElementById('sacred-bg');
+  const old = document.getElementById('geo-rotate-group');
+  if (old) old.remove();
+  const oldRing = document.getElementById('outer-dot-ring');
+  if (oldRing) oldRing.remove();
+
+  const dim = Math.min(CW, CH);
+  const R = dim * 0.42; // outer geometry radius
+
+  // Create geo group
+  const ns = 'http://www.w3.org/2000/svg';
+  const geoG = document.createElementNS(ns, 'g');
+  geoG.id = 'geo-rotate-group';
+  geoG.style.cssText = `transform-origin: ${ocx}px ${ocy}px; animation: slow-rotate 240s linear infinite;`;
+
+  function makeLine(x1,y1,x2,y2, grp) {
+    const l = document.createElementNS(ns,'line');
+    l.setAttribute('x1',x1); l.setAttribute('y1',y1);
+    l.setAttribute('x2',x2); l.setAttribute('y2',y2);
+    grp.appendChild(l);
+  }
+  function makeCircle(r, grp) {
+    const c = document.createElementNS(ns,'circle');
+    c.setAttribute('cx', ocx); c.setAttribute('cy', ocy); c.setAttribute('r', r);
+    grp.appendChild(c);
+  }
+  function makePolygon(points, grp) {
+    const p = document.createElementNS(ns,'polygon');
+    p.setAttribute('points', points);
+    grp.appendChild(p);
+  }
+
+  // Phi-ratio ring circles
+  const fibG = document.createElementNS(ns,'g');
+  fibG.setAttribute('stroke','#D4AF37');
+  fibG.setAttribute('stroke-width','0.3');
+  fibG.setAttribute('fill','none');
+  fibG.setAttribute('opacity','0.09');
+  const fibs = [0.0562, 0.091, 0.147, 0.238, 0.386, 0.624, 1.0];
+  fibs.forEach(f => makeCircle(R * f, fibG));
+  geoG.appendChild(fibG);
+
+  // Metatron Cube — concentric circles at Fibonacci intervals
+  const metaG = document.createElementNS(ns,'g');
+  metaG.setAttribute('stroke','#1A2A5A');
+  metaG.setAttribute('stroke-width','0.5');
+  metaG.setAttribute('fill','none');
+  metaG.setAttribute('opacity','0.7');
+  [R*0.182, R*0.364, R*0.546].forEach(r => makeCircle(r, metaG));
+
+  // Hexagram star lines at 3 scales
+  [R*0.182, R*0.364, R*0.546].forEach(r => {
+    // Upward triangle
+    for(let i=0;i<3;i++) {
+      const a1 = (i/3)*Math.PI*2 - Math.PI/2;
+      const a2 = ((i+1)/3)*Math.PI*2 - Math.PI/2;
+      makeLine(ocx+Math.cos(a1)*r, ocy+Math.sin(a1)*r, ocx+Math.cos(a2)*r, ocy+Math.sin(a2)*r, metaG);
+    }
+    // Downward triangle
+    for(let i=0;i<3;i++) {
+      const a1 = (i/3)*Math.PI*2 + Math.PI/6;
+      const a2 = ((i+1)/3)*Math.PI*2 + Math.PI/6;
+      makeLine(ocx+Math.cos(a1)*r, ocy+Math.sin(a1)*r, ocx+Math.cos(a2)*r, ocy+Math.sin(a2)*r, metaG);
+    }
+    // Star lines (center to point)
+    for(let i=0;i<6;i++) {
+      const a = (i/6)*Math.PI*2;
+      makeLine(ocx, ocy, ocx+Math.cos(a)*r, ocy+Math.sin(a)*r, metaG);
+    }
+  });
+  geoG.appendChild(metaG);
+
+  // Sri Yantra concentric triangles
+  const triG = document.createElementNS(ns,'g');
+  triG.setAttribute('stroke','#1A2A5A');
+  triG.setAttribute('stroke-width','0.35');
+  triG.setAttribute('fill','none');
+  triG.setAttribute('opacity','0.5');
+  const triScales = [0.26, 0.32, 0.38, 0.45];
+  triScales.forEach(s => {
+    const r = R * s;
+    // Up triangle
+    const upPts = [0,1,2].map(i => {
+      const a = (i/3)*Math.PI*2 - Math.PI/2;
+      return `${ocx+Math.cos(a)*r},${ocy+Math.sin(a)*r}`;
+    }).join(' ');
+    makePolygon(upPts, triG);
+    // Down triangle
+    const dnPts = [0,1,2].map(i => {
+      const a = (i/3)*Math.PI*2 + Math.PI/6;
+      return `${ocx+Math.cos(a)*r},${ocy+Math.sin(a)*r}`;
+    }).join(' ');
+    makePolygon(dnPts, triG);
+  });
+  geoG.appendChild(triG);
+
+  // Outer dodecagon
+  const dodecG = document.createElementNS(ns,'g');
+  dodecG.setAttribute('stroke','#1A2A5A');
+  dodecG.setAttribute('stroke-width','0.4');
+  dodecG.setAttribute('fill','none');
+  dodecG.setAttribute('opacity','0.4');
+  const dodecPts = Array.from({length:12}, (_,i) => {
+    const a = (i/12)*Math.PI*2;
+    return `${ocx+Math.cos(a)*R*0.92},${ocy+Math.sin(a)*R*0.92}`;
+  }).join(' ');
+  makePolygon(dodecPts, dodecG);
+  geoG.appendChild(dodecG);
+
+  sacredBg.appendChild(geoG);
+
+  // Outer rotating dot ring
+  const ringG = document.createElementNS(ns,'g');
+  ringG.id = 'outer-dot-ring';
+  ringG.style.cssText = `transform-origin: ${ocx}px ${ocy}px; animation: slow-rotate 180s linear infinite;`;
+
+  const dotCount = 72;
+  const dotR = R * 0.98;
+  for(let i=0;i<dotCount;i++) {
+    const a = (i/dotCount)*Math.PI*2;
+    const c = document.createElementNS(ns,'circle');
+    c.setAttribute('cx', ocx+Math.cos(a)*dotR);
+    c.setAttribute('cy', ocy+Math.sin(a)*dotR);
+    c.setAttribute('r', i % 9 === 0 ? 2.5 : i % 3 === 0 ? 1.5 : 0.8);
+    c.setAttribute('fill', '#D4AF37');
+    c.setAttribute('opacity', i % 9 === 0 ? '0.45' : i % 3 === 0 ? '0.25' : '0.12');
+    ringG.appendChild(c);
+  }
+  sacredBg.appendChild(ringG);
+}
+
+// ─── LAYOUT ──────────────────────────────────────────────────────────────────
+function buildLayout() {
+  const dim  = Math.min(CW, CH);
+  const R1   = dim * 0.24;   // domain radius
+  const R2   = dim * 0.43;   // topic radius
+  const N    = BRANCHES.length; // 8
+  const SPREAD = Math.PI * 0.28; // half-arc for topics around each domain
+
+  builtNodes = [];
+  builtLinks = [];
+  particles  = [];
+
+  // Core
+  const core = {
+    id:"frqncy", label:"FRQNCY", type:"core", r:52,
+    desc:"The living network of consciousness", x:cx, y:cy
+  };
+  builtNodes.push(core);
+
+  BRANCHES.forEach((branch, bi) => {
+    // 8 branches at 45-degree intervals (octagonal sacred geometry)
+    // Start at top (−π/2) and step by π/4
+    const baseAngle = (bi / N) * Math.PI * 2 - Math.PI / 2;
+
+    const dx = cx + Math.cos(baseAngle) * R1;
+    const dy = cy + Math.sin(baseAngle) * R1;
+
+    const domainNode = {
+      id: branch.id, label: branch.label, type:"cluster", r:24,
+      desc: branch.desc, x: dx, y: dy,
+      angle: baseAngle
+    };
+    builtNodes.push(domainNode);
+    builtLinks.push({ source: core, target: domainNode, level: 0 });
+
+    // Topic nodes — fanned at golden ratio proportional spread
+    const nt = branch.topics.length;
+    branch.topics.forEach((topic, ti) => {
+      const tAngle = baseAngle - SPREAD/2 + (ti / (nt - 1 || 1)) * SPREAD;
+      const tx = cx + Math.cos(tAngle) * R2;
+      const ty = cy + Math.sin(tAngle) * R2;
+
+      const topicNode = {
+        id: topic.id, label: topic.label, type:"topic", r:13,
+        x: tx, y: ty,
+        shape: TOPIC_SHAPES[ti % TOPIC_SHAPES.length],
+        angle: tAngle
+      };
+      builtNodes.push(topicNode);
+      builtLinks.push({ source: domainNode, target: topicNode, level: 1 });
+    });
+  });
+}
+
+// ─── SVG RENDER ──────────────────────────────────────────────────────────────
+function pathHex(cx,cy,r, points=6) {
+  const pts = [];
+  for(let i=0;i<points;i++){
+    const a = (i/points)*Math.PI*2 - Math.PI/2;
+    pts.push(`${cx+Math.cos(a)*r},${cy+Math.sin(a)*r}`);
+  }
+  return 'M'+pts.join('L')+'Z';
+}
+function pathTriangle(cx,cy,r) { return pathHex(cx,cy,r,3); }
+function pathSquare(cx,cy,r) {
+  const h = r * 0.88;
+  return `M${cx-h},${cy-h} L${cx+h},${cy-h} L${cx+h},${cy+h} L${cx-h},${cy+h}Z`;
+}
+// Star of David (hexagram) for domain node backgrounds
+function pathStarOfDavid(cx,cy,r) {
+  let d = '';
+  // Two overlapping equilateral triangles
+  for(let t=0;t<2;t++){
+    const pts = [0,1,2].map(i => {
+      const a = (i/3)*Math.PI*2 - Math.PI/2 + t*Math.PI/3;
+      return `${cx+Math.cos(a)*r},${cy+Math.sin(a)*r}`;
+    });
+    d += `M${pts[0]} L${pts[1]} L${pts[2]} Z `;
+  }
+  return d;
+}
+// Hexagonal path for domain glow shape
+function hexGlowPath(cx,cy,r) { return pathHex(cx,cy,r,6); }
+
+function renderSVG() {
+  svg.selectAll('*').remove();
+
+  const defs = svg.append('defs');
+
+  // Node fill gradients
+  [
+    { id:'g-core',    c1:'#F4DC88', c2:'#A06818' },
+    { id:'g-cluster', c1:'#3062C8', c2:'#081640' },
+    { id:'g-topic',   c1:'#213E88', c2:'#060E24' },
+  ].forEach(g => {
+    const gr = defs.append('radialGradient').attr('id', g.id).attr('cx','38%').attr('cy','30%');
+    gr.append('stop').attr('offset','0%').attr('stop-color', g.c1);
+    gr.append('stop').attr('offset','100%').attr('stop-color', g.c2);
+  });
+
+  // Hex glow filter for domain nodes
+  const hexFilter = defs.append('filter').attr('id','hex-glow').attr('x','-80%').attr('y','-80%').attr('width','260%').attr('height','260%');
+  hexFilter.append('feGaussianBlur').attr('stdDeviation','8').attr('result','blur');
+  const hm = hexFilter.append('feMerge');
+  hm.append('feMergeNode').attr('in','blur');
+  hm.append('feMergeNode').attr('in','SourceGraphic');
+
+  // Core glow filter
+  const coreFilter = defs.append('filter').attr('id','core-glow').attr('x','-80%').attr('y','-80%').attr('width','260%').attr('height','260%');
+  coreFilter.append('feGaussianBlur').attr('stdDeviation','14').attr('result','blur');
+  const cm = coreFilter.append('feMerge');
+  cm.append('feMergeNode').attr('in','blur');
+  cm.append('feMergeNode').attr('in','SourceGraphic');
+
+  // Topic glow filter
+  const topicFilter = defs.append('filter').attr('id','topic-glow').attr('x','-60%').attr('y','-60%').attr('width','220%').attr('height','220%');
+  topicFilter.append('feGaussianBlur').attr('stdDeviation','4').attr('result','blur');
+  const tm = topicFilter.append('feMerge');
+  tm.append('feMergeNode').attr('in','blur');
+  tm.append('feMergeNode').attr('in','SourceGraphic');
+
+  // ── Domain ring arc (connecting domain nodes in a circle) ──
+  const domainNodes = builtNodes.filter(n => n.type === 'cluster');
+  if (domainNodes.length > 0) {
+    const dim = Math.min(CW,CH);
+    const R1 = dim * 0.24;
+    const ringG = svg.append('g').attr('class','domain-ring');
+    ringG.append('circle')
+      .attr('cx', cx).attr('cy', cy)
+      .attr('r', R1)
+      .attr('fill','none')
+      .attr('stroke','rgba(212,175,55,0.12)')
+      .attr('stroke-width','1')
+      .attr('stroke-dasharray','4,8');
+
+    // Topic ring arc
+    const R2 = dim * 0.43;
+    ringG.append('circle')
+      .attr('cx', cx).attr('cy', cy)
+      .attr('r', R2)
+      .attr('fill','none')
+      .attr('stroke','rgba(48,98,200,0.08)')
+      .attr('stroke-width','0.6')
+      .attr('stroke-dasharray','2,12');
+  }
+
+  // ── Branch paths — straight geometric lines ──
+  const branchG = svg.append('g').attr('class','branches');
+  builtLinks.forEach(link => {
+    branchG.append('line')
+      .attr('x1', link.source.x)
+      .attr('y1', link.source.y)
+      .attr('x2', link.target.x)
+      .attr('y2', link.target.y)
+      .attr('stroke', link.level === 0 ? 'rgba(212,175,55,0.35)' : 'rgba(48,98,200,0.22)')
+      .attr('stroke-width', link.level === 0 ? 2 : 1)
+      .attr('stroke-linecap','square');
+  });
+
+  // ── Nodes ──
+  const nodeG = svg.append('g').attr('class','nodes');
+  const groups = nodeG.selectAll('g.node')
+    .data(builtNodes)
+    .join('g')
+    .attr('class','node')
+    .attr('transform', d => `translate(${d.x},${d.y})`)
+    .style('cursor','default');
+
+  // Star of David behind domain nodes
+  groups.filter(d => d.type === 'cluster')
+    .append('path')
+    .attr('d', d => pathStarOfDavid(0, 0, d.r * 2.1))
+    .attr('fill','none')
+    .attr('stroke','rgba(212,175,55,0.18)')
+    .attr('stroke-width','0.7');
+
+  // Hexagonal glow behind domain nodes
+  groups.filter(d => d.type === 'cluster')
+    .append('path')
+    .attr('d', d => hexGlowPath(0, 0, d.r * 2.0))
+    .attr('fill','rgba(48,98,200,0.08)')
+    .attr('stroke','rgba(48,98,200,0.18)')
+    .attr('stroke-width','0.5')
+    .attr('filter','url(#hex-glow)');
+
+  // Core golden glow ring
+  groups.filter(d => d.type === 'core')
+    .append('circle')
+    .attr('r', d => d.r * 2.8)
+    .attr('fill','rgba(212,175,55,0.06)')
+    .attr('stroke','rgba(212,175,55,0.22)')
+    .attr('stroke-width','0.6')
+    .attr('filter','url(#core-glow)');
+
+  // Core — hexagonal outline (sacred geometry)
+  groups.filter(d => d.type === 'core')
+    .append('path')
+    .attr('d', d => hexGlowPath(0, 0, d.r * 1.25))
+    .attr('fill','none')
+    .attr('stroke','rgba(212,175,55,0.30)')
+    .attr('stroke-width','0.8');
+
+  // Topic geometric shapes (triangle / square / hexagon)
+  groups.filter(d => d.type === 'topic')
+    .append('path')
+    .attr('d', d => {
+      const r = d.r;
+      if (d.shape === 'triangle') return pathTriangle(0,0,r*1.15);
+      if (d.shape === 'square')   return pathSquare(0,0,r*1.0);
+      return pathHex(0,0,r*1.08,6);
+    })
+    .attr('fill', 'url(#g-topic)')
+    .attr('stroke','rgba(48,98,200,0.55)')
+    .attr('stroke-width','0.7')
+    .attr('filter','url(#topic-glow)');
+
+  // Topic inner dot (iridescent white)
+  groups.filter(d => d.type === 'topic')
+    .append('circle')
+    .attr('r', 2.5)
+    .attr('fill','rgba(248,244,255,0.45)');
+
+  // Domain node circle (filled)
+  groups.filter(d => d.type === 'cluster')
+    .append('circle')
+    .attr('r', d => d.r)
+    .attr('fill','url(#g-cluster)')
+    .attr('stroke','rgba(48,98,200,0.65)')
+    .attr('stroke-width','1.2');
+
+  // Core node circle
+  groups.filter(d => d.type === 'core')
+    .append('circle')
+    .attr('r', d => d.r)
+    .attr('fill','url(#g-core)')
+    .attr('stroke','#D4AF37')
+    .attr('stroke-width','2.2');
+
+  // ── Labels ──
+  groups.filter(d => d.type !== 'topic')
+    .append('text')
+    .attr('text-anchor','middle')
+    .attr('dominant-baseline','central')
+    .attr('fill', d => d.type === 'core' ? '#0A1220' : '#E8C97D')
+    .attr('font-family', d => d.type === 'core' ? 'Cormorant,Georgia,serif' : "'Jost',sans-serif")
+    .attr('font-size', d => d.type === 'core' ? '15px' : '9px')
+    .attr('font-weight', d => d.type === 'core' ? '500' : '300')
+    .attr('letter-spacing', d => d.type === 'core' ? '0.18em' : '0.06em')
+    .attr('pointer-events','none')
+    .text(d => d.label);
+
+  // Topic labels — placed outside the shape, toward the perimeter
+  groups.filter(d => d.type === 'topic')
+    .append('text')
+    .attr('text-anchor','middle')
+    .attr('dominant-baseline','central')
+    .attr('fill','rgba(201,149,108,0.82)')
+    .attr('font-family',"'Jost',sans-serif")
+    .attr('font-size','7px')
+    .attr('font-weight','300')
+    .attr('letter-spacing','0.04em')
+    .attr('pointer-events','none')
+    .attr('transform', d => {
+      const outDist = 20;
+      const dim = Math.min(CW,CH);
+      const origCx = CW/2, origCy = CH/2;
+      const dx = d.x - origCx, dy = d.y - origCy;
+      const len = Math.sqrt(dx*dx+dy*dy) || 1;
+      return `translate(${dx/len*outDist},${dy/len*outDist})`;
+    })
+    .each(function(d) {
+      const el = d3.select(this);
+      if (d.label.length > 12) {
+        const words = d.label.split(' ');
+        const mid = Math.ceil(words.length/2);
+        el.append('tspan').attr('x',0).attr('dy','-0.5em').text(words.slice(0,mid).join(' '));
+        el.append('tspan').attr('x',0).attr('dy','1em').text(words.slice(mid).join(' '));
+      } else {
+        el.text(d.label);
+      }
+    });
+
+  // ── Tooltip interaction ──
+  const tip = document.getElementById('nm-tooltip');
+  groups
+    .on('mouseover', (e,d) => {
+      if (!tip) return;
+      tip.querySelector('.tip-title').textContent = d.label;
+      tip.querySelector('.tip-type').textContent =
+        d.desc || ({core:'FRQNCY Core · Sacred Center', cluster:'Domain', topic:'Topic'}[d.type]||'');
+      tip.style.opacity = '1';
+    })
+    .on('mousemove', e => {
+      if (!tip) return;
+      tip.style.left = (e.clientX + 16) + 'px';
+      tip.style.top  = (e.clientY - 16) + 'px';
+    })
+    .on('mouseout', () => { if (tip) tip.style.opacity = '0'; });
+}
+
+// ─── BACKGROUND STARS ────────────────────────────────────────────────────────
+const STARS = Array.from({length:160}, () => ({
+  rx: Math.random(), ry: Math.random(),
+  r:  Math.random()*1.2+0.15,
+  base:  Math.random()*0.38+0.06,
+  phase: Math.random()*Math.PI*2,
+  speed: 0.4+Math.random()*0.8,
+}));
+
+// ─── FIBONACCI SPIRAL PARTICLE PATHS ─────────────────────────────────────────
+// Approximate with successive arcs at Fibonacci-radius steps
+const FIB_RADII = [21,34,55,89,144,233,377];
+
+function spawnFibParticle() {
+  if (particles.length > 120 || !builtLinks.length) return;
+
+  // Pick a random branch link to flow along
+  const link = builtLinks[Math.floor(Math.random()*builtLinks.length)];
+
+  // Fibonacci spiral — start from the center and spiral outward
+  const fibR  = FIB_RADII[Math.floor(Math.random()*FIB_RADII.length)];
+  const fibAngle = Math.random()*Math.PI*2;
+  const startX = cx + Math.cos(fibAngle)*fibR*0.05;
+  const startY = cy + Math.sin(fibAngle)*fibR*0.05;
+  const endX   = link.target.x;
+  const endY   = link.target.y;
+
+  // Control point spirals outward at phi
+  const midAngle = fibAngle + 1/PHI;
+  const midR = fibR * 0.5;
+  particles.push({
+    sx: startX, sy: startY,
+    cpx: cx + Math.cos(midAngle)*midR,
+    cpy: cy + Math.sin(midAngle)*midR,
+    tx: endX, ty: endY,
+    prog: 0,
+    speed: 0.006+Math.random()*0.008,
+    level: link.level,
+    isFib: true,
+  });
+}
+
+function quadBezierPoint(x1,y1,cpx,cpy,x2,y2,t) {
+  const mt=1-t;
+  return {
+    x: mt*mt*x1+2*mt*t*cpx+t*t*x2,
+    y: mt*mt*y1+2*mt*t*cpy+t*t*y2,
+  };
+}
+
+// ─── RENDER LOOP ─────────────────────────────────────────────────────────────
+function render(ts) {
+  requestAnimationFrame(render);
+  bgCtx.clearRect(0,0,CW,CH);
+
+  // Background — very dark navy, subtle radial center lift
+  const bgGr = bgCtx.createRadialGradient(cx, cy*0.7, 0, cx, cy, Math.max(CW,CH)*0.75);
+  bgGr.addColorStop(0, '#0C1830');
+  bgGr.addColorStop(0.4,'#080F22');
+  bgGr.addColorStop(1, '#060C1E');
+  bgCtx.fillStyle = bgGr;
+  bgCtx.fillRect(0,0,CW,CH);
+
+  // Stars
+  const t = ts*0.00044;
+  STARS.forEach(s => {
+    const a = s.base*(0.6+0.4*Math.sin(t*s.speed+s.phase));
+    bgCtx.fillStyle = `rgba(248,244,255,${a.toFixed(2)})`;
+    bgCtx.beginPath();
+    bgCtx.arc(s.rx*CW, s.ry*CH, s.r, 0, Math.PI*2);
+    bgCtx.fill();
+  });
+
+  if (!builtNodes.length) return;
+
+  // Core golden aura (canvas, behind SVG)
+  const core = builtNodes.find(n => n.type==='core');
+  if (core) {
+    const pulse = 0.88+0.12*Math.sin(ts*0.0008);
+    const coreGr = bgCtx.createRadialGradient(core.x,core.y,core.r*0.4,core.x,core.y,core.r*5*pulse);
+    coreGr.addColorStop(0,'rgba(212,175,55,0.22)');
+    coreGr.addColorStop(0.4,'rgba(212,175,55,0.07)');
+    coreGr.addColorStop(1,'rgba(212,175,55,0)');
+    bgCtx.fillStyle = coreGr;
+    bgCtx.beginPath();
+    bgCtx.arc(core.x, core.y, core.r*5*pulse, 0, Math.PI*2);
+    bgCtx.fill();
+  }
+
+  // Domain hexagonal auras (canvas layer)
+  builtNodes.filter(n=>n.type==='cluster').forEach(n => {
+    const hexPulse = 0.9+0.1*Math.sin(ts*0.0006+n.angle);
+    const gr = bgCtx.createRadialGradient(n.x,n.y,n.r*0.4,n.x,n.y,n.r*3*hexPulse);
+    gr.addColorStop(0,'rgba(48,98,200,0.20)');
+    gr.addColorStop(0.5,'rgba(48,98,200,0.06)');
+    gr.addColorStop(1,'rgba(48,98,200,0)');
+    bgCtx.fillStyle = gr;
+    // Draw hex shape for glow
+    bgCtx.save();
+    bgCtx.beginPath();
+    const hr = n.r*3*hexPulse;
+    for(let i=0;i<6;i++){
+      const a=(i/6)*Math.PI*2-Math.PI/6;
+      if(i===0) bgCtx.moveTo(n.x+Math.cos(a)*hr, n.y+Math.sin(a)*hr);
+      else bgCtx.lineTo(n.x+Math.cos(a)*hr, n.y+Math.sin(a)*hr);
+    }
+    bgCtx.closePath();
+    bgCtx.fillStyle = gr;
+    bgCtx.fill();
+    bgCtx.restore();
+  });
+
+  // Topic auras — small warm rose gold points
+  builtNodes.filter(n=>n.type==='topic').forEach(n => {
+    const tp = 0.7+0.3*Math.sin(ts*0.001+n.angle*3);
+    const gr = bgCtx.createRadialGradient(n.x,n.y,1,n.x,n.y,n.r*2.8*tp);
+    gr.addColorStop(0,'rgba(201,149,108,0.18)');
+    gr.addColorStop(1,'rgba(201,149,108,0)');
+    bgCtx.fillStyle = gr;
+    bgCtx.beginPath();
+    bgCtx.arc(n.x,n.y,n.r*2.8*tp,0,Math.PI*2);
+    bgCtx.fill();
+  });
+
+  // Fibonacci spiral particles
+  if (ts-lastSpawn > 200) { spawnFibParticle(); lastSpawn = ts; }
+
+  for (let i=particles.length-1;i>=0;i--) {
+    const p=particles[i];
+    p.prog += p.speed;
+    if(p.prog>=1){particles.splice(i,1);continue;}
+    const pt = quadBezierPoint(p.sx,p.sy,p.cpx,p.cpy,p.tx,p.ty,p.prog);
+    const fade = Math.min(p.prog*6,1)*Math.min((1-p.prog)*6,1);
+    if(p.level===0){
+      // Sacred gold on core→domain
+      bgCtx.fillStyle=`rgba(212,175,55,${(0.9*fade).toFixed(2)})`;
+      bgCtx.beginPath();bgCtx.arc(pt.x,pt.y,2.0,0,Math.PI*2);bgCtx.fill();
+      // Rose gold trail
+      bgCtx.fillStyle=`rgba(201,149,108,${(0.4*fade).toFixed(2)})`;
+      bgCtx.beginPath();bgCtx.arc(pt.x,pt.y,3.5,0,Math.PI*2);bgCtx.fill();
+    } else {
+      // Iridescent white on domain→topic
+      bgCtx.fillStyle=`rgba(248,244,255,${(0.75*fade).toFixed(2)})`;
+      bgCtx.beginPath();bgCtx.arc(pt.x,pt.y,1.3,0,Math.PI*2);bgCtx.fill();
+    }
+  }
+}
+
+// ─── BOOT ────────────────────────────────────────────────────────────────────
+resize();
+requestAnimationFrame(render);
+</script>
+</body>
+</html>

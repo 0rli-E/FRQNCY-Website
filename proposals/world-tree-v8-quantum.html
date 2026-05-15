@@ -1,0 +1,798 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRQNCY · World Tree · v8 · Quantum Field</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&family=JetBrains+Mono:wght@300;400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #030508; }
+
+#bg-canvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+#tree-svg {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  overflow: visible;
+}
+
+.eyebrow {
+  position: absolute; top: 22px; left: 30px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase;
+  color: rgba(196,151,58,0.55); pointer-events: none;
+}
+.eyebrow span { color: rgba(0,200,120,0.5); }
+.eyebrow em { color: rgba(0,168,168,0.5); font-style: normal; }
+
+.uncertainty-label {
+  position: absolute; bottom: 22px; right: 30px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 0.28em; text-transform: uppercase;
+  color: rgba(20,100,200,0.35); pointer-events: none;
+  text-align: right; line-height: 1.7;
+}
+
+#nm-tooltip {
+  position: absolute; pointer-events: none; opacity: 0;
+  background: rgba(3,5,8,0.92);
+  border: 1px solid rgba(20,100,200,0.35);
+  border-radius: 2px; padding: 10px 14px;
+  font-family: 'Jost', sans-serif; font-size: 12px; color: #F0F8FF;
+  transition: opacity 0.15s; max-width: 230px;
+  backdrop-filter: blur(8px);
+}
+.tip-title {
+  font-family: 'Cormorant', serif; font-style: italic;
+  font-size: 16px; margin-bottom: 4px; color: #F0F8FF;
+}
+.tip-type {
+  font-size: 9.5px; letter-spacing: 0.14em; opacity: 0.5;
+  text-transform: uppercase; color: #00A8A8;
+}
+.tip-psi {
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8.5px; margin-top: 5px; color: rgba(20,100,200,0.7);
+  letter-spacing: 0.08em;
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<svg id="tree-svg"></svg>
+
+<div class="eyebrow">FRQNCY · <span>Quantum Field</span> · <em>v8</em></div>
+
+<div class="uncertainty-label">
+  ΔxΔp ≥ ℏ/2<br>
+  Wave function · collapse<br>
+  Probability · manifold
+</div>
+
+<div id="nm-tooltip">
+  <div class="tip-title"></div>
+  <div class="tip-type"></div>
+  <div class="tip-psi"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+/* ===================================================================
+   FRQNCY World Tree v8 — Quantum Field
+   Design persona: nodes as probability distributions, wave functions,
+   orbital density clouds. Uncertainty made visible.
+   =================================================================== */
+
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const BRANCHES = [
+  {
+    id:"d-meta", label:"Consciousness", desc:"The architecture of reality",
+    topics:[
+      {id:"t-oneness",   label:"Oneness"},
+      {id:"t-source",    label:"Source Energy"},
+      {id:"t-vibration", label:"Vibration"},
+      {id:"t-sacredgeo", label:"Sacred Geometry"},
+      {id:"t-akashic",   label:"Akashic Records"},
+      {id:"t-merkaba",   label:"Merkaba"},
+    ]
+  },
+  {
+    id:"d-sciences", label:"Sciences", desc:"Empirical exploration of reality",
+    topics:[
+      {id:"t-quantum",   label:"Quantum Physics"},
+      {id:"t-neuro",     label:"Neuroscience"},
+      {id:"t-astrophys", label:"Astrophysics"},
+      {id:"t-bio",       label:"Biology"},
+      {id:"t-psych",     label:"Psychology"},
+      {id:"t-ecology",   label:"Ecology"},
+    ]
+  },
+  {
+    id:"d-tech", label:"Technology", desc:"Tools shaping the future",
+    topics:[
+      {id:"t-ai",        label:"Artificial Intelligence"},
+      {id:"t-blockchain",label:"Blockchain"},
+      {id:"t-web3",      label:"Web3"},
+      {id:"t-decentral", label:"Decentralized Networks"},
+      {id:"t-biotech",   label:"Biotechnology"},
+      {id:"t-robotics",  label:"Robotics"},
+    ]
+  },
+  {
+    id:"d-arts", label:"Arts & Culture", desc:"Expression of the human spirit",
+    topics:[
+      {id:"t-music",  label:"Music"},
+      {id:"t-visual", label:"Visual Art"},
+      {id:"t-film",   label:"Film"},
+      {id:"t-poetry", label:"Poetry"},
+      {id:"t-story",  label:"Storytelling"},
+      {id:"t-archit", label:"Architecture"},
+    ]
+  },
+  {
+    id:"d-nature", label:"Nature & Cosmos", desc:"The living systems of existence",
+    topics:[
+      {id:"t-forests",   label:"Forests"},
+      {id:"t-oceans",    label:"Oceans"},
+      {id:"t-cosmos",    label:"Stars & Planets"},
+      {id:"t-climate",   label:"Climate"},
+      {id:"t-biodivers", label:"Biodiversity"},
+      {id:"t-cycles",    label:"Seasons & Cycles"},
+    ]
+  },
+  {
+    id:"d-money", label:"Money", desc:"Capital, crypto, and the new financial layer",
+    topics:[
+      {id:"t-crypto",  label:"Cryptocurrency"},
+      {id:"t-bitcoin", label:"Bitcoin"},
+      {id:"t-defi",    label:"DeFi"},
+      {id:"t-impact",  label:"Impact Investing"},
+      {id:"t-conscap", label:"Conscious Capital"},
+      {id:"t-gold",    label:"Gold"},
+    ]
+  },
+  {
+    id:"d-wellbeing", label:"Well-being", desc:"Healing and wholeness",
+    topics:[
+      {id:"t-meditation",label:"Meditation"},
+      {id:"t-breathwork",label:"Breathwork"},
+      {id:"t-soundheal", label:"Sound Healing"},
+      {id:"t-yoga",      label:"Yoga"},
+      {id:"t-somatic",   label:"Somatic Therapy"},
+      {id:"t-energyheal",label:"Energy Healing"},
+    ]
+  },
+  {
+    id:"d-society", label:"Society", desc:"Collective human systems",
+    topics:[
+      {id:"t-governance",label:"Governance"},
+      {id:"t-indigenous",label:"Indigenous Wisdom"},
+      {id:"t-collective",label:"Collective Intelligence"},
+      {id:"t-peace",     label:"Peace Building"},
+      {id:"t-socialmov", label:"Social Movements"},
+      {id:"t-community", label:"Community"},
+    ]
+  },
+];
+
+// ─── QUANTUM PALETTE ─────────────────────────────────────────────────────────
+const Q = {
+  void:        '#030508',
+  qWhite:      '#F0F8FF',
+  probBlue:    '#1464C8',
+  probBlueDark:'#020E28',
+  entangleTeal:'#00A8A8',
+  waveFuncGreen:'#00C878',
+  decoherRed:  'rgba(255,58,58,',
+  planckGold:  '#C4973A',
+  planckLight: '#F4DC88',
+  planckDark:  '#A06818',
+};
+
+// ─── CANVAS / SVG ────────────────────────────────────────────────────────────
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx    = bgCanvas.getContext('2d');
+const svgEl    = document.getElementById('tree-svg');
+const svg      = d3.select(svgEl);
+
+let CW, CH, cx, cy;
+let builtNodes = [], builtLinks = [], particles = [];
+let lastSpawn = 0;
+let hoveredNode = null;  // id of currently hovered node
+let hoveredSet  = null;  // Set of connected node ids
+
+// ─── NODE QUANTUM OSCILLATORS ─────────────────────────────────────────────────
+// Each node gets unique Lissajous frequencies/phases so they all drift independently
+const nodeOscillators = {};
+function seedOscillator(id) {
+  // deterministic from string hash so positions are consistent
+  let h = 0;
+  for (let i = 0; i < id.length; i++) { h = (h * 31 + id.charCodeAt(i)) >>> 0; }
+  const rng = () => { h = (h ^ (h << 13) ^ (h >> 7) ^ (h << 17)) >>> 0; return (h % 10000) / 10000; };
+  return {
+    freqX:  0.23 + rng() * 0.54,   // Hz equivalent in animation time
+    freqY:  0.19 + rng() * 0.48,
+    phaseX: rng() * Math.PI * 2,
+    phaseY: rng() * Math.PI * 2,
+    ampX:   3 + rng() * 2.5,        // ±px
+    ampY:   3 + rng() * 2.5,
+  };
+}
+
+// ─── RESIZE & LAYOUT ─────────────────────────────────────────────────────────
+function resize() {
+  CW = bgCanvas.width  = window.innerWidth;
+  CH = bgCanvas.height = window.innerHeight;
+  cx = CW / 2;
+  cy = CH / 2;
+  buildLayout();
+  renderSVG();
+}
+window.addEventListener('resize', resize, { passive: true });
+
+function buildLayout() {
+  const dim    = Math.min(CW, CH);
+  const R1     = dim * 0.235;
+  const R2     = dim * 0.435;
+  const N      = BRANCHES.length;
+  const SPREAD = Math.PI * 0.30;
+
+  builtNodes = [];
+  builtLinks = [];
+  particles  = [];
+
+  const core = {
+    id:"frqncy", label:"FRQNCY", type:"core", r:52,
+    desc:"The quantum vacuum. The ground state of all possibility.",
+    bx: cx, by: cy,   // base (resting) positions
+    x: cx, y: cy,
+  };
+  if (!nodeOscillators['frqncy']) nodeOscillators['frqncy'] = seedOscillator('frqncy');
+  builtNodes.push(core);
+
+  BRANCHES.forEach((branch, bi) => {
+    const baseAngle = (bi / N) * Math.PI * 2 - Math.PI / 2;
+    const dx = cx + Math.cos(baseAngle) * R1;
+    const dy = cy + Math.sin(baseAngle) * R1;
+    const perpX = -Math.sin(baseAngle), perpY = Math.cos(baseAngle);
+    const curve = R1 * 0.16 * ((bi % 2 === 0) ? 1 : -1);
+
+    if (!nodeOscillators[branch.id]) nodeOscillators[branch.id] = seedOscillator(branch.id);
+
+    const domainNode = {
+      id: branch.id, label: branch.label, type:"cluster", r:24,
+      desc: branch.desc,
+      bx: dx, by: dy, x: dx, y: dy,
+      cpx: (cx + dx)/2 + perpX * curve,
+      cpy: (cy + dy)/2 + perpY * curve
+    };
+    builtNodes.push(domainNode);
+    builtLinks.push({ source: core, target: domainNode, level: 0,
+      cpx: domainNode.cpx, cpy: domainNode.cpy });
+
+    const nt = branch.topics.length;
+    branch.topics.forEach((topic, ti) => {
+      const tAngle = baseAngle - SPREAD/2 + (ti / (nt - 1 || 1)) * SPREAD;
+      const tx = cx + Math.cos(tAngle) * R2;
+      const ty = cy + Math.sin(tAngle) * R2;
+      const tdx = tx - dx, tdy = ty - dy;
+      const tdist = Math.sqrt(tdx*tdx + tdy*tdy) || 1;
+      const tperpX = -tdy/tdist, tperpY = tdx/tdist;
+      const tcurve = tdist * 0.11 * ((ti % 2 === 0) ? 1 : -1);
+
+      if (!nodeOscillators[topic.id]) nodeOscillators[topic.id] = seedOscillator(topic.id);
+
+      const topicNode = {
+        id: topic.id, label: topic.label, type:"topic", r:13,
+        bx: tx, by: ty, x: tx, y: ty,
+        cpx: (dx + tx)/2 + tperpX * tcurve,
+        cpy: (dy + ty)/2 + tperpY * tcurve,
+      };
+      builtNodes.push(topicNode);
+      builtLinks.push({ source: domainNode, target: topicNode, level: 1,
+        cpx: topicNode.cpx, cpy: topicNode.cpy });
+    });
+  });
+}
+
+// ─── SVG: nodes only (branches drawn on canvas) ──────────────────────────────
+function renderSVG() {
+  svg.selectAll('*').remove();
+  const defs = svg.append('defs');
+
+  // Radial gradients — quantum palette
+  [
+    { id:'qg-core',    c1: Q.planckLight,  c2: Q.planckDark },
+    { id:'qg-cluster', c1: '#0A3880',      c2: Q.probBlueDark },
+    { id:'qg-topic',   c1: '#080A18',      c2: '#020306' },
+  ].forEach(g => {
+    const gr = defs.append('radialGradient').attr('id', g.id).attr('cx','38%').attr('cy','30%');
+    gr.append('stop').attr('offset','0%').attr('stop-color', g.c1);
+    gr.append('stop').attr('offset','100%').attr('stop-color', g.c2);
+  });
+
+  // Glow filter for core
+  const coreGlow = defs.append('filter').attr('id','qf-core-glow')
+    .attr('x','-80%').attr('y','-80%').attr('width','260%').attr('height','260%');
+  coreGlow.append('feGaussianBlur').attr('stdDeviation','8').attr('result','b');
+  const m1 = coreGlow.append('feMerge');
+  m1.append('feMergeNode').attr('in','b');
+  m1.append('feMergeNode').attr('in','SourceGraphic');
+
+  // Glow filter for domain nodes
+  const domGlow = defs.append('filter').attr('id','qf-dom-glow')
+    .attr('x','-50%').attr('y','-50%').attr('width','200%').attr('height','200%');
+  domGlow.append('feGaussianBlur').attr('stdDeviation','5').attr('result','b');
+  const m2 = domGlow.append('feMerge');
+  m2.append('feMergeNode').attr('in','b');
+  m2.append('feMergeNode').attr('in','SourceGraphic');
+
+  // Orbital glow for topic nodes
+  const orbGlow = defs.append('filter').attr('id','qf-orb-glow')
+    .attr('x','-60%').attr('y','-60%').attr('width','220%').attr('height','220%');
+  orbGlow.append('feGaussianBlur').attr('stdDeviation','3').attr('result','b');
+  const m3 = orbGlow.append('feMerge');
+  m3.append('feMergeNode').attr('in','b');
+  m3.append('feMergeNode').attr('in','SourceGraphic');
+
+  const nodeG = svg.append('g').attr('class','nodes');
+  const groups = nodeG.selectAll('g.qnode')
+    .data(builtNodes)
+    .join('g')
+    .attr('class','qnode')
+    .attr('id', d => 'qn-' + d.id)
+    .attr('transform', d => `translate(${d.x},${d.y})`)
+    .style('cursor','default');
+
+  // === TOPIC NODES: electron orbital rings (probability density) ===
+  groups.filter(d => d.type === 'topic').each(function(d) {
+    const g = d3.select(this);
+    // Three concentric probability rings (dot-dash style, rotated)
+    [
+      { r: d.r * 1.8, dots: 12, opacity: 0.18, color: Q.probBlue },
+      { r: d.r * 2.5, dots: 18, opacity: 0.10, color: Q.entangleTeal },
+      { r: d.r * 3.3, dots: 24, opacity: 0.06, color: Q.probBlue },
+    ].forEach(ring => {
+      const ringG = g.append('g').attr('class','orb-ring').attr('data-r', ring.r).attr('data-base-rot', Math.random() * Math.PI * 2);
+      for (let k = 0; k < ring.dots; k++) {
+        const angle = (k / ring.dots) * Math.PI * 2;
+        const px = Math.cos(angle) * ring.r;
+        const py = Math.sin(angle) * ring.r;
+        ringG.append('circle')
+          .attr('cx', px).attr('cy', py)
+          .attr('r', 0.8)
+          .attr('fill', ring.color)
+          .attr('opacity', ring.opacity * (0.5 + 0.5 * Math.abs(Math.sin(angle))));
+      }
+    });
+    // Bright core
+    g.append('circle').attr('r', d.r * 0.55)
+      .attr('fill', 'url(#qg-topic)')
+      .attr('stroke', Q.probBlue).attr('stroke-width', 0.5).attr('stroke-opacity', 0.4);
+    // Faint outer blur halo
+    g.append('circle').attr('r', d.r * 1.1)
+      .attr('fill', 'none')
+      .attr('stroke', Q.probBlue).attr('stroke-width', 0.3).attr('stroke-opacity', 0.25);
+  });
+
+  // === DOMAIN NODES: atomic nuclei with electron cloud ===
+  groups.filter(d => d.type === 'cluster').each(function(d) {
+    const g = d3.select(this);
+    // Electron cloud (blurred halo layer — done via canvas; here do soft rings)
+    g.append('circle').attr('r', d.r * 2.6)
+      .attr('fill', Q.probBlue).attr('fill-opacity', 0.04)
+      .attr('stroke', Q.probBlue).attr('stroke-width', 0.4).attr('stroke-opacity', 0.15);
+    g.append('circle').attr('r', d.r * 1.85)
+      .attr('fill', Q.probBlue).attr('fill-opacity', 0.06)
+      .attr('stroke', Q.entangleTeal).attr('stroke-width', 0.5).attr('stroke-opacity', 0.2);
+    // Nucleus core
+    g.append('circle').attr('r', d.r)
+      .attr('fill', 'url(#qg-cluster)')
+      .attr('stroke', Q.probBlue).attr('stroke-width', 1).attr('stroke-opacity', 0.55)
+      .attr('filter', 'url(#qf-dom-glow)');
+  });
+
+  // === CORE NODE: quantum vacuum / ground state ===
+  groups.filter(d => d.type === 'core').each(function(d) {
+    const g = d3.select(this);
+    // Outer probability halos
+    [3.8, 2.8, 2.0].forEach((mult, i) => {
+      g.append('circle').attr('r', d.r * mult)
+        .attr('fill', 'none')
+        .attr('stroke', Q.planckGold)
+        .attr('stroke-width', 0.3)
+        .attr('stroke-opacity', 0.06 + i * 0.03)
+        .attr('stroke-dasharray', `${2 + i} ${4 - i}`);
+    });
+    // Main nucleus
+    g.append('circle').attr('r', d.r)
+      .attr('fill', 'url(#qg-core)')
+      .attr('stroke', '#E0C06A').attr('stroke-width', 1.5)
+      .attr('filter', 'url(#qf-core-glow)');
+  });
+
+  // Labels — drawn after shapes
+  groups.filter(d => d.type !== 'dot').each(function(d) {
+    const g = d3.select(this);
+    const isCore    = d.type === 'core';
+    const isCluster = d.type === 'cluster';
+
+    const label = g.append('text')
+      .attr('text-anchor', 'middle')
+      .attr('dominant-baseline', 'central')
+      .attr('pointer-events', 'none')
+      .attr('fill',
+        isCore ? '#030508' :
+        isCluster ? '#E8D890' :
+        'rgba(140,180,255,0.82)')
+      .attr('font-family',
+        isCore ? 'Cormorant,Georgia,serif' : "'Jost',sans-serif")
+      .attr('font-size',
+        isCore ? '14px' : isCluster ? '8.5px' : '7.5px')
+      .attr('font-weight', isCore ? '500' : isCluster ? '300' : '200')
+      .attr('letter-spacing', isCore ? '0.2em' : '0.06em');
+
+    const yOffset = isCore ? 0 : isCluster ? 0 : 0;
+
+    if (d.type === 'topic' && d.label.length > 14) {
+      const words = d.label.split(' ');
+      const mid   = Math.ceil(words.length / 2);
+      label.append('tspan').attr('x', 0).attr('dy', '-0.55em').text(words.slice(0, mid).join(' '));
+      label.append('tspan').attr('x', 0).attr('dy', '1.1em').text(words.slice(mid).join(' '));
+    } else {
+      label.text(d.label);
+    }
+  });
+
+  // ─── HOVER / TOOLTIP ───────────────────────────────────────────────────────
+  const tip = document.getElementById('nm-tooltip');
+  const psiStrings = [
+    'ψ(x,t) = Ae^{i(kx−ωt)}',
+    'ΔE · Δt ≥ ℏ/2',
+    '∇²ψ = (1/c²)∂²ψ/∂t²',
+    'E = hν = ℏω',
+    'p = ℏk',
+    'S = −kB Σ pᵢ ln pᵢ',
+  ];
+
+  groups
+    .on('mouseover', (e, d) => {
+      hoveredNode = d.id;
+      hoveredSet = new Set([d.id]);
+      builtLinks.forEach(l => {
+        const sid = l.source.id || l.source;
+        const tid = l.target.id || l.target;
+        if (sid === d.id) hoveredSet.add(tid);
+        if (tid === d.id) hoveredSet.add(sid);
+      });
+      // Fade non-connected nodes
+      d3.selectAll('g.qnode').style('opacity', n => hoveredSet.has(n.id) ? 1 : 0.06);
+      if (tip) {
+        tip.querySelector('.tip-title').textContent = d.label;
+        tip.querySelector('.tip-type').textContent  =
+          (d.desc ? d.desc + ' · ' : '') +
+          ({core:'QUANTUM VACUUM', cluster:'DOMAIN FIELD', topic:'EIGENSTATE'}[d.type] || '');
+        tip.querySelector('.tip-psi').textContent   =
+          psiStrings[Math.floor(Math.random() * psiStrings.length)];
+        tip.style.opacity = '1';
+      }
+    })
+    .on('mousemove', e => {
+      if (!tip) return;
+      tip.style.left = (e.clientX + 16) + 'px';
+      tip.style.top  = (e.clientY - 16) + 'px';
+    })
+    .on('mouseout', () => {
+      hoveredNode = null;
+      hoveredSet  = null;
+      d3.selectAll('g.qnode').style('opacity', 1);
+      if (tip) tip.style.opacity = '0';
+    });
+}
+
+// ─── CANVAS BACKGROUND SYSTEM ─────────────────────────────────────────────────
+// Heisenberg grid constants (will jitter per frame)
+let gridJitter = { dx: 0, dy: 0 };
+
+// Quantum foam: overlapping sine waves at very low amplitude
+// Pre-generate wave parameters for the interference pattern
+const FOAM_WAVES = Array.from({length: 12}, (_, i) => ({
+  freq:   0.018 + i * 0.006,
+  dir:    (i / 12) * Math.PI * 2,
+  phase:  Math.random() * Math.PI * 2,
+  amp:    0.018 + Math.random() * 0.012,
+  speed:  0.00018 + Math.random() * 0.0002,
+}));
+
+// Particles: wave-function collapse style
+function spawnParticle() {
+  if (particles.length > 120 || !builtLinks.length) return;
+  const link = builtLinks[Math.floor(Math.random() * builtLinks.length)];
+  const s = link.source, t = link.target;
+  // Ghost copies count
+  particles.push({
+    sx: s.bx, sy: s.by,
+    cpx: link.cpx, cpy: link.cpy,
+    tx: t.bx, ty: t.by,
+    prog: 0,
+    speed: 0.006 + Math.random() * 0.007,
+    level: link.level,
+    ghosts: 3 + Math.floor(Math.random() * 4),  // multiple superposition copies
+    ghostSpread: 6 + Math.random() * 10,
+    collapsed: false,  // becomes true when prog > 0.7
+    seedAngle: Math.random() * Math.PI * 2,
+  });
+}
+
+function quadBP(x1,y1,cpx,cpy,x2,y2,t) {
+  const mt = 1 - t;
+  return {
+    x: mt*mt*x1 + 2*mt*t*cpx + t*t*x2,
+    y: mt*mt*y1 + 2*mt*t*cpy + t*t*y2,
+  };
+}
+
+// ─── MAIN RENDER LOOP ─────────────────────────────────────────────────────────
+function render(ts) {
+  requestAnimationFrame(render);
+  bgCtx.clearRect(0, 0, CW, CH);
+
+  const t  = ts * 0.001;  // seconds
+
+  // ── 1. Flat void background ──────────────────────────────────────────────
+  bgCtx.fillStyle = Q.void;
+  bgCtx.fillRect(0, 0, CW, CH);
+
+  // ── 2. Quantum foam — interference pattern (moiré) ───────────────────────
+  // Draw scanline-style: for each row sample compute combined wave
+  // For performance: sample every 4 pixels horizontally, use imageData approach
+  // Instead: draw overlapping gradient stripes at very low opacity
+  bgCtx.save();
+  FOAM_WAVES.forEach((w, wi) => {
+    const phase = w.phase + t * w.speed * 1000;
+    const cosD  = Math.cos(w.dir);
+    const sinD  = Math.sin(w.dir);
+    // Draw a series of translucent gradient lines
+    const stripeCount = 6;
+    for (let s = 0; s < stripeCount; s++) {
+      const offset = ((s / stripeCount) + (phase * w.freq * 0.15)) % 1;
+      const px = offset * CW * 2 - CW * 0.5 + cosD * CW;
+      const py = offset * CH * 2 - CH * 0.5 + sinD * CH;
+      const grad = bgCtx.createLinearGradient(
+        px - sinD * CW * 0.8, py + cosD * CH * 0.8,
+        px + sinD * CW * 0.8, py - cosD * CH * 0.8
+      );
+      const alpha = w.amp * (0.4 + 0.6 * Math.sin(t * 0.3 + wi));
+      grad.addColorStop(0,   'rgba(20,100,200,0)');
+      grad.addColorStop(0.45,'rgba(20,100,200,' + (alpha * 0.5).toFixed(3) + ')');
+      grad.addColorStop(0.5, 'rgba(20,100,200,' + alpha.toFixed(3) + ')');
+      grad.addColorStop(0.55,'rgba(20,100,200,' + (alpha * 0.5).toFixed(3) + ')');
+      grad.addColorStop(1,   'rgba(20,100,200,0)');
+      bgCtx.fillStyle = grad;
+      bgCtx.fillRect(0, 0, CW, CH);
+    }
+  });
+  bgCtx.restore();
+
+  // ── 3. Heisenberg grid — faint, jittering ────────────────────────────────
+  gridJitter.dx = Math.sin(t * 2.3) * 1.5;
+  gridJitter.dy = Math.cos(t * 1.7) * 1.5;
+  bgCtx.save();
+  bgCtx.globalAlpha = 0.022;
+  bgCtx.strokeStyle = Q.probBlue;
+  bgCtx.lineWidth   = 0.5;
+  const gridStep = 80;
+  bgCtx.beginPath();
+  // Vertical lines
+  for (let gx = (gridJitter.dx % gridStep + gridStep) % gridStep; gx < CW; gx += gridStep) {
+    bgCtx.moveTo(gx, 0); bgCtx.lineTo(gx, CH);
+  }
+  // Horizontal lines
+  for (let gy = (gridJitter.dy % gridStep + gridStep) % gridStep; gy < CH; gy += gridStep) {
+    bgCtx.moveTo(0, gy); bgCtx.lineTo(CW, gy);
+  }
+  bgCtx.stroke();
+  bgCtx.restore();
+
+  if (!builtNodes.length) return;
+
+  // ── 4. Update oscillating node positions (Lissajous) ──────────────────────
+  builtNodes.forEach(n => {
+    const osc = nodeOscillators[n.id];
+    if (!osc) return;
+    n.x = n.bx + Math.sin(t * osc.freqX + osc.phaseX) * osc.ampX;
+    n.y = n.by + Math.sin(t * osc.freqY + osc.phaseY) * osc.ampY;
+  });
+
+  // Update SVG node positions to match oscillation
+  builtNodes.forEach(n => {
+    const el = document.getElementById('qn-' + n.id);
+    if (el) el.setAttribute('transform', `translate(${n.x},${n.y})`);
+  });
+
+  // Rotate orbital rings on topic nodes (slow)
+  d3.selectAll('g.orb-ring').each(function() {
+    const ringEl = d3.select(this);
+    const r = parseFloat(ringEl.attr('data-r')) || 20;
+    const baseRot = parseFloat(ringEl.attr('data-base-rot')) || 0;
+    // Different rings rotate at different speeds / directions
+    const speed = 0.08 / r;  // smaller orbit = faster
+    const angle = baseRot + t * speed;
+    ringEl.attr('transform', `rotate(${angle * 180 / Math.PI})`);
+  });
+
+  // ── 5. Draw probability cloud branches on canvas ──────────────────────────
+  bgCtx.save();
+  builtLinks.forEach(link => {
+    const s = link.source, t_ = link.target;
+    const isHoverLink = hoveredSet && (hoveredSet.has(s.id) && hoveredSet.has(t_.id));
+    const notHovered  = hoveredSet && !isHoverLink;
+
+    if (notHovered) return;  // skip links not connected to hovered node
+
+    const layers = link.level === 0 ? [
+      // Core → domain: 5 probability cloud passes
+      { offset: 0,   alpha: isHoverLink ? 0.28 : 0.12, width: 3.0, blur: false },
+      { offset: 2,   alpha: isHoverLink ? 0.10 : 0.04, width: 5.0, blur: false },
+      { offset: -2,  alpha: isHoverLink ? 0.10 : 0.04, width: 5.0, blur: false },
+      { offset: 4,   alpha: isHoverLink ? 0.05 : 0.02, width: 8.0, blur: false },
+      { offset: -4,  alpha: isHoverLink ? 0.05 : 0.02, width: 8.0, blur: false },
+    ] : [
+      // Domain → topic: softer
+      { offset: 0,   alpha: isHoverLink ? 0.22 : 0.07, width: 1.5, blur: false },
+      { offset: 1.5, alpha: isHoverLink ? 0.07 : 0.025, width: 3.0, blur: false },
+      { offset: -1.5,alpha: isHoverLink ? 0.07 : 0.025, width: 3.0, blur: false },
+      { offset: 3,   alpha: isHoverLink ? 0.03 : 0.01,  width: 5.0, blur: false },
+    ];
+
+    const color = link.level === 0 ? Q.planckGold : Q.probBlue;
+
+    layers.forEach(layer => {
+      // Perpendicular offset for the gaussian spread effect
+      const dx  = t_.x - s.x, dy = t_.y - s.y;
+      const len = Math.sqrt(dx*dx + dy*dy) || 1;
+      const nx  = -dy/len * layer.offset, ny = dx/len * layer.offset;
+
+      bgCtx.beginPath();
+      bgCtx.moveTo(s.x + nx, s.y + ny);
+      bgCtx.quadraticCurveTo(
+        link.cpx + nx, link.cpy + ny,
+        t_.x + nx, t_.y + ny
+      );
+      bgCtx.strokeStyle = color.startsWith('#')
+        ? hexToRgba(color, layer.alpha)
+        : 'rgba(20,100,200,' + layer.alpha + ')';
+      bgCtx.lineWidth = layer.width;
+      bgCtx.lineCap   = 'round';
+      bgCtx.setLineDash([]);
+      bgCtx.stroke();
+    });
+  });
+  bgCtx.restore();
+
+  // ── 6. Glow halos for nodes (canvas layer) ────────────────────────────────
+  bgCtx.save();
+  builtNodes.forEach(n => {
+    const dimmed = hoveredSet && !hoveredSet.has(n.id);
+    if (dimmed) return;
+
+    if (n.type === 'core') {
+      // Planck gold vacuum energy
+      const pulse = 0.22 + 0.08 * Math.sin(t * 1.8);
+      const gr = bgCtx.createRadialGradient(n.x, n.y, n.r*0.5, n.x, n.y, n.r * 3.8);
+      gr.addColorStop(0,   `rgba(196,151,58,${pulse.toFixed(2)})`);
+      gr.addColorStop(0.4, `rgba(196,151,58,${(pulse*0.3).toFixed(2)})`);
+      gr.addColorStop(1,   'rgba(196,151,58,0)');
+      bgCtx.fillStyle = gr;
+      bgCtx.beginPath(); bgCtx.arc(n.x, n.y, n.r * 3.8, 0, Math.PI*2); bgCtx.fill();
+
+      // Decoherence red tinge (very faint)
+      const dr = bgCtx.createRadialGradient(n.x, n.y, n.r, n.x, n.y, n.r * 5);
+      dr.addColorStop(0, 'rgba(255,58,58,0.04)');
+      dr.addColorStop(1, 'rgba(255,58,58,0)');
+      bgCtx.fillStyle = dr;
+      bgCtx.beginPath(); bgCtx.arc(n.x, n.y, n.r * 5, 0, Math.PI*2); bgCtx.fill();
+
+    } else if (n.type === 'cluster') {
+      // Domain: electron cloud
+      const pulse = 0.14 + 0.05 * Math.sin(t * 1.2 + nodeOscillators[n.id].phaseX);
+      const gr = bgCtx.createRadialGradient(n.x, n.y, n.r*0.5, n.x, n.y, n.r * 3.2);
+      gr.addColorStop(0,   `rgba(20,100,200,${pulse.toFixed(2)})`);
+      gr.addColorStop(0.5, `rgba(0,168,168,${(pulse*0.3).toFixed(2)})`);
+      gr.addColorStop(1,   'rgba(20,100,200,0)');
+      bgCtx.fillStyle = gr;
+      bgCtx.beginPath(); bgCtx.arc(n.x, n.y, n.r * 3.2, 0, Math.PI*2); bgCtx.fill();
+
+    } else if (n.type === 'topic') {
+      // Topic: probability density cloud
+      const pulse = 0.07 + 0.04 * Math.sin(t * 2.1 + nodeOscillators[n.id].phaseY);
+      const gr = bgCtx.createRadialGradient(n.x, n.y, 0, n.x, n.y, n.r * 3.8);
+      gr.addColorStop(0,   `rgba(0,200,120,${(pulse * 1.5).toFixed(2)})`);
+      gr.addColorStop(0.3, `rgba(20,100,200,${pulse.toFixed(2)})`);
+      gr.addColorStop(1,   'rgba(20,100,200,0)');
+      bgCtx.fillStyle = gr;
+      bgCtx.beginPath(); bgCtx.arc(n.x, n.y, n.r * 3.8, 0, Math.PI*2); bgCtx.fill();
+    }
+  });
+  bgCtx.restore();
+
+  // ── 7. Wave-function collapse particles ────────────────────────────────────
+  if (ts - lastSpawn > 150) { spawnParticle(); lastSpawn = ts; }
+
+  bgCtx.save();
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.prog += p.speed;
+    if (p.prog >= 1) { particles.splice(i, 1); continue; }
+
+    // Check if hovered — skip irrelevant particles
+    if (hoveredSet) {
+      // find the link this particle belongs to — approximation by checking endpoints
+      const onHoveredLink = builtLinks.some(l =>
+        hoveredSet.has(l.source.id) && hoveredSet.has(l.target.id) &&
+        Math.abs(l.source.bx - p.sx) < 5 && Math.abs(l.target.bx - p.tx) < 5
+      );
+      if (!onHoveredLink) continue;
+    }
+
+    const pt = quadBP(p.sx, p.sy, p.cpx, p.cpy, p.tx, p.ty, p.prog);
+    const fade = Math.min(p.prog * 5, 1) * Math.min((1 - p.prog) * 5, 1);
+
+    // Wave function collapse: ghost copies exist at low prog, collapse at high prog
+    const collapseRatio = Math.max(0, Math.min(1, (p.prog - 0.55) / 0.25));
+    const ghosts = p.collapsed ? 0 : Math.round(p.ghosts * (1 - collapseRatio));
+
+    if (p.prog > 0.6 && !p.collapsed) p.collapsed = true;
+
+    const color = p.level === 0
+      ? [196, 151, 58]    // gold for trunk
+      : [20, 100, 200];   // blue for branches
+
+    // Draw ghost superposition copies
+    for (let g = 0; g < ghosts; g++) {
+      const ghostAngle = p.seedAngle + (g / ghosts) * Math.PI * 2;
+      const ghostDist  = p.ghostSpread * (1 - collapseRatio) * (0.3 + 0.7 * (1 - p.prog));
+      const gx = pt.x + Math.cos(ghostAngle) * ghostDist;
+      const gy = pt.y + Math.sin(ghostAngle) * ghostDist;
+      bgCtx.fillStyle = `rgba(${color[0]},${color[1]},${color[2]},${(0.12 * fade * (1 - collapseRatio)).toFixed(3)})`;
+      bgCtx.beginPath();
+      bgCtx.arc(gx, gy, p.level === 0 ? 1.5 : 1.0, 0, Math.PI*2);
+      bgCtx.fill();
+    }
+
+    // Main collapsed particle
+    const mainAlpha = p.level === 0 ? 0.85 * fade : 0.7 * fade;
+    bgCtx.fillStyle = `rgba(${color[0]},${color[1]},${color[2]},${mainAlpha.toFixed(3)})`;
+    bgCtx.beginPath();
+    bgCtx.arc(pt.x, pt.y, p.level === 0 ? 2.0 : 1.2, 0, Math.PI*2);
+    bgCtx.fill();
+
+    // Entanglement teal flash near endpoints
+    if (p.prog > 0.85 || p.prog < 0.08) {
+      const flashAlpha = (p.prog > 0.85 ? (p.prog - 0.85) / 0.15 : (0.08 - p.prog) / 0.08) * fade * 0.6;
+      bgCtx.fillStyle = `rgba(0,168,168,${flashAlpha.toFixed(3)})`;
+      bgCtx.beginPath();
+      bgCtx.arc(pt.x, pt.y, p.level === 0 ? 3.5 : 2.0, 0, Math.PI*2);
+      bgCtx.fill();
+    }
+  }
+  bgCtx.restore();
+}
+
+// ─── UTILITY ─────────────────────────────────────────────────────────────────
+function hexToRgba(hex, alpha) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgba(${r},${g},${b},${alpha})`;
+}
+
+// ─── BOOT ─────────────────────────────────────────────────────────────────────
+resize();
+requestAnimationFrame(render);
+</script>
+</body>
+</html>

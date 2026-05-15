@@ -171,7 +171,7 @@ function imageForTopic(topicId) {
   const t = topicById.get(topicId);
   if (t) {
     const slug = t.slug || topicId.replace(/^t-/, '');
-    const fromPage = imageFromPageFile(`/v2/${slug}/`);
+    const fromPage = imageFromPageFile(`/${slug}/`);
     if (fromPage) return fromPage;
   }
   const candidatePools = [
@@ -234,7 +234,7 @@ const videoPool = shuffle(allVideos, 23).slice(0, 3).map(({ topic, v }) =>
     eyebrow: v.channel || topic.label,
     title: v.title,
     image: ytThumb(v.youtube_id),
-    href: `/v2/watch/index.html#${encodeURIComponent(v.youtube_id)}`,
+    href: `/watch/index.html#${encodeURIComponent(v.youtube_id)}`,
   })
 );
 
@@ -271,7 +271,7 @@ for (const id of handpickedTopicIds) {
     eyebrow: 'Topic',
     title: t.label,
     image: img,
-    href: `/v2/${t.slug || t.id.replace(/^t-/, '')}/`,
+    href: `/${t.slug || t.id.replace(/^t-/, '')}/`,
   }));
 }
 // Top up from a shuffled remainder so we always reach the target if possible.
@@ -286,7 +286,7 @@ if (topicPool.length < TOPIC_TARGET) {
       eyebrow: 'Topic',
       title: t.label,
       image: img,
-      href: `/v2/${t.slug || t.id.replace(/^t-/, '')}/`,
+      href: `/${t.slug || t.id.replace(/^t-/, '')}/`,
     }));
   }
 }
@@ -331,9 +331,61 @@ function interleave(...streams) {
   }
   return out;
 }
-const stream = interleave(bookPool, videoPool, peoplePool, placePool, topicPool, filmCards);
+// User request 2026-05-15: the band always opens with these specific items.
+// Pulled from live beds; missing items skip silently.
+const leadIds = [
+  { kind: 'topic',  id: 't-ecovillages' },
+  { kind: 'person', id: 'p-kevin-trudeau' },
+  { kind: 'topic',  id: 't-permaculture' },
+  { kind: 'person', id: 'p-sai-maa' },
+  { kind: 'topic',  id: 't-crypto' },
+  { kind: 'topic',  id: 't-privacy' },
+  { kind: 'topic',  id: 't-renewable' },
+];
+const leadCards = [];
+const leadSeen = new Set();
+for (const { kind, id } of leadIds) {
+  if (kind === 'topic') {
+    const t = topicById.get(id);
+    if (!t) continue;
+    const img = imageForTopic(id);
+    if (!img) continue;
+    leadCards.push(card({
+      kind: 'topic',
+      eyebrow: 'Topic',
+      title: t.label,
+      image: img,
+      href: `/${t.slug || t.id.replace(/^t-/, '')}/`,
+    }));
+    leadSeen.add(id);
+  } else if (kind === 'person') {
+    const p = peopleById.get(id);
+    if (!p || !p.image) continue;
+    leadCards.push(card({
+      kind: 'person',
+      eyebrow: 'Person',
+      title: p.name,
+      image: p.image,
+      href: `/people/${p.id.replace(/^p-/, '')}/`,
+    }));
+    leadSeen.add(id);
+  }
+}
 
-const finalCards = stream;
+// De-dupe: drop anything from the shuffled pools that we already pinned in lead.
+const leadSlugs = [...leadSeen].map(id => id.replace(/^[pt]-/, ''));
+const removeIfLead = (cards) => cards.filter(c => !leadSlugs.some(s => c.includes(`/${s}/`)));
+
+const stream = interleave(
+  removeIfLead(bookPool),
+  removeIfLead(videoPool),
+  removeIfLead(peoplePool),
+  removeIfLead(placePool),
+  removeIfLead(topicPool),
+  removeIfLead(filmCards),
+);
+
+const finalCards = [...leadCards, ...stream];
 const track = finalCards.concat(finalCards).join('');
 
 const generatedBlock =

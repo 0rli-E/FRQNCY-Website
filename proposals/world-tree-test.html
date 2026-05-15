@@ -1,0 +1,471 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRQNCY · World Tree · test</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #081530; }
+#bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+#tree-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; }
+.eyebrow {
+  position: absolute; top: 22px; left: 30px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase;
+  color: rgba(196,151,58,0.62); pointer-events: none;
+}
+.eyebrow span { color: rgba(107,203,119,0.55); }
+#nm-tooltip {
+  position: absolute; pointer-events: none; opacity: 0;
+  background: rgba(8,21,48,0.93);
+  border: 1px solid rgba(196,151,58,0.28);
+  border-radius: 3px; padding: 9px 13px;
+  font-family: 'Jost', sans-serif; font-size: 12.5px; color: #F5F8FB;
+  transition: opacity 0.12s; max-width: 220px;
+  backdrop-filter: blur(4px);
+}
+.tip-title { font-family: 'Cormorant', serif; font-style: italic; font-size: 16px; margin-bottom: 3px; color: #fff; }
+.tip-type  { font-size: 10px; letter-spacing: 0.1em; opacity: 0.6; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<svg id="tree-svg"></svg>
+<div class="eyebrow">FRQNCY · <span>World Tree</span> · v1 test</div>
+<div id="nm-tooltip"><div class="tip-title"></div><div class="tip-type"></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+/* ===================================================================
+   FRQNCY World Tree — same palette as the network constellation
+   (navy #0B1C3D, gold core, deep blues for clusters/topics)
+   + brown bark (#5C3015 → #8B5E3C) and green leaf glow (#2D7A4A → #6BCB77)
+   =================================================================== */
+
+// ─── DATA ────────────────────────────────────────────────────────────────────
+// 8 domain branches, 6 topics each = 48 leaf nodes + 8 clusters + 1 core
+const BRANCHES = [
+  {
+    id:"d-meta", label:"Consciousness", desc:"The architecture of reality",
+    topics:[
+      {id:"t-oneness",   label:"Oneness"},
+      {id:"t-source",    label:"Source Energy"},
+      {id:"t-vibration", label:"Vibration"},
+      {id:"t-sacredgeo", label:"Sacred Geometry"},
+      {id:"t-akashic",   label:"Akashic Records"},
+      {id:"t-merkaba",   label:"Merkaba"},
+    ]
+  },
+  {
+    id:"d-sciences", label:"Sciences", desc:"Empirical exploration of reality",
+    topics:[
+      {id:"t-quantum",  label:"Quantum Physics"},
+      {id:"t-neuro",    label:"Neuroscience"},
+      {id:"t-astrophys",label:"Astrophysics"},
+      {id:"t-bio",      label:"Biology"},
+      {id:"t-psych",    label:"Psychology"},
+      {id:"t-ecology",  label:"Ecology"},
+    ]
+  },
+  {
+    id:"d-tech", label:"Technology", desc:"Tools shaping the future",
+    topics:[
+      {id:"t-ai",        label:"Artificial Intelligence"},
+      {id:"t-blockchain",label:"Blockchain"},
+      {id:"t-web3",      label:"Web3"},
+      {id:"t-decentral", label:"Decentralized Networks"},
+      {id:"t-biotech",   label:"Biotechnology"},
+      {id:"t-robotics",  label:"Robotics"},
+    ]
+  },
+  {
+    id:"d-arts", label:"Arts & Culture", desc:"Expression of the human spirit",
+    topics:[
+      {id:"t-music",  label:"Music"},
+      {id:"t-visual", label:"Visual Art"},
+      {id:"t-film",   label:"Film"},
+      {id:"t-poetry", label:"Poetry"},
+      {id:"t-story",  label:"Storytelling"},
+      {id:"t-archit", label:"Architecture"},
+    ]
+  },
+  {
+    id:"d-nature", label:"Nature & Cosmos", desc:"The living systems of existence",
+    topics:[
+      {id:"t-forests",  label:"Forests"},
+      {id:"t-oceans",   label:"Oceans"},
+      {id:"t-cosmos",   label:"Stars & Planets"},
+      {id:"t-climate",  label:"Climate"},
+      {id:"t-biodivers",label:"Biodiversity"},
+      {id:"t-cycles",   label:"Seasons & Cycles"},
+    ]
+  },
+  {
+    id:"d-money", label:"Money", desc:"Capital, crypto, and the new financial layer",
+    topics:[
+      {id:"t-crypto",  label:"Cryptocurrency"},
+      {id:"t-bitcoin", label:"Bitcoin"},
+      {id:"t-defi",    label:"DeFi"},
+      {id:"t-impact",  label:"Impact Investing"},
+      {id:"t-conscap", label:"Conscious Capital"},
+      {id:"t-gold",    label:"Gold"},
+    ]
+  },
+  {
+    id:"d-wellbeing", label:"Well-being", desc:"Healing and wholeness",
+    topics:[
+      {id:"t-meditation",label:"Meditation"},
+      {id:"t-breathwork",label:"Breathwork"},
+      {id:"t-soundheal", label:"Sound Healing"},
+      {id:"t-yoga",      label:"Yoga"},
+      {id:"t-somatic",   label:"Somatic Therapy"},
+      {id:"t-energyheal",label:"Energy Healing"},
+    ]
+  },
+  {
+    id:"d-society", label:"Society", desc:"Collective human systems",
+    topics:[
+      {id:"t-governance",label:"Governance"},
+      {id:"t-indigenous",label:"Indigenous Wisdom"},
+      {id:"t-collective",label:"Collective Intelligence"},
+      {id:"t-peace",     label:"Peace Building"},
+      {id:"t-socialmov", label:"Social Movements"},
+      {id:"t-community", label:"Community"},
+    ]
+  },
+];
+
+// ─── CANVAS / SVG SETUP ───────────────────────────────────────────────────────
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx    = bgCanvas.getContext('2d');
+const svgEl    = document.getElementById('tree-svg');
+const svg      = d3.select(svgEl);
+
+let CW, CH, cx, cy;
+let builtNodes = [], builtLinks = [], particles = [];
+let lastSpawn = 0;
+
+function resize() {
+  CW = bgCanvas.width  = window.innerWidth;
+  CH = bgCanvas.height = window.innerHeight;
+  cx = CW / 2;
+  cy = CH / 2;
+  buildLayout();
+  renderSVG();
+}
+window.addEventListener('resize', resize, { passive: true });
+
+// ─── LAYOUT ──────────────────────────────────────────────────────────────────
+function buildLayout() {
+  const dim  = Math.min(CW, CH);
+  const R1   = dim * 0.24;   // domain radius
+  const R2   = dim * 0.44;   // topic radius
+  const N    = BRANCHES.length;
+  const SPREAD = Math.PI * 0.32;  // half-arc for topics around each domain
+
+  builtNodes = [];
+  builtLinks = [];
+  particles  = [];
+
+  // Core
+  const core = { id:"frqncy", label:"FRQNCY", type:"core", r:52, desc:"The living network of consciousness", x:cx, y:cy };
+  builtNodes.push(core);
+
+  BRANCHES.forEach((branch, bi) => {
+    const baseAngle = (bi / N) * Math.PI * 2 - Math.PI / 2;
+
+    // Domain node
+    const dx = cx + Math.cos(baseAngle) * R1;
+    const dy = cy + Math.sin(baseAngle) * R1;
+
+    // Branch control point (organic curve away from center)
+    const perpX = -Math.sin(baseAngle), perpY = Math.cos(baseAngle);
+    const curve = R1 * 0.18 * ((bi % 2 === 0) ? 1 : -1);
+
+    const domainNode = {
+      id: branch.id, label: branch.label, type:"cluster", r:24,
+      desc: branch.desc, x: dx, y: dy,
+      cpx: (cx + dx)/2 + perpX * curve,
+      cpy: (cy + dy)/2 + perpY * curve
+    };
+    builtNodes.push(domainNode);
+    builtLinks.push({ source: core, target: domainNode, level: 0,
+      cpx: domainNode.cpx, cpy: domainNode.cpy });
+
+    // Topic nodes
+    const nt = branch.topics.length;
+    branch.topics.forEach((topic, ti) => {
+      const tAngle = baseAngle - SPREAD/2 + (ti / (nt - 1 || 1)) * SPREAD;
+      const tx = cx + Math.cos(tAngle) * R2;
+      const ty = cy + Math.sin(tAngle) * R2;
+
+      const tdx = tx - dx, tdy = ty - dy;
+      const tdist = Math.sqrt(tdx*tdx + tdy*tdy) || 1;
+      const tperpX = -tdy/tdist, tperpY = tdx/tdist;
+      const tcurve = tdist * 0.12 * ((ti % 2 === 0) ? 1 : -1);
+
+      const topicNode = {
+        id: topic.id, label: topic.label, type:"topic", r:13,
+        x: tx, y: ty,
+        cpx: (dx + tx)/2 + tperpX * tcurve,
+        cpy: (dy + ty)/2 + tperpY * tcurve
+      };
+      builtNodes.push(topicNode);
+      builtLinks.push({ source: domainNode, target: topicNode, level: 1,
+        cpx: topicNode.cpx, cpy: topicNode.cpy });
+    });
+  });
+}
+
+// ─── SVG ────────────────────────────────────────────────────────────────────
+function renderSVG() {
+  svg.selectAll('*').remove();
+
+  const defs = svg.append('defs');
+
+  // Node gradients — same as network-map.js
+  [
+    { id:'g-core',    c1:'#F4DC88', c2:'#A06818' },
+    { id:'g-cluster', c1:'#3062C8', c2:'#081640' },
+    { id:'g-topic',   c1:'#213E88', c2:'#060E24' },
+  ].forEach(g => {
+    const gr = defs.append('radialGradient').attr('id', g.id).attr('cx','38%').attr('cy','30%');
+    gr.append('stop').attr('offset','0%').attr('stop-color', g.c1);
+    gr.append('stop').attr('offset','100%').attr('stop-color', g.c2);
+  });
+
+  // Leaf filter: soft green glow on topic circles
+  const leafFilter = defs.append('filter').attr('id','leaf-glow').attr('x','-60%').attr('y','-60%').attr('width','220%').attr('height','220%');
+  leafFilter.append('feGaussianBlur').attr('stdDeviation','5').attr('result','blur');
+  const merge = leafFilter.append('feMerge');
+  merge.append('feMergeNode').attr('in','blur');
+  merge.append('feMergeNode').attr('in','SourceGraphic');
+
+  // Draw branch paths (tree branches between nodes)
+  const branchG = svg.append('g').attr('class','branches');
+  builtLinks.forEach(link => {
+    branchG.append('path')
+      .attr('d', `M${link.source.x},${link.source.y} Q${link.cpx},${link.cpy} ${link.target.x},${link.target.y}`)
+      .attr('fill', 'none')
+      .attr('stroke', link.level === 0 ? 'rgba(92,48,21,0.78)' : 'rgba(101,62,24,0.52)')
+      .attr('stroke-width', link.level === 0 ? 4.5 : 1.8)
+      .attr('stroke-linecap', 'round');
+  });
+
+  // Nodes
+  const nodeG = svg.append('g').attr('class','nodes');
+  const groups = nodeG.selectAll('g.node')
+    .data(builtNodes)
+    .join('g')
+    .attr('class','node')
+    .attr('transform', d => `translate(${d.x},${d.y})`)
+    .style('cursor','default');
+
+  // Leaf ring (green glow circle) for topics
+  groups.filter(d => d.type === 'topic')
+    .append('circle')
+    .attr('r', d => d.r * 2.6)
+    .attr('fill', 'none')
+    .attr('stroke', 'rgba(45,122,74,0.22)')
+    .attr('stroke-width', 6)
+    .attr('filter', 'url(#leaf-glow)');
+
+  // Leaf fill behind topic node
+  groups.filter(d => d.type === 'topic')
+    .append('circle')
+    .attr('r', d => d.r * 1.9)
+    .attr('fill', 'rgba(34,90,52,0.12)')
+    .attr('stroke', 'none');
+
+  // Main node circle (same fill as constellation)
+  groups.append('circle')
+    .attr('r', d => d.r)
+    .attr('fill', d => `url(#g-${d.type === 'core' ? 'core' : d.type === 'cluster' ? 'cluster' : 'topic'})`)
+    .attr('stroke', d =>
+      d.type === 'core'    ? '#E0C06A' :
+      d.type === 'cluster' ? '#2952B3' :
+      '#1A3A8F')
+    .attr('stroke-width', d => d.type === 'core' ? 2.5 : 1);
+
+  // Labels
+  groups.filter(d => d.type !== 'dot')
+    .append('text')
+    .attr('text-anchor', 'middle')
+    .attr('dominant-baseline', 'central')
+    .attr('fill', d =>
+      d.type === 'core'    ? '#0A1220' :
+      d.type === 'cluster' ? '#E8C97D' :
+      'rgba(172,202,255,0.88)')
+    .attr('font-family', d =>
+      d.type === 'core' ? 'Cormorant,Georgia,serif' : "'Jost',sans-serif")
+    .attr('font-size', d =>
+      d.type === 'core' ? '15px' : d.type === 'cluster' ? '9.5px' : '8px')
+    .attr('font-weight', d => d.type === 'core' ? '500' : '300')
+    .attr('letter-spacing', d => d.type === 'core' ? '0.18em' : '0.04em')
+    .attr('pointer-events', 'none')
+    .each(function(d) {
+      const el = d3.select(this);
+      if (d.type === 'topic' && d.label.length > 14) {
+        const words = d.label.split(' ');
+        const mid = Math.ceil(words.length / 2);
+        el.append('tspan').attr('x',0).attr('dy','-0.5em').text(words.slice(0,mid).join(' '));
+        el.append('tspan').attr('x',0).attr('dy','1em').text(words.slice(mid).join(' '));
+      } else {
+        el.text(d.label);
+      }
+    });
+
+  // Tooltip interaction
+  const tip = document.getElementById('nm-tooltip');
+  groups
+    .on('mouseover', (e,d) => {
+      if (!tip) return;
+      tip.querySelector('.tip-title').textContent = d.label;
+      tip.querySelector('.tip-type').textContent =
+        d.desc || ({core:'FRQNCY Core',cluster:'Domain',topic:'Topic'}[d.type] || '');
+      tip.style.opacity = '1';
+    })
+    .on('mousemove', e => {
+      if (!tip) return;
+      tip.style.left = (e.clientX + 16) + 'px';
+      tip.style.top  = (e.clientY - 16) + 'px';
+    })
+    .on('mouseout', () => { if (tip) tip.style.opacity = '0'; });
+}
+
+// ─── BACKGROUND STARS ────────────────────────────────────────────────────────
+const STARS = Array.from({length: 180}, () => ({
+  rx: Math.random(), ry: Math.random(),
+  r:  Math.random() * 1.3 + 0.15,
+  base:  Math.random() * 0.42 + 0.08,
+  phase: Math.random() * Math.PI * 2,
+  speed: 0.5 + Math.random() * 0.9,
+}));
+
+// ─── PARTICLE SYSTEM ─────────────────────────────────────────────────────────
+// Particles flow from core outward along the bezier branches
+function spawnParticle() {
+  if (particles.length > 160 || !builtLinks.length) return;
+  const link = builtLinks[Math.floor(Math.random() * builtLinks.length)];
+  particles.push({
+    sx: link.source.x, sy: link.source.y,
+    cpx: link.cpx, cpy: link.cpy,
+    tx: link.target.x, ty: link.target.y,
+    prog: 0, speed: 0.007 + Math.random() * 0.009,
+    level: link.level,
+  });
+}
+
+function quadBezierPoint(x1,y1,cpx,cpy,x2,y2,t) {
+  const mt = 1-t;
+  return {
+    x: mt*mt*x1 + 2*mt*t*cpx + t*t*x2,
+    y: mt*mt*y1 + 2*mt*t*cpy + t*t*y2,
+  };
+}
+
+// ─── RENDER LOOP ─────────────────────────────────────────────────────────────
+function render(ts) {
+  requestAnimationFrame(render);
+  bgCtx.clearRect(0, 0, CW, CH);
+
+  // Background gradient (navy deep)
+  const bgGr = bgCtx.createRadialGradient(cx, cy*0.6, 0, cx, cy, Math.max(CW,CH)*0.7);
+  bgGr.addColorStop(0, '#0D2451');
+  bgGr.addColorStop(1, '#081530');
+  bgCtx.fillStyle = bgGr;
+  bgCtx.fillRect(0, 0, CW, CH);
+
+  // Stars
+  const t = ts * 0.00048;
+  STARS.forEach(s => {
+    const a = s.base * (0.65 + 0.35 * Math.sin(t * s.speed + s.phase));
+    bgCtx.fillStyle = `rgba(255,255,255,${a.toFixed(2)})`;
+    bgCtx.beginPath();
+    bgCtx.arc(s.rx * CW, s.ry * CH, s.r, 0, Math.PI * 2);
+    bgCtx.fill();
+  });
+
+  if (!builtNodes.length) return;
+
+  // ── Green leaf aura for topic nodes ──
+  builtNodes.filter(n => n.type === 'topic').forEach(n => {
+    const gr = bgCtx.createRadialGradient(n.x, n.y, n.r, n.x, n.y, n.r * 4.2);
+    gr.addColorStop(0, 'rgba(45,122,74,0.16)');
+    gr.addColorStop(0.55,'rgba(45,122,74,0.05)');
+    gr.addColorStop(1,   'rgba(45,122,74,0)');
+    bgCtx.fillStyle = gr;
+    bgCtx.beginPath();
+    bgCtx.arc(n.x, n.y, n.r * 4.2, 0, Math.PI*2);
+    bgCtx.fill();
+  });
+
+  // ── Blue glow for cluster (domain) nodes ──
+  builtNodes.filter(n => n.type === 'cluster').forEach(n => {
+    const gr = bgCtx.createRadialGradient(n.x, n.y, n.r*0.5, n.x, n.y, n.r*2.4);
+    gr.addColorStop(0, 'rgba(48,98,200,0.22)');
+    gr.addColorStop(1, 'rgba(48,98,200,0)');
+    bgCtx.fillStyle = gr;
+    bgCtx.beginPath();
+    bgCtx.arc(n.x, n.y, n.r*2.4, 0, Math.PI*2);
+    bgCtx.fill();
+  });
+
+  // ── Gold glow for core ──
+  const core = builtNodes.find(n => n.type === 'core');
+  if (core) {
+    const gr = bgCtx.createRadialGradient(core.x, core.y, core.r*0.6, core.x, core.y, core.r*3.2);
+    gr.addColorStop(0, 'rgba(196,151,58,0.30)');
+    gr.addColorStop(0.5,'rgba(196,151,58,0.08)');
+    gr.addColorStop(1,  'rgba(196,151,58,0)');
+    bgCtx.fillStyle = gr;
+    bgCtx.beginPath();
+    bgCtx.arc(core.x, core.y, core.r*3.2, 0, Math.PI*2);
+    bgCtx.fill();
+
+    // Trunk bark ring at center
+    bgCtx.save();
+    bgCtx.globalAlpha = 0.22;
+    bgCtx.strokeStyle = '#6B3D1A';
+    bgCtx.lineWidth = 14;
+    bgCtx.beginPath();
+    bgCtx.arc(core.x, core.y, core.r + 18, 0, Math.PI*2);
+    bgCtx.stroke();
+    bgCtx.lineWidth = 6;
+    bgCtx.strokeStyle = '#3D1F0A';
+    bgCtx.beginPath();
+    bgCtx.arc(core.x, core.y, core.r + 30, 0, Math.PI*2);
+    bgCtx.stroke();
+    bgCtx.restore();
+  }
+
+  // ── Particles along branches ──
+  if (ts - lastSpawn > 130) { spawnParticle(); lastSpawn = ts; }
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.prog += p.speed;
+    if (p.prog >= 1) { particles.splice(i,1); continue; }
+    const pt = quadBezierPoint(p.sx, p.sy, p.cpx, p.cpy, p.tx, p.ty, p.prog);
+    const fade = Math.min(p.prog*5, 1) * Math.min((1-p.prog)*5, 1);
+    if (p.level === 0) {
+      // Gold particles on trunk branches
+      bgCtx.fillStyle = `rgba(240,210,95,${(0.88*fade).toFixed(2)})`;
+      bgCtx.beginPath(); bgCtx.arc(pt.x, pt.y, 2.2, 0, Math.PI*2); bgCtx.fill();
+    } else {
+      // Green particles on leaf branches (same rgba(210,230,255) blue-white as human stars)
+      bgCtx.fillStyle = `rgba(107,203,119,${(0.72*fade).toFixed(2)})`;
+      bgCtx.beginPath(); bgCtx.arc(pt.x, pt.y, 1.4, 0, Math.PI*2); bgCtx.fill();
+    }
+  }
+}
+
+// ─── BOOT ────────────────────────────────────────────────────────────────────
+resize();
+requestAnimationFrame(render);
+</script>
+</body>
+</html>

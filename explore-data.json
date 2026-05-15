@@ -1650,6 +1650,18 @@
       "label": "Companies",
       "type": "topic",
       "r": 12
+    },
+    {
+      "id": "t-diy",
+      "label": "DIY",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-ecovillages",
+      "label": "Eco-Villages",
+      "type": "topic",
+      "r": 12
     }
   ],
   "links": [
@@ -3532,6 +3544,18 @@
     [
       "d-business",
       "t-companies"
+    ],
+    [
+      "d-creation",
+      "t-diy"
+    ],
+    [
+      "d-society",
+      "t-ecovillages"
+    ],
+    [
+      "p-intaaya",
+      "t-ecovillages"
     ]
   ],
   "node_urls": {
@@ -3803,7 +3827,9 @@
     "t-referrals": "referrals/index.html",
     "t-donations": "donations/index.html",
     "p-yogaville": "https://www.yogaville.org/",
-    "t-companies": "companies/index.html"
+    "t-companies": "companies/index.html",
+    "t-diy": "diy/index.html",
+    "t-ecovillages": "eco-villages/index.html"
   },
   "$last_sync": "2026-05-15",
   "$updated": "2026-04-24 — removed 4 ghost nodes (t-commodities, t-filestorage, t-stocks, t-world-models) that existed on the map but not in content.json. If you want these topics back, add them to content.json — the sync will bring them to the map automatically.",

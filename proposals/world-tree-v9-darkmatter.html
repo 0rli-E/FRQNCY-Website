@@ -1,0 +1,670 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRQNCY · World Tree · v9 · Dark Matter Web</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300&family=Jost:wght@200;300;400&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #020305; }
+
+#main-canvas {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+}
+
+#svg-layer {
+  position: absolute; top: 0; left: 0;
+  width: 100%; height: 100%;
+  overflow: visible;
+  pointer-events: none;
+}
+
+.eyebrow {
+  position: absolute; top: 24px; left: 32px;
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 9px; letter-spacing: 0.38em; text-transform: uppercase;
+  color: rgba(232,192,96,0.22);
+  pointer-events: none;
+  user-select: none;
+}
+.eyebrow em { color: rgba(232,192,96,0.12); font-style: normal; }
+
+#tooltip {
+  position: absolute; pointer-events: none; opacity: 0;
+  background: rgba(2,3,5,0.92);
+  border: 1px solid rgba(232,192,96,0.12);
+  border-radius: 2px; padding: 10px 14px;
+  font-family: 'Jost', sans-serif; font-size: 12px;
+  color: rgba(216,232,255,0.7);
+  transition: opacity 0.18s;
+  max-width: 230px;
+  backdrop-filter: blur(8px);
+}
+.tip-title {
+  font-family: 'Cormorant', serif; font-style: italic;
+  font-size: 15px; margin-bottom: 4px;
+  color: rgba(216,232,255,0.85);
+  font-weight: 300;
+}
+.tip-type {
+  font-size: 9px; letter-spacing: 0.14em;
+  opacity: 0.45; text-transform: uppercase;
+}
+
+#hint {
+  position: absolute; bottom: 22px; left: 50%;
+  transform: translateX(-50%);
+  font-family: 'JetBrains Mono', monospace;
+  font-size: 8px; letter-spacing: 0.32em; text-transform: uppercase;
+  color: rgba(216,232,255,0.08);
+  pointer-events: none;
+  user-select: none;
+}
+</style>
+</head>
+<body>
+
+<canvas id="main-canvas"></canvas>
+<svg id="svg-layer"></svg>
+<div class="eyebrow">FRQNCY &nbsp;·&nbsp; <em>World Tree</em> &nbsp;·&nbsp; v9</div>
+<div id="tooltip"><div class="tip-title"></div><div class="tip-type"></div></div>
+<div id="hint">hover to reveal · drag to explore</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+/* =============================================================================
+   FRQNCY World Tree — v9 · Dark Matter Web
+   Design: nearly invisible. Only effects are visible. Presence through absence.
+   ============================================================================= */
+
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const BRANCHES = [
+  {
+    id:"d-meta", label:"Consciousness", desc:"The architecture of reality",
+    topics:[
+      {id:"t-oneness",   label:"Oneness"},
+      {id:"t-source",    label:"Source Energy"},
+      {id:"t-vibration", label:"Vibration"},
+      {id:"t-sacredgeo", label:"Sacred Geometry"},
+      {id:"t-akashic",   label:"Akashic Records"},
+      {id:"t-merkaba",   label:"Merkaba"},
+    ]
+  },
+  {
+    id:"d-sciences", label:"Sciences", desc:"Empirical exploration of reality",
+    topics:[
+      {id:"t-quantum",  label:"Quantum Physics"},
+      {id:"t-neuro",    label:"Neuroscience"},
+      {id:"t-astrophys",label:"Astrophysics"},
+      {id:"t-bio",      label:"Biology"},
+      {id:"t-psych",    label:"Psychology"},
+      {id:"t-ecology",  label:"Ecology"},
+    ]
+  },
+  {
+    id:"d-tech", label:"Technology", desc:"Tools shaping the future",
+    topics:[
+      {id:"t-ai",        label:"Artificial Intelligence"},
+      {id:"t-blockchain",label:"Blockchain"},
+      {id:"t-web3",      label:"Web3"},
+      {id:"t-decentral", label:"Decentralized Networks"},
+      {id:"t-biotech",   label:"Biotechnology"},
+      {id:"t-robotics",  label:"Robotics"},
+    ]
+  },
+  {
+    id:"d-arts", label:"Arts & Culture", desc:"Expression of the human spirit",
+    topics:[
+      {id:"t-music",  label:"Music"},
+      {id:"t-visual", label:"Visual Art"},
+      {id:"t-film",   label:"Film"},
+      {id:"t-poetry", label:"Poetry"},
+      {id:"t-story",  label:"Storytelling"},
+      {id:"t-archit", label:"Architecture"},
+    ]
+  },
+  {
+    id:"d-nature", label:"Nature & Cosmos", desc:"The living systems of existence",
+    topics:[
+      {id:"t-forests",  label:"Forests"},
+      {id:"t-oceans",   label:"Oceans"},
+      {id:"t-cosmos",   label:"Stars & Planets"},
+      {id:"t-climate",  label:"Climate"},
+      {id:"t-biodivers",label:"Biodiversity"},
+      {id:"t-cycles",   label:"Seasons & Cycles"},
+    ]
+  },
+  {
+    id:"d-money", label:"Money", desc:"Capital, crypto, and the new financial layer",
+    topics:[
+      {id:"t-crypto",  label:"Cryptocurrency"},
+      {id:"t-bitcoin", label:"Bitcoin"},
+      {id:"t-defi",    label:"DeFi"},
+      {id:"t-impact",  label:"Impact Investing"},
+      {id:"t-conscap", label:"Conscious Capital"},
+      {id:"t-gold",    label:"Gold"},
+    ]
+  },
+  {
+    id:"d-wellbeing", label:"Well-being", desc:"Healing and wholeness",
+    topics:[
+      {id:"t-meditation",label:"Meditation"},
+      {id:"t-breathwork",label:"Breathwork"},
+      {id:"t-soundheal", label:"Sound Healing"},
+      {id:"t-yoga",      label:"Yoga"},
+      {id:"t-somatic",   label:"Somatic Therapy"},
+      {id:"t-energyheal",label:"Energy Healing"},
+    ]
+  },
+  {
+    id:"d-society", label:"Society", desc:"Collective human systems",
+    topics:[
+      {id:"t-governance",label:"Governance"},
+      {id:"t-indigenous",label:"Indigenous Wisdom"},
+      {id:"t-collective",label:"Collective Intelligence"},
+      {id:"t-peace",     label:"Peace Building"},
+      {id:"t-socialmov", label:"Social Movements"},
+      {id:"t-community", label:"Community"},
+    ]
+  },
+];
+
+// ─── STATE ───────────────────────────────────────────────────────────────────
+const canvas = document.getElementById('main-canvas');
+const ctx    = canvas.getContext('2d');
+const svgEl  = document.getElementById('svg-layer');
+const svg    = d3.select(svgEl);
+
+let CW, CH, cx, cy;
+let nodes = [], links = [];
+let hoveredId = null;
+let litLinks = new Set(); // currently "illuminated" link indices
+let litFade  = {};        // link index → fade value [0..1]
+let particle = null;      // single particle at a time
+let cosmicRingR = 60;     // the slow expanding ring
+
+// ─── STARS (sparse, very dim) ─────────────────────────────────────────────────
+const STARS = Array.from({length: 90}, () => ({
+  rx: Math.random(), ry: Math.random(),
+  r:  Math.random() * 0.8 + 0.3,
+  base:  0.12 + Math.random() * 0.13,  // very dim: 0.12–0.25
+  phase: Math.random() * Math.PI * 2,
+  speed: 0.3 + Math.random() * 0.5,
+}));
+
+// ─── LAYOUT ──────────────────────────────────────────────────────────────────
+function buildLayout() {
+  nodes = []; links = [];
+  const dim   = Math.min(CW, CH);
+  const R1    = dim * 0.26;
+  const R2    = dim * 0.46;
+  const N     = BRANCHES.length;
+  const SPREAD = Math.PI * 0.30;
+
+  const core = {
+    id: "frqncy", label: "FRQNCY", type: "core",
+    desc: "The living network of consciousness",
+    x: cx, y: cy, r: 8
+  };
+  nodes.push(core);
+
+  BRANCHES.forEach((branch, bi) => {
+    const baseAngle = (bi / N) * Math.PI * 2 - Math.PI / 2;
+
+    const dx = cx + Math.cos(baseAngle) * R1;
+    const dy = cy + Math.sin(baseAngle) * R1;
+
+    const perpX = -Math.sin(baseAngle), perpY = Math.cos(baseAngle);
+    const curve = R1 * 0.15 * ((bi % 2 === 0) ? 1 : -1);
+
+    const domain = {
+      id: branch.id, label: branch.label, type: "domain",
+      desc: branch.desc, x: dx, y: dy, r: 6,
+      cpx: (cx + dx) / 2 + perpX * curve,
+      cpy: (cy + dy) / 2 + perpY * curve,
+    };
+    nodes.push(domain);
+
+    const li = links.length;
+    links.push({ src: core, tgt: domain, level: 0,
+      cpx: domain.cpx, cpy: domain.cpy, idx: li });
+
+    const nt = branch.topics.length;
+    branch.topics.forEach((topic, ti) => {
+      const tAngle = baseAngle - SPREAD / 2 + (ti / (nt - 1 || 1)) * SPREAD;
+      const tx = cx + Math.cos(tAngle) * R2;
+      const ty = cy + Math.sin(tAngle) * R2;
+
+      const tdx = tx - dx, tdy = ty - dy;
+      const tdist = Math.sqrt(tdx*tdx + tdy*tdy) || 1;
+      const tperpX = -tdy / tdist, tperpY = tdx / tdist;
+      const tcurve = tdist * 0.1 * ((ti % 2 === 0) ? 1 : -1);
+
+      const topicNode = {
+        id: topic.id, label: topic.label, type: "topic",
+        x: tx, y: ty, r: 2.5,
+        cpx: (dx + tx) / 2 + tperpX * tcurve,
+        cpy: (dy + ty) / 2 + tperpY * tcurve,
+        domainId: branch.id,
+      };
+      nodes.push(topicNode);
+
+      const li2 = links.length;
+      links.push({ src: domain, tgt: topicNode, level: 1,
+        cpx: topicNode.cpx, cpy: topicNode.cpy, idx: li2 });
+    });
+  });
+}
+
+// ─── BEZIER HELPER ───────────────────────────────────────────────────────────
+function qbez(x1,y1,cpx,cpy,x2,y2,t) {
+  const mt = 1-t;
+  return {
+    x: mt*mt*x1 + 2*mt*t*cpx + t*t*x2,
+    y: mt*mt*y1 + 2*mt*t*cpy + t*t*y2,
+  };
+}
+
+// ─── GRAVITATIONAL LENSING: draw a link as luminous fog ──────────────────────
+// samples N points along the bezier, draws radial blur at each
+function drawLensingFog(link, alpha, thickness) {
+  const S = 28;  // samples
+  const { src, tgt, cpx, cpy } = link;
+  for (let i = 0; i <= S; i++) {
+    const t  = i / S;
+    const pt = qbez(src.x, src.y, cpx, cpy, tgt.x, tgt.y, t);
+    // fade at ends
+    const endFade = Math.min(t * 6, 1) * Math.min((1-t)*6, 1);
+    const a = alpha * endFade;
+    if (a < 0.001) continue;
+    const r = thickness;
+    const g = ctx.createRadialGradient(pt.x, pt.y, 0, pt.x, pt.y, r);
+    g.addColorStop(0, `rgba(48,96,160,${(a * 0.9).toFixed(3)})`);
+    g.addColorStop(0.4, `rgba(30,60,120,${(a * 0.4).toFixed(3)})`);
+    g.addColorStop(1, `rgba(6,8,16,0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(pt.x, pt.y, r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+}
+
+// ─── HOVER DETECTION ─────────────────────────────────────────────────────────
+function getNodeAtXY(mx, my) {
+  // Iterate in reverse so frontmost (last drawn) wins
+  for (let i = nodes.length - 1; i >= 0; i--) {
+    const n = nodes[i];
+    const dx = mx - n.x, dy = my - n.y;
+    const hitR = Math.max(n.r * 3.5, 14);
+    if (dx*dx + dy*dy < hitR*hitR) return n;
+  }
+  return null;
+}
+
+// ─── HOVER: illuminate connected links ───────────────────────────────────────
+function onHover(node) {
+  if (!node) return;
+  const connectedIdx = new Set();
+  links.forEach((l, i) => {
+    if (l.src.id === node.id || l.tgt.id === node.id) connectedIdx.add(i);
+    // also get sibling links if hovering a domain (light its topic branches)
+    if (node.type === 'domain') {
+      if (l.src.id === node.id) connectedIdx.add(i);
+    }
+    // if hovering topic, also light the domain→topic link
+    if (node.type === 'topic') {
+      if (l.tgt.id === node.id) connectedIdx.add(i);
+    }
+  });
+  connectedIdx.forEach(i => {
+    litLinks.add(i);
+    litFade[i] = 1.0;
+  });
+}
+
+// ─── MOUSE ───────────────────────────────────────────────────────────────────
+let mouseX = -9999, mouseY = -9999;
+canvas.addEventListener('mousemove', e => {
+  const r = canvas.getBoundingClientRect();
+  mouseX = (e.clientX - r.left) * (CW / r.width);
+  mouseY = (e.clientY - r.top)  * (CH / r.height);
+
+  const n = getNodeAtXY(mouseX, mouseY);
+  const newId = n ? n.id : null;
+  if (newId !== hoveredId) {
+    hoveredId = newId;
+    if (n) onHover(n);
+    updateTooltip(n, e);
+  }
+});
+canvas.addEventListener('mouseleave', () => {
+  hoveredId = null;
+  updateTooltip(null, null);
+});
+
+// Touch support
+canvas.addEventListener('touchstart', e => {
+  const t = e.touches[0];
+  const r = canvas.getBoundingClientRect();
+  mouseX = (t.clientX - r.left) * (CW / r.width);
+  mouseY = (t.clientY - r.top)  * (CH / r.height);
+  const n = getNodeAtXY(mouseX, mouseY);
+  hoveredId = n ? n.id : null;
+  if (n) onHover(n);
+  updateTooltip(n, t);
+}, { passive: true });
+
+// ─── TOOLTIP ─────────────────────────────────────────────────────────────────
+const tip = document.getElementById('tooltip');
+function updateTooltip(node, e) {
+  if (!node || !e) { tip.style.opacity = '0'; return; }
+  tip.querySelector('.tip-title').textContent = node.label;
+  const typeStr = { core:'FRQNCY', domain:'DOMAIN', topic:'TOPIC' }[node.type] || '';
+  tip.querySelector('.tip-type').textContent = (node.desc ? node.desc + ' · ' : '') + typeStr;
+  tip.style.opacity = '1';
+  const rx = e.clientX || (e.pageX || 0);
+  const ry = e.clientY || (e.pageY || 0);
+  tip.style.left = (rx + 18) + 'px';
+  tip.style.top  = (ry - 14) + 'px';
+}
+canvas.addEventListener('mousemove', e => {
+  if (tip.style.opacity === '1') {
+    tip.style.left = (e.clientX + 18) + 'px';
+    tip.style.top  = (e.clientY - 14) + 'px';
+  }
+});
+
+// ─── PARTICLE SPAWNER ────────────────────────────────────────────────────────
+function spawnParticle() {
+  if (!links.length) return;
+  const link = links[Math.floor(Math.random() * links.length)];
+  particle = {
+    link,
+    prog: 0,
+    speed: 0.0025 + Math.random() * 0.003,
+  };
+}
+
+// ─── RESIZE ──────────────────────────────────────────────────────────────────
+function resize() {
+  CW = canvas.width  = window.innerWidth;
+  CH = canvas.height = window.innerHeight;
+  cx = CW / 2;
+  cy = CH / 2;
+  buildLayout();
+}
+window.addEventListener('resize', resize, { passive: true });
+
+// ─── MAIN RENDER LOOP ─────────────────────────────────────────────────────────
+let lastSpawn = 0;
+let cosmicT = 0;  // drives the 60-second cosmic ring
+const COSMIC_PERIOD = 60000; // ms
+
+function render(ts) {
+  requestAnimationFrame(render);
+
+  ctx.clearRect(0, 0, CW, CH);
+
+  // Absolute void background
+  ctx.fillStyle = '#020305';
+  ctx.fillRect(0, 0, CW, CH);
+
+  // ── Sparse dim stars ──
+  const tSlow = ts * 0.00028;
+  for (let i = 0; i < STARS.length; i++) {
+    const s = STARS[i];
+    const a = s.base * (0.7 + 0.3 * Math.sin(tSlow * s.speed + s.phase));
+    ctx.fillStyle = `rgba(216,232,255,${a.toFixed(3)})`;
+    ctx.beginPath();
+    ctx.arc(s.rx * CW, s.ry * CH, s.r, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  if (!nodes.length) return;
+
+  const core = nodes.find(n => n.type === 'core');
+
+  // ── Cosmic expanding ring (60s cycle, very faint) ──
+  cosmicT = (ts % COSMIC_PERIOD) / COSMIC_PERIOD;
+  // ring grows from r=60 to r=400
+  const ringR   = 60 + cosmicT * 340;
+  // fade: bright early, disappears as it expands
+  const ringAlpha = (1 - cosmicT) * 0.045;
+  if (core && ringAlpha > 0.001) {
+    ctx.save();
+    ctx.strokeStyle = `rgba(232,192,96,${ringAlpha.toFixed(3)})`;
+    ctx.lineWidth   = 1.0;
+    ctx.globalAlpha = 1;
+    ctx.beginPath();
+    ctx.arc(core.x, core.y, ringR, 0, Math.PI * 2);
+    ctx.stroke();
+    // second ring slightly behind, even fainter
+    const r2 = ringR * 0.85;
+    const a2 = ringAlpha * 0.4;
+    ctx.strokeStyle = `rgba(232,192,96,${a2.toFixed(3)})`;
+    ctx.lineWidth   = 0.5;
+    ctx.beginPath();
+    ctx.arc(core.x, core.y, r2, 0, Math.PI * 2);
+    ctx.stroke();
+    ctx.restore();
+  }
+
+  // ── Update lit link fades ──
+  const fadeSpeed = 0.008;
+  for (const i of Array.from(litLinks)) {
+    if (litFade[i] === undefined) litFade[i] = 0;
+    // if link is connected to hovered node, keep lit; else fade out
+    const l = links[i];
+    const connected = hoveredId && (l.src.id === hoveredId || l.tgt.id === hoveredId);
+    if (!connected) {
+      litFade[i] -= fadeSpeed;
+      if (litFade[i] <= 0) { litLinks.delete(i); delete litFade[i]; }
+    } else {
+      litFade[i] = Math.min(1.0, litFade[i] + fadeSpeed * 3);
+    }
+  }
+
+  // ── Draw all links as gravitational lensing fog ──
+  links.forEach((link, i) => {
+    const isLit = litLinks.has(i);
+    const fade  = isLit ? litFade[i] || 0 : 0;
+
+    // Baseline invisible fog — tiny alpha, always there
+    const baseAlpha = link.level === 0 ? 0.018 : 0.010;
+    const baseThick = link.level === 0 ? 22 : 14;
+    drawLensingFog(link, baseAlpha, baseThick);
+
+    // Illuminated state
+    if (isLit && fade > 0.01) {
+      const litAlpha = link.level === 0 ? 0.14 * fade : 0.09 * fade;
+      const litThick = link.level === 0 ? 36 * fade : 22 * fade;
+      drawLensingFog(link, litAlpha, Math.max(4, litThick));
+    }
+  });
+
+  // ── Domain nodes: dim elliptical galaxy smudges ──
+  nodes.filter(n => n.type === 'domain').forEach(n => {
+    const isHovered = hoveredId === n.id;
+    const domAlpha  = isHovered ? 0.28 : 0.10;
+
+    // Smudge: slightly elliptical via scale transform
+    ctx.save();
+    ctx.translate(n.x, n.y);
+    ctx.scale(1.0, 0.65);  // flatten into galaxy shape
+
+    const g = ctx.createRadialGradient(0, 0, 0, 0, 0, 18);
+    g.addColorStop(0,   `rgba(26,26,46,${domAlpha.toFixed(2)})`);
+    g.addColorStop(0.35,`rgba(16,20,40,${(domAlpha * 0.5).toFixed(2)})`);
+    g.addColorStop(1,   `rgba(2,3,5,0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(0, 0, 18, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Second, wider outer glow
+    const g2 = ctx.createRadialGradient(0, 0, 0, 0, 0, 30);
+    g2.addColorStop(0,   `rgba(48,96,160,${(domAlpha * 0.3).toFixed(3)})`);
+    g2.addColorStop(1,   `rgba(6,8,16,0)`);
+    ctx.fillStyle = g2;
+    ctx.beginPath();
+    ctx.arc(0, 0, 30, 0, Math.PI * 2);
+    ctx.fill();
+
+    ctx.restore();
+
+    // Hover: dark matter halo rings
+    if (isHovered) {
+      for (let ring = 1; ring <= 3; ring++) {
+        const rr = n.r + ring * 12 + Math.sin(ts * 0.001 + ring) * 3;
+        const ra = 0.06 / ring;
+        ctx.strokeStyle = `rgba(48,96,160,${ra.toFixed(3)})`;
+        ctx.lineWidth   = 1;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, rr, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+  });
+
+  // ── Topic nodes: barely-there dim dots ──
+  nodes.filter(n => n.type === 'topic').forEach(n => {
+    const isHovered = hoveredId === n.id;
+    const dotAlpha  = isHovered ? 0.7 : 0.25;
+    const haloAlpha = isHovered ? 0.12 : 0.035;
+
+    // Faint halo
+    const g = ctx.createRadialGradient(n.x, n.y, 0, n.x, n.y, 10);
+    g.addColorStop(0, `rgba(216,232,255,${haloAlpha.toFixed(3)})`);
+    g.addColorStop(1, `rgba(2,3,5,0)`);
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, 10, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Core dot
+    ctx.fillStyle = `rgba(216,232,255,${dotAlpha.toFixed(2)})`;
+    ctx.beginPath();
+    ctx.arc(n.x, n.y, 2, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Hover: halo rings
+    if (isHovered) {
+      for (let ring = 1; ring <= 2; ring++) {
+        const rr = 10 + ring * 10;
+        ctx.strokeStyle = `rgba(48,96,160,${(0.05 / ring).toFixed(3)})`;
+        ctx.lineWidth   = 0.5;
+        ctx.beginPath();
+        ctx.arc(n.x, n.y, rr, 0, Math.PI * 2);
+        ctx.stroke();
+      }
+    }
+  });
+
+  // ── Labels: only domain labels (very faint), topic labels appear on hover ──
+  ctx.font = '300 9px Jost, sans-serif';
+  ctx.textAlign = 'center';
+  nodes.filter(n => n.type === 'domain').forEach(n => {
+    const isHovered = hoveredId === n.id;
+    const labelAlpha = isHovered ? 0.82 : 0.40;
+    ctx.fillStyle = `rgba(216,232,255,${labelAlpha.toFixed(2)})`;
+    ctx.letterSpacing = '0.06em';
+    ctx.fillText(n.label, n.x, n.y + 26);
+  });
+
+  // Topic labels on hover
+  nodes.filter(n => n.type === 'topic').forEach(n => {
+    const isHovered = hoveredId === n.id;
+    if (!isHovered) return;
+    ctx.fillStyle = 'rgba(216,232,255,0.72)';
+    ctx.font = '200 8px Jost, sans-serif';
+    // wrap long labels
+    const words = n.label.split(' ');
+    if (words.length > 2) {
+      const mid = Math.ceil(words.length / 2);
+      ctx.fillText(words.slice(0, mid).join(' '), n.x, n.y - 14);
+      ctx.fillText(words.slice(mid).join(' '), n.x, n.y - 4);
+    } else {
+      ctx.fillText(n.label, n.x, n.y - 12);
+    }
+  });
+
+  // ── Core node: quasar ──
+  if (core) {
+    const pulse = 0.7 + 0.3 * Math.sin(ts * 0.0018);
+
+    // Outer diffuse halos — multiple expanding rings
+    for (let ring = 1; ring <= 5; ring++) {
+      const rr = 14 + ring * 18;
+      const ra = (0.06 / ring) * pulse;
+      const g = ctx.createRadialGradient(core.x, core.y, rr * 0.7, core.x, core.y, rr);
+      g.addColorStop(0, `rgba(232,192,96,${ra.toFixed(3)})`);
+      g.addColorStop(1, `rgba(2,3,5,0)`);
+      ctx.fillStyle = g;
+      ctx.beginPath();
+      ctx.arc(core.x, core.y, rr, 0, Math.PI * 2);
+      ctx.fill();
+    }
+
+    // Core bright point
+    const cg = ctx.createRadialGradient(core.x, core.y, 0, core.x, core.y, 12);
+    cg.addColorStop(0,   `rgba(255,252,240,${(0.95 * pulse).toFixed(2)})`);
+    cg.addColorStop(0.2, `rgba(232,192,96,${(0.80 * pulse).toFixed(2)})`);
+    cg.addColorStop(0.6, `rgba(180,120,40,${(0.25 * pulse).toFixed(2)})`);
+    cg.addColorStop(1,   `rgba(2,3,5,0)`);
+    ctx.fillStyle = cg;
+    ctx.beginPath();
+    ctx.arc(core.x, core.y, 12, 0, Math.PI * 2);
+    ctx.fill();
+
+    // Center point — pure white-gold
+    ctx.fillStyle = `rgba(255,252,248,${(0.98 * pulse).toFixed(2)})`;
+    ctx.beginPath();
+    ctx.arc(core.x, core.y, 2.5, 0, Math.PI * 2);
+    ctx.fill();
+
+    // FRQNCY label — very faint, nearly invisible
+    ctx.font = '300 11px "Jost", sans-serif';
+    ctx.textAlign = 'center';
+    ctx.fillStyle = `rgba(232,192,96,${(0.30 * pulse).toFixed(2)})`;
+    ctx.letterSpacing = '0.22em';
+    ctx.fillText('FRQNCY', core.x, core.y + 26);
+  }
+
+  // ── Single particle — gold, extremely faint, slow ──
+  if (!particle) {
+    if (ts - lastSpawn > 2800) { spawnParticle(); lastSpawn = ts; }
+  } else {
+    particle.prog += particle.speed;
+    if (particle.prog >= 1) {
+      particle = null;
+      lastSpawn = ts;
+    } else {
+      const l   = particle.link;
+      const pt  = qbez(l.src.x, l.src.y, l.cpx, l.cpy, l.tgt.x, l.tgt.y, particle.prog);
+      const fade = Math.min(particle.prog * 6, 1) * Math.min((1 - particle.prog) * 6, 1);
+      const pa   = 0.6 * fade;
+      // Tiny glow
+      const pg = ctx.createRadialGradient(pt.x, pt.y, 0, pt.x, pt.y, 5);
+      pg.addColorStop(0, `rgba(232,192,96,${pa.toFixed(2)})`);
+      pg.addColorStop(1, `rgba(2,3,5,0)`);
+      ctx.fillStyle = pg;
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, 5, 0, Math.PI * 2);
+      ctx.fill();
+      // Point
+      ctx.fillStyle = `rgba(255,230,140,${pa.toFixed(2)})`;
+      ctx.beginPath();
+      ctx.arc(pt.x, pt.y, 1, 0, Math.PI * 2);
+      ctx.fill();
+    }
+  }
+}
+
+// ─── BOOT ────────────────────────────────────────────────────────────────────
+resize();
+requestAnimationFrame(render);
+</script>
+</body>
+</html>

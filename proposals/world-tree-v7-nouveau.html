@@ -1,0 +1,916 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRQNCY · World Tree · v7 Art Nouveau Botanical</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400;1,500&family=Jost:wght@200;300;400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #0C0B08; }
+
+#linen-canvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; opacity: 1;
+}
+#bg-canvas {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none;
+}
+#tree-svg {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  overflow: visible;
+}
+#border-svg {
+  position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+  pointer-events: none; overflow: visible;
+}
+
+.eyebrow {
+  position: absolute; top: 22px; left: 32px;
+  font-family: 'Cormorant', Georgia, serif;
+  font-style: italic; font-weight: 300;
+  font-size: 12px; letter-spacing: 0.26em;
+  color: rgba(201,168,76,0.55); pointer-events: none;
+}
+.eyebrow em { font-style: normal; color: rgba(122,155,106,0.6); }
+
+#version-tag {
+  position: absolute; bottom: 20px; right: 28px;
+  font-family: 'Cormorant', serif; font-style: italic; font-size: 10px;
+  letter-spacing: 0.22em; color: rgba(201,168,76,0.28);
+  pointer-events: none;
+}
+
+#nm-tooltip {
+  position: absolute; pointer-events: none; opacity: 0;
+  background: rgba(12,11,8,0.92);
+  border: 1px solid rgba(201,168,76,0.30);
+  border-radius: 2px; padding: 10px 15px;
+  font-family: 'Jost', sans-serif; font-size: 12px; color: #F5F0E8;
+  transition: opacity 0.15s; max-width: 230px;
+  backdrop-filter: blur(6px);
+}
+.tip-title {
+  font-family: 'Cormorant', serif; font-style: italic;
+  font-size: 17px; margin-bottom: 4px; color: #E8C56A; line-height: 1.2;
+}
+.tip-desc  { font-size: 10.5px; opacity: 0.55; margin-bottom: 3px; line-height: 1.4; }
+.tip-type  { font-size: 9px; letter-spacing: 0.14em; opacity: 0.38; text-transform: uppercase; }
+.tip-ornament {
+  display: inline-block; margin: 0 5px;
+  color: rgba(201,168,76,0.5); font-size: 9px;
+}
+</style>
+</head>
+<body>
+
+<!-- Linen texture -->
+<canvas id="linen-canvas"></canvas>
+<!-- Particle/glow layer -->
+<canvas id="bg-canvas"></canvas>
+
+<!-- Decorative Art Nouveau border frame -->
+<svg id="border-svg" viewBox="0 0 100 100" preserveAspectRatio="none" xmlns="http://www.w3.org/2000/svg">
+  <defs>
+    <style>.border-vine { fill:none; stroke: #C9A84C; stroke-opacity:0.06; }</style>
+  </defs>
+  <!-- Corner flourishes and vine border, all in viewport % space -->
+  <!-- Top edge vine -->
+  <path class="border-vine" stroke-width="0.3"
+    d="M 5,2 C 10,1.2 15,2.8 20,1.8 C 25,0.8 30,2.4 35,1.6 C 40,0.8 45,2.2 50,1.5 C 55,0.8 60,2.2 65,1.6 C 70,1 75,2.4 80,1.8 C 85,1.2 90,2.5 95,2"/>
+  <!-- Bottom edge vine -->
+  <path class="border-vine" stroke-width="0.3"
+    d="M 5,98 C 10,98.8 15,97.2 20,98.2 C 25,99.2 30,97.6 35,98.4 C 40,99.2 45,97.8 50,98.5 C 55,99.2 60,97.8 65,98.4 C 70,99 75,97.6 80,98.2 C 85,98.8 90,97.5 95,98"/>
+  <!-- Left edge vine -->
+  <path class="border-vine" stroke-width="0.3"
+    d="M 2,5 C 1.2,10 2.8,15 1.8,20 C 0.8,25 2.4,30 1.6,35 C 0.8,40 2.2,45 1.5,50 C 0.8,55 2.2,60 1.6,65 C 1,70 2.4,75 1.8,80 C 1.2,85 2.5,90 2,95"/>
+  <!-- Right edge vine -->
+  <path class="border-vine" stroke-width="0.3"
+    d="M 98,5 C 98.8,10 97.2,15 98.2,20 C 99.2,25 97.6,30 98.4,35 C 99.2,40 97.8,45 98.5,50 C 99.2,55 97.8,60 98.4,65 C 99,70 97.6,75 98.2,80 C 98.8,85 97.5,90 98,95"/>
+
+  <!-- Top-left corner flourish -->
+  <g transform="translate(5,5)" opacity="0.06" fill="#C9A84C">
+    <path d="M 0,0 C 4,-1 8,2 6,6 C 4,10 -1,8 0,4 Z"/>
+    <path d="M 0,0 C -1,4 2,8 6,6 C 10,4 8,-1 4,0 Z"/>
+    <circle cx="3" cy="3" r="1.2"/>
+    <path fill="none" stroke="#C9A84C" stroke-width="0.4"
+      d="M 6,6 C 9,8 12,6 14,9 C 16,12 13,15 10,14"/>
+    <path fill="none" stroke="#C9A84C" stroke-width="0.4"
+      d="M 6,6 C 8,9 6,12 9,14 C 12,16 15,13 14,10"/>
+  </g>
+  <!-- Top-right corner flourish -->
+  <g transform="translate(95,5) scale(-1,1)" opacity="0.06" fill="#C9A84C">
+    <path d="M 0,0 C 4,-1 8,2 6,6 C 4,10 -1,8 0,4 Z"/>
+    <path d="M 0,0 C -1,4 2,8 6,6 C 10,4 8,-1 4,0 Z"/>
+    <circle cx="3" cy="3" r="1.2"/>
+    <path fill="none" stroke="#C9A84C" stroke-width="0.4"
+      d="M 6,6 C 9,8 12,6 14,9 C 16,12 13,15 10,14"/>
+    <path fill="none" stroke="#C9A84C" stroke-width="0.4"
+      d="M 6,6 C 8,9 6,12 9,14 C 12,16 15,13 14,10"/>
+  </g>
+  <!-- Bottom-left corner flourish -->
+  <g transform="translate(5,95) scale(1,-1)" opacity="0.06" fill="#C9A84C">
+    <path d="M 0,0 C 4,-1 8,2 6,6 C 4,10 -1,8 0,4 Z"/>
+    <path d="M 0,0 C -1,4 2,8 6,6 C 10,4 8,-1 4,0 Z"/>
+    <circle cx="3" cy="3" r="1.2"/>
+    <path fill="none" stroke="#C9A84C" stroke-width="0.4"
+      d="M 6,6 C 9,8 12,6 14,9 C 16,12 13,15 10,14"/>
+  </g>
+  <!-- Bottom-right corner flourish -->
+  <g transform="translate(95,95) scale(-1,-1)" opacity="0.06" fill="#C9A84C">
+    <path d="M 0,0 C 4,-1 8,2 6,6 C 4,10 -1,8 0,4 Z"/>
+    <path d="M 0,0 C -1,4 2,8 6,6 C 10,4 8,-1 4,0 Z"/>
+    <circle cx="3" cy="3" r="1.2"/>
+    <path fill="none" stroke="#C9A84C" stroke-width="0.4"
+      d="M 6,6 C 9,8 12,6 14,9 C 16,12 13,15 10,14"/>
+  </g>
+
+  <!-- Diamond ornaments along edges -->
+  <g fill="#C9A84C" opacity="0.055">
+    <!-- Top -->
+    <path d="M 25,2.5 L 25.8,1.8 L 26.6,2.5 L 25.8,3.2 Z"/>
+    <path d="M 50,1.8 L 50.7,1.1 L 51.4,1.8 L 50.7,2.5 Z"/>
+    <path d="M 75,2.5 L 75.8,1.8 L 76.6,2.5 L 75.8,3.2 Z"/>
+    <!-- Bottom -->
+    <path d="M 25,97.5 L 25.8,96.8 L 26.6,97.5 L 25.8,98.2 Z"/>
+    <path d="M 50,98.2 L 50.7,97.5 L 51.4,98.2 L 50.7,98.9 Z"/>
+    <path d="M 75,97.5 L 75.8,96.8 L 76.6,97.5 L 75.8,98.2 Z"/>
+    <!-- Left -->
+    <path d="M 2.5,25 L 1.8,25.8 L 2.5,26.6 L 3.2,25.8 Z"/>
+    <path d="M 1.8,50 L 1.1,50.7 L 1.8,51.4 L 2.5,50.7 Z"/>
+    <path d="M 2.5,75 L 1.8,75.8 L 2.5,76.6 L 3.2,75.8 Z"/>
+    <!-- Right -->
+    <path d="M 97.5,25 L 96.8,25.8 L 97.5,26.6 L 98.2,25.8 Z"/>
+    <path d="M 98.2,50 L 97.5,50.7 L 98.2,51.4 L 98.9,50.7 Z"/>
+    <path d="M 97.5,75 L 96.8,75.8 L 97.5,76.6 L 98.2,75.8 Z"/>
+  </g>
+</svg>
+
+<!-- Main tree SVG -->
+<svg id="tree-svg" xmlns="http://www.w3.org/2000/svg"></svg>
+
+<div class="eyebrow">FRQNCY &nbsp;·&nbsp; <em>The Living Network</em></div>
+<div id="version-tag">v7 · Art Nouveau Botanical</div>
+<div id="nm-tooltip">
+  <div class="tip-title"></div>
+  <div class="tip-desc"></div>
+  <div class="tip-type"></div>
+</div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+/* ============================================================
+   FRQNCY World Tree — v7 Art Nouveau Botanical
+   Alphonse Mucha meets William Morris meets sacred plants
+   ============================================================ */
+
+// ─── PALETTE ─────────────────────────────────────────────────
+const C = {
+  gold:       '#C9A84C',
+  goldLight:  '#E8C56A',
+  goldPale:   '#E8D080',
+  goldDeep:   '#8B6810',
+  sage:       '#7A9B6A',
+  sageDark:   '#5A7A4A',
+  forest:     '#1A2A15',
+  forestDeep: '#082015',
+  rose:       '#C98B7A',
+  cream:      '#F5F0E8',
+  sepia:      '#3D2B1F',
+  sepiaDark:  '#100A06',
+  bg:         '#0C0B08',
+};
+
+// ─── BRANCH DATA (8 domains × 6 topics) ──────────────────────
+const BRANCHES = [
+  {
+    id:"d-meta", label:"Consciousness", desc:"The architecture of reality",
+    topics:[
+      {id:"t-oneness",   label:"Oneness"},
+      {id:"t-source",    label:"Source Energy"},
+      {id:"t-vibration", label:"Vibration & Frequency"},
+      {id:"t-sacredgeo", label:"Sacred Geometry"},
+      {id:"t-akashic",   label:"Akashic Records"},
+      {id:"t-merkaba",   label:"Merkaba"},
+    ]
+  },
+  {
+    id:"d-sciences", label:"Sciences", desc:"Empirical exploration of reality",
+    topics:[
+      {id:"t-quantum",  label:"Quantum Physics"},
+      {id:"t-neuro",    label:"Neuroscience"},
+      {id:"t-astrophys",label:"Astrophysics"},
+      {id:"t-bio",      label:"Biology"},
+      {id:"t-psych",    label:"Psychology"},
+      {id:"t-ecology",  label:"Ecology"},
+    ]
+  },
+  {
+    id:"d-tech", label:"Technology", desc:"Tools shaping the future",
+    topics:[
+      {id:"t-ai",        label:"Artificial Intelligence"},
+      {id:"t-blockchain",label:"Blockchain"},
+      {id:"t-web3",      label:"Web3"},
+      {id:"t-decentral", label:"Decentralized Networks"},
+      {id:"t-biotech",   label:"Biotechnology"},
+      {id:"t-robotics",  label:"Robotics"},
+    ]
+  },
+  {
+    id:"d-arts", label:"Arts & Culture", desc:"Expression of the human spirit",
+    topics:[
+      {id:"t-music",  label:"Music"},
+      {id:"t-visual", label:"Visual Art"},
+      {id:"t-film",   label:"Film"},
+      {id:"t-poetry", label:"Poetry"},
+      {id:"t-story",  label:"Storytelling"},
+      {id:"t-archit", label:"Architecture"},
+    ]
+  },
+  {
+    id:"d-nature", label:"Nature & Cosmos", desc:"The living systems of existence",
+    topics:[
+      {id:"t-forests",  label:"Forests"},
+      {id:"t-oceans",   label:"Oceans"},
+      {id:"t-cosmos",   label:"Stars & Planets"},
+      {id:"t-climate",  label:"Climate"},
+      {id:"t-biodivers",label:"Biodiversity"},
+      {id:"t-cycles",   label:"Seasons & Cycles"},
+    ]
+  },
+  {
+    id:"d-money", label:"Money", desc:"Capital, crypto & the new financial layer",
+    topics:[
+      {id:"t-crypto",  label:"Cryptocurrency"},
+      {id:"t-bitcoin", label:"Bitcoin"},
+      {id:"t-defi",    label:"DeFi"},
+      {id:"t-impact",  label:"Impact Investing"},
+      {id:"t-conscap", label:"Conscious Capital"},
+      {id:"t-gold",    label:"Gold"},
+    ]
+  },
+  {
+    id:"d-wellbeing", label:"Well-being", desc:"Healing and wholeness",
+    topics:[
+      {id:"t-meditation",label:"Meditation"},
+      {id:"t-breathwork",label:"Breathwork"},
+      {id:"t-soundheal", label:"Sound Healing"},
+      {id:"t-yoga",      label:"Yoga"},
+      {id:"t-somatic",   label:"Somatic Therapy"},
+      {id:"t-energyheal",label:"Energy Healing"},
+    ]
+  },
+  {
+    id:"d-society", label:"Society", desc:"Collective human systems",
+    topics:[
+      {id:"t-governance",label:"Global Governance"},
+      {id:"t-indigenous",label:"Indigenous Wisdom"},
+      {id:"t-collective",label:"Collective Intelligence"},
+      {id:"t-peace",     label:"Peace Building"},
+      {id:"t-socialmov", label:"Social Movements"},
+      {id:"t-community", label:"Community"},
+    ]
+  },
+];
+
+// Domain colour accents (sage/forest spectrum, subtly varied)
+const DOMAIN_ACCENT = [
+  { stroke:'#7A9B6A', glow:'rgba(122,155,106,0.18)' },  // meta — sage
+  { stroke:'#6A8AAA', glow:'rgba(106,138,170,0.16)' },  // sciences — slate blue-sage
+  { stroke:'#8A9B7A', glow:'rgba(138,155,122,0.16)' },  // tech — cool sage
+  { stroke:'#C98B7A', glow:'rgba(201,139,122,0.14)' },  // arts — dusty rose
+  { stroke:'#7A9B6A', glow:'rgba(90,122,74,0.18)' },    // nature — forest sage
+  { stroke:'#C9A84C', glow:'rgba(201,168,76,0.16)' },   // money — gold
+  { stroke:'#9A7B8A', glow:'rgba(154,123,138,0.15)' },  // wellbeing — violet-rose
+  { stroke:'#7A8A9B', glow:'rgba(122,138,155,0.15)' },  // society — steel sage
+];
+
+// ─── SETUP ───────────────────────────────────────────────────
+const linenCanvas = document.getElementById('linen-canvas');
+const linenCtx    = linenCanvas.getContext('2d');
+const bgCanvas    = document.getElementById('bg-canvas');
+const bgCtx       = bgCanvas.getContext('2d');
+const svgEl       = document.getElementById('tree-svg');
+const svg         = d3.select(svgEl);
+
+let CW, CH, cx, cy;
+let builtNodes = [], builtLinks = [], particles = [];
+let lastSpawn = 0;
+let hoveredId = null;
+let frameTs   = 0;
+
+// Tiny seeded random for deterministic leaf placement
+function srand(seed) {
+  let s = seed >>> 0;
+  return () => { s = Math.imul(1664525, s) + 1013904223 >>> 0; return s / 4294967296; };
+}
+
+// ─── LINEN TEXTURE ───────────────────────────────────────────
+function drawLinen() {
+  const w = linenCanvas.width, h = linenCanvas.height;
+  linenCtx.clearRect(0,0,w,h);
+  // Very fine grid of crossing lines — cream on dark bg
+  linenCtx.strokeStyle = 'rgba(245,240,232,0.022)';
+  linenCtx.lineWidth   = 0.5;
+  const step = 8;
+  linenCtx.beginPath();
+  for (let x = 0; x < w; x += step) {
+    linenCtx.moveTo(x,0); linenCtx.lineTo(x,h);
+  }
+  for (let y = 0; y < h; y += step) {
+    linenCtx.moveTo(0,y); linenCtx.lineTo(w,y);
+  }
+  linenCtx.stroke();
+  // Diagonal warp threads
+  linenCtx.strokeStyle = 'rgba(201,168,76,0.012)';
+  linenCtx.beginPath();
+  for (let d = -h; d < w; d += step*3) {
+    linenCtx.moveTo(d,0); linenCtx.lineTo(d+h, h);
+    linenCtx.moveTo(d,0); linenCtx.lineTo(d-h, h);
+  }
+  linenCtx.stroke();
+}
+
+// ─── LAYOUT ──────────────────────────────────────────────────
+function buildLayout() {
+  const dim   = Math.min(CW, CH);
+  const R1    = dim * 0.235;
+  const R2    = dim * 0.435;
+  const N     = BRANCHES.length;
+  const SPREAD = Math.PI * 0.30;
+
+  builtNodes = [];
+  builtLinks = [];
+  particles  = [];
+
+  // Core node — fixed at centre
+  const core = {
+    id:"frqncy", label:"FRQNCY", type:"core", r:54,
+    desc:"The living network of consciousness", x:cx, y:cy,
+    accent: { stroke: C.goldLight, glow: 'rgba(232,197,106,0.22)' }
+  };
+  builtNodes.push(core);
+
+  BRANCHES.forEach((branch, bi) => {
+    const baseAngle = (bi / N) * Math.PI * 2 - Math.PI / 2;
+    const dx = cx + Math.cos(baseAngle) * R1;
+    const dy = cy + Math.sin(baseAngle) * R1;
+    const perpX = -Math.sin(baseAngle), perpY = Math.cos(baseAngle);
+    const curve = R1 * 0.20 * ((bi % 2 === 0) ? 1 : -1);
+    const accent = DOMAIN_ACCENT[bi];
+
+    const domainNode = {
+      id: branch.id, label: branch.label, type:"cluster", r:26,
+      desc: branch.desc, x:dx, y:dy,
+      cpx:(cx+dx)/2 + perpX*curve, cpy:(cy+dy)/2 + perpY*curve,
+      accent, bi
+    };
+    builtNodes.push(domainNode);
+    builtLinks.push({
+      source:core, target:domainNode, level:0,
+      cpx:domainNode.cpx, cpy:domainNode.cpy,
+      accent
+    });
+
+    const nt = branch.topics.length;
+    branch.topics.forEach((topic, ti) => {
+      const tAngle = baseAngle - SPREAD/2 + (ti / (nt-1||1)) * SPREAD;
+      const tx = cx + Math.cos(tAngle) * R2;
+      const ty = cy + Math.sin(tAngle) * R2;
+      const tdx = tx-dx, tdy = ty-dy;
+      const tdist = Math.sqrt(tdx*tdx+tdy*tdy)||1;
+      const tperpX = -tdy/tdist, tperpY = tdx/tdist;
+      const tcurve = tdist * 0.13 * ((ti%2===0)?1:-1);
+      const topicNode = {
+        id:topic.id, label:topic.label, type:"topic", r:14,
+        x:tx, y:ty, bi,
+        cpx:(dx+tx)/2 + tperpX*tcurve,
+        cpy:(dy+ty)/2 + tperpY*tcurve,
+        accent
+      };
+      builtNodes.push(topicNode);
+      builtLinks.push({
+        source:domainNode, target:topicNode, level:1,
+        cpx:topicNode.cpx, cpy:topicNode.cpy,
+        accent, bi, ti
+      });
+    });
+  });
+}
+
+// ─── BEZIER HELPERS ──────────────────────────────────────────
+function quadBez(x1,y1,cx1,cy1,x2,y2,t) {
+  const m = 1-t;
+  return {
+    x: m*m*x1 + 2*m*t*cx1 + t*t*x2,
+    y: m*m*y1 + 2*m*t*cy1 + t*t*y2
+  };
+}
+function quadBezPath(link) {
+  return `M${link.source.x},${link.source.y} Q${link.cpx},${link.cpy} ${link.target.x},${link.target.y}`;
+}
+
+// ─── SVG RENDER ──────────────────────────────────────────────
+function renderSVG() {
+  svg.selectAll('*').remove();
+  const defs = svg.append('defs');
+
+  // ── Watermark text element (behind everything) ──
+  svg.append('text')
+    .attr('x', cx).attr('y', cy + (CH*0.02))
+    .attr('text-anchor','middle').attr('dominant-baseline','middle')
+    .attr('font-family','Cormorant, Georgia, serif')
+    .attr('font-style','italic').attr('font-weight','300')
+    .attr('font-size', Math.min(CW, CH) * 0.11 + 'px')
+    .attr('fill', C.cream)
+    .attr('opacity','0.03')
+    .attr('letter-spacing','0.08em')
+    .attr('pointer-events','none')
+    .text('FRQNCY · The Living Network');
+
+  // ── Gradients ──
+  // Core: antique gold medallion
+  const coreGrad = defs.append('radialGradient').attr('id','g-core').attr('cx','36%').attr('cy','28%');
+  coreGrad.append('stop').attr('offset','0%').attr('stop-color','#E8D080');
+  coreGrad.append('stop').attr('offset','55%').attr('stop-color','#C9A84C');
+  coreGrad.append('stop').attr('offset','100%').attr('stop-color','#8B6810');
+
+  // Domain: deep forest with sage lift
+  const domGrad = defs.append('radialGradient').attr('id','g-domain').attr('cx','35%').attr('cy','28%');
+  domGrad.append('stop').attr('offset','0%').attr('stop-color','#1A4A28');
+  domGrad.append('stop').attr('offset','100%').attr('stop-color','#082015');
+
+  // Topic: sepia-dark
+  const topGrad = defs.append('radialGradient').attr('id','g-topic').attr('cx','35%').attr('cy','28%');
+  topGrad.append('stop').attr('offset','0%').attr('stop-color','#2A1A12');
+  topGrad.append('stop').attr('offset','100%').attr('stop-color','#100A06');
+
+  // ── Filters ──
+  const goldGlow = defs.append('filter').attr('id','f-gold-glow').attr('x','-80%').attr('y','-80%').attr('width','260%').attr('height','260%');
+  goldGlow.append('feGaussianBlur').attr('stdDeviation','7').attr('result','blur');
+  const gm = goldGlow.append('feMerge');
+  gm.append('feMergeNode').attr('in','blur');
+  gm.append('feMergeNode').attr('in','SourceGraphic');
+
+  const sageGlow = defs.append('filter').attr('id','f-sage-glow').attr('x','-60%').attr('y','-60%').attr('width','220%').attr('height','220%');
+  sageGlow.append('feGaussianBlur').attr('stdDeviation','5').attr('result','blur');
+  const sm = sageGlow.append('feMerge');
+  sm.append('feMergeNode').attr('in','blur');
+  sm.append('feMergeNode').attr('in','SourceGraphic');
+
+  // ── Branch / vine layer ──
+  const branchG = svg.append('g').attr('class','branches');
+
+  builtLinks.forEach((link, li) => {
+    const rng = srand(li * 7919 + 42);
+    const isMain = link.level === 0;
+    const sw0 = isMain ? 6 : 2.8; // start stroke-width (source end)
+    const sw1 = isMain ? 1.8 : 0.9; // end stroke-width (target end)
+    const accent = link.accent || { stroke: C.sage };
+
+    // Tapered vine: draw as gradient stroke simulation with two paths
+    // Use a clip path trick: draw the full path twice, varying opacity
+    const pathD = quadBezPath(link);
+
+    // Outer haze (wider, very faint)
+    branchG.append('path')
+      .attr('d', pathD)
+      .attr('fill','none')
+      .attr('stroke', accent.stroke)
+      .attr('stroke-width', sw0 * 1.6)
+      .attr('stroke-linecap','round')
+      .attr('opacity', isMain ? 0.06 : 0.04);
+
+    // Main vine stroke — a gradient-ish taper using multiple segments
+    const SEGS = isMain ? 12 : 8;
+    for (let s = 0; s < SEGS; s++) {
+      const t0 = s / SEGS, t1 = (s+1) / SEGS;
+      const tm = (t0+t1)/2;
+      const p0 = quadBez(link.source.x, link.source.y, link.cpx, link.cpy, link.target.x, link.target.y, t0);
+      const p1 = quadBez(link.source.x, link.source.y, link.cpx, link.cpy, link.target.x, link.target.y, t1);
+      const sw = sw0 + (sw1 - sw0) * tm;
+      const alpha = isMain
+        ? 0.55 + 0.15 * (1 - tm)  // thicker end is more opaque
+        : 0.38 + 0.12 * (1 - tm);
+      branchG.append('line')
+        .attr('x1', p0.x).attr('y1', p0.y)
+        .attr('x2', p1.x).attr('y2', p1.y)
+        .attr('stroke', isMain ? C.gold : accent.stroke)
+        .attr('stroke-width', sw)
+        .attr('stroke-linecap','round')
+        .attr('opacity', alpha)
+        .attr('class', `vine-seg branch-bi-${link.bi}`);
+    }
+
+    // ── Tiny leaf shapes along the branch ──
+    const leafCount = isMain ? 3 : 2;
+    for (let lf = 0; lf < leafCount; lf++) {
+      const t = 0.2 + (lf / (leafCount)) * 0.6 + rng() * 0.08 - 0.04;
+      const pt = quadBez(link.source.x, link.source.y, link.cpx, link.cpy, link.target.x, link.target.y, t);
+      // Tangent direction for leaf orientation
+      const eps = 0.02;
+      const ptA = quadBez(link.source.x, link.source.y, link.cpx, link.cpy, link.target.x, link.target.y, Math.max(0,t-eps));
+      const ptB = quadBez(link.source.x, link.source.y, link.cpx, link.cpy, link.target.x, link.target.y, Math.min(1,t+eps));
+      const tang = Math.atan2(ptB.y - ptA.y, ptB.x - ptA.x);
+      const side = (rng() > 0.5) ? 1 : -1;
+      const leafAngle = tang + side * (Math.PI/2 + rng()*0.4);
+      const lw = isMain ? (6 + rng()*4) : (3 + rng()*3);
+      const lh = lw * 0.38;
+      const leafStroke = DOMAIN_ACCENT[link.bi % DOMAIN_ACCENT.length]?.stroke || C.sage;
+      branchG.append('ellipse')
+        .attr('cx', pt.x).attr('cy', pt.y)
+        .attr('rx', lw).attr('ry', lh)
+        .attr('transform', `rotate(${leafAngle * 180/Math.PI},${pt.x},${pt.y})`)
+        .attr('fill', C.forestDeep)
+        .attr('stroke', leafStroke)
+        .attr('stroke-width', 0.6)
+        .attr('opacity', 0.40)
+        .attr('class', `leaf branch-bi-${link.bi}`);
+    }
+
+    // ── Botanical ornament dots/diamonds along branch ──
+    const ornCount = isMain ? 4 : 2;
+    for (let or = 0; or < ornCount; or++) {
+      const ot = 0.15 + (or / ornCount) * 0.7;
+      const opt = quadBez(link.source.x, link.source.y, link.cpx, link.cpy, link.target.x, link.target.y, ot);
+      const isRhombus = (or % 2 === 0);
+      if (isRhombus) {
+        // diamond
+        const ds = isMain ? 2.8 : 1.8;
+        branchG.append('path')
+          .attr('d', `M${opt.x},${opt.y-ds} L${opt.x+ds},${opt.y} L${opt.x},${opt.y+ds} L${opt.x-ds},${opt.y} Z`)
+          .attr('fill', C.gold)
+          .attr('opacity', 0.22)
+          .attr('class', `orn branch-bi-${link.bi}`);
+      } else {
+        // circle dot
+        branchG.append('circle')
+          .attr('cx', opt.x).attr('cy', opt.y)
+          .attr('r', isMain ? 1.8 : 1.1)
+          .attr('fill', C.goldLight)
+          .attr('opacity', 0.20)
+          .attr('class', `orn branch-bi-${link.bi}`);
+      }
+    }
+  });
+
+  // ── Node layer ──
+  const nodeG = svg.append('g').attr('class','nodes');
+  const groups = nodeG.selectAll('g.node')
+    .data(builtNodes)
+    .join('g')
+    .attr('class', d => `node node-${d.type}`)
+    .attr('transform', d => `translate(${d.x},${d.y})`)
+    .attr('id', d => `node-${d.id}`)
+    .style('cursor','default');
+
+  // ── Core node: gilded medallion with chrysanthemum petals ──
+  const coreGroup = groups.filter(d => d.type === 'core');
+
+  // Outer aura ring
+  coreGroup.append('circle')
+    .attr('r', d => d.r * 3.2)
+    .attr('fill','none')
+    .attr('stroke', C.gold)
+    .attr('stroke-width', 0.5)
+    .attr('opacity', 0.08);
+  coreGroup.append('circle')
+    .attr('r', d => d.r * 2.4)
+    .attr('fill','none')
+    .attr('stroke', C.goldLight)
+    .attr('stroke-width', 0.8)
+    .attr('opacity', 0.10);
+
+  // 8 chrysanthemum petals
+  const petalAngles = d3.range(8).map(i => (i/8)*Math.PI*2);
+  petalAngles.forEach(ang => {
+    coreGroup.append('ellipse')
+      .attr('cx', 0).attr('cy', 0)
+      .attr('rx', d => d.r * 0.42)
+      .attr('ry', d => d.r * 1.18)
+      .attr('transform', `rotate(${ang * 180/Math.PI})`)
+      .attr('fill', C.goldDeep)
+      .attr('stroke', C.gold)
+      .attr('stroke-width', 0.5)
+      .attr('opacity', 0.18);
+  });
+
+  // Main circle
+  coreGroup.append('circle')
+    .attr('r', d => d.r)
+    .attr('fill','url(#g-core)')
+    .attr('stroke', C.goldLight)
+    .attr('stroke-width', 2.5)
+    .attr('filter','url(#f-gold-glow)');
+
+  // Inner ring detail
+  coreGroup.append('circle')
+    .attr('r', d => d.r * 0.72)
+    .attr('fill','none')
+    .attr('stroke', C.goldDeep)
+    .attr('stroke-width', 0.8)
+    .attr('opacity', 0.45);
+
+  // Label
+  coreGroup.append('text')
+    .attr('text-anchor','middle').attr('dominant-baseline','central')
+    .attr('font-family','Cormorant, Georgia, serif')
+    .attr('font-size','15px').attr('font-weight','500')
+    .attr('letter-spacing','0.22em')
+    .attr('fill', '#0A0806')
+    .attr('pointer-events','none')
+    .text(d => d.label);
+
+  // ── Domain nodes: flower-head chrysanthemum ──
+  const domainGroups = groups.filter(d => d.type === 'cluster');
+
+  // 8 elongated petals (chrysanthemum silhouette)
+  d3.range(8).forEach(i => {
+    const ang = (i/8)*Math.PI*2;
+    domainGroups.append('ellipse')
+      .attr('cx',0).attr('cy',0)
+      .attr('rx', d => d.r * 0.35)
+      .attr('ry', d => d.r * 1.05)
+      .attr('transform', `rotate(${ang * 180/Math.PI})`)
+      .attr('fill', C.forestDeep)
+      .attr('stroke', d => d.accent?.stroke || C.sage)
+      .attr('stroke-width', 0.4)
+      .attr('opacity', 0.22)
+      .attr('class','domain-petal');
+  });
+
+  // Glow halo
+  domainGroups.append('circle')
+    .attr('r', d => d.r * 2.0)
+    .attr('fill', d => d.accent?.glow || 'rgba(122,155,106,0.12)')
+    .attr('stroke','none');
+
+  // Main circle
+  domainGroups.append('circle')
+    .attr('r', d => d.r)
+    .attr('fill','url(#g-domain)')
+    .attr('stroke', d => d.accent?.stroke || C.sage)
+    .attr('stroke-width', 1.2)
+    .attr('filter','url(#f-sage-glow)');
+
+  // Inner decorative ring
+  domainGroups.append('circle')
+    .attr('r', d => d.r * 0.70)
+    .attr('fill','none')
+    .attr('stroke', d => d.accent?.stroke || C.sage)
+    .attr('stroke-width', 0.6)
+    .attr('opacity', 0.35);
+
+  // Domain label
+  domainGroups.each(function(d) {
+    const g = d3.select(this);
+    const words = d.label.split(' ');
+    if (words.length > 1 && d.label.length > 10) {
+      const t = g.append('text')
+        .attr('text-anchor','middle').attr('pointer-events','none')
+        .attr('font-family','Cormorant, Georgia, serif')
+        .attr('font-size','9px').attr('font-weight','400')
+        .attr('letter-spacing','0.08em')
+        .attr('fill', C.cream);
+      t.append('tspan').attr('x',0).attr('dy','-0.55em').text(words[0]);
+      t.append('tspan').attr('x',0).attr('dy','1.1em').text(words.slice(1).join(' '));
+    } else {
+      g.append('text')
+        .attr('text-anchor','middle').attr('dominant-baseline','central')
+        .attr('pointer-events','none')
+        .attr('font-family','Cormorant, Georgia, serif')
+        .attr('font-size','9.5px').attr('font-weight','400')
+        .attr('letter-spacing','0.07em')
+        .attr('fill', C.cream)
+        .text(d.label);
+    }
+  });
+
+  // ── Topic nodes: botanical specimen ──
+  const topicGroups = groups.filter(d => d.type === 'topic');
+
+  // Tiny leaf pair behind node
+  topicGroups.append('ellipse')
+    .attr('cx', -4).attr('cy', 0)
+    .attr('rx', 6).attr('ry', 3)
+    .attr('transform', 'rotate(-35,-4,0)')
+    .attr('fill', C.forestDeep)
+    .attr('stroke', d => d.accent?.stroke || C.sage)
+    .attr('stroke-width', 0.5)
+    .attr('opacity', 0.35);
+  topicGroups.append('ellipse')
+    .attr('cx', 4).attr('cy', 0)
+    .attr('rx', 6).attr('ry', 3)
+    .attr('transform', 'rotate(35,4,0)')
+    .attr('fill', C.forestDeep)
+    .attr('stroke', d => d.accent?.stroke || C.sage)
+    .attr('stroke-width', 0.5)
+    .attr('opacity', 0.35);
+
+  // Glow ring
+  topicGroups.append('circle')
+    .attr('r', d => d.r * 1.7)
+    .attr('fill', d => d.accent?.glow || 'rgba(90,122,74,0.10)')
+    .attr('stroke','none');
+
+  // Main circle
+  topicGroups.append('circle')
+    .attr('r', d => d.r)
+    .attr('fill','url(#g-topic)')
+    .attr('stroke', d => d.accent?.stroke || C.sageDark)
+    .attr('stroke-width', 0.8);
+
+  // Topic label (multi-line if long)
+  topicGroups.each(function(d) {
+    const g = d3.select(this);
+    const el = g.append('text')
+      .attr('text-anchor','middle')
+      .attr('pointer-events','none')
+      .attr('font-family',"'Jost', sans-serif")
+      .attr('font-size','7.5px').attr('font-weight','300')
+      .attr('letter-spacing','0.04em')
+      .attr('fill', C.cream).attr('opacity','0.82');
+    const words = d.label.split(' ');
+    if (d.label.length > 12) {
+      const mid = Math.ceil(words.length/2);
+      el.append('tspan').attr('x',0).attr('dy','-0.5em').text(words.slice(0,mid).join(' '));
+      el.append('tspan').attr('x',0).attr('dy','1em').text(words.slice(mid).join(' '));
+    } else {
+      el.attr('dominant-baseline','central').text(d.label);
+    }
+  });
+
+  // ── Hover interaction ──
+  const tip = document.getElementById('nm-tooltip');
+  let hoverTimer = null;
+
+  groups
+    .on('mouseover', function(event, d) {
+      hoveredId = d.id;
+      // Highlight the hovered node and related branch
+      const bi = d.bi;
+      svg.selectAll(`.vine-seg, .leaf, .orn`)
+        .attr('opacity', function() {
+          const cls = this.getAttribute('class') || '';
+          if (bi === undefined) return null; // core, show all
+          return cls.includes(`branch-bi-${bi}`) ? null : 0.12;
+        });
+      // Dim other node groups
+      if (bi !== undefined) {
+        groups.attr('opacity', n => (n.bi === bi || n.id === d.id || n.type === 'core') ? 1 : 0.12);
+      }
+      // Petal spin for domains on hover
+      if (d.type === 'cluster') {
+        d3.select(`#node-${d.id}`).selectAll('.domain-petal')
+          .interrupt()
+          .transition().duration(800).ease(d3.easeSinInOut)
+          .attrTween('transform', function(dn, i) {
+            const base = (i/8)*360;
+            return t => `rotate(${base + t*22.5})`;
+          });
+      }
+      // Tooltip
+      if (tip) {
+        tip.querySelector('.tip-title').textContent = d.label;
+        tip.querySelector('.tip-desc').textContent = d.desc || '';
+        tip.querySelector('.tip-type').innerHTML =
+          `<span class="tip-ornament">◆</span>` +
+          ({core:'FRQNCY CORE', cluster:'DOMAIN', topic:'TOPIC'}[d.type] || '') +
+          `<span class="tip-ornament">◆</span>`;
+        tip.style.opacity = '1';
+      }
+    })
+    .on('mousemove', function(event) {
+      if (!tip) return;
+      tip.style.left = (event.clientX + 18) + 'px';
+      tip.style.top  = (event.clientY - 18) + 'px';
+    })
+    .on('mouseout', function(event, d) {
+      hoveredId = null;
+      svg.selectAll('.vine-seg, .leaf, .orn').attr('opacity', null);
+      groups.attr('opacity', 1);
+      if (tip) tip.style.opacity = '0';
+      // Relax petal rotation
+      if (d.type === 'cluster') {
+        d3.select(`#node-${d.id}`).selectAll('.domain-petal')
+          .interrupt()
+          .transition().duration(600)
+          .attrTween('transform', function(dn, i) {
+            const base = (i/8)*360;
+            return t => `rotate(${base + (1-t)*22.5 * 0.5})`;
+          });
+      }
+    });
+}
+
+// ─── BACKGROUND RENDER LOOP (canvas) ─────────────────────────
+const SPORES = Array.from({length:55}, (_, i) => {
+  const r = srand(i*13331);
+  return {
+    rx: r(), ry: r(),
+    rad: r()*1.2+0.15,
+    base: r()*0.35+0.06,
+    phase: r()*Math.PI*2,
+    spd: 0.4+r()*0.7
+  };
+});
+
+// Gold dust particles along vine paths
+function spawnParticle(ts) {
+  if (particles.length > 140 || !builtLinks.length) return;
+  const link = builtLinks[Math.floor(Math.random()*builtLinks.length)];
+  particles.push({
+    sx:link.source.x, sy:link.source.y,
+    cpx:link.cpx, cpy:link.cpy,
+    tx:link.target.x, ty:link.target.y,
+    prog:0, speed:0.004 + Math.random()*0.006,
+    level:link.level,
+    accent: link.accent
+  });
+}
+
+let rafId = null;
+function render(ts) {
+  rafId = requestAnimationFrame(render);
+  frameTs = ts;
+  bgCtx.clearRect(0,0,CW,CH);
+
+  // Background — very dark cream-black, subtle radial warmth at center
+  const bgGr = bgCtx.createRadialGradient(cx,cy*0.8,0,cx,cy,Math.max(CW,CH)*0.65);
+  bgGr.addColorStop(0,  '#161410');
+  bgGr.addColorStop(0.5,'#0E0C09');
+  bgGr.addColorStop(1,  '#0C0B08');
+  bgCtx.fillStyle = bgGr;
+  bgCtx.fillRect(0,0,CW,CH);
+
+  // Gold dust spores (replacing blue stars — warm, dreamy)
+  const t = ts*0.00042;
+  SPORES.forEach(s => {
+    const a = s.base*(0.55 + 0.45*Math.sin(t*s.spd + s.phase));
+    bgCtx.fillStyle = `rgba(201,168,76,${a.toFixed(2)})`;
+    bgCtx.beginPath();
+    bgCtx.arc(s.rx*CW, s.ry*CH, s.rad, 0, Math.PI*2);
+    bgCtx.fill();
+  });
+
+  if (!builtNodes.length) return;
+
+  // Node glow halos
+  builtNodes.forEach(n => {
+    if (n.type === 'core') {
+      const pulse = 0.22 + 0.06*Math.sin(ts*0.0009);
+      const gr = bgCtx.createRadialGradient(n.x,n.y,n.r*0.5,n.x,n.y,n.r*3.4);
+      gr.addColorStop(0, `rgba(232,197,106,${pulse})`);
+      gr.addColorStop(0.45,`rgba(201,168,76,0.07)`);
+      gr.addColorStop(1,  'rgba(201,168,76,0)');
+      bgCtx.fillStyle = gr;
+      bgCtx.beginPath(); bgCtx.arc(n.x,n.y,n.r*3.4,0,Math.PI*2); bgCtx.fill();
+    } else if (n.type === 'cluster') {
+      const acc = n.accent?.glow || 'rgba(122,155,106,0.14)';
+      const gr = bgCtx.createRadialGradient(n.x,n.y,n.r*0.4,n.x,n.y,n.r*2.6);
+      gr.addColorStop(0, acc);
+      gr.addColorStop(1,'rgba(0,0,0,0)');
+      bgCtx.fillStyle = gr;
+      bgCtx.beginPath(); bgCtx.arc(n.x,n.y,n.r*2.6,0,Math.PI*2); bgCtx.fill();
+    }
+  });
+
+  // Gold dust particles along vine paths
+  if (ts - lastSpawn > 200) { spawnParticle(ts); lastSpawn = ts; }
+
+  for (let i = particles.length-1; i >= 0; i--) {
+    const p = particles[i];
+    p.prog += p.speed;
+    if (p.prog >= 1) { particles.splice(i,1); continue; }
+    const pt = quadBez(p.sx,p.sy,p.cpx,p.cpy,p.tx,p.ty,p.prog);
+    const fade = Math.min(p.prog*6,1) * Math.min((1-p.prog)*6,1);
+    const r = p.level === 0 ? 2.2 : 1.3;
+    const aStr = p.level === 0 ? (0.85*fade).toFixed(2) : (0.60*fade).toFixed(2);
+    bgCtx.fillStyle = `rgba(232,197,106,${aStr})`; // all gold — Art Nouveau dust
+    bgCtx.shadowBlur = p.level === 0 ? 4 : 2;
+    bgCtx.shadowColor = C.gold;
+    bgCtx.beginPath(); bgCtx.arc(pt.x,pt.y,r,0,Math.PI*2); bgCtx.fill();
+    bgCtx.shadowBlur = 0;
+  }
+}
+
+// ─── RESIZE / BOOT ───────────────────────────────────────────
+function resize() {
+  CW = bgCanvas.width = linenCanvas.width = window.innerWidth;
+  CH = bgCanvas.height = linenCanvas.height = window.innerHeight;
+  cx = CW/2; cy = CH/2;
+  drawLinen();
+  buildLayout();
+  renderSVG();
+}
+window.addEventListener('resize', () => {
+  clearTimeout(window._rzt);
+  window._rzt = setTimeout(resize, 80);
+}, {passive:true});
+
+resize();
+requestAnimationFrame(render);
+</script>
+</body>
+</html>

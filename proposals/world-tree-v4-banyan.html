@@ -1,0 +1,799 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>FRQNCY · World Tree · v4 Banyan</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@200;300;400;500&family=JetBrains+Mono:wght@400&display=swap" rel="stylesheet">
+<style>
+* { box-sizing: border-box; margin: 0; padding: 0; }
+html, body { width: 100%; height: 100%; overflow: hidden; }
+#bg-canvas { position: absolute; top: 0; left: 0; width: 100%; height: 100%; pointer-events: none; }
+#tree-svg { position: absolute; top: 0; left: 0; width: 100%; height: 100%; overflow: visible; }
+.eyebrow {
+  position: absolute; top: 22px; left: 30px;
+  font-family: 'JetBrains Mono', ui-monospace, monospace;
+  font-size: 10px; letter-spacing: 0.34em; text-transform: uppercase;
+  color: rgba(196,151,58,0.55); pointer-events: none; z-index: 10;
+}
+.eyebrow span { color: rgba(107,203,119,0.5); }
+#nm-tooltip {
+  position: absolute; pointer-events: none; opacity: 0; z-index: 20;
+  background: rgba(6,12,20,0.92);
+  border: 1px solid rgba(139,94,60,0.38);
+  border-radius: 3px; padding: 9px 13px;
+  font-family: 'Jost', sans-serif; font-size: 12.5px; color: #F5F5F0;
+  transition: opacity 0.14s; max-width: 220px;
+  backdrop-filter: blur(5px);
+}
+.tip-title { font-family: 'Cormorant', serif; font-style: italic; font-size: 16px; margin-bottom: 3px; color: #fff; }
+.tip-type  { font-size: 10px; letter-spacing: 0.1em; opacity: 0.58; text-transform: uppercase; }
+</style>
+</head>
+<body>
+
+<canvas id="bg-canvas"></canvas>
+<svg id="tree-svg"></svg>
+<div class="eyebrow">FRQNCY · <span>World Tree</span> · v4 Banyan</div>
+<div id="nm-tooltip"><div class="tip-title"></div><div class="tip-type"></div></div>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+/* ===================================================================
+   FRQNCY World Tree v4 — Ancient Banyan persona
+   Vertical tree layout: FRQNCY trunk at center-bottom,
+   8 domain branches arching upward, topics as outer leaves.
+   Aerial roots hang from domain nodes. Fireflies drift upward.
+   Dusk sky gradient. Organic bark, green canopy.
+   =================================================================== */
+
+// ─── DATA ────────────────────────────────────────────────────────────────────
+const BRANCHES = [
+  {
+    id:"d-meta", label:"Consciousness", desc:"The architecture of reality",
+    topics:[
+      {id:"t-oneness",   label:"Oneness"},
+      {id:"t-source",    label:"Source Energy"},
+      {id:"t-vibration", label:"Vibration"},
+      {id:"t-sacredgeo", label:"Sacred Geometry"},
+      {id:"t-akashic",   label:"Akashic Records"},
+      {id:"t-merkaba",   label:"Merkaba"},
+    ]
+  },
+  {
+    id:"d-sciences", label:"Sciences", desc:"Empirical exploration of reality",
+    topics:[
+      {id:"t-quantum",  label:"Quantum Physics"},
+      {id:"t-neuro",    label:"Neuroscience"},
+      {id:"t-astrophys",label:"Astrophysics"},
+      {id:"t-bio",      label:"Biology"},
+      {id:"t-psych",    label:"Psychology"},
+      {id:"t-ecology",  label:"Ecology"},
+    ]
+  },
+  {
+    id:"d-tech", label:"Technology", desc:"Tools shaping the future",
+    topics:[
+      {id:"t-ai",        label:"Artificial Intelligence"},
+      {id:"t-blockchain",label:"Blockchain"},
+      {id:"t-web3",      label:"Web3"},
+      {id:"t-decentral", label:"Decentralized Networks"},
+      {id:"t-biotech",   label:"Biotechnology"},
+      {id:"t-robotics",  label:"Robotics"},
+    ]
+  },
+  {
+    id:"d-arts", label:"Arts & Culture", desc:"Expression of the human spirit",
+    topics:[
+      {id:"t-music",  label:"Music"},
+      {id:"t-visual", label:"Visual Art"},
+      {id:"t-film",   label:"Film"},
+      {id:"t-poetry", label:"Poetry"},
+      {id:"t-story",  label:"Storytelling"},
+      {id:"t-archit", label:"Architecture"},
+    ]
+  },
+  {
+    id:"d-nature", label:"Nature & Cosmos", desc:"The living systems of existence",
+    topics:[
+      {id:"t-forests",  label:"Forests"},
+      {id:"t-oceans",   label:"Oceans"},
+      {id:"t-cosmos",   label:"Stars & Planets"},
+      {id:"t-climate",  label:"Climate"},
+      {id:"t-biodivers",label:"Biodiversity"},
+      {id:"t-cycles",   label:"Seasons & Cycles"},
+    ]
+  },
+  {
+    id:"d-money", label:"Money", desc:"Capital, crypto & the new financial layer",
+    topics:[
+      {id:"t-crypto",  label:"Cryptocurrency"},
+      {id:"t-bitcoin", label:"Bitcoin"},
+      {id:"t-defi",    label:"DeFi"},
+      {id:"t-impact",  label:"Impact Investing"},
+      {id:"t-conscap", label:"Conscious Capital"},
+      {id:"t-gold",    label:"Gold"},
+    ]
+  },
+  {
+    id:"d-wellbeing", label:"Well-being", desc:"Healing and wholeness",
+    topics:[
+      {id:"t-meditation",label:"Meditation"},
+      {id:"t-breathwork",label:"Breathwork"},
+      {id:"t-soundheal", label:"Sound Healing"},
+      {id:"t-yoga",      label:"Yoga"},
+      {id:"t-somatic",   label:"Somatic Therapy"},
+      {id:"t-energyheal",label:"Energy Healing"},
+    ]
+  },
+  {
+    id:"d-society", label:"Society", desc:"Collective human systems",
+    topics:[
+      {id:"t-governance",label:"Governance"},
+      {id:"t-indigenous",label:"Indigenous Wisdom"},
+      {id:"t-collective",label:"Collective Intelligence"},
+      {id:"t-peace",     label:"Peace Building"},
+      {id:"t-socialmov", label:"Social Movements"},
+      {id:"t-community", label:"Community"},
+    ]
+  },
+];
+
+// ─── CANVAS / SVG SETUP ──────────────────────────────────────────────────────
+const bgCanvas = document.getElementById('bg-canvas');
+const bgCtx    = bgCanvas.getContext('2d');
+const svgEl    = document.getElementById('tree-svg');
+const svg      = d3.select(svgEl);
+
+let CW, CH;
+let builtNodes = [], builtLinks = [], particles = [];
+let fireflies  = [];
+let aerialRoots = [];   // { domain node, hang points[] }
+let lastSpawn  = 0;
+
+// ─── FIREFLY INIT ────────────────────────────────────────────────────────────
+function initFireflies() {
+  fireflies = [];
+  for (let i = 0; i < 22; i++) {
+    fireflies.push({
+      x: CW * 0.12 + Math.random() * CW * 0.76,
+      y: CH * 0.15 + Math.random() * CH * 0.65,
+      vx: (Math.random() - 0.5) * 0.3,
+      vy: -(0.12 + Math.random() * 0.28),  // drift upward
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.6 + Math.random() * 0.9,
+      r: 1.4 + Math.random() * 1.6,
+      baseAlpha: 0.55 + Math.random() * 0.4,
+    });
+  }
+}
+
+function resize() {
+  CW = bgCanvas.width  = window.innerWidth;
+  CH = bgCanvas.height = window.innerHeight;
+  buildLayout();
+  buildAerialRoots();
+  initFireflies();
+  renderSVG();
+}
+window.addEventListener('resize', resize, { passive: true });
+
+// ─── LAYOUT ──────────────────────────────────────────────────────────────────
+// Vertical tree: trunk base near bottom-center, canopy spreads upward.
+// 8 branches arranged in an arc from lower-left to lower-right going over top.
+// The arc spans roughly 180° (π), from -160° to -20° (measured from bottom).
+function buildLayout() {
+  builtNodes = [];
+  builtLinks = [];
+  particles  = [];
+
+  // Trunk base = center-bottom, FRQNCY sits a little up from the very bottom
+  const trunkX  = CW * 0.5;
+  const trunkY  = CH * 0.84;   // FRQNCY node Y position
+  const N       = BRANCHES.length;
+
+  // Domain ring: arranged in a tree-crown arc
+  // Angles go from left-side to right-side sweeping upward
+  // -170° → -10° (measuring from positive-x axis, going counterclockwise through top)
+  const arcStart = -Math.PI * (170/180);  // far left
+  const arcEnd   = -Math.PI * (10/180);   // far right
+  const arcSpan  = arcEnd - arcStart;
+
+  // Domain distance from trunk — taller near center-top, lower on edges
+  const domainBaseR = Math.min(CW, CH) * 0.34;
+
+  // Core node
+  const core = {
+    id:"frqncy", label:"FRQNCY", type:"core", r:52,
+    desc:"The living network of consciousness",
+    x: trunkX, y: trunkY
+  };
+  builtNodes.push(core);
+
+  BRANCHES.forEach((branch, bi) => {
+    // Distribute evenly across arc
+    const t = N === 1 ? 0.5 : bi / (N - 1);
+    const angle = arcStart + t * arcSpan;
+
+    // Vary radius: domains near the top-center get pushed farther out
+    // Map t from 0..1, peak at 0.5
+    const radiusMod = 1.0 + 0.22 * Math.sin(t * Math.PI);
+    const dr = domainBaseR * radiusMod;
+
+    const dx = trunkX + Math.cos(angle) * dr;
+    const dy = trunkY + Math.sin(angle) * dr;
+
+    // Control point for trunk→domain branch: bulge outward
+    const midX = (trunkX + dx) / 2;
+    const midY = (trunkY + dy) / 2;
+    // Perpendicular offset — alternate sides for organic feel
+    const perpAngle = angle + Math.PI / 2;
+    const bulgeDist = dr * 0.18 * (bi % 2 === 0 ? 1 : -1);
+    const cpx0 = midX + Math.cos(perpAngle) * bulgeDist;
+    const cpy0 = midY + Math.sin(perpAngle) * bulgeDist;
+
+    const domainNode = {
+      id: branch.id, label: branch.label, type:"cluster", r:26,
+      desc: branch.desc,
+      x: dx, y: dy,
+      angle: angle,   // store for root hanging
+      cpx: cpx0, cpy: cpy0
+    };
+    builtNodes.push(domainNode);
+    builtLinks.push({ source: core, target: domainNode, level: 0, cpx: cpx0, cpy: cpy0 });
+
+    // Topics: fan out from domain in a tighter arc
+    const nt = branch.topics.length;
+    const SPREAD = Math.PI * 0.30;
+
+    // The topic fan opens away from trunk, roughly perpendicular to branch direction
+    // Fan is centered on the branch angle, but shifted slightly upward for leaf feel
+    const fanCenter = angle - Math.PI * 0.04; // very slight upward lean
+
+    branch.topics.forEach((topic, ti) => {
+      const tt = nt === 1 ? 0.5 : ti / (nt - 1);
+      const tAngle = fanCenter - SPREAD / 2 + tt * SPREAD;
+
+      // Topics are farther from trunk
+      const topicR = dr + Math.min(CW, CH) * (0.16 + 0.04 * Math.abs(ti - (nt-1)/2) / ((nt-1)/2 || 1));
+
+      const tx = trunkX + Math.cos(tAngle) * topicR;
+      const ty = trunkY + Math.sin(tAngle) * topicR;
+
+      // Control point: bulge away from domain outward
+      const dtx = tx - dx, dty = ty - dy;
+      const dtLen = Math.sqrt(dtx*dtx + dty*dty) || 1;
+      const tperpX = -dty / dtLen, tperpY = dtx / dtLen;
+      const tcurve = dtLen * 0.14 * (ti % 2 === 0 ? 1 : -1);
+      const tcpx = (dx + tx) / 2 + tperpX * tcurve;
+      const tcpy = (dy + ty) / 2 + tperpY * tcurve;
+
+      const topicNode = {
+        id: topic.id, label: topic.label, type:"topic", r:13,
+        x: tx, y: ty, cpx: tcpx, cpy: tcpy
+      };
+      builtNodes.push(topicNode);
+      builtLinks.push({ source: domainNode, target: topicNode, level: 1, cpx: tcpx, cpy: tcpy });
+    });
+  });
+}
+
+// ─── AERIAL ROOTS ────────────────────────────────────────────────────────────
+// Thin brown lines hanging DOWN from domain nodes, like banyan aerial roots
+function buildAerialRoots() {
+  aerialRoots = [];
+  const domainNodes = builtNodes.filter(n => n.type === 'cluster');
+  domainNodes.forEach(dn => {
+    const count = 2 + Math.floor(Math.random() * 3);
+    const roots = [];
+    for (let i = 0; i < count; i++) {
+      const offsetX = (Math.random() - 0.5) * dn.r * 1.8;
+      const hangLen = 40 + Math.random() * 80;
+      const swayAmp = 4 + Math.random() * 8;
+      const swayPhase = Math.random() * Math.PI * 2;
+      const swaySpeed = 0.3 + Math.random() * 0.4;
+      roots.push({
+        startX: dn.x + offsetX,
+        startY: dn.y + dn.r * 0.6,
+        len: hangLen,
+        swayAmp, swayPhase, swaySpeed,
+        alpha: 0.25 + Math.random() * 0.2
+      });
+    }
+    aerialRoots.push({ domainNode: dn, roots });
+  });
+}
+
+// ─── SVG RENDER ──────────────────────────────────────────────────────────────
+function renderSVG() {
+  svg.selectAll('*').remove();
+
+  const defs = svg.append('defs');
+
+  // Gradients for nodes
+  // Core: warm gold
+  const gCore = defs.append('radialGradient').attr('id','g-core').attr('cx','38%').attr('cy','30%');
+  gCore.append('stop').attr('offset','0%').attr('stop-color','#F4DC88');
+  gCore.append('stop').attr('offset','100%').attr('stop-color','#7A4E10');
+
+  // Domain (cluster): blue-green tinted
+  const gCluster = defs.append('radialGradient').attr('id','g-cluster').attr('cx','38%').attr('cy','30%');
+  gCluster.append('stop').attr('offset','0%').attr('stop-color','#4A7ACC');
+  gCluster.append('stop').attr('offset','100%').attr('stop-color','#0A1E4A');
+
+  // Topic: deep forest green gradient
+  const gTopic = defs.append('radialGradient').attr('id','g-topic').attr('cx','38%').attr('cy','30%');
+  gTopic.append('stop').attr('offset','0%').attr('stop-color','#2D7A4A');
+  gTopic.append('stop').attr('offset','100%').attr('stop-color','#061408');
+
+  // Leaf glow filter for topics
+  const leafFilt = defs.append('filter').attr('id','leaf-glow').attr('x','-70%').attr('y','-70%').attr('width','240%').attr('height','240%');
+  leafFilt.append('feGaussianBlur').attr('in','SourceGraphic').attr('stdDeviation','5').attr('result','blur');
+  const lfMerge = leafFilt.append('feMerge');
+  lfMerge.append('feMergeNode').attr('in','blur');
+  lfMerge.append('feMergeNode').attr('in','SourceGraphic');
+
+  // Domain glow filter
+  const domFilt = defs.append('filter').attr('id','dom-glow').attr('x','-60%').attr('y','-60%').attr('width','220%').attr('height','220%');
+  domFilt.append('feGaussianBlur').attr('in','SourceGraphic').attr('stdDeviation','7').attr('result','blur');
+  const dfMerge = domFilt.append('feMerge');
+  dfMerge.append('feMergeNode').attr('in','blur');
+  dfMerge.append('feMergeNode').attr('in','SourceGraphic');
+
+  // Core glow
+  const coreFilt = defs.append('filter').attr('id','core-glow').attr('x','-80%').attr('y','-80%').attr('width','360%').attr('height','360%');
+  coreFilt.append('feGaussianBlur').attr('in','SourceGraphic').attr('stdDeviation','12').attr('result','blur');
+  const cfMerge = coreFilt.append('feMerge');
+  cfMerge.append('feMergeNode').attr('in','blur');
+  cfMerge.append('feMergeNode').attr('in','SourceGraphic');
+
+  // ── Draw trunk branches (level 0) ──
+  const trunkG = svg.append('g').attr('class','trunk-branches');
+  builtLinks.filter(l => l.level === 0).forEach(link => {
+    // Draw a thick bark-brown branch with two strokes for depth
+    trunkG.append('path')
+      .attr('d', `M${link.source.x},${link.source.y} Q${link.cpx},${link.cpy} ${link.target.x},${link.target.y}`)
+      .attr('fill','none')
+      .attr('stroke','rgba(45,21,9,0.70)')
+      .attr('stroke-width', 9)
+      .attr('stroke-linecap','round');
+    trunkG.append('path')
+      .attr('d', `M${link.source.x},${link.source.y} Q${link.cpx},${link.cpy} ${link.target.x},${link.target.y}`)
+      .attr('fill','none')
+      .attr('stroke','rgba(92,48,21,0.55)')
+      .attr('stroke-width', 4.5)
+      .attr('stroke-linecap','round');
+    // Fine highlight grain line
+    trunkG.append('path')
+      .attr('d', `M${link.source.x},${link.source.y} Q${link.cpx},${link.cpy} ${link.target.x},${link.target.y}`)
+      .attr('fill','none')
+      .attr('stroke','rgba(139,94,60,0.20)')
+      .attr('stroke-width', 1.5)
+      .attr('stroke-linecap','round');
+  });
+
+  // ── Draw twig branches (level 1) ──
+  const twigG = svg.append('g').attr('class','twig-branches');
+  builtLinks.filter(l => l.level === 1).forEach(link => {
+    twigG.append('path')
+      .attr('d', `M${link.source.x},${link.source.y} Q${link.cpx},${link.cpy} ${link.target.x},${link.target.y}`)
+      .attr('fill','none')
+      .attr('stroke','rgba(69,40,14,0.48)')
+      .attr('stroke-width', 2.2)
+      .attr('stroke-linecap','round');
+    twigG.append('path')
+      .attr('d', `M${link.source.x},${link.source.y} Q${link.cpx},${link.cpy} ${link.target.x},${link.target.y}`)
+      .attr('fill','none')
+      .attr('stroke','rgba(107,122,92,0.15)')
+      .attr('stroke-width', 0.8)
+      .attr('stroke-linecap','round');
+  });
+
+  // ── Nodes ──
+  const nodeG = svg.append('g').attr('class','nodes');
+  const groups = nodeG.selectAll('g.node')
+    .data(builtNodes)
+    .join('g')
+    .attr('class','node')
+    .attr('transform', d => `translate(${d.x},${d.y})`)
+    .style('cursor', d => d.type !== 'dot' ? 'pointer' : 'default');
+
+  // Topic: leaf-shaped halo (rotated ellipse)
+  groups.filter(d => d.type === 'topic').each(function(d, i) {
+    const g = d3.select(this);
+    const leafAngle = -20 + (i % 5) * 14;
+    // Outer leaf aura ellipse
+    g.append('ellipse')
+      .attr('rx', d.r * 2.8)
+      .attr('ry', d.r * 1.9)
+      .attr('transform', `rotate(${leafAngle})`)
+      .attr('fill','none')
+      .attr('stroke','rgba(44,122,74,0.18)')
+      .attr('stroke-width', 8)
+      .attr('filter','url(#leaf-glow)');
+    // Inner soft leaf fill
+    g.append('ellipse')
+      .attr('rx', d.r * 2.1)
+      .attr('ry', d.r * 1.5)
+      .attr('transform', `rotate(${leafAngle})`)
+      .attr('fill','rgba(26,74,30,0.14)')
+      .attr('stroke','none');
+  });
+
+  // Domain: soft ring
+  groups.filter(d => d.type === 'cluster')
+    .append('circle')
+    .attr('r', d => d.r * 2.0)
+    .attr('fill','none')
+    .attr('stroke','rgba(48,98,200,0.20)')
+    .attr('stroke-width', 7)
+    .attr('filter','url(#dom-glow)');
+
+  // Core: outer bark ring
+  groups.filter(d => d.type === 'core')
+    .append('circle')
+    .attr('r', d => d.r + 22)
+    .attr('fill','none')
+    .attr('stroke','rgba(92,48,21,0.28)')
+    .attr('stroke-width', 14);
+  groups.filter(d => d.type === 'core')
+    .append('circle')
+    .attr('r', d => d.r + 38)
+    .attr('fill','none')
+    .attr('stroke','rgba(45,21,9,0.14)')
+    .attr('stroke-width', 6);
+
+  // Main filled circle
+  groups.append('circle')
+    .attr('r', d => d.r)
+    .attr('fill', d => `url(#g-${d.type === 'core' ? 'core' : d.type === 'cluster' ? 'cluster' : 'topic'})`)
+    .attr('stroke', d =>
+      d.type === 'core'    ? '#C4973A' :
+      d.type === 'cluster' ? '#3A6AB8' :
+      '#2D7A4A')
+    .attr('stroke-width', d => d.type === 'core' ? 2.5 : d.type === 'cluster' ? 1.5 : 1)
+    .attr('filter', d => d.type === 'core' ? 'url(#core-glow)' : null);
+
+  // Labels
+  groups.filter(d => d.type !== 'dot')
+    .append('text')
+    .attr('text-anchor','middle')
+    .attr('dominant-baseline','central')
+    .attr('fill', d =>
+      d.type === 'core'    ? '#0A0800' :
+      d.type === 'cluster' ? '#D4C080' :
+      'rgba(220,240,215,0.90)')
+    .attr('font-family', d =>
+      d.type === 'core' ? 'Cormorant,Georgia,serif' : "'Jost',sans-serif")
+    .attr('font-size', d =>
+      d.type === 'core' ? '15px' : d.type === 'cluster' ? '9.5px' : '7.8px')
+    .attr('font-weight', d =>
+      d.type === 'core' ? '500' : d.type === 'cluster' ? '400' : '300')
+    .attr('letter-spacing', d =>
+      d.type === 'core' ? '0.18em' : '0.04em')
+    .attr('pointer-events','none')
+    .each(function(d) {
+      const el = d3.select(this);
+      if (d.type !== 'core' && d.label.length > 13) {
+        const words = d.label.split(' ');
+        const mid = Math.ceil(words.length / 2);
+        el.append('tspan').attr('x',0).attr('dy','-0.52em').text(words.slice(0,mid).join(' '));
+        el.append('tspan').attr('x',0).attr('dy','1.06em').text(words.slice(mid).join(' '));
+      } else {
+        el.text(d.label);
+      }
+    });
+
+  // ── Tooltip interaction ──
+  const tip = document.getElementById('nm-tooltip');
+  groups
+    .on('mouseover', (e, d) => {
+      if (!tip) return;
+      tip.querySelector('.tip-title').textContent = d.label;
+      tip.querySelector('.tip-type').textContent =
+        d.desc || ({core:'FRQNCY Core', cluster:'Domain', topic:'Topic'}[d.type] || '');
+      tip.style.opacity = '1';
+    })
+    .on('mousemove', e => {
+      if (!tip) return;
+      tip.style.left = (e.clientX + 16) + 'px';
+      tip.style.top  = (e.clientY - 16) + 'px';
+    })
+    .on('mouseout', () => { if (tip) tip.style.opacity = '0'; });
+}
+
+// ─── BACKGROUND STARS ────────────────────────────────────────────────────────
+const STARS = Array.from({length: 160}, () => ({
+  rx: Math.random(), ry: Math.random() * 0.72,  // keep stars out of ground area
+  r:  Math.random() * 1.2 + 0.15,
+  base:  Math.random() * 0.38 + 0.06,
+  phase: Math.random() * Math.PI * 2,
+  speed: 0.5 + Math.random() * 0.8,
+}));
+
+// ─── PARTICLE SYSTEM ─────────────────────────────────────────────────────────
+function spawnParticle() {
+  if (particles.length > 140 || !builtLinks.length) return;
+  const link = builtLinks[Math.floor(Math.random() * builtLinks.length)];
+  particles.push({
+    sx: link.source.x, sy: link.source.y,
+    cpx: link.cpx, cpy: link.cpy,
+    tx: link.target.x, ty: link.target.y,
+    prog: 0, speed: 0.006 + Math.random() * 0.009,
+    level: link.level,
+  });
+}
+
+function quadBezier(x1,y1,cpx,cpy,x2,y2,t) {
+  const mt = 1 - t;
+  return {
+    x: mt*mt*x1 + 2*mt*t*cpx + t*t*x2,
+    y: mt*mt*y1 + 2*mt*t*cpy + t*t*y2,
+  };
+}
+
+// ─── RENDER LOOP ─────────────────────────────────────────────────────────────
+function render(ts) {
+  requestAnimationFrame(render);
+  bgCtx.clearRect(0, 0, CW, CH);
+
+  // ── Dusk sky background gradient ──
+  // Deep indigo at top → warmer deep blue mid → very dark earth at bottom
+  const skyGr = bgCtx.createLinearGradient(0, 0, 0, CH);
+  skyGr.addColorStop(0,    '#0D0B1E');   // deepest indigo
+  skyGr.addColorStop(0.35, '#120E28');
+  skyGr.addColorStop(0.62, '#1A1535');   // warmer deep blue
+  skyGr.addColorStop(0.80, '#100C20');
+  skyGr.addColorStop(1,    '#0E0A08');   // dark earthy ground
+  bgCtx.fillStyle = skyGr;
+  bgCtx.fillRect(0, 0, CW, CH);
+
+  // ── Ground / earth layer ──
+  const groundY  = CH * 0.82;
+  // Faint ground horizon glow
+  const groundGr = bgCtx.createLinearGradient(0, groundY - 18, 0, CH);
+  groundGr.addColorStop(0,   'rgba(26,14,5,0)');
+  groundGr.addColorStop(0.3, 'rgba(20,10,4,0.55)');
+  groundGr.addColorStop(1,   'rgba(14,10,8,0.92)');
+  bgCtx.fillStyle = groundGr;
+  bgCtx.fillRect(0, groundY - 18, CW, CH - groundY + 18);
+
+  // Ground line (subtle earthy stripe)
+  bgCtx.save();
+  bgCtx.globalAlpha = 0.38;
+  const lineGr = bgCtx.createLinearGradient(0, groundY, CW, groundY);
+  lineGr.addColorStop(0,   'rgba(45,21,9,0)');
+  lineGr.addColorStop(0.25,'rgba(92,48,21,0.6)');
+  lineGr.addColorStop(0.5, 'rgba(107,90,60,0.8)');
+  lineGr.addColorStop(0.75,'rgba(92,48,21,0.6)');
+  lineGr.addColorStop(1,   'rgba(45,21,9,0)');
+  bgCtx.strokeStyle = lineGr;
+  bgCtx.lineWidth = 1.5;
+  bgCtx.beginPath();
+  bgCtx.moveTo(0, groundY);
+  bgCtx.lineTo(CW, groundY);
+  bgCtx.stroke();
+  bgCtx.restore();
+
+  // Lichen/moss texture along ground (a few short organic marks)
+  bgCtx.save();
+  bgCtx.globalAlpha = 0.12;
+  bgCtx.strokeStyle = '#6B7A5C';
+  bgCtx.lineWidth = 1.2;
+  for (let i = 0; i < 18; i++) {
+    const gx = CW * (0.04 + (i / 18) * 0.92) + Math.sin(i * 13.7) * 8;
+    const gy = groundY + 2 + Math.sin(i * 7.3) * 6;
+    bgCtx.beginPath();
+    bgCtx.moveTo(gx - 4 - Math.random()*6, gy);
+    bgCtx.quadraticCurveTo(gx, gy - 5, gx + 4 + Math.random()*6, gy);
+    bgCtx.stroke();
+  }
+  bgCtx.restore();
+
+  // ── Stars (only in sky portion) ──
+  const t = ts * 0.00046;
+  STARS.forEach(s => {
+    const a = s.base * (0.62 + 0.38 * Math.sin(t * s.speed + s.phase));
+    bgCtx.fillStyle = `rgba(210,220,255,${a.toFixed(2)})`;
+    bgCtx.beginPath();
+    bgCtx.arc(s.rx * CW, s.ry * CH, s.r, 0, Math.PI * 2);
+    bgCtx.fill();
+  });
+
+  if (!builtNodes.length) return;
+
+  // ── Aerial roots (hanging from domain nodes, animated sway) ──
+  bgCtx.save();
+  bgCtx.lineCap = 'round';
+  aerialRoots.forEach(ar => {
+    ar.roots.forEach(root => {
+      const sway = root.swayAmp * Math.sin(ts * 0.001 * root.swaySpeed + root.swayPhase);
+      const endX = root.startX + sway;
+      const endY = root.startY + root.len;
+      // Control point bulges outward
+      const cpx = root.startX + sway * 0.4;
+      const cpy = root.startY + root.len * 0.55;
+
+      bgCtx.beginPath();
+      bgCtx.strokeStyle = `rgba(69,34,12,${root.alpha})`;
+      bgCtx.lineWidth = 0.9;
+      bgCtx.moveTo(root.startX, root.startY);
+      bgCtx.quadraticCurveTo(cpx, cpy, endX, endY);
+      bgCtx.stroke();
+
+      // Tiny root-tip dot
+      bgCtx.fillStyle = `rgba(92,48,21,${root.alpha * 0.7})`;
+      bgCtx.beginPath();
+      bgCtx.arc(endX, endY, 1.5, 0, Math.PI*2);
+      bgCtx.fill();
+    });
+  });
+  bgCtx.restore();
+
+  // ── Node glows on canvas (behind SVG) ──
+  builtNodes.forEach(n => {
+    if (n.type === 'topic') {
+      const gr = bgCtx.createRadialGradient(n.x, n.y, n.r * 0.4, n.x, n.y, n.r * 4.5);
+      gr.addColorStop(0,    'rgba(44,122,74,0.18)');
+      gr.addColorStop(0.5,  'rgba(26,74,44,0.07)');
+      gr.addColorStop(1,    'rgba(26,74,44,0)');
+      bgCtx.fillStyle = gr;
+      bgCtx.beginPath();
+      bgCtx.arc(n.x, n.y, n.r * 4.5, 0, Math.PI*2);
+      bgCtx.fill();
+    } else if (n.type === 'cluster') {
+      const gr = bgCtx.createRadialGradient(n.x, n.y, n.r * 0.5, n.x, n.y, n.r * 2.8);
+      gr.addColorStop(0,   'rgba(48,98,200,0.22)');
+      gr.addColorStop(0.6, 'rgba(48,98,200,0.06)');
+      gr.addColorStop(1,   'rgba(48,98,200,0)');
+      bgCtx.fillStyle = gr;
+      bgCtx.beginPath();
+      bgCtx.arc(n.x, n.y, n.r * 2.8, 0, Math.PI*2);
+      bgCtx.fill();
+    } else if (n.type === 'core') {
+      // Warm amber/gold trunk glow
+      const gr = bgCtx.createRadialGradient(n.x, n.y, n.r * 0.5, n.x, n.y, n.r * 4.0);
+      gr.addColorStop(0,    'rgba(196,151,58,0.35)');
+      gr.addColorStop(0.4,  'rgba(196,151,58,0.12)');
+      gr.addColorStop(0.7,  'rgba(196,151,58,0.04)');
+      gr.addColorStop(1,    'rgba(196,151,58,0)');
+      bgCtx.fillStyle = gr;
+      bgCtx.beginPath();
+      bgCtx.arc(n.x, n.y, n.r * 4.0, 0, Math.PI*2);
+      bgCtx.fill();
+
+      // Draw the trunk column below the core node (extending to ground)
+      drawTrunk(n.x, n.y, groundY);
+    }
+  });
+
+  // ── Particles along branches ──
+  if (ts - lastSpawn > 140) { spawnParticle(); lastSpawn = ts; }
+
+  for (let i = particles.length - 1; i >= 0; i--) {
+    const p = particles[i];
+    p.prog += p.speed;
+    if (p.prog >= 1) { particles.splice(i, 1); continue; }
+    const pt = quadBezier(p.sx, p.sy, p.cpx, p.cpy, p.tx, p.ty, p.prog);
+    const fade = Math.min(p.prog * 5, 1) * Math.min((1 - p.prog) * 5, 1);
+    if (p.level === 0) {
+      // Amber/gold particles on main branches
+      bgCtx.fillStyle = `rgba(196,151,58,${(0.85 * fade).toFixed(2)})`;
+      bgCtx.beginPath(); bgCtx.arc(pt.x, pt.y, 2.0, 0, Math.PI*2); bgCtx.fill();
+    } else {
+      // Green leaf particles on twig branches
+      bgCtx.fillStyle = `rgba(107,203,119,${(0.70 * fade).toFixed(2)})`;
+      bgCtx.beginPath(); bgCtx.arc(pt.x, pt.y, 1.3, 0, Math.PI*2); bgCtx.fill();
+    }
+  }
+
+  // ── Fireflies (gold dots drifting upward in canopy) ──
+  fireflies.forEach(f => {
+    // Drift upward, wrap when leaving screen
+    f.x += f.vx + Math.sin(ts * 0.0008 * f.speed + f.phase) * 0.18;
+    f.y += f.vy;
+    if (f.y < CH * 0.04) {
+      f.y = CH * 0.72 + Math.random() * CH * 0.12;
+      f.x = CW * 0.12 + Math.random() * CW * 0.76;
+    }
+    if (f.x < 0) f.x = CW;
+    if (f.x > CW) f.x = 0;
+
+    const twinkle = 0.5 + 0.5 * Math.sin(ts * 0.002 * f.speed + f.phase);
+    const alpha = f.baseAlpha * twinkle;
+
+    // Soft outer glow
+    const glowGr = bgCtx.createRadialGradient(f.x, f.y, 0, f.x, f.y, f.r * 5);
+    glowGr.addColorStop(0,   `rgba(196,151,58,${(alpha * 0.35).toFixed(2)})`);
+    glowGr.addColorStop(1,   'rgba(196,151,58,0)');
+    bgCtx.fillStyle = glowGr;
+    bgCtx.beginPath(); bgCtx.arc(f.x, f.y, f.r * 5, 0, Math.PI*2); bgCtx.fill();
+
+    // Bright core dot
+    bgCtx.fillStyle = `rgba(240,200,80,${alpha.toFixed(2)})`;
+    bgCtx.beginPath(); bgCtx.arc(f.x, f.y, f.r, 0, Math.PI*2); bgCtx.fill();
+  });
+}
+
+// ─── TRUNK DRAWING ───────────────────────────────────────────────────────────
+// A realistic-ish tree trunk shape from core node down to ground
+function drawTrunk(cx, coreY, groundY) {
+  const trunkTopW = 22;   // trunk width at core
+  const trunkBotW = 46;   // trunk width at ground (flares)
+  const rootFlare = 80;   // how far roots flare at base
+
+  bgCtx.save();
+
+  // Main trunk silhouette
+  bgCtx.beginPath();
+  bgCtx.moveTo(cx - trunkTopW, coreY + 8);
+  // Left edge: slight S-curve flaring out at base
+  bgCtx.bezierCurveTo(
+    cx - trunkTopW - 4, coreY + (groundY - coreY) * 0.45,
+    cx - trunkBotW + 4, groundY - (groundY - coreY) * 0.18,
+    cx - trunkBotW, groundY
+  );
+  // Base
+  bgCtx.lineTo(cx + trunkBotW, groundY);
+  // Right edge: mirror
+  bgCtx.bezierCurveTo(
+    cx + trunkBotW - 4, groundY - (groundY - coreY) * 0.18,
+    cx + trunkTopW + 4, coreY + (groundY - coreY) * 0.45,
+    cx + trunkTopW, coreY + 8
+  );
+  bgCtx.closePath();
+
+  const trunkGr = bgCtx.createLinearGradient(cx - trunkBotW, 0, cx + trunkBotW, 0);
+  trunkGr.addColorStop(0,    'rgba(20,10,4,0.70)');
+  trunkGr.addColorStop(0.22, 'rgba(45,21,9,0.82)');
+  trunkGr.addColorStop(0.5,  'rgba(92,48,21,0.72)');
+  trunkGr.addColorStop(0.78, 'rgba(45,21,9,0.82)');
+  trunkGr.addColorStop(1,    'rgba(20,10,4,0.70)');
+  bgCtx.fillStyle = trunkGr;
+  bgCtx.fill();
+
+  // Bark grain lines (vertical, slight wobble)
+  bgCtx.globalAlpha = 0.18;
+  bgCtx.strokeStyle = '#8B5E3C';
+  bgCtx.lineWidth = 0.8;
+  for (let g = 0; g < 5; g++) {
+    const gx = cx - trunkTopW + (g / 4) * trunkTopW * 2;
+    bgCtx.beginPath();
+    bgCtx.moveTo(gx, coreY + 10);
+    bgCtx.bezierCurveTo(
+      gx + Math.sin(g * 1.7) * 3, coreY + (groundY - coreY) * 0.33,
+      gx + Math.sin(g * 2.3) * 4, coreY + (groundY - coreY) * 0.66,
+      gx, groundY
+    );
+    bgCtx.stroke();
+  }
+
+  // Root flares at base
+  bgCtx.globalAlpha = 0.55;
+  const numRoots = 5;
+  for (let r = 0; r < numRoots; r++) {
+    const rx = cx - rootFlare + (r / (numRoots - 1)) * rootFlare * 2;
+    const spreadX = (rx - cx) * 0.6;
+
+    bgCtx.beginPath();
+    bgCtx.moveTo(cx + (r - 2) * 8, coreY + (groundY - coreY) * 0.65);
+    bgCtx.bezierCurveTo(
+      cx + spreadX * 0.5, coreY + (groundY - coreY) * 0.80,
+      rx + (rx - cx) * 0.2, groundY - 6,
+      rx, groundY + 2
+    );
+    bgCtx.strokeStyle = r % 2 === 0 ? 'rgba(45,21,9,0.60)' : 'rgba(69,34,12,0.45)';
+    bgCtx.lineWidth = 6 - r * 0.4;
+    bgCtx.lineCap = 'round';
+    bgCtx.stroke();
+  }
+
+  bgCtx.restore();
+}
+
+// ─── BOOT ────────────────────────────────────────────────────────────────────
+resize();
+requestAnimationFrame(render);
+</script>
+</body>
+</html>

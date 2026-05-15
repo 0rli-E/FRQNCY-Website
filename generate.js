@@ -2,7 +2,7 @@
 // ─────────────────────────────────────────────────────────────────
 // FRQNCY Network v2 — Static Site Generator
 // Run: node generate.js
-// Output: ./v2/  (150 HTML pages), sitemap.xml, search.json
+// Output: ./<slug>/  (root paths since the 2026-05-13 /v2/ removal), sitemap.xml, search.json
 // ─────────────────────────────────────────────────────────────────
 
 const fs   = require('fs');
@@ -1293,13 +1293,13 @@ function appearancesFor(appearsIn) {
   for (const id of appearsIn || []) {
     if (pillarById.has(id)) {
       const p = pillarById.get(id);
-      out.push({ eyebrow: 'Pillar', label: p.label, desc: p.desc, href: `/v2/${p.slug}/index.html` });
+      out.push({ eyebrow: 'Pillar', label: p.label, desc: p.desc, href: `/${p.slug}/` });
     } else if (domainById.has(id)) {
       const d = domainById.get(id);
-      out.push({ eyebrow: 'Domain', label: d.label, desc: d.desc, href: `/v2/${d.slug}/index.html` });
+      out.push({ eyebrow: 'Domain', label: d.label, desc: d.desc, href: `/${d.slug}/` });
     } else if (topicById.has(id)) {
       const t = topicById.get(id);
-      out.push({ eyebrow: 'Topic', label: t.label, desc: t.desc, href: `/v2/${t.slug}/index.html` });
+      out.push({ eyebrow: 'Topic', label: t.label, desc: t.desc, href: `/${t.slug}/` });
     }
   }
   return out;
