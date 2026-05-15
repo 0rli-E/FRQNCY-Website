@@ -73,7 +73,7 @@ const BESPOKE_TOPICS  = new Set([
   'energy-policy', 'energy-storage', 'esports', 'fashion', 'fermentation', 'festivals', 'film', 'food-sovereignty',
   'food-systems', 'forests', 'future-cities', 'future-tech', 'gaming', 'genetics', 'geothermal', 'governance',
   'grid-technology', 'history', 'human-design', 'humor', 'impact-investing', 'indigenous-wisdom', 'journalism', 'kriya-yoga',
-  'language', 'leisure', 'manifestation', 'mathematics', 'medicine', 'meditation', 'mental-health', 'merkaba',
+  'conscious-creation', 'language', 'leisure', 'mathematics', 'medicine', 'meditation', 'mental-health', 'merkaba',
   'minimalism', 'movement', 'music', 'mythology', 'natural-cycles', 'near-death-experiences', 'neuroscience', 'nonviolent-communication',
   'nutrition', 'oceans', 'oneness', 'open-source', 'outdoor-adventure', 'peace', 'permaculture', 'personal-development',
   'photography', 'plant-medicine', 'play-creativity', 'poetry', 'privacy', 'product-design', 'prosperity-mindset', 'prototyping',

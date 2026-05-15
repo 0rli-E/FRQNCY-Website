@@ -21,7 +21,7 @@ function getVideoId(v)  { return v.video_id || v.youtube_id || ''; }
 
 const TOPIC_LABELS = {
   't-meditation':'Meditation','t-quantum':'Quantum Physics','t-neuro':'Neuroscience',
-  't-breathwork':'Breathwork','t-manifestation':'Manifestation','t-plantmed':'Plant Medicine',
+  't-breathwork':'Breathwork','t-conscious-creation':'Conscious Creation','t-plantmed':'Plant Medicine',
   't-soundheal':'Sound Healing','t-quantum-grammar':'Quantum Grammar','t-ai':'AI & Technology',
   't-sacredgeo':'Sacred Geometry','t-vibration':'Vibration','t-saclaw':'Sacred Law',
   't-trudeau':'Kevin Trudeau','t-osho':'Osho','t-sadhguru':'Sadhguru','t-saimaa':'Sai Maa','t-garyspivey':'Gary Spivey','t-shihengyi':'Shi Heng Yi','t-tolle':'Eckhart Tolle',
@@ -40,7 +40,7 @@ for (const [topicId, videos] of Object.entries(VIDEOS)) {
 allVideos.sort((a, b) => (b.frqncy_pick ? 1 : 0) - (a.frqncy_pick ? 1 : 0));
 
 // ── Inject into the template ────────────────────────────────────
-const TEMPLATE_PATH = path.join(ROOT, 'v2', 'watch', 'index.html');
+const TEMPLATE_PATH = path.join(ROOT, 'watch', 'index.html');
 let html = fs.readFileSync(TEMPLATE_PATH, 'utf8');
 
 const MARKER_START = '// ▼▼ INLINE_DATA_START ▼▼';

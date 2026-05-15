@@ -273,7 +273,6 @@ Voice is constant. Tone flexes by context across three dimensions: formality, en
 | **abundance mindset** | Pop-psych compound (the *concept* of abundance is kept; this compound is not) |
 | **love-n-light** *(flippant form)* | The full form "love and light" is kept as *philosophical concept*; the abbreviated/flippant form is banished — and even the full form should not appear as direct self-description in public copy (see Examples to Fix) |
 | **high vibe** | Direct cliché |
-| **manifest** | Watered-down version of conscious creation |
 | **awakened** *(as a status label for people)* | Implies a binary state and ranks people |
 | **soul food** | Borrowed register from a different cultural context |
 | **infinite energy** *(as an abstract goal)* | Means nothing precise |
