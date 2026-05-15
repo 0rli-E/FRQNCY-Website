@@ -22,7 +22,10 @@ ON CONFLICT (id) DO NOTHING;
 
 -- RLS: a member of the conversation that owns the message can read the blob.
 -- The path convention is `<conversation_id>/<message_id>` so we can join.
-CREATE POLICY IF NOT EXISTS dm_media_select_member
+-- Note: PostgreSQL does NOT support CREATE POLICY IF NOT EXISTS — use the
+-- DROP-then-CREATE pattern for idempotency (matches migrations 002 + 018).
+DROP POLICY IF EXISTS dm_media_select_member ON storage.objects;
+CREATE POLICY dm_media_select_member
     ON storage.objects
     FOR SELECT
     USING (
@@ -35,7 +38,8 @@ CREATE POLICY IF NOT EXISTS dm_media_select_member
     );
 
 -- The sender can upload to a path under their conversation.
-CREATE POLICY IF NOT EXISTS dm_media_insert_member
+DROP POLICY IF EXISTS dm_media_insert_member ON storage.objects;
+CREATE POLICY dm_media_insert_member
     ON storage.objects
     FOR INSERT
     WITH CHECK (
