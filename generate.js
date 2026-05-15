@@ -175,8 +175,20 @@ function peopleToCard(p, nid) {
   };
 }
 function bookToCard(b, nid) {
-  const pid = b.author_is_person_ref ? b.author : null;
-  const authorName = pid ? ((PEOPLE?.people.find(p => p.id === pid)||{}).name || b.author) : b.author;
+  let authorName = '';
+  if (b.author_is_person_ref) {
+    const refs = Array.isArray(b.author) ? b.author : [b.author];
+    const names = refs
+      .map(id => (PEOPLE?.people.find(p => p.id === id) || {}).name)
+      .filter(Boolean);
+    authorName = names.length === 2
+      ? `${names[0]} & ${names[1]}`
+      : names.length > 2
+        ? `${names.slice(0, -1).join(', ')} & ${names[names.length - 1]}`
+        : (names[0] || '');
+  } else if (typeof b.author === 'string') {
+    authorName = b.author;
+  }
   const title = authorName ? `${b.title} — ${authorName}` : b.title;
   const slug = (b.id || '').replace(/^b-/, '');
   return {
@@ -934,8 +946,13 @@ function pillarBooksSection(pillarId) {
     if (!title) return '';
     let author = pk.author || '';
     if (bed) {
-      if (bed.author_is_person_ref && peopleById.has(bed.author)) author = peopleById.get(bed.author).name;
-      else if (typeof bed.author === 'string') author = bed.author;
+      if (bed.author_is_person_ref) {
+        const refs = Array.isArray(bed.author) ? bed.author : [bed.author];
+        const names = refs.map(id => peopleById.get(id)?.name).filter(Boolean);
+        if (names.length === 2) author = `${names[0]} & ${names[1]}`;
+        else if (names.length > 2) author = `${names.slice(0,-1).join(', ')} & ${names[names.length-1]}`;
+        else if (names.length === 1) author = names[0];
+      } else if (typeof bed.author === 'string') author = bed.author;
     }
     const image = bed?.image || '';
     const href = bed ? `/books/${bed.id.replace(/^b-/, '')}/` : (pk.url || '#');
@@ -1210,9 +1227,12 @@ function personSlug(person) {
 function worksForPerson(personId) {
   const out = [];
   if (BOOKS) for (const b of BOOKS.books) {
-    if (b.author_is_person_ref && b.author === personId) {
-      const title = b.title; // bare title; author is the current page's subject
-      out.push({ type: 'book', title, url: b.url, desc: b.bio, frqncy_pick: false });
+    if (b.author_is_person_ref) {
+      const refs = Array.isArray(b.author) ? b.author : [b.author];
+      if (refs.includes(personId)) {
+        const title = b.title; // bare title; author is the current page's subject
+        out.push({ type: 'book', title, url: b.url, desc: b.bio, frqncy_pick: false });
+      }
     }
   }
   if (ORGS) for (const o of ORGS.orgs) {
@@ -2340,8 +2360,11 @@ if (BOOKS) for (const b of BOOKS.books) {
   // Resolve author name for searchability (query "huberman" should find his book)
   let authorName = '';
   if (b.author_is_person_ref && PEOPLE) {
-    const person = PEOPLE.people.find(pp => pp.id === b.author);
-    authorName = person ? person.name : '';
+    const refs = Array.isArray(b.author) ? b.author : [b.author];
+    authorName = refs
+      .map(id => (PEOPLE.people.find(pp => pp.id === id) || {}).name)
+      .filter(Boolean)
+      .join(' & ');
   } else if (typeof b.author === 'string') {
     authorName = b.author;
   }
@@ -2485,8 +2508,11 @@ if (PEOPLE) for (const p of PEOPLE.people) {
 if (BOOKS) for (const b of BOOKS.books) {
   let authorName = '';
   if (b.author_is_person_ref && PEOPLE) {
-    const person = PEOPLE.people.find(pp => pp.id === b.author);
-    authorName = person ? person.name : '';
+    const refs = Array.isArray(b.author) ? b.author : [b.author];
+    authorName = refs
+      .map(id => (PEOPLE.people.find(pp => pp.id === id) || {}).name)
+      .filter(Boolean)
+      .join(' & ');
   } else if (typeof b.author === 'string') {
     authorName = b.author;
   }
