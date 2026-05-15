@@ -2584,7 +2584,7 @@ console.log(`\n✓ FRQNCY Network v2 generated`);
 console.log(`  Pillars : ${DATA.pillars.length}`);
 console.log(`  Domains : ${DATA.domains.length}`);
 console.log(`  Topics  : ${DATA.topics.length}`);
-console.log(`  Total   : ${count} pages → ./v2/`);
+console.log(`  Total   : ${count} pages → root paths`);
 console.log(`  People  : ${personCount} profiles → ./people/`);
 console.log(`  Books   : ${bookCount} profiles → ./books/`);
 console.log(`  Orgs    : ${orgCount} profiles → ./orgs/`);

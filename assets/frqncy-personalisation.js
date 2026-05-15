@@ -250,7 +250,7 @@ function addTopicFraming(topic) {
   return {
     slug:    topic.slug,
     label:   topic.label,
-    url:     topic.url || `/v2/${topic.slug}/`,
+    url:     topic.url || `/${topic.slug}/`,
     framing: words || 'often resonates with this design.',
     domain:  topic.domain || '',
   };

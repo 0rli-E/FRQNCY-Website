@@ -47,7 +47,7 @@ export default function ProjectBadge({
   conviction = null,
 }: ProjectBadgeProps) {
   const color = getTierColor(tier);
-  const href = `/v2/crypto/projects.html#${slugify(name)}`;
+  const href = `/crypto/projects#${slugify(name)}`;
 
   const convictionGlyph = conviction ? CONVICTION_GLYPH[conviction] : null;
   // Gold for bullish, muted for bearish/neutral — stays on-palette.
