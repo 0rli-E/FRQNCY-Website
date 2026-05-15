@@ -150,7 +150,104 @@ html, body { width: 100%; height: 100%; overflow: hidden; background: #060C1E; }
 <div class="eyebrow">FRQNCY · <span>World Tree</span> · v3 · Sacred Geometry</div>
 <div id="nm-tooltip"><div class="tip-title"></div><div class="tip-type"></div></div>
 
-<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js"></script>
+<script>
+/* ── Minimal D3 shim (no CDN needed) ──────────────────────────── */
+const d3 = (function(){
+  'use strict';
+  const NS = 'http://www.w3.org/2000/svg';
+  function mk(tag) { return document.createElementNS(NS, tag); }
+
+  class Sel {
+    constructor(els, par) {
+      this._els = (Array.isArray(els) ? els : els ? [els] : []).filter(Boolean);
+      this._par = par || null;
+      this._dat = null;
+    }
+    attr(k, v) {
+      this._els.forEach((el, i) => {
+        const val = typeof v === 'function' ? v(el.__d3d__, i) : v;
+        if (val == null) el.removeAttribute(k);
+        else el.setAttribute(k, String(val));
+      });
+      return this;
+    }
+    style(k, v) {
+      this._els.forEach((el, i) => {
+        const val = typeof v === 'function' ? v(el.__d3d__, i) : v;
+        if (val == null) el.style.removeProperty(k);
+        else el.style.setProperty(k, String(val));
+      });
+      return this;
+    }
+    text(v) {
+      this._els.forEach(el => {
+        el.textContent = typeof v === 'function' ? v(el.__d3d__) : v;
+      });
+      return this;
+    }
+    append(tag) {
+      const ch = this._els.map(el => {
+        const c = mk(tag);
+        c.__d3d__ = el.__d3d__;
+        el.appendChild(c);
+        return c;
+      });
+      return new Sel(ch, this._els[0] || this._par);
+    }
+    on(type, fn) {
+      const t = type.split('.')[0];
+      this._els.forEach(el => el.addEventListener(t, e => fn.call(el, e, el.__d3d__)));
+      return this;
+    }
+    each(fn) {
+      this._els.forEach((el, i) => fn.call(el, el.__d3d__, i));
+      return this;
+    }
+    filter(fn) {
+      const kept = this._els.filter((el, i) =>
+        typeof fn === 'function' ? fn(el.__d3d__, i) : el.matches(fn));
+      return new Sel(kept, this._par);
+    }
+    remove() {
+      this._els.forEach(el => el.parentNode && el.parentNode.removeChild(el));
+      this._els = [];
+      return this;
+    }
+    selectAll(sel) {
+      const found = [];
+      this._els.forEach(el => found.push(...el.querySelectorAll(sel)));
+      return new Sel(found, this._els[0] || null);
+    }
+    data(arr) { this._dat = arr; return this; }
+    join(tag) {
+      const data = this._dat || [], parent = this._par;
+      if (!parent) return this;
+      this._els.forEach(el => el.parentNode && el.parentNode.removeChild(el));
+      const created = data.map((d, i) => {
+        const el = mk(tag);
+        el.__d3d__ = d;
+        parent.appendChild(el);
+        return el;
+      });
+      return new Sel(created, parent);
+    }
+    node() { return this._els[0] || null; }
+    nodes() { return this._els; }
+  }
+
+  function select(target) {
+    let el = typeof target === 'string' ? document.querySelector(target) : target;
+    if (el && el.__d3d__ === undefined) el.__d3d__ = null;
+    return new Sel(el ? [el] : [], el ? el.parentNode : null);
+  }
+  function selectAll(sel) {
+    const els = [...document.querySelectorAll(sel)];
+    return new Sel(els, document.body);
+  }
+  return { select, selectAll };
+})();
+/* ── end shim ─────────────────────────────────────────────────── */
+</script>
 <script>
 /* =========================================================================
    FRQNCY World Tree v3 — Sacred Geometry Mandala

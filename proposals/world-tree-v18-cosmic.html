@@ -1,0 +1,1085 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <title>FRQNCY World Tree — Cosmic</title>
+  <style>
+    * { margin: 0; padding: 0; box-sizing: border-box; }
+    body { background: #000005; overflow: hidden; width: 100vw; height: 100vh; font-family: 'Georgia', serif; }
+    #canvas { position: absolute; top: 0; left: 0; }
+    #svg { position: absolute; top: 0; left: 0; z-index: 10; overflow: visible; }
+    #title {
+      position: fixed; top: 18px; right: 24px; z-index: 100;
+      color: rgba(255, 230, 140, 0.88);
+      font-size: 13px; letter-spacing: 0.22em; text-transform: uppercase;
+      text-shadow: 0 0 12px rgba(255,200,80,0.5), 0 0 30px rgba(255,160,40,0.2);
+      pointer-events: none;
+    }
+    #tooltip {
+      position: fixed; z-index: 200; pointer-events: none;
+      background: rgba(4, 6, 20, 0.92);
+      border: 1px solid rgba(255, 200, 80, 0.35);
+      border-radius: 4px; padding: 8px 14px;
+      opacity: 0; transition: opacity 0.15s;
+      max-width: 220px;
+    }
+    #tooltip .tip-label {
+      color: rgba(255, 220, 140, 0.95);
+      font-size: 13px; letter-spacing: 0.08em;
+      font-family: 'Georgia', serif;
+    }
+    #tooltip .tip-desc {
+      color: rgba(180, 200, 240, 0.65);
+      font-size: 10px; letter-spacing: 0.06em;
+      margin-top: 3px;
+      font-family: 'Arial', sans-serif;
+    }
+    #hint {
+      position: fixed; bottom: 14px; left: 50%;
+      transform: translateX(-50%);
+      color: rgba(255, 200, 80, 0.25);
+      font-size: 9px; letter-spacing: 0.2em;
+      text-transform: uppercase; z-index: 100;
+      pointer-events: none;
+    }
+  </style>
+</head>
+<body>
+  <canvas id="canvas"></canvas>
+  <svg id="svg" xmlns="http://www.w3.org/2000/svg">
+    <defs id="svgdefs"></defs>
+    <g id="links-layer"></g>
+    <g id="nodes-layer"></g>
+  </svg>
+  <div id="title">FRQNCY · Cosmic</div>
+  <div id="tooltip"><div class="tip-label"></div><div class="tip-desc"></div></div>
+  <div id="hint">Drag nodes · Hover to explore</div>
+
+  <script>
+  (function() {
+    'use strict';
+
+    // ===== DATASET =====
+    const HOME_NODES = [
+      {id:"frqncy",label:"FRQNCY",type:"core",desc:"The living network of consciousness"},
+      {id:"network-state",label:"Network State",type:"main",desc:"The sovereign community"},
+      {id:"fund",label:"Fund",type:"main",desc:"Capital allocation"},
+      {id:"education",label:"Education",type:"main",desc:"Transmitting what's known"},
+      {id:"research",label:"Research",type:"main",desc:"Exploring what isn't known yet"},
+      {id:"media",label:"Media",type:"main",desc:"Spreading the signal"},
+      {id:"builder",label:"Builder",type:"main",desc:"Creating products, tools, experiences"},
+      {id:"curate",label:"Curate",type:"main",desc:"Picking with care"},
+      {id:"sell",label:"Sell",type:"main",desc:"Commerce as transparent service"},
+      {id:"d-sciences",label:"Sciences",type:"cluster",desc:"Empirical exploration of reality"},
+      {id:"d-tech",label:"Technology",type:"cluster",desc:"Tools shaping the future"},
+      {id:"d-arts",label:"Arts & Culture",type:"cluster",desc:"Expression of the human spirit"},
+      {id:"d-nature",label:"Nature & Cosmos",type:"cluster",desc:"The living systems of existence"},
+      {id:"d-business",label:"Business",type:"cluster",desc:"Regenerative enterprise and social models"},
+      {id:"d-money",label:"Money",type:"cluster",desc:"Capital, crypto, and the new financial layer"},
+      {id:"d-meta",label:"Consciousness",type:"cluster",desc:"The architecture of reality"},
+      {id:"d-lifestyle",label:"Lifestyle",type:"cluster",desc:"Conscious ways of living"},
+      {id:"d-creation",label:"Creation",type:"cluster",desc:"Building what has never existed"},
+      {id:"d-wellbeing",label:"Well-being",type:"cluster",desc:"Healing and wholeness"},
+      {id:"d-society",label:"Society & Networks",type:"cluster",desc:"Collective human systems"},
+      {id:"d-communication",label:"Communication",type:"cluster",desc:"How humans connect and express meaning"},
+      {id:"d-energy",label:"Energy",type:"cluster",desc:"The forces and resources that power existence"},
+      {id:"d-food",label:"Food & Agriculture",type:"cluster",desc:"Growing, sharing and consuming nourishment"},
+      {id:"d-play",label:"Play & Recreation",type:"cluster",desc:"Joy, games, sports and leisure"},
+      {id:"t-quantum",label:"Quantum Physics",type:"topic"},
+      {id:"t-neuro",label:"Neuroscience",type:"topic"},
+      {id:"t-bio",label:"Biology",type:"topic"},
+      {id:"t-psych",label:"Psychology",type:"topic"},
+      {id:"t-med",label:"Medicine",type:"topic"},
+      {id:"t-math",label:"Mathematics",type:"topic"},
+      {id:"t-astrophys",label:"Astrophysics",type:"topic"},
+      {id:"t-ecology",label:"Ecology",type:"topic"},
+      {id:"t-genetics",label:"Genetics",type:"topic"},
+      {id:"t-chemistry",label:"Chemistry",type:"topic"},
+      {id:"t-ai",label:"Artificial Intelligence",type:"topic"},
+      {id:"t-blockchain",label:"Blockchain",type:"topic"},
+      {id:"t-decentral",label:"Decentralized Networks",type:"topic"},
+      {id:"t-arvr",label:"AR / VR",type:"topic"},
+      {id:"t-biotech",label:"Biotechnology",type:"topic"},
+      {id:"t-robotics",label:"Robotics",type:"topic"},
+      {id:"t-web3",label:"Web3",type:"topic"},
+      {id:"t-quantcomp",label:"Quantum Computing",type:"topic"},
+      {id:"t-cybersec",label:"Cybersecurity",type:"topic"},
+      {id:"t-music",label:"Music",type:"topic"},
+      {id:"t-visual",label:"Visual Art",type:"topic"},
+      {id:"t-film",label:"Film",type:"topic"},
+      {id:"t-poetry",label:"Poetry",type:"topic"},
+      {id:"t-dance",label:"Dance",type:"topic"},
+      {id:"t-archit",label:"Architecture",type:"topic"},
+      {id:"t-fashion",label:"Fashion",type:"topic"},
+      {id:"t-story",label:"Storytelling",type:"topic"},
+      {id:"t-photo",label:"Photography",type:"topic"},
+      {id:"t-theater",label:"Theater",type:"topic"},
+      {id:"t-sacredgeo",label:"Sacred Geometry",type:"topic"},
+      {id:"t-astrology",label:"Astrology",type:"topic"},
+      {id:"t-climate",label:"Climate",type:"topic"},
+      {id:"t-biodivers",label:"Biodiversity",type:"topic"},
+      {id:"t-oceans",label:"Oceans",type:"topic"},
+      {id:"t-forests",label:"Forests",type:"topic"},
+      {id:"t-cosmos",label:"Stars & Planets",type:"topic"},
+      {id:"t-efields",label:"Energy Fields",type:"topic"},
+      {id:"t-cycles",label:"Seasons & Cycles",type:"topic"},
+      {id:"t-defi",label:"DeFi",type:"topic"},
+      {id:"t-impact",label:"Impact Investing",type:"topic"},
+      {id:"t-socialent",label:"Social Enterprise",type:"topic"},
+      {id:"t-circular",label:"Circular Economy",type:"topic"},
+      {id:"t-conscap",label:"Conscious Capital",type:"topic"},
+      {id:"t-regenbiz",label:"Regenerative Business",type:"topic"},
+      {id:"t-dao",label:"DAOs",type:"topic"},
+      {id:"t-crypto",label:"Cryptocurrency",type:"topic"},
+      {id:"t-wealth-mind",label:"Prosperity Mindset",type:"topic"},
+      {id:"t-cards",label:"Cards",type:"topic"},
+      {id:"t-personal-finance",label:"Personal Finance",type:"topic"},
+      {id:"t-stocks",label:"Stocks",type:"topic"},
+      {id:"t-bonds",label:"Bonds",type:"topic"},
+      {id:"t-etfs",label:"ETFs",type:"topic"},
+      {id:"t-commodities",label:"Commodities",type:"topic"},
+      {id:"t-gold",label:"Gold",type:"topic"},
+      {id:"t-silver",label:"Silver",type:"topic"},
+      {id:"t-platinum",label:"Platinum",type:"topic"},
+      {id:"t-palladium",label:"Palladium",type:"topic"},
+      {id:"t-uranium",label:"Uranium",type:"topic"},
+      {id:"t-copper",label:"Copper",type:"topic"},
+      {id:"t-oil",label:"Oil",type:"topic"},
+      {id:"t-lithium",label:"Lithium",type:"topic"},
+      {id:"t-rare-earths",label:"Rare Earths",type:"topic"},
+      {id:"t-carbon-credits",label:"Carbon Credits",type:"topic"},
+      {id:"t-water",label:"Water",type:"topic"},
+      {id:"t-natgas",label:"Natural Gas",type:"topic"},
+      {id:"t-nickel",label:"Nickel",type:"topic"},
+      {id:"t-cobalt",label:"Cobalt",type:"topic"},
+      {id:"t-wheat",label:"Wheat",type:"topic"},
+      {id:"t-diamonds",label:"Diamonds",type:"topic"},
+      {id:"t-iron",label:"Iron Ore",type:"topic"},
+      {id:"t-aluminum",label:"Aluminum",type:"topic"},
+      {id:"t-zinc",label:"Zinc",type:"topic"},
+      {id:"t-lead",label:"Lead",type:"topic"},
+      {id:"t-tin",label:"Tin",type:"topic"},
+      {id:"t-sugar",label:"Sugar",type:"topic"},
+      {id:"t-cotton",label:"Cotton",type:"topic"},
+      {id:"t-hydrogen",label:"Hydrogen",type:"topic"},
+      {id:"t-bitcoin",label:"Bitcoin",type:"topic"},
+      {id:"t-sov",label:"Store of Value",type:"topic"},
+      {id:"t-l1",label:"Layer 1s",type:"topic"},
+      {id:"t-l2",label:"Layer 2s",type:"topic"},
+      {id:"t-stablecoins",label:"Stablecoins",type:"topic"},
+      {id:"t-rwa",label:"Real World Assets",type:"topic"},
+      {id:"t-depin",label:"DePIN",type:"topic"},
+      {id:"t-desci",label:"DeSci",type:"topic"},
+      {id:"t-gamefi",label:"GameFi",type:"topic"},
+      {id:"t-socialfi",label:"SocialFi",type:"topic"},
+      {id:"t-memes",label:"Memes",type:"topic"},
+      {id:"t-modular",label:"Modular",type:"topic"},
+      {id:"t-oracles",label:"Oracles",type:"topic"},
+      {id:"t-staking",label:"Staking",type:"topic"},
+      {id:"t-deai",label:"DeAI",type:"topic"},
+      {id:"t-icm",label:"Internet Capital",type:"topic"},
+      {id:"t-neobanks",label:"Neobanks",type:"topic"},
+      {id:"t-nfts",label:"NFTs",type:"topic"},
+      {id:"t-predictions",label:"Prediction Markets",type:"topic"},
+      {id:"t-crypto-privacy",label:"Crypto Privacy",type:"topic"},
+      {id:"t-privacy",label:"Privacy & Sovereignty",type:"topic"},
+      {id:"t-oneness",label:"Oneness",type:"topic"},
+      {id:"t-source",label:"Source Energy",type:"topic"},
+      {id:"t-soul",label:"Soul Purpose",type:"topic"},
+      {id:"t-akashic",label:"Akashic Records",type:"topic"},
+      {id:"t-dims",label:"Higher Dimensions",type:"topic"},
+      {id:"t-sync",label:"Synchronicity",type:"topic"},
+      {id:"t-saclaw",label:"Sacred Law",type:"topic"},
+      {id:"t-merkaba",label:"Merkaba",type:"topic"},
+      {id:"t-vibration",label:"Vibration & Frequency",type:"topic"},
+      {id:"t-nutrition",label:"Nutrition",type:"topic"},
+      {id:"t-movement",label:"Movement",type:"topic"},
+      {id:"t-sleep",label:"Sleep",type:"topic"},
+      {id:"t-plantmed",label:"Plant Medicine",type:"topic"},
+      {id:"t-community",label:"Community Living",type:"topic"},
+      {id:"t-minimalism",label:"Minimalism",type:"topic"},
+      {id:"t-detox",label:"Digital Detox",type:"topic"},
+      {id:"t-sustliving",label:"Sustainable Living",type:"topic"},
+      {id:"t-proddesign",label:"Product Design",type:"topic"},
+      {id:"t-systems",label:"Systems Thinking",type:"topic"},
+      {id:"t-opensource",label:"Open Source",type:"topic"},
+      {id:"t-cocreate",label:"Co-creation",type:"topic"},
+      {id:"t-proto",label:"Prototyping",type:"topic"},
+      {id:"t-emergence",label:"Emergence",type:"topic"},
+      {id:"t-biomimicry",label:"Biomimicry",type:"topic"},
+      {id:"t-futuretech",label:"Future of Work",type:"topic"},
+      {id:"t-meditation",label:"Meditation",type:"topic"},
+      {id:"t-soundheal",label:"Sound Healing",type:"topic"},
+      {id:"t-breathwork",label:"Breathwork",type:"topic"},
+      {id:"t-somatic",label:"Somatic Therapy",type:"topic"},
+      {id:"t-energyheal",label:"Energy Healing",type:"topic"},
+      {id:"t-yoga",label:"Yoga",type:"topic"},
+      {id:"t-mentalhlth",label:"Mental Health",type:"topic"},
+      {id:"t-governance",label:"Global Governance",type:"topic"},
+      {id:"t-indigenous",label:"Indigenous Wisdom",type:"topic"},
+      {id:"t-collective",label:"Collective Intelligence",type:"topic"},
+      {id:"t-socialmov",label:"Social Movements",type:"topic"},
+      {id:"t-peace",label:"Peace Building",type:"topic"},
+      {id:"t-futurecity",label:"Future Cities",type:"topic"},
+      {id:"t-edusystem",label:"Education Systems",type:"topic"},
+      {id:"t-diaspora",label:"Global Diaspora",type:"topic"},
+      {id:"t-language",label:"Language & Linguistics",type:"topic"},
+      {id:"t-speaking",label:"Public Speaking",type:"topic"},
+      {id:"t-dialogue",label:"Dialogue & Debate",type:"topic"},
+      {id:"t-journalism",label:"Journalism",type:"topic"},
+      {id:"t-socialmedia",label:"Social Media",type:"topic"},
+      {id:"t-nvc",label:"Nonviolent Communication",type:"topic"},
+      {id:"t-translation",label:"Translation",type:"topic"},
+      {id:"t-broadcasting",label:"Broadcasting",type:"topic"},
+      {id:"t-renewable",label:"Renewable Energy",type:"topic"},
+      {id:"t-solar",label:"Solar Energy",type:"topic"},
+      {id:"t-wind",label:"Wind Energy",type:"topic"},
+      {id:"t-geothermal",label:"Geothermal",type:"topic"},
+      {id:"t-storage",label:"Energy Storage",type:"topic"},
+      {id:"t-bioenergy",label:"Bioenergy",type:"topic"},
+      {id:"t-gridtech",label:"Grid Technology",type:"topic"},
+      {id:"t-energypolicy",label:"Energy Policy",type:"topic"},
+      {id:"t-regenfarm",label:"Regenerative Farming",type:"topic"},
+      {id:"t-permaculture",label:"Permaculture",type:"topic"},
+      {id:"t-foodsystems",label:"Food Systems",type:"topic"},
+      {id:"t-urbanfarm",label:"Urban Farming",type:"topic"},
+      {id:"t-fermentation",label:"Fermentation",type:"topic"},
+      {id:"t-foodsov",label:"Food Sovereignty",type:"topic"},
+      {id:"t-cuisine",label:"Cuisine & Culture",type:"topic"},
+      {id:"t-aquaculture",label:"Aquaculture",type:"topic"},
+      {id:"t-sports",label:"Sports & Athletics",type:"topic"},
+      {id:"t-gaming",label:"Games & Gaming",type:"topic"},
+      {id:"t-outdoor",label:"Outdoor Adventure",type:"topic"},
+      {id:"t-esports",label:"Esports",type:"topic"},
+      {id:"t-leisure",label:"Leisure & Rest",type:"topic"},
+      {id:"t-humor",label:"Humor & Comedy",type:"topic"},
+      {id:"t-festivals",label:"Festivals & Events",type:"topic"},
+      {id:"t-playcreat",label:"Play & Creativity",type:"topic"}
+    ];
+
+    const HOME_RAW_LINKS = [
+      ["frqncy","network-state"],["frqncy","fund"],["frqncy","education"],["frqncy","research"],["frqncy","media"],["frqncy","builder"],["frqncy","curate"],["frqncy","sell"],
+      ["sell","d-money"],["sell","d-business"],["sell","d-tech"],["sell","d-creation"],["sell","d-society"],
+      ["curate","d-arts"],["curate","d-communication"],["curate","d-lifestyle"],["curate","d-meta"],
+      ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],["frqncy","d-nature"],["frqncy","d-business"],["frqncy","d-money"],
+      ["frqncy","d-meta"],["frqncy","d-lifestyle"],["frqncy","d-creation"],["frqncy","d-wellbeing"],["frqncy","d-society"],
+      ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],["network-state","d-money"],["network-state","d-creation"],
+      ["fund","d-business"],["fund","d-money"],["fund","d-tech"],["fund","d-creation"],["fund","d-society"],
+      ["education","d-sciences"],["education","d-arts"],["education","d-creation"],["education","d-society"],
+      ["research","d-sciences"],["research","d-meta"],["research","d-nature"],["research","d-tech"],
+      ["media","d-arts"],["media","d-communication"],["media","d-society"],["media","d-tech"],
+      ["builder","d-creation"],["builder","d-tech"],["builder","d-business"],["builder","d-money"],["builder","d-society"],
+      ["d-sciences","t-quantum"],["d-sciences","t-neuro"],["d-sciences","t-bio"],["d-sciences","t-psych"],
+      ["d-sciences","t-med"],["d-sciences","t-math"],["d-sciences","t-astrophys"],["d-sciences","t-ecology"],
+      ["d-sciences","t-genetics"],["d-sciences","t-chemistry"],
+      ["d-tech","t-ai"],["d-tech","t-blockchain"],["d-tech","t-decentral"],["d-tech","t-arvr"],
+      ["d-tech","t-biotech"],["d-tech","t-robotics"],["d-tech","t-web3"],["d-tech","t-quantcomp"],["d-tech","t-cybersec"],["d-tech","t-privacy"],
+      ["d-arts","t-music"],["d-arts","t-visual"],["d-arts","t-film"],["d-arts","t-poetry"],["d-arts","t-dance"],
+      ["d-arts","t-archit"],["d-arts","t-fashion"],["d-arts","t-story"],["d-arts","t-photo"],["d-arts","t-theater"],
+      ["d-nature","t-sacredgeo"],["d-nature","t-astrology"],["d-nature","t-climate"],["d-nature","t-biodivers"],
+      ["d-nature","t-oceans"],["d-nature","t-forests"],["d-nature","t-cosmos"],["d-nature","t-efields"],["d-nature","t-cycles"],
+      ["d-business","t-socialent"],["d-business","t-circular"],["d-business","t-regenbiz"],
+      ["d-money","t-defi"],["d-money","t-impact"],["d-money","t-conscap"],["d-money","t-dao"],["d-money","t-crypto"],["d-money","t-wealth-mind"],
+      ["d-money","t-cards"],["d-money","t-personal-finance"],["d-money","t-stocks"],["d-money","t-bonds"],["d-money","t-etfs"],
+      ["d-money","t-commodities"],
+      ["d-money","t-gold"],["d-money","t-silver"],["d-money","t-platinum"],["d-money","t-palladium"],["d-money","t-uranium"],["d-money","t-copper"],
+      ["d-money","t-oil"],["d-money","t-lithium"],["d-money","t-rare-earths"],["d-money","t-carbon-credits"],["d-money","t-water"],
+      ["d-money","t-natgas"],["d-money","t-nickel"],["d-money","t-cobalt"],["d-money","t-wheat"],["d-money","t-diamonds"],
+      ["d-money","t-iron"],["d-money","t-aluminum"],["d-money","t-zinc"],["d-money","t-lead"],["d-money","t-tin"],
+      ["d-money","t-sugar"],["d-money","t-cotton"],["d-money","t-hydrogen"],
+      ["t-commodities","t-gold"],["t-commodities","t-silver"],["t-commodities","t-platinum"],["t-commodities","t-palladium"],["t-commodities","t-uranium"],["t-commodities","t-copper"],
+      ["t-commodities","t-oil"],["t-commodities","t-lithium"],["t-commodities","t-rare-earths"],["t-commodities","t-carbon-credits"],["t-commodities","t-water"],
+      ["t-commodities","t-natgas"],["t-commodities","t-nickel"],["t-commodities","t-cobalt"],["t-commodities","t-wheat"],["t-commodities","t-diamonds"],
+      ["t-commodities","t-iron"],["t-commodities","t-aluminum"],["t-commodities","t-zinc"],["t-commodities","t-lead"],["t-commodities","t-tin"],
+      ["t-commodities","t-sugar"],["t-commodities","t-cotton"],["t-commodities","t-hydrogen"],
+      ["t-gold","t-silver"],["t-gold","t-wealth-mind"],["t-gold","t-crypto"],
+      ["t-silver","t-platinum"],["t-platinum","t-palladium"],
+      ["t-uranium","d-energy"],["t-copper","t-renewable"],["t-copper","t-gridtech"],
+      ["t-oil","d-energy"],["t-natgas","d-energy"],["t-natgas","t-oil"],
+      ["t-lithium","d-energy"],["t-lithium","t-renewable"],["t-lithium","t-nickel"],["t-lithium","t-cobalt"],
+      ["t-rare-earths","d-tech"],["t-hydrogen","d-energy"],["t-hydrogen","t-renewable"],
+      ["t-carbon-credits","t-climate"],
+      ["t-water","d-nature"],["t-water","d-lifestyle"],
+      ["t-wheat","d-food"],["t-iron","t-aluminum"],
+      ["t-stocks","t-bonds"],["t-stocks","t-etfs"],["t-bonds","t-etfs"],
+      ["t-personal-finance","t-cards"],["t-personal-finance","t-stocks"],["t-personal-finance","t-wealth-mind"],
+      ["t-stocks","t-impact"],["t-cards","t-defi"],
+      ["d-money","t-bitcoin"],["d-money","t-sov"],["d-money","t-l1"],["d-money","t-l2"],["d-money","t-stablecoins"],
+      ["d-money","t-rwa"],["d-money","t-depin"],["d-money","t-desci"],["d-money","t-gamefi"],["d-money","t-socialfi"],
+      ["d-money","t-memes"],["d-money","t-modular"],["d-money","t-oracles"],["d-money","t-staking"],
+      ["d-money","t-deai"],["d-money","t-icm"],["d-money","t-neobanks"],["d-money","t-nfts"],
+      ["d-money","t-predictions"],["d-money","t-crypto-privacy"],
+      ["t-crypto","t-bitcoin"],["t-crypto","t-sov"],["t-crypto","t-l1"],["t-crypto","t-l2"],["t-crypto","t-stablecoins"],
+      ["t-crypto","t-rwa"],["t-crypto","t-depin"],["t-crypto","t-desci"],["t-crypto","t-gamefi"],["t-crypto","t-socialfi"],
+      ["t-crypto","t-memes"],["t-crypto","t-modular"],["t-crypto","t-oracles"],["t-crypto","t-staking"],
+      ["t-crypto","t-deai"],["t-crypto","t-icm"],["t-crypto","t-neobanks"],["t-crypto","t-nfts"],
+      ["t-crypto","t-predictions"],["t-crypto","t-crypto-privacy"],
+      ["t-crypto","t-defi"],["t-crypto","t-dao"],["t-crypto","t-web3"],
+      ["t-bitcoin","t-sov"],["t-bitcoin","t-gold"],
+      ["t-l2","t-l1"],["t-modular","t-l1"],["t-staking","t-l1"],
+      ["t-stablecoins","t-defi"],["t-oracles","t-defi"],["t-rwa","t-stocks"],["t-rwa","t-bonds"],
+      ["t-deai","t-ai"],["t-crypto-privacy","t-privacy"],["t-neobanks","t-cards"],
+      ["d-meta","t-oneness"],["d-meta","t-source"],["d-meta","t-soul"],["d-meta","t-akashic"],
+      ["d-meta","t-dims"],["d-meta","t-sync"],["d-meta","t-saclaw"],["d-meta","t-merkaba"],["d-meta","t-vibration"],
+      ["d-lifestyle","t-nutrition"],["d-lifestyle","t-movement"],["d-lifestyle","t-sleep"],["d-lifestyle","t-plantmed"],
+      ["d-lifestyle","t-community"],["d-lifestyle","t-minimalism"],["d-lifestyle","t-detox"],["d-lifestyle","t-sustliving"],
+      ["d-creation","t-proddesign"],["d-creation","t-systems"],["d-creation","t-opensource"],["d-creation","t-cocreate"],
+      ["d-creation","t-proto"],["d-creation","t-emergence"],["d-creation","t-biomimicry"],["d-creation","t-futuretech"],
+      ["d-wellbeing","t-meditation"],["d-wellbeing","t-soundheal"],["d-wellbeing","t-breathwork"],["d-wellbeing","t-somatic"],
+      ["d-wellbeing","t-energyheal"],["d-wellbeing","t-yoga"],["d-wellbeing","t-mentalhlth"],
+      ["d-society","t-governance"],["d-society","t-indigenous"],["d-society","t-collective"],["d-society","t-socialmov"],
+      ["d-society","t-peace"],["d-society","t-futurecity"],["d-society","t-edusystem"],["d-society","t-diaspora"],
+      ["d-communication","t-language"],["d-communication","t-speaking"],["d-communication","t-dialogue"],
+      ["d-communication","t-journalism"],["d-communication","t-socialmedia"],["d-communication","t-nvc"],
+      ["d-communication","t-translation"],["d-communication","t-broadcasting"],
+      ["d-energy","t-renewable"],["d-energy","t-solar"],["d-energy","t-wind"],["d-energy","t-geothermal"],
+      ["d-energy","t-storage"],["d-energy","t-bioenergy"],["d-energy","t-gridtech"],["d-energy","t-energypolicy"],
+      ["d-food","t-regenfarm"],["d-food","t-permaculture"],["d-food","t-foodsystems"],["d-food","t-urbanfarm"],
+      ["d-food","t-fermentation"],["d-food","t-foodsov"],["d-food","t-cuisine"],["d-food","t-aquaculture"],
+      ["d-play","t-sports"],["d-play","t-gaming"],["d-play","t-outdoor"],["d-play","t-esports"],
+      ["d-play","t-leisure"],["d-play","t-humor"],["d-play","t-festivals"],["d-play","t-playcreat"],
+      ["t-energypolicy","t-governance"],["t-gridtech","t-systems"],["t-storage","t-gridtech"],
+      ["t-language","t-story"],["t-journalism","t-socialmov"],["t-nvc","t-peace"],
+      ["t-socialmedia","t-collective"],["t-dialogue","t-peace"],["t-broadcasting","t-journalism"],
+      ["t-sports","t-movement"],["t-festivals","t-community"],["t-gaming","t-ai"],
+      ["t-esports","t-gaming"],["t-playcreat","t-cocreate"],["t-outdoor","t-ecology"],
+      ["t-leisure","t-mentalhlth"],["t-humor","t-story"],
+      ["t-quantum","t-oneness"],["t-quantum","t-vibration"],
+      ["t-neuro","t-meditation"],["t-neuro","t-psych"],
+      ["t-psych","t-mentalhlth"],["t-psych","t-somatic"],
+      ["t-bio","t-ecology"],["t-genetics","t-biotech"],["t-med","t-mentalhlth"],
+      ["t-ai","t-systems"],["t-ai","t-collective"],["t-ai","t-futuretech"],
+      ["t-blockchain","t-defi"],["t-blockchain","t-dao"],
+      ["t-web3","t-decentral"],["t-web3","t-dao"],
+      ["fund","t-blockchain"],["fund","t-defi"],["fund","t-web3"],["fund","t-dao"],["fund","t-conscap"],
+      ["t-music","t-soundheal"],["t-music","t-vibration"],
+      ["t-sacredgeo","t-merkaba"],["t-sacredgeo","t-dims"],["t-sacredgeo","t-math"],
+      ["t-astrology","t-cycles"],["t-cosmos","t-astrophys"],
+      ["t-indigenous","t-saclaw"],["t-indigenous","t-ecology"],["t-indigenous","t-story"]
+    ];
+
+    // ===== LAYOUT COMPUTATION =====
+    let CW = window.innerWidth;
+    let CH = window.innerHeight;
+
+    const canvas = document.getElementById('canvas');
+    const ctx = canvas.getContext('2d');
+    const svgEl = document.getElementById('svg');
+    const linksLayer = document.getElementById('links-layer');
+    const nodesLayer = document.getElementById('nodes-layer');
+    const tooltip = document.getElementById('tooltip');
+
+    // Separate nodes by type
+    const coreNode = HOME_NODES.find(n => n.type === 'core');
+    const mainNodes = HOME_NODES.filter(n => n.type === 'main');
+    const clusterNodes = HOME_NODES.filter(n => n.type === 'cluster');
+    const topicNodes = HOME_NODES.filter(n => n.type === 'topic');
+
+    // nodeMap: id -> {x, y, type, label, desc}
+    const nodeMap = {};
+
+    function computeLayout() {
+      // Core
+      nodeMap['frqncy'] = { x: CW * 0.50, y: CH * 0.60, type: 'core', label: 'FRQNCY', desc: 'The living network of consciousness' };
+
+      // Main nodes: arc around core, y range 0.42–0.62
+      mainNodes.forEach((n, i) => {
+        const t = i / mainNodes.length;
+        const angle = Math.PI * 1.15 + t * Math.PI * 0.7; // spread across top arc
+        const rx = CW * 0.30;
+        const ry = CH * 0.14;
+        const cx = CW * 0.50;
+        const cy = CH * 0.56;
+        nodeMap[n.id] = {
+          x: cx + Math.cos(angle) * rx,
+          y: cy - Math.abs(Math.sin(angle)) * ry,
+          type: n.type, label: n.label, desc: n.desc
+        };
+      });
+
+      // Cluster nodes: y range 0.18–0.40
+      clusterNodes.forEach((n, i) => {
+        const t = i / (clusterNodes.length - 1);
+        nodeMap[n.id] = {
+          x: CW * 0.06 + t * CW * 0.88,
+          y: CH * 0.22 + Math.sin(t * Math.PI) * CH * 0.12,
+          type: n.type, label: n.label, desc: n.desc
+        };
+      });
+
+      // Topic nodes: y range 0.04–0.30, spread full width
+      topicNodes.forEach((n, i) => {
+        const t = i / (topicNodes.length - 1);
+        const rowCount = 5;
+        const row = i % rowCount;
+        const col = Math.floor(i / rowCount);
+        const totalCols = Math.ceil(topicNodes.length / rowCount);
+        const colT = col / Math.max(totalCols - 1, 1);
+        const rowT = row / (rowCount - 1);
+        nodeMap[n.id] = {
+          x: CW * 0.03 + colT * CW * 0.94,
+          y: CH * 0.04 + rowT * CH * 0.14,
+          type: n.type, label: n.label, desc: n.desc
+        };
+      });
+
+      // Fill any missing nodes
+      HOME_NODES.forEach(n => {
+        if (!nodeMap[n.id]) nodeMap[n.id] = { x: CW * 0.5, y: CH * 0.5, type: n.type, label: n.label, desc: n.desc };
+      });
+    }
+
+    // ===== OFFSCREEN TREE SILHOUETTE CANVAS =====
+    let offscreen = null;
+
+    function drawBranch(bctx, x, y, angle, len, depth, seed) {
+      if (depth === 0 || len < 3) return;
+      const dx = Math.cos(angle) * len;
+      const dy = -Math.abs(Math.sin(angle)) * len;
+      const x2 = x + dx;
+      const y2 = y + dy;
+      bctx.beginPath();
+      bctx.moveTo(x, y);
+      bctx.lineTo(x2, y2);
+      bctx.lineWidth = Math.max(depth * 0.65, 0.5);
+      bctx.strokeStyle = `rgba(20,15,10,${0.08 + depth * 0.06})`;
+      bctx.stroke();
+      const spread = 0.35 + (seed % 7) * 0.02;
+      drawBranch(bctx, x2, y2, angle - spread + (seed % 3) * 0.05, len * 0.70, depth - 1, seed + 1);
+      drawBranch(bctx, x2, y2, angle + spread - (seed % 5) * 0.03, len * 0.65, depth - 1, seed + 3);
+    }
+
+    function buildOffscreenTree() {
+      offscreen = document.createElement('canvas');
+      offscreen.width = CW;
+      offscreen.height = CH;
+      const bctx = offscreen.getContext('2d');
+
+      const tx = CW * 0.50;
+      const ty = CH * 0.60;
+
+      // Draw trunk on offscreen
+      const tgrad = bctx.createLinearGradient(tx - 18, ty, tx + 18, ty + CH * 0.14);
+      tgrad.addColorStop(0, 'rgba(22,16,10,0.9)');
+      tgrad.addColorStop(1, 'rgba(10,8,4,0.6)');
+      bctx.fillStyle = tgrad;
+      bctx.beginPath();
+      bctx.moveTo(tx - 18, ty);
+      bctx.quadraticCurveTo(tx - 22, ty + CH * 0.07, tx - 14, ty + CH * 0.14);
+      bctx.lineTo(tx + 14, ty + CH * 0.14);
+      bctx.quadraticCurveTo(tx + 22, ty + CH * 0.07, tx + 18, ty);
+      bctx.closePath();
+      bctx.fill();
+
+      // Decorative branches (upper portion)
+      // Main trunk up
+      drawBranch(bctx, tx, ty, Math.PI / 2, 90, 7, 1);
+      // Left side branches
+      drawBranch(bctx, tx, ty, Math.PI / 2 + 0.4, 75, 6, 5);
+      drawBranch(bctx, tx - CW*0.05, ty + CH*0.03, Math.PI / 2 + 0.55, 65, 5, 9);
+      drawBranch(bctx, tx - CW*0.10, ty + CH*0.05, Math.PI / 2 + 0.7, 55, 5, 13);
+      // Right side branches
+      drawBranch(bctx, tx, ty, Math.PI / 2 - 0.4, 75, 6, 7);
+      drawBranch(bctx, tx + CW*0.05, ty + CH*0.03, Math.PI / 2 - 0.55, 65, 5, 11);
+      drawBranch(bctx, tx + CW*0.10, ty + CH*0.05, Math.PI / 2 - 0.7, 55, 5, 15);
+    }
+
+    // ===== STARS =====
+    let stars = [];
+
+    function buildStars() {
+      stars = Array.from({length: 300}, () => ({
+        x: Math.random() * CW,
+        y: Math.random() * CH * 0.75,
+        r: Math.random() * 1.5 + 0.3,
+        baseOpacity: Math.random() * 0.6 + 0.25,
+        twinkle: Math.random() * Math.PI * 2,
+        twinkleSpeed: 0.018 + Math.random() * 0.028,
+        color: ['#FFFFFF','#E8E8FF','#FFFFE0','#E0F0FF'][Math.floor(Math.random() * 4)]
+      }));
+    }
+
+    // ===== SAP PARTICLES =====
+    let sapParticles = [];
+
+    function buildSapParticles() {
+      sapParticles = Array.from({length: 90}, () => resetSap({}));
+    }
+
+    function resetSap(p) {
+      p.x = CW * 0.50 + (Math.random() - 0.5) * 40;
+      p.y = CH * 0.60 + Math.random() * 80;
+      p.vx = (Math.random() - 0.5) * 0.5;
+      p.vy = -(Math.random() * 0.8 + 0.3);
+      p.life = Math.random() * 0.4; // stagger start
+      p.speed = Math.random() * 0.004 + 0.002;
+      p.size = Math.random() * 2.5 + 0.5;
+      return p;
+    }
+
+    // ===== SHOOTING STAR =====
+    let shootingStar = null;
+    let nextShoot = Date.now() + 3000 + Math.random() * 3000;
+
+    // ===== SVG SETUP =====
+    const defs = document.getElementById('svgdefs');
+
+    // Core glow filter
+    const cosmicFilter = document.createElementNS('http://www.w3.org/2000/svg','filter');
+    cosmicFilter.setAttribute('id','cosmic-glow');
+    cosmicFilter.setAttribute('x','-100%');
+    cosmicFilter.setAttribute('y','-100%');
+    cosmicFilter.setAttribute('width','300%');
+    cosmicFilter.setAttribute('height','300%');
+    const fgBlur = document.createElementNS('http://www.w3.org/2000/svg','feGaussianBlur');
+    fgBlur.setAttribute('stdDeviation','12');
+    fgBlur.setAttribute('result','blur');
+    const fgMerge = document.createElementNS('http://www.w3.org/2000/svg','feMerge');
+    ['blur','blur','SourceGraphic'].forEach(inp => {
+      const mn = document.createElementNS('http://www.w3.org/2000/svg','feMergeNode');
+      mn.setAttribute('in', inp);
+      fgMerge.appendChild(mn);
+    });
+    cosmicFilter.appendChild(fgBlur);
+    cosmicFilter.appendChild(fgMerge);
+    defs.appendChild(cosmicFilter);
+
+    // Main node glow filter
+    const mainFilter = document.createElementNS('http://www.w3.org/2000/svg','filter');
+    mainFilter.setAttribute('id','main-glow');
+    mainFilter.setAttribute('x','-80%');
+    mainFilter.setAttribute('y','-80%');
+    mainFilter.setAttribute('width','260%');
+    mainFilter.setAttribute('height','260%');
+    const mfBlur = document.createElementNS('http://www.w3.org/2000/svg','feGaussianBlur');
+    mfBlur.setAttribute('stdDeviation','6');
+    mfBlur.setAttribute('result','blur');
+    const mfMerge = document.createElementNS('http://www.w3.org/2000/svg','feMerge');
+    ['blur','SourceGraphic'].forEach(inp => {
+      const mn = document.createElementNS('http://www.w3.org/2000/svg','feMergeNode');
+      mn.setAttribute('in', inp);
+      mfMerge.appendChild(mn);
+    });
+    mainFilter.appendChild(mfBlur);
+    mainFilter.appendChild(mfMerge);
+    defs.appendChild(mainFilter);
+
+    // Cluster glow filter
+    const clusterFilter = document.createElementNS('http://www.w3.org/2000/svg','filter');
+    clusterFilter.setAttribute('id','cluster-glow');
+    clusterFilter.setAttribute('x','-60%');
+    clusterFilter.setAttribute('y','-60%');
+    clusterFilter.setAttribute('width','220%');
+    clusterFilter.setAttribute('height','220%');
+    const cfBlur = document.createElementNS('http://www.w3.org/2000/svg','feGaussianBlur');
+    cfBlur.setAttribute('stdDeviation','4');
+    cfBlur.setAttribute('result','blur');
+    const cfMerge = document.createElementNS('http://www.w3.org/2000/svg','feMerge');
+    ['blur','SourceGraphic'].forEach(inp => {
+      const mn = document.createElementNS('http://www.w3.org/2000/svg','feMergeNode');
+      mn.setAttribute('in', inp);
+      cfMerge.appendChild(mn);
+    });
+    clusterFilter.appendChild(cfBlur);
+    clusterFilter.appendChild(cfMerge);
+    defs.appendChild(clusterFilter);
+
+    // Gradients
+    function makeRadGrad(id, c1, c2) {
+      const g = document.createElementNS('http://www.w3.org/2000/svg','radialGradient');
+      g.setAttribute('id', id);
+      g.setAttribute('cx','35%'); g.setAttribute('cy','30%');
+      const s1 = document.createElementNS('http://www.w3.org/2000/svg','stop');
+      s1.setAttribute('offset','0%'); s1.setAttribute('stop-color', c1);
+      const s2 = document.createElementNS('http://www.w3.org/2000/svg','stop');
+      s2.setAttribute('offset','100%'); s2.setAttribute('stop-color', c2);
+      g.appendChild(s1); g.appendChild(s2);
+      defs.appendChild(g);
+    }
+    makeRadGrad('grad-core','#FFEF90','#B07818');
+    makeRadGrad('grad-main','#142050','#0A1535');
+    makeRadGrad('grad-cluster','#2A1050','#1A0A35');
+    makeRadGrad('grad-topic','#C8A040','#90680A');
+
+    // ===== BRANCH PATHS =====
+    const branchPaths = []; // {src, tgt, els:[pathEl, pathEl]}
+
+    function curvePath(x1, y1, x2, y2) {
+      const cpx = (x1 + x2) / 2;
+      const cpy = Math.min(y1, y2) - Math.abs(x2 - x1) * 0.3 - 30;
+      return `M${x1},${y1} Q${cpx},${cpy} ${x2},${y2}`;
+    }
+
+    function linkStroke(srcType, tgtType) {
+      if (srcType === 'core' || tgtType === 'core' || srcType === 'main' || tgtType === 'main') {
+        return { base: 'rgba(10,8,4,0.4)', glow: 'rgba(255,200,80,0.5)', w: 2.5 };
+      }
+      if (srcType === 'cluster' || tgtType === 'cluster') {
+        return { base: 'rgba(8,5,16,0.35)', glow: 'rgba(200,150,50,0.35)', w: 1.5 };
+      }
+      return { base: 'rgba(5,3,8,0.2)', glow: 'rgba(150,100,30,0.2)', w: 0.8 };
+    }
+
+    function buildSVG() {
+      linksLayer.innerHTML = '';
+      nodesLayer.innerHTML = '';
+      branchPaths.length = 0;
+
+      // Build links
+      HOME_RAW_LINKS.forEach(([srcId, tgtId]) => {
+        const s = nodeMap[srcId];
+        const t = nodeMap[tgtId];
+        if (!s || !t) return;
+        const style = linkStroke(s.type, t.type);
+        const d = curvePath(s.x, s.y, t.x, t.y);
+
+        const pathBase = document.createElementNS('http://www.w3.org/2000/svg','path');
+        pathBase.setAttribute('d', d);
+        pathBase.setAttribute('fill','none');
+        pathBase.setAttribute('stroke', style.base);
+        pathBase.setAttribute('stroke-width', style.w * 1.5);
+        pathBase.setAttribute('pointer-events','none');
+
+        const pathGlow = document.createElementNS('http://www.w3.org/2000/svg','path');
+        pathGlow.setAttribute('d', d);
+        pathGlow.setAttribute('fill','none');
+        pathGlow.setAttribute('stroke', style.glow);
+        pathGlow.setAttribute('stroke-width', style.w);
+        pathGlow.setAttribute('pointer-events','none');
+
+        linksLayer.appendChild(pathBase);
+        linksLayer.appendChild(pathGlow);
+        branchPaths.push({ src: srcId, tgt: tgtId, els: [pathBase, pathGlow] });
+      });
+
+      // Build nodes
+      HOME_NODES.forEach(n => {
+        const pos = nodeMap[n.id];
+        if (!pos) return;
+
+        const g = document.createElementNS('http://www.w3.org/2000/svg','g');
+        g.setAttribute('data-id', n.id);
+        g.setAttribute('transform', `translate(${pos.x},${pos.y})`);
+        g.style.cursor = 'grab';
+
+        if (n.type === 'core') {
+          // Outer bloom
+          const bloom = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          bloom.setAttribute('r','60');
+          bloom.setAttribute('fill','rgba(255,200,60,0.08)');
+          bloom.setAttribute('pointer-events','none');
+          g.appendChild(bloom);
+
+          const bloom2 = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          bloom2.setAttribute('r','42');
+          bloom2.setAttribute('fill','rgba(255,200,60,0.12)');
+          bloom2.setAttribute('pointer-events','none');
+          g.appendChild(bloom2);
+
+          const circ = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          circ.setAttribute('r','32');
+          circ.setAttribute('fill','url(#grad-core)');
+          circ.setAttribute('stroke','rgba(255,220,100,0.9)');
+          circ.setAttribute('stroke-width','2.5');
+          circ.setAttribute('filter','url(#cosmic-glow)');
+          g.appendChild(circ);
+
+          const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+          txt.setAttribute('text-anchor','middle');
+          txt.setAttribute('dominant-baseline','central');
+          txt.setAttribute('fill','#0A0806');
+          txt.setAttribute('font-size','13');
+          txt.setAttribute('font-family','Georgia,serif');
+          txt.setAttribute('letter-spacing','0.2em');
+          txt.setAttribute('font-weight','600');
+          txt.setAttribute('pointer-events','none');
+          txt.textContent = 'FRQNCY';
+          g.appendChild(txt);
+
+        } else if (n.type === 'main') {
+          const circ = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          circ.setAttribute('r','18');
+          circ.setAttribute('fill','url(#grad-main)');
+          circ.setAttribute('stroke','rgba(180,140,60,0.8)');
+          circ.setAttribute('stroke-width','1.5');
+          circ.setAttribute('filter','url(#main-glow)');
+          g.appendChild(circ);
+
+          const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+          txt.setAttribute('text-anchor','middle');
+          txt.setAttribute('dominant-baseline','central');
+          txt.setAttribute('fill','rgba(220,200,150,0.95)');
+          txt.setAttribute('font-size','8.5');
+          txt.setAttribute('font-family','Georgia,serif');
+          txt.setAttribute('letter-spacing','0.06em');
+          txt.setAttribute('pointer-events','none');
+          txt.textContent = n.label;
+          g.appendChild(txt);
+
+        } else if (n.type === 'cluster') {
+          const circ = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          circ.setAttribute('r','13');
+          circ.setAttribute('fill','url(#grad-cluster)');
+          circ.setAttribute('stroke','rgba(160,100,200,0.6)');
+          circ.setAttribute('stroke-width','1.2');
+          circ.setAttribute('filter','url(#cluster-glow)');
+          g.appendChild(circ);
+
+          const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+          txt.setAttribute('text-anchor','middle');
+          txt.setAttribute('dominant-baseline','central');
+          txt.setAttribute('fill','rgba(200,170,120,0.9)');
+          txt.setAttribute('font-size','7');
+          txt.setAttribute('font-family','Arial,sans-serif');
+          txt.setAttribute('letter-spacing','0.04em');
+          txt.setAttribute('pointer-events','none');
+          // Wrap long labels
+          const words = n.label.split(' ');
+          if (words.length > 2) {
+            const mid = Math.ceil(words.length / 2);
+            const t1 = document.createElementNS('http://www.w3.org/2000/svg','tspan');
+            t1.setAttribute('x','0'); t1.setAttribute('dy','-0.5em');
+            t1.textContent = words.slice(0, mid).join(' ');
+            const t2 = document.createElementNS('http://www.w3.org/2000/svg','tspan');
+            t2.setAttribute('x','0'); t2.setAttribute('dy','1em');
+            t2.textContent = words.slice(mid).join(' ');
+            txt.appendChild(t1); txt.appendChild(t2);
+          } else {
+            txt.textContent = n.label;
+          }
+          g.appendChild(txt);
+
+        } else {
+          // Topic — star constellation point
+          // 4-point star behind
+          const star = document.createElementNS('http://www.w3.org/2000/svg','polygon');
+          const sp = 5.5, si = 2.2;
+          const pts = [
+            `0,${-sp}`, `${si},${-si}`, `${sp},0`, `${si},${si}`,
+            `0,${sp}`, `${-si},${si}`, `${-sp},0`, `${-si},${-si}`
+          ].join(' ');
+          star.setAttribute('points', pts);
+          star.setAttribute('fill','rgba(200,160,60,0.15)');
+          star.setAttribute('pointer-events','none');
+          g.appendChild(star);
+
+          const circ = document.createElementNS('http://www.w3.org/2000/svg','circle');
+          circ.setAttribute('r','5');
+          circ.setAttribute('fill','url(#grad-topic)');
+          circ.setAttribute('stroke','rgba(255,200,80,0.4)');
+          circ.setAttribute('stroke-width','0.8');
+          g.appendChild(circ);
+
+          // Label below
+          const txt = document.createElementNS('http://www.w3.org/2000/svg','text');
+          txt.setAttribute('text-anchor','middle');
+          txt.setAttribute('y','13');
+          txt.setAttribute('fill','rgba(180,150,80,0.7)');
+          txt.setAttribute('font-size','6');
+          txt.setAttribute('font-family','Arial,sans-serif');
+          txt.setAttribute('letter-spacing','0.03em');
+          txt.setAttribute('pointer-events','none');
+          txt.textContent = n.label.length > 16 ? n.label.slice(0, 14) + '…' : n.label;
+          g.appendChild(txt);
+        }
+
+        nodesLayer.appendChild(g);
+      });
+    }
+
+    function updatePaths(id) {
+      branchPaths.forEach(bp => {
+        if (bp.src !== id && bp.tgt !== id) return;
+        const s = nodeMap[bp.src], t = nodeMap[bp.tgt];
+        if (!s || !t) return;
+        const d = curvePath(s.x, s.y, t.x, t.y);
+        bp.els.forEach(e => e.setAttribute('d', d));
+      });
+    }
+
+    // ===== DRAG =====
+    let dragging = null;
+
+    svgEl.addEventListener('pointerdown', e => {
+      const g = e.target.closest('g[data-id]');
+      if (!g) return;
+      dragging = g.dataset.id;
+      g.style.cursor = 'grabbing';
+      svgEl.setPointerCapture(e.pointerId);
+      e.preventDefault();
+    }, { passive: false });
+
+    svgEl.addEventListener('pointermove', e => {
+      if (!dragging) return;
+      const r = svgEl.getBoundingClientRect();
+      nodeMap[dragging].x = e.clientX - r.left;
+      nodeMap[dragging].y = e.clientY - r.top;
+      const g = document.querySelector(`g[data-id="${dragging}"]`);
+      if (g) g.setAttribute('transform', `translate(${nodeMap[dragging].x},${nodeMap[dragging].y})`);
+      updatePaths(dragging);
+    });
+
+    svgEl.addEventListener('pointerup', e => {
+      if (dragging) {
+        const g = document.querySelector(`g[data-id="${dragging}"]`);
+        if (g) g.style.cursor = 'grab';
+        dragging = null;
+      }
+    });
+
+    // ===== TOOLTIP =====
+    svgEl.addEventListener('mouseover', e => {
+      const g = e.target.closest('g[data-id]');
+      if (!g || dragging) return;
+      const id = g.dataset.id;
+      const n = HOME_NODES.find(n => n.id === id);
+      if (!n) return;
+      tooltip.querySelector('.tip-label').textContent = n.label;
+      tooltip.querySelector('.tip-desc').textContent = n.desc || ({core:'FRQNCY CORE', main:'PILLAR', cluster:'DOMAIN', topic:'TOPIC'}[n.type] || '');
+      tooltip.style.opacity = '1';
+    });
+
+    svgEl.addEventListener('mousemove', e => {
+      tooltip.style.left = (e.clientX + 14) + 'px';
+      tooltip.style.top = (e.clientY - 14) + 'px';
+    });
+
+    svgEl.addEventListener('mouseout', e => {
+      const g = e.target.closest('g[data-id]');
+      if (g) tooltip.style.opacity = '0';
+    });
+
+    // ===== RESIZE =====
+    function onResize() {
+      const oldCW = CW, oldCH = CH;
+      CW = window.innerWidth;
+      CH = window.innerHeight;
+      canvas.width = CW;
+      canvas.height = CH;
+      svgEl.setAttribute('width', CW);
+      svgEl.setAttribute('height', CH);
+
+      const scaleX = CW / oldCW;
+      const scaleY = CH / oldCH;
+
+      // Reposition nodes proportionally
+      Object.keys(nodeMap).forEach(id => {
+        nodeMap[id].x *= scaleX;
+        nodeMap[id].y *= scaleY;
+        const g = document.querySelector(`g[data-id="${id}"]`);
+        if (g) g.setAttribute('transform', `translate(${nodeMap[id].x},${nodeMap[id].y})`);
+      });
+
+      // Rebuild static tree silhouette
+      buildOffscreenTree();
+
+      // Rebuild stars for new dimensions
+      buildStars();
+
+      // Update all paths
+      branchPaths.forEach(bp => {
+        const s = nodeMap[bp.src], t = nodeMap[bp.tgt];
+        if (!s || !t) return;
+        const d = curvePath(s.x, s.y, t.x, t.y);
+        bp.els.forEach(e => e.setAttribute('d', d));
+      });
+
+      // Reposition sap particles
+      sapParticles.forEach(p => resetSap(p));
+    }
+
+    // ===== ANIMATION LOOP =====
+    let lastFrame = 0;
+
+    function drawRoots(c) {
+      const tx = CW * 0.50;
+      const ty = CH * 0.60;
+      const rootDefs = [
+        { dx: -CW*0.26, width: 10 },
+        { dx: -CW*0.18, width: 8 },
+        { dx: -CW*0.09, width: 6 },
+        { dx: CW*0.00,  width: 7 },
+        { dx: CW*0.09,  width: 6 },
+        { dx: CW*0.18,  width: 8 },
+        { dx: CW*0.26,  width: 10 }
+      ];
+      rootDefs.forEach((rd, i) => {
+        const endX = tx + rd.dx;
+        const endY = CH * 0.93;
+        const cp1x = tx + rd.dx * 0.3;
+        const cp1y = ty + CH * 0.15;
+        const cp2x = endX + (Math.random() - 0.5) * 40;
+        const cp2y = endY - CH * 0.08;
+
+        // Taper
+        const steps = 20;
+        for (let s = 0; s < steps; s++) {
+          const t0 = s / steps;
+          const t1 = (s + 1) / steps;
+
+          function bezierPoint(t) {
+            const mt = 1 - t;
+            return {
+              x: mt*mt*mt*tx + 3*mt*mt*t*cp1x + 3*mt*t*t*cp2x + t*t*t*endX,
+              y: mt*mt*mt*ty + 3*mt*mt*t*cp1y + 3*mt*t*t*cp2y + t*t*t*endY
+            };
+          }
+
+          const p0 = bezierPoint(t0);
+          const p1 = bezierPoint(t1);
+          const w = rd.width * (1 - t0 * 0.85);
+
+          c.beginPath();
+          c.moveTo(p0.x, p0.y);
+          c.lineTo(p1.x, p1.y);
+          c.lineWidth = w;
+          c.strokeStyle = `rgba(16,12,8,${0.95 - t0 * 0.4})`;
+          c.stroke();
+        }
+      });
+    }
+
+    function animate(ts) {
+      requestAnimationFrame(animate);
+
+      // Clear
+      ctx.clearRect(0, 0, CW, CH);
+
+      // Deep space background
+      ctx.fillStyle = '#000005';
+      ctx.fillRect(0, 0, CW, CH);
+
+      // Nebula blobs
+      const n1 = ctx.createRadialGradient(CW*0.25, CH*0.18, 0, CW*0.25, CH*0.18, CW*0.35);
+      n1.addColorStop(0, 'rgba(80,20,120,0.15)');
+      n1.addColorStop(1, 'rgba(80,20,120,0)');
+      ctx.fillStyle = n1;
+      ctx.fillRect(0, 0, CW, CH);
+
+      const n2 = ctx.createRadialGradient(CW*0.75, CH*0.12, 0, CW*0.75, CH*0.12, CW*0.30);
+      n2.addColorStop(0, 'rgba(20,80,120,0.12)');
+      n2.addColorStop(1, 'rgba(20,80,120,0)');
+      ctx.fillStyle = n2;
+      ctx.fillRect(0, 0, CW, CH);
+
+      const n3 = ctx.createRadialGradient(CW*0.50, CH*0.30, 0, CW*0.50, CH*0.30, CW*0.22);
+      n3.addColorStop(0, 'rgba(120,80,20,0.08)');
+      n3.addColorStop(1, 'rgba(120,80,20,0)');
+      ctx.fillStyle = n3;
+      ctx.fillRect(0, 0, CW, CH);
+
+      // Stars with twinkling
+      const t = ts * 0.001;
+      stars.forEach(s => {
+        s.twinkle += s.twinkleSpeed;
+        const opacity = s.baseOpacity + Math.sin(s.twinkle) * 0.2;
+        ctx.fillStyle = s.color.replace('#', 'rgba(').replace(/(..)(..)(..)/, (_, r, g, b) => {
+          return `rgba(${parseInt(r,16)},${parseInt(g,16)},${parseInt(b,16)},${opacity.toFixed(2)})`;
+        });
+        // Simpler approach:
+        ctx.globalAlpha = Math.max(0, Math.min(1, opacity));
+        ctx.fillStyle = s.color;
+        ctx.beginPath();
+        ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+
+      // Shooting star
+      const now = Date.now();
+      if (!shootingStar && now > nextShoot) {
+        shootingStar = {
+          x: Math.random() * CW * 0.8,
+          y: Math.random() * CH * 0.3,
+          vx: 8 + Math.random() * 6,
+          vy: 3 + Math.random() * 3,
+          alpha: 1
+        };
+        nextShoot = now + 3000 + Math.random() * 4000;
+      }
+      if (shootingStar) {
+        const tailX = shootingStar.x - shootingStar.vx * 6;
+        const tailY = shootingStar.y - shootingStar.vy * 6;
+        const sg = ctx.createLinearGradient(tailX, tailY, shootingStar.x, shootingStar.y);
+        sg.addColorStop(0, `rgba(255,255,240,0)`);
+        sg.addColorStop(1, `rgba(255,255,255,${shootingStar.alpha.toFixed(2)})`);
+        ctx.strokeStyle = sg;
+        ctx.lineWidth = 1.5;
+        ctx.beginPath();
+        ctx.moveTo(tailX, tailY);
+        ctx.lineTo(shootingStar.x, shootingStar.y);
+        ctx.stroke();
+        shootingStar.x += shootingStar.vx;
+        shootingStar.y += shootingStar.vy;
+        shootingStar.alpha -= 0.025;
+        if (shootingStar.alpha <= 0 || shootingStar.x > CW + 100 || shootingStar.y > CH * 0.5) {
+          shootingStar = null;
+        }
+      }
+
+      // Composite static tree silhouette
+      if (offscreen) {
+        ctx.globalAlpha = 0.85;
+        ctx.drawImage(offscreen, 0, 0);
+        ctx.globalAlpha = 1;
+      }
+
+      // Golden sap particles
+      sapParticles.forEach(p => {
+        p.life += p.speed;
+        if (p.life > 1) resetSap(p);
+        p.x += p.vx;
+        p.y += p.vy;
+        const opacity = (1 - p.life) * 0.8;
+        // Color: gold to white
+        const r = Math.round(255);
+        const g2 = Math.round(208 + p.life * 47);
+        const b = Math.round(96 + p.life * 159);
+        ctx.globalAlpha = opacity;
+        ctx.fillStyle = `rgb(${r},${g2},${b})`;
+        ctx.beginPath();
+        ctx.arc(p.x, p.y, p.size, 0, Math.PI * 2);
+        ctx.fill();
+      });
+      ctx.globalAlpha = 1;
+
+      // Roots
+      drawRoots(ctx);
+
+      // Trunk glow overlay (canvas)
+      const tx = CW * 0.50;
+      const ty = CH * 0.60;
+      const tglow = ctx.createRadialGradient(tx, ty + CH*0.05, 0, tx, ty + CH*0.05, 60);
+      tglow.addColorStop(0, 'rgba(40,28,16,0.4)');
+      tglow.addColorStop(1, 'rgba(40,28,16,0)');
+      ctx.fillStyle = tglow;
+      ctx.beginPath();
+      ctx.ellipse(tx, ty + CH*0.07, 30, 70, 0, 0, Math.PI*2);
+      ctx.fill();
+
+      lastFrame = ts;
+    }
+
+    // ===== INIT =====
+    function init() {
+      canvas.width = CW;
+      canvas.height = CH;
+      svgEl.setAttribute('width', CW);
+      svgEl.setAttribute('height', CH);
+
+      computeLayout();
+      buildOffscreenTree();
+      buildStars();
+      buildSapParticles();
+      buildSVG();
+
+      window.addEventListener('resize', onResize, { passive: true });
+      requestAnimationFrame(animate);
+    }
+
+    init();
+
+  })();
+  </script>
+</body>
+</html>

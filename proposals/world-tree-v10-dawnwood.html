@@ -1,0 +1,741 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRQNCY World Tree — Dawnwood</title>
+<style>
+* { margin: 0; padding: 0; box-sizing: border-box; }
+html, body { width: 100%; height: 100%; overflow: hidden; background: #040608; }
+#bg { position: fixed; inset: 0; z-index: 0; }
+#svg-layer { position: fixed; inset: 0; z-index: 1; overflow: visible; cursor: default; }
+#tip {
+  position: fixed; pointer-events: none; opacity: 0; transition: opacity 0.15s;
+  background: rgba(4,6,10,0.92); border: 1px solid rgba(200,140,30,0.35);
+  border-radius: 3px; padding: 8px 12px;
+  font-family: system-ui, sans-serif; font-size: 12px; color: #F0E0C0; z-index: 99;
+  max-width: 200px;
+}
+#tip-title { font-size: 15px; font-style: italic; margin-bottom: 2px; }
+#tip-type { font-size: 9px; opacity: 0.6; letter-spacing: 0.1em; text-transform: uppercase; }
+#legend {
+  position: fixed; bottom: 18px; left: 20px; z-index: 10;
+  font-family: system-ui, sans-serif; font-size: 10px; color: rgba(240,200,130,0.6);
+  pointer-events: none;
+}
+#legend div { display: flex; align-items: center; gap: 6px; margin-bottom: 4px; }
+#legend span.dot {
+  display: inline-block; border-radius: 50%;
+  width: 10px; height: 10px; flex-shrink: 0;
+}
+</style>
+</head>
+<body>
+
+<canvas id="bg"></canvas>
+
+<svg id="svg-layer" xmlns="http://www.w3.org/2000/svg">
+  <defs id="svg-defs"></defs>
+  <g id="branches-layer"></g>
+  <g id="nodes-layer"></g>
+</svg>
+
+<div id="tip">
+  <div id="tip-title"></div>
+  <div id="tip-type"></div>
+</div>
+
+<div id="legend">
+  <div><span class="dot" style="background:linear-gradient(135deg,#F0C040,#A05010)"></span> FRQNCY Core</div>
+  <div><span class="dot" style="background:linear-gradient(135deg,#703020,#380E00)"></span> Main Branch</div>
+  <div><span class="dot" style="background:linear-gradient(135deg,#B05E20,#6B3600)"></span> Domain Cluster</div>
+  <div><span class="dot" style="background:linear-gradient(135deg,#5A8A18,#2A4208)"></span> Topic Node</div>
+</div>
+
+<script>
+const NODES = [
+  {id:"frqncy",label:"FRQNCY",type:"core",r:52},
+  {id:"network-state",label:"Network State",type:"main",r:30},
+  {id:"fund",label:"Fund",type:"main",r:29},
+  {id:"education",label:"Education",type:"main",r:30},
+  {id:"research",label:"Research",type:"main",r:29},
+  {id:"media",label:"Media",type:"main",r:29},
+  {id:"builder",label:"Builder",type:"main",r:30},
+  {id:"curate",label:"Curate",type:"main",r:29},
+  {id:"sell",label:"Sell",type:"main",r:29},
+  {id:"d-sciences",label:"Sciences",type:"cluster",r:24},
+  {id:"d-tech",label:"Technology",type:"cluster",r:24},
+  {id:"d-arts",label:"Arts & Culture",type:"cluster",r:23},
+  {id:"d-nature",label:"Nature & Cosmos",type:"cluster",r:24},
+  {id:"d-business",label:"Business",type:"cluster",r:22},
+  {id:"d-money",label:"Money",type:"cluster",r:23},
+  {id:"d-meta",label:"Consciousness",type:"cluster",r:25},
+  {id:"d-lifestyle",label:"Lifestyle",type:"cluster",r:22},
+  {id:"d-creation",label:"Creation",type:"cluster",r:23},
+  {id:"d-wellbeing",label:"Well-being",type:"cluster",r:24},
+  {id:"d-society",label:"Society",type:"cluster",r:23},
+  {id:"d-communication",label:"Communication",type:"cluster",r:23},
+  {id:"d-energy",label:"Energy",type:"cluster",r:23},
+  {id:"d-food",label:"Food & Agriculture",type:"cluster",r:23},
+  {id:"d-play",label:"Play & Recreation",type:"cluster",r:22},
+  {id:"t-quantum",label:"Quantum Physics",type:"topic",r:12},
+  {id:"t-neuro",label:"Neuroscience",type:"topic",r:12},
+  {id:"t-bio",label:"Biology",type:"topic",r:11},
+  {id:"t-psych",label:"Psychology",type:"topic",r:12},
+  {id:"t-med",label:"Medicine",type:"topic",r:11},
+  {id:"t-math",label:"Mathematics",type:"topic",r:11},
+  {id:"t-astrophys",label:"Astrophysics",type:"topic",r:12},
+  {id:"t-ecology",label:"Ecology",type:"topic",r:11},
+  {id:"t-genetics",label:"Genetics",type:"topic",r:11},
+  {id:"t-chemistry",label:"Chemistry",type:"topic",r:10},
+  {id:"t-ai",label:"AI",type:"topic",r:13},
+  {id:"t-blockchain",label:"Blockchain",type:"topic",r:12},
+  {id:"t-decentral",label:"Decentralized Nets",type:"topic",r:12},
+  {id:"t-arvr",label:"AR / VR",type:"topic",r:11},
+  {id:"t-biotech",label:"Biotechnology",type:"topic",r:12},
+  {id:"t-robotics",label:"Robotics",type:"topic",r:11},
+  {id:"t-web3",label:"Web3",type:"topic",r:12},
+  {id:"t-quantcomp",label:"Quantum Computing",type:"topic",r:12},
+  {id:"t-cybersec",label:"Cybersecurity",type:"topic",r:11},
+  {id:"t-music",label:"Music",type:"topic",r:13},
+  {id:"t-visual",label:"Visual Art",type:"topic",r:12},
+  {id:"t-film",label:"Film",type:"topic",r:11},
+  {id:"t-poetry",label:"Poetry",type:"topic",r:11},
+  {id:"t-dance",label:"Dance",type:"topic",r:11},
+  {id:"t-archit",label:"Architecture",type:"topic",r:11},
+  {id:"t-fashion",label:"Fashion",type:"topic",r:10},
+  {id:"t-story",label:"Storytelling",type:"topic",r:12},
+  {id:"t-photo",label:"Photography",type:"topic",r:10},
+  {id:"t-theater",label:"Theater",type:"topic",r:10},
+  {id:"t-sacredgeo",label:"Sacred Geometry",type:"topic",r:12},
+  {id:"t-astrology",label:"Astrology",type:"topic",r:12},
+  {id:"t-climate",label:"Climate",type:"topic",r:12},
+  {id:"t-biodivers",label:"Biodiversity",type:"topic",r:11},
+  {id:"t-oceans",label:"Oceans",type:"topic",r:11},
+  {id:"t-forests",label:"Forests",type:"topic",r:11},
+  {id:"t-cosmos",label:"Stars & Planets",type:"topic",r:12},
+  {id:"t-efields",label:"Energy Fields",type:"topic",r:12},
+  {id:"t-cycles",label:"Seasons & Cycles",type:"topic",r:11},
+  {id:"t-defi",label:"DeFi",type:"topic",r:12},
+  {id:"t-impact",label:"Impact Investing",type:"topic",r:12},
+  {id:"t-socialent",label:"Social Enterprise",type:"topic",r:12},
+  {id:"t-circular",label:"Circular Economy",type:"topic",r:12},
+  {id:"t-conscap",label:"Conscious Capital",type:"topic",r:12},
+  {id:"t-regenbiz",label:"Regenerative Biz",type:"topic",r:12},
+  {id:"t-dao",label:"DAOs",type:"topic",r:11},
+  {id:"t-crypto",label:"Crypto",type:"subcluster",r:19},
+  {id:"t-wealth-mind",label:"Prosperity Mindset",type:"topic",r:11},
+  {id:"t-personal-finance",label:"Personal Finance",type:"topic",r:12},
+  {id:"t-stocks",label:"Stocks",type:"subcluster",r:17},
+  {id:"t-commodities",label:"Commodities",type:"subcluster",r:18},
+  {id:"t-gold",label:"Gold",type:"topic",r:12},
+  {id:"t-oil",label:"Oil",type:"topic",r:12},
+  {id:"t-lithium",label:"Lithium",type:"topic",r:11},
+  {id:"t-bitcoin",label:"Bitcoin",type:"topic",r:13},
+  {id:"t-l1",label:"Layer 1s",type:"topic",r:12},
+  {id:"t-l2",label:"Layer 2s",type:"topic",r:11},
+  {id:"t-stablecoins",label:"Stablecoins",type:"topic",r:12},
+  {id:"t-depin",label:"DePIN",type:"topic",r:11},
+  {id:"t-nfts",label:"NFTs",type:"topic",r:11},
+  {id:"t-oneness",label:"Oneness",type:"topic",r:13},
+  {id:"t-source",label:"Source Energy",type:"topic",r:12},
+  {id:"t-soul",label:"Soul Purpose",type:"topic",r:12},
+  {id:"t-vibration",label:"Vibration",type:"topic",r:12},
+  {id:"t-akashic",label:"Akashic Records",type:"topic",r:11},
+  {id:"t-dims",label:"Higher Dimensions",type:"topic",r:11},
+  {id:"t-merkaba",label:"Merkaba",type:"topic",r:11},
+  {id:"t-nutrition",label:"Nutrition",type:"topic",r:11},
+  {id:"t-movement",label:"Movement",type:"topic",r:11},
+  {id:"t-sleep",label:"Sleep",type:"topic",r:10},
+  {id:"t-plantmed",label:"Plant Medicine",type:"topic",r:12},
+  {id:"t-community",label:"Community Living",type:"topic",r:12},
+  {id:"t-sustliving",label:"Sustainable Living",type:"topic",r:12},
+  {id:"t-proddesign",label:"Product Design",type:"topic",r:11},
+  {id:"t-systems",label:"Systems Thinking",type:"topic",r:12},
+  {id:"t-opensource",label:"Open Source",type:"topic",r:12},
+  {id:"t-cocreate",label:"Co-creation",type:"topic",r:12},
+  {id:"t-emergence",label:"Emergence",type:"topic",r:12},
+  {id:"t-biomimicry",label:"Biomimicry",type:"topic",r:12},
+  {id:"t-meditation",label:"Meditation",type:"topic",r:13},
+  {id:"t-soundheal",label:"Sound Healing",type:"topic",r:12},
+  {id:"t-breathwork",label:"Breathwork",type:"topic",r:12},
+  {id:"t-somatic",label:"Somatic Therapy",type:"topic",r:11},
+  {id:"t-energyheal",label:"Energy Healing",type:"topic",r:11},
+  {id:"t-yoga",label:"Yoga",type:"topic",r:12},
+  {id:"t-mentalhlth",label:"Mental Health",type:"topic",r:12},
+  {id:"t-governance",label:"Governance",type:"topic",r:12},
+  {id:"t-indigenous",label:"Indigenous Wisdom",type:"topic",r:12},
+  {id:"t-collective",label:"Collective Intelligence",type:"topic",r:12},
+  {id:"t-socialmov",label:"Social Movements",type:"topic",r:12},
+  {id:"t-peace",label:"Peace Building",type:"topic",r:12},
+  {id:"t-futurecity",label:"Future Cities",type:"topic",r:12},
+  {id:"t-edusystem",label:"Education Systems",type:"topic",r:12},
+  {id:"t-language",label:"Language",type:"topic",r:12},
+  {id:"t-speaking",label:"Public Speaking",type:"topic",r:11},
+  {id:"t-journalism",label:"Journalism",type:"topic",r:12},
+  {id:"t-socialmedia",label:"Social Media",type:"topic",r:12},
+  {id:"t-nvc",label:"Nonviolent Comm.",type:"topic",r:11},
+  {id:"t-renewable",label:"Renewable Energy",type:"topic",r:12},
+  {id:"t-solar",label:"Solar Energy",type:"topic",r:12},
+  {id:"t-wind",label:"Wind Energy",type:"topic",r:11},
+  {id:"t-storage",label:"Energy Storage",type:"topic",r:11},
+  {id:"t-gridtech",label:"Grid Technology",type:"topic",r:11},
+  {id:"t-regenfarm",label:"Regenerative Farming",type:"topic",r:12},
+  {id:"t-permaculture",label:"Permaculture",type:"topic",r:12},
+  {id:"t-foodsystems",label:"Food Systems",type:"topic",r:12},
+  {id:"t-urbanfarm",label:"Urban Farming",type:"topic",r:11},
+  {id:"t-cuisine",label:"Cuisine & Culture",type:"topic",r:12},
+  {id:"t-sports",label:"Sports",type:"topic",r:12},
+  {id:"t-gaming",label:"Games & Gaming",type:"topic",r:12},
+  {id:"t-outdoor",label:"Outdoor Adventure",type:"topic",r:11},
+  {id:"t-festivals",label:"Festivals & Events",type:"topic",r:12},
+  {id:"t-playcreat",label:"Play & Creativity",type:"topic",r:11},
+  {id:"t-privacy",label:"Privacy & Sovereignty",type:"topic",r:11},
+  {id:"t-humor",label:"Humor & Comedy",type:"topic",r:11},
+];
+
+const LINKS_RAW = [
+  ["frqncy","network-state"],["frqncy","fund"],["frqncy","education"],["frqncy","research"],
+  ["frqncy","media"],["frqncy","builder"],["frqncy","curate"],["frqncy","sell"],
+  ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],["frqncy","d-nature"],
+  ["frqncy","d-business"],["frqncy","d-money"],["frqncy","d-meta"],["frqncy","d-lifestyle"],
+  ["frqncy","d-creation"],["frqncy","d-wellbeing"],["frqncy","d-society"],
+  ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],
+  ["fund","d-business"],["fund","d-money"],["fund","d-tech"],
+  ["education","d-sciences"],["education","d-arts"],["education","d-society"],
+  ["research","d-sciences"],["research","d-meta"],["research","d-nature"],["research","d-tech"],
+  ["media","d-arts"],["media","d-communication"],["media","d-society"],
+  ["builder","d-creation"],["builder","d-tech"],["builder","d-business"],
+  ["curate","d-arts"],["curate","d-communication"],["curate","d-lifestyle"],["curate","d-meta"],
+  ["sell","d-money"],["sell","d-business"],["sell","d-tech"],
+  ["d-sciences","t-quantum"],["d-sciences","t-neuro"],["d-sciences","t-bio"],["d-sciences","t-psych"],
+  ["d-sciences","t-med"],["d-sciences","t-math"],["d-sciences","t-astrophys"],["d-sciences","t-ecology"],
+  ["d-sciences","t-genetics"],["d-sciences","t-chemistry"],
+  ["d-tech","t-ai"],["d-tech","t-blockchain"],["d-tech","t-decentral"],["d-tech","t-arvr"],
+  ["d-tech","t-biotech"],["d-tech","t-robotics"],["d-tech","t-web3"],["d-tech","t-quantcomp"],
+  ["d-tech","t-cybersec"],["d-tech","t-privacy"],
+  ["d-arts","t-music"],["d-arts","t-visual"],["d-arts","t-film"],["d-arts","t-poetry"],
+  ["d-arts","t-dance"],["d-arts","t-archit"],["d-arts","t-fashion"],["d-arts","t-story"],
+  ["d-arts","t-photo"],["d-arts","t-theater"],
+  ["d-nature","t-sacredgeo"],["d-nature","t-astrology"],["d-nature","t-climate"],
+  ["d-nature","t-biodivers"],["d-nature","t-oceans"],["d-nature","t-forests"],
+  ["d-nature","t-cosmos"],["d-nature","t-efields"],["d-nature","t-cycles"],
+  ["d-business","t-socialent"],["d-business","t-circular"],["d-business","t-regenbiz"],
+  ["d-money","t-defi"],["d-money","t-impact"],["d-money","t-conscap"],["d-money","t-dao"],
+  ["d-money","t-crypto"],["d-money","t-wealth-mind"],["d-money","t-personal-finance"],
+  ["d-money","t-stocks"],["d-money","t-commodities"],["d-money","t-bitcoin"],
+  ["d-money","t-l1"],["d-money","t-l2"],["d-money","t-stablecoins"],["d-money","t-depin"],["d-money","t-nfts"],
+  ["d-meta","t-oneness"],["d-meta","t-source"],["d-meta","t-soul"],["d-meta","t-akashic"],
+  ["d-meta","t-dims"],["d-meta","t-vibration"],["d-meta","t-merkaba"],
+  ["d-lifestyle","t-nutrition"],["d-lifestyle","t-movement"],["d-lifestyle","t-sleep"],
+  ["d-lifestyle","t-plantmed"],["d-lifestyle","t-community"],["d-lifestyle","t-sustliving"],
+  ["d-creation","t-proddesign"],["d-creation","t-systems"],["d-creation","t-opensource"],
+  ["d-creation","t-cocreate"],["d-creation","t-emergence"],["d-creation","t-biomimicry"],
+  ["d-wellbeing","t-meditation"],["d-wellbeing","t-soundheal"],["d-wellbeing","t-breathwork"],
+  ["d-wellbeing","t-somatic"],["d-wellbeing","t-energyheal"],["d-wellbeing","t-yoga"],
+  ["d-wellbeing","t-mentalhlth"],
+  ["d-society","t-governance"],["d-society","t-indigenous"],["d-society","t-collective"],
+  ["d-society","t-socialmov"],["d-society","t-peace"],["d-society","t-futurecity"],["d-society","t-edusystem"],
+  ["d-communication","t-language"],["d-communication","t-speaking"],["d-communication","t-journalism"],
+  ["d-communication","t-socialmedia"],["d-communication","t-nvc"],
+  ["d-energy","t-renewable"],["d-energy","t-solar"],["d-energy","t-wind"],
+  ["d-energy","t-storage"],["d-energy","t-gridtech"],
+  ["d-food","t-regenfarm"],["d-food","t-permaculture"],["d-food","t-foodsystems"],
+  ["d-food","t-urbanfarm"],["d-food","t-cuisine"],
+  ["d-play","t-sports"],["d-play","t-gaming"],["d-play","t-outdoor"],
+  ["d-play","t-festivals"],["d-play","t-playcreat"],["d-play","t-humor"],
+  ["t-crypto","t-bitcoin"],["t-crypto","t-l1"],["t-crypto","t-l2"],["t-crypto","t-stablecoins"],
+  ["t-crypto","t-defi"],["t-crypto","t-dao"],
+  ["t-commodities","t-gold"],["t-commodities","t-oil"],["t-commodities","t-lithium"],
+  ["t-stocks","t-defi"],["t-music","t-soundheal"],["t-neuro","t-meditation"],
+  ["t-quantum","t-oneness"],["t-ai","t-systems"],["t-blockchain","t-defi"],
+];
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+function el(tag, attrs, parent) {
+  const e = document.createElementNS(SVG_NS, tag);
+  for (const [k,v] of Object.entries(attrs || {})) e.setAttribute(k, v);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+
+const bgCanvas = document.getElementById('bg');
+const ctx = bgCanvas.getContext('2d');
+const svgEl = document.getElementById('svg-layer');
+const defsEl = document.getElementById('svg-defs');
+const branchesLayer = document.getElementById('branches-layer');
+const nodesLayer = document.getElementById('nodes-layer');
+const tipEl = document.getElementById('tip');
+const tipTitle = document.getElementById('tip-title');
+const tipType = document.getElementById('tip-type');
+
+let CW, CH, cx;
+const nodeMap = {};
+const branchPaths = [];
+let dragging = null;
+let hoveredId = null;
+
+const stars = [];
+const motes = [];
+const sapParticles = [];
+let tick = 0;
+
+NODES.forEach(n => nodeMap[n.id] = n);
+
+function layoutLevel(nodes, yMin, yMax, xSpread) {
+  const n = nodes.length;
+  nodes.forEach((node, i) => {
+    const t = n === 1 ? 0.5 : i / (n - 1);
+    node.x = cx + (t - 0.5) * 2 * xSpread;
+    const arcY = yMin + (yMax - yMin) * 0.5 + Math.sin(Math.PI * t) * (yMax - yMin) * 0.3;
+    node.y = arcY;
+  });
+}
+
+function buildLayout() {
+  const cores = NODES.filter(n => n.type === 'core');
+  const mains = NODES.filter(n => n.type === 'main');
+  const clusters = NODES.filter(n => n.type === 'cluster');
+  const topics = NODES.filter(n => n.type === 'topic' || n.type === 'subcluster');
+
+  cores.forEach(n => { n.x = cx; n.y = CH * 0.60; });
+  layoutLevel(mains, CH * 0.42, CH * 0.62, CW * 0.28);
+  layoutLevel(clusters, CH * 0.18, CH * 0.40, CW * 0.43);
+  layoutLevel(topics, CH * 0.04, CH * 0.36, CW * 0.47);
+}
+
+function curvePath(x1, y1, x2, y2) {
+  const cpx = (x1 + x2) / 2 + (cx - (x1 + x2) / 2) * 0.15;
+  const cpy = (y1 + y2) / 2 - Math.abs(x1 - x2) * 0.12;
+  return `M${x1},${y1} Q${cpx},${cpy} ${x2},${y2}`;
+}
+
+function buildGradientDefs() {
+  defsEl.innerHTML = '';
+
+  function makeRadial(id, stops) {
+    const grad = el('radialGradient', {id, cx:'50%', cy:'50%', r:'50%'}, defsEl);
+    stops.forEach(([offset, color]) => {
+      el('stop', {'offset': offset, 'stop-color': color}, grad);
+    });
+    return grad;
+  }
+
+  makeRadial('grad-core', [
+    ['0%','#F8E060'],['35%','#E09020'],['65%','#A05010'],['100%','#3A1400']
+  ]);
+  makeRadial('grad-main', [
+    ['0%','#703020'],['55%','#4A1800'],['100%','#280A00']
+  ]);
+  makeRadial('grad-cluster', [
+    ['0%','#C06830'],['50%','#8B4010'],['100%','#5A2800']
+  ]);
+  makeRadial('grad-topic', [
+    ['0%','#6A9C20'],['55%','#3A5C0A'],['100%','#1E3004']
+  ]);
+  makeRadial('grad-subcluster', [
+    ['0%','#9AB830'],['45%','#5A7810'],['100%','#2E4005']
+  ]);
+
+  const glowFilter = el('filter', {id:'glow-core', x:'-50%', y:'-50%', width:'200%', height:'200%'}, defsEl);
+  const feGaussian = el('feGaussianBlur', {stdDeviation:'6', result:'blur'}, glowFilter);
+  const feMerge = el('feMerge', {}, glowFilter);
+  el('feMergeNode', {in:'blur'}, feMerge);
+  el('feMergeNode', {in:'SourceGraphic'}, feMerge);
+
+  const glowFilterMid = el('filter', {id:'glow-mid', x:'-40%', y:'-40%', width:'180%', height:'180%'}, defsEl);
+  el('feGaussianBlur', {stdDeviation:'3', result:'blur'}, glowFilterMid);
+  const feMerge2 = el('feMerge', {}, glowFilterMid);
+  el('feMergeNode', {in:'blur'}, feMerge2);
+  el('feMergeNode', {in:'SourceGraphic'}, feMerge2);
+
+  const glowSmall = el('filter', {id:'glow-small', x:'-60%', y:'-60%', width:'220%', height:'220%'}, defsEl);
+  el('feGaussianBlur', {stdDeviation:'1.5', result:'blur'}, glowSmall);
+  const feMerge3 = el('feMerge', {}, glowSmall);
+  el('feMergeNode', {in:'blur'}, feMerge3);
+  el('feMergeNode', {in:'SourceGraphic'}, feMerge3);
+}
+
+function updatePaths(changedId) {
+  branchPaths.forEach(bp => {
+    if (bp.src !== changedId && bp.tgt !== changedId) return;
+    const s = nodeMap[bp.src], t = nodeMap[bp.tgt];
+    const d = curvePath(s.x, s.y, t.x, t.y);
+    if (bp.el1) bp.el1.setAttribute('d', d);
+    if (bp.el2) bp.el2.setAttribute('d', d);
+    if (bp.el3) bp.el3.setAttribute('d', d);
+  });
+}
+
+function getLinkStyle(srcNode, tgtNode) {
+  const srcType = srcNode.type;
+  const tgtType = tgtNode.type;
+  if (srcType === 'core' || tgtType === 'core') {
+    return { w1: 14, w2: 8, w3: 2.5, c1: 'rgba(50,22,5,0.85)', c2: 'rgba(95,48,15,0.75)', c3: 'rgba(190,130,40,0.35)' };
+  } else if (srcType === 'main' || tgtType === 'main') {
+    return { w1: 9, w2: 5, w3: 1.5, c1: 'rgba(45,18,3,0.80)', c2: 'rgba(85,38,10,0.70)', c3: 'rgba(165,105,35,0.30)' };
+  } else if (srcType === 'cluster' || tgtType === 'cluster') {
+    return { w1: 5.5, w2: 3, w3: 1.0, c1: 'rgba(40,15,3,0.70)', c2: 'rgba(75,32,8,0.60)', c3: 'rgba(145,90,28,0.28)' };
+  } else {
+    return { w1: 2.5, w2: 1.5, w3: 0.5, c1: 'rgba(35,14,2,0.55)', c2: 'rgba(65,28,5,0.45)', c3: 'rgba(120,80,20,0.22)' };
+  }
+}
+
+function buildSVG() {
+  branchesLayer.innerHTML = '';
+  nodesLayer.innerHTML = '';
+  branchPaths.length = 0;
+
+  LINKS_RAW.forEach(([srcId, tgtId]) => {
+    const s = nodeMap[srcId], t = nodeMap[tgtId];
+    if (!s || !t) return;
+    const style = getLinkStyle(s, t);
+    const d = curvePath(s.x, s.y, t.x, t.y);
+
+    const e1 = el('path', {d, fill:'none', stroke: style.c1, 'stroke-width': style.w1, 'stroke-linecap':'round'}, branchesLayer);
+    const e2 = el('path', {d, fill:'none', stroke: style.c2, 'stroke-width': style.w2, 'stroke-linecap':'round'}, branchesLayer);
+    const e3 = el('path', {d, fill:'none', stroke: style.c3, 'stroke-width': style.w3, 'stroke-linecap':'round'}, branchesLayer);
+
+    branchPaths.push({ src: srcId, tgt: tgtId, el1: e1, el2: e2, el3: e3 });
+  });
+
+  NODES.forEach(node => {
+    const g = el('g', {'data-id': node.id, transform: `translate(${node.x},${node.y})`, style:'cursor:grab'}, nodesLayer);
+
+    let fillId, filterId, strokeColor, strokeW;
+    if (node.type === 'core') {
+      fillId = 'url(#grad-core)'; filterId = 'url(#glow-core)'; strokeColor = 'rgba(240,185,80,0.5)'; strokeW = 2.5;
+    } else if (node.type === 'main') {
+      fillId = 'url(#grad-main)'; filterId = 'url(#glow-mid)'; strokeColor = 'rgba(160,90,40,0.45)'; strokeW = 1.5;
+    } else if (node.type === 'cluster') {
+      fillId = 'url(#grad-cluster)'; filterId = 'url(#glow-mid)'; strokeColor = 'rgba(185,115,50,0.40)'; strokeW = 1.2;
+    } else if (node.type === 'subcluster') {
+      fillId = 'url(#grad-subcluster)'; filterId = 'url(#glow-small)'; strokeColor = 'rgba(160,200,50,0.40)'; strokeW = 1.0;
+    } else {
+      fillId = 'url(#grad-topic)'; filterId = 'url(#glow-small)'; strokeColor = 'rgba(130,190,40,0.35)'; strokeW = 0.8;
+    }
+
+    el('circle', {r: node.r, fill: fillId, stroke: strokeColor, 'stroke-width': strokeW, filter: filterId}, g);
+
+    if (node.type === 'core') {
+      const outerRing = el('circle', {r: node.r + 8, fill:'none', stroke:'rgba(240,180,50,0.12)', 'stroke-width':6}, g);
+      el('circle', {r: node.r + 14, fill:'none', stroke:'rgba(240,180,50,0.06)', 'stroke-width':4}, g);
+    }
+
+    const showLabel = node.type === 'core' || node.type === 'main' || node.type === 'cluster' || node.type === 'subcluster' || node.r >= 12;
+
+    if (showLabel) {
+      let fontSize, fontFamily, fontStyle, fillColor;
+      if (node.type === 'core') {
+        fontSize = '14px'; fontFamily = "Georgia, 'Times New Roman', serif"; fontStyle = 'italic'; fillColor = '#F5E8C0';
+      } else if (node.type === 'main') {
+        fontSize = '9px'; fontFamily = "'Segoe UI', Arial, sans-serif"; fontStyle = 'normal'; fillColor = '#E8C890';
+      } else if (node.type === 'cluster' || node.type === 'subcluster') {
+        fontSize = '8.5px'; fontFamily = "'Segoe UI', Arial, sans-serif"; fontStyle = 'normal'; fillColor = '#E0B870';
+      } else {
+        fontSize = '7px'; fontFamily = "'Segoe UI', Arial, sans-serif"; fontStyle = 'normal'; fillColor = '#C8D890';
+      }
+
+      const words = node.label.split(' ');
+      const maxCharsPerLine = node.type === 'core' ? 10 : (node.type === 'main' || node.type === 'cluster' || node.type === 'subcluster' ? 10 : 12);
+      const lines = [];
+      let currentLine = '';
+      words.forEach(w => {
+        if (currentLine.length + w.length + 1 <= maxCharsPerLine || currentLine === '') {
+          currentLine += (currentLine ? ' ' : '') + w;
+        } else {
+          lines.push(currentLine);
+          currentLine = w;
+        }
+      });
+      if (currentLine) lines.push(currentLine);
+
+      const lineHeight = parseFloat(fontSize) * 1.25;
+      const totalH = lines.length * lineHeight;
+      const startY = -totalH / 2 + lineHeight * 0.38;
+
+      lines.forEach((line, li) => {
+        el('text', {
+          x: 0, y: startY + li * lineHeight,
+          'text-anchor': 'middle',
+          'dominant-baseline': 'middle',
+          fill: fillColor,
+          'font-size': fontSize,
+          'font-family': fontFamily,
+          'font-style': fontStyle,
+          'font-weight': node.type === 'core' ? '500' : '400',
+          'pointer-events': 'none',
+          'user-select': 'none'
+        }, g).textContent = line;
+      });
+    }
+
+    g.addEventListener('pointerenter', (e) => {
+      if (dragging) return;
+      hoveredId = node.id;
+      applyHoverDim(node.id);
+      tipTitle.textContent = node.label;
+      tipType.textContent = node.type;
+      tipEl.style.opacity = '1';
+    });
+    g.addEventListener('pointermove', (e) => {
+      tipEl.style.left = (e.clientX + 14) + 'px';
+      tipEl.style.top = (e.clientY - 28) + 'px';
+    });
+    g.addEventListener('pointerleave', () => {
+      if (dragging === node.id) return;
+      hoveredId = null;
+      clearHoverDim();
+      tipEl.style.opacity = '0';
+    });
+  });
+}
+
+function getConnectedIds(id) {
+  const connected = new Set([id]);
+  LINKS_RAW.forEach(([s, t]) => {
+    if (s === id) connected.add(t);
+    if (t === id) connected.add(s);
+  });
+  return connected;
+}
+
+function applyHoverDim(id) {
+  const connected = getConnectedIds(id);
+  nodesLayer.querySelectorAll('g[data-id]').forEach(g => {
+    const gid = g.dataset.id;
+    g.style.opacity = connected.has(gid) ? '1' : '0.18';
+  });
+  branchesLayer.querySelectorAll('path').forEach((p, i) => {
+    const bp = branchPaths[Math.floor(i / 3)];
+    if (!bp) return;
+    const visible = bp.src === id || bp.tgt === id || connected.has(bp.src) && connected.has(bp.tgt);
+    p.style.opacity = (bp.src === id || bp.tgt === id) ? '1' : '0.08';
+  });
+}
+
+function clearHoverDim() {
+  nodesLayer.querySelectorAll('g[data-id]').forEach(g => { g.style.opacity = '1'; });
+  branchesLayer.querySelectorAll('path').forEach(p => { p.style.opacity = '1'; });
+}
+
+svgEl.addEventListener('pointerdown', e => {
+  const g = e.target.closest('g[data-id]');
+  if (!g) return;
+  dragging = g.dataset.id;
+  g.style.cursor = 'grabbing';
+  svgEl.setPointerCapture(e.pointerId);
+  e.preventDefault();
+}, { passive: false });
+
+svgEl.addEventListener('pointermove', e => {
+  if (!dragging) return;
+  const r = svgEl.getBoundingClientRect();
+  nodeMap[dragging].x = e.clientX - r.left;
+  nodeMap[dragging].y = e.clientY - r.top;
+  const g = document.querySelector(`g[data-id="${dragging}"]`);
+  if (g) g.setAttribute('transform', `translate(${nodeMap[dragging].x},${nodeMap[dragging].y})`);
+  updatePaths(dragging);
+  tipEl.style.left = (e.clientX + 14) + 'px';
+  tipEl.style.top = (e.clientY - 28) + 'px';
+});
+
+svgEl.addEventListener('pointerup', e => {
+  if (dragging) {
+    const g = document.querySelector(`g[data-id="${dragging}"]`);
+    if (g) g.style.cursor = 'grab';
+    dragging = null;
+  }
+});
+
+svgEl.addEventListener('pointercancel', () => { dragging = null; });
+
+function initStars() {
+  stars.length = 0;
+  for (let i = 0; i < 180; i++) {
+    stars.push({
+      x: Math.random() * CW,
+      y: Math.random() * CH * 0.75,
+      r: 0.4 + Math.random() * 1.2,
+      phase: Math.random() * Math.PI * 2,
+      speed: 0.4 + Math.random() * 0.8,
+      warm: Math.random() > 0.4
+    });
+  }
+}
+
+function initMotes() {
+  motes.length = 0;
+  for (let i = 0; i < 50; i++) {
+    motes.push({
+      x: cx * 0.3 + Math.random() * CW * 0.4,
+      y: Math.random() * CH,
+      r: 0.8 + Math.random() * 1.4,
+      speed: 0.15 + Math.random() * 0.35,
+      drift: (Math.random() - 0.5) * 0.3,
+      alpha: 0.1 + Math.random() * 0.3
+    });
+  }
+}
+
+function spawnSapParticle() {
+  const core = nodeMap['frqncy'];
+  if (!core) return;
+  const linkIdx = Math.floor(Math.random() * LINKS_RAW.length);
+  const [srcId, tgtId] = LINKS_RAW[linkIdx];
+  const src = nodeMap[srcId], tgt = nodeMap[tgtId];
+  if (!src || !tgt) return;
+  sapParticles.push({
+    sx: src.x, sy: src.y,
+    tx: tgt.x, ty: tgt.y,
+    t: 0, speed: 0.003 + Math.random() * 0.006,
+    r: 1.5 + Math.random() * 2,
+    alpha: 0.7 + Math.random() * 0.3
+  });
+}
+
+function drawBackground() {
+  const grad = ctx.createLinearGradient(0, 0, 0, CH);
+  grad.addColorStop(0, '#040608');
+  grad.addColorStop(0.3, '#0A1020');
+  grad.addColorStop(0.7, '#081408');
+  grad.addColorStop(1, '#100A02');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, CW, CH);
+}
+
+function drawStars(t) {
+  stars.forEach(s => {
+    const twinkle = 0.4 + 0.6 * (0.5 + 0.5 * Math.sin(t * s.speed + s.phase));
+    const alpha = twinkle * 0.7;
+    ctx.beginPath();
+    ctx.arc(s.x, s.y, s.r, 0, Math.PI * 2);
+    if (s.warm) {
+      ctx.fillStyle = `rgba(255,230,170,${alpha})`;
+    } else {
+      ctx.fillStyle = `rgba(210,225,255,${alpha})`;
+    }
+    ctx.fill();
+  });
+}
+
+function drawRoots() {
+  const core = nodeMap['frqncy'];
+  if (!core) return;
+  const bx = core.x, by = core.y;
+
+  const roots = [
+    { cp1x: bx - 20, cp1y: by + 55, cp2x: bx - 100, cp2y: by + 120, ex: bx - 180, ey: CH + 10, w: 13, alpha: 0.82 },
+    { cp1x: bx - 50, cp1y: by + 60, cp2x: bx - 160, cp2y: by + 140, ex: bx - 290, ey: CH + 20, w: 9, alpha: 0.70 },
+    { cp1x: bx - 10, cp1y: by + 70, cp2x: bx - 40, cp2y: by + 150, ex: bx - 60, ey: CH + 15, w: 8, alpha: 0.72 },
+    { cp1x: bx + 20, cp1y: by + 55, cp2x: bx + 100, cp2y: by + 120, ex: bx + 180, ey: CH + 10, w: 13, alpha: 0.82 },
+    { cp1x: bx + 50, cp1y: by + 60, cp2x: bx + 160, cp2y: by + 140, ex: bx + 290, ey: CH + 20, w: 9, alpha: 0.70 },
+    { cp1x: bx + 10, cp1y: by + 70, cp2x: bx + 40, cp2y: by + 150, ex: bx + 60, ey: CH + 15, w: 8, alpha: 0.72 },
+  ];
+
+  roots.forEach(root => {
+    ctx.beginPath();
+    ctx.moveTo(bx, by + 40);
+    ctx.bezierCurveTo(root.cp1x, root.cp1y, root.cp2x, root.cp2y, root.ex, root.ey);
+    ctx.strokeStyle = `rgba(55,22,4,${root.alpha})`;
+    ctx.lineWidth = root.w;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+
+    ctx.beginPath();
+    ctx.moveTo(bx, by + 40);
+    ctx.bezierCurveTo(root.cp1x, root.cp1y, root.cp2x, root.cp2y, root.ex, root.ey);
+    ctx.strokeStyle = `rgba(90,38,8,0.35)`;
+    ctx.lineWidth = root.w * 0.45;
+    ctx.lineCap = 'round';
+    ctx.stroke();
+  });
+}
+
+function drawCrownGlow() {
+  const grad = ctx.createRadialGradient(cx, CH * 0.12, 0, cx, CH * 0.15, CW * 0.52);
+  grad.addColorStop(0, 'rgba(200,140,30,0.10)');
+  grad.addColorStop(0.5, 'rgba(180,120,20,0.05)');
+  grad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = grad;
+  ctx.fillRect(0, 0, CW, CH * 0.55);
+}
+
+function drawMotes() {
+  motes.forEach(m => {
+    m.y -= m.speed;
+    m.x += m.drift;
+    if (m.y < -5) {
+      m.y = CH + 5;
+      m.x = cx * 0.3 + Math.random() * CW * 0.4;
+    }
+    if (m.x < 0 || m.x > CW) m.x = cx + (Math.random() - 0.5) * CW * 0.4;
+    ctx.beginPath();
+    ctx.arc(m.x, m.y, m.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(255,220,100,${m.alpha})`;
+    ctx.fill();
+  });
+}
+
+function drawSapParticles() {
+  for (let i = sapParticles.length - 1; i >= 0; i--) {
+    const p = sapParticles[i];
+    p.t += p.speed;
+    if (p.t >= 1) {
+      sapParticles.splice(i, 1);
+      continue;
+    }
+    const t2 = p.t;
+    const cpx = (p.sx + p.tx) / 2 + (cx - (p.sx + p.tx) / 2) * 0.15;
+    const cpy = (p.sy + p.ty) / 2 - Math.abs(p.sx - p.tx) * 0.12;
+    const bx = (1 - t2) * (1 - t2) * p.sx + 2 * (1 - t2) * t2 * cpx + t2 * t2 * p.tx;
+    const by = (1 - t2) * (1 - t2) * p.sy + 2 * (1 - t2) * t2 * cpy + t2 * t2 * p.ty;
+    const fadeIn = Math.min(1, t2 * 8);
+    const fadeOut = Math.min(1, (1 - t2) * 8);
+    const alpha = p.alpha * fadeIn * fadeOut;
+    ctx.beginPath();
+    ctx.arc(bx, by, p.r, 0, Math.PI * 2);
+    ctx.fillStyle = `rgba(240,185,60,${alpha})`;
+    ctx.fill();
+  }
+
+  if (Math.random() < 0.18) spawnSapParticle();
+}
+
+function animate(timestamp) {
+  tick = timestamp * 0.001;
+  ctx.clearRect(0, 0, CW, CH);
+  drawBackground();
+  drawCrownGlow();
+  drawStars(tick);
+  drawRoots();
+  drawMotes();
+  drawSapParticles();
+  requestAnimationFrame(animate);
+}
+
+function resize() {
+  CW = bgCanvas.width = window.innerWidth;
+  CH = bgCanvas.height = window.innerHeight;
+  cx = CW / 2;
+  svgEl.setAttribute('width', CW);
+  svgEl.setAttribute('height', CH);
+  svgEl.setAttribute('viewBox', `0 0 ${CW} ${CH}`);
+  buildLayout();
+  buildGradientDefs();
+  buildSVG();
+  initStars();
+  initMotes();
+}
+
+resize._t = null;
+window.addEventListener('resize', () => {
+  clearTimeout(resize._t);
+  resize._t = setTimeout(resize, 150);
+});
+
+resize();
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>

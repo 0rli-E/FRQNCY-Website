@@ -331,24 +331,49 @@ function interleave(...streams) {
   }
   return out;
 }
-// User request 2026-05-15: the band always opens with these specific items.
+// User request 2026-05-15: the full 28-card band, hand-curated.
 // Pulled from live beds; missing items skip silently.
 const leadIds = [
-  { kind: 'topic',  id: 't-ecovillages' },
-  { kind: 'person', id: 'p-kevin-trudeau' },
-  { kind: 'topic',  id: 't-permaculture' },
-  { kind: 'person', id: 'p-sai-maa' },
-  { kind: 'topic',  id: 't-crypto' },
-  { kind: 'topic',  id: 't-privacy' },
-  { kind: 'topic',  id: 't-renewable' },
+  { kind: 'topic',  id: 't-ecovillages' },                       //  1
+  { kind: 'person', id: 'p-kevin-trudeau' },                     //  2
+  { kind: 'topic',  id: 't-permaculture' },                      //  3
+  { kind: 'person', id: 'p-sai-maa' },                           //  4
+  { kind: 'topic',  id: 't-crypto',
+    imageOverride: '/images/topics/crypto-hero.png' },           //  5
+  { kind: 'topic',  id: 't-privacy',
+    imageOverride: '/images/topics/privacy-hero.webp' },         //  6
+  { kind: 'topic',  id: 't-renewable' },                         //  7
+  { kind: 'book',   id: 'b-the-magic-of-thinking-big' },         //  8
+  { kind: 'video',  id: 'v-film-sun' },                          //  9
+  { kind: 'person', id: 'p-andreas-antonopoulos' },              // 10
+  { kind: 'place',  id: 'pl-bali' },                             // 11
+  { kind: 'topic',  id: 't-source' },                            // 12
+  { kind: 'film',   id: 'm-hidden-secrets-of-money' },           // 13
+  { kind: 'book',   id: 'b-fingerprints-of-the-gods' },          // 14
+  { kind: 'video',  id: 'v-_nB13VUT' },                          // 15  Bashar
+  { kind: 'person', id: 'p-carlo-rovelli' },                     // 16
+  { kind: 'place',  id: 'pl-yogaville' },                        // 17
+  { kind: 'topic',  id: 't-meditation' },                        // 18
+  { kind: 'film',   id: 'm-roger-eberts-reviews' },              // 19
+  { kind: 'book',   id: 'b-ask-and-it-is-given' },               // 20
+  { kind: 'video',  id: 'v-sacgeo-1' },                          // 21
+  { kind: 'person', id: 'p-matt-debenham' },                     // 22
+  { kind: 'place',  id: 'pl-sedona' },                           // 23
+  { kind: 'topic',  id: 't-networkstates',                       // 24
+    imageOverride: 'https://covers.openlibrary.org/b/id/14569476-L.jpg' },
+  { kind: 'book',   id: 'b-wishes-fulfilled' },                  // 25
+  { kind: 'topic',  id: 't-abilities' },                         // 26
+  { kind: 'topic',  id: 't-conscap' },                           // 27
+  { kind: 'topic',  id: 't-bitcoin',
+    imageOverride: '/images/topics/bitcoin-hero.jpg' },          // 28
 ];
 const leadCards = [];
 const leadSeen = new Set();
-for (const { kind, id } of leadIds) {
+for (const { kind, id, imageOverride } of leadIds) {
   if (kind === 'topic') {
     const t = topicById.get(id);
     if (!t) continue;
-    const img = imageForTopic(id);
+    const img = imageOverride || imageForTopic(id);
     if (!img) continue;
     leadCards.push(card({
       kind: 'topic',
@@ -369,6 +394,72 @@ for (const { kind, id } of leadIds) {
       href: `/people/${p.id.replace(/^p-/, '')}/`,
     }));
     leadSeen.add(id);
+  } else if (kind === 'book') {
+    const b = bookById.get(id);
+    if (!b || !b.image) continue;
+    let author = '';
+    if (b.author_is_person_ref && peopleById.has(b.author)) author = peopleById.get(b.author).name;
+    else if (typeof b.author === 'string') author = b.author;
+    leadCards.push(card({
+      kind: 'book',
+      eyebrow: author || 'Book',
+      title: b.title,
+      image: b.image,
+      href: `/books/${b.id.replace(/^b-/, '')}/`,
+    }));
+    leadSeen.add(id);
+  } else if (kind === 'video') {
+    // Search videosObj for a video with this id (the id can match v-* form)
+    let found = null;
+    let topicLabel = '';
+    for (const [topicId, vids] of Object.entries(videosObj)) {
+      if (!Array.isArray(vids)) continue;
+      for (const v of vids) {
+        if (v?.id === id || v?.youtube_id === id) {
+          found = v;
+          const t = topicById.get(topicId);
+          if (t) topicLabel = t.label;
+          break;
+        }
+      }
+      if (found) break;
+    }
+    if (!found?.youtube_id) continue;
+    leadCards.push(card({
+      kind: 'video',
+      eyebrow: found.channel || topicLabel || 'Film',
+      title: found.title,
+      image: ytThumb(found.youtube_id),
+      href: `/watch/index.html#${encodeURIComponent(found.youtube_id)}`,
+    }));
+    leadSeen.add(id);
+  } else if (kind === 'place') {
+    const pl = placeById.get(id);
+    if (!pl || !pl.image) continue;
+    leadCards.push(card({
+      kind: 'place',
+      eyebrow: pl.location || 'Place',
+      title: pl.name,
+      image: pl.image,
+      href: `/places/${pl.id.replace(/^pl-/, '')}/`,
+    }));
+    leadSeen.add(id);
+  } else if (kind === 'film') {
+    const mm = mediaById.get(id);
+    if (!mm) continue;
+    const img = imageForEntity(id);
+    if (!img) continue;
+    let creator = '';
+    if (mm.creator_is_person_ref && peopleById.has(mm.creator)) creator = peopleById.get(mm.creator).name;
+    else if (typeof mm.creator === 'string') creator = mm.creator;
+    leadCards.push(card({
+      kind: 'film',
+      eyebrow: creator || 'Film',
+      title: mm.name,
+      image: img,
+      href: `/media/${mm.id.replace(/^m-/, '')}/`,
+    }));
+    leadSeen.add(id);
   }
 }
 
@@ -376,16 +467,10 @@ for (const { kind, id } of leadIds) {
 const leadSlugs = [...leadSeen].map(id => id.replace(/^[pt]-/, ''));
 const removeIfLead = (cards) => cards.filter(c => !leadSlugs.some(s => c.includes(`/${s}/`)));
 
-const stream = interleave(
-  removeIfLead(bookPool),
-  removeIfLead(videoPool),
-  removeIfLead(peoplePool),
-  removeIfLead(placePool),
-  removeIfLead(topicPool),
-  removeIfLead(filmCards),
-);
-
-const finalCards = [...leadCards, ...stream];
+// User request 2026-05-15: curated band only — no shuffled mid-band fill.
+// Only the hand-picked lead cards appear in the marquee. The pools above
+// are intentionally unused so the band stays exactly the items chosen.
+const finalCards = [...leadCards];
 const track = finalCards.concat(finalCards).join('');
 
 const generatedBlock =

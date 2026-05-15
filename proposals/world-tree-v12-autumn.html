@@ -1,0 +1,781 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>FRQNCY World Tree — Autumn Dusk</title>
+<style>
+*{margin:0;padding:0;box-sizing:border-box}
+html,body{width:100%;height:100%;overflow:hidden;background:#060210}
+#wrap{position:relative;width:100%;height:100vh}
+canvas#bg{position:absolute;top:0;left:0;width:100%;height:100%;pointer-events:none;z-index:0}
+svg#tree{position:absolute;top:0;left:0;width:100%;height:100%;z-index:1}
+#tooltip{
+  position:fixed;pointer-events:none;z-index:99;
+  background:rgba(20,6,2,0.92);border:1px solid rgba(255,120,20,0.35);
+  color:#F5C080;font-family:system-ui,sans-serif;font-size:13px;
+  padding:6px 12px;border-radius:6px;white-space:nowrap;
+  opacity:0;transition:opacity 0.15s;
+}
+</style>
+</head>
+<body>
+<div id="wrap">
+  <canvas id="bg"></canvas>
+  <svg id="tree"></svg>
+</div>
+<div id="tooltip"></div>
+<script>
+const NODES = [
+  {id:"frqncy",label:"FRQNCY",type:"core",r:52},
+  {id:"network-state",label:"Network State",type:"main",r:30},
+  {id:"fund",label:"Fund",type:"main",r:29},
+  {id:"education",label:"Education",type:"main",r:30},
+  {id:"research",label:"Research",type:"main",r:29},
+  {id:"media",label:"Media",type:"main",r:29},
+  {id:"builder",label:"Builder",type:"main",r:30},
+  {id:"curate",label:"Curate",type:"main",r:29},
+  {id:"sell",label:"Sell",type:"main",r:29},
+  {id:"d-sciences",label:"Sciences",type:"cluster",r:24},
+  {id:"d-tech",label:"Technology",type:"cluster",r:24},
+  {id:"d-arts",label:"Arts & Culture",type:"cluster",r:23},
+  {id:"d-nature",label:"Nature & Cosmos",type:"cluster",r:24},
+  {id:"d-business",label:"Business",type:"cluster",r:22},
+  {id:"d-money",label:"Money",type:"cluster",r:23},
+  {id:"d-meta",label:"Consciousness",type:"cluster",r:25},
+  {id:"d-lifestyle",label:"Lifestyle",type:"cluster",r:22},
+  {id:"d-creation",label:"Creation",type:"cluster",r:23},
+  {id:"d-wellbeing",label:"Well-being",type:"cluster",r:24},
+  {id:"d-society",label:"Society",type:"cluster",r:23},
+  {id:"d-communication",label:"Communication",type:"cluster",r:23},
+  {id:"d-energy",label:"Energy",type:"cluster",r:23},
+  {id:"d-food",label:"Food & Agriculture",type:"cluster",r:23},
+  {id:"d-play",label:"Play & Recreation",type:"cluster",r:22},
+  {id:"t-quantum",label:"Quantum Physics",type:"topic",r:12},
+  {id:"t-neuro",label:"Neuroscience",type:"topic",r:12},
+  {id:"t-bio",label:"Biology",type:"topic",r:11},
+  {id:"t-psych",label:"Psychology",type:"topic",r:12},
+  {id:"t-med",label:"Medicine",type:"topic",r:11},
+  {id:"t-math",label:"Mathematics",type:"topic",r:11},
+  {id:"t-astrophys",label:"Astrophysics",type:"topic",r:12},
+  {id:"t-ecology",label:"Ecology",type:"topic",r:11},
+  {id:"t-genetics",label:"Genetics",type:"topic",r:11},
+  {id:"t-chemistry",label:"Chemistry",type:"topic",r:10},
+  {id:"t-ai",label:"AI",type:"topic",r:13},
+  {id:"t-blockchain",label:"Blockchain",type:"topic",r:12},
+  {id:"t-decentral",label:"Decentralized Nets",type:"topic",r:12},
+  {id:"t-arvr",label:"AR / VR",type:"topic",r:11},
+  {id:"t-biotech",label:"Biotechnology",type:"topic",r:12},
+  {id:"t-robotics",label:"Robotics",type:"topic",r:11},
+  {id:"t-web3",label:"Web3",type:"topic",r:12},
+  {id:"t-quantcomp",label:"Quantum Computing",type:"topic",r:12},
+  {id:"t-cybersec",label:"Cybersecurity",type:"topic",r:11},
+  {id:"t-music",label:"Music",type:"topic",r:13},
+  {id:"t-visual",label:"Visual Art",type:"topic",r:12},
+  {id:"t-film",label:"Film",type:"topic",r:11},
+  {id:"t-poetry",label:"Poetry",type:"topic",r:11},
+  {id:"t-dance",label:"Dance",type:"topic",r:11},
+  {id:"t-archit",label:"Architecture",type:"topic",r:11},
+  {id:"t-fashion",label:"Fashion",type:"topic",r:10},
+  {id:"t-story",label:"Storytelling",type:"topic",r:12},
+  {id:"t-photo",label:"Photography",type:"topic",r:10},
+  {id:"t-theater",label:"Theater",type:"topic",r:10},
+  {id:"t-sacredgeo",label:"Sacred Geometry",type:"topic",r:12},
+  {id:"t-astrology",label:"Astrology",type:"topic",r:12},
+  {id:"t-climate",label:"Climate",type:"topic",r:12},
+  {id:"t-biodivers",label:"Biodiversity",type:"topic",r:11},
+  {id:"t-oceans",label:"Oceans",type:"topic",r:11},
+  {id:"t-forests",label:"Forests",type:"topic",r:11},
+  {id:"t-cosmos",label:"Stars & Planets",type:"topic",r:12},
+  {id:"t-efields",label:"Energy Fields",type:"topic",r:12},
+  {id:"t-cycles",label:"Seasons & Cycles",type:"topic",r:11},
+  {id:"t-defi",label:"DeFi",type:"topic",r:12},
+  {id:"t-impact",label:"Impact Investing",type:"topic",r:12},
+  {id:"t-socialent",label:"Social Enterprise",type:"topic",r:12},
+  {id:"t-circular",label:"Circular Economy",type:"topic",r:12},
+  {id:"t-conscap",label:"Conscious Capital",type:"topic",r:12},
+  {id:"t-regenbiz",label:"Regenerative Biz",type:"topic",r:12},
+  {id:"t-dao",label:"DAOs",type:"topic",r:11},
+  {id:"t-crypto",label:"Crypto",type:"subcluster",r:19},
+  {id:"t-wealth-mind",label:"Prosperity Mindset",type:"topic",r:11},
+  {id:"t-personal-finance",label:"Personal Finance",type:"topic",r:12},
+  {id:"t-stocks",label:"Stocks",type:"subcluster",r:17},
+  {id:"t-commodities",label:"Commodities",type:"subcluster",r:18},
+  {id:"t-gold",label:"Gold",type:"topic",r:12},
+  {id:"t-oil",label:"Oil",type:"topic",r:12},
+  {id:"t-lithium",label:"Lithium",type:"topic",r:11},
+  {id:"t-bitcoin",label:"Bitcoin",type:"topic",r:13},
+  {id:"t-l1",label:"Layer 1s",type:"topic",r:12},
+  {id:"t-l2",label:"Layer 2s",type:"topic",r:11},
+  {id:"t-stablecoins",label:"Stablecoins",type:"topic",r:12},
+  {id:"t-depin",label:"DePIN",type:"topic",r:11},
+  {id:"t-nfts",label:"NFTs",type:"topic",r:11},
+  {id:"t-oneness",label:"Oneness",type:"topic",r:13},
+  {id:"t-source",label:"Source Energy",type:"topic",r:12},
+  {id:"t-soul",label:"Soul Purpose",type:"topic",r:12},
+  {id:"t-vibration",label:"Vibration",type:"topic",r:12},
+  {id:"t-akashic",label:"Akashic Records",type:"topic",r:11},
+  {id:"t-dims",label:"Higher Dimensions",type:"topic",r:11},
+  {id:"t-merkaba",label:"Merkaba",type:"topic",r:11},
+  {id:"t-nutrition",label:"Nutrition",type:"topic",r:11},
+  {id:"t-movement",label:"Movement",type:"topic",r:11},
+  {id:"t-sleep",label:"Sleep",type:"topic",r:10},
+  {id:"t-plantmed",label:"Plant Medicine",type:"topic",r:12},
+  {id:"t-community",label:"Community Living",type:"topic",r:12},
+  {id:"t-sustliving",label:"Sustainable Living",type:"topic",r:12},
+  {id:"t-proddesign",label:"Product Design",type:"topic",r:11},
+  {id:"t-systems",label:"Systems Thinking",type:"topic",r:12},
+  {id:"t-opensource",label:"Open Source",type:"topic",r:12},
+  {id:"t-cocreate",label:"Co-creation",type:"topic",r:12},
+  {id:"t-emergence",label:"Emergence",type:"topic",r:12},
+  {id:"t-biomimicry",label:"Biomimicry",type:"topic",r:12},
+  {id:"t-meditation",label:"Meditation",type:"topic",r:13},
+  {id:"t-soundheal",label:"Sound Healing",type:"topic",r:12},
+  {id:"t-breathwork",label:"Breathwork",type:"topic",r:12},
+  {id:"t-somatic",label:"Somatic Therapy",type:"topic",r:11},
+  {id:"t-energyheal",label:"Energy Healing",type:"topic",r:11},
+  {id:"t-yoga",label:"Yoga",type:"topic",r:12},
+  {id:"t-mentalhlth",label:"Mental Health",type:"topic",r:12},
+  {id:"t-governance",label:"Governance",type:"topic",r:12},
+  {id:"t-indigenous",label:"Indigenous Wisdom",type:"topic",r:12},
+  {id:"t-collective",label:"Collective Intelligence",type:"topic",r:12},
+  {id:"t-socialmov",label:"Social Movements",type:"topic",r:12},
+  {id:"t-peace",label:"Peace Building",type:"topic",r:12},
+  {id:"t-futurecity",label:"Future Cities",type:"topic",r:12},
+  {id:"t-edusystem",label:"Education Systems",type:"topic",r:12},
+  {id:"t-language",label:"Language",type:"topic",r:12},
+  {id:"t-speaking",label:"Public Speaking",type:"topic",r:11},
+  {id:"t-journalism",label:"Journalism",type:"topic",r:12},
+  {id:"t-socialmedia",label:"Social Media",type:"topic",r:12},
+  {id:"t-nvc",label:"Nonviolent Comm.",type:"topic",r:11},
+  {id:"t-renewable",label:"Renewable Energy",type:"topic",r:12},
+  {id:"t-solar",label:"Solar Energy",type:"topic",r:12},
+  {id:"t-wind",label:"Wind Energy",type:"topic",r:11},
+  {id:"t-storage",label:"Energy Storage",type:"topic",r:11},
+  {id:"t-gridtech",label:"Grid Technology",type:"topic",r:11},
+  {id:"t-regenfarm",label:"Regenerative Farming",type:"topic",r:12},
+  {id:"t-permaculture",label:"Permaculture",type:"topic",r:12},
+  {id:"t-foodsystems",label:"Food Systems",type:"topic",r:12},
+  {id:"t-urbanfarm",label:"Urban Farming",type:"topic",r:11},
+  {id:"t-cuisine",label:"Cuisine & Culture",type:"topic",r:12},
+  {id:"t-sports",label:"Sports",type:"topic",r:12},
+  {id:"t-gaming",label:"Games & Gaming",type:"topic",r:12},
+  {id:"t-outdoor",label:"Outdoor Adventure",type:"topic",r:11},
+  {id:"t-festivals",label:"Festivals & Events",type:"topic",r:12},
+  {id:"t-playcreat",label:"Play & Creativity",type:"topic",r:11},
+  {id:"t-privacy",label:"Privacy & Sovereignty",type:"topic",r:11},
+  {id:"t-humor",label:"Humor & Comedy",type:"topic",r:11},
+];
+
+const LINKS = [
+  ["frqncy","network-state"],["frqncy","fund"],["frqncy","education"],["frqncy","research"],
+  ["frqncy","media"],["frqncy","builder"],["frqncy","curate"],["frqncy","sell"],
+  ["frqncy","d-sciences"],["frqncy","d-tech"],["frqncy","d-arts"],["frqncy","d-nature"],
+  ["frqncy","d-business"],["frqncy","d-money"],["frqncy","d-meta"],["frqncy","d-lifestyle"],
+  ["frqncy","d-creation"],["frqncy","d-wellbeing"],["frqncy","d-society"],
+  ["network-state","d-tech"],["network-state","d-society"],["network-state","d-business"],
+  ["fund","d-business"],["fund","d-money"],["fund","d-tech"],
+  ["education","d-sciences"],["education","d-arts"],["education","d-society"],
+  ["research","d-sciences"],["research","d-meta"],["research","d-nature"],["research","d-tech"],
+  ["media","d-arts"],["media","d-communication"],["media","d-society"],
+  ["builder","d-creation"],["builder","d-tech"],["builder","d-business"],
+  ["curate","d-arts"],["curate","d-communication"],["curate","d-lifestyle"],["curate","d-meta"],
+  ["sell","d-money"],["sell","d-business"],["sell","d-tech"],
+  ["d-sciences","t-quantum"],["d-sciences","t-neuro"],["d-sciences","t-bio"],["d-sciences","t-psych"],
+  ["d-sciences","t-med"],["d-sciences","t-math"],["d-sciences","t-astrophys"],["d-sciences","t-ecology"],
+  ["d-sciences","t-genetics"],["d-sciences","t-chemistry"],
+  ["d-tech","t-ai"],["d-tech","t-blockchain"],["d-tech","t-decentral"],["d-tech","t-arvr"],
+  ["d-tech","t-biotech"],["d-tech","t-robotics"],["d-tech","t-web3"],["d-tech","t-quantcomp"],
+  ["d-tech","t-cybersec"],["d-tech","t-privacy"],
+  ["d-arts","t-music"],["d-arts","t-visual"],["d-arts","t-film"],["d-arts","t-poetry"],
+  ["d-arts","t-dance"],["d-arts","t-archit"],["d-arts","t-fashion"],["d-arts","t-story"],
+  ["d-arts","t-photo"],["d-arts","t-theater"],
+  ["d-nature","t-sacredgeo"],["d-nature","t-astrology"],["d-nature","t-climate"],
+  ["d-nature","t-biodivers"],["d-nature","t-oceans"],["d-nature","t-forests"],
+  ["d-nature","t-cosmos"],["d-nature","t-efields"],["d-nature","t-cycles"],
+  ["d-business","t-socialent"],["d-business","t-circular"],["d-business","t-regenbiz"],
+  ["d-money","t-defi"],["d-money","t-impact"],["d-money","t-conscap"],["d-money","t-dao"],
+  ["d-money","t-crypto"],["d-money","t-wealth-mind"],["d-money","t-personal-finance"],
+  ["d-money","t-stocks"],["d-money","t-commodities"],["d-money","t-bitcoin"],
+  ["d-money","t-l1"],["d-money","t-l2"],["d-money","t-stablecoins"],["d-money","t-depin"],["d-money","t-nfts"],
+  ["d-meta","t-oneness"],["d-meta","t-source"],["d-meta","t-soul"],["d-meta","t-akashic"],
+  ["d-meta","t-dims"],["d-meta","t-vibration"],["d-meta","t-merkaba"],
+  ["d-lifestyle","t-nutrition"],["d-lifestyle","t-movement"],["d-lifestyle","t-sleep"],
+  ["d-lifestyle","t-plantmed"],["d-lifestyle","t-community"],["d-lifestyle","t-sustliving"],
+  ["d-creation","t-proddesign"],["d-creation","t-systems"],["d-creation","t-opensource"],
+  ["d-creation","t-cocreate"],["d-creation","t-emergence"],["d-creation","t-biomimicry"],
+  ["d-wellbeing","t-meditation"],["d-wellbeing","t-soundheal"],["d-wellbeing","t-breathwork"],
+  ["d-wellbeing","t-somatic"],["d-wellbeing","t-energyheal"],["d-wellbeing","t-yoga"],
+  ["d-wellbeing","t-mentalhlth"],
+  ["d-society","t-governance"],["d-society","t-indigenous"],["d-society","t-collective"],
+  ["d-society","t-socialmov"],["d-society","t-peace"],["d-society","t-futurecity"],["d-society","t-edusystem"],
+  ["d-communication","t-language"],["d-communication","t-speaking"],["d-communication","t-journalism"],
+  ["d-communication","t-socialmedia"],["d-communication","t-nvc"],
+  ["d-energy","t-renewable"],["d-energy","t-solar"],["d-energy","t-wind"],
+  ["d-energy","t-storage"],["d-energy","t-gridtech"],
+  ["d-food","t-regenfarm"],["d-food","t-permaculture"],["d-food","t-foodsystems"],
+  ["d-food","t-urbanfarm"],["d-food","t-cuisine"],
+  ["d-play","t-sports"],["d-play","t-gaming"],["d-play","t-outdoor"],
+  ["d-play","t-festivals"],["d-play","t-playcreat"],["d-play","t-humor"],
+  ["t-crypto","t-bitcoin"],["t-crypto","t-l1"],["t-crypto","t-defi"],
+  ["t-commodities","t-gold"],["t-commodities","t-oil"],["t-music","t-soundheal"],
+  ["t-neuro","t-meditation"],["t-quantum","t-oneness"],["t-ai","t-systems"],["t-blockchain","t-defi"],
+];
+
+const AUTUMN = ['#FF5E1A','#CC2020','#E8A800','#8B0000','#FF8C00'];
+
+const SVG_NS = 'http://www.w3.org/2000/svg';
+function mkSVG(tag, attrs={}, parent) {
+  const e = document.createElementNS(SVG_NS, tag);
+  for (const [k,v] of Object.entries(attrs)) e.setAttribute(k,v);
+  if (parent) parent.appendChild(e);
+  return e;
+}
+
+function hexOpacity(opacity) {
+  return Math.round(opacity * 255).toString(16).padStart(2,'0');
+}
+
+let CW, CH;
+const canvas = document.getElementById('bg');
+const ctx = canvas.getContext('2d');
+const svgEl = document.getElementById('tree');
+const tooltip = document.getElementById('tooltip');
+
+function resize() {
+  CW = window.innerWidth;
+  CH = window.innerHeight;
+  canvas.width = CW;
+  canvas.height = CH;
+  svgEl.setAttribute('viewBox', `0 0 ${CW} ${CH}`);
+}
+resize();
+window.addEventListener('resize', () => { resize(); buildTree(); });
+
+// Stars
+const stars = Array.from({length:120}, () => ({
+  x: Math.random(),
+  y: Math.random() * 0.55,
+  r: 0.4 + Math.random() * 0.8,
+  op: 0.08 + Math.random() * 0.22,
+}));
+
+// Falling leaves
+let leaves = [];
+function initLeaves() {
+  leaves = Array.from({length:60}, (_, i) => ({
+    x: Math.random() * CW,
+    y: Math.random() * CH,
+    vx: (Math.random()-0.5)*0.8,
+    vy: 0.6 + Math.random()*1.2,
+    angle: Math.random()*Math.PI*2,
+    spin: (Math.random()-0.5)*0.06,
+    color: AUTUMN[i%5],
+    w: 4+Math.random()*5,
+    h: 3+Math.random()*3,
+    opacity: 0.4+Math.random()*0.45,
+  }));
+}
+initLeaves();
+
+// Sap particles
+const sapParticles = Array.from({length:40}, () => ({
+  x: 0, y: 0,
+  vx: (Math.random()-0.5)*0.6,
+  vy: -(0.4 + Math.random()*0.8),
+  life: Math.random(),
+  maxLife: 0.6 + Math.random()*0.4,
+  r: 1 + Math.random()*2,
+}));
+
+function drawBackground(ts) {
+  ctx.clearRect(0,0,CW,CH);
+
+  // Sky gradient
+  const skyGrad = ctx.createLinearGradient(0,0,0,CH);
+  skyGrad.addColorStop(0, '#060210');
+  skyGrad.addColorStop(0.3, '#120818');
+  skyGrad.addColorStop(0.55, '#1E0C06');
+  skyGrad.addColorStop(0.78, '#280E04');
+  skyGrad.addColorStop(1, '#0C0602');
+  ctx.fillStyle = skyGrad;
+  ctx.fillRect(0,0,CW,CH);
+
+  // Stars
+  stars.forEach(s => {
+    const twinkle = s.op * (0.7 + 0.3 * Math.sin(ts*0.0007 + s.x*10));
+    ctx.beginPath();
+    ctx.arc(s.x*CW, s.y*CH, s.r, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(255,220,180,${twinkle})`;
+    ctx.fill();
+  });
+
+  // Horizon amber glow
+  const horizonGrad = ctx.createRadialGradient(CW*0.5, CH*0.82, 0, CW*0.5, CH*0.82, CW*0.55);
+  horizonGrad.addColorStop(0, 'rgba(200,80,10,0.28)');
+  horizonGrad.addColorStop(0.4, 'rgba(140,40,4,0.12)');
+  horizonGrad.addColorStop(1, 'rgba(0,0,0,0)');
+  ctx.fillStyle = horizonGrad;
+  ctx.fillRect(0,0,CW,CH);
+
+  // Falling leaves
+  leaves.forEach(lf => {
+    lf.x += lf.vx + Math.sin(ts*0.001 + lf.angle)*0.4;
+    lf.y += lf.vy;
+    lf.angle += lf.spin;
+    if (lf.y > CH+10) { lf.y = -10; lf.x = Math.random()*CW; }
+    ctx.save();
+    ctx.translate(lf.x, lf.y);
+    ctx.rotate(lf.angle);
+    ctx.beginPath();
+    ctx.ellipse(0,0,lf.w,lf.h,0,0,Math.PI*2);
+    ctx.fillStyle = lf.color + hexOpacity(lf.opacity);
+    ctx.fill();
+    ctx.restore();
+  });
+
+  // Sap particles rising from trunk base
+  const cx = CW*0.5;
+  const cy = CH*0.60;
+  sapParticles.forEach(p => {
+    p.x += p.vx;
+    p.y += p.vy;
+    p.life += 0.008;
+    if (p.life >= p.maxLife) {
+      p.x = cx + (Math.random()-0.5)*30;
+      p.y = cy + 20;
+      p.vx = (Math.random()-0.5)*0.6;
+      p.vy = -(0.4 + Math.random()*0.8);
+      p.life = 0;
+      p.maxLife = 0.6 + Math.random()*0.4;
+    }
+    const fade = 1 - (p.life / p.maxLife);
+    ctx.beginPath();
+    ctx.arc(p.x, p.y, p.r * fade, 0, Math.PI*2);
+    ctx.fillStyle = `rgba(240,120,20,${0.85 * fade})`;
+    ctx.fill();
+  });
+}
+
+// Layout engine
+const nodeMap = {};
+const branchPaths = [];
+
+function computeLayout() {
+  const cx = CW * 0.5;
+  const cy = CH * 0.60;
+
+  // Core
+  nodeMap['frqncy'] = { x: cx, y: cy };
+
+  // Main nodes — spread around centre
+  const mainNodes = NODES.filter(n => n.type === 'main');
+  const mainCount = mainNodes.length;
+  const mainYMin = CH * 0.42;
+  const mainYMax = CH * 0.62;
+  const mainXSpread = CW * 0.28;
+  mainNodes.forEach((n, i) => {
+    const t = mainCount === 1 ? 0.5 : i / (mainCount - 1);
+    nodeMap[n.id] = {
+      x: cx + (t * 2 - 1) * mainXSpread,
+      y: mainYMin + t * (mainYMax - mainYMin),
+    };
+  });
+
+  // Cluster nodes
+  const clusterNodes = NODES.filter(n => n.type === 'cluster');
+  const clusterCount = clusterNodes.length;
+  const clusterYMin = CH * 0.18;
+  const clusterYMax = CH * 0.40;
+  const clusterXSpread = CW * 0.43;
+  clusterNodes.forEach((n, i) => {
+    const t = clusterCount === 1 ? 0.5 : i / (clusterCount - 1);
+    nodeMap[n.id] = {
+      x: cx + (t * 2 - 1) * clusterXSpread,
+      y: clusterYMin + t * (clusterYMax - clusterYMin),
+    };
+  });
+
+  // Topic/subcluster nodes
+  const topicNodes = NODES.filter(n => n.type === 'topic' || n.type === 'subcluster');
+  const topicCount = topicNodes.length;
+  const topicYMin = CH * 0.06;
+  const topicYMax = CH * 0.34;
+  const topicXSpread = CW * 0.47;
+
+  // Group topics by their parent cluster for smarter spreading
+  const topicParents = {};
+  LINKS.forEach(([src, tgt]) => {
+    const srcNode = NODES.find(n => n.id === src);
+    const tgtNode = NODES.find(n => n.id === tgt);
+    if (!srcNode || !tgtNode) return;
+    if ((srcNode.type === 'cluster' || srcNode.type === 'subcluster') &&
+        (tgtNode.type === 'topic' || tgtNode.type === 'subcluster')) {
+      if (!topicParents[tgt]) topicParents[tgt] = [];
+      topicParents[tgt].push(src);
+    }
+  });
+
+  // Place topics near their parent cluster x positions
+  const placedTopics = {};
+  const clusterTopicLists = {};
+  clusterNodes.forEach(c => { clusterTopicLists[c.id] = []; });
+
+  topicNodes.forEach(n => {
+    const parents = topicParents[n.id] || [];
+    const parentCluster = parents.find(p => clusterNodes.some(c => c.id === p));
+    if (parentCluster) {
+      if (!clusterTopicLists[parentCluster]) clusterTopicLists[parentCluster] = [];
+      clusterTopicLists[parentCluster].push(n.id);
+    }
+  });
+
+  // Assign x zones per cluster
+  const sortedClusters = [...clusterNodes].sort((a,b) => nodeMap[a.id].x - nodeMap[b.id].x);
+  const clusterZones = {};
+  sortedClusters.forEach((c, ci) => {
+    const zoneW = (CW * 0.94) / clusterCount;
+    const zoneLeft = CW * 0.03 + ci * zoneW;
+    clusterZones[c.id] = { left: zoneLeft, width: zoneW };
+  });
+
+  // Position each topic within its parent cluster zone
+  const unparented = [];
+  topicNodes.forEach(n => {
+    const parents = topicParents[n.id] || [];
+    const parentCluster = parents.find(p => clusterNodes.some(c => c.id === p));
+    if (!parentCluster) { unparented.push(n); return; }
+    const zone = clusterZones[parentCluster];
+    if (!zone) { unparented.push(n); return; }
+    const siblings = clusterTopicLists[parentCluster];
+    const idx = siblings.indexOf(n.id);
+    const count = siblings.length;
+    const t = count === 1 ? 0.5 : idx / (count - 1);
+    const margin = Math.min(zone.width * 0.08, 20);
+    nodeMap[n.id] = {
+      x: zone.left + margin + t * (zone.width - margin*2),
+      y: topicYMin + (0.3 + Math.random() * 0.6) * (topicYMax - topicYMin),
+    };
+    placedTopics[n.id] = true;
+  });
+
+  // Fallback placement for unparented topics
+  unparented.forEach((n, i) => {
+    const t = unparented.length === 1 ? 0.5 : i / (unparented.length - 1);
+    nodeMap[n.id] = {
+      x: cx + (t * 2 - 1) * topicXSpread,
+      y: topicYMin + t * (topicYMax - topicYMin),
+    };
+  });
+}
+
+function curvePath(x1, y1, x2, y2) {
+  const dx = x2 - x1;
+  const dy = y2 - y1;
+  const mx = (x1 + x2) / 2;
+  const my = (y1 + y2) / 2 - Math.abs(dy) * 0.15 - Math.abs(dx) * 0.08;
+  return `M${x1},${y1} Q${mx},${my} ${x2},${y2}`;
+}
+
+function getTopicColor(nodeId) {
+  const idx = NODES.findIndex(n => n.id === nodeId);
+  return AUTUMN[((idx < 0 ? 0 : idx) % 5)];
+}
+
+function darken(hex, amount=0.3) {
+  const r = parseInt(hex.slice(1,3),16);
+  const g = parseInt(hex.slice(3,5),16);
+  const b = parseInt(hex.slice(5,7),16);
+  return `rgb(${Math.round(r*(1-amount))},${Math.round(g*(1-amount))},${Math.round(b*(1-amount))})`;
+}
+
+let dragging = null;
+
+function buildTree() {
+  while (svgEl.firstChild) svgEl.removeChild(svgEl.firstChild);
+  branchPaths.length = 0;
+
+  computeLayout();
+
+  const cx = CW * 0.5;
+  const cy = CH * 0.60;
+
+  // Defs
+  const defs = mkSVG('defs', {}, svgEl);
+
+  // Trunk gradient
+  const trunkGrad = mkSVG('linearGradient', {id:'trunk-grad', x1:'0%', y1:'0%', x2:'100%', y2:'0%'}, defs);
+  mkSVG('stop', {offset:'0%', 'stop-color':'rgba(45,18,4,0.88)'}, trunkGrad);
+  mkSVG('stop', {offset:'40%', 'stop-color':'rgba(92,40,8,0.76)'}, trunkGrad);
+  mkSVG('stop', {offset:'70%', 'stop-color':'rgba(160,80,28,0.28)'}, trunkGrad);
+  mkSVG('stop', {offset:'100%', 'stop-color':'rgba(45,18,4,0.88)'}, trunkGrad);
+
+  // Core ember gradient
+  const coreGrad = mkSVG('radialGradient', {id:'core-grad', cx:'50%', cy:'50%', r:'50%'}, defs);
+  mkSVG('stop', {offset:'0%', 'stop-color':'#CC6000'}, coreGrad);
+  mkSVG('stop', {offset:'50%', 'stop-color':'#7A2800'}, coreGrad);
+  mkSVG('stop', {offset:'100%', 'stop-color':'#2A0800'}, coreGrad);
+
+  // Cluster gradient
+  const clustGrad = mkSVG('linearGradient', {id:'clust-grad', x1:'0%', y1:'0%', x2:'0%', y2:'100%'}, defs);
+  mkSVG('stop', {offset:'0%', 'stop-color':'#8C3A10'}, clustGrad);
+  mkSVG('stop', {offset:'100%', 'stop-color':'#4A1A00'}, clustGrad);
+
+  // Main node gradient
+  const mainGrad = mkSVG('linearGradient', {id:'main-grad', x1:'0%', y1:'0%', x2:'0%', y2:'100%'}, defs);
+  mkSVG('stop', {offset:'0%', 'stop-color':'#5C2010'}, mainGrad);
+  mkSVG('stop', {offset:'100%', 'stop-color':'#280A00'}, mainGrad);
+
+  // Glow filter
+  const filter = mkSVG('filter', {id:'glow', x:'-50%', y:'-50%', width:'200%', height:'200%'}, defs);
+  const feGauss = mkSVG('feGaussianBlur', {in:'SourceGraphic', stdDeviation:'6', result:'blur'}, filter);
+  const feMerge = mkSVG('feMerge', {}, filter);
+  mkSVG('feMergeNode', {in:'blur'}, feMerge);
+  mkSVG('feMergeNode', {in:'SourceGraphic'}, feMerge);
+
+  // Subtle glow filter for topics
+  const filterSm = mkSVG('filter', {id:'glow-sm', x:'-80%', y:'-80%', width:'260%', height:'260%'}, defs);
+  mkSVG('feGaussianBlur', {in:'SourceGraphic', stdDeviation:'3', result:'blur'}, filterSm);
+  const feMergeSm = mkSVG('feMerge', {}, filterSm);
+  mkSVG('feMergeNode', {in:'blur'}, feMergeSm);
+  mkSVG('feMergeNode', {in:'SourceGraphic'}, feMergeSm);
+
+  // Layer groups
+  const rootsLayer = mkSVG('g', {id:'roots'}, svgEl);
+  const linksLayer = mkSVG('g', {id:'links'}, svgEl);
+  const nodesLayer = mkSVG('g', {id:'nodes'}, svgEl);
+
+  // Decorative roots
+  const rootsData = [
+    {cx: cx, spread:-0.32, depth:0.92},
+    {cx: cx, spread:-0.18, depth:0.88},
+    {cx: cx, spread:-0.06, depth:0.90},
+    {cx: cx, spread:0.07, depth:0.90},
+    {cx: cx, spread:0.20, depth:0.88},
+    {cx: cx, spread:0.34, depth:0.92},
+  ];
+  rootsData.forEach((rd, i) => {
+    const rx = cx + rd.spread * CW;
+    const ry = CH * rd.depth;
+    const cp1x = cx + (rd.spread * 0.4) * CW;
+    const cp1y = cy + (CH * rd.depth - cy) * 0.5;
+    const path = mkSVG('path', {
+      d: `M${cx},${cy+50} C${cp1x},${cp1y} ${(cx+rx)/2},${(cy+ry)/2} ${rx},${ry}`,
+      fill:'none',
+      stroke:'url(#trunk-grad)',
+      'stroke-width': 3 + (i%3),
+      opacity:'0.65',
+    }, rootsLayer);
+  });
+
+  // Draw links
+  LINKS.forEach(([srcId, tgtId]) => {
+    const s = nodeMap[srcId];
+    const t = nodeMap[tgtId];
+    if (!s || !t) return;
+
+    const srcNode = NODES.find(n => n.id === srcId);
+    const tgtNode = NODES.find(n => n.id === tgtId);
+    if (!srcNode || !tgtNode) return;
+
+    let strokeColor, strokeW, opacity;
+
+    if (srcNode.type === 'core' || tgtNode.type === 'core') {
+      strokeColor = 'rgba(160,80,28,0.55)';
+      strokeW = 2.5;
+      opacity = 0.7;
+    } else if (srcNode.type === 'main' || tgtNode.type === 'main') {
+      strokeColor = 'rgba(120,55,12,0.45)';
+      strokeW = 1.8;
+      opacity = 0.6;
+    } else if (srcNode.type === 'cluster' || tgtNode.type === 'cluster') {
+      strokeColor = 'rgba(90,35,8,0.38)';
+      strokeW = 1.2;
+      opacity = 0.5;
+    } else {
+      const tc = getTopicColor(tgtId);
+      strokeColor = tc + '55';
+      strokeW = 0.8;
+      opacity = 0.4;
+    }
+
+    const d = curvePath(s.x, s.y, t.x, t.y);
+    const path1 = mkSVG('path', {
+      d, fill:'none',
+      stroke: strokeColor,
+      'stroke-width': strokeW,
+      opacity: opacity,
+    }, linksLayer);
+
+    branchPaths.push({ src: srcId, tgt: tgtId, els: [path1] });
+  });
+
+  // Draw nodes
+  NODES.forEach((node, idx) => {
+    const pos = nodeMap[node.id];
+    if (!pos) return;
+
+    const g = mkSVG('g', {
+      'data-id': node.id,
+      transform: `translate(${pos.x},${pos.y})`,
+      style: 'cursor:grab',
+    }, nodesLayer);
+
+    if (node.type === 'core') {
+      // Outer glow ring
+      mkSVG('circle', {r: node.r + 18, fill:'rgba(200,80,10,0.12)', filter:'url(#glow)'}, g);
+      mkSVG('circle', {r: node.r + 10, fill:'rgba(180,60,5,0.18)'}, g);
+      // Main circle
+      mkSVG('circle', {r: node.r, fill:'url(#core-grad)', stroke:'rgba(240,140,30,0.7)', 'stroke-width':'2'}, g);
+      // Trunk visual connecting downward
+      mkSVG('rect', {
+        x: -12, y: node.r - 4,
+        width: 24, height: CH * 0.30,
+        fill:'url(#trunk-grad)',
+        rx:6,
+      }, g);
+      // Label
+      const label = mkSVG('text', {
+        'text-anchor':'middle',
+        'dominant-baseline':'middle',
+        fill:'#FFD090',
+        'font-size':'15',
+        'font-weight':'700',
+        'font-family':'system-ui,sans-serif',
+        'letter-spacing':'2',
+      }, g);
+      label.textContent = node.label;
+
+    } else if (node.type === 'main') {
+      mkSVG('circle', {r: node.r + 8, fill:'rgba(140,50,10,0.15)'}, g);
+      mkSVG('circle', {r: node.r, fill:'url(#main-grad)', stroke:'rgba(180,80,20,0.6)', 'stroke-width':'1.5'}, g);
+      const label = mkSVG('text', {
+        'text-anchor':'middle',
+        'dominant-baseline':'middle',
+        fill:'#E8A060',
+        'font-size':'10',
+        'font-weight':'600',
+        'font-family':'system-ui,sans-serif',
+      }, g);
+      label.textContent = node.label;
+
+    } else if (node.type === 'cluster') {
+      mkSVG('circle', {r: node.r + 6, fill:'rgba(100,35,5,0.12)'}, g);
+      mkSVG('circle', {r: node.r, fill:'url(#clust-grad)', stroke:'rgba(160,70,15,0.5)', 'stroke-width':'1.2'}, g);
+      const label = mkSVG('text', {
+        'text-anchor':'middle',
+        'dominant-baseline':'middle',
+        fill:'#D09050',
+        'font-size':'9',
+        'font-weight':'600',
+        'font-family':'system-ui,sans-serif',
+      }, g);
+      const labelText = node.label.length > 12 ? node.label.slice(0,10)+'…' : node.label;
+      label.textContent = labelText;
+
+    } else if (node.type === 'subcluster') {
+      mkSVG('circle', {r: node.r + 4, fill:'rgba(80,25,5,0.12)'}, g);
+      mkSVG('circle', {r: node.r, fill:'url(#clust-grad)', stroke:'rgba(150,65,12,0.5)', 'stroke-width':'1'}, g);
+      const label = mkSVG('text', {
+        'text-anchor':'middle',
+        'dominant-baseline':'middle',
+        fill:'#C07840',
+        'font-size':'8',
+        'font-weight':'600',
+        'font-family':'system-ui,sans-serif',
+      }, g);
+      label.textContent = node.label;
+
+    } else {
+      // Topic
+      const color = getTopicColor(node.id);
+      const darkColor = darken(color, 0.45);
+      // Glow behind
+      mkSVG('circle', {
+        r: node.r + 5,
+        fill: color + '22',
+        filter:'url(#glow-sm)',
+      }, g);
+      mkSVG('circle', {
+        r: node.r,
+        fill: darkColor,
+        stroke: color + 'BB',
+        'stroke-width':'1',
+      }, g);
+
+      // Label for topics (tiny, shown on hover via tooltip)
+      // Attach hover events for tooltip
+      g.addEventListener('mouseenter', (e) => {
+        tooltip.style.opacity = '1';
+        tooltip.textContent = node.label;
+      });
+      g.addEventListener('mousemove', (e) => {
+        tooltip.style.left = (e.clientX + 14) + 'px';
+        tooltip.style.top = (e.clientY - 8) + 'px';
+      });
+      g.addEventListener('mouseleave', () => {
+        tooltip.style.opacity = '0';
+      });
+    }
+
+    // Hover effects for all nodes
+    if (node.type !== 'topic') {
+      g.addEventListener('mouseenter', (e) => {
+        tooltip.style.opacity = '1';
+        tooltip.textContent = node.label;
+      });
+      g.addEventListener('mousemove', (e) => {
+        tooltip.style.left = (e.clientX + 14) + 'px';
+        tooltip.style.top = (e.clientY - 8) + 'px';
+      });
+      g.addEventListener('mouseleave', () => {
+        tooltip.style.opacity = '0';
+      });
+    }
+  });
+
+  // Drag
+  svgEl.addEventListener('pointerdown', e => {
+    const gg = e.target.closest('g[data-id]');
+    if (!gg) return;
+    dragging = gg.dataset.id;
+    svgEl.setPointerCapture(e.pointerId);
+    e.preventDefault();
+  }, {passive: false});
+
+  svgEl.addEventListener('pointermove', e => {
+    if (!dragging) return;
+    const rect = svgEl.getBoundingClientRect();
+    nodeMap[dragging].x = e.clientX - rect.left;
+    nodeMap[dragging].y = e.clientY - rect.top;
+    const dragG = document.querySelector(`g[data-id="${dragging}"]`);
+    if (dragG) dragG.setAttribute('transform', `translate(${nodeMap[dragging].x},${nodeMap[dragging].y})`);
+    updatePaths(dragging);
+  });
+
+  svgEl.addEventListener('pointerup', () => { dragging = null; });
+}
+
+function updatePaths(id) {
+  branchPaths.forEach(bp => {
+    if (bp.src !== id && bp.tgt !== id) return;
+    const s = nodeMap[bp.src];
+    const t = nodeMap[bp.tgt];
+    if (!s || !t) return;
+    const d = curvePath(s.x, s.y, t.x, t.y);
+    bp.els.forEach(e => e.setAttribute('d', d));
+  });
+}
+
+// Animation loop
+let animId;
+function animate(ts) {
+  drawBackground(ts);
+  animId = requestAnimationFrame(animate);
+}
+
+buildTree();
+requestAnimationFrame(animate);
+</script>
+</body>
+</html>
