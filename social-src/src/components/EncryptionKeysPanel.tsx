@@ -83,9 +83,136 @@ export default function EncryptionKeysPanel() {
   // Pending parsed v2 blob waiting for passphrase decryption.
   const [pendingImportBlob, setPendingImportBlob] = useState<any | null>(null);
 
+  // Nostr identity (optional federation surface). See
+  // proposals/NRG-EXPERT-CRITIQUE-2026-05-14.md Tier 2 #11 + Nostr expert
+  // critique. The private key is held in localStorage; the public key + opt-in
+  // flag persist to profiles.nostr_pubkey + nostr_publish_enabled
+  // (supabase/migrations/021_nostr_publish.sql). Generation is gated behind
+  // an explicit user click — never auto-generated.
+  const NOSTR_LS_KEY = 'frqncy.nrg.nostr.privkey';
+  const [nostrNpub, setNostrNpub] = useState<string | null>(null);
+  const [nostrEnabled, setNostrEnabled] = useState<boolean>(false);
+  const [nostrBusy, setNostrBusy] = useState(false);
+  const [nostrMessage, setNostrMessage] = useState('');
+  const [nostrError, setNostrError] = useState(false);
+  const [nostrConfirmRegen, setNostrConfirmRegen] = useState('');
+
   useEffect(() => {
     setHasLocalKey(!!loadPrivateKeyLocal());
   }, [profile]);
+
+  // Hydrate Nostr identity state from the profile row + localStorage.
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    const pub = (profile as any)?.nostr_pubkey ?? null;
+    const enabled = !!(profile as any)?.nostr_publish_enabled;
+    setNostrEnabled(enabled);
+    if (pub) {
+      // Lazy-import to avoid loading the bech32/secp256k1 helper module on
+      // panels that don't need it.
+      import('../lib/nostr-publish').then((mod) => {
+        try {
+          setNostrNpub(mod.publicKeyToNpub(pub));
+        } catch {
+          setNostrNpub(null);
+        }
+      });
+    } else {
+      setNostrNpub(null);
+    }
+  }, [profile]);
+
+  const handleGenerateNostr = async () => {
+    if (!user) return;
+    setNostrBusy(true);
+    setNostrMessage('');
+    setNostrError(false);
+    try {
+      const mod = await import('../lib/nostr-publish');
+      const result = await mod.generateNostrKeypair();
+      if (!('publicKeyHex' in result)) {
+        setNostrError(true);
+        setNostrMessage(
+          `Couldn't generate a Nostr key: ${result.reason}. Run \`npm install @noble/curves@^1.4.0\` in social-src/ to enable Nostr publishing.`,
+        );
+        return;
+      }
+      // Persist private key to localStorage (browser-only, never to the server)
+      window.localStorage.setItem(NOSTR_LS_KEY, result.privateKeyHex);
+      // Write pubkey + enable opt-in to profiles
+      const { error } = await supabase
+        .from('profiles')
+        .update({ nostr_pubkey: result.publicKeyHex, nostr_publish_enabled: true })
+        .eq('id', user.id);
+      if (error) {
+        setNostrError(true);
+        setNostrMessage(`Saved locally, but profile update failed: ${error.message}. Apply migration 021 in Supabase.`);
+        return;
+      }
+      setNostrNpub(result.npub);
+      setNostrEnabled(true);
+      setNostrMessage('Nostr identity generated. Your posts will now also publish to relay.damus.io, nos.lol, relay.snort.social.');
+    } catch (e: any) {
+      setNostrError(true);
+      setNostrMessage(e?.message || 'Nostr keygen failed.');
+    } finally {
+      setNostrBusy(false);
+    }
+  };
+
+  const handleToggleNostr = async (next: boolean) => {
+    if (!user) return;
+    setNostrBusy(true);
+    setNostrMessage('');
+    setNostrError(false);
+    try {
+      const { error } = await supabase
+        .from('profiles')
+        .update({ nostr_publish_enabled: next })
+        .eq('id', user.id);
+      if (error) {
+        setNostrError(true);
+        setNostrMessage(error.message);
+        return;
+      }
+      setNostrEnabled(next);
+      setNostrMessage(next ? 'Nostr publishing enabled.' : 'Nostr publishing paused. Your identity stays — flip it back any time.');
+    } finally {
+      setNostrBusy(false);
+    }
+  };
+
+  const handleRegenNostr = async () => {
+    if (!user || nostrConfirmRegen !== 'regenerate') return;
+    setNostrBusy(true);
+    setNostrMessage('');
+    setNostrError(false);
+    try {
+      const mod = await import('../lib/nostr-publish');
+      const result = await mod.generateNostrKeypair();
+      if (!('publicKeyHex' in result)) {
+        setNostrError(true);
+        setNostrMessage(`Regen failed: ${result.reason}`);
+        return;
+      }
+      window.localStorage.setItem(NOSTR_LS_KEY, result.privateKeyHex);
+      const { error } = await supabase
+        .from('profiles')
+        .update({ nostr_pubkey: result.publicKeyHex, nostr_publish_enabled: true })
+        .eq('id', user.id);
+      if (error) {
+        setNostrError(true);
+        setNostrMessage(error.message);
+        return;
+      }
+      setNostrNpub(result.npub);
+      setNostrEnabled(true);
+      setNostrConfirmRegen('');
+      setNostrMessage('Regenerated. Old npub no longer signs posts.');
+    } finally {
+      setNostrBusy(false);
+    }
+  };
 
   if (loading) {
     return <p class="text-sm text-text-dim">Loading…</p>;
@@ -564,6 +691,94 @@ export default function EncryptionKeysPanel() {
         <p class="mt-2">
           Backups are wrapped with Argon2id-derived encryption using a passphrase you choose. FRQNCY never sees the passphrase and cannot recover it. v1 has no forward secrecy: compromising your private key reveals every past message. v2 will add Signal-style ratcheting. See{' '}
           <a href="https://github.com/0rli-E/frqncy-website/blob/main/social-src/E2EE-NOTES.md" class="underline hover:text-gold">E2EE-NOTES.md</a>.
+        </p>
+      </div>
+
+      {/* ─── Nostr identity (optional federation surface) ─────────────── */}
+      <div class="mt-6 rounded-xl border border-card-border bg-card-bg p-5">
+        <div class="flex items-start justify-between gap-3 mb-3">
+          <div>
+            <p class="font-medium text-text">Nostr publishing</p>
+            <p class="text-xs text-text-dim mt-0.5">optional · federation surface</p>
+          </div>
+          {nostrNpub ? (
+            <span class={`text-[10px] uppercase tracking-wider px-2 py-1 rounded ${nostrEnabled ? 'bg-gold/10 text-gold border border-gold/30' : 'bg-card-bg text-text-dim border border-card-border'}`}>
+              {nostrEnabled ? 'live' : 'paused'}
+            </span>
+          ) : null}
+        </div>
+
+        {!nostrNpub ? (
+          <>
+            <p class="text-sm text-text-dim leading-relaxed mb-3">
+              Generate a Nostr identity to also publish your posts to public relays (relay.damus.io, nos.lol, relay.snort.social). This is a separate secp256k1 keypair from your libsodium messaging keys — it lives in your browser only.
+            </p>
+            <button
+              type="button"
+              onClick={handleGenerateNostr}
+              disabled={nostrBusy}
+              class="px-4 py-2 text-sm rounded-lg bg-gold/15 border border-gold/40 text-gold hover:bg-gold/25 disabled:opacity-50 transition-colors"
+            >
+              {nostrBusy ? 'Generating…' : 'Generate Nostr identity'}
+            </button>
+          </>
+        ) : (
+          <>
+            <p class="text-sm text-text-dim mb-2">
+              Your Nostr public identifier (anyone can use this to find your published posts on Nostr clients):
+            </p>
+            <div class="font-mono text-xs text-gold bg-navy-mid border border-card-border rounded-lg p-3 mb-3 break-all select-all">
+              {nostrNpub}
+            </div>
+
+            <div class="flex flex-wrap gap-2 items-center">
+              <button
+                type="button"
+                onClick={() => handleToggleNostr(!nostrEnabled)}
+                disabled={nostrBusy}
+                class="px-3 py-1.5 text-xs rounded-lg border border-card-border text-text hover:border-gold/40 disabled:opacity-50 transition-colors"
+              >
+                {nostrEnabled ? 'Pause publishing' : 'Resume publishing'}
+              </button>
+
+              <details class="text-xs">
+                <summary class="cursor-pointer text-text-dim hover:text-text transition-colors px-2 py-1.5">
+                  Regenerate
+                </summary>
+                <div class="mt-2 p-3 rounded-lg border border-amber/30 bg-amber/5">
+                  <p class="text-xs text-text-dim mb-2 leading-relaxed">
+                    Generates a fresh secp256k1 keypair. <span class="text-amber">Your old npub stops signing posts</span>, but past Nostr-published events stay on relays under the old identifier. Type <span class="text-gold font-mono">regenerate</span> to confirm.
+                  </p>
+                  <div class="flex gap-2">
+                    <input
+                      type="text"
+                      value={nostrConfirmRegen}
+                      onInput={(e) => setNostrConfirmRegen((e.target as HTMLInputElement).value)}
+                      placeholder="type regenerate"
+                      class="flex-1 px-3 py-1.5 text-xs bg-navy-mid border border-card-border rounded-lg text-text placeholder-text-dim focus:outline-none focus:border-amber/50"
+                    />
+                    <button
+                      type="button"
+                      onClick={handleRegenNostr}
+                      disabled={nostrBusy || nostrConfirmRegen !== 'regenerate'}
+                      class="px-3 py-1.5 text-xs rounded-lg bg-amber/15 border border-amber/40 text-amber hover:bg-amber/25 disabled:opacity-30 transition-colors"
+                    >
+                      Regenerate
+                    </button>
+                  </div>
+                </div>
+              </details>
+            </div>
+          </>
+        )}
+
+        {nostrMessage && (
+          <p class={`mt-3 text-xs leading-relaxed ${nostrError ? 'text-amber' : 'text-text-dim'}`}>{nostrMessage}</p>
+        )}
+
+        <p class="mt-3 text-[11px] text-text-dim leading-relaxed border-t border-card-border pt-3 opacity-75">
+          Posts publish to relays after you create them. There is no fan-out for past posts. Disable any time — your identity stays.{' '}
+          <a href="https://github.com/nostr-protocol/nips/blob/master/19.md" class="underline hover:text-gold" target="_blank" rel="noopener noreferrer">NIP-19</a> bech32 encoding · BIP-340 schnorr signatures.
         </p>
       </div>
 

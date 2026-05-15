@@ -3,6 +3,7 @@ import { useAuth } from './AuthProvider';
 import { supabase } from '../lib/supabase';
 import ChatWindow from './ChatWindow';
 import StartGroupConversation from './StartGroupConversation';
+import SetupSecureDMs, { SKIP_LS_KEY as DM_SETUP_SKIP_KEY } from './SetupSecureDMs';
 
 interface OtherUser {
   id: string;
@@ -32,11 +33,20 @@ function timeAgo(dateStr: string | null): string {
 }
 
 export default function ConversationsList() {
-  const { user, loading: authLoading } = useAuth();
+  const { user, loading: authLoading, encryptionStatus } = useAuth();
   const [conversations, setConversations] = useState<ConversationRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [selectedId, setSelectedId] = useState<string | null>(null);
   const [showStartGroup, setShowStartGroup] = useState(false);
+  const [showSetupModal, setShowSetupModal] = useState(false);
+  // Read the skip-flag once on mount so the inline banner softens (less
+  // aggressive copy) for users who already dismissed the prompt. Live state
+  // re-flips when the user actually completes setup (encryptionStatus -> ready).
+  const [setupSkipped, setSetupSkipped] = useState(false);
+  useEffect(() => {
+    if (typeof window === 'undefined') return;
+    setSetupSkipped(window.localStorage.getItem(DM_SETUP_SKIP_KEY) === '1');
+  }, []);
 
   // Honor ?c=<id> (StartConversationButton, 1:1) and ?cid=<id>
   // (StartGroupConversation, group chats) so either deep-link works.
@@ -175,8 +185,75 @@ export default function ConversationsList() {
     );
   }
 
+  // Inline encryption-status banner. Surfaces once the user is signed in and
+  // their state is one of:
+  //   not-set-up           → primary CTA opens SetupSecureDMs modal
+  //   new-device-import    → link out to /social/profile/keys/ to import backup
+  // Softens to a subtle reminder when the user has previously skipped.
+  const renderEncryptionBanner = () => {
+    if (!user) return null;
+    if (encryptionStatus === 'ready' || encryptionStatus === 'unknown') return null;
+    if (encryptionStatus === 'new-device-import-needed') {
+      return (
+        <div class="mb-4 p-4 rounded-xl border border-amber/40 bg-amber/5 flex items-start gap-3">
+          <span class="text-amber text-lg leading-none mt-0.5" aria-hidden="true">⚠</span>
+          <div class="flex-1">
+            <div class="text-sm text-text font-medium mb-1">Your encryption key isn't on this device</div>
+            <p class="text-xs text-text-dim leading-relaxed mb-2">
+              You have a profile key but no private key locally — your past DMs can't be read until you import your backup.
+            </p>
+            <a href="/social/profile/keys/" class="text-xs text-gold border-b border-gold/30 hover:border-gold transition-colors">
+              Import keys backup →
+            </a>
+          </div>
+        </div>
+      );
+    }
+    // not-set-up
+    const soft = setupSkipped;
+    return (
+      <div class={`mb-4 p-4 rounded-xl border ${soft ? 'border-card-border bg-card-bg/60' : 'border-gold/40 bg-gold/5'} flex items-start gap-3`}>
+        <span class={`text-lg leading-none mt-0.5 ${soft ? 'text-text-dim' : 'text-gold'}`} aria-hidden="true">{soft ? '✦' : '◊'}</span>
+        <div class="flex-1">
+          <div class="text-sm text-text font-medium mb-1">
+            {soft ? 'Messages are unencrypted' : 'Set up secure DMs'}
+          </div>
+          <p class="text-xs text-text-dim leading-relaxed mb-2">
+            {soft
+              ? 'You opted out of end-to-end encryption. You can enable it any time.'
+              : "End-to-end encrypt your messages so even FRQNCY's servers can't read them. Takes a few seconds."}
+          </p>
+          <button
+            type="button"
+            onClick={() => setShowSetupModal(true)}
+            class={`text-xs ${soft ? 'text-gold/80 border-b border-gold/20 hover:border-gold/60' : 'text-gold border-b border-gold/40 hover:border-gold'} transition-colors`}
+          >
+            {soft ? 'Enable encryption →' : 'Set up secure DMs →'}
+          </button>
+        </div>
+      </div>
+    );
+  };
+
   return (
     <>
+    {renderEncryptionBanner()}
+    {showSetupModal && (
+      <SetupSecureDMs
+        isModal
+        onComplete={() => {
+          setShowSetupModal(false);
+          setSetupSkipped(false);
+        }}
+        onCancel={() => {
+          setShowSetupModal(false);
+          // SetupSecureDMs writes SKIP_LS_KEY itself on the skip path; re-read.
+          if (typeof window !== 'undefined') {
+            setSetupSkipped(window.localStorage.getItem(DM_SETUP_SKIP_KEY) === '1');
+          }
+        }}
+      />
+    )}
     <div class="grid grid-cols-1 md:grid-cols-12 gap-0 rounded-xl border border-card-border overflow-hidden" style="min-height: 60vh;">
       {/* Conversations list */}
       <div class="md:col-span-4 bg-card-bg border-r border-card-border">
