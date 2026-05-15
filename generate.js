@@ -2267,9 +2267,16 @@ if (PLACES) {
     fs.writeFileSync(path.join(PLACES_OUT, slug, 'index.html'), placePage(pl));
     placeCount++;
   }
-  fs.writeFileSync(path.join(PLACES_OUT, 'index.html'),
-    entityIndexPage({ label: 'Places', eyebrow: 'Place', entities: PLACES.places, slugFn: placeSlug, canonicalPath: '/places/', showFilters: false }));
-  console.log(`  places: ${placeCount} profiles + 1 index → ./places/`);
+  // Hub-style listing lives at /places/all/ when the canonical /places/
+  // is bespoke (canonical 6-slide domain page). Otherwise write the hub
+  // to /places/ as before.
+  const placesHubPath = BESPOKE_DOMAINS.has('places')
+    ? path.join(PLACES_OUT, 'all', 'index.html')
+    : path.join(PLACES_OUT, 'index.html');
+  if (BESPOKE_DOMAINS.has('places')) mkdirp(path.join(PLACES_OUT, 'all'));
+  fs.writeFileSync(placesHubPath,
+    entityIndexPage({ label: 'Places', eyebrow: 'Place', entities: PLACES.places, slugFn: placeSlug, canonicalPath: BESPOKE_DOMAINS.has('places') ? '/places/all/' : '/places/', showFilters: false }));
+  console.log(`  places: ${placeCount} profiles + 1 ${BESPOKE_DOMAINS.has('places') ? 'hub at /places/all/' : 'index'} → ./places/`);
 }
 
 // ── SITEMAP ──────────────────────────────────────────────────────
