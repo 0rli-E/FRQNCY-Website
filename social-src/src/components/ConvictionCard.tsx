@@ -121,7 +121,7 @@ export default function ConvictionCard({
           <div class="text-[11px] text-text-dim">
             {authorUsername ? (
               <a
-                href={`/social/profile/${authorUsername}`}
+                href={`/social/u/${authorUsername}`}
                 class="hover:text-gold transition-colors"
               >
                 @{authorUsername}

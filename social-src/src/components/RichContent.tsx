@@ -25,7 +25,7 @@ export default function RichContent({ text }: RichContentProps) {
             return (
               <a
                 key={i}
-                href={`/social/profile/${seg.username}`}
+                href={`/social/u/${seg.username}`}
                 class="text-gold hover:text-gold-light transition-colors"
               >@{seg.username}</a>
             );

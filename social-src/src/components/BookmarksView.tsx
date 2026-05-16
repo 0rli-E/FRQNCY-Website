@@ -102,7 +102,7 @@ export default function BookmarksView() {
           >
             <header class="flex items-center gap-3 mb-3">
               <a
-                href={author ? `/social/profile/${author.username}` : '#'}
+                href={author ? `/social/u/${author.username}` : '#'}
                 class="w-10 h-10 rounded-full bg-navy-mid overflow-hidden border border-card-border flex-shrink-0"
               >
                 {author?.avatar_url ? (
@@ -115,7 +115,7 @@ export default function BookmarksView() {
               </a>
               <div class="min-w-0 flex-1">
                 <a
-                  href={author ? `/social/profile/${author.username}` : '#'}
+                  href={author ? `/social/u/${author.username}` : '#'}
                   class="font-heading text-text hover:text-gold truncate block"
                 >
                   {author?.display_name || author?.username || 'Anonymous'}

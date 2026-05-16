@@ -53,7 +53,7 @@ function notifText(n: NotificationRow): string {
 function notifHref(n: NotificationRow): string | null {
   switch (n.type) {
     case 'follow':
-      return n.actor?.username ? `/social/profile/${n.actor.username}` : null;
+      return n.actor?.username ? `/social/u/${n.actor.username}` : null;
     case 'message':
       return '/social/messages';
     case 'like':

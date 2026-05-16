@@ -71,21 +71,22 @@
 /social/pages/*         /404.html 404
 /social/chunks/*        /404.html 404
 
-# Static profile sub-pages must be matched BEFORE the dynamic catchall —
-# CF Pages _redirects are first-match-wins, and the /social/profile/* pattern
-# below otherwise swallows real static files (/keys/, /connections/,
-# /bluesky-callback/, the OAuth client metadata JSON).
-/social/profile/keys              /social/profile/keys/index.html             200
-/social/profile/keys/             /social/profile/keys/index.html             200
-/social/profile/connections       /social/profile/connections/index.html      200
-/social/profile/connections/      /social/profile/connections/index.html      200
-/social/profile/bluesky-callback  /social/profile/bluesky-callback/index.html 200
-/social/profile/bluesky-callback/ /social/profile/bluesky-callback/index.html 200
-/social/profile/bluesky-oauth-client.json /social/profile/bluesky-oauth-client.json 200
+# Dynamic user-profile route — now under /social/u/ so it cannot collide
+# with the static settings sub-pages of /social/profile/ (keys, connections,
+# bluesky-callback, bluesky-oauth-client.json). The previous catchall
+# /social/profile/* hijacked those static files because CF Pages applies
+# redirects-with-status=200 before serving static files of the same path.
+# By moving the dynamic route under a separate prefix, the catchall and
+# the static files can coexist cleanly.
+/social/u/*             /social/profile/index.html 200
 
-# Dynamic profile route — serve the same shell for any username (must come
-# AFTER the explicit static rules above)
-/social/profile/*       /social/profile/index.html 200
+# 301 legacy /social/profile/<username> → /social/u/<username> so inbound
+# links keep working. This is a 3xx redirect (not a 200 rewrite), so per
+# CF Pages docs static assets at the matching path (/keys/index.html,
+# /connections/index.html, /bluesky-callback/index.html, the OAuth JSON)
+# take precedence — only bare-username URLs hit this rule.
+/social/profile/u/*     /social/u/:splat 301
+/social/profile/*       /social/u/:splat 301
 
 # Dynamic channel route — same shell for every channel slug. The Astro build
 # emits /social/channel/<seed>/index.html for the seeds in getStaticPaths;

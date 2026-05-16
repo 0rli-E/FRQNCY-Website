@@ -11,8 +11,13 @@ import { getProfile, type Profile } from '../lib/api';
 /**
  * ProfilePage — reads @username from the URL client-side, then renders the
  * full profile view. Lets us ship this page via pure static output:
- * _redirects rewrites /social/profile/:username → /social/profile/index.html
- * and this component reads the username from window.location.pathname.
+ * _redirects rewrites /social/u/:username → /social/profile/index.html
+ * (moved from /social/profile/:username to avoid catchall collisions with
+ *  the real static settings sub-pages /social/profile/{keys,connections,
+ *  bluesky-callback,bluesky-oauth-client.json} — see _redirects comment).
+ * This component reads the username from window.location.pathname and
+ * tolerates both the new /social/u/<name> and the legacy
+ * /social/profile/<name> URL during the migration window.
  */
 export default function ProfilePage() {
   const [username, setUsername] = useState<string | null>(null);
@@ -22,11 +27,15 @@ export default function ProfilePage() {
   const { user } = useAuth();
 
   useEffect(() => {
-    // Extract :username from /social/profile/:username (trailing slash tolerant)
+    // Extract :username from /social/u/:username OR /social/profile/:username
+    // (trailing slash tolerant). Skip the special static sub-pages of
+    // /social/profile/ (keys/connections/bluesky-callback) which should not
+    // be interpreted as usernames if the legacy path is hit somehow.
     const path = window.location.pathname.replace(/\/+$/, '');
     const parts = path.split('/');
     const last = parts[parts.length - 1];
-    if (last && last !== 'profile' && last !== 'index.html') {
+    const stop = new Set(['', 'u', 'profile', 'index.html', 'keys', 'connections', 'bluesky-callback']);
+    if (last && !stop.has(last)) {
       setUsername(decodeURIComponent(last));
     } else {
       setUsername('');
