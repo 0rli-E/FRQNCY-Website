@@ -1,0 +1,93 @@
+# Sanctuary — Morning Open (the first five seconds)
+
+**Author:** Senior product designer (Headspace Today, Calm Daily Move, Apple Sleep + Wind Down)
+**Date:** 2026-05-16
+**Surface:** `/my-frqncy/dashboard/` at 390×844, opened cold at 6 AM
+**Companion docs:** `SANCTUARY-DAILY-FLOW-2026-05-16.md` · `SANCTUARY-ROADMAP.md` · `FRQNCY-VOICE-PLAYBOOK.md`
+
+---
+
+## The frame
+
+A morning-open is not a homescreen. It's a threshold — the user has just chosen, half-asleep, to look at *this* before email, before social, before the news. The reward for that choice has to land before the eyes adjust. The five-second test (Maze, Lyssna) is the canonical way to evaluate it: show the screen for five seconds, then ask what the user remembers, what they think the app is *for*, and what one action it invites. If the answer is "a menu," the morning is already lost.
+
+Right now the Sanctuary at 390×844 surfaces, in order: a fixed nav, an "Your Sanctuary" hero with three buttons (Illuminator / Export / Import), a privacy banner with a Saved indicator, a five-tab tablist, and *then* — below the fold for an empty-state user — a four-tier first-pass card. For a returning user the first viewport is the Today panel (italic date, "What is today's intention?" prompt, yesterday's intention, habits chips, milestones). The Today panel is good. Almost everything above it is not earning its pixels at 6 AM.
+
+---
+
+## 1. The five-second test — what the Sanctuary should surface
+
+At 6 AM, the first viewport should answer three questions in one glance: *where am I, what is asked of me, and what did yesterday-me leave for today-me?* Everything else is below the fold and reachable, not surfaced.
+
+The answer should not be a dashboard. It should be a single sentence the user can read, a single line they can write, and a single thread back to yesterday. The brand's "remembrance, not instruction" rule maps cleanly onto this — the morning surface mirrors the user back to themselves, it does not assign work.
+
+Concretely, the five-second recall target:
+- Date and a soft welcome.
+- One prompt (the intention line).
+- One trace of yesterday (their own words, not the app's).
+- One quiet acknowledgment of any practice already underway.
+- No counters, no rings, no streak-as-status, no menu.
+
+A user who passed this five-second test should walk away with: "this is a quiet place that remembers me, asks one thing, and waits."
+
+---
+
+## 2. How peer apps handle that first frame
+
+**Calm.** Opens to a Daily Calm card (a single 10-minute guided session that rotates by theme), then a Weekly Progress Goal tracker. The single-card morning anchor works — it solves the choice-paralysis that the rest of Calm's catalogue creates. The Weekly Progress goal is the gamified-trap part; recent reviews note that the home screen "lacks a defined starting place" once you scroll past the card. *Borrow:* the single-anchor card. *Drop:* the weekly progress ring.
+
+**Headspace.** Recently moved to a "Today" tab that splits content by Morning / Day / Night with two or three relevant recommendations per band. The time-of-day banding is correct and worth borrowing. But user reviews from Aug–Dec 2025 call the home "very overwhelming," "a disaster," "so cluttered" — because the bands still surface 6–8 cards each. The lesson is structural: time-banding good, density bad.
+
+**Insight Timer.** Opens to a five-tab nav (For You / Plus / Explore / Community / Library), a notification bar, a six-tile category grid, a "For your mood" picker, and a featured carousel — all before any recall of yesterday. It is the cautionary tale. Choice-as-content. The morning user bounces to YouTube.
+
+**Oak.** The opposite extreme — a near-empty home, a few lozenges for recent practices, generous whitespace. 4.8★ average. Users explicitly praise the lack of "moving parts or tracking variables." This is the closest peer to FRQNCY's voice constraints, and the strongest evidence that *less* outperforms *more* in the 6 AM use case.
+
+**Apple Health Today.** Native Today tab surfaces a curated stack of cards (sleep last night, walking + steps, mindful minutes). It uses the user's *own* data as the content, not editorial. The morning user opens it and sees their night. *Borrow:* the "your own data is the surface" pattern.
+
+**Things 3 Today.** Opens to a list of what you put there yesterday, plus today's calendar events grouped at the top. No streak counters. No motivational copy. No suggestions. The aesthetic is "your plan is already here, you just have to look." This is the cleanest expression of *trust the user* on the App Store. *Borrow:* the no-suggestion, no-recommendation, no-coaching tone.
+
+**Stoic.** Daily Check-In at the top, then customisable cards (favourites, quotes, exercises). Dynamic greetings rotate. The morning slot is a single mood-and-line check-in — small surface, big return rate. *Borrow:* the single-question morning. *Drop:* the dynamic greeting (it reads as autogenerated; "rotating greetings" is exactly what FRQNCY voice rules out as default-template language).
+
+**Reflectly.** Mood slider, daily challenge ("draw a picture," "say three affirmations"), motivational quote, instant theme-change reward. Reviewer note: "There's a slight awkwardness after the first mood check-in" — the app fires three reward animations in a row and the user disengages. This is what gamified-trap looks like when it's pretending to be a journal. Avoid wholesale.
+
+**Apple Watch Good Morning.** After the alarm dismisses, the watch shows time, weather, battery, calendar — four facts, no actions. The user has zero work to do to receive the morning summary. *Borrow:* the absolute restraint. No CTAs. No "begin your day" buttons. Just facts and a soft surface.
+
+The pattern across the wins (Oak, Things 3, Apple Watch Good Morning, Stoic's check-in slot) is consistent: one prompt, the user's own material, no choice menu, no recommendation engine, no metric-as-identity. The pattern across the losses (Insight Timer, late-2025 Headspace, Reflectly) is also consistent: density, recommendations, gamified return loops.
+
+---
+
+## 3. Six proposals for the Sanctuary's morning-open state
+
+**3.1 Promote the Today card above the nav, hide the hero on return visits.** A returning user should not see "Your Sanctuary · Dream · chief aim · objectives · goals · daily practice — held in one place" every morning. The hero is onboarding copy; show it on first visit, hide it after the user has any state, surface a slim date strip in its place. The Today card becomes the first viewport content.
+
+**3.2 Lead with the intention prompt, not the date.** Currently the Today card renders date → intention label → intention input. Invert: a Cormorant-italic prompt as the first thing the user reads ("What does today serve?") with the date demoted to a small italic line above. The prompt is the contract; the date is metadata.
+
+**3.3 Show yesterday's intention *before* asking for today's.** Today the card asks for today's intention first and renders yesterday's only if it exists. For a returning user this is backwards — the bridge between days is what makes the surface a *practice* and not a form. Order: yesterday's intention (one line, italic) → "What did yesterday serve?" reflection (optional, small) → "What does today serve?" (new intention). The user always meets themselves before they meet a blank field.
+
+**3.4 Replace the Scoreboard placeholder in the empty state with a one-line nudge that doesn't ask.** The current "name your first chief aim" card is a dashed-border invitation that occupies a full card slot. For a 6 AM new user it reads as homework. Replace with a single italic line at the bottom of the Today card: *"When you're ready, you can name a chief aim in the Goal Pyramid."* No card, no border, no CTA. The Pyramid tab is one tap away — that's enough.
+
+**3.5 Cap the morning surface at four elements, full stop.** Today card body should contain, in this order and nothing else: yesterday's intention (if any), reflection prompt (if intention exists), today's intention input, today's practice chips. Hide goal chips, milestones, and the Recommended Memberships block below the fold of the second screen. This is the Oak / Things 3 lesson: the user scrolls *if they want to*, the morning surface does not present them with a buffet.
+
+**3.6 Adopt a time-of-day register without a time-of-day algorithm.** Headspace's banded copy is good in concept and bad in execution because the bands push content. Steal the register, not the recommendations. Between 5 AM and 11 AM local time, the Today card's prompt reads *"What does today serve?"*; between 11 AM and 5 PM, *"How is today going?"*; between 5 PM and bed, *"What did today serve?"* Same field, same data shape, different framing. The user feels met by the time of day without the surface ever recommending anything.
+
+---
+
+## 4. Anti-patterns to avoid
+
+**Duolingo's start-page nag.** Streaks-in-danger, sad-mascot push notifications, "your family will be upset" copy. The Sanctuary already encodes the inverse rule ("a skipped day resets the count silently") — keep it, and add: no morning-open animation that draws the eye to a streak counter. Streak language is reserved for milestone moments inside the Today card (the existing "Quiet, repeated devotion is the work." pattern is exactly right) and never appears in nav, never as a number-as-headline, never as a comparison.
+
+**Notion's blank canvas freeze.** A 6 AM user staring at an empty Pyramid is the worst version of the Sanctuary. The fix is *not* templates (that's Notion's solve; it imports someone else's voice into the user's room). The fix is reducing the morning surface so the empty state isn't visible at all — the Today card with an intention input is never blank because it's a question, not a canvas. The four-tier first-pass coaching card is correct for first-run *only*; hide it the moment the user has any state.
+
+**Reflectly's reward stack.** Three congratulations in a row after one input. Don't celebrate a saved intention. The save indicator already exists and is the right scale ("Saved" in nav). No toasts, no animations, no haptic confirmation of writing a line. The user wrote a sentence; that is its own event.
+
+**Insight Timer's menu-as-home.** Five tabs above the fold is the current Sanctuary's biggest morning-open liability. Consider moving the tablist to a thinner secondary row directly above the Today card (or below the first viewport entirely on mobile), so the first scroll-position content is the user's own writing and not a navigation choice. The user does not need to choose Dashboard vs Goal Pyramid vs Daily Practice vs Progress vs Vision Board at 6 AM; they need to read yesterday and write today.
+
+**Stoic's rotating greetings.** Dynamic generated greeting copy ("Good morning, beautiful soul") fails the voice playbook on every axis — it's wellness-borrowed, autogenerated, sentimentally empty. Keep the greeting absent. The italic date is enough. Silence is on-brand.
+
+---
+
+## 5. The acceptance test
+
+After these changes, run the five-second test against a returning user at 6 AM. The user should be able to answer: *what day is it, what did I leave for today, what is asked of me right now?* They should not be able to answer: *what should I click first, what does this app want me to do, am I behind?* The second set of questions should not even occur to them. If they do, density is still too high.
+
+The Sanctuary at 6 AM is a mirror. The user already knows what today serves. The surface only has to ask the question and hold the line.
