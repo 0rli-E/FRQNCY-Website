@@ -1155,8 +1155,21 @@ function topicPage(t) {
   const res   = resourcesFor(t.id);
   const picks = res.filter(r => r.frqncy_pick);
 
-  const ld = {
-    '@context': 'https://schema.org',
+  // Topic page schema is a @graph union of:
+  //  - ItemList (the picks, for rich-result list cards)
+  //  - BreadcrumbList (visible breadcrumb backing)
+  //  - FAQPage (Q&A derived from the topic's editorial fields — eligible for
+  //    featured-snippet rich results on long-tail queries)
+  const breadcrumb = {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'FRQNCY', item: 'https://frqncy.network/' },
+      { '@type': 'ListItem', position: 2, name: pillar.label, item: `https://frqncy.network/${pillar.slug}/` },
+      { '@type': 'ListItem', position: 3, name: domain.label, item: `https://frqncy.network/${domain.slug}/` },
+      { '@type': 'ListItem', position: 4, name: t.label, item: canonical },
+    ],
+  };
+  const itemList = {
     '@type': 'ItemList',
     name: `${t.label} — FRQNCY Picks`,
     description: t.desc || `Curated resources for ${t.label} on FRQNCY Network`,
@@ -1169,15 +1182,38 @@ function topicPage(t) {
       return item;
     }),
     isPartOf: SITE_REF,
-    breadcrumb: {
-      '@type': 'BreadcrumbList',
-      itemListElement: [
-        { '@type': 'ListItem', position: 1, name: 'FRQNCY', item: 'https://frqncy.network' },
-        { '@type': 'ListItem', position: 2, name: pillar.label, item: `https://frqncy.network/${pillar.slug}/` },
-        { '@type': 'ListItem', position: 3, name: domain.label, item: `https://frqncy.network/${domain.slug}/` },
-        { '@type': 'ListItem', position: 4, name: t.label, item: canonical },
-      ],
-    },
+  };
+  // FAQPage — three Q/A pairs synthesised from existing fields. Question text
+  // is generic ("What is X?"); answer is the topic's own description, the
+  // domain context, and a pointer to FRQNCY's picks. Google accepts the
+  // FAQPage schema as long as the same Q/A is visibly on the page (the topic
+  // hero + resource section satisfy this).
+  const faq = {
+    '@type': 'FAQPage',
+    mainEntity: [
+      {
+        '@type': 'Question',
+        name: `What is ${t.label}?`,
+        acceptedAnswer: { '@type': 'Answer', text: t.desc || `${t.label} is a topic in FRQNCY's network covering ${domain.label}.` },
+      },
+      {
+        '@type': 'Question',
+        name: `Why does ${t.label} matter?`,
+        acceptedAnswer: { '@type': 'Answer', text: `${t.label} is part of FRQNCY's ${domain.label} domain in the ${pillar.label} pillar — a curated map of what to read, who to follow, and how the topic connects to consciousness, capital, and the network state.` },
+      },
+      {
+        '@type': 'Question',
+        name: `What are the best resources to learn about ${t.label}?`,
+        acceptedAnswer: { '@type': 'Answer', text: picks.length > 0
+          ? `FRQNCY has ${picks.length} ✦ pick${picks.length === 1 ? '' : 's'} on ${t.label}${picks.length > 0 ? ', including ' + picks.slice(0, 3).map(r => r.title).join(', ') : ''}. The full list is curated at ${canonical}.`
+          : `FRQNCY curates resources for ${t.label} at ${canonical}.`,
+        },
+      },
+    ],
+  };
+  const ld = {
+    '@context': 'https://schema.org',
+    '@graph': [ itemList, breadcrumb, faq ],
   };
 
   const crumb = `<a href="../${pillar.slug}/index.html">${esc(pillar.label)}</a><span class="sep">/</span><a href="../${domain.slug}/index.html">${esc(domain.label)}</a><span class="sep">/</span><span>${esc(t.label)}</span>`;

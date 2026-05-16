@@ -21,7 +21,8 @@ try {
 
 const ROOT = __dirname;
 const DATA = JSON.parse(fs.readFileSync(path.join(ROOT, 'content.json'), 'utf8'));
-const OUT  = path.join(ROOT, 'v2', 'og');
+// Output: ./og/  (was ./v2/og/ pre-2026-05-13 /v2/-removal — corrected here)
+const OUT  = path.join(ROOT, 'og');
 fs.mkdirSync(OUT, { recursive: true });
 
 // Pre-index
@@ -173,7 +174,28 @@ async function main() {
     count++;
   } catch(e) { errors.push(`og-image.png — ${e.message}`); }
 
-  console.log(`✓ OG images generated: ${count} → v2/og/ + og-image.png`);
+  // Per-page OG cards for top-level non-topic pages (about, podcast, etc.) —
+  // these previously shared the generic og-image.png. Output to /og/<slug>.png
+  // so they sit alongside topic OG cards under the same directory.
+  const STATIC_PAGES = [
+    { slug: 'about',       title: 'About FRQNCY',     subtitle: 'A network becoming a civilisation', accent: '#C4973A', type: 'Vision' },
+    { slug: 'start-here',  title: 'Start Here',       subtitle: 'New to FRQNCY?',                    accent: '#C4973A', type: 'Guide' },
+    { slug: 'podcast',     title: 'FRQNCY Podcast',   subtitle: 'Long-form conversations',           accent: '#5A8AFF', type: 'Audio' },
+    { slug: 'membership',  title: 'Membership',       subtitle: 'Fund the free layer',               accent: '#C4973A', type: 'Membership' },
+    { slug: 'platform',    title: 'Platform',         subtitle: 'How FRQNCY works',                  accent: '#4A7AE8', type: 'Platform' },
+    { slug: 'space',       title: 'Space',            subtitle: 'A living atlas',                    accent: '#4A7AE8', type: 'Network' },
+    { slug: 'chart',       title: 'Chart Generator',  subtitle: 'Map your alignment',                accent: '#C4973A', type: 'Tool' },
+    { slug: 'aligned',     title: 'Aligned Goods',    subtitle: 'The best of everything, curated',   accent: '#C4973A', type: 'Catalogue' },
+    { slug: 'my-frqncy',   title: 'My FRQNCY',        subtitle: 'Your sanctuary',                    accent: '#4A7AE8', type: 'Sanctuary' },
+  ];
+  for (const p of STATIC_PAGES) {
+    try {
+      await generate(p.slug, makeSvg({ title: p.title, subtitle: p.subtitle, accent: p.accent, type: p.type }));
+      count++;
+    } catch(e) { errors.push(`static:${p.slug} — ${e.message}`); }
+  }
+
+  console.log(`✓ OG images generated: ${count} → og/ + og-image.png`);
   if (errors.length) {
     console.error(`  ${errors.length} errors:`);
     errors.forEach(e => console.error('   ', e));
