@@ -328,13 +328,23 @@ nav{
 .score-trend.down{color:var(--bad)}
 .score-card.add-card{
   border-style:dashed;background:transparent;
-  display:flex;align-items:center;justify-content:center;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  gap:0.85rem;
   color:var(--text-faint);font-family:'Jost',sans-serif;
   font-size:0.68rem;letter-spacing:0.16em;text-transform:uppercase;
   text-indent:0.16em;
+  text-align:center;padding:1.5rem 1rem;
   cursor:pointer;transition:border-color .18s,color .18s,background .18s;
 }
 .score-card.add-card:hover{border-color:var(--gold);color:var(--gold);background:rgba(196,151,58,0.03)}
+/* First-aim empty-state — Cormorant italic prompt over the gold "+ name it"
+   call. Replaces the broken-looking dashed-border placeholder. */
+.add-empty-prompt{
+  font-family:'Cormorant',serif;font-style:italic;font-weight:400;
+  font-size:1.1rem;letter-spacing:0.01em;text-transform:none;
+  color:var(--text-dim);line-height:1.4;max-width:24ch;text-indent:0;
+}
+.add-empty-cta{color:var(--gold);opacity:0.9}
 .score-delete{
   position:absolute;top:0.7rem;right:0.7rem;
   width:26px;height:26px;border-radius:50%;
@@ -1081,6 +1091,11 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 <!-- Supabase auth + cloud sync (loads SDK from CDN, sets up window.frqncy) -->
 <script src="../../assets/frqncy-supabase.js" defer></script>
 
+<!-- Tag the body so page-scoped CSS rules apply (e.g. hide the global
+     floating donate button on the private dashboard — Sanctuary doesn't
+     ask for money in this room). -->
+<script>document.body.classList.add('frqncy-sanctuary');</script>
+
 <main class="wrap">
 
   <header class="hero">
@@ -1680,8 +1695,13 @@ function renderScoreboard() {
     const add = document.createElement('button');
     add.type = 'button';
     add.className = 'score-card add-card';
-    add.setAttribute('aria-label', 'Add chief aim');
-    add.innerHTML = `+ Add chief aim`;
+    add.setAttribute('aria-label', state.chiefAims.length === 0 ? 'Name your first chief aim' : 'Add chief aim');
+    // Warmer empty-state copy when there are no aims yet — the dashed
+    // placeholder otherwise read as broken. The Cormorant italic prompt +
+    // the smaller gold "+ name it" line invites rather than indicts.
+    add.innerHTML = state.chiefAims.length === 0
+      ? `<span class="add-empty-prompt">what's possible if everything aligns?</span><span class="add-empty-cta">+ name your first chief aim</span>`
+      : `+ Add chief aim`;
     add.addEventListener('click', addChiefAim);
     el.appendChild(add);
   }

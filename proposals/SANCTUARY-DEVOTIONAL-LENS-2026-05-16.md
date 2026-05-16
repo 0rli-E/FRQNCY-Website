@@ -19,13 +19,13 @@ Apps want users back so they can be measured. A sanctuary wants the *person* bac
 
 **Today's state.** The page lands with two stacked FRQNCY logos (issue 1 of the 2026-05-16 audit), then jumps straight to "Your *Sanctuary* / Dream · chief aim · objectives · goals · daily practice — held in one place" and three buttons (Illuminator / Export / Import). The first interactive thing a user sees on a contemplative surface is **Export**.
 
-**The proposal.** Three seconds of intentional arrival before the dashboard reveals itself. Not a splash screen — a *settling*:
+**The proposal.** Three seconds of intentional arrival, not a splash screen — a *settling*:
 
-- *t=0.0s* — page mounts dark. No content visible yet. A single Cormorant-italic line fades in centred: *"You arrived."* (alternate options, rotated weekly by deterministic seed, not algorithm: *"Welcome back." / "The room is quiet." / "Begin where you are."* — each one in the voice playbook's permission-to-leave register, never striving.)
-- *t=1.2s* — beneath that line, three soft dots pulse once each, ~700ms apart, the rhythm of three breaths. No text instructing the user to breathe. The dots simply pulse. Anyone who notices breathes with them; anyone who doesn't loses nothing.
-- *t=3.0s* — line and dots fade. The dashboard fades in beneath. The first thing visible after the curtain is *the user's own dream* (if present) or the empty-state invitation (if not) — not the page chrome.
+- *t=0.0s* — page mounts dark, a single Cormorant-italic line fades in centred: *"You arrived."* (rotated weekly by deterministic seed: *"Welcome back." / "The room is quiet." / "Begin where you are."*)
+- *t=1.2s* — three soft dots pulse once each ~700ms apart, the rhythm of three breaths. No text instructing the user to breathe — anyone who notices breathes with them, anyone who doesn't loses nothing.
+- *t=3.0s* — line and dots fade. The dashboard reveals beneath, with the user's own dream first if present.
 
-**Behavioural notes.** Skippable by tap anywhere; remembers the skip per device for 24 hours (so a power user reloading isn't punished). Respects `prefers-reduced-motion` — for those users, just the line, no dots, 800ms total. No audio by default (Insight Timer's bell is opt-in; we should match). The curtain is suppressed for the very first first-run (the user has never seen the room — show them the room, not the curtain) and after that, every visit.
+Skippable on tap; remembers skip per device for 24h; respects `prefers-reduced-motion` (line only, 800ms total); no audio by default; suppressed on the very-first land (show the room, not the curtain).
 
 **What to ship.** A 3-second pre-roll fade with one rotating Cormorant-italic line and three breath-paced dots, skippable, motion-respecting, suppressed on first-ever land.
 
@@ -52,20 +52,16 @@ The bridge paragraph above the cards loses its "you do have to fill them in time
 
 ## 3. The empty states — invite, don't indict [Severity: high]
 
-**Today's state.** Three offenders:
+**Today's state.** Three offenders: the empty Scoreboard reads as a missing form field; *"No dream written yet — open the Goal Pyramid to begin."* sounds like a 404; *"Add what you want to do every day — wake at 6, gym, read, meditate."* is instructional and slightly hectoring.
 
-- The Scoreboard renders an empty grid with *"+ Add chief aim"* — reads as a missing form field.
-- *"No dream written yet — open the Goal Pyramid to begin."* — administrative; sounds like a 404.
-- *"Add what you want to do every day — wake at 6, gym, read, meditate."* — instructional and slightly hectoring, in the same register a fitness app uses.
+**The proposal.** Every empty state as a doorway, present-tense Cormorant italic:
 
-**The proposal.** Treat every empty state as a doorway into the practice, written in present-tense Cormorant italic. Worked examples:
-
-- **Empty Scoreboard.** Replace the bare *+ Add chief aim* button with a soft Cormorant prompt: *"This is where the year's aims will sit. Up to three. Take your time."* Then a smaller, less commanding action: *Name an aim →* (gold link weight, not button weight). The 200px placeholder is filled with breath, not a CTA.
-- **Empty Dream tile.** Replace *"No dream written yet — open the Goal Pyramid to begin."* with: *"The dream sits at the top. You don't have to write it today. When you do, write it the way you'd say it to one person."*
-- **Empty Daily Practice.** Replace the instructional list (*wake at 6, gym, read, meditate*) with: *"The small things you keep doing become the shape of your life. Add one when you're ready."* Then the *+ Add* affordance below at the same visual weight.
+- **Empty Scoreboard.** Replace the bare button with: *"This is where the year's aims will sit. Up to three. Take your time."* — then *Name an aim →* at gold link weight, not button weight.
+- **Empty Dream tile.** *"The dream sits at the top. You don't have to write it today. When you do, write it the way you'd say it to one person."*
+- **Empty Daily Practice.** *"The small things you keep doing become the shape of your life. Add one when you're ready."* — *+ Add* below at the same visual weight.
 - **Empty Vision Board.** Already passes (*"Nothing pinned yet. Drop in the images that hold your future."*) — leave it.
 
-**What to ship.** Rewrite four empty-state strings using the present-tense, italic-Cormorant, no-instruction pattern modelled by the Vision Board copy.
+**What to ship.** Four empty-state rewrites in the Cormorant-italic, no-instruction pattern modelled by the Vision Board copy.
 
 ---
 
@@ -73,18 +69,18 @@ The bridge paragraph above the cards loses its "you do have to fill them in time
 
 **Today's state.** The line *"Lives privately on this device. Sign in to sync across devices."* with the lock glyph is the single best piece of micro-copy on the page. It tells the user the truth, uses ordinary English, and respects them. Nothing else on the page operates at that voice level. The save indicator is just *"Saved"*.
 
-**The proposal.** Eight edge moments deserve the same quality of language. Each is one line, present tense, no exclamation:
+**The proposal.** Eight edge moments deserve the same register. Each is one line, present tense, no exclamation:
 
-- **First save of any field, ever.** Replace *Saved* with: *"Held."* (Once per field type per device, then revert to the quiet *Saved* dot.)
-- **Save of the Dream specifically.** *"The dream is held."*
+- **First save of any field, ever.** Replace *Saved* with *"Held."* — once per field type per device, then revert to the quiet dot.
+- **Save of the Dream.** *"The dream is held."*
 - **Save of a Chief Aim.** *"An aim is held."*
-- **Returning after >14 days away.** A single line above the hero, fades after 6s: *"It's been a while. The room is the way you left it."* (Trail of intentions, dream, aims — all still there. This is the *opposite* of a streak-loss penalty. It is faithfulness.)
-- **Returning after >90 days away.** *"You're back. Nothing here moved."*
-- **Deleting a Dream (currently no confirm).** Two-step modal — first line: *"You're about to clear the dream. The old one will be lost from this device."* Confirm button: *"Clear it."* Cancel: *"Keep it."* No "are you sure" — that's productivity-app voice.
-- **Deleting a Chief Aim.** *"This aim leaves the room. Its objectives and goals will leave with it."* — the truth of cascade, in plain language.
-- **Sign-out from a synced session.** *"You're signed out. What was synced is on this device too. Nothing was lost."* — closes the privacy loop the lock banner opened.
+- **Returning after >14 days.** A line above the hero, fades after 6s: *"It's been a while. The room is the way you left it."* — the opposite of streak-loss; it is faithfulness.
+- **Returning after >90 days.** *"You're back. Nothing here moved."*
+- **Deleting a Dream.** Two-step modal: *"You're about to clear the dream. The old one will be lost from this device."* Confirm: *"Clear it."* Cancel: *"Keep it."* No "are you sure."
+- **Deleting a Chief Aim.** *"This aim leaves the room. Its objectives and goals will leave with it."*
+- **Sign-out from a synced session.** *"You're signed out. What was synced is on this device too. Nothing was lost."*
 
-Notes on the register: avoid *"safely stored"* (corporate), *"successfully saved"* (productivity), *"your data"* (administrative). The Sanctuary holds *the dream*, *an aim*, *a practice* — never *data* or *content* or *entries*.
+Avoid *"safely stored"*, *"successfully saved"*, *"your data"*. The Sanctuary holds *the dream*, *an aim*, *a practice* — never *data*, *content*, *entries*.
 
 **What to ship.** Eight one-line edge-moment strings layered onto the existing save / delete / auth surfaces; first-of-its-kind toasts use *"Held"*, subsequent saves stay quiet.
 
@@ -100,11 +96,11 @@ Six external links (Global Information Network, Toastmasters, Network School, Ga
 
 ### 5b. The donate button — hide on `/my-frqncy/*`. [Severity: high]
 
-`#frq-donate-btn` floats bottom-right at z-index 9997 and visibly covers content while scrolling (audit issue 4). Asking a user for money while they are looking at their own private dream is wrong in the way that putting a donation jar inside a therapist's office is wrong — not unethical, just contextually deaf. **Ship: a single CSS rule `body.path-my-frqncy #frq-donate-btn { display: none; }` toggled by body class set in the global header script.** Donations belong on public surfaces.
+`#frq-donate-btn` at z-index 9997 visibly covers content while scrolling (audit issue 4). Asking for money while a user reads their own private dream is the contextual equivalent of a donation jar inside a therapist's office. **Ship: `body.path-my-frqncy #frq-donate-btn { display: none; }`.** Donations belong on public surfaces.
 
-### 5c. The Word Illuminator card on the dashboard — move, don't kill. [Severity: medium]
+### 5c. Word Illuminator card on the dashboard — move, don't kill. [Severity: medium]
 
-The Illuminator itself is good and load-bearing across the site. But on the Sanctuary it currently presents as a featured card competing with the user's own work for visual weight. The slide-in panel is already accessible from the hero button (`✧ Illuminator`) and via the global `#illuminate=` deep-link. **Ship: remove the dashboard's Illuminator section block (the one with "Companion · lives inside your Sanctuary"); keep the hero button and the panel itself untouched.** This drops one of nine H2 sections and shortens the 3,872px scroll by ~280px.
+The Illuminator itself is good. But as a featured card it competes with the user's own work for visual weight. The slide-in panel is already reachable from the hero button and the `#illuminate=` deep-link. **Ship: remove the Illuminator section block ("Companion · lives inside your Sanctuary"); keep the hero button and panel untouched.** Drops one of nine H2s, shortens scroll by ~280px.
 
 ### 5d. The keyboard-shortcut tip on touch devices. [Severity: low]
 
@@ -112,24 +108,17 @@ The Illuminator itself is good and load-bearing across the site. But on the Sanc
 
 ### 5e. The doubled FRQNCY header. [Severity: high]
 
-Audit issue 1. The page's per-section `<nav>` AND the global `#main-nav` both render. **Ship: same body-class pattern used for `body.frqncy-embed` on the app iframe — apply `body.path-my-frqncy` and hide the page-level `<nav>`. Reclaim ~56px above the fold on every device.**
+Audit issue 1. Both the global `#main-nav` and the page's per-section `<nav>` render. **Ship: same body-class pattern as `body.frqncy-embed` — apply `body.path-my-frqncy` and hide the page-level `<nav>`. Reclaims ~56px above the fold.**
 
 ---
 
 ## 6. The closing moment — a clean way to leave [Severity: medium]
 
-**Today's state.** There is no "leaving" affordance. The user closes a tab, navigates away via the top nav, or kills the app. The Sanctuary makes no acknowledgment that the visit is ending.
+**Today's state.** No leaving affordance. The user closes a tab, navigates away, or kills the app. The Sanctuary makes no acknowledgment.
 
-**The proposal.** A small, optional *Close the room* link in the footer, beneath the slogan. Clicking it:
+**The proposal.** A small, optional *Close the room* link in the footer, beneath the slogan. On click: persist pending writes; fade the dashboard ~500ms; show one Cormorant-italic line on the dim background — *"What was tended is held. Until next time."* — for ~2s; redirect to `/` (or `/my-frqncy/` if signed in). The inverse of the arrival ritual: same fade, same register, closing. A *bow at the door*. Users who never click it lose nothing.
 
-1. Persists any pending writes (already happens, but make it explicit).
-2. Fades the dashboard for ~500ms.
-3. Shows a single Cormorant-italic line on the dim background: *"What was tended is held. Until next time."* — for ~2 seconds.
-4. Redirects to `/` (the home page) — or, if the user signed in, to `/my-frqncy/` (the constellation), letting them step from the private room into the public network.
-
-This is the inverse of the arrival ritual: same fade, same one-line register, but closing. It is a *bow at the door*. Users who never click it lose nothing — the page works exactly as today. But the option to leave intentionally is itself a form of dignity.
-
-**What to ship.** One footer link (*Close the room*) wired to a 2.5-second exit fade with one Cormorant line, then a redirect; absence of the link changes nothing.
+**What to ship.** One footer link (*Close the room*) wired to a 2.5s exit fade with one Cormorant line, then redirect.
 
 ---
 
@@ -139,17 +128,17 @@ These are from the 2026-05-16 audit (issues 2 and 3) and worth restating in this
 
 ### 7a. Tabs that segment, not anchor-link. [Severity: high]
 
-Five H2 sections rendering in a 3,872px stack — with five tabs at the top that *look* like they should swap views but don't — teaches the user that the tabs are decorative. In a sanctuary, every affordance should mean what it says. **Ship: wire the tabs to true view-swap (the `view-dashboard / view-pyramid / view-practice / view-progress / view-vision` containers already exist in the markup — just hide all but the active one).** This was the original Phase 0 intent per the roadmap; it appears to have regressed.
+A 3,872px stack with five tabs that *look* like view-swaps but don't teaches users the tabs are decorative. In a sanctuary, every affordance means what it says. **Ship: wire tabs to true view-swap (the `view-*` containers already exist; hide all but the active).** Phase 0 intent per the roadmap — appears regressed.
 
 ### 7b. Horizontal overflow on the mobile tab strip. [Severity: high]
 
-At 390px, only 3 of 5 tabs fit; *Daily Practic…* truncates mid-word. **Ship: `overflow-x: auto` + a 12px gradient fade on the right edge as a scroll affordance, until tab count reduces to 4 (a future possibility if Progress + Vision Board merge into a single *Trail* surface in Phase 1).**
+At 390px, 3 of 5 tabs fit; *Daily Practic…* truncates. **Ship: `overflow-x: auto` + 12px gradient fade on the right edge as scroll affordance.**
 
 ---
 
 ## 8. Inconsistent section glyphs [Severity: low]
 
-Audit issue 7. The H2 glyphs ✦ ◇ ▲ ✧ ◉ vary in stroke weight and optical size. In a productivity app this is harmless; in a sanctuary, the typography is the architecture. **Ship: unify to a single glyph family — recommend the four-pointed star ✦ for *all* H2s, at fixed gold weight, varying only by the tile content beneath, the way a chapel uses one cross design throughout.** Or, if visual differentiation matters, commission a 5-glyph SVG set drawn at the same stroke and metrics — same fix as the app's tab icons.
+Audit issue 7. The H2 glyphs ✦ ◇ ▲ ✧ ◉ vary in stroke weight and optical size. In a sanctuary, typography is the architecture. **Ship: unify to a single four-pointed star ✦ for *all* H2s at fixed gold weight, the way a chapel uses one cross design throughout.** Or commission a 5-glyph SVG set at matching stroke and metrics.
 
 ---
 
@@ -173,15 +162,11 @@ Audit issue 7. The H2 glyphs ✦ ◇ ▲ ✧ ◉ vary in stroke weight and optic
 
 ---
 
-## What this proposal does NOT touch
+## Out of scope
 
-- The four-layer schema (Dream → Chief Aim → Objective → Daily Practice). It is the load-bearing structure of the Sanctuary and the roadmap; copy changes, structure stays.
-- Cloud sync / Supabase / auth. Out of scope.
-- The Illuminator's system prompt or chat behaviour. Out of scope.
-- Membership tiers, Stripe, or the public-site revenue model. Out of scope.
-- The Vision Board, Progress charts, or Goal Pyramid internals. Untouched except where empty-state copy applies.
+The four-layer schema (Dream → Chief Aim → Objective → Daily Practice) — load-bearing, copy changes only. Cloud sync / auth. The Illuminator system prompt. Membership tiers and the revenue model. Vision Board, Progress charts, Goal Pyramid internals — untouched except where empty-state copy applies.
 
-Every change above passes the Principles checklist in `SANCTUARY-ROADMAP.md` — nothing gamifies, ranks, compares, or extracts. The donation button removal and the Memberships section cut both *increase* the room's privacy posture rather than reduce revenue surface (donations and memberships have public homes; this is not one of them).
+Every change above passes the Principles checklist in `SANCTUARY-ROADMAP.md` — nothing gamifies, ranks, compares, or extracts. The donate-button and Memberships removals *increase* the room's privacy posture rather than reduce revenue surface; both have public homes elsewhere.
 
 ---
 
