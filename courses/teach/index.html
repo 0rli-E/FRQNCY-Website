@@ -1,0 +1,424 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>Teacher Dashboard — FRQNCY Courses</title>
+<meta name="description" content="Teacher dashboard for FRQNCY courses — per-course roster, student progress, and the open-questions queue.">
+<meta name="theme-color" content="#0B1C3D">
+<meta name="robots" content="noindex,nofollow">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/courses/teach/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#E6EEF8;--text-dim:#91A8CC;--text-dim2:#6E84A5;
+  --card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);
+  --green:#5BC79A;--amber:#E0C06A;
+}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.55}
+a{text-decoration:none;color:inherit}
+
+/* Hero */
+.hero{margin-top:56px;padding:clamp(2.6rem,6vw,4rem) clamp(1.25rem,5vw,2.5rem) clamp(1rem,2.5vw,1.5rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(196,151,58,0.10) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1.1rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.2rem,5vw,3.8rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:0.9rem}
+.hero-desc{max-width:560px;margin:0 auto;font-size:0.86rem;color:var(--text-dim);line-height:1.7}
+
+main{max-width:1200px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 6rem}
+
+/* States */
+.state{padding:3rem 1.5rem;text-align:center;color:var(--text-dim);font-size:0.86rem}
+.state.err{color:#E07A4A;font-style:italic}
+.state-cta{display:inline-block;margin-top:1rem;padding:9px 22px;background:var(--gold);color:var(--navy);font-size:0.66rem;letter-spacing:0.2em;text-transform:uppercase;border-radius:2px;font-weight:400}
+.state-cta:hover{background:var(--gold-light)}
+
+/* Layout */
+.deck{display:grid;grid-template-columns:1fr 360px;gap:2rem;margin-top:1.5rem}
+@media(max-width:980px){.deck{grid-template-columns:1fr}}
+
+/* Course chooser */
+.chooser{display:flex;gap:0.55rem;flex-wrap:wrap;padding-bottom:1.1rem;margin-bottom:1.2rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.chip{display:inline-flex;align-items:center;gap:0.45rem;padding:7px 13px 7px 10px;background:transparent;border:1px solid var(--card-border);border-radius:18px;color:var(--text-dim);font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;font-family:inherit;cursor:pointer;transition:border-color .15s,color .15s,background .15s}
+.chip:hover{color:var(--text);border-color:rgba(255,255,255,0.22)}
+.chip.is-active{background:rgba(196,151,58,0.08);border-color:var(--gold);color:var(--gold)}
+.chip-stripe{width:8px;height:8px;border-radius:50%}
+.chip-count{font-size:0.6rem;color:var(--text-dim2);margin-left:0.2rem}
+.chip.is-active .chip-count{color:var(--gold)}
+
+/* Section headers (per pane) */
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:1rem}
+.sec-title{font-family:'Cormorant',serif;font-size:1.35rem;color:#fff;font-weight:400}
+.sec-meta{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim2)}
+
+/* Roster table */
+.roster{background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;overflow:hidden}
+.roster-row{display:grid;grid-template-columns:1.4fr 1.5fr 0.9fr 0.7fr;gap:1rem;padding:0.8rem 1.1rem;align-items:center;border-bottom:1px solid rgba(255,255,255,0.04);font-size:0.78rem}
+.roster-row:last-child{border-bottom:0}
+.roster-row.hd{font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim2);background:rgba(0,0,0,0.15);padding-top:0.65rem;padding-bottom:0.65rem}
+.roster-row.is-empty{padding:1.6rem 1.1rem;color:var(--text-dim2);font-style:italic;text-align:center;grid-template-columns:1fr;display:block}
+.roster-student{display:flex;align-items:center;gap:0.6rem;min-width:0}
+.roster-avatar{width:30px;height:30px;border-radius:50%;flex-shrink:0;background:rgba(255,255,255,0.06);display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;color:var(--text-dim);font-weight:400;letter-spacing:0.04em;overflow:hidden}
+.roster-avatar img{width:100%;height:100%;object-fit:cover}
+.roster-name{display:flex;flex-direction:column;gap:1px;min-width:0}
+.roster-name-display{color:var(--text);font-size:0.82rem;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.roster-name-handle{color:var(--text-dim2);font-size:0.66rem}
+.roster-progress{display:flex;flex-direction:column;gap:4px;min-width:0}
+.roster-bar{height:3px;background:rgba(255,255,255,0.08);border-radius:1.5px;overflow:hidden}
+.roster-fill{height:100%;border-radius:1.5px;transition:width .3s}
+.roster-progress-text{font-size:0.66rem;color:var(--text-dim);letter-spacing:0.04em}
+.roster-active{font-size:0.7rem;color:var(--text-dim);text-align:right}
+.roster-status{font-size:0.56rem;letter-spacing:0.18em;text-transform:uppercase;padding:3px 8px;border-radius:2px;border:1px solid currentColor;justify-self:end;white-space:nowrap}
+.roster-status.s-active{color:var(--green)}
+.roster-status.s-completed{color:var(--gold)}
+.roster-status.s-paused{color:var(--text-dim)}
+.roster-status.s-dropped{color:var(--text-dim2);opacity:0.6}
+
+@media(max-width:720px){
+  .roster-row{grid-template-columns:1fr 1fr;gap:0.6rem}
+  .roster-row.hd .col-status,.roster-row.hd .col-active{display:none}
+  .roster-active{text-align:left}
+  .roster-status{justify-self:start}
+}
+
+/* Questions pane */
+.qcol{background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;padding:1.1rem;height:fit-content;position:sticky;top:80px}
+.qcol-head{display:flex;align-items:baseline;justify-content:space-between;gap:0.8rem;margin-bottom:0.9rem;padding-bottom:0.7rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.qcol-title{font-family:'Cormorant',serif;font-size:1.15rem;color:#fff;font-weight:400}
+.qcol-empty{font-size:0.78rem;color:var(--text-dim2);font-style:italic;padding:1.2rem 0;text-align:center}
+.qlist{display:flex;flex-direction:column;gap:0.8rem}
+.qitem{display:flex;flex-direction:column;gap:0.32rem;padding:0.7rem 0.8rem;background:rgba(255,255,255,0.02);border:1px solid rgba(255,255,255,0.05);border-left:2px solid var(--gold);border-radius:0 4px 4px 0;text-decoration:none;color:inherit;transition:background .15s,border-color .15s}
+.qitem:hover{background:rgba(255,255,255,0.05);border-color:rgba(255,255,255,0.12);border-left-color:var(--gold-light)}
+.qitem-where{display:flex;justify-content:space-between;gap:0.5rem;font-size:0.58rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim2)}
+.qitem-where strong{color:var(--gold);font-weight:400;letter-spacing:0.04em;text-transform:none;font-size:0.74rem}
+.qitem-body{font-size:0.78rem;color:var(--text);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-overflow:ellipsis}
+.qitem-foot{display:flex;justify-content:space-between;gap:0.5rem;font-size:0.62rem;color:var(--text-dim2);margin-top:0.2rem}
+.qitem-author{color:var(--text-dim)}
+
+/* Numbers strip */
+.totals{display:grid;grid-template-columns:repeat(3,1fr);gap:1rem;margin:0 0 2rem}
+@media(max-width:600px){.totals{grid-template-columns:1fr 1fr}}
+.total{background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;padding:1rem 1.1rem}
+.total-label{font-size:0.55rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--text-dim2);margin-bottom:0.4rem}
+.total-value{font-family:'Cormorant',serif;font-size:2rem;color:var(--gold);font-weight:300;line-height:1;font-feature-settings:"tnum"}
+.total-sub{font-size:0.66rem;color:var(--text-dim);margin-top:0.2rem}
+</style>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+</head>
+<body>
+
+<!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — see _chrome/global-header.html) ▼▼ -->
+<style data-frqncy-header-critical>
+#main-nav{position:sticky;top:0;width:100%;z-index:500;padding:14px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;background:rgba(11,28,61,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);font-family:'Jost',system-ui,sans-serif}
+#main-nav .nav-logo{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:20px;letter-spacing:.34em;color:#fff;text-decoration:none;text-transform:uppercase}
+#main-nav .nav-links{display:flex;gap:22px;list-style:none;margin:0;padding:0;align-items:center}
+#main-nav .nav-links a{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);text-decoration:none;display:inline-flex;align-items:center;min-height:30px}
+#main-nav .nav-back{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:2px;text-decoration:none}
+#main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+#main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none}
+#main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
+body.frqncy-embed #main-nav{display:none !important}
+@media(max-width:720px){#main-nav .nav-links{display:none}}
+</style>
+<nav id="main-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li><a href="/courses/">All Courses</a></li>
+    <li><a href="/courses/me/">My Courses</a></li>
+    <li><a href="/social/">NRG</a></li>
+    <li><a href="/" class="nav-back" onclick="if(window.history.length>1){event.preventDefault();window.history.back();}">← Back</a></li>
+    <li><a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a></li>
+  </ul>
+</nav>
+<script>(function(){try{var p=new URLSearchParams(location.search);if(p.get('embed')==='1')document.body.classList.add('frqncy-embed');}catch(_){}})();</script>
+<!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
+
+<section class="hero">
+  <div class="hero-eyebrow">Teacher</div>
+  <h1>Your Cohort</h1>
+  <p class="hero-desc">A quiet view of who's learning what. Click any question to jump straight to it in the course room.</p>
+</section>
+
+<main>
+  <div id="state-loading" class="state">Checking your teaching access…</div>
+
+  <div id="state-not-teacher" class="state" hidden>
+    <p>This page is only for course teachers.</p>
+    <a class="state-cta" href="/courses/me/">Go to my courses →</a>
+  </div>
+
+  <div id="state-logged-out" class="state" hidden>
+    <p>Sign in with a teacher account to see your cohort.</p>
+    <a class="state-cta" href="#" id="signin-cta">Sign in</a>
+  </div>
+
+  <div id="state-loaded" hidden>
+    <section class="totals">
+      <div class="total"><div class="total-label">Students</div><div class="total-value" id="t-students">0</div><div class="total-sub">enrolled across your courses</div></div>
+      <div class="total"><div class="total-label">Lessons completed</div><div class="total-value" id="t-lessons">0</div><div class="total-sub">all-time, across the cohort</div></div>
+      <div class="total"><div class="total-label">Open questions</div><div class="total-value" id="t-questions">0</div><div class="total-sub">awaiting a reply or resolution</div></div>
+    </section>
+
+    <div class="deck">
+      <section>
+        <div class="chooser" id="chooser" role="tablist" aria-label="Choose a course"></div>
+        <div class="sec-head">
+          <div class="sec-title" id="roster-title">Roster</div>
+          <div class="sec-meta"><span id="roster-count">0</span> students</div>
+        </div>
+        <div class="roster" id="roster">
+          <div class="roster-row hd">
+            <span>Student</span>
+            <span>Progress</span>
+            <span class="col-active">Last active</span>
+            <span class="col-status">Status</span>
+          </div>
+        </div>
+      </section>
+
+      <aside class="qcol" aria-label="Open questions">
+        <div class="qcol-head">
+          <div class="qcol-title">Open questions</div>
+          <div class="sec-meta"><span id="open-count">0</span></div>
+        </div>
+        <div id="qlist" class="qlist"></div>
+        <div id="qempty" class="qcol-empty" hidden>Nothing open — go enjoy the day.</div>
+      </aside>
+    </div>
+  </div>
+</main>
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/frqncy-supabase.js"></script>
+
+<script>
+const DOMAIN_LABELS={"d-wellbeing":"Wellbeing","d-sciences":"Sciences","d-lifestyle":"Lifestyle","d-consciousness":"Consciousness","d-society":"Society","d-creativity":"Creativity","d-tech":"Tech"};
+const $ = (s,r=document)=>r.querySelector(s);
+const $$ = (s,r=document)=>Array.from(r.querySelectorAll(s));
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+const fmtRel = (iso) => {
+  if (!iso) return '—';
+  const ms = Date.now() - new Date(iso).getTime();
+  const s = Math.round(ms/1000); if (s < 60) return 'just now';
+  const mn = Math.round(s/60);   if (mn < 60) return mn + 'm';
+  const h = Math.round(mn/60);   if (h < 24)  return h + 'h';
+  const d = Math.round(h/24);    if (d < 7)   return d + 'd';
+  const w = Math.round(d/7);     if (w < 5)   return w + 'w';
+  const mo = Math.round(d/30);   if (mo < 12) return mo + 'mo';
+  return Math.round(d/365) + 'y';
+};
+const initials = (name) => String(name||'').trim().split(/\s+/).slice(0,2).map(w=>w[0]||'').join('').toUpperCase() || '·';
+
+let COURSES = [];
+let USER = null;
+let STORE = null;
+let MY_COURSES = [];        // courses Orlando teaches (objects from courses.json)
+let ACTIVE_SLUG = null;
+let ROSTER_BY_SLUG = new Map(); // slug -> roster array
+
+async function loadCourses() {
+  try {
+    const res = await fetch('/courses.json', { cache: 'force-cache' });
+    COURSES = res.ok ? await res.json() : [];
+  } catch (_) { COURSES = []; }
+}
+
+function statusClass(s) { return 's-' + (s || 'active'); }
+
+async function renderRoster(slug) {
+  ACTIVE_SLUG = slug;
+  const course = COURSES.find(c => c.slug === slug);
+  if (!course) return;
+  $('#roster-title').textContent = course.title;
+
+  // Use cached if we have it
+  let roster = ROSTER_BY_SLUG.get(slug);
+  if (!roster) {
+    try {
+      roster = await STORE.teacherListRoster(slug);
+      ROSTER_BY_SLUG.set(slug, roster);
+    } catch (e) {
+      console.warn('[teach] roster:', e);
+      roster = [];
+    }
+  }
+  const total = course.lessons.length;
+  $('#roster-count').textContent = roster.length;
+
+  // Update active chip
+  $$('.chip').forEach(c => c.classList.toggle('is-active', c.dataset.slug === slug));
+
+  const wrap = $('#roster');
+  // wipe rows after header
+  $$('.roster-row:not(.hd)', wrap).forEach(r => r.remove());
+  if (!roster.length) {
+    const row = document.createElement('div');
+    row.className = 'roster-row is-empty';
+    row.textContent = 'No students yet for this course.';
+    wrap.appendChild(row);
+    return;
+  }
+  // Sort: active first, then most-progress, then most-recent
+  roster.sort((a, b) => {
+    if (a.status !== b.status) {
+      const order = { active: 0, completed: 1, paused: 2, dropped: 3 };
+      return (order[a.status] ?? 9) - (order[b.status] ?? 9);
+    }
+    if (b.lessons_completed !== a.lessons_completed) return b.lessons_completed - a.lessons_completed;
+    return new Date(b.last_active_at) - new Date(a.last_active_at);
+  });
+  const frag = document.createDocumentFragment();
+  for (const r of roster) {
+    const p = r.profile || {};
+    const name = p.display_name || p.username || 'Student';
+    const pct = total ? Math.round((r.lessons_completed / total) * 100) : 0;
+    const row = document.createElement('div');
+    row.className = 'roster-row';
+    row.innerHTML = `
+      <div class="roster-student">
+        <div class="roster-avatar">${p.avatar_url ? `<img src="${esc(p.avatar_url)}" alt="">` : esc(initials(name))}</div>
+        <div class="roster-name">
+          <span class="roster-name-display">${esc(name)}</span>
+          ${p.username ? `<span class="roster-name-handle">@${esc(p.username)}</span>` : ''}
+        </div>
+      </div>
+      <div class="roster-progress">
+        <div class="roster-bar"><div class="roster-fill" style="width:${pct}%;background:${course.accent || '#C4973A'}"></div></div>
+        <div class="roster-progress-text">${r.lessons_completed} of ${total} · ${pct}%</div>
+      </div>
+      <div class="roster-active">${esc(fmtRel(r.last_active_at))}</div>
+      <span class="roster-status ${statusClass(r.status)}">${esc(r.status)}</span>
+    `;
+    frag.appendChild(row);
+  }
+  wrap.appendChild(frag);
+}
+
+async function renderQuestions() {
+  let qs = [];
+  try { qs = await STORE.teacherOpenQuestions(); } catch (e) { console.warn('[teach] questions:', e); }
+  $('#open-count').textContent = qs.length;
+  $('#t-questions').textContent = qs.length;
+  const list = $('#qlist'); const empty = $('#qempty');
+  if (!qs.length) { list.innerHTML = ''; empty.hidden = false; return; }
+  empty.hidden = true;
+  list.innerHTML = qs.map(q => {
+    const course = COURSES.find(c => c.slug === q.course_slug);
+    const lesson = course?.lessons.find(l => l.id === q.lesson_id);
+    const courseTitle = course ? course.title : q.course_slug;
+    const lessonTitle = lesson ? lesson.title : q.lesson_id;
+    const name = q.author_display_name || q.author_username || 'Student';
+    return `
+      <a class="qitem" href="/courses/${esc(q.course_slug)}/?cr=open&tab=qa&q=${encodeURIComponent(q.id)}#${esc(q.lesson_id)}">
+        <div class="qitem-where"><strong>${esc(courseTitle)}</strong><span>${esc(fmtRel(q.created_at))}</span></div>
+        <div class="qitem-body">${esc(q.body)}</div>
+        <div class="qitem-foot">
+          <span class="qitem-author">${esc(name)} · ${esc(lessonTitle)}</span>
+          <span>${q.reply_count ? (q.reply_count + ' repl' + (q.reply_count === 1 ? 'y' : 'ies')) : 'No replies'}</span>
+        </div>
+      </a>
+    `;
+  }).join('');
+}
+
+async function loadTotals() {
+  // Pre-fetch rosters for every taught course so the totals are accurate and
+  // chips show enrollment counts.
+  let studentCount = 0;
+  let lessonsDone = 0;
+  await Promise.all(MY_COURSES.map(async (course) => {
+    try {
+      const roster = await STORE.teacherListRoster(course.slug);
+      ROSTER_BY_SLUG.set(course.slug, roster);
+      studentCount += roster.length;
+      lessonsDone += roster.reduce((s, r) => s + (r.lessons_completed || 0), 0);
+    } catch (e) { console.warn('[teach] preload roster', course.slug, e); }
+  }));
+  $('#t-students').textContent = studentCount;
+  $('#t-lessons').textContent = lessonsDone;
+}
+
+function renderChips() {
+  const chooser = $('#chooser');
+  chooser.innerHTML = MY_COURSES.map(c => {
+    const roster = ROSTER_BY_SLUG.get(c.slug) || [];
+    return `
+      <button class="chip" data-slug="${esc(c.slug)}" role="tab">
+        <span class="chip-stripe" style="background:${c.accent || '#C4973A'}"></span>
+        <span class="chip-label">${esc(c.title)}</span>
+        <span class="chip-count">· ${roster.length}</span>
+      </button>
+    `;
+  }).join('');
+  $$('.chip', chooser).forEach(btn => {
+    btn.addEventListener('click', () => renderRoster(btn.dataset.slug));
+  });
+}
+
+(async function init() {
+  await loadCourses();
+  if (!window.frqncy || !window.frqncy.ready) {
+    $('#state-loading').textContent = 'Auth client failed to load.';
+    return;
+  }
+  await window.frqncy.ready;
+  USER = await window.frqncy.auth.getUser();
+  if (!USER) {
+    $('#state-loading').hidden = true;
+    $('#state-logged-out').hidden = false;
+    $('#signin-cta').addEventListener('click', e => {
+      e.preventDefault();
+      location.href = '/social/login/?next=' + encodeURIComponent(location.pathname);
+    });
+    return;
+  }
+  STORE = window.frqncy.coursesStore(USER);
+
+  // Build list of taught courses. amTeacher() answers per-slug; check each.
+  // If teacher row has course_slug NULL → all courses; we can avoid N+1 by
+  // reading the table once.
+  let teachesAll = false;
+  let taughtSlugs = new Set();
+  try {
+    const { data, error } = await window.frqncy.client.from('course_teachers').select('course_slug').eq('user_id', USER.id);
+    if (error) throw error;
+    for (const r of (data || [])) {
+      if (r.course_slug === null) teachesAll = true;
+      else taughtSlugs.add(r.course_slug);
+    }
+  } catch (e) {
+    console.warn('[teach] teacher lookup:', e);
+  }
+  if (!teachesAll && !taughtSlugs.size) {
+    $('#state-loading').hidden = true;
+    $('#state-not-teacher').hidden = false;
+    return;
+  }
+  MY_COURSES = teachesAll ? COURSES.slice() : COURSES.filter(c => taughtSlugs.has(c.slug));
+  if (!MY_COURSES.length) {
+    $('#state-loading').hidden = true;
+    $('#state-not-teacher').hidden = false;
+    return;
+  }
+
+  $('#state-loading').hidden = true;
+  $('#state-loaded').hidden = false;
+
+  await loadTotals();
+  renderChips();
+  await renderRoster(MY_COURSES[0].slug);
+  await renderQuestions();
+})();
+</script>
+</body>
+</html>

@@ -93,6 +93,31 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 <link rel="stylesheet" href="../nav-dropdown.css">
 <link rel="manifest" href="../manifest.json">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<style>
+/* Continue learning strip — only renders for signed-in users */
+.continue-strip{display:none;margin-bottom:2.5rem;padding:1.3rem 1.4rem 1.5rem;background:rgba(196,151,58,0.05);border:1px solid rgba(196,151,58,0.22);border-radius:6px;position:relative}
+.continue-strip.show{display:block}
+.continue-strip-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
+.continue-strip-title{font-family:'Cormorant',serif;font-size:1.25rem;color:#fff;font-weight:400}
+.continue-strip-link{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);padding:5px 12px;border:1px solid rgba(196,151,58,0.4);border-radius:2px;transition:background .15s}
+.continue-strip-link:hover{background:rgba(196,151,58,0.12)}
+.continue-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0.9rem}
+.continue-item{display:flex;align-items:center;gap:0.9rem;padding:0.7rem 0.9rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:4px;transition:border-color .2s,background .2s}
+.continue-item:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.18)}
+.continue-stripe{width:3px;align-self:stretch;border-radius:2px;flex-shrink:0}
+.continue-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:0.18rem}
+.continue-name{font-size:0.84rem;color:#fff;line-height:1.2;font-family:'Cormorant',serif;font-weight:400}
+.continue-progress-line{font-size:0.6rem;color:var(--text-dim);letter-spacing:0.06em}
+.continue-mini-bar{height:2px;background:rgba(255,255,255,0.08);border-radius:1px;overflow:hidden;margin-top:3px}
+.continue-mini-fill{height:100%;border-radius:1px}
+.continue-cta{font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
+
+/* My Courses link in hero */
+.hero-me-link{display:inline-flex;align-items:center;gap:6px;margin-top:1.2rem;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);padding:6px 14px;border:1px solid rgba(196,151,58,0.4);border-radius:2px;transition:background .15s;opacity:0}
+.hero-me-link.show{opacity:1}
+.hero-me-link:hover{background:rgba(196,151,58,0.12)}
+.hero-me-link .dot{width:6px;height:6px;border-radius:50%;background:#5BC79A}
+</style>
 </head>
 <body>
 
@@ -285,9 +310,17 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
   <div class="hero-eyebrow">Learning Paths</div>
   <h1>Courses</h1>
   <p class="hero-desc">Structured paths through the ideas, practices, and sciences that matter most. Each course combines video, reflection, and reading.</p>
+  <a href="/courses/me/" class="hero-me-link" id="hero-me-link"><span class="dot"></span>My Courses →</a>
 </section>
 
 <main>
+  <section class="continue-strip" id="continue-strip" aria-label="Continue learning">
+    <div class="continue-strip-head">
+      <div class="continue-strip-title">Continue learning</div>
+      <a class="continue-strip-link" href="/courses/me/">All my courses →</a>
+    </div>
+    <div class="continue-row" id="continue-row"></div>
+  </section>
   <div class="courses-grid" id="grid"></div>
 </main>
 
@@ -352,6 +385,66 @@ if (!COURSES.length) {
 } else {
   for (const c of COURSES) grid.appendChild(makeCard(c));
 }
+</script>
+
+<!-- Logged-in enhancement: Continue learning strip + My Courses chip -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/frqncy-supabase.js"></script>
+<script>
+(async function() {
+  try {
+    if (!window.frqncy || !window.frqncy.ready) return;
+    await window.frqncy.ready;
+    const user = await window.frqncy.auth.getUser();
+    if (!user) return;
+
+    // Reveal the My Courses link in the hero
+    const meLink = document.getElementById('hero-me-link');
+    if (meLink) meLink.classList.add('show');
+
+    const store = window.frqncy.coursesStore(user);
+    const enrollments = await store.listMyEnrollments();
+    const active = enrollments.filter(e => e.status === 'active' || e.status === 'completed');
+    if (!active.length) return;
+
+    // Fetch progress per enrolled course
+    const progress = {};
+    await Promise.all(active.map(async (e) => {
+      try {
+        const rows = await store.listMyProgress(e.course_slug);
+        progress[e.course_slug] = rows.filter(r => r.completed_at).length;
+      } catch (_) { progress[e.course_slug] = 0; }
+    }));
+
+    // Render top-6 by last_active_at (already sorted by listMyEnrollments)
+    const row = document.getElementById('continue-row');
+    const strip = document.getElementById('continue-strip');
+    if (!row || !strip) return;
+    const items = active.slice(0, 6).map(e => {
+      const c = COURSES.find(x => x.slug === e.course_slug);
+      if (!c) return '';
+      const done = progress[e.course_slug] || 0;
+      const total = c.lessons.length;
+      const pct = total ? Math.round((done / total) * 100) : 0;
+      const complete = done === total && total > 0;
+      return `
+        <a class="continue-item" href="/courses/${esc(c.slug)}/">
+          <span class="continue-stripe" style="background:${c.accent}"></span>
+          <span class="continue-meta">
+            <span class="continue-name">${esc(c.title)}</span>
+            <span class="continue-progress-line">${complete ? 'Completed' : (done + ' of ' + total + ' lessons · ' + pct + '%')}</span>
+            <span class="continue-mini-bar"><span class="continue-mini-fill" style="width:${pct}%;background:${c.accent}"></span></span>
+          </span>
+          <span class="continue-cta">${complete ? 'Review →' : 'Resume →'}</span>
+        </a>
+      `;
+    }).join('');
+    row.innerHTML = items;
+    strip.classList.add('show');
+  } catch (e) {
+    console.warn('[courses-index] continue-strip failed:', e);
+  }
+})();
 </script>
 </body>
 </html>

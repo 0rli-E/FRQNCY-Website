@@ -1211,9 +1211,36 @@ function topicPage(t) {
       },
     ],
   };
+  // Article schema + Person attribution (Orlando) for E-E-A-T signal.
+  // dateModified uses build time (regen cadence); datePublished is the FRQNCY
+  // genesis date so it doesn't bump on every regen. Author = the editor who
+  // curates the topic-page line; publisher = FRQNCY Network.
+  const article = {
+    '@type': 'Article',
+    headline: t.label,
+    description: t.desc,
+    url: canonical,
+    author: {
+      '@type': 'Person',
+      name: 'Orlando Eisenreich',
+      url: 'https://frqncy.network/about',
+      jobTitle: 'Founder, FRQNCY',
+    },
+    publisher: {
+      '@type': 'Organization',
+      name: 'FRQNCY Network',
+      url: 'https://frqncy.network',
+      logo: { '@type': 'ImageObject', url: 'https://frqncy.network/og-image.png' },
+    },
+    datePublished: '2026-04-29',
+    dateModified: new Date().toISOString().slice(0, 10),
+    mainEntityOfPage: { '@type': 'WebPage', '@id': canonical },
+    isPartOf: SITE_REF,
+    about: { '@type': 'Thing', name: t.label },
+  };
   const ld = {
     '@context': 'https://schema.org',
-    '@graph': [ itemList, breadcrumb, faq ],
+    '@graph': [ article, itemList, breadcrumb, faq ],
   };
 
   const crumb = `<a href="../${pillar.slug}/index.html">${esc(pillar.label)}</a><span class="sep">/</span><a href="../${domain.slug}/index.html">${esc(domain.label)}</a><span class="sep">/</span><span>${esc(t.label)}</span>`;
