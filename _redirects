@@ -71,7 +71,20 @@
 /social/pages/*         /404.html 404
 /social/chunks/*        /404.html 404
 
-# Dynamic profile route — serve the same shell for any username
+# Static profile sub-pages must be matched BEFORE the dynamic catchall —
+# CF Pages _redirects are first-match-wins, and the /social/profile/* pattern
+# below otherwise swallows real static files (/keys/, /connections/,
+# /bluesky-callback/, the OAuth client metadata JSON).
+/social/profile/keys              /social/profile/keys/index.html             200
+/social/profile/keys/             /social/profile/keys/index.html             200
+/social/profile/connections       /social/profile/connections/index.html      200
+/social/profile/connections/      /social/profile/connections/index.html      200
+/social/profile/bluesky-callback  /social/profile/bluesky-callback/index.html 200
+/social/profile/bluesky-callback/ /social/profile/bluesky-callback/index.html 200
+/social/profile/bluesky-oauth-client.json /social/profile/bluesky-oauth-client.json 200
+
+# Dynamic profile route — serve the same shell for any username (must come
+# AFTER the explicit static rules above)
 /social/profile/*       /social/profile/index.html 200
 
 # Dynamic channel route — same shell for every channel slug. The Astro build
