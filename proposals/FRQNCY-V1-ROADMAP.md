@@ -10,6 +10,10 @@
 
 > Frqncy is for things not against them as we know we create what we focus on. So we are not against war, terror, inequality or the like. We are for peace, freedom and free will and the free expression of every individual. People will say oh but what people then still want to kill each other for the experience? Well if you come from oneness and love why would you ever want to hurt anyone? People hurting others stems from the fact they are themselves hurting in lack, pain or any other destructive state. When you come from a place of gratitude, wholeness and love you will spread gratitude, wholeness and love.
 
+> The goal has to be to take as many of the undecided as possible to new earth and maybe even some of the deeply negative and lost, and give them everything they need to move on into new earth.
+
+> We are part of birthing new earth.
+
 ---
 
 ## The shape of FRQNCY

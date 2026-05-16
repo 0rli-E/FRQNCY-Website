@@ -1566,6 +1566,27 @@ function mediaPage(media) {
   const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Media</a><span class="sep">/</span><span>${esc(media.name)}</span>`;
   const externalLink = media.url ? `<a href="${esc(media.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>` : '';
 
+  // Optional hero banner — when the media bed entry has `banner_image`, render
+  // a clickable banner above the H1 that deep-links to /watch/?q=<watch_query>
+  // (the watch page reads `q=` on load and pre-fills the search input).
+  const bannerHtml = media.banner_image ? `
+  <a href="/watch/${media.watch_query ? `?q=${encodeURIComponent(media.watch_query)}` : ''}" class="hero-banner" aria-label="Watch ${esc(media.name)} on FRQNCY">
+    <img src="${esc(media.banner_image)}" alt="${esc(media.banner_image_alt || media.name)}" loading="eager" />
+    <span class="hero-banner-cta">Watch the series →</span>
+  </a>` : '';
+  const bannerCss = media.banner_image ? `<style>
+.hero{padding-top:clamp(2rem,5vw,3.5rem) !important}
+.hero-banner{display:block;position:relative;max-width:880px;margin:0 auto clamp(1.5rem,4vw,2.5rem);border-radius:6px;overflow:hidden;text-decoration:none;aspect-ratio:21/9;background:#0B1C3D;border:1px solid rgba(196,151,58,0.18);transition:border-color .3s ease,transform .25s ease}
+.hero-banner img{width:100%;height:100%;object-fit:cover;object-position:center 30%;display:block;filter:saturate(0.9) contrast(1.05);transition:filter .35s ease,transform .6s ease}
+.hero-banner::after{content:'';position:absolute;inset:0;background:linear-gradient(180deg,rgba(11,28,61,0) 30%,rgba(11,28,61,0.65) 80%,rgba(11,28,61,0.9) 100%);pointer-events:none}
+.hero-banner-cta{position:absolute;bottom:1.25rem;left:50%;transform:translateX(-50%);font-size:0.7rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--accent,#C4973A);font-weight:500;z-index:2;border:1px solid rgba(196,151,58,0.45);padding:9px 18px;border-radius:2px;background:rgba(11,28,61,0.65);backdrop-filter:blur(8px);-webkit-backdrop-filter:blur(8px);transition:all .25s ease}
+.hero-banner:hover{border-color:rgba(196,151,58,0.45);transform:translateY(-2px)}
+.hero-banner:hover img{filter:saturate(1) contrast(1);transform:scale(1.015)}
+.hero-banner:hover .hero-banner-cta{background:rgba(196,151,58,0.92);color:#0B1C3D;border-color:rgba(196,151,58,0.95)}
+.hero-banner:focus-visible{outline:2px solid rgba(196,151,58,0.95);outline-offset:3px;border-color:rgba(196,151,58,0.6)}
+@media(max-width:560px){.hero-banner{aspect-ratio:16/10}.hero-banner-cta{font-size:0.62rem;padding:7px 14px;letter-spacing:0.22em}}
+</style>` : '';
+
   const ld = {
     '@context': 'https://schema.org',
     '@type': 'CreativeWork',
@@ -1577,8 +1598,10 @@ function mediaPage(media) {
   };
 
   return head(media.name, null, media.bio, canonical, ld, null) +
+bannerCss +
 nav(crumb) +
 `<div class="hero">
+  ${bannerHtml}
   <div class="hero-eyebrow">Media</div>
   <h1>${esc(media.name)}</h1>
   ${creatorHtml}
