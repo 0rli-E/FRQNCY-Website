@@ -20,15 +20,19 @@ const PRIVY_APP_ID = (import.meta.env.PUBLIC_PRIVY_APP_ID || '').trim();
 
 export default function PrivyLoginButton() {
   if (!PRIVY_APP_ID) {
+    // User-facing copy when the embedded-wallet provider isn't configured.
+    // Honest framing (per the no-decentralization-overclaim feedback memory):
+    // wallet features aren't live yet, so render an honest "coming soon" state
+    // instead of a dead-looking error button.
     return (
       <button
         type="button"
         disabled
-        title="Privy not configured — set PUBLIC_PRIVY_APP_ID in Cloudflare Pages env vars."
-        class="w-full py-2.5 rounded-lg border border-card-border text-text-dim text-sm opacity-50 cursor-not-allowed flex items-center justify-center gap-2"
+        title="Wallet support is coming soon. Email or Google sign-in works today."
+        class="w-full py-2.5 rounded-lg border border-card-border text-text-dim text-sm opacity-60 cursor-not-allowed flex items-center justify-center gap-2"
       >
         <WalletIcon />
-        Wallet (not configured)
+        Wallet (coming soon)
       </button>
     );
   }

@@ -1,0 +1,17 @@
+{
+  "client_id": "https://frqncy.network/social/profile/bluesky-oauth-client.json",
+  "client_name": "NRG · FRQNCY Social",
+  "client_uri": "https://frqncy.network",
+  "logo_uri": "https://frqncy.network/favicon.svg",
+  "tos_uri": "https://frqncy.network/about",
+  "policy_uri": "https://frqncy.network/about",
+  "redirect_uris": [
+    "https://frqncy.network/social/profile/bluesky-callback/"
+  ],
+  "grant_types": ["authorization_code", "refresh_token"],
+  "response_types": ["code"],
+  "scope": "atproto transition:generic",
+  "application_type": "web",
+  "token_endpoint_auth_method": "none",
+  "dpop_bound_access_tokens": true
+}
