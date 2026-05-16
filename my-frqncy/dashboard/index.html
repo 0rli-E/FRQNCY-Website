@@ -182,12 +182,87 @@ nav{
    line-height, italic Cormorant for the date. Adapts to width: stacks
    on mobile, grids on desktop. Gentle on first land — the user shouldn't
    feel "summoned" to do anything; the panel offers, doesn't demand. */
+/* ── Week 2 of SANCTUARY-DAILY-USE-SYNTHESIS-2026-05-16.md ──
+   - Breathing gold dot: the one living, locatable element in the Sanctuary.
+     6-second inhale/exhale cycle, prefers-reduced-motion respected.
+   - Inline save chips: per-input "saved" feedback so the user doesn't have
+     to look up at the global indicator 1500px above them mid-edit.
+   - Evening review: three short fields (kept / missed / cue) — Marcus
+     Aurelius's hypomnemata pattern. Saves to state.dailyIntentions[today].
+   - Progressive disclosure: first-run pyramid steps unlock by return day.
+     `body[data-sanctuary-day="N"]` set on init from state.returnDays. */
+.breathing-dot{
+  position:absolute;top:1.2rem;right:1.2rem;
+  width:6px;height:6px;border-radius:50%;
+  background:var(--gold);opacity:0.5;
+  animation:breath 6s ease-in-out infinite;
+  pointer-events:none;
+}
+@keyframes breath{
+  0%,100%{opacity:0.45;transform:scale(1)}
+  50%   {opacity:0.95;transform:scale(1.55)}
+}
+@media(prefers-reduced-motion:reduce){
+  .breathing-dot{animation:none;opacity:0.65}
+}
+.save-chip{
+  display:inline-block;margin-left:0.5rem;
+  font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--gold-light);opacity:0;transition:opacity 0.25s;
+  vertical-align:middle;
+  pointer-events:none;
+}
+.save-chip.visible{opacity:0.78}
+.today-evening{
+  margin-top:1.4rem;padding-top:1.2rem;
+  border-top:1px solid var(--card-border);
+}
+.today-evening-label{
+  font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-faint);margin-bottom:0.85rem;
+}
+.evening-row{
+  display:flex;align-items:baseline;gap:0.7rem;
+  margin-bottom:0.55rem;
+}
+.evening-glyph{
+  color:var(--gold);opacity:0.7;font-size:0.85rem;line-height:1;
+  flex:0 0 12px;text-align:center;
+}
+.evening-input{
+  flex:1;background:transparent;border:none;outline:none;
+  border-bottom:1px dotted var(--card-border);
+  padding:0.25rem 0.1rem 0.35rem;
+  font-family:'Cormorant',serif;font-style:italic;font-weight:300;
+  font-size:1.05rem;color:#fff;line-height:1.4;
+  transition:border-color 0.18s;
+}
+.evening-input:focus{border-bottom-color:var(--gold-dim)}
+.evening-input::placeholder{color:var(--text-faint);opacity:0.65;font-style:italic}
+.yesterday-cue{
+  font-family:'Cormorant',serif;font-style:italic;font-weight:300;
+  font-size:0.95rem;color:var(--gold-light);opacity:0.75;
+  margin:0.2rem 0 0.8rem;letter-spacing:0.01em;
+}
+.yesterday-cue::before{content:"yesterday's cue · ";text-transform:uppercase;font-style:normal;font-size:0.6rem;letter-spacing:0.18em;color:var(--text-faint);opacity:0.85;margin-right:0.4rem}
+/* Progressive disclosure on first-run pyramid — only Dream visible at
+   day 1; Chief Aim unlocks day 2; Objective day 3; Daily Practice day 4.
+   After day 4 or any non-empty state, applyUnlockClass() sets day to 90
+   (full reveal). */
+body[data-sanctuary-day="1"] .fr-step[data-fr-action="aim"],
+body[data-sanctuary-day="1"] .fr-step[data-fr-action="objective"],
+body[data-sanctuary-day="1"] .fr-step[data-fr-action="practice"]{display:none}
+body[data-sanctuary-day="2"] .fr-step[data-fr-action="objective"],
+body[data-sanctuary-day="2"] .fr-step[data-fr-action="practice"]{display:none}
+body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
+
 .today-card{
+  position:relative;
   border:1px solid rgba(196,151,58,0.22);
   border-radius:4px;
   padding:1.6rem 1.7rem 1.4rem;
   background:linear-gradient(135deg,rgba(196,151,58,0.04) 0%,rgba(11,16,32,0.55) 70%);
-  position:relative;overflow:hidden;
+  overflow:hidden;
 }
 .today-card::before{
   content:"";position:absolute;top:0;right:0;width:240px;height:160px;
@@ -1631,6 +1706,55 @@ function showSaveError() {
   _saveTimer = setTimeout(() => { el.style.opacity = '0'; }, 3000);
 }
 
+/* ── Inline save chip — per-input "saved" feedback. The global indicator
+   in the privacy banner stays for screen-reader / cloud-sync semantics,
+   but the user editing a field 1500px down the page sees the chip next
+   to their input, not far above. Per SANCTUARY-DAILY-USE-SYNTHESIS #20. */
+function flashSaveChip(input) {
+  if (!input || !input.parentElement) return;
+  let chip = input.nextElementSibling;
+  if (!chip || !chip.classList || !chip.classList.contains('save-chip')) {
+    chip = document.createElement('span');
+    chip.className = 'save-chip';
+    chip.setAttribute('aria-hidden', 'true'); // global indicator already speaks
+    chip.textContent = '✦ saved';
+    input.insertAdjacentElement('afterend', chip);
+  }
+  chip.classList.add('visible');
+  if (chip._t) clearTimeout(chip._t);
+  chip._t = setTimeout(() => chip.classList.remove('visible'), 1400);
+}
+
+/* ── Progressive disclosure — Sanctuary-day count from state.returnDays.
+   Synthesis #5: day-0 shows only the Dream; Chief Aim unlocks day 2;
+   Objective day 3; Daily Practice day 4. Existing users with any data
+   shortcut to "fully unlocked" (day 90) so they never lose features.
+   Sets body[data-sanctuary-day=N] so CSS does the actual gating. */
+function ensureReturnDays() {
+  let mutated = false;
+  if (!Array.isArray(state.returnDays)) { state.returnDays = []; mutated = true; }
+  if (!state.firstSeenAt) { state.firstSeenAt = new Date().toISOString(); mutated = true; }
+  const today = todayISO();
+  if (!state.returnDays.includes(today)) {
+    state.returnDays.push(today);
+    if (state.returnDays.length > 365) state.returnDays = state.returnDays.slice(-365);
+    mutated = true;
+  }
+  // Persist on first append-per-session so the day-count is durable across
+  // reloads. Schedule via setTimeout so we don't block render and so we can
+  // batch with any other state writes that fire immediately after.
+  if (mutated && typeof persist === 'function') setTimeout(persist, 0);
+}
+function sanctuaryDay() {
+  ensureReturnDays();
+  // Existing users with content are already past the unlock gates.
+  if (!isStateEmpty()) return 90;
+  return state.returnDays.length;
+}
+function applyUnlockClass() {
+  document.body.dataset.sanctuaryDay = String(sanctuaryDay());
+}
+
 /* ── Privacy banner mode toggle (local vs synced) ── */
 function updatePrivacyBanner(user) {
   const banner = document.getElementById('privacy-banner');
@@ -2867,6 +2991,7 @@ document.getElementById('import-file').addEventListener('change', async e => {
    INIT
    ════════════════════════════════════════════════════════════════ */
 function renderAll() {
+  applyUnlockClass();
   document.getElementById('today-date').textContent = formatDate(new Date());
   renderFirstRun();
   renderToday();
@@ -2958,10 +3083,19 @@ function renderToday() {
     ? `<div class="today-vow" aria-label="Today's chief aim, read as a vow"><span class="today-vow-glyph" aria-hidden="true">✦</span><span class="today-vow-text">${escape(primaryAim.name)}</span></div>`
     : '';
 
+  // Yesterday's evening cue — surfaces at the top of today's morning, so the
+  // user is greeted by their own handwriting rather than a blank page.
+  // (Gollwitzer if-then implementation-intentions; Marcus Aurelius hypomnemata.)
+  const yesterdayCue = (yesterdayEntry && yesterdayEntry.cueIfThen)
+    ? `<div class="yesterday-cue">${escape(yesterdayEntry.cueIfThen)}</div>`
+    : '';
+
   el.innerHTML = `
     <div class="today-card">
+      <div class="breathing-dot" aria-hidden="true" title="Quiet, repeated devotion is the work."></div>
       <div class="today-date">${escape(niceDate)}</div>
       ${aimVow}
+      ${yesterdayCue}
       <div class="today-intent-label">What is today's intention?</div>
       <textarea class="today-intent-input" id="today-intent-input" rows="1" placeholder="A line that names what today serves…">${escape(todayEntry.intention || '')}</textarea>
       ${yesterdayEntry && (yesterdayEntry.intention || yesterdayEntry.reflection) ? `
@@ -2971,6 +3105,21 @@ function renderToday() {
           <textarea class="today-yesterday-input" id="today-yesterday-input" rows="1" placeholder="A short reflection — keep it small.">${escape(yesterdayEntry.reflection || '')}</textarea>
         </div>
       ` : ''}
+      <div class="today-evening">
+        <div class="today-evening-label">Evening review</div>
+        <div class="evening-row">
+          <span class="evening-glyph" aria-hidden="true">✦</span>
+          <input class="evening-input" id="evening-kept" type="text" placeholder="what was kept…" value="${escape(todayEntry.kept || '')}" aria-label="What was kept today">
+        </div>
+        <div class="evening-row">
+          <span class="evening-glyph" aria-hidden="true">·</span>
+          <input class="evening-input" id="evening-missed" type="text" placeholder="what was missed…" value="${escape(todayEntry.missed || '')}" aria-label="What was missed today">
+        </div>
+        <div class="evening-row">
+          <span class="evening-glyph" aria-hidden="true">›</span>
+          <input class="evening-input" id="evening-cue" type="text" placeholder="cue for tomorrow — when X, then Y" value="${escape(todayEntry.cueIfThen || '')}" aria-label="If-then cue for tomorrow">
+        </div>
+      </div>
       <div class="today-glance">
         <div class="today-glance-block">
           <div class="glance-label"><span aria-hidden="true">◇</span> Today's practice</div>
@@ -2992,7 +3141,7 @@ function renderToday() {
     intentInput.addEventListener('input', () => {
       if (!state.dailyIntentions[today]) state.dailyIntentions[today] = {};
       state.dailyIntentions[today].intention = intentInput.value;
-      clearTimeout(h); h = setTimeout(persist, 300);
+      clearTimeout(h); h = setTimeout(() => persist().then(() => flashSaveChip(intentInput)), 300);
     });
     // Auto-grow
     const autoGrow = () => {
@@ -3009,9 +3158,26 @@ function renderToday() {
     yIn.addEventListener('input', () => {
       if (!state.dailyIntentions[yesterday]) state.dailyIntentions[yesterday] = {};
       state.dailyIntentions[yesterday].reflection = yIn.value;
-      clearTimeout(h2); h2 = setTimeout(persist, 300);
+      clearTimeout(h2); h2 = setTimeout(() => persist().then(() => flashSaveChip(yIn)), 300);
     });
   }
+
+  // Evening review: kept / missed / cue. Saves to state.dailyIntentions[today].
+  // The cue (if-then) surfaces as the "yesterday's cue" line tomorrow morning.
+  [
+    { id: 'evening-kept',   field: 'kept'      },
+    { id: 'evening-missed', field: 'missed'    },
+    { id: 'evening-cue',    field: 'cueIfThen' },
+  ].forEach(({ id, field }) => {
+    const inp = document.getElementById(id);
+    if (!inp) return;
+    let h;
+    inp.addEventListener('input', () => {
+      if (!state.dailyIntentions[today]) state.dailyIntentions[today] = {};
+      state.dailyIntentions[today][field] = inp.value;
+      clearTimeout(h); h = setTimeout(() => persist().then(() => flashSaveChip(inp)), 300);
+    });
+  });
 
   // Habit chip tap → toggle today's log
   el.querySelectorAll('.today-chip[data-habit-id]').forEach(chip => {
