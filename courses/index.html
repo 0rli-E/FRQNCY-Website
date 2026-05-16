@@ -82,6 +82,8 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 .cstart-btn{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:inherit;opacity:0.6;transition:opacity .2s;white-space:nowrap}
 .ccard:hover .cstart-btn{opacity:1}
 .cbadge{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;background:rgba(196,151,58,0.15);border:1px solid rgba(196,151,58,0.4);color:var(--gold);padding:2px 8px;border-radius:2px}
+.cprice{font-size:0.54rem;letter-spacing:0.16em;text-transform:uppercase;background:rgba(91,199,154,0.12);border:1px solid rgba(91,199,154,0.4);color:#5BC79A;padding:2px 8px;border-radius:2px;font-weight:400}
+.cprice.is-free{background:transparent;border-color:rgba(255,255,255,0.14);color:var(--text-dim)}
 
 /* EMPTY */
 .empty{text-align:center;padding:5rem 2rem;color:var(--text-dim);font-size:0.86rem}
@@ -385,6 +387,39 @@ if (!COURSES.length) {
 } else {
   for (const c of COURSES) grid.appendChild(makeCard(c));
 }
+</script>
+
+<!-- Decorate cards with price badges (fetched from courses.json so the
+     pricing source-of-truth stays single). Free vs $price only — no
+     "discount" theatrics per editorial rules. -->
+<script>
+(async function() {
+  try {
+    const res = await fetch('/courses.json', { cache: 'force-cache' });
+    if (!res.ok) return;
+    const arr = await res.json();
+    const priceBySlug = {};
+    for (const c of arr) priceBySlug[c.slug] = c.pricing || null;
+    document.querySelectorAll('.ccard').forEach(card => {
+      const href = card.getAttribute('href') || '';
+      const m = href.match(/^([a-z0-9-]+)\//i);
+      if (!m) return;
+      const p = priceBySlug[m[1]];
+      if (!p) return;
+      const meta = card.querySelector('.ccard-meta');
+      if (!meta) return;
+      const badge = document.createElement('span');
+      if (p.model === 'paid' && p.suggested) {
+        badge.className = 'cprice';
+        badge.textContent = '$' + (p.suggested / 100).toFixed(0);
+      } else {
+        badge.className = 'cprice is-free';
+        badge.textContent = 'Free';
+      }
+      meta.appendChild(badge);
+    });
+  } catch (e) { /* non-blocking */ }
+})();
 </script>
 
 <!-- Logged-in enhancement: Continue learning strip + My Courses chip -->
