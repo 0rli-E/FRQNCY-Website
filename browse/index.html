@@ -114,6 +114,32 @@ body[data-search-active="1"] .search-state{display:block}
 .result-desc{font-size:0.76rem;color:var(--text-dim);line-height:1.5}
 .result-title mark,.result-desc mark,.result-kind mark{background:rgba(196,151,58,0.28);color:inherit;padding:0 2px;border-radius:2px}
 
+/* Ask AI panel */
+.ask-panel{margin-bottom:2rem;padding:1.4rem 1.5rem;background:linear-gradient(135deg,rgba(196,151,58,0.06) 0%,rgba(255,255,255,0.02) 60%);border:1px solid rgba(196,151,58,0.22);border-radius:14px;position:relative;overflow:hidden}
+.ask-panel::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 100% 0%,rgba(196,151,58,0.08) 0%,transparent 60%);pointer-events:none}
+.ask-eyebrow{font-family:'Cormorant',serif;font-size:0.66rem;letter-spacing:0.4em;text-transform:uppercase;color:var(--accent);margin-bottom:0.8rem;position:relative}
+.ask-status{font-size:0.78rem;color:var(--text-dim);font-style:italic;font-family:'Cormorant',serif;margin-bottom:0.6rem;min-height:1.2em;position:relative}
+.ask-status.thinking::after{content:'';display:inline-block;width:4px;height:4px;background:var(--accent);border-radius:50%;margin-left:0.5em;animation:ask-pulse 1.2s ease-in-out infinite}
+@keyframes ask-pulse{0%,100%{opacity:0.3}50%{opacity:1}}
+.ask-answer{font-size:0.92rem;line-height:1.65;color:#fff;font-weight:300;white-space:pre-wrap;position:relative}
+.ask-answer:empty{display:none}
+.ask-sources{margin-top:0.95rem;display:flex;flex-wrap:wrap;gap:6px;position:relative}
+.ask-sources:empty{display:none}
+.ask-source{display:inline-flex;align-items:center;padding:5px 10px;background:rgba(255,255,255,0.04);border:1px solid var(--card-border);border-radius:999px;color:var(--text);font-size:0.7rem;text-decoration:none;transition:background .2s ease,border-color .2s ease}
+.ask-source::before{content:'↗';color:var(--gold);margin-right:0.4em;font-size:0.75rem}
+.ask-source:hover{background:rgba(255,255,255,0.08);border-color:rgba(196,151,58,0.4);color:#fff;opacity:1}
+.ask-error{color:rgba(245,138,138,0.85);font-size:0.86rem;line-height:1.55}
+.hero-search-row{display:flex;gap:0.5rem;margin:1.5rem auto 0;max-width:560px}
+.hero-search-row .hero-search{margin:0;flex:1}
+.ask-cta{padding:0 1.1rem;background:rgba(196,151,58,0.1);border:1px solid rgba(196,151,58,0.4);border-radius:14px;color:var(--gold);font-family:'Cormorant',serif;font-size:0.95rem;font-weight:400;letter-spacing:0.05em;cursor:pointer;transition:background .2s ease,border-color .2s ease,opacity .2s ease;-webkit-tap-highlight-color:transparent;white-space:nowrap}
+.ask-cta:hover{background:rgba(196,151,58,0.18);border-color:rgba(196,151,58,0.6)}
+.ask-cta:active{transform:scale(0.98)}
+.ask-cta:disabled{opacity:0.4;cursor:not-allowed}
+@media (max-width:520px){
+  .hero-search-row{flex-direction:column;gap:0.6rem}
+  .ask-cta{padding:0.7rem 1rem;font-size:0.9rem}
+}
+
 /* MOBILE */
 @media (max-width:520px){
   .hero{padding:3.5rem 1.25rem 2rem}
@@ -151,16 +177,28 @@ body[data-search-active="1"] .search-state{display:block}
   <h1>The FRQNCY Network</h1>
   <p class="hero-desc">Everything FRQNCY publishes — searchable, browseable, askable. The whole field, one input.</p>
 
-  <div class="hero-search">
-    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
-    <input id="browse-search" type="search" placeholder="Search the network — or ask a question…" autocomplete="off" aria-label="Search topics, people, books, resources, or ask a question">
+  <div class="hero-search-row">
+    <div class="hero-search">
+      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><circle cx="11" cy="11" r="8"></circle><path d="m21 21-4.3-4.3"></path></svg>
+      <input id="browse-search" type="search" placeholder="Search the network — or ask a question…" autocomplete="off" aria-label="Search topics, people, books, resources, or ask a question">
+    </div>
+    <button id="ask-button" class="ask-cta" type="button" aria-label="Ask AI">Ask</button>
   </div>
-  <p class="hero-search-hint">146 topics · 311 people · 317 books · 766 resources</p>
+  <p class="hero-search-hint">146 topics · 311 people · 317 books · 766 resources · ask anything</p>
 </section>
 
 <!-- Search results render here when input has content; catalog hides via body[data-search-active]. -->
 <div class="search-state">
   <div class="search-results-wrap">
+    <!-- Ask AI panel — populated by /api/ask when the user presses Enter or
+         clicks the Ask button. Hidden by default; shown when an answer arrives
+         or while the request is in flight. -->
+    <div id="ask-panel" class="ask-panel" hidden>
+      <div class="ask-eyebrow">Ask</div>
+      <div id="ask-status" class="ask-status"></div>
+      <div id="ask-answer" class="ask-answer"></div>
+      <div id="ask-sources" class="ask-sources"></div>
+    </div>
     <div id="search-meta" class="search-meta"></div>
     <div id="search-results"></div>
   </div>
@@ -477,10 +515,12 @@ body[data-search-active="1"] .search-state{display:block}
     if(e.key === 'Enter'){
       e.preventDefault();
       load().then(function(){ search(input.value); });
+      askAi(input.value);
     }
     if(e.key === 'Escape'){
       input.value = '';
       search('');
+      hideAsk();
     }
   });
 
@@ -489,6 +529,88 @@ body[data-search-active="1"] .search-state{display:block}
   if(urlQ){
     input.value = urlQ;
     load().then(function(){ search(urlQ); });
+  }
+
+  // ── Ask AI flow ─────────────────────────────────────────────────────
+  // POSTs the input to /api/ask (Cloudflare Workers AI, free) and renders
+  // the structured response (answer + cited sources) above the search
+  // results. Fail-soft on 503 (binding not configured) so the UI stays
+  // honest if Workers AI isn't wired yet.
+  var askPanel   = document.getElementById('ask-panel');
+  var askStatus  = document.getElementById('ask-status');
+  var askAnswer  = document.getElementById('ask-answer');
+  var askSources = document.getElementById('ask-sources');
+  var askBtn     = document.getElementById('ask-button');
+  var askInflight = null;
+
+  function showAsk(){ if(askPanel) askPanel.hidden = false; }
+  function hideAsk(){ if(askPanel) askPanel.hidden = true; }
+  function setAskState(state, text){
+    if(!askStatus) return;
+    askStatus.className = 'ask-status' + (state === 'thinking' ? ' thinking' : '');
+    askStatus.textContent = text || '';
+  }
+  function setAskAnswer(text){ if(askAnswer) askAnswer.textContent = text || ''; }
+  function setAskSources(sources){
+    if(!askSources) return;
+    if(!sources || !sources.length){ askSources.innerHTML = ''; return; }
+    askSources.innerHTML = sources.map(function(s){
+      var url = String(s.url || '#');
+      var title = String(s.title || '(source)');
+      return '<a class="ask-source" href="' + escapeHtml(url) + '">' + escapeHtml(title) + '</a>';
+    }).join('');
+  }
+  function setAskError(message){
+    if(!askAnswer) return;
+    askAnswer.innerHTML = '<div class="ask-error">' + escapeHtml(message) + '</div>';
+  }
+
+  function askAi(question){
+    question = String(question || '').trim();
+    if(!question || question.length < 3) return;
+    // Cancel any in-flight request — only the latest question matters.
+    if(askInflight && typeof askInflight.abort === 'function'){
+      askInflight.abort();
+    }
+    showAsk();
+    setAskState('thinking', 'Thinking');
+    setAskAnswer('');
+    setAskSources(null);
+
+    var controller = (typeof AbortController === 'function') ? new AbortController() : null;
+    askInflight = controller;
+
+    fetch('/api/ask', {
+      method:  'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body:    JSON.stringify({ question: question }),
+      signal:  controller ? controller.signal : undefined,
+    })
+      .then(function(res){
+        return res.json().then(function(data){ return { ok: res.ok, status: res.status, data: data }; });
+      })
+      .then(function(r){
+        if(r.ok){
+          setAskState('done', '');
+          setAskAnswer(r.data.answer || '');
+          setAskSources(r.data.sources);
+        } else if(r.status === 503 && r.data && r.data.coming_soon){
+          setAskState('done', '');
+          setAskError(r.data.error || 'Ask is coming soon.');
+        } else {
+          setAskState('done', '');
+          setAskError(r.data && r.data.error ? r.data.error : 'Ask is temporarily unavailable.');
+        }
+      })
+      .catch(function(err){
+        if(err && err.name === 'AbortError') return;
+        setAskState('done', '');
+        setAskError('Ask failed — please try again.');
+      });
+  }
+
+  if(askBtn){
+    askBtn.addEventListener('click', function(){ askAi(input.value); });
   }
 })();
 </script>
