@@ -121,7 +121,11 @@ body[data-search-active="1"] .search-state{display:block}
 .ask-status{font-size:0.78rem;color:var(--text-dim);font-style:italic;font-family:'Cormorant',serif;margin-bottom:0.6rem;min-height:1.2em;position:relative}
 .ask-status.thinking::after{content:'';display:inline-block;width:4px;height:4px;background:var(--accent);border-radius:50%;margin-left:0.5em;animation:ask-pulse 1.2s ease-in-out infinite}
 @keyframes ask-pulse{0%,100%{opacity:0.3}50%{opacity:1}}
-.ask-answer{font-size:0.92rem;line-height:1.65;color:#fff;font-weight:300;white-space:pre-wrap;position:relative}
+.ask-answer{font-size:0.92rem;line-height:1.65;color:#fff;font-weight:300;position:relative}
+.ask-answer strong{font-weight:500;color:var(--gold-light)}
+.ask-bullets{margin:0.6rem 0;padding-left:1.2rem;list-style:none}
+.ask-bullets li{position:relative;margin-bottom:0.4rem}
+.ask-bullets li::before{content:'·';color:var(--gold);position:absolute;left:-1rem;font-weight:600}
 .ask-answer:empty{display:none}
 .ask-sources{margin-top:0.95rem;display:flex;flex-wrap:wrap;gap:6px;position:relative}
 .ask-sources:empty{display:none}
@@ -550,7 +554,36 @@ body[data-search-active="1"] .search-state{display:block}
     askStatus.className = 'ask-status' + (state === 'thinking' ? ' thinking' : '');
     askStatus.textContent = text || '';
   }
-  function setAskAnswer(text){ if(askAnswer) askAnswer.textContent = text || ''; }
+  // Minimal markdown → HTML: bold + bullets + line breaks. Avoids a full
+  // dep just to render Workers AI answers nicely. Escapes HTML first so the
+  // LLM can't inject markup, then re-applies the safe-subset formatting.
+  function renderAskMarkdown(raw){
+    var s = escapeHtml(String(raw || ''));
+    // Bold **text** → <strong>text</strong>
+    s = s.replace(/\*\*([^*\n]+?)\*\*/g, '<strong>$1</strong>');
+    // Bulleted lines starting with -/* (after optional indentation)
+    var lines = s.split('\n');
+    var out = [];
+    var inList = false;
+    for(var i = 0; i < lines.length; i++){
+      var line = lines[i];
+      var bullet = line.match(/^\s*[-*]\s+(.*)$/);
+      if(bullet){
+        if(!inList){ out.push('<ul class="ask-bullets">'); inList = true; }
+        out.push('<li>' + bullet[1] + '</li>');
+      } else {
+        if(inList){ out.push('</ul>'); inList = false; }
+        out.push(line);
+      }
+    }
+    if(inList) out.push('</ul>');
+    return out.join('\n').replace(/\n\n+/g, '<br><br>').replace(/\n/g, ' ');
+  }
+  function setAskAnswer(text){
+    if(!askAnswer) return;
+    if(!text){ askAnswer.innerHTML = ''; return; }
+    askAnswer.innerHTML = renderAskMarkdown(text);
+  }
   function setAskSources(sources){
     if(!askSources) return;
     if(!sources || !sources.length){ askSources.innerHTML = ''; return; }
