@@ -71,22 +71,21 @@
 /social/pages/*         /404.html 404
 /social/chunks/*        /404.html 404
 
-# Dynamic user-profile route — now under /social/u/ so it cannot collide
-# with the static settings sub-pages of /social/profile/ (keys, connections,
-# bluesky-callback, bluesky-oauth-client.json). The previous catchall
-# /social/profile/* hijacked those static files because CF Pages applies
-# redirects-with-status=200 before serving static files of the same path.
-# By moving the dynamic route under a separate prefix, the catchall and
-# the static files can coexist cleanly.
+# Dynamic user-profile route — namespaced under /social/u/ so it cannot
+# collide with the static settings sub-pages of /social/profile/ (keys,
+# connections, bluesky-callback, bluesky-oauth-client.json). The previous
+# /social/profile/* catchall hijacked those static files even when written
+# as a 301 — confirmed empirically 2026-05-16 that CF Pages applies the
+# catchall before any static-file resolution regardless of status code.
+# By moving the dynamic route under a separate prefix the catchall and the
+# static files can coexist cleanly.
 /social/u/*             /social/profile/index.html 200
 
-# 301 legacy /social/profile/<username> → /social/u/<username> so inbound
-# links keep working. This is a 3xx redirect (not a 200 rewrite), so per
-# CF Pages docs static assets at the matching path (/keys/index.html,
-# /connections/index.html, /bluesky-callback/index.html, the OAuth JSON)
-# take precedence — only bare-username URLs hit this rule.
-/social/profile/u/*     /social/u/:splat 301
-/social/profile/*       /social/u/:splat 301
+# NOTE: deliberately NO catchall on /social/profile/<username>. Inbound
+# links to legacy /social/profile/<username> URLs (~2 users in production
+# as of 2026-05-16) will 404. If/when that becomes load-bearing, add
+# specific 301 lines per username — never a wildcard, or the static sub-
+# pages re-break.
 
 # Dynamic channel route — same shell for every channel slug. The Astro build
 # emits /social/channel/<seed>/index.html for the seeds in getStaticPaths;
