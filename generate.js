@@ -99,6 +99,7 @@ const ORGS   = loadBed('orgs.json');
 const MEDIA  = loadBed('media.json');
 const PLACES = loadBed('places.json');
 const MUSIC  = loadBed('music.json');
+const PAPERS = loadBed('papers.json');
 // Pillar-pick mapping: 6 books per pillar (#65). Loaded once; rendered in
 // pillarPage() via pillarBooksSection(). If a pick references a b- id that
 // exists in the bed, we use the bed entry's image, author, etc. Stubs
@@ -1843,6 +1844,76 @@ ${FOOTER}
 </body></html>`;
 }
 
+// ── PAPER PAGE — /papers/[slug]/ ─────────────────────────────────
+const PAPER_COLLECTIONS = {
+  'the-field': 'The Field — consciousness research',
+  'dispenza': 'Dispenza — meditation & brain research',
+  'wikileaks': 'Wikileaks — primary-source documents',
+  'emoto-water': 'Emoto — water-crystal research',
+};
+function paperSlug(paper) { return (paper.id || '').replace(/^pp-/, ''); }
+
+function paperPage(paper) {
+  const slug = paperSlug(paper);
+  const canonical = `https://frqncy.network/papers/${slug}/`;
+  const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Papers</a><span class="sep">/</span><span>${esc(paper.title)}</span>`;
+  const collectionLabel = PAPER_COLLECTIONS[paper.collection] || paper.collection || 'Research';
+
+  const externalLink = paper.url
+    ? `<a href="${esc(paper.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Read paper →</a>`
+    : '';
+  const doiLink = paper.doi
+    ? ` &nbsp;·&nbsp; <a href="https://doi.org/${esc(paper.doi)}" target="_blank" rel="noopener noreferrer" class="rlink">DOI: ${esc(paper.doi)}</a>`
+    : '';
+
+  const citation = [
+    paper.authors,
+    paper.year ? `(${paper.year})` : '',
+    paper.title ? `<em>${esc(paper.title)}</em>` : '',
+    paper.venue,
+  ].filter(Boolean).map(esc).join(' · ').replace('&lt;em&gt;','<em>').replace('&lt;/em&gt;','</em>');
+
+  const appearances = appearancesFor(paper.appears_in);
+  const topicsSection = appearances.length ? `<section>
+  <div class="section-label">Cited on</div>
+  <div class="grid grid-sm">
+    ${appearances.map(a => `<a href="${esc(a.href)}" class="ncard">
+  <div class="ncard-type">${esc(a.eyebrow)}</div>
+  <h3>${esc(a.label)}</h3>
+  ${a.desc ? `<p>${esc(a.desc.slice(0, 70))}…</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`).join('\n')}
+  </div>
+</section>` : '';
+
+  const ld = entityLdWithBreadcrumb({
+    '@type': 'ScholarlyArticle',
+    name: paper.title,
+    description: paper.desc,
+    url: canonical,
+    sameAs: paper.url ? [paper.url] : undefined,
+    author: paper.authors ? paper.authors.split(',').map(a => ({ '@type': 'Person', name: a.trim() })) : undefined,
+    datePublished: paper.year ? String(paper.year) : undefined,
+    publisher: paper.venue,
+    isPartOf: SITE_REF,
+  }, 'Papers', 'papers', paper.title, canonical);
+
+  return head(paper.title, null, paper.desc, canonical, ld, null) +
+nav(crumb) +
+`<div class="hero">
+  <div class="hero-eyebrow">Paper · ${esc(collectionLabel)}</div>
+  <h1>${esc(paper.title)}</h1>
+  <div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim);max-width:60ch">${citation}</div>
+  ${paper.desc ? `<p class="hero-desc">${esc(paper.desc)}</p>` : ''}
+  <div style="margin-top:1.25rem">${externalLink}${doiLink}</div>
+</div>
+<main>
+  ${topicsSection}
+</main>
+${FOOTER}
+</body></html>`;
+}
+
 // ── EXPLORE-DATA SYNC ────────────────────────────────────────────
 // Keep explore-data.json in sync with content.json + places.json.
 // Preserves hand-curated map topology (cross-pillar links, map-specific
@@ -2442,6 +2513,36 @@ if (PLACES) {
   console.log(`  places: ${placeCount} profiles + 1 ${BESPOKE_DOMAINS.has('places') ? 'hub at /places/all/' : 'index'} → ./places/`);
 }
 
+// ── PAPER PAGES — /papers/[slug]/ + /papers/index.html ───────────
+const PAPERS_OUT = path.join(ROOT, 'papers');
+let paperCount = 0;
+if (PAPERS && PAPERS.papers && PAPERS.papers.length) {
+  mkdirp(PAPERS_OUT);
+  for (const pp of PAPERS.papers) {
+    const slug = paperSlug(pp);
+    if (!slug) continue;
+    mkdirp(path.join(PAPERS_OUT, slug));
+    fs.writeFileSync(path.join(PAPERS_OUT, slug, 'index.html'), paperPage(pp));
+    paperCount++;
+  }
+  // Hub page — group by collection. Reuses the entityIndexPage shape but
+  // with the eyebrow varying per collection.
+  fs.writeFileSync(path.join(PAPERS_OUT, 'index.html'),
+    entityIndexPage({
+      label: 'Papers',
+      eyebrow: 'Paper',
+      entities: PAPERS.papers.map(p => ({
+        ...p,
+        name: p.title,
+        bio: [p.authors, p.year ? `(${p.year})` : '', p.venue, p.desc].filter(Boolean).join(' · '),
+      })),
+      slugFn: paperSlug,
+      canonicalPath: '/papers/',
+      showFilters: false,
+    }));
+  console.log(`  papers: ${paperCount} profiles + 1 index → ./papers/`);
+}
+
 // ── SITEMAP ──────────────────────────────────────────────────────
 const today = new Date().toISOString().slice(0, 10);
 
@@ -2472,6 +2573,8 @@ const sitemapEntries = [
   ...(MUSIC  ? MUSIC.music.map(mu => ({ loc: `https://frqncy.network/music/${musicSlug(mu)}/`, priority: '0.5', freq: 'monthly' })) : []),
   ...(PLACES ? [{ loc: 'https://frqncy.network/places/', priority: '0.7', freq: 'weekly' }] : []),
   ...(PLACES ? PLACES.places.map(pl => ({ loc: `https://frqncy.network/places/${placeSlug(pl)}/`, priority: '0.5', freq: 'monthly' })) : []),
+  ...(PAPERS && PAPERS.papers && PAPERS.papers.length ? [{ loc: 'https://frqncy.network/papers/', priority: '0.7', freq: 'weekly' }] : []),
+  ...(PAPERS && PAPERS.papers ? PAPERS.papers.map(pp => ({ loc: `https://frqncy.network/papers/${paperSlug(pp)}/`, priority: '0.5', freq: 'monthly' })) : []),
 ];
 
 fs.writeFileSync(path.join(ROOT, 'sitemap.xml'), `<?xml version="1.0" encoding="UTF-8"?>

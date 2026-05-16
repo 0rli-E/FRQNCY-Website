@@ -844,6 +844,81 @@ footer.site-foot .legal {
 
 </main>
 
+<!-- PAPERS WE CITE — primary sources, grouped by collection -->
+<section class="section section-wide fade-up" id="papers-section">
+  <span class="label">The corpus</span>
+  <h2>Papers we <strong>cite.</strong></h2>
+  <p style="max-width: 60ch;">
+    Primary sources, not summaries. Every paper below is open-access; click straight through to the PDF or canonical archive. Four working bibliographies — three of consciousness research and one of leaks we treat as historical primary documents.
+  </p>
+
+  <div class="papers-grid" id="papers-grid"></div>
+
+  <div style="margin-top:2rem;text-align:center">
+    <a href="/papers/" class="constellation-cta">All papers ↗</a>
+  </div>
+</section>
+
+<style>
+  .papers-grid { display: grid; gap: 2.5rem; margin-top: 2rem; }
+  .papers-collection h3 {
+    font-family: var(--serif); font-size: clamp(1.05rem, 1.5vw, 1.3rem);
+    font-weight: 400; font-style: italic; letter-spacing: 0.02em;
+    color: var(--gold-light); margin-bottom: 1rem; border-bottom: 1px solid rgba(196,151,58,0.18);
+    padding-bottom: 0.5rem;
+  }
+  .papers-list { display: grid; gap: 1rem; }
+  .paper-card {
+    display: block; padding: 1rem 1.25rem;
+    background: rgba(255,255,255,0.03); border-left: 2px solid rgba(196,151,58,0.4);
+    text-decoration: none; transition: background .2s, border-color .2s;
+  }
+  .paper-card:hover { background: rgba(255,255,255,0.06); border-left-color: var(--gold-light); }
+  .paper-meta {
+    font-size: 0.62rem; letter-spacing: 0.18em; text-transform: uppercase;
+    color: var(--text-dim); margin-bottom: 0.4rem;
+  }
+  .paper-title {
+    font-family: var(--serif); font-size: clamp(0.95rem, 1.25vw, 1.1rem);
+    line-height: 1.35; color: #fff; margin-bottom: 0.4rem;
+  }
+  .paper-desc {
+    font-size: 0.85rem; line-height: 1.5; color: rgba(255,255,255,0.72); margin: 0;
+  }
+</style>
+
+<script>
+(function() {
+  const COLLECTIONS = [
+    { id: 'the-field',    label: 'Consciousness & the field' },
+    { id: 'dispenza',     label: 'Meditation & brain (Dispenza team)' },
+    { id: 'emoto-water',  label: 'Water-crystal research (Emoto)' },
+    { id: 'wikileaks',    label: 'Wikileaks — primary documents' },
+  ];
+  fetch('/papers.json').then(r => r.json()).then(data => {
+    const papers = data.papers || [];
+    const byColl = {};
+    for (const p of papers) (byColl[p.collection] = byColl[p.collection] || []).push(p);
+    const grid = document.getElementById('papers-grid');
+    if (!grid) return;
+    grid.innerHTML = COLLECTIONS.map(c => {
+      const items = (byColl[c.id] || []).sort((a, b) => (b.year || 0) - (a.year || 0));
+      if (!items.length) return '';
+      return `<div class="papers-collection">
+        <h3>${c.label}</h3>
+        <div class="papers-list">
+          ${items.map(p => `<a class="paper-card" href="/papers/${p.id.replace(/^pp-/, '')}/">
+            <div class="paper-meta">${p.authors || ''}${p.year ? ' · ' + p.year : ''}${p.venue ? ' · ' + p.venue : ''}</div>
+            <div class="paper-title">${p.title}</div>
+            ${p.desc ? `<p class="paper-desc">${p.desc}</p>` : ''}
+          </a>`).join('')}
+        </div>
+      </div>`;
+    }).join('');
+  }).catch(() => {});
+})();
+</script>
+
 <!-- CLOSING -->
 <section class="closing fade-up">
   <div class="closing-bg" aria-hidden="true"></div>
