@@ -878,6 +878,32 @@ function collectionLd(label, desc, url) {
   return { '@context': 'https://schema.org', '@type': 'CollectionPage', name: `${label} — FRQNCY Network`, description: desc, url, isPartOf: SITE_REF };
 }
 
+// BreadcrumbList for an entity item page (people/books/orgs/media/music/places).
+// `hubLabel` is the hub's display name ("People", "Books", ...), `hubSlug` its URL slug.
+// `entityName` is the item's display name, `entityUrl` its canonical URL.
+function breadcrumbLd(hubLabel, hubSlug, entityName, entityUrl) {
+  return {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'FRQNCY',  item: 'https://frqncy.network/' },
+      { '@type': 'ListItem', position: 2, name: hubLabel,  item: `https://frqncy.network/${hubSlug}/` },
+      { '@type': 'ListItem', position: 3, name: entityName, item: entityUrl },
+    ],
+  };
+}
+
+// Wrap a primary entity schema + breadcrumb into a single @graph block.
+// Google + Bing both accept @graph; this is the canonical multi-type form.
+function entityLdWithBreadcrumb(primary, hubLabel, hubSlug, entityName, entityUrl) {
+  return {
+    '@context': 'https://schema.org',
+    '@graph': [
+      primary,
+      breadcrumbLd(hubLabel, hubSlug, entityName, entityUrl),
+    ],
+  };
+}
+
 // ── Head template ────────────────────────────────────────────────
 function head(title, accent, desc = '', canonical = '', jsonLd = null, ogImageSlug = null) {
   const safe     = safeAccent(accent);
@@ -1360,15 +1386,14 @@ function personPage(person) {
   const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">People</a><span class="sep">/</span><span>${esc(person.name)}</span>`;
   const externalLink = person.url ? `<a href="${esc(person.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit ${esc((person.url||'').replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,''))} →</a>` : '';
 
-  const ld = {
-    '@context': 'https://schema.org',
+  const ld = entityLdWithBreadcrumb({
     '@type': 'Person',
     name: person.name,
     description: person.bio,
     url: canonical,
     sameAs: person.url ? [person.url] : undefined,
     isPartOf: SITE_REF,
-  };
+  }, 'People', 'people', person.name, canonical);
 
   // Portrait — person.image is a stable URL. Renders as a small circular
   // crop above the name. Quiet, editorial, not insistent.
@@ -1432,15 +1457,14 @@ function bookPage(book) {
   const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Books</a><span class="sep">/</span><span>${esc(book.title)}</span>`;
   const externalLink = book.url ? `<a href="${esc(book.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>` : '';
 
-  const ld = {
-    '@context': 'https://schema.org',
+  const ld = entityLdWithBreadcrumb({
     '@type': 'Book',
     name: book.title,
     description: book.bio,
     url: canonical,
     sameAs: book.url ? [book.url] : undefined,
     isPartOf: SITE_REF,
-  };
+  }, 'Books', 'books', book.title, canonical);
 
   // Optional editorial fields populated by enrichment pass:
   //   intro — a paragraph (or 2-3) sourced from the book itself / publisher / archive.org
@@ -1507,20 +1531,24 @@ function orgPage(org) {
   const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Orgs</a><span class="sep">/</span><span>${esc(org.name)}</span>`;
   const externalLink = org.url ? `<a href="${esc(org.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit →</a>` : '';
 
-  const ld = {
-    '@context': 'https://schema.org',
+  const ld = entityLdWithBreadcrumb({
     '@type': 'Organization',
     name: org.name,
     description: org.bio,
     url: canonical,
     sameAs: org.url ? [org.url] : undefined,
     isPartOf: SITE_REF,
-  };
+  }, 'Organisations', 'orgs', org.name, canonical);
+
+  const logoHtml = org.image
+    ? `<figure style="margin:0 auto 1.5rem;width:140px;height:140px;display:flex;align-items:center;justify-content:center;background:rgba(255,255,255,0.04);border-radius:8px;padding:14px;box-sizing:border-box"><img src="${esc(org.image)}" alt="${esc(org.name)} logo" loading="lazy" style="max-width:100%;max-height:100%;object-fit:contain;display:block"></figure>`
+    : '';
 
   return head(org.name, null, org.bio, canonical, ld, null) +
 nav(crumb) +
 `<div class="hero">
   <div class="hero-eyebrow">Organisation</div>
+  ${logoHtml}
   <h1>${esc(org.name)}</h1>
   ${founderHtml}
   ${org.bio ? `<p class="hero-desc">${esc(org.bio)}</p>` : ''}
@@ -1587,15 +1615,21 @@ function mediaPage(media) {
 @media(max-width:560px){.hero-banner{aspect-ratio:16/10}.hero-banner-cta{font-size:0.62rem;padding:7px 14px;letter-spacing:0.22em}}
 </style>` : '';
 
-  const ld = {
-    '@context': 'https://schema.org',
+  const ld = entityLdWithBreadcrumb({
     '@type': 'CreativeWork',
     name: media.name,
     description: media.bio,
     url: canonical,
     sameAs: media.url ? [media.url] : undefined,
     isPartOf: SITE_REF,
-  };
+  }, 'Media', 'media', media.name, canonical);
+
+  // Square 140px artwork (podcast cover / film poster / publication mark)
+  // — only when no banner is set; the banner pattern is the richer hero
+  // and replaces the small art tile.
+  const artworkHtml = (media.image && !media.banner_image)
+    ? `<figure style="margin:0 auto 1.5rem;width:140px;height:140px;border-radius:6px;overflow:hidden;box-shadow:0 16px 40px -16px rgba(0,0,0,0.55)"><img src="${esc(media.image)}" alt="${esc(media.name)} artwork" loading="lazy" style="width:100%;height:100%;object-fit:cover;display:block"></figure>`
+    : '';
 
   return head(media.name, null, media.bio, canonical, ld, null) +
 bannerCss +
@@ -1603,6 +1637,7 @@ nav(crumb) +
 `<div class="hero">
   ${bannerHtml}
   <div class="hero-eyebrow">Media</div>
+  ${artworkHtml}
   <h1>${esc(media.name)}</h1>
   ${creatorHtml}
   ${media.bio ? `<p class="hero-desc">${esc(media.bio)}</p>` : ''}
