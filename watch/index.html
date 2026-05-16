@@ -80,6 +80,18 @@ nav.snav{
   content:'';position:absolute;left:50%;bottom:0;transform:translateX(-50%);
   width:64px;height:1px;background:var(--gold);opacity:0.55;
 }
+/* Ganesha sigil — quiet brand marker in the hero's top-right corner.
+   Visible but never aufdringlich: low opacity, soft lift on hover,
+   shrinks on small screens, hidden when inside the app's iframe shell. */
+.hero-sigil{
+  position:absolute;top:18px;right:clamp(8px,3vw,28px);
+  width:84px;height:auto;opacity:0.55;
+  filter:drop-shadow(0 8px 20px rgba(0,0,0,0.45));
+  transition:opacity 0.35s ease;pointer-events:none;
+}
+.hero-sigil:hover{opacity:0.85}
+@media (max-width:720px){ .hero-sigil{width:60px;top:10px;right:10px;opacity:0.45} }
+body.frqncy-embed .hero-sigil{display:none}
 .hero-eyebrow{
   display:inline-flex;align-items:center;gap:0.75rem;
   font-size:0.58rem;letter-spacing:0.36em;text-transform:uppercase;
@@ -884,6 +896,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 
 <!-- Hero: The Library -->
 <section class="hero">
+  <img class="hero-sigil" src="/images/ganesha-300.png" srcset="/images/ganesha-300.png 1x, /images/ganesha-600.png 2x" alt="" aria-hidden="true" loading="lazy">
   <div class="hero-eyebrow">The Library</div>
   <h1>A spiritual library<br>for the <em>age of seekers.</em></h1>
   <p class="hero-desc">Curated talks, teachings, and guided practices — organised into chapters you can walk through, or wander at your own pace.</p>
