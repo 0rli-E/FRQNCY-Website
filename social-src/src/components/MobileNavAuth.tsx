@@ -25,7 +25,7 @@ export default function MobileNavAuth() {
   return (
     <>
       {username && (
-        <a href={`/social/u/${username}`} class="block text-text py-1.5">
+        <a href={`/social/profile/${username}`} class="block text-text py-1.5">
           {displayName}
         </a>
       )}

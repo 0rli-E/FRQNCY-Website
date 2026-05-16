@@ -63,7 +63,7 @@ export default function CommentItem({
     <div class="flex gap-2">
       {/* Avatar */}
       <a
-        href={`/social/u/${username}`}
+        href={`/social/profile/${username}`}
         class="w-7 h-7 rounded-full bg-accent/20 flex items-center justify-center text-accent text-[10px] font-semibold shrink-0 overflow-hidden hover:ring-1 hover:ring-gold/30 transition-all"
       >
         {author?.avatar_url ? (
@@ -81,7 +81,7 @@ export default function CommentItem({
       <div class="flex-1 min-w-0">
         <div class="flex items-baseline gap-1.5 flex-wrap">
           <a
-            href={`/social/u/${username}`}
+            href={`/social/profile/${username}`}
             class="text-xs font-medium text-text hover:text-gold transition-colors"
           >
             {display}

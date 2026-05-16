@@ -208,7 +208,7 @@ export default function SearchView() {
                 {results.profiles.map((pr) => (
                   <a
                     key={pr.id}
-                    href={`/social/u/${pr.username}`}
+                    href={`/social/profile/${pr.username}`}
                     class="rounded-xl bg-card-bg border border-card-border hover:border-gold/30 p-4 transition-colors flex gap-3 items-center"
                   >
                     <div class="w-10 h-10 rounded-full bg-navy-mid overflow-hidden flex-shrink-0 border border-card-border">
@@ -252,7 +252,7 @@ export default function SearchView() {
                     >
                       <header class="flex items-center gap-3 mb-2">
                         <a
-                          href={author ? `/social/u/${author.username}` : '#'}
+                          href={author ? `/social/profile/${author.username}` : '#'}
                           class="w-8 h-8 rounded-full bg-navy-mid overflow-hidden border border-card-border flex-shrink-0"
                         >
                           {author?.avatar_url ? (
@@ -265,7 +265,7 @@ export default function SearchView() {
                         </a>
                         <div class="min-w-0 flex-1 flex items-baseline gap-2">
                           <a
-                            href={author ? `/social/u/${author.username}` : '#'}
+                            href={author ? `/social/profile/${author.username}` : '#'}
                             class="font-heading text-sm text-text hover:text-gold truncate"
                           >
                             {author?.display_name || author?.username || 'Anonymous'}

@@ -125,7 +125,7 @@ export default function NavAuth() {
           )}
 
           <a
-            href={`/social/u/${profile?.username || ''}`}
+            href={`/social/profile/${profile?.username || ''}`}
             class="flex items-center gap-2 px-4 py-2 text-sm text-text-dim hover:text-text hover:bg-navy-mid transition-colors"
           >
             <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">

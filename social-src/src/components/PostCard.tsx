@@ -265,7 +265,7 @@ export default function PostCard({
       {/* Header */}
       <div class="flex items-start gap-3">
         <a
-          href={`/social/u/${username}`}
+          href={`/social/profile/${username}`}
           class="w-10 h-10 rounded-full bg-accent/20 flex items-center justify-center text-accent text-sm font-semibold shrink-0 hover:ring-2 hover:ring-gold/30 transition-all overflow-hidden"
         >
           {avatar ? (
@@ -276,7 +276,7 @@ export default function PostCard({
         </a>
         <div class="flex-1 min-w-0">
           <div class="flex items-center gap-2">
-            <a href={`/social/u/${username}`} class="text-sm font-medium text-text hover:text-gold transition-colors">
+            <a href={`/social/profile/${username}`} class="text-sm font-medium text-text hover:text-gold transition-colors">
               {author}
             </a>
             <span class="text-xs text-text-dim">@{username}</span>
