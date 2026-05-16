@@ -71,21 +71,17 @@
 /social/pages/*         /404.html 404
 /social/chunks/*        /404.html 404
 
-# Dynamic user-profile route — namespaced under /social/u/ so it cannot
-# collide with the static settings sub-pages of /social/profile/ (keys,
-# connections, bluesky-callback, bluesky-oauth-client.json). The previous
-# /social/profile/* catchall hijacked those static files even when written
-# as a 301 — confirmed empirically 2026-05-16 that CF Pages applies the
-# catchall before any static-file resolution regardless of status code.
-# By moving the dynamic route under a separate prefix the catchall and the
-# static files can coexist cleanly.
-/social/u/*             /social/profile/index.html 200
+# /social/profile/<username> dynamic routing — now handled by the
+# functions/social/profile/[[path]].js Pages Function. It defers to
+# static for /keys/, /connections/, /bluesky-callback/, and the OAuth
+# JSON, and rewrites to /social/profile/index.html for any other path
+# (e.g. /social/profile/<username>). _redirects can't express this
+# selectively — see the cf-pages-catchall-hijacks-static memory.
 
-# NOTE: deliberately NO catchall on /social/profile/<username>. Inbound
-# links to legacy /social/profile/<username> URLs (~2 users in production
-# as of 2026-05-16) will 404. If/when that becomes load-bearing, add
-# specific 301 lines per username — never a wildcard, or the static sub-
-# pages re-break.
+# Backup: /social/u/* still works as a clean dynamic-profile namespace
+# (no static-file collision possible) for any new code that wants to
+# route there directly.
+/social/u/*             /social/profile/index.html 200
 
 # Dynamic channel route — same shell for every channel slug. The Astro build
 # emits /social/channel/<seed>/index.html for the seeds in getStaticPaths;
