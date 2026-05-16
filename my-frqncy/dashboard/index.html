@@ -709,6 +709,30 @@ nav{
 .foot{text-align:center;color:var(--text-faint);font-size:0.7rem;letter-spacing:0.08em;margin-top:4rem;padding:2rem 0;border-top:1px solid var(--card-border)}
 .foot a{color:var(--gold-light);text-decoration:underline;text-decoration-color:var(--gold-dim)}
 
+/* Sanctuary page chrome — hide the floating donate button + popover. This
+   is a private room; the room itself doesn't ask for money. The membership
+   surface (linked from elsewhere) handles support. The body class
+   `frqncy-sanctuary` is set in the small inline IIFE below. */
+body.frqncy-sanctuary #frq-donate-btn,
+body.frqncy-sanctuary #frq-donate-pop { display: none !important; }
+
+/* Tab-strip "more →" chevron hint, in addition to the existing 32px fade.
+   Sits above the gradient, gold, fades in when .scrollable is on the wrap.
+   On touch devices the user can swipe; the chevron is the visual cue. */
+.tabs-wrap::before {
+  content: "›"; position: absolute; right: 8px; top: 50%;
+  transform: translateY(-60%); color: var(--gold);
+  font-size: 1.1rem; line-height: 1; opacity: 0; pointer-events: none;
+  transition: opacity .2s; z-index: 2;
+}
+.tabs-wrap.scrollable::before { opacity: 0.7; }
+
+/* Keyboard-shortcut tip — hide on touch-only devices. The "press 1–5"
+   string assumes a hardware keyboard; on phones it's misleading copy. */
+@media (hover: none) and (pointer: coarse) {
+  .kbd-tip { display: none !important; }
+}
+
 /* Mobile touch targets & layout fixes */
 @media(max-width:640px){
   .score-btn{width:44px;height:44px;font-size:1.15rem}
@@ -1048,22 +1072,11 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 <!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
 
 
-<nav>
-  <a href="../../index.html" class="nav-logo">FRQNCY</a>
-  <ul class="nav-links">
-    <li><a href="../../explore.html">Discover</a></li>
-    <li class="nav-dd">
-      <a href="/social/">Community</a>
-      <div class="nav-dd-menu">
-        <a href="../../podcast.html"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
-        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">The social layer</span></a>
-        <a href="../../space.html"><span class="dd-label">Community Space</span><span class="dd-sub">Coworking &amp; retreat</span></a>
-        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
-      </div>
-    </li>
-    <li><a href="../../my-frqncy.html" class="nav-cta-gold active">My FRQNCY</a></li>
-</ul>
-</nav>
+<!-- Page-local <nav> removed 2026-05-16 — the canonical global header above
+     (#main-nav from _chrome/global-header.html) already provides FRQNCY logo
+     + Discover dropdown + Community dropdown + My FRQNCY CTA. Stacking a
+     second nav with the same FRQNCY logo wasted ~112px (13%) of phone
+     viewport. The global header has the active-state hint via path-matching. -->
 
 <!-- Supabase auth + cloud sync (loads SDK from CDN, sets up window.frqncy) -->
 <script src="../../assets/frqncy-supabase.js" defer></script>
@@ -1144,7 +1157,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
             </button>
           </li>
         </ol>
-        <p style="font-size:0.7rem;color:var(--text-faint);margin-top:1.1rem;letter-spacing:0.04em">Tip · press <kbd style="font-family:inherit;font-size:0.78em;padding:0.05em 0.4em;border:1px solid var(--card-border);border-radius:2px;background:rgba(255,255,255,0.03)">1</kbd>–<kbd style="font-family:inherit;font-size:0.78em;padding:0.05em 0.4em;border:1px solid var(--card-border);border-radius:2px;background:rgba(255,255,255,0.03)">5</kbd> to jump between tabs.</p>
+        <p class="kbd-tip" style="font-size:0.7rem;color:var(--text-faint);margin-top:1.1rem;letter-spacing:0.04em">Tip · press <kbd style="font-family:inherit;font-size:0.78em;padding:0.05em 0.4em;border:1px solid var(--card-border);border-radius:2px;background:rgba(255,255,255,0.03)">1</kbd>–<kbd style="font-family:inherit;font-size:0.78em;padding:0.05em 0.4em;border:1px solid var(--card-border);border-radius:2px;background:rgba(255,255,255,0.03)">5</kbd> to jump between tabs.</p>
       </div>
     </section>
 

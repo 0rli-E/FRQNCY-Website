@@ -1678,15 +1678,14 @@ function musicPage(mu) {
   const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">Music</a><span class="sep">/</span><span>${esc(mu.title)}</span>`;
   const externalLink = mu.url ? `<a href="${esc(mu.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Listen →</a>` : '';
 
-  const ld = {
-    '@context': 'https://schema.org',
+  const ld = entityLdWithBreadcrumb({
     '@type': 'MusicComposition',
     name: mu.title,
     description: mu.bio,
     url: canonical,
     sameAs: mu.url ? [mu.url] : undefined,
     isPartOf: SITE_REF,
-  };
+  }, 'Music', 'music', mu.title, canonical);
 
   return head(mu.title, null, mu.bio, canonical, ld, null) +
 nav(crumb) +
@@ -1754,8 +1753,7 @@ function placePage(place) {
   const externalLink = externalLinks ? `<div style="margin-top:1.25rem;display:flex;gap:0.75rem;flex-wrap:wrap;justify-content:center">${externalLinks}</div>` : '';
   const locationHtml = place.location ? `<div style="margin-top:0.75rem;font-size:0.85rem;color:var(--text-dim)">${esc(place.location)}</div>` : '';
 
-  const ld = {
-    '@context': 'https://schema.org',
+  const ld = entityLdWithBreadcrumb({
     '@type': 'Place',
     name: place.name,
     description: place.bio,
@@ -1763,7 +1761,7 @@ function placePage(place) {
     sameAs: place.url ? [place.url] : undefined,
     address: place.location || undefined,
     isPartOf: SITE_REF,
-  };
+  }, 'Places', 'places', place.name, canonical);
 
   return head(place.name, null, place.bio, canonical, ld, null) +
 nav(crumb) +
@@ -2045,6 +2043,17 @@ for (const t of DATA.topics) {
 }
 
 // ── Helper: entity index page builder (one alphabetical grid of cards) ──
+// Per-hub 4K Unsplash hero background URLs — verified 2026-05-16.
+// Keeping these in one place so future regens don't lose them
+// (the previous round had them hand-applied via sed; got clobbered by regen).
+const HUB_HERO_BG = {
+  '/people/': 'https://images.unsplash.com/photo-1559223607-a43c990c692c?auto=format&fit=crop&q=85&w=3840',
+  '/books/':  'https://images.unsplash.com/photo-1568667256549-094345857637?auto=format&fit=crop&q=85&w=3840',
+  '/orgs/':   'https://images.unsplash.com/photo-1431576901776-e539bd916ba2?auto=format&fit=crop&q=85&w=3840',
+  '/media/':  'https://images.unsplash.com/photo-1485579149621-3123dd979885?auto=format&fit=crop&q=85&w=3840',
+  '/music/':  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&q=85&w=3840',
+};
+
 function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intro, showFilters = true }) {
   // For each entity, derive the set of pillars it touches. A person teaching
   // topics across Well-being and Consciousness shows under BOTH Education and
@@ -2131,16 +2140,49 @@ function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intr
   const heroDescPlain = heroDescRaw ? null : defaultIntro;
   const metaDesc = `${entities.length} ${label.toLowerCase()} curated on the FRQNCY network.`;
 
+  // Hub schema: CollectionPage + ItemList of the first 20 entities (Google
+  // accepts a representative slice; the full list is paginated client-side).
+  // Each ListItem references the entity's canonical URL.
+  const itemListLd = {
+    '@type': 'ItemList',
+    numberOfItems: entities.length,
+    itemListElement: enriched.slice(0, 20).map((row, i) => ({
+      '@type': 'ListItem',
+      position: i + 1,
+      url: `${canonical}${slugFn(row.e)}/`,
+      name: row.e.name || row.e.title || '',
+    })),
+  };
+  const breadcrumb = {
+    '@type': 'BreadcrumbList',
+    itemListElement: [
+      { '@type': 'ListItem', position: 1, name: 'FRQNCY', item: 'https://frqncy.network/' },
+      { '@type': 'ListItem', position: 2, name: label,    item: canonical },
+    ],
+  };
   const ld = {
     '@context': 'https://schema.org',
-    '@type': 'CollectionPage',
-    name: `${label} — FRQNCY Network`,
-    description: metaDesc,
-    url: canonical,
-    isPartOf: SITE_REF,
+    '@graph': [
+      {
+        '@type': 'CollectionPage',
+        name: `${label} — FRQNCY Network`,
+        description: metaDesc,
+        url: canonical,
+        isPartOf: SITE_REF,
+      },
+      itemListLd,
+      breadcrumb,
+    ],
   };
 
-  return head(label, null, metaDesc, canonical, ld, null) +
+  // Per-hub 4K Unsplash hero background — preconnect + override the .hero
+  // background-image + add a legibility gradient on the existing ::before glow.
+  const heroBgUrl = HUB_HERO_BG[canonicalPath] || null;
+  const heroBgStyle = heroBgUrl
+    ? `<link rel="preconnect" href="https://images.unsplash.com" crossorigin><style>.hero{padding:clamp(6rem,10vw,8.5rem) clamp(1.25rem,5vw,2.5rem) clamp(5rem,8vw,7.5rem);background-image:url('${heroBgUrl}');background-size:cover;background-position:center;background-color:#081530}.hero::before{background:radial-gradient(ellipse at 50% -10%,var(--accent-glow) 0%,transparent 65%),linear-gradient(to bottom,rgba(8,21,48,0.55) 0%,rgba(8,21,48,0.82) 100%)}</style>`
+    : '';
+
+  return head(label, null, metaDesc, canonical, ld, null).replace('</head>', heroBgStyle + '</head>') +
 nav(`<a href="../index.html">FRQNCY</a><span class="sep">/</span><span>${esc(label)}</span>`) +
 `<div class="hero">
   <div class="hero-eyebrow">Network</div>
