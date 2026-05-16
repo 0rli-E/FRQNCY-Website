@@ -199,6 +199,25 @@ nav{
   font-size:0.78rem;letter-spacing:0.16em;text-transform:uppercase;
   color:var(--gold-light);margin-bottom:1rem;
 }
+/* Chief Aim as vow — the user's primary aim reads as a Cormorant italic
+   line above the intention prompt. No score, no edit affordance here;
+   reread daily, restated when needed in the Scoreboard / Pyramid. */
+.today-vow{
+  display:flex;align-items:baseline;gap:0.6rem;
+  margin:0.2rem 0 1.4rem;padding:0.65rem 0.9rem;
+  border-left:2px solid var(--gold-dim);
+  background:linear-gradient(90deg,rgba(196,151,58,0.06),transparent 70%);
+  border-radius:0 3px 3px 0;
+}
+.today-vow-glyph{color:var(--gold);font-size:0.78rem;opacity:0.85;line-height:1.4}
+.today-vow-text{
+  font-family:'Cormorant',serif;font-style:italic;font-weight:400;
+  font-size:1.15rem;line-height:1.45;color:#fff;letter-spacing:0.01em;
+}
+@media(max-width:640px){
+  .today-vow-text{font-size:1.05rem}
+  .today-vow{padding:0.55rem 0.75rem;margin-bottom:1.1rem}
+}
 .today-intent-label{
   font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;
   color:var(--text-faint);margin-bottom:0.5rem;
@@ -1098,6 +1117,12 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 
 <main class="wrap">
 
+  <!-- Today section — pinned ABOVE the hero per synthesis #1 (6 of 10 lenses).
+       The morning surface is the first thing the user sees; the hero retreats
+       to a quieter role beneath it. Stays hidden via [hidden] until the user
+       has any state (first-run coaching takes the real estate until then). -->
+  <section class="section today-section" id="today-section" hidden></section>
+
   <header class="hero">
     <div>
       <h1>Your <em>Sanctuary</em></h1>
@@ -1130,12 +1155,10 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
   <!-- ─────────────── DASHBOARD VIEW (overview) ─────────────── -->
   <div class="view active" id="view-dashboard">
 
-    <!-- Today panel — morning-ritual surface. Hidden when state is fully empty
-         (the first-run coaching takes that real estate instead). Filled in by
-         renderToday() with date, daily intention input, yesterday's reflection
-         loop, today's practice glance, this month's goals glance, and any
-         streak milestones recently passed. -->
-    <section class="section today-section" id="today-section" hidden></section>
+    <!-- Today section was here — relocated 2026-05-16 to live ABOVE the hero,
+         outside #view-dashboard, so the morning surface is the first thing
+         the user sees from any tab (synthesis #1 in
+         proposals/SANCTUARY-DAILY-USE-SYNTHESIS-2026-05-16.md). -->
 
     <!-- First-run coaching: shown only when state is fully empty -->
     <section class="section first-run" id="first-run" hidden>
@@ -2116,7 +2139,11 @@ function renderHabits(targetId='habits-quick') {
   if (active.length === 0) {
     const empty = document.createElement('div');
     empty.style.cssText = 'color:var(--text-faint);font-size:0.85rem;font-style:italic;flex:1;text-align:center;padding:0.5rem';
-    empty.textContent = 'Add what you want to do every day — wake at 6, gym, read, meditate.';
+    // Routine-cue copy — synthesis #10. Habit cues are anchored to existing
+    // routines, not clock times. Don't say "wake at 6"; say "before email,"
+    // "with morning coffee." Routine cues beat time cues for automaticity
+    // (Keller 2021, replicated 2024).
+    empty.textContent = 'Add what you want to do every day — before email, with morning coffee, after a walk.';
     el.appendChild(empty);
   }
 
@@ -2128,11 +2155,15 @@ function renderHabits(targetId='habits-quick') {
     chip.setAttribute('role', 'button');
     chip.setAttribute('tabindex', '0');
     chip.setAttribute('aria-pressed', done ? 'true' : 'false');
-    chip.setAttribute('aria-label', `${h.name}${done ? ', completed today' : ', tap to mark done'}${streak > 0 ? `, ${streak} day streak` : ''}`);
+    // Streak count intentionally removed from the visible chip (synthesis
+    // #4 from SANCTUARY-DAILY-USE-SYNTHESIS-2026-05-16.md: kill the 🔥 chip,
+    // keep the milestone thresholds at 7/30/100/365). The aria-label drops
+    // the count too — accessibility shouldn't expose a metric that's
+    // intentionally hidden from sight.
+    chip.setAttribute('aria-label', `${h.name}${done ? ', completed today' : ', tap to mark done'}`);
     chip.innerHTML = `
       <span class="habit-icon" aria-hidden="true">${escape(h.icon || '◇')}</span>
       <span class="habit-name">${escape(h.name)}</span>
-      ${streak > 0 ? `<span class="habit-streak" aria-hidden="true">🔥${streak}</span>` : ''}
       <button type="button" class="habit-del-btn" data-action="del-habit" data-id="${h.id}" title="Remove habit" aria-label="Remove habit ${escape(h.name)}">✕</button>
     `;
     chip.addEventListener('keydown', e => {
@@ -2242,7 +2273,10 @@ function renderHabitHistory() {
     row.innerHTML = `
       <div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:0.7rem">
         <div class="gh">${escape(h.icon)} ${escape(h.name)}</div>
-        <div style="font-size:0.75rem;color:var(--gold-light)">${hits}/30 days · streak ${streakFor(h.id)}</div>
+        <!-- "streak N" label dropped per synthesis; the bar grid below
+             already shows the rhythm. "N of 30 days" is a count, not a
+             streak — no loss-aversion pressure. -->
+        <div style="font-size:0.75rem;color:var(--gold-light)">${hits} of 30 days</div>
       </div>
       <div style="display:grid;grid-template-columns:repeat(30,1fr);gap:3px">
         ${last30.map(d => `<div title="${d.date}" style="aspect-ratio:1;background:${d.done ? 'var(--gold)' : 'rgba(255,255,255,0.04)'};border-radius:2px"></div>`).join('')}
@@ -2916,9 +2950,19 @@ function renderToday() {
       `<div class="today-milestone"><span class="glyph" aria-hidden="true">✦</span><span><strong>${m.threshold} days</strong> of ${escape(m.habit.name)}. Quiet, repeated devotion is the work.</span><button type="button" class="today-milestone-dismiss" data-milestone-key="${m.key}" aria-label="Acknowledge milestone">×</button></div>`
     ).join('') + '</div>';
 
+  // Chief Aim as vow — synthesis #2. The user's primary (first non-empty)
+  // chief aim is read each morning as a vow-line in Cormorant italic at
+  // the top of the Today card. No score, no "complete" affordance — vows
+  // are restated, not finished.
+  const primaryAim = (state.chiefAims || []).find(a => a.name && a.name.trim());
+  const aimVow = primaryAim
+    ? `<div class="today-vow" aria-label="Today's chief aim, read as a vow"><span class="today-vow-glyph" aria-hidden="true">✦</span><span class="today-vow-text">${escape(primaryAim.name)}</span></div>`
+    : '';
+
   el.innerHTML = `
     <div class="today-card">
       <div class="today-date">${escape(niceDate)}</div>
+      ${aimVow}
       <div class="today-intent-label">What is today's intention?</div>
       <textarea class="today-intent-input" id="today-intent-input" rows="1" placeholder="A line that names what today serves…">${escape(todayEntry.intention || '')}</textarea>
       ${yesterdayEntry && (yesterdayEntry.intention || yesterdayEntry.reflection) ? `
