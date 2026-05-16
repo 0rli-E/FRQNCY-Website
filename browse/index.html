@@ -126,6 +126,20 @@ body[data-search-active="1"] .search-state{display:block}
 .ask-bullets{margin:0.6rem 0;padding-left:1.2rem;list-style:none}
 .ask-bullets li{position:relative;margin-bottom:0.4rem}
 .ask-bullets li::before{content:'·';color:var(--gold);position:absolute;left:-1rem;font-weight:600}
+
+/* Suggestion chips below the hero search */
+.ask-suggestions{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin-top:1.1rem;max-width:620px;margin-left:auto;margin-right:auto}
+body[data-search-active="1"] .ask-suggestions,
+body.ask-active .ask-suggestions{display:none}
+.ask-suggest{display:inline-flex;align-items:center;padding:7px 14px;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);border-radius:999px;color:var(--text);font-family:inherit;font-size:0.78rem;font-weight:300;letter-spacing:0.01em;cursor:pointer;transition:background .2s ease,border-color .2s ease,color .2s ease;-webkit-tap-highlight-color:transparent}
+.ask-suggest::before{content:'';display:inline-block;width:4px;height:4px;background:var(--gold);border-radius:50%;margin-right:0.55em;opacity:0.6}
+.ask-suggest:hover{background:rgba(255,255,255,0.06);border-color:rgba(196,151,58,0.35);color:#fff;opacity:1}
+.ask-suggest:hover::before{opacity:1}
+.ask-suggest:active{transform:scale(0.97)}
+@media (max-width:520px){
+  .ask-suggestions{gap:6px;margin-top:0.9rem}
+  .ask-suggest{padding:6px 11px;font-size:0.72rem}
+}
 .ask-answer:empty{display:none}
 .ask-sources{margin-top:0.95rem;display:flex;flex-wrap:wrap;gap:6px;position:relative}
 .ask-sources:empty{display:none}
@@ -189,6 +203,16 @@ body[data-search-active="1"] .search-state{display:block}
     <button id="ask-button" class="ask-cta" type="button" aria-label="Ask AI">Ask</button>
   </div>
   <p class="hero-search-hint">146 topics · 311 people · 317 books · 766 resources · ask anything</p>
+
+  <!-- Suggestion chips — visible when the input is empty, hidden once the
+       user starts typing or asks. Tap a chip to seed the input + auto-ask. -->
+  <div class="ask-suggestions" id="ask-suggestions" aria-label="Suggested questions">
+    <button type="button" class="ask-suggest" data-q="What is FRQNCY?">What is FRQNCY?</button>
+    <button type="button" class="ask-suggest" data-q="What's the best book to start with?">Best book to start with?</button>
+    <button type="button" class="ask-suggest" data-q="How does FRQNCY think about money?">How does FRQNCY think about money?</button>
+    <button type="button" class="ask-suggest" data-q="What is the Network State?">What is the Network State?</button>
+    <button type="button" class="ask-suggest" data-q="Show me practices for sleep">Practices for sleep</button>
+  </div>
 </section>
 
 <!-- Search results render here when input has content; catalog hides via body[data-search-active]. -->
@@ -645,6 +669,26 @@ body[data-search-active="1"] .search-state{display:block}
   if(askBtn){
     askBtn.addEventListener('click', function(){ askAi(input.value); });
   }
+
+  // Suggestion chips: click → seed input → fire both search + askAi. Hides
+  // automatically (CSS handles it via body.ask-active when the panel opens).
+  var suggestRoot = document.getElementById('ask-suggestions');
+  if(suggestRoot){
+    suggestRoot.addEventListener('click', function(e){
+      var btn = e.target && e.target.closest && e.target.closest('.ask-suggest');
+      if(!btn) return;
+      var q = btn.getAttribute('data-q') || btn.textContent.trim();
+      input.value = q;
+      document.body.classList.add('ask-active');
+      load().then(function(){ search(q); });
+      askAi(q);
+    });
+  }
+  // Track ask-active for the suggestion-chip auto-hide. Cleared on Escape
+  // or when the user manually empties the input.
+  input.addEventListener('input', function(e){
+    if(!e.target.value){ document.body.classList.remove('ask-active'); }
+  });
 })();
 </script>
 
