@@ -1,0 +1,166 @@
+- generic [active] [ref=e1]:
+  - navigation "Main navigation" [ref=e2]:
+    - link "FRQNCY home" [ref=e3] [cursor=pointer]:
+      - /url: /
+      - text: FRQNCY
+  - main [ref=e4]:
+    - generic [ref=e5]:
+      - generic [ref=e6]:
+        - heading "Your Sanctuary" [level=1] [ref=e7]:
+          - text: Your
+          - emphasis [ref=e8]: Sanctuary
+        - generic [ref=e9]: Dream · chief aim · objectives · goals · daily practice — held in one place
+      - generic [ref=e10]:
+        - button "Open the Word Illuminator" [ref=e11] [cursor=pointer]: ✧ Illuminator
+        - button "Export your Sanctuary data as JSON" [ref=e12] [cursor=pointer]: Export
+        - button "Import Sanctuary data from JSON backup" [ref=e13] [cursor=pointer]: Import
+    - generic [ref=e14]:
+      - generic [ref=e15]: 🔒
+      - generic [ref=e16]:
+        - text: Lives privately on this device.
+        - link "Sign in" [ref=e17] [cursor=pointer]:
+          - /url: /social/login
+        - text: to sync across devices.
+      - generic [ref=e18]: Saved
+    - generic [ref=e19]:
+      - text: ›
+      - tablist "Sanctuary sections" [ref=e20]:
+        - tab "Dashboard" [selected] [ref=e21] [cursor=pointer]
+        - tab "Goal Pyramid" [ref=e22] [cursor=pointer]
+        - tab "Daily Practice" [ref=e23] [cursor=pointer]
+        - tab "Progress" [ref=e24] [cursor=pointer]
+        - tab "Vision Board" [ref=e25] [cursor=pointer]
+    - generic [ref=e26]:
+      - generic [ref=e28]:
+        - generic [ref=e29]: A first pass through your Sanctuary
+        - paragraph [ref=e30]: Four layers, smallest at the bottom. Each one feeds the one above it. You don't have to fill them in order — you do have to fill them in time.
+        - list [ref=e31]:
+          - listitem [ref=e32]:
+            - button "01 · Dream Beyond this lifetime The version of the world that's bigger than you." [ref=e33] [cursor=pointer]:
+              - generic [ref=e34]: 01 · Dream
+              - generic [ref=e35]: Beyond this lifetime
+              - generic [ref=e36]: The version of the world that's bigger than you.
+          - listitem [ref=e37]:
+            - button "02 · Chief aim 1–2 years What's possible if everything aligns. Up to three." [ref=e38] [cursor=pointer]:
+              - generic [ref=e39]: 02 · Chief aim
+              - generic [ref=e40]: 1–2 years
+              - generic [ref=e41]: What's possible if everything aligns. Up to three.
+          - listitem [ref=e42]:
+            - button "03 · Objective 1–6 months A milestone that moves a chief aim forward." [ref=e43] [cursor=pointer]:
+              - generic [ref=e44]: 03 · Objective
+              - generic [ref=e45]: 1–6 months
+              - generic [ref=e46]: A milestone that moves a chief aim forward.
+          - listitem [ref=e47]:
+            - button "04 · Daily practice Today The small things that compound." [ref=e48] [cursor=pointer]:
+              - generic [ref=e49]: 04 · Daily practice
+              - generic [ref=e50]: Today
+              - generic [ref=e51]: The small things that compound.
+        - paragraph [ref=e52]: Tip · press 1–5 to jump between tabs.
+      - generic [ref=e53]:
+        - generic [ref=e54]:
+          - heading "✦ Scoreboard" [level=2] [ref=e55]:
+            - generic [ref=e56]: ✦
+            - text: Scoreboard
+          - generic [ref=e57]: Up to 3 chief-aim scores
+        - button "Name your first chief aim" [ref=e59] [cursor=pointer]:
+          - generic [ref=e60]: what's possible if everything aligns?
+          - generic [ref=e61]: + name your first chief aim
+      - generic [ref=e62]:
+        - generic [ref=e63]:
+          - heading "◇ Today's Practice" [level=2] [ref=e64]:
+            - generic [ref=e65]: ◇
+            - text: Today's Practice
+          - generic [ref=e66]: Saturday 16 May
+        - generic [ref=e67]:
+          - generic [ref=e68]: Add what you want to do every day — wake at 6, gym, read, meditate.
+          - generic [ref=e69] [cursor=pointer]: + Add habit
+      - generic [ref=e70]:
+        - generic [ref=e71]:
+          - heading "▲ Where You're Headed" [level=2] [ref=e72]:
+            - generic [ref=e73]: ▲
+            - text: Where You're Headed
+          - generic [ref=e74]: Dream · chief aim · objectives · this month's goals
+        - generic [ref=e76]:
+          - generic [ref=e77]:
+            - generic [ref=e78]:
+              - text: Dream
+              - generic [ref=e79]: Beyond this lifetime
+            - link "Edit" [ref=e80] [cursor=pointer]:
+              - /url: "#"
+          - generic [ref=e82]: No dream written yet — open the Goal Pyramid to begin.
+      - generic [ref=e83]:
+        - generic [ref=e84]:
+          - heading "✧ Word Illuminator" [level=2] [ref=e85]:
+            - generic [ref=e86]: ✧
+            - text: Word Illuminator
+          - generic [ref=e87]: Companion · lives inside your Sanctuary
+        - generic [ref=e88]:
+          - generic [ref=e89]:
+            - generic [ref=e90]: Ask about any word, name, or concept.
+            - paragraph [ref=e91]: A contemplative companion that reveals the full depth of any word you offer — definitions, etymology, deeper illumination. Paste a word from your constellation, the name of a teacher, or any idea you're sitting with. Your conversation stays on your device.
+          - button "Open Illuminator →" [ref=e92] [cursor=pointer]
+      - generic [ref=e93]:
+        - generic [ref=e94]:
+          - heading "◉ Recommended Memberships" [level=2] [ref=e95]:
+            - generic [ref=e96]: ◉
+            - text: Recommended Memberships
+          - generic [ref=e97]: Communities & platforms worth joining
+        - generic [ref=e98]:
+          - link "Global Information Network A private members' association for wealth, success, and self-mastery — built on timeless principles the world forgot. Visit →" [ref=e99] [cursor=pointer]:
+            - /url: https://www.globalinformationnetwork.com/
+            - generic [ref=e100]:
+              - generic [ref=e101]: Global Information Network
+              - paragraph [ref=e102]: A private members' association for wealth, success, and self-mastery — built on timeless principles the world forgot.
+            - generic [ref=e103]: Visit →
+          - link "Toastmasters Public speaking and leadership practice through local clubs worldwide. Speak the thing until the thing speaks you. Visit →" [ref=e104] [cursor=pointer]:
+            - /url: https://www.toastmasters.org/
+            - generic [ref=e105]:
+              - generic [ref=e106]: Toastmasters
+              - paragraph [ref=e107]: Public speaking and leadership practice through local clubs worldwide. Speak the thing until the thing speaks you.
+            - generic [ref=e108]: Visit →
+          - link "Network School Balaji's pop-up network state — founders, builders, and thinkers living and learning together on the edge of the future. Visit →" [ref=e109] [cursor=pointer]:
+            - /url: https://ns.com/
+            - generic [ref=e110]:
+              - generic [ref=e111]: Network School
+              - paragraph [ref=e112]: Balaji's pop-up network state — founders, builders, and thinkers living and learning together on the edge of the future.
+            - generic [ref=e113]: Visit →
+          - link "Gaia Streaming library of yoga, meditation, and consciousness-expanding films — a quiet doorway into the hidden shelves. Visit →" [ref=e114] [cursor=pointer]:
+            - /url: https://www.gaia.com/
+            - generic [ref=e115]:
+              - generic [ref=e116]: Gaia
+              - paragraph [ref=e117]: Streaming library of yoga, meditation, and consciousness-expanding films — a quiet doorway into the hidden shelves.
+            - generic [ref=e118]: Visit →
+          - link "Isha Foundation Sadhguru's global foundation — Inner Engineering, yoga, and inner science for direct experience rather than belief. Visit →" [ref=e119] [cursor=pointer]:
+            - /url: https://www.ishafoundation.org/
+            - generic [ref=e120]:
+              - generic [ref=e121]: Isha Foundation
+              - paragraph [ref=e122]: Sadhguru's global foundation — Inner Engineering, yoga, and inner science for direct experience rather than belief.
+            - generic [ref=e123]: Visit →
+          - link "Sai Maa Organisation The teachings and transmissions of Sai Maa — awakening through divine love, humanity, and unity. Visit →" [ref=e124] [cursor=pointer]:
+            - /url: https://www.humanityinunity.org/
+            - generic [ref=e125]:
+              - generic [ref=e126]: Sai Maa Organisation
+              - paragraph [ref=e127]: The teachings and transmissions of Sai Maa — awakening through divine love, humanity, and unity.
+            - generic [ref=e128]: Visit →
+    - generic [ref=e129]:
+      - paragraph [ref=e130]: FRQNCY makes the unable able. FRQNCY empowers the empowering.
+      - paragraph [ref=e131]: Held privately. Built for the long game.
+      - paragraph [ref=e132]:
+        - text: When signed in, your Sanctuary syncs across devices via your
+        - link "FRQNCY account" [ref=e133] [cursor=pointer]:
+          - /url: /social/
+        - text: . Logged out, it stays on this device.
+  - dialog [ref=e134]:
+    - banner [ref=e135]:
+      - heading [level=3] [ref=e136]:
+        - generic [ref=e137]: ✧
+        - text: Word Illuminator
+      - generic [ref=e138]:
+        - button [ref=e139] [cursor=pointer]: ↻
+        - button [ref=e140] [cursor=pointer]: ×
+    - generic [ref=e142]:
+      - textbox [ref=e143]:
+        - /placeholder: Offer a word, a name, or a concept…
+      - generic [ref=e144]:
+        - generic [ref=e145]: Enter to send · Shift+Enter for new line
+        - button [ref=e146] [cursor=pointer]: Illuminate

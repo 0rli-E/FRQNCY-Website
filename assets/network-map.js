@@ -544,7 +544,7 @@
         }
       }).theta(0.9))
       .force('center', d3.forceCenter(NM_W()/2, NM_H()/2).strength(0.04))
-      .force('collide', d3.forceCollide(d => d.r + 14).strength(0.7).iterations(2))
+      .force('collide', d3.forceCollide(d => d.r + 22).strength(0.75).iterations(2))
       .alphaDecay(0.03).velocityDecay(0.45);
 
     const nmNodeById = {};
@@ -587,7 +587,7 @@
       .attr('text-anchor','middle').attr('dominant-baseline','central')
       .attr('fill', d => d.type === 'core' ? '#0A1220' : d.type === 'main' ? '#FFFFFF' : (d.type === 'cluster' || d.type === 'subcluster') ? '#E8C97D' : 'rgba(172,202,255,0.88)')
       .attr('font-family', d => (d.type === 'core' || d.type === 'main') ? 'Cormorant,Georgia,serif' : "'Jost',sans-serif")
-      .attr('font-size', d => d.type === 'core' ? '15px' : d.type === 'main' ? '10.5px' : d.type === 'cluster' ? '9.5px' : d.type === 'subcluster' ? '9px' : '8px')
+      .attr('font-size', d => d.type === 'core' ? '17px' : d.type === 'main' ? '13px' : d.type === 'cluster' ? '12px' : d.type === 'subcluster' ? '11.5px' : '11px')
       .attr('font-weight', d => d.type === 'core' ? '500' : d.type === 'subcluster' ? '400' : '300')
       .attr('letter-spacing', d => d.type === 'core' ? '0.18em' : d.type === 'subcluster' ? '0.08em' : '0.04em')
       .attr('pointer-events', 'none')
