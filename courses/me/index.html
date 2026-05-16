@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>My Courses — FRQNCY Network</title>
+<meta name="description" content="Your learning library on FRQNCY — continue where you left off, browse new paths, and track your progress.">
+<meta name="theme-color" content="#0B1C3D">
+<meta name="robots" content="noindex,nofollow">
+<meta property="og:type" content="website">
+<meta property="og:title" content="My Courses — FRQNCY Network">
+<meta property="og:description" content="Your learning library on FRQNCY — continue where you left off, browse new paths, and track your progress.">
+<meta property="og:url" content="https://frqncy.network/courses/me/">
+<meta property="og:image" content="https://frqncy.network/og-image.png">
+<meta property="og:site_name" content="FRQNCY">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
+<link rel="canonical" href="https://frqncy.network/courses/me/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;--text-dim2:#5A78A0;
+  --card-bg:rgba(255,255,255,0.04);--card-border:rgba(255,255,255,0.08);
+}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.6}
+a{text-decoration:none;color:inherit}
+
+/* Hero */
+.hero{margin-top:56px;padding:clamp(3rem,7vw,5rem) clamp(1.25rem,5vw,2.5rem) clamp(1.5rem,3vw,2.5rem);text-align:center;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse at 50% -10%,rgba(196,151,58,0.10) 0%,transparent 65%);pointer-events:none}
+.hero-eyebrow{display:inline-flex;align-items:center;gap:0.5rem;font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1.25rem}
+.hero-eyebrow::before,.hero-eyebrow::after{content:'';display:block;width:20px;height:1px;background:currentColor;opacity:0.4}
+.hero h1{font-family:'Cormorant',serif;font-size:clamp(2.4rem,6vw,4.5rem);font-weight:300;color:#fff;line-height:1.08;margin-bottom:1.1rem}
+.hero-desc{max-width:520px;margin:0 auto;font-size:0.88rem;color:var(--text-dim);font-weight:300;line-height:1.75}
+
+main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
+
+/* Section heads */
+.sec{margin-top:3rem}
+.sec-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:1.2rem;padding-bottom:0.7rem;border-bottom:1px solid rgba(255,255,255,0.06)}
+.sec-title{font-family:'Cormorant',serif;font-size:1.4rem;font-weight:400;color:#fff}
+.sec-meta{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim2)}
+
+/* Cards */
+.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));gap:1.5rem}
+.ccard{background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px;overflow:hidden;display:flex;flex-direction:column;transition:border-color .25s,transform .25s,background .25s}
+.ccard:hover{border-color:rgba(255,255,255,0.18);transform:translateY(-3px);background:rgba(255,255,255,0.06)}
+.ccard-top{height:5px;flex-shrink:0}
+.ccard-body{padding:1.5rem 1.5rem 1.4rem;flex:1;display:flex;flex-direction:column;gap:0.55rem}
+.ccard-meta{display:flex;align-items:center;gap:0.6rem;flex-wrap:wrap}
+.clevel{font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;padding:3px 9px;border-radius:2px;font-weight:400;border:1px solid currentColor}
+.cdomain{font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+.ctitle{font-family:'Cormorant',serif;font-size:1.55rem;font-weight:400;color:#fff;line-height:1.15}
+.csubtitle{font-size:0.72rem;color:var(--text-dim);font-style:italic;margin-top:-0.2rem}
+.cdesc{font-size:0.78rem;color:var(--text-dim);line-height:1.65;margin-top:0.2rem}
+.ccard-footer{margin-top:auto;padding-top:1.1rem;display:flex;align-items:center;justify-content:space-between;gap:1rem;border-top:1px solid rgba(255,255,255,0.06)}
+.cstats{display:flex;gap:1rem}
+.cstat{font-size:0.64rem;letter-spacing:0.06em;color:var(--text-dim)}
+.cstat strong{color:var(--text);font-weight:400}
+.cprogress-wrap{flex:1;max-width:140px}
+.cprogress-bar{height:2px;background:rgba(255,255,255,0.08);border-radius:1px;overflow:hidden;margin-bottom:4px}
+.cprogress-fill{height:100%;border-radius:1px;transition:width .3s}
+.cprogress-label{font-size:0.56rem;letter-spacing:0.1em;color:var(--text-dim2)}
+.cstart-btn{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:inherit;opacity:0.65}
+.cbadge{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;background:rgba(196,151,58,0.15);border:1px solid rgba(196,151,58,0.4);color:var(--gold);padding:2px 8px;border-radius:2px}
+.cbadge.is-active{background:rgba(91,199,154,0.12);border-color:rgba(91,199,154,0.4);color:#5BC79A}
+
+/* Auth wall */
+.authwall{margin:3rem auto 1rem;max-width:480px;text-align:center;padding:2.5rem 1.5rem;background:var(--card-bg);border:1px solid var(--card-border);border-radius:6px}
+.authwall-eyebrow{font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold);margin-bottom:0.8rem}
+.authwall h2{font-family:'Cormorant',serif;font-size:1.7rem;font-weight:400;color:#fff;margin-bottom:0.8rem}
+.authwall p{font-size:0.84rem;color:var(--text-dim);line-height:1.7;margin-bottom:1.5rem}
+.authwall .btn{display:inline-block;font-size:0.66rem;letter-spacing:0.2em;text-transform:uppercase;padding:11px 28px;background:var(--gold);color:var(--navy);border-radius:2px;transition:background .15s,transform .15s;font-weight:400}
+.authwall .btn:hover{background:var(--gold-light);transform:translateY(-1px)}
+.authwall .alt{display:block;margin-top:0.9rem;font-size:0.7rem;color:var(--text-dim2)}
+.authwall .alt a{color:var(--gold)}
+
+/* Loading + empty */
+.loading{padding:3rem 1.5rem;text-align:center;color:var(--text-dim2);font-size:0.84rem;font-style:italic}
+.empty{padding:2.5rem 1.5rem;text-align:center;color:var(--text-dim2);font-size:0.82rem}
+.empty a{color:var(--gold)}
+
+/* Greeting */
+.greeting{display:flex;align-items:center;justify-content:center;gap:0.5rem;font-size:0.72rem;color:var(--text-dim);letter-spacing:0.06em;margin-top:0.7rem}
+.greeting .dot{width:6px;height:6px;border-radius:50%;background:#5BC79A}
+
+/* Teacher peek */
+.teacher-peek{margin:1.6rem auto 0;max-width:560px;padding:0.9rem 1.2rem;background:rgba(196,151,58,0.06);border:1px solid rgba(196,151,58,0.25);border-radius:4px;display:flex;align-items:center;justify-content:space-between;gap:1rem;flex-wrap:wrap}
+.teacher-peek-text{font-size:0.78rem;color:var(--text)}
+.teacher-peek-text strong{color:var(--gold);font-weight:400;letter-spacing:0.04em}
+.teacher-peek a{font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);padding:6px 12px;border:1px solid rgba(196,151,58,0.5);border-radius:2px;white-space:nowrap}
+.teacher-peek a:hover{background:rgba(196,151,58,0.12)}
+
+@media(max-width:600px){.grid{grid-template-columns:1fr}}
+</style>
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+</head>
+<body>
+
+<!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
+<style data-frqncy-header-critical>
+#main-nav{position:sticky;top:0;width:100%;z-index:500;padding:14px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;background:rgba(11,28,61,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);font-family:'Jost',system-ui,sans-serif}
+#main-nav .nav-logo{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:20px;letter-spacing:.34em;color:#fff;text-decoration:none;text-transform:uppercase}
+#main-nav .nav-links{display:flex;gap:22px;list-style:none;margin:0;padding:0;align-items:center}
+#main-nav .nav-links a{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);text-decoration:none;display:inline-flex;align-items:center;min-height:30px}
+#main-nav .nav-back{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:2px;text-decoration:none}
+#main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+#main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
+#main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
+body.frqncy-embed #main-nav{display:none !important}
+body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none !important}
+@media(max-width:720px){#main-nav .nav-links{display:none}}
+</style>
+<nav id="main-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li><a href="/courses/">All Courses</a></li>
+    <li><a href="/explore">Explore</a></li>
+    <li><a href="/social/">NRG</a></li>
+    <li><a href="/my-frqncy/dashboard/">Sanctuary</a></li>
+    <li><a href="/" class="nav-back" onclick="if(window.history.length>1){event.preventDefault();window.history.back();}">← Back</a></li>
+    <li><a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a></li>
+  </ul>
+</nav>
+<script>
+  (function(){try{var p=new URLSearchParams(location.search);if(p.get('embed')==='1')document.body.classList.add('frqncy-embed');}catch(_){}})();
+</script>
+<!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
+
+<section class="hero">
+  <div class="hero-eyebrow">Your Library</div>
+  <h1>My Courses</h1>
+  <p class="hero-desc">Continue where you left off, or pick up a new path. Progress, notes, and questions all live with your account.</p>
+  <div class="greeting" id="greeting" hidden></div>
+  <div class="teacher-peek" id="teacher-peek" hidden>
+    <div class="teacher-peek-text">You're listed as a <strong>teacher</strong> — the teacher dashboard is now available.</div>
+    <a href="/courses/teach/">Open dashboard →</a>
+  </div>
+</section>
+
+<main>
+  <div id="state-loading" class="loading">Loading your library…</div>
+
+  <div id="state-auth" class="authwall" hidden>
+    <div class="authwall-eyebrow">Sign in</div>
+    <h2>Track your learning</h2>
+    <p>FRQNCY courses are free to browse. Sign in with your Sanctuary account to enroll, track progress, take private notes, and ask questions — and the same answers travel with you across devices.</p>
+    <a href="#" class="btn" id="signin-cta">Sign in to FRQNCY</a>
+    <span class="alt">No account yet? <a href="#" id="signup-cta">Create one</a>.</span>
+  </div>
+
+  <div id="state-logged-in" hidden>
+    <section class="sec" id="sec-enrolled">
+      <div class="sec-head">
+        <div class="sec-title">Continue learning</div>
+        <div class="sec-meta"><span id="enrolled-count">0</span> enrolled</div>
+      </div>
+      <div class="grid" id="grid-enrolled"></div>
+      <div id="empty-enrolled" class="empty" hidden>
+        You haven't enrolled in anything yet — pick a course below to start.
+      </div>
+    </section>
+    <section class="sec" id="sec-browse">
+      <div class="sec-head">
+        <div class="sec-title">Browse the library</div>
+        <div class="sec-meta"><span id="browse-count">0</span> available</div>
+      </div>
+      <div class="grid" id="grid-browse"></div>
+    </section>
+  </div>
+</main>
+
+<!-- ▼▼ FRQNCY_GLOBAL_DONATE ▼▼ -->
+<style data-frqncy-donate>
+  #frq-donate-btn{position:fixed;right:18px;bottom:95px;z-index:9997;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
+  #frq-donate-btn:hover{background:#C4973A;color:#fff;transform:translateY(-1px)}
+  #frq-donate-btn .heart{margin-right:6px}
+  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:80px;padding:8px 14px;font-size:10px}}
+</style>
+<a id="frq-donate-btn" href="/donate" aria-label="Support FRQNCY"><span class="heart">♥</span>Donate</a>
+<!-- ▲▲ FRQNCY_GLOBAL_DONATE ▲▲ -->
+
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+<script src="/assets/frqncy-supabase.js"></script>
+
+<script>
+const DOMAIN_LABELS={"d-wellbeing":"Wellbeing","d-sciences":"Sciences","d-lifestyle":"Lifestyle","d-consciousness":"Consciousness","d-society":"Society","d-creativity":"Creativity","d-tech":"Tech"};
+
+const $ = (sel,root=document)=>root.querySelector(sel);
+const esc = s => String(s==null?'':s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
+
+let COURSES = [];
+let USER = null;
+let STORE = null;
+
+async function loadCourses() {
+  try {
+    const res = await fetch('/courses.json', { cache: 'force-cache' });
+    if (!res.ok) throw new Error(res.status);
+    COURSES = await res.json();
+  } catch (e) {
+    COURSES = [];
+    console.warn('[my-courses] couldn\'t load courses.json', e);
+  }
+}
+
+function readLocalProgress(slug) {
+  try { return JSON.parse(localStorage.getItem('frqncy-course-' + slug) || '[]').length; }
+  catch (_) { return 0; }
+}
+
+function progressFor(course, cloudProgressByCourse) {
+  // Cloud takes precedence; falls back to local.
+  if (cloudProgressByCourse && cloudProgressByCourse[course.slug]) {
+    const done = cloudProgressByCourse[course.slug];
+    return { done, total: course.lessons.length };
+  }
+  return { done: readLocalProgress(course.slug), total: course.lessons.length };
+}
+
+function cardHTML(c, opts) {
+  const { progress, enrolled } = opts || {};
+  const { done, total } = progress || { done: 0, total: c.lessons.length };
+  const pct = total ? Math.round((done / total) * 100) : 0;
+  const complete = done === total && total > 0;
+  const accent = c.accent || '#C4973A';
+  return `
+    <a class="ccard" href="/courses/${esc(c.slug)}/">
+      <div class="ccard-top" style="background:${accent}"></div>
+      <div class="ccard-body">
+        <div class="ccard-meta">
+          <span class="clevel" style="color:${accent};border-color:${accent}40">${esc(c.level)}</span>
+          <span class="cdomain">${esc(DOMAIN_LABELS[c.domain] || c.domain)}</span>
+          ${complete ? '<span class="cbadge">✓ Completed</span>' : (enrolled && !complete ? '<span class="cbadge is-active">In progress</span>' : '')}
+        </div>
+        <div class="ctitle">${esc(c.title)}</div>
+        ${c.subtitle ? `<div class="csubtitle">${esc(c.subtitle)}</div>` : ''}
+        ${c.desc ? `<div class="cdesc">${esc(c.desc)}</div>` : ''}
+        <div class="ccard-footer">
+          <div class="cstats">
+            <div class="cstat"><strong>${total}</strong> lessons</div>
+            <div class="cstat"><strong>${esc(c.duration || '')}</strong></div>
+          </div>
+          ${enrolled || pct > 0 ? `
+            <div class="cprogress-wrap">
+              <div class="cprogress-bar"><div class="cprogress-fill" style="width:${pct}%;background:${accent}"></div></div>
+              <div class="cprogress-label">${done}/${total} complete</div>
+            </div>
+          ` : `<span class="cstart-btn">Start →</span>`}
+        </div>
+      </div>
+    </a>
+  `;
+}
+
+function renderLoggedOut() {
+  $('#state-loading').hidden = true;
+  $('#state-logged-in').hidden = true;
+  $('#state-auth').hidden = false;
+  $('#signin-cta').addEventListener('click', e => {
+    e.preventDefault();
+    location.href = '/social/login/?next=' + encodeURIComponent(location.pathname);
+  });
+  $('#signup-cta').addEventListener('click', e => {
+    e.preventDefault();
+    location.href = '/social/login/?signup=1&next=' + encodeURIComponent(location.pathname);
+  });
+}
+
+async function renderLoggedIn() {
+  $('#state-loading').hidden = true;
+  $('#state-auth').hidden = true;
+  $('#state-logged-in').hidden = false;
+
+  // Greeting
+  const name = USER.user_metadata?.display_name || USER.user_metadata?.username || (USER.email || '').split('@')[0];
+  const greeting = $('#greeting');
+  greeting.innerHTML = '<span class="dot"></span><span>Signed in as ' + esc(name) + '</span>';
+  greeting.hidden = false;
+
+  // Pull enrollments + per-course completed counts in parallel
+  let enrollments = [];
+  let progressByCourse = {};
+  try {
+    enrollments = await STORE.listMyEnrollments();
+  } catch (e) { console.warn('[my-courses] enrollments:', e); }
+
+  // For each enrolled course, fetch completed-lesson count
+  await Promise.all(enrollments.map(async (en) => {
+    try {
+      const rows = await STORE.listMyProgress(en.course_slug);
+      progressByCourse[en.course_slug] = rows.filter(r => r.completed_at).length;
+    } catch (_) {}
+  }));
+
+  // Teacher peek
+  try {
+    // Check teacher status on ANY course (using the first available slug)
+    const slug = COURSES[0]?.slug || 'crypto-fundamentals';
+    const isTeacher = await STORE.amTeacher(slug);
+    if (isTeacher) $('#teacher-peek').hidden = false;
+  } catch (_) {}
+
+  // Build enrolled section
+  const enrolledSlugs = new Set(enrollments.filter(e => e.status === 'active' || e.status === 'completed').map(e => e.course_slug));
+  const enrolledCourses = enrollments
+    .filter(e => e.status === 'active' || e.status === 'completed')
+    .map(e => COURSES.find(c => c.slug === e.course_slug))
+    .filter(Boolean);
+
+  $('#enrolled-count').textContent = enrolledCourses.length;
+  const gridEnrolled = $('#grid-enrolled');
+  if (!enrolledCourses.length) {
+    gridEnrolled.hidden = true;
+    $('#empty-enrolled').hidden = false;
+  } else {
+    gridEnrolled.innerHTML = enrolledCourses
+      .map(c => cardHTML(c, { progress: progressFor(c, progressByCourse), enrolled: true }))
+      .join('');
+  }
+
+  // Build browse section (not enrolled)
+  const browseCourses = COURSES.filter(c => !enrolledSlugs.has(c.slug));
+  $('#browse-count').textContent = browseCourses.length;
+  $('#grid-browse').innerHTML = browseCourses.length
+    ? browseCourses.map(c => cardHTML(c, { progress: progressFor(c, progressByCourse), enrolled: false })).join('')
+    : '<div class="empty">You\'re enrolled in everything we publish. <a href="/social/">Suggest a course →</a></div>';
+}
+
+(async function init() {
+  await loadCourses();
+  try {
+    await window.frqncy.ready;
+    USER = await window.frqncy.auth.getUser();
+    if (!USER) return renderLoggedOut();
+    STORE = window.frqncy.coursesStore(USER);
+    await renderLoggedIn();
+  } catch (e) {
+    console.error('[my-courses] init failed:', e);
+    $('#state-loading').textContent = 'Couldn\'t load your library — please refresh.';
+  }
+})();
+</script>
+</body>
+</html>
