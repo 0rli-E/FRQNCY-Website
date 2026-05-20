@@ -229,6 +229,7 @@ If you're reading this and want in:
 | NRG · Community Roadmap | scaffolded | Internal roadmap for `/social/` — separate from this doc, plugs into it |
 | My FRQNCY Roadmap → chart integration | concept | Roadmap for the My FRQNCY surface: dashboard ↔ chart deeper integration |
 | **My FRQNCY = first stop for newcomers** | concept | First-touch experience: a newcomer arrives, generates their Human Design chart, and that becomes their entry point into the network — chart → dashboard → personalised paths through the topic graph |
+| **Sanctuary · Dreambuilding** — Mind-Movies-style vision builder | concept | Build a Mind-Movies-grade dream-builder into the My FRQNCY Sanctuary: user assembles still images + affirmations + music + voiceover into a 3-minute personal vision film, watches on a daily cadence, can re-edit as the dream evolves. Reference: [mindmovies.com/free-trainings.php](https://www.mindmovies.com/free-trainings.php) — Natalie Ledwell's flagship product. FRQNCY version: deeper integration with the chart (auto-suggest visuals from your gates / centres), tied to the daily-practice flow, no upsell funnel, sharable in NRG for accountability |
 | All different roadmaps spawning and plugging in | thesis | Each track owns its own roadmap; this v1 doc is the spine they connect to |
 
 Legend (unchanged): ◉ ship in next 6 weeks · ○ ship in next quarter · ◌ ship when foundation is denser

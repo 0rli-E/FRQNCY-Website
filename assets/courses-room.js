@@ -762,6 +762,57 @@
 
     // 5) Watch the hash for per-page lesson changes
     watchHash();
+
+    // 6) Handle deep-link params (e.g. teacher dashboard linking to a question).
+    //    Recognised query params: cr=open · tab=lessons|notes|qa · q=<question-uuid>
+    handleDeepLink();
+  }
+
+  function handleDeepLink() {
+    try {
+      const params = new URLSearchParams(location.search);
+      if (params.get('cr') !== 'open') return;
+      const tab = params.get('tab');
+      const qid = params.get('q');
+
+      // Defer to next frame so mountShell's listeners are attached.
+      requestAnimationFrame(() => {
+        const pill = $('#frq-cr .frq-cr-pill');
+        if (pill && !state.opened) pill.click();
+
+        if (tab && ['lessons', 'notes', 'qa'].includes(tab)) {
+          // Logged-out users can't open Notes / QA.
+          if ((tab === 'notes' || tab === 'qa') && !state.user) return;
+          const tabBtn = $('.frq-cr-tab[data-tab="' + tab + '"]');
+          if (tabBtn) tabBtn.click();
+        }
+
+        if (qid && state.user) {
+          // Wait for questions to load (renderQuestions is async via tab-click).
+          // Poll the DOM up to ~3s for the matching .frq-cr-q[data-qid].
+          let tries = 0;
+          const iv = setInterval(() => {
+            tries++;
+            const el = document.querySelector('#frq-cr .frq-cr-q[data-qid="' + qid.replace(/"/g, '') + '"]');
+            if (el) {
+              clearInterval(iv);
+              el.scrollIntoView({ behavior: 'smooth', block: 'center' });
+              // Briefly highlight
+              el.style.transition = 'box-shadow .4s';
+              el.style.boxShadow = '0 0 0 2px var(--cr-accent)';
+              setTimeout(() => { el.style.boxShadow = ''; }, 1800);
+              // Auto-expand replies
+              const toggle = el.querySelector('.frq-cr-q-toggle');
+              if (toggle && !state.expandedQ.has(qid)) toggle.click();
+            } else if (tries > 30) {
+              clearInterval(iv);
+            }
+          }, 100);
+        }
+      });
+    } catch (e) {
+      console.warn('[courses-room] deep-link:', e);
+    }
   }
 
   if (document.readyState === 'loading') {

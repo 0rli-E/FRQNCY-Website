@@ -444,5 +444,110 @@
       "suggested": null,
       "stripe_price_id": null
     }
+  },
+  {
+    "id": "c-fastai-ml-coders",
+    "slug": "fastai-machine-learning",
+    "title": "Introduction to Machine Learning for Coders",
+    "subtitle": "Jeremy Howard · fast.ai · 24 hours of video",
+    "desc": "Jeremy Howard's full ML curriculum taught the way a working data scientist actually thinks — start with a Kaggle dataset, fit a random forest, then peel back layers until you understand every transform along the way. Twelve lessons across about twenty-four hours of video. Free, ungated, taught at the University of San Francisco's MS in Analytics. No prior ML required — Python and basic stats are enough. The course that turned thousands of working coders into competent ML practitioners without anyone asking for a credit card.",
+    "domain": "d-tech",
+    "accent": "#7A5BE8",
+    "level": "Intermediate — coders new to ML",
+    "duration": "≈ 24 hours · 12 lessons",
+    "topics": [
+      "t-ai",
+      "t-deai",
+      "t-future-tech",
+      "t-open-source"
+    ],
+    "external_url": "https://course18.fast.ai/ml.html",
+    "host": "fast.ai · Jeremy Howard + Rachel Thomas",
+    "lessons": [
+      {
+        "id": "l1",
+        "title": "Lesson 1 — Random Forests",
+        "type": "video",
+        "duration": "≈ 1h 17m",
+        "desc": "Set up Jupyter + the fastai library, load the Blue Book for Bulldozers Kaggle dataset, and train your first random forest. The first taste of a working ML pipeline."
+      },
+      {
+        "id": "l2",
+        "title": "Lesson 2 — Random Forest Deep Dive",
+        "type": "video",
+        "duration": "≈ 1h 13m",
+        "desc": "How a random forest actually works under the hood, plus the validation strategies that prevent you from fooling yourself."
+      },
+      {
+        "id": "l3",
+        "title": "Lesson 3 — Performance, Validation, and Model Interpretation",
+        "type": "video",
+        "duration": "≈ 2h 11m",
+        "desc": "How to read what the model is telling you about your data — feature importance, partial dependence, the things that matter once a model works."
+      },
+      {
+        "id": "l4",
+        "title": "Lesson 4 — Feature Importance, Tree Interpreter",
+        "type": "video",
+        "duration": "≈ 1h 20m",
+        "desc": "Going deeper into model interpretation. Confidence intervals on predictions. The tree interpreter for explaining individual rows."
+      },
+      {
+        "id": "l5",
+        "title": "Lesson 5 — Extrapolation and RF from Scratch",
+        "type": "video",
+        "duration": "≈ 1h 36m",
+        "desc": "Where random forests fail (extrapolation), and how to build one yourself from numpy primitives so you understand it in the bones."
+      },
+      {
+        "id": "l6",
+        "title": "Lesson 6 — Data Products and Live Coding",
+        "type": "video",
+        "duration": "≈ 1h 49m",
+        "desc": "From a model in a notebook to a data product in production. Live coding with the Rossmann dataset."
+      },
+      {
+        "id": "l7",
+        "title": "Lesson 7 — RF From Scratch + Gradient Descent",
+        "type": "video",
+        "duration": "≈ 1h 19m",
+        "desc": "Finishing the from-scratch random forest, then pivoting to the engine behind deep learning: gradient descent."
+      },
+      {
+        "id": "l8",
+        "title": "Lesson 8 — Gradient Descent and Logistic Regression",
+        "type": "video",
+        "duration": "≈ 1h 38m",
+        "desc": "Logistic regression as a one-layer neural net. SGD, learning rates, the actual mechanics of training."
+      },
+      {
+        "id": "l9",
+        "title": "Lesson 9 — Regularization, Learning Rates, and NLP",
+        "type": "video",
+        "duration": "≈ 1h 38m",
+        "desc": "Weight decay, the magic of finding a good learning rate, and the leap into natural-language processing."
+      },
+      {
+        "id": "l10",
+        "title": "Lesson 10 — More NLP, Columnar Data",
+        "type": "video",
+        "duration": "≈ 1h 27m",
+        "desc": "Continuing the NLP thread alongside techniques for columnar data — the bread and butter of most real ML work."
+      },
+      {
+        "id": "l11",
+        "title": "Lesson 11 — Embeddings",
+        "type": "video",
+        "duration": "≈ 1h 41m",
+        "desc": "What embeddings actually are, how they're trained, and why they're the single most important idea in modern ML."
+      },
+      {
+        "id": "l12",
+        "title": "Lesson 12 — Complete Rossmann, Ethical Issues",
+        "type": "video",
+        "duration": "≈ 1h 26m",
+        "desc": "Putting the full Rossmann competition pipeline together, then closing on ethics — bias, fairness, what models can quietly do to the world."
+      }
+    ]
   }
 ]

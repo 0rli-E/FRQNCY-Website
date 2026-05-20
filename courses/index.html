@@ -12,8 +12,8 @@
 <meta property="og:url" content="https://frqncy.network/courses/">
 <meta property="og:image" content="https://frqncy.network/og-image.png">
 <meta property="og:site_name" content="FRQNCY">
-<link rel="icon" type="image/svg+xml" href="../favicon.svg">
-<link rel="manifest" href="../manifest.json">
+<link rel="icon" type="image/svg+xml" href="../../favicon.svg">
+<link rel="manifest" href="../../manifest.json">
 <link rel="canonical" href="https://frqncy.network/courses/">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -82,254 +82,49 @@ main{max-width:1080px;margin:0 auto;padding:0 clamp(1.25rem,5vw,2.5rem) 7rem}
 .cstart-btn{font-size:0.64rem;letter-spacing:0.14em;text-transform:uppercase;color:inherit;opacity:0.6;transition:opacity .2s;white-space:nowrap}
 .ccard:hover .cstart-btn{opacity:1}
 .cbadge{font-size:0.5rem;letter-spacing:0.15em;text-transform:uppercase;background:rgba(196,151,58,0.15);border:1px solid rgba(196,151,58,0.4);color:var(--gold);padding:2px 8px;border-radius:2px}
-.cprice{font-size:0.54rem;letter-spacing:0.16em;text-transform:uppercase;background:rgba(91,199,154,0.12);border:1px solid rgba(91,199,154,0.4);color:#5BC79A;padding:2px 8px;border-radius:2px;font-weight:400}
-.cprice.is-free{background:transparent;border-color:rgba(255,255,255,0.14);color:var(--text-dim)}
 
 /* EMPTY */
 .empty{text-align:center;padding:5rem 2rem;color:var(--text-dim);font-size:0.86rem}
 
 @media(max-width:600px){.courses-grid{grid-template-columns:1fr}}
 </style>
-<script src="../mobile-nav.js" defer></script>
-<script src="../chat-widget.js" defer></script>
-<link rel="stylesheet" href="../nav-dropdown.css">
-<link rel="manifest" href="../manifest.json">
+<script src="../../mobile-nav.js" defer></script>
+<script src="../../chat-widget.js" defer></script>
+<link rel="stylesheet" href="../../nav-dropdown.css">
+<link rel="manifest" href="../../manifest.json">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
-<style>
-/* Continue learning strip — only renders for signed-in users */
-.continue-strip{display:none;margin-bottom:2.5rem;padding:1.3rem 1.4rem 1.5rem;background:rgba(196,151,58,0.05);border:1px solid rgba(196,151,58,0.22);border-radius:6px;position:relative}
-.continue-strip.show{display:block}
-.continue-strip-head{display:flex;align-items:baseline;justify-content:space-between;gap:1rem;margin-bottom:1rem;flex-wrap:wrap}
-.continue-strip-title{font-family:'Cormorant',serif;font-size:1.25rem;color:#fff;font-weight:400}
-.continue-strip-link{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:var(--gold);padding:5px 12px;border:1px solid rgba(196,151,58,0.4);border-radius:2px;transition:background .15s}
-.continue-strip-link:hover{background:rgba(196,151,58,0.12)}
-.continue-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:0.9rem}
-.continue-item{display:flex;align-items:center;gap:0.9rem;padding:0.7rem 0.9rem;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.06);border-radius:4px;transition:border-color .2s,background .2s}
-.continue-item:hover{background:rgba(255,255,255,0.06);border-color:rgba(255,255,255,0.18)}
-.continue-stripe{width:3px;align-self:stretch;border-radius:2px;flex-shrink:0}
-.continue-meta{flex:1;min-width:0;display:flex;flex-direction:column;gap:0.18rem}
-.continue-name{font-size:0.84rem;color:#fff;line-height:1.2;font-family:'Cormorant',serif;font-weight:400}
-.continue-progress-line{font-size:0.6rem;color:var(--text-dim);letter-spacing:0.06em}
-.continue-mini-bar{height:2px;background:rgba(255,255,255,0.08);border-radius:1px;overflow:hidden;margin-top:3px}
-.continue-mini-fill{height:100%;border-radius:1px}
-.continue-cta{font-size:0.6rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);white-space:nowrap}
-
-/* My Courses link in hero */
-.hero-me-link{display:inline-flex;align-items:center;gap:6px;margin-top:1.2rem;font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);padding:6px 14px;border:1px solid rgba(196,151,58,0.4);border-radius:2px;transition:background .15s;opacity:0}
-.hero-me-link.show{opacity:1}
-.hero-me-link:hover{background:rgba(196,151,58,0.12)}
-.hero-me-link .dot{width:6px;height:6px;border-radius:50%;background:#5BC79A}
-</style>
 </head>
 <body>
 
-<!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
-<style data-frqncy-header-critical>
-/* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
-#main-nav{position:sticky;top:0;width:100%;z-index:500;padding:14px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;background:rgba(11,28,61,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);font-family:'Jost',system-ui,sans-serif}
-#main-nav .nav-logo{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:20px;letter-spacing:.34em;color:#fff;text-decoration:none;text-transform:uppercase}
-#main-nav .nav-links{display:flex;gap:22px;list-style:none;margin:0;padding:0;align-items:center}
-#main-nav .nav-links a{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);text-decoration:none;display:inline-flex;align-items:center;min-height:30px}
-#main-nav .nav-search{display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:2px}
-#main-nav .nav-search input{background:transparent;border:0;outline:0;color:#fff;font:inherit;font-size:10.5px;letter-spacing:.14em;width:clamp(120px,14vw,180px);padding:5px 9px}
-#main-nav .nav-search input::placeholder{color:rgba(255,255,255,.45)}
-#main-nav .nav-search button{background:transparent;border:0;color:rgba(255,255,255,.6);font-size:13px;padding:4px 9px;cursor:pointer}
-#main-nav .nav-back{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:2px;text-decoration:none}
-#main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
-#main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
-#main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
-body.frqncy-home #main-nav .nav-back{display:none}
-/* Dropdown panel — inlined so the styling ships with every page, including
-   social/NRG pages that don't load nav-dropdown.css. */
-#main-nav .nav-dd{position:relative}
-#main-nav .nav-dd > a{display:inline-flex;align-items:center;gap:4px}
-#main-nav .nav-dd > a::after{content:'';display:inline-block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:3.5px solid currentColor;opacity:.5;transition:opacity .2s,transform .2s}
-#main-nav .nav-dd:hover > a::after,#main-nav .nav-dd:focus-within > a::after{opacity:1;transform:rotate(180deg)}
-#main-nav .nav-dd-menu{position:absolute;top:calc(100% + 12px);left:50%;min-width:200px;background:rgba(11,28,61,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px rgba(0,0,0,.3);padding:8px 0;opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-4px);transition:opacity .2s,visibility .2s,transform .2s;z-index:600}
-#main-nav .nav-dd:hover .nav-dd-menu,#main-nav .nav-dd:focus-within .nav-dd-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
-#main-nav .nav-dd-menu::before{content:'';position:absolute;top:-14px;left:0;right:0;height:14px}
-#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important;padding:10px 24px !important;text-decoration:none;transition:background .15s;font-size:11px !important;letter-spacing:.22em !important;text-transform:uppercase !important;font-weight:300 !important;font-family:'Jost',sans-serif !important;color:rgba(255,255,255,.85) !important;min-height:0}
-#main-nav .nav-dd-menu a:hover{background:rgba(196,151,58,.12)}
-#main-nav .nav-dd-menu a:hover .dd-label{color:#E0C06A}
-#main-nav .nav-dd-menu .dd-label{display:block !important;width:100% !important;text-align:center !important;font-weight:400 !important;color:rgba(255,255,255,.9);transition:color .15s;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
-#main-nav .nav-dd-menu .dd-sub{display:block !important;width:100% !important;text-align:center !important;font-size:9px !important;letter-spacing:.12em !important;color:rgba(255,255,255,.45);margin-top:2px;font-weight:300 !important;text-transform:none !important}
-@media(max-width:720px){#main-nav .nav-links{display:none}#main-nav .nav-dd-menu{display:none !important}}
-/* Embed mode — when the page loads inside the FRQNCY mobile app's iframe shell
-   (URL has ?embed=1), hide the global nav and the floating donate button so
-   the app's own tab bar is the only persistent chrome. The page's body-level
-   navs (e.g. /my-frqncy/dashboard's own tab strip) stay intact. */
-body.frqncy-embed #main-nav{display:none !important}
-body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none !important}
-</style>
-<nav id="main-nav" aria-label="Main navigation">
-  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
-  <ul class="nav-links">
-    <li class="nav-dd">
-      <a href="/about">About</a>
-      <div class="nav-dd-menu">
-        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
-        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
-        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
-      </div>
-    </li>
-    <li class="nav-dd">
-      <a href="/explore">Discover</a>
-      <div class="nav-dd-menu">
-        <a href="/explore"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
-        <a href="/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
-        <a href="/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
-        <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
-        <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
-        <a href="/browse"><span class="dd-label">Browse</span><span class="dd-sub">Everything FRQNCY publishes</span></a>
-      </div>
-    </li>
-    <li class="nav-dd">
-      <a href="/social/">Community</a>
-      <div class="nav-dd-menu">
-        <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
-        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">Social layer</span></a>
-        <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access</span></a>
-        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
-      </div>
-    </li>
-    <li class="nav-search-li">
-      <form action="/search" method="get" role="search" class="nav-search">
-        <input type="text" role="searchbox" name="q" placeholder="Search…" aria-label="Search the FRQNCY network" autocomplete="off">
-        <button type="submit" aria-label="Search">⌕</button>
-      </form>
-    </li>
-    <li>
-      <a href="/" class="nav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
-    </li>
-    <li>
-      <a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a>
-    </li>
-  </ul>
+<nav class="snav">
+  <div class="snav-left">
+    <a href="../../" class="snav-logo">FRQNCY</a>
+    <div class="breadcrumb">
+      <a href="../explore.html">Network</a>
+      <span class="sep">›</span>
+      <span>Courses</span>
+    </div>
+  </div>
+  <div class="snav-right">
+    <a href="../watch/index.html" class="snav-link">Watch</a>
+    <a href="../explore.html" class="snav-back">← Network Map</a>
+  </div>
 </nav>
-<script>
-  // Tag the homepage so CSS can hide the back button there (it's redundant on /).
-  // Also tag embed mode (page loaded inside the FRQNCY mobile app iframe)
-  // so CSS can hide the global nav / donate button — the app provides its own chrome.
-  // In embed mode, preserve ?embed=1 across same-origin internal navigations
-  // so the chrome stays hidden as the user moves through the site.
-  (function(){
-    try {
-      var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
-      if (isHome) document.body.classList.add('frqncy-home');
-      var params = new URLSearchParams(location.search);
-      var isEmbed = (params.get('embed') === '1');
-      if (isEmbed) {
-        document.body.classList.add('frqncy-embed');
-        // Intercept clicks on internal links and re-append embed=1 if missing.
-        document.addEventListener('click', function(ev){
-          var a = ev.target && ev.target.closest && ev.target.closest('a[href]');
-          if (!a) return;
-          var href = a.getAttribute('href') || '';
-          // Skip externals, fragments, mailto/tel, and links already carrying embed.
-          if (/^(https?:|mailto:|tel:|#)/.test(href) && !/^https?:\/\/(www\.)?frqncy\.network/.test(href)) return;
-          if (href.indexOf('embed=1') !== -1) return;
-          if (a.target && a.target !== '' && a.target !== '_self') return;
-          ev.preventDefault();
-          var sep = href.indexOf('?') === -1 ? '?' : '&';
-          location.href = href + sep + 'embed=1';
-        }, true);
-      }
-    } catch(_) {}
-  })();
-</script>
-<!-- Tiny floating Donate button — bottom-right on every page. Click opens a
-     popover with the EVM + SOL wallet addresses; the full /donate page link
-     sits at the top of the popover. -->
-<style data-frqncy-donate>
-  /* Stacks above the AI chat button (chat is bottom:24px, ~56px tall, z-index:9998).
-     Donate sits at bottom:95px so it clears the AI floater. */
-  #frq-donate-btn{position:fixed;right:18px;bottom:95px;z-index:9997;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
-  #frq-donate-btn:hover{background:#C4973A;color:#fff;transform:translateY(-1px)}
-  #frq-donate-btn .heart{margin-right:6px;display:inline-block}
-  #frq-donate-pop{position:fixed;right:18px;bottom:145px;z-index:9998;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
-  #frq-donate-pop.open{display:block}
-  #frq-donate-pop .frq-pop-title{font-family:'Cormorant',Georgia,serif;font-size:18px;font-weight:400;color:#0B1C3D;margin-bottom:4px}
-  #frq-donate-pop .frq-pop-sub{font-size:11px;color:#8A9AB8;margin-bottom:14px;line-height:1.5}
-  #frq-donate-pop .frq-pop-sub a{color:#C4973A;text-decoration:none}
-  #frq-donate-pop .frq-w-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#C4973A;font-weight:500;margin-top:10px;display:block}
-  #frq-donate-pop .frq-w-addr{font-family:'SFMono-Regular',Menlo,monospace;font-size:11px;color:#0B1C3D;background:#F8FAFC;border:1px solid rgba(11,28,61,.08);padding:8px 10px;border-radius:3px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;word-break:break-all}
-  #frq-donate-pop .frq-w-copy{flex:0 0 auto;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#C4973A;background:transparent;border:1px solid rgba(196,151,58,.5);padding:3px 8px;border-radius:2px;cursor:pointer;font-family:inherit}
-  #frq-donate-pop .frq-w-copy:hover{background:#C4973A;color:#fff}
-  #frq-donate-pop .frq-pop-foot{margin-top:14px;padding-top:12px;border-top:1px solid rgba(11,28,61,.06);font-size:10px;letter-spacing:.06em;color:#8A9AB8;line-height:1.5}
-  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:80px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:128px}}
-</style>
-<button id="frq-donate-btn" type="button" aria-haspopup="dialog" aria-controls="frq-donate-pop" aria-label="Support FRQNCY">
-  <span class="heart" aria-hidden="true">♥</span>Donate
-</button>
-<div id="frq-donate-pop" role="dialog" aria-label="FRQNCY donation wallets">
-  <div class="frq-pop-title">Support FRQNCY</div>
-  <div class="frq-pop-sub">Full details + fiat options on <a href="/donate">/donate</a>.</div>
-  <span class="frq-w-label">EVM · ETH / Base / Arbitrum (USDC, ETH)</span>
-  <div class="frq-w-addr">
-    <span data-frq-addr="evm">0xPENDING — treasury multi-sig coming</span>
-    <button class="frq-w-copy" type="button" data-frq-copy="evm">Copy</button>
-  </div>
-  <span class="frq-w-label">Solana (SOL / USDC-SPL)</span>
-  <div class="frq-w-addr">
-    <span data-frq-addr="sol">SOLPENDING — treasury multi-sig coming</span>
-    <button class="frq-w-copy" type="button" data-frq-copy="sol">Copy</button>
-  </div>
-  <div class="frq-pop-foot">Wallets are placeholders until the FRQNY treasury multi-sig goes live. See the crypto stack spec.</div>
-</div>
-<script>
-  (function(){
-    var btn = document.getElementById('frq-donate-btn');
-    var pop = document.getElementById('frq-donate-pop');
-    if (!btn || !pop) return;
-    btn.addEventListener('click', function(e){
-      e.stopPropagation();
-      pop.classList.toggle('open');
-    });
-    document.addEventListener('click', function(e){
-      if (!pop.contains(e.target) && e.target !== btn) pop.classList.remove('open');
-    });
-    pop.addEventListener('click', function(e){
-      var t = e.target;
-      if (t && t.dataset && t.dataset.frqCopy) {
-        var which = t.dataset.frqCopy;
-        var addrEl = pop.querySelector('[data-frq-addr="' + which + '"]');
-        if (!addrEl) return;
-        var text = addrEl.textContent.trim();
-        if (navigator.clipboard && navigator.clipboard.writeText) {
-          navigator.clipboard.writeText(text).then(function(){
-            var orig = t.textContent;
-            t.textContent = 'Copied';
-            setTimeout(function(){ t.textContent = orig; }, 1200);
-          });
-        }
-      }
-    });
-  })();
-</script>
-<!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
 
 <section class="hero">
   <div class="hero-eyebrow">Learning Paths</div>
   <h1>Courses</h1>
   <p class="hero-desc">Structured paths through the ideas, practices, and sciences that matter most. Each course combines video, reflection, and reading.</p>
-  <a href="/courses/me/" class="hero-me-link" id="hero-me-link"><span class="dot"></span>My Courses →</a>
 </section>
 
 <main>
-  <section class="continue-strip" id="continue-strip" aria-label="Continue learning">
-    <div class="continue-strip-head">
-      <div class="continue-strip-title">Continue learning</div>
-      <a class="continue-strip-link" href="/courses/me/">All my courses →</a>
-    </div>
-    <div class="continue-row" id="continue-row"></div>
-  </section>
   <div class="courses-grid" id="grid"></div>
 </main>
 
 <script>
 const DOMAIN_LABELS = {"d-wellbeing":"Wellbeing","d-sciences":"Sciences","d-lifestyle":"Lifestyle","d-consciousness":"Consciousness","d-society":"Society","d-creativity":"Creativity"};
 // Courses data is inlined at build time — no fetch() needed, works locally too
-const COURSES = [{"slug":"meditation-101","title":"Meditation 101","subtitle":"From Stillness to Practice","desc":"A complete beginner's path through the science, philosophy, and practice of meditation. Move from curiosity to a daily sitting practice in five lessons.","level":"Beginner","domain":"d-wellbeing","duration":"1.5 hours","accent":"#3B7DD8","lessons":[{"id":"l1","title":"Why Meditate?","type":"video"},{"id":"l2","title":"What Happens in the Brain","type":"video"},{"id":"l3","title":"The Breath as Anchor","type":"video"},{"id":"l4","title":"Your First Sitting","type":"reflection"},{"id":"l5","title":"Building a Daily Practice","type":"reading"}]},{"slug":"quantum-reality","title":"Quantum Reality","subtitle":"Physics at the Edge of the Known","desc":"A guided journey through quantum mechanics — from the double slit experiment to quantum fields and what it all means for consciousness and reality.","level":"Intermediate","domain":"d-sciences","duration":"2 hours","accent":"#4A7AE8","lessons":[{"id":"l1","title":"The Double Slit Experiment","type":"video"},{"id":"l2","title":"Quantum Fields — What Everything Is Made Of","type":"video"},{"id":"l3","title":"Reflection — What Does Quantum Mean for You?","type":"reflection"},{"id":"l4","title":"Consciousness and the Quantum — The Open Question","type":"reading"}]},{"slug":"conscious-living-foundations","title":"Conscious Living Foundations","subtitle":"An Orientation to the FRQNCY Network","desc":"A cross-domain introduction to conscious living — covering the pillars of the FRQNCY network: consciousness, well-being, society, and creative action.","level":"Beginner","domain":"d-lifestyle","duration":"2.5 hours","accent":"#C4973A","lessons":[{"id":"l1","title":"What is Conscious Living?","type":"reflection"},{"id":"l2","title":"The Science of Manifestation","type":"video"},{"id":"l3","title":"Vibration & Frequency","type":"video"},{"id":"l4","title":"Daily Practice — Morning Intention","type":"reflection"},{"id":"l5","title":"Finding Your Network","type":"reading"}]},{"slug":"quantum-grammar","title":"Quantum Grammar","subtitle":"The Hidden Structure of Language & Law","desc":"Explore how syntax and sentence construction shape reality, commerce, and sovereignty. Discover the mathematical structure behind contracts, statutes, and the language that binds.","level":"Intermediate","domain":"d-society","duration":"2.5 hours","accent":"#E87A4A","lessons":[{"id":"l1","title":"What Is Quantum Grammar?","type":"video"},{"id":"l2","title":"The Syntax of Control — How Language Binds","type":"video"},{"id":"l3","title":"Correct-Sentence-Structure Communication Parse-Syntax","type":"video"},{"id":"l4","title":"Reflection — Deconstructing a Contract","type":"reflection"},{"id":"l5","title":"Language, Law & Sovereignty — The Bigger Picture","type":"reading"}]},{"slug":"crypto-fundamentals","title":"Crypto Fundamentals","subtitle":"A hands-on path to self-custody and your first onchain swap","desc":"Skip the theory — set up the toolkit yourself. Open an exchange account, install your own wallets, hold your own keys, send your first transaction, and swap onchain. Each lesson is a short walkthrough you follow alongside the video.","level":"Beginner","domain":"d-tech","duration":"2 hours","accent":"#7B61FF","lessons":[{"id":"l1","title":"Set Up Brave Browser","type":"video"},{"id":"l2","title":"Open + Tour Your Kraken Account","type":"video"},{"id":"l3","title":"Install Rabby & Phantom Wallets","type":"video"},{"id":"l4","title":"Seed Phrase Security — Non-Negotiable","type":"video"},{"id":"l5","title":"Send and Receive Transactions","type":"video"},{"id":"l6","title":"Deposit Crypto and Withdraw Fiat on Kraken","type":"video"},{"id":"l7","title":"Swap Onchain with Defillama","type":"video"},{"id":"l8","title":"Swap Onchain with Titan Exchange","type":"video"},{"id":"l9","title":"Common Scams — and How to Avoid Them","type":"video"},{"id":"l10","title":"Find Tokens with Dexscreener","type":"video"},{"id":"l11","title":"Get to Know Coingecko","type":"video"},{"id":"l12","title":"Set Up TradingView","type":"video"},{"id":"l13","title":"Sources on X — The Live List","type":"reading"},{"id":"l14","title":"Bridge Between Chains with Bungee","type":"video"},{"id":"l15","title":"Join the Live Channel","type":"reading"}]},{"slug":"working-with-claude","title":"Working with Claude","subtitle":"A FRQNCY guide to using Anthropic Claude with intention","desc":"Most people use AI like a vending machine. Claude is built to work like a thoughtful collaborator. This short course teaches the prompting, the boundaries, and the practices that turn the tool into a real thinking partner.","level":"Beginner","domain":"d-tech","duration":"1 hour","accent":"#7B4AE8","lessons":[{"id":"l1","title":"Why Claude is Different","type":"reading"},{"id":"l2","title":"How to Prompt Well","type":"reading"},{"id":"l3","title":"Claude in Practice","type":"reflection"},{"id":"l4","title":"Limits, Bias, and Hallucination","type":"reading"},{"id":"l5","title":"Building a Practice","type":"reflection"}]}];
+const COURSES = [{"slug":"meditation-101","title":"Meditation 101","subtitle":"From Stillness to Practice","desc":"A complete beginner's path through the science, philosophy, and practice of meditation. Move from curiosity to a daily sitting practice in five lessons.","level":"Beginner","domain":"d-wellbeing","duration":"1.5 hours","accent":"#3B7DD8","lessons":[{"id":"l1","title":"Why Meditate?","type":"video"},{"id":"l2","title":"What Happens in the Brain","type":"video"},{"id":"l3","title":"The Breath as Anchor","type":"video"},{"id":"l4","title":"Your First Sitting","type":"reflection"},{"id":"l5","title":"Building a Daily Practice","type":"reading"}]},{"slug":"quantum-reality","title":"Quantum Reality","subtitle":"Physics at the Edge of the Known","desc":"A guided journey through quantum mechanics — from the double slit experiment to quantum fields and what it all means for consciousness and reality.","level":"Intermediate","domain":"d-sciences","duration":"2 hours","accent":"#4A7AE8","lessons":[{"id":"l1","title":"The Double Slit Experiment","type":"video"},{"id":"l2","title":"Quantum Fields — What Everything Is Made Of","type":"video"},{"id":"l3","title":"Reflection — What Does Quantum Mean for You?","type":"reflection"},{"id":"l4","title":"Consciousness and the Quantum — The Open Question","type":"reading"}]},{"slug":"conscious-living-foundations","title":"Conscious Living Foundations","subtitle":"An Orientation to the FRQNCY Network","desc":"A cross-domain introduction to conscious living — covering the pillars of the FRQNCY network: consciousness, well-being, society, and creative action.","level":"Beginner","domain":"d-lifestyle","duration":"2.5 hours","accent":"#C4973A","lessons":[{"id":"l1","title":"What is Conscious Living?","type":"reflection"},{"id":"l2","title":"The Science of Manifestation","type":"video"},{"id":"l3","title":"Vibration & Frequency","type":"video"},{"id":"l4","title":"Daily Practice — Morning Intention","type":"reflection"},{"id":"l5","title":"Finding Your Network","type":"reading"}]},{"slug":"quantum-grammar","title":"Quantum Grammar","subtitle":"The Hidden Structure of Language & Law","desc":"Explore how syntax and sentence construction shape reality, commerce, and sovereignty. Discover the mathematical structure behind contracts, statutes, and the language that binds.","level":"Intermediate","domain":"d-society","duration":"2.5 hours","accent":"#E87A4A","lessons":[{"id":"l1","title":"What Is Quantum Grammar?","type":"video"},{"id":"l2","title":"The Syntax of Control — How Language Binds","type":"video"},{"id":"l3","title":"Correct-Sentence-Structure Communication Parse-Syntax","type":"video"},{"id":"l4","title":"Reflection — Deconstructing a Contract","type":"reflection"},{"id":"l5","title":"Language, Law & Sovereignty — The Bigger Picture","type":"reading"}]},{"slug":"crypto-fundamentals","title":"Crypto Fundamentals","subtitle":"A hands-on path to self-custody and your first onchain swap","desc":"Skip the theory — set up the toolkit yourself. Open an exchange account, install your own wallets, hold your own keys, send your first transaction, and swap onchain. Each lesson is a short walkthrough you follow alongside the video.","level":"Beginner","domain":"d-tech","duration":"2 hours","accent":"#7B61FF","lessons":[{"id":"l1","title":"Set Up Brave Browser","type":"video"},{"id":"l2","title":"Open + Tour Your Kraken Account","type":"video"},{"id":"l3","title":"Install Rabby & Phantom Wallets","type":"video"},{"id":"l4","title":"Seed Phrase Security — Non-Negotiable","type":"video"},{"id":"l5","title":"Send and Receive Transactions","type":"video"},{"id":"l6","title":"Deposit Crypto and Withdraw Fiat on Kraken","type":"video"},{"id":"l7","title":"Swap Onchain with Defillama","type":"video"},{"id":"l8","title":"Swap Onchain with Titan Exchange","type":"video"},{"id":"l9","title":"Common Scams — and How to Avoid Them","type":"video"},{"id":"l10","title":"Find Tokens with Dexscreener","type":"video"},{"id":"l11","title":"Get to Know Coingecko","type":"video"},{"id":"l12","title":"Set Up TradingView","type":"video"},{"id":"l13","title":"Sources on X — The Live List","type":"reading"},{"id":"l14","title":"Bridge Between Chains with Bungee","type":"video"},{"id":"l15","title":"Join the Live Channel","type":"reading"}]},{"slug":"working-with-claude","title":"Working with Claude","subtitle":"A FRQNCY guide to using Anthropic Claude with intention","desc":"Most people use AI like a vending machine. Claude is built to work like a thoughtful collaborator. This short course teaches the prompting, the boundaries, and the practices that turn the tool into a real thinking partner.","level":"Beginner","domain":"d-tech","duration":"1 hour","accent":"#7B4AE8","lessons":[{"id":"l1","title":"Why Claude is Different","type":"reading"},{"id":"l2","title":"How to Prompt Well","type":"reading"},{"id":"l3","title":"Claude in Practice","type":"reflection"},{"id":"l4","title":"Limits, Bias, and Hallucination","type":"reading"},{"id":"l5","title":"Building a Practice","type":"reflection"}]},{"slug":"fastai-machine-learning","title":"Introduction to Machine Learning for Coders","subtitle":"Jeremy Howard · fast.ai · 24 hours of video","desc":"Jeremy Howard's full ML curriculum taught the way a working data scientist actually thinks — start with a Kaggle dataset, fit a random forest, then peel back layers until you understand every transform along the way. Twelve lessons across about twenty-four hours of video. Free, ungated, taught at the University of San Francisco's MS in Analytics. No prior ML required — Python and basic stats are enough. The course that turned thousands of working coders into competent ML practitioners without anyone asking for a credit card.","level":"Intermediate — coders new to ML","domain":"d-tech","duration":"≈ 24 hours · 12 lessons","accent":"#7A5BE8","lessons":[{"id":"l1","title":"Lesson 1 — Random Forests","type":"video"},{"id":"l2","title":"Lesson 2 — Random Forest Deep Dive","type":"video"},{"id":"l3","title":"Lesson 3 — Performance, Validation, and Model Interpretation","type":"video"},{"id":"l4","title":"Lesson 4 — Feature Importance, Tree Interpreter","type":"video"},{"id":"l5","title":"Lesson 5 — Extrapolation and RF from Scratch","type":"video"},{"id":"l6","title":"Lesson 6 — Data Products and Live Coding","type":"video"},{"id":"l7","title":"Lesson 7 — RF From Scratch + Gradient Descent","type":"video"},{"id":"l8","title":"Lesson 8 — Gradient Descent and Logistic Regression","type":"video"},{"id":"l9","title":"Lesson 9 — Regularization, Learning Rates, and NLP","type":"video"},{"id":"l10","title":"Lesson 10 — More NLP, Columnar Data","type":"video"},{"id":"l11","title":"Lesson 11 — Embeddings","type":"video"},{"id":"l12","title":"Lesson 12 — Complete Rossmann, Ethical Issues","type":"video"}]}];
 
 function getProgress(slug, lessons) {
   try {
@@ -387,99 +182,6 @@ if (!COURSES.length) {
 } else {
   for (const c of COURSES) grid.appendChild(makeCard(c));
 }
-</script>
-
-<!-- Decorate cards with price badges (fetched from courses.json so the
-     pricing source-of-truth stays single). Free vs $price only — no
-     "discount" theatrics per editorial rules. -->
-<script>
-(async function() {
-  try {
-    const res = await fetch('/courses.json', { cache: 'force-cache' });
-    if (!res.ok) return;
-    const arr = await res.json();
-    const priceBySlug = {};
-    for (const c of arr) priceBySlug[c.slug] = c.pricing || null;
-    document.querySelectorAll('.ccard').forEach(card => {
-      const href = card.getAttribute('href') || '';
-      const m = href.match(/^([a-z0-9-]+)\//i);
-      if (!m) return;
-      const p = priceBySlug[m[1]];
-      if (!p) return;
-      const meta = card.querySelector('.ccard-meta');
-      if (!meta) return;
-      const badge = document.createElement('span');
-      if (p.model === 'paid' && p.suggested) {
-        badge.className = 'cprice';
-        badge.textContent = '$' + (p.suggested / 100).toFixed(0);
-      } else {
-        badge.className = 'cprice is-free';
-        badge.textContent = 'Free';
-      }
-      meta.appendChild(badge);
-    });
-  } catch (e) { /* non-blocking */ }
-})();
-</script>
-
-<!-- Logged-in enhancement: Continue learning strip + My Courses chip -->
-<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
-<script src="/assets/frqncy-supabase.js"></script>
-<script>
-(async function() {
-  try {
-    if (!window.frqncy || !window.frqncy.ready) return;
-    await window.frqncy.ready;
-    const user = await window.frqncy.auth.getUser();
-    if (!user) return;
-
-    // Reveal the My Courses link in the hero
-    const meLink = document.getElementById('hero-me-link');
-    if (meLink) meLink.classList.add('show');
-
-    const store = window.frqncy.coursesStore(user);
-    const enrollments = await store.listMyEnrollments();
-    const active = enrollments.filter(e => e.status === 'active' || e.status === 'completed');
-    if (!active.length) return;
-
-    // Fetch progress per enrolled course
-    const progress = {};
-    await Promise.all(active.map(async (e) => {
-      try {
-        const rows = await store.listMyProgress(e.course_slug);
-        progress[e.course_slug] = rows.filter(r => r.completed_at).length;
-      } catch (_) { progress[e.course_slug] = 0; }
-    }));
-
-    // Render top-6 by last_active_at (already sorted by listMyEnrollments)
-    const row = document.getElementById('continue-row');
-    const strip = document.getElementById('continue-strip');
-    if (!row || !strip) return;
-    const items = active.slice(0, 6).map(e => {
-      const c = COURSES.find(x => x.slug === e.course_slug);
-      if (!c) return '';
-      const done = progress[e.course_slug] || 0;
-      const total = c.lessons.length;
-      const pct = total ? Math.round((done / total) * 100) : 0;
-      const complete = done === total && total > 0;
-      return `
-        <a class="continue-item" href="/courses/${esc(c.slug)}/">
-          <span class="continue-stripe" style="background:${c.accent}"></span>
-          <span class="continue-meta">
-            <span class="continue-name">${esc(c.title)}</span>
-            <span class="continue-progress-line">${complete ? 'Completed' : (done + ' of ' + total + ' lessons · ' + pct + '%')}</span>
-            <span class="continue-mini-bar"><span class="continue-mini-fill" style="width:${pct}%;background:${c.accent}"></span></span>
-          </span>
-          <span class="continue-cta">${complete ? 'Review →' : 'Resume →'}</span>
-        </a>
-      `;
-    }).join('');
-    row.innerHTML = items;
-    strip.classList.add('show');
-  } catch (e) {
-    console.warn('[courses-index] continue-strip failed:', e);
-  }
-})();
 </script>
 </body>
 </html>
