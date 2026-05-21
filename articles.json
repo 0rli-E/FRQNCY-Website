@@ -1,0 +1,82 @@
+{
+  "$schema_version": 1,
+  "$purpose": "Articles bed — peer-reviewed papers (when they're more 'article' than 'study'), online essays, long-form blog posts, working papers, definitional documents. Bridges the gap between books (long-form, edited) and studies (primary research with findings). Use this bed for the kind of thing you'd cite as 'the foundational paper on X' or 'the definitive online explainer of Y'.",
+  "$generated": "2026-05-20",
+  "$updated": "2026-05-22",
+  "$schema_notes": "Each entry: id (a-<slug>), title, authors (list of names), year, venue (journal / blog / publisher), url (DOI preferred for academic), bio (FRQNCY-voice summary, 40-80 words), appears_in (topic ids), picked_in (topics that flag it as a pick), tier ('foundational' | 'definitional' | 'review' | 'commentary').",
+  "articles": [
+    {
+      "id": "a-spreckelsen-desci-definition-2024",
+      "title": "Decentralized science (DeSci): definition, shared values, and guiding principles",
+      "authors": [
+        "Cord Spreckelsen"
+      ],
+      "year": 2024,
+      "venue": "Frontiers in Blockchain, Vol. 7",
+      "url": "https://www.frontiersin.org/journals/blockchain/articles/10.3389/fbloc.2024.1375763/full",
+      "doi": "10.3389/fbloc.2024.1375763",
+      "bio": "The first attempt at a rigorous, citable definition of DeSci. Spreckelsen sets out what the term actually means, what values its practitioners share, and what guiding principles separate honest decentralised-science work from blockchain-branding. Foundational reference for anyone deciding whether a project is DeSci or just selling tokens with a research-flavoured wrapper.",
+      "appears_in": [
+        "t-desci",
+        "t-blockchain",
+        "t-deai",
+        "t-dao",
+        "t-conscap",
+        "t-cryptoprivacy",
+        "t-open-source"
+      ],
+      "picked_in": [
+        "t-desci"
+      ],
+      "tier": "definitional"
+    },
+    {
+      "id": "a-ulam-desci-improves-research-2025",
+      "title": "How Decentralized Science (DeSci) Improves Research",
+      "authors": [
+        "Szymon Białas"
+      ],
+      "year": 2025,
+      "venue": "Ulam Labs blog · 15 January 2025",
+      "url": "https://www.ulam.io/blog/how-decentralized-science-is-revolutionizing-research",
+      "bio": "An accessible primer comparing centralised science to DeSci across four dimensions: funding (DAOs and quadratic funding vs grant gatekeepers), collaboration (open networks vs institutional silos), peer review (token incentives vs unpaid invisible labour), and IP (IP-NFTs vs institution-locked patents). Names the working projects worth watching — VitaDAO, ResearchHub, Molecule, Arweave, Filecoin, Ocean Protocol — and is honest about what's still hard: scalability, institutional resistance, privacy, and quality control.",
+      "appears_in": [
+        "t-desci",
+        "t-blockchain",
+        "t-dao",
+        "t-conscap",
+        "t-open-source",
+        "t-deai",
+        "t-cryptoprivacy"
+      ],
+      "picked_in": [
+        "t-desci"
+      ],
+      "tier": "review"
+    },
+    {
+      "id": "a-ethereum-org-desci",
+      "title": "Decentralized science (DeSci) — ethereum.org",
+      "authors": [
+        "ethereum.org contributors"
+      ],
+      "year": 2026,
+      "venue": "ethereum.org · official Ethereum Foundation use-case page",
+      "url": "https://ethereum.org/desci/",
+      "bio": "The canonical Ethereum Foundation explainer of DeSci. Frames the movement as public infrastructure for funding, creating, reviewing, crediting, storing, and disseminating scientific knowledge equitably. Side-by-side tables comparing DeSci vs traditional science across funding, collaboration, peer review, IP, and publication bias. Catalogues the working tooling — Molecule, VitaDAO, ResearchHub, OceanDAO, dClimate, Bio.xyz, ValleyDAO, Cerebrum, CryoDAO, IP-NFTs, soulbound tokens. Best single starting point for anyone new to the field.",
+      "appears_in": [
+        "t-desci",
+        "t-blockchain",
+        "t-dao",
+        "t-conscap",
+        "t-open-source",
+        "t-deai",
+        "t-cryptoprivacy"
+      ],
+      "picked_in": [
+        "t-desci"
+      ],
+      "tier": "foundational"
+    }
+  ]
+}

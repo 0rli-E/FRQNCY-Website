@@ -1,0 +1,122 @@
+{
+  "$schema_version": 1,
+  "$purpose": "Transmissions — FRQNCY's long-form video bed. Four kinds of content under one roof: movie (full-length film), episode (one chapter of a series), presentation (one speaker, conference- or lecture-style), panel (multi-speaker discussion). Distinct from the short-form watch library (videos.json) and the creator-tied media bed (media.json).",
+  "$generated": "2026-05-20",
+  "$updated": "2026-05-20",
+  "$schema_notes": "Each entry: id (tx-<slug>), title, kind ('movie' | 'episode' | 'presentation' | 'panel'), series (only when kind=episode), episode_number, year, host_or_speakers (array), source ('youtube' | 'vimeo' | 'own' | 'external'), youtube_id (when source=youtube), url (canonical link), duration (e.g. '90 min'), desc (FRQNCY-voice editorial), appears_in (topic ids), picked_in (topics that flag it as a pick), frqncy_pick (bool).",
+  "$kinds": {
+    "movie": "Standalone film. Documentary, feature, dramatised. One title, one screen-able unit.",
+    "episode": "One chapter of a multi-part series. Has series + episode_number.",
+    "presentation": "One speaker addressing an audience. Lecture, conference talk, keynote, TED-style.",
+    "panel": "Multiple speakers in conversation. Roundtable, interview, podcast video, fireside chat."
+  },
+  "transmissions": [
+    {
+      "id": "tx-frequency-movie",
+      "title": "Source: The Frequency Movie",
+      "kind": "movie",
+      "year": 2023,
+      "host_or_speakers": [
+        "Dr Joe Dispenza"
+      ],
+      "source": "external",
+      "url": "https://www.thefrequencymovie.com/",
+      "duration": "108 min",
+      "desc": "Dr Joe Dispenza's feature documentary on coherence, healing, and the measurable physiological changes participants undergo during his progressive workshops. Built from years of biometric data collected at his events — HRV, EEG, blood markers — paired with the personal stories of participants whose conditions resolved. The film FRQNCY would have made if FRQNCY made films.",
+      "appears_in": [
+        "t-source",
+        "t-meditation",
+        "t-vibration",
+        "t-energy-fields",
+        "t-consciousness",
+        "t-mental"
+      ],
+      "picked_in": [
+        "t-source"
+      ],
+      "frqncy_pick": true
+    },
+    {
+      "id": "tx-hsom-ep1",
+      "title": "Hidden Secrets of Money — Episode 1: Currency vs Money",
+      "kind": "episode",
+      "series": "Hidden Secrets of Money",
+      "episode_number": 1,
+      "year": 2013,
+      "host_or_speakers": [
+        "Mike Maloney"
+      ],
+      "source": "youtube",
+      "youtube_id": "DyV0OfU3-FU",
+      "url": "https://www.youtube.com/watch?v=DyV0OfU3-FU",
+      "duration": "26 min",
+      "desc": "Mike Maloney opens his ten-part monetary history series with the most important distinction in personal finance: currency is what you spend, money is what holds value across time. Filmed partly in Egypt. The clearest mainstream education on what money actually is — free on YouTube, watched tens of millions of times.",
+      "appears_in": [
+        "t-gold",
+        "t-silver",
+        "t-bitcoin",
+        "t-conscap",
+        "t-personal-finance",
+        "t-crypto"
+      ],
+      "picked_in": [
+        "t-gold",
+        "t-bitcoin"
+      ],
+      "frqncy_pick": true
+    },
+    {
+      "id": "tx-dolores-three-waves-2011",
+      "title": "The Three Waves of Volunteers & The New Earth",
+      "kind": "presentation",
+      "year": 2011,
+      "host_or_speakers": [
+        "Dolores Cannon"
+      ],
+      "source": "youtube",
+      "youtube_id": "Hi-lPoF90GU",
+      "url": "https://www.youtube.com/watch?v=Hi-lPoF90GU",
+      "duration": "75 min",
+      "venue": "Ozark Mountain Transformation Conference",
+      "desc": "Dolores Cannon's flagship lecture, delivered at the Ozark Mountain Transformation Conference. She lays out the thesis carried by her QHHT case histories: three successive waves of souls have come to Earth at this turning to lift the planet's frequency. The required-watching entry into the New-Earth thread on FRQNCY.",
+      "appears_in": [
+        "t-new-earth",
+        "t-consciousness",
+        "t-source",
+        "t-channeling",
+        "t-abilities"
+      ],
+      "picked_in": [
+        "t-new-earth"
+      ],
+      "frqncy_pick": true
+    },
+    {
+      "id": "tx-dolores-c2c-volunteer-souls",
+      "title": "Dolores Cannon on Volunteer Souls, Past Lives & Lost Knowledge",
+      "kind": "panel",
+      "year": 2022,
+      "host_or_speakers": [
+        "Dolores Cannon",
+        "George Noory (host)"
+      ],
+      "source": "youtube",
+      "youtube_id": "TfKBfCY6Mek",
+      "url": "https://www.youtube.com/watch?v=TfKBfCY6Mek",
+      "duration": "70 min",
+      "venue": "Coast to Coast AM",
+      "desc": "Long-form interview format. Cannon on Coast to Coast — the radio show that broke this material to a mainstream nighttime audience. Volunteer souls, past lives, and the lost knowledge she recovered across four decades of QHHT sessions. Pair with the Ozark presentation for breadth + depth on the same thesis.",
+      "appears_in": [
+        "t-new-earth",
+        "t-consciousness",
+        "t-source",
+        "t-channeling",
+        "t-abilities"
+      ],
+      "picked_in": [
+        "t-new-earth"
+      ],
+      "frqncy_pick": false
+    }
+  ]
+}
