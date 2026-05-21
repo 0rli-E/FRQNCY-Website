@@ -47,7 +47,7 @@ data class AlarmRecord(
             moment = json.optString("moment", "morning"),
             audioUrl = json.optString("audioUrl").takeIf { it.isNotEmpty() },
             videoUrl = json.optString("videoUrl").takeIf { it.isNotEmpty() },
-            label = json.optString("label", "FRQNCY"),
+            label = json.optString("label", "VBRTN"),
             repeat = json.optString("repeat", "none"),
             fadeInSeconds = json.optInt("fadeInSeconds", 90),
             snoozeCount = json.optInt("snoozeCount", 0),

@@ -1,5 +1,8 @@
 /**
- * FRQNCY app entry point.
+ * VBRTN — entry point for the FRQNCY network's mobile app.
+ *
+ * App name (stores / device): VBRTN ("vibration"). The codebase folder, bundle
+ * IDs, and Java package keep the FRQNCY codename — see app/README.md.
  *
  * Surfaces:
  *   - "/"               → native Home (#home-screen)
@@ -9,7 +12,7 @@
  *                          in production CSP frame-ancestors as of 2026-05-14)
  *
  * The tab bar stays visible across all surfaces, including while browsing
- * Sanctuary / My FRQNCY / Social inside the iframe.
+ * Sanctuary / My FRQNCY / NRG (social) inside the iframe.
  */
 
 import { Network, type ConnectionStatus } from '@capacitor/network';
@@ -141,7 +144,7 @@ function openExternal(url: string, tabRoute?: string) {
   // Load the live-site URL into the app's iframe shell. Production CSP
   // frame-ancestors permits https://localhost / capacitor://localhost / vite
   // dev origin to embed frqncy.network, so the tab bar stays visible while
-  // the user browses Sanctuary / My FRQNCY / Social / etc. inside the frame.
+  // the user browses Sanctuary / My FRQNCY / NRG (social) / etc. inside the frame.
   //
   // Append ?embed=1 — the global header on frqncy.network reads this and adds
   // body.frqncy-embed which hides the site's #main-nav and the floating donate

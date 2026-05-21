@@ -44,7 +44,7 @@ class FrqncyAlarmPlugin : Plugin() {
         val moment = call.getString("moment") ?: "morning"
         val audioUrl = call.getString("audioUrl")
         val videoUrl = call.getString("videoUrl")
-        val label = call.getString("label") ?: "FRQNCY"
+        val label = call.getString("label") ?: "VBRTN"
         val repeat = call.getString("repeat") ?: "none"
         val fadeInSeconds = call.getInt("fadeInSeconds") ?: 90
 
@@ -123,37 +123,37 @@ class FrqncyAlarmPlugin : Plugin() {
         val (aggressive, instructions, deepLink) = when {
             "xiaomi" in mfr || "redmi" in mfr || "poco" in mfr -> Triple(
                 true,
-                "On Xiaomi/Redmi/Poco: open Settings → Apps → FRQNCY. Turn on Autostart. " +
-                    "Set Battery saver to 'No restrictions'. Lock FRQNCY in the recents screen by " +
+                "On Xiaomi/Redmi/Poco: open Settings → Apps → VBRTN. Turn on Autostart. " +
+                    "Set Battery saver to 'No restrictions'. Lock VBRTN in the recents screen by " +
                     "swiping down on the card and tapping the lock icon.",
                 "miui.intent.action.APP_PERM_EDITOR"
             )
             "samsung" in mfr -> Triple(
                 true,
                 "On Samsung: open Settings → Battery → Background usage limits → Never sleeping apps. " +
-                    "Add FRQNCY. Also: Settings → Apps → FRQNCY → Battery → Unrestricted.",
+                    "Add VBRTN. Also: Settings → Apps → VBRTN → Battery → Unrestricted.",
                 null
             )
             "huawei" in mfr || "honor" in mfr -> Triple(
                 true,
-                "On Huawei/Honor: open Settings → Apps → FRQNCY → App launch. Turn off auto-manage, " +
+                "On Huawei/Honor: open Settings → Apps → VBRTN → App launch. Turn off auto-manage, " +
                     "then enable Auto-launch, Secondary launch, and Run in background.",
                 null
             )
             "oppo" in mfr || "realme" in mfr || "oneplus" in mfr -> Triple(
                 true,
-                "On Oppo/Realme/OnePlus: open Settings → Apps → App management → FRQNCY. " +
+                "On Oppo/Realme/OnePlus: open Settings → Apps → App management → VBRTN. " +
                     "Enable Allow auto-launch and Allow background activity.",
                 null
             )
             "vivo" in mfr || "iqoo" in mfr -> Triple(
                 true,
                 "On Vivo/iQOO: open Settings → Battery → Background power consumption manager. " +
-                    "Set FRQNCY to 'Allow background high power consumption'. Vivo's battery manager " +
+                    "Set VBRTN to 'Allow background high power consumption'. Vivo's battery manager " +
                     "is the most aggressive — pair with a backup alarm if you can't risk a missed wake.",
                 null
             )
-            else -> Triple(false, "Your device should run FRQNCY alarms reliably by default.", null)
+            else -> Triple(false, "Your device should run VBRTN alarms reliably by default.", null)
         }
 
         val result = JSObject().apply {

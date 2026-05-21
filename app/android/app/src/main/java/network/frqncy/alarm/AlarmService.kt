@@ -111,7 +111,7 @@ class AlarmService : Service() {
         val id = intent.getStringExtra(EXTRA_ID) ?: run { stopSelf(); return }
         val moment = intent.getStringExtra(EXTRA_MOMENT) ?: "morning"
         val audioUrl = intent.getStringExtra(EXTRA_AUDIO_URL)
-        val label = intent.getStringExtra(EXTRA_LABEL) ?: "FRQNCY"
+        val label = intent.getStringExtra(EXTRA_LABEL) ?: "VBRTN"
         val fadeInSeconds = intent.getIntExtra(EXTRA_FADE_IN_SECONDS, 90)
 
         val notification = buildNotification(id, moment, label)
@@ -334,7 +334,7 @@ class AlarmService : Service() {
             "Alarms",
             NotificationManager.IMPORTANCE_HIGH
         ).apply {
-            description = "Plays your scheduled FRQNCY wake-up."
+            description = "Plays your scheduled VBRTN wake-up."
             setBypassDnd(true)
             lockscreenVisibility = Notification.VISIBILITY_PUBLIC
         }

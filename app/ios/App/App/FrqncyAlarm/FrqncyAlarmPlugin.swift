@@ -42,7 +42,7 @@ public class FrqncyAlarmPlugin: CAPPlugin {
         let moment = call.getString("moment") ?? "morning"
         let audioUrl = call.getString("audioUrl")
         let videoUrl = call.getString("videoUrl")
-        let label = call.getString("label") ?? "FRQNCY"
+        let label = call.getString("label") ?? "VBRTN"
         let repeatMode = call.getString("repeat") ?? "none"
         let fadeIn = call.getInt("fadeInSeconds") ?? 90
 
@@ -170,9 +170,9 @@ public class FrqncyAlarmPlugin: CAPPlugin {
             "manufacturer": "Apple",
             "isAggressive": false,
             "settingsDeepLink": NSNull(),
-            "instructions": "On iOS, plug in your phone and keep FRQNCY open in Bedside Mode. " +
-                "Add FRQNCY to your Sleep Focus and enable Time Sensitive notifications. " +
-                "iOS may not wake force-quit apps — keep FRQNCY in recents."
+            "instructions": "On iOS, plug in your phone and keep VBRTN open in Bedside Mode. " +
+                "Add VBRTN to your Sleep Focus and enable Time Sensitive notifications. " +
+                "iOS may not wake force-quit apps — keep VBRTN in recents."
         ])
     }
 

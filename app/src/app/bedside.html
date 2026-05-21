@@ -4,7 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="theme-color" content="#0B1C3D" />
-    <title>FRQNCY · Bedside</title>
+    <title>VBRTN · Bedside</title>
     <style>
       * { box-sizing: border-box; margin: 0; padding: 0; }
       html, body {
@@ -854,7 +854,7 @@
             id: ALARM_ID,
             timestamp,
             moment: 'morning',
-            label: 'FRQNCY',
+            label: 'VBRTN',
             repeat: 'daily',
             fadeInSeconds: 90,
           });
@@ -871,7 +871,7 @@
                 id: PREWAKE_ID,
                 timestamp: prewakeTs,
                 moment: 'morning',
-                label: 'FRQNCY · gently',
+                label: 'VBRTN · gently',
                 repeat: 'daily',
                 fadeInSeconds: PREWAKE_OFFSET_MIN * 60, // ramp over the full 15 min
               });
@@ -904,7 +904,7 @@
           // Friendly fallback copy — the underlying error message is often
           // technical (EXACT_ALARM_DENIED etc.); the toast translates.
           const msg = (err && err.code === 'EXACT_ALARM_DENIED')
-            ? "android needs permission to fire alarms exactly on time. settings → alarms & reminders → allow for FRQNCY."
+            ? "android needs permission to fire alarms exactly on time. settings → alarms & reminders → allow for VBRTN."
             : (err && err.message)
               ? `couldn't arm: ${err.message}`
               : "couldn't arm. try again, or check permissions in settings.";
@@ -914,7 +914,7 @@
 
       // Split a manufacturer instruction string into an ordered list of steps.
       // The native plugin returns sentences like:
-      //   "On Samsung: open Settings → Battery → ... . Add FRQNCY. Also: ..."
+      //   "On Samsung: open Settings → Battery → ... . Add VBRTN. Also: ..."
       // We strip the "On <oem>:" prefix and split on sentence breaks so each
       // step stands alone in the modal's <ol>. Falls back to a one-item list
       // for unrecognised shapes.

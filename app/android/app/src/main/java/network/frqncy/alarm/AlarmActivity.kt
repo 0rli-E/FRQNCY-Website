@@ -152,7 +152,7 @@ class AlarmActivity : AppCompatActivity() {
         }
 
         val title = TextView(this).apply {
-            text = "FRQNCY"
+            text = "VBRTN"
             setTextColor(0xFFC4973A.toInt())
             setTypeface(typeface, Typeface.NORMAL)
             setTextSize(TypedValue.COMPLEX_UNIT_SP, 14f)

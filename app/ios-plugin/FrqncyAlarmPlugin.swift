@@ -41,7 +41,7 @@ public class FrqncyAlarmPlugin: CAPPlugin {
         let moment = call.getString("moment") ?? "morning"
         let audioUrl = call.getString("audioUrl")
         let videoUrl = call.getString("videoUrl")
-        let label = call.getString("label") ?? "FRQNCY"
+        let label = call.getString("label") ?? "VBRTN"
         let repeatMode = call.getString("repeat") ?? "none"
         let fadeIn = call.getInt("fadeInSeconds") ?? 90
 
@@ -146,7 +146,7 @@ public class FrqncyAlarmPlugin: CAPPlugin {
             "manufacturer": "Apple",
             "isAggressive": false,
             "settingsDeepLink": NSNull(),
-            "instructions": "For the most reliable alarm, plug in your phone, keep FRQNCY open in Bedside Mode, and do not force-quit the app."
+            "instructions": "For the most reliable alarm, plug in your phone, keep VBRTN open in Bedside Mode, and do not force-quit the app."
         ])
     }
 

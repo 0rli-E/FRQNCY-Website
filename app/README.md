@@ -1,4 +1,7 @@
-# FRQNCY App
+# VBRTN — the FRQNCY mobile app
+
+User-facing name in the App Store / Play Store: **VBRTN** (pronounced "vibration").
+Internal codenames, bundle IDs (`network.frqncy.app`), and the Java package (`network.frqncy.alarm`) stay FRQNCY — renaming them would relaunch the app as a new product in the stores.
 
 Mobile app (iOS + Android) built with Capacitor 7. Delivers frqncy.network natively plus a native wake/sleep alarm feature.
 
