@@ -1,0 +1,221 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The FRQNCY Moon Calendar — 13 Moons + 1 Day of Rest</title>
+<meta name="description" content="A 13-month perpetual calendar — thirteen moons of twenty-eight days each, plus one day beyond time. The calendar the body already knows.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:title" content="The FRQNCY Moon Calendar — 13 Moons + 1 Day of Rest">
+<meta property="og:description" content="Thirteen moons of twenty-eight days, plus one day beyond time. The calendar the body already knows.">
+<meta property="og:url" content="https://frqncy.network/moon-calendar/">
+<meta property="og:image" content="https://frqncy.network/og/moon-calendar.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="FRQNCY">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://frqncy.network/moon-calendar/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--navy-deep:#081530;
+  --gold:#C4973A;--gold-light:#E0C06A;--gold-soft:rgba(196,151,58,.14);
+  --moon:#E8E4D0;--moon-dim:#9FA3B0;
+  --text:#C8D8F0;--text-dim:#8FA8CC;--text-faint:#5A6F8F;
+  --card-border:rgba(255,255,255,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;min-height:100vh}
+a{color:var(--gold-light);text-decoration:none}
+a:hover{color:#fff}
+
+/* hero */
+.hero{padding:clamp(4rem,9vw,7rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 20%, rgba(196,151,58,.10) 0%, transparent 60%)}
+.hero::before{content:'';position:absolute;top:18%;left:50%;transform:translateX(-50%);width:140px;height:140px;border-radius:50%;background:radial-gradient(circle at 35% 35%, var(--moon) 0%, var(--moon-dim) 70%, transparent 72%);box-shadow:0 0 80px rgba(232,228,208,.18);opacity:.6;z-index:0}
+.hero-inner{position:relative;z-index:1;max-width:780px;margin:0 auto}
+.eyebrow{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1.5rem;display:inline-block}
+h1{font-family:'Cormorant',serif;font-weight:300;font-size:clamp(2.6rem,7vw,5rem);color:#fff;line-height:1.08;letter-spacing:-.01em;margin-bottom:1.25rem}
+h1 em{font-style:italic;color:var(--gold-light)}
+.hero-desc{max-width:580px;margin:0 auto;font-size:1rem;color:var(--text-dim);font-weight:300}
+
+/* sections */
+main{max-width:1080px;margin:0 auto;padding:3rem clamp(1.25rem,5vw,2.5rem) 6rem}
+section{margin-bottom:4.5rem}
+h2{font-family:'Cormorant',serif;font-weight:300;font-size:clamp(1.8rem,3.6vw,2.6rem);color:#fff;margin-bottom:1.25rem;letter-spacing:-.005em}
+h3{font-family:'Cormorant',serif;font-weight:400;font-size:1.5rem;color:var(--gold-light);margin-bottom:.75rem}
+p{margin-bottom:1rem;color:var(--text);font-size:.96rem}
+p em{font-family:'Cormorant',serif;font-style:italic;color:var(--gold-light)}
+
+/* the 13 months grid */
+.moons{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1.25rem;margin:2rem 0}
+.moon{background:linear-gradient(180deg, var(--navy-mid) 0%, var(--navy-deep) 100%);border:1px solid var(--card-border);border-radius:6px;padding:1.5rem 1.4rem;position:relative;transition:border-color .25s, transform .25s}
+.moon:hover{border-color:rgba(196,151,58,.32);transform:translateY(-2px)}
+.moon-num{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:.5rem}
+.moon-name{font-family:'Cormorant',serif;font-size:1.5rem;font-weight:400;color:#fff;margin-bottom:.4rem;letter-spacing:.01em}
+.moon-greg{font-size:.66rem;letter-spacing:.18em;text-transform:uppercase;color:var(--text-faint);margin-bottom:.6rem}
+.moon-desc{font-size:.82rem;color:var(--text-dim);line-height:1.6}
+
+/* day-of-rest special */
+.rest{background:linear-gradient(180deg, rgba(196,151,58,.10) 0%, rgba(196,151,58,.04) 100%);border-color:rgba(196,151,58,.32);grid-column:1/-1;text-align:center;padding:2rem}
+.rest .moon-name{color:var(--gold-light);font-style:italic;font-size:1.8rem}
+.rest .moon-desc{max-width:560px;margin:.5rem auto 0;font-size:.95rem}
+
+/* the perpetual month grid */
+.perpetual{background:var(--navy-mid);border:1px solid var(--card-border);border-radius:6px;padding:2rem;margin:2rem 0}
+.month-title{font-family:'Cormorant',serif;font-size:1.4rem;color:var(--gold-light);text-align:center;margin-bottom:1rem}
+.week-row{display:grid;grid-template-columns:repeat(7,1fr);gap:6px}
+.week-row.head{margin-bottom:6px}
+.day,.head-cell{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:3px;font-size:.85rem}
+.head-cell{font-size:.58rem;letter-spacing:.16em;text-transform:uppercase;color:var(--gold);background:transparent;aspect-ratio:auto;padding:.5rem 0}
+.day{background:rgba(255,255,255,.02);border:1px solid rgba(255,255,255,.04);color:var(--text)}
+.day.solstice{background:rgba(196,151,58,.10);border-color:rgba(196,151,58,.28);color:var(--gold-light)}
+.day.new-moon{background:rgba(11,28,61,.5);border-color:rgba(120,140,180,.18);color:var(--moon-dim)}
+.day.full-moon{background:rgba(232,228,208,.08);border-color:rgba(232,228,208,.22);color:var(--moon)}
+
+/* table */
+table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.88rem}
+th,td{text-align:left;padding:.7rem .9rem;border-bottom:1px solid var(--card-border)}
+th{color:var(--gold);font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;font-weight:400}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+
+/* pull-quote */
+.pull{font-family:'Cormorant',serif;font-style:italic;font-size:1.4rem;color:var(--gold-light);text-align:center;border-left:2px solid var(--gold);padding:.4rem 1.25rem;margin:2.5rem auto;max-width:680px;line-height:1.45}
+
+/* footer + breadcrumb */
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:.28em;color:#fff;opacity:.85}
+.snav-back{font-size:.68rem;letter-spacing:.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,.1);padding:5px 14px;border-radius:2px}
+footer{border-top:1px solid var(--card-border);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center;color:var(--text-faint);font-size:.78rem;letter-spacing:.06em}
+
+@media(max-width:560px){
+  .moons{grid-template-columns:1fr}
+  .rest{grid-column:1}
+}
+</style>
+</head>
+<body>
+<nav class="snav">
+  <a href="/" class="snav-logo">FRQNCY</a>
+  <a href="/" class="snav-back">← Main</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">A Living Library · Time</span>
+    <h1>The <em>Moon Calendar</em></h1>
+    <p class="hero-desc">Thirteen moons of twenty-eight days each. One day beyond time. The calendar the body already knows — the rhythm of menstruation, the four weeks of a moon cycle, the natural year split cleanly by the count of breath.</p>
+  </div>
+</div>
+
+<main>
+
+  <section>
+    <h2>Why thirteen</h2>
+    <p>The earth makes one circuit of the sun in roughly 365 days. The moon completes 13 sidereal cycles in that same span — 13 × 28 = 364, plus one day for the gap. Twelve was a number imposed by emperors and accountants. Thirteen is the number the sky was already using.</p>
+    <p>A 13-month calendar with 28-day months was proposed publicly by <em>Moses B. Cotsworth</em> in 1902, championed in the 1920s by <em>George Eastman</em> of Kodak, and used internally at Kodak from 1928 until 1989. The League of Nations seriously considered it as a world standard in 1928. The same structure exists in older form across Indigenous lunar reckonings on every continent — the Pleiades calendar of the Aboriginal Yolŋu, the 13-moon traditions carried in many Native American tribes, the Druidic Coligny calendar. <em>The earth knew this rhythm long before anyone wrote it down.</em></p>
+    <p class="pull">Twelve is a number imposed. Thirteen is the number the sky was already using.</p>
+  </section>
+
+  <section>
+    <h2>The shape of the year</h2>
+    <p>Every moon is exactly 28 days. Every moon begins on a <em>New Moon Day</em> (Sunday) and ends on a <em>Settle Day</em> (Saturday). The 8th and the 22nd are always Sundays. The 1st of every month, forever, is a Sunday. Once you learn one moon, you have learned them all.</p>
+
+    <div class="perpetual">
+      <div class="month-title">Any moon, any year — the shape never changes</div>
+      <div class="week-row head">
+        <div class="head-cell">New</div>
+        <div class="head-cell">Mon</div>
+        <div class="head-cell">Tue</div>
+        <div class="head-cell">Wed</div>
+        <div class="head-cell">Thu</div>
+        <div class="head-cell">Fri</div>
+        <div class="head-cell">Settle</div>
+      </div>
+      <div class="week-row">
+        <div class="day new-moon">1</div><div class="day">2</div><div class="day">3</div><div class="day">4</div><div class="day">5</div><div class="day">6</div><div class="day">7</div>
+      </div>
+      <div class="week-row">
+        <div class="day">8</div><div class="day">9</div><div class="day">10</div><div class="day">11</div><div class="day">12</div><div class="day">13</div><div class="day full-moon">14</div>
+      </div>
+      <div class="week-row">
+        <div class="day full-moon">15</div><div class="day">16</div><div class="day">17</div><div class="day">18</div><div class="day">19</div><div class="day">20</div><div class="day">21</div>
+      </div>
+      <div class="week-row">
+        <div class="day">22</div><div class="day">23</div><div class="day">24</div><div class="day">25</div><div class="day">26</div><div class="day">27</div><div class="day">28</div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The thirteen moons</h2>
+    <p>The names come from the traditional Native American moon calendar — pre-colonial, agricultural, in tune with what each part of the year was actually doing. FRQNCY keeps them. Each is paired with the consciousness phase the body and field tend to move through at that time. The Gregorian dates are approximate — the system is a fixed grid, not seasonal drift.</p>
+
+    <div class="moons">
+      <div class="moon"><div class="moon-num">Moon I</div><div class="moon-name">Wolf</div><div class="moon-greg">~ Jan 1 — Jan 28</div><div class="moon-desc">Return. The longest night just past. The body asks what it has been ignoring. Wolves call to each other across the cold — a remembering of pack.</div></div>
+      <div class="moon"><div class="moon-num">Moon II</div><div class="moon-name">Snow</div><div class="moon-greg">~ Jan 29 — Feb 25</div><div class="moon-desc">Stillness. The world is held under white. Plans are made in this quiet. The seed has not cracked but it is awake.</div></div>
+      <div class="moon"><div class="moon-num">Moon III</div><div class="moon-name">Worm</div><div class="moon-greg">~ Feb 26 — Mar 25</div><div class="moon-desc">First thaw. The first soft ground. Earthworms surface — the underworld signalling life. Old structures soften, old grief moves.</div></div>
+      <div class="moon"><div class="moon-num">Moon IV</div><div class="moon-name">Seed</div><div class="moon-greg">~ Mar 26 — Apr 22</div><div class="moon-desc">Plant. What is being put into the ground for the year is decided here. Equinox sits inside this moon — perfect balance, then forward motion.</div></div>
+      <div class="moon"><div class="moon-num">Moon V</div><div class="moon-name">Flower</div><div class="moon-greg">~ Apr 23 — May 20</div><div class="moon-desc">Bloom. Whatever was seeded shows its first colour. Beltane fires. The moon of beauty, attraction, the field returning to abundance.</div></div>
+      <div class="moon"><div class="moon-num">Moon VI</div><div class="moon-name">Strawberry</div><div class="moon-greg">~ May 21 — Jun 17</div><div class="moon-desc">Ripening. The first sweetness of the year arrives. Pleasure as a teaching, not a distraction. The body says: <em>yes</em>.</div></div>
+      <div class="moon"><div class="moon-num">Moon VII</div><div class="moon-name">Sun</div><div class="moon-greg">~ Jun 18 — Jul 15</div><div class="moon-desc">Peak. The summer solstice sits in this moon — the longest day, the apex of light. The middle of the year. From here the wheel turns home.</div></div>
+      <div class="moon"><div class="moon-num">Moon VIII</div><div class="moon-name">Thunder</div><div class="moon-greg">~ Jul 16 — Aug 12</div><div class="moon-desc">Heat and storm. The moon when stags grow new antlers and skies break open. Restless. Productive. Sometimes destructive of the half-built.</div></div>
+      <div class="moon"><div class="moon-num">Moon IX</div><div class="moon-name">Sturgeon</div><div class="moon-greg">~ Aug 13 — Sep 9</div><div class="moon-desc">Abundance from the deep. The lakes and rivers gave up their largest fish in this moon. A moon for trusting what the depths have been growing.</div></div>
+      <div class="moon"><div class="moon-num">Moon X</div><div class="moon-name">Harvest</div><div class="moon-greg">~ Sep 10 — Oct 7</div><div class="moon-desc">Gathering. The autumn equinox sits in this moon — balance again, but tilting now toward inward. What you grew, you carry in.</div></div>
+      <div class="moon"><div class="moon-num">Moon XI</div><div class="moon-name">Hunter</div><div class="moon-greg">~ Oct 8 — Nov 4</div><div class="moon-desc">Provisioning. The cold is announced. What will not be used is released. The moon of clean cuts and decided endings.</div></div>
+      <div class="moon"><div class="moon-num">Moon XII</div><div class="moon-name">Beaver</div><div class="moon-greg">~ Nov 5 — Dec 2</div><div class="moon-desc">Building shelter. Settle the den, dam the river, finish the work. The most concentrated, hands-on moon of the year.</div></div>
+      <div class="moon"><div class="moon-num">Moon XIII</div><div class="moon-name">Cold</div><div class="moon-greg">~ Dec 3 — Dec 30</div><div class="moon-desc">Deep winter. Long nights. The winter solstice sits inside this moon — the longest dark, then the slow return of light. The year completes itself.</div></div>
+
+      <div class="moon rest">
+        <div class="moon-num">Beyond Time</div>
+        <div class="moon-name">The Day of Rest</div>
+        <div class="moon-desc">Dec 31. One day that belongs to no moon and no week. A day with no name, no work, no schedule. The year ends here and does not begin again until the sun rises on Moon I. <em>In leap years, a second day is added in midsummer — the Day Between Suns.</em></div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>Conversion</h2>
+    <p>If you want to read your Gregorian date in moons: take the day-of-year (Jan 1 = 1, Feb 1 = 32, etc.), subtract 1, divide by 28. The integer is your moon number minus one. The remainder + 1 is your day inside the moon.</p>
+
+    <table>
+      <thead><tr><th>Gregorian</th><th>Moon</th><th>Day</th><th>Weekday</th></tr></thead>
+      <tbody>
+        <tr><td>Jan 1</td><td>I — Wolf</td><td class="num">1</td><td>New Moon (Sun)</td></tr>
+        <tr><td>Mar 21 (Equinox)</td><td>III — Worm</td><td class="num">26</td><td>Thursday</td></tr>
+        <tr><td>Jun 21 (Solstice)</td><td>VII — Sun</td><td class="num">4</td><td>Wednesday</td></tr>
+        <tr><td>Sep 23 (Equinox)</td><td>X — Harvest</td><td class="num">14</td><td>Full Moon eve</td></tr>
+        <tr><td>Dec 21 (Solstice)</td><td>XIII — Cold</td><td class="num">19</td><td>Thursday</td></tr>
+        <tr><td>Dec 31</td><td>—</td><td>Beyond Time</td><td>Day of Rest</td></tr>
+      </tbody>
+    </table>
+  </section>
+
+  <section>
+    <h2>How to use it</h2>
+    <p><em>For practice.</em> Move through the moon. Notice what's seasonal in you on Wolf Day 12 versus Flower Day 12. The same numeric date hits you at different points of the year because the moon is different. You start to feel it.</p>
+    <p><em>For planning.</em> Anything you ship on Day 14 of any moon ships on a Saturday — forever. Recurring meetings, salaries, retreats, releases all lock to the same weekday across years. The administrative overhead of the Gregorian calendar drops by a third.</p>
+    <p><em>For belonging.</em> Each moon has a name your great-grandmother would have known. Tracking time this way is a small, quiet way of stepping out of the empire's clock and back into the earth's.</p>
+  </section>
+
+  <section>
+    <h2>Sources & lineage</h2>
+    <ul style="list-style:none;padding:0;font-size:.88rem;color:var(--text-dim)">
+      <li style="margin-bottom:.4rem">— Cotsworth, M. B. (1902). <em>The Rational Almanac.</em> The original 13-month proposal.</li>
+      <li style="margin-bottom:.4rem">— George Eastman / Kodak — adopted internally, 1928–1989.</li>
+      <li style="margin-bottom:.4rem">— League of Nations Committee on Calendar Reform — final report, 1937.</li>
+      <li style="margin-bottom:.4rem">— Traditional Native American moon names — carried by the Algonquian-speaking peoples, popularised by the <em>Farmer's Almanac</em>.</li>
+      <li style="margin-bottom:.4rem">— Coligny Calendar (Gaulish, c. 200 CE) — a 5-year cycle of 62 months including intercalary months. The earliest known European lunisolar reckoning.</li>
+    </ul>
+  </section>
+
+  <p style="text-align:center;margin-top:3rem"><a href="/mayan-calendar/" style="font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(196,151,58,.4);padding:.7rem 1.4rem;border-radius:24px">See the Mayan Calendar →</a></p>
+
+</main>
+
+<footer>FRQNCY · The Moon Calendar · A living library for the conscious age</footer>
+
+</body>
+</html>

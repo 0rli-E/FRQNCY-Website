@@ -1,0 +1,319 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<title>The Mayan Calendar — Tzolk'in · Haab' · Long Count</title>
+<meta name="description" content="The three interlocking calendars of the Maya — the 260-day sacred Tzolk'in, the 365-day Haab', and the Long Count that tracks the world-age. With a live converter for today.">
+<meta name="theme-color" content="#0B1C3D">
+<meta property="og:title" content="The Mayan Calendar — Tzolk'in · Haab' · Long Count">
+<meta property="og:description" content="The three interlocking calendars of the Maya. With a live converter for today.">
+<meta property="og:url" content="https://frqncy.network/mayan-calendar/">
+<meta property="og:image" content="https://frqncy.network/og/mayan-calendar.png">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta property="og:site_name" content="FRQNCY">
+<link rel="icon" type="image/svg+xml" href="/favicon.svg">
+<link rel="manifest" href="/manifest.json">
+<link rel="canonical" href="https://frqncy.network/mayan-calendar/">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;1,300;1,400&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--navy-deep:#081530;
+  --gold:#C4973A;--gold-light:#E0C06A;--gold-soft:rgba(196,151,58,.14);
+  --jade:#4A7A6E;--jade-light:#6FA89A;
+  --terra:#A86A4A;--terra-light:#C68A6A;
+  --text:#C8D8F0;--text-dim:#8FA8CC;--text-faint:#5A6F8F;
+  --card-border:rgba(255,255,255,.08);
+}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;line-height:1.7;min-height:100vh}
+a{color:var(--gold-light);text-decoration:none}
+a:hover{color:#fff}
+
+nav.snav{position:fixed;top:0;left:0;right:0;z-index:100;background:rgba(11,28,61,.85);backdrop-filter:blur(16px);-webkit-backdrop-filter:blur(16px);border-bottom:1px solid rgba(255,255,255,.06);padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;display:flex;align-items:center;justify-content:space-between}
+.snav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:.28em;color:#fff;opacity:.85}
+.snav-back{font-size:.68rem;letter-spacing:.1em;color:var(--text-dim);border:1px solid rgba(255,255,255,.1);padding:5px 14px;border-radius:2px}
+
+.hero{padding:clamp(4rem,9vw,7rem) clamp(1.25rem,5vw,2.5rem) clamp(3rem,6vw,5rem);text-align:center;position:relative;overflow:hidden;background:radial-gradient(ellipse at 50% 20%, rgba(168,106,74,.10) 0%, transparent 60%)}
+.hero-inner{position:relative;z-index:1;max-width:780px;margin:0 auto}
+.eyebrow{font-size:.62rem;letter-spacing:.32em;text-transform:uppercase;color:var(--terra-light);margin-bottom:1.5rem;display:inline-block}
+h1{font-family:'Cormorant',serif;font-weight:300;font-size:clamp(2.6rem,7vw,5rem);color:#fff;line-height:1.08;letter-spacing:-.01em;margin-bottom:1.25rem}
+h1 em{font-style:italic;color:var(--gold-light)}
+.hero-desc{max-width:580px;margin:0 auto;font-size:1rem;color:var(--text-dim)}
+
+main{max-width:1080px;margin:0 auto;padding:3rem clamp(1.25rem,5vw,2.5rem) 6rem}
+section{margin-bottom:4.5rem}
+h2{font-family:'Cormorant',serif;font-weight:300;font-size:clamp(1.8rem,3.6vw,2.6rem);color:#fff;margin-bottom:1.25rem;letter-spacing:-.005em}
+h3{font-family:'Cormorant',serif;font-weight:400;font-size:1.5rem;color:var(--gold-light);margin-bottom:.75rem}
+p{margin-bottom:1rem;color:var(--text);font-size:.96rem}
+p em{font-family:'Cormorant',serif;font-style:italic;color:var(--gold-light)}
+
+/* live today panel */
+.today{background:linear-gradient(180deg, rgba(196,151,58,.10) 0%, rgba(196,151,58,.02) 100%);border:1px solid rgba(196,151,58,.32);border-radius:8px;padding:2rem;margin:2rem 0}
+.today-title{font-size:.6rem;letter-spacing:.32em;text-transform:uppercase;color:var(--gold);text-align:center;margin-bottom:1rem}
+.today-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1.5rem;text-align:center}
+.today-cell{padding:1rem 0}
+.today-label{font-size:.62rem;letter-spacing:.24em;text-transform:uppercase;color:var(--text-faint);margin-bottom:.5rem}
+.today-value{font-family:'Cormorant',serif;font-size:1.5rem;color:#fff;line-height:1.2}
+.today-sub{font-size:.75rem;color:var(--text-dim);margin-top:.3rem}
+@media(max-width:560px){.today-grid{grid-template-columns:1fr;gap:1rem}.today-cell{border-bottom:1px solid var(--card-border);padding-bottom:1rem}}
+
+.calendars{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1.25rem;margin:2rem 0}
+.cal{background:var(--navy-mid);border:1px solid var(--card-border);border-radius:6px;padding:1.75rem;transition:border-color .25s}
+.cal:hover{border-color:rgba(196,151,58,.32)}
+.cal-eye{font-size:.6rem;letter-spacing:.3em;text-transform:uppercase;margin-bottom:.6rem}
+.cal-eye.tzolkin{color:var(--jade-light)}
+.cal-eye.haab{color:var(--terra-light)}
+.cal-eye.long{color:var(--gold)}
+.cal h3{margin-bottom:.6rem}
+
+table{width:100%;border-collapse:collapse;margin:1.5rem 0;font-size:.86rem}
+th,td{text-align:left;padding:.6rem .8rem;border-bottom:1px solid var(--card-border)}
+th{color:var(--gold);font-size:.6rem;letter-spacing:.22em;text-transform:uppercase;font-weight:400}
+td.num{text-align:right;font-variant-numeric:tabular-nums}
+
+.glyph-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(120px,1fr));gap:.5rem;margin:1rem 0;font-size:.78rem}
+.glyph{background:rgba(255,255,255,.03);border:1px solid var(--card-border);border-radius:4px;padding:.55rem .7rem;color:var(--text-dim);text-align:center}
+.glyph strong{display:block;color:var(--jade-light);font-weight:400;font-family:'Cormorant',serif;font-size:1rem;letter-spacing:.02em}
+
+.haab-grid .glyph strong{color:var(--terra-light)}
+
+.pull{font-family:'Cormorant',serif;font-style:italic;font-size:1.4rem;color:var(--gold-light);text-align:center;border-left:2px solid var(--gold);padding:.4rem 1.25rem;margin:2.5rem auto;max-width:680px;line-height:1.45}
+
+footer{border-top:1px solid var(--card-border);padding:2.5rem clamp(1.25rem,5vw,2.5rem);text-align:center;color:var(--text-faint);font-size:.78rem;letter-spacing:.06em}
+</style>
+</head>
+<body>
+<nav class="snav">
+  <a href="/" class="snav-logo">FRQNCY</a>
+  <a href="/" class="snav-back">← Main</a>
+</nav>
+
+<div class="hero">
+  <div class="hero-inner">
+    <span class="eyebrow">A Living Library · Time</span>
+    <h1>The <em>Mayan Calendar</em></h1>
+    <p class="hero-desc">Three interlocking calendars that ran in parallel for two thousand years — the 260-day sacred Tzolk'in, the 365-day Haab', and the Long Count tracking the entire arc of the world. The Maya were doing what physicists are only just admitting: time isn't a line, it's a weave.</p>
+  </div>
+</div>
+
+<main>
+
+  <section>
+    <div class="today">
+      <div class="today-title">Today in the Maya count</div>
+      <div class="today-grid">
+        <div class="today-cell">
+          <div class="today-label">Tzolk'in</div>
+          <div class="today-value" id="tz-val">—</div>
+          <div class="today-sub" id="tz-sub">sacred · 260-day</div>
+        </div>
+        <div class="today-cell">
+          <div class="today-label">Haab'</div>
+          <div class="today-value" id="hb-val">—</div>
+          <div class="today-sub" id="hb-sub">solar · 365-day</div>
+        </div>
+        <div class="today-cell">
+          <div class="today-label">Long Count</div>
+          <div class="today-value" id="lc-val">—</div>
+          <div class="today-sub" id="lc-sub">since 11 Aug 3114 BCE</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The three calendars</h2>
+    <p>Most cultures had one calendar. The Maya kept three running simultaneously — each measuring something different, all interlocking. A given day is a co-ordinate in three systems at once. <em>The Maya did not measure time. They located themselves inside it.</em></p>
+
+    <div class="calendars">
+      <div class="cal">
+        <div class="cal-eye tzolkin">Tzolk'in · 260 days</div>
+        <h3>The sacred count</h3>
+        <p style="font-size:.88rem">The oldest known calendar cycle in Mesoamerica, dating to at least 600 BCE. 20 day-signs × 13 numbers = 260 unique days. The length matches the human gestation period and nine cycles of the moon. Used for divination, ritual timing, and naming children. A daykeeper still consults it.</p>
+      </div>
+      <div class="cal">
+        <div class="cal-eye haab">Haab' · 365 days</div>
+        <h3>The solar count</h3>
+        <p style="font-size:.88rem">18 named months of 20 days each, plus a 5-day shadow period called <em>Wayeb'</em>. Tracked agricultural cycles, seasonal festivals, the planting and harvest. The Wayeb' days were considered dangerous — the veil between worlds thin, the calendar briefly empty.</p>
+      </div>
+      <div class="cal">
+        <div class="cal-eye long">Long Count · 1,872,000 days</div>
+        <h3>The world-age count</h3>
+        <p style="font-size:.88rem">Days counted since the mythical creation event on <em>11 August 3114 BCE</em>. Five-place positional system: kin · uinal · tun · katun · baktun. The current creation cycle (the 13th baktun) completed on 21 Dec 2012. We are inside the next cycle now.</p>
+      </div>
+    </div>
+
+    <p class="pull">A given day is a coordinate in three systems at once. The Maya did not measure time. They located themselves inside it.</p>
+  </section>
+
+  <section>
+    <h2>The Tzolk'in · 20 day-signs</h2>
+    <p>Each day belongs to a day-sign with its own character, animal, and direction. Walked in order, 1 through 20, paired with a number that cycles 1 through 13. The two cycles tick independently — it takes 260 days before the same combination returns.</p>
+
+    <div class="glyph-grid">
+      <div class="glyph"><strong>Imix</strong>Crocodile · Earth-being</div>
+      <div class="glyph"><strong>Ik'</strong>Wind · Spirit</div>
+      <div class="glyph"><strong>Ak'b'al</strong>Night · Dark House</div>
+      <div class="glyph"><strong>K'an</strong>Seed · Yellow</div>
+      <div class="glyph"><strong>Chikchan</strong>Serpent</div>
+      <div class="glyph"><strong>Kimi</strong>Death · Transmuter</div>
+      <div class="glyph"><strong>Manik'</strong>Deer · Hand</div>
+      <div class="glyph"><strong>Lamat</strong>Rabbit · Venus</div>
+      <div class="glyph"><strong>Muluk</strong>Water · Offering</div>
+      <div class="glyph"><strong>Ok</strong>Dog · Guide</div>
+      <div class="glyph"><strong>Chuwen</strong>Monkey · Artisan</div>
+      <div class="glyph"><strong>Eb'</strong>Road · Pathway</div>
+      <div class="glyph"><strong>B'en</strong>Reed · Growing Maize</div>
+      <div class="glyph"><strong>Ix</strong>Jaguar · Magician</div>
+      <div class="glyph"><strong>Men</strong>Eagle · Vision</div>
+      <div class="glyph"><strong>Kib'</strong>Vulture · Wisdom</div>
+      <div class="glyph"><strong>Kab'an</strong>Earth · Movement</div>
+      <div class="glyph"><strong>Etz'nab'</strong>Flint · Mirror</div>
+      <div class="glyph"><strong>Kawak</strong>Storm · Rain</div>
+      <div class="glyph"><strong>Ajaw</strong>Sun · Lord</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The Haab' · 18 months + Wayeb'</h2>
+    <p>Eighteen months of 20 days, plus a final 5-day Wayeb'. Each Haab' month had a name and a patron deity. The Wayeb' was a liminal time — fasting, no ceremonies, the world unguarded.</p>
+
+    <div class="glyph-grid haab-grid">
+      <div class="glyph"><strong>Pop</strong>Mat · 20 days</div>
+      <div class="glyph"><strong>Wo'</strong>Black Conjunction · 20</div>
+      <div class="glyph"><strong>Sip</strong>Red Conjunction · 20</div>
+      <div class="glyph"><strong>Sotz'</strong>Bat · 20</div>
+      <div class="glyph"><strong>Sek</strong>Death's Toll · 20</div>
+      <div class="glyph"><strong>Xul</strong>Dog · 20</div>
+      <div class="glyph"><strong>Yaxk'in</strong>New Sun · 20</div>
+      <div class="glyph"><strong>Mol</strong>Water · 20</div>
+      <div class="glyph"><strong>Ch'en</strong>Black Storm · 20</div>
+      <div class="glyph"><strong>Yax</strong>Green Storm · 20</div>
+      <div class="glyph"><strong>Sak'</strong>White Storm · 20</div>
+      <div class="glyph"><strong>Keh</strong>Red Storm · 20</div>
+      <div class="glyph"><strong>Mak</strong>Enclosed · 20</div>
+      <div class="glyph"><strong>K'ank'in</strong>Yellow Sun · 20</div>
+      <div class="glyph"><strong>Muwan</strong>Owl · 20</div>
+      <div class="glyph"><strong>Pax</strong>Planting Time · 20</div>
+      <div class="glyph"><strong>K'ayab</strong>Turtle · 20</div>
+      <div class="glyph"><strong>Kumk'u</strong>Granary · 20</div>
+      <div class="glyph" style="grid-column:span 2;background:rgba(168,106,74,.1);border-color:rgba(198,138,106,.3)"><strong>Wayeb'</strong>The Nameless · 5 days · the unguarded time</div>
+    </div>
+  </section>
+
+  <section>
+    <h2>The Long Count</h2>
+    <p>The Long Count is a five-place positional system, written like <em>13.0.0.0.0</em>. Each place has its own unit:</p>
+
+    <table>
+      <thead><tr><th>Unit</th><th>Equals</th><th>Roughly</th></tr></thead>
+      <tbody>
+        <tr><td>K'in</td><td class="num">1 day</td><td>day</td></tr>
+        <tr><td>Winal</td><td class="num">20 k'in</td><td>~ 3 weeks</td></tr>
+        <tr><td>Tun</td><td class="num">18 winal · 360 days</td><td>~ year</td></tr>
+        <tr><td>K'atun</td><td class="num">20 tun · 7,200 days</td><td>~ 20 years</td></tr>
+        <tr><td>B'ak'tun</td><td class="num">20 k'atun · 144,000 days</td><td>~ 394 years</td></tr>
+      </tbody>
+    </table>
+
+    <p>Day zero was <em>11 August 3114 BCE</em>. The completion of the 13th b'ak'tun — <em>13.0.0.0.0</em> — fell on <em>21 December 2012</em>. Contrary to the popular myth, the Maya did not say the world would end. They said one creation cycle ends and another begins. The current count restarted from <em>13.0.0.0.1</em> and runs forward from there.</p>
+  </section>
+
+  <section>
+    <h2>The Calendar Round</h2>
+    <p>Combine a Tzolk'in date with a Haab' date and you get a unique pairing that recurs only every <em>18,980 days — approximately 52 solar years</em>. A full human life inside one round. The Maya marked the completion of each round with the <em>New Fire ceremony</em> — every household extinguished its hearth, and a single sacred fire was kindled from which every other was relit. The world made new.</p>
+    <p class="pull">A full human life inside one round. The world made new at the end.</p>
+  </section>
+
+  <section>
+    <h2>How to use this</h2>
+    <p><em>As mirror.</em> Read your birth Tzolk'in date as a portrait. The number is your tone (intensity, frequency). The day-sign is your archetype. Both colour the day you arrived.</p>
+    <p><em>As compass.</em> The 260-day cycle has been used continuously by Maya daykeepers in the Guatemalan highlands for over two millennia. The Tzolk'in date today still informs what kind of work, ritual, or conversation belongs to it.</p>
+    <p><em>As reminder.</em> We're inside b'ak'tun 14, the first century of a new world-age. The Maya recorded the previous turning. We're recording the current one — whether we mean to or not.</p>
+  </section>
+
+  <section>
+    <h2>Sources & lineage</h2>
+    <ul style="list-style:none;padding:0;font-size:.88rem;color:var(--text-dim)">
+      <li style="margin-bottom:.4rem">— <em>Living Maya Time</em> — Smithsonian NMAI digital archive, the definitive contemporary primer.</li>
+      <li style="margin-bottom:.4rem">— Coe, M. D. (1992). <em>Breaking the Maya Code.</em> The decipherment story.</li>
+      <li style="margin-bottom:.4rem">— Tedlock, B. (1992). <em>Time and the Highland Maya.</em> Living daykeeper practice in K'iche' communities.</li>
+      <li style="margin-bottom:.4rem">— Dresden, Madrid, and Paris codices — the surviving pre-Columbian astronomical texts.</li>
+      <li style="margin-bottom:.4rem">— The K'iche' Maya <em>Aj Q'ij</em> daykeepers — the lineage holders of the Tzolk'in today.</li>
+    </ul>
+  </section>
+
+  <p style="text-align:center;margin-top:3rem"><a href="/moon-calendar/" style="font-size:.7rem;letter-spacing:.22em;text-transform:uppercase;border:1px solid rgba(196,151,58,.4);padding:.7rem 1.4rem;border-radius:24px">← See the Moon Calendar</a></p>
+
+</main>
+
+<footer>FRQNCY · The Mayan Calendar · A living library for the conscious age</footer>
+
+<script>
+// === Live Mayan-date converter ===
+// Correlation: GMT (Goodman–Martínez–Thompson). Long Count 0.0.0.0.0 = Julian day 584283 = 11 Aug 3114 BCE (proleptic Gregorian).
+const JDN_AT_CREATION = 584283;
+
+const TZOLKIN_NAMES = ["Imix","Ik'","Ak'b'al","K'an","Chikchan","Kimi","Manik'","Lamat","Muluk","Ok","Chuwen","Eb'","B'en","Ix","Men","Kib'","Kab'an","Etz'nab'","Kawak","Ajaw"];
+const HAAB_NAMES = ["Pop","Wo'","Sip","Sotz'","Sek","Xul","Yaxk'in","Mol","Ch'en","Yax","Sak'","Keh","Mak","K'ank'in","Muwan","Pax","K'ayab","Kumk'u","Wayeb'"];
+
+function gregorianToJDN(y, m, d){
+  // Standard Gregorian to Julian Day Number.
+  const a = Math.floor((14 - m) / 12);
+  const y1 = y + 4800 - a;
+  const m1 = m + 12 * a - 3;
+  return d + Math.floor((153 * m1 + 2) / 5) + 365 * y1
+       + Math.floor(y1/4) - Math.floor(y1/100) + Math.floor(y1/400) - 32045;
+}
+
+function mayanDate(date){
+  const jdn = gregorianToJDN(date.getFullYear(), date.getMonth() + 1, date.getDate());
+  const days = jdn - JDN_AT_CREATION;
+
+  // Long Count: baktun.katun.tun.uinal.kin
+  let n = days;
+  const baktun = Math.floor(n / 144000); n %= 144000;
+  const katun  = Math.floor(n / 7200);   n %= 7200;
+  const tun    = Math.floor(n / 360);    n %= 360;
+  const uinal  = Math.floor(n / 20);     n %= 20;
+  const kin    = n;
+
+  // Tzolk'in: at day 0 (creation) the date is 4 Ajaw.
+  // number cycles 1..13, sign cycles Imix..Ajaw (Ajaw is index 19).
+  // day 0 → number 4, sign Ajaw (index 19).
+  const tzNumber = ((days + 3) % 13 + 13) % 13 + 1; // +3 because creation is "4" — but we want offset s.t. days=0 → 4
+  // Actually: (days mod 13) + 4 mod 13, then map 0→13.
+  // Let's compute properly:
+  // tzNumber = ((days + 4 - 1) % 13) + 1
+  const tzNum = ((days % 13) + 4 - 1 + 13*1000) % 13 + 1;
+  const tzSignIndex = ((days % 20) + 19 + 20*1000) % 20; // 0→19 (Ajaw)
+  const tzSign = TZOLKIN_NAMES[tzSignIndex];
+
+  // Haab': at day 0 the date is 8 Kumk'u (which is month index 17, day 8 — but Haab' days are 0-indexed in some sources).
+  // Standard convention: 8 Kumk'u = Haab' day 348 (17*20 + 8).
+  const haabDayOfYear = ((days + 348) % 365 + 365) % 365;
+  const haabMonthIndex = Math.min(Math.floor(haabDayOfYear / 20), 18);
+  const haabDayInMonth = haabDayOfYear - haabMonthIndex * 20;
+  const haabMonth = HAAB_NAMES[haabMonthIndex];
+
+  return {
+    longCount: `${baktun}.${katun}.${tun}.${uinal}.${kin}`,
+    tzolkin: `${tzNum} ${tzSign}`,
+    haab: `${haabDayInMonth} ${haabMonth}`,
+    daysSinceCreation: days
+  };
+}
+
+const m = mayanDate(new Date());
+document.getElementById('tz-val').textContent = m.tzolkin;
+document.getElementById('hb-val').textContent = m.haab;
+document.getElementById('lc-val').textContent = m.longCount;
+document.getElementById('lc-sub').textContent = `day ${m.daysSinceCreation.toLocaleString()} of the count`;
+</script>
+
+</body>
+</html>
