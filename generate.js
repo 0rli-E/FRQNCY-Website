@@ -951,6 +951,7 @@ ${CSS}
 <script src="/chat-widget.js" defer></script>
 <link rel="stylesheet" href="/nav-dropdown.css">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+<script src="/assets/frqncy-analytics.js" defer></script>
 ${ldTag}
 </head>
 <body>`;

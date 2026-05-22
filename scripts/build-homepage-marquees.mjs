@@ -351,21 +351,18 @@ const leadIds = [
   { kind: 'film',   id: 'm-hidden-secrets-of-money' },           // 13
   { kind: 'book',   id: 'b-fingerprints-of-the-gods' },          // 14
   { kind: 'video',  id: 'v-_nB13VUT' },                          // 15  Bashar
-  { kind: 'person', id: 'p-carlo-rovelli' },                     // 16
-  { kind: 'place',  id: 'pl-yogaville' },                        // 17
-  { kind: 'topic',  id: 't-meditation' },                        // 18
-  { kind: 'film',   id: 'm-roger-eberts-reviews' },              // 19
-  { kind: 'book',   id: 'b-ask-and-it-is-given' },               // 20
-  { kind: 'video',  id: 'v-sacgeo-1' },                          // 21
-  { kind: 'person', id: 'p-matt-debenham' },                     // 22
-  { kind: 'place',  id: 'pl-sedona' },                           // 23
-  { kind: 'topic',  id: 't-networkstates',                       // 24
+  { kind: 'topic',  id: 't-meditation' },                        // 16
+  { kind: 'book',   id: 'b-ask-and-it-is-given' },               // 17
+  { kind: 'video',  id: 'v-sacgeo-1' },                          // 18
+  { kind: 'person', id: 'p-matt-debenham' },                     // 19
+  { kind: 'place',  id: 'pl-sedona' },                           // 20
+  { kind: 'topic',  id: 't-networkstates',                       // 21
     imageOverride: 'https://covers.openlibrary.org/b/id/14569476-L.jpg' },
-  { kind: 'book',   id: 'b-wishes-fulfilled' },                  // 25
-  { kind: 'topic',  id: 't-abilities' },                         // 26
-  { kind: 'topic',  id: 't-conscap' },                           // 27
+  { kind: 'book',   id: 'b-wishes-fulfilled' },                  // 22
+  { kind: 'topic',  id: 't-abilities' },                         // 23
+  { kind: 'topic',  id: 't-conscap' },                           // 24
   { kind: 'topic',  id: 't-bitcoin',
-    imageOverride: '/images/topics/bitcoin-hero.jpg' },          // 28
+    imageOverride: '/images/topics/bitcoin-hero.jpg' },          // 25
 ];
 const leadCards = [];
 const leadSeen = new Set();

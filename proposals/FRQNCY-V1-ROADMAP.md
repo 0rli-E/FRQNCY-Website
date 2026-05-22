@@ -669,6 +669,57 @@ Things named in the master roadmap as deliberately out of scope for v1:
 
 ---
 
+## Topic universe in motion — 2026-05-22 check-in
+
+Orlando's handwritten check-in from 2026-05-22 captures every topic currently in motion. The structural rule: **every double-underlined heading on the pages is its own island of to-dos** — 29 islands in total. The only exception is **"Wait für Valentino"**, which is a *bracket label* over the Funding island's legal cluster (hold-state, not an island). Faithful page-by-page transcription is in `MAIN-PAGE-MESSAGING-NOTES.md` under "Topic universe — handwritten check-in"; that doc also lists the items that were illegible and need correction. The summary view, grouped by layer (each bullet = one island):
+
+**Editorial / network (5 islands)**
+- Topics
+- Research Papers
+- Watch and Movies
+- World constellation
+- Maps and Kalender
+
+**Product surfaces (7 islands)**
+- My FRQNCY — Polls, Convergence
+- Sanctuary
+- Courses
+- NRG (the social / creation layer)
+- AI company / Jarvis / Bot / Trading assistant — survey of providers and tools: Perplexity, Gemini, Codex, abacus ai, Harness, Hermes, kaggle, Huggingface (plus several illegible entries)
+- Socials . FRQNCY
+- Dreambuilding
+
+**Org / capital (8 islands)**
+- Law and Constitution
+- Funding — entire legal cluster sits behind the **"Wait für Valentino"** bracket; sub-items cover goal ~0% Tax (Norman → Ambrosi), Paraguay / Estonia / Hungary, BVI / Cayman / Dubai / Schweiz, polystate.io, Lucerne 1x 5000, "FRQNCY language"
+- Domains
+- Physical Space
+- Pitch
+- Canvases — Founderpal
+- Team — Norman → Legal · Orlando → (item illegible) · AI's
+- Token Utility and Tokenomics — Veto council
+
+**Distribution / attention (6 islands)**
+- FRQNCY attention
+- Visibility (two items illegible)
+- Partnerships
+- Brand boulevards — FRQNCY (Network), NRG, VBRTN
+- Aligned Goods — Suppliers, plus an illegible "FRQNCY WNNO real Ref Ctrl" string
+- Podcasts + Interviews + Reactions + Discussions — operational stack covering Norman + Orlando recording, "Call: Study + Orga + Reflexion", Plus presse Anfragen (23 Jun), pic uploads, Dropbox video, captions search, Opus clip / Clip.opus.pro, cutout-pic + caption pipeline, Shorts → Grid / Vid → Grid → repurpose
+
+**Operating mechanics (3 islands)**
+- Pillars — Selling/referrals · Building · Research · Curation · Settlement · two trailing items partially illegible
+- Roadmap (this doc)
+- KTS — Data Tracking
+
+**Reconciliation flags (not blocking — but worth a pass)**
+- The **Pillars** island lists Selling/referrals · Building · Research · Curation · Settlement · two illegible items, while the live roadmap header still uses the eight-pillar set (Curate · Educate · Research · Broadcast · Sell · Fund · Build · Settle). Decide which is canonical and update the other.
+- **AI company** as a first-class island is new to the v1 roadmap; today it lives under the harness track. May warrant its own surface once Orlando confirms the shape.
+- **NRG** appears both as its own island and as a member of the **Brand boulevards** island (with FRQNCY (Network) + VBRTN). Intentional — NRG is both a brand-architecture peer and a workstream with its own to-dos.
+- **Funding** is an active island, but the legal cluster inside it is on hold by design — Valentino-shaped gate.
+
+---
+
 ## Cross-references
 
 - `MASTER-ROADMAP.md` — every internal task and what layer it lives in
