@@ -270,6 +270,90 @@ nav{
 }
 .disclosure-inner strong{color:var(--text);font-weight:400}
 
+/* ── MERCHANTS OVERVIEW ── */
+/* Canonical list of every brand FRQNCY is aligned with. Auto-generated from
+   aligned-goods.json vendor data — stays in sync as the index grows. Designed
+   to become the canonical referral hub once affiliate links are live across
+   the board. Affiliate status is shown honestly: live, pending, or none. */
+.merchants{
+  max-width:1200px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) 3rem;
+}
+.merchants-head{
+  text-align:center;margin-bottom:2.2rem;
+  padding-top:1.6rem;border-top:1px solid rgba(255,255,255,0.06);
+}
+.merchants-eyebrow{
+  font-size:0.6rem;letter-spacing:0.32em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.9rem;opacity:0.9;
+}
+.merchants-title{
+  font-family:'Cormorant',serif;font-size:clamp(1.6rem,3vw,2.1rem);
+  font-weight:300;color:#fff;line-height:1.1;letter-spacing:0.005em;
+  margin-bottom:0.7rem;
+}
+.merchants-title em{font-style:italic;color:var(--gold-light)}
+.merchants-desc{
+  max-width:600px;margin:0 auto;
+  font-size:0.84rem;color:var(--text-dim);line-height:1.7;
+}
+.merchants-meta{
+  margin-top:0.8rem;
+  font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-dim);opacity:0.65;
+}
+.merchants-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
+  gap:0.7rem;
+}
+.mcard{
+  border:1px solid rgba(255,255,255,0.06);
+  background:rgba(255,255,255,0.018);
+  border-radius:3px;
+  padding:0.95rem 1.05rem;
+  display:flex;flex-direction:column;gap:0.45rem;
+  transition:all .2s;
+  position:relative;
+  text-decoration:none;color:inherit;
+}
+.mcard:hover{
+  border-color:rgba(196,151,58,0.3);
+  background:rgba(196,151,58,0.025);
+}
+.mcard-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:0.5rem;
+}
+.mcard-name{
+  font-family:'Cormorant',serif;font-size:1.04rem;font-weight:400;color:#fff;
+  letter-spacing:0.005em;line-height:1.2;
+}
+.mcard-arrow{
+  font-size:0.7rem;color:var(--text-dim);flex-shrink:0;
+  transition:color .2s;
+}
+.mcard:hover .mcard-arrow{color:var(--gold)}
+.mcard-blurb{
+  font-size:0.74rem;color:var(--text-dim);line-height:1.55;
+}
+.mcard-foot{
+  display:flex;align-items:center;flex-wrap:wrap;gap:0.3rem;
+  margin-top:0.15rem;
+}
+.mcard-shelf{
+  font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--text-dim);padding:2px 6px;
+  border:1px solid rgba(255,255,255,0.08);border-radius:2px;
+}
+.mcard-rel{
+  font-size:0.5rem;letter-spacing:0.18em;text-transform:uppercase;
+  padding:2px 6px;border-radius:2px;border:1px solid;margin-left:auto;
+}
+.mcard-rel.live{color:var(--gold);border-color:rgba(196,151,58,0.4);background:rgba(196,151,58,0.06)}
+.mcard-rel.pending{color:#d4a574;border-color:rgba(212,165,116,0.3);background:rgba(212,165,116,0.04)}
+.mcard-rel.partner{color:var(--accent);border-color:rgba(106,160,200,0.4);background:rgba(106,160,200,0.06)}
+.mcard-rel.contributor{color:var(--gold-light);border-color:rgba(224,192,106,0.4);background:rgba(224,192,106,0.06)}
+
 /* ── FOOTER ── */
 footer.site{
   border-top:1px solid rgba(255,255,255,0.06);
@@ -494,8 +578,18 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 
 <section class="disclosure">
   <div class="disclosure-inner">
-    <strong>On money flows.</strong> Every Aligned Goods entry carries a <code style="color:var(--text-dim);background:rgba(255,255,255,0.04);padding:1px 6px;border-radius:2px;font-size:0.78rem">revenue_relationship</code> field with one of four values: <em>none</em> (default — no money flows between FRQNCY and this entry), <em>contributor</em> (the brand contributes to the FRQNCY Fund or a Sanctuary operating budget; pick decision precedes the contribution), <em>partner</em> (a direct revenue-share or co-marketing agreement exists), or <em>affiliate</em> (a commission link — currently unused, kept for completeness). Where any of the latter three apply, a small badge will render on the entry. Today, every entry is set to <em>none</em>. We do not accept paid placement, and the pick decision always precedes any commercial relationship — see <a href="../proposals/EDITORIAL-STANDARDS.md" style="color:var(--accent);border-bottom:1px solid currentColor">Editorial Standards</a> for the full rules.
+    <strong>On money flows.</strong> Every Aligned Goods entry carries a <code style="color:var(--text-dim);background:rgba(255,255,255,0.04);padding:1px 6px;border-radius:2px;font-size:0.78rem">revenue_relationship</code> field with one of four values: <em>none</em> (default — no money flows between FRQNCY and this entry), <em>contributor</em> (the brand contributes to the FRQNCY Fund or a Sanctuary operating budget; pick decision precedes the contribution), <em>partner</em> (a direct revenue-share or co-marketing agreement exists), or <em>affiliate</em> (a commission link). Where any of the latter three apply, a small badge renders on the entry and the merchant is marked in the index below. The pick decision always precedes any commercial relationship — see <a href="../proposals/EDITORIAL-STANDARDS.md" style="color:var(--accent);border-bottom:1px solid currentColor">Editorial Standards</a> for the full rules. The long-term intent is that every alignment FRQNCY makes has a referral path — so the work of pointing people at the right thing also funds the work of finding the next right thing.
   </div>
+</section>
+
+<section class="merchants" id="merchantsSection">
+  <header class="merchants-head">
+    <p class="merchants-eyebrow">The index</p>
+    <h2 class="merchants-title">Merchants we are <em>aligned with</em></h2>
+    <p class="merchants-desc">Every brand FRQNCY points at, listed alphabetically. Auto-generated from the entries above — the canonical referral surface. A pending tag means the affiliate link is queued; live means it routes; none means no commercial relationship exists today.</p>
+    <p class="merchants-meta" id="merchantsMeta">Loading the index…</p>
+  </header>
+  <div class="merchants-grid" id="merchantsGrid"></div>
 </section>
 
 <footer class="site" role="contentinfo">
@@ -519,6 +613,7 @@ const CATEGORIES = [
   { id: 'tools-carry', name: 'Tools & carry',        desc: 'Everyday objects that should last a decade. The opposite of fast fashion for things.' },
   { id: 'cards',       name: 'Cards',                desc: 'How money moves with intention — for travel, sovereignty, and the new financial layer.' },
   { id: 'privacy',     name: 'Privacy & sovereignty', desc: 'Tools that keep you the owner of your data, your money, and your attention.' },
+  { id: 'emce',        name: 'EMCE',                 desc: 'Electro Magnetic Chaos Eliminators. Tools for the invisible field — pyramids, toroids, copper, sound, structured energy. The shielding and the signal.' },
 ];
 
 const CRIT_LABEL = {
@@ -541,6 +636,7 @@ async function load() {
   }
   renderShelfNav();
   renderShelves();
+  renderMerchants();
   attachActiveShelfTracking();
 }
 
@@ -628,6 +724,119 @@ function attachActiveShelfTracking() {
     });
   }, { rootMargin: '-30% 0px -60% 0px', threshold: 0 });
   document.querySelectorAll('.shelf').forEach(s => obs.observe(s));
+}
+
+function renderMerchants() {
+  // The merchants index — canonical list of every brand FRQNCY points at.
+  // Auto-extracted from aligned-goods.json so it stays in sync. Designed to
+  // become the referral surface once affiliate links route across the board.
+  // Honest disclosure: each merchant shows live / pending / none status.
+  const grid = document.getElementById('merchantsGrid');
+  const meta = document.getElementById('merchantsMeta');
+  if (!grid) return;
+
+  // Build a map keyed by URL hostname so the same brand appearing across
+  // multiple shelves (e.g. Apple in cards + audio) collapses to one entry.
+  const uniq = new Map();
+  GOODS.forEach(g => {
+    (g.vendor || []).forEach(v => {
+      if (!v || !v.url) return;
+      let host;
+      try { host = new URL(v.url).hostname.replace(/^www\./, ''); }
+      catch (e) { host = v.url; }
+      let m = uniq.get(host);
+      if (!m) {
+        m = {
+          host,
+          name: v.name,
+          url: v.url,
+          shelves: new Set(),
+          rel: g.revenue_relationship || 'none',
+          affiliate_status: v.affiliate_status || null,
+          entries: [],
+        };
+        uniq.set(host, m);
+      }
+      m.shelves.add(g.category);
+      m.entries.push(g);
+      // Upgrade rel if any entry has a stronger relationship
+      const strength = { none: 0, contributor: 1, partner: 2, affiliate: 3 };
+      if ((strength[g.revenue_relationship] || 0) > (strength[m.rel] || 0)) {
+        m.rel = g.revenue_relationship;
+      }
+    });
+  });
+
+  // Sort alphabetically by display name
+  const merchants = Array.from(uniq.values())
+    .sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: 'base' }));
+
+  // Count rel buckets for the meta line
+  const counts = { live: 0, pending: 0, none: 0, partner: 0, contributor: 0 };
+  merchants.forEach(m => {
+    if (m.rel === 'affiliate') {
+      if (m.affiliate_status && m.affiliate_status.startsWith('placeholder')) counts.pending++;
+      else counts.live++;
+    } else if (m.rel === 'partner') counts.partner++;
+    else if (m.rel === 'contributor') counts.contributor++;
+    else counts.none++;
+  });
+
+  // Build the meta line
+  const metaBits = [`${merchants.length} merchants`];
+  if (counts.live) metaBits.push(`${counts.live} live`);
+  if (counts.pending) metaBits.push(`${counts.pending} pending`);
+  if (counts.partner) metaBits.push(`${counts.partner} partner`);
+  if (counts.contributor) metaBits.push(`${counts.contributor} contributor`);
+  if (counts.none) metaBits.push(`${counts.none} unmonetized`);
+  if (meta) meta.textContent = metaBits.join(' · ');
+
+  // Shelf id → display name lookup for chip labels
+  const shelfName = {};
+  CATEGORIES.forEach(c => { shelfName[c.id] = c.name; });
+
+  // Pick a representative entry per merchant — prefer pick > aligned, then
+  // shorter description (a one-liner is more "blurb-shaped"). The first
+  // sentence becomes the merchant tagline.
+  function pickEntry(m) {
+    const tr = { pick: 0, aligned: 1, referenced: 2 };
+    return [...m.entries].sort((a, b) =>
+      (tr[a.tier] ?? 9) - (tr[b.tier] ?? 9) || a.desc.length - b.desc.length
+    )[0];
+  }
+  function firstSentence(s) {
+    if (!s) return '';
+    // Split on first sentence-terminator followed by space + capital, fall back
+    // to first 160 chars. Keeps editorial copy intact rather than mid-clause.
+    const match = s.match(/^(.{30,180}?[.!?])\s+[A-Z0-9]/);
+    if (match) return match[1];
+    if (s.length <= 160) return s;
+    return s.slice(0, 158).replace(/\s+\S*$/, '') + '…';
+  }
+
+  grid.innerHTML = merchants.map(m => {
+    const ent = pickEntry(m);
+    const blurb = firstSentence(ent?.desc || '');
+    const shelves = Array.from(m.shelves)
+      .map(id => `<span class="mcard-shelf">${shelfName[id] || id}</span>`).join('');
+    let relTag = '';
+    if (m.rel === 'affiliate') {
+      const pending = m.affiliate_status && m.affiliate_status.startsWith('placeholder');
+      relTag = `<span class="mcard-rel ${pending ? 'pending' : 'live'}">${pending ? 'Affiliate · pending' : 'Affiliate · live'}</span>`;
+    } else if (m.rel === 'partner') {
+      relTag = `<span class="mcard-rel partner">Partner</span>`;
+    } else if (m.rel === 'contributor') {
+      relTag = `<span class="mcard-rel contributor">Contributor</span>`;
+    }
+    return `<a class="mcard" href="${m.url}" target="_blank" rel="noopener noreferrer">
+      <div class="mcard-head">
+        <span class="mcard-name">${m.name}</span>
+        <span class="mcard-arrow">↗</span>
+      </div>
+      ${blurb ? `<p class="mcard-blurb">${blurb}</p>` : ''}
+      <div class="mcard-foot">${shelves}${relTag}</div>
+    </a>`;
+  }).join('');
 }
 
 function card(g) {
