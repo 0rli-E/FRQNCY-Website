@@ -800,6 +800,8 @@ nav.snav{
 <script src="../../../mobile-nav.js" defer></script>
 <script src="../../../chat-widget.js" defer></script>
 <link rel="stylesheet" href="../../../nav-dropdown.css">
+<!-- Skool-style course room (pill bottom-left → Lessons / Notes / Q&A) -->
+<link rel="stylesheet" href="/assets/courses-room.css">
 <link rel="manifest" href="../../../manifest.json">
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 <script type="application/ld+json">${schemaJson}</script>
@@ -1252,6 +1254,12 @@ function pickInitialLesson() {
 showLesson(pickInitialLesson());
 maybeShowReturnToast();
 </script>
+
+<!-- Course room overlay: Supabase auth + Lessons/Notes/Q&A side panel.
+     Falls back to local-only mode if the user isn't signed in. -->
+<script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2" defer></script>
+<script src="/assets/frqncy-supabase.js" defer></script>
+<script src="/assets/courses-room.js" defer></script>
 </body>
 </html>`;
 }
