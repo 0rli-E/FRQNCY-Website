@@ -1046,6 +1046,8 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
         <a href="/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
         <a href="/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
         <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
+        <a href="/moon-calendar/"><span class="dd-label">Moon Calendar</span><span class="dd-sub">Thirteen moons · perpetual</span></a>
+        <a href="/mayan-calendar/"><span class="dd-label">Mayan Calendar</span><span class="dd-sub">Tzolk'in · Haab' · Long Count</span></a>
         <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
         <a href="/browse"><span class="dd-label">Browse</span><span class="dd-sub">Everything FRQNCY publishes</span></a>
       </div>
@@ -1297,6 +1299,115 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       </div>
       <div class="pyramid" id="pyramid-mini"></div>
     </section>
+
+    <!-- ▼▼ EARTH-RHYTHMS · MOON · MAYAN · SCHUMANN ▼▼
+         Added 2026-05-22: surface two FRQNCY calendars (moon + mayan) plus
+         a live Schumann resonance chart inside the Sanctuary. The Schumann
+         image is the canonical Tomsk State University real-time feed; it
+         updates roughly every 10 minutes server-side. We cache-bust on a
+         5-min interval and gracefully fall back to a link if the image
+         fails to load (mixed-content / hotlink-block / network).
+    -->
+    <section class="section" id="earth-rhythms">
+      <div class="section-head">
+        <h2><span class="glyph">✺</span> Earth Rhythms</h2>
+        <div class="meta">Lunar · Mayan · Schumann — the timekeepers under the clock</div>
+      </div>
+      <style>
+        #earth-rhythms .rhythm-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:1rem}
+        #earth-rhythms .rhythm-card{
+          display:flex;flex-direction:column;gap:0.6rem;
+          background:var(--card,rgba(255,255,255,0.025));
+          border:1px solid var(--card-border,rgba(255,255,255,0.08));
+          border-radius:4px;padding:1.15rem 1.2rem;
+          color:inherit;text-decoration:none;
+          transition:border-color .2s,background .2s,transform .2s;
+        }
+        #earth-rhythms .rhythm-card:hover{border-color:rgba(196,151,58,0.42);background:rgba(255,255,255,0.05);transform:translateY(-1px)}
+        #earth-rhythms .rh-eyebrow{font-size:0.58rem;letter-spacing:0.28em;text-transform:uppercase;color:var(--gold,#C4973A);opacity:0.85}
+        #earth-rhythms .rh-title{font-family:'Cormorant',serif;font-size:1.4rem;font-weight:400;color:#fff;line-height:1.2}
+        #earth-rhythms .rh-body{font-size:0.78rem;color:var(--text-dim,#8FA8CC);line-height:1.55;flex:1}
+        #earth-rhythms .rh-go{font-size:0.66rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold,#C4973A);opacity:0.9;align-self:flex-start;border-top:1px solid rgba(255,255,255,0.06);padding-top:0.6rem;margin-top:0.4rem;width:100%}
+        #earth-rhythms .schumann-card{grid-column:1/-1}
+        #earth-rhythms .schumann-frame{
+          position:relative;border:1px solid var(--card-border,rgba(255,255,255,0.08));
+          border-radius:3px;background:#000;overflow:hidden;min-height:160px;
+        }
+        #earth-rhythms .schumann-img{display:block;width:100%;height:auto;background:#000}
+        #earth-rhythms .schumann-fallback{
+          display:none;padding:1.5rem 1rem;color:var(--text-dim,#8FA8CC);
+          font-size:0.74rem;text-align:center;line-height:1.6
+        }
+        #earth-rhythms .schumann-img.failed + .schumann-fallback{display:block}
+        #earth-rhythms .schumann-img.failed{display:none}
+        #earth-rhythms .schumann-meta{
+          display:flex;justify-content:space-between;align-items:baseline;gap:1rem;
+          font-size:0.66rem;color:var(--text-dim,#8FA8CC);margin-top:0.55rem;flex-wrap:wrap
+        }
+        #earth-rhythms .schumann-meta a{color:var(--gold,#C4973A);text-decoration:none}
+        #earth-rhythms .schumann-meta a:hover{text-decoration:underline}
+      </style>
+      <div class="rhythm-grid">
+
+        <a class="rhythm-card" href="/moon-calendar/">
+          <div class="rh-eyebrow">Moon · 13 Months</div>
+          <div class="rh-title">Moon Calendar</div>
+          <p class="rh-body">Thirteen lunar months of twenty-eight days plus a Day of Rest — the perpetual calendar the Gregorian one papered over. Every month is the same shape; every date falls on the same weekday, forever.</p>
+          <span class="rh-go">Open the calendar →</span>
+        </a>
+
+        <a class="rhythm-card" href="/mayan-calendar/">
+          <div class="rh-eyebrow">Mayan · Tzolk'in · Haab' · Long Count</div>
+          <div class="rh-title">Mayan Calendar</div>
+          <p class="rh-body">Three interlocking wheels — the 260-day Tzolk'in (galactic timing), the 365-day Haab' (solar year), and the Long Count anchored to 11 August 3114 BCE. Includes a live converter for today's kin.</p>
+          <span class="rh-go">Open the calendar →</span>
+        </a>
+
+        <div class="rhythm-card schumann-card">
+          <div class="rh-eyebrow">Schumann Resonance · live</div>
+          <div class="rh-title">Earth's heartbeat — 7.83 Hz</div>
+          <p class="rh-body">The electromagnetic standing wave between Earth's surface and the ionosphere. Discovered by Winfried Otto Schumann in 1952; rises with solar activity and lightning. Spectrogram below updates every ~10 minutes from Tomsk State University's real-time monitor.</p>
+          <div class="schumann-frame">
+            <img id="schumann-live"
+                 class="schumann-img"
+                 src="https://sosrff.tsu.ru/new/shm.jpg"
+                 alt="Schumann resonance spectrogram — live feed from Tomsk State University"
+                 loading="lazy"
+                 referrerpolicy="no-referrer"
+                 onerror="this.classList.add('failed')">
+            <div class="schumann-fallback">
+              Live feed temporarily unavailable. Open the canonical real-time monitor at
+              <a href="https://sosrff.tsu.ru/?page_id=7" target="_blank" rel="noopener noreferrer">sosrff.tsu.ru</a>
+              or the project view at
+              <a href="https://www.schumannresonator.com/" target="_blank" rel="noopener noreferrer">schumannresonator.com</a>.
+            </div>
+          </div>
+          <div class="schumann-meta">
+            <span>Source · Space Observing System, Tomsk State University · time UTC+7 (Tomsk local)</span>
+            <a href="https://sosrff.tsu.ru/?page_id=7" target="_blank" rel="noopener noreferrer">Full chart ↗</a>
+          </div>
+        </div>
+
+      </div>
+      <script>
+        // Cache-bust the Schumann live image every 5 minutes. Tomsk updates the
+        // .jpg server-side roughly every 10 min; appending a timestamp forces
+        // the browser to refetch instead of serving the cached frame.
+        (function(){
+          var img = document.getElementById('schumann-live');
+          if (!img) return;
+          var base = (img.src || '').split('?')[0];
+          if (!base) return;
+          setInterval(function(){
+            // Don't thrash if the image is already failed — give it one retry,
+            // then back off (the .failed class will surface the fallback link).
+            img.classList.remove('failed');
+            img.src = base + '?t=' + Date.now();
+          }, 5 * 60 * 1000);
+        })();
+      </script>
+    </section>
+    <!-- ▲▲ EARTH-RHYTHMS ▲▲ -->
 
     <section class="section">
       <div class="section-head">

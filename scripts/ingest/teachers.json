@@ -1,0 +1,29 @@
+{
+  "_comment": "Ingestion-rules registry. Each entry layers on top of a playlists.json entry by playlist_id. Channel URL / IDs live in playlists.json — this file only adds per-teacher ingest behaviour (rotation, caps, pick policy, exclusions).",
+  "version": 1,
+  "rotation_default": {
+    "max_videos": 20,
+    "rotate": true,
+    "frqncy_pick_policy": "manual"
+  },
+  "teachers": [
+    { "id": "osho",          "playlist_id": "pl-osho",         "max_videos": 15 },
+    { "id": "sadhguru",      "playlist_id": "pl-sadhguru",     "max_videos": 20 },
+    { "id": "trudeau",       "playlist_id": "pl-trudeau",      "max_videos": 20 },
+    { "id": "saimaa",        "playlist_id": "pl-saimaa",       "max_videos": 20 },
+    { "id": "neville",       "playlist_id": "pl-neville",      "max_videos": 20 },
+    { "id": "shihengyi",     "playlist_id": "pl-shihengyi",    "max_videos": 20 },
+    { "id": "tolle",         "playlist_id": "pl-tolle",        "max_videos": 20 },
+    { "id": "hancock",       "playlist_id": "pl-history",      "max_videos": 20 },
+    { "id": "local-project", "playlist_id": "pl-design",       "max_videos": 20 },
+    { "id": "planet-wild",   "playlist_id": "pl-earth",        "max_videos": 20 },
+    { "id": "dispenza",      "playlist_id": "pl-neuroscience", "max_videos": 20 },
+    { "id": "kitchen-nightmares", "playlist_id": "pl-entertainment", "max_videos": 20 },
+    { "id": "master-key",    "playlist_id": "pl-bookreadings", "max_videos": 20 },
+    { "id": "hicks",         "playlist_id": "pl-hicks",        "max_videos": 20, "topic_override": "t-channeling" },
+    { "id": "gary-spivey",   "playlist_id": "pl-spirituality", "max_videos": 25 },
+    { "id": "goldsilver",    "playlist_id": "pl-money",        "max_videos": 15, "rotate": false }
+  ],
+  "excluded_video_ids": [],
+  "_excluded_video_ids_comment": "Use this list to explicitly reject specific uploads (Shorts, off-topic streams, etc.) so they never re-surface in proposals."
+}

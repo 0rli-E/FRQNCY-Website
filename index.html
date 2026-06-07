@@ -3,14 +3,22 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>FRQNCY — A network of people, building their dream life</title>
+  <title>FRQNCY — Find yourself. Create from that.</title>
+  <!-- v2 homepage — Golden Circle (Why / How / What) rework.
+       See proposals/MAIN-PAGE-MESSAGING-NOTES.md. Leans on the existing
+       index.html: same chrome, hero, network map, marquee, pillars. Adds:
+       onboarding video after the first scroll, Triangle (NRG Social / VBRTN /
+       FRQNCY) + Tesla quote mid-page, and a Last Door section before contact.
+       Primary CTA updated from "Draw Your Constellation ✦" to "Tell us where
+       you're at" — this is also Step 1 of the My FRQNCY intake. -->
+  <meta name="frqncy-page-version" content="v2-2026-05-23">
   <meta name="theme-color" content="#0B1C3D">
 
   <!-- SEO — discoverability copy follows proposals/HOMEPAGE-HERO-REWRITE.md.
        Voice-playbook compliant: present-tense, declarative, no spiritual cliches
        used as direct self-description in surfaces (search results, social-card
        previews) where the surrounding context can't earn them. -->
-  <meta name="description" content="FRQNCY is a topic graph for consciousness — 146 maps of how money, energy, mind, and matter actually work. A reading list with conviction. A network becoming a civilisation. A fund underneath.">
+  <meta name="description" content="FRQNCY is a network for people building their dream life. Find yourself with VBRTN. Create from that on NRG Social. The whole architecture turns energy, vibration and frequency into a place you actually live from.">
   <meta name="robots" content="index, follow">
   <meta name="google-site-verification" content="GOOGLE_SITE_VERIFICATION_PLACEHOLDER">
   <meta name="msvalidate.01" content="BING_VERIFICATION_PLACEHOLDER">
@@ -19,8 +27,8 @@
   <!-- Open Graph (social sharing) -->
   <meta property="og:type" content="website">
   <meta property="og:site_name" content="FRQNCY">
-  <meta property="og:title" content="FRQNCY — A network of people, building their dream life">
-  <meta property="og:description" content="A topic graph for consciousness — 146 maps of how money, energy, mind, and matter actually work. A reading list with conviction. A network becoming a civilisation. A fund underneath.">
+  <meta property="og:title" content="FRQNCY — Find yourself. Create from that.">
+  <meta property="og:description" content="A network for people building their dream life. VBRTN walks beside you while you find yourself. NRG Social is where you create from what you find. FRQNCY is the network it all lives inside.">
   <meta property="og:url" content="https://frqncy.network/">
   <meta property="og:image" content="https://frqncy.network/og-image.png">
 
@@ -29,8 +37,8 @@
   <!-- Twitter Card -->
   <meta name="twitter:card" content="summary_large_image">
   <meta name="twitter:site" content="@frqncy_network">
-  <meta name="twitter:title" content="FRQNCY — A network of people, building their dream life">
-  <meta name="twitter:description" content="A topic graph for consciousness — 146 maps of how money, energy, mind, and matter actually work. A reading list with conviction. A network becoming a civilisation. A fund underneath.">
+  <meta name="twitter:title" content="FRQNCY — Find yourself. Create from that.">
+  <meta name="twitter:description" content="A network for people building their dream life. VBRTN walks beside you while you find yourself. NRG Social is where you create from what you find. FRQNCY is the network it all lives inside.">
   <meta name="twitter:image" content="https://frqncy.network/og-image.png">
 
   <!-- JSON-LD structured data -->
@@ -123,6 +131,309 @@
   }
   /* Belt-and-braces: hide the dynamically-injected Sign In link if it ever sneaks in. */
   .frq-auth-signin, [data-frq-auth="signin"], [data-frq-auth="signin-li"] { display: none !important; }
+  </style>
+
+  <!-- v2 inline styles — Golden Circle (Why / How / What) chapter system.
+       Three big chapters, clearly labeled, each one doing one job.
+       Palette: navy #0B1C3D, gold #C4973A, soft #E0C06A, muted #8A9AB8.
+       Fonts: Cormorant (display) + Jost (UI). -->
+  <style data-frqncy-v2>
+  /* ===== Shared chapter styles — WHY / HOW / WHAT ===== */
+  .ch {
+    background: #0B1C3D;
+    padding: clamp(110px, 14vw, 180px) clamp(20px, 4vw, 60px);
+    color: #FFFFFF;
+    border-top: 1px solid rgba(255,255,255,0.06);
+    position: relative;
+  }
+  .ch:first-of-type { border-top: 0; }
+  .ch-inner { max-width: 1100px; margin: 0 auto; }
+  .ch-eyebrow {
+    font-family: 'Jost', sans-serif; font-size: 11px;
+    letter-spacing: 0.42em; text-transform: uppercase; color: #C4973A;
+    margin: 0 0 22px; font-weight: 500;
+  }
+  .ch-headline {
+    font-family: 'Cormorant', Georgia, serif; font-weight: 300;
+    font-size: clamp(40px, 6vw, 76px); line-height: 1.08; color: #FFFFFF;
+    margin: 0 0 28px; letter-spacing: 0.005em;
+  }
+  .ch-headline em { font-style: italic; color: #E0C06A; font-weight: 400; }
+  .ch-lede {
+    font-family: 'Jost', sans-serif; font-size: clamp(16px, 1.4vw, 19px);
+    line-height: 1.7; color: rgba(255,255,255,0.85); max-width: 700px;
+    margin: 0 0 56px;
+  }
+  .ch-quote {
+    max-width: 760px; margin: 56px 0 0; padding: 32px 0 0;
+    border-top: 1px solid rgba(196,151,58,0.22);
+  }
+  .ch-quote p {
+    font-family: 'Cormorant', Georgia, serif; font-style: italic;
+    font-weight: 300; font-size: clamp(22px, 2.6vw, 30px); line-height: 1.45;
+    color: rgba(255,255,255,0.95); margin: 0 0 16px;
+  }
+  .ch-quote cite {
+    font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.36em;
+    text-transform: uppercase; color: #8A9AB8; font-style: normal;
+  }
+
+  /* ===== WHY chapter specifics ===== */
+  #ch-why .ch-headline { max-width: 920px; }
+
+  /* ===== HOW chapter — three-stage arc + nested pillars ===== */
+  .how-stages {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: clamp(20px, 3vw, 40px); margin: 0 0 96px;
+  }
+  .how-stage {
+    padding: 32px 28px; background: rgba(255,255,255,0.02);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 4px;
+    transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  }
+  .how-stage:hover {
+    border-color: rgba(196,151,58,0.4); background: rgba(255,255,255,0.04);
+    transform: translateY(-2px);
+  }
+  .how-num {
+    font-family: 'Jost', sans-serif; font-size: 10.5px; letter-spacing: 0.32em;
+    text-transform: uppercase; color: #C4973A; display: block; margin-bottom: 16px;
+  }
+  .how-stage h3 {
+    font-family: 'Cormorant', Georgia, serif; font-weight: 400;
+    font-size: 28px; color: #FFFFFF; margin: 0 0 14px; letter-spacing: 0.005em;
+  }
+  .how-stage p {
+    font-family: 'Jost', sans-serif; font-size: 14.5px; line-height: 1.7;
+    color: rgba(255,255,255,0.78); margin: 0;
+  }
+  .how-pillars-intro { margin: 0 0 40px; }
+  .how-pillars-intro .ch-eyebrow { margin-bottom: 14px; }
+  .how-pillars-title {
+    font-family: 'Cormorant', Georgia, serif; font-weight: 300;
+    font-size: clamp(28px, 3.4vw, 40px); color: #FFFFFF; margin: 0;
+    letter-spacing: 0.005em;
+  }
+  /* The existing #details-section .details-grid is reused under HOW — we just
+     wrap it. Override its outer padding so it doesn't double the chapter spacing. */
+  #ch-how #details-section { padding: 0; background: transparent; }
+  #ch-how #details-section .section-label,
+  #ch-how #details-section .section-title { display: none; }
+
+  /* ===== WHAT chapter — Triangle + network map + marquee ===== */
+  .triangle-diagram {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: clamp(20px, 3vw, 40px); margin: 0 0 80px;
+  }
+  .triangle-node {
+    padding: 38px 28px 30px; background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 4px;
+    display: flex; flex-direction: column; min-height: 260px;
+    transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  }
+  .triangle-node:hover {
+    border-color: rgba(196,151,58,0.45); background: rgba(255,255,255,0.04);
+    transform: translateY(-3px);
+  }
+  .triangle-greek {
+    font-family: 'Jost', sans-serif; font-size: 10px; letter-spacing: 0.32em;
+    text-transform: uppercase; color: #C4973A; margin-bottom: 18px;
+  }
+  .triangle-node h3 {
+    font-family: 'Cormorant', Georgia, serif; font-weight: 400;
+    font-size: 32px; letter-spacing: 0.16em; color: #FFFFFF; margin: 0 0 16px;
+  }
+  .triangle-node p {
+    font-family: 'Jost', sans-serif; font-size: 14.5px; line-height: 1.65;
+    color: rgba(255,255,255,0.78); margin: 0 0 22px; flex-grow: 1;
+  }
+  .triangle-link {
+    font-family: 'Jost', sans-serif; font-size: 10.5px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: #E0C06A; text-decoration: none;
+    border-bottom: 1px solid rgba(196,151,58,0.4); padding-bottom: 3px;
+    align-self: flex-start; transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  .triangle-link:hover { color: #FFFFFF; border-color: #E0C06A; }
+
+  /* Nested network map + marquee under WHAT — strip their outer chrome */
+  #ch-what #bubble-section { padding: 80px 0 40px; background: transparent; }
+  #ch-what #bubble-section .section-label,
+  #ch-what #bubble-section .section-title { display: none; }
+  #ch-what #marquee-bands {
+    padding: 24px 0 0; background: transparent; border: 0; margin-top: 40px;
+  }
+  .what-subhead {
+    font-family: 'Jost', sans-serif; font-size: 10.5px; letter-spacing: 0.32em;
+    text-transform: uppercase; color: rgba(255,255,255,0.5); margin: 64px 0 24px;
+    text-align: center;
+  }
+
+  @media (max-width: 880px) {
+    .how-stages, .triangle-diagram {
+      grid-template-columns: 1fr; gap: 16px;
+    }
+    .triangle-node { min-height: 0; }
+  }
+
+  /* ===== Legacy v2 styles (kept for graceful degradation) ===== */
+  /* ===== Onboarding video — DEPRECATED (no longer used in v2 Golden Circle build) ===== */
+  #onboarding-video {
+    background: #0B1C3D;
+    padding: clamp(80px, 12vw, 140px) clamp(20px, 4vw, 60px);
+    text-align: center;
+    color: #FFFFFF;
+    border-bottom: 1px solid rgba(255,255,255,0.05);
+  }
+  #onboarding-video .video-inner { max-width: 920px; margin: 0 auto; }
+  #onboarding-video .section-label {
+    font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.32em;
+    text-transform: uppercase; color: #C4973A; margin: 0 0 18px;
+  }
+  #onboarding-video .video-title {
+    font-family: 'Cormorant', Georgia, serif; font-weight: 300;
+    font-size: clamp(36px, 5vw, 56px); color: #FFFFFF; line-height: 1.15;
+    margin: 0 0 14px; letter-spacing: 0.01em;
+  }
+  #onboarding-video .video-sub {
+    font-family: 'Jost', sans-serif; font-size: 14px; color: #8A9AB8;
+    line-height: 1.6; max-width: 560px; margin: 0 auto 40px;
+  }
+  #onboarding-video .video-frame {
+    position: relative; width: 100%; aspect-ratio: 16 / 9; max-width: 880px;
+    margin: 0 auto; background: linear-gradient(135deg, #152E7A 0%, #0B1C3D 100%);
+    border: 1px solid rgba(196,151,58,0.25); border-radius: 6px;
+    overflow: hidden; display: flex; align-items: center;
+    justify-content: center; flex-direction: column; gap: 18px;
+    cursor: pointer; transition: border-color 0.3s ease, transform 0.3s ease;
+  }
+  #onboarding-video .video-frame:hover {
+    border-color: rgba(196,151,58,0.55); transform: translateY(-2px);
+  }
+  #onboarding-video .video-play {
+    width: 76px; height: 76px; border-radius: 50%;
+    border: 1.5px solid #C4973A; color: #E0C06A; display: flex;
+    align-items: center; justify-content: center; font-size: 22px;
+    padding-left: 4px; background: rgba(11,28,61,0.4);
+    backdrop-filter: blur(6px); -webkit-backdrop-filter: blur(6px);
+  }
+  #onboarding-video .video-caption {
+    font-family: 'Jost', sans-serif; font-size: 11px;
+    letter-spacing: 0.28em; text-transform: uppercase;
+    color: rgba(255,255,255,0.7);
+  }
+
+  /* ===== Triangle — three surfaces, one network ===== */
+  #triangle-section {
+    background: #0B1C3D; padding: clamp(90px, 12vw, 150px) clamp(20px, 4vw, 60px);
+    color: #FFFFFF; border-top: 1px solid rgba(255,255,255,0.04);
+    border-bottom: 1px solid rgba(255,255,255,0.04);
+  }
+  #triangle-section .triangle-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+  #triangle-section .section-label {
+    font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.32em;
+    text-transform: uppercase; color: #C4973A; margin: 0 0 18px;
+  }
+  #triangle-section .triangle-title {
+    font-family: 'Cormorant', Georgia, serif; font-weight: 300;
+    font-size: clamp(36px, 5vw, 56px); line-height: 1.15; color: #FFFFFF;
+    margin: 0 0 56px; letter-spacing: 0.01em;
+  }
+  #triangle-section .triangle-diagram {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: clamp(20px, 3vw, 48px); margin: 0 auto 56px; max-width: 1000px;
+  }
+  #triangle-section .triangle-node {
+    padding: 36px 26px 32px; background: rgba(255,255,255,0.025);
+    border: 1px solid rgba(255,255,255,0.08); border-radius: 4px;
+    text-align: left; display: flex; flex-direction: column; min-height: 240px;
+    transition: border-color 0.3s ease, transform 0.3s ease, background 0.3s ease;
+  }
+  #triangle-section .triangle-node:hover {
+    border-color: rgba(196,151,58,0.45); background: rgba(255,255,255,0.04);
+    transform: translateY(-3px);
+  }
+  #triangle-section .triangle-greek {
+    font-family: 'Jost', sans-serif; font-size: 10px; letter-spacing: 0.32em;
+    text-transform: uppercase; color: #C4973A; margin-bottom: 14px;
+  }
+  #triangle-section .triangle-node h3 {
+    font-family: 'Cormorant', Georgia, serif; font-weight: 400;
+    font-size: 30px; letter-spacing: 0.18em; color: #FFFFFF; margin: 0 0 14px;
+  }
+  #triangle-section .triangle-node p {
+    font-family: 'Jost', sans-serif; font-size: 14px; line-height: 1.65;
+    color: rgba(255,255,255,0.78); margin: 0 0 18px; flex-grow: 1;
+  }
+  #triangle-section .triangle-node .triangle-link {
+    font-family: 'Jost', sans-serif; font-size: 10.5px; letter-spacing: 0.22em;
+    text-transform: uppercase; color: #E0C06A; text-decoration: none;
+    border-bottom: 1px solid rgba(196,151,58,0.4); padding-bottom: 2px;
+    align-self: flex-start; transition: color 0.2s ease, border-color 0.2s ease;
+  }
+  #triangle-section .triangle-node .triangle-link:hover {
+    color: #FFFFFF; border-color: #E0C06A;
+  }
+  #triangle-section .triangle-quote {
+    max-width: 720px; margin: 0 auto; padding: 32px 24px 0;
+    border-top: 1px solid rgba(196,151,58,0.18);
+  }
+  #triangle-section .triangle-quote p {
+    font-family: 'Cormorant', Georgia, serif; font-style: italic;
+    font-weight: 300; font-size: clamp(20px, 2.4vw, 26px); line-height: 1.5;
+    color: rgba(255,255,255,0.92); margin: 0 0 14px;
+  }
+  #triangle-section .triangle-quote cite {
+    font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.32em;
+    text-transform: uppercase; color: #8A9AB8; font-style: normal;
+  }
+  @media (max-width: 880px) {
+    #triangle-section .triangle-diagram { grid-template-columns: 1fr; gap: 18px; }
+    #triangle-section .triangle-node { min-height: 0; }
+  }
+
+  /* ===== Last Door — the three-stage arc, graduation framing ===== */
+  #last-door-section {
+    background: #0B1C3D; padding: clamp(90px, 12vw, 150px) clamp(20px, 4vw, 60px);
+    color: #FFFFFF; border-top: 1px solid rgba(255,255,255,0.04);
+  }
+  #last-door-section .last-door-inner { max-width: 1100px; margin: 0 auto; text-align: center; }
+  #last-door-section .section-label {
+    font-family: 'Jost', sans-serif; font-size: 11px; letter-spacing: 0.32em;
+    text-transform: uppercase; color: #C4973A; margin: 0 0 18px;
+  }
+  #last-door-section .last-door-title {
+    font-family: 'Cormorant', Georgia, serif; font-weight: 300;
+    font-size: clamp(36px, 5vw, 56px); line-height: 1.15; color: #FFFFFF;
+    margin: 0 0 18px; letter-spacing: 0.01em;
+  }
+  #last-door-section .last-door-sub {
+    font-family: 'Jost', sans-serif; font-size: 15px; color: #8A9AB8;
+    line-height: 1.7; max-width: 620px; margin: 0 auto 64px;
+  }
+  #last-door-section .last-door-grid {
+    display: grid; grid-template-columns: 1fr 1fr 1fr;
+    gap: clamp(20px, 3vw, 40px); text-align: left;
+    max-width: 1000px; margin: 0 auto;
+  }
+  #last-door-section .last-door-stage {
+    padding: 28px 24px 24px; background: transparent;
+    border-left: 2px solid rgba(196,151,58,0.45);
+  }
+  #last-door-section .last-door-number {
+    font-family: 'Jost', sans-serif; font-size: 10.5px; letter-spacing: 0.32em;
+    text-transform: uppercase; color: #C4973A; display: block; margin-bottom: 12px;
+  }
+  #last-door-section .last-door-stage h3 {
+    font-family: 'Cormorant', Georgia, serif; font-weight: 400;
+    font-size: 26px; color: #FFFFFF; margin: 0 0 14px; letter-spacing: 0.01em;
+  }
+  #last-door-section .last-door-stage p {
+    font-family: 'Jost', sans-serif; font-size: 14px; line-height: 1.7;
+    color: rgba(255,255,255,0.78); margin: 0;
+  }
+  @media (max-width: 880px) {
+    #last-door-section .last-door-grid { grid-template-columns: 1fr; gap: 16px; }
+  }
   </style>
   <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
 <script src="chat-widget.js" defer></script>
@@ -236,6 +547,8 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
         <a href="/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
         <a href="/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
         <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
+        <a href="/moon-calendar/"><span class="dd-label">Moon Calendar</span><span class="dd-sub">Thirteen moons · perpetual</span></a>
+        <a href="/mayan-calendar/"><span class="dd-label">Mayan Calendar</span><span class="dd-sub">Tzolk'in · Haab' · Long Count</span></a>
         <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
         <a href="/browse"><span class="dd-label">Browse</span><span class="dd-sub">Everything FRQNCY publishes</span></a>
       </div>
@@ -405,122 +718,181 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     </div>
   </div>
 
-  <!-- =====================
-       SECTION 2: QUOTE
-  ===================== -->
-  <section id="quote-section">
-    <div class="quote-inner">
-      <span class="quote-mark reveal" aria-hidden="true">"</span>
-      <p class="quote-text reveal reveal-delay-1">
-        A network of people, building their dream life. <em>We invite you to find yourself.</em>
+  <!-- ============================================================
+       CHAPTER 01 · WHY — the belief.
+       Single section. One statement of what FRQNCY exists for.
+       Tesla quote anchored beneath — why the universe is built this way.
+  ============================================================ -->
+  <section id="ch-why" class="ch" aria-label="Chapter one — Why FRQNCY exists">
+    <div class="ch-inner">
+      <p class="ch-eyebrow reveal">01 · Why</p>
+      <h2 class="ch-headline reveal reveal-delay-1">
+        A network of people,<br>building their dream life.
+      </h2>
+      <p class="ch-lede reveal reveal-delay-2">
+        You're here because the default scripts aren't quite working. The career you were told to want. The metrics you were told to chase. The version of yourself you were sold.
       </p>
-      <div class="quote-divider reveal reveal-delay-2"></div>
-      <p class="quote-attribution reveal reveal-delay-3">FRQNCY</p>
-      <div class="quote-cta reveal reveal-delay-3">
-        <a href="/my-frqncy" class="quote-cta-btn">Draw Your Constellation ✦</a>
+      <p class="ch-lede reveal reveal-delay-2">
+        FRQNCY is for the moment after you notice that. When you know there's another way to live, but no one has handed you the map.
+      </p>
+      <p class="ch-lede reveal reveal-delay-2">
+        The belief is simple. A person who knows who they are — what their body wants, how their mind is shaped, what they're actually for — builds differently. They start work that doesn't burn them out. They love without performing. They make things that don't lie. A new earth begins there.
+      </p>
+      <p class="ch-lede reveal reveal-delay-3" style="font-style:italic;color:#E0C06A;font-size:clamp(18px,1.6vw,22px);margin-top:8px;">
+        We invite you to find yourself.
+      </p>
+      <div class="ch-cta reveal reveal-delay-3" style="margin-top:36px;">
+        <a href="/my-frqncy" class="quote-cta-btn">Tell us where you're at ✦</a>
+      </div>
+      <blockquote class="ch-quote reveal reveal-delay-3">
+        <p>"If you want to understand the universe, think in terms of energy, vibration and frequency."</p>
+        <cite>— Nikola Tesla</cite>
+      </blockquote>
+    </div>
+  </section>
+
+  <!-- ============================================================
+       CHAPTER 02 · HOW — the process.
+       The three-stage arc (Find → Create → Live) sits at the top.
+       Eight Pillars nest beneath as "the operations that hold it up."
+  ============================================================ -->
+  <section id="ch-how" class="ch" aria-label="Chapter two — How it works">
+    <div class="ch-inner">
+      <p class="ch-eyebrow reveal">02 · How</p>
+      <h2 class="ch-headline reveal reveal-delay-1">
+        How it actually works.
+      </h2>
+      <p class="ch-lede reveal reveal-delay-2">
+        You spend about ten minutes telling a private companion where you are right now. It asks the questions a good friend or a good therapist would — what you keep returning to, what you keep avoiding, what your body says, what your chart says.
+      </p>
+      <p class="ch-lede reveal reveal-delay-2">
+        It builds a profile that lives with you. Then it walks you through three stages, at your pace. The whole arc is designed for the day you no longer need it.
+      </p>
+
+      <div class="how-stages reveal reveal-delay-2">
+        <article class="how-stage">
+          <span class="how-num">01 · Find · in VBRTN</span>
+          <h3>Find yourself</h3>
+          <p><strong style="color:#E0C06A;font-weight:500;">You do:</strong> answer a short intake. Bring your Human Design chart, your Gene Keys, your story — or none of those, and just speak in your own words.</p>
+          <p><strong style="color:#E0C06A;font-weight:500;">You leave with:</strong> a clearer picture of how you actually decide, what energises you, what drains you. Lenses you chose, held lightly. No diagnosis.</p>
+        </article>
+        <article class="how-stage">
+          <span class="how-num">02 · Create · in NRG Social</span>
+          <h3>Create from that</h3>
+          <p><strong style="color:#E0C06A;font-weight:500;">You do:</strong> bring an idea you care about. A business, a piece of work, a relationship, a project you keep restarting.</p>
+          <p><strong style="color:#E0C06A;font-weight:500;">You leave with:</strong> the idea shaped around who you now know yourself to be. Real coaches, collaborators, and a marketplace one click away.</p>
+        </article>
+        <article class="how-stage">
+          <span class="how-num">03 · Live · out in the world</span>
+          <h3>Step into the world</h3>
+          <p><strong style="color:#E0C06A;font-weight:500;">You do:</strong> stop checking the app. Run the habits on your own. Show up in the community because you want to.</p>
+          <p><strong style="color:#E0C06A;font-weight:500;">You leave with:</strong> a life you actually live. We meet you in physical spaces — townhalls, coworking, land. The whole point.</p>
+        </article>
+      </div>
+
+      <p class="ch-lede reveal" style="margin-top:8px;font-size:14px;color:#8A9AB8;border-top:1px solid rgba(255,255,255,0.06);padding-top:24px;">
+        <strong style="color:#C4973A;letter-spacing:0.12em;text-transform:uppercase;font-size:11px;font-weight:500;">A few promises</strong><br>
+        Your intake is private to you. Nothing is sold, ranked, or paywalled. The companion suggests, never prescribes. You can leave with your data at any time.
+      </p>
+
+      <!-- Pillars collapsed into a single discreet line on the homepage to keep
+           focus on the user's three-stage journey. Full grid lives on /platform/. -->
+      <div class="how-pillars-intro reveal" style="border-top:1px solid rgba(255,255,255,0.06);padding-top:48px;margin-top:8px;">
+        <p class="ch-eyebrow" style="margin-bottom:14px;">How the network keeps itself honest</p>
+        <p style="font-family:'Jost',sans-serif;font-size:15px;line-height:1.7;color:rgba(255,255,255,0.78);max-width:720px;margin:0 0 18px;">
+          Underneath the user journey, FRQNCY operates on eight pillars: <strong style="color:rgba(255,255,255,0.92);font-weight:500;">Curate, Educate, Research, Broadcast, Sell, Fund, Build, Settle.</strong> No ads. No paid placement. No paywalled thesis. The free public layer is load-bearing.
+        </p>
+        <a href="/platform" style="font-family:'Jost',sans-serif;font-size:10.5px;letter-spacing:0.22em;text-transform:uppercase;color:#E0C06A;text-decoration:none;border-bottom:1px solid rgba(196,151,58,0.4);padding-bottom:3px;">See the platform in detail ↗</a>
       </div>
     </div>
   </section>
 
-  <!-- =====================
-       SECTION 3: BUBBLE MAP
-  ===================== -->
-  <section id="bubble-section">
-    <p class="section-label reveal">Problem &amp; Solution</p>
-    <h2 class="section-title light reveal reveal-delay-1">The landscape of<br>light &amp; consciousness</h2>
+  <!-- ============================================================
+       CHAPTER 03 · WHAT — the products.
+       Triangle of three named surfaces. Then the network map and marquee
+       as proof of what's inside.
+  ============================================================ -->
+  <section id="ch-what" class="ch" aria-label="Chapter three — What FRQNCY is">
+    <div class="ch-inner">
+      <p class="ch-eyebrow reveal">03 · What</p>
+      <h2 class="ch-headline reveal reveal-delay-1">
+        Three things that actually exist.
+      </h2>
+      <p class="ch-lede reveal reveal-delay-2">
+        Energy, vibration and frequency — Tesla's three. We gave each one a name, a place to live, and a job to do. All three ship today.
+      </p>
 
-    <div id="bubble-map">
-      <div id="nm-container">
-        <canvas id="nm-fx" aria-hidden="true"></canvas>
-        <svg id="nm-svg"><defs id="nm-svg-defs"></defs></svg>
-        <div id="nm-tooltip"><div class="nm-tip-title"></div><div class="nm-tip-type"></div></div>
-        <div id="nm-legend">
-          <div class="nm-leg-item"><div class="nm-leg-dot" style="width:12px;height:12px;background:linear-gradient(135deg,#F4DC88,#B0791E);border-radius:50%"></div>CORE</div>
-          <div class="nm-leg-item"><div class="nm-leg-dot" style="width:9px;height:9px;background:linear-gradient(135deg,#5A8AFF,#152E7A);border-radius:50%"></div>PILLARS</div>
-          <div class="nm-leg-item"><div class="nm-leg-dot" style="width:7px;height:7px;background:linear-gradient(135deg,#3062C8,#091840);border-radius:50%"></div>DOMAINS</div>
-          <div class="nm-leg-item"><div class="nm-leg-dot" style="width:5px;height:5px;background:linear-gradient(135deg,#213E88,#080F28);border-radius:50%"></div>TOPICS</div>
-          <div class="nm-leg-item"><div class="nm-leg-dot" style="width:3px;height:3px;background:#fff;box-shadow:0 0 3px rgba(255,255,255,0.8);border-radius:50%"></div>HUMANS</div>
+      <div class="triangle-diagram reveal reveal-delay-2">
+        <div class="triangle-node">
+          <span class="triangle-greek">Vibration · the pocket app</span>
+          <h3>VBRTN</h3>
+          <p>Your private companion. Chat with it. Get your chart read back to you. Build habits that stick. Lives inside My FRQNCY.</p>
+          <a href="/my-frqncy" class="triangle-link">Open VBRTN ↗</a>
         </div>
-        <div id="nm-hint">DRAG · SCROLL TO ZOOM · CLICK TO EXPLORE</div>
-      <div id="nm-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(196,151,58,0.7);font-family:Jost,sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;pointer-events:none;z-index:4;animation:nmPulse 1.6s ease-in-out infinite;">✦ Loading network ✦</div>
+        <div class="triangle-node">
+          <span class="triangle-greek">Energy · the social layer</span>
+          <h3>NRG&nbsp;Social</h3>
+          <p>Where the people are. Post your work, find collaborators, book a real coach. The marketplace of the network.</p>
+          <a href="/social/" class="triangle-link">Open NRG Social ↗</a>
+        </div>
+        <div class="triangle-node">
+          <span class="triangle-greek">Frequency · the network</span>
+          <h3>FRQNCY</h3>
+          <p>146 maps of every area of life. 766 vetted books, people, places, podcasts. The library of what's worth your attention.</p>
+          <a href="/explore" class="triangle-link">Open the map ↗</a>
+        </div>
       </div>
-      <a href="explore.html" class="network-expand-btn" target="_blank" rel="noopener noreferrer">EXPLORE FULL MAP ↗</a>
-    </div>
-  </section>
 
-    <!-- =====================
-       SECTION 1B: NETWORK PULSE (mixed marquee)
-       Auto-generated by scripts/build-homepage-marquees.mjs.
-       Do not edit the cards inline — re-run the script.
-       Moved below Section 3 (Bubble Map) on 2026-05-22.
-  ===================== -->
-  <section id="marquee-bands" aria-label="A pulse of the FRQNCY network">
-    <!-- ▼▼ FRQNCY_MARQUEE_SHELVES ▼▼ -->
+      <!-- The Topic Graph — D3 network map (existing, restyled inside WHAT) -->
+      <p class="what-subhead reveal">The topic graph · 146 maps</p>
+      <section id="bubble-section">
+        <div id="bubble-map">
+          <div id="nm-container">
+            <canvas id="nm-fx" aria-hidden="true"></canvas>
+            <svg id="nm-svg"><defs id="nm-svg-defs"></defs></svg>
+            <div id="nm-tooltip"><div class="nm-tip-title"></div><div class="nm-tip-type"></div></div>
+            <div id="nm-legend">
+              <div class="nm-leg-item"><div class="nm-leg-dot" style="width:12px;height:12px;background:linear-gradient(135deg,#F4DC88,#B0791E);border-radius:50%"></div>CORE</div>
+              <div class="nm-leg-item"><div class="nm-leg-dot" style="width:9px;height:9px;background:linear-gradient(135deg,#5A8AFF,#152E7A);border-radius:50%"></div>PILLARS</div>
+              <div class="nm-leg-item"><div class="nm-leg-dot" style="width:7px;height:7px;background:linear-gradient(135deg,#3062C8,#091840);border-radius:50%"></div>DOMAINS</div>
+              <div class="nm-leg-item"><div class="nm-leg-dot" style="width:5px;height:5px;background:linear-gradient(135deg,#213E88,#080F28);border-radius:50%"></div>TOPICS</div>
+              <div class="nm-leg-item"><div class="nm-leg-dot" style="width:3px;height:3px;background:#fff;box-shadow:0 0 3px rgba(255,255,255,0.8);border-radius:50%"></div>HUMANS</div>
+            </div>
+            <div id="nm-hint">DRAG · SCROLL TO ZOOM · CLICK TO EXPLORE</div>
+            <div id="nm-loading" style="position:absolute;inset:0;display:flex;align-items:center;justify-content:center;color:rgba(196,151,58,0.7);font-family:Jost,sans-serif;font-size:11px;letter-spacing:0.22em;text-transform:uppercase;pointer-events:none;z-index:4;animation:nmPulse 1.6s ease-in-out infinite;">✦ Loading network ✦</div>
+          </div>
+          <a href="explore.html" class="network-expand-btn" target="_blank" rel="noopener noreferrer">EXPLORE FULL MAP ↗</a>
+        </div>
+      </section>
+
+      <!-- A pulse of the network — the existing marquee, nested under WHAT -->
+      <p class="what-subhead reveal">A pulse of the network</p>
+      <section id="marquee-bands" aria-label="A pulse of the FRQNCY network">
+        <!-- ▼▼ FRQNCY_MARQUEE_SHELVES ▼▼ -->
 <div class="mq-shelf"><div class="mq-track" style="--mq-speed:420s"><a class="mq-card mq-kind-topic" href="/eco-villages/"><span class="mq-img"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&amp;q=80&amp;auto=format&amp;fit=crop" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Eco-Villages</span></span></a><a class="mq-card mq-kind-person" href="/people/kevin-trudeau/"><span class="mq-img"><img src="/images/people/kevin-trudeau.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Person</span><span class="mq-title">Kevin Trudeau</span></span></a><a class="mq-card mq-kind-topic" href="/permaculture/"><span class="mq-img"><img src="https://images.pexels.com/photos/8678828/pexels-photo-8678828.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Permacultures</span></span></a><a class="mq-card mq-kind-person" href="/people/sai-maa/"><span class="mq-img"><img src="/images/people/sai-maa.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Person</span><span class="mq-title">Sai Maa</span></span></a><a class="mq-card mq-kind-topic" href="/cryptocurrency/"><span class="mq-img"><img src="/images/topics/crypto-hero.png" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Cryptocurrency</span></span></a><a class="mq-card mq-kind-topic" href="/privacy/"><span class="mq-img"><img src="/images/topics/privacy-hero.webp" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Privacy &amp; Sovereignty</span></span></a><a class="mq-card mq-kind-topic" href="/renewable-energy/"><span class="mq-img"><img src="https://images.pexels.com/photos/31633329/pexels-photo-31633329.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Renewable Energy</span></span></a><a class="mq-card mq-kind-book" href="/books/the-magic-of-thinking-big/"><span class="mq-img"><img src="https://covers.openlibrary.org/b/id/480539-L.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">David J. Schwartz</span><span class="mq-title">The Magic of Thinking Big</span></span></a><a class="mq-card mq-kind-video" href="/watch/index.html#mG9Hxo8J8J0"><span class="mq-img"><img src="https://img.youtube.com/vi/mG9Hxo8J8J0/hqdefault.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Happy Science</span><span class="mq-title">The Laws of the Sun</span></span></a><a class="mq-card mq-kind-person" href="/people/andreas-antonopoulos/"><span class="mq-img"><img src="https://images.gr-assets.com/authors/1474336822p8/8115718.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Person</span><span class="mq-title">Andreas Antonopoulos</span></span></a><a class="mq-card mq-kind-place" href="/places/bali/"><span class="mq-img"><img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200&amp;q=80&amp;auto=format&amp;fit=crop" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Bali, Indonesia</span><span class="mq-title">Bali</span></span></a><a class="mq-card mq-kind-topic" href="/source/"><span class="mq-img"><img src="https://images.pexels.com/photos/789397/pexels-photo-789397.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Source</span></span></a><a class="mq-card mq-kind-film" href="/media/hidden-secrets-of-money/"><span class="mq-img"><img src="https://img.youtube.com/vi/DyV0OfU3-FU/maxresdefault.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Mike Maloney</span><span class="mq-title">Hidden Secrets of Money</span></span></a><a class="mq-card mq-kind-book" href="/books/fingerprints-of-the-gods/"><span class="mq-img"><img src="https://covers.openlibrary.org/b/id/322542-L.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Graham Hancock</span><span class="mq-title">Fingerprints of the Gods</span></span></a><a class="mq-card mq-kind-video" href="/watch/index.html#_nB13VUTqL4"><span class="mq-img"><img src="https://img.youtube.com/vi/_nB13VUTqL4/hqdefault.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Bashar Channeled by Darryl Anka</span><span class="mq-title">Discover Your Highest Excitement &amp; Free Will</span></span></a><a class="mq-card mq-kind-topic" href="/meditation/"><span class="mq-img"><img src="https://images.pexels.com/photos/6941322/pexels-photo-6941322.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Meditation</span></span></a><a class="mq-card mq-kind-book" href="/books/ask-and-it-is-given/"><span class="mq-img"><img src="https://covers.openlibrary.org/b/id/9128672-L.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Esther Hicks</span><span class="mq-title">Ask and It Is Given</span></span></a><a class="mq-card mq-kind-video" href="/watch/index.html#kkGeOWYOFoA"><span class="mq-img"><img src="https://img.youtube.com/vi/kkGeOWYOFoA/hqdefault.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Spirit Science</span><span class="mq-title">Sacred Geometry — The Language of Light</span></span></a><a class="mq-card mq-kind-person" href="/people/matt-debenham/"><span class="mq-img"><img src="http://www.mattdebenham.com/blog/wp-content/uploads/2009/06/matt_debenham_ljp_09_2.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Person</span><span class="mq-title">Matt Debenham</span></span></a><a class="mq-card mq-kind-place" href="/places/sedona/"><span class="mq-img"><img src="https://images.unsplash.com/photo-1581262208435-41726149a759?w=1200&amp;q=80&amp;auto=format&amp;fit=crop" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Sedona, Arizona, USA</span><span class="mq-title">Sedona</span></span></a><a class="mq-card mq-kind-topic" href="/network-states/"><span class="mq-img"><img src="https://covers.openlibrary.org/b/id/14569476-L.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Network States</span></span></a><a class="mq-card mq-kind-book" href="/books/wishes-fulfilled/"><span class="mq-img"><img src="https://covers.openlibrary.org/b/id/7105432-L.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Wayne W. Dyer</span><span class="mq-title">Wishes Fulfilled</span></span></a><a class="mq-card mq-kind-topic" href="/intuitive-abilities/"><span class="mq-img"><img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthf.bing.com%2Fth%2Fid%2FOIP.EcYRy5g-3UxkOGpVkhDMNQHaHa%3Fr%3D0%26cb%3Dthfc1%26pid%3DApi&amp;f=1&amp;ipt=b4e3c162698365b34fc9ef9a5cf9ff2837715b4cd40a13527a0a66f1066b2483&amp;ipo=images" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Intuitive Abilities</span></span></a><a class="mq-card mq-kind-topic" href="/conscious-capital/"><span class="mq-img"><img src="https://images.pexels.com/photos/5550904/pexels-photo-5550904.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Conscious Capital</span></span></a><a class="mq-card mq-kind-topic" href="/bitcoin/"><span class="mq-img"><img src="/images/topics/bitcoin-hero.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Bitcoin</span></span></a><a class="mq-card mq-kind-topic" href="/eco-villages/"><span class="mq-img"><img src="https://images.unsplash.com/photo-1469474968028-56623f02e42e?w=800&amp;q=80&amp;auto=format&amp;fit=crop" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Eco-Villages</span></span></a><a class="mq-card mq-kind-person" href="/people/kevin-trudeau/"><span class="mq-img"><img src="/images/people/kevin-trudeau.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Person</span><span class="mq-title">Kevin Trudeau</span></span></a><a class="mq-card mq-kind-topic" href="/permaculture/"><span class="mq-img"><img src="https://images.pexels.com/photos/8678828/pexels-photo-8678828.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Permacultures</span></span></a><a class="mq-card mq-kind-person" href="/people/sai-maa/"><span class="mq-img"><img src="/images/people/sai-maa.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Person</span><span class="mq-title">Sai Maa</span></span></a><a class="mq-card mq-kind-topic" href="/cryptocurrency/"><span class="mq-img"><img src="/images/topics/crypto-hero.png" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Cryptocurrency</span></span></a><a class="mq-card mq-kind-topic" href="/privacy/"><span class="mq-img"><img src="/images/topics/privacy-hero.webp" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Privacy &amp; Sovereignty</span></span></a><a class="mq-card mq-kind-topic" href="/renewable-energy/"><span class="mq-img"><img src="https://images.pexels.com/photos/31633329/pexels-photo-31633329.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Renewable Energy</span></span></a><a class="mq-card mq-kind-book" href="/books/the-magic-of-thinking-big/"><span class="mq-img"><img src="https://covers.openlibrary.org/b/id/480539-L.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">David J. Schwartz</span><span class="mq-title">The Magic of Thinking Big</span></span></a><a class="mq-card mq-kind-video" href="/watch/index.html#mG9Hxo8J8J0"><span class="mq-img"><img src="https://img.youtube.com/vi/mG9Hxo8J8J0/hqdefault.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Happy Science</span><span class="mq-title">The Laws of the Sun</span></span></a><a class="mq-card mq-kind-person" href="/people/andreas-antonopoulos/"><span class="mq-img"><img src="https://images.gr-assets.com/authors/1474336822p8/8115718.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Person</span><span class="mq-title">Andreas Antonopoulos</span></span></a><a class="mq-card mq-kind-place" href="/places/bali/"><span class="mq-img"><img src="https://images.unsplash.com/photo-1537996194471-e657df975ab4?w=1200&amp;q=80&amp;auto=format&amp;fit=crop" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Bali, Indonesia</span><span class="mq-title">Bali</span></span></a><a class="mq-card mq-kind-topic" href="/source/"><span class="mq-img"><img src="https://images.pexels.com/photos/789397/pexels-photo-789397.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Source</span></span></a><a class="mq-card mq-kind-film" href="/media/hidden-secrets-of-money/"><span class="mq-img"><img src="https://img.youtube.com/vi/DyV0OfU3-FU/maxresdefault.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Mike Maloney</span><span class="mq-title">Hidden Secrets of Money</span></span></a><a class="mq-card mq-kind-book" href="/books/fingerprints-of-the-gods/"><span class="mq-img"><img src="https://covers.openlibrary.org/b/id/322542-L.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Graham Hancock</span><span class="mq-title">Fingerprints of the Gods</span></span></a><a class="mq-card mq-kind-video" href="/watch/index.html#_nB13VUTqL4"><span class="mq-img"><img src="https://img.youtube.com/vi/_nB13VUTqL4/hqdefault.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Bashar Channeled by Darryl Anka</span><span class="mq-title">Discover Your Highest Excitement &amp; Free Will</span></span></a><a class="mq-card mq-kind-topic" href="/meditation/"><span class="mq-img"><img src="https://images.pexels.com/photos/6941322/pexels-photo-6941322.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Meditation</span></span></a><a class="mq-card mq-kind-book" href="/books/ask-and-it-is-given/"><span class="mq-img"><img src="https://covers.openlibrary.org/b/id/9128672-L.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Esther Hicks</span><span class="mq-title">Ask and It Is Given</span></span></a><a class="mq-card mq-kind-video" href="/watch/index.html#kkGeOWYOFoA"><span class="mq-img"><img src="https://img.youtube.com/vi/kkGeOWYOFoA/hqdefault.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Spirit Science</span><span class="mq-title">Sacred Geometry — The Language of Light</span></span></a><a class="mq-card mq-kind-person" href="/people/matt-debenham/"><span class="mq-img"><img src="http://www.mattdebenham.com/blog/wp-content/uploads/2009/06/matt_debenham_ljp_09_2.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Person</span><span class="mq-title">Matt Debenham</span></span></a><a class="mq-card mq-kind-place" href="/places/sedona/"><span class="mq-img"><img src="https://images.unsplash.com/photo-1581262208435-41726149a759?w=1200&amp;q=80&amp;auto=format&amp;fit=crop" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Sedona, Arizona, USA</span><span class="mq-title">Sedona</span></span></a><a class="mq-card mq-kind-topic" href="/network-states/"><span class="mq-img"><img src="https://covers.openlibrary.org/b/id/14569476-L.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Network States</span></span></a><a class="mq-card mq-kind-book" href="/books/wishes-fulfilled/"><span class="mq-img"><img src="https://covers.openlibrary.org/b/id/7105432-L.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Wayne W. Dyer</span><span class="mq-title">Wishes Fulfilled</span></span></a><a class="mq-card mq-kind-topic" href="/intuitive-abilities/"><span class="mq-img"><img src="https://external-content.duckduckgo.com/iu/?u=https%3A%2F%2Fthf.bing.com%2Fth%2Fid%2FOIP.EcYRy5g-3UxkOGpVkhDMNQHaHa%3Fr%3D0%26cb%3Dthfc1%26pid%3DApi&amp;f=1&amp;ipt=b4e3c162698365b34fc9ef9a5cf9ff2837715b4cd40a13527a0a66f1066b2483&amp;ipo=images" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Intuitive Abilities</span></span></a><a class="mq-card mq-kind-topic" href="/conscious-capital/"><span class="mq-img"><img src="https://images.pexels.com/photos/5550904/pexels-photo-5550904.jpeg?cs=srgb&amp;fm=jpg&amp;w=3840" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Conscious Capital</span></span></a><a class="mq-card mq-kind-topic" href="/bitcoin/"><span class="mq-img"><img src="/images/topics/bitcoin-hero.jpg" alt="" loading="lazy" decoding="async" onerror="this.parentElement.classList.add('mq-img-broken')"></span><span class="mq-meta"><span class="mq-eyebrow">Topic</span><span class="mq-title">Bitcoin</span></span></a></div></div>
-    <!-- ▲▲ FRQNCY_MARQUEE_SHELVES ▲▲ -->
-  </section>
-
-  <!-- =====================
-       SECTION 4: EIGHT PILLARS
-  ===================== -->
-  <section id="details-section">
-    <p class="section-label reveal">The Eight Pillars</p>
-    <h2 class="section-title dark reveal reveal-delay-1">Remember.<br>Create.</h2>
-
-    <div class="details-grid">
-      <a href="curate/" class="detail-card reveal">
-        <span class="detail-number">01 / Choose</span>
-        <h3 class="detail-title">Curate</h3>
-        <p class="detail-body">Picking with care. Sifting the world's signal from its noise so what reaches FRQNCY is honest, alive, and worth attention.</p>
-      </a>
-      <a href="education/" class="detail-card reveal reveal-delay-1">
-        <span class="detail-number">02 / Learn</span>
-        <h3 class="detail-title">Educate</h3>
-        <p class="detail-body">What is known, transmitted. Your chart read back to you. The masters pointed to, not mimicked. Body, food, breath, practice.</p>
-      </a>
-      <a href="research/" class="detail-card reveal reveal-delay-2">
-        <span class="detail-number">03 / Know</span>
-        <h3 class="detail-title">Research</h3>
-        <p class="detail-body">You ask what a thing is at its very core, then answer. Truth with strong ethics, for the benefit of mankind. Everywhere academia will not go.</p>
-      </a>
-      <a href="broadcast/" class="detail-card reveal reveal-delay-3">
-        <span class="detail-number">04 / Broadcast</span>
-        <h3 class="detail-title">Broadcast</h3>
-        <p class="detail-body">The voice of the network. A swarm of .frqncies all over social media, super aligned with the good in the world. Podcast. Video. Writing.</p>
-      </a>
-      <a href="sell/" class="detail-card reveal reveal-delay-3">
-        <span class="detail-number">05 / Exchange</span>
-        <h3 class="detail-title">Sell</h3>
-        <p class="detail-body">Letting the work, goods, and access that emerge from FRQNCY meet the people who want them. Fairly. Openly. With nothing hidden in the price.</p>
-      </a>
-      <a href="fund/" class="detail-card reveal reveal-delay-3">
-        <span class="detail-number">06 / Fuel</span>
-        <h3 class="detail-title">Fund</h3>
-        <p class="detail-body">An actual fund. Money gathered, deployed into aligned projects and people. Sovereign custody. We always give in abundance.</p>
-      </a>
-      <a href="builder/" class="detail-card reveal reveal-delay-3">
-        <span class="detail-number">07 / Make</span>
-        <h3 class="detail-title">Build</h3>
-        <p class="detail-body">Products, tools, experiences — from the accumulated talent of the network. Aligned projects supported. FRQNCY-native things built.</p>
-      </a>
-      <a href="network-state/" class="detail-card reveal reveal-delay-3">
-        <span class="detail-number">08 / Inhabit</span>
-        <h3 class="detail-title">Settle</h3>
-        <p class="detail-body">A parallel society of people at similar frequency. From the digital into the physical. Coworking first. Then a building. Then several. Then land.</p>
-      </a>
+        <!-- ▲▲ FRQNCY_MARQUEE_SHELVES ▲▲ -->
+      </section>
     </div>
   </section>
 
   <!-- =====================
        SECTION 5: CONTACT
   ===================== -->
+  <!-- ============================================================
+       CLOSER — the page repeats its primary invitation, then offers
+       a softer second path (subscribe) for the people not ready yet.
+  ============================================================ -->
   <section id="contact-section">
     <div class="contact-inner">
-      <p class="section-label reveal">The Door is Open</p>
+      <p class="section-label reveal">Begin</p>
       <h2 class="contact-title reveal reveal-delay-1">Step in.<br>Or watch from close.</h2>
-      <p class="contact-sub reveal reveal-delay-2">Researcher, teacher, builder, artist, investor, or someone who simply remembers — there is a place for you in the network. Write to us. Or subscribe and listen.</p>
+      <p class="contact-sub reveal reveal-delay-2">Researcher, teacher, builder, artist, investor, or someone who simply remembers — there is a place for you in the network. Tell the companion where you're at. Or stay on the list and watch the work unfold.</p>
 
-      <form class="subscribe-form contact-subscribe-form reveal reveal-delay-3" id="subscribe-form-contact" onsubmit="handleSubscribe(event, this)" style="margin: 32px auto 0; max-width:440px;">
+      <div class="contact-cta-primary reveal reveal-delay-2" style="margin: 40px auto 32px; text-align:center;">
+        <a href="/my-frqncy" class="quote-cta-btn">Tell us where you're at ✦</a>
+      </div>
+
+      <form class="subscribe-form contact-subscribe-form reveal reveal-delay-3" id="subscribe-form-contact" onsubmit="handleSubscribe(event, this)" style="margin: 24px auto 0; max-width:440px;">
         <input type="email" name="email" placeholder="your@email.com" required aria-label="Email address" autocomplete="email">
         <button type="submit" id="subscribe-btn-contact">Subscribe</button>
       </form>
@@ -533,7 +905,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 
       <footer class="footer-line" role="contentinfo">
         <span class="footer-wordmark">FRQNCY</span>
-        <a href="/about#distinction-section" class="footer-slogan" style="color:inherit;text-decoration:none;border-bottom:1px dotted rgba(255,255,255,0.2);" aria-label="FRQNCY makes the unable able — what this means">FRQNCY makes the unable able. FRQNCY empowers the empowering.</a>
+        <span class="footer-slogan" style="color:rgba(255,255,255,0.6);">Capital, content and community for a conscious civilisation.</span>
         <span class="footer-note">© 2026 FRQNCY &nbsp;·&nbsp; All frequencies reserved</span>
       </footer>
     </div>

@@ -45,6 +45,32 @@ The full My FRQNCY flow, end to end. The companion is the mechanism; the arc is 
 
 **The creation of a new earth.** The terminal frame. The aggregate of many people running their own aligned momentum cycle is a different world. Not a metaphor.
 
+## The self-improvement loop — how VBRTN gets better as the user gets better
+
+The system is designed to *improve itself on the improvement of the person.* Two levels run in parallel.
+
+**Per-user — the companion sharpens to the individual.** From the moment the intake completes, VBRTN holds the user's Human Design chart, Gene Keys profile, astrology, meta-programs, calibrated octave, modal-operator captures, and trigger inventory in its working memory. Every interaction adds signal — a journal entry shifts the rolling state octave, a TI check-in moves the running Teachability Index, a habit log adjusts the TBS load reading, a modal-operator catch updates the necessity/impossibility lists, the answer to a recovery prompt either lands (saved, time-stamped) or doesn't (also saved, time-stamped). The companion's *next* reflection draws from this widening record. The mirror gets sharper because it has more to see by.
+
+**Aggregate — the companion learns what actually moves people.** Across the user base (anonymised, never named), the companion logs the triplet *(state-before, intervention, state-after)* for every meaningful exchange — every recovery prompt, every offered practice, every Cormorant reflection. The signal of "improvement" is composite: rising Teachability Index, narrowing distance to chief aim, lifting calibrated octave, growing habit rhythm, drift of journal tone from fear-pattern modals toward possibility modals. Over time the system learns *which intervention shapes work* for *which user shapes* under *which state conditions* — not as content (the user's actual words never leave their layer) but as structural patterns. The companion gets quietly better. The user notices nothing different except that VBRTN is more often right on the first read.
+
+**The HD integration is the foundation, not a feature.** The chart is computed at intake and lives in the profile permanently. Every reflection the companion writes is cross-referenced against the user's type, strategy, authority, profile, and current Gene Key sphere. A Sacral Generator gets *"What are you responding to?"* — never *"What do you want to initiate?"* A 28-day Reflector never gets a same-day decision prompt. A Manifestor in their not-self anger gets information and space, not check-in language. The chart is not a horoscope; it is the design-spec the companion writes against.
+
+**Privacy is the architectural floor.** Aggregate learning never crosses the user-data boundary. What the system learns is *patterns* — that a Generator with an open Solar Plexus and rising TI responds well to a particular sequence — not *content* — never the specific words the user wrote. The user's full profile, journal, conversation history stay in their encrypted Supabase row, never sent in full to any LLM call, never leaked into training data, exportable as JSON at any moment. The companion gets better because the *network* shares its learning. No individual user is studied.
+
+**The improvement signal is composite — measure what matters.** No single metric is the verdict. The companion tracks:
+
+- *TI trend* — Teachability Index rolling 30-day average
+- *Octave drift* — calibrated state (internal Hawkins map) moving direction over weeks
+- *Modal-operator ratio* — necessity-and-impossibility sentences vs. possibility sentences in journal text
+- *Chief-aim distance* — user-reported felt distance from the declared three-year truth, asked every 30 days
+- *Habit shape* — rhythm density across the 53-week ribbon
+- *WDYLT alignment* — drift of the user's named trust web against their chief aim's voice
+- *Re-engagement rhythm* — pattern of return after gaps (the companion learns each user's natural cadence, never forces it)
+
+These feed the dashboard's *Know The Score* surface as the user's private scoreboard, and feed the aggregate pattern-learning at the network level. The user always sees their own numbers; the network never sees the user's.
+
+This is the engine that turns *individual practice* into *collective intelligence* without ever turning the user into the product. VBRTN improves because users improve. Users improve because VBRTN gets better at meeting them. The loop is the cause.
+
 ## How we run it — parallel channels, offline-encouraged
 
 The arc does not live inside the AI alone. Three channels run in parallel by design.
@@ -252,9 +278,17 @@ Twenty-two questions across five sessions. Each session three to five minutes. E
 20. *Where do you feel most yourself?* — Place. Time of day. Who you're with.
 21. *What's the last thing someone said about you that landed as true?* — Free-text.
 
-**Session 5 — Your aim.** *About one minute.*
+**Session 5 — Your aim + the baseline.** *About three minutes.*
 
 22. *If VBRTN could remember one thing about you forever, what would you want it to be?* — Free-text. *(Becomes the seed of the companion's opening line in every session.)*
+
+23. *Right now, how strong is your desire to learn new things?* — 1-10 slider. *(First component of the Teachability Index baseline.)*
+
+24. *Right now, how willing do you feel to actually change?* — 1-10 slider. *(Second component of TI. TI = Q23 × Q24, surfaced to the user as their own number.)*
+
+25. *Right now, how far do you feel from the life you want?* — 1-10 slider, where 1 is "I am already there" and 10 is "it feels impossibly far." *(Chief-aim-distance baseline; re-asked every thirty days; the trend is the improvement signal.)*
+
+These four close the intake and seed the measurement. Every subsequent shift VBRTN tracks moves against this starting point. Without the baseline there is no improvement signal — and without the improvement signal the self-improvement loop has nothing to learn from.
 
 ## Data shape — sketch
 
@@ -306,9 +340,20 @@ profile = {
     witnessedTruth
   },
   rememberOne: '',
+  baseline: {                   // captured at intake, never overwritten
+    intakeCompletedAt,
+    desireToLearn,              // 1-10, Q23
+    willingnessToChange,        // 1-10, Q24
+    teachabilityIndex,          // Q23 × Q24, 1-100
+    chiefAimDistance,           // 1-10, Q25
+    recentFeelingAtIntake,      // Q2, the seed of the rolling octave
+    notes: ''                   // optional Cormorant line VBRTN writes at completion
+  },
   state: {
     stateOctave: '',            // Hawkins level name, internal only
-    lastSevenJournalTones: []
+    lastSevenJournalTones: [],
+    ti: { current, history: [] },              // rolling TI, re-asked monthly
+    chiefAimDistance: { current, history: [] } // re-asked every 30 days
   },
   history: {
     interactions: [],

@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>My FRQNCY · Begin to know yourself</title>
+<meta name="description" content="Twenty-five questions. A companion that begins to know you.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e18;
+    --bg-card:#10162a;
+    --bg-elev:#161d35;
+    --ink:#f5f0e6;
+    --ink-soft:#b9b3a3;
+    --ink-dim:#7d7866;
+    --gold:#C4973A;
+    --gold-soft:#dcb15a;
+    --gold-dim:#7a5d22;
+    --rule:#1f2942;
+    --shadow:0 16px 40px rgba(0,0,0,.45);
+    --r-sm:8px;
+    --r-md:14px;
+    --r-lg:24px;
+    --t-fast:140ms ease;
+    --t-med:280ms ease;
+    --t-slow:600ms cubic-bezier(.2,.6,.2,1);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-weight:400;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{min-height:100vh;display:flex;flex-direction:column}
+  ::selection{background:var(--gold);color:var(--bg)}
+  a{color:var(--gold);text-decoration:none}
+  a:hover{color:var(--gold-soft)}
+
+  /* ── shell ─────────────────────────── */
+  .shell{flex:1;max-width:560px;margin:0 auto;padding:32px 24px 80px;width:100%;display:flex;flex-direction:column}
+  .wordmark{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;text-align:center;margin-bottom:32px}
+  .wordmark.hidden{visibility:hidden}
+  .progress{display:flex;gap:6px;justify-content:center;margin-bottom:48px;transition:opacity var(--t-med)}
+  .progress.hidden{opacity:0;pointer-events:none}
+  .progress span{width:24px;height:2px;background:var(--rule);transition:background var(--t-med)}
+  .progress span.active{background:var(--gold)}
+  .progress span.done{background:var(--gold-dim)}
+
+  /* ── stage ─────────────────────────── */
+  .stage{flex:1;display:flex;flex-direction:column;justify-content:center;min-height:60vh;animation:slideIn 320ms ease both}
+  @keyframes slideIn{from{opacity:0;transform:translateY(8px)}to{opacity:1;transform:none}}
+
+  /* ── question card ─────────────────── */
+  .eyebrow{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;letter-spacing:.08em;color:var(--ink-dim);margin-bottom:18px}
+  .question{font-family:'Inter',sans-serif;font-weight:300;font-size:26px;line-height:1.35;color:var(--ink);margin:0 0 26px 0;letter-spacing:-.005em}
+  .hint{font-size:13px;color:var(--ink-dim);margin-bottom:18px;line-height:1.5}
+
+  /* ── tile choosers ─────────────────── */
+  .tiles{display:flex;flex-direction:column;gap:8px}
+  .tiles.grid{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+  .tile{background:var(--bg-card);border:1px solid var(--rule);border-radius:var(--r-md);padding:14px 18px;color:var(--ink);font-size:15px;text-align:left;cursor:pointer;transition:all var(--t-fast);font-family:inherit}
+  .tile:hover{border-color:var(--gold-dim);background:var(--bg-elev)}
+  .tile.selected{border-color:var(--gold);background:var(--bg-elev);color:var(--gold-soft);transform:translateY(-1px)}
+  .tile:focus-visible{outline:1px solid var(--gold);outline-offset:2px}
+  .tile.locked{pointer-events:none;opacity:.55}
+  .tile.locked.selected{opacity:1}
+
+  /* ── inputs ────────────────────────── */
+  .textfield, .textarea{width:100%;background:var(--bg-card);border:1px solid var(--rule);border-radius:var(--r-md);padding:14px 18px;color:var(--ink);font-size:15px;font-family:inherit;transition:border-color var(--t-fast)}
+  .textfield:focus, .textarea:focus{outline:none;border-color:var(--gold)}
+  .textarea{resize:vertical;min-height:88px;line-height:1.5}
+  .listfield{display:flex;flex-direction:column;gap:8px}
+
+  /* ── slider ────────────────────────── */
+  .slider-wrap{padding:12px 4px}
+  .slider-labels{display:flex;justify-content:space-between;font-size:12px;color:var(--ink-dim);margin-bottom:14px;letter-spacing:.04em}
+  .slider{-webkit-appearance:none;appearance:none;width:100%;height:2px;background:var(--rule);border-radius:1px;outline:none}
+  .slider::-webkit-slider-thumb{-webkit-appearance:none;width:22px;height:22px;border-radius:50%;background:var(--gold);cursor:pointer;border:none}
+  .slider::-moz-range-thumb{width:22px;height:22px;border-radius:50%;background:var(--gold);cursor:pointer;border:none}
+  .slider-value{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:32px;color:var(--gold);text-align:center;margin-top:10px;font-weight:500}
+
+  /* ── birth-data form ───────────────── */
+  .form-row{display:flex;flex-direction:column;gap:6px;margin-bottom:14px}
+  .form-row label{font-size:12px;color:var(--ink-dim);letter-spacing:.04em;text-transform:uppercase}
+  .form-row .helper{font-size:12px;color:var(--ink-soft);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;margin-top:4px;line-height:1.45}
+  .toggle-row{display:flex;align-items:center;gap:10px;margin-top:8px;font-size:13px;color:var(--ink-soft);cursor:pointer}
+  .toggle-row input[type="checkbox"]{accent-color:var(--gold);width:16px;height:16px;cursor:pointer}
+  .toggle-row.checked{color:var(--gold-soft)}
+  .time-disabled input[type="time"]{opacity:.4;pointer-events:none}
+  .skip-card{margin-top:24px;padding:16px;background:transparent;border:1px dashed var(--rule);border-radius:var(--r-md);text-align:center}
+  .skip-card .skip-line{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--ink-soft);margin-bottom:10px}
+  .skip-btn{background:none;border:none;color:var(--gold-soft);font-size:13px;letter-spacing:.04em;cursor:pointer;font-family:inherit;text-decoration:underline;text-underline-offset:3px;padding:6px 12px}
+  .skip-btn:hover{color:var(--gold)}
+
+  /* ── reflection ────────────────────── */
+  .reflection{
+    font-family:'Cormorant Garamond',serif;
+    font-style:italic;
+    font-size:19px;
+    line-height:1.55;
+    color:var(--gold-soft);
+    margin-top:24px;
+    padding:18px 0 0 0;
+    border-top:1px solid var(--rule);
+    opacity:0;
+    transform:translateY(8px);
+    transition:opacity var(--t-slow), transform var(--t-slow);
+    min-height:48px;
+  }
+  .reflection.in{opacity:1;transform:translateY(0)}
+
+  /* ── nav ───────────────────────────── */
+  .nav{display:flex;justify-content:space-between;align-items:center;margin-top:36px;gap:16px;min-height:48px}
+  .nav.hidden{visibility:hidden;height:0;margin-top:0}
+  .btn{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:12px 28px;border-radius:999px;font-size:14px;letter-spacing:.04em;cursor:pointer;font-family:inherit;transition:all var(--t-fast)}
+  .btn:hover{background:var(--gold);color:var(--bg)}
+  .btn:disabled{border-color:var(--rule);color:var(--ink-dim);cursor:not-allowed;background:transparent}
+  .btn:disabled:hover{background:transparent;color:var(--ink-dim)}
+  .btn.ghost{border:none;color:var(--ink-dim);padding:12px 16px}
+  .btn.ghost:hover{color:var(--ink);background:transparent}
+  .btn.primary{background:var(--gold);color:var(--bg)}
+  .btn.primary:hover{background:var(--gold-soft)}
+  .btn.breathing{animation:breathe 2.4s ease-in-out infinite}
+  @keyframes breathe{0%,100%{box-shadow:0 0 0 0 rgba(196,151,58,.0)}50%{box-shadow:0 0 0 6px rgba(196,151,58,.18)}}
+
+  /* ── splash ────────────────────────── */
+  .splash{text-align:center;padding:40px 0}
+  .splash .eyebrow-big{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:.22em;color:var(--gold);text-transform:uppercase;margin-bottom:36px}
+  .splash h1{font-family:'Cormorant Garamond',serif;font-weight:500;font-style:italic;font-size:42px;line-height:1.15;color:var(--ink);margin:0 0 24px 0;letter-spacing:-.005em}
+  .splash .lede{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:19px;line-height:1.55;color:var(--gold-soft);margin:0 auto 14px;max-width:42ch}
+  .splash .lede-2{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;line-height:1.55;color:var(--ink-soft);margin:0 auto 36px;max-width:42ch}
+  .splash .meta-line{font-size:12px;letter-spacing:.06em;color:var(--ink-dim);margin-top:24px;text-transform:uppercase}
+
+  /* ── session-insight interstitial ──── */
+  .interstitial{text-align:center;padding:48px 0;animation:slideIn 320ms ease both}
+  .interstitial .label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;margin-bottom:24px}
+  .interstitial h2{font-family:'Cormorant Garamond',serif;font-weight:500;font-style:italic;font-size:30px;line-height:1.25;color:var(--ink);margin:0 0 18px 0}
+  .interstitial p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;line-height:1.55;color:var(--gold-soft);margin:0 auto 8px;max-width:38ch}
+  .interstitial .sub{color:var(--ink-soft);font-size:15px;margin-top:14px}
+  .interstitial .countdown{margin-top:32px;font-size:11px;color:var(--ink-dim);letter-spacing:.08em;text-transform:uppercase}
+  .interstitial .countdown::after{content:'';display:inline-block;margin-left:8px;width:60px;height:1px;background:linear-gradient(to right, var(--gold-dim), transparent);vertical-align:middle;animation:countbar 2.6s linear forwards}
+  @keyframes countbar{from{background:linear-gradient(to right, var(--gold) 100%, transparent 0)}to{background:linear-gradient(to right, var(--gold) 0%, transparent 0)}}
+
+  /* ── chart compute ─────────────────── */
+  .compute{text-align:center;padding:24px 0}
+  .compute .spin{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--gold);margin-bottom:12px;animation:pulse 2s ease-in-out infinite}
+  @keyframes pulse{0%,100%{opacity:.45}50%{opacity:1}}
+  .chart-card{background:var(--bg-card);border:1px solid var(--gold-dim);border-radius:var(--r-md);padding:24px;margin-top:20px;text-align:left}
+  .chart-card .title{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+  .chart-card dl{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px}
+  .chart-card dt{font-size:11px;color:var(--ink-dim);letter-spacing:.06em;text-transform:uppercase}
+  .chart-card dd{margin:0 0 6px 0;font-size:14px;color:var(--ink)}
+  .chart-note{margin-top:14px;font-size:12px;color:var(--ink-dim);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px}
+
+  /* ── completion ────────────────────── */
+  .complete{text-align:center;padding:40px 0}
+  .complete h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:38px;color:var(--gold);margin:0 0 16px 0;line-height:1.2}
+  .complete .sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;color:var(--ink-soft);margin-bottom:32px;line-height:1.55;max-width:42ch;margin-left:auto;margin-right:auto}
+  .complete .vbrtn-sees{background:var(--bg-card);border:1px solid var(--gold-dim);border-radius:var(--r-md);padding:24px;text-align:left;margin-bottom:24px}
+  .complete .vbrtn-sees .label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;letter-spacing:.08em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+  .complete .vbrtn-sees p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;line-height:1.6;color:var(--ink);margin:0 0 10px 0}
+  .complete .vbrtn-sees p:last-child{margin-bottom:0}
+  .summary{background:transparent;border:1px solid var(--rule);border-radius:var(--r-md);padding:20px;text-align:left;margin-bottom:32px}
+  .summary dt{font-size:11px;letter-spacing:.06em;text-transform:uppercase;color:var(--ink-dim);margin-bottom:3px}
+  .summary dd{margin:0 0 12px 0;font-size:14px;color:var(--ink);line-height:1.5}
+  .summary dd:last-child{margin-bottom:0}
+
+  .foot{text-align:center;padding:40px 24px 24px;font-size:11px;color:var(--ink-dim);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:.04em}
+  .foot a{color:var(--gold-dim)}
+
+  @media (max-width:480px){
+    .shell{padding:24px 18px 60px}
+    .question{font-size:22px}
+    .reflection{font-size:17px}
+    .splash h1{font-size:34px}
+    .splash .lede{font-size:17px}
+    .interstitial h2{font-size:26px}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition-duration:0.01ms !important;animation-duration:0.01ms !important}
+  }
+</style>
+</head>
+<body>
+  <div class="shell">
+    <div class="wordmark" id="wordmark">FRQNCY · VBRTN</div>
+    <div class="progress" id="progress" aria-hidden="true"></div>
+
+    <main class="stage" id="stage" role="main" aria-live="polite"></main>
+
+    <nav class="nav" id="nav">
+      <button class="btn ghost" id="backBtn" type="button">← Back</button>
+      <button class="btn primary" id="nextBtn" type="button" disabled>Next</button>
+    </nav>
+  </div>
+
+  <footer class="foot">
+    Your answers stay on this device until you sign in. <a href="/my-frqncy/dashboard/">Sanctuary</a>
+  </footer>
+
+<script>
+(function(){
+  'use strict';
+
+  const STORE_KEY = 'frqncy:vbrtn:profile';
+  const POSITION_KEY = 'frqncy:vbrtn:position';
+  const STARTED_KEY = 'frqncy:vbrtn:started';
+  const SESSIONS_SHOWN_KEY = 'frqncy:vbrtn:sessionsShown';
+  const SESSIONS = 5;
+
+  // ── Question definitions ─────────────────────────────────────────
+  const QUESTIONS = [
+    // Session 1 — Where you stand
+    {
+      id:'texture', session:1, sessionTitle:'Where you stand',
+      question:"Which of these best describes where you are in your life right now?",
+      hint:'Pick the one that comes first. The body knows before the mind catches up.',
+      type:'tiles', cols:2,
+      options:[
+        {v:'stride',         l:'Hitting my stride',          r:'Stride is its own gravity. Notice it; do not over-control it.'},
+        {v:'building',       l:'Slowly building',            r:'Slow building is the real kind. The fast kind collapses.'},
+        {v:'holding',        l:'Holding it together',        r:'Holding it together is heavier than moving. The fact that you are still holding is the work.'},
+        {v:'surviving',      l:'Just getting through',       r:'Just getting through is its own strength. Naming it changes the load.'},
+        {v:'catching-breath',l:'Catching my breath',         r:'Breath is the part of the work that asks for nothing.'},
+        {v:'restart',        l:'Starting over',              r:'Starting over is choosing the form again. Most people never get the chance.'},
+        {v:'searching',      l:'Looking for what is next',   r:'Looking means you have not given up. That alone is more than most.'},
+        {v:'returning',      l:'Coming back to myself',      r:'Coming back is the one motion the door does not lock against.'}
+      ],
+      field:'standing.texture'
+    },
+    {
+      id:'recentFeeling', session:1, sessionTitle:'Where you stand',
+      question:"In the last thirty days, which feeling has shown up most?",
+      hint:'There is no wrong answer. The honest one is the useful one.',
+      type:'tiles', cols:2,
+      options:[
+        {v:'tired',       l:'Tired',         r:'Tired is data. What has been carried that does not need to be carried?'},
+        {v:'stressed',    l:'Stressed',      r:'Stress is the body running ahead of itself. The first move is slowing the body down.'},
+        {v:'anxious',     l:'Anxious',       r:'Anxiety is the body knowing something the mind has not yet named.'},
+        {v:'overwhelmed', l:'Overwhelmed',   r:'Overwhelm means the inputs outran the capacity. Cut inputs, do not add strength.'},
+        {v:'sad',         l:'Sad',           r:'Sadness is grief that has not been formally introduced. It deserves the introduction.'},
+        {v:'lonely',      l:'Lonely',        r:'Loneliness is the body asking for a particular kind of contact. Notice which kind.'},
+        {v:'frustrated',  l:'Frustrated',    r:'Frustration is Generator language. Something is asking to be responded to, not initiated.'},
+        {v:'angry',       l:'Angry',         r:'Anger is power that has not yet found its direction.'},
+        {v:'numb',        l:'Numb',          r:'Numb is the body saying "too much, too fast." Not a verdict.'},
+        {v:'restless',    l:'Restless',      r:'Restless is asking. The question is what it is asking for.'},
+        {v:'hopeful',     l:'Hopeful',       r:'Hope is unfinished. That is the design.'},
+        {v:'curious',     l:'Curious',       r:'Curiosity pulls without pushing. The most underrated state.'},
+        {v:'excited',     l:'Excited',       r:'Excitement is desire that has not yet been disciplined. Both halves are useful.'},
+        {v:'grateful',    l:'Grateful',      r:'Gratitude is the first frequency above survival. Notice you arrived there.'},
+        {v:'content',     l:'Content',       r:'Content is rare. Most people skip it on the way to wanting more.'},
+        {v:'peaceful',    l:'Peaceful',      r:'Peace is rarely loud. The fact that you notice it is the proof.'},
+        {v:'alive',       l:'Alive',         r:'Alive is the baseline. What follows has to live up to it.'}
+      ],
+      field:'standing.recentFeeling'
+    },
+    {
+      id:'dominantDesire', session:1, sessionTitle:'Where you stand',
+      question:"What do you want more of right now? Pick the closest.",
+      hint:'You will refine the specifics later. This is just the direction.',
+      type:'tiles', cols:2,
+      options:[
+        {v:'freedom',    l:'Freedom',     r:'Freedom is worth specifying. The companion will come back to ask what kind.'},
+        {v:'peace',      l:'Peace',       r:'Peace is rarer than people admit. Picking it is a real choice.'},
+        {v:'purpose',    l:'Purpose',     r:'Purpose is the question the second half of life asks louder than the first.'},
+        {v:'love',       l:'Love',        r:'Love is the only frequency that does not ration itself when it grows.'},
+        {v:'health',     l:'Health',      r:'Health is the body asking for attention. The companion will help name which kind.'},
+        {v:'time',       l:'Time',        r:'Time is the only resource you cannot make more of. Choosing what it is for is the practice.'},
+        {v:'money',      l:'Money',       r:'Money is energy held in waiting. The question is always what for.'},
+        {v:'creativity', l:'Creativity',  r:'Creativity is the channel through which something not-yet enters the room.'},
+        {v:'growth',     l:'Growth',      r:'Growth is the orientation, not the destination. The companion will keep that in mind.'},
+        {v:'impact',     l:'Impact',      r:'Impact is the externalisation of internal work. Both halves count.'},
+        {v:'adventure',  l:'Adventure',   r:'Adventure is the body wanting to be larger than the room. We can build the room around that.'},
+        {v:'stability',  l:'Stability',   r:'Stability is the ground that lets the rest of the work happen. Naming it is not small.'}
+      ],
+      field:'standing.dominantDesire'
+    },
+    {
+      id:'avoiding', session:1, sessionTitle:'Where you stand',
+      question:"What's the thing you keep postponing — the one you know you'll have to face?",
+      hint:'Optional. Skip if it is not ready to be named.',
+      type:'textarea',
+      placeholder:'The thing that keeps moving to next week…',
+      reflection:'Naming it is most of the work. Notice — the room did not change. You did.',
+      optional:true,
+      field:'standing.avoiding'
+    },
+    {
+      id:'pull', session:1, sessionTitle:'Where you stand',
+      question:"What pulls you?",
+      hint:'A person, a place, a topic, a feeling. Whatever surfaces first.',
+      type:'textarea',
+      placeholder:'What pulls…',
+      reflection:'Whatever pulls is the direction. Trust the pull — it knows things the plan does not.',
+      field:'standing.pull'
+    },
+
+    // Session 2 — Your design
+    {
+      id:'birthData', session:2, sessionTitle:'The map you came in with',
+      question:"Your birth — date, place, and time if you have it.",
+      hint:'This generates your Human Design chart, your Gene Keys, and your natal astrology. If you do not know the exact time, you can mark it unknown — the chart still works, just less precise. You can also skip this entire step and come back later.',
+      type:'birthForm',
+      reflection:'Your chart is one of about eight billion configurations. The one you got is the one that fits the work you came here to do.',
+      optional:true,
+      field:'design.birth'
+    },
+    {
+      id:'priorFamiliarity', session:2, sessionTitle:'The map you came in with',
+      question:"Have you read or worked with Human Design, Gene Keys, or astrology before?",
+      type:'tiles', cols:2,
+      options:[
+        {v:'none',    l:'None of it',      r:'Then we start fresh. The system reveals itself in its own time.'},
+        {v:'little',  l:'A little',        r:'A little is plenty for now. The deeper material waits for the right question.'},
+        {v:'lot',     l:'A lot',           r:'Then the companion will not over-translate. We will speak the actual language.'},
+        {v:'teach',   l:'I teach it',      r:'Then the companion will sometimes ask you to teach it back. The mirror works both ways.'}
+      ],
+      field:'design.priorFamiliarity'
+    },
+    {
+      id:'cannotChange', session:2, sessionTitle:'The map you came in with',
+      question:"What's one thing about yourself you've never been able to change, no matter how hard you tried?",
+      hint:'The thing that does not move. The thing that comes back.',
+      type:'textarea',
+      placeholder:'The thing that stays…',
+      reflection:'That thing is probably not a flaw. It is likely the shape of how you are supposed to move.',
+      field:'design.cannotChange'
+    },
+
+    // Session 3 — How you move
+    {
+      id:'toward_away', session:3, sessionTitle:'How your mind moves',
+      question:"When you set out, are you moving toward something you want, or away from something you don't?",
+      type:'tiles', cols:1,
+      options:[
+        {v:'toward',  l:'Toward what I want',        r:'Toward types lead with vision. The companion will speak in what you are reaching for.'},
+        {v:'away',    l:'Away from what I don\'t',   r:'Away From types lead with relief. The companion will speak in what you are moving past.'},
+        {v:'both',    l:'Both, depending',           r:'The rarer configuration. The companion will pace between the two.'}
+      ],
+      field:'meta.toward_away'
+    },
+    {
+      id:'internal_external', session:3, sessionTitle:'How your mind moves',
+      question:"How do you know you've done good work?",
+      type:'tiles', cols:1,
+      options:[
+        {v:'internal',l:'I feel it inside',          r:'Internal frame. The companion mirrors what you already know, never verifies it.'},
+        {v:'external',l:'Someone tells me',          r:'External frame. The companion names the work back to you so you can hear it.'},
+        {v:'mixed',   l:'Both, but one weighs more', r:'Mixed. The companion holds both and leans to the heavier side as it learns you.'}
+      ],
+      field:'meta.internal_external'
+    },
+    {
+      id:'options_procedures', session:3, sessionTitle:'How your mind moves',
+      question:"Step-by-step, or a few possibilities you choose between?",
+      type:'tiles', cols:1,
+      options:[
+        {v:'procedures',l:'Step-by-step',              r:'Procedures. The companion sequences your moves.'},
+        {v:'options',   l:'A few possibilities',       r:'Options. The companion hands you doors instead of paths.'},
+        {v:'depends',   l:'Depends',                   r:'Then we match the context.'}
+      ],
+      field:'meta.options_procedures'
+    },
+    {
+      id:'general_specific', session:3, sessionTitle:'How your mind moves',
+      question:"Big picture first, or details first?",
+      type:'tiles', cols:1,
+      options:[
+        {v:'general', l:'Big picture',                  r:'General sort. The companion opens with the frame.'},
+        {v:'specific',l:'Details',                      r:'Specific sort. The companion opens with the part.'},
+        {v:'both',    l:'Both, in that order',          r:'The companion leads with what you asked for.'}
+      ],
+      field:'meta.general_specific'
+    },
+    {
+      id:'sameness_difference', session:3, sessionTitle:'How your mind moves',
+      question:"Do you notice what's the same about things, or what's different?",
+      type:'tiles', cols:1,
+      options:[
+        {v:'sameness',  l:'What is the same',           r:'Sameness sort. Change reads as discontinuity — the companion frames moves as continuations.'},
+        {v:'difference',l:'What is different',          r:'Difference sort. You sort for what is new. The companion offers unopened doors.'},
+        {v:'both',      l:'Both',                       r:'Then we match the context.'}
+      ],
+      field:'meta.sameness_difference'
+    },
+    {
+      id:'convincer', session:3, sessionTitle:'How your mind moves',
+      question:"How many times do you need to experience something to trust it?",
+      type:'tiles', cols:2,
+      options:[
+        {v:'once',        l:'Once',                     r:'Automatic convincer. The first instance lands. The companion writes for the first read.'},
+        {v:'few',         l:'A few times',              r:'Number-of-examples. The companion returns to the same insight from different angles.'},
+        {v:'many',        l:'Many times',               r:'Consistent. The companion knows nothing is settled — it keeps being said.'},
+        {v:'reconvinced', l:'Always reconvinced',       r:'Then the relationship is the practice, not the conclusion.'}
+      ],
+      field:'meta.convincer'
+    },
+    {
+      id:'haveToSentence', session:3, sessionTitle:'How your mind moves',
+      question:'What\'s your "I have to ___" sentence this week?',
+      hint:'Catch yourself saying it. Write what comes after the "have to."',
+      type:'textarea',
+      placeholder:'I have to…',
+      reflection:'That sentence has a voice in it. Whose? The "have to" is rarely yours alone.',
+      field:'meta.modalOperators.necessity'
+    },
+    {
+      id:'cantSentence', session:3, sessionTitle:'How your mind moves',
+      question:'What\'s your "I can\'t ___" sentence this week?',
+      hint:'The thing you keep telling yourself you cannot do.',
+      type:'textarea',
+      placeholder:'I can\'t…',
+      reflection:'"Can\'t" is a closed door. Sometimes it is not locked — just heavier than it looks.',
+      field:'meta.modalOperators.impossibility'
+    },
+
+    // Session 4 — Your doors
+    {
+      id:'negativeTriggers', session:4, sessionTitle:'Your doors',
+      question:"What reliably ruins your day in under sixty seconds?",
+      hint:'Up to three. One per line. These are data, not judgments — precise locators of what asks to be integrated.',
+      type:'list', max:3,
+      placeholder:'Something that pulls you down fast…',
+      reflection:'Not weaknesses. Locators. Each one points at something asking to be met.',
+      field:'triggers.negative'
+    },
+    {
+      id:'positiveTriggers', session:4, sessionTitle:'Your doors',
+      question:"What reliably brings you back?",
+      hint:'Up to three. Doors the companion can hand you when you are far from yourself.',
+      type:'list', max:3,
+      placeholder:'Something that returns you to yourself…',
+      reflection:'Hold these. When you are far from yourself, these are the doors back.',
+      field:'triggers.positive'
+    },
+    {
+      id:'music', session:4, sessionTitle:'Your doors',
+      question:"What music does to you what nothing else can?",
+      hint:'Optional. A song, an artist, a frequency.',
+      type:'textarea',
+      placeholder:'The sound that works on you…',
+      reflection:'Music bypasses the mind. The companion holds this for the Mindmovie that is coming.',
+      optional:true,
+      field:'triggers.music'
+    },
+    {
+      id:'place', session:4, sessionTitle:'Your doors',
+      question:"Where do you feel most yourself?",
+      hint:'A place. A time. A configuration. Any of them.',
+      type:'textarea',
+      placeholder:'Where, when, with whom…',
+      reflection:'That place is a state. Once you know what it is made of, you can build it anywhere.',
+      field:'triggers.place'
+    },
+    {
+      id:'witnessedTruth', session:4, sessionTitle:'Your doors',
+      question:"What's the last thing someone said about you that landed as true?",
+      hint:'The sentence the body knew the moment it heard it.',
+      type:'textarea',
+      placeholder:'The sentence that landed…',
+      reflection:'People rarely tell us the true things. When they do, the body knows. Write it where you can see it.',
+      field:'triggers.witnessedTruth'
+    },
+
+    // Session 5 — What to remember + baseline
+    {
+      id:'rememberOne', session:5, sessionTitle:'What to remember',
+      question:"If VBRTN could remember one thing about you forever, what would you want it to be?",
+      hint:'One line. This becomes the companion\'s opening line in every session.',
+      type:'textarea',
+      placeholder:'The one thing…',
+      reflection:'That is the seed. The companion will speak to that part of you, first, every time.',
+      field:'rememberOne'
+    },
+    {
+      id:'desireToLearn', session:5, sessionTitle:'What to remember',
+      question:"Right now, how strong is your desire to learn?",
+      hint:'First half of the Teachability Index. There is no wrong answer — only the truth right now.',
+      type:'slider', min:1, max:10, labels:['Low','High'], defaultV:5,
+      reflection:'Even a low score is information. Desire shifts, and the companion learns the shape of yours.',
+      field:'baseline.desireToLearn'
+    },
+    {
+      id:'willingnessToChange', session:5, sessionTitle:'What to remember',
+      question:"Right now, how willing do you feel to actually change?",
+      hint:'Second half. Willingness × desire = your Teachability Index baseline.',
+      type:'slider', min:1, max:10, labels:['Closed','Open'], defaultV:5,
+      reflection:'Willingness is harder than desire — it touches identity. The companion notices when it shifts.',
+      field:'baseline.willingnessToChange'
+    },
+    {
+      id:'chiefAimDistance', session:5, sessionTitle:'What to remember',
+      question:"Right now, how far do you feel from the life you want?",
+      hint:'1 means you are already there. 10 means it feels impossibly far. The trend over time is the work.',
+      type:'slider', min:1, max:10, labels:['Already there','Impossibly far'], defaultV:5,
+      reflection:'This is the baseline. Not the verdict. The number changes. The trend is the work.',
+      field:'baseline.chiefAimDistance'
+    }
+  ];
+
+  // ── State management ─────────────────────────────────────────────
+  function loadProfile(){
+    try{
+      const raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : freshProfile();
+    }catch(e){ return freshProfile(); }
+  }
+  function freshProfile(){
+    return {
+      standing:{texture:null,recentFeeling:null,dominantDesire:null,avoiding:'',pull:''},
+      design:{birth:null,priorFamiliarity:null,cannotChange:'',hd:null,gk:null,astro:null},
+      meta:{
+        toward_away:null,internal_external:null,options_procedures:null,
+        general_specific:null,sameness_difference:null,convincer:null,
+        modalOperators:{necessity:[],impossibility:[]}
+      },
+      triggers:{negative:[],positive:[],music:'',place:'',witnessedTruth:''},
+      rememberOne:'',
+      baseline:{
+        intakeStartedAt:Date.now(),
+        intakeCompletedAt:null,
+        desireToLearn:null,
+        willingnessToChange:null,
+        teachabilityIndex:null,
+        chiefAimDistance:null,
+        recentFeelingAtIntake:null
+      },
+      state:{stateOctave:'',lastSevenJournalTones:[],ti:{current:null,history:[]},chiefAimDistance:{current:null,history:[]}},
+      history:{interactions:[],lastSeen:null,journalEntries:[],habitShape:{}},
+      _intakeAnswers:{}
+    };
+  }
+  function saveProfile(p){ localStorage.setItem(STORE_KEY, JSON.stringify(p)); }
+  function loadPosition(){ const r = localStorage.getItem(POSITION_KEY); return r ? parseInt(r,10) : 0; }
+  function savePosition(n){ localStorage.setItem(POSITION_KEY, String(n)); }
+  function isStarted(){ return localStorage.getItem(STARTED_KEY) === '1'; }
+  function markStarted(){ localStorage.setItem(STARTED_KEY, '1'); }
+  function getSessionsShown(){
+    try{ return JSON.parse(localStorage.getItem(SESSIONS_SHOWN_KEY) || '[]'); }catch(e){ return []; }
+  }
+  function markSessionShown(s){
+    const list = getSessionsShown();
+    if(!list.includes(s)) list.push(s);
+    localStorage.setItem(SESSIONS_SHOWN_KEY, JSON.stringify(list));
+  }
+  function setField(profile, path, value){
+    const parts = path.split('.');
+    let obj = profile;
+    for(let i=0;i<parts.length-1;i++){
+      if(!obj[parts[i]]) obj[parts[i]] = {};
+      obj = obj[parts[i]];
+    }
+    obj[parts[parts.length-1]] = value;
+  }
+
+  // ── Globals ──────────────────────────────────────────────────────
+  let profile = loadProfile();
+  let pos = loadPosition();
+  let pendingAnswer = null;
+  let reflectionShown = false;
+  let advanceTimer = null;
+  let autoAdvanceTimer = null;
+
+  const stage = document.getElementById('stage');
+  const nextBtn = document.getElementById('nextBtn');
+  const backBtn = document.getElementById('backBtn');
+  const progressEl = document.getElementById('progress');
+  const navEl = document.getElementById('nav');
+  const wordmarkEl = document.getElementById('wordmark');
+
+  // ── Insight derivation (what VBRTN already sees) ─────────────────
+  function derivePartialInsights(){
+    const p = profile;
+    const lines = [];
+
+    if(p.standing.texture && p.standing.recentFeeling){
+      lines.push(`A person ${textureToVerb(p.standing.texture)}, whose recent state has carried ${p.standing.recentFeeling}.`);
+    } else if(p.standing.texture){
+      lines.push(`A person ${textureToVerb(p.standing.texture)}.`);
+    }
+
+    if(p.standing.dominantDesire){
+      lines.push(`Reaching toward more ${p.standing.dominantDesire}.`);
+    }
+
+    if(p.standing.pull && p.standing.pull.length > 0){
+      const pull = p.standing.pull.split(/[.\n]/)[0].trim().substring(0,80);
+      if(pull) lines.push(`Pulled toward: ${pull.toLowerCase()}.`);
+    }
+
+    if(p.design.hd && p.design.hd.type){
+      lines.push(`A ${p.design.hd.type} by design — strategy: ${p.design.hd.strategy.toLowerCase()}.`);
+    }
+
+    if(p.meta.toward_away){
+      const t = p.meta.toward_away === 'toward' ? 'reaches toward'
+              : p.meta.toward_away === 'away' ? 'moves away from'
+              : 'paces between';
+      lines.push(`Whose mind ${t}.`);
+    }
+
+    if(p.meta.modalOperators && p.meta.modalOperators.necessity && p.meta.modalOperators.necessity.length > 0){
+      const s = p.meta.modalOperators.necessity[0].text || '';
+      if(s.length > 0) lines.push(`Carrying a "have to" sentence the companion will come back to.`);
+    }
+
+    if(p.triggers.positive && p.triggers.positive.length > 0){
+      lines.push(`Doors back to self: ${p.triggers.positive.slice(0,2).join(', ').toLowerCase()}.`);
+    }
+
+    return lines.slice(0, 3);
+  }
+
+  function textureToVerb(t){
+    return {
+      stride:'hitting their stride',
+      building:'slowly building',
+      holding:'holding it together',
+      surviving:'just getting through',
+      'catching-breath':'catching their breath',
+      restart:'starting over',
+      searching:'looking for what is next',
+      returning:'coming back to themselves'
+    }[t] || t;
+  }
+
+  // ── Renderers ────────────────────────────────────────────────────
+  function renderProgress(){
+    const session = pos < QUESTIONS.length ? QUESTIONS[pos].session : SESSIONS + 1;
+    let html = '';
+    for(let s=1;s<=SESSIONS;s++){
+      let cls = '';
+      if(s < session) cls = 'done';
+      else if(s === session) cls = 'active';
+      html += `<span class="${cls}"></span>`;
+    }
+    progressEl.innerHTML = html;
+  }
+
+  function renderSplash(){
+    progressEl.classList.add('hidden');
+    navEl.classList.add('hidden');
+    stage.innerHTML = `
+      <div class="splash">
+        <div class="eyebrow-big">Begin to know yourself</div>
+        <h1>Twenty-five questions. About twelve minutes total. Three short sessions you can leave anytime — the room remembers.</h1>
+        <p class="lede">By question five, you may notice the questions are not the point. What you say back to yourself is.</p>
+        <p class="lede-2">VBRTN reads each answer through your design, your meta-programs, and the patterns it learns over time. Nothing leaves this device until you sign in.</p>
+        <button class="btn primary breathing" id="beginBtn" type="button" style="margin-top:24px">Begin</button>
+        <div class="meta-line">Session 1 begins · Where you stand</div>
+      </div>`;
+    document.getElementById('beginBtn').addEventListener('click', ()=>{
+      markStarted();
+      renderCurrent();
+    });
+  }
+
+  function renderInterstitial(sessionJustCompleted, callback){
+    progressEl.classList.remove('hidden');
+    renderProgress();
+    navEl.classList.add('hidden');
+    const insights = derivePartialInsights();
+    const insightHtml = insights.length > 0
+      ? `<p>${insights.join(' ')}</p>`
+      : `<p>The companion is beginning to recognise the shape.</p>`;
+
+    const nextSession = sessionJustCompleted + 1;
+    const nextTitle = QUESTIONS.find(q => q.session === nextSession)?.sessionTitle || '';
+
+    stage.innerHTML = `
+      <div class="interstitial">
+        <div class="label">VBRTN already sees</div>
+        <h2>${nextTitle ? `Session ${nextSession} · ${nextTitle}` : 'Intake nearly complete'}</h2>
+        ${insightHtml}
+        <p class="sub">Continuing in a moment…</p>
+        <div class="countdown">Auto</div>
+      </div>`;
+
+    if(autoAdvanceTimer) clearTimeout(autoAdvanceTimer);
+    autoAdvanceTimer = setTimeout(()=>{
+      callback();
+    }, 2700);
+  }
+
+  function renderCurrent(){
+    if(!isStarted()){ renderSplash(); return; }
+    if(pos >= QUESTIONS.length){ renderComplete(); return; }
+
+    // Check whether we should show a session interstitial first
+    const currentSession = QUESTIONS[pos].session;
+    const prevSession = pos > 0 ? QUESTIONS[pos-1].session : 0;
+    const sessionsShown = getSessionsShown();
+
+    if(pos > 0 && currentSession !== prevSession && !sessionsShown.includes(currentSession)){
+      markSessionShown(currentSession);
+      renderInterstitial(prevSession, ()=> { renderQuestion(); });
+      return;
+    }
+
+    renderQuestion();
+  }
+
+  function renderQuestion(){
+    wordmarkEl.classList.remove('hidden');
+    progressEl.classList.remove('hidden');
+    navEl.classList.remove('hidden');
+    renderProgress();
+
+    const q = QUESTIONS[pos];
+    pendingAnswer = null;
+    reflectionShown = false;
+    if(autoAdvanceTimer){ clearTimeout(autoAdvanceTimer); autoAdvanceTimer = null; }
+
+    let html = `<div class="eyebrow">Session ${q.session} of ${SESSIONS} · ${q.sessionTitle}</div>`;
+    html += `<h2 class="question">${q.question}</h2>`;
+    if(q.hint) html += `<div class="hint">${q.hint}</div>`;
+    html += `<div id="answer-area"></div>`;
+    html += `<div class="reflection" id="reflection" aria-live="polite"></div>`;
+    stage.innerHTML = html;
+
+    renderAnswerControl(q, document.getElementById('answer-area'));
+    updateNav();
+    backBtn.style.visibility = pos === 0 ? 'hidden' : 'visible';
+    nextBtn.style.visibility = 'visible';
+  }
+
+  function renderAnswerControl(q, area){
+    const existing = readExistingAnswer(q);
+
+    if(q.type === 'tiles'){
+      const cls = q.cols === 1 ? 'tiles' : 'tiles grid';
+      area.innerHTML = `<div class="${cls}" role="radiogroup"></div>`;
+      const group = area.firstElementChild;
+      q.options.forEach(opt=>{
+        const btn = document.createElement('button');
+        btn.type = 'button';
+        btn.className = 'tile' + (existing === opt.v ? ' selected' : '');
+        btn.setAttribute('role','radio');
+        btn.setAttribute('aria-checked', existing === opt.v ? 'true' : 'false');
+        btn.textContent = opt.l;
+        btn.addEventListener('click', ()=>{
+          // visual select
+          Array.from(group.children).forEach(c=>{c.classList.remove('selected');c.setAttribute('aria-checked','false');});
+          btn.classList.add('selected');
+          btn.setAttribute('aria-checked','true');
+          pendingAnswer = opt.v;
+          showReflection(opt.r);
+          updateNav();
+          // Auto-advance after reflection settles
+          if(advanceTimer) clearTimeout(advanceTimer);
+          // lock all tiles to prevent change-spam
+          Array.from(group.children).forEach(c=>c.classList.add('locked'));
+          advanceTimer = setTimeout(()=>{
+            next();
+          }, 1750);
+        });
+        group.appendChild(btn);
+      });
+      if(existing){
+        const sel = q.options.find(o=>o.v===existing);
+        if(sel) showReflection(sel.r);
+        pendingAnswer = existing;
+      }
+    }
+
+    else if(q.type === 'textarea'){
+      const ta = document.createElement('textarea');
+      ta.className = 'textarea';
+      ta.placeholder = q.placeholder || '';
+      ta.value = (existing && typeof existing === 'string') ? existing : '';
+      if(typeof existing === 'object' && existing && existing.text) ta.value = existing.text;
+      ta.addEventListener('input', ()=>{
+        pendingAnswer = ta.value.trim();
+        if(pendingAnswer.length > 0 && !reflectionShown){
+          showReflection(q.reflection);
+        }
+        updateNav();
+      });
+      area.appendChild(ta);
+      if(ta.value.trim().length > 0){
+        pendingAnswer = ta.value.trim();
+        showReflection(q.reflection);
+      }
+    }
+
+    else if(q.type === 'list'){
+      const wrap = document.createElement('div');
+      wrap.className = 'listfield';
+      const existingList = Array.isArray(existing) ? existing : [];
+      for(let i=0;i<q.max;i++){
+        const inp = document.createElement('input');
+        inp.type = 'text';
+        inp.className = 'textfield';
+        inp.placeholder = q.placeholder + (i===0?'':' (optional)');
+        inp.value = existingList[i] || '';
+        inp.addEventListener('input', ()=>{
+          const vals = Array.from(wrap.querySelectorAll('input')).map(x=>x.value.trim()).filter(Boolean);
+          pendingAnswer = vals;
+          if(vals.length > 0 && !reflectionShown) showReflection(q.reflection);
+          updateNav();
+        });
+        wrap.appendChild(inp);
+      }
+      area.appendChild(wrap);
+      if(existingList.length > 0){
+        pendingAnswer = existingList;
+        showReflection(q.reflection);
+      }
+    }
+
+    else if(q.type === 'slider'){
+      const initial = (existing != null) ? existing : q.defaultV;
+      area.innerHTML = `
+        <div class="slider-wrap">
+          <div class="slider-labels">
+            <span>${q.labels[0]} · ${q.min}</span>
+            <span>${q.labels[1]} · ${q.max}</span>
+          </div>
+          <input type="range" class="slider" min="${q.min}" max="${q.max}" value="${initial}" id="slider-${q.id}">
+          <div class="slider-value" id="sv-${q.id}">${initial}</div>
+        </div>`;
+      const slider = document.getElementById('slider-'+q.id);
+      const valEl = document.getElementById('sv-'+q.id);
+      pendingAnswer = parseInt(slider.value,10);
+      showReflection(q.reflection);
+      slider.addEventListener('input', ()=>{
+        valEl.textContent = slider.value;
+        pendingAnswer = parseInt(slider.value,10);
+        updateNav();
+      });
+    }
+
+    else if(q.type === 'birthForm'){
+      const existingB = existing || {};
+      area.innerHTML = `
+        <div class="form-row">
+          <label for="bdate">Date of birth</label>
+          <input type="date" class="textfield" id="bdate" value="${existingB.date || ''}">
+        </div>
+        <div class="form-row" id="time-row">
+          <label for="btime">Time of birth</label>
+          <input type="time" class="textfield" id="btime" value="${existingB.time || ''}">
+          <label class="toggle-row" id="time-unknown-row">
+            <input type="checkbox" id="time-unknown" ${existingB.timeUnknown ? 'checked' : ''}>
+            <span>Time unknown — work without it</span>
+          </label>
+          <div class="helper">Exact time gives the sharpest chart. Approximate is fine. Unknown still works — the companion adapts.</div>
+        </div>
+        <div class="form-row">
+          <label for="bcity">City of birth</label>
+          <input type="text" class="textfield" id="bcity" placeholder="City, country" value="${existingB.city || ''}">
+        </div>
+
+        <div class="skip-card">
+          <div class="skip-line">Not ready to enter this yet?</div>
+          <button class="skip-btn" id="birth-skip" type="button">Skip — I'll come back to my chart later</button>
+        </div>`;
+
+      const dEl = document.getElementById('bdate');
+      const tEl = document.getElementById('btime');
+      const cEl = document.getElementById('bcity');
+      const tuRow = document.getElementById('time-row');
+      const tuChk = document.getElementById('time-unknown');
+      const tuRowLabel = document.getElementById('time-unknown-row');
+
+      function applyTimeUnknown(){
+        if(tuChk.checked){
+          tuRow.classList.add('time-disabled');
+          tuRowLabel.classList.add('checked');
+          tEl.value = '';
+        } else {
+          tuRow.classList.remove('time-disabled');
+          tuRowLabel.classList.remove('checked');
+        }
+      }
+      applyTimeUnknown();
+      tuChk.addEventListener('change', ()=>{
+        applyTimeUnknown();
+        check();
+      });
+
+      function check(){
+        const d = dEl.value, c = cEl.value.trim();
+        if(d && c){
+          pendingAnswer = {
+            date: d,
+            time: tuChk.checked ? null : (tEl.value || null),
+            timeUnknown: !!tuChk.checked,
+            city: c
+          };
+          if(!reflectionShown) showReflection(q.reflection);
+        } else {
+          pendingAnswer = null;
+        }
+        updateNav();
+      }
+      [dEl, tEl, cEl].forEach(el => el.addEventListener('input', check));
+      check();
+
+      document.getElementById('birth-skip').addEventListener('click', ()=>{
+        // Mark as deliberately skipped
+        profile.design.birth = { skipped: true, skippedAt: Date.now() };
+        saveProfile(profile);
+        pos++;
+        savePosition(pos);
+        renderCurrent();
+        window.scrollTo({top:0,behavior:'smooth'});
+      });
+    }
+  }
+
+  function readExistingAnswer(q){
+    if(q.field === 'meta.modalOperators.necessity') return profile.meta.modalOperators.necessity?.[0]?.text || '';
+    if(q.field === 'meta.modalOperators.impossibility') return profile.meta.modalOperators.impossibility?.[0]?.text || '';
+    if(q.field === 'design.birth') return profile.design.birth?.skipped ? null : profile.design.birth;
+    if(q.field === 'meta.convincer') return profile.meta.convincer?.mode || null;
+    const parts = q.field.split('.');
+    let obj = profile;
+    for(const p of parts){
+      if(obj == null) return null;
+      obj = obj[p];
+    }
+    return obj;
+  }
+
+  function showReflection(text){
+    const el = document.getElementById('reflection');
+    if(!el) return;
+    el.textContent = text;
+    requestAnimationFrame(()=>{ el.classList.add('in'); });
+    reflectionShown = true;
+  }
+
+  function updateNav(){
+    const q = QUESTIONS[pos];
+    if(!q){ nextBtn.disabled = false; return; }
+    const has = pendingAnswer !== null && pendingAnswer !== '' && !(Array.isArray(pendingAnswer) && pendingAnswer.length === 0);
+    nextBtn.disabled = !has && !q.optional;
+    nextBtn.textContent = (pos === QUESTIONS.length - 1) ? 'Complete intake' : (q.optional && !has ? 'Skip' : 'Next');
+    nextBtn.classList.toggle('breathing', !nextBtn.disabled && q.type !== 'tiles');
+  }
+
+  function commitAnswer(){
+    const q = QUESTIONS[pos];
+    const val = pendingAnswer;
+    if(val === null || val === undefined || val === ''){
+      if(!q.optional) return false;
+    }
+    if(q.field === 'meta.modalOperators.necessity'){
+      if(val) profile.meta.modalOperators.necessity = [{ text: val, at: Date.now() }];
+    } else if(q.field === 'meta.modalOperators.impossibility'){
+      if(val) profile.meta.modalOperators.impossibility = [{ text: val, at: Date.now() }];
+    } else if(q.field === 'meta.convincer'){
+      profile.meta.convincer = { mode: val, count: null };
+    } else if(q.field === 'design.birth'){
+      if(val){
+        profile.design.birth = val;
+        profile.design.hd = stubHDChart();
+        profile.design.gk = stubGKProfile();
+        profile.design.astro = stubAstro();
+      }
+    } else {
+      if(val !== null && val !== undefined && val !== '') setField(profile, q.field, val);
+    }
+    if(q.field === 'standing.recentFeeling'){
+      profile.baseline.recentFeelingAtIntake = val;
+    }
+    if(q.field === 'baseline.desireToLearn' || q.field === 'baseline.willingnessToChange'){
+      const d = profile.baseline.desireToLearn, w = profile.baseline.willingnessToChange;
+      if(d != null && w != null){
+        profile.baseline.teachabilityIndex = d * w;
+        profile.state.ti = { current: d * w, history: [{ at: Date.now(), value: d * w }] };
+      }
+    }
+    if(q.field === 'baseline.chiefAimDistance'){
+      profile.state.chiefAimDistance = { current: val, history: [{ at: Date.now(), value: val }] };
+    }
+    profile._intakeAnswers[q.id] = { value: val, at: Date.now() };
+    saveProfile(profile);
+    return true;
+  }
+
+  function stubHDChart(){
+    const types = ['Generator','Manifesting Generator','Projector','Manifestor','Reflector'];
+    const strats = {'Generator':'Wait to respond','Manifesting Generator':'Respond, then inform','Projector':'Wait for invitation','Manifestor':'Inform, then initiate','Reflector':'Wait a lunar cycle'};
+    const auths = ['Sacral','Emotional','Splenic','Ego','Self-Projected','Mental','Lunar'];
+    const profiles = ['1/3','3/5','5/1','6/2','4/6','2/4','1/4','5/2','3/6','4/1'];
+    const t = types[Math.floor(Math.random()*types.length)];
+    return {
+      type:t, strategy:strats[t], authority:auths[Math.floor(Math.random()*auths.length)],
+      profile: profiles[Math.floor(Math.random()*profiles.length)],
+      centers:{defined:['Sacral','G','Throat'],open:['Head','Ajna','Heart','Spleen','Solar Plexus','Root']},
+      incarnationCross:'(computed when chart engine connects)',
+      _stub:true
+    };
+  }
+  function stubGKProfile(){ return { lifesWork: 28, evolution: 27, radiance: 19, purpose: 33, _stub:true }; }
+  function stubAstro(){
+    const signs = ['Aries','Taurus','Gemini','Cancer','Leo','Virgo','Libra','Scorpio','Sagittarius','Capricorn','Aquarius','Pisces'];
+    return { sun: signs[Math.floor(Math.random()*signs.length)],
+             moon: signs[Math.floor(Math.random()*signs.length)],
+             rising: signs[Math.floor(Math.random()*signs.length)],
+             _stub:true };
+  }
+
+  function next(){
+    const q = QUESTIONS[pos];
+    if(advanceTimer){ clearTimeout(advanceTimer); advanceTimer = null; }
+
+    if(q.type === 'birthForm' && pendingAnswer){
+      commitAnswer();
+      renderComputeInterstitial();
+      return;
+    }
+
+    if(commitAnswer() || q.optional){
+      pos++;
+      savePosition(pos);
+      renderCurrent();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  }
+  function back(){
+    if(advanceTimer){ clearTimeout(advanceTimer); advanceTimer = null; }
+    if(autoAdvanceTimer){ clearTimeout(autoAdvanceTimer); autoAdvanceTimer = null; }
+    if(pos > 0){
+      pos--;
+      savePosition(pos);
+      renderQuestion();
+      window.scrollTo({top:0,behavior:'smooth'});
+    }
+  }
+
+  function renderComputeInterstitial(){
+    progressEl.classList.add('hidden');
+    navEl.classList.add('hidden');
+    stage.innerHTML = `<div class="compute"><div class="spin">Calculating your chart…</div></div>`;
+    setTimeout(()=>{
+      const hd = profile.design.hd, gk = profile.design.gk, astro = profile.design.astro;
+      stage.innerHTML = `
+        <div class="compute">
+          <div class="chart-card">
+            <div class="title">Your design — first pass</div>
+            <dl>
+              <dt>Type</dt><dd>${hd.type}</dd>
+              <dt>Strategy</dt><dd>${hd.strategy}</dd>
+              <dt>Authority</dt><dd>${hd.authority}</dd>
+              <dt>Profile</dt><dd>${hd.profile}</dd>
+              <dt>Life's Work GK</dt><dd>${gk.lifesWork}</dd>
+              <dt>Evolution GK</dt><dd>${gk.evolution}</dd>
+              <dt>Sun</dt><dd>${astro.sun}</dd>
+              <dt>Moon</dt><dd>${astro.moon}</dd>
+              <dt>Rising</dt><dd>${astro.rising}</dd>
+            </dl>
+            <div class="chart-note">Placeholder values. The chart engine ships in the next iteration; your real chart populates here when it does.</div>
+          </div>
+          <div class="reflection in" style="margin-top:20px">Your chart is one of about eight billion configurations. The one you got fits the work you came here to do.</div>
+        </div>`;
+      navEl.classList.remove('hidden');
+      progressEl.classList.remove('hidden');
+      nextBtn.disabled = false;
+      nextBtn.textContent = 'Continue';
+      backBtn.style.visibility = 'visible';
+      const advance = ()=>{
+        pos++;
+        savePosition(pos);
+        nextBtn.removeEventListener('click', advance);
+        nextBtn.addEventListener('click', next);
+        renderCurrent();
+        window.scrollTo({top:0,behavior:'smooth'});
+      };
+      nextBtn.removeEventListener('click', next);
+      nextBtn.addEventListener('click', advance);
+    }, 1500);
+  }
+
+  function renderComplete(){
+    profile.baseline.intakeCompletedAt = Date.now();
+    saveProfile(profile);
+    progressEl.classList.remove('hidden');
+    progressEl.innerHTML = '<span class="done"></span>'.repeat(SESSIONS);
+    navEl.classList.add('hidden');
+
+    const insights = derivePartialInsights();
+    const insightsHtml = insights.map(l => `<p>${escapeHtml(l)}</p>`).join('');
+
+    const ti = profile.baseline.teachabilityIndex;
+    const hd = profile.design.hd || {};
+    const textureLabels = {
+      stride:'Hitting my stride', building:'Slowly building', holding:'Holding it together',
+      surviving:'Just getting through', 'catching-breath':'Catching my breath',
+      restart:'Starting over', searching:'Looking for what is next', returning:'Coming back to myself'
+    };
+    const summary = [
+      { label:'The one thing to remember', value: profile.rememberOne || '(not set)' },
+      { label:'Reaching toward', value: profile.standing.dominantDesire ? cap(profile.standing.dominantDesire) : '—' },
+      { label:'Where you are', value: textureLabels[profile.standing.texture] || '—' },
+      { label:'Recent feeling', value: cap(profile.standing.recentFeeling) || '—' },
+      { label:'Type · Strategy', value: hd.type ? `${hd.type} · ${hd.strategy}` : '(chart pending)' },
+      { label:'Toward / Away', value: profile.meta.toward_away ? cap(profile.meta.toward_away.replace('_',' / ')) : '—' },
+      { label:'Teachability Index baseline', value: ti != null ? ti : 'pending' },
+      { label:'Distance from the life you want', value: profile.baseline.chiefAimDistance != null ? `${profile.baseline.chiefAimDistance} / 10` : '—' }
+    ];
+    const dl = summary.map(s=>`<dt>${s.label}</dt><dd>${escapeHtml(String(s.value))}</dd>`).join('');
+
+    stage.innerHTML = `
+      <div class="complete">
+        <h1>Intake complete.</h1>
+        <div class="sub">The companion has what it needs to begin. The work, from here, is together.</div>
+        <div class="vbrtn-sees">
+          <div class="label">VBRTN sees</div>
+          ${insightsHtml || '<p>The shape is forming. The first sessions of practice will sharpen it.</p>'}
+        </div>
+        <dl class="summary">${dl}</dl>
+        <a class="btn primary breathing" href="/my-frqncy/dashboard/">Open your Sanctuary →</a>
+      </div>`;
+  }
+
+  function cap(s){ if(!s) return s; return s[0].toUpperCase() + s.slice(1); }
+  function escapeHtml(s){ return s.replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+
+  // ── Wire up ──────────────────────────────────────────────────────
+  nextBtn.addEventListener('click', next);
+  backBtn.addEventListener('click', back);
+  document.addEventListener('keydown', e=>{
+    if(e.key === 'Enter' && (e.metaKey || e.ctrlKey)){
+      if(!nextBtn.disabled) next();
+    }
+  });
+
+  if(pos > QUESTIONS.length) pos = QUESTIONS.length;
+  renderCurrent();
+})();
+</script>
+</body>
+</html>

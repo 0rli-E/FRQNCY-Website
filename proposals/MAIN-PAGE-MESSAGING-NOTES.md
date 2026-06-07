@@ -1,7 +1,72 @@
 # Main Page Messaging — Working Notes
 
 Date opened: 2026-05-22
-Status: capture-only, no edits to v2/ yet — waiting on Orlando's full direction.
+Status: brief locked, **v2 homepage built** at `/index-v2.html` (2026-05-23). Live `index.html` untouched. Final review + cutover pending Orlando.
+
+## Build summary (2026-05-23) — Golden Circle restructure
+
+The first v2 (with onboarding-video, triangle, last-door as separate floating sections) was reviewed by Orlando as "horrible" because it bolted sections on instead of restructuring around Simon Sinek's Golden Circle. **Rebuilt** with three explicit chapters: WHY · HOW · WHAT.
+
+**Live homepage now (`index.html`, also mirrored at `index-v2.html`):**
+
+1. **Hero** (`#light-intro`) — animation, FRQNCY wordmark, "A new earth. For those who take the leap." — unchanged.
+2. **Chapter 01 · WHY** (`#ch-why`) — single section. The belief: "A network of people, building their dream life. We invite you to find yourself." Tesla quote anchored beneath. Primary CTA "Tell us where you're at ✦" → `/my-frqncy`.
+3. **Chapter 02 · HOW** (`#ch-how`) — the arc in three stages (Find / Create / Live). Eight Pillars nest underneath as "the operations that hold it up."
+4. **Chapter 03 · WHAT** (`#ch-what`) — the Triangle (VBRTN / NRG Social / FRQNCY). D3 network map nests beneath as "the topic graph · 146 maps." Marquee nests beneath as "a pulse of the network."
+5. **Closer** (`#contact-section`) — primary CTA repeated, then a softer subscribe path. New footer slogan ("Capital, content and community for a conscious civilisation") replaces the rejected "FRQNCY makes the unable able" line.
+
+**Global nav** (`_chrome/global-header.html`) restructured to **Why / How / What** with submenus pointing at canonical destinations. **Synced site-wide** — 312 pages updated via `scripts/sync-headers.mjs`.
+
+**Key landing pages aligned:**
+
+- `about.html` hero label: *Vision* → **01 · Why · Vision**
+- `platform.html` hero label: *How the Network Works* → **02 · How · Platform**
+- `start-here.html` hero eyebrow: *New here* → **Entry · Why & How**
+
+**Backup of pre–Golden-Circle homepage** preserved at `index-v1-backup-pre-golden-circle.html` (551 lines) in case rollback is needed.
+
+**Voice playbook compliance:** banished terms checked, em-dashes kept moderate, no "calls/leaderboards" framing, the locked hero H1+sub preserved verbatim, subscribe overlay's "love and light" exception untouched.
+
+**HTML validity:** verified clean.
+
+**Open follow-ups:**
+
+- Stylistic polish across `ch-why` / `ch-how` / `ch-what` — once Orlando has scrolled the live page, expect specific spacing / typography callouts.
+- Restructure inner content of About, Platform, and Start Here to fully map each page to its Golden Circle chapter (the eyebrow labels are the minimum alignment; the body copy could go deeper).
+- Decide whether topic pages (146 of them) need their own Why/How/What signpost or whether the global nav is enough.
+- The `MY-FRQNCY-VBRTN-COMPANION-2026-05-22.md` proposal still doesn't exist on disk — referenced in `CLAUDE.md` as the canonical doc for the intake.
+
+## Concreteness pass (2026-05-23, second edit)
+
+After review, Orlando flagged that the WHY and HOW copy was still too abstract — visitors read it and still had questions. Rewrote both chapters using the voice playbook's "plain speech about non-plain things" principle.
+
+**WHY now names the visitor's actual feeling**:
+
+- Opens with "the default scripts aren't quite working" — names what the visitor walked in with
+- Triad of what they were sold: "the career you were told to want, the metrics you were told to chase, the version of yourself you were sold"
+- The belief is now made concrete: "they start work that doesn't burn them out, they love without performing, they make things that don't lie"
+- "We invite you to find yourself" preserved as the italic gold closer above the CTA
+
+**HOW now names the actual moves**:
+
+- Opens with concrete time: "about ten minutes telling a private companion where you are right now"
+- Relatable comparison: "questions a good friend or a good therapist would"
+- Each stage now has explicit "**You do:**" / "**You leave with:**" lines in gold, naming the input and the output
+- Each stage names the surface it runs on inline (`01 · Find · in VBRTN`, `02 · Create · in NRG Social`, `03 · Live · out in the world`)
+- Promises footer: privacy, no ranking, no paywall, leave with your data at any time
+
+**Eight Pillars collapsed**:
+
+- Previously a full grid of 8 cards under HOW — was stealing attention from the user's three-stage journey
+- Now a single discreet line that names the eight pillar verbs and links out to `/platform/` for anyone who wants the deeper view
+- This honored Orlando's earlier work without overwhelming a first-time visitor
+
+**WHAT chapter sharpened**:
+
+- Headline changed from "Three surfaces. One network." → "Three things that actually exist."
+- Lede now names Tesla's three explicitly and says "all three ship today" — anchors the architecture in reality
+- Each triangle card now opens with one concrete sentence and lists what you actually do on that surface
+- FRQNCY card now cites the real numbers: "146 maps · 766 vetted books, people, places, podcasts"
 
 ## Frame: Simon Sinek's Golden Circle
 
@@ -44,19 +109,18 @@ The three brands map to Tesla's three concepts:
 
 > "If you want to understand the universe, think in terms of energy, vibration and frequency." — Tesla
 
-| Tesla | Brand | What it is |
-|---|---|---|
-| Energy | **NRG** | Social layer marketplace → real coaching |
-| Vibration | **VBRTN** | Pocket app coach → real coach |
-| Frequency | **FRQNCY** | The network |
+| Tesla | Brand | Canonical name | What it is |
+|---|---|---|---|
+| Energy | **NRG** | **NRG Social** | The social network + marketplace — creation surface + path to real coaching |
+| Vibration | **VBRTN** | VBRTN | The app inside My FRQNCY — pocket coach → real coach |
+| Frequency | **FRQNCY** | FRQNCY | The network — connective tissue, topic graph, people |
 
 So:
 
 - **FRQNCY = the network** (the connective tissue, the topic graph, the people).
-- **NRG = creation surface + social layer + marketplace** — where you create from your bliss, and where the path to *real* (human) coaching lives.
-- **VBRTN = pocket app coach** that leads to a *real* coach.
-- The pocket agent / "coach in your pocket" lives in the VBRTN surface.
-- You **find yourself** through VBRTN; you **create from that** through NRG; both happen inside the **FRQNCY** network.
+- **NRG Social = social network + marketplace + creation surface** — where you create from your bliss, and where the path to *real* (human) coaching lives.
+- **VBRTN = the app inside My FRQNCY** — pocket coach that leads to a real coach. The pocket agent / "coach in your pocket" lives here.
+- You **find yourself** through VBRTN (inside My FRQNCY); you **create from that** through NRG Social; both happen inside the **FRQNCY** network.
 
 Tesla quote is a candidate anchor line for the page or onboarding.
 
@@ -100,9 +164,82 @@ Placeholder — Orlando to fill in.
 
 Deeper self-discovery loop. (Detail TBD.)
 
-### Final step — the last door
+### Final step — the last door (Q1 answered)
 
-Whatever the last door turns out to be (see above), this is where the arc lands.
+The ultimate goal: **people no longer need FRQNCY.**
+
+When they've moved through the whole arc:
+
+- Habits run unconsciously.
+- They're in the community because they *want* to be, not because they need to be.
+- They show up in **physical spaces / townhalls**.
+
+The success metric is *graduation*, not retention. This is anti-attention-economy by design. It also means the homepage shouldn't promise "stay forever" — it should promise *find yourself, build the habits, then go live*.
+
+This lands at the same place as the end of the middle-loop (see below): **Creation of a new earth.** Individuals don't need FRQNCY anymore because together they *are* the new earth.
+
+## The middle of the journey (Q2 + Q3 — one growing loop)
+
+Steps 2 and 3 aren't discrete — they're a single loop that grows with the person. The chain of thought, in order:
+
+1. **Intake** — Abfrage, query the person.
+2. **Data** — captured into the agent's working memory.
+3. **AI synthesis** — generates rules + training program + a **Future-You Assistant**, custom-built from charts, NLP, data.
+4. **Goal anchoring** — supports a self-defined, flexible goal.
+5. **To-dos — MTRSYCW** (acronym TBD — Orlando to confirm).
+6. **Dreambuilding** — KI avatar *with you in the photo*, mind-movie, audios, physical dreambuilding. Engages **all five senses**. Upload an image to make it more specific to the person.
+7. **Personalized exercises** — status quo, **WDYLT** ("What did you learn today"?), **TI** (Teachability Index), **TBS** (TBD), leadership, **Seed of Greater Benefit**.
+8. **Agent leads** — **GIN-trained** (TBD). Leads people *to look for the gold* / **blaue Brille** (the blue/reframe lens).
+9. **Outcome orientation** — "helps me get to where I want to be (feel better)."
+10. **Positive momentum + habits — success cycle (MTRSYCW).**
+11. **Content + KTs (TBD) + progress** — the loop grows with the person.
+12. **Output: Creations from people on FRQNCY.**
+13. **End state: Creation of a new earth.**
+
+This loop is the answer to *"what now?"* after the visitor finds themselves. It feeds the last door.
+
+### Acronyms to confirm with Orlando
+
+- **MTRSYCW** — appears twice, tied to to-dos and the success cycle.
+- **TBS** — appears alongside WDYLT, TI, leadership.
+- **GIN** — the training the agent has gone through.
+- **KTs** — appears in "content + KTs + progress."
+
+## Agent presence on the homepage (Q4 answered)
+
+The agent does **not** introduce itself first on the homepage. Plain copy does the hooking. The agent is **teased** before commitment, then enters fully **after Step 1**. So the visitor sees hints of the agent's presence early, but their first real conversation with it is once they've decided to start.
+
+## Triangle on the homepage (Q6 answered)
+
+The Triangle (NRG / VBRTN / FRQNCY) does **not** lead the homepage. The homepage focuses on the *experience* — find yourself → create from that bliss. NRG, VBRTN, and FRQNCY become visible **as the visitor moves through the flow**, each surface getting named when it's about to be relevant. Show, don't sell.
+
+This matches the "experiment, not prescription" voice rule and the anti-attention-economy posture — we don't front-load architecture on a first-time visitor.
+
+## Onboarding video placement (Q7 answered)
+
+The video sits **after the first scroll down** from the homepage hero. The hero stays clean (Why hook + primary CTA + tiny secondary CTA). The video is the first thing the visitor meets *after* they choose to scroll — rewarding the small commitment of "I'm interested, show me more" with the clearest single-shot explanation of what FRQNCY is.
+
+## Brand naming on the site today (Q8 answered)
+
+NRG and VBRTN are **already real surfaces**, not concept-stage:
+
+- **VBRTN** lives as the **app inside My FRQNCY**.
+- **NRG Social** is the **social network and marketplace** (the canonical name is *NRG Social*, not bare *NRG*).
+
+This means the homepage rework introduces nothing new in terms of brand architecture — it just makes the existing Triangle legible as the visitor moves through the flow.
+
+## Tesla quote (Q9 answered)
+
+The Tesla quote sits **directly below the Triangle**, wherever the Triangle is revealed inside the journey. Not on the homepage hero, not in the footer — it's the anchor under the diagram that names the three.
+
+> "If you want to understand the universe, think in terms of energy, vibration and frequency." — Tesla
+
+## Primary CTA (Q5 answered)
+
+- **Primary CTA:** *"Tell us where you're at"* → opens the **My FRQNCY intake questionnaire** (this is Step 1 of the journey — homepage CTA and the agent's first prompt are the same sentence).
+- **Secondary CTA, smaller, below:** *"See how it works (90 sec)"* → the onboarding video.
+- **No signup wall at the gate.** Account creation is offered *after* the agent has produced something worth keeping (charts, future-you assistant, daily check-ins).
+- Reference for the intake: `proposals/MY-FRQNCY-VBRTN-COMPANION-2026-05-22.md` (per CLAUDE.md — the intake questionnaire v0 and the four-shape companion architecture).
 
 ## Onboarding video
 

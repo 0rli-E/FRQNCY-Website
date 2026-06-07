@@ -1,0 +1,48 @@
+name: Ingest pipeline (v0.5)
+
+# Drafts new-upload proposals for the Watch hub. Nothing here auto-merges.
+# Per scripts/ingest/README.md.
+#
+# Currently MANUAL ONLY (workflow_dispatch). The `schedule` trigger is
+# commented out — uncomment it when the v0.5 pipeline has been observed for a
+# few weeks and proposals are reliably mergeable with minor edits.
+
+on:
+  workflow_dispatch: {}
+  # schedule:
+  #   - cron: '0 9 * * *'  # 09:00 UTC daily — uncomment to enable
+
+jobs:
+  propose:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+
+      - name: Resolve handles (refresh channel-id cache)
+        run: node scripts/ingest/resolve-handles.mjs
+
+      - name: Run propose pipeline
+        run: node scripts/ingest/propose.mjs
+        env:
+          YOUTUBE_API_KEY: ${{ secrets.YOUTUBE_API_KEY }}
+          ANTHROPIC_API_KEY: ${{ secrets.ANTHROPIC_API_KEY }}
+
+      - name: Open PR with the new proposal
+        uses: peter-evans/create-pull-request@v6
+        with:
+          commit-message: 'ingest: draft proposal for new uploads'
+          title: 'Ingest: new-upload proposal (review + merge)'
+          body: |
+            Drafted by `scripts/ingest/propose.mjs` — see the dated Markdown file
+            in `scripts/ingest/output/proposals/` for the human-readable summary.
+
+            **Nothing has been merged into `videos.json` or `playlists.json`.**
+            This PR only contains the proposal artifacts. Apply the deltas
+            manually per `scripts/ingest/README.md` → "Merging".
+          branch: ingest/propose-${{ github.run_id }}
+          add-paths: |
+            scripts/ingest/output/**
