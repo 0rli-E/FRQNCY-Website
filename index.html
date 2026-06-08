@@ -916,7 +916,41 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
   </main>
   <script src="mobile-nav.js" defer></script>
   <script src="assets/network-map.js?v=2026-05-22a" defer></script>
-  <script src="index.js" defer></script>
+  <script src="index.js?v=2026-05-22a" defer></script>
+  <!-- ▼▼ EXPLORE-MAP DEFENSIVE INIT (2026-05-22) ▼▼
+       The map's primary init lives in index.js (FRQNCYNetworkMap.init({})), but
+       service-worker cache state, deferred-script ordering quirks, or a stale
+       index.js can occasionally skip it. This inline block waits for both
+       DOMContentLoaded and the FRQNCYNetworkMap global to be present, then
+       calls init once. Idempotent — the renderer itself short-circuits on
+       repeat calls. -->
+  <script>
+    (function(){
+      var tries = 0;
+      function tryInit(){
+        tries++;
+        if (typeof window.FRQNCYNetworkMap !== 'undefined' && document.getElementById('nm-container')) {
+          try {
+            // Mark to avoid double-init via index.js as well.
+            if (window.__frqncyMapInited) return;
+            window.__frqncyMapInited = true;
+            window.FRQNCYNetworkMap.init({});
+          } catch (e) {
+            console.warn('[FRQNCY] map init threw:', e);
+          }
+          return;
+        }
+        if (tries < 40) setTimeout(tryInit, 150); // ~6s max wait
+        else console.warn('[FRQNCY] map init: container or FRQNCYNetworkMap never appeared');
+      }
+      if (document.readyState === 'loading') {
+        document.addEventListener('DOMContentLoaded', tryInit);
+      } else {
+        tryInit();
+      }
+    })();
+  </script>
+  <!-- ▲▲ EXPLORE-MAP DEFENSIVE INIT ▲▲ -->
   <!-- Social auth awareness (Supabase) -->
   <script src="/social-config.js" defer></script>
   <script type="module" src="/social-auth.js"></script>

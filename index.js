@@ -257,5 +257,11 @@
 
   /* Network constellation widget — implementation lives in assets/network-map.js.
    * The home view passes no opts, so it gets the full topology + 1000 humans.
-   * pageVisible (defined above) is independent of the widget's own visibility pause. */
-  if (typeof FRQNCYNetworkMap !== 'undefined') FRQNCYNetworkMap.init({});
+   * pageVisible (defined above) is independent of the widget's own visibility pause.
+   *
+   * Idempotency: the inline defensive init in index.html sets
+   * window.__frqncyMapInited = true to prevent double-render if both paths fire. */
+  if (typeof FRQNCYNetworkMap !== 'undefined' && !window.__frqncyMapInited) {
+    window.__frqncyMapInited = true;
+    FRQNCYNetworkMap.init({});
+  }
