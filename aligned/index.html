@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Aligned Goods — FRQNCY</title>
-<meta name="description" content="A curated index of products, places, texts, and tools that help you live in alignment. Information in abundance. No paid placement.">
+<meta name="description" content="FRQNCY's curated index of products, places, and tools across 13 categories — water, food, body care, supplements, sleep, movement, cookware, coffee, turntables, tools, cards, privacy, and EMCE. One Editor's Choice per shelf. No paid placement. Pick decision precedes any money flow.">
 <meta name="theme-color" content="#0B1C3D">
 <meta name="robots" content="index, follow">
 <meta property="og:type" content="website">
@@ -21,6 +21,20 @@
 <meta name="twitter:description" content="A curated index of products, places, texts, and tools that help you live in alignment.">
 <meta name="twitter:image" content="https://frqncy.network/og/aligned.png">
 <link rel="canonical" href="https://frqncy.network/aligned/">
+<!-- JSON-LD ItemList — populated by JS after aligned-goods.json loads.
+     Helps Google Shopping / rich-result surfaces understand the page is a
+     curated index rather than a single product. The static fallback below
+     describes the page; the JS injects the per-entry Product list. -->
+<script type="application/ld+json" id="ld-aligned">
+{
+  "@context": "https://schema.org",
+  "@type": "ItemList",
+  "name": "Aligned Goods — FRQNCY",
+  "description": "A curated index of products, places, texts, and tools that help you live in alignment. Information in abundance. No paid placement.",
+  "url": "https://frqncy.network/aligned/",
+  "numberOfItems": 0
+}
+</script>
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="manifest" href="/manifest.json">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -563,7 +577,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
   <div class="criteria-rule"></div>
   <p class="criteria-eyebrow">Why these picks</p>
   <p class="criteria-body">Every entry is held against five questions. <em>Used</em> — does someone we trust actually use it. <em>Clean</em> — does the ingredient or material list survive a literate reading. <em>Independent</em> — is the maker free of the incentive to compromise. <em>Verifiable</em> — can the claims be checked. <em>Durable</em> — will it outlast its first replacement. One Editor's Choice per shelf. Everything else is held to the same bar.</p>
-  <p class="criteria-meta">No paid placement · Affiliate-free · Updated April 2026</p>
+  <p class="criteria-meta">No paid placement · Pick decision precedes any money flow · Updated June 2026</p>
 </section>
 
 <section class="editorial">
@@ -580,7 +594,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 
 <section class="disclosure">
   <div class="disclosure-inner">
-    <strong>On money flows.</strong> Every Aligned Goods entry carries a <code style="color:var(--text-dim);background:rgba(255,255,255,0.04);padding:1px 6px;border-radius:2px;font-size:0.78rem">revenue_relationship</code> field with one of four values: <em>none</em> (default — no money flows between FRQNCY and this entry), <em>contributor</em> (the brand contributes to the FRQNCY Fund or a Sanctuary operating budget; pick decision precedes the contribution), <em>partner</em> (a direct revenue-share or co-marketing agreement exists), or <em>affiliate</em> (a commission link). Where any of the latter three apply, a small badge renders on the entry and the merchant is marked in the index below. The pick decision always precedes any commercial relationship — see <a href="../proposals/EDITORIAL-STANDARDS.md" style="color:var(--accent);border-bottom:1px solid currentColor">Editorial Standards</a> for the full rules. The long-term intent is that every alignment FRQNCY makes has a referral path — so the work of pointing people at the right thing also funds the work of finding the next right thing.
+    <strong>How we earn.</strong> FRQNCY does not accept paid placement. Picks are decided first, on merit; money flows are declared after. Each entry carries a <code style="color:var(--text-dim);background:rgba(255,255,255,0.04);padding:1px 6px;border-radius:2px;font-size:0.78rem">revenue_relationship</code>: <em>none</em> (default), <em>contributor</em> (the brand gives back to the FRQNCY Fund or a Sanctuary), <em>partner</em> (direct revenue-share), or <em>affiliate</em> (commission link). The long-term intent is that every alignment FRQNCY makes has a referral path — the work of pointing people at the right thing funds the work of finding the next right thing. The badges in the merchant index below show where each brand currently sits. See <a href="../proposals/EDITORIAL-STANDARDS.md" style="color:var(--accent);border-bottom:1px solid currentColor">Editorial Standards</a> and <a href="../proposals/PARTNER-STRATEGY.md" style="color:var(--accent);border-bottom:1px solid currentColor">Partner Strategy</a> for the full rules.
   </div>
 </section>
 
@@ -639,7 +653,40 @@ async function load() {
   renderShelfNav();
   renderShelves();
   renderMerchants();
+  renderJsonLd();
   attachActiveShelfTracking();
+}
+
+function renderJsonLd() {
+  // Inject Schema.org structured data so rich-result surfaces see the page
+  // as an editorial product index. One ItemList containing one Product per
+  // entry; rich snippets pick up the name, description, and merchant URL.
+  const el = document.getElementById('ld-aligned');
+  if (!el) return;
+  const itemListElement = GOODS.map((g, i) => {
+    const vendor = (g.vendor && g.vendor[0]) || {};
+    return {
+      "@type": "ListItem",
+      "position": i + 1,
+      "item": {
+        "@type": "Product",
+        "name": g.name,
+        "description": (g.desc || '').slice(0, 320),
+        "category": g.category,
+        "url": vendor.url || "https://frqncy.network/aligned/",
+        "brand": { "@type": "Brand", "name": vendor.name || "FRQNCY" }
+      }
+    };
+  });
+  el.textContent = JSON.stringify({
+    "@context": "https://schema.org",
+    "@type": "ItemList",
+    "name": "Aligned Goods — FRQNCY",
+    "description": "A curated index of products, places, texts, and tools that help you live in alignment. Information in abundance. No paid placement.",
+    "url": "https://frqncy.network/aligned/",
+    "numberOfItems": GOODS.length,
+    "itemListElement": itemListElement
+  }, null, 2);
 }
 
 function itemsFor(catId) {
@@ -650,10 +697,21 @@ function itemsFor(catId) {
     });
 }
 
+// Visible-shelf order — sort by depth (descending) so the strongest shelves
+// lead. Single-entry shelves still appear; they just sit at the bottom rather
+// than fragment the top of the page. Stable: equal-count shelves keep their
+// CATEGORIES-array order.
+function visibleShelves() {
+  return CATEGORIES
+    .filter(c => itemsFor(c.id).length > 0)
+    .map((c, originalIdx) => ({ c, originalIdx, count: itemsFor(c.id).length }))
+    .sort((a, b) => b.count - a.count || a.originalIdx - b.originalIdx)
+    .map(x => x.c);
+}
+
 function renderShelfNav() {
   const nav = document.getElementById('shelfNav');
-  // Only show categories that actually have items
-  const visible = CATEGORIES.filter(c => itemsFor(c.id).length > 0);
+  const visible = visibleShelves();
   nav.innerHTML = visible.map(c =>
     `<a class="shelf-nav-link" href="#shelf-${c.id}" data-shelf="${c.id}">${c.name}</a>`
   ).join('');
@@ -665,11 +723,18 @@ function renderShelves() {
     wrap.innerHTML = `<div class="empty" style="padding:4rem 1rem;text-align:center;color:var(--text-dim);font-style:italic;">The index is being seeded. Check back soon.</div>`;
     return;
   }
-  const visible = CATEGORIES.filter(c => itemsFor(c.id).length > 0);
+  const visible = visibleShelves();
   const total = visible.length;
-  // Hero meta: total picks across all shelves
+  // Hero meta: entries · rooms · referral status. Tells the visitor at a
+  // glance how much there is to see AND how the page funds itself.
   const heroMeta = document.getElementById('heroMeta');
-  if (heroMeta) heroMeta.textContent = `${GOODS.length} entries · ${total} rooms · Updated April 2026`;
+  const pendingAff = GOODS.filter(g => g.revenue_relationship === 'affiliate').length;
+  if (heroMeta) {
+    const bits = [`${GOODS.length} entries`, `${total} rooms`];
+    if (pendingAff) bits.push(`${pendingAff} referral paths pending`);
+    bits.push('Updated June 2026');
+    heroMeta.textContent = bits.join(' · ');
+  }
 
   wrap.innerHTML = visible.map((c, i) => {
     const items = itemsFor(c.id);
@@ -689,7 +754,7 @@ function renderShelves() {
       <div class="shelf-items">
         ${items.map(card).join('')}
       </div>
-      <p class="shelf-footer">Last reviewed by FRQNCY · April 2026</p>
+      <p class="shelf-footer">Last reviewed by FRQNCY · June 2026</p>
     </section>`;
   }).join('');
 }

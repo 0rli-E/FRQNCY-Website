@@ -320,11 +320,11 @@
     },
     {
       id:'cannotChange', session:2, sessionTitle:'The map you came in with',
-      question:"What's one thing about yourself you've never been able to change, no matter how hard you tried?",
-      hint:'The thing that does not move. The thing that comes back.',
+      question:"What's a pattern about you that keeps coming back, no matter what you try?",
+      hint:'A habit, a feeling, a kind of relationship — whatever returns every few years. The way you always seem to end up.',
       type:'textarea',
-      placeholder:'The thing that stays…',
-      reflection:'That thing is probably not a flaw. It is likely the shape of how you are supposed to move.',
+      placeholder:'The pattern that returns…',
+      reflection:'That pattern is probably not a flaw. It is likely the shape of how you are supposed to move.',
       field:'design.cannotChange'
     },
 
@@ -364,23 +364,23 @@
     },
     {
       id:'general_specific', session:3, sessionTitle:'How your mind moves',
-      question:"Big picture first, or details first?",
+      question:"When someone explains something to you, what do you want first — the overview, or the steps?",
       type:'tiles', cols:1,
       options:[
-        {v:'general', l:'Big picture',                  r:'General sort. The companion opens with the frame.'},
-        {v:'specific',l:'Details',                      r:'Specific sort. The companion opens with the part.'},
-        {v:'both',    l:'Both, in that order',          r:'The companion leads with what you asked for.'}
+        {v:'general', l:'The overview first',             r:'General sort. The companion opens with the frame.'},
+        {v:'specific',l:'The steps first',                r:'Specific sort. The companion opens with the part.'},
+        {v:'both',    l:'Overview, then steps',           r:'The companion leads with the frame and follows with the part.'}
       ],
       field:'meta.general_specific'
     },
     {
       id:'sameness_difference', session:3, sessionTitle:'How your mind moves',
-      question:"Do you notice what's the same about things, or what's different?",
+      question:"When something new shows up in your life, what hits first — what's familiar about it, or what's different?",
       type:'tiles', cols:1,
       options:[
-        {v:'sameness',  l:'What is the same',           r:'Sameness sort. Change reads as discontinuity — the companion frames moves as continuations.'},
-        {v:'difference',l:'What is different',          r:'Difference sort. You sort for what is new. The companion offers unopened doors.'},
-        {v:'both',      l:'Both',                       r:'Then we match the context.'}
+        {v:'sameness',  l:'What is familiar about it',    r:'Sameness sort. Change reads as discontinuity — the companion frames new moves as continuations.'},
+        {v:'difference',l:'What is different about it',   r:'Difference sort. You sort for what is new. The companion offers unopened doors.'},
+        {v:'both',      l:'Both, roughly equally',        r:'Then we match the context.'}
       ],
       field:'meta.sameness_difference'
     },
@@ -398,8 +398,8 @@
     },
     {
       id:'haveToSentence', session:3, sessionTitle:'How your mind moves',
-      question:'What\'s your "I have to ___" sentence this week?',
-      hint:'Catch yourself saying it. Write what comes after the "have to."',
+      question:'And one in your own voice — what sentence do you catch yourself saying that starts with "I have to"?',
+      hint:'Stay in your own words. Whatever first surfaces.',
       type:'textarea',
       placeholder:'I have to…',
       reflection:'That sentence has a voice in it. Whose? The "have to" is rarely yours alone.',
@@ -407,8 +407,8 @@
     },
     {
       id:'cantSentence', session:3, sessionTitle:'How your mind moves',
-      question:'What\'s your "I can\'t ___" sentence this week?',
-      hint:'The thing you keep telling yourself you cannot do.',
+      question:'And the other side — what do you catch yourself saying you "can\'t" do?',
+      hint:'The closed door you keep walking past. One sentence.',
       type:'textarea',
       placeholder:'I can\'t…',
       reflection:'"Can\'t" is a closed door. Sometimes it is not locked — just heavier than it looks.',
@@ -437,7 +437,7 @@
     {
       id:'music', session:4, sessionTitle:'Your doors',
       question:"What music does to you what nothing else can?",
-      hint:'Optional. A song, an artist, a frequency.',
+      hint:'A song, an artist, a frequency. Optional — but the companion uses this for your Mindmovies later.',
       type:'textarea',
       placeholder:'The sound that works on you…',
       reflection:'Music bypasses the mind. The companion holds this for the Mindmovie that is coming.',
@@ -447,7 +447,7 @@
     {
       id:'place', session:4, sessionTitle:'Your doors',
       question:"Where do you feel most yourself?",
-      hint:'A place. A time. A configuration. Any of them.',
+      hint:'A kitchen at 7am. A trail you walk alone. The studio when no one is watching. Wherever you become more you.',
       type:'textarea',
       placeholder:'Where, when, with whom…',
       reflection:'That place is a state. Once you know what it is made of, you can build it anywhere.',
@@ -456,9 +456,9 @@
     {
       id:'witnessedTruth', session:4, sessionTitle:'Your doors',
       question:"What's the last thing someone said about you that landed as true?",
-      hint:'The sentence the body knew the moment it heard it.',
+      hint:'A friend, a partner, a stranger. The sentence the body knew before the mind agreed.',
       type:'textarea',
-      placeholder:'The sentence that landed…',
+      placeholder:'They said…',
       reflection:'People rarely tell us the true things. When they do, the body knows. Write it where you can see it.',
       field:'triggers.witnessedTruth'
     },
@@ -475,24 +475,24 @@
     },
     {
       id:'desireToLearn', session:5, sessionTitle:'What to remember',
-      question:"Right now, how strong is your desire to learn?",
-      hint:'First half of the Teachability Index. There is no wrong answer — only the truth right now.',
+      question:"How strong is your hunger to learn right now?",
+      hint:'Honest read. It shifts week to week — the truth right now is the useful one.',
       type:'slider', min:1, max:10, labels:['Low','High'], defaultV:5,
       reflection:'Even a low score is information. Desire shifts, and the companion learns the shape of yours.',
       field:'baseline.desireToLearn'
     },
     {
       id:'willingnessToChange', session:5, sessionTitle:'What to remember',
-      question:"Right now, how willing do you feel to actually change?",
-      hint:'Second half. Willingness × desire = your Teachability Index baseline.',
+      question:"And how open does change feel today?",
+      hint:'Willingness sits closer to identity than desire does. The companion notices when this shifts.',
       type:'slider', min:1, max:10, labels:['Closed','Open'], defaultV:5,
       reflection:'Willingness is harder than desire — it touches identity. The companion notices when it shifts.',
       field:'baseline.willingnessToChange'
     },
     {
       id:'chiefAimDistance', session:5, sessionTitle:'What to remember',
-      question:"Right now, how far do you feel from the life you want?",
-      hint:'1 means you are already there. 10 means it feels impossibly far. The trend over time is the work.',
+      question:"And how far do you feel from the life you want?",
+      hint:'1 = already there. 10 = impossibly far. The companion will ask again every thirty days; the trend is the work.',
       type:'slider', min:1, max:10, labels:['Already there','Impossibly far'], defaultV:5,
       reflection:'This is the baseline. Not the verdict. The number changes. The trend is the work.',
       field:'baseline.chiefAimDistance'

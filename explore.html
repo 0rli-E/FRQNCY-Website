@@ -31,7 +31,7 @@
        pointing to the now-removed t-trauma node) was getting `node not found:
        t-trauma` from d3 and the map never rendered. Bumping this query string
        on every regeneration of explore-data.js forces a fresh fetch. -->
-  <script src="./explore-data.js?v=2026-05-12e"></script>
+  <script src="./explore-data.js?v=2026-05-22a"></script>
   <script type="application/ld+json">{"@context":"https://schema.org","@type":"CollectionPage","name":"Explore the Network — FRQNCY","description":"Navigate 134 topics across 6 pillars of conscious living. An interactive map of the FRQNCY Network.","url":"https://frqncy.network/explore.html","isPartOf":{"@type":"WebSite","name":"FRQNCY Network","url":"https://frqncy.network"}}</script>
   <style>
     *, *::before, *::after { box-sizing:border-box; margin:0; padding:0; }
@@ -645,7 +645,25 @@ let NODE_URL = {};
 
 function bootMap(data) {
   NODES = data.nodes;
-  LINKS = data.links.map(([s, t]) => ({source: s, target: t}));
+  // Defensive filter (2026-05-22): explore-data.js was shipping links that
+  // referenced node IDs that no longer exist in the nodes array — d3.forceLink
+  // then assigned `undefined` to those links' source/target and the first
+  // simulation tick threw inside d3's internals, killing the map entirely
+  // before render() could be queued. Strip broken links and log so the
+  // generator bug gets caught next deploy without blanking the page.
+  const _nodeIds = new Set(data.nodes.map(n => n.id));
+  const _rawLinks = data.links;
+  const _validLinks = [];
+  const _droppedLinks = [];
+  for (const [s, t] of _rawLinks) {
+    if (_nodeIds.has(s) && _nodeIds.has(t)) _validLinks.push([s, t]);
+    else _droppedLinks.push([s, t]);
+  }
+  if (_droppedLinks.length) {
+    console.warn('[FRQNCY explore] dropped ' + _droppedLinks.length +
+                 ' link(s) referencing missing node IDs:', _droppedLinks);
+  }
+  LINKS = _validLinks.map(([s, t]) => ({source: s, target: t}));
   NODE_URL = data.node_urls;
   initMap();
 }

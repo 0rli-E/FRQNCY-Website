@@ -103,6 +103,10 @@
   <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400&family=Jost:wght@300;400;500;600&display=swap" rel="stylesheet">
   <!-- Preload D3 so the network map renders quickly on cold loads -->
   <link rel="preload" href="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" as="script" crossorigin>
+  <!-- Load D3 synchronously so the network-map.js dynamic loader never has to
+       fall back. This mirrors what explore.html does — guaranteed window.d3
+       before our defer scripts run. -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" crossorigin></script>
   <link rel="stylesheet" href="index.css?v=2026-05-22a">
   <style data-frqncy-overrides>
   /* Safety overrides — bypass any caching of index.css. Mirrors the canonical
