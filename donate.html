@@ -38,6 +38,8 @@
     .pay-btn.gold:hover{background:var(--gold);color:#fff}
     .note{font-size:13px;color:var(--light-mid);font-style:italic;margin-top:24px;padding:16px;background:#FFFAF0;border-left:3px solid var(--gold);border-radius:0 3px 3px 0}
   </style>
+<script src="/mobile-nav.js" defer></script>
+<script src="/chat-widget.js" defer></script>
 </head>
 <body>
   <!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
@@ -193,7 +195,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     <span data-frq-addr="sol">SOLPENDING — treasury multi-sig coming</span>
     <button class="frq-w-copy" type="button" data-frq-copy="sol">Copy</button>
   </div>
-  <div class="frq-pop-foot">Wallets are placeholders until the FRQNY treasury multi-sig goes live. See the crypto stack spec.</div>
+  <div class="frq-pop-foot">Wallets are placeholders until the FRQNCY treasury multi-sig goes live. See the crypto stack spec.</div>
 </div>
 <script>
   (function(){
@@ -262,10 +264,10 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       <h2>Fiat rails</h2>
       <p>For supporters who don't yet hold crypto. Pass-through — funds land in the same treasury.</p>
       <div class="pay-row">
-        <a class="pay-btn" href="#" data-frq-pay="paypal">PayPal</a>
-        <a class="pay-btn" href="#" data-frq-pay="gpay">Google Pay</a>
-        <a class="pay-btn" href="#" data-frq-pay="stripe">Card</a>
-        <a class="pay-btn gold" href="#" data-frq-pay="bank">Bank Transfer</a>
+        <a class="pay-btn" href="#" aria-disabled="true" title="Coming soon — wire to processor" onclick="event.preventDefault();alert(\'Payment processors coming soon — for now please use the crypto wallets or PayPal once we publish the link.\');" data-frq-pay="paypal">PayPal</a>
+        <a class="pay-btn" href="#" aria-disabled="true" title="Coming soon — wire to processor" onclick="event.preventDefault();alert(\'Payment processors coming soon — for now please use the crypto wallets or PayPal once we publish the link.\');" data-frq-pay="gpay">Google Pay</a>
+        <a class="pay-btn" href="#" aria-disabled="true" title="Coming soon — wire to processor" onclick="event.preventDefault();alert(\'Payment processors coming soon — for now please use the crypto wallets or PayPal once we publish the link.\');" data-frq-pay="stripe">Card</a>
+        <a class="pay-btn gold" href="#" aria-disabled="true" title="Coming soon — wire to processor" onclick="event.preventDefault();alert(\'Payment processors coming soon — for now please use the crypto wallets or PayPal once we publish the link.\');" data-frq-pay="bank">Bank Transfer</a>
       </div>
     </section>
 
@@ -286,12 +288,12 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
         <div class="card">
           <h3>The Launchpad</h3>
           <p>Back the projects FRQNCY has incubated and decided to spotlight. Coming Q4 — sign up for the first round.</p>
-          <a href="/launchpad/" class="pay-btn">Open Launchpad →</a>
+          <a href="/launchpad" class="pay-btn">Open Launchpad →</a>
         </div>
       </div>
     </section>
 
-    <p class="note">Wallets above are placeholders until the FRQNY treasury multi-sig is set up (see <em>FRQNCY-CRYPTO-STACK</em>). Once live, addresses are signed, posted, and rotated on a transparent schedule.</p>
+    <p class="note">Wallets above are placeholders until the FRQNCY treasury multi-sig is set up (see <em>FRQNCY-CRYPTO-STACK</em>). Once live, addresses are signed, posted, and rotated on a transparent schedule.</p>
   </main>
 </body>
 </html>

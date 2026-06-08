@@ -1,0 +1,557 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>VBRTN · My FRQNCY</title>
+<meta name="description" content="Your companion. Drawn from your design, your state, and what you said.">
+<meta name="robots" content="noindex">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  :root{
+    --bg:#0a0e18;
+    --bg-card:#10162a;
+    --bg-elev:#161d35;
+    --ink:#f5f0e6;
+    --ink-soft:#b9b3a3;
+    --ink-dim:#7d7866;
+    --gold:#C4973A;
+    --gold-soft:#dcb15a;
+    --gold-dim:#7a5d22;
+    --rule:#1f2942;
+    --r-md:14px;
+    --t-fast:140ms ease;
+    --t-slow:600ms cubic-bezier(.2,.6,.2,1);
+  }
+  *{box-sizing:border-box}
+  html,body{margin:0;padding:0;background:var(--bg);color:var(--ink);font-family:'Inter',system-ui,sans-serif;font-weight:400;line-height:1.55;-webkit-font-smoothing:antialiased;text-rendering:optimizeLegibility}
+  body{min-height:100vh;display:flex;flex-direction:column}
+  ::selection{background:var(--gold);color:var(--bg)}
+  a{color:var(--gold);text-decoration:none}
+  a:hover{color:var(--gold-soft)}
+
+  .shell{flex:1;max-width:620px;margin:0 auto;padding:32px 24px 80px;width:100%}
+  .topbar{display:flex;justify-content:space-between;align-items:center;margin-bottom:36px}
+  .wordmark{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase}
+  .topbar-nav{display:flex;gap:18px;font-size:12px;letter-spacing:.04em}
+  .topbar-nav a{color:var(--ink-dim)}
+  .topbar-nav a:hover{color:var(--gold)}
+
+  /* ── morning open ────────────────────────────────────── */
+  .morning{margin:48px 0 40px;text-align:center}
+  .morning .label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;letter-spacing:.2em;color:var(--gold);text-transform:uppercase;margin-bottom:16px;opacity:0;animation:fadeIn 800ms ease 200ms forwards}
+  .morning h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:32px;line-height:1.3;color:var(--ink);margin:0;letter-spacing:-.005em;max-width:36ch;margin-left:auto;margin-right:auto;opacity:0;animation:fadeIn 800ms ease 500ms forwards}
+  .morning .sub{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--gold-soft);margin-top:18px;opacity:0;animation:fadeIn 800ms ease 1000ms forwards}
+  @keyframes fadeIn{from{opacity:0;transform:translateY(6px)}to{opacity:1;transform:none}}
+
+  /* ── reflection input ────────────────────────────────── */
+  .reflect{margin-bottom:40px;padding:24px;background:var(--bg-card);border:1px solid var(--rule);border-radius:var(--r-md)}
+  .reflect .prompt{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--gold-soft);margin-bottom:12px}
+  .reflect textarea{width:100%;background:transparent;border:none;color:var(--ink);font-family:'Inter',sans-serif;font-size:15px;line-height:1.55;resize:vertical;min-height:60px;outline:none;padding:6px 0}
+  .reflect textarea::placeholder{color:var(--ink-dim);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px}
+  .reflect .actions{display:flex;justify-content:space-between;align-items:center;margin-top:14px;border-top:1px solid var(--rule);padding-top:14px}
+  .reflect .saved{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--gold);opacity:0;transition:opacity var(--t-slow)}
+  .reflect .saved.in{opacity:1}
+  .reflect .save-btn{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:8px 18px;border-radius:999px;font-size:13px;letter-spacing:.04em;cursor:pointer;font-family:inherit;transition:all var(--t-fast)}
+  .reflect .save-btn:hover{background:var(--gold);color:var(--bg)}
+  .reflect .save-btn:disabled{border-color:var(--rule);color:var(--ink-dim);cursor:not-allowed}
+
+  /* ── modal-operator recovery ─────────────────────────── */
+  .recovery{margin-bottom:40px;padding:24px;background:var(--bg-card);border:1px solid var(--gold-dim);border-radius:var(--r-md)}
+  .recovery .label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+  .recovery .echo{font-family:'Inter',sans-serif;font-size:14px;color:var(--ink-soft);margin-bottom:14px;padding:10px 14px;background:var(--bg-elev);border-left:2px solid var(--gold-dim);border-radius:0 4px 4px 0;line-height:1.5}
+  .recovery .echo .quoted{color:var(--ink);font-style:italic}
+  .recovery .question{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:20px;line-height:1.45;color:var(--gold-soft);margin:0 0 14px 0}
+  .recovery .rotate-row{display:flex;justify-content:space-between;align-items:center;font-size:11px;color:var(--ink-dim);letter-spacing:.06em}
+  .recovery .rotate-btn{background:none;border:none;color:var(--gold-dim);font-size:11px;cursor:pointer;letter-spacing:.06em;font-family:inherit;text-decoration:underline;text-underline-offset:3px}
+  .recovery .rotate-btn:hover{color:var(--gold)}
+
+  /* ── what VBRTN sees ─────────────────────────────────── */
+  .sees{margin-bottom:40px;padding:24px;background:transparent;border:1px solid var(--rule);border-radius:var(--r-md)}
+  .sees .label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+  .sees p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;line-height:1.55;color:var(--ink);margin:0 0 10px 0}
+  .sees p:last-child{margin-bottom:0}
+
+  /* ── room knows (stats) ──────────────────────────────── */
+  .knows{margin-bottom:40px}
+  .knows .label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;margin-bottom:18px;text-align:center}
+  .knows-grid{display:grid;grid-template-columns:repeat(2, 1fr);gap:12px}
+  .stat{background:var(--bg-card);border:1px solid var(--rule);border-radius:var(--r-md);padding:18px}
+  .stat .k{font-size:11px;letter-spacing:.06em;color:var(--ink-dim);text-transform:uppercase;margin-bottom:8px}
+  .stat .v{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:24px;color:var(--gold);font-weight:500;line-height:1.1}
+  .stat .v.small{font-size:18px;line-height:1.3}
+  .stat .v.tiny{font-size:14px;font-family:'Inter',sans-serif;font-style:normal;color:var(--ink)}
+
+  /* ── chart card ──────────────────────────────────────── */
+  .chart{margin-bottom:40px;padding:24px;background:var(--bg-card);border:1px solid var(--rule);border-radius:var(--r-md)}
+  .chart .label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+  .chart dl{margin:0;display:grid;grid-template-columns:1fr 1fr;gap:8px 16px}
+  .chart dt{font-size:11px;color:var(--ink-dim);letter-spacing:.06em;text-transform:uppercase}
+  .chart dd{margin:0 0 6px 0;font-size:14px;color:var(--ink)}
+  .chart .note{margin-top:14px;font-size:12px;color:var(--ink-dim);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px}
+
+  /* ── nav ─────────────────────────────────────────────── */
+  .actions-row{display:flex;justify-content:center;gap:14px;margin-top:48px;flex-wrap:wrap}
+  .btn{background:transparent;border:1px solid var(--gold);color:var(--gold);padding:12px 24px;border-radius:999px;font-size:14px;letter-spacing:.04em;cursor:pointer;font-family:inherit;transition:all var(--t-fast);text-decoration:none;display:inline-block}
+  .btn:hover{background:var(--gold);color:var(--bg)}
+  .btn.primary{background:var(--gold);color:var(--bg)}
+  .btn.primary:hover{background:var(--gold-soft)}
+  .btn.ghost{border:none;color:var(--ink-dim)}
+  .btn.ghost:hover{color:var(--gold);background:transparent}
+
+  /* ── empty state ─────────────────────────────────────── */
+  .empty{text-align:center;padding:80px 24px}
+  .empty h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:34px;color:var(--ink);margin:0 0 16px 0;line-height:1.2}
+  .empty p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--gold-soft);line-height:1.55;max-width:42ch;margin:0 auto 32px}
+
+  .foot{text-align:center;padding:40px 24px 24px;font-size:11px;color:var(--ink-dim);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:.04em}
+  .foot a{color:var(--gold-dim)}
+
+  @media (max-width:480px){
+    .shell{padding:24px 18px 60px}
+    .morning h1{font-size:26px}
+    .knows-grid{grid-template-columns:1fr}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{transition-duration:0.01ms !important;animation-duration:0.01ms !important}
+  }
+</style>
+</head>
+<body>
+  <div class="shell" id="shell">
+    <!-- dynamic content -->
+  </div>
+  <footer class="foot">
+    <a href="/my-frqncy/intake/">Intake</a> · <a href="/my-frqncy/dashboard/">Sanctuary</a> · Your data lives on this device until you sign in.
+  </footer>
+
+<script>
+(function(){
+  'use strict';
+  const STORE_KEY = 'frqncy:vbrtn:profile';
+  const RECOVERY_ROTATION_KEY = 'frqncy:vbrtn:recoveryRotation';
+
+  function loadProfile(){
+    try{
+      const raw = localStorage.getItem(STORE_KEY);
+      return raw ? JSON.parse(raw) : null;
+    }catch(e){ return null; }
+  }
+  function saveProfile(p){ localStorage.setItem(STORE_KEY, JSON.stringify(p)); }
+
+  const shell = document.getElementById('shell');
+
+  function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+  function cap(s){ if(!s) return s; return s[0].toUpperCase() + s.slice(1); }
+
+  // ── Morning open generator ─────────────────────────────
+  function generateMorningOpen(p){
+    const hd = p.design?.hd;
+    const feeling = p.standing?.recentFeeling;
+    const desire = p.standing?.dominantDesire;
+    const texture = p.standing?.texture;
+
+    // Tier 1 — Design-aware (if HD type present)
+    if(hd?.type){
+      const designPrompts = {
+        'Generator': [
+          'What are you responding to today?',
+          'Notice what your body says yes to before noon. Follow that.',
+          'You are designed to wait, then move. What just arrived in front of you?'
+        ],
+        'Manifesting Generator': [
+          'What are you responding to — and who needs to know your next move?',
+          'Two engines today. Respond first, then inform.',
+          'You will want to skip steps. The skipped step is where you go back for resistance.'
+        ],
+        'Projector': [
+          'Who saw you yesterday? That is the room to be in today.',
+          'Wait for the invitation. The invitation is closer than it looks.',
+          'You see the others; today, let one of them see you back.'
+        ],
+        'Manifestor': [
+          'What needs to be initiated this morning?',
+          'Inform the people who will be affected. Then move.',
+          'Your anger is information. Read it before you act on it.'
+        ],
+        'Reflector': [
+          'What does the room feel like today? You are the room\'s instrument.',
+          'No decisions today that cannot wait twenty-eight days.',
+          'Watch the moon. Watch yourself in it.'
+        ]
+      };
+      const arr = designPrompts[hd.type] || designPrompts['Generator'];
+      // Deterministic pick — same prompt for same day
+      const dayKey = new Date().toDateString();
+      const idx = simpleHash(dayKey + hd.type) % arr.length;
+      return { primary: arr[idx], sub: subForState(feeling, desire) };
+    }
+
+    // Tier 2 — State-aware (feeling + desire, no HD)
+    if(feeling || desire){
+      const primary = feeling
+        ? feelingToMorningLine(feeling)
+        : `You are reaching for more ${desire}. The first move today is a small one in that direction.`;
+      return { primary, sub: desire && feeling ? `And: more ${desire}.` : null };
+    }
+
+    // Tier 3 — Texture-only
+    if(texture){
+      return { primary: textureToMorningLine(texture), sub: null };
+    }
+
+    return { primary: 'Begin where you are. Not where you should be.', sub: null };
+  }
+
+  function subForState(feeling, desire){
+    if(feeling && desire) return `Carrying ${feeling}. Reaching for ${desire}.`;
+    if(feeling) return `Today you are carrying ${feeling}. Notice it; do not argue with it.`;
+    if(desire) return `Reaching for more ${desire}.`;
+    return null;
+  }
+
+  function feelingToMorningLine(f){
+    const lines = {
+      tired: 'Tired is data. Today, the first move is to rest something you are not consciously carrying.',
+      stressed: 'Stress is the body running ahead of itself. Slow the body first. The mind follows.',
+      anxious: 'Anxiety is the body knowing something the mind has not yet named. Name one thing today.',
+      overwhelmed: 'Overwhelm means inputs outran capacity. Cut one input today. That is the entire move.',
+      sad: 'Sadness is grief that has not been formally introduced. Today, introduce it.',
+      lonely: 'Loneliness is the body asking for a specific kind of contact. Notice which kind, before deciding what to do.',
+      frustrated: 'Frustration is the body saying something is asking to be responded to, not initiated. What are you trying to start that needs you to wait?',
+      angry: 'Anger is power that has not yet found its direction. Today, find the direction.',
+      numb: 'Numb is the body saying "too much, too fast." Slow down. Today is small.',
+      restless: 'Restless is asking. What is it asking for?',
+      hopeful: 'Hope is unfinished — by design. What is the next finished thing?',
+      curious: 'Curiosity pulls without pushing. Follow it for one move today.',
+      excited: 'Excitement is desire that has not been disciplined. Both halves matter today.',
+      grateful: 'Gratitude is the first frequency above survival. Notice you arrived there.',
+      content: 'Content is rare. Stay in it longer than your mind wants to.',
+      peaceful: 'Peace is rarely loud. The fact that you notice it is the proof.',
+      alive: 'Alive is the baseline. What follows has to live up to it.'
+    };
+    return lines[f] || 'You are carrying something. The first move is to name it.';
+  }
+
+  function textureToMorningLine(t){
+    const lines = {
+      stride: 'You are in stride. Do not over-control it.',
+      building: 'Slow building is the real kind. Today is one brick.',
+      holding: 'You are holding it together. That is the work. Notice it.',
+      surviving: 'Just getting through is its own strength. Today is small. That is enough.',
+      'catching-breath': 'Today is for breath. The work asks for nothing.',
+      restart: 'Starting over is choosing the form again. What are you choosing?',
+      searching: 'Looking means you have not given up. Today, look in one specific place.',
+      returning: 'Coming back is the one motion the door does not lock against.'
+    };
+    return lines[t] || 'Begin where you are.';
+  }
+
+  function simpleHash(s){
+    let h = 0;
+    for(let i=0;i<s.length;i++){ h = ((h<<5)-h) + s.charCodeAt(i); h |= 0; }
+    return Math.abs(h);
+  }
+
+  // ── Insights derivation ───────────────────────────────
+  function deriveInsights(p){
+    const lines = [];
+    const texture = p.standing?.texture;
+    const feeling = p.standing?.recentFeeling;
+    const desire = p.standing?.dominantDesire;
+
+    if(texture && feeling){
+      lines.push(`A person ${textureVerb(texture)}, whose recent state has carried ${feeling}.`);
+    } else if(texture){
+      lines.push(`A person ${textureVerb(texture)}.`);
+    }
+    if(desire) lines.push(`Reaching toward more ${desire}.`);
+    if(p.design?.hd?.type) lines.push(`A ${p.design.hd.type} by design — strategy: ${p.design.hd.strategy.toLowerCase()}.`);
+    if(p.meta?.toward_away){
+      const t = p.meta.toward_away === 'toward' ? 'reaches toward'
+              : p.meta.toward_away === 'away' ? 'moves away from'
+              : 'paces between';
+      lines.push(`Whose mind ${t}.`);
+    }
+    if(p.triggers?.positive?.length > 0){
+      lines.push(`Doors back to self: ${p.triggers.positive.slice(0,2).join(', ').toLowerCase()}.`);
+    }
+    if(p.rememberOne) lines.push(`Asked to be remembered as: ${p.rememberOne}`);
+    return lines.slice(0, 4);
+  }
+
+  function textureVerb(t){
+    return {
+      stride:'hitting their stride',
+      building:'slowly building',
+      holding:'holding it together',
+      surviving:'just getting through',
+      'catching-breath':'catching their breath',
+      restart:'starting over',
+      searching:'looking for what is next',
+      returning:'coming back to themselves'
+    }[t] || t;
+  }
+
+  // ── Modal-operator recovery ───────────────────────────
+  const RECOVERY_NECESSITY = [
+    { stem: 'What would happen if you did not?', frame: 'Recover the consequence.' },
+    { stem: 'What would you choose if you were not supposed to?', frame: 'Shift from necessity to possibility.' },
+    { stem: 'Whose voice is the "have to" in?', frame: 'Recover the locus of authority.' }
+  ];
+  const RECOVERY_IMPOSSIBILITY = [
+    { stem: 'What stops you?', frame: 'Surface the specific constraint.' },
+    { stem: 'What would happen if you did?', frame: 'Surface the feared consequence.' },
+    { stem: 'What would have to be true for you to be able to?', frame: 'Open the conditions.' }
+  ];
+
+  function getRecoveryRotation(){
+    try{ return JSON.parse(localStorage.getItem(RECOVERY_ROTATION_KEY) || '{}'); }
+    catch(e){ return {}; }
+  }
+  function setRecoveryRotation(obj){ localStorage.setItem(RECOVERY_ROTATION_KEY, JSON.stringify(obj)); }
+
+  function getCurrentRecovery(p){
+    const nec = p.meta?.modalOperators?.necessity?.[0]?.text;
+    const imp = p.meta?.modalOperators?.impossibility?.[0]?.text;
+    if(!nec && !imp) return null;
+
+    const rot = getRecoveryRotation();
+    // Alternate: if both exist, pick the one that hasn't been rotated as much
+    let kind;
+    if(nec && imp){
+      kind = (rot.lastKind === 'necessity') ? 'impossibility' : 'necessity';
+    } else if(nec){
+      kind = 'necessity';
+    } else {
+      kind = 'impossibility';
+    }
+    const arr = kind === 'necessity' ? RECOVERY_NECESSITY : RECOVERY_IMPOSSIBILITY;
+    const idx = (rot[kind] || 0) % arr.length;
+    const sentence = kind === 'necessity' ? nec : imp;
+    return { kind, sentence, prompt: arr[idx].stem, frame: arr[idx].frame, idx };
+  }
+
+  function rotateRecovery(currentKind, currentIdx){
+    const arr = currentKind === 'necessity' ? RECOVERY_NECESSITY : RECOVERY_IMPOSSIBILITY;
+    const rot = getRecoveryRotation();
+    rot[currentKind] = (currentIdx + 1) % arr.length;
+    rot.lastKind = currentKind;
+    setRecoveryRotation(rot);
+    renderAll(loadProfile());
+  }
+
+  // ── Renderers ─────────────────────────────────────────
+  function renderAll(p){
+    if(!p || !p._intakeAnswers || Object.keys(p._intakeAnswers).length === 0){
+      renderEmpty();
+      return;
+    }
+    const morn = generateMorningOpen(p);
+    const insights = deriveInsights(p);
+    const recovery = getCurrentRecovery(p);
+
+    const hd = p.design?.hd;
+    const ti = p.baseline?.teachabilityIndex;
+    const dist = p.baseline?.chiefAimDistance;
+    const remember = p.rememberOne;
+
+    let html = `
+      <div class="topbar">
+        <div class="wordmark">VBRTN</div>
+        <nav class="topbar-nav">
+          <a href="/my-frqncy/intake/">Intake</a>
+          <a href="/my-frqncy/dashboard/">Sanctuary</a>
+        </nav>
+      </div>
+
+      <section class="morning">
+        <div class="label">Today</div>
+        <h1>${escapeHtml(morn.primary)}</h1>
+        ${morn.sub ? `<div class="sub">${escapeHtml(morn.sub)}</div>` : ''}
+      </section>
+
+      <section class="reflect">
+        <div class="prompt">Write back. One line, or many. The companion holds it.</div>
+        <textarea id="reflectInput" placeholder="What's true right now…"></textarea>
+        <div class="actions">
+          <div class="saved" id="savedMsg"></div>
+          <button class="save-btn" id="saveBtn" type="button" disabled>Save</button>
+        </div>
+      </section>
+    `;
+
+    if(recovery){
+      html += `
+        <section class="recovery">
+          <div class="label">A sentence the companion came back to</div>
+          <div class="echo">You wrote: <span class="quoted">${escapeHtml(recovery.sentence)}</span></div>
+          <p class="question">${escapeHtml(recovery.prompt)}</p>
+          <div class="rotate-row">
+            <span>${escapeHtml(recovery.frame)}</span>
+            <button class="rotate-btn" id="rotateBtn" type="button">Try another angle →</button>
+          </div>
+        </section>
+      `;
+    }
+
+    if(insights.length > 0){
+      html += `
+        <section class="sees">
+          <div class="label">What VBRTN sees</div>
+          ${insights.map(l => `<p>${escapeHtml(l)}</p>`).join('')}
+        </section>
+      `;
+    }
+
+    // Stats
+    const stats = [];
+    if(p.standing?.recentFeeling) stats.push({ k:'Current state', v: cap(p.standing.recentFeeling), small:false });
+    if(ti != null) stats.push({ k:'Teachability', v: ti + ' / 100', small:false });
+    if(dist != null) stats.push({ k:'Distance from the life you want', v: dist + ' / 10', small:false });
+    if(p.standing?.dominantDesire) stats.push({ k:'Reaching toward', v: cap(p.standing.dominantDesire), small:false });
+
+    if(stats.length > 0){
+      html += `
+        <section class="knows">
+          <div class="label">The room knows</div>
+          <div class="knows-grid">
+            ${stats.map(s => `<div class="stat"><div class="k">${escapeHtml(s.k)}</div><div class="v ${s.small ? 'small' : ''}">${escapeHtml(String(s.v))}</div></div>`).join('')}
+          </div>
+        </section>
+      `;
+    }
+
+    if(hd && hd.type){
+      html += `
+        <section class="chart">
+          <div class="label">Your design</div>
+          <dl>
+            <dt>Type</dt><dd>${escapeHtml(hd.type)}</dd>
+            <dt>Strategy</dt><dd>${escapeHtml(hd.strategy)}</dd>
+            <dt>Authority</dt><dd>${escapeHtml(hd.authority)}</dd>
+            <dt>Profile</dt><dd>${escapeHtml(hd.profile)}</dd>
+            ${p.design.gk ? `<dt>Life's Work GK</dt><dd>${p.design.gk.lifesWork}</dd><dt>Evolution GK</dt><dd>${p.design.gk.evolution}</dd>` : ''}
+            ${p.design.astro ? `<dt>Sun · Moon · Rising</dt><dd>${p.design.astro.sun} · ${p.design.astro.moon} · ${p.design.astro.rising}</dd>` : ''}
+          </dl>
+          ${hd._stub ? '<div class="note">Placeholder values. The chart engine ships next; your real chart populates here when it does.</div>' : ''}
+        </section>
+      `;
+    }
+
+    if(remember){
+      html += `
+        <section class="sees" style="border-color:var(--gold-dim)">
+          <div class="label">You asked the companion to remember</div>
+          <p>${escapeHtml(remember)}</p>
+        </section>
+      `;
+    }
+
+    html += `
+      <div class="actions-row">
+        <a class="btn primary" href="/my-frqncy/dashboard/">Open the Sanctuary →</a>
+        <a class="btn ghost" href="/my-frqncy/intake/">Update intake</a>
+      </div>
+    `;
+
+    shell.innerHTML = html;
+
+    // Wire reflection input
+    const inp = document.getElementById('reflectInput');
+    const saveBtn = document.getElementById('saveBtn');
+    const savedMsg = document.getElementById('savedMsg');
+    inp.addEventListener('input', ()=>{
+      saveBtn.disabled = inp.value.trim().length === 0;
+      savedMsg.classList.remove('in');
+    });
+    saveBtn.addEventListener('click', ()=>{
+      const text = inp.value.trim();
+      if(!text) return;
+      const profile = loadProfile();
+      if(!profile.history) profile.history = { interactions: [], lastSeen:null, journalEntries:[], habitShape:{} };
+      if(!profile.history.interactions) profile.history.interactions = [];
+      profile.history.interactions.push({
+        at: Date.now(),
+        kind: 'reflection',
+        text
+      });
+      profile.history.lastSeen = Date.now();
+      // Scan for modal operators in what the user just wrote
+      const detected = detectModalOperators(text);
+      if(detected.length > 0){
+        if(!profile.meta) profile.meta = { modalOperators:{ necessity:[], impossibility:[] } };
+        if(!profile.meta.modalOperators) profile.meta.modalOperators = { necessity:[], impossibility:[] };
+        detected.forEach(d => {
+          const list = profile.meta.modalOperators[d.kind];
+          if(list) list.push({ text: d.match, at: Date.now(), source:'reflection' });
+        });
+      }
+      saveProfile(profile);
+      const responseLine = detected.length > 0
+        ? `Saved. The companion noticed a "${detected[0].marker}" sentence — that surfaces next time you visit.`
+        : 'Saved. The companion holds it.';
+      savedMsg.textContent = responseLine;
+      savedMsg.classList.add('in');
+      inp.value = '';
+      saveBtn.disabled = true;
+    });
+
+    // Wire recovery rotation
+    if(recovery){
+      const rotateBtn = document.getElementById('rotateBtn');
+      if(rotateBtn){
+        rotateBtn.addEventListener('click', ()=> rotateRecovery(recovery.kind, recovery.idx));
+      }
+    }
+  }
+
+  function detectModalOperators(text){
+    const found = [];
+    const lower = text.toLowerCase();
+    const necessityPatterns = [
+      { re: /\bi\s+have\s+to\s+([^.,!?\n]+)/i, marker: 'I have to' },
+      { re: /\bi\s+should\s+([^.,!?\n]+)/i, marker: 'I should' },
+      { re: /\bi\s+must\s+([^.,!?\n]+)/i, marker: 'I must' },
+      { re: /\bi\s+need\s+to\s+([^.,!?\n]+)/i, marker: 'I need to' },
+      { re: /\bi\s+ought\s+to\s+([^.,!?\n]+)/i, marker: 'I ought to' }
+    ];
+    const impossibilityPatterns = [
+      { re: /\bi\s+can'?t\s+([^.,!?\n]+)/i, marker: "I can't" },
+      { re: /\bi\s+cannot\s+([^.,!?\n]+)/i, marker: 'I cannot' },
+      { re: /\bi\s+won'?t\s+([^.,!?\n]+)/i, marker: "I won't" },
+      { re: /\bi\s+couldn'?t\s+([^.,!?\n]+)/i, marker: "I couldn't" }
+    ];
+    necessityPatterns.forEach(p => {
+      const m = text.match(p.re);
+      if(m) found.push({ kind:'necessity', marker:p.marker, match: m[0].trim() });
+    });
+    impossibilityPatterns.forEach(p => {
+      const m = text.match(p.re);
+      if(m) found.push({ kind:'impossibility', marker:p.marker, match: m[0].trim() });
+    });
+    return found;
+  }
+
+  function renderEmpty(){
+    shell.innerHTML = `
+      <div class="topbar">
+        <div class="wordmark">VBRTN</div>
+      </div>
+      <div class="empty">
+        <h1>The companion does not yet know you.</h1>
+        <p>VBRTN reads your intake to begin. About twelve minutes — twenty-five questions across three short sessions you can leave anytime.</p>
+        <a class="btn primary" href="/my-frqncy/intake/">Begin the intake →</a>
+      </div>
+    `;
+  }
+
+  // ── Boot ─────────────────────────────────────────────
+  renderAll(loadProfile());
+})();
+</script>
+</body>
+</html>

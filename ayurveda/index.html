@@ -398,7 +398,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     <span data-frq-addr="sol">SOLPENDING — treasury multi-sig coming</span>
     <button class="frq-w-copy" type="button" data-frq-copy="sol">Copy</button>
   </div>
-  <div class="frq-pop-foot">Wallets are placeholders until the FRQNY treasury multi-sig goes live. See the crypto stack spec.</div>
+  <div class="frq-pop-foot">Wallets are placeholders until the FRQNCY treasury multi-sig goes live. See the crypto stack spec.</div>
 </div>
 <script>
   (function(){
@@ -458,8 +458,30 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
   
   <section>
   <div class="section-label">Curated Resources</div>
-  <div class="empty"><p>FRQNCY is curating this space.<br>Resources coming soon.</p></div>
+  <div style="font-size:0.72rem;letter-spacing:0.04em;color:var(--text-dim);margin-bottom:1.25rem;padding-bottom:0.75rem;border-bottom:1px solid rgba(255,255,255,0.05)">1 resource &nbsp;·&nbsp; 1 place</div>
+  <div class="ftabs"><button class="ftab active" data-filter="all">all</button><button class="ftab" data-filter="place">place</button></div>
+  <div class="rlist"><div class="rcard" data-type="place">
+  <span class="rtype">place</span>
+  <div class="rinfo">
+    <h4>Kripalu Center</h4>
+    <p>The largest yoga and holistic-living retreat center in North America. Stockbridge, Massachusetts, in the Berkshires. Founded in 1972, now a 401(c)(3) non-profit. Programs every week of the year — yoga teacher training, Ayurveda, meditation, somatic therapy, conscious-leadership workshops. The American gateway into the residential-retreat model: arrive, hand in your phone, eat what they cook, follow the schedule.</p>
+  </div>
+  <a href="https://kripalu.org/" target="_blank" rel="noopener noreferrer" class="rlink">Visit →</a>
+</div></div>
 </section>
+
+<script>
+document.querySelectorAll('.ftab').forEach(btn=>{
+  btn.addEventListener('click',()=>{
+    document.querySelectorAll('.ftab').forEach(b=>b.classList.remove('active'));
+    btn.classList.add('active');
+    const f=btn.dataset.filter;
+    document.querySelectorAll('.rcard').forEach(c=>{
+      c.style.display=(f==='all'||c.dataset.type===f)?'':'none';
+    });
+  });
+});
+</script>
   <section>
     <div class="section-label">Explore</div>
     <div class="grid grid-sm">

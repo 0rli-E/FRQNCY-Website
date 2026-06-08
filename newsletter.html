@@ -35,6 +35,8 @@
     button:hover{background:var(--gold);border-color:var(--gold)}
     .help{font-size:12px;color:var(--light-mid);margin-top:14px;font-style:italic}
   </style>
+<script src="/mobile-nav.js" defer></script>
+<script src="/chat-widget.js" defer></script>
 </head>
 <body>
   <!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
@@ -190,7 +192,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     <span data-frq-addr="sol">SOLPENDING — treasury multi-sig coming</span>
     <button class="frq-w-copy" type="button" data-frq-copy="sol">Copy</button>
   </div>
-  <div class="frq-pop-foot">Wallets are placeholders until the FRQNY treasury multi-sig goes live. See the crypto stack spec.</div>
+  <div class="frq-pop-foot">Wallets are placeholders until the FRQNCY treasury multi-sig goes live. See the crypto stack spec.</div>
 </div>
 <script>
   (function(){
@@ -235,7 +237,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       <p>Most newsletters ask you to drink from the firehose. FRQNCY's asks you to choose. Pick the topics, get the dispatches on those — nothing else. Unsubscribe per-topic or globally, anytime, in one click.</p>
       <p>Each dispatch goes out when there's something to say — usually weekly for the active areas (crypto, network state), monthly for the slow ones (philosophy, places).</p>
 
-      <form action="/api/newsletter/subscribe" method="post">
+      <form action="/api/subscribe" method="post">
         <label for="email">Email</label>
         <input id="email" type="email" name="email" placeholder="your@email.com" required autocomplete="email">
 

@@ -154,7 +154,7 @@
     "name": "Dr. Bronner's",
     "desc": "FRQNCY's flagship body-care pick. Family-owned since 1948 (the fifth-generation Bronners still run it), the pure-castile soap is the heart of the line — eighteen-in-one, biodegradable, certified organic, fair-trade-sourced palm, coconut, olive, and hemp oils. Beyond the iconic soap: hand soaps, toothpastes, lip balms, body lotions, hair rinses, magic balm, and coconut oil. The company caps executive pay at five times the lowest-paid worker, donates a large share of profits to social-justice causes, and prints their All-One philosophy on every label. The cleanest cleaner, run the way the rest of CPG pretends to.",
     "category": "body-care",
-    "tier": "flagship",
+    "tier": "pick",
     "criteria": [
       "certified-organic",
       "fair-trade",
@@ -1054,13 +1054,19 @@
     ],
     "vendor": [
       {
-        "name": "patagonia.com",
-        "url": "https://www.patagonia.com/",
-        "affiliate": false,
-        "region": "global"
+        "name": "Patagonia",
+        "url": "https://www.patagonia.com/?ref=frqncy",
+        "affiliate": "https://www.patagonia.com/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Patagonia affiliate enrollment",
+        "regions": [
+          "US",
+          "EU",
+          "UK",
+          "worldwide"
+        ]
       }
     ],
-    "revenue_relationship": null
+    "revenue_relationship": "affiliate"
   },
   {
     "id": "klean-kanteen",
@@ -1818,5 +1824,636 @@
       }
     ],
     "revenue_relationship": null
+  },
+  {
+    "id": "patagonia",
+    "type": "tool",
+    "name": "Patagonia",
+    "desc": "The benchmark for conscious clothing, and the one company every other sustainable brand benchmarks against. Founded by Yvon Chouinard in 1973, now in perpetual trust — Chouinard transferred ownership to a steward foundation in 2022 so every dollar of profit funds environmental protection rather than shareholders. Recycled materials across most of the catalogue, fair-trade certified factories, and the Worn Wear repair-for-life program that quietly subverts the entire fast-fashion economy. The jacket you buy at 30 is the jacket you hand down at 60.",
+    "category": "wear",
+    "tier": "pick",
+    "criteria": [
+      "used",
+      "clean",
+      "independent",
+      "verifiable",
+      "durable",
+      "mission-aligned"
+    ],
+    "topicSlugs": [
+      "fashion",
+      "sustainable-living",
+      "tools-carry"
+    ],
+    "vendor": [
+      {
+        "name": "Patagonia",
+        "url": "https://www.patagonia.com/?ref=frqncy",
+        "affiliate": "https://www.patagonia.com/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Patagonia affiliate enrollment",
+        "regions": [
+          "US",
+          "EU",
+          "UK",
+          "worldwide"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
+  },
+  {
+    "id": "outerknown",
+    "type": "tool",
+    "name": "Outerknown",
+    "desc": "Kelly Slater's brand. Started in 2015 with one obsession — make clothes the surf community can wear without dressing in plastic. Recycled fishing nets become board shorts, organic cotton and hemp run the basics, Fair Labor Association certified factories. Lifetime guarantee on the S.E.A. Jeans (Social Environmental Accountability). The conscious answer to the surfwear that the industry mass-produced through the 90s and 2000s.",
+    "category": "wear",
+    "tier": "aligned",
+    "criteria": [
+      "clean",
+      "independent",
+      "verifiable",
+      "durable",
+      "mission-aligned"
+    ],
+    "topicSlugs": [
+      "fashion",
+      "sustainable-living"
+    ],
+    "vendor": [
+      {
+        "name": "Outerknown",
+        "url": "https://www.outerknown.com/?ref=frqncy",
+        "affiliate": "https://www.outerknown.com/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Outerknown affiliate enrollment",
+        "regions": [
+          "US",
+          "worldwide"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
+  },
+  {
+    "id": "asket",
+    "type": "tool",
+    "name": "Asket",
+    "desc": "Swedish minimalism with a permanent collection. No seasons, no sales, no marketing campaigns — Asket carries one t-shirt, one oxford shirt, one merino sweater, all year, every year. Every garment ships with a full traceability map — which farm grew the cotton, which mill spun it, which factory cut it. The opposite of fast fashion's planned obsolescence. The wardrobe is small; the lifespan is long.",
+    "category": "wear",
+    "tier": "aligned",
+    "criteria": [
+      "clean",
+      "independent",
+      "verifiable",
+      "durable",
+      "mission-aligned"
+    ],
+    "topicSlugs": [
+      "fashion",
+      "minimalism",
+      "sustainable-living"
+    ],
+    "vendor": [
+      {
+        "name": "Asket",
+        "url": "https://www.asket.com/?ref=frqncy",
+        "affiliate": "https://www.asket.com/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Asket affiliate enrollment",
+        "regions": [
+          "EU",
+          "US",
+          "worldwide"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
+  },
+  {
+    "id": "pact-apparel",
+    "type": "tool",
+    "name": "Pact Apparel",
+    "desc": "GOTS-certified organic cotton from end to end, Fair Trade USA certified factories, accessible price points. The brand that proved you do not need to charge $200 for a t-shirt to do this right. Basics — tees, underwear, socks, loungewear, kids' clothes — that survive the wash for years rather than pilling out by month three.",
+    "category": "wear",
+    "tier": "aligned",
+    "criteria": [
+      "used",
+      "clean",
+      "verifiable",
+      "durable",
+      "accessible",
+      "mission-aligned"
+    ],
+    "topicSlugs": [
+      "fashion",
+      "sustainable-living"
+    ],
+    "vendor": [
+      {
+        "name": "Pact",
+        "url": "https://wearpact.com/?ref=frqncy",
+        "affiliate": "https://wearpact.com/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Pact affiliate enrollment",
+        "regions": [
+          "US",
+          "worldwide"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
+  },
+  {
+    "id": "buck-mason",
+    "type": "tool",
+    "name": "Buck Mason",
+    "desc": "American-made heritage basics. Started in Venice Beach in 2013 with one rule — every shirt cut and sewn in the US, every fabric milled in the US, every detail finished by hand. Tees, denim, oxford shirts, henleys — the wardrobe a working man's grandfather built in the 1950s, brought forward without nostalgia. Slow growth, no outside investment, sold direct.",
+    "category": "wear",
+    "tier": "aligned",
+    "criteria": [
+      "clean",
+      "independent",
+      "verifiable",
+      "durable"
+    ],
+    "topicSlugs": [
+      "fashion",
+      "sustainable-living"
+    ],
+    "vendor": [
+      {
+        "name": "Buck Mason",
+        "url": "https://www.buckmason.com/?ref=frqncy",
+        "affiliate": "https://www.buckmason.com/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Buck Mason affiliate enrollment",
+        "regions": [
+          "US",
+          "worldwide"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
+  },
+  {
+    "id": "esalen",
+    "type": "place",
+    "name": "Esalen Institute",
+    "desc": "The retreat center that founded the modern retreat-center category. Big Sur, California, on a cliff above the Pacific, hot springs running into the sea. Founded 1962 by Michael Murphy and Dick Price; the place where Aldous Huxley, Abraham Maslow, Fritz Perls, Joseph Campbell, Stan Grof, and three generations of humanistic-psychology and consciousness teachers gathered, taught, and built the field. Today: workshops on meditation, gestalt, somatic practice, bodywork, ecology. The closest thing the western world has to a continuously operating sanctuary in the lineage tradition.",
+    "category": "stay",
+    "tier": "pick",
+    "criteria": [
+      "used",
+      "clean",
+      "independent",
+      "verifiable",
+      "durable",
+      "ancient-lineage",
+      "mission-aligned"
+    ],
+    "topicSlugs": [
+      "meditation",
+      "wellbeing",
+      "oneness"
+    ],
+    "vendor": [
+      {
+        "name": "Esalen",
+        "url": "https://www.esalen.org/",
+        "affiliate": false,
+        "region": "US"
+      }
+    ],
+    "revenue_relationship": null
+  },
+  {
+    "id": "plum-village",
+    "type": "place",
+    "name": "Plum Village",
+    "desc": "Thích Nhất Hạnh's monastery in southwestern France. Founded 1982, now the largest international Buddhist monastery in the Plum Village tradition — five hamlets, hundreds of monastics, retreats year-round in five languages. Mindfulness practised in the original way: silent meals, walking meditation between sessions, working meditation in the gardens. Open to anyone for a week or longer. The closest you can get in the West to actually living the practice rather than reading about it.",
+    "category": "stay",
+    "tier": "aligned",
+    "criteria": [
+      "used",
+      "clean",
+      "independent",
+      "verifiable",
+      "durable",
+      "ancient-lineage"
+    ],
+    "topicSlugs": [
+      "meditation",
+      "buddhism",
+      "wellbeing"
+    ],
+    "vendor": [
+      {
+        "name": "Plum Village",
+        "url": "https://plumvillage.org/",
+        "affiliate": false,
+        "region": "EU"
+      }
+    ],
+    "revenue_relationship": null
+  },
+  {
+    "id": "kripalu",
+    "type": "place",
+    "name": "Kripalu Center",
+    "desc": "The largest yoga and holistic-living retreat center in North America. Stockbridge, Massachusetts, in the Berkshires. Founded in 1972, now a 401(c)(3) non-profit. Programs every week of the year — yoga teacher training, Ayurveda, meditation, somatic therapy, conscious-leadership workshops. The American gateway into the residential-retreat model: arrive, hand in your phone, eat what they cook, follow the schedule.",
+    "category": "stay",
+    "tier": "aligned",
+    "criteria": [
+      "used",
+      "clean",
+      "independent",
+      "verifiable",
+      "durable"
+    ],
+    "topicSlugs": [
+      "yoga",
+      "meditation",
+      "wellbeing",
+      "ayurveda"
+    ],
+    "vendor": [
+      {
+        "name": "Kripalu",
+        "url": "https://kripalu.org/",
+        "affiliate": false,
+        "region": "US"
+      }
+    ],
+    "revenue_relationship": null
+  },
+  {
+    "id": "1-hotels",
+    "type": "place",
+    "name": "1 Hotels",
+    "desc": "The first luxury hotel chain built around an ecological mission rather than retrofitted to one. LEED-certified properties, reclaimed materials throughout the interiors, organic cotton bedding, low-impact food sourcing, electric-vehicle charging at every location. Locations in Brooklyn, Manhattan, West Hollywood, Miami, Toronto, San Francisco, London, Mayfair, Mexico City, Cabo, Nashville, Hanalei Bay. The proof-point that luxury hospitality and ecological responsibility are not mutually exclusive.",
+    "category": "stay",
+    "tier": "aligned",
+    "criteria": [
+      "clean",
+      "verifiable",
+      "durable",
+      "mission-aligned"
+    ],
+    "topicSlugs": [
+      "sustainable-living",
+      "wellbeing"
+    ],
+    "vendor": [
+      {
+        "name": "1 Hotels",
+        "url": "https://www.1hotels.com/",
+        "affiliate": false,
+        "region": "global"
+      }
+    ],
+    "revenue_relationship": null
+  },
+  {
+    "id": "spirit-rock",
+    "type": "place",
+    "name": "Spirit Rock Meditation Center",
+    "desc": "The West Coast home of Insight Meditation (Vipassana). Founded by Jack Kornfield, Sylvia Boorstein, James Baraz, and a small circle of teachers who studied under U Pandita and other Burmese masters. 411 acres in Marin County, California. Day-long sits, weekend retreats, month-long silent retreats. The lineage place for anyone serious about the western adaptation of the Theravada tradition.",
+    "category": "stay",
+    "tier": "aligned",
+    "criteria": [
+      "used",
+      "clean",
+      "independent",
+      "verifiable",
+      "durable",
+      "ancient-lineage"
+    ],
+    "topicSlugs": [
+      "meditation",
+      "buddhism",
+      "wellbeing"
+    ],
+    "vendor": [
+      {
+        "name": "Spirit Rock",
+        "url": "https://www.spiritrock.org/",
+        "affiliate": false,
+        "region": "US"
+      }
+    ],
+    "revenue_relationship": null
+  },
+  {
+    "id": "tao-te-ching",
+    "type": "book",
+    "name": "Tao Te Ching",
+    "desc": "Lao Tzu, circa 6th century BCE. Eighty-one chapters, less than 5,000 Chinese characters, the entire foundation of Daoist thought. Reading it is not optional for anyone interested in consciousness, leadership, non-coercion, or how to live in alignment with what is rather than against it. Translations matter — Stephen Mitchell's is the poetic standard, Red Pine's the scholarly reference, D.C. Lau's the classical Cambridge edition. Read one a year for life and the book teaches a different lesson each pass.",
+    "category": "library",
+    "tier": "pick",
+    "criteria": [
+      "clean",
+      "verifiable",
+      "durable",
+      "ancient-lineage"
+    ],
+    "topicSlugs": [
+      "taoism",
+      "oneness",
+      "literature"
+    ],
+    "vendor": [
+      {
+        "name": "Bookshop.org (Stephen Mitchell translation)",
+        "url": "https://bookshop.org/p/books/tao-te-ching-a-new-english-version-stephen-mitchell/?ref=frqncy",
+        "affiliate": "https://bookshop.org/p/books/tao-te-ching-a-new-english-version-stephen-mitchell/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Bookshop.org affiliate enrollment",
+        "regions": [
+          "US",
+          "UK"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
+  },
+  {
+    "id": "the-bible",
+    "type": "book",
+    "name": "The Bible",
+    "desc": "The most-read book in human history and the textual scaffold of Western civilization. Whether read as scripture, mythology, literature, philosophy, or law, the depth is the same. For a literal translation that preserves rhythm and texture: the Robert Alter translation of the Hebrew Bible (one of the great scholarly achievements of the last century). For the New Testament alongside, the New Revised Standard Version. For continuous family reading, the King James — irreplaceable for its English-language influence even where its scholarship has been superseded.",
+    "category": "library",
+    "tier": "aligned",
+    "criteria": [
+      "clean",
+      "verifiable",
+      "durable",
+      "ancient-lineage"
+    ],
+    "topicSlugs": [
+      "christianity",
+      "oneness",
+      "literature",
+      "mythology"
+    ],
+    "vendor": [
+      {
+        "name": "Bookshop.org (Robert Alter translation)",
+        "url": "https://bookshop.org/p/books/the-hebrew-bible-a-translation-with-commentary-robert-alter/?ref=frqncy",
+        "affiliate": "https://bookshop.org/p/books/the-hebrew-bible-a-translation-with-commentary-robert-alter/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Bookshop.org affiliate enrollment",
+        "regions": [
+          "US",
+          "UK"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
+  },
+  {
+    "id": "book-of-enoch",
+    "type": "book",
+    "name": "The Book of Enoch",
+    "desc": "Pre-Christian Jewish apocalyptic literature, fragments of which were found among the Dead Sea Scrolls. Excluded from the Hebrew canon and most Christian canons (the Ethiopian Orthodox Church keeps it), which is exactly why it matters — the cosmology of fallen angels, Watchers, giants, and pre-Flood revelation that the canonical texts only allude to. The R.H. Charles 1917 translation is the scholarly standard; the Nickelsburg / VanderKam two-volume Hermeneia commentary is the deeper read.",
+    "category": "library",
+    "tier": "aligned",
+    "criteria": [
+      "clean",
+      "verifiable",
+      "durable",
+      "ancient-lineage"
+    ],
+    "topicSlugs": [
+      "christianity",
+      "oneness",
+      "mythology",
+      "akashic-records"
+    ],
+    "vendor": [
+      {
+        "name": "Bookshop.org",
+        "url": "https://bookshop.org/p/books/the-book-of-enoch-r-h-charles/?ref=frqncy",
+        "affiliate": "https://bookshop.org/p/books/the-book-of-enoch-r-h-charles/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Bookshop.org affiliate enrollment",
+        "regions": [
+          "US",
+          "UK"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
+  },
+  {
+    "id": "bhagavad-gita",
+    "type": "book",
+    "name": "The Bhagavad Gita",
+    "desc": "Seven hundred Sanskrit verses inside the Mahabharata, the central scriptural text of the Vedic tradition. The dialogue between Arjuna and Krishna on the eve of the great battle — duty, action, devotion, liberation. Eknath Easwaran's translation is the warm modern entry; Stephen Mitchell's is the poetic; the Gambhirananda / Ramakrishna Math edition is the scholarly with Shankara's classical commentary. The book Gandhi carried, the book Oppenheimer quoted, the book millions still read daily.",
+    "category": "library",
+    "tier": "aligned",
+    "criteria": [
+      "clean",
+      "verifiable",
+      "durable",
+      "ancient-lineage"
+    ],
+    "topicSlugs": [
+      "hinduism",
+      "oneness",
+      "literature",
+      "yoga"
+    ],
+    "vendor": [
+      {
+        "name": "Bookshop.org (Easwaran translation)",
+        "url": "https://bookshop.org/p/books/the-bhagavad-gita-eknath-easwaran/?ref=frqncy",
+        "affiliate": "https://bookshop.org/p/books/the-bhagavad-gita-eknath-easwaran/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Bookshop.org affiliate enrollment",
+        "regions": [
+          "US",
+          "UK"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
+  },
+  {
+    "id": "upanishads",
+    "type": "book",
+    "name": "The Upanishads",
+    "desc": "The philosophical layer of the Vedas — composed between 800 and 200 BCE, the foundational texts of Hindu thought and the source from which Buddhism, Jainism, and most of the later Indian traditions branched. Tat tvam asi — that thou art — is here. The non-dual recognition the entire eastern contemplative tradition has been unpacking for three thousand years. Eknath Easwaran's translation is the readable; the Olivelle Oxford edition is the scholarly.",
+    "category": "library",
+    "tier": "aligned",
+    "criteria": [
+      "clean",
+      "verifiable",
+      "durable",
+      "ancient-lineage"
+    ],
+    "topicSlugs": [
+      "hinduism",
+      "oneness",
+      "literature",
+      "oneness"
+    ],
+    "vendor": [
+      {
+        "name": "Bookshop.org (Easwaran translation)",
+        "url": "https://bookshop.org/p/books/the-upanishads-eknath-easwaran/?ref=frqncy",
+        "affiliate": "https://bookshop.org/p/books/the-upanishads-eknath-easwaran/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Bookshop.org affiliate enrollment",
+        "regions": [
+          "US",
+          "UK"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
+  },
+  {
+    "id": "waking-up",
+    "type": "course",
+    "name": "Waking Up by Sam Harris",
+    "desc": "Sam Harris's meditation app and the deepest non-religious contemplative course on the market. Daily guided sits across multiple traditions (Vipassana, Dzogchen, Mahamudra), plus a long-form Theory section — interviews with Joseph Goldstein, Loch Kelly, Adyashanti, Henry Shukman, Frank Yang, and the cream of contemporary contemplative teachers. Free for anyone who genuinely can't afford it (no questions asked); otherwise modestly subscription-priced and entirely ad-free.",
+    "category": "learn",
+    "tier": "pick",
+    "criteria": [
+      "used",
+      "clean",
+      "independent",
+      "verifiable",
+      "durable",
+      "accessible"
+    ],
+    "topicSlugs": [
+      "meditation",
+      "oneness",
+      "wellbeing"
+    ],
+    "vendor": [
+      {
+        "name": "Waking Up",
+        "url": "https://wakingup.com/?ref=frqncy",
+        "affiliate": "https://wakingup.com/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Waking Up affiliate enrollment",
+        "regions": [
+          "global"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
+  },
+  {
+    "id": "anthropic-academy",
+    "type": "course",
+    "name": "Anthropic Academy",
+    "desc": "Anthropic's free, ad-free, working-engineer-grade course on building with Claude. Prompt engineering, agentic patterns, Claude Code, the Agent SDK, the MCP protocol — taught by the people who actually build the platform, in the depth that hands-on technical work requires. Free in the sense that matters: no upsell, no email-capture wall, no advertising. The fastest way to go from 'I have used ChatGPT' to 'I can ship with Claude.'",
+    "category": "learn",
+    "tier": "aligned",
+    "criteria": [
+      "clean",
+      "verifiable",
+      "durable",
+      "accessible"
+    ],
+    "topicSlugs": [
+      "artificial-intelligence",
+      "technology"
+    ],
+    "vendor": [
+      {
+        "name": "Anthropic Academy",
+        "url": "https://www.anthropic.com/courses",
+        "affiliate": false,
+        "region": "global",
+        "free": true
+      }
+    ],
+    "revenue_relationship": null
+  },
+  {
+    "id": "80000-hours",
+    "type": "course",
+    "name": "80,000 Hours",
+    "desc": "The career-research org built around one question — how do you use your working life (the eighty thousand hours of it) to actually make the world better? Free career guide, free coaching for serious candidates, in-depth research into which problems and which jobs have the highest marginal impact. The Effective Altruism community's most readable, least scoldy front door.",
+    "category": "learn",
+    "tier": "aligned",
+    "criteria": [
+      "clean",
+      "independent",
+      "verifiable",
+      "durable",
+      "accessible"
+    ],
+    "topicSlugs": [
+      "personal-development",
+      "impact-investing",
+      "social-enterprise"
+    ],
+    "vendor": [
+      {
+        "name": "80,000 Hours",
+        "url": "https://80000hours.org/",
+        "affiliate": false,
+        "region": "global",
+        "free": true
+      }
+    ],
+    "revenue_relationship": null
+  },
+  {
+    "id": "khan-academy",
+    "type": "course",
+    "name": "Khan Academy",
+    "desc": "Sal Khan's non-profit education platform. Free, ad-free, comprehensive — kindergarten math through college calculus, US history, economics, physics, biology, computer science, art history. Funded by donations and grants rather than ads or data sale. The closest thing the internet has produced to genuinely accessible, ad-free, quality general education.",
+    "category": "learn",
+    "tier": "aligned",
+    "criteria": [
+      "used",
+      "clean",
+      "independent",
+      "verifiable",
+      "durable",
+      "accessible"
+    ],
+    "topicSlugs": [
+      "education-systems",
+      "homeschooling",
+      "mathematics"
+    ],
+    "vendor": [
+      {
+        "name": "Khan Academy",
+        "url": "https://www.khanacademy.org/",
+        "affiliate": false,
+        "region": "global",
+        "free": true
+      }
+    ],
+    "revenue_relationship": null
+  },
+  {
+    "id": "brilliant",
+    "type": "course",
+    "name": "Brilliant",
+    "desc": "Interactive math, science, and computer science — every lesson designed as a hands-on problem set rather than a video to watch. Subscription-priced, ad-free, no behavioural tracking. The platform that does for STEM what Duolingo does for languages: small daily reps that compound into real fluency.",
+    "category": "learn",
+    "tier": "aligned",
+    "criteria": [
+      "used",
+      "clean",
+      "verifiable",
+      "durable"
+    ],
+    "topicSlugs": [
+      "mathematics",
+      "physics",
+      "education-systems"
+    ],
+    "vendor": [
+      {
+        "name": "Brilliant",
+        "url": "https://brilliant.org/?ref=frqncy",
+        "affiliate": "https://brilliant.org/?ref=frqncy",
+        "affiliate_status": "placeholder — pending Brilliant affiliate enrollment",
+        "regions": [
+          "global"
+        ]
+      }
+    ],
+    "revenue_relationship": "affiliate"
   }
 ]

@@ -946,12 +946,6 @@ window.EXPLORE_DATA = {
       "r": 13
     },
     {
-      "id": "t-robert-gould",
-      "label": "Robert Jay Gould",
-      "type": "topic",
-      "r": 13
-    },
-    {
       "id": "p-intaaya",
       "label": "Intaaya",
       "type": "topic",
@@ -1092,12 +1086,6 @@ window.EXPLORE_DATA = {
       "r": 11
     },
     {
-      "id": "t-spirituality",
-      "label": "Spirituality",
-      "type": "topic",
-      "r": 13
-    },
-    {
       "id": "curate",
       "label": "Curate",
       "type": "main",
@@ -1184,12 +1172,6 @@ window.EXPLORE_DATA = {
     {
       "id": "t-personal-finance",
       "label": "Personal Finance",
-      "type": "topic",
-      "r": 12
-    },
-    {
-      "id": "t-husbandry",
-      "label": "Animal Husbandry",
       "type": "topic",
       "r": 12
     },
@@ -1989,10 +1971,6 @@ window.EXPLORE_DATA = {
     [
       "d-sciences",
       "t-quantum-grammar"
-    ],
-    [
-      "d-sciences",
-      "t-robert-gould"
     ],
     [
       "d-tech",
@@ -3155,34 +3133,6 @@ window.EXPLORE_DATA = {
       "d-meta"
     ],
     [
-      "t-spirituality",
-      "d-meta"
-    ],
-    [
-      "t-spirituality",
-      "t-channeling"
-    ],
-    [
-      "t-spirituality",
-      "t-oneness"
-    ],
-    [
-      "t-spirituality",
-      "t-meditation"
-    ],
-    [
-      "t-spirituality",
-      "t-soul"
-    ],
-    [
-      "t-spirituality",
-      "t-abilities"
-    ],
-    [
-      "t-spirituality",
-      "t-akashic"
-    ],
-    [
       "d-society",
       "t-community"
     ],
@@ -3237,10 +3187,6 @@ window.EXPLORE_DATA = {
     [
       "d-money",
       "t-personal-finance"
-    ],
-    [
-      "d-food",
-      "t-husbandry"
     ],
     [
       "d-nature",
@@ -3812,10 +3758,6 @@ window.EXPLORE_DATA = {
     ],
     [
       "t-sacred-sites",
-      "t-spirituality"
-    ],
-    [
-      "t-sacred-sites",
       "t-sacredgeo"
     ],
     [
@@ -3829,10 +3771,6 @@ window.EXPLORE_DATA = {
     [
       "t-pilgrimage",
       "d-meta"
-    ],
-    [
-      "t-pilgrimage",
-      "t-spirituality"
     ],
     [
       "t-pilgrimage",
@@ -3869,10 +3807,6 @@ window.EXPLORE_DATA = {
     [
       "p-mount-shasta",
       "t-indigenous"
-    ],
-    [
-      "p-mount-shasta",
-      "t-spirituality"
     ],
     [
       "p-mount-shasta",
@@ -3921,10 +3855,6 @@ window.EXPLORE_DATA = {
     [
       "p-pyramids-of-giza",
       "t-archit"
-    ],
-    [
-      "p-pyramids-of-giza",
-      "t-spirituality"
     ],
     [
       "p-pyramids-of-giza",
@@ -4120,7 +4050,6 @@ window.EXPLORE_DATA = {
     "t-eft": "eft-tapping/index.html",
     "t-decentral-ai": "decentralised-ai/index.html",
     "t-quantum-grammar": "quantum-grammar/index.html",
-    "t-robert-gould": "robert-jay-gould/index.html",
     "p-intaaya": "https://intaaya.com",
     "t-humandesign": "human-design/index.html",
     "t-water": "water/index.html",
@@ -4144,7 +4073,6 @@ window.EXPLORE_DATA = {
     "p-schumacher-college": "/places/schumacher-college/",
     "t-abilities": "abilities/index.html",
     "p-monroe-institute": "/places/monroe-institute/",
-    "t-spirituality": "spirituality/index.html",
     "curate": "curate/index.html",
     "sell": "sell/index.html",
     "t-buddhism": "buddhism/index.html",
@@ -4160,7 +4088,6 @@ window.EXPLORE_DATA = {
     "t-entrepreneurship": "entrepreneurship/index.html",
     "t-leadership": "leadership/index.html",
     "t-personal-finance": "personal-finance/index.html",
-    "t-husbandry": "animal-husbandry/index.html",
     "t-wildlife": "wildlife/index.html",
     "t-writing": "writing/index.html",
     "t-literature": "literature/index.html",
@@ -4258,37 +4185,5 @@ window.EXPLORE_DATA = {
   },
   "$last_sync": "2026-06-08",
   "$updated": "2026-05-22 — added Sacred Sites + Pilgrimage topics and four place nodes (Mount Shasta, Pyramids of Giza newly created; Sedona, Bali linked to Sacred Sites).",
-  "$ghost_nodes": [
-    {
-      "id": "t-robert-gould",
-      "label": "Robert Jay Gould",
-      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
-    },
-    {
-      "id": "p-frqncy-space",
-      "label": "The FRQNCY Space",
-      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
-    },
-    {
-      "id": "t-spirituality",
-      "label": "Spirituality",
-      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
-    },
-    {
-      "id": "t-husbandry",
-      "label": "Animal Husbandry",
-      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
-    },
-    {
-      "id": "p-mount-shasta",
-      "label": "Mount Shasta",
-      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
-    },
-    {
-      "id": "p-pyramids-of-giza",
-      "label": "Pyramids of Giza",
-      "reason": "In explore map but not in content.json or places.json — review whether to keep or remove."
-    }
-  ],
   "edges": []
 };
