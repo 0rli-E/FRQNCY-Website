@@ -135,6 +135,52 @@ nav{
   color:var(--text-dim);opacity:0.6;font-family:'Jost',sans-serif;
 }
 
+/* ── ALL PICKS STRIP ── */
+/* Zoomed-out preview of every Editor's Choice across the page. Sits between
+   the editorial intro and the shelf nav. First-time visitors see what
+   FRQNCY recommends without scrolling 17 shelves. */
+.allpicks{
+  max-width:1200px;margin:0 auto;
+  padding:0 clamp(1.25rem,5vw,2.5rem) 2.4rem;
+}
+.allpicks-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:1rem;
+  margin-bottom:1rem;flex-wrap:wrap;
+}
+.allpicks-eyebrow{
+  font-size:0.58rem;letter-spacing:0.3em;text-transform:uppercase;
+  color:var(--gold);opacity:0.9;
+}
+.allpicks-eyebrow::before{content:'★';margin-right:0.5rem;opacity:0.7}
+.allpicks-meta{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);opacity:0.7}
+.allpicks-grid{
+  display:grid;
+  grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
+  gap:0.5rem;
+}
+.pickmini{
+  border:1px solid rgba(196,151,58,0.22);
+  background:rgba(196,151,58,0.03);
+  border-radius:3px;
+  padding:0.7rem 0.85rem;
+  display:flex;flex-direction:column;gap:0.25rem;
+  text-decoration:none;color:inherit;
+  transition:border-color .2s,background .2s,transform .2s;
+}
+.pickmini:hover{
+  border-color:rgba(196,151,58,0.5);
+  background:rgba(196,151,58,0.06);
+  transform:translateY(-1px);
+}
+.pickmini-shelf{
+  font-size:0.5rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--gold);opacity:0.75;
+}
+.pickmini-name{
+  font-family:'Cormorant',serif;font-size:0.92rem;font-weight:400;
+  color:#fff;line-height:1.2;letter-spacing:0.005em;
+}
+
 /* ── SHELF NAV (sticky, horizontal-scrollable on mobile) ── */
 .shelf-nav-wrap{
   position:sticky;top:0;z-index:50;
@@ -181,6 +227,14 @@ nav{
   font-family:'Cormorant',serif;font-size:clamp(1.7rem,3.4vw,2.4rem);
   font-weight:300;color:#fff;line-height:1.1;letter-spacing:0.005em;
   margin-bottom:0.5rem;
+}
+.shelf-title-link{
+  color:inherit;text-decoration:none;
+  border-bottom:1px dashed rgba(196,151,58,0.22);
+  transition:border-color .2s,color .2s;
+}
+.shelf-title-link:hover{
+  color:var(--gold-light);border-bottom-color:rgba(196,151,58,0.6);
 }
 .shelf-desc{
   font-size:0.86rem;color:var(--text-dim);line-height:1.6;max-width:560px;
@@ -236,6 +290,20 @@ nav{
   font-size:0.54rem;letter-spacing:0.18em;text-transform:uppercase;
   color:var(--text-dim);padding:3px 8px;
   border:1px solid rgba(255,255,255,0.08);border-radius:2px;
+}
+/* Quiet inline criteria — one line under the description, dot-separated.
+   Carries the rubric per-card without the chip clutter. */
+.gcard-crit-line{
+  font-size:0.56rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--text-dim);opacity:0.7;margin-top:0.2rem;line-height:1.5;
+}
+.gcard.tier-pick .gcard-crit-line{color:var(--gold);opacity:0.75}
+/* Pick cards get a touch more presence in title weight + gold gradient line. */
+.gcard.tier-pick h3{font-weight:500}
+.gcard.tier-pick::before{
+  content:'';position:absolute;top:0;left:0;right:0;height:1px;
+  background:linear-gradient(to right,transparent,rgba(196,151,58,0.5),transparent);
+  border-radius:3px 3px 0 0;
 }
 .gcard-vendors{
   display:flex;flex-direction:column;gap:0.3rem;
@@ -316,11 +384,32 @@ nav{
   font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;
   color:var(--text-dim);opacity:0.65;
 }
+.merchants-filters{
+  display:flex;flex-direction:column;gap:0.55rem;
+  margin-bottom:1.3rem;
+}
+.merchants-filter-row{
+  display:flex;gap:0.35rem;flex-wrap:wrap;align-items:center;
+}
+.merchants-filter-label{
+  font-size:0.54rem;letter-spacing:0.24em;text-transform:uppercase;
+  color:var(--text-dim);opacity:0.75;
+  min-width:54px;margin-right:0.25rem;
+}
+.merchants-chip{
+  font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;
+  padding:5px 11px;border:1px solid rgba(255,255,255,0.1);border-radius:2px;
+  color:var(--text-dim);background:transparent;cursor:pointer;
+  font-family:'Jost',sans-serif;transition:all .15s;
+}
+.merchants-chip:hover{color:var(--text);border-color:rgba(255,255,255,0.22)}
+.merchants-chip.active{color:var(--gold);border-color:rgba(196,151,58,0.55);background:rgba(196,151,58,0.06)}
 .merchants-grid{
   display:grid;
   grid-template-columns:repeat(auto-fill,minmax(260px,1fr));
   gap:0.7rem;
 }
+.merchants-grid .mcard.hidden{display:none}
 .mcard{
   border:1px solid rgba(255,255,255,0.06);
   background:rgba(255,255,255,0.018);
@@ -378,6 +467,8 @@ footer.site .wm{font-family:'Cormorant',serif;font-size:0.94rem;letter-spacing:0
 </style>
 </head>
 <body>
+<a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#C4973A;color:#0B1C3D;padding:8px 16px;z-index:10000;font-size:14px;transition:top .2s;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to main content</a>
+
 
 <!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
 <style data-frqncy-header-critical>
@@ -586,6 +677,14 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
   <p>Every entry on this page meets a rubric — used, clean, independent, verifiable, accessible, durable. Picks are things we use ourselves. Aligned items are things we'd recommend. Nothing is here because someone paid for it.</p>
 </section>
 
+<section class="allpicks" id="allpicksSection">
+  <div class="allpicks-head">
+    <span class="allpicks-eyebrow">Editor's Choices · all shelves</span>
+    <span class="allpicks-meta" id="allpicksMeta"></span>
+  </div>
+  <div class="allpicks-grid" id="allpicksGrid"></div>
+</section>
+
 <nav class="shelf-nav-wrap" aria-label="Aligned Goods shelves">
   <div class="shelf-nav" id="shelfNav"></div>
 </nav>
@@ -605,6 +704,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     <p class="merchants-desc">Every brand FRQNCY points at, listed alphabetically. Auto-generated from the entries above — the canonical referral surface. A pending tag means the affiliate link is queued; live means it routes; none means no commercial relationship exists today.</p>
     <p class="merchants-meta" id="merchantsMeta">Loading the index…</p>
   </header>
+  <div class="merchants-filters" id="merchantsFilters"></div>
   <div class="merchants-grid" id="merchantsGrid"></div>
 </section>
 
@@ -655,10 +755,34 @@ async function load() {
     GOODS = [];
   }
   renderShelfNav();
+  renderAllPicks();
   renderShelves();
   renderMerchants();
   renderJsonLd();
   attachActiveShelfTracking();
+}
+
+function renderAllPicks() {
+  // One mini-card per Editor's Choice, in CATEGORIES order so the eye runs
+  // top-down through the page's own architecture before the visitor hits
+  // the sticky nav.
+  const grid = document.getElementById('allpicksGrid');
+  const meta = document.getElementById('allpicksMeta');
+  if (!grid) return;
+  const picks = CATEGORIES
+    .map(c => {
+      const items = itemsFor(c.id);
+      const pick = items.find(x => x.tier === 'pick');
+      return pick ? { c, pick } : null;
+    })
+    .filter(Boolean);
+  if (meta) meta.textContent = `${picks.length} picks`;
+  grid.innerHTML = picks.map(({ c, pick }) =>
+    `<a class="pickmini" href="#shelf-${c.id}">
+      <span class="pickmini-shelf">${c.name}</span>
+      <span class="pickmini-name">${pick.name}</span>
+    </a>`
+  ).join('');
 }
 
 function renderJsonLd() {
@@ -749,7 +873,7 @@ function renderShelves() {
       <header class="shelf-head">
         <div class="shelf-head-text">
           <span class="shelf-num">${num}</span>
-          <h2 class="shelf-title">${c.name}</h2>
+          <h2 class="shelf-title"><a href="/aligned/${c.id}/" class="shelf-title-link">${c.name}</a></h2>
           <p class="shelf-desc">${c.desc}</p>
           ${choiceLine}
         </div>
@@ -899,7 +1023,15 @@ function renderMerchants() {
     } else if (m.rel === 'contributor') {
       relTag = `<span class="mcard-rel contributor">Contributor</span>`;
     }
-    return `<a class="mcard" href="${m.url}" target="_blank" rel="noopener noreferrer">
+    // Status token for filtering: live / pending / partner / contributor / none.
+    let statusToken = 'none';
+    if (m.rel === 'affiliate') {
+      statusToken = (m.affiliate_status && m.affiliate_status.startsWith('placeholder')) ? 'pending' : 'live';
+    } else if (m.rel === 'partner') statusToken = 'partner';
+    else if (m.rel === 'contributor') statusToken = 'contributor';
+
+    const shelfTokens = Array.from(m.shelves).join(' ');
+    return `<a class="mcard" data-status="${statusToken}" data-shelves="${shelfTokens}" href="${m.url}" target="_blank" rel="noopener noreferrer">
       <div class="mcard-head">
         <span class="mcard-name">${m.name}</span>
         <span class="mcard-arrow">↗</span>
@@ -908,6 +1040,101 @@ function renderMerchants() {
       <div class="mcard-foot">${shelves}${relTag}</div>
     </a>`;
   }).join('');
+
+  renderMerchantFilters(merchants);
+}
+
+function renderMerchantFilters(merchants) {
+  // Two filter rows — status and shelf — driven entirely by what's actually
+  // present in the merchant set. No empty filters get rendered.
+  const wrap = document.getElementById('merchantsFilters');
+  if (!wrap) return;
+
+  // Status counts
+  const statusCounts = { live: 0, pending: 0, partner: 0, contributor: 0, none: 0 };
+  const shelfCounts = {};
+  merchants.forEach(m => {
+    const t = m.rel === 'affiliate'
+      ? (m.affiliate_status && m.affiliate_status.startsWith('placeholder') ? 'pending' : 'live')
+      : (m.rel === 'partner' ? 'partner' : m.rel === 'contributor' ? 'contributor' : 'none');
+    statusCounts[t]++;
+    m.shelves.forEach(s => { shelfCounts[s] = (shelfCounts[s] || 0) + 1; });
+  });
+
+  const shelfNameById = {};
+  CATEGORIES.forEach(c => { shelfNameById[c.id] = c.name; });
+
+  // Build status row
+  const statusOrder = ['all', 'live', 'pending', 'partner', 'contributor', 'none'];
+  const statusLabel = { all: 'All', live: 'Live', pending: 'Pending', partner: 'Partner', contributor: 'Contributor', none: 'Unmonetized' };
+  const statusChips = statusOrder
+    .filter(s => s === 'all' || statusCounts[s] > 0)
+    .map(s => {
+      const count = s === 'all' ? merchants.length : statusCounts[s];
+      const active = s === 'all' ? ' active' : '';
+      return `<button class="merchants-chip${active}" data-filter-type="status" data-filter-value="${s}">${statusLabel[s]} <span style="opacity:0.55;margin-left:0.3em;font-size:0.85em">${count}</span></button>`;
+    }).join('');
+
+  // Build shelf row (in CATEGORIES order)
+  const shelfChips = ['<button class="merchants-chip active" data-filter-type="shelf" data-filter-value="all">All <span style="opacity:0.55;margin-left:0.3em;font-size:0.85em">'+merchants.length+'</span></button>']
+    .concat(CATEGORIES.filter(c => shelfCounts[c.id])
+      .map(c => `<button class="merchants-chip" data-filter-type="shelf" data-filter-value="${c.id}">${c.name} <span style="opacity:0.55;margin-left:0.3em;font-size:0.85em">${shelfCounts[c.id]}</span></button>`))
+    .join('');
+
+  wrap.innerHTML = `
+    <div class="merchants-filter-row">
+      <span class="merchants-filter-label">Status</span>
+      ${statusChips}
+    </div>
+    <div class="merchants-filter-row">
+      <span class="merchants-filter-label">Shelf</span>
+      ${shelfChips}
+    </div>
+  `;
+
+  // State: current selection per filter type
+  const state = { status: 'all', shelf: 'all' };
+
+  function applyFilters() {
+    const cards = document.querySelectorAll('#merchantsGrid .mcard');
+    let visible = 0;
+    cards.forEach(c => {
+      const matchStatus = state.status === 'all' || c.dataset.status === state.status;
+      const matchShelf = state.shelf === 'all' || c.dataset.shelves.split(' ').includes(state.shelf);
+      const show = matchStatus && matchShelf;
+      c.classList.toggle('hidden', !show);
+      if (show) visible++;
+    });
+    // Update meta line with visible count when filtering, or full summary otherwise
+    const meta = document.getElementById('merchantsMeta');
+    if (!meta) return;
+    if (state.status === 'all' && state.shelf === 'all') {
+      const bits = [`${merchants.length} merchants`];
+      if (statusCounts.live) bits.push(`${statusCounts.live} live`);
+      if (statusCounts.pending) bits.push(`${statusCounts.pending} pending`);
+      if (statusCounts.partner) bits.push(`${statusCounts.partner} partner`);
+      if (statusCounts.contributor) bits.push(`${statusCounts.contributor} contributor`);
+      if (statusCounts.none) bits.push(`${statusCounts.none} unmonetized`);
+      meta.textContent = bits.join(' · ');
+    } else {
+      const parts = [`${visible} showing`];
+      if (state.status !== 'all') parts.push(state.status);
+      if (state.shelf !== 'all') parts.push(shelfNameById[state.shelf] || state.shelf);
+      meta.textContent = parts.join(' · ');
+    }
+  }
+
+  wrap.addEventListener('click', (e) => {
+    const btn = e.target.closest('.merchants-chip');
+    if (!btn) return;
+    const type = btn.dataset.filterType;
+    const value = btn.dataset.filterValue;
+    state[type] = value;
+    // Toggle active within row
+    btn.parentElement.querySelectorAll('.merchants-chip').forEach(c => c.classList.remove('active'));
+    btn.classList.add('active');
+    applyFilters();
+  });
 }
 
 function card(g) {
@@ -939,6 +1166,16 @@ function card(g) {
   const rel = REL_BADGES[g.revenue_relationship];
   const relBadge = rel ? `<span class="gcard-rel ${rel.cls}" title="See 'On money flows' below">${rel.label}</span>` : '';
 
+  // Criteria line — quiet inline labels under the desc, dot-separated. The
+  // rubric is stated once at page level; per-card we show only which entries
+  // meet which criteria, in compact uppercase form.
+  const crits = (g.criteria || [])
+    .filter(c => CRIT_LABEL[c])
+    .map(c => CRIT_LABEL[c]);
+  const critLine = crits.length
+    ? `<div class="gcard-crit-line">${crits.join(' · ')}</div>`
+    : '';
+
   return `<article class="gcard tier-${tierClass}">
     <div class="gcard-head">
       <div style="flex:1;min-width:0;">
@@ -947,6 +1184,7 @@ function card(g) {
       ${isChoice ? `<span class="gcard-tier">★ Editor's choice</span>` : ''}
     </div>
     <p class="gcard-desc">${g.desc}</p>
+    ${critLine}
     ${vendors ? `<div class="gcard-vendors">${vendors}</div>` : ''}
     ${relBadge ? `<div class="gcard-rel-row">${relBadge}</div>` : ''}
   </article>`;

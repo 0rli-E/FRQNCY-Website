@@ -16,7 +16,7 @@
  *   - /api/*:         pass-through (functions handle their own caching)
  */
 
-const VERSION = 'v56';
+const VERSION = 'v58';
 const SHELL_CACHE   = `frqncy-shell-${VERSION}`;
 const DATA_CACHE    = `frqncy-data-${VERSION}`;
 const RUNTIME_CACHE = 'frqncy-runtime';   // intentionally unversioned
@@ -35,6 +35,7 @@ const PRECACHE = [
   '/chart.js',
   '/search.html',
   '/about.html',
+  '/about/why/index.html',
   '/platform.html',
   '/podcast.html',
   '/space.html',
@@ -43,9 +44,6 @@ const PRECACHE = [
   '/start-here.html',
   '/browse/index.html',
   // Entity hub indexes — added with the world-model expansion
-  '/people/index.html',
-  '/books/index.html',
-  '/orgs/index.html',
   '/media/index.html',
   '/music/index.html',
   '/places/index.html',
