@@ -660,6 +660,8 @@
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </head>
 <body>
+<a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#C4973A;color:#0B1C3D;padding:8px 16px;z-index:10000;font-size:14px;transition:top .2s;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to main content</a>
+
 <!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
 <style data-frqncy-header-critical>
 /* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
@@ -1067,6 +1069,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       <p class="cta-subtitle">The teachers are already here. The isles are already mapped. Find what resonates, meet the people building alongside it, and begin.</p>
       <div class="cta-buttons">
         <a href="explore.html" class="cta-button">Explore Network</a>
+        <a href="/about/why" class="cta-button secondary">Why FRQNCY</a>
         <a href="index.html#contact-section" class="cta-button secondary">Get in Touch</a>
       </div>
     </div>

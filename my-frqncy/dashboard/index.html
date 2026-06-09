@@ -19,7 +19,7 @@
 :root{
   --navy:#0B1C3D;--navy-mid:#0D2451;--navy-light:#112860;--navy-deep:#08152F;
   --gold:#C4973A;--gold-light:#E0C06A;--gold-dim:rgba(196,151,58,0.35);
-  --text:#C8D8F0;--text-dim:#7090B8;--text-faint:#4A6280;
+  --text:#C8D8F0;--text-dim:#7090B8;--text-faint:#7090B8;
   --accent:#4A7AE8;--accent-glow:rgba(74,122,232,0.12);
   --good:#5BC79A;--warn:#E8B04A;--bad:#E47878;
   --card:rgba(255,255,255,0.025);--card-hover:rgba(255,255,255,0.05);
@@ -988,8 +988,11 @@ button:focus-visible,[role="button"]:focus-visible,input:focus-visible,textarea:
 }
 </style>
 <script src="/assets/frqncy-analytics.js" defer></script>
+<script src="/mobile-nav.js" defer></script>
 </head>
 <body>
+<a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#C4973A;color:#0B1C3D;padding:8px 16px;z-index:10000;font-size:14px;transition:top .2s;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to main content</a>
+
 <!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
 <style data-frqncy-header-critical>
 /* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */

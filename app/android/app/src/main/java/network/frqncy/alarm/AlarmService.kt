@@ -313,7 +313,7 @@ class AlarmService : Service() {
         val pm = getSystemService(Context.POWER_SERVICE) as PowerManager
         wakeLock = pm.newWakeLock(
             PowerManager.PARTIAL_WAKE_LOCK,
-            "FRQNCY:AlarmService"
+            "VBRTN:AlarmService"
         ).apply {
             setReferenceCounted(false)
             acquire(WAKE_LOCK_TIMEOUT_MS)
@@ -367,7 +367,7 @@ class AlarmService : Service() {
 
         return NotificationCompat.Builder(this, CHANNEL_ID)
             .setSmallIcon(R.drawable.ic_stat_icon)
-            .setColor(0xFFC4973A.toInt()) // FRQNCY gold tint
+            .setColor(0xFFC4973A.toInt()) // VBRTN brand gold tint
             .setContentTitle(label)
             .setContentText("Tap to arrive")
             .setPriority(NotificationCompat.PRIORITY_MAX)
@@ -457,7 +457,7 @@ class AlarmService : Service() {
         const val EXTRA_SNOOZE_MINUTES = "snoozeMinutes"
 
         private const val CHANNEL_ID = "frqncy_alarms"
-        private const val NOTIFICATION_ID = 0xFCA1 // FRQNCY alarm
+        private const val NOTIFICATION_ID = 0xFCA1 // VBRTN alarm
         private const val TAG = "FrqncyAlarmService"
         private const val WAKE_LOCK_TIMEOUT_MS = 30L * 60L * 1000L // 30 min ceiling
     }

@@ -401,6 +401,8 @@
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </head>
 <body>
+<a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#C4973A;color:#0B1C3D;padding:8px 16px;z-index:10000;font-size:14px;transition:top .2s;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to main content</a>
+
 <!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
 <style data-frqncy-header-critical>
 /* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
@@ -672,7 +674,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     <!-- For Creators -->
     <section>
         <div class="for-creators">
-            <h3>Stand in the Network</h3>
+            <h2>Stand in the Network</h2>
             <p>If you make things aligned with this — tools, teachings, experiences, art, code, practices — the network wants to know you. Write in. Tell us what you build and the ethics behind it. FRQNCY supports aligned work and amplifies it.</p>
             <a href="mailto:hello@frqncy.network" class="cta-button">hello@frqncy.network</a>
         </div>

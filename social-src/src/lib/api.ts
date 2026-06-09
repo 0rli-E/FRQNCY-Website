@@ -5,7 +5,7 @@ import {
   derivePublicKeyDidKey,
   signPayloadWithDomain,
 } from './crypto';
-import { isBlueskyConnected, publishToBluesky } from './atproto-bridge';
+import { isBlueskyConnected, publishToBluesky, searchBluesky, type BlueskyPost } from './atproto-bridge';
 import { notifyMentions } from './mention-notify';
 
 // ─── Hybrid signed-message mirror helpers ─────────────────────────────────────
@@ -932,19 +932,23 @@ export interface SearchResults {
   posts: Post[];
   profiles: Profile[];
   projects: CryptoProject[];
+  bluesky: BlueskyPost[];
 }
 
 /**
- * Multi-entity search across posts (content + project_tag), profiles
- * (username + display_name), and the crypto project corpus (name + symbol).
+ * Federated multi-entity search across NRG posts (content + project_tag), NRG
+ * profiles (username + display_name), the crypto project corpus (name +
+ * symbol), and public Bluesky posts (via the unauthenticated AppView). Each
+ * source resolves independently — a slow or failing Bluesky search never
+ * blocks the NRG-native results.
  */
 export async function searchAll(query: string): Promise<SearchResults> {
   const q = query.trim();
-  if (!q) return { posts: [], profiles: [], projects: [] };
+  if (!q) return { posts: [], profiles: [], projects: [], bluesky: [] };
 
   const likeQ = `%${q}%`;
 
-  const [postsRes, profilesRes, projectsRes] = await Promise.all([
+  const [postsRes, profilesRes, projectsRes, blueskyRes] = await Promise.all([
     supabase
       .from('posts')
       .select('*, author:profiles!posts_author_id_fkey(*)')
@@ -957,12 +961,16 @@ export async function searchAll(query: string): Promise<SearchResults> {
       .or(`username.ilike.${likeQ},display_name.ilike.${likeQ}`)
       .limit(20),
     searchProjects(q),
+    // searchBluesky is best-effort and never throws, but guard anyway so a
+    // rejected promise here can't sink the whole Promise.all.
+    searchBluesky(q).catch(() => [] as BlueskyPost[]),
   ]);
 
   return {
     posts: (postsRes.data ?? []) as Post[],
     profiles: (profilesRes.data ?? []) as Profile[],
     projects: projectsRes,
+    bluesky: blueskyRes,
   };
 }
 

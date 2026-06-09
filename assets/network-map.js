@@ -43,6 +43,10 @@
     {id:"d-energy",label:"Energy",type:"cluster",r:23,desc:"The forces and resources that power existence"},
     {id:"d-food",label:"Food & Agriculture",type:"cluster",r:23,desc:"Growing, sharing and consuming nourishment"},
     {id:"d-play",label:"Play & Recreation",type:"cluster",r:22,desc:"Joy, games, sports and leisure"},
+    {id:"d-places",label:"Places",type:"cluster",r:24,desc:"Where the network gathers"},
+    {id:"d-commerce",label:"Commerce",type:"cluster",r:24,desc:"Right-relation transactions"},
+    {id:"d-curation",label:"Curation",type:"cluster",r:24,desc:"Picking with care"},
+
     {id:"t-quantum",label:"Quantum Physics",type:"topic",r:14},
     {id:"t-neuro",label:"Neuroscience",type:"topic",r:14},
     {id:"t-bio",label:"Biology",type:"topic",r:13},

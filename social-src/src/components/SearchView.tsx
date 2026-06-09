@@ -1,5 +1,6 @@
 import { useEffect, useRef, useState } from 'preact/hooks';
 import { searchAll, type SearchResults } from '../lib/api';
+import { BlueskyPostCard } from './FederatedFeed';
 
 function timeAgo(dateStr: string): string {
   const seconds = Math.floor((Date.now() - new Date(dateStr).getTime()) / 1000);
@@ -26,7 +27,7 @@ export default function SearchView() {
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResults | null>(null);
   const [loading, setLoading] = useState(false);
-  const [activeTab, setActiveTab] = useState<'all' | 'posts' | 'people' | 'projects'>('all');
+  const [activeTab, setActiveTab] = useState<'all' | 'posts' | 'people' | 'projects' | 'bluesky'>('all');
   const debounceRef = useRef<number | null>(null);
   const inputRef = useRef<HTMLInputElement>(null);
 
@@ -72,10 +73,11 @@ export default function SearchView() {
         posts: results.posts.length,
         people: results.profiles.length,
         projects: results.projects.length,
+        bluesky: results.bluesky.length,
       }
-    : { posts: 0, people: 0, projects: 0 };
+    : { posts: 0, people: 0, projects: 0, bluesky: 0 };
 
-  const totalCount = counts.posts + counts.people + counts.projects;
+  const totalCount = counts.posts + counts.people + counts.projects + counts.bluesky;
 
   return (
     <div class="space-y-6">
@@ -123,6 +125,7 @@ export default function SearchView() {
             ['posts', 'Posts', counts.posts],
             ['people', 'People', counts.people],
             ['projects', 'Projects', counts.projects],
+            ['bluesky', 'Bluesky', counts.bluesky],
           ] as const).map(([key, label, n]) => (
             <button
               key={key}
@@ -289,6 +292,25 @@ export default function SearchView() {
                     </article>
                   );
                 })}
+              </div>
+            </section>
+          )}
+
+          {/* Bluesky — public results from the federated AppView */}
+          {(activeTab === 'all' || activeTab === 'bluesky') && results.bluesky.length > 0 && (
+            <section class="space-y-3">
+              {activeTab === 'all' && (
+                <h2 class="font-heading text-lg text-gold flex items-baseline gap-2">
+                  Bluesky <span class="text-xs text-text-dim">· {results.bluesky.length}</span>
+                </h2>
+              )}
+              <p class="text-xs text-text-dim/70">
+                Public posts from the wider network · open on bsky.app to reply or repost.
+              </p>
+              <div class="space-y-3">
+                {results.bluesky.map((post) => (
+                  <BlueskyPostCard key={post.uri} post={post} />
+                ))}
               </div>
             </section>
           )}

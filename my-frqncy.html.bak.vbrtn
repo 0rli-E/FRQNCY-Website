@@ -1,0 +1,2174 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="theme-color" content="#0B1C3D">
+<meta name="robots" content="index, follow">
+<title>Your FRQNCY</title>
+<meta name="description" content="Your FRQNCY. A constellation drawn around you — domains that call, teachers aligned to your type, the next three things to read.">
+<link rel="canonical" href="https://frqncy.network/my-frqncy">
+<meta property="og:type" content="website">
+<meta property="og:site_name" content="FRQNCY">
+<meta property="og:title" content="Your FRQNCY">
+<meta property="og:description" content="Your FRQNCY. A constellation drawn around you — domains that call, teachers aligned to your type, the next three things to read.">
+<meta property="og:url" content="https://frqncy.network/my-frqncy">
+<meta property="og:image" content="https://frqncy.network/og/my-frqncy.png">
+  <meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:site" content="@frqncy_network">
+<meta name="twitter:title" content="Your FRQNCY">
+<meta name="twitter:description" content="Your FRQNCY. A constellation drawn around you — domains that call, teachers aligned to your type, the next three things to read.">
+<meta name="twitter:image" content="https://frqncy.network/og/my-frqncy.png">
+<link rel="icon" type="image/svg+xml" href="favicon.svg">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;1,300;1,400&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{
+  --navy:#0B1C3D;--navy-mid:#0D2451;--navy-light:#112860;
+  --gold:#C4973A;--gold-light:#E0C06A;
+  --text:#C8D8F0;--text-dim:#7090B8;
+  --accent:#4A7AE8;--accent-glow:rgba(74,122,232,0.12);
+  --card-border:rgba(255,255,255,0.08);
+}
+html,body{
+  background:var(--navy);color:var(--text);
+  font-family:'Jost',sans-serif;font-weight:300;
+  min-height:100vh;line-height:1.6;
+}
+a{color:inherit;text-decoration:none}
+
+/* ── NAV ── */
+nav{
+  position:fixed;top:0;left:0;right:0;z-index:100;
+  background:rgba(11,28,61,0.97);backdrop-filter:blur(16px);
+  border-bottom:1px solid var(--card-border);
+  padding:0 clamp(1.25rem,4vw,2.5rem);height:56px;
+  display:flex;align-items:center;justify-content:space-between;
+}
+.nav-logo{font-family:'Cormorant',serif;font-size:1.1rem;letter-spacing:0.28em;color:#fff;text-transform:uppercase;opacity:0.85}
+.nav-logo:hover{opacity:1}
+.nav-links{list-style:none;display:flex;align-items:center;gap:1.75rem}
+.nav-links a{font-size:0.68rem;letter-spacing:0.14em;text-transform:uppercase;color:rgba(255,255,255,0.55);transition:color .2s}
+.nav-links a:hover,.nav-links a.active{color:#fff}
+.nav-cta-gold{color:var(--gold) !important;border:1px solid rgba(196,151,58,0.35);padding:5px 14px;border-radius:2px}
+.nav-cta-gold:hover{background:rgba(196,151,58,0.08)}
+@media(max-width:768px){.nav-links{display:none}}
+
+/* ── CHART GENERATOR CTA (form view) ── */
+.chart-cta{
+  display:flex;align-items:center;gap:16px;
+  width:100%;max-width:700px;
+  margin:0 auto 2.5rem;
+  padding:20px 24px;
+  border:1px solid var(--gold);border-radius:4px;
+  background:linear-gradient(135deg, rgba(196,151,58,0.1) 0%, rgba(196,151,58,0.03) 100%);
+  text-decoration:none;color:inherit;
+  transition:all 0.25s;cursor:pointer;
+}
+.chart-cta:hover{
+  background:linear-gradient(135deg, rgba(196,151,58,0.18) 0%, rgba(196,151,58,0.06) 100%);
+  border-color:#E0C06A;transform:translateY(-1px);
+  box-shadow:0 4px 20px rgba(196,151,58,0.15);
+}
+.chart-cta-glyph{
+  font-size:1.8rem;color:var(--gold);flex-shrink:0;
+  width:48px;height:48px;display:flex;align-items:center;justify-content:center;
+  background:rgba(196,151,58,0.1);border-radius:50%;
+}
+.chart-cta-text{flex:1}
+.chart-cta-title{
+  font-family:'Cormorant',serif;font-size:1.25rem;font-weight:400;color:#fff;
+  margin-bottom:3px;
+}
+.chart-cta-sub{
+  font-size:0.72rem;color:var(--text-dim);line-height:1.5;
+}
+.chart-cta-arrow{
+  font-size:1.4rem;color:var(--gold);flex-shrink:0;
+  transition:transform 0.2s;
+}
+.chart-cta:hover .chart-cta-arrow{transform:translateX(4px)}
+
+@media(max-width:520px){
+  .chart-cta{padding:16px 18px;gap:12px}
+  .chart-cta-glyph{width:40px;height:40px;font-size:1.4rem}
+  .chart-cta-title{font-size:1.1rem}
+}
+
+/* ── CHART GENERATOR CARD (result view) ── */
+.chart-result-card{
+  display:flex;align-items:center;justify-content:space-between;
+  width:100%;padding:22px 24px;margin-bottom:1.5rem;
+  border:1px solid var(--gold);border-radius:4px;
+  background:linear-gradient(135deg, rgba(196,151,58,0.12) 0%, rgba(196,151,58,0.03) 100%);
+  text-decoration:none;color:inherit;
+  transition:all 0.25s;cursor:pointer;
+}
+.chart-result-card:hover{
+  background:linear-gradient(135deg, rgba(196,151,58,0.2) 0%, rgba(196,151,58,0.08) 100%);
+  border-color:#E0C06A;transform:translateY(-1px);
+  box-shadow:0 4px 20px rgba(196,151,58,0.15);
+}
+.chart-rc-left{display:flex;align-items:center;gap:16px}
+.chart-rc-glyph{
+  font-size:1.5rem;color:var(--gold);flex-shrink:0;
+  width:44px;height:44px;display:flex;align-items:center;justify-content:center;
+  background:rgba(196,151,58,0.1);border-radius:50%;
+}
+.chart-rc-title{
+  font-family:'Cormorant',serif;font-size:1.15rem;font-weight:400;color:#fff;
+  margin-bottom:2px;
+}
+.chart-rc-sub{font-size:0.68rem;color:var(--text-dim);line-height:1.5;max-width:400px}
+.chart-rc-arrow{
+  font-size:1.3rem;color:var(--gold);flex-shrink:0;
+  transition:transform 0.2s;
+}
+.chart-result-card:hover .chart-rc-arrow{transform:translateX(4px)}
+
+@media(max-width:520px){
+  .chart-result-card{flex-direction:column;align-items:flex-start;gap:12px;padding:18px}
+  .chart-rc-arrow{align-self:flex-end}
+}
+
+/* ── FORM SHELL ── */
+#form-view{
+  min-height:100vh;padding-top:56px;
+  display:flex;flex-direction:column;align-items:center;justify-content:center;
+  padding-bottom:4rem;
+}
+.form-inner{width:100%;max-width:700px;padding:0 clamp(1.25rem,5vw,2rem)}
+
+/* Step indicator */
+.step-bar{display:flex;gap:8px;margin-bottom:2.5rem;align-items:center}
+.step-dot{
+  width:6px;height:6px;border-radius:50%;background:rgba(255,255,255,0.15);
+  transition:all .3s;
+}
+.step-dot.active{background:var(--gold);width:20px;border-radius:3px}
+.step-dot.done{background:rgba(196,151,58,0.4)}
+
+/* Step blocks */
+.form-step{display:none}
+.form-step.visible{display:block;animation:fadeUp .4s ease}
+@keyframes fadeUp{from{opacity:0;transform:translateY(12px)}to{opacity:1;transform:translateY(0)}}
+
+.form-eyebrow{font-size:0.58rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;opacity:0.85}
+.form-q{font-family:'Cormorant',serif;font-size:clamp(1.6rem,4vw,2.4rem);font-weight:300;color:#fff;line-height:1.15;margin-bottom:0.5rem}
+.form-hint{font-size:0.78rem;color:var(--text-dim);margin-bottom:1.75rem}
+
+/* Domain tiles grid */
+.domain-grid{
+  display:grid;grid-template-columns:repeat(3,1fr);gap:10px;
+  margin-bottom:2rem;
+}
+@media(max-width:520px){.domain-grid{grid-template-columns:repeat(2,1fr)}}
+
+.domain-tile{
+  border:1px solid var(--card-border);border-radius:4px;
+  padding:1rem 1rem 0.85rem;cursor:pointer;
+  background:rgba(255,255,255,0.03);
+  transition:all .2s;user-select:none;
+}
+.domain-tile:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06)}
+.domain-tile.selected{
+  border-color:var(--gold);background:rgba(196,151,58,0.08);
+}
+.domain-tile.selected .dt-name{color:var(--gold)}
+.dt-glyph{font-size:1.25rem;margin-bottom:0.4rem;opacity:0.75}
+.dt-name{font-size:0.78rem;font-weight:400;color:var(--text);line-height:1.3;margin-bottom:0.2rem;transition:color .2s}
+.dt-sub{font-size:0.62rem;color:var(--text-dim);line-height:1.4}
+
+/* Intent & depth tiles */
+.intent-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:8px;margin-bottom:1.5rem}
+.depth-grid{display:flex;gap:8px;flex-wrap:wrap;margin-bottom:2rem}
+
+.choice-tile{
+  border:1px solid var(--card-border);border-radius:4px;
+  padding:0.85rem 1rem;cursor:pointer;
+  background:rgba(255,255,255,0.03);transition:all .2s;
+  text-align:left;
+}
+.choice-tile:hover{border-color:rgba(255,255,255,0.2);background:rgba(255,255,255,0.06)}
+.choice-tile.selected{border-color:var(--accent);background:rgba(74,122,232,0.1)}
+.choice-tile.selected .ct-name{color:#fff}
+.ct-name{font-size:0.82rem;font-weight:400;color:var(--text);margin-bottom:0.15rem;transition:color .2s}
+.ct-desc{font-size:0.64rem;color:var(--text-dim);line-height:1.4}
+
+/* Preference chips (modalities multi-select) */
+.pref-chip{
+  border:1px solid var(--card-border);border-radius:999px;
+  padding:0.45rem 0.9rem;cursor:pointer;
+  background:rgba(255,255,255,0.03);transition:all .2s;
+  font-size:0.72rem;color:var(--text);letter-spacing:0.02em;
+  user-select:none;
+}
+.pref-chip:hover{border-color:rgba(255,255,255,0.25);background:rgba(255,255,255,0.06)}
+.pref-chip.selected{border-color:var(--accent);background:rgba(74,122,232,0.12);color:#fff}
+
+/* Name input */
+.name-wrap{margin-bottom:2rem}
+.name-label{font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-dim);margin-bottom:0.5rem;display:block}
+#name-input{
+  width:100%;background:rgba(255,255,255,0.05);
+  border:1px solid var(--card-border);border-radius:3px;
+  padding:12px 16px;color:#fff;font-family:'Jost',sans-serif;
+  font-size:1rem;font-weight:300;letter-spacing:0.04em;outline:none;
+  transition:border-color .2s;
+}
+#name-input::placeholder{color:rgba(255,255,255,0.2)}
+#name-input:focus{border-color:rgba(74,122,232,0.5)}
+
+/* Buttons */
+.btn-row{display:flex;gap:12px;align-items:center}
+.btn-primary{
+  display:inline-block;background:var(--gold);color:var(--navy);
+  padding:13px 32px;font-family:'Jost',sans-serif;font-weight:500;
+  font-size:11px;letter-spacing:0.2em;text-transform:uppercase;
+  border:1px solid var(--gold);cursor:pointer;transition:all .25s;border-radius:2px;
+}
+.btn-primary:hover{background:#B8862E;border-color:#B8862E}
+.btn-primary:disabled{opacity:0.4;cursor:not-allowed}
+.btn-ghost{
+  display:inline-block;background:transparent;color:var(--text-dim);
+  padding:13px 20px;font-family:'Jost',sans-serif;font-weight:400;
+  font-size:11px;letter-spacing:0.14em;text-transform:uppercase;
+  border:1px solid rgba(255,255,255,0.1);cursor:pointer;transition:all .25s;border-radius:2px;
+}
+.btn-ghost:hover{color:var(--text);border-color:rgba(255,255,255,0.25)}
+
+/* ── RESULT VIEW ── */
+#result-view{display:none;min-height:100vh;padding-top:56px}
+
+.result-hero{
+  text-align:center;
+  padding:clamp(2rem,5vw,3.5rem) clamp(1.25rem,5vw,2.5rem) 1rem;
+  position:relative;
+}
+.result-hero::before{
+  content:'';position:absolute;inset:0;
+  background:radial-gradient(ellipse at 50% 0%,rgba(196,151,58,0.07) 0%,transparent 65%);
+  pointer-events:none;
+}
+.result-eyebrow{font-size:0.56rem;letter-spacing:0.36em;text-transform:uppercase;color:var(--gold);margin-bottom:0.75rem;opacity:0.8}
+.result-title{font-family:'Cormorant',serif;font-size:clamp(2rem,5vw,3.2rem);font-weight:300;color:#fff;line-height:1.1;margin-bottom:0.5rem}
+.result-sub{font-size:0.8rem;color:var(--text-dim);max-width:420px;margin:0 auto}
+
+/* Constellation SVG */
+#constellation-wrap{
+  width:100%;max-width:860px;margin:0 auto;
+  padding:0 clamp(1rem,4vw,2rem);
+  position:relative;
+}
+#constellation-svg{width:100%;display:block}
+
+/* Curated sections */
+.curated{max-width:860px;margin:0 auto;padding:0 clamp(1.25rem,4vw,2rem) 5rem}
+
+.section-label{
+  font-size:0.54rem;letter-spacing:0.36em;text-transform:uppercase;
+  color:var(--accent);margin-bottom:1.25rem;opacity:0.75;
+}
+.teacher-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(220px,1fr));gap:1px;background:var(--card-border);border:1px solid var(--card-border);border-radius:4px;overflow:hidden;margin-bottom:2.5rem}
+.teacher-card{
+  background:var(--navy);padding:1.1rem 1.25rem;
+  display:block;text-decoration:none;transition:background .18s;
+}
+.teacher-card:hover{background:rgba(255,255,255,0.04)}
+.tc-type{font-size:0.46rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.4rem;font-weight:500}
+.tc-name{font-family:'Cormorant',serif;font-size:1.05rem;color:#fff;line-height:1.25;margin-bottom:0.3rem}
+.tc-topic{font-size:0.6rem;color:var(--text-dim);margin-bottom:0.35rem}
+.tc-desc{font-size:0.7rem;color:var(--text-dim);line-height:1.5;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden}
+
+.start-card{
+  border:1px solid var(--card-border);border-radius:4px;
+  padding:1.25rem 1.4rem;display:flex;align-items:flex-start;
+  gap:1rem;margin-bottom:2.5rem;
+  background:rgba(255,255,255,0.02);
+  transition:background .18s;text-decoration:none;color:inherit;
+}
+.start-card:hover{background:rgba(255,255,255,0.04)}
+.start-badge{
+  flex-shrink:0;font-size:0.46rem;letter-spacing:0.18em;text-transform:uppercase;
+  color:var(--navy);background:var(--gold);padding:3px 8px;border-radius:2px;font-weight:500;
+  margin-top:3px;
+}
+.start-info{}
+.start-title{font-family:'Cormorant',serif;font-size:1.1rem;color:#fff;margin-bottom:0.25rem}
+.start-desc{font-size:0.72rem;color:var(--text-dim);line-height:1.5}
+
+/* ── Learning path ── */
+#learning-path{display:flex;flex-direction:column;gap:0.6rem;margin-bottom:2.5rem}
+.path-step{
+  position:relative;display:flex;align-items:center;gap:0.95rem;
+  padding:0.95rem 1.05rem;
+  border:1px solid var(--card-border);border-radius:4px;
+  background:rgba(255,255,255,0.02);text-decoration:none;color:inherit;
+  transition:border-color .2s,background .2s,transform .2s;
+  overflow:hidden;
+}
+.path-step::before{
+  content:"";position:absolute;left:0;top:0;bottom:0;width:3px;
+  background:linear-gradient(180deg,#E0C06A,#C4973A);opacity:0;transition:opacity .2s;
+}
+.path-step:hover{border-color:rgba(196,151,58,0.35);background:rgba(255,255,255,0.04);transform:translateX(2px)}
+.path-step:hover::before{opacity:1}
+.path-step.done{opacity:0.65}
+.path-step.done .path-title{text-decoration:line-through;text-decoration-color:rgba(196,151,58,0.4)}
+.path-step.done::before{opacity:1;background:#5BC79A}
+.path-num{
+  flex-shrink:0;width:30px;height:30px;border-radius:50%;
+  border:1px solid var(--card-border);background:rgba(255,255,255,0.02);
+  display:flex;align-items:center;justify-content:center;
+  font-family:'Cormorant',serif;font-size:0.95rem;color:var(--gold-light);
+  transition:all .2s;
+}
+.path-step.done .path-num{background:rgba(91,199,154,0.12);border-color:rgba(91,199,154,0.4);color:#5BC79A}
+.path-step.done .path-num::before{content:"✓";font-size:0.95rem}
+.path-step.done .path-num span{display:none}
+.path-info{flex:1;min-width:0}
+.path-title{font-family:'Cormorant',serif;font-size:1.1rem;color:#fff;margin-bottom:0.2rem;line-height:1.3}
+.path-meta{font-size:0.65rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-faint)}
+.path-meta strong{color:var(--gold-light);font-weight:400}
+.path-arrow{flex-shrink:0;color:var(--gold);font-size:1.1rem;opacity:0.6;transition:opacity .2s,transform .2s}
+.path-step:hover .path-arrow{opacity:1;transform:translateX(3px)}
+.path-empty{padding:1rem 1.1rem;color:var(--text-faint);font-size:0.78rem;font-style:italic;text-align:center}
+.path-foot{
+  margin-top:0.4rem;font-size:0.65rem;color:var(--text-faint);
+  letter-spacing:0.1em;text-transform:uppercase;
+  display:flex;align-items:center;gap:0.5rem;
+}
+.path-foot .path-progress{flex:1;height:2px;background:rgba(255,255,255,0.06);border-radius:1px;overflow:hidden}
+.path-foot .path-progress span{display:block;height:100%;background:linear-gradient(90deg,#C4973A,#E0C06A);transition:width .4s}
+@media(max-width:520px){
+  .path-step{padding:0.8rem 0.9rem;gap:0.75rem}
+  .path-title{font-size:1rem}
+}
+
+.action-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center;margin-bottom:3rem}
+.share-url{
+  font-size:0.62rem;color:var(--text-dim);letter-spacing:0.08em;
+  border:1px solid var(--card-border);padding:8px 14px;border-radius:3px;
+  background:rgba(255,255,255,0.03);cursor:pointer;transition:all .2s;
+  font-family:'Jost',sans-serif;
+}
+.share-url:hover{border-color:rgba(255,255,255,0.2);color:var(--text)}
+.share-copied{color:var(--gold)!important;border-color:rgba(196,151,58,0.4)!important}
+
+/* ── Loading pulse ── */
+#loading{
+  display:none;position:fixed;inset:0;z-index:200;
+  background:var(--navy);align-items:center;justify-content:center;
+  flex-direction:column;gap:1rem;
+}
+.loading-glyph{
+  font-family:'Cormorant',serif;font-size:3rem;letter-spacing:0.3em;
+  color:rgba(196,151,58,0.6);animation:pulse 1.8s ease-in-out infinite;
+}
+.loading-text{font-size:0.6rem;letter-spacing:0.3em;text-transform:uppercase;color:var(--text-dim)}
+@keyframes pulse{0%,100%{opacity:0.4}50%{opacity:1}}
+
+/* Focus rings for keyboard navigation */
+button:focus-visible,input:focus-visible,a:focus-visible,.domain-tile:focus-visible,.choice-tile:focus-visible{
+  outline:2px solid var(--gold);outline-offset:2px;
+}
+/* Ensure mobile touch targets on tiles */
+@media(max-width:520px){
+  .domain-tile,.choice-tile{min-height:56px}
+  .btn-primary,.btn-ghost{min-height:44px;padding:13px 22px}
+}
+</style>
+<script src="mobile-nav.js" defer></script>
+<script src="chat-widget.js" defer></script>
+<link rel="manifest" href="manifest.json">
+<link rel="stylesheet" href="nav-dropdown.css">
+<link rel="sitemap" type="application/xml" href="/sitemap.xml">
+<script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
+  <script defer data-domain="frqncy.network" src="https://plausible.io/js/script.js"></script>
+<script src="/assets/frqncy-analytics.js" defer></script>
+</head>
+<body>
+<!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
+<style data-frqncy-header-critical>
+/* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
+#main-nav{position:sticky;top:0;width:100%;z-index:500;padding:14px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;background:rgba(11,28,61,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);font-family:'Jost',system-ui,sans-serif}
+#main-nav .nav-logo{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:20px;letter-spacing:.34em;color:#fff;text-decoration:none;text-transform:uppercase}
+#main-nav .nav-links{display:flex;gap:22px;list-style:none;margin:0;padding:0;align-items:center}
+#main-nav .nav-links a{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);text-decoration:none;display:inline-flex;align-items:center;min-height:30px}
+#main-nav .nav-search{display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:2px}
+#main-nav .nav-search input{background:transparent;border:0;outline:0;color:#fff;font:inherit;font-size:10.5px;letter-spacing:.14em;width:clamp(120px,14vw,180px);padding:5px 9px}
+#main-nav .nav-search input::placeholder{color:rgba(255,255,255,.45)}
+#main-nav .nav-search button{background:transparent;border:0;color:rgba(255,255,255,.6);font-size:13px;padding:4px 9px;cursor:pointer}
+#main-nav .nav-back{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:2px;text-decoration:none}
+#main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+#main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
+#main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
+body.frqncy-home #main-nav .nav-back{display:none}
+/* Dropdown panel — inlined so the styling ships with every page, including
+   social/NRG pages that don't load nav-dropdown.css. */
+#main-nav .nav-dd{position:relative}
+#main-nav .nav-dd > a{display:inline-flex;align-items:center;gap:4px}
+#main-nav .nav-dd > a::after{content:'';display:inline-block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:3.5px solid currentColor;opacity:.5;transition:opacity .2s,transform .2s}
+#main-nav .nav-dd:hover > a::after,#main-nav .nav-dd:focus-within > a::after{opacity:1;transform:rotate(180deg)}
+#main-nav .nav-dd-menu{position:absolute;top:calc(100% + 12px);left:50%;min-width:200px;background:rgba(11,28,61,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px rgba(0,0,0,.3);padding:8px 0;opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-4px);transition:opacity .2s,visibility .2s,transform .2s;z-index:600}
+#main-nav .nav-dd:hover .nav-dd-menu,#main-nav .nav-dd:focus-within .nav-dd-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+#main-nav .nav-dd-menu::before{content:'';position:absolute;top:-14px;left:0;right:0;height:14px}
+#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important;padding:10px 24px !important;text-decoration:none;transition:background .15s;font-size:11px !important;letter-spacing:.22em !important;text-transform:uppercase !important;font-weight:300 !important;font-family:'Jost',sans-serif !important;color:rgba(255,255,255,.85) !important;min-height:0}
+#main-nav .nav-dd-menu a:hover{background:rgba(196,151,58,.12)}
+#main-nav .nav-dd-menu a:hover .dd-label{color:#E0C06A}
+#main-nav .nav-dd-menu .dd-label{display:block !important;width:100% !important;text-align:center !important;font-weight:400 !important;color:rgba(255,255,255,.9);transition:color .15s;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+#main-nav .nav-dd-menu .dd-sub{display:block !important;width:100% !important;text-align:center !important;font-size:9px !important;letter-spacing:.12em !important;color:rgba(255,255,255,.45);margin-top:2px;font-weight:300 !important;text-transform:none !important}
+@media(max-width:720px){#main-nav .nav-links{display:none}#main-nav .nav-dd-menu{display:none !important}}
+/* Embed mode — when the page loads inside the FRQNCY mobile app's iframe shell
+   (URL has ?embed=1), hide the global nav and the floating donate button so
+   the app's own tab bar is the only persistent chrome. The page's body-level
+   navs (e.g. /my-frqncy/dashboard's own tab strip) stay intact. */
+body.frqncy-embed #main-nav{display:none !important}
+body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none !important}
+</style>
+<nav id="main-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <a href="/about">About</a>
+      <div class="nav-dd-menu">
+        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
+        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/explore">Discover</a>
+      <div class="nav-dd-menu">
+        <a href="/explore"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
+        <a href="/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
+        <a href="/moon-calendar/"><span class="dd-label">Moon Calendar</span><span class="dd-sub">Thirteen moons · perpetual</span></a>
+        <a href="/mayan-calendar/"><span class="dd-label">Mayan Calendar</span><span class="dd-sub">Tzolk'in · Haab' · Long Count</span></a>
+        <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
+        <a href="/browse"><span class="dd-label">Browse</span><span class="dd-sub">Everything FRQNCY publishes</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/social/">Community</a>
+      <div class="nav-dd-menu">
+        <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
+        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">Social layer</span></a>
+        <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access</span></a>
+        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
+      </div>
+    </li>
+    <li class="nav-search-li">
+      <form action="/search" method="get" role="search" class="nav-search">
+        <input type="text" role="searchbox" name="q" placeholder="Search…" aria-label="Search the FRQNCY network" autocomplete="off">
+        <button type="submit" aria-label="Search">⌕</button>
+      </form>
+    </li>
+    <li>
+      <a href="/" class="nav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
+    </li>
+    <li>
+      <a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a>
+    </li>
+  </ul>
+</nav>
+<script>
+  // Tag the homepage so CSS can hide the back button there (it's redundant on /).
+  // Also tag embed mode (page loaded inside the FRQNCY mobile app iframe)
+  // so CSS can hide the global nav / donate button — the app provides its own chrome.
+  // In embed mode, preserve ?embed=1 across same-origin internal navigations
+  // so the chrome stays hidden as the user moves through the site.
+  (function(){
+    try {
+      var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
+      if (isHome) document.body.classList.add('frqncy-home');
+      var params = new URLSearchParams(location.search);
+      var isEmbed = (params.get('embed') === '1');
+      if (isEmbed) {
+        document.body.classList.add('frqncy-embed');
+        // Intercept clicks on internal links and re-append embed=1 if missing.
+        document.addEventListener('click', function(ev){
+          var a = ev.target && ev.target.closest && ev.target.closest('a[href]');
+          if (!a) return;
+          var href = a.getAttribute('href') || '';
+          // Skip externals, fragments, mailto/tel, and links already carrying embed.
+          if (/^(https?:|mailto:|tel:|#)/.test(href) && !/^https?:\/\/(www\.)?frqncy\.network/.test(href)) return;
+          if (href.indexOf('embed=1') !== -1) return;
+          if (a.target && a.target !== '' && a.target !== '_self') return;
+          ev.preventDefault();
+          var sep = href.indexOf('?') === -1 ? '?' : '&';
+          location.href = href + sep + 'embed=1';
+        }, true);
+      }
+    } catch(_) {}
+  })();
+</script>
+<!-- Tiny floating Donate button — bottom-right on every page. Click opens a
+     popover with the EVM + SOL wallet addresses; the full /donate page link
+     sits at the top of the popover. -->
+<style data-frqncy-donate>
+  /* Stacks above the AI chat button (chat is bottom:24px, ~56px tall, z-index:9998).
+     Donate sits at bottom:95px so it clears the AI floater. */
+  #frq-donate-btn{position:fixed;right:18px;bottom:95px;z-index:9997;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
+  #frq-donate-btn:hover{background:#C4973A;color:#fff;transform:translateY(-1px)}
+  #frq-donate-btn .heart{margin-right:6px;display:inline-block}
+  #frq-donate-pop{position:fixed;right:18px;bottom:145px;z-index:9998;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
+  #frq-donate-pop.open{display:block}
+  #frq-donate-pop .frq-pop-title{font-family:'Cormorant',Georgia,serif;font-size:18px;font-weight:400;color:#0B1C3D;margin-bottom:4px}
+  #frq-donate-pop .frq-pop-sub{font-size:11px;color:#8A9AB8;margin-bottom:14px;line-height:1.5}
+  #frq-donate-pop .frq-pop-sub a{color:#C4973A;text-decoration:none}
+  #frq-donate-pop .frq-w-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#C4973A;font-weight:500;margin-top:10px;display:block}
+  #frq-donate-pop .frq-w-addr{font-family:'SFMono-Regular',Menlo,monospace;font-size:11px;color:#0B1C3D;background:#F8FAFC;border:1px solid rgba(11,28,61,.08);padding:8px 10px;border-radius:3px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;word-break:break-all}
+  #frq-donate-pop .frq-w-copy{flex:0 0 auto;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#C4973A;background:transparent;border:1px solid rgba(196,151,58,.5);padding:3px 8px;border-radius:2px;cursor:pointer;font-family:inherit}
+  #frq-donate-pop .frq-w-copy:hover{background:#C4973A;color:#fff}
+  #frq-donate-pop .frq-pop-foot{margin-top:14px;padding-top:12px;border-top:1px solid rgba(11,28,61,.06);font-size:10px;letter-spacing:.06em;color:#8A9AB8;line-height:1.5}
+  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:80px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:128px}}
+</style>
+<button id="frq-donate-btn" type="button" aria-haspopup="dialog" aria-controls="frq-donate-pop" aria-label="Support FRQNCY">
+  <span class="heart" aria-hidden="true">♥</span>Donate
+</button>
+<div id="frq-donate-pop" role="dialog" aria-label="FRQNCY donation wallets">
+  <div class="frq-pop-title">Support FRQNCY</div>
+  <div class="frq-pop-sub">Full details + fiat options on <a href="/donate">/donate</a>.</div>
+  <span class="frq-w-label">EVM · ETH / Base / Arbitrum (USDC, ETH)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="evm">0xPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="evm">Copy</button>
+  </div>
+  <span class="frq-w-label">Solana (SOL / USDC-SPL)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="sol">SOLPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="sol">Copy</button>
+  </div>
+  <div class="frq-pop-foot">Wallets are placeholders until the FRQNCY treasury multi-sig goes live. See the crypto stack spec.</div>
+</div>
+<script>
+  (function(){
+    var btn = document.getElementById('frq-donate-btn');
+    var pop = document.getElementById('frq-donate-pop');
+    if (!btn || !pop) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      pop.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!pop.contains(e.target) && e.target !== btn) pop.classList.remove('open');
+    });
+    pop.addEventListener('click', function(e){
+      var t = e.target;
+      if (t && t.dataset && t.dataset.frqCopy) {
+        var which = t.dataset.frqCopy;
+        var addrEl = pop.querySelector('[data-frq-addr="' + which + '"]');
+        if (!addrEl) return;
+        var text = addrEl.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function(){
+            var orig = t.textContent;
+            t.textContent = 'Copied';
+            setTimeout(function(){ t.textContent = orig; }, 1200);
+          });
+        }
+      }
+    });
+  })();
+</script>
+<!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
+
+
+<nav>
+  <a href="/" class="nav-logo">FRQNCY</a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <a href="/about">About</a>
+      <div class="nav-dd-menu">
+        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
+        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="explore.html">Discover</a>
+      <div class="nav-dd-menu">
+        <a href="explore.html"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video library</span></a>
+        <a href="audio/index.html"><span class="dd-label">Audio</span><span class="dd-sub">Recordings & lectures</span></a>
+        <a href="courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="/search"><span class="dd-label">Search</span><span class="dd-sub">Find anything</span></a>
+        <a href="/chart"><span class="dd-label">Chart Generator</span><span class="dd-sub">Map your alignment</span></a>
+        <a href="/people/"><span class="dd-label">Network</span><span class="dd-sub">People, books, orgs, media, places</span></a>
+      </div>
+    </li>
+      <li class="nav-dd">
+        <a href="/social/">Community</a>
+        <div class="nav-dd-menu">
+          <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
+          <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">The social layer</span></a>
+          <a href="/space"><span class="dd-label">Community Space</span><span class="dd-sub">Coworking &amp; retreat</span></a>
+          <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
+        </div>
+      </li>
+      <li><a href="/my-frqncy" class="nav-cta-gold active">My FRQNCY</a></li>  </ul>
+</nav><script>
+  // Auth-pill removed 2026-05-11 (task #15) — sign-in lives at /social/login/
+  // reachable via the Community → Sanctuary dropdown in the global header.
+</script>
+
+<!-- Loading overlay -->
+<div id="loading" role="status" aria-live="polite">
+  <div class="loading-glyph" aria-hidden="true">✦</div>
+  <div class="loading-text">Building your constellation</div>
+</div>
+
+<main>
+
+<!-- ── YOUR DESIGN (Personalisation Engine v0; signed-in + has-chart only) ── -->
+<!-- Two cards: domains from search.json + teachers from people.json, matched
+     against the user's saved Human Design / Gene Keys signature. Suggestion
+     not prescription — see proposals/PRACTICE-TRACKER.md > "Personalisation
+     engine v0 (paired)" and assets/frqncy-personalisation.js. Hidden by
+     default; revealed only when the user is signed in AND has a chart. -->
+<section id="your-design" aria-label="Your design" style="display:none;max-width:920px;margin:0 auto 2rem;padding:0 clamp(1rem,3vw,2rem)">
+  <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.6rem">Your design</div>
+  <div id="yd-signature" style="font-size:0.78rem;color:var(--text-dim);margin-bottom:0.85rem;letter-spacing:0.04em"></div>
+  <div id="yd-grid" style="display:grid;grid-template-columns:1fr;gap:0.9rem">
+    <article style="position:relative;overflow:hidden;padding:1.2rem 1.4rem;border:1px solid var(--card-border);border-radius:4px;background:rgba(255,255,255,0.025)">
+      <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.4rem">Your domains</div>
+      <h3 style="font-family:'Cormorant',serif;font-weight:300;font-size:1.25rem;color:#fff;margin:0 0 0.35rem;line-height:1.2">Topics that often resonate with your type</h3>
+      <p style="font-size:0.75rem;color:var(--text-dim);margin:0 0 0.85rem;line-height:1.5">Suggestions, not prescriptions. Follow what calls.</p>
+      <ul id="yd-topics" style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem"></ul>
+    </article>
+    <article style="position:relative;overflow:hidden;padding:1.2rem 1.4rem;border:1px solid var(--card-border);border-radius:4px;background:rgba(255,255,255,0.025)">
+      <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.4rem">Teachers aligned</div>
+      <h3 style="font-family:'Cormorant',serif;font-weight:300;font-size:1.25rem;color:#fff;margin:0 0 0.35rem;line-height:1.2">Teachers worth reading at your design</h3>
+      <p style="font-size:0.75rem;color:var(--text-dim);margin:0 0 0.85rem;line-height:1.5">A starting bench. Take what serves; leave the rest.</p>
+      <ul id="yd-people" style="list-style:none;padding:0;margin:0;display:flex;flex-direction:column;gap:0.5rem"></ul>
+    </article>
+  </div>
+</section>
+
+<!-- Empty state — signed in, no chart yet. Tiny nudge to /chart. -->
+<section id="your-design-empty" aria-label="Save your chart" style="display:none;max-width:700px;margin:0 auto 2rem;padding:0 clamp(1rem,3vw,2rem)">
+  <div style="padding:1rem 1.2rem;border:1px dashed var(--card-border);border-radius:4px;background:rgba(255,255,255,0.02)">
+    <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.45rem">Your design</div>
+    <p style="font-size:0.86rem;color:var(--text);margin:0 0 0.6rem;line-height:1.55">Save your chart on the chart page to see suggestions tailored to your design.</p>
+    <a href="/chart" style="display:inline-flex;align-items:center;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.55rem 1rem;border-radius:3px;border:1px solid var(--gold);color:var(--gold);text-decoration:none">Generate your chart →</a>
+  </div>
+</section>
+
+<!-- Two columns on wider screens for #your-design — kept inline so this
+     surface stays self-contained without touching the global stylesheet. -->
+<style>
+  @media (min-width: 720px) {
+    #yd-grid { grid-template-columns: 1fr 1fr !important; }
+  }
+  #yd-topics li, #yd-people li {
+    padding: 0.55rem 0.75rem;
+    border: 1px solid var(--card-border);
+    border-radius: 3px;
+    background: rgba(255,255,255,0.02);
+  }
+  #yd-topics a, #yd-people a {
+    color: var(--gold);
+    text-decoration: none;
+    font-size: 0.88rem;
+    letter-spacing: 0.02em;
+  }
+  #yd-topics .yd-framing, #yd-people .yd-framing {
+    display: block;
+    margin-top: 0.2rem;
+    font-size: 0.75rem;
+    color: var(--text-dim);
+    line-height: 1.45;
+  }
+</style>
+
+<script type="module">
+  // Personalisation Engine v0 — paint "Your design" cards when the signed-in
+  // user has a saved chart. Silent no-op for everyone else.
+  import {
+    getUserChart, matchTopicsToChart, matchPeopleToChart, loadTopicsAndPeople,
+  } from '/assets/frqncy-personalisation.js';
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+
+  async function paintYourDesign() {
+    if (!window.frqncy) return;
+    await window.frqncy.ready;
+    const user = await window.frqncy.auth.getUser();
+    if (!user) return;
+
+    let chart = null;
+    try { chart = await getUserChart(); }
+    catch (err) { console.warn('[your-design] chart fetch failed', err); }
+
+    const sectionMain  = document.getElementById('your-design');
+    const sectionEmpty = document.getElementById('your-design-empty');
+    if (!sectionMain || !sectionEmpty) return;
+
+    if (!chart) {
+      sectionEmpty.style.display = 'block';
+      return;
+    }
+
+    sectionMain.style.display = 'block';
+
+    // Signature line — a quiet acknowledgement of what we read.
+    const sigBits = [chart.hd_type, chart.profile, chart.authority]
+      .filter(Boolean).join(' · ');
+    const sigEl = document.getElementById('yd-signature');
+    if (sigEl) {
+      sigEl.textContent = sigBits
+        ? `Reading from your saved chart — ${sigBits}.`
+        : 'Reading from your saved chart.';
+    }
+
+    let topics = [], people = [];
+    try {
+      const data = await loadTopicsAndPeople();
+      topics = matchTopicsToChart(chart, data.topics, 5);
+      people = matchPeopleToChart(chart, data.people, 5);
+    } catch (err) {
+      console.warn('[your-design] match failed', err);
+    }
+
+    const topicsEl = document.getElementById('yd-topics');
+    if (topicsEl) {
+      topicsEl.innerHTML = topics.map(function (t) {
+        return '<li>'
+          + '<a href="' + escapeHtml(t.url) + '">' + escapeHtml(t.label) + '</a>'
+          + '<span class="yd-framing">' + escapeHtml(t.framing) + '</span>'
+          + '</li>';
+      }).join('') || '<li style="color:var(--text-dim);font-size:0.8rem">No matches yet — try saving your chart again.</li>';
+    }
+
+    const peopleEl = document.getElementById('yd-people');
+    if (peopleEl) {
+      peopleEl.innerHTML = people.map(function (p) {
+        return '<li>'
+          + '<a href="' + escapeHtml(p.url) + '">' + escapeHtml(p.name) + '</a>'
+          + '<span class="yd-framing">' + escapeHtml(p.framing) + '</span>'
+          + '</li>';
+      }).join('') || '<li style="color:var(--text-dim);font-size:0.8rem">No matches yet — try saving your chart again.</li>';
+    }
+  }
+
+  document.addEventListener('DOMContentLoaded', paintYourDesign);
+  if (window.frqncy && typeof window.frqncy.onAuth === 'function') {
+    window.frqncy.onAuth((u) => { if (u) paintYourDesign(); });
+  }
+</script>
+
+<!-- ── TODAY'S PATH (signed-in only; populated by JS) ────────────────────── -->
+<!-- Sanctuary daily-use loop. Reframes the practice tracker as an invitation,
+     not an assignment. Hidden by default; revealed when frqncy auth resolves
+     to a logged-in user. See assets/frqncy-practice.js for the API. -->
+<section id="todays-path" aria-label="Today's path" style="display:none;max-width:700px;margin:0 auto 2rem;padding:0 clamp(1rem,3vw,2rem)">
+  <article id="tp-card" style="position:relative;overflow:hidden;padding:1.4rem 1.6rem;border:1px solid rgba(196,151,58,0.36);border-radius:4px;background:linear-gradient(135deg,rgba(196,151,58,0.07) 0%,rgba(11,16,32,0.3) 60%);">
+    <div style="position:absolute;top:0;right:0;width:200px;height:100%;background:radial-gradient(ellipse at top right,rgba(224,192,106,0.12),transparent 70%);pointer-events:none"></div>
+    <div style="position:relative;z-index:1">
+      <div style="font-size:0.62rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold);margin-bottom:0.5rem">Today's path</div>
+      <h2 id="tp-headline" style="font-family:'Cormorant',serif;font-weight:300;font-size:1.7rem;color:#fff;line-height:1.15;margin:0 0 0.4rem">Loading…</h2>
+      <p id="tp-subline" style="color:var(--text);font-size:0.92rem;max-width:54ch;line-height:1.55;margin:0 0 0.5rem"></p>
+      <div style="font-size:0.72rem;color:var(--text-dim);letter-spacing:0.05em;display:flex;flex-wrap:wrap;align-items:center;gap:0.7rem;margin-bottom:1rem">
+        <span id="tp-practice">—</span>
+        <span style="width:3px;height:3px;border-radius:50%;background:var(--text-dim);display:inline-block"></span>
+        <span id="tp-duration">—</span>
+      </div>
+      <div style="display:flex;flex-wrap:wrap;gap:0.6rem">
+        <a id="tp-begin" href="/my-frqncy/practice/" style="display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.65rem 1.1rem 0.65rem 1.28rem;border-radius:3px;border:1px solid var(--gold);color:var(--gold);background:rgba(196,151,58,0.08);text-decoration:none;line-height:1">Begin</a>
+        <a href="/my-frqncy/charts/" style="display:inline-flex;align-items:center;justify-content:center;font-size:0.7rem;letter-spacing:0.18em;text-transform:uppercase;padding:0.65rem 1.1rem 0.65rem 1.28rem;border-radius:3px;border:1px solid rgba(255,255,255,0.14);color:var(--text-dim);text-decoration:none;line-height:1">See your charts</a>
+      </div>
+    </div>
+  </article>
+
+  <!-- Recent practices (last 3) -->
+  <div id="tp-recent" style="margin-top:0.9rem;display:none">
+    <div style="font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-faint);margin-bottom:0.5rem;padding:0 0.2rem">Recent</div>
+    <div id="tp-recent-list" style="display:flex;flex-direction:column;gap:0.4rem"></div>
+  </div>
+</section>
+
+<script type="module">
+  // Populate Today's Path when signed in. Silent no-op when signed out.
+  import { getDailySuggestion, listLogs, relativeTime, getPractice }
+    from '/assets/frqncy-practice.js';
+
+  async function paintTodaysPath() {
+    if (!window.frqncy) return;
+    await window.frqncy.ready;
+    const user = await window.frqncy.auth.getUser();
+    if (!user) return;
+
+    const section = document.getElementById('todays-path');
+    if (!section) return;
+    section.style.display = 'block';
+
+    try {
+      const sug = await getDailySuggestion();
+      document.getElementById('tp-headline').textContent = sug.headline;
+      document.getElementById('tp-subline').textContent = sug.subline;
+      document.getElementById('tp-practice').textContent = sug.practice.label;
+      document.getElementById('tp-duration').textContent = sug.durationMinutes + ' min';
+      const beginA = document.getElementById('tp-begin');
+      beginA.href = '/my-frqncy/practice/?from=today&practice=' + encodeURIComponent(sug.practice.slug);
+    } catch (err) {
+      console.error('[todays-path] suggestion failed', err);
+    }
+
+    try {
+      const recent = await listLogs({ limit: 3 });
+      if (recent.length) {
+        const wrap = document.getElementById('tp-recent');
+        const list = document.getElementById('tp-recent-list');
+        list.innerHTML = recent.map(function (l) {
+          const p = getPractice(l.practice_slug);
+          const name = p ? p.label : l.practice_slug;
+          return '<div style="display:flex;align-items:center;justify-content:space-between;gap:0.7rem;padding:0.55rem 0.85rem;border:1px solid var(--card-border);border-radius:3px;background:rgba(255,255,255,0.025);font-size:0.82rem;color:var(--text)">'
+            + '<span><span style="color:var(--gold)">·</span> ' + escapeHtml(name) + ' · ' + l.duration_minutes + ' min</span>'
+            + '<span style="font-size:0.7rem;color:var(--text-dim)">' + escapeHtml(relativeTime(l.started_at)) + '</span>'
+            + '</div>';
+        }).join('');
+        wrap.style.display = 'block';
+      }
+    } catch (err) {
+      console.error('[todays-path] recent failed', err);
+    }
+  }
+
+  function escapeHtml(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c];
+    });
+  }
+
+  document.addEventListener('DOMContentLoaded', paintTodaysPath);
+  // Re-paint if auth flips while on the page
+  if (window.frqncy && typeof window.frqncy.onAuth === 'function') {
+    window.frqncy.onAuth((u) => { if (u) paintTodaysPath(); });
+  }
+</script>
+
+<!-- ── MEMBERSHIP PILL (signed-in + no-active-membership only) ───────────── -->
+<!-- Quiet nudge to /membership/. Hidden by default; revealed by JS only when
+     the user is signed in AND has no active/trialing membership row. No FOMO,
+     no scarcity copy — just a one-line invitation per CLAUDE.md cooperation
+     rule and proposals/MEMBERSHIP-V0.md voice constraints. -->
+<section id="membership-pill" aria-label="Become a member" style="display:none;max-width:700px;margin:0 auto 2rem;padding:0 clamp(1rem,3vw,2rem)">
+  <a href="/membership/" style="display:flex;align-items:center;justify-content:space-between;gap:0.9rem;padding:0.85rem 1.2rem;border:1px dashed rgba(196,151,58,0.4);border-radius:3px;background:rgba(196,151,58,0.04);color:inherit;text-decoration:none;transition:border-color .2s,background .2s">
+    <span style="display:flex;flex-direction:column;gap:0.2rem">
+      <span style="font-size:0.6rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--gold)">Become a member</span>
+      <span style="font-size:0.82rem;color:var(--text-dim);line-height:1.5">Support the network. The reading stays free.</span>
+    </span>
+    <span style="font-size:1rem;color:var(--gold);flex-shrink:0">→</span>
+  </a>
+</section>
+
+<script type="module">
+  // Show the membership pill when the user is signed in but has no
+  // active/trialing membership. Silent no-op when signed out OR a member.
+  import { getMyMembership } from '/assets/frqncy-membership.js';
+
+  async function paintMembershipPill() {
+    if (!window.frqncy) return;
+    await window.frqncy.ready;
+    const user = await window.frqncy.auth.getUser();
+    const section = document.getElementById('membership-pill');
+    if (!section) return;
+    if (!user) { section.style.display = 'none'; return; }
+    try {
+      const m = await getMyMembership(user);
+      const isMember = m && (m.status === 'active' || m.status === 'trialing');
+      section.style.display = isMember ? 'none' : 'block';
+    } catch (_) {
+      // Tables may not exist yet (migration 013 not applied) — fail closed.
+      section.style.display = 'none';
+    }
+  }
+  document.addEventListener('DOMContentLoaded', paintMembershipPill);
+  if (window.frqncy && typeof window.frqncy.onAuth === 'function') {
+    window.frqncy.onAuth((u) => { paintMembershipPill(); });
+  }
+</script>
+
+<!-- ── FORM VIEW ── -->
+<section id="form-view" aria-labelledby="form-heading">
+  <div class="form-inner">
+
+    <div class="step-bar">
+      <div class="step-dot active" id="dot-1"></div>
+      <div class="step-dot" id="dot-2"></div>
+      <div class="step-dot" id="dot-3"></div>
+    </div>
+
+    <!-- Chart Generator CTA -->
+    <a href="/chart" class="chart-cta" id="chart-cta">
+      <div class="chart-cta-glyph">✦</div>
+      <div class="chart-cta-text">
+        <div class="chart-cta-title">Your Chart, First</div>
+        <div class="chart-cta-sub">Date, time, place. Human Design, Gene Keys, natal — read back to you in plain language.</div>
+      </div>
+      <div class="chart-cta-arrow">→</div>
+    </a>
+
+    <!-- Sanctuary / Dashboard CTA -->
+    <a href="my-frqncy/dashboard/" class="chart-cta" id="sanctuary-cta" style="margin-top:-1.2rem">
+      <div class="chart-cta-glyph">◈</div>
+      <div class="chart-cta-text">
+        <div class="chart-cta-title">Your Sanctuary</div>
+        <div class="chart-cta-sub">Private space — dream, chief aims, objectives, goals, daily practice, vision board. Yours, on this device.</div>
+      </div>
+      <div class="chart-cta-arrow">→</div>
+    </a>
+
+    <!-- Step 1: Domains -->
+    <div class="form-step visible" id="step-1">
+      <div class="form-eyebrow">Step 1 of 3</div>
+      <h1 class="form-q" id="form-heading">What calls to you?</h1>
+      <p class="form-hint">Pick up to three. The constellation draws itself around what you choose.</p>
+      <div class="domain-grid" id="domain-grid" role="group" aria-label="Domains — pick up to three"></div>
+      <div class="btn-row">
+        <button type="button" class="btn-primary" id="btn-s1" onclick="goStep(2)" disabled>Continue →</button>
+      </div>
+    </div>
+
+    <!-- Step 2: Intent + Depth -->
+    <div class="form-step" id="step-2">
+      <div class="form-eyebrow">Step 2 of 3</div>
+      <h1 class="form-q">What brings you here?</h1>
+      <p class="form-hint">This shapes the teachers and the texts that surface for you.</p>
+
+      <div style="margin-bottom:1rem">
+        <div class="form-hint" style="margin-bottom:0.6rem">My intention is to —</div>
+        <div class="intent-grid" id="intent-grid" role="radiogroup" aria-label="Intention">
+          <div class="choice-tile" data-val="understand" role="radio" tabindex="0" aria-checked="false" onclick="selectIntent(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectIntent(this)}">
+            <div class="ct-name">Understand deeply</div>
+            <div class="ct-desc">Books, papers, core texts</div>
+          </div>
+          <div class="choice-tile" data-val="practice" role="radio" tabindex="0" aria-checked="false" onclick="selectIntent(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectIntent(this)}">
+            <div class="ct-name">Build a practice</div>
+            <div class="ct-desc">Techniques, guides, courses</div>
+          </div>
+          <div class="choice-tile" data-val="discover" role="radio" tabindex="0" aria-checked="false" onclick="selectIntent(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectIntent(this)}">
+            <div class="ct-name">Discover teachers</div>
+            <div class="ct-desc">People, voices, thinkers</div>
+          </div>
+          <div class="choice-tile" data-val="create" role="radio" tabindex="0" aria-checked="false" onclick="selectIntent(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectIntent(this)}">
+            <div class="ct-name">Create and build</div>
+            <div class="ct-desc">Tools, organisations, methods</div>
+          </div>
+        </div>
+      </div>
+
+      <div style="margin-bottom:2rem">
+        <div class="form-hint" style="margin-bottom:0.6rem">On the path I am —</div>
+        <div class="depth-grid" id="depth-grid" role="radiogroup" aria-label="Where you are on the path">
+          <div class="choice-tile" data-val="curious" role="radio" tabindex="0" aria-checked="false" onclick="selectDepth(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectDepth(this)}" style="flex:1;min-width:140px">
+            <div class="ct-name">Curious</div>
+            <div class="ct-desc">New to this territory</div>
+          </div>
+          <div class="choice-tile" data-val="practicing" role="radio" tabindex="0" aria-checked="false" onclick="selectDepth(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectDepth(this)}" style="flex:1;min-width:140px">
+            <div class="ct-name">Practicing</div>
+            <div class="ct-desc">Working with the first layers</div>
+          </div>
+          <div class="choice-tile" data-val="integrating" role="radio" tabindex="0" aria-checked="false" onclick="selectDepth(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectDepth(this)}" style="flex:1;min-width:140px">
+            <div class="ct-name">Integrating</div>
+            <div class="ct-desc">Weaving it into daily life</div>
+          </div>
+          <div class="choice-tile" data-val="embodying" role="radio" tabindex="0" aria-checked="false" onclick="selectDepth(this)" onkeydown="if(event.key===' '||event.key==='Enter'){event.preventDefault();selectDepth(this)}" style="flex:1;min-width:140px">
+            <div class="ct-name">Embodying</div>
+            <div class="ct-desc">It is how I live</div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Optional signature block — HD + modalities. Pre-fills from /chart save. -->
+      <details style="margin-bottom:1.5rem;border:1px solid var(--card-border);border-radius:6px;padding:0.9rem 1.1rem;background:rgba(255,255,255,0.02)" id="sig-details">
+        <summary style="cursor:pointer;font-size:0.78rem;letter-spacing:0.12em;text-transform:uppercase;color:var(--text-dim);outline:none">
+          <span id="sig-summary-text">Refine with your signature (optional)</span>
+        </summary>
+
+        <div id="sig-saved-card" style="display:none;margin-top:0.9rem;padding:0.9rem 1rem;border-radius:5px;background:rgba(224,192,106,0.06);border:1px solid rgba(224,192,106,0.2)">
+          <div style="font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--accent);margin-bottom:0.4rem">From your chart</div>
+          <div style="font-family:'Cormorant',serif;font-size:1.15rem;color:#fff;line-height:1.4" id="sig-saved-summary"></div>
+          <div style="margin-top:0.6rem;display:flex;gap:0.8rem;align-items:center">
+            <button type="button" class="btn-ghost" onclick="clearSignature()" style="font-size:0.62rem;padding:0.3rem 0.7rem">Change</button>
+            <a href="/chart" style="font-size:0.62rem;color:var(--text-dim);letter-spacing:0.08em">Regenerate chart →</a>
+          </div>
+        </div>
+
+        <div id="sig-manual" style="margin-top:0.9rem">
+          <div class="form-hint" style="margin-bottom:0.6rem">Human Design Type (optional)</div>
+          <select id="sig-hd-type" onchange="onSignatureChange()" style="width:100%;max-width:340px;padding:0.6rem 0.8rem;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);border-radius:4px;color:#fff;font-family:'Jost',sans-serif;font-size:0.82rem">
+            <option value="">— I don't know / skip —</option>
+            <option value="Manifestor">Manifestor</option>
+            <option value="Generator">Generator</option>
+            <option value="Manifesting Generator">Manifesting Generator</option>
+            <option value="Projector">Projector</option>
+            <option value="Reflector">Reflector</option>
+          </select>
+          <p style="font-size:0.62rem;color:var(--text-dim);margin-top:0.5rem;line-height:1.5">Don't know yours? <a href="/chart" style="color:var(--accent)">Generate your chart →</a> and come back.</p>
+        </div>
+
+        <div style="margin-top:1.2rem">
+          <div class="form-hint" style="margin-bottom:0.6rem">What resonates (optional, pick any)</div>
+          <div id="prefs-grid" style="display:flex;flex-wrap:wrap;gap:0.5rem">
+            <div class="pref-chip" data-val="science"  onclick="togglePref(this)" role="checkbox" aria-checked="false" tabindex="0">Science-grounded</div>
+            <div class="pref-chip" data-val="mystical" onclick="togglePref(this)" role="checkbox" aria-checked="false" tabindex="0">Mystical / metaphysical</div>
+            <div class="pref-chip" data-val="channeled" onclick="togglePref(this)" role="checkbox" aria-checked="false" tabindex="0">Channeled / transmitted</div>
+            <div class="pref-chip" data-val="embodied" onclick="togglePref(this)" role="checkbox" aria-checked="false" tabindex="0">Embodied / practical</div>
+          </div>
+        </div>
+      </details>
+
+      <div class="btn-row">
+        <button type="button" class="btn-primary" id="btn-s2" onclick="goStep(3)" disabled>Continue →</button>
+        <button type="button" class="btn-ghost" onclick="goStep(1)">← Back</button>
+      </div>
+    </div>
+
+    <!-- Step 3: Name + Generate -->
+    <div class="form-step" id="step-3">
+      <div class="form-eyebrow">Step 3 of 3</div>
+      <h1 class="form-q">What's your name?</h1>
+      <p class="form-hint">Optional. It sits at the centre of the constellation — the point everything else orbits.</p>
+      <div class="name-wrap">
+        <label class="name-label" for="name-input">Your name</label>
+        <input id="name-input" type="text" placeholder="e.g. Orli" autocomplete="off" maxlength="40">
+      </div>
+      <div class="btn-row">
+        <button type="button" class="btn-primary" onclick="generate()">Build my FRQNCY →</button>
+        <button type="button" class="btn-ghost" onclick="goStep(2)">← Back</button>
+      </div>
+    </div>
+
+  </div>
+</section>
+
+<!-- ── RESULT VIEW ── -->
+<section id="result-view" aria-labelledby="result-title">
+
+  <div class="result-hero">
+    <div class="result-eyebrow" id="result-eyebrow">Your FRQNCY</div>
+    <h1 class="result-title" id="result-title">Your Constellation</h1>
+    <p class="result-sub" id="result-sub"></p>
+    <div id="sig-badge" style="display:none;margin-top:1.1rem;padding:0.75rem 1rem;border-radius:4px;background:rgba(224,192,106,0.06);border:1px solid rgba(224,192,106,0.18);max-width:520px;margin-left:auto;margin-right:auto"></div>
+  </div>
+
+  <div id="constellation-wrap">
+    <svg id="constellation-svg" role="img" aria-label="Your personal constellation — a hierarchical map of the FRQNCY domains, pillars, and topics most aligned with your intention. The visible pattern visualises which areas of the network resonate most strongly for you."></svg>
+  </div>
+
+  <div class="curated">
+
+    <div class="section-label" id="teachers-label">Your teachers</div>
+    <div class="teacher-grid" id="teacher-grid"></div>
+
+    <div class="section-label">Start here</div>
+    <a class="start-card" id="start-card" href="#" target="_blank" rel="noopener noreferrer">
+      <div class="start-badge" id="start-badge">Pick</div>
+      <div class="start-info">
+        <div class="start-title" id="start-title"></div>
+        <div class="start-desc" id="start-desc"></div>
+      </div>
+    </a>
+
+    <!-- Your path — ordered next-step topics, marks each visited automatically -->
+    <div class="section-label" style="margin-top:2.5rem">Your path</div>
+    <div id="learning-path" aria-live="polite"></div>
+
+    <!-- Carry this forward -->
+    <div class="section-label" style="margin-top:2.5rem">Carry this forward</div>
+
+    <!-- Save your constellation — routes to /social/login (Supabase auth) -->
+    <a href="/social/login?next=/my-frqncy.html" class="chart-result-card" id="save-constellation-cta">
+      <div class="chart-rc-left">
+        <div class="chart-rc-glyph">◈</div>
+        <div>
+          <div class="chart-rc-title">Save your constellation</div>
+          <div class="chart-rc-sub">Sign in to keep this on your FRQNCY profile. Your teachers, your topics, the map of you — tied to your handle.</div>
+        </div>
+      </div>
+      <div class="chart-rc-arrow">→</div>
+    </a>
+
+    <!-- Word Illuminator — opens the in-Sanctuary panel via hash deep-link -->
+    <a href="/my-frqncy/dashboard/#illuminate"
+       id="word-illuminator-cta" class="chart-result-card">
+      <div class="chart-rc-left">
+        <div class="chart-rc-glyph">✧</div>
+        <div>
+          <div class="chart-rc-title">The Word Illuminator</div>
+          <div class="chart-rc-sub">Ask about any word, name, or concept in your constellation. Opens inside your Sanctuary — your conversation stays on your device.</div>
+        </div>
+      </div>
+      <div class="chart-rc-arrow">→</div>
+    </a>
+
+    <!-- Chart Generator featured card -->
+    <div class="section-label" style="margin-top:2.5rem">Go deeper</div>
+    <a href="/chart" class="chart-result-card">
+      <div class="chart-rc-left">
+        <div class="chart-rc-glyph">✦</div>
+        <div>
+          <div class="chart-rc-title">Your Chart, Read Back to You</div>
+          <div class="chart-rc-sub">Date, time, place. Human Design, Gene Keys, natal — the on-ramp into Education.</div>
+        </div>
+      </div>
+      <div class="chart-rc-arrow">→</div>
+    </a>
+
+    <div class="action-row">
+      <button type="button" class="btn-primary" onclick="restartForm()">Build another →</button>
+      <button type="button" class="share-url" id="share-btn" onclick="shareConstellation()" aria-label="Copy shareable link to clipboard">Copy shareable link</button>
+    </div>
+
+  </div>
+</section>
+</main>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/d3/7.8.5/d3.min.js" defer></script>
+<script>
+// Functions must be in global scope because onclick attributes reference them.
+// D3 is loaded with defer so it runs before this inline script, but we still
+// guard drawConstellation in case D3 fails to load.
+
+// ── State ──────────────────────────────────────────────────────────────
+let TOPICS = [], RESOURCES = [], ENTITIES = [];
+let selectedDomains = [];
+let selectedIntent = null;
+let selectedDepth = null;
+
+// ── Domain definitions ─────────────────────────────────────────────────
+const DOMAINS = [
+  { key:'Consciousness',    glyph:'✦', name:'Consciousness',      sub:'Oneness, Sacred Law, Channeling' },
+  { key:'Sciences',         glyph:'◎', name:'Sciences',            sub:'Physics, Biology, Mathematics' },
+  { key:'Well-being',       glyph:'◈', name:'Well-being',          sub:'Meditation, Yoga, Breathwork' },
+  { key:'Technology',       glyph:'⬡', name:'Technology',          sub:'AI, Blockchain, Web3' },
+  { key:'Arts & Culture',   glyph:'◇', name:'Arts & Culture',      sub:'Music, Film, Poetry' },
+  { key:'Society & Networks',glyph:'○', name:'Society & Networks', sub:'Governance, Community, Future Cities' },
+  { key:'Nature & Cosmos',  glyph:'◑', name:'Nature & Cosmos',     sub:'Climate, Oceans, Cosmos' },
+  { key:'Money',            glyph:'◆', name:'Money & Capital',     sub:'DeFi, Impact Investing, Circular Economy' },
+  { key:'Creation',         glyph:'△', name:'Creation',            sub:'Design, Systems, Open Source' },
+];
+
+// ── Load data ─────────────────────────────────────────────────────────
+async function loadData() {
+  const [t, r, e] = await Promise.allSettled([
+    fetch('search.json').then(x => x.json()),
+    fetch('resources.json').then(x => x.json()),
+    fetch('entities.json').then(x => x.json()),
+  ]);
+  if (t.status === 'fulfilled') TOPICS = t.value;
+  if (r.status === 'fulfilled') RESOURCES = r.value;
+  if (e.status === 'fulfilled') ENTITIES = e.value;
+}
+
+// ── Build domain tiles ─────────────────────────────────────────────────
+function buildDomainGrid() {
+  const grid = document.getElementById('domain-grid');
+  if (!grid) return;
+  grid.innerHTML = '';
+  for (const d of DOMAINS) {
+    const div = document.createElement('div');
+    div.className = 'domain-tile';
+    div.dataset.key = d.key;
+    div.setAttribute('role', 'checkbox');
+    div.setAttribute('tabindex', '0');
+    div.setAttribute('aria-checked', 'false');
+    div.setAttribute('aria-label', `${d.name}: ${d.sub}`);
+    div.innerHTML = `<div class="dt-glyph" aria-hidden="true">${d.glyph}</div>
+      <div class="dt-name">${d.name}</div>
+      <div class="dt-sub">${d.sub}</div>`;
+    const activate = () => toggleDomain(d.key, div);
+    div.addEventListener('click', activate);
+    div.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); activate(); }
+    });
+    grid.appendChild(div);
+  }
+}
+
+function toggleDomain(key, el) {
+  if (selectedDomains.includes(key)) {
+    selectedDomains = selectedDomains.filter(d => d !== key);
+    el.classList.remove('selected');
+    el.setAttribute('aria-checked', 'false');
+  } else {
+    if (selectedDomains.length >= 3) return;
+    selectedDomains.push(key);
+    el.classList.add('selected');
+    el.setAttribute('aria-checked', 'true');
+  }
+  document.getElementById('btn-s1').disabled = selectedDomains.length === 0;
+}
+
+// ── Intent / depth ─────────────────────────────────────────────────────
+function selectIntent(el) {
+  document.querySelectorAll('#intent-grid .choice-tile').forEach(t => { t.classList.remove('selected'); t.setAttribute('aria-checked','false'); });
+  el.classList.add('selected');
+  el.setAttribute('aria-checked','true');
+  selectedIntent = el.dataset.val;
+  updateStep2Btn();
+}
+function selectDepth(el) {
+  document.querySelectorAll('#depth-grid .choice-tile').forEach(t => { t.classList.remove('selected'); t.setAttribute('aria-checked','false'); });
+  el.classList.add('selected');
+  el.setAttribute('aria-checked','true');
+  selectedDepth = el.dataset.val;
+  updateStep2Btn();
+}
+function updateStep2Btn() {
+  document.getElementById('btn-s2').disabled = !selectedIntent || !selectedDepth;
+}
+
+// ── Signature (HD + preferences) — optional personalisation ──────────────
+// Reads /chart save from localStorage on load; falls back to the inline
+// dropdown. Also persists selections so returning visitors skip the setup.
+let userSignature = { hd: null, prefs: [] };
+
+function loadSignature() {
+  try {
+    const chart = JSON.parse(localStorage.getItem('frqncy:chart') || 'null');
+    const prefs = JSON.parse(localStorage.getItem('frqncy:prefs') || '[]');
+    if (chart && chart.hd) userSignature.hd = chart.hd;
+    if (Array.isArray(prefs)) userSignature.prefs = prefs;
+  } catch (e) { /* ignore */ }
+
+  // Paint signature UI — every getElementById guarded so a partial DOM
+  // (e.g. a future page reusing loadSignature without the sig block)
+  // can't crash with a TypeError.
+  const savedCard = document.getElementById('sig-saved-card');
+  const manual = document.getElementById('sig-manual');
+  const sumText = document.getElementById('sig-summary-text');
+  if (!savedCard || !manual || !sumText) return; // sig block isn't on this page
+  if (userSignature.hd && userSignature.hd.type) {
+    savedCard.style.display = 'block';
+    manual.style.display = 'none';
+    const parts = [userSignature.hd.type];
+    if (userSignature.hd.authority) parts.push(userSignature.hd.authority + ' authority');
+    if (userSignature.hd.profile) parts.push('Profile ' + userSignature.hd.profile);
+    const savedSummary = document.getElementById('sig-saved-summary');
+    if (savedSummary) savedSummary.textContent = parts.join(' · ');
+    sumText.textContent = 'Your signature: ' + userSignature.hd.type;
+  } else {
+    savedCard.style.display = 'none';
+    manual.style.display = 'block';
+  }
+
+  // Paint pref chips
+  document.querySelectorAll('.pref-chip').forEach(chip => {
+    const on = userSignature.prefs.includes(chip.dataset.val);
+    chip.classList.toggle('selected', on);
+    chip.setAttribute('aria-checked', String(on));
+  });
+  if (userSignature.prefs.length) {
+    sumText.textContent = (userSignature.hd && userSignature.hd.type ? userSignature.hd.type + ' · ' : '')
+      + userSignature.prefs.length + ' preference' + (userSignature.prefs.length === 1 ? '' : 's');
+  }
+}
+
+function onSignatureChange() {
+  const sel = document.getElementById('sig-hd-type');
+  if (sel.value) userSignature.hd = { type: sel.value, authority: '', profile: '', strategy: '' };
+  else userSignature.hd = null;
+  persistSignature();
+}
+
+function clearSignature() {
+  try { localStorage.removeItem('frqncy:chart'); } catch (e) {}
+  userSignature.hd = null;
+  document.getElementById('sig-saved-card').style.display = 'none';
+  document.getElementById('sig-manual').style.display = 'block';
+  document.getElementById('sig-summary-text').textContent = 'Refine with your signature (optional)';
+}
+
+function togglePref(el) {
+  const val = el.dataset.val;
+  const i = userSignature.prefs.indexOf(val);
+  if (i >= 0) { userSignature.prefs.splice(i, 1); el.classList.remove('selected'); el.setAttribute('aria-checked','false'); }
+  else { userSignature.prefs.push(val); el.classList.add('selected'); el.setAttribute('aria-checked','true'); }
+  persistSignature();
+}
+
+function persistSignature() {
+  try { localStorage.setItem('frqncy:prefs', JSON.stringify(userSignature.prefs)); } catch (e) {}
+  // Cloud-mirror — fire-and-forget when logged in
+  if (window.frqncy && typeof window.frqncy.constellationStore === 'function') {
+    (async () => {
+      try {
+        await window.frqncy.ready;
+        const u = await window.frqncy.auth.getUser();
+        if (!u) return;
+        await window.frqncy.constellationStore(u).patch({ prefs: userSignature.prefs });
+      } catch (_) {}
+    })();
+  }
+}
+
+// Keyboard toggle for pref chips
+document.addEventListener('keydown', (e) => {
+  if ((e.key === 'Enter' || e.key === ' ') && e.target.classList && e.target.classList.contains('pref-chip')) {
+    e.preventDefault(); togglePref(e.target);
+  }
+});
+
+// ── Step nav ──────────────────────────────────────────────────────────
+function goStep(n) {
+  document.querySelectorAll('.form-step').forEach(s => s.classList.remove('visible'));
+  document.getElementById(`step-${n}`).classList.add('visible');
+  document.querySelectorAll('.step-dot').forEach((d, i) => {
+    d.classList.toggle('active', i + 1 === n);
+    d.classList.toggle('done', i + 1 < n);
+  });
+}
+
+// ── Generate ──────────────────────────────────────────────────────────
+async function generate() {
+  const name = document.getElementById('name-input').value.trim();
+
+  // Show loading
+  const loading = document.getElementById('loading');
+  loading.style.display = 'flex';
+
+  // Ensure data loaded
+  if (!TOPICS.length) await loadData();
+
+  // Simulate brief delay for effect
+  await new Promise(r => setTimeout(r, 900));
+
+  // Build constellation data
+  const data = buildConstellationData(name);
+
+  // Show result view BEFORE rendering so the SVG container has real dimensions
+  loading.style.display = 'none';
+  document.getElementById('form-view').style.display = 'none';
+  document.getElementById('result-view').style.display = 'block';
+  window.scrollTo(0, 0);
+
+  // Render result (drawConstellation needs the container to be visible)
+  renderResult(data, name);
+
+  // Update URL
+  const params = new URLSearchParams({
+    domains: selectedDomains.join(','),
+    intent: selectedIntent,
+    depth: selectedDepth,
+    ...(name ? { name } : {}),
+  });
+  history.replaceState(null, '', '?' + params.toString());
+}
+
+// ── Personalisation maps — used when userSignature has values ──────────
+// HD affinity: which teachers resonate with which HD type. Grounded in
+// the nature of each teacher's work (initiator / builder / guide / mirror).
+// Absence of a teacher means neutral — no boost, no demotion.
+const HD_AFFINITY = {
+  'Manifestor':            ['p-satoshi-nakamoto','p-balaji-srinivasan','p-vitalik-buterin','p-ra-uru-hu','p-napoleon-hill','p-dale-carnegie','p-emma-grede','p-joshua-fields-millburn'],
+  'Generator':             ['p-osho','p-paramhansa-yogananda','p-michael-pollan','p-andrew-huberman','p-robin-wall-kimmerer','p-peter-wohlleben','p-james-nestor','p-andreas-antonopoulos','p-david-hoffman'],
+  'Manifesting Generator': ['p-osho','p-michael-pollan','p-andrew-huberman','p-andreas-antonopoulos','p-david-hoffman','p-joshua-fields-millburn','p-vitalik-buterin'],
+  'Projector':             ['p-david-r-hawkins','p-eckhart-tolle','p-lao-tzu','p-carlo-rovelli','p-bruce-schneier','p-grant-sanderson','p-anita-moorjani','p-jenna-zoe','p-adrienne-maree-brown','p-carl-sagan'],
+  'Reflector':             ['p-carl-sagan','p-barbara-marciniak','p-dolores-cannon','p-three-initiates','p-esther-hicks','p-lao-tzu'],
+};
+
+// Modality → domain map. Channeled is handled separately (entity-level).
+const MODALITY_DOMAINS = {
+  science:   ['Sciences','Technology'],
+  mystical:  ['Consciousness','Nature & Cosmos'],
+  embodied:  ['Well-being'],
+  channeled: [], // handled by explicit list below
+};
+
+// Channeled modality — people whose work IS channeled transmission.
+const CHANNELED_IDS = new Set([
+  'p-barbara-marciniak','p-dolores-cannon','p-esther-hicks','p-three-initiates'
+]);
+
+// Derive ID from an entity URL (/people/[slug]/) for affinity lookup.
+function personIdFromUrl(url) {
+  if (!url) return null;
+  const m = url.match(/\/people\/([^/]+)\/?/);
+  return m ? 'p-' + m[1] : null;
+}
+
+// ── Build data ─────────────────────────────────────────────────────────
+function buildConstellationData(name) {
+  // Filter topics to selected domains, sort by resource count desc
+  let pool = TOPICS.filter(t => selectedDomains.includes(t.domain));
+  pool.sort((a, b) => (b.resourceCount || 0) - (a.resourceCount || 0));
+  const topicNodes = pool.slice(0, Math.min(6, pool.length));
+
+  // For each topic, pick a resource (prefer person, fallback book/org)
+  const resourceNodes = [];
+  const usedNames = new Set();
+  for (const t of topicNodes) {
+    const candidates = RESOURCES.filter(r =>
+      r.topicSlug === t.slug && r.name && !usedNames.has(r.name)
+    );
+    // Prefer person, then book, then org
+    const pick =
+      candidates.find(r => r.type === 'person') ||
+      candidates.find(r => r.type === 'book') ||
+      candidates.find(r => r.type === 'org') ||
+      candidates[0];
+    if (pick) {
+      resourceNodes.push({ ...pick, parentSlug: t.slug });
+      usedNames.add(pick.name);
+    }
+  }
+
+  // Curated teachers — up to 5 people across selected domains.
+  // Prefer picks; then cross-domain teachers (higher breadth across the
+  // network); then anyone. Exclude names that look like URLs.
+  const looksLikeUrl = n => /\.(com|org|net|io|co|info|gov|edu|tv)$/i.test(n) || /^https?:\/\//i.test(n);
+
+  // If entities.json loaded, score people across the user's selected domains
+  let teachers = [];
+  if (ENTITIES.length) {
+    // Map each domain label to its slug (search.json puts label in r.domain)
+    // Entities.json gives us topics[] and pick flag directly — much richer.
+    const selectedDomainSet = new Set(selectedDomains);
+    // Build a set of topic slugs that belong to the user's selected domains
+    const topicSlugsInSelectedDomains = new Set(
+      TOPICS.filter(t => selectedDomainSet.has(t.domain)).map(t => t.id)
+    );
+    // Personalisation weighting
+    const hdType = userSignature.hd && userSignature.hd.type;
+    const hdBoosted = new Set(hdType ? (HD_AFFINITY[hdType] || []) : []);
+    const prefs = userSignature.prefs || [];
+    const prefDomains = new Set(prefs.flatMap(p => MODALITY_DOMAINS[p] || []));
+    const wantChanneled = prefs.includes('channeled');
+
+    // Build topic-id → domain map once so modality scoring is fast.
+    const topicIdToDomain = new Map();
+    for (const t of TOPICS) topicIdToDomain.set(t.id, t.domain);
+
+    const candidates = ENTITIES
+      .filter(e => e.type === 'person' && e.name && !looksLikeUrl(e.name))
+      .map(e => {
+        const overlap = (e.topics || []).filter(tid => topicSlugsInSelectedDomains.has(tid)).length;
+        const pid = e.id || personIdFromUrl(e.url);
+        // HD bonus: +3 if explicitly in the affinity list for this HD type
+        const hdBonus = pid && hdBoosted.has(pid) ? 3 : 0;
+        // Modality bonus: +1 per modality-domain match (only if prefs chosen)
+        let modBonus = 0;
+        if (prefs.length) {
+          // Derive the person's domains from the topics they appear on.
+          const theirDomains = new Set();
+          for (const tid of (e.topics || [])) {
+            const d = topicIdToDomain.get(tid);
+            if (d) theirDomains.add(d);
+          }
+          for (const d of theirDomains) if (prefDomains.has(d)) modBonus += 1;
+          if (wantChanneled && pid && CHANNELED_IDS.has(pid)) modBonus += 2;
+        }
+        const score = overlap + hdBonus + modBonus;
+        return { e, overlap, score, hdBonus, modBonus };
+      })
+      .filter(x => x.overlap > 0);
+    // Sort: picks first, then composite score desc, then name
+    candidates.sort((a, b) => {
+      if (a.e.pick !== b.e.pick) return a.e.pick ? -1 : 1;
+      if (b.score !== a.score) return b.score - a.score;
+      return a.e.name.localeCompare(b.e.name);
+    });
+    teachers = candidates.slice(0, 5).map(x => ({
+      name: x.e.name,
+      desc: x.e.desc,
+      url: x.e.url,          // internal profile URL (/people/[slug]/)
+      external: x.e.external,
+      type: 'person',
+      topicLabel: '',        // no single topic for entity-level teachers
+      pick: x.e.pick,
+      overlap: x.overlap,
+      score: x.score,
+      hdBonus: x.hdBonus,
+      modBonus: x.modBonus,
+    }));
+  }
+  // Fallback: if entities.json didn't load, use the old resources.json path
+  if (!teachers.length) {
+    const teacherPool = RESOURCES.filter(r =>
+      r.type === 'person' && selectedDomains.includes(r.domain) && r.name && !looksLikeUrl(r.name)
+    );
+    const seen = new Set();
+    for (const r of teacherPool) {
+      if (seen.has(r.name)) continue;
+      seen.add(r.name);
+      teachers.push(r);
+      if (teachers.length >= 5) break;
+    }
+  }
+
+  // Start here — pick based on intent + stage (awareness path)
+  // Stage shifts the type ladder: Curious prefers shorter-form entries,
+  // Embodying reaches for foundational texts regardless of intent.
+  let startPick = null;
+  let startTypes = selectedIntent === 'understand' ? ['book'] :
+                   selectedIntent === 'practice'  ? ['course', 'media'] :
+                   selectedIntent === 'discover'  ? ['person'] :
+                   ['org', 'media'];
+  if (selectedDepth === 'curious') {
+    // Favour accessible on-ramps (media / podcast before book)
+    startTypes = ['media','person','book','course','org'];
+  } else if (selectedDepth === 'embodying') {
+    // Favour foundational depth
+    startTypes = ['book','person','course','media','org'];
+  }
+  for (const type of startTypes) {
+    const p = RESOURCES.find(r =>
+      selectedDomains.includes(r.domain) && r.type === type && r.name
+    );
+    if (p) { startPick = p; break; }
+  }
+  if (!startPick) startPick = RESOURCES.find(r => selectedDomains.includes(r.domain) && r.name);
+
+  return { topicNodes, resourceNodes, teachers, startPick };
+}
+
+// ── Render result ──────────────────────────────────────────────────────
+function renderResult({ topicNodes, resourceNodes, teachers, startPick }, name) {
+  const displayName = name || 'Your';
+  const domainLabels = selectedDomains.join(', ');
+
+  document.getElementById('result-eyebrow').textContent =
+    name ? `${name}'s FRQNCY` : 'Your FRQNCY';
+  document.getElementById('result-title').textContent =
+    name ? `${name}'s Constellation` : 'Your Constellation';
+  document.getElementById('result-sub').textContent =
+    `${topicNodes.length} topics · ${teachers.length} teachers · built around ${domainLabels}`;
+
+  renderSignatureBadge();
+  drawConstellation(topicNodes, resourceNodes, name);
+  renderTeachers(teachers);
+  renderStartHere(startPick);
+  renderLearningPath(topicNodes);
+  updateSaveCtaNext();
+  // Stash for re-render after late cloud merge
+  window._lastTopicNodes = topicNodes;
+}
+
+// ── Visited topics ────────────────────────────────────────────────────
+// Sourced from localStorage (chat-widget.js increments on each /<slug>/
+// page load). When the user is logged in we also merge cloud state in.
+function getVisitedSet() {
+  try {
+    const raw = localStorage.getItem('frqncy:visited');
+    const arr = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(arr) ? arr : []);
+  } catch (_) { return new Set(); }
+}
+function getPathDoneSet() {
+  try {
+    const raw = localStorage.getItem('frqncy:pathDone');
+    const arr = raw ? JSON.parse(raw) : [];
+    return new Set(Array.isArray(arr) ? arr : []);
+  } catch (_) { return new Set(); }
+}
+function setPathDone(set) {
+  try { localStorage.setItem('frqncy:pathDone', JSON.stringify([...set])); }
+  catch (_) {}
+  // Cloud bridge — fire-and-forget when logged in
+  if (window.frqncy && typeof window.frqncy.constellationStore === 'function') {
+    (async () => {
+      try {
+        await window.frqncy.ready;
+        const u = await window.frqncy.auth.getUser();
+        if (!u) return;
+        await window.frqncy.constellationStore(u).patch({ pathDone: [...set] });
+      } catch (_) {}
+    })();
+  }
+}
+
+// ── Render learning path ──────────────────────────────────────────────
+// Picks up to 5 next topics from the user's constellation, ordered:
+//   1. unvisited + not-marked-done first
+//   2. then visited
+//   3. then explicitly marked done (rendered struck-through)
+// Each tile links to /<slug>/. Visiting a topic auto-marks it via the
+// chat-widget.js tracker — the user comes back to a check next time.
+function renderLearningPath(topicNodes) {
+  const host = document.getElementById('learning-path');
+  if (!host) return;
+  if (!topicNodes || !topicNodes.length) {
+    host.innerHTML = '<div class="path-empty">Choose a domain to build your path.</div>';
+    return;
+  }
+  const visited = getVisitedSet();
+  const done = getPathDoneSet();
+
+  // Decorate each topic with state for sorting
+  const decorated = topicNodes.map(t => ({
+    topic: t,
+    visited: visited.has(t.slug),
+    done: done.has(t.slug),
+  }));
+  // Stable order: unvisited & not-done first, then visited (not-done), then done.
+  decorated.sort((a, b) => {
+    const ar = a.done ? 2 : (a.visited ? 1 : 0);
+    const br = b.done ? 2 : (b.visited ? 1 : 0);
+    return ar - br;
+  });
+  const steps = decorated.slice(0, 5);
+
+  const url = t => '/' + encodeURIComponent(t.slug) + '/';
+  host.innerHTML = steps.map((s, i) => {
+    const t = s.topic;
+    const stateLabel = s.done
+      ? '<span style="color:#5BC79A">✓ marked complete</span>'
+      : s.visited
+        ? '<strong>opened</strong> · come back when ready'
+        : (i === 0 ? '<strong>start with this</strong>' : 'next');
+    return `
+      <a class="path-step ${s.done ? 'done' : ''}" data-slug="${esc(t.slug)}" href="${esc(url(t))}">
+        <span class="path-num"><span>${i + 1}</span></span>
+        <div class="path-info">
+          <div class="path-title">${esc(t.label || t.slug)}</div>
+          <div class="path-meta">${stateLabel}${t.domain ? ' · ' + esc(t.domain) : ''}</div>
+        </div>
+        <span class="path-arrow">→</span>
+      </a>`;
+  }).join('');
+
+  // Progress bar
+  const total = steps.length;
+  const completed = steps.filter(s => s.done || s.visited).length;
+  const pct = total ? Math.round((completed / total) * 100) : 0;
+  const foot = document.createElement('div');
+  foot.className = 'path-foot';
+  foot.innerHTML = `
+    <span>${completed}/${total} opened</span>
+    <span class="path-progress" aria-hidden="true"><span style="width:${pct}%"></span></span>
+    <span>${pct}%</span>`;
+  host.appendChild(foot);
+
+  // Cmd/Ctrl+Click toggles "marked complete" without navigating away.
+  // Plain click follows the link normally (which itself increments the
+  // visited set via chat-widget.js).
+  host.querySelectorAll('.path-step').forEach(el => {
+    el.addEventListener('click', e => {
+      if (!(e.metaKey || e.ctrlKey)) return;   // normal click → navigate
+      e.preventDefault();
+      const slug = el.dataset.slug;
+      const set = getPathDoneSet();
+      if (set.has(slug)) set.delete(slug); else set.add(slug);
+      setPathDone(set);
+      renderLearningPath(topicNodes); // re-render
+    });
+    el.title = 'Click to open · Cmd/Ctrl-click to mark complete';
+  });
+}
+
+// Signature badge — shows what personalisation was applied, if any.
+function renderSignatureBadge() {
+  const host = document.getElementById('sig-badge');
+  if (!host) return;
+  const stageNames = { curious:'Curious', practicing:'Practicing', integrating:'Integrating', embodying:'Embodying' };
+  const parts = [];
+  if (userSignature.hd && userSignature.hd.type) parts.push(userSignature.hd.type);
+  if (selectedDepth && stageNames[selectedDepth]) parts.push(stageNames[selectedDepth]);
+  if (userSignature.prefs && userSignature.prefs.length) {
+    const labels = { science:'Science', mystical:'Mystical', channeled:'Channeled', embodied:'Embodied' };
+    parts.push(userSignature.prefs.map(p => labels[p] || p).join(' · '));
+  }
+  if (!parts.length) { host.style.display = 'none'; return; }
+  host.style.display = 'block';
+  host.innerHTML = `<div style="font-size:0.58rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);margin-bottom:0.35rem">Tuned to your signature</div>
+    <div style="font-family:'Cormorant',serif;font-size:0.95rem;color:rgba(255,255,255,0.85);line-height:1.45">${parts.join('  <span style="color:var(--text-dim);opacity:0.6">·</span>  ')}</div>`;
+}
+
+// ── D3 Constellation (Merkle-tree / dendrogram, bottom-up) ─────────────
+function drawConstellation(topics, resources, name) {
+  if (typeof d3 === 'undefined') {
+    const wrap = document.getElementById('constellation-wrap');
+    wrap.innerHTML = '<p style="text-align:center;color:var(--text-dim);padding:2rem;">Constellation visualisation could not load. Please check your connection and refresh.</p>';
+    return;
+  }
+  const wrap = document.getElementById('constellation-wrap');
+  const W = Math.max(wrap.clientWidth, 320);
+  const H = Math.min(Math.max(W * 0.78, 440), 600);
+
+  const svg = d3.select('#constellation-svg')
+    .attr('viewBox', `0 0 ${W} ${H}`)
+    .attr('height', H)
+    .attr('role', 'img')
+    .attr('aria-label', `Hierarchical constellation for ${name || 'you'}`);
+
+  svg.selectAll('*').remove();
+
+  // Defs — glow filter + subtle gradient
+  const defs = svg.append('defs');
+  const glow = defs.append('filter').attr('id', 'glow').attr('x','-50%').attr('y','-50%').attr('width','200%').attr('height','200%');
+  glow.append('feGaussianBlur').attr('stdDeviation', '3.5').attr('result', 'blur');
+  const merge = glow.append('feMerge');
+  merge.append('feMergeNode').attr('in', 'blur');
+  merge.append('feMergeNode').attr('in', 'SourceGraphic');
+
+  // Build hierarchical (merkle-tree) data: root → domains → topics → resource
+  const domainMap = {};
+  selectedDomains.forEach(key => {
+    const dLabel = (DOMAINS.find(x => x.key === key) || {}).label || key;
+    domainMap[key] = { name: dLabel, key, type: 'domain', children: [] };
+  });
+  topics.forEach(t => {
+    if (!domainMap[t.domain]) return;
+    const res = resources.find(r => r.parentSlug === t.slug);
+    const node = {
+      name: t.label, url: t.url, slug: t.slug, type: 'topic',
+      children: res ? [{
+        name: (res.name || '').split(' — ')[0],
+        url: res.url, type: res.type || 'resource'
+      }] : []
+    };
+    domainMap[t.domain].children.push(node);
+  });
+  // Fold empty domains (so they don't render as dead branches)
+  const domainChildren = Object.values(domainMap).filter(d => d.children.length > 0);
+
+  const data = {
+    name: name || 'Your FRQNCY',
+    type: 'root',
+    children: domainChildren
+  };
+
+  const root = d3.hierarchy(data);
+
+  // Bottom-up dendrogram. Root (YOU) anchors at the bottom; branches grow upward
+  // toward leaves. Invert y-coordinates after layout so the whole tree flips.
+  const margin = { top: 52, right: 24, bottom: 68, left: 24 };
+  const innerW = W - margin.left - margin.right;
+  const innerH = H - margin.top - margin.bottom;
+  const treeLayout = d3.tree()
+    .size([innerW, innerH])
+    .separation((a, b) => (a.parent === b.parent ? 1 : 1.5));
+  treeLayout(root);
+  // Flip vertically — root drops to bottom, leaves float at top
+  root.descendants().forEach(d => { d.y = innerH - d.y; });
+
+  const g = svg.append('g').attr('transform', `translate(${margin.left},${margin.top})`);
+
+  // Links — smooth curved paths, gold for root→domain, muted-blue deeper
+  g.append('g').attr('fill', 'none')
+    .selectAll('path').data(root.links()).join('path')
+    .attr('d', d3.linkVertical().x(d => d.x).y(d => d.y))
+    .attr('stroke', d =>
+      d.source.data.type === 'root'   ? 'rgba(196,151,58,0.55)' :
+      d.source.data.type === 'domain' ? 'rgba(74,122,232,0.42)' :
+                                        'rgba(255,255,255,0.22)')
+    .attr('stroke-width', d => d.source.data.type === 'root' ? 1.4 : 1)
+    .attr('stroke-linecap', 'round')
+    .attr('class', d => 'link-' + d.source.data.type)
+    .style('opacity', 0)
+    .transition().duration(650).delay(d => d.source.depth * 180)
+    .style('opacity', 1);
+
+  // Nodes
+  const nodeG = g.append('g')
+    .selectAll('g').data(root.descendants()).join('g')
+    .attr('transform', d => `translate(${d.x},${d.y})`)
+    .style('cursor', d => d.data.url ? 'pointer' : 'default')
+    .on('click', (e, d) => { if (d.data.url) window.open(d.data.url, '_blank', 'noopener,noreferrer'); })
+    .style('opacity', 0);
+
+  nodeG.transition().duration(500).delay(d => 180 + d.depth * 180).style('opacity', 1);
+
+  // Visited topics get a gold-tinted treatment so the user sees their
+  // progress reflected back on their constellation. Sourced live from
+  // localStorage (chat-widget.js writes it; cloud-merge tops it up).
+  const visitedTopics = getVisitedSet();
+  const isVisitedTopic = d => d.data.type === 'topic' && visitedTopics.has(d.data.slug);
+
+  // Circles
+  nodeG.append('circle')
+    .attr('class', 'node-circle')
+    .attr('r', d =>
+      d.data.type === 'root'   ? 11 :
+      d.data.type === 'domain' ? 7  :
+      d.data.type === 'topic'  ? 5.5 : 4)
+    .attr('fill', d => {
+      if (isVisitedTopic(d))         return 'rgba(196,151,58,0.32)';
+      if (d.data.type === 'root')    return 'rgba(196,151,58,0.22)';
+      if (d.data.type === 'domain')  return 'rgba(196,151,58,0.14)';
+      if (d.data.type === 'topic')   return 'rgba(74,122,232,0.22)';
+      return 'rgba(255,255,255,0.1)';
+    })
+    .attr('stroke', d => {
+      if (isVisitedTopic(d))         return 'rgba(224,192,106,0.95)';
+      if (d.data.type === 'root')    return 'rgba(224,192,106,0.95)';
+      if (d.data.type === 'domain')  return 'rgba(196,151,58,0.7)';
+      if (d.data.type === 'topic')   return 'rgba(74,122,232,0.65)';
+      return 'rgba(255,255,255,0.38)';
+    })
+    .attr('stroke-width', d => d.data.type === 'root' || isVisitedTopic(d) ? 1.5 : 1)
+    .attr('filter', d => (d.data.type === 'root' || isVisitedTopic(d)) ? 'url(#glow)' : null);
+
+  // Tiny ✓ glyph on visited topics — subtle gold mark inside the node
+  nodeG.filter(isVisitedTopic).append('text')
+    .attr('text-anchor', 'middle').attr('dy', '0.34em')
+    .attr('fill', '#E0C06A').attr('font-size', '7.5px').attr('font-weight', '500')
+    .attr('pointer-events', 'none')
+    .text('✓');
+
+  // Slow pulse on root node
+  nodeG.filter(d => d.data.type === 'root').select('circle')
+    .append('animate').attr('attributeName', 'r')
+    .attr('values', '11;13;11').attr('dur', '3.6s').attr('repeatCount', 'indefinite');
+
+  // Soft, staggered twinkle on topic nodes — random offset so it doesn't
+  // look like a metronome. Skips visited topics (they have a different signal).
+  nodeG.filter(d => d.data.type === 'topic' && !isVisitedTopic(d)).each(function(d, i) {
+    const dur = (3.4 + Math.random() * 2.2).toFixed(2);     // 3.4–5.6s
+    const begin = (Math.random() * 2.5).toFixed(2);          // 0–2.5s offset
+    d3.select(this).select('circle')
+      .append('animate').attr('attributeName', 'opacity')
+      .attr('values', '0.55;1;0.55').attr('dur', dur + 's')
+      .attr('begin', begin + 's').attr('repeatCount', 'indefinite');
+  });
+
+  // Hover scale on linkable nodes — gentle lift, no layout shift
+  nodeG.filter(d => d.data.url)
+    .on('mouseenter', function () {
+      d3.select(this).select('circle.node-circle')
+        .transition().duration(160).attr('transform', 'scale(1.25)');
+    })
+    .on('mouseleave', function () {
+      d3.select(this).select('circle.node-circle')
+        .transition().duration(220).attr('transform', 'scale(1)');
+    });
+
+  // Labels — root (below circle, serif uppercase) — root sits at the bottom now
+  nodeG.filter(d => d.data.type === 'root').append('text')
+    .attr('text-anchor', 'middle').attr('dy', '2.0em')
+    .attr('fill', '#E0C06A')
+    .attr('font-family', 'Cormorant, serif')
+    .attr('font-size', '15px').attr('font-weight', '400')
+    .attr('letter-spacing', '0.22em')
+    .text(d => (d.data.name || 'YOU').toUpperCase().slice(0, 22));
+
+  // Labels — domain (below circle, gold small-caps) — between domain and root
+  nodeG.filter(d => d.data.type === 'domain').append('text')
+    .attr('text-anchor', 'middle').attr('dy', '1.8em')
+    .attr('fill', 'var(--gold)').attr('font-family', 'Jost, sans-serif')
+    .attr('font-size', '9.5px').attr('font-weight', '400')
+    .attr('letter-spacing', '0.2em').attr('text-transform', 'uppercase')
+    .text(d => (d.data.name || '').toUpperCase());
+
+  // Labels — topic (above circle, near-white) — topics sit in the upper half
+  nodeG.filter(d => d.data.type === 'topic').each(function(d) {
+    const sel = d3.select(this);
+    const label = (d.data.name || '').trim();
+    // Allow up to two lines, stacked so reading order is top → bottom
+    const words = label.split(/\s+/);
+    const mid = Math.ceil(words.length / 2);
+    const line1 = words.slice(0, mid).join(' ');
+    const line2 = words.slice(mid).join(' ');
+    const common = sel => sel
+      .attr('text-anchor', 'middle')
+      .attr('fill', '#C8D8F0').attr('font-family', 'Jost, sans-serif')
+      .attr('font-size', '9.5px').attr('font-weight', '300');
+    if (!line2 || words.length <= 2) {
+      common(sel.append('text').attr('dy', '-1.1em').text(label));
+    } else {
+      common(sel.append('text').attr('dy', '-2.3em').text(line1));
+      common(sel.append('text').attr('dy', '-1.1em').text(line2));
+    }
+  });
+
+  // Labels — resource/leaf (above circle, muted) — leaves are at the top
+  nodeG.filter(d =>
+      d.data.type !== 'root' && d.data.type !== 'domain' && d.data.type !== 'topic')
+    .append('text')
+    .attr('text-anchor', 'middle').attr('dy', '-1.3em')
+    .attr('fill', 'rgba(200,216,240,0.7)')
+    .attr('font-family', 'Jost, sans-serif')
+    .attr('font-size', '8.5px').attr('font-weight', '300')
+    .attr('font-style', 'italic')
+    .text(d => {
+      const n = (d.data.name || '').slice(0, 22);
+      return n + (d.data.name && d.data.name.length > 22 ? '…' : '');
+    });
+
+  // Gold traveling particles along root→domain links (like explore.html)
+  const rootLinks = root.links().filter(l => l.source.data.type === 'root');
+  if (rootLinks.length) {
+    const pg = g.append('g').attr('class', 'particles');
+    const spawn = () => {
+      const link = rootLinks[Math.floor(Math.random() * rootLinks.length)];
+      const pathStr = d3.linkVertical().x(d => d.x).y(d => d.y)(link);
+      const p = pg.append('path').attr('d', pathStr).attr('fill', 'none').attr('stroke', 'none');
+      const total = p.node().getTotalLength();
+      const dot = pg.append('circle').attr('r', 1.8).attr('fill', '#E0C06A').attr('filter', 'url(#glow)').style('opacity', 0.85);
+      dot.transition().duration(1400).ease(d3.easeSinInOut)
+        .tween('pos', function() {
+          return t => {
+            const pt = p.node().getPointAtLength(t * total);
+            d3.select(this).attr('cx', pt.x).attr('cy', pt.y);
+          };
+        })
+        .style('opacity', 0)
+        .on('end', () => { dot.remove(); p.remove(); });
+    };
+    const particleInt = setInterval(spawn, 520);
+    // Clean up if re-rendered
+    svg.node().__particleInt = particleInt;
+    const prev = svg.node().__prevParticleInt;
+    if (prev) clearInterval(prev);
+    svg.node().__prevParticleInt = particleInt;
+  }
+}
+
+// Keep the Save CTA's `next=` param pointed at the current constellation hash,
+// so after sign-in the user lands back on *their* constellation.
+function updateSaveCtaNext() {
+  const cta = document.getElementById('save-constellation-cta');
+  if (!cta) return;
+  const hash = window.location.hash || '';
+  const next = encodeURIComponent('/my-frqncy.html' + hash);
+  cta.setAttribute('href', '/social/login?next=' + next);
+}
+
+// ── Render teachers ────────────────────────────────────────────────────
+function renderTeachers(teachers) {
+  const grid = document.getElementById('teacher-grid');
+  document.getElementById('teachers-label').textContent =
+    `Your teachers (${teachers.length})`;
+  grid.innerHTML = '';
+  if (!teachers.length) {
+    grid.innerHTML = '<div style="padding:1.5rem;color:var(--text-dim);font-size:0.8rem">No people found for these domains. Try different selections.</div>';
+    return;
+  }
+  for (const t of teachers) {
+    const a = document.createElement('a');
+    a.className = 'teacher-card';
+    const href = t.url || t.topicUrl || '#';
+    a.href = href;
+    // Internal FRQNCY URLs open in same tab; externals open in new tab.
+    const isInternal = href && href.startsWith('/');
+    if (href !== '#' && !isInternal) { a.target = '_blank'; a.rel = 'noopener noreferrer'; }
+    // Build subtitle: for entity-level teachers we have overlap, otherwise topic.
+    const subtitle = t.overlap
+      ? `across ${t.overlap} of your topics${t.pick ? ' · ✦ PICK' : ''}`
+      : t.topicLabel ? `in ${t.topicLabel}` : '';
+    a.innerHTML = `<div class="tc-type">${t.type || 'person'}</div>
+      <div class="tc-name">${esc(t.name)}</div>
+      ${subtitle ? `<div class="tc-topic">${esc(subtitle)}</div>` : ''}
+      <div class="tc-desc">${esc(t.desc || '')}</div>`;
+    grid.appendChild(a);
+  }
+}
+
+// ── Render start here ──────────────────────────────────────────────────
+function renderStartHere(pick) {
+  const card = document.getElementById('start-card');
+  const label = document.getElementById('teachers-label')?.nextElementSibling
+    ? document.querySelectorAll('.section-label')[1]   // the "Start here" label
+    : null;
+  if (!pick) {
+    if (card) card.style.display = 'none';
+    return;
+  }
+  const href = pick.url || pick.topicUrl || '';
+  if (!href) {
+    // No destination — hide rather than leave a dead clickable element
+    if (card) card.style.display = 'none';
+    return;
+  }
+  card.style.display = '';
+  card.href = href;
+  const isInternal = href.startsWith('/');
+  if (!isInternal) {
+    card.target = '_blank'; card.rel = 'noopener noreferrer';
+  } else {
+    card.removeAttribute('target'); card.removeAttribute('rel');
+  }
+  document.getElementById('start-badge').textContent = (pick.type || 'pick').toUpperCase();
+  document.getElementById('start-title').textContent = pick.name;
+  document.getElementById('start-desc').textContent = pick.desc || '';
+}
+
+// ── Share ──────────────────────────────────────────────────────────────
+function shareConstellation() {
+  const url = location.href;
+  const btn = document.getElementById('share-btn');
+  const done = () => {
+    btn.textContent = '✓ Link copied';
+    btn.classList.add('share-copied');
+    setTimeout(() => {
+      btn.textContent = 'Copy shareable link';
+      btn.classList.remove('share-copied');
+    }, 2500);
+  };
+  const fail = () => {
+    btn.textContent = 'Copy failed — long-press to copy URL';
+    setTimeout(() => { btn.textContent = 'Copy shareable link'; }, 3500);
+  };
+  if (navigator.clipboard && navigator.clipboard.writeText) {
+    navigator.clipboard.writeText(url).then(done).catch(fail);
+  } else {
+    // Fallback for insecure contexts / old browsers
+    try {
+      const ta = document.createElement('textarea');
+      ta.value = url; ta.style.position = 'fixed'; ta.style.opacity = '0';
+      document.body.appendChild(ta); ta.select();
+      document.execCommand('copy');
+      document.body.removeChild(ta);
+      done();
+    } catch (e) { fail(); }
+  }
+}
+
+function restartForm() {
+  selectedDomains = [];
+  selectedIntent = null;
+  selectedDepth = null;
+  document.getElementById('name-input').value = '';
+  document.querySelectorAll('.domain-tile').forEach(t => t.classList.remove('selected'));
+  document.querySelectorAll('.choice-tile').forEach(t => t.classList.remove('selected'));
+  document.getElementById('btn-s1').disabled = true;
+  document.getElementById('btn-s2').disabled = true;
+  document.getElementById('result-view').style.display = 'none';
+  document.getElementById('form-view').style.display = 'flex';
+  goStep(1);
+  history.replaceState(null, '', location.pathname);
+  window.scrollTo(0, 0);
+}
+
+// ── URL param restore ──────────────────────────────────────────────────
+async function restoreFromURL() {
+  const p = new URLSearchParams(location.search);
+  const domains = p.get('domains');
+  const intent = p.get('intent');
+  const depth = p.get('depth');
+  const name = p.get('name') || '';
+
+  if (!domains || !intent || !depth) return false;
+
+  selectedDomains = domains.split(',').filter(d => DOMAINS.some(x => x.key === d));
+  selectedIntent = intent;
+  selectedDepth = depth;
+  if (!selectedDomains.length) return false;
+
+  document.getElementById('name-input').value = name;
+
+  if (!TOPICS.length) await loadData();
+  const data = buildConstellationData(name);
+  renderResult(data, name);
+  document.getElementById('form-view').style.display = 'none';
+  document.getElementById('result-view').style.display = 'block';
+  return true;
+}
+
+// ── Escape HTML ────────────────────────────────────────────────────────
+function esc(s) {
+  return String(s || '').replace(/&/g,'&amp;').replace(/</g,'&lt;').replace(/>/g,'&gt;');
+}
+
+// ── Init ──────────────────────────────────────────────────────────────
+function enhanceChoiceTiles() {
+  // Make the hand-coded choice-tile divs keyboard accessible
+  document.querySelectorAll('.choice-tile').forEach(el => {
+    el.setAttribute('role', 'radio');
+    el.setAttribute('tabindex', '0');
+    el.setAttribute('aria-checked', 'false');
+    const name = el.querySelector('.ct-name')?.textContent || '';
+    const desc = el.querySelector('.ct-desc')?.textContent || '';
+    el.setAttribute('aria-label', `${name}: ${desc}`);
+    el.addEventListener('keydown', e => {
+      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); el.click(); }
+    });
+  });
+}
+// ── Cloud merge ───────────────────────────────────────────────────────
+// When the user is signed in, pull their cloud Constellation row and
+// merge it into localStorage (cloud wins on conflict — most recent state).
+// This runs after frqncy-supabase.js is ready, then re-paints the UI.
+async function mergeCloudIntoLocal() {
+  if (!window.frqncy || typeof window.frqncy.constellationStore !== 'function') return false;
+  try {
+    await window.frqncy.ready;
+    const user = await window.frqncy.auth.getUser();
+    if (!user) return false;
+    const store = window.frqncy.constellationStore(user);
+    const cloud = await store.getState();
+    if (!cloud || typeof cloud !== 'object') return false;
+    // chart
+    if (cloud.chart) {
+      try { localStorage.setItem('frqncy:chart', JSON.stringify(cloud.chart)); } catch (_) {}
+    }
+    // prefs (replace local — cloud is authoritative for the logged-in user)
+    if (Array.isArray(cloud.prefs)) {
+      try { localStorage.setItem('frqncy:prefs', JSON.stringify(cloud.prefs)); } catch (_) {}
+    }
+    // visited (union — local visits since last sync should also be kept)
+    if (Array.isArray(cloud.visited)) {
+      try {
+        const local = JSON.parse(localStorage.getItem('frqncy:visited') || '[]');
+        const merged = Array.from(new Set([...(Array.isArray(local) ? local : []), ...cloud.visited]));
+        localStorage.setItem('frqncy:visited', JSON.stringify(merged.slice(-500)));
+        // Push the union back so next device sees the combined set
+        await store.patch({ visited: merged.slice(-500) });
+      } catch (_) {}
+    }
+    // pathDone (union same way)
+    if (Array.isArray(cloud.pathDone)) {
+      try {
+        const local = JSON.parse(localStorage.getItem('frqncy:pathDone') || '[]');
+        const merged = Array.from(new Set([...(Array.isArray(local) ? local : []), ...cloud.pathDone]));
+        localStorage.setItem('frqncy:pathDone', JSON.stringify(merged));
+        await store.patch({ pathDone: merged });
+      } catch (_) {}
+    }
+    return true;
+  } catch (err) {
+    console.warn('[my-frqncy] cloud merge skipped', err);
+    return false;
+  }
+}
+
+(async function init() {
+  buildDomainGrid();
+  enhanceChoiceTiles();
+  loadSignature(); // read saved chart + prefs from localStorage, paint UI
+  await loadData();
+  // Best-effort cloud merge — non-blocking. If the user is logged in, we pull
+  // their saved state and re-paint the signature/path with cloud values.
+  mergeCloudIntoLocal().then(merged => {
+    if (merged) {
+      loadSignature();
+      // If the result view is already painted, re-render the path
+      const resultView = document.getElementById('result-view');
+      if (resultView && resultView.style.display !== 'none' && typeof window._lastTopicNodes === 'object') {
+        try { renderLearningPath(window._lastTopicNodes); } catch (_) {}
+      }
+    }
+  });
+  const restored = await restoreFromURL();
+  if (!restored) {
+    // Eagerly pre-selected nothing — form is ready
+  }
+})();
+</script>
+
+<!-- Footer -->
+<footer style="padding:28px clamp(24px,6vw,80px);text-align:center;border-top:1px solid rgba(196,151,58,0.15);margin-top:60px;">
+  <span style="font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:16px;letter-spacing:0.3em;color:#C8D8F0;text-transform:uppercase;">FRQNCY</span>
+  <br>
+  <span style="font-size:11px;color:#7090B8;letter-spacing:0.12em;margin-top:8px;display:inline-block;">&copy; 2026 FRQNCY &middot; All frequencies reserved</span>
+</footer>
+
+  <!-- Social auth awareness (Supabase) -->
+  <script src="/social-config.js"></script>
+  <script type="module" src="/social-auth.js"></script>
+  <!-- Cloud sync for chart + prefs + visited topics + path progress -->
+  <script src="/assets/frqncy-supabase.js" defer></script>
+</body>
+</html>

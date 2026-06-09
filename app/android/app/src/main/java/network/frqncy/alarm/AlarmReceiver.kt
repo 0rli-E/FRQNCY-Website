@@ -29,7 +29,7 @@ class AlarmReceiver : BroadcastReceiver() {
         val pm = context.getSystemService(Context.POWER_SERVICE) as PowerManager
         val wakeLock = pm.newWakeLock(
             PowerManager.PARTIAL_WAKE_LOCK,
-            "FRQNCY:AlarmReceiver"
+            "VBRTN:AlarmReceiver"
         )
         wakeLock.setReferenceCounted(false)
         wakeLock.acquire(WAKE_LOCK_TIMEOUT_MS)

@@ -39,6 +39,8 @@
 <script src="/chat-widget.js" defer></script>
 </head>
 <body>
+<a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#C4973A;color:#0B1C3D;padding:8px 16px;z-index:10000;font-size:14px;transition:top .2s;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to main content</a>
+
   <!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
 <style data-frqncy-header-critical>
 /* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
@@ -237,7 +239,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       <p>Most newsletters ask you to drink from the firehose. FRQNCY's asks you to choose. Pick the topics, get the dispatches on those — nothing else. Unsubscribe per-topic or globally, anytime, in one click.</p>
       <p>Each dispatch goes out when there's something to say — usually weekly for the active areas (crypto, network state), monthly for the slow ones (philosophy, places).</p>
 
-      <form action="/api/subscribe" method="post">
+      <form id="newsletter-form">
         <label for="email">Email</label>
         <input id="email" type="email" name="email" placeholder="your@email.com" required autocomplete="email">
 
@@ -262,5 +264,43 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       </form>
     </section>
   </main>
+
+<script>
+(function(){
+  var form = document.getElementById('newsletter-form');
+  if (!form) return;
+  // Find or create a status div
+  var status = form.querySelector('.nl-status');
+  if (!status) {
+    status = document.createElement('p');
+    status.className = 'nl-status';
+    status.style.cssText = 'margin-top:1rem;font-size:0.86rem;letter-spacing:0.04em;min-height:1.4rem';
+    form.appendChild(status);
+  }
+  function set(msg, color){ status.textContent = msg; status.style.color = color || 'inherit'; }
+  form.addEventListener('submit', async function(ev){
+    ev.preventDefault();
+    var emailEl = form.querySelector('input[name="email"]');
+    var email = emailEl && emailEl.value.trim();
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      set('Please enter a valid email.', '#E87A4A'); emailEl && emailEl.focus(); return;
+    }
+    var topics = Array.from(form.querySelectorAll('input[name="topics"]:checked')).map(function(i){return i.value});
+    set('Joining…', 'rgba(255,255,255,0.7)');
+    try {
+      var res = await fetch('/api/subscribe', {
+        method:'POST', headers:{'Content-Type':'application/json'},
+        body: JSON.stringify({ email: email, topics: topics, source: 'newsletter_page' })
+      });
+      if (res.status === 429) { set('You\'re going a bit fast — try again in a moment.', '#E87A4A'); return; }
+      if (!res.ok) { set('Something went wrong. Please try again.', '#E87A4A'); return; }
+      set('✦ You\'re in. A welcome note is on its way.', '#C4973A');
+      form.reset();
+    } catch(e) {
+      set('Network error. Try again.', '#E87A4A');
+    }
+  });
+})();
+</script>
 </body>
 </html>

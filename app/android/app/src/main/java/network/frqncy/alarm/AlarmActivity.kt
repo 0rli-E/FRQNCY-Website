@@ -8,7 +8,7 @@
  *     onCreate. Manifest flags alone are not honored on every OEM.
  *   - Disable back gesture so the alarm can't be dismissed by a stray swipe.
  *   - Host alarm.html in a WebView so the breath-hold dismiss UI lives in the
- *     bundled web layer (consistent with the rest of FRQNCY's screens).
+ *     bundled web layer (consistent with the rest of VBRTN's screens).
  *   - Expose a single JavaScriptInterface (`FrqncyAlarmBridge`) to the WebView
  *     so the page can call dismiss() / snooze() / openWake() after the gesture.
  *   - This activity is intentionally NOT a BridgeActivity — it doesn't need
@@ -147,7 +147,7 @@ class AlarmActivity : AppCompatActivity() {
         val container = LinearLayout(this).apply {
             orientation = LinearLayout.VERTICAL
             gravity = Gravity.CENTER
-            setBackgroundColor(0xFF0B1C3D.toInt()) // FRQNCY navy
+            setBackgroundColor(0xFF0B1C3D.toInt()) // VBRTN brand navy
             setPadding(dp(24), dp(24), dp(24), dp(24))
         }
 

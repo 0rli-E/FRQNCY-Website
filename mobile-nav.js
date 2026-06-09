@@ -43,7 +43,7 @@
       '.mob-dd-items a{font-size:11px !important;letter-spacing:0.2em !important;padding:10px 0 !important;color:' + dimColor + ' !important;}',
       '.mob-dd-items a:hover{color:' + accentColor + ' !important;}',
       'body.frqncy-menu-open{overflow:hidden;}',
-      '@media (max-width:768px){#frqncy-hamburger{display:flex;}}'
+      '@media (max-width:720px){#frqncy-hamburger{display:flex;}}'
     ].join('');
     document.head.appendChild(style);
 

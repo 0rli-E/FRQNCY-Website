@@ -2712,6 +2712,23 @@ if (PLACES) for (const pl of PLACES.places) {
   });
 }
 
+// Papers — research papers / studies surface in entities.json so they show up
+// in unified search and per-topic relevance. Round-2 audit (2026-05-22) caught
+// these missing entirely from entities.json despite papers.json holding 34
+// records.
+if (PAPERS && PAPERS.papers) for (const pp of PAPERS.papers) {
+  entitiesIndex.push({
+    type: 'paper',
+    id: pp.id,
+    name: pp.title || pp.id,
+    desc: (pp.bio || pp.abstract || pp.summary || '').slice(0, 200),
+    url: `/papers/${paperSlug(pp)}/`,
+    external: pp.url || pp.doi || '',
+    topics: (pp.topics || pp.appears_in || []).filter(x => typeof x === 'string' && x.startsWith('t-')),
+    pick: !!pp.frqncy_pick,
+  });
+}
+
 // Courses — surface in entities.json so they're searchable. Resources.json
 // already gets them via the content.json leftover-types path (course rows
 // declared per-topic in DATA.resources).

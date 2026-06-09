@@ -550,7 +550,7 @@
       </div>
 
       <div class="quiet-note" id="reliability-note">
-        <strong>for reliable wake:</strong> plug in your phone and leave frqncy open in bedside mode overnight.
+        <strong>for reliable wake:</strong> plug in your phone and leave VBRTN open in bedside mode overnight.
       </div>
     </div>
 
@@ -577,7 +577,7 @@
     <div class="oem-overlay" id="oem-overlay" role="dialog" aria-modal="true" aria-labelledby="oem-title" aria-hidden="true">
       <div class="oem-card">
         <h2 id="oem-title">one-time setup</h2>
-        <p id="oem-text">your phone throttles background apps. these steps keep frqncy reliable overnight.</p>
+        <p id="oem-text">your phone throttles background apps. these steps keep VBRTN reliable overnight.</p>
         <ol class="oem-steps" id="oem-steps"></ol>
         <p class="oem-footnote">takes about a minute. you only do it once.</p>
         <div class="actions">
@@ -945,7 +945,7 @@
           }
           const brand = (guidance.manufacturer || 'your phone').toLowerCase();
           oemTitle.textContent = `one-time setup for ${brand}`;
-          oemText.textContent = `${brand} throttles background apps. these steps keep frqncy reliable overnight.`;
+          oemText.textContent = `${brand} throttles background apps. these steps keep VBRTN reliable overnight.`;
           // Build the <ol> from the parsed sentences.
           const stepsEl = document.getElementById('oem-steps');
           if (stepsEl) {
@@ -954,7 +954,7 @@
             if (steps.length === 0) {
               // Fallback: render the raw instructions as a single item.
               const li = document.createElement('li');
-              li.textContent = guidance.instructions || 'open phone settings and allow frqncy to run in the background.';
+              li.textContent = guidance.instructions || 'open phone settings and allow VBRTN to run in the background.';
               stepsEl.appendChild(li);
             } else {
               steps.forEach(text => {
@@ -968,7 +968,7 @@
           // becomes OEM-aware: name the manufacturer so they know it applies.
           const note = document.getElementById('reliability-note');
           if (note) {
-            note.innerHTML = `<strong>for reliable wake on ${brand}:</strong> keep frqncy open in bedside mode overnight, plugged in.`;
+            note.innerHTML = `<strong>for reliable wake on ${brand}:</strong> keep VBRTN open in bedside mode overnight, plugged in.`;
           }
           oemModal.open();
         } catch {}

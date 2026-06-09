@@ -617,6 +617,8 @@
 <script>if('serviceWorker' in navigator){window.addEventListener('load',()=>navigator.serviceWorker.register('/sw.js'));}</script>
 </head>
 <body>
+<a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#C4973A;color:#0B1C3D;padding:8px 16px;z-index:10000;font-size:14px;transition:top .2s;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to main content</a>
+
 <!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
 <style data-frqncy-header-critical>
 /* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
@@ -856,7 +858,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     <section>
         <div class="section-label">How It Works</div>
         <div class="format-content">
-            <h3>Long Conversations. Domain Deep-Dives.</h3>
+            <h2>Long Conversations. Domain Deep-Dives.</h2>
             <p>Every episode sits with one person long enough for the real thing to come through. How they think. What they build. Why they build it. You leave each conversation with the map of someone else's practice slightly in your hands.</p>
             <div class="format-quote">
                 "The podcast is how the network finds its voice — and how you find the voices inside the network."
@@ -889,7 +891,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     <section>
         <div class="section-label">Coming Soon</div>
         <div class="subscribe-section">
-            <h3>The First Episodes Are Close</h3>
+            <h2>The First Episodes Are Close</h2>
             <p>Leave your email. We will tell you when the first conversation goes live.</p>
             <form class="subscribe-form" onsubmit="handleSubscribe(event)">
                 <input
@@ -921,7 +923,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     <!-- Pitch Yourself -->
     <section>
         <div class="pitch-section">
-            <h3>Want to Sit at the Table?</h3>
+            <h2>Want to Sit at the Table?</h2>
             <p>If you carry real work — research, craft, practice, ethics — the network wants to know. Pitch yourself. Tell us what you do and the core of why you do it.</p>
             <a href="mailto:podcast@frqncy.network" class="cta-button">podcast@frqncy.network</a>
         </div>

@@ -983,13 +983,6 @@ window.EXPLORE_DATA = {
       "label": "Mythology"
     },
     {
-      "id": "p-frqncy-space",
-      "label": "The FRQNCY Space",
-      "type": "topic",
-      "r": 14,
-      "desc": "The first physical node of the Sanctuary — a minimal, intentionally designed coworking and gathering space. Calm coworking, quiet rooms for deep work, regular breathwork sessions, and community events. The room where the network meets the world."
-    },
-    {
       "id": "t-cards",
       "type": "topic",
       "r": 12,
@@ -1737,18 +1730,34 @@ window.EXPLORE_DATA = {
       "desc": "The journey itself as practice — walking the Camino, circling Kailash, returning to the well. Movement toward a place that reorganises the inner landscape on arrival."
     },
     {
-      "id": "p-mount-shasta",
-      "label": "Mount Shasta",
+      "id": "t-wellbeing",
+      "label": "Wellbeing",
       "type": "topic",
-      "r": 14,
-      "desc": "A 14,000-foot volcano in northern California held as sacred by the Wintu, Shasta, Modoc, and Achomawi long before John Muir's writings, the Lemurian mythos, or the I AM movement found it. Snow-capped, solitary, charged. One of the most consistently named power-points on the North American continent — a mountain that arrives in dreams and pulls people across the country to climb its lower slopes, sit by Panther Meadows, or simply look at it."
+      "r": 12
     },
     {
-      "id": "p-pyramids-of-giza",
-      "label": "Pyramids of Giza",
+      "id": "t-grounding",
+      "label": "Grounding",
       "type": "topic",
-      "r": 14,
-      "desc": "The Great Pyramid, Khafre, Menkaure, and the Sphinx on the Giza plateau west of Cairo. Older, more precise, and more strangely aligned than mainstream Egyptology will easily admit. Whatever they were originally for — tomb, initiation chamber, resonator, star-clock — they still hold the geometry. The benchmark sacred site of the ancient world."
+      "r": 12
+    },
+    {
+      "id": "t-longevity",
+      "label": "Longevity",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-recovery",
+      "label": "Recovery",
+      "type": "topic",
+      "r": 12
+    },
+    {
+      "id": "t-tech",
+      "label": "Technology",
+      "type": "topic",
+      "r": 12
     }
   ],
   "links": [
@@ -2921,26 +2930,6 @@ window.EXPLORE_DATA = {
       "t-mythology"
     ],
     [
-      "p-frqncy-space",
-      "t-meditation"
-    ],
-    [
-      "p-frqncy-space",
-      "t-breathwork"
-    ],
-    [
-      "p-frqncy-space",
-      "t-soundheal"
-    ],
-    [
-      "p-frqncy-space",
-      "t-community"
-    ],
-    [
-      "p-frqncy-space",
-      "t-minimalism"
-    ],
-    [
       "d-money",
       "t-cards"
     ],
@@ -3789,82 +3778,6 @@ window.EXPLORE_DATA = {
       "t-movement"
     ],
     [
-      "p-mount-shasta",
-      "t-sacred-sites"
-    ],
-    [
-      "p-mount-shasta",
-      "t-source"
-    ],
-    [
-      "p-mount-shasta",
-      "t-vibration"
-    ],
-    [
-      "p-mount-shasta",
-      "t-channeling"
-    ],
-    [
-      "p-mount-shasta",
-      "t-indigenous"
-    ],
-    [
-      "p-mount-shasta",
-      "t-meditation"
-    ],
-    [
-      "p-mount-shasta",
-      "t-akashic"
-    ],
-    [
-      "p-mount-shasta",
-      "d-places"
-    ],
-    [
-      "p-mount-shasta",
-      "d-meta"
-    ],
-    [
-      "p-pyramids-of-giza",
-      "t-sacred-sites"
-    ],
-    [
-      "p-pyramids-of-giza",
-      "t-sacredgeo"
-    ],
-    [
-      "p-pyramids-of-giza",
-      "t-merkaba"
-    ],
-    [
-      "p-pyramids-of-giza",
-      "t-history"
-    ],
-    [
-      "p-pyramids-of-giza",
-      "t-vibration"
-    ],
-    [
-      "p-pyramids-of-giza",
-      "t-akashic"
-    ],
-    [
-      "p-pyramids-of-giza",
-      "t-dims"
-    ],
-    [
-      "p-pyramids-of-giza",
-      "t-archit"
-    ],
-    [
-      "p-pyramids-of-giza",
-      "d-places"
-    ],
-    [
-      "p-pyramids-of-giza",
-      "d-meta"
-    ],
-    [
       "p-sedona",
       "t-sacred-sites"
     ],
@@ -3895,6 +3808,26 @@ window.EXPLORE_DATA = {
     [
       "p-vale-das-lobas",
       "t-networkstates"
+    ],
+    [
+      "d-wellbeing",
+      "t-wellbeing"
+    ],
+    [
+      "d-wellbeing",
+      "t-grounding"
+    ],
+    [
+      "d-wellbeing",
+      "t-longevity"
+    ],
+    [
+      "d-wellbeing",
+      "t-recovery"
+    ],
+    [
+      "d-sciences",
+      "t-tech"
     ]
   ],
   "node_urls": {
@@ -4056,7 +3989,6 @@ window.EXPLORE_DATA = {
     "t-taoism": "taoism/index.html",
     "t-christianity": "christianity/index.html",
     "t-mythology": "mythology/index.html",
-    "p-frqncy-space": "/space",
     "t-cards": "cards/index.html",
     "t-bodycare": "body-care/index.html",
     "t-coffee-tea": "coffee-tea/index.html",
@@ -4180,8 +4112,11 @@ window.EXPLORE_DATA = {
     "t-homeopathy": "homeopathy/index.html",
     "t-sacred-sites": "sacred-sites/index.html",
     "t-pilgrimage": "pilgrimage/index.html",
-    "p-mount-shasta": "/places/mount-shasta/",
-    "p-pyramids-of-giza": "/places/pyramids-of-giza/"
+    "t-wellbeing": "wellbeing/index.html",
+    "t-grounding": "grounding/index.html",
+    "t-longevity": "longevity/index.html",
+    "t-recovery": "recovery/index.html",
+    "t-tech": "technology/index.html"
   },
   "$last_sync": "2026-06-08",
   "$updated": "2026-05-22 — added Sacred Sites + Pilgrimage topics and four place nodes (Mount Shasta, Pyramids of Giza newly created; Sedona, Bali linked to Sacred Sites).",

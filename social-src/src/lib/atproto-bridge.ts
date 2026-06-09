@@ -723,6 +723,95 @@ export async function fetchBlueskyTimeline(
   }
 }
 
+// ─── Search ───────────────────────────────────────────────────────────────
+
+const searchCache = new Map<string, CacheEntry<BlueskyPost[]>>();
+
+/**
+ * Search public Bluesky posts via the unauthenticated AppView
+ * (app.bsky.feed.searchPosts on api.bsky.app). Deliberately auth-free so the
+ * federated search surface works for logged-out NRG visitors too — symmetric
+ * with the NRG-native (Supabase) results.
+ *
+ * Best-effort: never throws. Returns [] on any error or when @atproto/api
+ * isn't installed. 60s per-query cache, same TTL as the timeline reader.
+ */
+export async function searchBluesky(
+  query: string,
+  limit = 25,
+): Promise<BlueskyPost[]> {
+  const q = query.trim();
+  if (!q) return [];
+
+  const capped = Math.min(Math.max(limit, 1), 100);
+  const cacheKey = `${capped}:${q.toLowerCase()}`;
+  const cached = searchCache.get(cacheKey);
+  if (cached && cached.expiresAt > Date.now()) return cached.value;
+
+  const BskyAgent = await loadBskyAgentClass();
+  if (!BskyAgent) return [];
+
+  try {
+    // Public AppView — no login. Same endpoint the native client searches.
+    const agent = new BskyAgent({ service: 'https://api.bsky.app' });
+    const res = await agent.app.bsky.feed.searchPosts({ q, limit: capped });
+    const rawPosts = Array.isArray(res?.data?.posts) ? res.data.posts : [];
+    const posts: BlueskyPost[] = [];
+    for (const post of rawPosts) {
+      const mapped = mapSearchPost(post);
+      if (mapped) posts.push(mapped);
+    }
+    // Cache on success only — let the next call retry on error.
+    searchCache.set(cacheKey, { value: posts, expiresAt: Date.now() + CACHE_TTL_MS });
+    return posts;
+  } catch (err) {
+    console.warn('[atproto] searchBluesky failed', err);
+    return [];
+  }
+}
+
+/**
+ * Map a bare postView (from searchPosts) to BlueskyPost. Looser than
+ * mapFeedItem — searchPosts returns posts directly, with no repost/reply
+ * wrapper to filter on — so we keep every text-bearing result.
+ */
+function mapSearchPost(post: any): BlueskyPost | null {
+  if (!post) return null;
+  const text = String(post.record?.text || '');
+  if (!text) return null;
+
+  const author = post.author || {};
+  const handle = String(author.handle || '');
+  const createdAt = String(post.record?.createdAt || post.indexedAt || new Date().toISOString());
+
+  let externalUrl: string | null = null;
+  const embed = post.embed;
+  if (embed && embed.$type && embed.$type.includes('app.bsky.embed.external')) {
+    externalUrl = embed?.external?.uri ?? null;
+  }
+
+  const rkey = parseRkeyFromUri(post.uri);
+  const webUrl = handle && rkey ? `https://bsky.app/profile/${handle}/post/${rkey}` : 'https://bsky.app';
+
+  return {
+    uri: String(post.uri || ''),
+    cid: String(post.cid || ''),
+    author: {
+      handle,
+      displayName: author.displayName ? String(author.displayName) : null,
+      avatar: author.avatar ? String(author.avatar) : null,
+      did: String(author.did || ''),
+    },
+    text,
+    createdAt,
+    replyCount: Number(post.replyCount || 0),
+    repostCount: Number(post.repostCount || 0),
+    likeCount: Number(post.likeCount || 0),
+    externalUrl,
+    webUrl,
+  };
+}
+
 /**
  * Map an AppView feed item to our internal BlueskyPost shape, applying the
  * v1 filtering rules. Returns null when the item should be skipped.
@@ -1073,7 +1162,7 @@ function composePostText(
   }
 
   const link = nrgPostId
-    ? `https://frqncy.network/social/posts/${nrgPostId}`
+    ? `https://frqncy.network/social/post/${nrgPostId}`
     : 'https://frqncy.network';
   const footer = `\n\n— via FRQNCY NRG ↗\n${link}`;
 
