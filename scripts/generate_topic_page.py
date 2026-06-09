@@ -43,6 +43,9 @@ BED_DIR = ROOT / "data"
 OUT_DIR = ROOT / ""
 TREATMENTS_DIR_REL = "../_chrome/treatments"
 BASE_CSS_REL = "../_chrome/topic-base.css"
+# Bump when topic-base.css / treatment CSS changes, so returning visitors and
+# the CF edge don't serve a stale shell against fresh markup.
+ASSET_VER = "20260609"
 
 # ──────────────── Sacred list — generator refuses to overwrite ────────────────
 LOCKED_TOPICS: set[str] = {
@@ -578,6 +581,214 @@ def render_closing(brief: dict) -> str:
     )
 
 
+# ──────────────── Onward-nav data (content graph, videos, courses) ────────────────
+# Loaded once. These power the Watch / Take-a-Course / Explore / prev-next
+# sections that were part of the richer topic-page architecture. All four
+# render only when data exists for the topic, so thin topics stay clean.
+_CONTENT_CACHE: dict | None = None
+
+
+def _content() -> dict:
+    global _CONTENT_CACHE
+    if _CONTENT_CACHE is None:
+        path = ROOT / "content.json"
+        data = json.loads(path.read_text()) if path.exists() else {}
+        topics = data.get("topics", []) or []
+        domains = data.get("domains", []) or []
+        by_slug = {t["slug"]: t for t in topics if t.get("slug")}
+        by_id = {t["id"]: t for t in topics if t.get("id")}
+        by_domain: dict[str, list] = {}
+        for t in topics:
+            by_domain.setdefault(t.get("domain"), []).append(t)
+        for lst in by_domain.values():
+            lst.sort(key=lambda t: (t.get("label") or "").lower())
+        _CONTENT_CACHE = {
+            "topics": topics,
+            "by_slug": by_slug,
+            "by_id": by_id,
+            "by_domain": by_domain,
+            "domain_by_id": {d["id"]: d for d in domains if d.get("id")},
+        }
+    return _CONTENT_CACHE
+
+
+_VIDEOS_CACHE: dict | None = None
+
+
+def _videos() -> dict:
+    global _VIDEOS_CACHE
+    if _VIDEOS_CACHE is None:
+        path = ROOT / "videos.json"
+        _VIDEOS_CACHE = json.loads(path.read_text()) if path.exists() else {}
+    return _VIDEOS_CACHE
+
+
+_COURSES_CACHE: list | None = None
+
+
+def _courses() -> list:
+    global _COURSES_CACHE
+    if _COURSES_CACHE is None:
+        path = ROOT / "courses.json"
+        raw = json.loads(path.read_text()) if path.exists() else []
+        _COURSES_CACHE = raw.get("courses", []) if isinstance(raw, dict) else raw
+    return _COURSES_CACHE
+
+
+def _topic_id_for(slug: str) -> str | None:
+    t = _content()["by_slug"].get(slug)
+    return t["id"] if t else None
+
+
+def render_watch(topic_id: str | None) -> str:
+    if not topic_id:
+        return ""
+    vids = [v for v in (_videos().get(topic_id) or []) if v.get("youtube_id")]
+    if not vids:
+        return ""
+    cards = []
+    for v in vids[:6]:
+        yid = _html.escape(v["youtube_id"])
+        title = _html.escape(v.get("title", ""))
+        chan = _html.escape(v.get("channel", ""))
+        embed = f"https://www.youtube.com/embed/{yid}?autoplay=1&rel=0"
+        thumb = f"https://i.ytimg.com/vi/{yid}/hqdefault.jpg"
+        dur = (
+            f'<span class="t-vdur">{_html.escape(v["duration"])}</span>'
+            if v.get("duration")
+            else ""
+        )
+        pick = '<span class="t-vpick">FRQNCY Pick</span>' if v.get("frqncy_pick") else ""
+        chan_html = f'<span class="t-vchan">{chan}</span>' if chan else ""
+        cards.append(
+            f'<button class="t-vcard" type="button" data-embed="{embed}" '
+            f'data-title="{title}" data-chan="{chan}" aria-label="Play {title}">'
+            f'<span class="t-vthumb"><img src="{thumb}" alt="" loading="lazy" decoding="async">'
+            f'<span class="t-vplay" aria-hidden="true">▶</span>{dur}{pick}</span>'
+            f'<span class="t-vinfo"><span class="t-vtitle">{title}</span>{chan_html}</span>'
+            "</button>"
+        )
+    return (
+        '<section class="section fade-up t-watch">'
+        '<span class="label">Watch</span>'
+        f'<div class="t-vgrid">{"".join(cards)}</div>'
+        '<a class="t-browse-all" href="/watch/">▶ Browse all videos</a>'
+        "</section>"
+        '<div class="t-vmodal" id="t-vmodal" hidden>'
+        '<div class="t-vmodal-box">'
+        '<div class="t-vmodal-player"><iframe id="t-vmodal-frame" src="" '
+        'allow="autoplay;encrypted-media;picture-in-picture" allowfullscreen title="Video"></iframe></div>'
+        '<button class="t-vmodal-close" id="t-vmodal-close" aria-label="Close video">✕</button>'
+        "</div></div>"
+        "<script>"
+        "(function(){var m=document.getElementById('t-vmodal'),f=document.getElementById('t-vmodal-frame');"
+        "if(!m)return;function close(){m.hidden=true;f.src='';document.body.style.overflow='';}"
+        "document.querySelectorAll('.t-vcard').forEach(function(c){c.addEventListener('click',function(){"
+        "f.src=c.dataset.embed;m.hidden=false;document.body.style.overflow='hidden';});});"
+        "document.getElementById('t-vmodal-close').addEventListener('click',close);"
+        "m.addEventListener('click',function(e){if(e.target===m)close();});"
+        "document.addEventListener('keydown',function(e){if(e.key==='Escape')close();});})();"
+        "</script>"
+    )
+
+
+def render_course(topic_id: str | None) -> str:
+    if not topic_id:
+        return ""
+    courses = [c for c in _courses() if topic_id in (c.get("topics") or [])]
+    if not courses:
+        return ""
+    cards = []
+    for c in courses:
+        accent = _html.escape(c.get("accent", "#C4973A"))
+        slug = _html.escape(c.get("slug", ""))
+        level = _html.escape(c.get("level", ""))
+        title = _html.escape(c.get("title", ""))
+        lessons = c.get("lessons", [])
+        n_lessons = len(lessons) if isinstance(lessons, list) else (lessons or 0)
+        duration = _html.escape(str(c.get("duration", "")))
+        subtitle = c.get("subtitle", "")
+        meta = f"{n_lessons} lessons · {duration}" + (
+            f" · {_html.escape(subtitle)}" if subtitle else ""
+        )
+        cards.append(
+            f'<a class="t-course" href="/courses/{slug}/" style="--cc:{accent}">'
+            f'<span class="t-course-level">{level}</span>'
+            f'<span class="t-course-body"><span class="t-course-title">{title}</span>'
+            f'<span class="t-course-meta">{meta}</span></span>'
+            '<span class="t-course-arrow">→</span></a>'
+        )
+    return (
+        '<section class="section fade-up t-course-sec">'
+        '<span class="label">Take a course</span>'
+        f'{"".join(cards)}</section>'
+    )
+
+
+def render_explore(slug: str, topic_id: str | None) -> str:
+    c = _content()
+    topic = c["by_slug"].get(slug)
+    if not topic:
+        return ""
+    domain_id = topic.get("domain")
+    siblings = [
+        t for t in c["by_domain"].get(domain_id, []) if t.get("slug") != slug
+    ][:12]
+    if not siblings:
+        return ""
+    domain = c["domain_by_id"].get(domain_id, {})
+    dlabel = _html.escape(domain.get("label", "Related"))
+    cards = []
+    for t in siblings:
+        label = _html.escape(t.get("label", ""))
+        desc = t.get("desc", "")
+        desc_html = (
+            f'<p>{_html.escape(desc[:72]).rstrip()}…</p>' if desc else ""
+        )
+        cards.append(
+            f'<a class="t-ncard" href="/{_html.escape(t["slug"])}/">'
+            f'<span class="t-ncard-type">{dlabel}</span>'
+            f"<h3>{label}</h3>{desc_html}"
+            '<span class="t-ncard-arrow">→</span></a>'
+        )
+    return (
+        '<section class="section section-wide fade-up t-explore">'
+        '<span class="label">Explore</span>'
+        f'<div class="t-ncard-grid">{"".join(cards)}</div>'
+        "</section>"
+    )
+
+
+def render_prevnext(slug: str) -> str:
+    c = _content()
+    topic = c["by_slug"].get(slug)
+    if not topic:
+        return ""
+    domain_id = topic.get("domain")
+    sibs = c["by_domain"].get(domain_id, [])
+    idx = next((i for i, t in enumerate(sibs) if t.get("slug") == slug), -1)
+    if idx < 0:
+        return ""
+    prev_t = sibs[idx - 1] if idx > 0 else None
+    next_t = sibs[idx + 1] if idx < len(sibs) - 1 else None
+    if not prev_t and not next_t:
+        return ""
+
+    def link(t, kind, arrow):
+        if not t:
+            return '<span class="t-prevnext-link disabled" aria-hidden="true"></span>'
+        return (
+            f'<a class="t-prevnext-link {kind}" href="/{_html.escape(t["slug"])}/">'
+            f'<span class="t-prevnext-eyebrow">{arrow}</span>'
+            f'<span class="t-prevnext-label">{_html.escape(t.get("label",""))}</span></a>'
+        )
+
+    return (
+        '<nav class="t-prevnext" aria-label="More in this domain">'
+        f'{link(prev_t, "prev", "← Previous")}{link(next_t, "next", "Next →")}</nav>'
+    )
+
+
 # ──────────────── Page assembly ────────────────
 def render_page(brief: dict) -> str:
     meta = brief["meta"]
@@ -596,6 +807,22 @@ def render_page(brief: dict) -> str:
 
     sections = brief.get("sections") or []
     sections_html = "\n".join(render_section(s, brief) for s in sections)
+
+    # Onward-nav architecture — Watch / Take-a-Course / Explore / prev-next.
+    # Each renders only when the topic has matching data, so thin pages stay
+    # clean. slug drives the content-graph lookups.
+    _slug = meta.get("slug", "")
+    _tid = _topic_id_for(_slug)
+    onward_html = "\n".join(
+        x
+        for x in (
+            render_watch(_tid),
+            render_course(_tid),
+            render_explore(_slug, _tid),
+        )
+        if x
+    )
+    prevnext_html = render_prevnext(_slug)
 
     canonical = brief.get("linking", {}).get("canonical", "")
     og_image = brief.get("linking", {}).get("og_image", "")
@@ -629,8 +856,8 @@ def render_page(brief: dict) -> str:
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;0,400;0,500;0,600;1,300;1,400;1,500;1,600&family=Jost:wght@200;300;400;500&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="{BASE_CSS_REL}">
-<link rel="stylesheet" href="{TREATMENTS_DIR_REL}/{register}.css">
+<link rel="stylesheet" href="{BASE_CSS_REL}?v={ASSET_VER}">
+<link rel="stylesheet" href="{TREATMENTS_DIR_REL}/{register}.css?v={ASSET_VER}">
 <style>
 :root {{
   --accent: {accent};
@@ -671,6 +898,8 @@ def render_page(brief: dict) -> str:
 {render_prelude(brief)}
 {sections_html}
 {render_picks(brief)}
+{onward_html}
+{prevnext_html}
 </main>
 
 {render_closing(brief)}
