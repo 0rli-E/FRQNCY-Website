@@ -16,7 +16,7 @@
  *   - /api/*:         pass-through (functions handle their own caching)
  */
 
-const VERSION = 'v61';
+const VERSION = 'v62';
 const SHELL_CACHE   = `frqncy-shell-${VERSION}`;
 const DATA_CACHE    = `frqncy-data-${VERSION}`;
 const RUNTIME_CACHE = 'frqncy-runtime';   // intentionally unversioned
