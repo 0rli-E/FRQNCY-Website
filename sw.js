@@ -16,7 +16,7 @@
  *   - /api/*:         pass-through (functions handle their own caching)
  */
 
-const VERSION = 'v62';
+const VERSION = 'v64';
 const SHELL_CACHE   = `frqncy-shell-${VERSION}`;
 const DATA_CACHE    = `frqncy-data-${VERSION}`;
 const RUNTIME_CACHE = 'frqncy-runtime';   // intentionally unversioned
@@ -48,6 +48,7 @@ const PRECACHE = [
   '/music/index.html',
   '/places/index.html',
   '/aligned/index.html',
+  '/aligned/buy.js',
 ];
 
 // JSON data — pre-cached separately so DATA_CACHE owns them.

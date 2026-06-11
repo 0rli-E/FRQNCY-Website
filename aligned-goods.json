@@ -37,7 +37,16 @@
     ],
     "image": "https://worldsbestnutritionals.com/cdn/shop/files/satchet-view-1-3rd-fix_27952e3a-3d16-4b5c-a452-ed72a293548e.png?v=1776399656",
     "frqncy_pick": true,
-    "pick_order": 1
+    "pick_order": 1,
+    "sell": {
+      "enabled": true,
+      "price": 8900,
+      "currency": "usd",
+      "cost_cents": 0,
+      "sku": "WBNO-AMPM-30",
+      "ships_from": "supplier-dropship",
+      "note": "PLACEHOLDER price — set the real sell price (cost + margin) and cost_cents before switching Stripe to live keys. price is in cents and is server-authoritative."
+    }
   },
   {
     "id": "lauretana",
@@ -66,7 +75,16 @@
         "region": "EU"
       }
     ],
-    "revenue_relationship": null
+    "revenue_relationship": null,
+    "sell": {
+      "enabled": true,
+      "price": 5400,
+      "currency": "usd",
+      "cost_cents": 0,
+      "sku": "LAURETANA-GLASS-12",
+      "ships_from": "supplier-dropship",
+      "note": "PLACEHOLDER price — water is heavy to ship; set the real sell price (cost + shipping + margin) and cost_cents before going live. price is in cents and is server-authoritative."
+    }
   },
   {
     "id": "white-oak-pastures",

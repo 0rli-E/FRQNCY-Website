@@ -108,6 +108,34 @@ async function supabaseRequest(env, path, init = {}) {
 
 async function handleCheckoutCompleted(env, evt) {
   const s = evt.data.object;
+
+  // ── Goods order (the "additional price on top" reseller flow) ──
+  // Guest-friendly: there is no FRQNCY user_id, so this MUST run before the
+  // user_id guard below. Records the paid order + shipping address so it can
+  // be fulfilled (forwarded to the supplier / dropshipped). See SELL-GOODS.md.
+  if (s.metadata?.kind === 'good') {
+    const shipping = s.shipping_details || s.collected_information?.shipping_details || null;
+    await supabaseRequest(env, 'goods_orders?on_conflict=stripe_session_id', {
+      method: 'POST',
+      headers: { Prefer: 'resolution=merge-duplicates,return=minimal' },
+      body: JSON.stringify([{
+        stripe_session_id: s.id || null,
+        stripe_payment_intent: s.payment_intent || null,
+        good_id: s.metadata?.good_id || null,
+        good_name: s.metadata?.good_name || null,
+        quantity: parseInt(s.metadata?.quantity, 10) || 1,
+        unit_amount_cents: parseInt(s.metadata?.unit_amount, 10) || null,
+        amount_total_cents: s.amount_total ?? null,
+        currency: s.currency || 'usd',
+        email: s.customer_details?.email || null,
+        ship_name: shipping?.name || s.customer_details?.name || null,
+        ship_address: shipping?.address || null,
+        status: 'paid',
+      }]),
+    });
+    return;
+  }
+
   const userId = s.client_reference_id || s.metadata?.user_id;
   if (!userId) {
     console.warn('checkout.session.completed without client_reference_id — ignoring');

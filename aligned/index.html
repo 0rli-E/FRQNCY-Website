@@ -1166,6 +1166,13 @@ function card(g) {
   const rel = REL_BADGES[g.revenue_relationship];
   const relBadge = rel ? `<span class="gcard-rel ${rel.cls}" title="See 'On money flows' below">${rel.label}</span>` : '';
 
+  // Buy button — only for goods FRQNCY resells on-site (entry.sell.enabled).
+  // Price is rendered for display; the server re-derives it on checkout.
+  const sell = g.sell;
+  const buyBlock = (sell && sell.enabled && Number.isInteger(sell.price))
+    ? `<div class="gcard-buy-row"><button class="gcard-buy" data-buy-good="${g.id}" data-qty="1">Buy · <span class="price">$${(sell.price / 100).toFixed(2)}</span></button><span class="gcard-buy-note">Sold &amp; shipped by FRQNCY</span></div>`
+    : '';
+
   // Criteria line — quiet inline labels under the desc, dot-separated. The
   // rubric is stated once at page level; per-card we show only which entries
   // meet which criteria, in compact uppercase form.
@@ -1186,11 +1193,13 @@ function card(g) {
     <p class="gcard-desc">${g.desc}</p>
     ${critLine}
     ${vendors ? `<div class="gcard-vendors">${vendors}</div>` : ''}
+    ${buyBlock}
     ${relBadge ? `<div class="gcard-rel-row">${relBadge}</div>` : ''}
   </article>`;
 }
 
 load();
 </script>
+<script src="/aligned/buy.js" defer></script>
 </body>
 </html>

@@ -142,11 +142,19 @@ function cardHtml(g) {
   const rel = REL_BADGES[g.revenue_relationship];
   const relRow = rel ? `<div class="gcard-rel-row"><span class="gcard-rel ${rel.cls}">${rel.label}</span></div>` : '';
 
+  // Buy button — only for goods FRQNCY resells on-site (entry.sell.enabled).
+  // Behaviour lives in /aligned/buy.js; price is re-derived server-side.
+  const sell = g.sell;
+  const buyBlock = (sell && sell.enabled && Number.isInteger(sell.price))
+    ? `<div class="gcard-buy-row"><button class="gcard-buy" data-buy-good="${esc(g.id)}" data-qty="1">Buy · <span class="price">$${(sell.price / 100).toFixed(2)}</span></button><span class="gcard-buy-note">Sold &amp; shipped by FRQNCY</span></div>`
+    : '';
+
   return `<article class="gcard tier-${tierClass}">
       ${head}
       <p class="gcard-desc">${esc(g.desc)}</p>
       ${critLine}
       ${vendorsBlock}
+      ${buyBlock}
       ${relRow}
     </article>`;
 }
@@ -229,6 +237,7 @@ ${shelf}
 ${related}
 
 ${footer}
+<script src="/aligned/buy.js" defer></script>
 </body>
 </html>
 `;

@@ -120,9 +120,81 @@ export async function onRequestPost({ request, env }) {
   try { body = await request.json(); }
   catch { return json({ error: 'Invalid JSON.' }, 400, origin); }
 
-  const kind    = String(body.kind || 'membership').toLowerCase();
-  const userId  = String(body.user_id || '').trim();
-  const email   = String(body.email || '').trim().toLowerCase();
+  const kind = String(body.kind || 'membership').toLowerCase();
+
+  // ── Build payload — branches on kind ──────────────────────────────────
+  let payload;
+
+  if (kind === 'good') {
+    // One-time purchase of a physical good FRQNCY resells at its own price
+    // (cost + margin — the "additional price on top" model). Guest-friendly:
+    // no FRQNCY account required; Stripe collects the email + shipping address.
+    //
+    // PRICE IS SERVER-AUTHORITATIVE. The client sends only good_id + quantity;
+    // we look the price up from the canonical aligned-goods.json so a tampered
+    // client can never set its own price. The sell price lives in entry.sell.
+    const goodId = String(body.good_id || '').trim();
+    let qty = parseInt(body.quantity, 10);
+    if (!Number.isFinite(qty) || qty < 1) qty = 1;
+    if (qty > 10) qty = 10;
+    if (!/^[a-z0-9-]{2,80}$/.test(goodId)) {
+      return json({ error: 'good_id must be a kebab-case slug.' }, 400, origin);
+    }
+
+    // Look the good up from the same-origin canonical data.
+    let good = null;
+    try {
+      const goodsUrl = new URL('/aligned-goods.json', request.url).toString();
+      const gr = await fetch(goodsUrl, { cf: { cacheTtl: 60 } });
+      const goods = await gr.json();
+      good = Array.isArray(goods) ? goods.find((g) => g.id === goodId) : null;
+    } catch {
+      good = null;
+    }
+    if (!good || !good.sell || good.sell.enabled !== true) {
+      return json({ error: 'That item is not available for purchase.' }, 404, origin);
+    }
+
+    const unit = Number(good.sell.price); // integer cents — FRQNCY's sell price
+    if (!Number.isInteger(unit) || unit < 50 || unit > 1_000_000) {
+      return json({ error: 'Item pricing is misconfigured.' }, 503, origin);
+    }
+    const currency = String(good.sell.currency || 'usd').toLowerCase();
+
+    // Physical goods need a shipping address so the order can be fulfilled.
+    const SHIP_COUNTRIES = ['US', 'CA', 'GB', 'IE', 'AU', 'NZ', 'DE', 'FR', 'IT', 'ES', 'NL', 'SE', 'NO', 'DK', 'FI', 'CH', 'AT', 'BE', 'PT'];
+
+    payload = {
+      mode: 'payment',
+      'line_items[0][price_data][currency]': currency,
+      'line_items[0][price_data][product_data][name]': good.name,
+      'line_items[0][price_data][unit_amount]': String(unit),
+      'line_items[0][quantity]': String(qty),
+      success_url: 'https://frqncy.network/aligned/order/?status=success&session_id={CHECKOUT_SESSION_ID}',
+      cancel_url:  `https://frqncy.network/aligned/${encodeURIComponent(good.category || '')}/?status=cancelled`,
+      'metadata[kind]': 'good',
+      'metadata[good_id]': goodId,
+      'metadata[good_name]': good.name,
+      'metadata[quantity]': String(qty),
+      'metadata[unit_amount]': String(unit),
+      'payment_intent_data[metadata][kind]': 'good',
+      'payment_intent_data[metadata][good_id]': goodId,
+      'payment_intent_data[metadata][quantity]': String(qty),
+      allow_promotion_codes: 'true',
+      // MVP ships with tax off. For a live reseller, enable Stripe Tax here
+      // (and register for sales-tax collection) — see proposals/SELL-GOODS.md.
+      'automatic_tax[enabled]': 'false',
+    };
+    SHIP_COUNTRIES.forEach((c, i) => {
+      payload[`shipping_address_collection[allowed_countries][${i}]`] = c;
+    });
+
+    return finalizeStripeCheckout(env, payload, origin);
+  }
+
+  // membership + course both require an authenticated FRQNCY user + email.
+  const userId = String(body.user_id || '').trim();
+  const email  = String(body.email || '').trim().toLowerCase();
 
   if (!UUID_RE.test(userId)) {
     return json({ error: 'user_id must be a UUID.' }, 400, origin);
@@ -130,9 +202,6 @@ export async function onRequestPost({ request, env }) {
   if (!EMAIL_RE.test(email) || email.length > 254) {
     return json({ error: 'A valid email is required.' }, 400, origin);
   }
-
-  // ── Build payload — branches on kind ──────────────────────────────────
-  let payload;
 
   if (kind === 'course') {
     // One-time payment for a course (Phase 3 Wk 5 Fri).
@@ -203,6 +272,12 @@ export async function onRequestPost({ request, env }) {
   }
 
   // ── Call Stripe ────────────────────────────────────────────────────────
+  return finalizeStripeCheckout(env, payload, origin);
+}
+
+// Open the Checkout Session with Stripe and return its URL. Shared by every
+// kind (good / course / membership).
+async function finalizeStripeCheckout(env, payload, origin) {
   let stripeResp;
   try {
     stripeResp = await fetch('https://api.stripe.com/v1/checkout/sessions', {
