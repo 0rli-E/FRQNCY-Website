@@ -194,6 +194,28 @@ function relatedHtml(catId) {
   return `${chips}<a class="related-chip" href="/aligned/">View all →</a>`;
 }
 
+// Per-shelf editorial intro — one voice-forward line shown in the editorial
+// band of each deep page, in place of the generic rubric. Keyed by shelf id.
+const SHELF_INTROS = {
+  'nourishment': 'Water is the first input and the most-used — the one thing you take into the body more than anything else. Get it right and everything downstream starts cleaner.',
+  'food': 'Food is the second input, and the shortest supply chain wins. These are sources you can trace to a farm, a bay, a family — the opposite of the anonymous shelf.',
+  'body-care': 'Whatever you put on the skin, assume it goes in. So the test here is the same as for food: can a literate person read the label and want to keep going.',
+  'supplements': 'Most of the industry sells proprietary blends and synthetic fillers. This shelf is small on purpose — single ingredients, traceable sourcing, and makers who tell you exactly what’s inside.',
+  'sleep': 'Sleep is the practice that compounds — the one input that improves every other. The goods here protect it: darkness, quiet, the right temperature, and gear that gets out of the way.',
+  'movement': 'How the body trains and how the practice is held. Tools meant to survive a decade of use, from people who train on them too.',
+  'cookware': 'Pots, pans, and knives are the rare objects that get better the longer you keep them. Bought once and handed down — the opposite of disposable.',
+  'coffee-tea': 'The morning ritual deserves better than a pod. Beans and leaves with a named origin, and the simple tools that brew them the way they were meant to be.',
+  'audio': 'The record asks for your whole attention and gives it back as coherence — the analogue answer to a feed that never stops. These are the machines built to spin one side at a time.',
+  'tools-carry': 'Everyday objects that should outlast a decade of pockets and bags. Buy the good one once instead of the cheap one five times.',
+  'cards': 'How money moves, chosen with intention — for the traveller, the sovereign, and the new financial layer. Held to the same bar as everything else: used, not just owned.',
+  'privacy': 'The digital floor of a free life: tools that keep you the owner of your data, your money, and your attention. Sovereignty you can actually run.',
+  'emce': 'Electro Magnetic Chaos Eliminators — the shelf for the invisible field. Pyramids, copper, shungite, structured energy: some of it is settled material science, some of it is open question. We label which is which and let you run the experiment.',
+  'wear': 'Clothing built to last a decade — clean fibres, a supply chain you can follow, the opposite of the season-and-landfill cycle. Fewer things, kept longer.',
+  'stay': 'Places to actually rest, practise, and come back changed. Retreat centers and conscious hospitality, chosen for what they protect rather than what they advertise.',
+  'library': 'The books to keep on the shelf forever — primary sources and sacred texts, not commentary about them. Bought from a seller that funds independent bookshops, because where you buy a book is part of the teaching.',
+  'learn': 'Courses and platforms that pay back the time you spend on them — ad-free, paced for depth, taught by people who know the thing. Education as an experiment you run on yourself.',
+};
+
 function buildPage(cat) {
   const items = itemsFor(cat.id);
   const pick = items.find((x) => x.tier === 'pick');
@@ -215,9 +237,11 @@ function buildPage(cat) {
   <p class="hero-meta">${heroMeta}</p>
 </section>`;
 
+  const RUBRIC = 'Every entry is held against five questions — used, clean, independent, verifiable, durable. One Editor’s Choice per shelf. Everything else is held to the same bar.';
+  const introText = SHELF_INTROS[cat.id] || RUBRIC;
   const editorial = `<section class="editorial">
   <div class="editorial-rule"></div>
-  <p>Every entry is held against five questions — used, clean, independent, verifiable, durable. One Editor's Choice per shelf. Everything else is held to the same bar.</p>
+  <p>${esc(introText)}</p>
 </section>`;
 
   const shelf = `<section class="shelf">
