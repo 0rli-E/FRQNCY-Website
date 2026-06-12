@@ -27,9 +27,9 @@ FRQNCY lists the good at its own price (supplier cost + margin), takes the payme
 
 **Seeded today (placeholder prices):** WBNO ($89.00) on Supplements, Lauretana water ($54.00) on Water. Both prices are placeholders flagged in the data.
 
-**Go-live checklist (your steps)**
+**Go-live checklist**
 
-1. **Apply the migration** `supabase/migrations/024_goods_orders.sql` via the Supabase Management API (see memory `reference_supabase_apply_migrations`). Until it exists, paid orders make the webhook 500 and Stripe retries — so apply it before taking real money.
+1. ~~**Apply the migration** `024_goods_orders.sql`.~~ ✅ **DONE (2026-06-12)** — applied via `supabase db query --linked`; the `goods_orders` table is live (15 columns, RLS on, service-role only). Paid orders will record.
 2. **Stripe env vars** (Cloudflare Pages → Settings → Environment): `STRIPE_SECRET_KEY` and `STRIPE_WEBHOOK_SECRET` — the same ones membership/courses already use. Test mode (`sk_test_…`) charges nothing; swap to live keys when ready.
 3. **Webhook endpoint** in Stripe → Developers → Webhooks: `https://frqncy.network/api/stripe-webhook`, event `checkout.session.completed` (already configured for membership — no change needed).
 4. **Set real prices.** Edit each `sell.price` (and `cost_cents`) in `aligned-goods.json`, run `node scripts/build-aligned-shelves.mjs`, bump `sw.js`, push.
