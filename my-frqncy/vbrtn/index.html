@@ -58,6 +58,36 @@
   .reflect .save-btn:hover{background:var(--gold);color:var(--bg)}
   .reflect .save-btn:disabled{border-color:var(--rule);color:var(--ink-dim);cursor:not-allowed}
 
+  /* ── companion thread ────────────────────────────────── */
+  .thread{margin-bottom:40px;padding:22px;background:var(--bg-card);border:1px solid var(--rule);border-radius:var(--r-md)}
+  .thread .label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;margin-bottom:16px}
+  .thread-log{display:flex;flex-direction:column;gap:16px;margin-bottom:16px}
+  .msg{max-width:88%;line-height:1.55;animation:fadeIn 500ms ease forwards}
+  .msg.user{align-self:flex-end;background:var(--bg-elev);border:1px solid var(--rule);color:var(--ink);padding:10px 14px;border-radius:14px 14px 4px 14px;font-size:14px;white-space:pre-wrap}
+  .msg.vbrtn{align-self:flex-start;color:var(--gold-soft);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:18px;line-height:1.5;white-space:pre-wrap}
+  .msg.vbrtn.thinking{color:var(--ink-dim)}
+  .thread-input{display:flex;gap:10px;align-items:flex-end;border-top:1px solid var(--rule);padding-top:14px}
+  .thread-input textarea{flex:1;background:transparent;border:none;color:var(--ink);font-family:'Inter',sans-serif;font-size:15px;line-height:1.55;resize:none;min-height:24px;max-height:160px;outline:none;padding:4px 0}
+  .thread-input textarea::placeholder{color:var(--ink-dim);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px}
+  .thread-send{flex:none;background:transparent;border:1px solid var(--gold);color:var(--gold);width:40px;height:40px;border-radius:999px;font-size:17px;line-height:1;cursor:pointer;font-family:inherit;transition:all var(--t-fast)}
+  .thread-send:hover{background:var(--gold);color:var(--bg)}
+  .thread-send:disabled{border-color:var(--rule);color:var(--ink-dim);cursor:not-allowed}
+  .thread-note{margin-top:12px;font-size:11px;color:var(--ink-dim);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px}
+
+  /* ── recommendation trail ────────────────────────────── */
+  .trail{margin-bottom:40px;padding:24px;background:var(--bg-card);border:1px solid var(--rule);border-radius:var(--r-md)}
+  .trail .label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
+  .trail-intro{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:16px;color:var(--gold-soft);margin:0 0 14px 0}
+  .trail-item{display:block;text-decoration:none;padding:14px 0;border-top:1px solid var(--rule)}
+  .trail-item:hover .trail-name{color:var(--gold-soft)}
+  .trail-kind{display:block;font-size:10px;letter-spacing:.14em;text-transform:uppercase;color:var(--gold);margin-bottom:4px}
+  .trail-name{display:block;color:var(--ink);font-size:16px;font-weight:500;transition:color var(--t-fast)}
+  .trail-name .ext{color:var(--ink-dim);font-size:11px}
+  .trail-why{display:block;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:14px;color:var(--ink-soft);margin-top:3px}
+  .trail-more{margin-top:18px;background:transparent;border:1px solid var(--gold-dim);color:var(--gold-dim);padding:8px 16px;border-radius:999px;font-size:12px;letter-spacing:.04em;cursor:pointer;font-family:inherit;transition:all var(--t-fast)}
+  .trail-more:hover{border-color:var(--gold);color:var(--gold)}
+  .trail-empty{font-family:'Cormorant Garamond',serif;font-style:italic;color:var(--ink-dim);font-size:14px}
+
   /* ── modal-operator recovery ─────────────────────────── */
   .recovery{margin-bottom:40px;padding:24px;background:var(--bg-card);border:1px solid var(--gold-dim);border-radius:var(--r-md)}
   .recovery .label{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:12px;letter-spacing:.18em;color:var(--gold);text-transform:uppercase;margin-bottom:14px}
@@ -146,6 +176,149 @@
 
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
   function cap(s){ if(!s) return s; return s[0].toUpperCase() + s.slice(1); }
+
+  // ── Companion thread helpers ───────────────────────────
+  // Privacy-safe slice sent to /api/companion. Stub design is dropped (never
+  // feed random HD to the model); negative-trigger NAMES never leave the device.
+  function slimProfile(p){
+    if(!p) return {};
+    const hd = p.design && p.design.hd, gk = p.design && p.design.gk, astro = p.design && p.design.astro;
+    const mo = (p.meta && p.meta.modalOperators) || {};
+    const trig = p.triggers || {};
+    return {
+      rememberOne: p.rememberOne || null,
+      hd:    (hd && hd.type && !hd._stub) ? { type:hd.type, strategy:hd.strategy, authority:hd.authority, profile:hd.profile } : null,
+      gk:    (gk && !gk._stub) ? { lifesWork:gk.lifesWork, evolution:gk.evolution, radiance:gk.radiance, purpose:gk.purpose } : null,
+      astro: (astro && !astro._stub && astro.sun) ? { sun:astro.sun, moon:astro.moon, rising:astro.rising } : null,
+      standing: {
+        feeling: (p.standing && p.standing.recentFeeling) || null,
+        texture: (p.standing && p.standing.texture) || null,
+        desire:  (p.standing && p.standing.dominantDesire) || null,
+        pull:    (p.standing && p.standing.pull) || null,
+        threeYearTrue: (p.standing && p.standing.threeYearTrue) || null
+      },
+      meta: {
+        toward_away: (p.meta && p.meta.toward_away) || null,
+        internal_external: (p.meta && p.meta.internal_external) || null,
+        options_procedures: (p.meta && p.meta.options_procedures) || null,
+        general_specific: (p.meta && p.meta.general_specific) || null,
+        sameness_difference: (p.meta && p.meta.sameness_difference) || null,
+        convincer: (p.meta && p.meta.convincer) || null
+      },
+      modalOperators: {
+        necessity:     (mo.necessity || []).map(x => x.text).filter(Boolean).slice(-3),
+        impossibility: (mo.impossibility || []).map(x => x.text).filter(Boolean).slice(-3)
+      },
+      positiveTriggers: (trig.positive || []).slice(0, 5),
+      music: (trig.music || []).slice(0, 5),
+      place: trig.place || null,
+      negativeTriggerCount: (trig.negative || []).length,
+      baseline: {
+        teachabilityIndex: (p.baseline && p.baseline.teachabilityIndex != null) ? p.baseline.teachabilityIndex : null,
+        chiefAimDistance:  (p.baseline && p.baseline.chiefAimDistance != null) ? p.baseline.chiefAimDistance : null
+      }
+    };
+  }
+
+  function threadSeed(p){
+    const r = p.rememberOne, f = p.standing && p.standing.recentFeeling;
+    if(r) return `You asked to be remembered as ${r}. I'm here. What's moving in you right now?`;
+    if(f) return `You've been carrying ${f}. I'm here, and I'm listening. Where do you want to begin?`;
+    return `I'm here. Say what's true right now — one line, or many.`;
+  }
+
+  function getStoredThread(p){
+    const inter = (p && p.history && p.history.interactions) || [];
+    const out = [];
+    inter.forEach(it => {
+      if(it.kind === 'companion-user') out.push({ role:'user', content: it.text });
+      else if(it.kind === 'companion-vbrtn') out.push({ role:'assistant', content: it.text });
+    });
+    return out.slice(-16);
+  }
+
+  // ── Recommendation trail (deterministic, traceable) ────
+  const TRAIL_ROTATION_KEY = 'frqncy:vbrtn:trailRotation';
+  let TRAIL_DATA = null;
+  async function loadTrailData(){
+    if(TRAIL_DATA) return TRAIL_DATA;
+    const res = await fetch('./trail-data.json', { cache:'force-cache' });
+    if(!res.ok) throw new Error('trail-data ' + res.status);
+    TRAIL_DATA = await res.json();
+    return TRAIL_DATA;
+  }
+  function getTrailRotation(){ const n = parseInt(localStorage.getItem(TRAIL_ROTATION_KEY) || '0', 10); return isNaN(n) ? 0 : n; }
+  function setTrailRotation(n){ localStorage.setItem(TRAIL_ROTATION_KEY, String(n)); }
+
+  function pickTrail(p, data, rot){
+    const desire = (p.standing && p.standing.dominantDesire) || null;
+    let candidates = (desire && data.desireMap[desire]) ? data.desireMap[desire].slice() : [];
+    if(!candidates.length) candidates = Object.keys(data.topics);
+    const books=[], musics=[], products=[], courses=[], topicCards=[];
+    const seen = { b:new Set(), m:new Set(), p:new Set(), c:new Set() };
+    candidates.forEach(slug => {
+      const t = data.topics[slug];
+      if(!t) return;
+      topicCards.push({ slug, label:t.label, url:t.url });
+      (t.books||[]).forEach(b => { if(!seen.b.has(b.name)){ seen.b.add(b.name); books.push(Object.assign({}, b, { topic:t.label })); } });
+      (t.music||[]).forEach(m => { if(!seen.m.has(m.title)){ seen.m.add(m.title); musics.push(Object.assign({}, m, { topic:t.label })); } });
+      (t.products||[]).forEach(pr => { if(!seen.p.has(pr.name)){ seen.p.add(pr.name); products.push(Object.assign({}, pr, { topic:t.label })); } });
+      (t.courses||[]).forEach(c => { if(!seen.c.has(c.title)){ seen.c.add(c.title); courses.push(Object.assign({}, c, { topic:t.label })); } });
+    });
+    const at = (arr) => arr.length ? arr[rot % arr.length] : null;
+    const candSet = new Set(candidates);
+    const pref = data.practices.filter(pr => pr.topicSlug && candSet.has(pr.topicSlug));
+    const practicePool = pref.length ? pref : data.practices;
+    return {
+      desire,
+      topic: at(topicCards),
+      practice: practicePool[rot % practicePool.length],
+      book: at(books),
+      music: at(musics),
+      product: at(products),
+      course: at(courses)
+    };
+  }
+
+  function paintTrail(el, t){
+    const desire = t.desire;
+    const rows = [];
+    const row = (kind, name, url, why, ext) => {
+      if(!name) return;
+      const target = ext ? ' target="_blank" rel="noopener"' : '';
+      rows.push(`<a class="trail-item" href="${escapeHtml(url || '#')}"${target}>
+        <span class="trail-kind">${escapeHtml(kind)}</span>
+        <span class="trail-name">${escapeHtml(name)}${ext ? ' <span class="ext">↗</span>' : ''}</span>
+        <span class="trail-why">${escapeHtml(why)}</span></a>`);
+    };
+    if(t.topic)    row('Where it lives', t.topic.label, t.topic.url, desire ? `Because you're reaching toward ${desire}. This is where it lives on FRQNCY.` : 'A place to begin on FRQNCY.', false);
+    if(t.practice) row('A practice', t.practice.label, `/my-frqncy/practice/?practice=${encodeURIComponent(t.practice.slug)}`, t.practice.framing, false);
+    if(t.book)     row('One book', t.book.name, t.book.url, `Near ${t.book.topic}.`, !!t.book.external);
+    if(t.music)    row('One piece of music', t.music.title, t.music.url, `${t.music.artist} — for ${t.music.topic}.`, true);
+    if(t.product)  row('Something aligned', t.product.name, t.product.url, t.product.desc || `Aligned with ${t.product.topic}.`, !!t.product.external);
+    if(t.course)   row('A course', t.course.title, t.course.url, `${t.course.free ? 'Free' : 'Member'} — in ${t.course.topic}.`, false);
+    const intro = desire
+      ? `For where you are — reaching toward ${escapeHtml(desire)}. One of each. Always one.`
+      : `One of each, for where you are. Always one.`;
+    el.innerHTML = `<div class="label">A trail VBRTN hands you</div>
+      <p class="trail-intro">${intro}</p>
+      ${rows.join('') || '<p class="trail-empty">Your trail fills in as your intake deepens.</p>'}
+      <button class="trail-more" id="trailMore" type="button">Hand me another →</button>`;
+    const more = document.getElementById('trailMore');
+    if(more) more.addEventListener('click', ()=>{ setTrailRotation(getTrailRotation() + 1); renderTrail(loadProfile()); });
+  }
+
+  async function renderTrail(p){
+    const el = document.getElementById('trailSection');
+    if(!el || !p) return;
+    let data;
+    try{ data = await loadTrailData(); }
+    catch(e){
+      el.innerHTML = '<div class="label">A trail VBRTN hands you</div><p class="trail-empty">Your trail appears on the live site.</p>';
+      return;
+    }
+    paintTrail(el, pickTrail(p, data, getTrailRotation()));
+  }
 
   // ── Morning open generator ─────────────────────────────
   function generateMorningOpen(p){
@@ -374,13 +547,14 @@
         ${morn.sub ? `<div class="sub">${escapeHtml(morn.sub)}</div>` : ''}
       </section>
 
-      <section class="reflect">
-        <div class="prompt">Write back. One line, or many. The companion holds it.</div>
-        <textarea id="reflectInput" placeholder="What's true right now…"></textarea>
-        <div class="actions">
-          <div class="saved" id="savedMsg"></div>
-          <button class="save-btn" id="saveBtn" type="button" disabled>Save</button>
+      <section class="thread">
+        <div class="label">The companion</div>
+        <div class="thread-log" id="threadLog"></div>
+        <div class="thread-input">
+          <textarea id="threadInput" rows="1" placeholder="Say what's true right now…"></textarea>
+          <button class="thread-send" id="threadSend" type="button" disabled aria-label="Send">→</button>
         </div>
+        <div class="thread-note">VBRTN speaks from your design, your state, and what you tell it. Nothing leaves this device beyond the words you send it.</div>
       </section>
     `;
 
@@ -425,6 +599,8 @@
       `;
     }
 
+    html += `<section class="trail" id="trailSection"><div class="label">A trail VBRTN hands you</div><p class="trail-empty">Gathering your trail…</p></section>`;
+
     if(hd && hd.type){
       html += `
         <section class="chart">
@@ -460,45 +636,96 @@
 
     shell.innerHTML = html;
 
-    // Wire reflection input
-    const inp = document.getElementById('reflectInput');
-    const saveBtn = document.getElementById('saveBtn');
-    const savedMsg = document.getElementById('savedMsg');
-    inp.addEventListener('input', ()=>{
-      saveBtn.disabled = inp.value.trim().length === 0;
-      savedMsg.classList.remove('in');
+    // ── Wire the companion thread ──────────────────────────
+    const log = document.getElementById('threadLog');
+    const inp = document.getElementById('threadInput');
+    const sendBtn = document.getElementById('threadSend');
+
+    const stored = getStoredThread(p);              // prior conversation, if any
+    const seed = stored.length ? null : threadSeed(p);
+    let sending = false;
+
+    function addBubble(kind, text, opts){
+      const div = document.createElement('div');
+      div.className = 'msg ' + (kind === 'user' ? 'user' : 'vbrtn') + (opts && opts.thinking ? ' thinking' : '');
+      div.textContent = text;
+      log.appendChild(div);
+      div.scrollIntoView({ block:'end', behavior:'smooth' });
+      return div;
+    }
+    function autosize(){ inp.style.height = 'auto'; inp.style.height = Math.min(inp.scrollHeight, 160) + 'px'; }
+
+    if(seed) addBubble('vbrtn', seed);
+    stored.forEach(m => addBubble(m.role === 'user' ? 'user' : 'vbrtn', m.content));
+
+    inp.addEventListener('input', ()=>{ sendBtn.disabled = inp.value.trim().length === 0 || sending; autosize(); });
+    inp.addEventListener('keydown', (e)=>{
+      if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); if(!sendBtn.disabled) send(); }
     });
-    saveBtn.addEventListener('click', ()=>{
+    sendBtn.addEventListener('click', send);
+
+    async function send(){
       const text = inp.value.trim();
-      if(!text) return;
-      const profile = loadProfile();
+      if(!text || sending) return;
+      sending = true; sendBtn.disabled = true;
+      inp.value = ''; autosize();
+      addBubble('user', text);
+
+      // Persist the user turn + scan for modal operators (feeds the recovery card)
+      const profile = loadProfile() || p;
       if(!profile.history) profile.history = { interactions: [], lastSeen:null, journalEntries:[], habitShape:{} };
       if(!profile.history.interactions) profile.history.interactions = [];
-      profile.history.interactions.push({
-        at: Date.now(),
-        kind: 'reflection',
-        text
-      });
+      profile.history.interactions.push({ at: Date.now(), kind:'companion-user', text });
       profile.history.lastSeen = Date.now();
-      // Scan for modal operators in what the user just wrote
       const detected = detectModalOperators(text);
-      if(detected.length > 0){
+      if(detected.length){
         if(!profile.meta) profile.meta = { modalOperators:{ necessity:[], impossibility:[] } };
         if(!profile.meta.modalOperators) profile.meta.modalOperators = { necessity:[], impossibility:[] };
-        detected.forEach(d => {
-          const list = profile.meta.modalOperators[d.kind];
-          if(list) list.push({ text: d.match, at: Date.now(), source:'reflection' });
-        });
+        detected.forEach(d => { const l = profile.meta.modalOperators[d.kind]; if(l) l.push({ text:d.match, at:Date.now(), source:'companion' }); });
       }
       saveProfile(profile);
-      const responseLine = detected.length > 0
-        ? `Saved. The companion noticed a "${detected[0].marker}" sentence — that surfaces next time you visit.`
-        : 'Saved. The companion holds it.';
-      savedMsg.textContent = responseLine;
-      savedMsg.classList.add('in');
-      inp.value = '';
-      saveBtn.disabled = true;
-    });
+
+      // Payload: opener (only on a fresh thread) + prior turns + this turn
+      const payload = [];
+      if(seed && !stored.length) payload.push({ role:'assistant', content: seed });
+      stored.forEach(m => payload.push({ role: m.role, content: m.content }));
+      payload.push({ role:'user', content: text });
+
+      const thinking = addBubble('vbrtn', '…', { thinking:true });
+      try{
+        const res = await fetch('/api/companion', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({ profile: slimProfile(profile), messages: payload })
+        });
+        const data = await res.json().catch(()=>null);
+        thinking.remove();
+        const reply = data && data.response ? data.response : null;
+        stored.push({ role:'user', content: text });
+        if(reply){
+          addBubble('vbrtn', reply);
+          stored.push({ role:'assistant', content: reply });
+          const pr = loadProfile() || profile;
+          if(!pr.history) pr.history = { interactions: [] };
+          if(!pr.history.interactions) pr.history.interactions = [];
+          pr.history.interactions.push({ at: Date.now(), kind:'companion-vbrtn', text: reply });
+          saveProfile(pr);
+        } else {
+          addBubble('vbrtn', 'I went quiet for a moment. Say it once more?');
+        }
+      }catch(err){
+        thinking.remove();
+        stored.push({ role:'user', content: text });
+        addBubble('vbrtn', "I can't reach you from here — this surface needs to be online. Open it on the live site (not from a file). Your words are saved.");
+      }finally{
+        sending = false;
+        sendBtn.disabled = inp.value.trim().length === 0;
+        inp.focus();
+      }
+    }
+
+    // Render the recommendation trail (async — fills the placeholder)
+    renderTrail(p);
 
     // Wire recovery rotation
     if(recovery){
