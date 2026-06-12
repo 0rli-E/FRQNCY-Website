@@ -1,0 +1,11 @@
+---
+import SocialLayout from '../../layouts/SocialLayout.astro';
+import GroupsDirectory from '../../components/GroupsDirectory';
+---
+
+<SocialLayout
+  title="Groups · NRG · FRQNCY"
+  description="The meeting places of the FRQNCY network. Join the rooms that resonate — or start your own."
+>
+  <GroupsDirectory client:load />
+</SocialLayout>

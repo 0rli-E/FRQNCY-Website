@@ -52,9 +52,14 @@ function useDebouncedCallback<T extends (...args: any[]) => void>(fn: T, ms: num
 
 interface PostComposerProps {
   onPost?: () => void;
+  /** When set, the post is filed into this group (posts.group_id). Used by the
+      group page composer. Undefined = a normal global-feed post. */
+  groupId?: string;
+  /** Group name shown in the composer placeholder when posting into a group. */
+  groupName?: string;
 }
 
-export default function PostComposer({ onPost }: PostComposerProps) {
+export default function PostComposer({ onPost, groupId, groupName }: PostComposerProps) {
   const { user, profile, loading } = useAuth();
   const [content, setContent] = useState('');
   const [tags, setTags] = useState<string[]>([]);
@@ -206,6 +211,8 @@ export default function PostComposer({ onPost }: PostComposerProps) {
         link_preview: linkPreview ?? undefined,
         project_tag: projectTag,
         project_tier: project?.tier ?? undefined,
+        // File into the group when the composer is scoped to one.
+        group_id: groupId ?? null,
         // Only meaningful when a project is tagged — createPost drops it
         // otherwise. Send the user's stance through as-is.
         conviction: project && conviction ? conviction : null,
@@ -270,7 +277,7 @@ export default function PostComposer({ onPost }: PostComposerProps) {
             onInput={(e) => setContent((e.target as HTMLTextAreaElement).value)}
             onFocus={() => setFocused(true)}
             onBlur={() => setFocused(false)}
-            placeholder="Share an insight, question, or discovery..."
+            placeholder={groupName ? `Share something with ${groupName}…` : 'Share an insight, question, or discovery...'}
             rows={focused || content ? 4 : 2}
             class="w-full bg-transparent text-sm text-text placeholder-text-dim resize-none focus:outline-none transition-all"
           />

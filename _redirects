@@ -89,6 +89,14 @@
 # can read the slug from location.pathname and filter the feed.
 /social/channel/*       /social/channel/research/index.html 200
 
+# Dynamic group route — same shell for every group slug. The Astro build emits
+# /social/g/<seed>/index.html for the seeds in getStaticPaths; this routes any
+# user-created slug to one of them so the Preact GroupView reads the slug from
+# location.pathname and loads that group. Deliberately under /social/g/* (not
+# /social/groups/*) so this 200-rewrite catchall can't hijack the static
+# /social/groups directory page (see cf-pages-catchall-hijacks-static).
+/social/g/*             /social/g/townhall/index.html 200
+
 # Dynamic single-post route — same shell for every post id. The Astro build
 # emits /social/post/shell/index.html; this redirect routes any post id to
 # it so the Preact PostView can fetch the post by id from the URL.

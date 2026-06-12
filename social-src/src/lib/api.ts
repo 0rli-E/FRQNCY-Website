@@ -352,10 +352,12 @@ export async function getProjectPosts(
   return (data ?? []) as Post[];
 }
 
-// Tracks whether the `conviction` column exists on posts. We optimistically
-// try to insert it; on the first schema error we flip this flag and retry
-// without it. Lets the UI ship before migration 002_conviction.sql is applied.
+// Tracks whether optional post columns exist yet. We optimistically include
+// them; on the first column-missing error we flip the flag and retry without
+// that column. Lets the UI ship before the matching migration is applied —
+// conviction → 002_conviction.sql, group_id → 023_groups.sql.
 let convictionColumnMissing = false;
+let groupColumnMissing = false;
 
 export async function createPost(data: {
   author_id: string;
@@ -370,51 +372,61 @@ export async function createPost(data: {
       column when migration 002 is applied; silently dropped on older
       schemas via the convictionColumnMissing fallback. */
   conviction?: 'bullish' | 'neutral' | 'bearish' | null;
+  /** When set, the post belongs to this group (migration 023). Dropped on
+      older schemas via the groupColumnMissing fallback so the post still
+      lands in the global feed. */
+  group_id?: string | null;
   /** Whether to mirror this post to the user's connected Bluesky account.
       Defaults to true when the user has a connection, false otherwise.
       Pass false explicitly from the composer to suppress for one post. */
   crosspostToBluesky?: boolean;
 }): Promise<Post | null> {
-  const baseInsert: Record<string, any> = {
-    author_id: data.author_id,
-    content: data.content,
-    media_urls: data.media_urls ?? [],
-    link_url: data.link_url ?? null,
-    link_preview: data.link_preview ?? null,
-    project_tag: data.project_tag ?? null,
-    project_tier: data.project_tier ?? null,
+  // Build the insert payload, including the optional columns only when they
+  // carry a value AND haven't been detected as missing this session.
+  const buildInsert = (): Record<string, any> => {
+    const insert: Record<string, any> = {
+      author_id: data.author_id,
+      content: data.content,
+      media_urls: data.media_urls ?? [],
+      link_url: data.link_url ?? null,
+      link_preview: data.link_preview ?? null,
+      project_tag: data.project_tag ?? null,
+      project_tier: data.project_tier ?? null,
+    };
+    // Conviction is only meaningful alongside a tagged project.
+    if (data.project_tag && data.conviction && !convictionColumnMissing) {
+      insert.conviction = data.conviction;
+    }
+    if (data.group_id && !groupColumnMissing) {
+      insert.group_id = data.group_id;
+    }
+    return insert;
   };
 
-  // Only include conviction when a project is tagged AND the column exists.
-  // Sending it for untagged posts is noise; sending it on an older schema
-  // throws a column-missing error which we recover from below.
-  const insertWithConviction =
-    data.project_tag && data.conviction && !convictionColumnMissing
-      ? { ...baseInsert, conviction: data.conviction }
-      : baseInsert;
-
-  let { data: post, error } = await supabase
-    .from('posts')
-    .insert(insertWithConviction)
-    .select('*, author:profiles!posts_author_id_fkey(*)')
-    .single();
-
-  // Fallback: if the conviction column doesn't exist yet, retry without it.
-  if (
-    error &&
-    !convictionColumnMissing &&
-    /conviction/i.test(error.message || '')
-  ) {
-    console.warn(
-      '[createPost] conviction column missing — falling back. ' +
-        'Run supabase/migrations/002_conviction.sql to enable it.',
-    );
-    convictionColumnMissing = true;
-    ({ data: post, error } = await supabase
+  const runInsert = () =>
+    supabase
       .from('posts')
-      .insert(baseInsert)
+      .insert(buildInsert())
       .select('*, author:profiles!posts_author_id_fkey(*)')
-      .single());
+      .single();
+
+  let { data: post, error } = await runInsert();
+
+  // Column-missing recovery: if either optional column doesn't exist yet, flip
+  // the flag (so buildInsert drops it) and retry. Loops at most twice — one per
+  // optional column — then gives up.
+  for (let attempt = 0; attempt < 2 && error; attempt++) {
+    const msg = error.message || '';
+    if (!convictionColumnMissing && /conviction/i.test(msg)) {
+      console.warn('[createPost] conviction column missing — falling back (apply 002_conviction.sql).');
+      convictionColumnMissing = true;
+    } else if (!groupColumnMissing && /group_id/i.test(msg)) {
+      console.warn('[createPost] group_id column missing — posting to global feed (apply 023_groups.sql).');
+      groupColumnMissing = true;
+    } else {
+      break; // not a column-missing error we know how to recover from
+    }
+    ({ data: post, error } = await runInsert());
   }
 
   if (error) {
@@ -439,7 +451,7 @@ export async function createPost(data: {
   // own canonical identity claim — verifiers don't need to look up the
   // author by Supabase id to resolve "who signed this".
   if (post) {
-    const p = post as Post & { conviction?: string | null };
+    const p = post as Post & { conviction?: string | null; group_id?: string | null };
     // Best-effort identity load. If the profile lookup fails or the user
     // has no signing pubkey on file, we still sign (signRowFireAndForget
     // gates on the local PRIVATE key) but omit the `did` — verifiers can
@@ -465,6 +477,9 @@ export async function createPost(data: {
           // here is cosmetic. Null on older-schema rows where the column
           // doesn't exist — preserves verification on legacy posts.
           conviction: p.conviction ?? null,
+          // Group membership is part of the canonical signed record so a post
+          // can't be silently re-homed to a different group post-signing.
+          group_id: p.group_id ?? null,
           media_urls: p.media_urls ?? [],
           link_url: p.link_url ?? null,
           created_at: p.created_at,
