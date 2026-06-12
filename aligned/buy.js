@@ -21,6 +21,33 @@
   style.textContent = css;
   document.head.appendChild(style);
 
+  // Fire an interest signal via the shared analytics client (window.frqncy.track,
+  // from /assets/frqncy-analytics.js). Non-blocking and best-effort: if the
+  // client isn't present we silently skip. This is how we learn which goods
+  // people actually click — no redirect, so affiliate ?ref params stay intact.
+  function track(type, goodId, extra) {
+    try {
+      if (window.frqncy && typeof window.frqncy.track === 'function') {
+        var props = { good_id: goodId || null };
+        if (extra) for (var k in extra) props[k] = extra[k];
+        window.frqncy.track(type, props);
+      }
+    } catch (_) {}
+  }
+
+  // Outbound clicks on a card's image, vendor link, or "Research" link.
+  document.addEventListener('click', function (ev) {
+    var a = ev.target && ev.target.closest && ev.target.closest('a.gcard-media, a.vendor, a.gcard-research');
+    if (!a) return;
+    var card = a.closest('.gcard');
+    var goodId = card && card.getAttribute('data-good-id');
+    var kind = a.classList.contains('vendor') ? 'vendor'
+             : a.classList.contains('gcard-research') ? 'research'
+             : 'image';
+    track('good_click', goodId, { kind: kind, href: a.getAttribute('href') || '' });
+    // Don't preventDefault — let the link proceed normally.
+  });
+
   document.addEventListener('click', function (ev) {
     var btn = ev.target && ev.target.closest && ev.target.closest('[data-buy-good]');
     if (!btn) return;
@@ -29,6 +56,7 @@
 
     var goodId = btn.getAttribute('data-buy-good');
     var qty = parseInt(btn.getAttribute('data-qty') || '1', 10) || 1;
+    track('good_buy_click', goodId, { quantity: qty });
     var original = btn.innerHTML;
     btn.dataset.busy = '1';
     btn.textContent = 'Opening checkout…';

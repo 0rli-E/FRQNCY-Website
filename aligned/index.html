@@ -1202,7 +1202,7 @@ function card(g) {
     ? `<div class="gcard-crit-line">${crits.join(' · ')}</div>`
     : '';
 
-  return `<article class="gcard tier-${tierClass}">
+  return `<article class="gcard tier-${tierClass}" data-good-id="${g.id}">
     ${mediaBlock}
     <div class="gcard-head">
       <div style="flex:1;min-width:0;">
@@ -1221,6 +1221,7 @@ function card(g) {
 
 load();
 </script>
+<script src="/assets/frqncy-analytics.js" defer></script>
 <script src="/aligned/buy.js" defer></script>
 </body>
 </html>

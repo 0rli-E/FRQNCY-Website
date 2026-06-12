@@ -41,6 +41,8 @@ const ALLOWED_EVENTS = new Set([
   // Revenue
   'membership_checkout_started', 'membership_converted',
   'course_purchased', 'newsletter_subscribed', 'referral_code_shared',
+  // Aligned Goods — outbound interest signals (which goods people click)
+  'good_click', 'good_buy_click',
   // Misc
   'export_downloaded',
 ]);

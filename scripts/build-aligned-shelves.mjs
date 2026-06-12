@@ -159,7 +159,7 @@ function cardHtml(g) {
     ? `<div class="gcard-buy-row"><button class="gcard-buy" data-buy-good="${esc(g.id)}" data-qty="1">Buy · <span class="price">$${(sell.price / 100).toFixed(2)}</span></button><span class="gcard-buy-note">Sold &amp; shipped by FRQNCY</span></div>`
     : '';
 
-  return `<article class="gcard tier-${tierClass}">
+  return `<article class="gcard tier-${tierClass}" data-good-id="${esc(g.id)}">
       ${mediaBlock}
       ${head}
       <p class="gcard-desc">${esc(g.desc)}</p>
@@ -264,6 +264,7 @@ ${shelf}
 ${related}
 
 ${footer}
+<script src="/assets/frqncy-analytics.js" defer></script>
 <script src="/aligned/buy.js" defer></script>
 </body>
 </html>
