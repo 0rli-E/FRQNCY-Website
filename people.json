@@ -1,10 +1,11 @@
 {
-  "$schema_version": 6,
+  "$schema_version": 7,
   "$purpose": "Draft first-class people list for FRQNCY. This is a PROPOSAL — not wired into the live site. Review, push back on anything wrong, and we refine.",
   "$generated": "2026-04-24",
-  "$updated": "2026-05-13T02:45:39Z",
+  "$updated": "2026-06-12T00:00:00Z",
   "$source": "Extracted from content.json — every resource with type:'person' (25 rows, 23 unique people after deduping Rupert Spira and Osho who each appeared twice).",
   "$reconciliation_notes": "Channeling humans now carry a 'channels' array listing the entities they channel, each with name and description. This keeps the human as the canonical person while giving the channeled entity its own structure — easy to migrate to a standalone channels.json later if we want.",
+  "$sources_field": "v7 (2026-06-12): researcher-type people whose legacy is patents / lectures / documents rather than authored books carry a 'sources' array — each item { title, url, kind, year, note }. kind drives the rcard label (e.g. 'patent', 'lecture'). Rendered as a 'Research & primary sources' section on the person page by generate.js. First used for David Radius Hudson (ORME / monatomic elements).",
   "people": [
     {
       "id": "p-aaron-hurst",
@@ -5017,6 +5018,52 @@
       ],
       "picked_in": [
         "t-spiritual-tech"
+      ],
+      "image": ""
+    },
+    {
+      "id": "p-david-radius-hudson",
+      "name": "David Radius Hudson",
+      "url": "https://www.rexresearch.com/ormes/ormes.htm",
+      "bio": "Arizona cotton farmer (b. 1944) who, while recovering metals from the 'black alkali' soil of his land in the late 1970s, reported a white powder that defied standard analysis. He named it ORME — Orbitally Rearranged Monoatomic Elements — and patented a process for the monoatomic forms of gold, silver and the platinum-group metals, claiming exotic properties (superconductivity, anomalous weight) that mainstream chemistry has not replicated. His 1990s lectures seeded the modern ORMUS / monatomic-gold field, framing it as a rediscovery of alchemy's Philosopher's Stone and the Egyptian mfkzt.",
+      "appears_in": [
+        "t-spiritual-tech"
+      ],
+      "picked_in": [],
+      "life_story": [
+        "Born in 1944 into a farming family, Hudson inherited several thousand acres in Arizona's Yuma Valley and around Phoenix, where he grew cotton. Fighting the high-sodium 'black alkali' soils that damaged his crops, he began recovering precious metals from the ground — and over roughly a decade reportedly spent some $8.7 million chasing an anomaly his standard assays could not explain.",
+        "The anomaly was a white powder that, by his account, would not behave like any known metal. Hudson proposed the metal atoms had relaxed into a 'high-spin,' orbitally rearranged state — single, unbonded atoms rather than a metallic lattice — and coined the term ORME. His British patent GB2219995A, 'Non-Metallic, Monoatomic Forms of Transition Elements' (1989), covers the monoatomic forms of gold, silver, copper, cobalt, nickel and the six platinum-group metals, and claims that rhodium and iridium S-ORMEs exhibit superconductivity and anomalous weight changes on heating. He further claimed such elements occur naturally in living tissue. None of these claims has been independently replicated by mainstream chemistry.",
+        "Hudson wrapped the chemistry in an older story. He linked ORME to the Egyptian mfkzt, the 'food of the gods'; to the biblical manna and the Ark of the Covenant; and to the alchemists' Philosopher's Stone. Through a run of 1995–96 lectures — most famously the February 1995 Dallas workshop recorded by The Eclectic Viewpoint, and a talk at the International Forum on New Science in Fort Collins — his freely circulating transcripts seeded the community that later grew the broader 'ORMUS' field (a term popularised by others, notably Barry Carter).",
+        "FRQNCY carries Hudson as a frontier figure, not a settled one: a farmer-turned-experimenter whose patents are real documents and whose claims remain unverified. Read him the way he asked to be read — as an open question at the seam of materials science, biology and consciousness, to be investigated rather than believed."
+      ],
+      "sources": [
+        {
+          "title": "Non-Metallic, Monoatomic Forms of Transition Elements — Patent GB2219995A",
+          "url": "https://patents.google.com/patent/GB2219995A/en",
+          "kind": "patent",
+          "year": "1989",
+          "note": "Hudson's primary patent. Covers the ORME forms of gold, silver, copper, cobalt, nickel and the six platinum-group metals; claims rhodium / iridium S-ORMEs reach superconductivity with little energy input and show weight anomalies on heating."
+        },
+        {
+          "title": "Orbitally-Transferred Monoatomic Elements, method of production — Patent DE3920144A1",
+          "url": "https://patents.google.com/patent/DE3920144A1/en",
+          "kind": "patent",
+          "year": "1989",
+          "note": "German-filed companion patent for the production and processing method behind the monoatomic elements."
+        },
+        {
+          "title": "Dallas Lecture & Workshop (The Eclectic Viewpoint) — transcript",
+          "url": "http://www.subtleenergies.com/ormus/presentations/dallas1.htm",
+          "kind": "lecture",
+          "year": "1995",
+          "note": "The canonical statement of the ORME story in Hudson's own words — from black-alkali soil and the unreadable assay to mfkzt, the Ark, and the Philosopher's Stone."
+        },
+        {
+          "title": "ORMEs — patents & lecture archive (Rex Research)",
+          "url": "https://www.rexresearch.com/ormes/ormes.htm",
+          "kind": "document",
+          "note": "A primary-source archive compiling Hudson's patents and lecture material in one place."
+        }
       ],
       "image": ""
     }

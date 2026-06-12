@@ -1409,6 +1409,14 @@ function personPage(person) {
   <div class="rlist">${works.map(rcard).join('\n')}</div>
 </section>` : '';
 
+  // Research & primary sources — for researcher-type people whose legacy is
+  // patents, lectures, or documents rather than authored books/orgs/media.
+  // Each item: { title, url, kind, year, note }. Reuses the rcard look.
+  const sourcesSection = (person.sources && person.sources.length) ? `<section>
+  <div class="section-label">Research &amp; primary sources</div>
+  <div class="rlist">${person.sources.map(s => rcard({ type: s.kind || 'document', title: s.year ? `${s.title} (${s.year})` : s.title, url: s.url, desc: s.note || '', frqncy_pick: false })).join('\n')}</div>
+</section>` : '';
+
   // Life section — longer-form biography when available. Accepts either a
   // single string (rendered as one paragraph) or an array of paragraphs.
   const lifeParas = Array.isArray(person.life_story)
@@ -1478,6 +1486,7 @@ nav(crumb) +
 <main>
   ${lifeSection}
   ${worksSection}
+  ${sourcesSection}
   ${channelsSection}
   ${topicsSection}
 </main>
