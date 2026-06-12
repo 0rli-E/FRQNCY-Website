@@ -737,6 +737,127 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
   padding:2rem;font-size:0.85rem;
 }
 
+/* ── MIND MOVIE ── the dream board, played back as a visualisation ritual.
+   A full-screen, slow cross-fade of the pinned images with their captions as
+   affirmations, a breathing gold dot, and an optional ambient pad. Loops. */
+.mm-launch{
+  display:inline-flex;align-items:center;gap:0.5rem;margin-top:0.2rem;
+}
+.mm-launch .btn-gold{display:inline-flex;align-items:center;gap:0.5rem}
+.mm-overlay{
+  position:fixed;inset:0;z-index:1000;background:var(--navy-deep);
+  display:none;opacity:0;transition:opacity .6s ease;
+  cursor:default;overflow:hidden;
+}
+.mm-overlay.open{display:block;opacity:1}
+.mm-overlay.hide-cursor{cursor:none}
+.mm-stage{position:absolute;inset:0}
+.mm-slide{
+  position:absolute;inset:0;opacity:0;
+  transition:opacity 1.4s ease;
+  display:flex;align-items:center;justify-content:center;
+  background:var(--navy-deep);
+}
+.mm-slide.active{opacity:1}
+.mm-slide img{
+  width:100%;height:100%;object-fit:cover;
+  transform:scale(1.02);
+}
+.mm-slide.active img{
+  animation:mm-ken 7s ease-out forwards;
+}
+@keyframes mm-ken{
+  from{transform:scale(1.02) translate3d(0,0,0)}
+  to{transform:scale(1.13) translate3d(-1.5%,-1.5%,0)}
+}
+/* Darkening scrim so captions stay legible over any image */
+.mm-slide::after{
+  content:"";position:absolute;inset:0;pointer-events:none;
+  background:linear-gradient(0deg,rgba(8,21,47,0.82) 0%,rgba(8,21,47,0.15) 40%,rgba(8,21,47,0.35) 100%);
+}
+.mm-intro{flex-direction:column;text-align:center;padding:2rem;gap:1.2rem}
+.mm-intro::after{display:none}
+.mm-intro .mm-intro-kicker{
+  font-size:0.62rem;letter-spacing:0.34em;text-transform:uppercase;color:var(--gold);opacity:0.8;
+}
+.mm-intro .mm-intro-dream{
+  font-family:'Cormorant',serif;font-style:italic;font-size:clamp(1.4rem,4.5vw,2.6rem);
+  color:#fff;line-height:1.4;max-width:18em;font-weight:300;
+}
+.mm-caption{
+  position:absolute;left:0;right:0;bottom:14%;z-index:3;
+  text-align:center;padding:0 8vw;
+  font-family:'Cormorant',serif;font-style:italic;font-weight:300;
+  font-size:clamp(1.3rem,4vw,2.4rem);color:#fff;line-height:1.4;
+  text-shadow:0 2px 24px rgba(0,0,0,0.6);
+  opacity:0;transform:translateY(12px);
+  transition:opacity 1s ease .5s,transform 1s ease .5s;
+  pointer-events:none;
+}
+.mm-caption.show{opacity:1;transform:translateY(0)}
+/* Breathing gold dot — the signature motion, 6s in/out */
+.mm-dot{
+  position:absolute;top:50%;left:50%;width:12px;height:12px;margin:-6px;
+  border-radius:50%;background:var(--gold);z-index:3;
+  animation:mm-breathe 6s ease-in-out infinite;opacity:0.9;
+}
+.mm-overlay.has-caption .mm-dot{display:none}
+@keyframes mm-breathe{
+  0%,100%{transform:scale(0.7);opacity:0.45;box-shadow:0 0 0 0 rgba(196,151,58,0.25)}
+  50%    {transform:scale(1.5);opacity:0.95;box-shadow:0 0 28px 8px rgba(196,151,58,0.18)}
+}
+.mm-progress{
+  position:absolute;top:0;left:0;right:0;height:3px;z-index:4;
+  display:flex;gap:3px;padding:0;
+}
+.mm-progress .seg{flex:1;background:rgba(255,255,255,0.12);overflow:hidden}
+.mm-progress .seg .fill{height:100%;width:0;background:var(--gold)}
+.mm-progress .seg.done .fill{width:100%}
+.mm-progress .seg.active .fill{animation:mm-seg linear forwards}
+@keyframes mm-seg{from{width:0}to{width:100%}}
+.mm-controls{
+  position:absolute;left:0;right:0;bottom:0;z-index:5;
+  display:flex;align-items:center;justify-content:center;gap:0.5rem;
+  padding:1.1rem;background:linear-gradient(0deg,rgba(8,21,47,0.7),transparent);
+  opacity:1;transition:opacity .4s ease;
+}
+.mm-overlay.idle .mm-controls{opacity:0}
+.mm-btn{
+  background:rgba(255,255,255,0.06);border:1px solid rgba(196,151,58,0.3);
+  color:var(--gold-light);width:42px;height:42px;border-radius:50%;
+  display:inline-flex;align-items:center;justify-content:center;
+  font-size:1rem;cursor:pointer;transition:all .15s;flex-shrink:0;
+}
+.mm-btn:hover{border-color:var(--gold);color:#fff;background:rgba(196,151,58,0.14)}
+.mm-btn.on{background:var(--gold);border-color:var(--gold);color:var(--navy)}
+.mm-btn.mm-play{width:52px;height:52px;font-size:1.2rem}
+.mm-close{
+  position:absolute;top:1rem;right:1rem;z-index:6;
+}
+.mm-aimbar{
+  position:absolute;top:1.1rem;left:1.1rem;z-index:6;
+  display:flex;gap:0.4rem;flex-wrap:wrap;max-width:70vw;
+  opacity:1;transition:opacity .4s ease;
+}
+.mm-overlay.idle .mm-aimbar{opacity:0}
+.mm-chip{
+  font-size:0.6rem;letter-spacing:0.1em;text-transform:uppercase;
+  color:var(--gold-light);background:rgba(8,21,47,0.6);
+  border:1px solid rgba(196,151,58,0.3);border-radius:2px;
+  padding:0.3rem 0.6rem;cursor:pointer;transition:all .15s;
+}
+.mm-chip.active{background:var(--gold);color:var(--navy);border-color:var(--gold)}
+.mm-empty-note{
+  position:absolute;inset:0;display:flex;align-items:center;justify-content:center;
+  text-align:center;padding:2rem;color:var(--text-dim);
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.3rem;z-index:3;
+}
+@media(prefers-reduced-motion:reduce){
+  .mm-slide.active img{animation:none;transform:scale(1.04)}
+  .mm-dot{animation:none;opacity:0.7}
+  .mm-progress .seg.active .fill{animation:none;width:100%}
+}
+
 /* Modal */
 .modal-bg{
   position:fixed;inset:0;background:rgba(8,21,47,0.85);
@@ -1570,6 +1691,10 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       <div class="section-head">
         <h2><span class="glyph">✦</span> Vision Board</h2>
         <div class="meta">Images stay on this device. You choose what gets shared.</div>
+      </div>
+      <div class="mm-launch" id="mm-launch" hidden>
+        <button type="button" class="btn btn-gold" id="mm-play-btn" aria-label="Play your Mind Movie — a full-screen visualisation of your vision board">▶ Play Mind Movie</button>
+        <span class="meta" style="font-style:italic">Your board, played back as a visualisation.</span>
       </div>
       <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Upload images to vision board — drop files here, or press Enter to choose files">
         <div class="upload-icon" aria-hidden="true">⤴</div>
@@ -2668,6 +2793,9 @@ async function renderVision() {
   // a gentle invitation; it stops the moment any image lands.
   const dz = document.getElementById('dropzone');
   if (dz) dz.classList.toggle('empty', imgs.length === 0);
+  // The Mind Movie launcher only makes sense once there's something to play.
+  const launch = document.getElementById('mm-launch');
+  if (launch) launch.hidden = imgs.length === 0;
   if (imgs.length === 0) {
     el.innerHTML = `<div class="vision-empty" style="grid-column:1/-1;column-span:all">Nothing pinned yet. Drop in the images that hold your future.</div>`;
     return;
@@ -2768,6 +2896,260 @@ async function handleFiles(files) {
   toast(`${list.length} added to your vision board`);
   renderVision();
 }
+
+/* ════════════════════════════════════════════════════════════════
+   MIND MOVIE — the vision board, played back as a visualisation ritual.
+   A slow full-screen cross-fade through the pinned images, each caption
+   surfacing as an affirmation, a breathing gold dot, an optional ambient
+   pad. Loops until you close it. Built lazily; nothing renders until play.
+   ════════════════════════════════════════════════════════════════ */
+const MindMovie = (() => {
+  let overlay, stage, captionEl, progressEl, dot, aimBar;
+  let images = [];     // the playlist for this run
+  let idx = 0;
+  let dur = 7000;      // ms per slide — matches the Ken Burns + breath cadence
+  let timer = null, idleTimer = null;
+  let playing = false, built = false;
+  let aimFilter = null;        // chiefAimId or null for all
+  let audio = null, soundOn = false;
+
+  function build() {
+    if (built) return;
+    overlay = document.createElement('div');
+    overlay.className = 'mm-overlay';
+    overlay.setAttribute('role', 'dialog');
+    overlay.setAttribute('aria-modal', 'true');
+    overlay.setAttribute('aria-label', 'Mind Movie');
+    overlay.innerHTML = `
+      <div class="mm-progress" id="mm-progress"></div>
+      <div class="mm-stage" id="mm-stage"></div>
+      <div class="mm-caption" id="mm-caption"></div>
+      <div class="mm-dot" id="mm-dot"></div>
+      <div class="mm-aimbar" id="mm-aimbar"></div>
+      <button type="button" class="mm-btn mm-close" id="mm-close" title="Close (Esc)" aria-label="Close Mind Movie">✕</button>
+      <div class="mm-controls" id="mm-controls">
+        <button type="button" class="mm-btn" id="mm-prev" title="Previous" aria-label="Previous image">‹</button>
+        <button type="button" class="mm-btn mm-play" id="mm-toggle" title="Pause/Play (space)" aria-label="Pause or play">⏸</button>
+        <button type="button" class="mm-btn" id="mm-next" title="Next" aria-label="Next image">›</button>
+        <button type="button" class="mm-btn" id="mm-sound" title="Ambient sound" aria-label="Toggle ambient sound">♪</button>
+        <button type="button" class="mm-btn" id="mm-pace" title="Slower / calmer pace" aria-label="Change pace">◐</button>
+      </div>`;
+    document.body.appendChild(overlay);
+    stage = overlay.querySelector('#mm-stage');
+    captionEl = overlay.querySelector('#mm-caption');
+    progressEl = overlay.querySelector('#mm-progress');
+    dot = overlay.querySelector('#mm-dot');
+    aimBar = overlay.querySelector('#mm-aimbar');
+
+    overlay.querySelector('#mm-close').addEventListener('click', close);
+    overlay.querySelector('#mm-prev').addEventListener('click', () => { go(idx - 1); resume(); });
+    overlay.querySelector('#mm-next').addEventListener('click', () => { go(idx + 1); resume(); });
+    overlay.querySelector('#mm-toggle').addEventListener('click', () => playing ? pause() : resume());
+    overlay.querySelector('#mm-sound').addEventListener('click', toggleSound);
+    overlay.querySelector('#mm-pace').addEventListener('click', cyclePace);
+    overlay.addEventListener('mousemove', wake);
+    overlay.addEventListener('click', e => {
+      // Tapping the bare stage advances; controls handle their own clicks.
+      if (e.target === stage || e.target.classList.contains('mm-slide') || e.target.tagName === 'IMG') {
+        go(idx + 1); resume();
+      }
+    });
+    built = true;
+  }
+
+  function buildAimBar() {
+    const linked = state.chiefAims.filter(a =>
+      allImages.some(im => im.chiefAimId === a.id));
+    if (linked.length === 0) { aimBar.innerHTML = ''; return; }
+    const chip = (id, label) =>
+      `<button type="button" class="mm-chip ${aimFilter === id ? 'active' : ''}" data-aim="${id == null ? '' : id}">${escape(label)}</button>`;
+    aimBar.innerHTML = chip(null, 'All') + linked.map(a => chip(a.id, a.name || 'Aim')).join('');
+    aimBar.querySelectorAll('.mm-chip').forEach(c => {
+      c.addEventListener('click', () => {
+        aimFilter = c.dataset.aim || null;
+        applyFilter();
+        buildAimBar();
+        go(0); resume();
+      });
+    });
+  }
+
+  let allImages = [];
+  function applyFilter() {
+    images = aimFilter
+      ? allImages.filter(im => im.chiefAimId === aimFilter)
+      : allImages.slice();
+  }
+
+  async function play() {
+    build();
+    allImages = (await store.getImages()).sort((a, b) => (a.position || 0) - (b.position || 0));
+    if (allImages.length === 0) { toast('Add images to your vision board first.'); return; }
+    aimFilter = null;
+    applyFilter();
+    buildAimBar();
+    renderSlides();
+    overlay.classList.add('open');
+    document.body.style.overflow = 'hidden';
+    idx = 0;
+    go(0);
+    resume();
+    document.addEventListener('keydown', onKey);
+  }
+
+  // An optional intro frame carrying the Dream, then one frame per image.
+  function renderSlides() {
+    const dream = (state.dream || '').trim();
+    stage.innerHTML = '';
+    if (dream) {
+      const intro = document.createElement('div');
+      intro.className = 'mm-slide mm-intro';
+      intro.dataset.intro = '1';
+      intro.innerHTML = `
+        <div class="mm-intro-kicker">Your Mind Movie</div>
+        <div class="mm-intro-dream">${escape(dream).replace(/\n/g, '<br>')}</div>`;
+      stage.appendChild(intro);
+    }
+    images.forEach(im => {
+      const s = document.createElement('div');
+      s.className = 'mm-slide';
+      s.dataset.caption = im.caption || '';
+      s.innerHTML = `<img src="${im.dataUrl}" alt="${escape(im.caption || 'vision')}" decoding="async">`;
+      stage.appendChild(s);
+    });
+    if (!dream && images.length === 0) {
+      stage.innerHTML = `<div class="mm-empty-note">No images linked to this aim yet.</div>`;
+    }
+    // Progress segments mirror the slide count
+    const slides = stage.querySelectorAll('.mm-slide');
+    progressEl.innerHTML = Array.from(slides).map(() =>
+      `<div class="seg"><div class="fill"></div></div>`).join('');
+  }
+
+  function go(n) {
+    const slides = stage.querySelectorAll('.mm-slide');
+    if (slides.length === 0) return;
+    idx = (n + slides.length) % slides.length;   // wrap → loops forever
+    slides.forEach((s, i) => s.classList.toggle('active', i === idx));
+    // Re-trigger the Ken Burns animation on the active image
+    const activeImg = slides[idx].querySelector('img');
+    if (activeImg) { activeImg.style.animation = 'none'; void activeImg.offsetWidth; activeImg.style.animation = ''; }
+    // Caption / dot
+    const cap = slides[idx].dataset.caption || '';
+    const isIntro = slides[idx].dataset.intro === '1';
+    captionEl.textContent = isIntro ? '' : cap;
+    captionEl.classList.toggle('show', !!cap && !isIntro);
+    overlay.classList.toggle('has-caption', (!!cap && !isIntro) || isIntro);
+    // Progress
+    const segs = progressEl.querySelectorAll('.seg');
+    segs.forEach((seg, i) => {
+      seg.classList.toggle('done', i < idx);
+      seg.classList.remove('active');
+      const fill = seg.querySelector('.fill');
+      fill.style.animation = 'none';
+      if (i === idx) {
+        void fill.offsetWidth;
+        seg.classList.add('active');
+        fill.style.animationDuration = dur + 'ms';
+      }
+    });
+  }
+
+  function schedule() {
+    clearTimeout(timer);
+    timer = setTimeout(() => { go(idx + 1); schedule(); }, dur);
+  }
+  function resume() {
+    if (!overlay.classList.contains('open')) return;
+    playing = true;
+    overlay.querySelector('#mm-toggle').textContent = '⏸';
+    // restart progress fill for current slide
+    const activeSeg = progressEl.querySelector('.seg.active .fill');
+    if (activeSeg) { activeSeg.style.animation = 'none'; void activeSeg.offsetWidth; activeSeg.style.animation = ''; activeSeg.style.animationDuration = dur + 'ms'; }
+    schedule();
+    wake();
+  }
+  function pause() {
+    playing = false;
+    clearTimeout(timer);
+    overlay.querySelector('#mm-toggle').textContent = '▶';
+    const activeFill = progressEl.querySelector('.seg.active .fill');
+    if (activeFill) activeFill.style.animationPlayState = 'paused';
+  }
+
+  function cyclePace() {
+    // Calm 7s → Slow 10s → Gentle 5s → back
+    dur = dur === 7000 ? 10000 : dur === 10000 ? 5000 : 7000;
+    toast(dur === 10000 ? 'Slow' : dur === 5000 ? 'Gentle' : 'Calm');
+    if (playing) { go(idx); resume(); }
+  }
+
+  // Idle auto-hide of the chrome so the imagery can breathe.
+  function wake() {
+    overlay.classList.remove('idle', 'hide-cursor');
+    clearTimeout(idleTimer);
+    idleTimer = setTimeout(() => {
+      if (playing) overlay.classList.add('idle', 'hide-cursor');
+    }, 3200);
+  }
+
+  function onKey(e) {
+    if (!overlay.classList.contains('open')) return;
+    if (e.key === 'Escape') { close(); }
+    else if (e.key === ' ') { e.preventDefault(); playing ? pause() : resume(); }
+    else if (e.key === 'ArrowRight') { go(idx + 1); resume(); }
+    else if (e.key === 'ArrowLeft') { go(idx - 1); resume(); }
+  }
+
+  function close() {
+    clearTimeout(timer); clearTimeout(idleTimer);
+    playing = false;
+    overlay.classList.remove('open');
+    document.body.style.overflow = '';
+    document.removeEventListener('keydown', onKey);
+    stopSound();
+  }
+
+  /* Ambient pad — generated, no asset. Two softly-detuned sines through a
+     low-pass with a slow gain swell. Off by default; the play button is the
+     user gesture that lets it start when toggled on. */
+  function toggleSound() {
+    soundOn ? stopSound() : startSound();
+    overlay.querySelector('#mm-sound').classList.toggle('on', soundOn);
+  }
+  function startSound() {
+    try {
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) { toast('Sound not supported here'); return; }
+      audio = new Ctx();
+      const master = audio.createGain();
+      master.gain.value = 0.0001;
+      const lp = audio.createBiquadFilter();
+      lp.type = 'lowpass'; lp.frequency.value = 600;
+      master.connect(lp); lp.connect(audio.destination);
+      // Soft root + fifth, gently detuned for movement
+      [146.83, 220.0, 220.9].forEach((f, i) => {
+        const o = audio.createOscillator();
+        o.type = 'sine'; o.frequency.value = f;
+        const g = audio.createGain(); g.gain.value = i === 0 ? 0.5 : 0.25;
+        o.connect(g); g.connect(master); o.start();
+      });
+      // Slow swell in
+      master.gain.exponentialRampToValueAtTime(0.06, audio.currentTime + 4);
+      soundOn = true;
+    } catch (_) { toast('Could not start sound'); }
+  }
+  function stopSound() {
+    soundOn = false;
+    if (overlay) overlay.querySelector('#mm-sound')?.classList.remove('on');
+    if (audio) {
+      try { audio.close(); } catch (_) {}
+      audio = null;
+    }
+  }
+
+  return { play };
+})();
 
 /* ════════════════════════════════════════════════════════════════
    TABS
@@ -3395,6 +3777,7 @@ function syncTabsScrollable() {
   renderAll();
   bindDream();
   bindUploads();
+  document.getElementById('mm-play-btn')?.addEventListener('click', () => MindMovie.play());
   syncTabsScrollable();
   window.addEventListener('resize', syncTabsScrollable);
   document.querySelector('.tabs')?.addEventListener('scroll', syncTabsScrollable, { passive: true });
