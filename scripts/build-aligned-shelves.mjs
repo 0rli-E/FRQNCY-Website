@@ -133,6 +133,16 @@ function cardHtml(g) {
   const tierSpan = isPick ? `<span class='gcard-tier'>★ Editor's choice</span>` : '';
   const head = `<div class="gcard-head"><div style="flex:1;min-width:0;"><h3>${esc(g.name)}</h3></div>${tierSpan}</div>`;
 
+  // Picture slot + research link — both point at the good's own page.
+  const productUrl = (g.vendor && g.vendor[0] && g.vendor[0].url) || '';
+  const researchUrl = g.research_url || productUrl;
+  const mediaBlock = g.image
+    ? `<a class="gcard-media" href="${esc(productUrl)}" target="_blank" rel="noopener noreferrer"><img src="${esc(g.image)}" alt="${esc(g.name)}" loading="lazy" onerror="this.insertAdjacentHTML('afterend','<span>FRQNCY</span>');this.parentElement.classList.add('gcard-media-empty');this.remove()"></a>`
+    : `<div class="gcard-media gcard-media-empty"><span>FRQNCY</span></div>`;
+  const researchBlock = researchUrl
+    ? `<a class="gcard-research" href="${esc(researchUrl)}" target="_blank" rel="noopener noreferrer">Research ↗</a>`
+    : '';
+
   const crits = (g.criteria || []).map(critLabel);
   const critLine = crits.length ? `<div class="gcard-crit-line">${crits.join(' · ')}</div>` : '';
 
@@ -150,14 +160,30 @@ function cardHtml(g) {
     : '';
 
   return `<article class="gcard tier-${tierClass}">
+      ${mediaBlock}
       ${head}
       <p class="gcard-desc">${esc(g.desc)}</p>
       ${critLine}
       ${vendorsBlock}
+      ${researchBlock}
       ${buyBlock}
       ${relRow}
     </article>`;
 }
+
+// Picture-slot + research-link CSS. Injected as a body-level <style> by
+// buildPage so it ships with every shelf page WITHOUT landing inside the
+// head slice (which would duplicate on the next regen). Keep in sync with
+// the same rules in aligned/index.html.
+const CARDS_CSS = `<style>
+.gcard-media{display:block;width:100%;aspect-ratio:16/10;border-radius:2px;overflow:hidden;background:rgba(255,255,255,0.03);border:1px solid rgba(255,255,255,0.07);margin:-0.2rem 0 0.35rem}
+.gcard-media img{width:100%;height:100%;object-fit:cover;display:block;transition:transform .35s ease}
+.gcard-media:hover img{transform:scale(1.04)}
+.gcard-media-empty{display:flex;align-items:center;justify-content:center;background:radial-gradient(ellipse at 50% 38%,rgba(196,151,58,0.08),transparent 70%)}
+.gcard-media-empty span{font-family:'Cormorant',serif;font-size:1.5rem;letter-spacing:0.35em;color:var(--text-dim);opacity:0.45;padding-left:0.35em}
+.gcard-research{display:inline-flex;align-items:center;gap:5px;margin-top:0.55rem;font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim);border-bottom:1px solid rgba(255,255,255,0.12);align-self:flex-start;padding-bottom:1px;transition:color .2s,border-color .2s}
+.gcard-research:hover{color:var(--gold-light);border-color:rgba(196,151,58,0.5)}
+</style>`;
 
 function relatedHtml(catId) {
   const chips = CATEGORIES
@@ -227,6 +253,7 @@ ${items.map(cardHtml).join('\n')}
 <link rel="canonical" href="${url}">
 ${HEAD_TAIL}
 ${CHROME}
+${CARDS_CSS}
 
 ${hero}
 
