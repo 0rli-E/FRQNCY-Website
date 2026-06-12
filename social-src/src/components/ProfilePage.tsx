@@ -1,6 +1,7 @@
 import { useState, useEffect, useCallback } from 'preact/hooks';
 import ProfileCard from './ProfileCard';
 import ProfileStats from './ProfileStats';
+import ProfileCourses from './ProfileCourses';
 import FollowButton from './FollowButton';
 import StartConversationButton from './StartConversationButton';
 import Feed from './Feed';
@@ -97,6 +98,7 @@ export default function ProfilePage() {
           )}
         </div>
         <ProfileStats username={username} key={`stats-${profileVersion}`} />
+        {isOwnProfile && user && <ProfileCourses userId={user.id} />}
       </aside>
       <section class="lg:col-span-8">
         <h2 class="font-heading text-2xl text-gold mb-4">Posts by @{username}</h2>
