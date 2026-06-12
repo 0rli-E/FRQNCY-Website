@@ -230,6 +230,49 @@ function buildPage(cat) {
 
   const heroMeta = `${nPick} pick · ${nOther} aligned · Updated June 2026`;
 
+  // Per-shelf OG image: the pick's photo (or the first good with one), so a
+  // shared shelf link previews the actual product, not a generic banner.
+  const ogImage = (pick && pick.image) || (items.find((i) => i.image) || {}).image || 'https://frqncy.network/og/aligned.png';
+
+  // Structured data: BreadcrumbList + an ItemList of the shelf's goods as
+  // Products (with an Offer where FRQNCY resells). Makes the deep page — the
+  // canonical target the topic-page callouts point at — eligible for rich
+  // results, compounding the discoverability work.
+  const ld = {
+    '@context': 'https://schema.org',
+    '@graph': [
+      { '@type': 'BreadcrumbList', itemListElement: [
+        { '@type': 'ListItem', position: 1, name: 'FRQNCY', item: 'https://frqncy.network/' },
+        { '@type': 'ListItem', position: 2, name: 'Aligned Goods', item: 'https://frqncy.network/aligned/' },
+        { '@type': 'ListItem', position: 3, name: cat.name, item: url },
+      ] },
+      { '@type': 'ItemList', name: `${cat.name} — Aligned Goods`, numberOfItems: items.length,
+        itemListElement: items.map((g, i) => {
+          const v = (g.vendor && g.vendor[0]) || {};
+          const product = {
+            '@type': 'Product',
+            name: g.name,
+            description: (g.desc || '').slice(0, 300),
+            url: v.url || url,
+            brand: { '@type': 'Brand', name: v.name || 'FRQNCY' },
+          };
+          if (g.image) product.image = g.image;
+          if (g.sell && g.sell.enabled && Number.isInteger(g.sell.price)) {
+            product.offers = {
+              '@type': 'Offer',
+              price: (g.sell.price / 100).toFixed(2),
+              priceCurrency: (g.sell.currency || 'usd').toUpperCase(),
+              availability: 'https://schema.org/InStock',
+              url,
+            };
+          }
+          return { '@type': 'ListItem', position: i + 1, item: product };
+        }),
+      },
+    ],
+  };
+  const ldScript = `<script type="application/ld+json">${JSON.stringify(ld).replace(/</g, '\\u003c')}</script>`;
+
   const hero = `<section class="hero">
   <span class="hero-eyebrow"><a href="/aligned/">Aligned Goods</a><span class="sep">·</span>${esc(cat.name)}</span>
   <h1>${esc(cat.name)}</h1>
@@ -273,8 +316,9 @@ ${items.map(cardHtml).join('\n')}
 <meta property="og:title" content="${title}">
 <meta property="og:description" content="${descMeta}">
 <meta property="og:url" content="${url}">
-<meta property="og:image" content="https://frqncy.network/og/aligned.png">
+<meta property="og:image" content="${esc(ogImage)}">
 <link rel="canonical" href="${url}">
+${ldScript}
 ${HEAD_TAIL}
 ${CHROME}
 ${CARDS_CSS}
