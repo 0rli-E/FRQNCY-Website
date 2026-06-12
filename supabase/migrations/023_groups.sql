@@ -77,9 +77,15 @@ AS $$
 $$;
 
 -- ── member_count maintenance ────────────────────────────────────────────────
+-- SECURITY DEFINER so the counter UPDATE runs as the function owner, NOT as the
+-- joining user. Without it, the AFTER-INSERT UPDATE on groups is silently
+-- filtered by the groups UPDATE RLS policy (the joiner isn't the group creator),
+-- so member_count never moves. (Found via end-to-end test 2026-06-12.)
 CREATE OR REPLACE FUNCTION public.handle_group_member_count()
 RETURNS TRIGGER
 LANGUAGE plpgsql
+SECURITY DEFINER
+SET search_path = public
 AS $$
 BEGIN
     IF (TG_OP = 'INSERT') THEN
@@ -97,6 +103,11 @@ DROP TRIGGER IF EXISTS trg_group_member_count ON public.group_members;
 CREATE TRIGGER trg_group_member_count
     AFTER INSERT OR DELETE ON public.group_members
     FOR EACH ROW EXECUTE FUNCTION public.handle_group_member_count();
+
+-- Backfill: recompute every group's member_count from the source of truth.
+-- Idempotent + self-heals any rows that drifted before the trigger was fixed.
+UPDATE public.groups g
+   SET member_count = (SELECT count(*) FROM public.group_members m WHERE m.group_id = g.id);
 
 -- ── RLS ─────────────────────────────────────────────────────────────────────
 ALTER TABLE public.groups         ENABLE ROW LEVEL SECURITY;

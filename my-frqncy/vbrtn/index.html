@@ -6,6 +6,7 @@
 <title>VBRTN · My FRQNCY</title>
 <meta name="description" content="Your companion. Drawn from your design, your state, and what you said.">
 <meta name="robots" content="noindex">
+<meta name="referrer" content="no-referrer">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
@@ -73,6 +74,15 @@
   .thread-send:hover{background:var(--gold);color:var(--bg)}
   .thread-send:disabled{border-color:var(--rule);color:var(--ink-dim);cursor:not-allowed}
   .thread-note{margin-top:12px;font-size:11px;color:var(--ink-dim);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px}
+  .thread-privacy{margin-top:14px}
+  .thread-privacy summary{cursor:pointer;list-style:none;font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;color:var(--ink-dim)}
+  .thread-privacy summary::-webkit-details-marker{display:none}
+  .thread-privacy summary .more{color:var(--gold-dim);text-decoration:underline;text-underline-offset:3px}
+  .thread-privacy[open] summary .more{color:var(--gold)}
+  .privacy-body{margin-top:12px;padding:16px;background:var(--bg-elev);border:1px solid var(--rule);border-radius:8px}
+  .privacy-body p{font-size:13px;color:var(--ink-soft);margin:0 0 9px 0;line-height:1.55}
+  .privacy-body p:last-child{margin-bottom:0}
+  .privacy-body strong{color:var(--gold-soft);font-weight:500}
 
   /* ── recommendation trail ────────────────────────────── */
   .trail{margin-bottom:40px;padding:24px;background:var(--bg-card);border:1px solid var(--rule);border-radius:var(--r-md)}
@@ -554,7 +564,16 @@
           <textarea id="threadInput" rows="1" placeholder="Say what's true right now…"></textarea>
           <button class="thread-send" id="threadSend" type="button" disabled aria-label="Send">→</button>
         </div>
-        <div class="thread-note">VBRTN speaks from your design, your state, and what you tell it. Nothing leaves this device beyond the words you send it.</div>
+        <details class="thread-privacy">
+          <summary>Private by default — what you tell VBRTN stays on this device. <span class="more">How your data is kept private</span></summary>
+          <div class="privacy-body">
+            <p><strong>On your device only.</strong> Your answers, your chart, and your whole history live here — on this device, not on our servers.</p>
+            <p><strong>When you send a message,</strong> only that one message and a short summary of you — your design, how you're feeling, what you're reaching for — go out, so VBRTN can write a reply. Nothing more.</p>
+            <p><strong>Never sent.</strong> What you said you're avoiding, and the name of anyone who hurt you, stay here. They are never included.</p>
+            <p><strong>Not kept, not sold, not used to train.</strong> Your words are used to write the reply, and for nothing else.</p>
+            <p><strong>Your choice.</strong> Clear this site's data any time, and all of it is gone.</p>
+          </div>
+        </details>
       </section>
     `;
 
