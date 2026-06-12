@@ -94,6 +94,7 @@ Read these before changing anything structural:
 - `proposals/VISION-1H-DEMO.md` — north star: the 1h demo that explains FRQNCY without slides
 - `proposals/BACKEND-STATUS.md` — single source of truth on what's alive / scaffolded / zero-state per surface
 - `proposals/TOPIC-COMMISSION-CONTEXT-GRAPH.md` — the procedure for commissioning a unique topic page (each one is its own piece)
+- `proposals/CURATION-AGENT.md` — the "Gardener": an AI that prunes/grows the world tree + constellation + beds with ~1 human steward per topic; four layers (QA senses / memory canon / harness judgment / stewards governance), asymmetric prune gate, eval-calibrated per-sector trust
 - `proposals/WORD-ILLUMINATOR-V2.md` — the source-set + 5-section template for Word Illuminator outputs
 - `proposals/MY-FRQNCY-VBRTN-COMPANION-2026-05-22.md` — VBRTN cause doc: what My FRQNCY is for, the seven lenses (HD, Gene Keys, astrology, Hawkins, NLP meta-programs, modal operators, triggers), the Milton-Model voice, the four-shape companion behavior, the rules-to-win architecture, the intake questionnaire v0
 - `frqncy-harness/proposals/SUB-AGENTS.md` — recommend-against-unless framing on sub-agents in the harness (lives in the sibling repo)
