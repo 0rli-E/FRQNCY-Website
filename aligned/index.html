@@ -1145,6 +1145,17 @@ function renderMerchantFilters(merchants) {
   });
 }
 
+// Request a ~600px thumbnail from Shopify CDN images so this page (up to ~90
+// cards) doesn't ship full-res 2000px shots. Other hosts untouched. Mirrors
+// thumbUrl() in scripts/build-aligned-shelves.mjs.
+function thumbUrl(u, w) {
+  w = w || 600;
+  if (!u || (u.indexOf('cdn/shop') === -1 && u.indexOf('cdn.shopify') === -1)) return u;
+  return /[?&]width=\d+/.test(u)
+    ? u.replace(/([?&]width=)\d+/, '$1' + w)
+    : u + (u.indexOf('?') === -1 ? '?' : '&') + 'width=' + w;
+}
+
 function card(g) {
   // Editor's Choice is the ONLY card that wears the badge — that is what makes
   // the badge mean something. Other entries are unmarked, equally valid picks
@@ -1157,7 +1168,7 @@ function card(g) {
   const productUrl = (g.vendor && g.vendor[0] && g.vendor[0].url) || '';
   const researchUrl = g.research_url || productUrl;
   const mediaBlock = g.image
-    ? `<a class="gcard-media" href="${productUrl}" target="_blank" rel="noopener noreferrer"><img src="${g.image}" alt="${g.name}" loading="lazy" onerror="this.insertAdjacentHTML('afterend','<span>FRQNCY</span>');this.parentElement.classList.add('gcard-media-empty');this.remove()"></a>`
+    ? `<a class="gcard-media" href="${productUrl}" target="_blank" rel="noopener noreferrer"><img src="${thumbUrl(g.image)}" alt="${g.name}" loading="lazy" decoding="async" onerror="this.insertAdjacentHTML('afterend','<span>FRQNCY</span>');this.parentElement.classList.add('gcard-media-empty');this.remove()"></a>`
     : `<div class="gcard-media gcard-media-empty"><span>FRQNCY</span></div>`;
   const researchBlock = researchUrl
     ? `<a class="gcard-research" href="${researchUrl}" target="_blank" rel="noopener noreferrer">Research ↗</a>`

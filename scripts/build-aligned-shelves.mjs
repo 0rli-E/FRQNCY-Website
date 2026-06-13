@@ -108,6 +108,17 @@ const critLabel = (c) => {
   return s.charAt(0).toUpperCase() + s.slice(1);
 };
 
+// Request a card-sized (~600px) thumbnail from Shopify CDN images (the bulk of
+// the catalogue), so an 88-card page isn't shipping full-res 2000px product
+// shots. Other hosts are left untouched. Keep in sync with thumbUrl() in
+// aligned/index.html. (The card slot is ~280-400px CSS wide; 600 covers retina.)
+function thumbUrl(u, w = 600) {
+  if (!u || (u.indexOf('cdn/shop') === -1 && u.indexOf('cdn.shopify') === -1)) return u;
+  return /[?&]width=\d+/.test(u)
+    ? u.replace(/([?&]width=)\d+/, `$1${w}`)
+    : u + (u.indexOf('?') === -1 ? '?' : '&') + 'width=' + w;
+}
+
 const REL_BADGES = {
   contributor: { label: '✦ contributes to FRQNCY', cls: 'rel-contributor' },
   partner:     { label: '⌬ co-marketing partner',  cls: 'rel-partner'     },
@@ -137,7 +148,7 @@ function cardHtml(g) {
   const productUrl = (g.vendor && g.vendor[0] && g.vendor[0].url) || '';
   const researchUrl = g.research_url || productUrl;
   const mediaBlock = g.image
-    ? `<a class="gcard-media" href="${esc(productUrl)}" target="_blank" rel="noopener noreferrer"><img src="${esc(g.image)}" alt="${esc(g.name)}" loading="lazy" onerror="this.insertAdjacentHTML('afterend','<span>FRQNCY</span>');this.parentElement.classList.add('gcard-media-empty');this.remove()"></a>`
+    ? `<a class="gcard-media" href="${esc(productUrl)}" target="_blank" rel="noopener noreferrer"><img src="${esc(thumbUrl(g.image))}" alt="${esc(g.name)}" loading="lazy" decoding="async" onerror="this.insertAdjacentHTML('afterend','<span>FRQNCY</span>');this.parentElement.classList.add('gcard-media-empty');this.remove()"></a>`
     : `<div class="gcard-media gcard-media-empty"><span>FRQNCY</span></div>`;
   const researchBlock = researchUrl
     ? `<a class="gcard-research" href="${esc(researchUrl)}" target="_blank" rel="noopener noreferrer">Research ↗</a>`
