@@ -1015,6 +1015,12 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 
     else if(q.type === 'birthForm'){
       const existingB = existing || {};
+      const browserOff = -(new Date().getTimezoneOffset());
+      const curOff = (existingB.tzOffset != null) ? existingB.tzOffset : browserOff;
+      const OFFSETS = [-720,-660,-600,-570,-540,-480,-420,-360,-300,-270,-240,-210,-180,-120,-60,0,60,120,180,210,240,270,300,330,345,360,390,420,480,525,540,570,600,630,660,690,720,765,840];
+      if(!OFFSETS.includes(curOff)) OFFSETS.push(curOff);
+      const fmtOff = (m)=>{ const s=m<0?'-':'+'; const a=Math.abs(m); return 'UTC'+s+String(Math.floor(a/60)).padStart(2,'0')+':'+String(a%60).padStart(2,'0'); };
+      const tzOptionsHtml = OFFSETS.sort((a,b)=>a-b).map(m=>`<option value="${m}" ${m===curOff?'selected':''}>${fmtOff(m)}</option>`).join('');
       area.innerHTML = `
         <div class="form-row">
           <label for="bdate">Date of birth</label>
@@ -1033,6 +1039,20 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
           <label for="bcity">City of birth</label>
           <input type="text" class="textfield" id="bcity" placeholder="City, country" value="${existingB.city || ''}">
         </div>
+        <div class="form-row">
+          <label for="btz">Timezone at birth</label>
+          <select class="textfield" id="btz">${tzOptionsHtml}</select>
+          <div class="helper">The UTC offset of your birthplace on your birth date, including daylight saving. This converts your local time so the chart is exact.</div>
+        </div>
+        <details class="form-row" id="coord-row">
+          <summary style="cursor:pointer;color:var(--gold,#C4973A)">Add birth coordinates for your Rising sign (optional)</summary>
+          <div style="margin-top:10px">
+            <input type="number" step="any" class="textfield" id="blat" placeholder="Latitude — e.g. 21.31" value="${existingB.lat != null ? existingB.lat : ''}">
+            <input type="number" step="any" class="textfield" id="blon" placeholder="Longitude — e.g. -157.86" value="${existingB.lon != null ? existingB.lon : ''}" style="margin-top:8px">
+          </div>
+        </details>
+
+        <div class="helper" style="margin-top:6px">Your birth details stay on this device. They're used only to draw your chart — never sent anywhere or saved on our servers.</div>
 
         <div class="skip-card">
           <div class="skip-line">Not ready to enter this yet?</div>
@@ -1042,6 +1062,10 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       const dEl = document.getElementById('bdate');
       const tEl = document.getElementById('btime');
       const cEl = document.getElementById('bcity');
+      const tzEl = document.getElementById('btz');
+      const latEl = document.getElementById('blat');
+      const lonEl = document.getElementById('blon');
+      if(tzEl) tzEl.value = String(curOff);
       const tuRow = document.getElementById('time-row');
       const tuChk = document.getElementById('time-unknown');
       const tuRowLabel = document.getElementById('time-unknown-row');
@@ -1065,11 +1089,16 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       function check(){
         const d = dEl.value, c = cEl.value.trim();
         if(d && c){
+          const latV = latEl && latEl.value !== '' ? parseFloat(latEl.value) : null;
+          const lonV = lonEl && lonEl.value !== '' ? parseFloat(lonEl.value) : null;
           pendingAnswer = {
             date: d,
             time: tuChk.checked ? null : (tEl.value || null),
             timeUnknown: !!tuChk.checked,
-            city: c
+            city: c,
+            tzOffset: tzEl ? parseInt(tzEl.value, 10) : curOff,
+            lat: (latV != null && !isNaN(latV)) ? latV : null,
+            lon: (lonV != null && !isNaN(lonV)) ? lonV : null
           };
           if(!reflectionShown) showReflection(q.reflection);
         } else {
@@ -1077,7 +1106,8 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
         }
         updateNav();
       }
-      [dEl, tEl, cEl].forEach(el => el.addEventListener('input', check));
+      [dEl, tEl, cEl, latEl, lonEl].forEach(el => el && el.addEventListener('input', check));
+      if(tzEl) tzEl.addEventListener('change', check);
       check();
 
       document.getElementById('birth-skip').addEventListener('click', ()=>{
@@ -1138,9 +1168,10 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     } else if(q.field === 'design.birth'){
       if(val){
         profile.design.birth = val;
-        profile.design.hd = stubHDChart();
-        profile.design.gk = stubGKProfile();
-        profile.design.astro = stubAstro();
+        const design = buildDesignFromBirth(val);
+        profile.design.hd = design.hd;
+        profile.design.gk = design.gk;
+        profile.design.astro = design.astro;
       }
     } else {
       if(val !== null && val !== undefined && val !== '') setField(profile, q.field, val);
@@ -1161,6 +1192,37 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     profile._intakeAnswers[q.id] = { value: val, at: Date.now() };
     saveProfile(profile);
     return true;
+  }
+
+  // Compute the real chart from birth data via the ephemeris engine
+  // (window.__hdComputeChart, loaded as a module below). Falls back to the
+  // honest stub when the engine is unavailable or the time/timezone is missing.
+  function buildDesignFromBirth(birth){
+    const fn = (typeof window !== 'undefined') && window.__hdComputeChart;
+    if(fn && birth && birth.date && birth.time && !birth.timeUnknown && birth.tzOffset != null){
+      try{
+        const dp = birth.date.split('-').map(Number);
+        const tp = birth.time.split(':').map(Number);
+        const r = fn({
+          year: dp[0], month: dp[1], day: dp[2],
+          hour: tp[0], minute: tp[1], second: 0,
+          tzOffsetMinutes: birth.tzOffset,
+          lat: (birth.lat != null ? birth.lat : undefined),
+          lon: (birth.lon != null ? birth.lon : undefined)
+        });
+        return {
+          hd: {
+            type: r.hd.type, strategy: r.hd.strategy, authority: r.hd.authority, profile: r.hd.profile,
+            centers: { defined: r.hd.definedCenters, open: r.hd.openCenters },
+            incarnationCross: r.hd.incarnationCross,
+            gates: { personality: r.hd.personalityGates, design: r.hd.designGates }
+          },
+          gk: { lifesWork: r.gk.lifesWork, evolution: r.gk.evolution, radiance: r.gk.radiance, purpose: r.gk.purpose },
+          astro: { sun: r.astro.sun, moon: r.astro.moon, rising: r.astro.rising }
+        };
+      }catch(e){ /* fall through to stub */ }
+    }
+    return { hd: stubHDChart(), gk: stubGKProfile(), astro: stubAstro() };
   }
 
   function stubHDChart(){
@@ -1233,9 +1295,11 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
               <dt>Evolution GK</dt><dd>${gk.evolution}</dd>
               <dt>Sun</dt><dd>${astro.sun}</dd>
               <dt>Moon</dt><dd>${astro.moon}</dd>
-              <dt>Rising</dt><dd>${astro.rising}</dd>
+              <dt>Rising</dt><dd>${astro.rising || '—'}</dd>
             </dl>
-            <div class="chart-note">Placeholder values. The chart engine ships in the next iteration; your real chart populates here when it does.</div>
+            <div class="chart-note">${hd._stub
+              ? 'Placeholder values — add your birth time and timezone to compute your real chart.'
+              : (astro.rising ? 'Computed from your birth data with an open-source ephemeris.' : 'Computed from your birth data. Add birth coordinates anytime to reveal your Rising sign.')}</div>
           </div>
           <div class="reflection in" style="margin-top:20px">Your chart is one of about eight billion configurations. The one you got fits the work you came here to do.</div>
         </div>`;
@@ -1317,6 +1381,14 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
   if(pos > QUESTIONS.length) pos = QUESTIONS.length;
   renderCurrent();
 })();
+</script>
+<script type="module">
+  // Load the real Human Design / Gene Keys / astrology engine and expose it to
+  // the intake. If it fails to load (e.g. opened from file://), the intake
+  // falls back to the honest placeholder chart.
+  import('../charts/hd-engine.js')
+    .then(m => { window.__hdComputeChart = m.computeChart; })
+    .catch(() => { /* engine unavailable — stub fallback remains */ });
 </script>
 </body>
 </html>
