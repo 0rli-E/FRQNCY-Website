@@ -318,6 +318,18 @@
   list-style: none;
   margin: 0; padding: 0;
 }
+/* Module section header inside the room lesson list (Skool-style grouping) */
+#frq-cr .frq-cr-module-head {
+  list-style: none;
+  padding: 14px 16px 5px;
+  font-size: 9.5px;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: var(--cr-accent);
+  border-bottom: 1px solid var(--cr-border-soft);
+  background: var(--cr-card-hover);
+}
+#frq-cr .frq-cr-module-head:first-child { padding-top: 10px; }
 #frq-cr .frq-cr-lesson {
   display: flex;
   align-items: flex-start;

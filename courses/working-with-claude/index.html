@@ -87,6 +87,20 @@ nav.snav{
 
 .lesson-list{padding:0.4rem 0;flex:1}
 
+/* Module section header inside the lesson list (Skool-style grouping) */
+.lesson-module-head{
+  display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
+  padding:0.95rem 1.1rem 0.45rem;
+  font-size:0.54rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);
+  border-top:1px solid rgba(255,255,255,0.06);margin-top:0.3rem;
+}
+.lesson-list > .lesson-module-head:first-child{border-top:none;margin-top:0}
+.lesson-module-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lesson-module-count{
+  flex-shrink:0;font-size:0.56rem;letter-spacing:0.04em;color:var(--text-dim);
+  background:rgba(255,255,255,0.06);border-radius:10px;padding:1px 7px;
+}
+
 .lesson-btn{
   width:100%;display:flex;align-items:center;gap:0.7rem;
   padding:0.7rem 1.1rem 0.7rem 1rem;

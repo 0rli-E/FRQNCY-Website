@@ -489,6 +489,8 @@
     const list = $('.frq-cr-lesson-list', root);
     if (!list || !state.lessons.length) return;
     const curIdx = currentLessonIdx();
+    const hasModules = state.lessons.some(l => l.module);
+    let curMod = null;
     list.innerHTML = state.lessons.map((l, i) => {
       const done = state.completedIdx.has(i);
       const isCur = i === curIdx;
@@ -496,7 +498,13 @@
         l.type === 'video'      ? '▶' :
         l.type === 'reflection' ? '✎' :
         l.type === 'reading'    ? '☰' : '·';
-      return `
+      // Module section header — emitted when the module name changes
+      let head = '';
+      if (hasModules) {
+        const mod = l.module || '';
+        if (mod !== curMod) { curMod = mod; if (mod) head = `<li class="frq-cr-module-head" aria-hidden="true">${esc(mod)}</li>`; }
+      }
+      return head + `
         <li class="frq-cr-lesson ${done ? 'is-done' : ''} ${isCur ? 'is-cur' : ''}" data-idx="${i}" data-id="${esc(l.id)}">
           <button class="frq-cr-lesson-check" type="button" aria-pressed="${done}" aria-label="${done ? 'Mark incomplete' : 'Mark complete'}: ${esc(l.title)}">
             ${done ? '<span aria-hidden="true">✓</span>' : ''}
