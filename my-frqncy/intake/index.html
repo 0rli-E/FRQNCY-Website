@@ -182,6 +182,8 @@
     *{transition-duration:0.01ms !important;animation-duration:0.01ms !important}
   }
 </style>
+<script src="/assets/frqncy-supabase.js"></script>
+<script src="/assets/frqncy-vbrtn-store.js"></script>
 </head>
 <body>
   <div class="shell">
@@ -197,7 +199,8 @@
   </div>
 
   <footer class="foot">
-    Your answers stay on this device until you sign in. <a href="/my-frqncy/dashboard/">Sanctuary</a>
+    <div id="vbrtn-sync" style="margin-bottom:8px"></div>
+    <a href="/my-frqncy/dashboard/">Sanctuary</a>
   </footer>
 
 <script>
@@ -502,6 +505,7 @@
 
   // ── State management ─────────────────────────────────────────────
   function loadProfile(){
+    if(window.FRQNCYVbrtn){ return window.FRQNCYVbrtn.load() || freshProfile(); }
     try{
       const raw = localStorage.getItem(STORE_KEY);
       return raw ? JSON.parse(raw) : freshProfile();
@@ -532,7 +536,10 @@
       _intakeAnswers:{}
     };
   }
-  function saveProfile(p){ localStorage.setItem(STORE_KEY, JSON.stringify(p)); }
+  function saveProfile(p){
+    if(window.FRQNCYVbrtn){ window.FRQNCYVbrtn.save(p); return; }
+    localStorage.setItem(STORE_KEY, JSON.stringify(p));
+  }
   function loadPosition(){ const r = localStorage.getItem(POSITION_KEY); return r ? parseInt(r,10) : 0; }
   function savePosition(n){ localStorage.setItem(POSITION_KEY, String(n)); }
   function isStarted(){ return localStorage.getItem(STARTED_KEY) === '1'; }
@@ -1199,6 +1206,24 @@
 
   if(pos > QUESTIONS.length) pos = QUESTIONS.length;
   renderCurrent();
+
+  // If a completed cloud profile arrives after sign-in and this device has not
+  // begun its own intake, adopt it and show the summary — a returning user on a
+  // fresh device sees their result rather than a blank questionnaire. Never
+  // interrupts an intake already in progress on this device.
+  if(window.FRQNCYVbrtn){
+    window.FRQNCYVbrtn.onSync(function(cloudProfile){
+      if(!cloudProfile || isStarted()) return;
+      if(cloudProfile.baseline && cloudProfile.baseline.intakeCompletedAt){
+        profile = cloudProfile;
+        markStarted();
+        pos = QUESTIONS.length;
+        savePosition(pos);
+        renderCurrent();
+        window.scrollTo({top:0,behavior:'smooth'});
+      }
+    });
+  }
 })();
 </script>
 <script type="module">
