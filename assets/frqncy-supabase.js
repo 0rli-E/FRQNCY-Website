@@ -579,6 +579,72 @@
       };
     },
 
+    /**
+     * Cloud store for the VBRTN profile — the founding-block profile produced by
+     * the intake and read/written by the My FRQNCY hub + VBRTN companion. Lives
+     * in the same `charts` table, under `name = 'VBRTN'`.
+     *
+     * The whole profile blob (standing / design / meta / triggers / baseline /
+     * state / history / rememberOne / _intakeAnswers / _updatedAt) is stored as
+     * the single JSON `data` column — same one-row-per-user pattern as the
+     * Sanctuary and Constellation stores. Anonymous visitors keep localStorage;
+     * logged-in users get cross-device sync transparently via the shared helper
+     * in /assets/frqncy-vbrtn-store.js.
+     */
+    vbrtnStore(user) {
+      if (!user) throw new Error('vbrtnStore requires a logged-in user');
+      const userId = user.id;
+      const ROW_NAME = 'VBRTN';
+
+      let rowId = null;
+      let rowPromise = null;
+      async function ensureRow() {
+        if (rowId) return rowId;
+        if (rowPromise) return rowPromise;
+        rowPromise = (async () => {
+          const { data: existing, error: selErr } = await client
+            .from('charts')
+            .select('id')
+            .eq('owner_id', userId)
+            .eq('name', ROW_NAME)
+            .maybeSingle();
+          if (selErr) throw selErr;
+          if (existing) { rowId = existing.id; return rowId; }
+          const { data: created, error: insErr } = await client
+            .from('charts')
+            .insert({ owner_id: userId, name: ROW_NAME, data: {}, dreams: [] })
+            .select('id')
+            .single();
+          if (insErr) throw insErr;
+          rowId = created.id;
+          return rowId;
+        })();
+        return rowPromise;
+      }
+      return {
+        async getState() {
+          const id = await ensureRow();
+          const { data, error } = await client
+            .from('charts')
+            .select('data')
+            .eq('id', id)
+            .single();
+          if (error) throw error;
+          // An empty {} (freshly-created row) reads as "no profile yet".
+          const d = data?.data;
+          return (d && Object.keys(d).length) ? d : null;
+        },
+        async setState(state) {
+          const id = await ensureRow();
+          const { error } = await client
+            .from('charts')
+            .update({ data: state })
+            .eq('id', id);
+          if (error) throw error;
+        },
+      };
+    },
+
     /** Auth widget — drops a small "Log in / Profile" pill into a target element. */
     mountAuthPill(targetEl, opts = {}) {
       if (!targetEl) return;
