@@ -127,6 +127,23 @@ nav{
 }
 .illuminator-card .btn{position:relative;z-index:1;flex-shrink:0}
 
+/* ── ADDITIONAL MATERIAL (collapsible secondary shelf) ──
+   Houses the supplementary surfaces (Earth Rhythms, Recommended Memberships)
+   below the core dashboard — retained, but folded away by default so the
+   daily-practice surfaces lead. */
+.additional-material{margin-top:1.75rem;border-top:1px solid var(--card-border)}
+.additional-material > summary{
+  cursor:pointer;list-style:none;display:flex;align-items:baseline;gap:0.7rem;flex-wrap:wrap;
+  padding:1.15rem 0 0.35rem;
+}
+.additional-material > summary::-webkit-details-marker{display:none}
+.additional-material > summary .am-caret{color:var(--gold);font-size:0.85rem;transition:transform .18s;align-self:center}
+.additional-material[open] > summary .am-caret{transform:rotate(90deg)}
+.additional-material > summary .am-title{font-family:'Cormorant',serif;font-weight:400;font-size:1.5rem;color:#fff;letter-spacing:0.04em}
+.additional-material > summary .am-sub{font-size:0.62rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-faint)}
+.additional-material > summary:hover .am-title{color:var(--gold-light,#D9B26A)}
+.additional-material[open] > summary{margin-bottom:0.5rem}
+
 /* ── RECOMMENDED MEMBERSHIPS ── */
 .membership-grid{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -1517,6 +1534,23 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       <div class="pyramid" id="pyramid-mini"></div>
     </section>
 
+    <section class="section">
+      <div class="section-head">
+        <h2><span class="glyph">✧</span> Word Illuminator</h2>
+        <div class="meta">Companion · lives inside your Sanctuary</div>
+      </div>
+      <div class="illuminator-card">
+        <div class="illuminator-copy">
+          <div class="illuminator-title">Ask about any word, name, or concept.</div>
+          <p>A contemplative companion that reveals the full depth of any word you offer — definitions, etymology, deeper illumination. Paste a word from your constellation, the name of a teacher, or any idea you're sitting with. Your conversation stays on your device.</p>
+        </div>
+        <button type="button" class="btn btn-gold" id="open-illuminator">Open Illuminator&nbsp;→</button>
+      </div>
+    </section>
+
+    <details class="additional-material">
+      <summary><span class="am-caret" aria-hidden="true">▸</span><span class="am-title">Additional material</span><span class="am-sub">Earth rhythms · recommended memberships</span></summary>
+
     <!-- ▼▼ EARTH-RHYTHMS · MOON · MAYAN · SCHUMANN ▼▼
          Added 2026-05-22: surface two FRQNCY calendars (moon + mayan) plus
          a live Schumann resonance chart inside the Sanctuary. The Schumann
@@ -1647,20 +1681,6 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 
     <section class="section">
       <div class="section-head">
-        <h2><span class="glyph">✧</span> Word Illuminator</h2>
-        <div class="meta">Companion · lives inside your Sanctuary</div>
-      </div>
-      <div class="illuminator-card">
-        <div class="illuminator-copy">
-          <div class="illuminator-title">Ask about any word, name, or concept.</div>
-          <p>A contemplative companion that reveals the full depth of any word you offer — definitions, etymology, deeper illumination. Paste a word from your constellation, the name of a teacher, or any idea you're sitting with. Your conversation stays on your device.</p>
-        </div>
-        <button type="button" class="btn btn-gold" id="open-illuminator">Open Illuminator&nbsp;→</button>
-      </div>
-    </section>
-
-    <section class="section">
-      <div class="section-head">
         <h2><span class="glyph">◉</span> Recommended Memberships</h2>
         <div class="meta">Communities &amp; platforms worth joining</div>
       </div>
@@ -1709,6 +1729,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
         </a>
       </div>
     </section>
+    </details>
 
   </div>
 
