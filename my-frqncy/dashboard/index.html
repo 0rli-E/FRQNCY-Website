@@ -794,6 +794,31 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
   display:inline-flex;align-items:center;gap:0.5rem;margin-top:0.2rem;
 }
 .mm-launch .btn-gold{display:inline-flex;align-items:center;gap:0.5rem}
+/* Mind Movie music — bring-your-own track, stored on this device only. */
+.mm-music{display:flex;align-items:center;flex-wrap:wrap;gap:0.6rem;margin:0.7rem 0 0.2rem}
+.mm-music .mm-music-add{
+  display:inline-flex;align-items:center;gap:0.4rem;padding:0.55rem 0.95rem;
+  border:1px dashed var(--card-border);border-radius:3px;background:transparent;
+  color:var(--text-faint);font-size:0.8rem;font-family:inherit;line-height:1;cursor:pointer;
+  transition:border-color .18s,color .18s,background .18s;
+}
+.mm-music .mm-music-add:hover{color:var(--gold);border-color:var(--gold);background:rgba(196,151,58,0.03)}
+.mm-music .mm-track{
+  display:inline-flex;align-items:center;gap:0.55rem;padding:0.5rem 0.85rem;
+  border:1px solid rgba(196,151,58,0.4);border-radius:3px;background:rgba(196,151,58,0.06);
+}
+.mm-music .mm-track .mm-track-note{color:var(--gold);font-size:0.95rem}
+.mm-music .mm-track .mm-track-name{color:#fff;font-size:0.82rem;max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.mm-music .mm-track button{
+  background:none;border:none;color:var(--text-dim);font-size:0.72rem;cursor:pointer;
+  font-family:inherit;padding:0.1rem 0.3rem;letter-spacing:0.06em;transition:color .15s;
+}
+.mm-music .mm-track button:hover{color:var(--gold)}
+.mm-music .mm-track button.mm-track-remove:hover{color:var(--bad)}
+.mm-music .mm-music-hint{font-size:0.72rem;font-style:italic;color:var(--text-faint)}
+/* Volume slider inside the movie controls */
+.mm-vol{width:84px;accent-color:var(--gold);cursor:pointer;vertical-align:middle}
+.mm-btn.on{color:var(--gold)}
 .mm-overlay{
   position:fixed;inset:0;z-index:1000;background:var(--navy-deep);
   display:none;opacity:0;transition:opacity .6s ease;
@@ -816,6 +841,9 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
 .mm-slide.active img{
   animation:mm-ken 7s ease-out forwards;
 }
+/* Dwell pace — stretch the same pan over the long hold so the scene sits
+   almost still, giving the eye time to enter it. */
+.mm-overlay.mm-dwell .mm-slide.active img{animation-duration:22s}
 @keyframes mm-ken{
   from{transform:scale(1.02) translate3d(0,0,0)}
   to{transform:scale(1.13) translate3d(-1.5%,-1.5%,0)}
@@ -1871,6 +1899,8 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
         <button type="button" class="btn" id="vb-pdf-btn" aria-label="Download your vision board as a printable PDF">⤓ Download PDF</button>
         <span class="meta" style="font-style:italic">Play it, or print it for your wall.</span>
       </div>
+      <div class="mm-music" id="mm-music"></div>
+      <input type="file" id="music-input" accept="audio/*" style="display:none" aria-label="Choose music for your Mind Movie">
       <div class="dropzone" id="dropzone" role="button" tabindex="0" aria-label="Upload images to vision board — drop files here, or press Enter to choose files">
         <div class="upload-icon" aria-hidden="true">⤴</div>
         Drop images here, or click to upload
@@ -1926,6 +1956,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 const STORE_KEY = 'frqncy.sanctuary.v1';
 const IDB_NAME  = 'frqncy_sanctuary';
 const IDB_STORE = 'images';
+const IDB_AUDIO = 'audio';   // Mind Movie music — Blobs, device-local, never synced
 
 class LocalStore {
   constructor() {
@@ -1933,11 +1964,15 @@ class LocalStore {
   }
   _openIdb() {
     return new Promise((res, rej) => {
-      const req = indexedDB.open(IDB_NAME, 1);
+      // v2 adds the `audio` store. Upgrade is additive (guards on presence),
+      // so existing users keep their images untouched.
+      const req = indexedDB.open(IDB_NAME, 2);
       req.onupgradeneeded = e => {
         const db = e.target.result;
         if (!db.objectStoreNames.contains(IDB_STORE))
           db.createObjectStore(IDB_STORE, { keyPath: 'id' });
+        if (!db.objectStoreNames.contains(IDB_AUDIO))
+          db.createObjectStore(IDB_AUDIO, { keyPath: 'id' });
       };
       req.onsuccess = () => res(req.result);
       req.onerror = () => rej(req.error);
@@ -1986,6 +2021,42 @@ class LocalStore {
       tx.onerror = () => rej(tx.error);
     });
   }
+  // Audio tracks (Mind Movie music). Stored as { id, name, mime, size, addedAt,
+  // blob }. Blobs live in IDB only — never in the synced state row.
+  async getAudioTracks() {
+    const db = await this.idbReady;
+    return new Promise((res, rej) => {
+      const req = db.transaction(IDB_AUDIO, 'readonly').objectStore(IDB_AUDIO).getAll();
+      req.onsuccess = () => res(req.result || []);
+      req.onerror = () => rej(req.error);
+    });
+  }
+  async getAudioTrack(id) {
+    const db = await this.idbReady;
+    return new Promise((res, rej) => {
+      const req = db.transaction(IDB_AUDIO, 'readonly').objectStore(IDB_AUDIO).get(id);
+      req.onsuccess = () => res(req.result || null);
+      req.onerror = () => rej(req.error);
+    });
+  }
+  async putAudioTrack(t) {
+    const db = await this.idbReady;
+    return new Promise((res, rej) => {
+      const tx = db.transaction(IDB_AUDIO, 'readwrite');
+      tx.objectStore(IDB_AUDIO).put(t);
+      tx.oncomplete = () => res();
+      tx.onerror = () => rej(tx.error);
+    });
+  }
+  async deleteAudioTrack(id) {
+    const db = await this.idbReady;
+    return new Promise((res, rej) => {
+      const tx = db.transaction(IDB_AUDIO, 'readwrite');
+      tx.objectStore(IDB_AUDIO).delete(id);
+      tx.oncomplete = () => res();
+      tx.onerror = () => rej(tx.error);
+    });
+  }
 }
 
 // `store` starts as LocalStore so the page works instantly for anonymous
@@ -1994,6 +2065,9 @@ class LocalStore {
 // and pulls fresh state on load. Migration of existing local data happens
 // once on first cloud-attach (LocalStore → SanctuaryCloudStore).
 let store = new LocalStore();
+// Stable device-local handle. Mind Movie music always uses this (never the
+// cloud store) so audio Blobs stay on the device and out of the synced row.
+const localStore = store;
 let cloudStore = null;     // active SanctuaryCloudStore when logged in
 let cloudReady = false;    // true once the swap (and any migration) finishes
 const cloudReadyListeners = [];
@@ -2070,6 +2144,10 @@ const DEFAULT_STATE = {
   // eating; `avoid` what's set aside; `logs` keyed by ISO date holds the daily
   // check-in { state:'aligned'|'partial'|'off', note }.
   nourishment: { protocol: '', avoid: '', logs: {} },
+  // Mind Movie preferences. The music Blob itself lives in IndexedDB (store
+  // `audio`); here we keep only a small pointer + settings so the synced state
+  // row stays lean. soundMode: 'off' | 'track' (your music) | 'pad' (generated).
+  mindMovie: { trackId: null, trackName: '', volume: 0.6, soundMode: 'off' },
   settings: { name: '' }
 };
 
@@ -3259,6 +3337,82 @@ async function handleFiles(files) {
   renderVision();
 }
 
+/* ── Mind Movie music — bring-your-own track ────────────────────────────
+   One track at a time, stored as a Blob in IndexedDB (device-local, never in
+   the synced state row). state.mindMovie holds only the id/name pointer. */
+function ensureMindMovie() {
+  if (!state.mindMovie) state.mindMovie = { trackId: null, trackName: '', volume: 0.6, soundMode: 'off' };
+  return state.mindMovie;
+}
+
+function renderMindMovieMusic() {
+  const el = document.getElementById('mm-music');
+  if (!el) return;
+  const mm = ensureMindMovie();
+  el.innerHTML = '';
+  const hint = document.createElement('span');
+  hint.className = 'mm-music-hint';
+  if (mm.trackId) {
+    const row = document.createElement('div');
+    row.className = 'mm-track';
+    row.innerHTML =
+      `<span class="mm-track-note" aria-hidden="true">♫</span>` +
+      `<span class="mm-track-name" title="${escape(mm.trackName || 'Your track')}">${escape(mm.trackName || 'Your track')}</span>` +
+      `<button type="button" class="mm-track-replace">Replace</button>` +
+      `<button type="button" class="mm-track-remove" aria-label="Remove music">Remove</button>`;
+    el.appendChild(row);
+    hint.textContent = 'Plays under your Mind Movie · stays on this device';
+    el.appendChild(hint);
+    row.querySelector('.mm-track-replace').addEventListener('click', () => document.getElementById('music-input')?.click());
+    row.querySelector('.mm-track-remove').addEventListener('click', removeMindMovieMusic);
+  } else {
+    const add = document.createElement('button');
+    add.type = 'button';
+    add.className = 'mm-music-add';
+    add.textContent = '♪ Add music for your Mind Movie';
+    add.addEventListener('click', () => document.getElementById('music-input')?.click());
+    el.appendChild(add);
+    hint.textContent = 'Your own track, looped under the movie · stays on this device';
+    el.appendChild(hint);
+  }
+}
+
+async function handleAudioFiles(files) {
+  const file = Array.from(files || []).find(f =>
+    (f.type && f.type.startsWith('audio/')) || /\.(mp3|m4a|aac|ogg|oga|wav|flac)$/i.test(f.name));
+  if (!file) { toast('Choose an audio file (mp3, m4a, ogg, wav)'); return; }
+  if (file.size > 30 * 1024 * 1024) { toast(`${file.name} is over 30MB — try a smaller file`); return; }
+  const mm = ensureMindMovie();
+  // One track at a time — clear any prior blob so IDB doesn't accumulate.
+  try { for (const t of await localStore.getAudioTracks()) await localStore.deleteAudioTrack(t.id); } catch (_) {}
+  const id = uid('aud');
+  await localStore.putAudioTrack({ id, name: file.name, mime: file.type || '', size: file.size, addedAt: todayISO(), blob: file });
+  mm.trackId = id;
+  mm.trackName = file.name;
+  if (mm.soundMode === 'off') mm.soundMode = 'track';   // default the new track on
+  await persist();
+  renderMindMovieMusic();
+  toast('Music added. It plays under your Mind Movie. ✦');
+}
+
+async function removeMindMovieMusic() {
+  const mm = ensureMindMovie();
+  if (!mm.trackId) return;
+  if (!confirm('Remove your Mind Movie music?')) return;
+  try { await localStore.deleteAudioTrack(mm.trackId); } catch (_) {}
+  mm.trackId = null; mm.trackName = '';
+  if (mm.soundMode === 'track') mm.soundMode = 'off';
+  await persist();
+  renderMindMovieMusic();
+  toast('Music removed.');
+}
+
+function bindMusicUpload() {
+  const inp = document.getElementById('music-input');
+  if (!inp) return;
+  inp.addEventListener('change', e => { handleAudioFiles(e.target.files); e.target.value = ''; });
+}
+
 /* ════════════════════════════════════════════════════════════════
    MIND MOVIE — the vision board, played back as a visualisation ritual.
    A slow full-screen cross-fade through the pinned images, each caption
@@ -3273,7 +3427,12 @@ const MindMovie = (() => {
   let timer = null, idleTimer = null;
   let playing = false, built = false;
   let aimFilter = null;        // chiefAimId or null for all
-  let audio = null, soundOn = false;
+  // Sound. The generated ambient pad (audio/padMaster) and an optional uploaded
+  // music track (trackEl/trackCtx/trackGain/trackUrl) are mutually exclusive,
+  // selected by state.mindMovie.soundMode ('off' | 'track' | 'pad').
+  let audio = null, padMaster = null;
+  let trackEl = null, trackCtx = null, trackGain = null, trackUrl = null;
+  let volTimer = null;
 
   function build() {
     if (built) return;
@@ -3293,7 +3452,8 @@ const MindMovie = (() => {
         <button type="button" class="mm-btn" id="mm-prev" title="Previous" aria-label="Previous image">‹</button>
         <button type="button" class="mm-btn mm-play" id="mm-toggle" title="Pause/Play (space)" aria-label="Pause or play">⏸</button>
         <button type="button" class="mm-btn" id="mm-next" title="Next" aria-label="Next image">›</button>
-        <button type="button" class="mm-btn" id="mm-sound" title="Ambient sound" aria-label="Toggle ambient sound">♪</button>
+        <button type="button" class="mm-btn" id="mm-sound" title="Sound — off / your music / ambient pad" aria-label="Cycle sound: off, your music, ambient pad">♪</button>
+        <input type="range" class="mm-vol" id="mm-vol" min="0" max="1" step="0.05" value="0.6" title="Volume" aria-label="Sound volume" style="display:none">
         <button type="button" class="mm-btn" id="mm-pace" title="Slower / calmer pace" aria-label="Change pace">◐</button>
       </div>`;
     document.body.appendChild(overlay);
@@ -3307,7 +3467,8 @@ const MindMovie = (() => {
     overlay.querySelector('#mm-prev').addEventListener('click', () => { go(idx - 1); resume(); });
     overlay.querySelector('#mm-next').addEventListener('click', () => { go(idx + 1); resume(); });
     overlay.querySelector('#mm-toggle').addEventListener('click', () => playing ? pause() : resume());
-    overlay.querySelector('#mm-sound').addEventListener('click', toggleSound);
+    overlay.querySelector('#mm-sound').addEventListener('click', cycleSound);
+    overlay.querySelector('#mm-vol').addEventListener('input', e => setVolume(parseFloat(e.target.value)));
     overlay.querySelector('#mm-pace').addEventListener('click', cyclePace);
     overlay.addEventListener('mousemove', wake);
     overlay.addEventListener('click', e => {
@@ -3356,6 +3517,9 @@ const MindMovie = (() => {
     idx = 0;
     go(0);
     resume();
+    // Honour the saved sound choice — this play() runs inside the button-click
+    // gesture, so an AudioContext is allowed to start here.
+    applySound();
     document.addEventListener('keydown', onKey);
   }
 
@@ -3440,9 +3604,10 @@ const MindMovie = (() => {
   }
 
   function cyclePace() {
-    // Calm 7s → Slow 10s → Gentle 5s → back
-    dur = dur === 7000 ? 10000 : dur === 10000 ? 5000 : 7000;
-    toast(dur === 10000 ? 'Slow' : dur === 5000 ? 'Gentle' : 'Calm');
+    // Calm 7s → Slow 10s → Dwell 20s (one scene, held) → Gentle 5s → back
+    dur = dur === 7000 ? 10000 : dur === 10000 ? 20000 : dur === 20000 ? 5000 : 7000;
+    toast(dur === 10000 ? 'Slow' : dur === 20000 ? 'Dwell — one scene, held' : dur === 5000 ? 'Gentle' : 'Calm');
+    overlay.classList.toggle('mm-dwell', dur === 20000);
     if (playing) { go(idx); resume(); }
   }
 
@@ -3469,45 +3634,103 @@ const MindMovie = (() => {
     overlay.classList.remove('open');
     document.body.style.overflow = '';
     document.removeEventListener('keydown', onKey);
-    stopSound();
+    stopTrack(); stopPad();
   }
 
-  /* Ambient pad — generated, no asset. Two softly-detuned sines through a
-     low-pass with a slow gain swell. Off by default; the play button is the
-     user gesture that lets it start when toggled on. */
-  function toggleSound() {
-    soundOn ? stopSound() : startSound();
-    overlay.querySelector('#mm-sound').classList.toggle('on', soundOn);
+  /* ── Sound ─────────────────────────────────────────────────────────────
+     Two mutually-exclusive sources: the user's uploaded music track, or a
+     generated ambient pad (no asset). soundMode ('off'|'track'|'pad') lives in
+     state so the choice is remembered; audio only starts inside a user gesture
+     (play / the sound button), per browser autoplay policy. */
+  function mm() {
+    if (!state.mindMovie) state.mindMovie = { trackId: null, trackName: '', volume: 0.6, soundMode: 'off' };
+    return state.mindMovie;
   }
-  function startSound() {
+
+  function cycleSound() {
+    const order = mm().trackId ? ['off', 'track', 'pad'] : ['off', 'pad'];
+    const cur = order.indexOf(mm().soundMode);
+    mm().soundMode = order[(cur + 1) % order.length] || 'off';
+    persist();
+    applySound();
+    toast(mm().soundMode === 'track' ? 'Your music' : mm().soundMode === 'pad' ? 'Ambient pad' : 'Sound off');
+  }
+
+  // Start/stop whatever the current soundMode calls for; sync the chrome.
+  function applySound() {
+    if (!overlay) return;
+    stopTrack(); stopPad();
+    let mode = mm().soundMode || 'off';
+    if (mode === 'track' && !mm().trackId) mode = 'off';   // track was removed
+    if (mode === 'track') startTrack();
+    else if (mode === 'pad') startPad();
+    const btn = overlay.querySelector('#mm-sound');
+    const vol = overlay.querySelector('#mm-vol');
+    if (btn) { btn.classList.toggle('on', mode !== 'off'); btn.textContent = mode === 'track' ? '♫' : '♪'; }
+    if (vol) { vol.value = mm().volume; vol.style.display = mode === 'off' ? 'none' : ''; }
+  }
+
+  function setVolume(v) {
+    v = Math.max(0, Math.min(1, v));
+    mm().volume = v;
+    if (trackGain && trackCtx) { try { trackGain.gain.setTargetAtTime(Math.max(0.0001, v), trackCtx.currentTime, 0.08); } catch (_) {} }
+    if (padMaster && audio) { try { padMaster.gain.setTargetAtTime(Math.max(0.0001, v * 0.1), audio.currentTime, 0.08); } catch (_) {} }
+    clearTimeout(volTimer); volTimer = setTimeout(() => persist(), 400);
+  }
+
+  // The user's own music, looped under the movie with a soft fade in/out.
+  async function startTrack() {
+    try {
+      const rec = await localStore.getAudioTrack(mm().trackId);
+      if (!rec || !rec.blob) { toast('Your music track is missing.'); mm().soundMode = 'off'; applySound(); return; }
+      const Ctx = window.AudioContext || window.webkitAudioContext;
+      if (!Ctx) { toast('Sound not supported here'); return; }
+      trackCtx = new Ctx();
+      try { await trackCtx.resume(); } catch (_) {}
+      trackUrl = URL.createObjectURL(rec.blob);
+      trackEl = new Audio(trackUrl);
+      trackEl.loop = true;
+      const src = trackCtx.createMediaElementSource(trackEl);
+      trackGain = trackCtx.createGain();
+      trackGain.gain.value = 0.0001;
+      src.connect(trackGain); trackGain.connect(trackCtx.destination);
+      await trackEl.play().catch(() => {});
+      trackGain.gain.exponentialRampToValueAtTime(Math.max(0.001, mm().volume), trackCtx.currentTime + 3);
+    } catch (_) { toast('Could not play your music'); }
+  }
+  function stopTrack() {
+    const el = trackEl, ctx = trackCtx, url = trackUrl, gain = trackGain;
+    trackEl = trackCtx = trackGain = trackUrl = null;
+    if (!el) return;
+    try { if (gain && ctx) gain.gain.exponentialRampToValueAtTime(0.0001, ctx.currentTime + 1.1); } catch (_) {}
+    setTimeout(() => {
+      try { el.pause(); } catch (_) {}
+      try { ctx && ctx.close(); } catch (_) {}
+      if (url) URL.revokeObjectURL(url);
+    }, 1200);
+  }
+
+  function startPad() {
     try {
       const Ctx = window.AudioContext || window.webkitAudioContext;
       if (!Ctx) { toast('Sound not supported here'); return; }
       audio = new Ctx();
-      const master = audio.createGain();
-      master.gain.value = 0.0001;
+      padMaster = audio.createGain();
+      padMaster.gain.value = 0.0001;
       const lp = audio.createBiquadFilter();
       lp.type = 'lowpass'; lp.frequency.value = 600;
-      master.connect(lp); lp.connect(audio.destination);
-      // Soft root + fifth, gently detuned for movement
+      padMaster.connect(lp); lp.connect(audio.destination);
       [146.83, 220.0, 220.9].forEach((f, i) => {
         const o = audio.createOscillator();
         o.type = 'sine'; o.frequency.value = f;
         const g = audio.createGain(); g.gain.value = i === 0 ? 0.5 : 0.25;
-        o.connect(g); g.connect(master); o.start();
+        o.connect(g); g.connect(padMaster); o.start();
       });
-      // Slow swell in
-      master.gain.exponentialRampToValueAtTime(0.06, audio.currentTime + 4);
-      soundOn = true;
+      padMaster.gain.exponentialRampToValueAtTime(Math.max(0.001, mm().volume * 0.1), audio.currentTime + 4);
     } catch (_) { toast('Could not start sound'); }
   }
-  function stopSound() {
-    soundOn = false;
-    if (overlay) overlay.querySelector('#mm-sound')?.classList.remove('on');
-    if (audio) {
-      try { audio.close(); } catch (_) {}
-      audio = null;
-    }
+  function stopPad() {
+    if (audio) { try { audio.close(); } catch (_) {} audio = null; padMaster = null; }
   }
 
   return { play };
@@ -4580,6 +4803,8 @@ function syncTabsScrollable() {
   renderAll();
   bindDream();
   bindUploads();
+  bindMusicUpload();
+  renderMindMovieMusic();
   bindNourishment();
   document.getElementById('mm-play-btn')?.addEventListener('click', () => MindMovie.play());
   document.getElementById('vb-pdf-btn')?.addEventListener('click', () => VisionPDF.download());
