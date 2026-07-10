@@ -610,6 +610,15 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
 }
 .habit-chip:hover .habit-del-btn{display:flex}
 .habit-del-btn:hover{color:var(--bad);border-color:var(--bad)}
+.habit-edit-btn{
+  position:absolute;top:-6px;left:-6px;width:18px;height:18px;
+  background:var(--navy);border:1px solid var(--card-border);border-radius:50%;
+  display:none;align-items:center;justify-content:center;font-size:0.62rem;
+  color:var(--text-dim);line-height:1;padding:0;cursor:pointer;
+  transition:color .15s,border-color .15s;
+}
+.habit-chip:hover .habit-edit-btn{display:flex}
+.habit-edit-btn:hover{color:var(--gold);border-color:var(--gold)}
 .habit-add-chip{
   display:inline-flex;align-items:center;gap:0.4rem;
   padding:0.6rem 1rem;border:1px dashed var(--card-border);
@@ -2677,6 +2686,7 @@ function buildHabitChip(h, done, today) {
   // (synthesis #4: kill the 🔥 chip, keep milestones at 7/30/100/365).
   chip.setAttribute('aria-label', `${h.name}${done ? ', completed today' : ', tap to mark done'}`);
   chip.innerHTML = `
+    <button type="button" class="habit-edit-btn" data-action="edit-habit" title="Edit habit" aria-label="Edit habit ${escape(h.name)}">✎</button>
     <span class="habit-icon" aria-hidden="true">${escape(h.icon || '◇')}</span>
     <span class="habit-name">${escape(h.name)}</span>
     <button type="button" class="habit-del-btn" data-action="del-habit" data-id="${h.id}" title="Remove habit" aria-label="Remove habit ${escape(h.name)}">✕</button>
@@ -2685,11 +2695,15 @@ function buildHabitChip(h, done, today) {
     if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
   });
   chip.addEventListener('click', e => {
-    if (e.target.closest('.habit-del-btn')) return;
+    if (e.target.closest('.habit-del-btn') || e.target.closest('.habit-edit-btn')) return;
     const done2 = !!(state.habitLogs[today] || {})[h.id];
     if (!state.habitLogs[today]) state.habitLogs[today] = {};
     state.habitLogs[today][h.id] = !done2;
     persist().then(reRenderHabits);
+  });
+  chip.querySelector('.habit-edit-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    promptAddHabit(null, h);
   });
   chip.querySelector('.habit-del-btn').addEventListener('click', e => {
     e.stopPropagation();
@@ -2783,17 +2797,21 @@ function renderHabits(targetId = 'habits-quick') {
   }
 }
 
-function promptAddHabit(presetCategory) {
-  // Curated palette — contemplative glyphs first, lifestyle emoji second.
-  // The user can still type anything custom (the input below the palette
-  // wins). Selected glyph mirrors into the input so the chosen state is
-  // visible and editable.
+function promptAddHabit(presetCategory, editHabit) {
+  // Shared add/edit modal. With `editHabit` we prefill from it and update in
+  // place; otherwise we create a new habit (optionally pre-tagged to
+  // `presetCategory`). Curated palette — contemplative glyphs first, lifestyle
+  // emoji second; a custom glyph typed below always wins.
   const PALETTE = ['◇','✦','✧','☉','☾','◯','⊙','△','◎','🪷','☘','🌅','🏋','📖','🧘','🚶','💧','🍃'];
-  let category = HABIT_GROUP_KEYS.includes(presetCategory) ? presetCategory : 'daily';
+  const editing = !!editHabit;
+  let category = editing ? habitCategory(editHabit)
+    : (HABIT_GROUP_KEYS.includes(presetCategory) ? presetCategory : 'daily');
+  const initName = editing ? (editHabit.name || '') : '';
+  const initIcon = editing ? (editHabit.icon || '') : '';
   openModal(`
-    <h3>New habit</h3>
+    <h3>${editing ? 'Edit habit' : 'New habit'}</h3>
     <p>One thing you want to do consistently. Examples: <em>Wake at 6</em>, <em>Gym</em>, <em>Read 30 min</em>, <em>Meditate</em>.</p>
-    <input id="h-name" placeholder="Name your habit…" autofocus>
+    <input id="h-name" placeholder="Name your habit…" value="${escape(initName)}" autofocus>
     <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-faint);margin:0.7rem 0 0.4rem">When</div>
     <div id="h-cat" role="radiogroup" aria-label="When this habit belongs" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.6rem">
       ${HABIT_GROUPS.map(g => `<button type="button" class="h-cat-opt" role="radio" aria-checked="${g.key === category}" data-cat="${g.key}" style="padding:0.4rem 0.75rem;border:1px solid ${g.key === category ? 'var(--gold)' : 'var(--card-border)'};border-radius:3px;background:${g.key === category ? 'rgba(196,151,58,0.12)' : 'rgba(255,255,255,0.025)'};color:var(--text);font-size:0.8rem;line-height:1;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s"><span aria-hidden="true">${g.glyph}</span> ${g.label}</button>`).join('')}
@@ -2802,10 +2820,10 @@ function promptAddHabit(presetCategory) {
     <div id="h-icon-palette" role="radiogroup" aria-label="Habit symbol" style="display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:0.6rem">
       ${PALETTE.map(g => `<button type="button" class="h-icon-opt" role="radio" aria-checked="false" data-glyph="${escape(g)}" style="width:34px;height:34px;border:1px solid var(--card-border);border-radius:3px;background:rgba(255,255,255,0.025);color:var(--text);font-size:1rem;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s,transform .1s">${escape(g)}</button>`).join('')}
     </div>
-    <input id="h-icon" placeholder="Or type your own (emoji or single symbol)" maxlength="2">
+    <input id="h-icon" placeholder="Or type your own (emoji or single symbol)" maxlength="2" value="${escape(initIcon)}">
     <div class="modal-actions">
       <button class="btn" onclick="closeModal()">Cancel</button>
-      <button class="btn btn-gold" id="h-save">Add habit</button>
+      <button class="btn btn-gold" id="h-save">${editing ? 'Save' : 'Add habit'}</button>
     </div>
   `);
   // Wire the When selector — single-choice, mirrors into `category`.
@@ -2823,6 +2841,12 @@ function promptAddHabit(presetCategory) {
   // Wire the palette: clicking a glyph fills the icon input and marks selected
   const iconInput = document.getElementById('h-icon');
   document.querySelectorAll('#h-icon-palette .h-icon-opt').forEach(btn => {
+    // When editing, pre-mark the glyph that matches the saved icon.
+    if (initIcon && btn.dataset.glyph === initIcon) {
+      btn.style.borderColor = 'var(--gold)';
+      btn.style.background = 'rgba(196,151,58,0.12)';
+      btn.setAttribute('aria-checked', 'true');
+    }
     btn.addEventListener('click', () => {
       document.querySelectorAll('#h-icon-palette .h-icon-opt').forEach(b => {
         b.style.borderColor = 'var(--card-border)';
@@ -2840,7 +2864,11 @@ function promptAddHabit(presetCategory) {
     const name = document.getElementById('h-name').value.trim();
     if (!name) { toast('Give it a name'); return; }
     const icon = iconInput.value.trim() || '◇';
-    state.habits.push({ id: uid('hab'), name, icon, createdAt: todayISO(), archived: false, category });
+    if (editing) {
+      editHabit.name = name; editHabit.icon = icon; editHabit.category = category;
+    } else {
+      state.habits.push({ id: uid('hab'), name, icon, createdAt: todayISO(), archived: false, category });
+    }
     await persist();
     closeModal();
     reRenderHabits();
