@@ -624,6 +624,30 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
 }
 .habit-add-input input{font-size:0.85rem;width:140px}
 
+/* ── HABIT GROUPS (time-of-day / breaks tags) ──
+   When habits carry a category, the bar switches to a column of labelled
+   groups (Daily · Morning · Evening · Breaks). The outer .habits-bar keeps
+   its card frame; each group is a soft-labelled row inside it. */
+.habits-bar.grouped{flex-direction:column;align-items:stretch;gap:1.15rem}
+.habit-group{display:flex;flex-direction:column;gap:0.5rem}
+.habit-group-head{display:flex;align-items:baseline;gap:0.55rem;flex-wrap:wrap}
+.habit-group-head .hg-glyph{font-size:0.95rem;opacity:0.85;line-height:1}
+.habit-group-head .hg-label{font-size:0.62rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-dim)}
+.habit-group-head .hg-hint{font-family:'Cormorant Garamond',Georgia,serif;font-style:italic;font-size:0.92rem;color:var(--text-faint)}
+.habit-group-row{display:flex;flex-wrap:wrap;gap:0.6rem;align-items:center}
+.habit-suggest-chip{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  padding:0.5rem 0.85rem;border:1px dashed rgba(196,151,58,0.35);
+  color:var(--text-faint);font-size:0.78rem;border-radius:3px;cursor:pointer;
+  background:transparent;font-family:inherit;line-height:1;
+  transition:border-color .18s,color .18s,background .18s;
+}
+.habit-suggest-chip:hover{color:var(--gold);border-color:var(--gold);background:rgba(196,151,58,0.04)}
+/* Today panel: light time-of-day grouping for the at-a-glance habit chips */
+.today-habit-group{margin-bottom:0.5rem}
+.today-habit-group:last-child{margin-bottom:0}
+.today-habit-grouplabel{font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-faint);margin:0 0 0.3rem}
+
 /* ── GRAPHS ── */
 .graphs-grid{
   display:grid;grid-template-columns:1fr;gap:1rem;
@@ -1714,6 +1738,11 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       </div>
       <div id="goals-by-objective"></div>
     </section>
+
+    <div class="pyramid-print" style="margin-top:0.25rem">
+      <button type="button" class="btn" id="goals-pdf-btn" aria-label="Download your goal pyramid as a printable one-page PDF">⤓ Print your pyramid</button>
+      <span class="meta" style="text-transform:none;letter-spacing:0;font-style:italic;font-size:0.85rem;margin-left:0.6rem">Dream, aims, objectives and this month's goals — one page.</span>
+    </div>
   </div>
 
   <!-- ─────────────── PRACTICE VIEW ─────────────── -->
@@ -1724,6 +1753,10 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
         <div class="meta">The small things that compound</div>
       </div>
       <div class="habits-bar" id="habits-full"></div>
+      <div class="habits-print" style="margin-top:0.7rem">
+        <button type="button" class="btn" id="habits-pdf-btn" aria-label="Download a printable one-page habit sheet to tick by hand">⤓ Print habit sheet</button>
+        <span class="meta" style="text-transform:none;letter-spacing:0;font-style:italic;font-size:0.85rem;margin-left:0.6rem">A physical week to tick by hand.</span>
+      </div>
     </section>
 
     <section class="section">
@@ -1993,7 +2026,7 @@ const DEFAULT_STATE = {
   chiefAims: [],     // { id, name, score:{current,target,history:[{date,value}]}, position }
   objectives: [],    // { id, chiefAimId, title, durationMonths, position }
   goals: [],         // { id, objectiveId, title, month:"YYYY-MM", completed, completedDate }
-  habits: [],        // { id, name, icon, createdAt, archived }
+  habits: [],        // { id, name, icon, createdAt, archived, category:'daily'|'morning'|'evening'|'break' }
   habitLogs: {},     // { "YYYY-MM-DD": { habitId: true } }
   // Daily intentions — one freeform line per day. Keyed by ISO date so the
   // Today panel can show "yesterday → reflection → today's intention" as a
@@ -2606,85 +2639,165 @@ function streakFor(habitId) {
   }
   return streak;
 }
-function renderHabits(targetId='habits-quick') {
-  const el = document.getElementById(targetId);
-  if (!el) return;
-  el.innerHTML = '';
-  const today = todayISO();
-  // Read-only during render — don't mutate state (was creating empty {} on every render).
-  const todayLog = state.habitLogs[today] || {};
+// Habit categories — the day's arc. `daily` is the default (anytime); the
+// others tag a habit to a part of the day, or to a healthy break. Order here
+// is render order. Copy stays contemplative, not clinical.
+const HABIT_GROUPS = [
+  { key: 'daily',   label: 'Daily',   glyph: '◇',  hint: 'Anytime, every day' },
+  { key: 'morning', label: 'Morning', glyph: '🌅', hint: 'How you begin' },
+  { key: 'evening', label: 'Evening', glyph: '☾',  hint: 'How you close the day' },
+  { key: 'break',   label: 'Breaks',  glyph: '☘',  hint: 'Healthy pauses through the day' },
+];
+const HABIT_GROUP_KEYS = HABIT_GROUPS.map(g => g.key);
+function habitCategory(h) {
+  return HABIT_GROUP_KEYS.includes(h.category) ? h.category : 'daily';
+}
+// A few gentle starters offered inside an empty Breaks group — one tap adds
+// the habit. Directly serves "let me add habits for healthy breaks."
+const BREAK_SUGGESTIONS = [
+  { icon: '🚶', name: 'Short walk' },
+  { icon: '🧘', name: 'Stretch' },
+  { icon: '💧', name: 'Water' },
+  { icon: '👁', name: 'Look far · 20-20-20' },
+  { icon: '🌬', name: 'Three deep breaths' },
+];
 
-  const active = state.habits.filter(h => !h.archived);
-  if (active.length === 0) {
-    const empty = document.createElement('div');
-    empty.style.cssText = 'color:var(--text-faint);font-size:0.85rem;font-style:italic;flex:1;text-align:center;padding:0.5rem';
-    // Routine-cue copy — synthesis #10. Habit cues are anchored to existing
-    // routines, not clock times. Don't say "wake at 6"; say "before email,"
-    // "with morning coffee." Routine cues beat time cues for automaticity
-    // (Keller 2021, replicated 2024).
-    empty.textContent = 'Add what you want to do every day — before email, with morning coffee, after a walk.';
-    el.appendChild(empty);
-  }
-
-  active.forEach(h => {
-    const done = !!todayLog[h.id];
-    const streak = streakFor(h.id);
-    const chip = document.createElement('div');
-    chip.className = 'habit-chip' + (done ? ' done' : '');
-    chip.setAttribute('role', 'button');
-    chip.setAttribute('tabindex', '0');
-    chip.setAttribute('aria-pressed', done ? 'true' : 'false');
-    // Streak count intentionally removed from the visible chip (synthesis
-    // #4 from SANCTUARY-DAILY-USE-SYNTHESIS-2026-05-16.md: kill the 🔥 chip,
-    // keep the milestone thresholds at 7/30/100/365). The aria-label drops
-    // the count too — accessibility shouldn't expose a metric that's
-    // intentionally hidden from sight.
-    chip.setAttribute('aria-label', `${h.name}${done ? ', completed today' : ', tap to mark done'}`);
-    chip.innerHTML = `
-      <span class="habit-icon" aria-hidden="true">${escape(h.icon || '◇')}</span>
-      <span class="habit-name">${escape(h.name)}</span>
-      <button type="button" class="habit-del-btn" data-action="del-habit" data-id="${h.id}" title="Remove habit" aria-label="Remove habit ${escape(h.name)}">✕</button>
-    `;
-    chip.addEventListener('keydown', e => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
-    });
-    chip.addEventListener('click', e => {
-      if (e.target.closest('.habit-del-btn')) return;
-      if (!state.habitLogs[today]) state.habitLogs[today] = {};
-      state.habitLogs[today][h.id] = !done;
-      persist().then(() => { renderHabits('habits-quick'); renderHabits('habits-full'); renderHabitHistory(); });
-    });
-    el.appendChild(chip);
-  });
-
-  const add = document.createElement('div');
-  add.className = 'habit-add-chip';
-  add.innerHTML = `+ Add habit`;
-  add.addEventListener('click', () => promptAddHabit(targetId));
-  el.appendChild(add);
-
-  el.querySelectorAll('[data-action="del-habit"]').forEach(b => {
-    b.addEventListener('click', e => {
-      e.stopPropagation();
-      const h = state.habits.find(x => x.id === b.dataset.id);
-      if (!h) return;
-      if (!confirm(`Remove "${h.name}"? Past check-ins are kept.`)) return;
-      h.archived = true;
-      persist().then(() => { renderHabits('habits-quick'); renderHabits('habits-full'); renderHabitHistory(); });
-    });
-  });
+function reRenderHabits() {
+  renderHabits('habits-quick'); renderHabits('habits-full'); renderHabitHistory(); renderToday();
 }
 
-function promptAddHabit() {
+// Build one tap-to-complete habit chip (shared by every group row).
+function buildHabitChip(h, done, today) {
+  const chip = document.createElement('div');
+  chip.className = 'habit-chip' + (done ? ' done' : '');
+  chip.setAttribute('role', 'button');
+  chip.setAttribute('tabindex', '0');
+  chip.setAttribute('aria-pressed', done ? 'true' : 'false');
+  // Streak count intentionally kept off the visible chip + aria-label
+  // (synthesis #4: kill the 🔥 chip, keep milestones at 7/30/100/365).
+  chip.setAttribute('aria-label', `${h.name}${done ? ', completed today' : ', tap to mark done'}`);
+  chip.innerHTML = `
+    <span class="habit-icon" aria-hidden="true">${escape(h.icon || '◇')}</span>
+    <span class="habit-name">${escape(h.name)}</span>
+    <button type="button" class="habit-del-btn" data-action="del-habit" data-id="${h.id}" title="Remove habit" aria-label="Remove habit ${escape(h.name)}">✕</button>
+  `;
+  chip.addEventListener('keydown', e => {
+    if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); chip.click(); }
+  });
+  chip.addEventListener('click', e => {
+    if (e.target.closest('.habit-del-btn')) return;
+    const done2 = !!(state.habitLogs[today] || {})[h.id];
+    if (!state.habitLogs[today]) state.habitLogs[today] = {};
+    state.habitLogs[today][h.id] = !done2;
+    persist().then(reRenderHabits);
+  });
+  chip.querySelector('.habit-del-btn').addEventListener('click', e => {
+    e.stopPropagation();
+    if (!confirm(`Remove "${h.name}"? Past check-ins are kept.`)) return;
+    h.archived = true;
+    persist().then(reRenderHabits);
+  });
+  return chip;
+}
+
+function renderHabits(targetId = 'habits-quick') {
+  const el = document.getElementById(targetId);
+  if (!el) return;
+  const isFull = targetId === 'habits-full';
+  el.innerHTML = '';
+  el.classList.add('grouped');
+  const today = todayISO();
+  const todayLog = state.habitLogs[today] || {};   // read-only during render
+  const active = state.habits.filter(h => !h.archived);
+
+  // Quick bar with nothing yet: keep the routine-cue guidance + a single add.
+  if (active.length === 0 && !isFull) {
+    el.classList.remove('grouped');
+    const empty = document.createElement('div');
+    empty.style.cssText = 'color:var(--text-faint);font-size:0.85rem;font-style:italic;flex:1;text-align:center;padding:0.5rem';
+    // Routine-cue copy — synthesis #10: anchor cues to existing routines,
+    // not clock times ("before email", "with morning coffee").
+    empty.textContent = 'Add what you want to do every day — before email, with morning coffee, after a walk.';
+    el.appendChild(empty);
+    const add = document.createElement('div');
+    add.className = 'habit-add-chip';
+    add.textContent = '+ Add habit';
+    add.addEventListener('click', () => promptAddHabit());
+    el.appendChild(add);
+    return;
+  }
+
+  HABIT_GROUPS.forEach(group => {
+    const inGroup = active.filter(h => habitCategory(h) === group.key);
+    // Quick bar: only surface groups that actually hold habits.
+    if (!isFull && inGroup.length === 0) return;
+
+    const block = document.createElement('div');
+    block.className = 'habit-group';
+    const head = document.createElement('div');
+    head.className = 'habit-group-head';
+    head.innerHTML =
+      `<span class="hg-glyph" aria-hidden="true">${group.glyph}</span>` +
+      `<span class="hg-label">${group.label}</span>` +
+      (isFull ? `<span class="hg-hint">${group.hint}</span>` : '');
+    block.appendChild(head);
+
+    const row = document.createElement('div');
+    row.className = 'habit-group-row';
+    inGroup.forEach(h => row.appendChild(buildHabitChip(h, !!todayLog[h.id], today)));
+
+    // Full view: each group gets its own add chip that pre-tags the category.
+    if (isFull) {
+      // Empty Breaks group: offer gentle one-tap starters.
+      if (inGroup.length === 0 && group.key === 'break') {
+        BREAK_SUGGESTIONS.forEach(s => {
+          const sug = document.createElement('button');
+          sug.type = 'button';
+          sug.className = 'habit-suggest-chip';
+          sug.innerHTML = `<span aria-hidden="true">${escape(s.icon)}</span> ${escape(s.name)}`;
+          sug.setAttribute('aria-label', `Add break habit: ${s.name}`);
+          sug.addEventListener('click', () => {
+            state.habits.push({ id: uid('hab'), name: s.name, icon: s.icon, createdAt: todayISO(), archived: false, category: 'break' });
+            persist().then(reRenderHabits);
+          });
+          row.appendChild(sug);
+        });
+      }
+      const add = document.createElement('div');
+      add.className = 'habit-add-chip';
+      add.textContent = '+ Add';
+      add.addEventListener('click', () => promptAddHabit(group.key));
+      row.appendChild(add);
+    }
+    block.appendChild(row);
+    el.appendChild(block);
+  });
+
+  // Quick bar: one global add at the end (category chosen in the modal).
+  if (!isFull) {
+    const add = document.createElement('div');
+    add.className = 'habit-add-chip';
+    add.textContent = '+ Add habit';
+    add.addEventListener('click', () => promptAddHabit());
+    el.appendChild(add);
+  }
+}
+
+function promptAddHabit(presetCategory) {
   // Curated palette — contemplative glyphs first, lifestyle emoji second.
   // The user can still type anything custom (the input below the palette
   // wins). Selected glyph mirrors into the input so the chosen state is
   // visible and editable.
   const PALETTE = ['◇','✦','✧','☉','☾','◯','⊙','△','◎','🪷','☘','🌅','🏋','📖','🧘','🚶','💧','🍃'];
+  let category = HABIT_GROUP_KEYS.includes(presetCategory) ? presetCategory : 'daily';
   openModal(`
     <h3>New habit</h3>
     <p>One thing you want to do consistently. Examples: <em>Wake at 6</em>, <em>Gym</em>, <em>Read 30 min</em>, <em>Meditate</em>.</p>
     <input id="h-name" placeholder="Name your habit…" autofocus>
+    <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-faint);margin:0.7rem 0 0.4rem">When</div>
+    <div id="h-cat" role="radiogroup" aria-label="When this habit belongs" style="display:flex;flex-wrap:wrap;gap:0.4rem;margin-bottom:0.6rem">
+      ${HABIT_GROUPS.map(g => `<button type="button" class="h-cat-opt" role="radio" aria-checked="${g.key === category}" data-cat="${g.key}" style="padding:0.4rem 0.75rem;border:1px solid ${g.key === category ? 'var(--gold)' : 'var(--card-border)'};border-radius:3px;background:${g.key === category ? 'rgba(196,151,58,0.12)' : 'rgba(255,255,255,0.025)'};color:var(--text);font-size:0.8rem;line-height:1;cursor:pointer;font-family:inherit;transition:border-color .15s,background .15s"><span aria-hidden="true">${g.glyph}</span> ${g.label}</button>`).join('')}
+    </div>
     <div style="font-size:0.6rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--text-faint);margin:0.7rem 0 0.4rem">Symbol</div>
     <div id="h-icon-palette" role="radiogroup" aria-label="Habit symbol" style="display:flex;flex-wrap:wrap;gap:0.35rem;margin-bottom:0.6rem">
       ${PALETTE.map(g => `<button type="button" class="h-icon-opt" role="radio" aria-checked="false" data-glyph="${escape(g)}" style="width:34px;height:34px;border:1px solid var(--card-border);border-radius:3px;background:rgba(255,255,255,0.025);color:var(--text);font-size:1rem;line-height:1;cursor:pointer;display:inline-flex;align-items:center;justify-content:center;transition:border-color .15s,background .15s,transform .1s">${escape(g)}</button>`).join('')}
@@ -2695,6 +2808,18 @@ function promptAddHabit() {
       <button class="btn btn-gold" id="h-save">Add habit</button>
     </div>
   `);
+  // Wire the When selector — single-choice, mirrors into `category`.
+  document.querySelectorAll('#h-cat .h-cat-opt').forEach(btn => {
+    btn.addEventListener('click', () => {
+      category = btn.dataset.cat;
+      document.querySelectorAll('#h-cat .h-cat-opt').forEach(b => {
+        const on = b.dataset.cat === category;
+        b.style.borderColor = on ? 'var(--gold)' : 'var(--card-border)';
+        b.style.background = on ? 'rgba(196,151,58,0.12)' : 'rgba(255,255,255,0.025)';
+        b.setAttribute('aria-checked', on ? 'true' : 'false');
+      });
+    });
+  });
   // Wire the palette: clicking a glyph fills the icon input and marks selected
   const iconInput = document.getElementById('h-icon');
   document.querySelectorAll('#h-icon-palette .h-icon-opt').forEach(btn => {
@@ -2715,11 +2840,10 @@ function promptAddHabit() {
     const name = document.getElementById('h-name').value.trim();
     if (!name) { toast('Give it a name'); return; }
     const icon = iconInput.value.trim() || '◇';
-    state.habits.push({ id: uid('hab'), name, icon, createdAt: todayISO(), archived: false });
+    state.habits.push({ id: uid('hab'), name, icon, createdAt: todayISO(), archived: false, category });
     await persist();
     closeModal();
-    renderHabits('habits-quick'); renderHabits('habits-full'); renderHabitHistory();
-    renderToday();
+    reRenderHabits();
   });
   document.getElementById('h-name').addEventListener('keydown', e => {
     if (e.key === 'Enter') document.getElementById('h-save').click();
@@ -3475,6 +3599,218 @@ const VisionPDF = (() => {
 })();
 
 /* ════════════════════════════════════════════════════════════════
+   SANCTUARY PDF — shared chrome for the printable one-pagers. Lazy-loads
+   jsPDF from cdnjs (CSP-allowlisted) and draws the standard FRQNCY header +
+   footer so every export reads as one family. Text-only; nothing leaves the
+   device beyond fetching the library.
+   ════════════════════════════════════════════════════════════════ */
+const SanctuaryPDF = (() => {
+  let libPromise = null;
+  function loadLib() {
+    if (window.jspdf && window.jspdf.jsPDF) return Promise.resolve(window.jspdf.jsPDF);
+    if (libPromise) return libPromise;
+    libPromise = new Promise((resolve, reject) => {
+      const s = document.createElement('script');
+      s.src = 'https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js';
+      s.onload = () => (window.jspdf && window.jspdf.jsPDF) ? resolve(window.jspdf.jsPDF) : reject(new Error('jsPDF missing'));
+      s.onerror = () => reject(new Error('Could not load the PDF library'));
+      document.head.appendChild(s);
+    });
+    return libPromise;
+  }
+  const NAVY = [11, 28, 61], GOLD = [196, 151, 58], MUTE = [120, 132, 150], FAINT = [155, 165, 180];
+  const A4 = { W: 210, H: 297, M: 16 };
+  // Draw the standard header on the current page; return the y just below it.
+  function header(doc, title, subtitle) {
+    const { W, M } = A4; let y = M;
+    doc.setFont('helvetica', 'normal'); doc.setFontSize(8); doc.setTextColor(...GOLD);
+    doc.text('FRQNCY · SANCTUARY', M, y + 1, { charSpace: 1.2 });
+    y += 8;
+    doc.setFont('times', 'normal'); doc.setFontSize(26); doc.setTextColor(...NAVY);
+    doc.text(title, M, y + 6);
+    y += 11;
+    if (subtitle) {
+      doc.setFont('times', 'italic'); doc.setFontSize(12); doc.setTextColor(...NAVY);
+      const lines = doc.splitTextToSize(subtitle, W - 2 * M).slice(0, 3);
+      doc.text(lines, M, y + 3); y += lines.length * 5.6 + 1;
+    }
+    doc.setDrawColor(...GOLD); doc.setLineWidth(0.5); doc.line(M, y + 2, W - M, y + 2);
+    return y + 9;
+  }
+  function footer(doc) {
+    const { W, H, M } = A4; const fy = H - 9;
+    const today = new Date();
+    const dateStr = today.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+    const n = doc.getNumberOfPages();
+    for (let pg = 1; pg <= n; pg++) {
+      doc.setPage(pg);
+      doc.setFont('times', 'normal'); doc.setFontSize(8); doc.setTextColor(...MUTE);
+      doc.text('Held privately · frqncy.network', M, fy);
+      doc.text(`${dateStr}${n > 1 ? '  ·  ' + pg + ' / ' + n : ''}`, W - M, fy, { align: 'right' });
+    }
+  }
+  async function withButton(btn, fn) {
+    const orig = btn ? btn.textContent : null;
+    if (btn) { btn.disabled = true; btn.textContent = '⤓ Building…'; }
+    try { await fn(); }
+    catch (e) { toast(e && e.message ? e.message : 'PDF failed — try again'); }
+    finally { if (btn) { btn.disabled = false; btn.textContent = orig; } }
+  }
+  return { loadLib, header, footer, withButton, A4, NAVY, GOLD, MUTE, FAINT };
+})();
+
+/* ════════════════════════════════════════════════════════════════
+   HABIT SHEET → PDF — a printable one-page week to tick by hand. Habits are
+   grouped by the day's arc (Daily · Morning · Evening · Breaks); each gets a
+   row of seven empty boxes headed by the next seven dates. Row height scales
+   so it always lands on a single page.
+   ════════════════════════════════════════════════════════════════ */
+const HabitsPDF = (() => {
+  async function download() {
+    const btn = document.getElementById('habits-pdf-btn');
+    const active = state.habits.filter(h => !h.archived);
+    if (active.length === 0) { toast('Add a habit first.'); return; }
+    await SanctuaryPDF.withButton(btn, async () => {
+      const jsPDF = await SanctuaryPDF.loadLib();
+      const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      const { W, H, M } = SanctuaryPDF.A4;
+      let y = SanctuaryPDF.header(doc, 'Daily Practice', 'A week of practice — tick each day by hand.');
+
+      // Seven day columns starting today.
+      const days = [];
+      for (let i = 0; i < 7; i++) { const d = new Date(); d.setDate(d.getDate() + i); days.push(d); }
+      const WD = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const nameColW = 80;
+      const dayArea = (W - 2 * M) - nameColW;
+      const dayColW = dayArea / 7;
+      const dayCx = i => M + nameColW + i * dayColW + dayColW / 2;
+
+      // Column header — weekday + day number over each box column.
+      doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(...SanctuaryPDF.MUTE);
+      days.forEach((d, i) => {
+        doc.text(WD[d.getDay()].toUpperCase(), dayCx(i), y, { align: 'center', charSpace: 0.5 });
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(9); doc.setTextColor(...SanctuaryPDF.NAVY);
+        doc.text(String(d.getDate()), dayCx(i), y + 4.5, { align: 'center' });
+        doc.setFont('helvetica', 'normal'); doc.setFontSize(7); doc.setTextColor(...SanctuaryPDF.MUTE);
+      });
+      let gy = y + 9;
+
+      const groups = HABIT_GROUPS
+        .map(g => ({ g, hs: active.filter(h => habitCategory(h) === g.key) }))
+        .filter(x => x.hs.length);
+      const labelH = 6.5;
+      const footerY = H - 12;
+      const avail = footerY - gy;
+      const rowH = Math.max(6, Math.min(11, (avail - groups.length * labelH) / active.length));
+      const box = Math.min(dayColW * 0.55, rowH * 0.6);
+
+      groups.forEach(({ g, hs }) => {
+        // group label
+        doc.setFont('helvetica', 'bold'); doc.setFontSize(7.5); doc.setTextColor(...SanctuaryPDF.GOLD);
+        doc.text(`${g.label.toUpperCase()}`, M, gy + 4, { charSpace: 1 });
+        gy += labelH;
+        hs.forEach(h => {
+          const cy = gy + rowH / 2;
+          doc.setFont('times', 'normal'); doc.setFontSize(10.5); doc.setTextColor(...SanctuaryPDF.NAVY);
+          // Icons are emoji/symbol glyphs jsPDF's core fonts can't encode — the
+          // printable sheet is name-only (cleaner to tick by hand regardless).
+          const nm = doc.splitTextToSize(h.name, nameColW - 3)[0];
+          doc.text(nm, M, cy + 1.4);
+          doc.setDrawColor(200, 206, 214); doc.setLineWidth(0.3);
+          for (let i = 0; i < 7; i++) {
+            doc.roundedRect(dayCx(i) - box / 2, cy - box / 2, box, box, 0.6, 0.6);
+          }
+          // faint row separator
+          doc.setDrawColor(233, 236, 240); doc.setLineWidth(0.2);
+          doc.line(M, gy + rowH, W - M, gy + rowH);
+          gy += rowH;
+        });
+        gy += 1.5;
+      });
+
+      SanctuaryPDF.footer(doc);
+      doc.save('frqncy-habit-sheet.pdf');
+      toast('Habit sheet downloaded. ✦');
+    });
+  }
+  return { download };
+})();
+
+/* ════════════════════════════════════════════════════════════════
+   GOAL PYRAMID → PDF — Dream → Chief Aims → Objectives → this-month's Goals,
+   laid out on a single page. Row height + font scale down together so the
+   whole pyramid always fits one sheet ("always on one page for now").
+   ════════════════════════════════════════════════════════════════ */
+const GoalsPDF = (() => {
+  async function download() {
+    const btn = document.getElementById('goals-pdf-btn');
+    const aims = (state.chiefAims || []).filter(a => a.name && a.name.trim());
+    if (!aims.length && !(state.dream || '').trim()) { toast('Add a dream or a chief aim first.'); return; }
+    await SanctuaryPDF.withButton(btn, async () => {
+      const jsPDF = await SanctuaryPDF.loadLib();
+      const doc = new jsPDF({ unit: 'mm', format: 'a4', orientation: 'portrait' });
+      const { W, H, M } = SanctuaryPDF.A4;
+      const thisMonth = monthISO();
+      let y = SanctuaryPDF.header(doc, 'Goal Pyramid', (state.dream || '').trim());
+
+      // Flatten into rows so we can measure before drawing.
+      const rows = [];
+      aims.forEach(aim => {
+        rows.push({ type: 'aim', text: aim.name, aim });
+        const objs = (state.objectives || []).filter(o => o.chiefAimId === aim.id);
+        if (!objs.length) rows.push({ type: 'none', text: 'No objectives yet' });
+        objs.forEach(o => {
+          const dur = o.durationMonths ? ` · ${o.durationMonths} mo` : '';
+          rows.push({ type: 'obj', text: (o.title || 'Untitled objective') + dur, obj: o });
+          const goals = (state.goals || []).filter(gg => gg.objectiveId === o.id);
+          goals.forEach(gg => rows.push({ type: 'goal', text: (gg.title || 'Untitled goal'), goal: gg }));
+        });
+      });
+
+      const footerY = H - 12;
+      const avail = footerY - y;
+      const gaps = aims.length * 2.5;
+      const rowH = Math.max(4.4, Math.min(7, (avail - gaps) / Math.max(rows.length, 1)));
+      const fAim = Math.min(12.5, rowH * 1.8), fObj = Math.min(10.5, rowH * 1.55), fGoal = Math.min(9.5, rowH * 1.4);
+
+      rows.forEach(r => {
+        if (r.type === 'aim') y += 2.5;
+        const cy = y + rowH / 2 + (r.type === 'aim' ? fAim : r.type === 'obj' ? fObj : fGoal) * 0.17;
+        if (r.type === 'aim') {
+          doc.setFont('times', 'bold'); doc.setFontSize(fAim); doc.setTextColor(...SanctuaryPDF.NAVY);
+          const sc = r.aim.score && typeof r.aim.score.current === 'number'
+            ? `  ${r.aim.score.current}/${r.aim.score.target ?? 10}` : '';
+          const t = doc.splitTextToSize(r.text, W - 2 * M - 24)[0];
+          doc.text(t, M, cy);
+          if (sc) { doc.setFont('times', 'italic'); doc.setFontSize(fAim * 0.72); doc.setTextColor(...SanctuaryPDF.MUTE); doc.text(sc.trim(), W - M, cy, { align: 'right' }); }
+        } else if (r.type === 'obj') {
+          doc.setFont('times', 'normal'); doc.setFontSize(fObj); doc.setTextColor(...SanctuaryPDF.NAVY);
+          doc.text(doc.splitTextToSize('·  ' + r.text, W - 2 * M - 10)[0], M + 6, cy);
+        } else if (r.type === 'none') {
+          doc.setFont('times', 'italic'); doc.setFontSize(fObj); doc.setTextColor(...SanctuaryPDF.FAINT);
+          doc.text(r.text, M + 6, cy);
+        } else {
+          const done = !!r.goal.completed;
+          const bx = M + 12, bs = fGoal * 0.42;
+          doc.setDrawColor(...(done ? SanctuaryPDF.GOLD : [200, 206, 214])); doc.setLineWidth(0.35);
+          doc.roundedRect(bx, cy - bs, bs, bs, 0.5, 0.5);
+          if (done) { doc.setFillColor(...SanctuaryPDF.GOLD); doc.roundedRect(bx, cy - bs, bs, bs, 0.5, 0.5, 'F'); }
+          doc.setFont('times', 'normal'); doc.setFontSize(fGoal); doc.setTextColor(...(done ? SanctuaryPDF.MUTE : SanctuaryPDF.NAVY));
+          const mo = r.goal.month === thisMonth ? '' : (r.goal.month ? `  (${r.goal.month})` : '');
+          doc.text(doc.splitTextToSize(r.text + mo, W - 2 * M - 20)[0], bx + bs + 3, cy);
+        }
+        y += rowH;
+      });
+
+      SanctuaryPDF.footer(doc);
+      doc.save('frqncy-goal-pyramid.pdf');
+      toast('Goal pyramid downloaded. ✦');
+    });
+  }
+  return { download };
+})();
+
+/* ════════════════════════════════════════════════════════════════
    EARTH RHYTHMS — today's moon phase + Mayan kin, computed in-browser.
    Deterministic (no network): the moon from a known new-moon epoch and the
    synodic month; the Mayan Tzolk'in / Haab' / Long Count from the Julian Day
@@ -3935,15 +4271,27 @@ function renderToday() {
 
   const niceDate = formatDate(new Date()); // already imported
 
-  // Today's habits: render as chips with done state
+  // Today's habits: render as chips with done state, lightly grouped by the
+  // day's arc (Daily · Morning · Evening · Breaks). A group label only shows
+  // when more than one group is populated — a single-group day reads as a
+  // plain glance list, no ceremony.
   const activeHabits = state.habits.filter(h => !h.archived);
   const todayLog = state.habitLogs[today] || {};
-  const habitsBlock = activeHabits.length === 0
-    ? '<div class="today-glance-empty">No habits yet — add one in Daily Practice.</div>'
-    : '<div class="glance-list">' + activeHabits.map(h => {
-        const done = !!todayLog[h.id];
-        return `<span class="today-chip ${done ? 'done' : ''}" data-habit-id="${h.id}" role="button" tabindex="0" aria-pressed="${done ? 'true' : 'false'}" aria-label="${escape(h.name)}${done ? ', done today' : ', tap to mark done'}"><span aria-hidden="true">${escape(h.icon || '◇')}</span> ${escape(h.name)}</span>`;
-      }).join('') + '</div>';
+  const chipHTML = h => {
+    const done = !!todayLog[h.id];
+    return `<span class="today-chip ${done ? 'done' : ''}" data-habit-id="${h.id}" role="button" tabindex="0" aria-pressed="${done ? 'true' : 'false'}" aria-label="${escape(h.name)}${done ? ', done today' : ', tap to mark done'}"><span aria-hidden="true">${escape(h.icon || '◇')}</span> ${escape(h.name)}</span>`;
+  };
+  let habitsBlock;
+  if (activeHabits.length === 0) {
+    habitsBlock = '<div class="today-glance-empty">No habits yet — add one in Daily Practice.</div>';
+  } else {
+    const populated = HABIT_GROUPS.map(g => ({ g, hs: activeHabits.filter(h => habitCategory(h) === g.key) })).filter(x => x.hs.length);
+    habitsBlock = populated.length <= 1
+      ? '<div class="glance-list">' + activeHabits.map(chipHTML).join('') + '</div>'
+      : populated.map(({ g, hs }) =>
+          `<div class="today-habit-group"><div class="today-habit-grouplabel">${g.glyph} ${g.label}</div><div class="glance-list">${hs.map(chipHTML).join('')}</div></div>`
+        ).join('');
+  }
 
   // This month's goals
   const thisMonth = monthISO();
@@ -4186,6 +4534,8 @@ function syncTabsScrollable() {
   bindNourishment();
   document.getElementById('mm-play-btn')?.addEventListener('click', () => MindMovie.play());
   document.getElementById('vb-pdf-btn')?.addEventListener('click', () => VisionPDF.download());
+  document.getElementById('habits-pdf-btn')?.addEventListener('click', () => HabitsPDF.download());
+  document.getElementById('goals-pdf-btn')?.addEventListener('click', () => GoalsPDF.download());
   renderEarthRhythms();
   syncTabsScrollable();
   window.addEventListener('resize', syncTabsScrollable);
