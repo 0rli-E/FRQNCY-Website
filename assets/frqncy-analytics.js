@@ -26,7 +26,15 @@
   const SUPABASE_KEY   = 'sb-vyazlspbmwmlyncdlezh-auth-token'; // localStorage key
   const PII_KEYS       = ['email', 'name', 'phone', 'password', 'token', 'key', 'secret'];
   const SCROLL_MARKS   = [25, 50, 75, 100];
-  const TOPIC_URL_RE   = /^\/v2\/([^/]+)\//;   // /v2/<slug>/
+  // Topic pages now live at the root (`/<slug>/`) — the old `/v2/` prefix was
+  // removed. Match a single trailing-slash segment, but exclude the known
+  // section hubs so /watch/, /social/, /courses/ etc. stay plain page_views.
+  const TOPIC_URL_RE   = /^\/([a-z0-9][a-z0-9-]*)\/?$/;
+  const NON_TOPIC      = new Set([
+    'watch', 'social', 'courses', 'course', 'my-frqncy', 'about', 'browse',
+    'search', 'research', 'media', 'orgs', 'affiliates', 'donations',
+    'membership', 'explore', 'aligned', 'sanctuary', 'books', 'papers',
+  ]);
   const COURSE_URL_RE  = /\/(course|courses?)\//i;
 
   // ─── Do-Not-Track gate ──────────────────────────────────────────────────────
@@ -107,7 +115,7 @@
     const path  = location.pathname;
     const topicMatch = path.match(TOPIC_URL_RE);
 
-    if (topicMatch) {
+    if (topicMatch && !NON_TOPIC.has(topicMatch[1])) {
       // Topic page — emit topic_view (richer) instead of plain page_view
       send('topic_view', {
         topic_slug: topicMatch[1],
