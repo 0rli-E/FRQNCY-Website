@@ -65,6 +65,7 @@
     course: null,                // full course object from courses.json
     lessons: [],                 // shorthand: course.lessons
     user: null,                  // Supabase user (or null)
+    authChecked: false,          // true once auth state is known — gate fails open until then
     isTeacher: false,
     enrolled: false,
     completedIdx: readLocalProgress(),  // Set<number> of completed lesson indices
@@ -171,15 +172,62 @@
     }
   }
 
-  // ── Hook the per-page markComplete so the floating UI reflects clicks ───
+  // ── Soft login gate ──────────────────────────────────────────────────────
+  // The curriculum, lesson titles and descriptions stay readable to everyone
+  // (editorial value: every teaching lives on the site). But *starting* a
+  // lesson and *tracking progress* bind to an account — so a signed-out user
+  // who clicks play or "Mark complete" gets a gentle sign-in prompt instead.
+  function promptSignIn(action) {
+    try { if (window.frqncy && window.frqncy.track) window.frqncy.track('course_login_prompted', { slug: SLUG, action: action }); } catch (_) {}
+    if (document.getElementById('frq-cr-gate')) return;
+    const next = encodeURIComponent(location.pathname + location.hash);
+    const line = action === 'complete'
+      ? 'Sign in to track your progress — it saves to your account and follows you across devices.'
+      : 'Sign in to start this lesson. Your progress and notes save to your account, so you can pick up where you left off anywhere.';
+    const el = document.createElement('div');
+    el.id = 'frq-cr-gate';
+    el.setAttribute('role', 'dialog');
+    el.setAttribute('aria-modal', 'true');
+    el.innerHTML =
+      '<div class="frq-cr-gate-backdrop"></div>' +
+      '<div class="frq-cr-gate-box">' +
+        '<div class="frq-cr-gate-eyebrow">FRQNCY Courses</div>' +
+        '<h3 class="frq-cr-gate-title">Continue with a free account</h3>' +
+        '<p class="frq-cr-gate-copy">' + line + '</p>' +
+        '<a class="frq-cr-gate-btn" href="/social/login/?next=' + next + '">Sign in / Create account</a>' +
+        '<button class="frq-cr-gate-dismiss" type="button">Not now</button>' +
+      '</div>';
+    const css =
+      '#frq-cr-gate{position:fixed;inset:0;z-index:99999;display:flex;align-items:center;justify-content:center;padding:1.25rem}' +
+      '#frq-cr-gate .frq-cr-gate-backdrop{position:absolute;inset:0;background:rgba(4,9,22,0.72);backdrop-filter:blur(3px)}' +
+      '#frq-cr-gate .frq-cr-gate-box{position:relative;max-width:400px;width:100%;background:#0B1C3D;border:1px solid rgba(196,151,58,0.35);border-radius:6px;padding:2rem 1.75rem;text-align:center;box-shadow:0 24px 60px rgba(0,0,0,0.5)}' +
+      '#frq-cr-gate .frq-cr-gate-eyebrow{font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;color:#C4973A;margin-bottom:0.75rem}' +
+      '#frq-cr-gate .frq-cr-gate-title{font-family:\'Cormorant\',serif;font-size:1.55rem;font-weight:500;color:#fff;margin:0 0 0.6rem}' +
+      '#frq-cr-gate .frq-cr-gate-copy{font-size:0.85rem;line-height:1.6;color:rgba(255,255,255,0.72);margin:0 0 1.4rem}' +
+      '#frq-cr-gate .frq-cr-gate-btn{display:block;background:#C4973A;color:#0B1C3D;font-size:0.72rem;letter-spacing:0.14em;text-transform:uppercase;font-weight:600;padding:12px 18px;border-radius:3px;text-decoration:none;margin-bottom:0.7rem}' +
+      '#frq-cr-gate .frq-cr-gate-btn:hover{background:#d4a850}' +
+      '#frq-cr-gate .frq-cr-gate-dismiss{background:none;border:none;color:rgba(255,255,255,0.5);font-size:0.72rem;letter-spacing:0.08em;cursor:pointer;padding:6px}' +
+      '#frq-cr-gate .frq-cr-gate-dismiss:hover{color:rgba(255,255,255,0.8)}';
+    if (!document.getElementById('frq-cr-gate-css')) {
+      const s = document.createElement('style'); s.id = 'frq-cr-gate-css'; s.textContent = css; document.head.appendChild(s);
+    }
+    function close() { el.remove(); }
+    el.querySelector('.frq-cr-gate-backdrop').addEventListener('click', close);
+    el.querySelector('.frq-cr-gate-dismiss').addEventListener('click', close);
+    document.addEventListener('keydown', function esc(e){ if(e.key==='Escape'){ close(); document.removeEventListener('keydown', esc); } });
+    document.body.appendChild(el);
+  }
+
+  // ── Hook the per-page markComplete + playVideo (progress + play bind to login) ──
   function hookPerPageMarkComplete() {
-    // Per-page course pages define `function markComplete(idx)` at the top
-    // of an inline <script>. Top-level `function` declarations become global,
-    // so we can wrap it to also push to cloud. If it's not present (other
-    // course pages with different code), just listen on the storage event.
+    // Per-page course pages define `function markComplete(idx)` and
+    // `function playVideo(el)` at the top of an inline <script>. Top-level
+    // `function` declarations become global, so we can wrap them to gate on
+    // login and (for completion) push to cloud.
     const orig = window.markComplete;
     if (typeof orig === 'function') {
       window.markComplete = function (idx) {
+        if (state.authChecked && !state.user) { promptSignIn('complete'); return; }
         try { orig.call(this, idx); } finally {
           state.completedIdx = readLocalProgress();
           const l = state.lessons[idx];
@@ -191,6 +239,14 @@
           }
           rerenderLessons();
         }
+      };
+    }
+    const origPlay = window.playVideo;
+    if (typeof origPlay === 'function') {
+      window.playVideo = function (el) {
+        if (state.authChecked && !state.user) { promptSignIn('play'); return; }
+        try { if (window.frqncy && window.frqncy.track) window.frqncy.track('lesson_started', { slug: SLUG }); } catch (_) {}
+        return origPlay.call(this, el);
       };
     }
     // Also: any time another tab writes to localStorage, pull it in.
@@ -730,6 +786,7 @@
       try {
         await window.frqncy.ready;
         state.user = await window.frqncy.auth.getUser();
+        state.authChecked = true;  // gate is armed only once we truly know the auth state
         if (state.user) {
           state.store = window.frqncy.coursesStore(state.user);
           state.isTeacher = await state.store.amTeacher(SLUG).catch(() => false);
@@ -744,6 +801,7 @@
         // Subscribe to subsequent auth changes (sign in mid-session)
         window.frqncy.onAuth(async (u) => {
           state.user = u || null;
+          state.authChecked = true;
           state.store = u ? window.frqncy.coursesStore(u) : null;
           if (state.store) {
             state.isTeacher = await state.store.amTeacher(SLUG).catch(() => false);
