@@ -2,7 +2,9 @@
 
 *Single source of truth for everything being built. Updated as items move.*
 
-*Last sync: 2026-05-12*
+*Last full sync: 2026-05-12. Partial update 2026-08-01 (Layer 0 — Operational identity).*
+
+> ⚠️ **This document is stale outside the section dated 2026-08-01.** The ✅/⚪ statuses below reflect 2026-05-12 and know nothing about Sanctuary, VBRTN, Aligned Goods, Courses/Skool, NRG, or the IG funnel — all built since. The *layer structure* is still sound; the *statuses* are not. Verify against prod before treating any row as current.
 
 ---
 
@@ -81,6 +83,58 @@ These are the things that have to keep working. If any of them break, everything
 | ✅ | Consciousness rename (was Metaphysics) — audit complete | `content.json` + `_redirects` |
 | 🟡 | Service-worker version discipline — bump on every JSON/JS shape change | `sw.js` |
 | 🟡 | Sync-from-canonical guard in CI (run `sync-headers.mjs --check`) | `scripts/sync-headers.mjs` |
+| 🟡 | **Operational identity — move every AI + tooling account to `frqncy@frqncy.network`** | see below |
+
+### Operational identity — one company email owns every account
+
+*Added 2026-08-01.*
+
+**The decision:** `frqncy@frqncy.network` is the account-of-record for every AI service, every piece of tooling, and every platform FRQNCY depends on. Not `orlando.eisenreich@gmail.com`, not a personal handle. The company should survive its founder losing a phone.
+
+**Why this is Layer 0 and not an errand:** accounts registered to a personal Gmail are a single point of failure for recovery, they can't be handed to a co-founder or contractor, they complicate the SAFE/token-warrant diligence already in flight, and they make it impossible to cleanly separate FRQNCY spend from personal spend. Every month this waits, more services accumulate on the wrong identity.
+
+**Rule for anything new:** if a service is not yet signed up for, do **not** migrate it later — create it on `frqncy@frqncy.network` on day one. Most of the media stack below is in exactly this state, which makes it free to get right.
+
+#### A. Already correct — verify only
+
+| Status | Account | Note |
+|---|---|---|
+| ✅ | Google Workspace / Drive | Verified 2026-08-01: Drive is owned by `frqncy@frqncy.network`. This is the anchor identity. |
+
+#### B. Migrate — account exists on the wrong identity
+
+| Status | Account | What "done" looks like |
+|---|---|---|
+| ⚪ | Anthropic / Claude | Billing + login on `frqncy@`. Currently this workspace authenticates as `orlando.eisenreich@gmail.com`. |
+| ⚪ | GitHub | Account is personal (`0rli-E`), repo `0rli-E/FRQNCY-Website`. Decide: add `frqncy@` as verified email, or create a `FRQNCY` **org** and transfer the repo. Org is the real answer — do it before outside contributors. |
+| ⚪ | Cloudflare (Pages + DNS) | Highest-consequence one on the list: losing it loses the domain **and** the deploy pipeline. |
+| ⚪ | Supabase | Owns all user data. Migrate the org owner, not just an invite. |
+| ⚪ | Miro | Org `3458764676643463076` — 4 boards, so migration cost is near zero right now. |
+| ⚪ | Resend (SMTP) | See `proposals/RESEND-SMTP-SETUP-2026-05-16.md`. |
+| ⚪ | Skool (courses) | See `proposals/COURSES-SKOOL-SHAPE-HANDOFF.md`. |
+| ⚪ | Stripe | Not yet configured in prod — so this is really a *create-it-right* item. Must be the company entity regardless. |
+| ⚪ | OpenRouter · Tavily · Brave | The three API keys currently in `~/.frqncy-harness/auth/keys.json`. |
+
+#### C. Create on `frqncy@` from the start — not yet signed up
+
+| Status | Account | Note |
+|---|---|---|
+| ⚪ | ElevenLabs | Real API — becomes scriptable once keyed. |
+| ⚪ | Runway | Real API. |
+| ⚪ | Postiz | Real API (open-source). |
+| ⚪ | Metricool | API on paid tiers. |
+| ⚪ | Higgsfield | API is partner-gated; expect manual use. |
+| ⚪ | CapCut | No public API — account hygiene only. |
+| ⚪ | X / Telegram handles | `@frqncy_network` still unclaimed on X. See Layer 10 + `proposals/VISIBILITY-PLAN.md`. |
+
+#### D. In-repo cleanup — agent-shippable, no browser needed
+
+| Status | Item | Where |
+|---|---|---|
+| ⚪ | Replace `orlando.eisenreich@gmail.com` with the right company address in 9 files | `CLAUDE.md`, `mcp-servers/frqncy-content/package.json` (author field), `audits/seo/PRESS-PITCHES.md` (×2), `audits/seo/WIKIDATA-EXECUTION-GUIDE.md`, + 4 handoff/session docs |
+| ⚪ | Decide the public-facing convention | Repo already uses `hello@` (41×), `orlando@` (7×), plus `podcast@`, `ops@`, `launchpad@`, `concerts@`, `noreply@`. `frqncy@` is the *account-of-record*; `hello@` stays the *public contact*. Don't collapse the two. |
+
+**Sequencing note:** do Cloudflare and GitHub first — they're the two where loss of access is unrecoverable. The media stack (section C) can wait until there's an actual publishing run to support.
 
 ---
 
