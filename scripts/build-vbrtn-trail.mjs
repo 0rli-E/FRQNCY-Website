@@ -21,6 +21,16 @@ import { dirname, join } from 'node:path';
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const read = (f) => JSON.parse(readFileSync(join(ROOT, f), 'utf8'));
 
+// Truncate on a word boundary — a hard slice leaves cards reading "hot springs
+// running i".
+function clip(s, max) {
+  const t = String(s || '').trim();
+  if (t.length <= max) return t;
+  const cut = t.slice(0, max);
+  const at = cut.lastIndexOf(' ');
+  return (at > max * 0.6 ? cut.slice(0, at) : cut).replace(/[\s,;:.-]+$/, '') + '…';
+}
+
 const search   = read('search.json');        // topics (the spine)
 const resources = read('resources.json');     // books, people, media…
 const music    = read('music.json').music || [];
@@ -41,31 +51,50 @@ const PRACTICES = [
 ];
 
 // ── desire → keyword bag (matched against slug + label + desc) ────
-// The 12 intake dominantDesire values. Keywords are substrings; slug/label
-// hits weigh more than desc hits.
+// The 12 intake dominantDesire values, matched against a topic's slug + label
+// only. Three keyword forms:
+//   'peace'      exact word, hyphens count as boundaries (so 'home' will not
+//                match `homeopathy`, which is how stability used to route there)
+//   'meditat*'   stem — matches meditation, meditative
+//   '=source'    slug must equal this exactly (`source` yes, `open-source` no)
+//
+// Descriptions are deliberately NOT searched. A passing mention of "learning"
+// is not a reason to hand someone artificial-intelligence when they said they
+// want growth. Some desires only route to four topics; that is honest. The
+// trail hands out one topic at a time, so a short, correct list beats a long
+// one padded with near-misses.
 const DESIRE_KEYWORDS = {
-  freedom:    ['freedom','sovereign','liberat','autonom','minimal','decentral','independ','web3','self-custody'],
-  peace:      ['peace','calm','still','meditat','mental-health','presence','rest','sleep','somatic'],
-  purpose:    ['purpose','meaning','soul','source','oneness','calling','dharma','vision','akashic','human design','gene'],
-  love:       ['love','relationship','connect','community','heart','nonviolent','compassion','oneness','dialogue'],
-  health:     ['health','nutrition','movement','sleep','body','heal','detox','somatic','vital','yoga','breathwork','fermentation','plant medicine'],
-  time:       ['time','presence','minimal','focus','leisure','rest','systems-thinking','natural-cycles'],
-  money:      ['money','wealth','abund','finance','capital','crypto','defi','invest','prosper','business','economy'],
-  creativity: ['creat','art','music','story','poetry','design','express','play','photo','film','dance','theater','make'],
-  growth:     ['growth','learn','develop','evolv','master','psychology','education','emergence','wisdom','neuroscience'],
-  impact:     ['impact','service','contribut','regenerat','social','movement','governance','enterprise','climate','biodiversity','sustainab'],
-  adventure:  ['adventure','explore','outdoor','sport','travel','play','festival','gaming','games','esports'],
-  stability:  ['stabil','ground','secur','steady','home','sustainab','minimal','governance','sleep','permac'],
+  freedom:    ['freedom','sovereign*','liberat*','autonom*','minimal*','decentrali*','independen*','web3','self-custody','privacy'],
+  peace:      ['peace','peaceful','calm','stillness','meditat*','mental health','presence','rest','sleep','somatic'],
+  purpose:    ['purpose','meaning','soul','oneness','calling','dharma','akashic','human design','ikigai','=source','pilgrimage','synchronicity','mythology','astrology','near death experiences'],
+  love:       ['love','relationship*','connection','community','heart','nonviolent','compassion*','oneness','dialogue'],
+  health:     ['health','healing','nutrition','movement','sleep','body','detox','somatic','vitality','yoga','breathwork','fermentation','plant medicine','longevity'],
+  time:       ['time','presence','minimal*','focus','leisure','rest','systems thinking','natural cycles'],
+  money:      ['money','wealth','abundance','finance','financial','capital','crypto','defi','invest*','prosperity','business','economy','economics'],
+  creativity: ['creativ*','creation','art','arts','music','story','storytelling','poetry','product design','visual art','expression','play','photography','film','dance','theater','theatre','writing','sculpture'],
+  growth:     ['growth','learning','development','evolution','mastery','psychology','education','emergence','wisdom','neuroscience'],
+  impact:     ['impact','service','contribution','regenerat*','social movements','governance','enterprise','climate','biodiversity','sustainab*'],
+  adventure:  ['adventure','exploration','outdoors','sport','sports','travel','play','festival*','gaming','games','esports'],
+  stability:  ['stability','grounding','security','steady','home','sustainab*','minimal*','governance','sleep','permaculture'],
 };
 
+const matcherCache = new Map();
+function matcher(k) {
+  if (!matcherCache.has(k)) {
+    const stem = k.endsWith('*');
+    const body = (stem ? k.slice(0, -1) : k).replace(/[.*+?^${}()|[\]\\]/g, '\\$&').replace(/[\s-]+/g, '[\\s-]+');
+    matcherCache.set(k, new RegExp(`(?<![a-z0-9])${body}${stem ? '[a-z]*' : ''}(?![a-z0-9])`, 'i'));
+  }
+  return matcherCache.get(k);
+}
+
 function scoreTopic(topic, keywords) {
-  const slug  = (topic.slug  || '').toLowerCase();
-  const label = (topic.label || '').toLowerCase();
-  const desc  = (topic.desc  || '').toLowerCase();
+  const slug = (topic.slug || '').toLowerCase();
+  const name = `${slug} ${(topic.label || '').toLowerCase()}`;
   let score = 0;
   for (const k of keywords) {
-    if (slug.includes(k) || label.includes(k)) score += 3;
-    else if (desc.includes(k)) score += 1;
+    if (k.startsWith('=')) { if (slug === k.slice(1)) score += 3; }
+    else if (matcher(k).test(name)) score += 3;
   }
   return score;
 }
@@ -76,7 +105,7 @@ for (const [desire, keywords] of Object.entries(DESIRE_KEYWORDS)) {
   desireMap[desire] = search
     .map((t) => ({ slug: t.slug, score: scoreTopic(t, keywords) }))
     .filter((x) => x.score > 0)
-    .sort((a, b) => b.score - a.score)
+    .sort((a, b) => b.score - a.score || a.slug.localeCompare(b.slug))
     .slice(0, 8)
     .map((x) => x.slug);
 }
@@ -124,7 +153,7 @@ for (const g of aligned) {
   for (const slug of (g.topicSlugs || [])) {
     const bucket = topics[slug];
     if (bucket && bucket.products.length < 3) {
-      bucket.products.push({ name: g.name, desc: (g.desc || '').slice(0, 140), url, tier: g.tier || 'aligned', external: !!(v && (v.affiliate || v.url)) });
+      bucket.products.push({ name: g.name, desc: clip(g.desc, 140), url, tier: g.tier || 'aligned', external: !!(v && (v.affiliate || v.url)) });
     }
   }
 }
@@ -166,6 +195,7 @@ const counts = Object.values(leanTopics).reduce(
 console.log(`Wrote ${outPath} — ${sizeKB}KB`);
 console.log(`Topics in index: ${Object.keys(leanTopics).length} / ${search.length}`);
 console.log(`Joined: ${counts.b} books, ${counts.m} music, ${counts.p} products, ${counts.c} courses`);
-console.log('desireMap sample — money:', desireMap.money.join(', '));
-console.log('desireMap sample — peace:', desireMap.peace.join(', '));
-console.log('desireMap sample — creativity:', desireMap.creativity.join(', '));
+console.log('\ndesireMap — every route, so collisions are visible at build time:');
+for (const [desire, slugs] of Object.entries(desireMap)) {
+  console.log(`  ${desire.padEnd(11)} ${slugs.join(', ') || '(none)'}`);
+}

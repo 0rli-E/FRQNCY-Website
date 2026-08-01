@@ -19,6 +19,13 @@ interface FeedProps {
    * (project_tag). Used on /social/channel/[slug].
    */
   channel?: string;
+  /**
+   * When provided, filter the feed to a single group (posts.group_id).
+   * Used on /social/g/[slug]. Mutually exclusive with the global feed.
+   */
+  groupId?: string;
+  /** Empty-state copy override (e.g. group feeds say "Be the first to post here"). */
+  emptyLabel?: string;
 }
 
 interface PostRow {
@@ -76,7 +83,7 @@ function timeAgo(dateStr: string): string {
   return `${days}d`;
 }
 
-export default function Feed({ username, channel: channelFilter }: FeedProps = {}) {
+export default function Feed({ username, channel: channelFilter, groupId, emptyLabel }: FeedProps = {}) {
   const [posts, setPosts] = useState<PostRow[]>([]);
   const [loading, setLoading] = useState(true);
   const [loadingMore, setLoadingMore] = useState(false);
@@ -94,7 +101,7 @@ export default function Feed({ username, channel: channelFilter }: FeedProps = {
   const [bskyLoading, setBskyLoading] = useState(false);
   const [bskyError, setBskyError] = useState<string | null>(null);
 
-  const isGlobalFeed = !username && !channelFilter;
+  const isGlobalFeed = !username && !channelFilter && !groupId;
   const showTabs = isGlobalFeed && bskyConnected;
 
   useEffect(() => {
@@ -163,8 +170,9 @@ export default function Feed({ username, channel: channelFilter }: FeedProps = {
       .range(from, to);
     if (username && authorId) q = q.eq('author_id', authorId);
     if (channelFilter) q = q.eq('project_tag', channelFilter);
+    if (groupId) q = q.eq('group_id', groupId);
     return q;
-  }, [username, authorId, channelFilter]);
+  }, [username, authorId, channelFilter, groupId]);
 
   const fetchPosts = useCallback(async () => {
     if (username && !authorId) {
@@ -244,7 +252,7 @@ export default function Feed({ username, channel: channelFilter }: FeedProps = {
 
     // Subscribe to realtime inserts. Channel name must be unique per mount
     // so a global feed + a profile feed on different tabs don't collide.
-    const channelKey = `posts-feed-${username ?? channelFilter ?? 'global'}-${Math.random().toString(36).slice(2, 8)}`;
+    const channelKey = `posts-feed-${username ?? channelFilter ?? groupId ?? 'global'}-${Math.random().toString(36).slice(2, 8)}`;
     const channel = supabase
       .channel(channelKey)
       .on(
@@ -259,7 +267,7 @@ export default function Feed({ username, channel: channelFilter }: FeedProps = {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [fetchPosts, username, authorId, channelFilter]);
+  }, [fetchPosts, username, authorId, channelFilter, groupId]);
 
   // Render a single NRG post via the existing PostCard (preserves like /
   // comment / quote / share / bookmark / signature-verify behaviour).
@@ -414,7 +422,9 @@ export default function Feed({ username, channel: channelFilter }: FeedProps = {
         {tabStrip}
         <div class="rounded-xl bg-card-bg border border-card-border p-8 text-center">
           <p class="text-text-dim text-sm">
-            {username ? `@${username} hasn't posted yet.` : 'No posts yet. Be the first to share something!'}
+            {username
+              ? `@${username} hasn't posted yet.`
+              : emptyLabel ?? 'No posts yet. Be the first to share something!'}
           </p>
         </div>
       </div>

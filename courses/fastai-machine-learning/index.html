@@ -87,6 +87,20 @@ nav.snav{
 
 .lesson-list{padding:0.4rem 0;flex:1}
 
+/* Module section header inside the lesson list (Skool-style grouping) */
+.lesson-module-head{
+  display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
+  padding:0.95rem 1.1rem 0.45rem;
+  font-size:0.54rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);
+  border-top:1px solid rgba(255,255,255,0.06);margin-top:0.3rem;
+}
+.lesson-list > .lesson-module-head:first-child{border-top:none;margin-top:0}
+.lesson-module-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lesson-module-count{
+  flex-shrink:0;font-size:0.56rem;letter-spacing:0.04em;color:var(--text-dim);
+  background:rgba(255,255,255,0.06);border-radius:10px;padding:1px 7px;
+}
+
 .lesson-btn{
   width:100%;display:flex;align-items:center;gap:0.7rem;
   padding:0.7rem 1.1rem 0.7rem 1rem;
@@ -656,7 +670,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       <div class="sp-bar"><div class="sp-fill" id="sp-fill" style="width:0%"></div></div>
     </div>
     <div class="lesson-list" id="lesson-list" role="tablist">
-      
+      <div class="lesson-module-head"><span class="lesson-module-title">Random Forests</span><span class="lesson-module-count">6</span></div>
     <button class="lesson-btn" data-idx="0" id="nav-0">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
@@ -704,7 +718,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
         <span class="lbtn-meta">Video · ≈ 1h 49m</span>
       </span>
       <span class="lbtn-check" id="chk-5" aria-hidden="true">✓</span>
-    </button>
+    </button><div class="lesson-module-head"><span class="lesson-module-title">Deep Learning from Scratch</span><span class="lesson-module-count">6</span></div>
     <button class="lesson-btn" data-idx="6" id="nav-6">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
@@ -1135,7 +1149,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     <button class="mobile-sidebar-close" onclick="closeMobileSidebar()" aria-label="Close">✕</button>
   </div>
   <div class="lesson-list" id="mobile-lesson-list">
-    
+    <div class="lesson-module-head"><span class="lesson-module-title">Random Forests</span><span class="lesson-module-count">6</span></div>
     <button class="lesson-btn" data-idx="0" id="m-nav-0">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
@@ -1183,7 +1197,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
         <span class="lbtn-meta">Video · ≈ 1h 49m</span>
       </span>
       <span class="lbtn-check" id="m-chk-5" aria-hidden="true">✓</span>
-    </button>
+    </button><div class="lesson-module-head"><span class="lesson-module-title">Deep Learning from Scratch</span><span class="lesson-module-count">6</span></div>
     <button class="lesson-btn" data-idx="6" id="m-nav-6">
       <span class="lbtn-icon"><svg width="13" height="13" viewBox="0 0 24 24" fill="currentColor"><polygon points="5,3 19,12 5,21"/></svg></span>
       <span class="lbtn-body">
@@ -1255,7 +1269,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 
 <script>
 const SLUG      = 'fastai-machine-learning';
-const LESSONS   = [{"id":"l1","title":"Lesson 1 — Random Forests","type":"video","duration":"≈ 1h 17m","desc":"Set up Jupyter + the fastai library, load the Blue Book for Bulldozers Kaggle dataset, and train your first random forest. The first taste of a working ML pipeline."},{"id":"l2","title":"Lesson 2 — Random Forest Deep Dive","type":"video","duration":"≈ 1h 13m","desc":"How a random forest actually works under the hood, plus the validation strategies that prevent you from fooling yourself."},{"id":"l3","title":"Lesson 3 — Performance, Validation, and Model Interpretation","type":"video","duration":"≈ 2h 11m","desc":"How to read what the model is telling you about your data — feature importance, partial dependence, the things that matter once a model works."},{"id":"l4","title":"Lesson 4 — Feature Importance, Tree Interpreter","type":"video","duration":"≈ 1h 20m","desc":"Going deeper into model interpretation. Confidence intervals on predictions. The tree interpreter for explaining individual rows."},{"id":"l5","title":"Lesson 5 — Extrapolation and RF from Scratch","type":"video","duration":"≈ 1h 36m","desc":"Where random forests fail (extrapolation), and how to build one yourself from numpy primitives so you understand it in the bones."},{"id":"l6","title":"Lesson 6 — Data Products and Live Coding","type":"video","duration":"≈ 1h 49m","desc":"From a model in a notebook to a data product in production. Live coding with the Rossmann dataset."},{"id":"l7","title":"Lesson 7 — RF From Scratch + Gradient Descent","type":"video","duration":"≈ 1h 19m","desc":"Finishing the from-scratch random forest, then pivoting to the engine behind deep learning: gradient descent."},{"id":"l8","title":"Lesson 8 — Gradient Descent and Logistic Regression","type":"video","duration":"≈ 1h 38m","desc":"Logistic regression as a one-layer neural net. SGD, learning rates, the actual mechanics of training."},{"id":"l9","title":"Lesson 9 — Regularization, Learning Rates, and NLP","type":"video","duration":"≈ 1h 38m","desc":"Weight decay, the magic of finding a good learning rate, and the leap into natural-language processing."},{"id":"l10","title":"Lesson 10 — More NLP, Columnar Data","type":"video","duration":"≈ 1h 27m","desc":"Continuing the NLP thread alongside techniques for columnar data — the bread and butter of most real ML work."},{"id":"l11","title":"Lesson 11 — Embeddings","type":"video","duration":"≈ 1h 41m","desc":"What embeddings actually are, how they're trained, and why they're the single most important idea in modern ML."},{"id":"l12","title":"Lesson 12 — Complete Rossmann, Ethical Issues","type":"video","duration":"≈ 1h 26m","desc":"Putting the full Rossmann competition pipeline together, then closing on ethics — bias, fairness, what models can quietly do to the world."}];
+const LESSONS   = [{"id":"l1","title":"Lesson 1 — Random Forests","type":"video","duration":"≈ 1h 17m","desc":"Set up Jupyter + the fastai library, load the Blue Book for Bulldozers Kaggle dataset, and train your first random forest. The first taste of a working ML pipeline.","module":"Random Forests"},{"id":"l2","title":"Lesson 2 — Random Forest Deep Dive","type":"video","duration":"≈ 1h 13m","desc":"How a random forest actually works under the hood, plus the validation strategies that prevent you from fooling yourself.","module":"Random Forests"},{"id":"l3","title":"Lesson 3 — Performance, Validation, and Model Interpretation","type":"video","duration":"≈ 2h 11m","desc":"How to read what the model is telling you about your data — feature importance, partial dependence, the things that matter once a model works.","module":"Random Forests"},{"id":"l4","title":"Lesson 4 — Feature Importance, Tree Interpreter","type":"video","duration":"≈ 1h 20m","desc":"Going deeper into model interpretation. Confidence intervals on predictions. The tree interpreter for explaining individual rows.","module":"Random Forests"},{"id":"l5","title":"Lesson 5 — Extrapolation and RF from Scratch","type":"video","duration":"≈ 1h 36m","desc":"Where random forests fail (extrapolation), and how to build one yourself from numpy primitives so you understand it in the bones.","module":"Random Forests"},{"id":"l6","title":"Lesson 6 — Data Products and Live Coding","type":"video","duration":"≈ 1h 49m","desc":"From a model in a notebook to a data product in production. Live coding with the Rossmann dataset.","module":"Random Forests"},{"id":"l7","title":"Lesson 7 — RF From Scratch + Gradient Descent","type":"video","duration":"≈ 1h 19m","desc":"Finishing the from-scratch random forest, then pivoting to the engine behind deep learning: gradient descent.","module":"Deep Learning from Scratch"},{"id":"l8","title":"Lesson 8 — Gradient Descent and Logistic Regression","type":"video","duration":"≈ 1h 38m","desc":"Logistic regression as a one-layer neural net. SGD, learning rates, the actual mechanics of training.","module":"Deep Learning from Scratch"},{"id":"l9","title":"Lesson 9 — Regularization, Learning Rates, and NLP","type":"video","duration":"≈ 1h 38m","desc":"Weight decay, the magic of finding a good learning rate, and the leap into natural-language processing.","module":"Deep Learning from Scratch"},{"id":"l10","title":"Lesson 10 — More NLP, Columnar Data","type":"video","duration":"≈ 1h 27m","desc":"Continuing the NLP thread alongside techniques for columnar data — the bread and butter of most real ML work.","module":"Deep Learning from Scratch"},{"id":"l11","title":"Lesson 11 — Embeddings","type":"video","duration":"≈ 1h 41m","desc":"What embeddings actually are, how they're trained, and why they're the single most important idea in modern ML.","module":"Deep Learning from Scratch"},{"id":"l12","title":"Lesson 12 — Complete Rossmann, Ethical Issues","type":"video","duration":"≈ 1h 26m","desc":"Putting the full Rossmann competition pipeline together, then closing on ethics — bias, fairness, what models can quietly do to the world.","module":"Deep Learning from Scratch"}];
 const TOTAL     = LESSONS.length;
 const STORE_KEY = 'frqncy-course-' + SLUG;
 const REFLECT_IDS = [];

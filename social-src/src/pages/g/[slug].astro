@@ -1,0 +1,24 @@
+---
+// Astro needs getStaticPaths to enumerate dynamic routes at build time. We seed
+// it with the system groups (townhall + the eight pillars). Any user-created
+// group slug hits the Cloudflare Pages redirect to this shell at runtime and
+// GroupView reads the slug from location.pathname — same pattern as channels.
+//
+// This route lives at /social/g/<slug> (NOT /social/groups/<slug>) on purpose:
+// the directory page is the static /social/groups, and a 200-rewrite catchall
+// over /social/groups/* would hijack it (see cf-pages-catchall-hijacks-static).
+// Namespacing the dynamic catchall under /social/g/* keeps the directory safe.
+import SocialLayout from '../../layouts/SocialLayout.astro';
+import GroupView from '../../components/GroupView';
+
+export function getStaticPaths() {
+  return [
+    'townhall', 'curate', 'education', 'research', 'media',
+    'sell', 'fund', 'build', 'network-state',
+  ].map((slug) => ({ params: { slug } }));
+}
+---
+
+<SocialLayout title="Group · NRG · FRQNCY" description="A FRQNCY group.">
+  <GroupView client:load />
+</SocialLayout>

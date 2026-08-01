@@ -197,6 +197,14 @@
   // ── Companion thread helpers ───────────────────────────
   // Privacy-safe slice sent to /api/companion. Stub design is dropped (never
   // feed random HD to the model); negative-trigger NAMES never leave the device.
+  // Intake stores list answers as arrays and textarea answers as plain strings.
+  // Everything downstream wants a list, so normalise here rather than at each use.
+  function asList(v){
+    if(Array.isArray(v)) return v.map(x => (x && typeof x === 'object') ? x.text : x).filter(x => typeof x === 'string' && x.trim()).map(x => x.trim());
+    if(typeof v === 'string' && v.trim()) return [v.trim()];
+    return [];
+  }
+
   function slimProfile(p){
     if(!p) return {};
     const hd = p.design && p.design.hd, gk = p.design && p.design.gk, astro = p.design && p.design.astro;
@@ -223,13 +231,13 @@
         convincer: (p.meta && p.meta.convincer) || null
       },
       modalOperators: {
-        necessity:     (mo.necessity || []).map(x => x.text).filter(Boolean).slice(-3),
-        impossibility: (mo.impossibility || []).map(x => x.text).filter(Boolean).slice(-3)
+        necessity:     asList(mo.necessity).slice(-3),
+        impossibility: asList(mo.impossibility).slice(-3)
       },
-      positiveTriggers: (trig.positive || []).slice(0, 5),
-      music: (trig.music || []).slice(0, 5),
+      positiveTriggers: asList(trig.positive).slice(0, 5),
+      music: asList(trig.music).slice(0, 5),
       place: trig.place || null,
-      negativeTriggerCount: (trig.negative || []).length,
+      negativeTriggerCount: asList(trig.negative).length,
       baseline: {
         teachabilityIndex: (p.baseline && p.baseline.teachabilityIndex != null) ? p.baseline.teachabilityIndex : null,
         chiefAimDistance:  (p.baseline && p.baseline.chiefAimDistance != null) ? p.baseline.chiefAimDistance : null
@@ -237,9 +245,15 @@
     };
   }
 
+  // People write their remember-line as a whole sentence, punctuation and all.
+  // Quote it rather than splicing it into ours, so it never double-punctuates.
+  function asQuote(s){
+    return String(s || '').trim().replace(/[.,;:!?\s]+$/, '');
+  }
+
   function threadSeed(p){
-    const r = p.rememberOne, f = p.standing && p.standing.recentFeeling;
-    if(r) return `You asked to be remembered as ${r}. I'm here. What's moving in you right now?`;
+    const r = asQuote(p.rememberOne), f = p.standing && p.standing.recentFeeling;
+    if(r) return `You asked to be remembered as “${r}”. I'm here. What's moving in you right now?`;
     if(f) return `You've been carrying ${f}. I'm here, and I'm listening. Where do you want to begin?`;
     return `I'm here. Say what's true right now — one line, or many.`;
   }
@@ -310,7 +324,7 @@
     };
     if(t.topic)    row('Where it lives', t.topic.label, t.topic.url, desire ? `Because you're reaching toward ${desire}. This is where it lives on FRQNCY.` : 'A place to begin on FRQNCY.', false);
     if(t.practice) row('A practice', t.practice.label, `/my-frqncy/practice/?practice=${encodeURIComponent(t.practice.slug)}`, t.practice.framing, false);
-    if(t.book)     row('One book', t.book.name, t.book.url, `Near ${t.book.topic}.`, !!t.book.external);
+    if(t.book)     row('One book', t.book.name, t.book.url, `Shelved under ${t.book.topic}.`, !!t.book.external);
     if(t.music)    row('One piece of music', t.music.title, t.music.url, `${t.music.artist} — for ${t.music.topic}.`, true);
     if(t.product)  row('Something aligned', t.product.name, t.product.url, t.product.desc || `Aligned with ${t.product.topic}.`, !!t.product.external);
     if(t.course)   row('A course', t.course.title, t.course.url, `${t.course.free ? 'Free' : 'Member'} — in ${t.course.topic}.`, false);

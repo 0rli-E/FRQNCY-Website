@@ -80,6 +80,30 @@ function sidebarItem(l, i, prefix) {
     </button>`;
 }
 
+/* ── Sidebar lesson list, optionally grouped into modules ──
+   When any lesson carries a `module` string, emit a section header each time
+   the module changes (Skool-style "Classroom" grouping). Falls back to a flat
+   list when no lesson declares a module, so short courses are unaffected. */
+function sidebarList(lessons, prefix) {
+  prefix = prefix || 'nav';
+  const hasModules = lessons.some(l => l.module);
+  if (!hasModules) return lessons.map((l, i) => sidebarItem(l, i, prefix)).join('');
+  let html = '';
+  let curMod = null;
+  lessons.forEach((l, i) => {
+    const mod = l.module || '';
+    if (mod !== curMod) {
+      curMod = mod;
+      if (mod) {
+        const count = lessons.filter(x => (x.module || '') === mod).length;
+        html += `<div class="lesson-module-head"><span class="lesson-module-title">${esc(mod)}</span><span class="lesson-module-count">${count}</span></div>`;
+      }
+    }
+    html += sidebarItem(l, i, prefix);
+  });
+  return html;
+}
+
 /* ── Content panel for a single lesson ── */
 function lessonContent(l, idx) {
   if (l.type === 'video') {
@@ -441,6 +465,20 @@ nav.snav{
 .sp-fill{height:100%;background:var(--accent);border-radius:2px;transition:width .4s ease}
 
 .lesson-list{padding:0.4rem 0;flex:1}
+
+/* Module section header inside the lesson list (Skool-style grouping) */
+.lesson-module-head{
+  display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
+  padding:0.95rem 1.1rem 0.45rem;
+  font-size:0.54rem;letter-spacing:0.2em;text-transform:uppercase;color:var(--accent);
+  border-top:1px solid rgba(255,255,255,0.06);margin-top:0.3rem;
+}
+.lesson-list > .lesson-module-head:first-child{border-top:none;margin-top:0}
+.lesson-module-title{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lesson-module-count{
+  flex-shrink:0;font-size:0.56rem;letter-spacing:0.04em;color:var(--text-dim);
+  background:rgba(255,255,255,0.06);border-radius:10px;padding:1px 7px;
+}
 
 .lesson-btn{
   width:100%;display:flex;align-items:center;gap:0.7rem;
@@ -839,7 +877,7 @@ nav.snav{
       <div class="sp-bar"><div class="sp-fill" id="sp-fill" style="width:0%"></div></div>
     </div>
     <div class="lesson-list" id="lesson-list" role="tablist">
-      ${c.lessons.map((l, i) => sidebarItem(l, i)).join('')}
+      ${sidebarList(c.lessons, 'nav')}
     </div>
   </aside>
 
@@ -874,7 +912,7 @@ nav.snav{
     <button class="mobile-sidebar-close" onclick="closeMobileSidebar()" aria-label="Close">✕</button>
   </div>
   <div class="lesson-list" id="mobile-lesson-list">
-    ${c.lessons.map((l, i) => sidebarItem(l, i, 'm-nav')).join('')}
+    ${sidebarList(c.lessons, 'm-nav')}
   </div>
 </div>
 

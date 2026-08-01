@@ -18,7 +18,9 @@ This dashboard is the implementation-state view; the plan is the strategy view. 
 
 ---
 
-## ⚠️ CRITICAL FINDING — read this first
+> **STALE — 2026-08-01.** The counts below are from 2026-05-13 and no longer describe the site. The "CRITICAL FINDING" immediately following is **resolved**: `generate.js` now emits Article / FAQPage / BreadcrumbList / ItemList natively, so schema survives every regen. Verified 2026-08-01: Article on 138 pages, FAQPage 103, BreadcrumbList 1,192, ItemList 253; sitemap at 1,172 URLs. For current state read `proposals/VISIBILITY-PLAN.md` (v2), not this table.
+
+## ⚠️ CRITICAL FINDING — read this first *(resolved — see note above)*
 
 The site has a topic-page generator (`scripts/generate_topic_page.py`) and a likely item-page generator (`generate.js`) that **regenerate static HTML from data sources** (`data/topics/<slug>.yaml`, `resources.json`). Across Sessions 1-4, my approach was to inject schema, bylines, FAQ blocks, and anchored-topics directly into the static HTML files — but **those injections did not survive subsequent generator runs**.
 
