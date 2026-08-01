@@ -22,7 +22,10 @@
 import { execFileSync } from 'node:child_process';
 
 const REPO = '0rli-E/frqncy-ops';
-const BOARD = 'https://miro.com/app/board/uXjVH1jzUtM=/';
+// FRQNCY DASHBOARDS. The old 'To-Do & Live Status' board (uXjVH1jzUtM=) was
+// deleted 2026-08-01 — it now returns "Board access denied". This is the only
+// kanban home. It works at ~25x normal coordinate scale, hence --scale=25.
+const BOARD = 'https://miro.com/app/board/uXjVHBAAjNo=/';
 
 const MD = process.argv.includes('--md');
 const WITH_CLOSED = process.argv.includes('--closed');
@@ -44,7 +47,7 @@ const STATUS = { 'do-now': 'DO NOW', next: 'Next', later: 'Later', decision: 'De
 const AREA = {
   'area:deploy': 'Deploy', 'area:visibility': 'Visibility', 'area:legal': 'Legal',
   'area:vbrtn': 'VBRTN', 'area:money': 'Money', 'area:content': 'Content',
-  'area:social': 'Social', 'area:mvp': 'MVP',
+  'area:social': 'Social', 'area:mvp': 'MVP', 'area:identity': 'Identity',
 };
 const RANK = { 'DO NOW': 0, Next: 1, Decision: 2, Later: 3, '': 4 };
 
