@@ -1459,12 +1459,24 @@ function personPage(person) {
   const crumb = `<a href="../../index.html">FRQNCY</a><span class="sep">/</span><a href="../index.html">People</a><span class="sep">/</span><span>${esc(person.name)}</span>`;
   const externalLink = person.url ? `<a href="${esc(person.url)}" target="_blank" rel="noopener noreferrer" class="rlink" style="margin-top:1.25rem;display:inline-block">Visit ${esc((person.url||'').replace(/^https?:\/\/(www\.)?/,'').replace(/\/$/,''))} →</a>` : '';
 
+  // sameAs is the entity-resolution signal: it tells Google/AI engines "this
+  // person is also that profile over there". Two rules follow from that:
+  //   1. A frqncy.network URL is never a sameAs — pointing the schema back at
+  //      the page it's on tells the resolver nothing (and Orlando's people.json
+  //      `url` is his own FRQNCY page, so the naive form was self-referential).
+  //   2. Cross-platform profiles come from an optional `sameAs` array in
+  //      people.json, so verified profiles feed the schema without hand-editing
+  //      generated HTML. See audits/seo/SAMEAS-MATRIX.md for the canon.
+  const personSameAs = [...(person.sameAs || []), person.url]
+    .filter(u => u && !/^https?:\/\/(www\.)?frqncy\.network/.test(u))
+    .filter((u, i, a) => a.indexOf(u) === i);
+
   const ld = entityLdWithBreadcrumb({
     '@type': 'Person',
     name: person.name,
     description: person.bio,
     url: canonical,
-    sameAs: person.url ? [person.url] : undefined,
+    sameAs: personSameAs.length ? personSameAs : undefined,
     isPartOf: SITE_REF,
   }, 'People', 'people', person.name, canonical);
 
