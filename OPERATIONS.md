@@ -148,6 +148,41 @@ installed on a device, so the app itself remains untested on both platforms.
 
 ---
 
+## 2026-08-02 — the push landed, and prod is fixed
+
+**Did.** Pushed `integrate-2026-08-01` to `main` — `0964f7905..6b0d748ba`, 33 commits, 136 files,
+clean fast-forward. SSH was refused (no key on this machine); routed through `gh auth setup-git`
+over HTTPS. Then removed a duplicate kanban from the DASHBOARDS board.
+
+**Opened.** #48 (verify the VBRTN flow cold in prod) and #49 (measure intake drop-off) — both
+existed only as stickies on the board that was about to be deleted, so they were filed first.
+
+**Finished — verified against prod, not assumed.**
+- **The companion answers.** `POST /api/companion` returns 200 with real copy (`via: workers-ai`)
+  on the exact payload that returned Cloudflare 1101/500 before. The `asList()` fix works, and it
+  runs keyless — the Anthropic key (#17) is a voice upgrade, not a blocker.
+- `/assets/frqncy-vbrtn-store.js` → 200, was 404. Cloud sync alive.
+- Both book slugs still resolve; the rename guard held and no indexed URL 404'd.
+- `/aligned/wear/` Research link resolves to bcorporation.net, not a seller `?ref=`.
+- `sw.js` live at v73.
+- Pre-push: `npm run lint` clean, HD engine acceptance tests pass, 1 expected deletion with 301s.
+- **#1 closed** with that evidence.
+- **Duplicate kanban removed.** The board carried 103 cards against 54 issues: a parallel session
+  read the board at *board scope*, saw no frames (board scope does not return them), concluded the
+  kanban was missing and built a second one stacked at the same coordinates. Deleted the older
+  49-card set, kept the current 54. Board and tracker now agree exactly.
+
+**Left.**
+- **Two to-do surfaces on this board are still unmerged** — the `FRQNCY — Areas We're Working On`
+  frame (10 focus areas, 64 items, dated 28 Jun) and `Weekly to dos 19–26 July`. The weekly list
+  holds at least two items with no issue: *finish the funding talks with Valentino* and *improve
+  the Drive structure*.
+- The Drive sweep has not started.
+- `frame`-only deletes do **not** cascade to children in Miro — delete the frame and its children
+  in one DSL block, or you orphan them.
+- Uncommitted work sits in `/tmp/frqncy-integrate` (donate.html, checkout-session.js,
+  stripe-webhook.js) from a parallel session — not pushed, still pending.
+
 ## 2026-08-01 (evening) — all to-dos merged onto one board
 
 **Did.** Read the FRQNCY DASHBOARDS board properly and found real to-do structure I had missed on
