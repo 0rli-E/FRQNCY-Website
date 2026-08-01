@@ -159,13 +159,16 @@
     *{transition-duration:0.01ms !important;animation-duration:0.01ms !important}
   }
 </style>
+<script src="/assets/frqncy-supabase.js"></script>
+<script src="/assets/frqncy-vbrtn-store.js"></script>
 </head>
 <body>
   <div class="shell" id="shell">
     <!-- dynamic content -->
   </div>
   <footer class="foot">
-    <a href="/my-frqncy/intake/">Intake</a> · <a href="/my-frqncy/dashboard/">Sanctuary</a> · Your data lives on this device until you sign in.
+    <div id="vbrtn-sync" style="margin-bottom:10px"></div>
+    <a href="/my-frqncy/intake/">Intake</a> · <a href="/my-frqncy/dashboard/">Sanctuary</a>
   </footer>
 
 <script>
@@ -175,12 +178,16 @@
   const RECOVERY_ROTATION_KEY = 'frqncy:vbrtn:recoveryRotation';
 
   function loadProfile(){
+    if(window.FRQNCYVbrtn) return window.FRQNCYVbrtn.load();
     try{
       const raw = localStorage.getItem(STORE_KEY);
       return raw ? JSON.parse(raw) : null;
     }catch(e){ return null; }
   }
-  function saveProfile(p){ localStorage.setItem(STORE_KEY, JSON.stringify(p)); }
+  function saveProfile(p){
+    if(window.FRQNCYVbrtn){ window.FRQNCYVbrtn.save(p); return; }
+    localStorage.setItem(STORE_KEY, JSON.stringify(p));
+  }
 
   const shell = document.getElementById('shell');
 
@@ -797,6 +804,8 @@
 
   // ── Boot ─────────────────────────────────────────────
   renderAll(loadProfile());
+  // Re-render when a cloud profile arrives after sign-in (e.g. a fresh device).
+  if(window.FRQNCYVbrtn) window.FRQNCYVbrtn.onSync(function(){ renderAll(loadProfile()); });
 })();
 </script>
 </body>
