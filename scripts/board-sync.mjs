@@ -26,6 +26,14 @@ const BOARD = 'https://miro.com/app/board/uXjVH1jzUtM=/';
 
 const MD = process.argv.includes('--md');
 const WITH_CLOSED = process.argv.includes('--closed');
+// The FRQNCY DASHBOARDS board works at roughly 25x normal coordinate scale
+// (frames ~44000 wide, font sizes ~288), so a default-scale kanban is invisible
+// on it. --scale/--y place a correctly-sized board anywhere.
+const SCALE = Number((process.argv.find((a) => a.startsWith('--scale=')) || '').split('=')[1]) || 1;
+const Y_AT = (() => {
+  const v = (process.argv.find((a) => a.startsWith('--y=')) || '').split('=')[1];
+  return v === undefined ? null : Number(v);
+})();
 
 const OWNER = {
   'owner:orlando': 'Orlando', 'owner:claude': 'Claude', 'owner:norman': 'Norman',
@@ -36,6 +44,7 @@ const STATUS = { 'do-now': 'DO NOW', next: 'Next', later: 'Later', decision: 'De
 const AREA = {
   'area:deploy': 'Deploy', 'area:visibility': 'Visibility', 'area:legal': 'Legal',
   'area:vbrtn': 'VBRTN', 'area:money': 'Money', 'area:content': 'Content',
+  'area:social': 'Social', 'area:mvp': 'MVP',
 };
 const RANK = { 'DO NOW': 0, Next: 1, Decision: 2, Later: 3, '': 4 };
 
@@ -112,13 +121,14 @@ function main() {
     { key: 'Done',     fill: '#E8F7EF', theme: '#23C27F' },
   ];
 
-  const CARD_W = 520, CARD_H = 190, GAP = 34;
-  const LANE_W = 620, PAD = 150;
-  // Board y-offset: keeps the kanban clear of the notes/frames above it.
-  const LANE_Y = 3200;
+  const K = SCALE;
+  const CARD_W = 520 * K, CARD_H = 190 * K, GAP = 34 * K;
+  const LANE_W = 620 * K, PAD = 150 * K, LANE_GAP = 60 * K;
+  // Board y-offset: keeps the kanban clear of whatever is already placed.
+  const LANE_Y = Y_AT === null ? 3200 : Y_AT;
   const tallest = Math.max(...LANES.map((l) =>
     list.filter((i) => laneOf(i) === l.key).length));
-  const LANE_H = Math.max(900, PAD + tallest * (CARD_H + GAP) + 80);
+  const LANE_H = Math.max(900 * K, PAD + tallest * (CARD_H + GAP) + 80 * K);
 
   const esc = (t) => String(t).replace(/"/g, "'").replace(/&/g, 'and');
 
@@ -128,12 +138,12 @@ function main() {
 
   LANES.forEach((lane, li) => {
     const rows = list.filter((i) => laneOf(i) === lane.key);
-    const x = (li - 1) * (LANE_W + 60);
+    const x = (li - 1) * (LANE_W + LANE_GAP);
     console.log(`\nlane${li} FRAME x=${x} y=${LANE_Y} w=${LANE_W} h=${LANE_H} fill=${lane.fill} "${lane.key}  (${rows.length})"`);
     rows.forEach((i, ri) => {
       const y = PAD + ri * (CARD_H + GAP);
       const desc = esc(i.why).slice(0, 200);
-      console.log(`c${i.n} CARD parent=lane${li} x=${LANE_W / 2} y=${y} w=${CARD_W} h=${CARD_H} theme=${lane.theme} desc="${i.area}. ${desc}" "[${i.owner || 'unassigned'}]  #${i.n} ${esc(i.title)}"`);
+      console.log(`c${i.n} CARD parent=lane${li} x=${LANE_W / 2} y=${y} w=${CARD_W} h=${CARD_H} theme=${lane.theme} desc="${i.area ? i.area + '. ' : ''}${desc}" "[${i.owner || 'unassigned'}]  #${i.n} ${esc(i.title)}"`);
     });
   });
 }

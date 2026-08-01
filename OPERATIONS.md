@@ -31,6 +31,112 @@ Every entry states four things:
 
 ---
 
+## 2026-08-01 (Aligned Goods — "Research" links stopped being affiliate links)
+
+**Did.** Fixed an editorial-integrity bug that was live in prod: every "Research ↗" link
+on all 94 Aligned Goods cards fell back to the seller's own shop with `?ref=frqncy`
+attached, so a label promising independent verification was pointing at a monetized
+affiliate link. Both renderers (`aligned/index.html`, `scripts/build-aligned-shelves.mjs`)
+now use `g.research_url || ''`, so the link renders only on a real source. Forward-ported
+rather than cherry-picked, because the fix's home branch predated the 6 food/body-care
+entries that exist only on main. Also researched and HTTP-verified 4 new independent
+sources — Lauretana→FineWaters, Waking Up→Clearer Thinking's pre-registered study,
+Tao Te Ching→Chinese Text Project, Esalen→Kripal/UChicago Press — taking picks with a
+real research link from 7 to 11 of 17. Committed `7bf0746`; since absorbed into
+`integrate-2026-08-01` as `df29427a2`.
+
+**Opened.** Two editorial questions for Orlando. (1) Le Creuset's `clean` criterion is
+arguably unverified — independent XRF testing finds cadmium in coloured *exterior* enamel
+and Le Creuset says only Dune and Palm are lead+cadmium-free; not linked because XRF
+measures bulk content rather than leaching. (2) The supplements pick remains
+Kevin Trudeau-founded, flagged previously and still unresolved.
+
+**Finished.** Verified in a real browser via Playwright against a local server, not from
+the diff: 94 cards render, 12 research links, **zero** containing `ref=frqncy`, and cards
+without a source degrade cleanly to just the honestly-labelled vendor link. Entry count
+and one-pick-per-shelf across 17 shelves both confirmed intact after the port.
+
+**Left.** Not pushed, so **prod still serves the affiliate-as-research links** — the fix
+only reaches users when `integrate-2026-08-01` ships. 6 picks remain deliberately
+linkless (no independent source backs the specific claim; padding them would defeat the
+purpose). Notably withheld: general PEMF literature for the iPyramids coil, which would
+verify the *modality* rather than a $6,499 device. Did not re-check the 8 previously
+verified URLs beyond an HTTP 200 — I did not re-read them for continued relevance.
+Did not touch `proposals/ALIGNED-GOODS.md`, still stale at 12 shelves / 56 entries.
+
+---
+
+## 2026-08-01 (VBRTN bugfix + app test surface)
+
+**Did.** Fixed all three VBRTN bugs from the 2026-07-30 prod audit, in three focused
+commits on `vbrtn-live`. (1) The `/api/companion` 500: the intake stores the music answer
+as a textarea string but `buildContext` called `p.music.join()`, and `slimProfile` passed
+the bad type through because `String.slice` also returns a string. Both ends now coerce
+via `asList()`; the server coerces too, since it cannot trust client shapes. Same pass
+fixed `negativeTriggerCount`, which counted *characters* when the field was a string.
+(2) The `frqncy-vbrtn-store.js` 404: the asset shipped in `a3cb254` but the page-side
+wiring had been sitting uncommitted in the working tree from an earlier session.
+(3) `desireMap` collisions: bare-substring matching in `scripts/build-vbrtn-trail.mjs`
+routed stability→homeopathy (`home`), purpose→open-source (`source`), peace→anything
+whose description used "still". Rewritten to word-boundary matching with stem (`meditat*`)
+and exact-slug (`=source`) forms; descriptions are no longer searched at all. The build
+now prints all twelve routes so the next collision shows up at build time.
+
+Also rebuilt the Android debug APK to confirm the toolchain still works, and probed the
+app's test surface.
+
+**Opened.** Nothing filed. Two facts worth tracking: `app/` has **zero automated tests**
+(no test script, no test files — every "verified" claim in `app/docs/*` is manual), and
+**Xcode is not installed**, which hard-blocks all iOS work. iOS project and Pods are
+otherwise staged.
+
+**Finished.** The three fixes are verified by unit-testing `buildContext` against six
+profile shapes (string / array / null / number / raw-string modal operators / `{text,at}`
+objects) — the string case used to throw and now returns clean context — plus a DOM-shim
+run of `slimProfile` and `threadSeed` in Node. All twelve desire routes were read by hand
+after the rewrite. Android APK builds clean in 17s.
+
+**Left.** **Nothing is deployed** — prod still returns 500 on `POST /api/companion`,
+confirmed by `scripts/status.mjs` this session. The fixes are all carried by
+`integrate-2026-08-01`, which is 30 ahead / 0 behind `origin/main` (clean fast-forward)
+and still unpushed, awaiting Orlando's cold walk.
+
+**Not verified: anything visual.** Playwright was blocked the entire session — a live
+Chrome owned the MCP profile and `rm SingletonLock` did not help — so there is no
+screenshot of the VBRTN page and no confirmation the copy changes look right in place.
+UI confidence rests on logic tests only. The rebuilt APK is byte-identical to the 11 July
+one (gradle packaging went UP-TO-DATE) because nothing in `app/` changed; it was never
+installed on a device, so the app itself remains untested on both platforms.
+
+---
+
+## 2026-08-01 (evening) — all to-dos merged onto one board
+
+**Did.** Read the FRQNCY DASHBOARDS board properly and found real to-do structure I had missed on
+the first pass: a **Social Media — Master To-Do** doc with 8 workstreams, swimlanes for Social
+Media / Foundation / Financials / MVP / Legal, and six numbered launch plans. Merged every open
+(⬜) item from that doc into the issue tracker, then generated the full kanban onto that board so
+there is one place to look.
+
+**Opened.** 20 new issues (#21–#40) from the Miro to-dos, labelled `area:social` / `area:mvp`.
+Notably #40 transcribes the **MVP definition** off the MVP swimlane — it had only ever existed on
+a canvas. `--scale` and `--y` options on `board-sync.mjs`, because DASHBOARDS works at ~25x normal
+coordinate scale and a default-scale kanban is invisible on it.
+
+**Finished.** All 40 issues now render as one kanban on DASHBOARDS at `y=295000`, placed clear of
+the existing Social Media To-Do frame. Verified the lane top edge (247,325) sits below that
+frame's bottom (226,000) so nothing overlaps. Confirmed #5 (/create /read /rich) is the same work
+the social doc calls "THE blocker", so it was cross-referenced rather than duplicated.
+
+**Left.**
+- The Miro doc is now **duplicated state** — it and the tracker will drift. It should be replaced
+  with a pointer to the tracker, but that is Orlando's canvas to edit.
+- The **older kanban on the separate To-Do board is now stale.** Two boards show to-dos; only
+  DASHBOARDS is current. Delete the old one or regenerate it.
+- Foundation / Financials / Social Media swimlanes were **not** mined — only MVP and the Social
+  Media doc. There may be more to-dos in them.
+- Still nobody but Orlando can see the tracker.
+
 ## 2026-08-01 (later) — one kanban, team delegation, Claude's queue
 
 **Did.** Audited all five Miro boards before consolidating anything and found there were no
