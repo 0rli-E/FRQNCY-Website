@@ -10,7 +10,7 @@
 
 v1 set a 90-day window (2026-05-12 → 2026-08-10). That window is now effectively closed, so here is the honest accounting: **the on-site work compounded; the off-site work didn't start.**
 
-The site got materially more discoverable. The sitemap went from 759 URLs to **1,172**. The "schema got wiped by the generator" crisis that dominated `audits/seo/PROGRESS.md` is **resolved** — schema is now emitted natively by `generate.js`, so it survives every regen: Article on 138 pages, FAQPage on 103, BreadcrumbList on 1,192, ItemList on 253. The newsletter backend was built and deployed. None of that is in v1's checkboxes because v1 was written before it happened.
+The site got materially more discoverable. The sitemap went from 759 URLs to **1,166 live** (1,172 in the local tree). The "schema got wiped by the generator" crisis that dominated `audits/seo/PROGRESS.md` is **resolved** — schema is now emitted natively by `generate.js`, so it survives every regen: Article on 138 pages, FAQPage on 103, BreadcrumbList on 1,192, ItemList on 253. The newsletter backend was built and deployed. None of that is in v1's checkboxes because v1 was written before it happened.
 
 What did not move is everything that needs a human to open a browser and claim a name. Zero podcast pitches sent (`PODCAST-TRACKER.md` reads `not pitched` on all 20 rows). No Telegram channel. No X brand handle. No LinkedIn company page. The 21 pre-written Telegram posts in `audits/seo/TELEGRAM-LAUNCH-QUEUE.md` are still sitting in the queue.
 
@@ -24,7 +24,7 @@ Everything below was checked against the repo or against the live network on 202
 
 | Item | State | Evidence |
 |---|---|---|
-| Sitemap | **1,172 URLs** (was 759) | `sitemap.xml` |
+| Sitemap | **1,166 URLs live** (was 759); 1,172 in the local tree | `curl frqncy.network/sitemap.xml` |
 | Topic-page schema | **Native in the generator** — survives regen | `generate.js` topic/entity `ld` builders |
 | Article / FAQPage / BreadcrumbList / ItemList | 138 / 103 / 1,192 / 253 pages | grep across `index.html` |
 | Newsletter backend | **Deployed and responding.** `/api/subscribe` validates input in prod | live POST probe returns the validation error correctly |
@@ -37,7 +37,7 @@ Everything below was checked against the repo or against the live network on 202
 | Telegram launch queue | **21 posts written and waiting** | `audits/seo/TELEGRAM-LAUNCH-QUEUE.md` |
 | Podcast pitches | **0 of 20 sent** | `audits/seo/PODCAST-TRACKER.md` |
 | Substack | Live but dormant — last public post Dec 2023, still crypto-flavoured | `SAMEAS-MATRIX.md` |
-| `/podcast` page | **Does not exist**, though v1 listed it as an owned channel | filesystem |
+| `/podcast` page | **Live** at `/podcast` (source is root `podcast.html`, 301'd to the clean URL) and already carrying `PodcastSeries` schema | `curl frqncy.network/podcast` → 200, `<h1>The FRQNCY Podcast</h1>` |
 | LinkedIn, Crunchbase, Bluesky, YouTube, Wikidata | Not created | `SAMEAS-MATRIX.md` (2 of 20 platforms live) |
 
 ---
@@ -62,7 +62,7 @@ Work an agent can do without Orlando. Ordered by leverage.
 
 - [x] **Fix `/people/orlando/` Person `sameAs`** — done 2026-08-01. A self-referential `sameAs` gives entity resolvers nothing; the generator now filters frqncy.network URLs out of `sameAs` and reads an optional `sameAs[]` array from `people.json`, so verified profiles feed the schema for any person, not just Orlando.
 - [x] **Add founder `sameAs` to the homepage `Organization`** — done 2026-08-01.
-- [ ] **Build `/podcast`.** v1's owned-channel table promises it; the page doesn't exist. Even an "episodes coming" page with `PodcastSeries` schema stakes the claim — and the Spotify/Apple handles for "The FRQNCY Podcast" are already taken by FMG, so an owned page is the only surface we control on this front.
+- [ ] **Point at `/podcast`.** The page is live with `PodcastSeries` schema already — but nothing links to it from the visibility surfaces, and it isn't in the homepage `Organization` schema. Since the Spotify and Apple handles for "The FRQNCY Podcast" are both taken by FMG, this page is the *only* podcast surface we control; it should be the canonical destination everywhere the podcast is mentioned.
 - [ ] **Populate `sameAs` for the other 312 people** in `people.json`. The generator now supports it and 210 entries already carry a `_url_source`. Every populated row is an entity edge from FRQNCY to a known figure — this is how a curation site earns authority, and it's pure data work.
 - [ ] **Close the Article-schema gap.** 138 pages carry Article; the topic graph is larger than that. Audit which generated pages fall through and why.
 - [ ] **Wikidata item.** Briefs are ready (`WIKIDATA-EXECUTION-GUIDE.md`). Wikidata has no notability bar anywhere near Wikipedia's and feeds Knowledge Graph directly. This is the highest-value earned-surface item that doesn't need press coverage first.
@@ -74,7 +74,7 @@ Work an agent can do without Orlando. Ordered by leverage.
 
 | Source | State (2026-08-01) | What it needs |
 |---|---|---|
-| **Organic search** | Strongest surface. Foundation shipped, schema native, 1,172 URLs | Backlinks + Wikidata. Content depth is no longer the bottleneck |
+| **Organic search** | Strongest surface. Foundation shipped, schema native, 1,166 URLs live | Backlinks + Wikidata. Content depth is no longer the bottleneck |
 | **Podcast appearances** | Kit ready, 0 sent | Orlando list #4 |
 | **Cross-platform mentions** | 2 of 20 platforms live | Orlando list #1–2, then agent-fills the rest |
 | **Network effects** | Newsletter deployed, Telegram unstarted | Orlando list #2–3 |
@@ -92,7 +92,7 @@ Work an agent can do without Orlando. Ordered by leverage.
 | Newsletter | /newsletter | Per-topic | Backend deployed, DB path unverified |
 | Telegram | @frqncy_network | Tue/Thu/Sat | 21 posts queued, channel not created |
 | Substack | frqncy.substack.com | Bi-weekly | Dormant since Dec 2023 |
-| Podcast | /podcast | Per-episode | Page not built |
+| Podcast | /podcast | Per-episode | Page live with `PodcastSeries` schema; no episodes yet |
 
 ### Earned *(others amplify us)*
 
@@ -117,7 +117,7 @@ Google organic is the live surface. Perplexity / ChatGPT / Claude citation work 
 
 Three tiers, floors not ceilings. Tier A should already be true; it isn't fully checkable yet, which is itself the finding.
 
-**Tier A · Existence** — indexed for "FRQNCY Network" and "frqncy.network"; all 1,172 sitemap URLs returning 200; Knowledge Graph card on brand search. *Blocked on: nobody has run the index-coverage check.*
+**Tier A · Existence** — indexed for "FRQNCY Network" and "frqncy.network"; all 1,166 live sitemap URLs returning 200; Knowledge Graph card on brand search. *Blocked on: nobody has run the index-coverage check.*
 
 **Tier B · Engagement** — Telegram 1,000 subs · newsletter 1,500 subs · direct traffic exceeding organic · 10+ podcast appearances. *All at zero; all gated on the Orlando list.*
 
