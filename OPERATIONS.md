@@ -31,6 +31,79 @@ Every entry states four things:
 
 ---
 
+## 2026-08-01 (Operational identity — one company email owns every account)
+
+**Did.** Orlando's directive: move every AI service and piece of tooling FRQNCY depends
+on to the company address. Wrote it into `proposals/MASTER-ROADMAP.md` as a new Layer 0
+section (`960d2d664`) with four buckets rather than one line — already-correct, migrate,
+create-right-from-the-start, and in-repo cleanup — because the buckets need different
+work. Recorded the rule that `hello@` stays the public contact and the company address is
+the account-of-record; collapsing them would put a login identity on every press pitch and
+Wikidata entry. Also flagged the roadmap as stale above that section: its ✅/⚪ statuses
+are from 2026-05-12 and predate Sanctuary, VBRTN, Aligned Goods, Courses, NRG and the IG
+funnel. Filed the work as `ops#50`–`ops#54`, added an `area:identity` label, taught
+`board-sync.mjs` to render it, and regenerated the kanban onto FRQNCY DASHBOARDS
+(61 items, 6 lanes, 52 issues).
+
+**Opened.** `ops#50`–`ops#54`. Two are `do-now` for Orlando because losing that access is
+unrecoverable; `ops#54` is `owner:claude` and needs no browser.
+
+**Finished.** Nothing closed. Verified by probe, not assumption: Drive, Miro, GitHub and
+the live site connectors all authenticate; **no API key exists anywhere** for the media
+stack named in ~20 proposals (checked env, repo, and the harness key store). That gap is
+the mechanical reason the off-site half of the visibility plan sits at zero.
+
+**Left.** Two corrections to earlier notes, both now fixed in code. The Miro board
+`uXjVH1jzUtM=` referenced by `board-sync.mjs` is **deleted** — it returns "Board access
+denied" and is absent from the board list — so the generator was pointing at nothing;
+`BOARD` now targets `uXjVHBAAjNo=`. And `scripts/board-sync.mjs` was untracked on
+`vbrtn-live` while tracked on `integrate-2026-08-01`, so the same two-line fix was
+committed to both (`aae894180`, `6b0d748ba`) to stop a push from regressing it.
+
+Not verified: I did not open the board visually to confirm the lanes render legibly at
+25x scale — only that the API reported all 61 items created. I did not check whether the
+five per-account migrations are even possible without a paid-plan owner transfer. The
+`/private/tmp/frqncy-integrate` worktree has **uncommitted** `donate.html`,
+`checkout-session.js` and `stripe-webhook.js` changes from another session that I did not
+touch and cannot vouch for.
+
+---
+
+## 2026-08-01 (Aligned Goods — "Research" links stopped being affiliate links)
+
+**Did.** Fixed an editorial-integrity bug that was live in prod: every "Research ↗" link
+on all 94 Aligned Goods cards fell back to the seller's own shop with `?ref=frqncy`
+attached, so a label promising independent verification was pointing at a monetized
+affiliate link. Both renderers (`aligned/index.html`, `scripts/build-aligned-shelves.mjs`)
+now use `g.research_url || ''`, so the link renders only on a real source. Forward-ported
+rather than cherry-picked, because the fix's home branch predated the 6 food/body-care
+entries that exist only on main. Also researched and HTTP-verified 4 new independent
+sources — Lauretana→FineWaters, Waking Up→Clearer Thinking's pre-registered study,
+Tao Te Ching→Chinese Text Project, Esalen→Kripal/UChicago Press — taking picks with a
+real research link from 7 to 11 of 17. Committed `7bf0746`; since absorbed into
+`integrate-2026-08-01` as `df29427a2`.
+
+**Opened.** Two editorial questions for Orlando. (1) Le Creuset's `clean` criterion is
+arguably unverified — independent XRF testing finds cadmium in coloured *exterior* enamel
+and Le Creuset says only Dune and Palm are lead+cadmium-free; not linked because XRF
+measures bulk content rather than leaching. (2) The supplements pick remains
+Kevin Trudeau-founded, flagged previously and still unresolved.
+
+**Finished.** Verified in a real browser via Playwright against a local server, not from
+the diff: 94 cards render, 12 research links, **zero** containing `ref=frqncy`, and cards
+without a source degrade cleanly to just the honestly-labelled vendor link. Entry count
+and one-pick-per-shelf across 17 shelves both confirmed intact after the port.
+
+**Left.** Not pushed, so **prod still serves the affiliate-as-research links** — the fix
+only reaches users when `integrate-2026-08-01` ships. 6 picks remain deliberately
+linkless (no independent source backs the specific claim; padding them would defeat the
+purpose). Notably withheld: general PEMF literature for the iPyramids coil, which would
+verify the *modality* rather than a $6,499 device. Did not re-check the 8 previously
+verified URLs beyond an HTTP 200 — I did not re-read them for continued relevance.
+Did not touch `proposals/ALIGNED-GOODS.md`, still stale at 12 shelves / 56 entries.
+
+---
+
 ## 2026-08-01 (VBRTN bugfix + app test surface)
 
 **Did.** Fixed all three VBRTN bugs from the 2026-07-30 prod audit, in three focused
@@ -74,6 +147,33 @@ one (gradle packaging went UP-TO-DATE) because nothing in `app/` changed; it was
 installed on a device, so the app itself remains untested on both platforms.
 
 ---
+
+## 2026-08-01 (evening) — all to-dos merged onto one board
+
+**Did.** Read the FRQNCY DASHBOARDS board properly and found real to-do structure I had missed on
+the first pass: a **Social Media — Master To-Do** doc with 8 workstreams, swimlanes for Social
+Media / Foundation / Financials / MVP / Legal, and six numbered launch plans. Merged every open
+(⬜) item from that doc into the issue tracker, then generated the full kanban onto that board so
+there is one place to look.
+
+**Opened.** 20 new issues (#21–#40) from the Miro to-dos, labelled `area:social` / `area:mvp`.
+Notably #40 transcribes the **MVP definition** off the MVP swimlane — it had only ever existed on
+a canvas. `--scale` and `--y` options on `board-sync.mjs`, because DASHBOARDS works at ~25x normal
+coordinate scale and a default-scale kanban is invisible on it.
+
+**Finished.** All 40 issues now render as one kanban on DASHBOARDS at `y=295000`, placed clear of
+the existing Social Media To-Do frame. Verified the lane top edge (247,325) sits below that
+frame's bottom (226,000) so nothing overlaps. Confirmed #5 (/create /read /rich) is the same work
+the social doc calls "THE blocker", so it was cross-referenced rather than duplicated.
+
+**Left.**
+- The Miro doc is now **duplicated state** — it and the tracker will drift. It should be replaced
+  with a pointer to the tracker, but that is Orlando's canvas to edit.
+- The **older kanban on the separate To-Do board is now stale.** Two boards show to-dos; only
+  DASHBOARDS is current. Delete the old one or regenerate it.
+- Foundation / Financials / Social Media swimlanes were **not** mined — only MVP and the Social
+  Media doc. There may be more to-dos in them.
+- Still nobody but Orlando can see the tracker.
 
 ## 2026-08-01 (later) — one kanban, team delegation, Claude's queue
 
