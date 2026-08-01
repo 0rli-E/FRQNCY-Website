@@ -27,7 +27,11 @@ const BOARD = 'https://miro.com/app/board/uXjVH1jzUtM=/';
 const MD = process.argv.includes('--md');
 const WITH_CLOSED = process.argv.includes('--closed');
 
-const OWNER = { 'owner:orlando': 'Orlando', 'owner:claude': 'Claude' };
+const OWNER = {
+  'owner:orlando': 'Orlando', 'owner:claude': 'Claude', 'owner:norman': 'Norman',
+  'owner:katzi': 'Katzi', 'owner:petra': 'Petra', 'owner:nikolaus': 'Nikolaus',
+  'owner:team': 'Team',
+};
 const STATUS = { 'do-now': 'DO NOW', next: 'Next', later: 'Later', decision: 'Decision' };
 const AREA = {
   'area:deploy': 'Deploy', 'area:visibility': 'Visibility', 'area:legal': 'Legal',
@@ -67,6 +71,7 @@ function issues() {
     return {
       n: i.number, title: i.title, url: i.url, state: i.state,
       owner: pick(OWNER), status: pick(STATUS), area: pick(AREA), why: why(i.body),
+      wip: names.includes('in-progress'),
     };
   }).sort((a, b) => (RANK[a.status] - RANK[b.status]) || (a.n - b.n));
 }
@@ -99,6 +104,7 @@ function main() {
   // wholesale, so dragging a card in Miro is cosmetic — move the label in
   // GitHub instead. This is a printout, not a workspace.
   const LANES = [
+    { key: 'In progress', fill: '#E3F0FD', theme: '#1d76db' },
     { key: 'DO NOW',   fill: '#FDECEA', theme: '#e53935' },
     { key: 'Next',     fill: '#FFF4E5', theme: '#ffa500' },
     { key: 'Decision', fill: '#F3E8FB', theme: '#8e24aa' },
@@ -122,18 +128,20 @@ function main() {
 
   LANES.forEach((lane, li) => {
     const rows = list.filter((i) => laneOf(i) === lane.key);
-    const x = li * (LANE_W + 60);
+    const x = (li - 1) * (LANE_W + 60);
     console.log(`\nlane${li} FRAME x=${x} y=${LANE_Y} w=${LANE_W} h=${LANE_H} fill=${lane.fill} "${lane.key}  (${rows.length})"`);
     rows.forEach((i, ri) => {
       const y = PAD + ri * (CARD_H + GAP);
       const desc = esc(i.why).slice(0, 200);
-      console.log(`c${i.n} CARD parent=lane${li} x=${LANE_W / 2} y=${y} w=${CARD_W} h=${CARD_H} theme=${lane.theme} desc="${i.owner} - ${i.area}. ${desc}" "#${i.n} ${esc(i.title)}"`);
+      console.log(`c${i.n} CARD parent=lane${li} x=${LANE_W / 2} y=${y} w=${CARD_W} h=${CARD_H} theme=${lane.theme} desc="${i.area}. ${desc}" "[${i.owner || 'unassigned'}]  #${i.n} ${esc(i.title)}"`);
     });
   });
 }
 
 function laneOf(i) {
-  return i.state === 'CLOSED' ? 'Done' : (i.status || 'Later');
+  if (i.state === 'CLOSED') return 'Done';
+  if (i.wip) return 'In progress';
+  return i.status || 'Later';
 }
 
 main();

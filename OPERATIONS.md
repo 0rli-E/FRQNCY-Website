@@ -31,6 +31,34 @@ Every entry states four things:
 
 ---
 
+## 2026-08-01 (later) — one kanban, team delegation, Claude's queue
+
+**Did.** Audited all five Miro boards before consolidating anything and found there were no
+other kanban boards to collapse — the premise did not hold, so nothing was merged. `FRQNCY
+DASHBOARDS` (624 items) is the values and team canvas; `Mein erstes Board` (6,134 items) is an
+unrelated LOVELIFEPASSPORT coaching template; two boards are empty. Merging any of them into
+the to-do board would have destroyed real work. Instead, made the single existing kanban
+delegatable.
+
+**Opened.** Owner labels for the team (`owner:norman`, `owner:katzi`, `owner:petra`,
+`owner:nikolaus`, `owner:team`) — names inferred from the values board, so Orlando should
+correct them. An `in-progress` label, and a matching "In progress" lane on the kanban. A "Team"
+legend frame naming each person and their label. Card titles now lead with `[Owner]`.
+
+**Finished.** `board-sync.mjs` regenerates all six lanes and resolves `in-progress` ahead of
+status, so whatever anyone is actively working on surfaces in one column. Verified the lane
+positions align with the frames already on the board, so the new lane slotted in without
+displacing DO NOW.
+
+**Left.**
+- **Nobody but Orlando can see the tracker.** `frqncy-ops` has one collaborator. The team needs
+  inviting before delegation means anything — blocked on their GitHub handles.
+- Existing cards keep their old titles until the five kanban lane frames are deleted by hand and
+  the board regenerated; the Miro API has no frame or card delete.
+- Two empty Miro boards were left in place — deletion is irreversible and was not confirmed.
+- **Claude cannot be a real Miro or GitHub user.** `owner:claude` is the actual mechanism, not a
+  user account. Assigning that label is a real handoff; a fake account would not be.
+
 ## 2026-08-01 — state audit, integration, and a tracking system
 
 **Did.** Audited the roadmap against reality and found the core problem is a deploy gap, not a
