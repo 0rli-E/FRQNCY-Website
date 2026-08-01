@@ -1163,10 +1163,12 @@ function card(g) {
   const isChoice = g.tier === 'pick';
   const tierClass = isChoice ? 'pick' : 'aligned';
 
-  // Picture slot (top of card) + research link. The image and the "Research"
-  // link both point at the product's own page so people can go read about it.
+  // Picture slot (top of card) + research link. The image points at the
+  // product's own page. "Research" only ever renders on an independent source
+  // — never a fallback to the seller's shop, which would put an affiliate
+  // link behind a label that promises verification.
   const productUrl = (g.vendor && g.vendor[0] && g.vendor[0].url) || '';
-  const researchUrl = g.research_url || productUrl;
+  const researchUrl = g.research_url || '';
   const mediaBlock = g.image
     ? `<a class="gcard-media" href="${productUrl}" target="_blank" rel="noopener noreferrer"><img src="${thumbUrl(g.image)}" alt="${g.name}" loading="lazy" decoding="async" onerror="this.insertAdjacentHTML('afterend','<span>FRQNCY</span>');this.parentElement.classList.add('gcard-media-empty');this.remove()"></a>`
     : `<div class="gcard-media gcard-media-empty"><span>FRQNCY</span></div>`;

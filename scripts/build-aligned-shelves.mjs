@@ -144,9 +144,10 @@ function cardHtml(g) {
   const tierSpan = isPick ? `<span class='gcard-tier'>★ Editor's choice</span>` : '';
   const head = `<div class="gcard-head"><div style="flex:1;min-width:0;"><h3>${esc(g.name)}</h3></div>${tierSpan}</div>`;
 
-  // Picture slot + research link — both point at the good's own page.
+  // Picture slot points at the good's own page. "Research" only ever renders
+  // on an independent source — never a fallback to the seller's shop.
   const productUrl = (g.vendor && g.vendor[0] && g.vendor[0].url) || '';
-  const researchUrl = g.research_url || productUrl;
+  const researchUrl = g.research_url || '';
   const mediaBlock = g.image
     ? `<a class="gcard-media" href="${esc(productUrl)}" target="_blank" rel="noopener noreferrer"><img src="${esc(thumbUrl(g.image))}" alt="${esc(g.name)}" loading="lazy" decoding="async" onerror="this.insertAdjacentHTML('afterend','<span>FRQNCY</span>');this.parentElement.classList.add('gcard-media-empty');this.remove()"></a>`
     : `<div class="gcard-media gcard-media-empty"><span>FRQNCY</span></div>`;
