@@ -192,6 +192,59 @@ export async function onRequestPost({ request, env }) {
     return finalizeStripeCheckout(env, payload, origin);
   }
 
+  if (kind === 'donation') {
+    // A gift, not a purchase. Guest-friendly: no FRQNCY account, no shipping,
+    // no tax — Stripe collects the email for the receipt and nothing else.
+    //
+    // Unlike a good, the DONOR names the amount, so the client legitimately
+    // sets it. We still clamp server-side: a tampered client must not be able
+    // to open a $0 session (which Stripe rejects anyway, but noisily) or an
+    // absurd one that looks like fraud on the statement. Currency is never
+    // taken from the client.
+    const MIN_CENTS = 100;        // $1 — below this the card fee eats the gift
+    const MAX_CENTS = 1_000_000;  // $10,000 — larger gifts should reach a human
+
+    const amount = parseInt(body.amount_cents, 10);
+    if (!Number.isInteger(amount)) {
+      return json({ error: 'amount_cents must be a whole number of cents.' }, 400, origin);
+    }
+    if (amount < MIN_CENTS || amount > MAX_CENTS) {
+      return json(
+        { error: `Donation must be between $${MIN_CENTS / 100} and $${(MAX_CENTS / 100).toLocaleString()}.` },
+        400,
+        origin,
+      );
+    }
+
+    // Optional free-text note from the donor — trimmed hard, since it rides
+    // into Stripe metadata (500-char ceiling per value).
+    const note = String(body.note || '').trim().slice(0, 180);
+
+    payload = {
+      mode: 'payment',
+      'line_items[0][price_data][currency]': 'usd',
+      'line_items[0][price_data][product_data][name]': 'Support FRQNCY',
+      'line_items[0][price_data][product_data][description]':
+        'A gift toward platform engineering, editorial work, and the projects FRQNCY incubates.',
+      'line_items[0][price_data][unit_amount]': String(amount),
+      'line_items[0][quantity]': '1',
+      success_url: 'https://frqncy.network/donate?status=thanks&session_id={CHECKOUT_SESSION_ID}',
+      cancel_url:  'https://frqncy.network/donate?status=cancelled',
+      'metadata[kind]': 'donation',
+      'metadata[amount_cents]': String(amount),
+      'payment_intent_data[metadata][kind]': 'donation',
+      // A gift is not a taxable sale of goods — no tax, no shipping collection.
+      'automatic_tax[enabled]': 'false',
+      submit_type: 'donate',
+    };
+    if (note) {
+      payload['metadata[note]'] = note;
+      payload['payment_intent_data[metadata][note]'] = note;
+    }
+
+    return finalizeStripeCheckout(env, payload, origin);
+  }
+
   // membership + course both require an authenticated FRQNCY user + email.
   const userId = String(body.user_id || '').trim();
   const email  = String(body.email || '').trim().toLowerCase();

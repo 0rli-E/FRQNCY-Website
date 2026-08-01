@@ -34,6 +34,19 @@
     .pay-row{display:flex;gap:12px;flex-wrap:wrap;margin-top:14px}
     .pay-btn{display:inline-flex;align-items:center;gap:8px;padding:10px 16px;font-size:11px;letter-spacing:.2em;text-transform:uppercase;font-weight:500;color:var(--dark);border:1px solid var(--dark);background:#fff;text-decoration:none;border-radius:2px;transition:background .2s,color .2s}
     .pay-btn:hover{background:var(--dark);color:#fff}
+    button.pay-btn{font-family:inherit;cursor:pointer}
+    .amt-row{display:flex;gap:10px;flex-wrap:wrap;align-items:center;margin-top:18px}
+    .amt-btn{font-family:inherit;font-size:13px;font-weight:500;letter-spacing:.04em;color:var(--dark);background:#fff;border:1px solid rgba(11,28,61,.22);border-radius:2px;padding:10px 18px;cursor:pointer;transition:border-color .2s,background .2s,color .2s}
+    .amt-btn:hover{border-color:var(--gold)}
+    .amt-btn.is-on{background:var(--dark);border-color:var(--dark);color:#fff}
+    .amt-custom{display:inline-flex;align-items:center;gap:4px;border:1px solid rgba(11,28,61,.22);border-radius:2px;padding:0 12px;background:#fff;color:var(--mid);font-size:13px}
+    .amt-custom input{font-family:inherit;font-size:13px;color:var(--dark);border:0;outline:0;padding:10px 2px;width:82px;background:transparent}
+    .amt-custom:focus-within{border-color:var(--gold)}
+    .give-note{font-size:12px;line-height:1.6;color:var(--mid);margin-top:10px;max-width:62ch}
+    #give-err{color:#B4472A;min-height:0}
+    #give-btn[data-busy]{opacity:.6;cursor:default}
+    .donate-thanks{border:1px solid var(--gold);border-left-width:3px;background:rgba(196,151,58,.06);padding:14px 16px;font-size:14px;line-height:1.7;color:var(--dark);margin:18px 0;max-width:62ch}
+    .sr-only{position:absolute;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0,0,0,0);white-space:nowrap;border:0}
     .pay-btn.gold{color:var(--gold);border-color:var(--gold)}
     .pay-btn.gold:hover{background:var(--gold);color:#fff}
     .note{font-size:13px;color:var(--light-mid);font-style:italic;margin-top:24px;padding:16px;background:#FFFAF0;border-left:3px solid var(--gold);border-radius:0 3px 3px 0}
@@ -262,15 +275,31 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       </div>
     </section>
 
-    <section class="section">
-      <h2>Fiat rails</h2>
-      <p>For supporters who don't yet hold crypto. Pass-through — funds land in the same treasury.</p>
-      <div class="pay-row">
-        <a class="pay-btn" href="#" aria-disabled="true" title="Coming soon — wire to processor" onclick="event.preventDefault();alert(\'Payment processors coming soon — for now please use the crypto wallets or PayPal once we publish the link.\');" data-frq-pay="paypal">PayPal</a>
-        <a class="pay-btn" href="#" aria-disabled="true" title="Coming soon — wire to processor" onclick="event.preventDefault();alert(\'Payment processors coming soon — for now please use the crypto wallets or PayPal once we publish the link.\');" data-frq-pay="gpay">Google Pay</a>
-        <a class="pay-btn" href="#" aria-disabled="true" title="Coming soon — wire to processor" onclick="event.preventDefault();alert(\'Payment processors coming soon — for now please use the crypto wallets or PayPal once we publish the link.\');" data-frq-pay="stripe">Card</a>
-        <a class="pay-btn gold" href="#" aria-disabled="true" title="Coming soon — wire to processor" onclick="event.preventDefault();alert(\'Payment processors coming soon — for now please use the crypto wallets or PayPal once we publish the link.\');" data-frq-pay="bank">Bank Transfer</a>
+    <section class="section" id="give">
+      <h2>Card</h2>
+      <p>For supporters who don't yet hold crypto. Card, Apple&nbsp;Pay and Google&nbsp;Pay all run through the same secure checkout — pick an amount and you'll be handed to Stripe. FRQNCY never sees your card number.</p>
+
+      <div id="donate-thanks" class="donate-thanks" hidden>
+        <strong>Thank you.</strong> Your gift went through, and a receipt is on its way to your email. It funds the engineering and editorial work, and it is genuinely what keeps this going.
       </div>
+
+      <div class="amt-row" role="group" aria-label="Choose an amount">
+        <button type="button" class="amt-btn" data-amt="500">$5</button>
+        <button type="button" class="amt-btn is-on" data-amt="2500">$25</button>
+        <button type="button" class="amt-btn" data-amt="10000">$100</button>
+        <button type="button" class="amt-btn" data-amt="50000">$500</button>
+        <label class="amt-custom">
+          <span class="sr-only">Custom amount in US dollars</span>
+          <span aria-hidden="true">$</span>
+          <input type="number" id="amt-other" min="1" max="10000" step="1" inputmode="decimal" placeholder="Other">
+        </label>
+      </div>
+
+      <div class="pay-row">
+        <button type="button" class="pay-btn gold" id="give-btn">Give <span id="give-amt">$25</span></button>
+      </div>
+      <p class="give-note" id="give-err" role="status"></p>
+      <p class="give-note">One-time gift in USD. Recurring giving, PayPal and bank transfer aren't wired up yet — we'd rather show you one route that works than four that don't.</p>
     </section>
 
     <section class="section">
@@ -297,5 +326,107 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 
     <p class="note">Wallets above are placeholders until the FRQNCY treasury multi-sig is set up (see <em>FRQNCY-CRYPTO-STACK</em>). Once live, addresses are signed, posted, and rotated on a transparent schedule.</p>
   </main>
+
+<script>
+/* Donation checkout. Posts { kind:'donation', amount_cents } to
+ * /api/checkout-session and hands the browser to Stripe. The amount is chosen
+ * here because a gift is whatever the giver says it is — but the server clamps
+ * it to $1–$10,000, so nothing here is load-bearing for safety. */
+(function () {
+  var row     = document.querySelector('.amt-row');
+  var other   = document.getElementById('amt-other');
+  var btn     = document.getElementById('give-btn');
+  var label   = document.getElementById('give-amt');
+  var err     = document.getElementById('give-err');
+  var thanks  = document.getElementById('donate-thanks');
+  if (!row || !btn) return;
+
+  var MIN = 100, MAX = 1000000;
+  var cents = 2500;
+
+  function fmt(c) {
+    var d = c / 100;
+    return '$' + (d % 1 === 0 ? d.toLocaleString() : d.toFixed(2));
+  }
+  function setLabel() { if (label) label.textContent = fmt(cents); }
+  function fail(msg)  { if (err) err.textContent = msg || ''; }
+
+  // Preset chips.
+  row.addEventListener('click', function (ev) {
+    var b = ev.target.closest && ev.target.closest('.amt-btn');
+    if (!b) return;
+    cents = parseInt(b.dataset.amt, 10);
+    row.querySelectorAll('.amt-btn').forEach(function (x) { x.classList.toggle('is-on', x === b); });
+    if (other) other.value = '';
+    fail(''); setLabel();
+  });
+
+  // Custom amount takes over as soon as it holds a usable number.
+  if (other) {
+    other.addEventListener('input', function () {
+      var dollars = parseFloat(other.value);
+      if (!isFinite(dollars) || dollars <= 0) {
+        // Empty or junk — fall back to whichever chip is lit.
+        var on = row.querySelector('.amt-btn.is-on');
+        cents = on ? parseInt(on.dataset.amt, 10) : 2500;
+        setLabel(); fail('');
+        return;
+      }
+      row.querySelectorAll('.amt-btn').forEach(function (x) { x.classList.remove('is-on'); });
+      cents = Math.round(dollars * 100);
+      setLabel();
+      fail(cents < MIN ? 'Minimum gift is $1.' : cents > MAX ? 'For gifts over $10,000 please email hello@frqncy.network.' : '');
+    });
+  }
+
+  btn.addEventListener('click', function () {
+    if (btn.hasAttribute('data-busy')) return;
+    if (!isFinite(cents) || cents < MIN) { fail('Minimum gift is $1.'); return; }
+    if (cents > MAX) { fail('For gifts over $10,000 please email hello@frqncy.network.'); return; }
+
+    fail('');
+    btn.setAttribute('data-busy', '1');
+    var restore = btn.innerHTML;
+    btn.textContent = 'Opening checkout…';
+
+    fetch('/api/checkout-session', {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ kind: 'donation', amount_cents: cents })
+    })
+      // The endpoint may answer with an HTML error page (edge 5xx, or a static
+      // host with no Functions) rather than JSON — so parse defensively instead
+      // of letting a raw "Unexpected token '<'" reach the donor.
+      .then(function (r) {
+        return r.text().then(function (txt) {
+          var d = null;
+          try { d = JSON.parse(txt); } catch (_) {}
+          return { ok: r.ok, d: d };
+        });
+      })
+      .then(function (res) {
+        if (res.ok && res.d && res.d.url) { window.location.href = res.d.url; return; }
+        throw new Error((res.d && res.d.error) || 'Checkout is unavailable right now.');
+      })
+      .catch(function (e) {
+        btn.removeAttribute('data-busy');
+        btn.innerHTML = restore;
+        setLabel();
+        fail(e.message + ' You can still give via the wallets above.');
+      });
+  });
+
+  // Returning from Stripe.
+  var status = new URLSearchParams(location.search).get('status');
+  if (status === 'thanks' && thanks) {
+    thanks.hidden = false;
+    thanks.scrollIntoView({ block: 'center' });
+  } else if (status === 'cancelled') {
+    fail('No charge was made — the checkout was cancelled.');
+  }
+
+  setLabel();
+})();
+</script>
 </body>
 </html>

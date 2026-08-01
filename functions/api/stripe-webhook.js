@@ -136,6 +136,21 @@ async function handleCheckoutCompleted(env, evt) {
     return;
   }
 
+  // ── Donation ──
+  // A gift buys no entitlement, so there is nothing to grant and no row to
+  // write: Stripe itself is the ledger for v1 (Dashboard → Payments, filtered
+  // on metadata.kind = donation). This branch exists so a donation cannot fall
+  // through to the membership upsert below, which would either be dropped by
+  // the user_id guard with a misleading warning or, worse, mint a membership
+  // nobody paid for. When donations are worth reporting on-site, give them
+  // their own table rather than overloading one of these.
+  if (s.metadata?.kind === 'donation') {
+    console.log(
+      `donation received: ${s.amount_total ?? '?'} ${s.currency || 'usd'} session=${s.id || '?'}`,
+    );
+    return;
+  }
+
   const userId = s.client_reference_id || s.metadata?.user_id;
   if (!userId) {
     console.warn('checkout.session.completed without client_reference_id — ignoring');
