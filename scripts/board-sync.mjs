@@ -94,21 +94,46 @@ function main() {
     return;
   }
 
-  // Miro DSL. Feed to layout_update (replacing the existing table) or layout_create.
+  // ── Miro kanban DSL ───────────────────────────────────────────────
+  // Lanes are frames; issues are cards. Regenerating replaces the lanes
+  // wholesale, so dragging a card in Miro is cosmetic — move the label in
+  // GitHub instead. This is a printout, not a workspace.
+  const LANES = [
+    { key: 'DO NOW',   fill: '#FDECEA', theme: '#e53935' },
+    { key: 'Next',     fill: '#FFF4E5', theme: '#ffa500' },
+    { key: 'Decision', fill: '#F3E8FB', theme: '#8e24aa' },
+    { key: 'Later',    fill: '#F0F0F0', theme: '#9e9e9e' },
+    { key: 'Done',     fill: '#E8F7EF', theme: '#23C27F' },
+  ];
+
+  const CARD_W = 520, CARD_H = 190, GAP = 34;
+  const LANE_W = 620, PAD = 150;
+  // Board y-offset: keeps the kanban clear of the notes/frames above it.
+  const LANE_Y = 3200;
+  const tallest = Math.max(...LANES.map((l) =>
+    list.filter((i) => laneOf(i) === l.key).length));
+  const LANE_H = Math.max(900, PAD + tallest * (CARD_H + GAP) + 80);
+
+  const esc = (t) => String(t).replace(/"/g, "'").replace(/&/g, 'and');
+
   console.log(`# Generated ${new Date().toISOString().slice(0, 10)} from github.com/${REPO}`);
   console.log(`# Board: ${BOARD}`);
-  console.log(`# Edit issues in GitHub, then re-run this. Never hand-edit the table.`);
-  console.log(`tbl TABLE x=-1500 y=-1050 "FRQNCY To-Do" <<<`);
-  console.log('Issue:link | Task:text | Owner:select(Orlando#C4973A, Claude#2d9bf0) | ' +
-    'Status:select(DO NOW#e53935, Next#ffa500, Later#9e9e9e, Decision#8e24aa, Done#23C27F) | ' +
-    'Area:select(Deploy#0B1C3D, Visibility#2d9bf0, Legal#e53935, VBRTN#8e24aa, Money#23C27F, Content#ffa500) | ' +
-    'Why it matters:text');
-  console.log('---');
-  for (const i of list) {
-    const st = i.state === 'CLOSED' ? 'Done' : i.status;
-    console.log([i.url, `#${i.n} ${cell(i.title)}`, i.owner, st, i.area, cell(i.why)].join(' | '));
-  }
-  console.log('>>>');
+  console.log(`# Kanban lanes are GENERATED. Move the label in GitHub, not the card here.`);
+
+  LANES.forEach((lane, li) => {
+    const rows = list.filter((i) => laneOf(i) === lane.key);
+    const x = li * (LANE_W + 60);
+    console.log(`\nlane${li} FRAME x=${x} y=${LANE_Y} w=${LANE_W} h=${LANE_H} fill=${lane.fill} "${lane.key}  (${rows.length})"`);
+    rows.forEach((i, ri) => {
+      const y = PAD + ri * (CARD_H + GAP);
+      const desc = esc(i.why).slice(0, 200);
+      console.log(`c${i.n} CARD parent=lane${li} x=${LANE_W / 2} y=${y} w=${CARD_W} h=${CARD_H} theme=${lane.theme} desc="${i.owner} - ${i.area}. ${desc}" "#${i.n} ${esc(i.title)}"`);
+    });
+  });
+}
+
+function laneOf(i) {
+  return i.state === 'CLOSED' ? 'Done' : (i.status || 'Later');
 }
 
 main();

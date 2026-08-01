@@ -1,0 +1,31 @@
+#!/bin/sh
+# Guard against the documented parallel-agent hazard: another agent moving or
+# deleting files between your `git add` and your `git commit`, so your commit
+# silently records mass deletions.
+#
+# Real incident: b2a5120 "8 new topic pages" contained 4,265 deletions and 0
+# additions, destroying 8 live topic pages.
+#
+# Override for an intentional bulk delete:  FRQNCY_ALLOW_DELETIONS=1 git commit ...
+
+LIMIT="${FRQNCY_DELETION_LIMIT:-20}"
+[ "$FRQNCY_ALLOW_DELETIONS" = "1" ] && exit 0
+
+DELETED=$(git diff --cached --name-status --diff-filter=D | wc -l | tr -d ' ')
+ADDED=$(git diff --cached --name-status --diff-filter=A | wc -l | tr -d ' ')
+
+if [ "$DELETED" -gt "$LIMIT" ]; then
+  echo ""
+  echo "BLOCKED: this commit deletes $DELETED files (adds $ADDED)."
+  echo ""
+  git diff --cached --name-status --diff-filter=D | head -15 | sed 's/^/    /'
+  [ "$DELETED" -gt 15 ] && echo "    ... and $((DELETED - 15)) more"
+  echo ""
+  echo "  A parallel agent may have moved these files out from under your staging."
+  echo "  Check 'git diff --cached --stat' before proceeding."
+  echo ""
+  echo "  Intentional?  FRQNCY_ALLOW_DELETIONS=1 git commit ..."
+  echo ""
+  exit 1
+fi
+exit 0
