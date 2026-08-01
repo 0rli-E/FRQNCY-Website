@@ -31,7 +31,54 @@ Every entry states four things:
 
 ---
 
-## 2026-08-01 (Aligned Goods — "Research" links stopped being affiliate links)
+## 2026-08-01 (late) — stranded commits folded in, and a donation path that works
+
+**Did.** Two jobs. First, closed out the "stranded commits" question on
+`integrate-2026-08-01`. Checked all three **by content** rather than by commit graph, and
+two of them — the `security_invoker` RLS migration and the ProfileCourses component —
+were already present under different shas from the integration merge. `git log A..B`
+had reported them missing, which is the documented `git cherry` unreliability after
+squashed publishes. Only `960d2d664` (a MASTER-ROADMAP doc edit) was genuinely absent;
+cherry-picked as `a522f056e` and confirmed it did not duplicate the existing Layer 0
+section. **Correction to an earlier claim in this session: the security fix was never at
+risk of being left out.**
+
+Second, built the donation path (`67a2918d6`). `/donate` had four fiat buttons that all
+alerted "coming soon", while the donate widget baked into **1,220 pages** points there for
+"fiat options". Added `kind:'donation'` to `checkout-session.js` — guest-friendly, no
+account, no shipping, no tax, amount clamped server-side to $1–$10,000. Added an explicit
+donation branch to `stripe-webhook.js` placed **before** the `user_id` guard, without which
+a donation falls through to the membership upsert and could mint a membership nobody paid
+for. Stripe is the ledger for v1, so no table and no migration — deliberate, given the
+duplicate `022_`/`024_` migration prefixes already in the tree.
+
+**Opened.** Chose donations over goods deliberately: the two `sell.enabled` goods still
+carry `PLACEHOLDER` prices with `cost_cents: 0`, and setting real prices is a business
+decision (supplier cost, margin, dropship fulfilment, merchant-of-record sales tax) that
+is Orlando's to make, not something to invent. Also found that **only `aligned/buy.js`
+calls the checkout endpoint at all** — membership and courses have server-side branches
+but no front-end buy button anywhere, and `/membership` still reads "coming soon". That
+contradicts an earlier claim of mine this session that env vars alone would revive all
+three surfaces; goods and donations are the only two with a front end.
+
+**Finished.** Donation branch unit-tested against nine amount cases (valid, $1 floor, 99c,
+zero, negative, over-max, non-numeric, missing, fractional) with a stubbed Stripe — all
+clamp correctly, and the captured payload confirms `mode=payment`, `submit_type=donate`,
+tax off and **no shipping collection**. Picker, custom-amount takeover, minimum error,
+thanks/cancelled return states and failure recovery all driven in a real browser. Fixed a
+defect found that way: a raw `Unexpected token '<'` reached the donor when the endpoint
+answered with HTML, now parsed defensively. Layout audited at 900px and 390px — no
+horizontal overflow, tap targets ≥36px, brand tokens correct. `npm run lint` passes.
+sw `v73` → `v74`.
+
+**Left.** **No money can move yet.** `STRIPE_SECRET_KEY` is absent from Cloudflare Pages,
+so `/api/checkout-session` returns 503 for every kind — this is config only, no code.
+Nothing is pushed, so none of this is live. **Not verified: any pixel screenshot** — the
+Playwright screenshot call timed out repeatedly this session, so visual confidence rests
+on computed styles and DOM geometry, not on having seen the page. Also unverified: the
+webhook donation branch was reasoned through and placed correctly but never exercised
+against a real Stripe event, since signature verification was not stubbed. Recurring
+donations, PayPal and bank transfer are not built, and the copy now says so plainly.
 
 **Did.** Fixed an editorial-integrity bug that was live in prod: every "Research ↗" link
 on all 94 Aligned Goods cards fell back to the seller's own shop with `?ref=frqncy`
