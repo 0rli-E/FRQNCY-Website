@@ -197,6 +197,14 @@
   // ── Companion thread helpers ───────────────────────────
   // Privacy-safe slice sent to /api/companion. Stub design is dropped (never
   // feed random HD to the model); negative-trigger NAMES never leave the device.
+  // Intake stores list answers as arrays and textarea answers as plain strings.
+  // Everything downstream wants a list, so normalise here rather than at each use.
+  function asList(v){
+    if(Array.isArray(v)) return v.map(x => (x && typeof x === 'object') ? x.text : x).filter(x => typeof x === 'string' && x.trim()).map(x => x.trim());
+    if(typeof v === 'string' && v.trim()) return [v.trim()];
+    return [];
+  }
+
   function slimProfile(p){
     if(!p) return {};
     const hd = p.design && p.design.hd, gk = p.design && p.design.gk, astro = p.design && p.design.astro;
@@ -223,13 +231,13 @@
         convincer: (p.meta && p.meta.convincer) || null
       },
       modalOperators: {
-        necessity:     (mo.necessity || []).map(x => x.text).filter(Boolean).slice(-3),
-        impossibility: (mo.impossibility || []).map(x => x.text).filter(Boolean).slice(-3)
+        necessity:     asList(mo.necessity).slice(-3),
+        impossibility: asList(mo.impossibility).slice(-3)
       },
-      positiveTriggers: (trig.positive || []).slice(0, 5),
-      music: (trig.music || []).slice(0, 5),
+      positiveTriggers: asList(trig.positive).slice(0, 5),
+      music: asList(trig.music).slice(0, 5),
       place: trig.place || null,
-      negativeTriggerCount: (trig.negative || []).length,
+      negativeTriggerCount: asList(trig.negative).length,
       baseline: {
         teachabilityIndex: (p.baseline && p.baseline.teachabilityIndex != null) ? p.baseline.teachabilityIndex : null,
         chiefAimDistance:  (p.baseline && p.baseline.chiefAimDistance != null) ? p.baseline.chiefAimDistance : null
