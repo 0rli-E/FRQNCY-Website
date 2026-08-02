@@ -578,12 +578,15 @@
   const wordmarkEl = document.getElementById('wordmark');
 
   // ── Insight derivation (what VBRTN already sees) ─────────────────
-  function derivePartialInsights(){
+  // mode 'growing' (session breaks) keeps the identity line and shows the two
+  // newest insights, so each break reads differently as the profile fills in.
+  // mode 'full' (the completion summary) shows the whole picture.
+  function derivePartialInsights(mode){
     const p = profile;
     const lines = [];
 
     if(p.standing.texture && p.standing.recentFeeling){
-      lines.push(`A person ${textureToVerb(p.standing.texture)}, whose recent state has carried ${p.standing.recentFeeling}.`);
+      lines.push(`A person ${textureToVerb(p.standing.texture)}, whose recent state has been mostly ${p.standing.recentFeeling}.`);
     } else if(p.standing.texture){
       lines.push(`A person ${textureToVerb(p.standing.texture)}.`);
     }
@@ -602,9 +605,9 @@
     }
 
     if(p.meta.toward_away){
-      const t = p.meta.toward_away === 'toward' ? 'reaches toward'
-              : p.meta.toward_away === 'away' ? 'moves away from'
-              : 'paces between';
+      const t = p.meta.toward_away === 'toward' ? 'reaches toward what it wants'
+              : p.meta.toward_away === 'away' ? 'moves away from what it does not want'
+              : 'paces between the two';
       lines.push(`Whose mind ${t}.`);
     }
 
@@ -617,7 +620,8 @@
       lines.push(`Doors back to self: ${p.triggers.positive.slice(0,2).join(', ').toLowerCase()}.`);
     }
 
-    return lines.slice(0, 3);
+    if(mode === 'full') return lines.slice(0, 6);
+    return lines.length <= 3 ? lines : [lines[0], ...lines.slice(-2)];
   }
 
   function textureToVerb(t){
@@ -652,7 +656,7 @@
     stage.innerHTML = `
       <div class="splash">
         <div class="eyebrow-big">Begin to know yourself</div>
-        <h1>Twenty-five questions. About twelve minutes total. Three short sessions you can leave anytime — the room remembers.</h1>
+        <h1>Twenty-five questions. About twelve minutes total. Five short sessions you can leave anytime — the room remembers.</h1>
         <p class="lede">By question five, you may notice the questions are not the point. What you say back to yourself is.</p>
         <p class="lede-2">VBRTN reads each answer through your design, your meta-programs, and the patterns it learns over time. Nothing leaves this device until you sign in.</p>
         <button class="btn primary breathing" id="beginBtn" type="button" style="margin-top:24px">Begin</button>
@@ -878,7 +882,7 @@
           </div>
         </details>
 
-        <div class="helper" style="margin-top:6px">Your birth details stay on this device. They're used only to draw your chart — never sent anywhere or saved on our servers.</div>
+        <div class="helper" style="margin-top:6px">Your birth details are used only to draw your chart, and are never sent to the companion — it only ever sees the chart they produce. They stay on this device unless you sign in, and then they sync to your account.</div>
 
         <div class="skip-card">
           <div class="skip-line">Not ready to enter this yet?</div>
@@ -1154,7 +1158,7 @@
     progressEl.innerHTML = '<span class="done"></span>'.repeat(SESSIONS);
     navEl.classList.add('hidden');
 
-    const insights = derivePartialInsights();
+    const insights = derivePartialInsights('full');
     const insightsHtml = insights.map(l => `<p>${escapeHtml(l)}</p>`).join('');
 
     const ti = profile.baseline.teachabilityIndex;

@@ -386,6 +386,200 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
 }
 .privacy-banner .lock{color:var(--gold);font-size:1rem}
 
+/* ── THE TRAIL ──
+   The read-only look-back. Reuses the Illuminator's slide-out chrome
+   (`.illum-panel` / `.illum-backdrop` / `.illum-head`) so there's one
+   panel idiom in this room, not two. Nothing here is editable: the
+   trail is a record you visit, not a surface you work on. */
+.trail-link{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  margin-top:1.1rem;padding:0;background:none;border:none;
+  font-family:'Cormorant',serif;font-style:italic;font-size:1rem;
+  color:var(--text-dim);cursor:pointer;transition:color .18s;
+}
+.trail-link:hover{color:var(--gold-light)}
+.trail-link .glyph{font-style:normal;font-size:0.7rem;color:var(--gold);opacity:0.8}
+.trail-body{
+  flex:1;overflow-y:auto;padding:1.1rem;
+}
+.trail-body::-webkit-scrollbar{width:6px}
+.trail-body::-webkit-scrollbar-thumb{background:rgba(196,151,58,0.2);border-radius:3px}
+.trail-day{
+  padding:0 0 1.3rem;margin-bottom:1.3rem;
+  border-bottom:1px solid var(--card-border);
+}
+.trail-day:last-of-type{border-bottom:none}
+.trail-day-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:0.8rem;
+  margin-bottom:0.7rem;
+}
+.trail-date{
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.1rem;
+  color:var(--gold-light);letter-spacing:0.02em;
+}
+.trail-ratio{
+  font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--text-dim);white-space:nowrap;
+}
+.trail-intention{
+  font-family:'Cormorant',serif;font-size:1.15rem;color:#fff;
+  line-height:1.5;margin-bottom:0.5rem;
+}
+.trail-line{
+  display:flex;align-items:baseline;gap:0.6rem;
+  font-size:0.85rem;line-height:1.6;color:var(--text);
+  margin-top:0.35rem;
+}
+.trail-line .glyph{color:var(--gold);opacity:0.6;font-size:0.75rem;flex:0 0 12px;text-align:center}
+.trail-line em{font-style:italic;color:var(--text-dim)}
+.trail-empty{
+  padding:2rem 0.5rem;text-align:center;line-height:1.8;
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.05rem;
+  color:var(--text-faint);
+}
+.trail-more{
+  display:block;width:100%;margin-top:0.5rem;padding:0.7rem;
+  border:1px dashed var(--card-border);border-radius:3px;background:transparent;
+  color:var(--text-faint);cursor:pointer;
+  font-family:'Jost',sans-serif;font-size:0.65rem;
+  letter-spacing:0.14em;text-transform:uppercase;text-indent:0.14em;
+  transition:border-color .18s,color .18s;
+}
+.trail-more:hover{border-color:var(--gold);color:var(--gold)}
+.trail-foot{
+  padding:0.9rem 1.1rem;border-top:1px solid var(--card-border);flex-shrink:0;
+  font-size:0.65rem;letter-spacing:0.1em;color:var(--text-faint);text-align:center;
+}
+
+/* ── WEEKLY REVIEW ──
+   The week's edge (Phase 1.2). Same slide-out chrome as the Trail and
+   the Illuminator — one panel idiom in this room. The Trail is the
+   record; this is the synthesis: what the week held, read back plainly,
+   and three questions answered in the user's own hand. The door is
+   there quietly every day; on Sunday it speaks. */
+.weekly-link{margin-left:1.3rem}
+.trail-link.weekly-invite{color:var(--gold-light)}
+.trail-link.weekly-invite .glyph{opacity:1}
+.weekly-week{
+  font-family:'Cormorant',serif;font-style:italic;font-weight:300;
+  font-size:0.78rem;letter-spacing:0.16em;text-transform:uppercase;
+  color:var(--gold-light);margin-bottom:0.4rem;
+}
+.weekly-lead{
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.1rem;
+  color:#fff;line-height:1.5;margin-bottom:0.9rem;
+}
+.weekly-sect{margin:1.15rem 0 0}
+.weekly-sect-label{
+  font-size:0.6rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--text-faint);margin-bottom:0.55rem;
+}
+.weekly-quiet{
+  padding:1.1rem 0.2rem 0.2rem;line-height:1.8;
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.05rem;
+  color:var(--text-faint);
+}
+.weekly-qs{margin-top:1.5rem;padding-top:1.2rem;border-top:1px solid var(--card-border)}
+.weekly-q{margin-bottom:1.15rem}
+.weekly-q-label{
+  font-family:'Cormorant',serif;font-style:italic;font-weight:300;
+  font-size:1.1rem;color:var(--gold-light);margin-bottom:0.3rem;
+}
+.weekly-q textarea{
+  width:100%;background:transparent;border:none;outline:none;resize:none;
+  border-bottom:1px dotted var(--card-border);
+  padding:0.25rem 0.1rem 0.4rem;
+  font-family:'Cormorant',serif;font-style:italic;font-weight:300;
+  font-size:1.05rem;color:#fff;line-height:1.5;
+  transition:border-color 0.18s;overflow:hidden;
+}
+.weekly-q textarea:focus{border-bottom-color:var(--gold-dim)}
+.weekly-q textarea::placeholder{color:var(--text-faint);opacity:0.65;font-style:italic}
+.weekly-prior{margin-top:1.6rem;padding-top:1.2rem;border-top:1px dashed var(--card-border)}
+.weekly-prior .trail-line em{flex-shrink:0}
+/* ── MONTHLY CLOSE ──
+   Phase 1.3 — the month's single-pane look-back. Same slide-out chrome
+   as the Illuminator and the Trail (`.illum-panel`), same reading idiom
+   as the Trail (`.trail-line`), same neutral mirror as the progress
+   pool. The word list is a plain frequency count over the user's own
+   writing — the stoplist lives in the script below, in the open. */
+.mc-body{flex:1;overflow-y:auto;padding:1.1rem}
+.mc-body::-webkit-scrollbar{width:6px}
+.mc-body::-webkit-scrollbar-thumb{background:rgba(196,151,58,0.2);border-radius:3px}
+.mc-nav{display:flex;align-items:center;justify-content:space-between;gap:0.6rem;margin-bottom:1.3rem}
+.mc-nav-btn{
+  width:32px;height:32px;border:1px solid var(--card-border);border-radius:3px;
+  background:transparent;color:var(--text-dim);cursor:pointer;font-size:1rem;
+  transition:all .15s;flex-shrink:0;
+}
+.mc-nav-btn:hover:not(:disabled){color:var(--gold);border-color:var(--gold-dim)}
+.mc-nav-btn:disabled{opacity:0.25;cursor:default}
+.mc-month{font-family:'Cormorant',serif;font-style:italic;font-size:1.35rem;color:var(--gold-light);text-align:center;letter-spacing:0.02em}
+.mc-section{margin-bottom:1.35rem;padding-bottom:1.15rem;border-bottom:1px solid var(--card-border)}
+.mc-section:last-of-type{border-bottom:none;margin-bottom:0}
+.mc-label{
+  font-size:0.58rem;letter-spacing:0.22em;text-transform:uppercase;
+  color:var(--gold);margin-bottom:0.6rem;display:flex;align-items:center;gap:0.4rem;
+}
+.mc-words{display:flex;flex-wrap:wrap;gap:0.4rem 1.3rem;align-items:baseline}
+.mc-word{font-family:'Cormorant',serif;font-style:italic;font-size:1.25rem;color:#fff}
+.mc-word .mc-count{
+  font-family:'Jost',sans-serif;font-style:normal;font-size:0.62rem;
+  color:var(--text-faint);letter-spacing:0.08em;margin-left:0.3rem;
+}
+.mc-epigraph-label{font-family:'Cormorant',serif;font-style:italic;font-size:1.1rem;color:var(--gold-light);margin-bottom:0.55rem}
+.mc-epigraph{
+  width:100%;background:rgba(255,255,255,0.03);border:1px solid var(--card-border);
+  border-radius:3px;padding:0.6rem 0.8rem;color:var(--text);
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.05rem;line-height:1.5;
+}
+.mc-epigraph:focus{outline:none;border-color:var(--gold-dim)}
+.mc-epigraph::placeholder{color:var(--text-faint);opacity:0.8}
+.mc-empty{
+  padding:1.6rem 0.5rem;text-align:center;line-height:1.8;
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.05rem;
+  color:var(--text-faint);
+}
+/* The month's-edge invitation sits beside "Look back" in the evening block. */
+.trail-link.mc-invite{margin-left:1.4rem}
+@media(max-width:560px){.trail-link.mc-invite{margin-left:0;display:flex}}
+/* The quiet door from the Trail's foot into the months. */
+.mc-door{
+  display:block;margin:0.45rem auto 0;background:none;border:none;cursor:pointer;
+  color:var(--text-faint);font-family:'Cormorant',serif;font-style:italic;
+  font-size:0.9rem;letter-spacing:normal;text-transform:none;transition:color .18s;
+}
+.mc-door:hover{color:var(--gold-light)}
+.mc-door .glyph{font-style:normal;font-size:0.65rem;color:var(--gold);opacity:0.8;margin-right:0.3rem}
+
+/* ── PROGRESS POOL ──
+   Completion pooled up the pyramid. A mirror, not a score: gold on a
+   faint track, never green for "won", never red for "behind". A bar
+   with nothing to pool renders as nothing at all. */
+.pool{margin-top:0.6rem}
+.pool-track{
+  height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;
+}
+.pool-fill{
+  height:100%;background:var(--gold);border-radius:2px;
+  transition:width .45s ease;
+}
+.pool-meta{
+  display:flex;align-items:baseline;justify-content:space-between;gap:0.6rem;
+  margin-top:0.35rem;
+  font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);
+}
+.pool-meta .pool-count{
+  font-family:'Cormorant',serif;font-size:0.9rem;color:var(--gold-light);
+  letter-spacing:0.04em;text-transform:none;
+}
+.pool-sm .pool-track{height:2px}
+.pool-sm .pool-meta{font-size:0.55rem;margin-top:0.28rem}
+.pool-sm .pool-meta .pool-count{font-size:0.82rem}
+/* An objective with goals under it completes when they do — the marker
+   reflects that state but isn't a control. */
+.goal-check.derived{cursor:default;opacity:0.75}
+
 /* ── SCOREBOARD ── */
 .scoreboard{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -406,6 +600,9 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
 .score-card .score-name{
   font-family:'Cormorant',serif;font-size:1.4rem;color:#fff;font-weight:400;
   border:none;line-height:1.2;
+  /* A long aim used to run past the card edge and clip mid-word.
+     Ellipsis while at rest; the full text is still there on focus. */
+  width:100%;min-width:0;max-width:100%;text-overflow:ellipsis;
 }
 .score-card .score-name:focus{outline:none;border-bottom:1px dashed var(--gold-dim)}
 .score-card .score-display{
@@ -513,6 +710,9 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
   box-shadow:0 0 8px rgba(196,151,58,0.5);flex-shrink:0;
 }
 .aim-name{flex:1;font-size:0.95rem;color:#fff;border:none}
+/* Row that carries a pooled bar under its line */
+.aim-row.stacked{flex-direction:column;align-items:stretch;gap:0.5rem}
+.aim-row-top{display:flex;align-items:center;gap:0.8rem}
 .aim-mini-score{
   color:var(--gold-light);font-family:'Cormorant',serif;font-size:1.1rem;
   letter-spacing:0.05em;
@@ -543,10 +743,12 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
   transition:all .15s;position:relative;
 }
 .obj-card:hover{border-color:var(--card-border-hover)}
+.obj-head{display:flex;align-items:center;gap:0.55rem}
 .obj-title{
-  font-size:0.92rem;color:#fff;border:none;width:100%;
-  font-weight:400;
+  font-size:0.92rem;color:#fff;border:none;width:100%;min-width:0;
+  font-weight:400;text-overflow:ellipsis;
 }
+.obj-title.done{color:var(--text-faint);text-decoration:line-through}
 .obj-meta{
   display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
   font-size:0.65rem;color:var(--text-faint);letter-spacing:0.08em;
@@ -1771,6 +1973,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       <div class="dream-card">
         <textarea class="dream-text" id="dream-input" placeholder="What is the world you are here to bring into being? Write the version that's bigger than you — the one that survives lifetimes."></textarea>
       </div>
+      <div id="dream-progress"></div>
     </section>
 
     <section class="section">
@@ -1820,7 +2023,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     <section class="section">
       <div class="section-head">
         <h2><span class="glyph">·</span> History</h2>
-        <div class="meta">Last 365 days</div>
+        <div class="meta">Last 30 days</div>
       </div>
       <div id="habit-history"></div>
     </section>
@@ -1946,6 +2149,50 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       <button type="submit" class="illum-send" id="illum-send">Illuminate</button>
     </div>
   </form>
+</aside>
+
+<!-- The Trail — read-only look-back. Borrows the Illuminator's panel
+     chrome deliberately; only the body styling is its own. -->
+<div class="illum-backdrop" id="trail-backdrop" aria-hidden="true"></div>
+<aside class="illum-panel" id="trail-panel" role="dialog" aria-modal="true" aria-labelledby="trail-title" aria-hidden="true">
+  <header class="illum-head">
+    <h3 id="trail-title"><span class="glyph">·</span> The Trail</h3>
+    <div class="illum-head-actions">
+      <button type="button" class="illum-icon-btn" id="trail-close" title="Close" aria-label="Close the trail">×</button>
+    </div>
+  </header>
+  <div class="trail-body" id="trail-body"></div>
+  <div class="trail-foot">Held privately on this device.
+    <button type="button" class="mc-door" id="mc-from-trail" aria-label="Read the months, one close at a time"><span class="glyph" aria-hidden="true">✦</span>The months</button>
+  </div>
+</aside>
+
+<!-- The Monthly Close (Phase 1.3) — the month's single-pane look-back.
+     Borrows the Illuminator's panel chrome like the Trail does. -->
+<div class="illum-backdrop" id="mc-backdrop" aria-hidden="true"></div>
+<aside class="illum-panel" id="mc-panel" role="dialog" aria-modal="true" aria-labelledby="mc-title" aria-hidden="true">
+  <header class="illum-head">
+    <h3 id="mc-title"><span class="glyph">✦</span> The Close</h3>
+    <div class="illum-head-actions">
+      <button type="button" class="illum-icon-btn" id="mc-close" title="Close" aria-label="Close the month pane">×</button>
+    </div>
+  </header>
+  <div class="mc-body" id="mc-body"></div>
+  <div class="trail-foot">Held privately on this device.</div>
+</aside>
+
+<!-- Weekly Review — the week's edge. The Trail is the record; this is the
+     synthesis. Borrows the same panel chrome so there's one idiom. -->
+<div class="illum-backdrop" id="weekly-backdrop" aria-hidden="true"></div>
+<aside class="illum-panel" id="weekly-panel" role="dialog" aria-modal="true" aria-labelledby="weekly-title" aria-hidden="true">
+  <header class="illum-head">
+    <h3 id="weekly-title"><span class="glyph">✦</span> The Week's Edge</h3>
+    <div class="illum-head-actions">
+      <button type="button" class="illum-icon-btn" id="weekly-close" title="Close" aria-label="Close the weekly review">×</button>
+    </div>
+  </header>
+  <div class="trail-body" id="weekly-body"></div>
+  <div class="trail-foot">Held privately on this device.</div>
 </aside>
 
 <script>
@@ -2148,6 +2395,14 @@ const DEFAULT_STATE = {
   // `audio`); here we keep only a small pointer + settings so the synced state
   // row stays lean. soundMode: 'off' | 'track' (your music) | 'pad' (generated).
   mindMovie: { trackId: null, trackName: '', volume: 0.6, soundMode: 'off' },
+  // Weekly reviews — the week's edge. Keyed by ISO week ("2026-W31"), each
+  // holds the three answers written at the week's close:
+  // { worked, calling, wanted, touchedAt }. The synthesis (goals hit, habit
+  // ratios, aim movement) is derived live from the rest of state, never stored.
+  weeklyReviews: {},
+  // Monthly Close — one optional line per closed month, keyed "YYYY-MM".
+  // { "2026-07": "It served the slow return to morning practice." }
+  monthEpigraphs: {},
   settings: { name: '' }
 };
 
@@ -2306,6 +2561,57 @@ document.getElementById('modal-bg').addEventListener('click', e => {
 });
 
 /* ════════════════════════════════════════════════════════════════
+   PROGRESS POOL — completion pooled up the pyramid.
+
+   The unit of completion is a goal. An objective that has goals
+   completes when its goals do — derived, never hand-set, so the bar
+   can't disagree with what's underneath it. An objective with no goals
+   yet is itself one hand-checkable unit, so a pyramid you haven't
+   broken all the way down is still walkable.
+
+   Aims pool their objectives' units; the Dream pools every aim's. The
+   numbers are a mirror — done over total, nothing ranked or scored.
+   ════════════════════════════════════════════════════════════════ */
+function objGoals(obj) { return state.goals.filter(g => g.objectiveId === obj.id); }
+
+function objUnits(obj) {
+  const goals = objGoals(obj);
+  if (goals.length) return { done: goals.filter(g => g.completed).length, total: goals.length };
+  // No goals under it — the objective stands as its own single unit.
+  return { done: obj.completed ? 1 : 0, total: 1 };
+}
+function objIsComplete(obj) {
+  const u = objUnits(obj);
+  return u.total > 0 && u.done === u.total;
+}
+function sumUnits(objs) {
+  return objs.reduce((acc, o) => {
+    const u = objUnits(o);
+    return { done: acc.done + u.done, total: acc.total + u.total };
+  }, { done: 0, total: 0 });
+}
+function aimUnits(aim) { return sumUnits(state.objectives.filter(o => o.chiefAimId === aim.id)); }
+function dreamUnits() { return sumUnits(state.objectives); }
+function poolPct(u) { return u && u.total ? Math.round((u.done / u.total) * 100) : 0; }
+
+// Returns '' when there's nothing to pool, so callers can concatenate freely
+// and a tier with no work under it simply shows no bar.
+function progressBar(units, label, opts = {}) {
+  if (!units || !units.total) return '';
+  const cls = 'pool' + (opts.small ? ' pool-sm' : '');
+  return `
+    <div class="${cls}">
+      <div class="pool-track" role="img" aria-label="${escape(label)}: ${units.done} of ${units.total} complete">
+        <div class="pool-fill" style="width:${poolPct(units)}%"></div>
+      </div>
+      <div class="pool-meta">
+        <span>${escape(label)}</span>
+        <span class="pool-count">${units.done}/${units.total}</span>
+      </div>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════════════════════════
    SCOREBOARD (chief aim scores — the soccer-game scores)
    ════════════════════════════════════════════════════════════════ */
 function renderScoreboard() {
@@ -2330,7 +2636,8 @@ function renderScoreboard() {
         <button type="button" class="score-btn" data-action="dec-score" data-id="${aim.id}" title="Score went down" aria-label="Decrease score">−</button>
         <button type="button" class="score-btn" data-action="inc-score" data-id="${aim.id}" title="Score went up" aria-label="Increase score">+</button>
         <span class="score-trend ${trend.dir}">${trend.sym} ${trend.delta !== 0 ? (trend.delta > 0 ? '+' : '') + trend.delta : 'no change yet'}</span>
-      </div>`;
+      </div>
+      ${progressBar(aimUnits(aim), 'Beneath this aim', { small: true })}`;
     el.appendChild(card);
   });
 
@@ -2410,6 +2717,9 @@ function renderDream() {
   if (ta.value !== state.dream) ta.value = state.dream;
   // Auto-grow on render so loaded text doesn't sit clipped behind a scroll
   autoGrowDream();
+  // Everything standing under the dream, pooled into one honest line.
+  const prog = document.getElementById('dream-progress');
+  if (prog) prog.innerHTML = progressBar(dreamUnits(), 'Across the whole pyramid');
 }
 function autoGrowDream() {
   const ta = document.getElementById('dream-input');
@@ -2498,7 +2808,9 @@ function renderObjectives() {
     group.innerHTML = `
       <div class="aim-group-head">
         <span class="dot"></span>
-        <span class="label"><strong>${escape(aim.name) || 'Unnamed chief aim'}</strong> · ${objs.length}/6 objectives</span>
+        <!-- Plain count, no "/6" — the max is stated in the section head,
+             and an x/y here would read as completion next to the bars. -->
+        <span class="label"><strong>${escape(aim.name) || 'Unnamed chief aim'}</strong> · ${objs.length} objective${objs.length === 1 ? '' : 's'}</span>
       </div>
       <div class="obj-grid"></div>
     `;
@@ -2506,9 +2818,20 @@ function renderObjectives() {
     objs.forEach(o => {
       const c = document.createElement('div');
       c.className = 'obj-card';
-      const goalCount = state.goals.filter(g => g.objectiveId === o.id).length;
+      const goals = objGoals(o);
+      const goalCount = goals.length;
+      const done = objIsComplete(o);
+      // With goals under it the objective's state is derived from them —
+      // a marker, not a control. With none, it's yours to check by hand.
+      const check = goalCount
+        ? `<span class="goal-check derived ${done ? 'done' : ''}" title="Completes when its goals do"></span>`
+        : `<button type="button" class="goal-check ${done ? 'done' : ''}" data-action="toggle-obj" data-id="${o.id}" title="No goals under this yet — check it by hand" aria-pressed="${done ? 'true' : 'false'}" aria-label="${done ? 'Mark objective incomplete' : 'Mark objective complete'}"></button>`;
       c.innerHTML = `
-        <input class="obj-title" data-obj-id="${o.id}" value="${escape(o.title)}" placeholder="What's the objective?">
+        <div class="obj-head">
+          ${check}
+          <input class="obj-title ${done ? 'done' : ''}" data-obj-id="${o.id}" value="${escape(o.title)}" placeholder="What's the objective?">
+        </div>
+        ${goalCount ? progressBar(objUnits(o), 'Goals', { small: true }) : ''}
         <div class="obj-meta">
           <span class="obj-duration" data-action="cycle-duration" data-id="${o.id}" title="Click to cycle 1→6 months">${o.durationMonths}mo</span>
           <span class="obj-goals-count">${goalCount} goal${goalCount===1?'':'s'}</span>
@@ -2541,6 +2864,15 @@ function renderObjectives() {
       persist().then(renderObjectives);
     });
   });
+  el.querySelectorAll('[data-action="toggle-obj"]').forEach(b => {
+    b.addEventListener('click', () => {
+      const o = state.objectives.find(x => x.id === b.dataset.id);
+      if (!o) return;
+      o.completed = !o.completed;
+      o.completedDate = o.completed ? todayISO() : null;
+      persist().then(renderAll);
+    });
+  });
   el.querySelectorAll('[data-action="del-obj"]').forEach(b => {
     b.addEventListener('click', () => {
       const o = state.objectives.find(x => x.id === b.dataset.id);
@@ -2556,6 +2888,7 @@ function addObjective(chiefAimId) {
   state.objectives.push({
     id: uid('obj'), chiefAimId,
     title: '', durationMonths: 3,
+    completed: false, completedDate: null,
     position: state.objectives.filter(o => o.chiefAimId === chiefAimId).length
   });
   persist().then(() => { renderObjectives(); renderGoalsByObj(); });
@@ -2660,6 +2993,7 @@ function renderPyramidMini() {
       <div style="font-family:Cormorant,serif;font-size:1.15rem;color:#fff;font-style:italic;line-height:1.5">
         ${state.dream ? escape(state.dream).replace(/\n/g,'<br>') : '<span style="color:var(--text-faint)">No dream written yet — open the Goal Pyramid to begin.</span>'}
       </div>
+      ${progressBar(dreamUnits(), 'Across the whole pyramid')}
     </div>
   `;
   el.appendChild(dreamCard);
@@ -2679,12 +3013,15 @@ function renderPyramidMini() {
     state.chiefAims.forEach(aim => {
       const objCount = state.objectives.filter(o => o.chiefAimId === aim.id).length;
       const r = document.createElement('div');
-      r.className = 'aim-row';
+      r.className = 'aim-row stacked';
       r.innerHTML = `
-        <span class="aim-bullet"></span>
-        <span style="flex:1;color:#fff">${escape(aim.name) || '<em style="color:var(--text-faint)">unnamed</em>'}</span>
-        <span style="font-size:0.7rem;color:var(--text-dim)">${objCount} objectives</span>
-        <span class="aim-mini-score">${aim.score.current}/${aim.score.target}</span>
+        <div class="aim-row-top">
+          <span class="aim-bullet"></span>
+          <span style="flex:1;color:#fff">${escape(aim.name) || '<em style="color:var(--text-faint)">unnamed</em>'}</span>
+          <span style="font-size:0.7rem;color:var(--text-dim)">${objCount} objective${objCount === 1 ? '' : 's'}</span>
+          <span class="aim-mini-score">${aim.score.current}/${aim.score.target}</span>
+        </div>
+        ${progressBar(aimUnits(aim), 'Complete', { small: true })}
       `;
       list.appendChild(r);
     });
@@ -4433,12 +4770,18 @@ document.addEventListener('keydown', e => {
   const modalBg = document.getElementById('modal-bg');
   if (modalBg?.classList.contains('open')) { closeModal(); return; }
   if (illumEls.panel?.classList.contains('open')) { closeChatPanel(); return; }
+  if (document.getElementById('trail-panel')?.classList.contains('open')) { closeTrail(); return; }
+  if (document.getElementById('weekly-panel')?.classList.contains('open')) { closeWeeklyReview(); return; }
+  if (document.getElementById('mc-panel')?.classList.contains('open')) { closeMonthClose(); return; }
 });
 
 // Number keys 1-5 jump tabs (skip when typing in inputs/textareas/contenteditable)
 document.addEventListener('keydown', e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   if (illumEls.panel?.classList.contains('open')) return;
+  if (document.getElementById('trail-panel')?.classList.contains('open')) return;
+  if (document.getElementById('weekly-panel')?.classList.contains('open')) return;
+  if (document.getElementById('mc-panel')?.classList.contains('open')) return;
   if (document.getElementById('modal-bg')?.classList.contains('open')) return;
   const tag = (e.target && e.target.tagName) || '';
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
@@ -4505,6 +4848,8 @@ function renderAll() {
   document.getElementById('today-date').textContent = formatDate(new Date());
   renderFirstRun();
   renderToday();
+  renderWeeklyReview();
+  renderMonthClose(); // no-op unless the Close pane is open
   renderScoreboard();
   renderDream();
   renderChiefAimsEdit();
@@ -4529,6 +4874,583 @@ function renderAll() {
    recently passed. Saves on input via the existing persist() so changes
    sync to cloud the same way every other field does.
 */
+/* ════════════════════════════════════════════════════════════════
+   THE TRAIL (Phase 1.1) — the read-only look-back.
+
+   Every day the user has written on, newest first, each paired with
+   how much of that day's practice was kept. Read-only on purpose: the
+   Today card is where you write, the trail is where you read. Days
+   with nothing on them are skipped without comment — a gap in the
+   trail is not a failure to be shown.
+
+   Sixty days at a time; older ones load on request rather than all at
+   once, so a long practice doesn't build a huge DOM on open.
+   ════════════════════════════════════════════════════════════════ */
+const TRAIL_PAGE = 60;
+let trailWindow = TRAIL_PAGE;
+
+// `new Date('2026-08-01')` parses as UTC midnight and renders as the day
+// before in any negative-offset timezone. The trail is entirely local, so
+// build the date locally.
+function parseISODate(iso) {
+  const [y, m, d] = String(iso).split('-').map(Number);
+  return new Date(y, (m || 1) - 1, d || 1);
+}
+
+// A habit only counts against a day if it already existed on that day —
+// otherwise adding a habit today would retroactively make every past day
+// look incomplete. Archived habits still count for the days they were kept.
+function habitsExistingOn(iso) {
+  return (state.habits || []).filter(h => !h.createdAt || String(h.createdAt).slice(0, 10) <= iso);
+}
+
+function trailEntries() {
+  const intentions = state.dailyIntentions || {};
+  const logs = state.habitLogs || {};
+  const dates = new Set([...Object.keys(intentions), ...Object.keys(logs)]);
+  const FIELDS = ['intention', 'reflection', 'kept', 'missed', 'cueIfThen'];
+
+  return [...dates]
+    .map(date => {
+      const e = intentions[date] || {};
+      const written = FIELDS.filter(f => (e[f] || '').trim()).map(f => [f, e[f].trim()]);
+      const dayLog = logs[date] || {};
+      const habitDone = Object.keys(dayLog).filter(id => dayLog[id]).length;
+      return { date, written, habitDone, habitTotal: habitsExistingOn(date).length };
+    })
+    // A day with neither writing nor a kept practice is quietly skipped.
+    .filter(d => d.written.length || d.habitDone)
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+function trailDayLabel(iso) {
+  const today = todayISO();
+  if (iso === today) return 'Today';
+  const y = new Date(); y.setDate(y.getDate() - 1);
+  if (iso === dateISO(y)) return 'Yesterday';
+  const d = parseISODate(iso);
+  const label = formatDate(d);
+  return d.getFullYear() === new Date().getFullYear() ? label : `${label}, ${d.getFullYear()}`;
+}
+
+const TRAIL_GLYPHS = {
+  reflection: { glyph: '◇', lead: 'What it served' },
+  kept:       { glyph: '✦', lead: 'Kept' },
+  missed:     { glyph: '·', lead: 'Missed' },
+  cueIfThen:  { glyph: '›', lead: 'Cue' },
+};
+
+function renderTrail() {
+  const el = document.getElementById('trail-body');
+  if (!el) return;
+  const all = trailEntries();
+
+  if (!all.length) {
+    el.innerHTML = `<div class="trail-empty">Nothing behind you yet.<br>Write today's intention, and tomorrow this is where it will be.</div>`;
+    return;
+  }
+
+  const shown = all.slice(0, trailWindow);
+  el.innerHTML = shown.map(day => {
+    const intention = day.written.find(([f]) => f === 'intention');
+    const rest = day.written.filter(([f]) => f !== 'intention');
+    // No ratio on today — the day isn't over, and a running "0 of 2" at the
+    // top of your own record reads as a verdict on a morning still in progress.
+    const ratio = (day.habitTotal && day.date !== todayISO())
+      ? `<span class="trail-ratio">${day.habitDone} of ${day.habitTotal} kept</span>`
+      : '';
+    return `
+      <article class="trail-day">
+        <div class="trail-day-head">
+          <span class="trail-date">${escape(trailDayLabel(day.date))}</span>
+          ${ratio}
+        </div>
+        ${intention ? `<div class="trail-intention">${escape(intention[1])}</div>` : ''}
+        ${rest.map(([f, v]) => {
+          const g = TRAIL_GLYPHS[f] || { glyph: '·', lead: '' };
+          return `<div class="trail-line"><span class="glyph" aria-hidden="true">${g.glyph}</span><span><em>${g.lead} —</em> ${escape(v)}</span></div>`;
+        }).join('')}
+      </article>`;
+  }).join('')
+    + (all.length > shown.length
+        ? `<button type="button" class="trail-more" id="trail-more">Further back · ${all.length - shown.length} more</button>`
+        : '');
+
+  const more = document.getElementById('trail-more');
+  if (more) more.addEventListener('click', () => {
+    trailWindow += TRAIL_PAGE;
+    renderTrail();
+  });
+}
+
+function openTrail() {
+  trailWindow = TRAIL_PAGE;
+  renderTrail();
+  document.getElementById('trail-panel')?.classList.add('open');
+  document.getElementById('trail-backdrop')?.classList.add('open');
+  document.getElementById('trail-panel')?.setAttribute('aria-hidden', 'false');
+  document.getElementById('trail-close')?.focus();
+}
+function closeTrail() {
+  document.getElementById('trail-panel')?.classList.remove('open');
+  document.getElementById('trail-backdrop')?.classList.remove('open');
+  document.getElementById('trail-panel')?.setAttribute('aria-hidden', 'true');
+}
+function bindTrail() {
+  document.getElementById('trail-close')?.addEventListener('click', closeTrail);
+  document.getElementById('trail-backdrop')?.addEventListener('click', closeTrail);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   WEEKLY REVIEW (Phase 1.2) — the week's edge.
+
+   The Trail is the record; this is the synthesis. One panel, three
+   parts: what the week held (goals hit, practice kept, aim movement —
+   derived live, never stored), three questions answered in the user's
+   own hand, and — when it exists — last week's answers read back.
+
+   The reviewed week is always a *whole* week: the ISO week ending on
+   the most recent Sunday. On Sunday the Today card carries the
+   invitation from the roadmap; every other day the same door stands
+   quietly beside "Look back", so a missed Sunday hides nothing and a
+   kept Sunday is never nagged about. What was not written is simply
+   not there — no reminder, no backlog, no debt.
+   ════════════════════════════════════════════════════════════════ */
+function isoWeekKey(d) {
+  // ISO-8601 week + week-year (weeks run Mon–Sun; week 1 holds Jan 4).
+  const t = new Date(d.getFullYear(), d.getMonth(), d.getDate());
+  t.setDate(t.getDate() + 3 - ((t.getDay() + 6) % 7)); // this week's Thursday
+  const week1 = new Date(t.getFullYear(), 0, 4);
+  const wk = 1 + Math.round(((t - week1) / 86400000 - 3 + ((week1.getDay() + 6) % 7)) / 7);
+  return `${t.getFullYear()}-W${String(wk).padStart(2, '0')}`;
+}
+
+// The week under review: the ISO week ending on the most recent Sunday
+// (today, if today is Sunday — that's the week's edge).
+function reviewTarget() {
+  const now = new Date();
+  const sunday = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  sunday.setDate(sunday.getDate() - now.getDay()); // getDay(): Sun = 0
+  const monday = new Date(sunday); monday.setDate(monday.getDate() - 6);
+  const dates = [];
+  for (let i = 0; i < 7; i++) {
+    const d = new Date(monday); d.setDate(d.getDate() + i);
+    dates.push(dateISO(d));
+  }
+  return { key: isoWeekKey(sunday), monday, sunday, dates, isEdge: now.getDay() === 0 };
+}
+
+// Everything the panel states about the week, computed from state on the
+// spot — deterministic and openable to inspection, per the no-algorithm
+// principle. Nothing here is persisted.
+function weeklyFacts(target) {
+  const [from, to] = [dateISO(target.monday), dateISO(target.sunday)];
+
+  const goalsHit = (state.goals || []).filter(g =>
+    g.completed && g.completedDate && g.completedDate >= from && g.completedDate <= to);
+
+  // Habit ratios — only habits kept at least once appear. A habit only
+  // counts against the days it already existed (same rule as the Trail),
+  // and an untouched habit is simply absent: a quiet week is a fact to
+  // hold, not a column of zeros to answer for.
+  const logs = state.habitLogs || {};
+  const habitRows = (state.habits || []).map(h => {
+    const days = target.dates.filter(iso => !h.createdAt || String(h.createdAt).slice(0, 10) <= iso);
+    const kept = days.filter(iso => logs[iso]?.[h.id]).length;
+    return { habit: h, kept, of: days.length };
+  }).filter(r => r.kept > 0);
+
+  // Chief-aim movement — only aims whose score was actually restated
+  // during the week. Shown as "was → is", no colour, no verdict.
+  const aimDeltas = (state.chiefAims || []).filter(a => a.name && a.name.trim()).map(a => {
+    const hist = (a.score && Array.isArray(a.score.history)) ? a.score.history : [];
+    const inWeek = hist.filter(e => e.date >= from && e.date <= to);
+    if (!inWeek.length) return null;
+    const before = hist.filter(e => e.date < from);
+    return {
+      name: a.name,
+      fromVal: before.length ? before[before.length - 1].value : null,
+      toVal: inWeek[inWeek.length - 1].value,
+    };
+  }).filter(Boolean);
+
+  const wrote = target.dates.some(iso => {
+    const e = (state.dailyIntentions || {})[iso];
+    return e && ['intention', 'reflection', 'kept', 'missed', 'cueIfThen'].some(f => (e[f] || '').trim());
+  });
+
+  return { goalsHit, habitRows, aimDeltas, thin: !goalsHit.length && !habitRows.length && !aimDeltas.length && !wrote };
+}
+
+const WEEKLY_QUESTIONS = [
+  { field: 'worked',  label: 'What worked?' },
+  { field: 'calling', label: 'What’s calling for attention?' },
+  { field: 'wanted',  label: 'What would last week’s you have wanted to know?' },
+];
+
+function weeklyRangeLabel(target) {
+  const opt = { month: 'long', day: 'numeric' };
+  return `${target.monday.toLocaleDateString(undefined, opt)} – ${target.sunday.toLocaleDateString(undefined, opt)}`;
+}
+
+// The Today-card slot. Nothing shows until there is something behind the
+// user (same day-one rule as "Look back"). On the week's edge, the soft
+// prompt; any other day, the same door in the Trail-link idiom.
+function weeklyInviteHTML() {
+  if (!state.weeklyReviews) state.weeklyReviews = {};
+  const hasReviews = Object.values(state.weeklyReviews).some(r => r && ['worked','calling','wanted'].some(f => (r[f] || '').trim()));
+  if (!trailEntries().length && !hasReviews) return '';
+  const target = reviewTarget();
+  const written = state.weeklyReviews[target.key] &&
+    ['worked','calling','wanted'].some(f => (state.weeklyReviews[target.key][f] || '').trim());
+  if (target.isEdge && !written) {
+    return `<button type="button" class="trail-link weekly-link weekly-invite" id="weekly-open" aria-label="Open the weekly review"><span class="glyph" aria-hidden="true">✦</span> It’s the week’s edge. Look back?</button>`;
+  }
+  return `<button type="button" class="trail-link weekly-link" id="weekly-open" aria-label="Open the weekly review"><span class="glyph" aria-hidden="true">✦</span> The week’s edge</button>`;
+}
+
+function renderWeeklyReview() {
+  const el = document.getElementById('weekly-body');
+  if (!el) return;
+  // Never rebuild under the user's cursor — state already holds the text.
+  if (el.contains(document.activeElement)) return;
+
+  if (!state.weeklyReviews) state.weeklyReviews = {};
+  const target = reviewTarget();
+  const facts = weeklyFacts(target);
+  const review = state.weeklyReviews[target.key] || {};
+
+  const lead = target.isEdge
+    ? 'The week closes today. Read it back before it goes.'
+    : 'The week that closed on Sunday, read back.';
+
+  const goalsSect = facts.goalsHit.length ? `
+    <div class="weekly-sect">
+      <div class="weekly-sect-label">Goals hit</div>
+      ${facts.goalsHit.map(g => `<div class="trail-line"><span class="glyph" aria-hidden="true">✦</span><span>${escape(g.title || 'unnamed goal')}</span></div>`).join('')}
+    </div>` : '';
+
+  const habitsSect = facts.habitRows.length ? `
+    <div class="weekly-sect">
+      <div class="weekly-sect-label">The practice</div>
+      ${facts.habitRows.map(r => `<div class="trail-line"><span class="glyph" aria-hidden="true">${escape(r.habit.icon || '◇')}</span><span>${escape(r.habit.name)} <em>— ${r.kept} of ${r.of} kept</em></span></div>`).join('')}
+    </div>` : '';
+
+  const aimsSect = facts.aimDeltas.length ? `
+    <div class="weekly-sect">
+      <div class="weekly-sect-label">Chief aims</div>
+      ${facts.aimDeltas.map(a => `<div class="trail-line"><span class="glyph" aria-hidden="true">·</span><span>${escape(a.name)} <em>— ${a.fromVal == null ? `at ${escape(String(a.toVal))}` : `${escape(String(a.fromVal))} → ${escape(String(a.toVal))}`}</em></span></div>`).join('')}
+    </div>` : '';
+
+  const quiet = facts.thin
+    ? `<div class="weekly-quiet">A quiet week on the record. The questions still stand.</div>`
+    : '';
+
+  const questions = `
+    <div class="weekly-qs">
+      ${WEEKLY_QUESTIONS.map(q => `
+        <div class="weekly-q">
+          <div class="weekly-q-label">${q.label}</div>
+          <textarea rows="1" data-weekly-field="${q.field}" placeholder="A line is enough." aria-label="${q.label}">${escape(review[q.field] || '')}</textarea>
+        </div>`).join('')}
+    </div>`;
+
+  // Last week's answers, read back — the conversation the third question
+  // is half of. Only when something was actually written.
+  const prevSunday = new Date(target.sunday); prevSunday.setDate(prevSunday.getDate() - 7);
+  const prev = state.weeklyReviews[isoWeekKey(prevSunday)];
+  const prevLines = prev ? WEEKLY_QUESTIONS.filter(q => (prev[q.field] || '').trim()) : [];
+  const priorSect = prevLines.length ? `
+    <div class="weekly-prior">
+      <div class="weekly-sect-label">From the week before</div>
+      ${prevLines.map(q => `<div class="trail-line"><span class="glyph" aria-hidden="true">◇</span><span><em>${q.label}</em> ${escape(prev[q.field].trim())}</span></div>`).join('')}
+    </div>` : '';
+
+  el.innerHTML = `
+    <div class="weekly-week">${escape(weeklyRangeLabel(target))}</div>
+    <div class="weekly-lead">${lead}</div>
+    ${goalsSect}${habitsSect}${aimsSect}${quiet}${questions}${priorSect}
+  `;
+
+  // Answers save as they're written — same debounce + chip as the Today card.
+  el.querySelectorAll('textarea[data-weekly-field]').forEach(ta => {
+    const grow = () => { ta.style.height = 'auto'; ta.style.height = ta.scrollHeight + 'px'; };
+    grow();
+    let h;
+    ta.addEventListener('input', () => {
+      grow();
+      if (!state.weeklyReviews) state.weeklyReviews = {};
+      if (!state.weeklyReviews[target.key]) state.weeklyReviews[target.key] = {};
+      state.weeklyReviews[target.key][ta.dataset.weeklyField] = ta.value;
+      state.weeklyReviews[target.key].touchedAt = new Date().toISOString();
+      clearTimeout(h); h = setTimeout(() => persist().then(() => flashSaveChip(ta)), 300);
+    });
+  });
+}
+
+function openWeeklyReview() {
+  renderWeeklyReview();
+  document.getElementById('weekly-panel')?.classList.add('open');
+  document.getElementById('weekly-backdrop')?.classList.add('open');
+  document.getElementById('weekly-panel')?.setAttribute('aria-hidden', 'false');
+  document.getElementById('weekly-close')?.focus();
+}
+function closeWeeklyReview() {
+  document.getElementById('weekly-panel')?.classList.remove('open');
+  document.getElementById('weekly-backdrop')?.classList.remove('open');
+  document.getElementById('weekly-panel')?.setAttribute('aria-hidden', 'true');
+}
+function bindWeeklyReview() {
+  document.getElementById('weekly-close')?.addEventListener('click', closeWeeklyReview);
+  document.getElementById('weekly-backdrop')?.addEventListener('click', closeWeeklyReview);
+}
+
+/* ════════════════════════════════════════════════════════════════
+   THE MONTHLY CLOSE (Phase 1.3) — one pane per finished month.
+
+   What it holds: the month's goals as the same pooled mirror the
+   pyramid uses (done over total, nothing ranked), the practices most
+   kept, the words the user returned to in their own writing, and one
+   optional line — "What did this month serve?" — kept as the month's
+   epigraph in state.monthEpigraphs["YYYY-MM"].
+
+   How it arrives: a quiet invitation beside "Look back" on the last
+   day of a month and through the first seven days of the next, so a
+   person who doesn't open the Sanctuary on the 31st still meets their
+   month. Writing the epigraph retires the invitation. Every past
+   close stays readable forever through "The months" door in the
+   Trail's foot — an epigraph written is an epigraph you can revisit.
+
+   The word count is a literal frequency count — lowercase, no
+   stemming, no inference. The only editorial act is the stoplist
+   below, kept in the open so the count stays inspectable.
+   ════════════════════════════════════════════════════════════════ */
+
+// The stoplist is an editorial object, not a magic blob: function words,
+// auxiliaries and light verbs, plus the diary's own scaffold (today,
+// yesterday, day) — words that carry the sentence, not the month.
+// Meaning-bearing verbs (feel, want, keep, trust) are deliberately NOT
+// listed: if a month turns on them, the count should say so.
+// German function words are included because this room is written in by
+// bilingual hands; a few share spellings with English nouns (man, war,
+// die, hat) and the German reading wins — as function words they would
+// flood every German month, while an English month rarely turns on them.
+const MC_STOPWORDS = new Set(('a an the and or but nor so yet if then than that this these those there here ' +
+  'when where while which who whom whose what why how as at by for from in into of off on onto out over under ' +
+  'up down with without within about above across after again against along among around before behind below ' +
+  'between during through to too until upon via i me my mine myself we us our ours ourselves you your yours ' +
+  'yourself he him his himself she her hers herself it its itself they them their theirs themselves one all any ' +
+  'both each few more most much some such other another same own every everything anything nothing something ' +
+  'someone anyone everyone no not only very just also even still quite rather really well am is are was were be ' +
+  'been being do does did doing done have has had having will would shall should can could may might must get ' +
+  'got gets getting go goes going gone went let lets today tonight tomorrow yesterday day days ' +
+  "don't didn't can't won't i'm i've i'll i'd it's isn't wasn't that's there's we're we've you're you've he's " +
+  "she's they're couldn't wouldn't shouldn't haven't hasn't aren't ain't dont didnt cant wont im ive ill isnt " +
+  'wasnt thats theres youre weve youve theyre couldnt wouldnt shouldnt havent hasnt arent ' +
+  'aber alle allem allen aller alles als also auch auf aus bei beim bin bis bist da damit dann das dass dein ' +
+  'deine dem den denn der des dich die dies diese diesem diesen dieser dieses dir doch dort du durch ein eine ' +
+  'einem einen einer eines er es etwas euch für gegen gewesen hab habe haben habt hat hatte hatten heute hier ' +
+  'ich ihm ihn ihnen ihr ihre im immer ist ja jede jedem jeden jeder jedes jetzt kann kein keine können könnte ' +
+  'machen mal man mehr mein meine mich mir mit morgen muss musste nach nicht nichts noch nun nur ob oder ohne ' +
+  'schon sehr sein seine sich sie sind über um und uns unser unter viel vom von vor war waren weil weiter wenn ' +
+  'wer werde werden wie wieder wir wird wirst wo wollen wollte würde während zu zum zur zwar').split(/\s+/));
+
+let mcMonth = null; // the month the pane is showing, "YYYY-MM"
+
+function mcEpigraphs() {
+  if (!state.monthEpigraphs || typeof state.monthEpigraphs !== 'object' || Array.isArray(state.monthEpigraphs)) {
+    state.monthEpigraphs = {};
+  }
+  return state.monthEpigraphs;
+}
+
+// "July", or "July 2025" once the year isn't the current one.
+function mcMonthLabel(ym, alwaysYear = false) {
+  const d = parseISODate(ym + '-01');
+  const name = d.toLocaleDateString(undefined, { month: 'long' });
+  return (alwaysYear || d.getFullYear() !== new Date().getFullYear()) ? `${name} ${d.getFullYear()}` : name;
+}
+
+// The month currently at its edge: this month on its last day, the
+// previous month through the first seven days after it. Null otherwise.
+function closableMonth() {
+  const d = new Date();
+  const lastDay = new Date(d.getFullYear(), d.getMonth() + 1, 0).getDate();
+  if (d.getDate() === lastDay) return monthISO(d);
+  if (d.getDate() <= 7) return monthISO(new Date(d.getFullYear(), d.getMonth() - 1, 1));
+  return null;
+}
+
+function mcMonthHasAnything(ym) {
+  if (trailEntries().some(e => e.date.startsWith(ym))) return true;
+  if ((state.goals || []).some(g => g.month === ym)) return true;
+  if ((mcEpigraphs()[ym] || '').trim()) return true;
+  return false;
+}
+
+// Months the pane can show: any finished month with something in it,
+// plus the month at its edge (even if empty — its epigraph may still
+// want writing). Ascending. The running month stays out: it isn't over.
+function mcMonths() {
+  const current = monthISO();
+  const set = new Set();
+  trailEntries().forEach(e => set.add(e.date.slice(0, 7)));
+  (state.goals || []).forEach(g => { if (g.month) set.add(g.month); });
+  Object.keys(mcEpigraphs()).forEach(ym => set.add(ym));
+  const closable = closableMonth();
+  if (closable) set.add(closable);
+  return [...set].filter(ym => /^\d{4}-\d{2}$/.test(ym) && (ym < current || ym === closable)).sort();
+}
+
+// The literal count. Corpus: everything written on the month's days —
+// intentions, reflections, kept / missed lines, cues — via the same
+// trailEntries() walk the Trail reads from. A word must appear three
+// times to count as returned-to; fewer than three honest words means
+// fewer than three words shown, never padding.
+function mcTopWords(ym) {
+  const texts = [];
+  trailEntries().forEach(e => {
+    if (e.date.startsWith(ym)) e.written.forEach(([, v]) => texts.push(v));
+  });
+  const counts = new Map();
+  const tokens = texts.join(' ').toLocaleLowerCase().replace(/’/g, "'").match(/[\p{L}][\p{L}'-]*/gu) || [];
+  tokens.forEach(raw => {
+    const t = raw.replace(/^['-]+|['-]+$/g, '');
+    if (t.length < 3 || MC_STOPWORDS.has(t)) return;
+    counts.set(t, (counts.get(t) || 0) + 1);
+  });
+  return [...counts.entries()]
+    .filter(([, n]) => n >= 3)
+    .sort((a, b) => b[1] - a[1] || a[0].localeCompare(b[0]))
+    .slice(0, 3);
+}
+
+// Practices most kept that month: days-kept per habit, most first.
+// Archived habits still count for the month they were lived in.
+function mcHabitDays(ym) {
+  const perHabit = new Map();
+  Object.entries(state.habitLogs || {}).forEach(([date, log]) => {
+    if (!date.startsWith(ym)) return;
+    Object.keys(log).forEach(id => { if (log[id]) perHabit.set(id, (perHabit.get(id) || 0) + 1); });
+  });
+  return [...perHabit.entries()]
+    .map(([id, n]) => ({ habit: (state.habits || []).find(h => h.id === id), days: n }))
+    .filter(x => x.habit)
+    .sort((a, b) => b.days - a.days || a.habit.name.localeCompare(b.habit.name))
+    .slice(0, 3);
+}
+
+// The invitation beside "Look back". Present only while a month is at
+// its edge with something in it; writing the epigraph retires it.
+function monthCloseInviteHTML() {
+  const ym = closableMonth();
+  if (!ym || !mcMonthHasAnything(ym)) return '';
+  if ((mcEpigraphs()[ym] || '').trim()) return '';
+  const name = mcMonthLabel(ym);
+  const line = ym === monthISO()
+    ? `It's the month's edge — sit with ${name}?`
+    : `${name} is complete. Sit with it?`;
+  return `<button type="button" class="trail-link mc-invite" id="mc-open" aria-label="Open the close of ${escape(name)}"><span class="glyph" aria-hidden="true">✦</span> ${escape(line)}</button>`;
+}
+
+function renderMonthClose() {
+  const panel = document.getElementById('mc-panel');
+  const el = document.getElementById('mc-body');
+  if (!panel || !el || !panel.classList.contains('open')) return;
+  // Don't rebuild under a hand mid-epigraph — renderAll can fire from
+  // any other surface while the pane is open.
+  if (document.activeElement && document.activeElement.id === 'mc-epigraph') return;
+
+  const months = mcMonths();
+  if (!months.length) {
+    el.innerHTML = `<div class="mc-empty">No month has closed yet.<br>The first close comes at the month's edge.</div>`;
+    return;
+  }
+  if (!mcMonth || !months.includes(mcMonth)) mcMonth = months[months.length - 1];
+  const idx = months.indexOf(mcMonth);
+  const ym = mcMonth;
+
+  const monthGoals = (state.goals || []).filter(g => g.month === ym);
+  const goalUnits = { done: monthGoals.filter(g => g.completed).length, total: monthGoals.length };
+  const goalsSection = monthGoals.length ? `
+    <section class="mc-section">
+      <div class="mc-label"><span aria-hidden="true">·</span> What was set</div>
+      ${progressBar(goalUnits, 'Goals this month', { small: true })}
+      ${monthGoals.map(g => `<div class="trail-line"><span class="glyph" aria-hidden="true">${g.completed ? '✦' : '·'}</span><span>${escape(g.title || 'unnamed goal')}</span></div>`).join('')}
+    </section>` : '';
+
+  const habitDays = mcHabitDays(ym);
+  const habitsSection = habitDays.length ? `
+    <section class="mc-section">
+      <div class="mc-label"><span aria-hidden="true">◇</span> What was kept</div>
+      ${habitDays.map(x => `<div class="trail-line"><span class="glyph" aria-hidden="true">${escape(x.habit.icon || '◇')}</span><span>${escape(x.habit.name)} <em>· ${x.days} ${x.days === 1 ? 'day' : 'days'}</em></span></div>`).join('')}
+    </section>` : '';
+
+  const words = mcTopWords(ym);
+  const wordsSection = words.length ? `
+    <section class="mc-section">
+      <div class="mc-label"><span aria-hidden="true">·</span> The words you returned to</div>
+      <div class="mc-words">${words.map(([w, n]) => `<span class="mc-word">${escape(w)}<span class="mc-count">×${n}</span></span>`).join('')}</div>
+    </section>` : '';
+
+  const emptyLine = (!goalsSection && !habitsSection && !wordsSection)
+    ? `<div class="mc-empty">Nothing written in ${escape(mcMonthLabel(ym))}.<br>The month was still lived.</div>`
+    : '';
+
+  const epigraph = mcEpigraphs()[ym] || '';
+  el.innerHTML = `
+    <div class="mc-nav">
+      <button type="button" class="mc-nav-btn" id="mc-prev" aria-label="Earlier month" ${idx === 0 ? 'disabled' : ''}>‹</button>
+      <div class="mc-month">${escape(mcMonthLabel(ym, true))}</div>
+      <button type="button" class="mc-nav-btn" id="mc-next" aria-label="Later month" ${idx === months.length - 1 ? 'disabled' : ''}>›</button>
+    </div>
+    ${emptyLine}
+    ${goalsSection}
+    ${habitsSection}
+    ${wordsSection}
+    <section class="mc-section">
+      <div class="mc-epigraph-label">What did this month serve?</div>
+      <input type="text" class="mc-epigraph" id="mc-epigraph" placeholder="One line, kept as the month's epigraph…" value="${escape(epigraph)}" aria-label="What did ${escape(mcMonthLabel(ym))} serve? One optional line.">
+    </section>`;
+
+  document.getElementById('mc-prev')?.addEventListener('click', () => {
+    if (idx > 0) { mcMonth = months[idx - 1]; renderMonthClose(); }
+  });
+  document.getElementById('mc-next')?.addEventListener('click', () => {
+    if (idx < months.length - 1) { mcMonth = months[idx + 1]; renderMonthClose(); }
+  });
+  const ep = document.getElementById('mc-epigraph');
+  if (ep) {
+    let h;
+    ep.addEventListener('input', () => {
+      mcEpigraphs()[ym] = ep.value;
+      clearTimeout(h); h = setTimeout(() => persist().then(() => flashSaveChip(ep)), 300);
+    });
+  }
+}
+
+function openMonthClose(ym) {
+  const months = mcMonths();
+  mcMonth = (ym && months.includes(ym)) ? ym : (months[months.length - 1] || null);
+  document.getElementById('mc-panel')?.classList.add('open');
+  document.getElementById('mc-backdrop')?.classList.add('open');
+  document.getElementById('mc-panel')?.setAttribute('aria-hidden', 'false');
+  renderMonthClose();
+  document.getElementById('mc-close')?.focus();
+}
+function closeMonthClose() {
+  document.getElementById('mc-panel')?.classList.remove('open');
+  document.getElementById('mc-backdrop')?.classList.remove('open');
+  document.getElementById('mc-panel')?.setAttribute('aria-hidden', 'true');
+  // The invitation may have just been retired by a written epigraph.
+  renderToday();
+}
+function bindMonthClose() {
+  document.getElementById('mc-close')?.addEventListener('click', closeMonthClose);
+  document.getElementById('mc-backdrop')?.addEventListener('click', closeMonthClose);
+  document.getElementById('mc-from-trail')?.addEventListener('click', () => { closeTrail(); openMonthClose(); });
+}
+
 function renderToday() {
   const el = document.getElementById('today-section');
   if (!el) return;
@@ -4613,6 +5535,19 @@ function renderToday() {
     ? `<div class="yesterday-cue">${escape(yesterdayEntry.cueIfThen)}</div>`
     : '';
 
+  // "Look back" only appears once there is something behind you — on day
+  // one it would open onto an empty room and read as a broken feature.
+  const trailCount = trailEntries().length;
+  const trailLink = trailCount
+    ? `<button type="button" class="trail-link" id="trail-open" aria-label="Look back — read your past days"><span class="glyph" aria-hidden="true">·</span> Look back</button>`
+    : '';
+
+  // Weekly Review slot (Phase 1.2) — computed in the WEEKLY REVIEW module.
+  const weeklySlot = weeklyInviteHTML();
+  // Monthly Close (Phase 1.3) — one computed slot; logic lives in the
+  // MONTHLY CLOSE module. Empty string outside the month's edge.
+  const mcInvite = monthCloseInviteHTML();
+
   el.innerHTML = `
     <div class="today-card">
       <div class="breathing-dot" aria-hidden="true" title="Quiet, repeated devotion is the work."></div>
@@ -4642,6 +5577,8 @@ function renderToday() {
           <span class="evening-glyph" aria-hidden="true">›</span>
           <input class="evening-input" id="evening-cue" type="text" placeholder="cue for tomorrow — when X, then Y" value="${escape(todayEntry.cueIfThen || '')}" aria-label="If-then cue for tomorrow">
         </div>
+        ${trailLink}${weeklySlot}
+        ${trailLink}${mcInvite}
       </div>
       <div class="today-glance">
         <div class="today-glance-block">
@@ -4684,6 +5621,11 @@ function renderToday() {
       clearTimeout(h2); h2 = setTimeout(() => persist().then(() => flashSaveChip(yIn)), 300);
     });
   }
+
+  document.getElementById('trail-open')?.addEventListener('click', openTrail);
+  document.getElementById('weekly-open')?.addEventListener('click', openWeeklyReview);
+  // Monthly Close (Phase 1.3) — invitation opens the pane on its month.
+  document.getElementById('mc-open')?.addEventListener('click', () => openMonthClose(closableMonth()));
 
   // Evening review: kept / missed / cue. Saves to state.dailyIntentions[today].
   // The cue (if-then) surfaces as the "yesterday's cue" line tomorrow morning.
@@ -4806,6 +5748,9 @@ function syncTabsScrollable() {
   bindMusicUpload();
   renderMindMovieMusic();
   bindNourishment();
+  bindTrail();
+  bindWeeklyReview();
+  bindMonthClose();
   document.getElementById('mm-play-btn')?.addEventListener('click', () => MindMovie.play());
   document.getElementById('vb-pdf-btn')?.addEventListener('click', () => VisionPDF.download());
   document.getElementById('habits-pdf-btn')?.addEventListener('click', () => HabitsPDF.download());

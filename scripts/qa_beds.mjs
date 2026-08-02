@@ -36,6 +36,11 @@ const ROOT = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const args = process.argv.slice(2);
 const externalMode = args.includes('--external');
 const reportFlagIdx = args.indexOf('--report');
+// R2-QUOTE-MISSING is opt-in (--depth). Book quote coverage is deliberately partial:
+// coverage reached 82% by DROPPING mis-attributions, and an empty quote is the
+// values-correct state over a fabricated one. Surfacing it by default reads as a
+// fill-list and invites fabrication. See feedback_qa_watchlist_not_all_fixable.
+const depthMode = args.includes('--depth');
 const wantsReport = reportFlagIdx !== -1;
 const reportArg = wantsReport ? (args[reportFlagIdx + 1] && !args[reportFlagIdx + 1].startsWith('--') ? args[reportFlagIdx + 1] : null) : null;
 const bedFilter = (() => {
@@ -44,7 +49,11 @@ const bedFilter = (() => {
 })();
 
 // ───────────────────────── thresholds ─────────────────────────
-const BIO_FLOOR = { books: 80, people: 100, orgs: 80, media: 80, music: 60, places: 80 };
+// Floors are for genuinely-thin stubs, not tight one-liners. A complete on-voice
+// sentence runs ~60 chars; flooring at 80 flagged crisp copy (e.g. Wired's 63-char
+// bio) whose only "fix" would be padding — a voice violation. Lowered to 60 so the
+// watchlist catches real stubs, not lean copy. See feedback_qa_watchlist_not_all_fixable.
+const BIO_FLOOR = { books: 60, people: 100, orgs: 60, media: 60, music: 60, places: 60 };
 const PAGE_FLOOR = { books: 120, people: 160, orgs: 100, media: 100, music: 80, places: 100 };
 
 // ───────────────────────── load ─────────────────────────
@@ -152,7 +161,13 @@ function l0People() {
       seen.add(p.id);
     }
     if (!p.name) flag('R0-MISSING', 'people', id, 'no name');
-    if (!p.url) flag('R0-MISSING', 'people', id, 'no url');
+    // An honestly-marked pending stub (renders with no external link) is a watch,
+    // not a hard build-breaker — forcing a fabricated/org url to satisfy the schema
+    // would be reward-hacking. See feedback_qa_watchlist_not_all_fixable.
+    if (!p.url) {
+      if (p._url_source === 'pending') warn('R2-URL-PENDING', 'people', id, 'url pending (low-confidence stub)');
+      else flag('R0-MISSING', 'people', id, 'no url');
+    }
     else if (!/^https?:\/\//i.test(p.url)) flag('R0-URL', 'people', id, `url not http(s): ${p.url}`);
     if (typeof p.bio !== 'string') flag('R0-MISSING', 'people', id, 'bio missing or not a string');
     if (!Array.isArray(p.appears_in)) flag('R0-TYPE', 'people', id, 'appears_in not an array');
@@ -218,7 +233,7 @@ function l1Books() {
 
   // 5. Orphan directories
   for (const d of bookDirs) {
-    if (!bedBySlug.has(d)) flag('R1-ORPHAN-DIR', 'books', `b-${d}`, `directory /books/${d}/ exists but has no bed entry`);
+    if (!bedBySlug.has(d) && d !== 'all') flag('R1-ORPHAN-DIR', 'books', `b-${d}`, `directory /books/${d}/ exists but has no bed entry`);
   }
 
   // 6. Valid refs in appears_in / picked_in
@@ -294,7 +309,7 @@ function l1People() {
   }
 
   for (const d of peopleDirs) {
-    if (!bedBySlug.has(d)) flag('R1-ORPHAN-DIR', 'people', `p-${d}`, `directory /people/${d}/ exists but has no bed entry`);
+    if (!bedBySlug.has(d) && d !== 'all') flag('R1-ORPHAN-DIR', 'people', `p-${d}`, `directory /people/${d}/ exists but has no bed entry`);
   }
 
   for (const p of people.people) {
@@ -321,7 +336,7 @@ function l2Books() {
     if (typeof b.intro !== 'string' || !b.intro.trim()) {
       warn('R2-INTRO-MISSING', 'books', id, 'no intro field — page renders bio only');
     }
-    if (!b.quote || (typeof b.quote === 'object' && !b.quote.text) || (typeof b.quote === 'string' && !b.quote.trim())) {
+    if (depthMode && (!b.quote || (typeof b.quote === 'object' && !b.quote.text) || (typeof b.quote === 'string' && !b.quote.trim()))) {
       warn('R2-QUOTE-MISSING', 'books', id, 'no quote field');
     }
     const slug = (b.id || '').replace(/^b-/, '');
@@ -426,7 +441,7 @@ function genericBed({ data, key, prefix, dirName, bedLabel, nameField, roleField
     else if (!fs.existsSync(path.join(ROOT, dirName, slug, 'index.html'))) flag('R1-COVERAGE-DIR', bedLabel, e.id, `directory exists but no index.html`);
   }
   for (const d of dirs) {
-    if (!bedBySlug.has(d)) flag('R1-ORPHAN-DIR', bedLabel, `${prefix}-${d}`, `directory /${dirName}/${d}/ exists but has no bed entry`);
+    if (!bedBySlug.has(d) && d !== 'all') flag('R1-ORPHAN-DIR', bedLabel, `${prefix}-${d}`, `directory /${dirName}/${d}/ exists but has no bed entry`);
   }
 
   // Valid refs

@@ -967,6 +967,23 @@ def main() -> int:
         for slug, q in dupes:
             print(f"     {slug}: {q[1]}", file=sys.stderr)
 
+    # Two slugs — wellbeing and technology — exist as BOTH a domain and a
+    # topic in content.json, so they collide on one URL and the rich domain
+    # page is what lives there. search.json carries the topic, so without
+    # this guard the drafter writes a brief for it and the topic generator
+    # then overwrites the domain page (measured: wellbeing 3999 → 1679 words,
+    # technology 3955 → 1101). Derived from content.json so it stays correct
+    # if the collision is ever resolved or a new one appears.
+    non_topics: set[str] = set()
+    try:
+        _graph = json.loads((ROOT / "content.json").read_text())
+        for _key in ("domains", "pillars"):
+            for _row in _graph.get(_key, []):
+                if _row.get("slug"):
+                    non_topics.add(_row["slug"])
+    except Exception:
+        pass
+
     drafted = 0
     skipped_locked = 0
     skipped_existing = 0
@@ -974,7 +991,7 @@ def main() -> int:
         slug = t.get("slug")
         if not slug:
             continue
-        if slug in LOCKED:
+        if slug in LOCKED or slug in non_topics:
             skipped_locked += 1
             continue
         out = TOPICS_DIR / f"{slug}.yaml"

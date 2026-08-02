@@ -161,6 +161,11 @@ The `frqncy-content__search_topics`, `frqncy-content__list_topics`, etc. tools a
 
 ## Tracking — where state lives
 
+**PROTOCOL (2026-08-02): read `proposals/COORDINATION-PROTOCOL.md` before touching any task state.**
+The live task tracker is the **Notion TASK BOARD** (FRQNCY HQ → 🏗 TASK BOARD). The dual-write rule is mandatory: any task state change = (1) update the Notion row, (2) append OPERATIONS.md at session end, (3) mirror to frqncy-ops when operational/legal/financial. Miro and markdown to-dos are read-only views. Agent queue = Owner:Claude + Agent-ready + Open; claim by setting In progress BEFORE starting; max 3 concurrent repo-touching agents.
+
+
+
 **One source of truth, many generated views. Never create a second writable tracker.**
 
 Two systems that both hold task state disagree within weeks, after which neither is
