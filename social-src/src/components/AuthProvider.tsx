@@ -93,18 +93,52 @@ const SUPABASE_URL = import.meta.env.PUBLIC_SUPABASE_URL || '';
 const PROJECT_REF = SUPABASE_URL.replace('https://', '').split('.')[0];
 const TOKEN_KEY = PROJECT_REF ? `sb-${PROJECT_REF}-auth-token` : '';
 
-function readSessionFromStorage(): User | null {
-  if (typeof window === 'undefined' || !TOKEN_KEY) return null;
+interface StoredSession {
+  user: User | null;
+  /** Access token already expired, but a refresh token is on hand — the
+      session is recoverable and the user should NOT be treated as signed out. */
+  needsRefresh: boolean;
+}
+
+/**
+ * Read the persisted session straight out of localStorage.
+ *
+ * An expired ACCESS token does not mean signed out. Access tokens last an hour;
+ * the refresh token sitting beside it is what keeps a login alive for weeks.
+ * This used to `return null` on expiry, so anyone coming back more than an hour
+ * later booted into the signed-out UI — "Sign In" in the nav, "Sign in to post"
+ * on the composer — until the SDK's background refresh landed and flipped it
+ * back. They were never signed out; they were shown as signed out. If the
+ * orphaned `lock:sb-*-auth-token` this file works around happened to be stuck,
+ * the refresh never landed and it stayed that way until they signed in again.
+ *
+ * Now: an expired token with a refresh token still yields the user, flagged as
+ * needing a refresh. The UI stays signed-in and the SDK confirms it moments
+ * later — or clears it via onAuthStateChange if the refresh token really is
+ * dead, which is the rare case and the only one that should ever sign you out.
+ */
+function readSessionFromStorage(): StoredSession {
+  const empty: StoredSession = { user: null, needsRefresh: false };
+  if (typeof window === 'undefined' || !TOKEN_KEY) return empty;
   try {
     const raw = window.localStorage.getItem(TOKEN_KEY);
-    if (!raw) return null;
+    if (!raw) return empty;
     const parsed = JSON.parse(raw);
-    // Check expiry
-    const nowSec = Math.floor(Date.now() / 1000);
-    if (parsed?.expires_at && parsed.expires_at < nowSec) return null;
-    return (parsed?.user ?? null) as User | null;
+    const user = (parsed?.user ?? null) as User | null;
+    if (!user) return empty;
+
+    // 10s of skew so a token about to expire mid-request is treated as stale
+    // rather than live — cheaper to refresh early than to fire a doomed call.
+    const nowSec = Math.floor(Date.now() / 1000) + 10;
+    const expired = Boolean(parsed?.expires_at && parsed.expires_at < nowSec);
+    if (!expired) return { user, needsRefresh: false };
+
+    // Expired. Recoverable only if a refresh token survived; without one there
+    // is genuinely nothing to restore and signed-out is the honest answer.
+    if (!parsed?.refresh_token) return empty;
+    return { user, needsRefresh: true };
   } catch {
-    return null;
+    return empty;
   }
 }
 
@@ -435,7 +469,19 @@ function initAuthOnce() {
   initialized = true;
 
   // Read session synchronously from storage — no lock contention, no hang.
-  const user = readSessionFromStorage();
+  const { user, needsRefresh } = readSessionFromStorage();
+
+  // Stale access token: nudge the SDK to refresh, but never await it. The
+  // whole reason this file reads localStorage directly is that awaiting the
+  // auth client can hang on an orphaned lock — so the refresh is fire-and-
+  // forget and the UI has already rendered signed-in either way. Success or
+  // failure both arrive through onAuthStateChange below.
+  if (user && needsRefresh) {
+    supabase.auth
+      .refreshSession()
+      .catch((err) => console.warn('[auth] background session refresh failed:', err));
+  }
+
   state = {
     user,
     profile: null,
@@ -468,8 +514,22 @@ function initAuthOnce() {
   }
 
   // Keep state in sync with subsequent sign in / sign out events.
-  supabase.auth.onAuthStateChange(async (_event, session) => {
+  let awaitingRefresh = Boolean(user && needsRefresh);
+
+  supabase.auth.onAuthStateChange(async (event, session) => {
     const u = session?.user ?? null;
+
+    // While a restore is in flight, a null session is not yet an answer.
+    // supabase-js emits INITIAL_SESSION as soon as it starts up — before
+    // _recoverAndRefresh has finished — and that first event can legitimately
+    // carry null. Acting on it would blank the user we just restored from
+    // storage and reintroduce exactly the signed-out flash this change exists
+    // to remove. Only an explicit SIGNED_OUT, or a resolved refresh, decides.
+    if (awaitingRefresh && !u && event !== 'SIGNED_OUT') return;
+    if (event === 'TOKEN_REFRESHED' || event === 'SIGNED_IN' || event === 'SIGNED_OUT') {
+      awaitingRefresh = false;
+    }
+
     const p = u ? await fetchProfile(u.id) : null;
     setState({
       user: u,
