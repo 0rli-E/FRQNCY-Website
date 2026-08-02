@@ -154,6 +154,56 @@ rotation. One cosmetic thing I noticed and left: `.nav.hidden` sets `height:0` b
 
 ---
 
+## 2026-08-02 (Sanctuary — The Trail, Phase 1.1)
+
+**Did.** Built the next open Sanctuary item by the roadmap's own rule — lowest-numbered
+open Phase 1 entry, which is 1.1 **The Trail**. Commit `39be61d83` on `vbrtn-live`, one
+file, +219/−0. Roadmap entry struck through and annotated with what shipped.
+
+It's the read-only look-back: every day you've written on, newest first, each paired with
+how much of that day's practice was kept. Opened by a quiet "Look back" at the foot of the
+evening review. The link appears only once there's something behind you — on day one it
+would open onto an empty room and read as a broken feature. Read-only on purpose: the Today
+card is where you write, the trail is where you read. Days with neither writing nor a kept
+practice are skipped without comment; a gap in the trail isn't a failure to be displayed.
+Sixty days at a time with the rest on request, so a long practice doesn't build a huge DOM
+on open. It reuses the Illuminator's slide-out chrome rather than inventing a second panel
+idiom — only the body styling is its own. No new state: it reads `dailyIntentions` and
+`habitLogs` exactly as they already are, so nothing to migrate and nothing new to sync.
+
+Two judgement calls beyond the written spec, both flagged here because they're mine, not
+the roadmap's. A habit only counts against a day it already existed on — otherwise adding a
+habit today would retroactively make every past day look incomplete, which is the kind of
+quiet indictment this room is supposed to refuse. And today carries no ratio at all: the
+day isn't over, and a running "0 of 2" at the top of your own record reads as a verdict on
+a morning still in progress. Past zero-days do keep their honest count.
+
+**Opened.** Nothing filed. The dashboard is now 5,179 lines, past the 5,000-line threshold
+at which the Sanctuary `CLAUDE.md` says to split CSS into `dashboard.css` and JS into
+`dashboard.js`. That split is now genuinely due and is a deploy-touching change (new files
+to serve, SW cache, CSP) — worth its own session rather than riding along with a feature.
+
+**Finished.** Verified in headless Chromium (playwright-core, 390×844 and 1280×900,
+screenshots taken) against a seeded 69-day practice built to exercise the edges: a fresh
+user with no data gets no "Look back" link at all; a day present in `dailyIntentions` but
+blank in every field is skipped; a day with habit ticks and no writing still appears with
+its ratio; the 60-day window renders with "Further back · 9 more" and clicking it reveals
+all 69 with the button gone; a day 70 back reads "1 of 1 kept" rather than "1 of 2",
+confirming the habit-existence rule; today shows no ratio; the panel body contains zero
+inputs or textareas, confirming read-only; Esc closes it. Inline JS parses (5 blocks, 0
+failures), divs balance at 240. Console clean but for the known `/api/analytics` 501 from
+the static dev server.
+
+**Left.** Not pushed — same reason as the entry below; Orlando tests first. Two dashboard
+commits are now unpushed (`078d9465a` pooled progress, `39be61d83` the trail) and prod is
+behind both. Not verified: the cloud-sync path again — I only exercised localStorage, though
+the trail adds no state so there's less to go wrong than usual. Not verified: behaviour at
+a genuinely large trail (hundreds of days) beyond the 69 I seeded, and the panel's focus
+trap — I confirmed focus moves to the close button on open but did not test tabbing past the
+end of the panel. Not done: Phase 1.2 (weekly review) through 1.7 remain open.
+
+---
+
 ## 2026-08-02 (Tracker — the last three legacy to-do surfaces, ported)
 
 **Did.** Closed the gap between the Miro board and the tracker. Three surfaces on
