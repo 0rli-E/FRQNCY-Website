@@ -12,16 +12,31 @@
   window.__frqncyChatInit = true;
 
   /* ── Topic visit tracker ─────────────────────────────────────────
-     Lightweight: any page at /<slug>/ adds <slug> to a localStorage
-     set the My FRQNCY constellation reads to mark topics as "visited"
-     and to surface the next unvisited next-step in the learning path.
-     Runs once per page load. Anonymous-only — cloud bridging happens
-     on /my-frqncy when the user is logged in.
+     Lightweight: any topic page records its slug (last path segment,
+     1–2 segment clean URLs) in two localStorage records:
+       frqncy:visited     — flat deduped slug list (legacy shape the
+                            My FRQNCY constellation reads for "visited"
+                            marks and learning-path next-steps)
+       frqncy:visited.v2  — { slug: { m:'YYYY-MM', c:n } } — how many
+                            times the topic was opened in the month it
+                            was last opened. Month granularity only —
+                            deliberately no per-visit timestamps, so
+                            this never becomes a reading diary.
+     The Sanctuary's Constellation section reads .v2 and filters slugs
+     against /search.json, so non-topic pages that slip in here are
+     ignored at display time. A sessionStorage guard keeps reloads in
+     the same tab from inflating counts. Bounded: 500 slugs (flat),
+     400 slugs (.v2, oldest-month/least-opened pruned first).
+     Runs once per page load. Local-only — nothing is uploaded.
+     2026-08-02: matcher updated — the /v2/ prefix left the URL space
+     on 2026-05-12, so the old /^\/v2\/…$/ pattern recorded nothing.
   ──────────────────────────────────────────────────────────────── */
   try {
-    const m = location.pathname.match(/^\/v2\/([a-z0-9-]+)\/?$/i);
-    if (m && m[1] && m[1] !== 'explore.html' && m[1] !== 'explore') {
-      const slug = m[1];
+    const m = location.pathname.match(/^\/(?:[a-z0-9-]+\/)?([a-z0-9-]+)\/?$/i);
+    const NOT_TOPICS = ['explore', 'browse', 'search', 'my-frqncy', 'dashboard', 'index', '404', 'admin', 'login', 'account'];
+    if (m && m[1] && NOT_TOPICS.indexOf(m[1].toLowerCase()) === -1) {
+      const slug = m[1].toLowerCase();
+      // Legacy flat list — shape preserved for existing readers.
       const key = 'frqncy:visited';
       const raw = localStorage.getItem(key);
       const list = raw ? JSON.parse(raw) : [];
@@ -30,6 +45,34 @@
         // Cap at 500 to be a good citizen
         const trimmed = list.slice(-500);
         localStorage.setItem(key, JSON.stringify(trimmed));
+      }
+      // Monthly counts — at most once per slug per tab session.
+      const sKey = 'frqncy:visited:session';
+      let seen = [];
+      try { seen = JSON.parse(sessionStorage.getItem(sKey) || '[]'); } catch (_) {}
+      if (!Array.isArray(seen)) seen = [];
+      if (!seen.includes(slug)) {
+        seen.push(slug);
+        sessionStorage.setItem(sKey, JSON.stringify(seen.slice(-200)));
+        const vKey = 'frqncy:visited.v2';
+        let map = {};
+        try {
+          const parsed = JSON.parse(localStorage.getItem(vKey) || '{}');
+          if (parsed && typeof parsed === 'object' && !Array.isArray(parsed)) map = parsed;
+        } catch (_) {}
+        const ym = new Date().toISOString().slice(0, 7);
+        const rec = map[slug];
+        map[slug] = (rec && rec.m === ym) ? { m: ym, c: ((rec.c | 0) || 0) + 1 } : { m: ym, c: 1 };
+        const keys = Object.keys(map);
+        if (keys.length > 400) {
+          keys.sort((a, b) => {
+            const A = map[a] || {}, B = map[b] || {};
+            if ((A.m || '') !== (B.m || '')) return (A.m || '') < (B.m || '') ? -1 : 1;
+            return ((A.c | 0) - (B.c | 0));
+          });
+          keys.slice(0, keys.length - 400).forEach(k => { delete map[k]; });
+        }
+        localStorage.setItem(vKey, JSON.stringify(map));
       }
     }
   } catch (_) { /* ignore — never break the page on tracker errors */ }

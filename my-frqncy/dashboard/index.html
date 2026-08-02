@@ -1198,6 +1198,33 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
 .nour-strip .ns-day.partial{background:rgba(196,151,58,0.4)}
 .nour-strip .ns-day.off{background:rgba(255,255,255,0.12)}
 
+/* ── CONSTELLATION VISITS ── an observational mirror of where attention
+   has traveled across FRQNCY this month. Reads the site-wide visit
+   tracker (localStorage, written by chat-widget.js on topic pages),
+   filtered against the topic graph. Observed, never scored. */
+.cv-line{
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.25rem;
+  color:var(--gold-light,#D9B26A);line-height:1.5;margin:0 0 0.9rem;max-width:62ch;
+}
+.cv-quiet{
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.1rem;
+  color:var(--text-dim,#8FA8CC);line-height:1.6;margin:0;max-width:62ch;
+}
+.cv-pills{display:flex;flex-wrap:wrap;gap:0.45rem}
+.cv-pill{
+  display:inline-block;padding:0.32rem 0.78rem;border-radius:999px;
+  border:1px solid var(--card-border,rgba(255,255,255,0.08));
+  background:var(--card,rgba(255,255,255,0.025));
+  font-size:0.74rem;letter-spacing:0.03em;color:var(--text-dim,#8FA8CC);
+  text-decoration:none;transition:border-color .18s,color .18s,background .18s;
+}
+.cv-pill:hover{border-color:rgba(196,151,58,0.45);color:#fff;background:rgba(255,255,255,0.05)}
+.cv-pill.returned{border-color:rgba(196,151,58,0.38);color:var(--gold-light,#D9B26A)}
+.cv-note{
+  font-size:0.66rem;color:var(--text-faint,#5C6E8E);letter-spacing:0.05em;
+  margin:0.9rem 0 0;
+}
+
 /* Modal */
 .modal-bg{
   position:fixed;inset:0;background:rgba(8,21,47,0.85);
@@ -1776,6 +1803,21 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
         </div>
         <button type="button" class="btn btn-gold" id="open-illuminator">Open Illuminator&nbsp;→</button>
       </div>
+    </section>
+
+    <!-- Constellation visits — where the reader's attention has traveled
+         across FRQNCY this month. Reads the site-wide visit tracker
+         (chat-widget.js → localStorage), filters against the topic graph,
+         recommends nothing, ranks nothing. Deliberately NOT part of the
+         Sanctuary state blob: reading history stays on this device and is
+         never uploaded, even for signed-in users. Hidden until there is
+         anything to show — a new reader is never shown an empty ledger. -->
+    <section class="section" id="constellation-visits" hidden>
+      <div class="section-head">
+        <h2><span class="glyph">✶</span> Constellation</h2>
+        <div class="meta">Where your attention travels — this month, this device</div>
+      </div>
+      <div id="cv-body"></div>
     </section>
 
     <details class="additional-material">
@@ -3426,6 +3468,98 @@ function bindNourishment() {
   });
 }
 
+/* ── Constellation visit summary ────────────────────────────────────────
+   An observational mirror: which topics the reader opened across FRQNCY
+   this month, and which they kept returning to. Reads the site-wide visit
+   tracker written by chat-widget.js —
+     localStorage['frqncy:visited.v2'] = { slug: { m:'YYYY-MM', c:n } }
+   (month granularity only; no per-visit timestamps, by design). Slugs are
+   resolved against /search.json so only real topics render, with their
+   real labels — a slug that left the topic graph simply doesn't appear.
+   This data is deliberately NOT merged into the Sanctuary state blob:
+   reading history stays on-device and never syncs to cloud.
+   Per the roadmap's no-recommendation principle: it observes, links, and
+   suggests nothing. The section stays hidden until there is history —
+   a new reader is never shown an empty ledger. */
+let cvTopicIndex = null; // slug → { label, url }, once /search.json loads
+function loadTopicIndex() {
+  fetch('/search.json')
+    .then(r => (r.ok ? r.json() : Promise.reject(new Error('search.json ' + r.status))))
+    .then(list => {
+      const idx = {};
+      (Array.isArray(list) ? list : []).forEach(t => {
+        if (t && t.slug) idx[t.slug] = { label: t.label || t.slug, url: t.url || ('/' + t.slug + '/') };
+      });
+      cvTopicIndex = idx;
+      renderConstellationVisits();
+    })
+    .catch(() => { /* graph unavailable — section simply stays hidden */ });
+}
+function readVisitMonths() {
+  try {
+    const raw = localStorage.getItem('frqncy:visited.v2');
+    const map = raw ? JSON.parse(raw) : null;
+    return (map && typeof map === 'object' && !Array.isArray(map)) ? map : {};
+  } catch (_) { return {}; }
+}
+function renderConstellationVisits() {
+  const sec = document.getElementById('constellation-visits');
+  const body = document.getElementById('cv-body');
+  if (!sec || !body) return;
+  const map = readVisitMonths();
+  // Keep only slugs that resolve to real topics in the graph.
+  const known = cvTopicIndex
+    ? Object.keys(map).filter(s => cvTopicIndex[s] && map[s] && typeof map[s] === 'object')
+    : [];
+  if (!known.length) { sec.hidden = true; body.innerHTML = ''; return; }
+  const ym = new Date().toISOString().slice(0, 7);
+  const rows = known
+    .filter(s => map[s].m === ym)
+    .map(s => ({
+      label: cvTopicIndex[s].label,
+      url: cvTopicIndex[s].url,
+      count: Math.max(1, map[s].c | 0),
+    }))
+    .sort((a, b) => b.count - a.count || a.label.localeCompare(b.label));
+  sec.hidden = false;
+  if (!rows.length) {
+    // There is history, just none this month. Quiet, never an accusation.
+    body.innerHTML = '<p class="cv-quiet">A quiet month so far. The topics you open across FRQNCY gather here as you read.</p>';
+    return;
+  }
+  const words = ['', 'one', 'two', 'three', 'four', 'five', 'six', 'seven', 'eight', 'nine'];
+  const num = n => (words[n] || String(n));
+  const cap = s => s.charAt(0).toUpperCase() + s.slice(1);
+  const names = arr => {
+    const n = arr.map(r => escape(r.label));
+    if (n.length === 1) return n[0];
+    if (n.length === 2) return n[0] + ' and ' + n[1];
+    return n.slice(0, -1).join(', ') + ', and ' + n[n.length - 1];
+  };
+  const returned = rows.filter(r => r.count >= 3);
+  let line = rows.length === 1
+    ? 'You’ve opened one topic this month.'
+    : 'You’ve opened ' + num(rows.length) + ' topics this month.';
+  if (rows.length === 1 && returned.length === 1) {
+    line = 'You’ve opened one topic this month, and you keep returning to it: ' + names(returned) + '.';
+  } else if (returned.length === rows.length && rows.length > 1) {
+    line += ' All of them three or more times: ' + names(returned) + '.';
+  } else if (returned.length === 1) {
+    line += ' One you keep returning to: ' + names(returned) + '.';
+  } else if (returned.length > 1) {
+    line += ' ' + cap(num(returned.length)) + ' of them three or more times: ' + names(returned) + '.';
+  }
+  const pills = rows.map(r =>
+    '<a class="cv-pill' + (r.count >= 3 ? ' returned' : '') + '" href="' + escape(r.url) + '"' +
+    ' title="' + escape(r.label) + ' · opened ' + (r.count === 1 ? 'once' : r.count + ' times') + ' this month">' +
+    escape(r.label) + '</a>'
+  ).join('');
+  body.innerHTML =
+    '<p class="cv-line">' + line + '</p>' +
+    '<div class="cv-pills">' + pills + '</div>' +
+    '<p class="cv-note">Seen from this device only — your reading never leaves it.</p>';
+}
+
 /* ════════════════════════════════════════════════════════════════
    GRAPHS
    ════════════════════════════════════════════════════════════════ */
@@ -4860,6 +4994,7 @@ function renderAll() {
   renderHabits('habits-full');
   renderHabitHistory();
   renderNourishment();
+  renderConstellationVisits();
   // graphs only when on progress tab
   if (document.querySelector('.view#view-progress.active')) {
     renderScoreChart(); renderHeatmap(); renderHitRate();
@@ -5577,8 +5712,10 @@ function renderToday() {
           <span class="evening-glyph" aria-hidden="true">›</span>
           <input class="evening-input" id="evening-cue" type="text" placeholder="cue for tomorrow — when X, then Y" value="${escape(todayEntry.cueIfThen || '')}" aria-label="If-then cue for tomorrow">
         </div>
-        ${trailLink}${weeklySlot}
-        ${trailLink}${mcInvite}
+        <!-- The three doors out of today: the record, the week's edge, the
+             month's close. One trailLink only — both agents' merged versions
+             of this line carried it, and keep-both duplicated it. -->
+        ${trailLink}${weeklySlot}${mcInvite}
       </div>
       <div class="today-glance">
         <div class="today-glance-block">
@@ -5751,6 +5888,7 @@ function syncTabsScrollable() {
   bindTrail();
   bindWeeklyReview();
   bindMonthClose();
+  loadTopicIndex();
   document.getElementById('mm-play-btn')?.addEventListener('click', () => MindMovie.play());
   document.getElementById('vb-pdf-btn')?.addEventListener('click', () => VisionPDF.download());
   document.getElementById('habits-pdf-btn')?.addEventListener('click', () => HabitsPDF.download());
