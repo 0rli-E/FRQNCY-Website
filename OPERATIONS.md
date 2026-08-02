@@ -31,6 +31,82 @@ Every entry states four things:
 
 ---
 
+## 2026-08-02 (NRG — CSP fix, moderation v1, private groups, the Townhall)
+
+**Did.** Four things on branch `nrg-2026-08-02`, in a worktree off fresh `origin/main`.
+
+*The CSP bug, which was the biggest find.* The site-wide `Content-Security-Policy` in
+`_headers` blocked WebAssembly, so `libsodium-wrappers` threw on every NRG page load and
+the entire E2EE layer — encrypted DMs, key generation, signing, encrypted backup — was
+dead in production. `connect-src` also omitted every host the protocol bridges call, so
+Bluesky OAuth and cross-post, the three Nostr relays, and the Ethos read path failed too.
+Four shipped features, none of them working, with no visible error. Added
+`'wasm-unsafe-eval'` (WASM compilation only — not `eval()` of JS strings) plus an explicit
+host allowlist. Kept as one rule under `/*`: Cloudflare Pages *joins* values when several
+`_headers` rules set the same header, and joined CSP values are enforced as separate
+policies, so a looser `/social/*` rule would have granted nothing.
+
+*Moderation v1* (migration 025). NRG had no block, no report, no mute — the named gap in
+`NRG-GO-LIVE-CHECKLIST-2026-05-16.md` before the first 100 users. `blocks` are silent and
+symmetric in effect, enforced in RLS via a SECURITY DEFINER `is_blocked_between()` so they
+hold on every read path rather than depending on each query remembering to filter.
+`reports` have deliberately no auto-hide threshold. Blocks close the DM channel; existing
+history stays readable. UI: post overflow menu (the `⋯` button was dead markup), profile
+block/report, manage page at `/social/profile/blocked`.
+
+*A pre-existing DM hole, found while wiring the above.* `conversation_members` INSERT was
+`WITH CHECK (auth.uid() IS NOT NULL)` — migration 002 left it open with a comment to narrow
+it later, which never happened. Any authenticated user could insert `(any conversation_id,
+self)`, become a member of a stranger's DM thread, read every message row in it and post
+into it. E2EE limited the damage to metadata (bodies are sealed per recipient) but
+injection was possible. Now requires existing membership or an empty conversation.
+
+*Private groups* (migration 026) — the tightening migration 023 explicitly deferred:
+`posts_select_all` now gates group posts on membership, composed with the block filter, and
+posting into a group (open ones too) requires being in it. Added the invite path, a trigger
+that makes the creator the first member, and an immutability rule on `visibility` so a
+private group can never be flipped open and retroactively publish everything written in it.
+
+*The Townhall* got its own pinned surface above the group list plus a top-level nav entry,
+and `/social/space` stopped calling itself "the town hall of the network" — that name had
+been pointing at a static page that can't hold a conversation.
+
+Commits `8574adf7d`, `e3db02485`, `916d5c639`, `4244d3e3b`.
+
+**Opened.** Nothing filed in the tracker this session.
+
+**Finished.** Verified: the CSP breakage was reproduced against prod before fixing —
+from a browser on frqncy.network, `WebAssembly.instantiate()` of an empty module was
+refused, `fetch` to bsky.social and plc.directory blocked, `wss://relay.damus.io` errored.
+The Cloudflare `_headers` join behaviour was confirmed empirically against prod rather than
+assumed. `npm run build` passes clean (36 pages) and the built output is synced into
+`/social/` with `cp -r`, not `rsync --delete`, so `bluesky-oauth-client.json` survived.
+The groups directory and Townhall hero were screenshotted at 390×844 off the local build.
+
+**Left — read this part.** Substantial and specific:
+
+- **Migrations 025 and 026 are NOT applied to the live database.** They are files only.
+  No local Postgres and no Docker on this machine, so the SQL was **never executed
+  anywhere** — it is reviewed, not tested. Recursion traps, policy names and helper
+  signatures were checked by reading 001/002/023, but a syntax error or a policy that
+  evaluates the wrong way would not have been caught. Apply with
+  `supabase db query --linked -f` (the path that has worked before) and re-test.
+- **No end-to-end test of any moderation flow.** Blocking, reporting, inviting, accepting
+  an invite, private-group read gating: none of it has been exercised against a real
+  database by a real signed-in user, because the tables do not exist yet. The UI renders
+  and the bundles build; that is all that is established.
+- **The CSP fix is unverified in production** — it ships in `_headers`, which only takes
+  effect once deployed. Re-run the probe after deploy and confirm WASM instantiates and
+  libsodium initialises. Until then, treat E2EE as still broken.
+- **Nothing is pushed.** The branch is local, per the test-before-push convention.
+- Not checked: whether `@atproto/oauth-client-browser` resolves a user's PDS through a
+  host outside the allowlist (`*.host.bsky.network` and `plc.directory` are covered; a
+  self-hosted PDS is not). Bluesky login should be retested end-to-end after deploy.
+- Not touched: the two-`022` / two-`024` migration-number collisions already on record.
+  025 and 026 are unique, but the numbering scheme remains unreliable as an apply order.
+
+---
+
 ## 2026-08-01 (Aligned Goods — "Research" links stopped being affiliate links)
 
 **Did.** Fixed an editorial-integrity bug that was live in prod: every "Research ↗" link
