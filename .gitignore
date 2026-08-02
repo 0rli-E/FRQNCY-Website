@@ -58,6 +58,23 @@ supabase/.temp/
 /sleep-*.png
 /wake-*.png
 /*-390x844.png
+# Same class, different prefixes — surface/feature review shots.
+/sanctuary-*.png
+/vbrtn-*.png
+/miro-*.png
+/door-*.png
+/legal-*.png
+/merged-*.png
+
+# Legal / tax / account material. THIS REPO IS PUBLIC — per CLAUDE.md these
+# belong in the private tracker (0rli-E/frqncy-ops), never here. The tax scan
+# carries a "Personal layer (Orlando + Norman)" section with personal
+# residency planning; the legal plan names ownership splits. Pushing either is
+# irreversible once GitHub has indexed it.
+proposals/LEGAL-STRUCTURE-PLAN-*.md
+proposals/GLOBAL-TAX-SCAN-*.md
+proposals/WYOMING-VS-ESTONIA-DASHBOARD.html
+proposals/FRQNCY-Social-Account-Registry.xlsx
 
 # Large media — lives in Drive, not git
 content-library/
@@ -65,5 +82,12 @@ engine/*.mp4
 engine/*.mp3
 engine/*.jpg
 engine/src_*
+# Caption / render intermediates from the same pipeline.
+engine/*.srt
+engine/*.ass
+engine/*.png
+engine/*.log
+engine/words*.json
+engine/scenes.txt
 engine/boom_*
 engine/bg*.mp4

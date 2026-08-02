@@ -1,0 +1,31 @@
+#!/bin/sh
+# Refuse to push a branch onto main when it is not a descendant of the remote
+# main — that push would discard whatever landed there while you worked.
+#
+# Override (you have genuinely reconciled):  FRQNCY_ALLOW_DIVERGED=1 git push ...
+
+[ "$FRQNCY_ALLOW_DIVERGED" = "1" ] && exit 0
+REMOTE="$1"
+
+while read -r LOCAL_REF LOCAL_SHA REMOTE_REF REMOTE_SHA; do
+  [ -z "$LOCAL_REF" ] && continue
+  case "$REMOTE_REF" in refs/heads/main) ;; *) continue ;; esac
+  # Deleting a branch — not our business.
+  case "$LOCAL_SHA" in *[!0]*) ;; *) continue ;; esac
+
+  git fetch -q "$REMOTE" main 2>/dev/null
+  BASE=$(git rev-parse -q --verify FETCH_HEAD 2>/dev/null || git rev-parse -q --verify refs/remotes/origin/main)
+  [ -z "$BASE" ] && exit 0   # cannot determine remote state; do not block
+
+  if ! git merge-base --is-ancestor "$BASE" "$LOCAL_SHA"; then
+    AHEAD=$(git rev-list --count "$LOCAL_SHA".."$BASE" 2>/dev/null)
+    echo ""
+    echo "BLOCKED: main has $AHEAD commit(s) you do not have."
+    echo "  Pushing now would discard them."
+    echo ""
+    echo "  Reconcile first, then:  FRQNCY_ALLOW_DIVERGED=1 git push ..."
+    echo ""
+    exit 1
+  fi
+done
+exit 0
