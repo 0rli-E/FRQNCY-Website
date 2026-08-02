@@ -1,0 +1,8 @@
+import{w as o}from"./core.CjxyBY72.js";import"./preload-helper.CDJrz_HB.js";import"./AuthForm.C7oPnMNi.js";import"./hooks.module.CdQ24DbJ.js";import"./preact.module.YZDSOCcU.js";import"./supabase.C9R9WPQZ.js";import"./jsxRuntime.module.Cn9vMI65.js";import"./_commonjsHelpers._d1bhYXs.js";import"./basics.CoyAzrNO.js";import"./privy-bridge.DDJJS37g.js";const d=o`<svg fill="none" viewBox="0 0 14 15">
+  <path
+    fill="currentColor"
+    fill-rule="evenodd"
+    d="M7 1.99a1 1 0 0 1 1 1v7.58l2.46-2.46a1 1 0 0 1 1.41 1.42L7.7 13.69a1 1 0 0 1-1.41 0L2.12 9.53A1 1 0 0 1 3.54 8.1L6 10.57V3a1 1 0 0 1 1-1Z"
+    clip-rule="evenodd"
+  />
+</svg>`;export{d as arrowBottomSvg};
