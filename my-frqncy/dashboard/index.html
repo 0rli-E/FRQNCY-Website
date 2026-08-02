@@ -386,6 +386,34 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
 }
 .privacy-banner .lock{color:var(--gold);font-size:1rem}
 
+/* ── PROGRESS POOL ──
+   Completion pooled up the pyramid. A mirror, not a score: gold on a
+   faint track, never green for "won", never red for "behind". A bar
+   with nothing to pool renders as nothing at all. */
+.pool{margin-top:0.6rem}
+.pool-track{
+  height:3px;background:rgba(255,255,255,0.06);border-radius:2px;overflow:hidden;
+}
+.pool-fill{
+  height:100%;background:var(--gold);border-radius:2px;
+  transition:width .45s ease;
+}
+.pool-meta{
+  display:flex;align-items:baseline;justify-content:space-between;gap:0.6rem;
+  margin-top:0.35rem;
+  font-size:0.6rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);
+}
+.pool-meta .pool-count{
+  font-family:'Cormorant',serif;font-size:0.9rem;color:var(--gold-light);
+  letter-spacing:0.04em;text-transform:none;
+}
+.pool-sm .pool-track{height:2px}
+.pool-sm .pool-meta{font-size:0.55rem;margin-top:0.28rem}
+.pool-sm .pool-meta .pool-count{font-size:0.82rem}
+/* An objective with goals under it completes when they do — the marker
+   reflects that state but isn't a control. */
+.goal-check.derived{cursor:default;opacity:0.75}
+
 /* ── SCOREBOARD ── */
 .scoreboard{
   display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));
@@ -406,6 +434,9 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
 .score-card .score-name{
   font-family:'Cormorant',serif;font-size:1.4rem;color:#fff;font-weight:400;
   border:none;line-height:1.2;
+  /* A long aim used to run past the card edge and clip mid-word.
+     Ellipsis while at rest; the full text is still there on focus. */
+  width:100%;min-width:0;max-width:100%;text-overflow:ellipsis;
 }
 .score-card .score-name:focus{outline:none;border-bottom:1px dashed var(--gold-dim)}
 .score-card .score-display{
@@ -513,6 +544,9 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
   box-shadow:0 0 8px rgba(196,151,58,0.5);flex-shrink:0;
 }
 .aim-name{flex:1;font-size:0.95rem;color:#fff;border:none}
+/* Row that carries a pooled bar under its line */
+.aim-row.stacked{flex-direction:column;align-items:stretch;gap:0.5rem}
+.aim-row-top{display:flex;align-items:center;gap:0.8rem}
 .aim-mini-score{
   color:var(--gold-light);font-family:'Cormorant',serif;font-size:1.1rem;
   letter-spacing:0.05em;
@@ -543,10 +577,12 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
   transition:all .15s;position:relative;
 }
 .obj-card:hover{border-color:var(--card-border-hover)}
+.obj-head{display:flex;align-items:center;gap:0.55rem}
 .obj-title{
-  font-size:0.92rem;color:#fff;border:none;width:100%;
-  font-weight:400;
+  font-size:0.92rem;color:#fff;border:none;width:100%;min-width:0;
+  font-weight:400;text-overflow:ellipsis;
 }
+.obj-title.done{color:var(--text-faint);text-decoration:line-through}
 .obj-meta{
   display:flex;align-items:center;justify-content:space-between;gap:0.5rem;
   font-size:0.65rem;color:var(--text-faint);letter-spacing:0.08em;
@@ -1771,6 +1807,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       <div class="dream-card">
         <textarea class="dream-text" id="dream-input" placeholder="What is the world you are here to bring into being? Write the version that's bigger than you — the one that survives lifetimes."></textarea>
       </div>
+      <div id="dream-progress"></div>
     </section>
 
     <section class="section">
@@ -1820,7 +1857,7 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
     <section class="section">
       <div class="section-head">
         <h2><span class="glyph">·</span> History</h2>
-        <div class="meta">Last 365 days</div>
+        <div class="meta">Last 30 days</div>
       </div>
       <div id="habit-history"></div>
     </section>
@@ -2306,6 +2343,57 @@ document.getElementById('modal-bg').addEventListener('click', e => {
 });
 
 /* ════════════════════════════════════════════════════════════════
+   PROGRESS POOL — completion pooled up the pyramid.
+
+   The unit of completion is a goal. An objective that has goals
+   completes when its goals do — derived, never hand-set, so the bar
+   can't disagree with what's underneath it. An objective with no goals
+   yet is itself one hand-checkable unit, so a pyramid you haven't
+   broken all the way down is still walkable.
+
+   Aims pool their objectives' units; the Dream pools every aim's. The
+   numbers are a mirror — done over total, nothing ranked or scored.
+   ════════════════════════════════════════════════════════════════ */
+function objGoals(obj) { return state.goals.filter(g => g.objectiveId === obj.id); }
+
+function objUnits(obj) {
+  const goals = objGoals(obj);
+  if (goals.length) return { done: goals.filter(g => g.completed).length, total: goals.length };
+  // No goals under it — the objective stands as its own single unit.
+  return { done: obj.completed ? 1 : 0, total: 1 };
+}
+function objIsComplete(obj) {
+  const u = objUnits(obj);
+  return u.total > 0 && u.done === u.total;
+}
+function sumUnits(objs) {
+  return objs.reduce((acc, o) => {
+    const u = objUnits(o);
+    return { done: acc.done + u.done, total: acc.total + u.total };
+  }, { done: 0, total: 0 });
+}
+function aimUnits(aim) { return sumUnits(state.objectives.filter(o => o.chiefAimId === aim.id)); }
+function dreamUnits() { return sumUnits(state.objectives); }
+function poolPct(u) { return u && u.total ? Math.round((u.done / u.total) * 100) : 0; }
+
+// Returns '' when there's nothing to pool, so callers can concatenate freely
+// and a tier with no work under it simply shows no bar.
+function progressBar(units, label, opts = {}) {
+  if (!units || !units.total) return '';
+  const cls = 'pool' + (opts.small ? ' pool-sm' : '');
+  return `
+    <div class="${cls}">
+      <div class="pool-track" role="img" aria-label="${escape(label)}: ${units.done} of ${units.total} complete">
+        <div class="pool-fill" style="width:${poolPct(units)}%"></div>
+      </div>
+      <div class="pool-meta">
+        <span>${escape(label)}</span>
+        <span class="pool-count">${units.done}/${units.total}</span>
+      </div>
+    </div>`;
+}
+
+/* ════════════════════════════════════════════════════════════════
    SCOREBOARD (chief aim scores — the soccer-game scores)
    ════════════════════════════════════════════════════════════════ */
 function renderScoreboard() {
@@ -2330,7 +2418,8 @@ function renderScoreboard() {
         <button type="button" class="score-btn" data-action="dec-score" data-id="${aim.id}" title="Score went down" aria-label="Decrease score">−</button>
         <button type="button" class="score-btn" data-action="inc-score" data-id="${aim.id}" title="Score went up" aria-label="Increase score">+</button>
         <span class="score-trend ${trend.dir}">${trend.sym} ${trend.delta !== 0 ? (trend.delta > 0 ? '+' : '') + trend.delta : 'no change yet'}</span>
-      </div>`;
+      </div>
+      ${progressBar(aimUnits(aim), 'Beneath this aim', { small: true })}`;
     el.appendChild(card);
   });
 
@@ -2410,6 +2499,9 @@ function renderDream() {
   if (ta.value !== state.dream) ta.value = state.dream;
   // Auto-grow on render so loaded text doesn't sit clipped behind a scroll
   autoGrowDream();
+  // Everything standing under the dream, pooled into one honest line.
+  const prog = document.getElementById('dream-progress');
+  if (prog) prog.innerHTML = progressBar(dreamUnits(), 'Across the whole pyramid');
 }
 function autoGrowDream() {
   const ta = document.getElementById('dream-input');
@@ -2498,7 +2590,9 @@ function renderObjectives() {
     group.innerHTML = `
       <div class="aim-group-head">
         <span class="dot"></span>
-        <span class="label"><strong>${escape(aim.name) || 'Unnamed chief aim'}</strong> · ${objs.length}/6 objectives</span>
+        <!-- Plain count, no "/6" — the max is stated in the section head,
+             and an x/y here would read as completion next to the bars. -->
+        <span class="label"><strong>${escape(aim.name) || 'Unnamed chief aim'}</strong> · ${objs.length} objective${objs.length === 1 ? '' : 's'}</span>
       </div>
       <div class="obj-grid"></div>
     `;
@@ -2506,9 +2600,20 @@ function renderObjectives() {
     objs.forEach(o => {
       const c = document.createElement('div');
       c.className = 'obj-card';
-      const goalCount = state.goals.filter(g => g.objectiveId === o.id).length;
+      const goals = objGoals(o);
+      const goalCount = goals.length;
+      const done = objIsComplete(o);
+      // With goals under it the objective's state is derived from them —
+      // a marker, not a control. With none, it's yours to check by hand.
+      const check = goalCount
+        ? `<span class="goal-check derived ${done ? 'done' : ''}" title="Completes when its goals do"></span>`
+        : `<button type="button" class="goal-check ${done ? 'done' : ''}" data-action="toggle-obj" data-id="${o.id}" title="No goals under this yet — check it by hand" aria-pressed="${done ? 'true' : 'false'}" aria-label="${done ? 'Mark objective incomplete' : 'Mark objective complete'}"></button>`;
       c.innerHTML = `
-        <input class="obj-title" data-obj-id="${o.id}" value="${escape(o.title)}" placeholder="What's the objective?">
+        <div class="obj-head">
+          ${check}
+          <input class="obj-title ${done ? 'done' : ''}" data-obj-id="${o.id}" value="${escape(o.title)}" placeholder="What's the objective?">
+        </div>
+        ${goalCount ? progressBar(objUnits(o), 'Goals', { small: true }) : ''}
         <div class="obj-meta">
           <span class="obj-duration" data-action="cycle-duration" data-id="${o.id}" title="Click to cycle 1→6 months">${o.durationMonths}mo</span>
           <span class="obj-goals-count">${goalCount} goal${goalCount===1?'':'s'}</span>
@@ -2541,6 +2646,15 @@ function renderObjectives() {
       persist().then(renderObjectives);
     });
   });
+  el.querySelectorAll('[data-action="toggle-obj"]').forEach(b => {
+    b.addEventListener('click', () => {
+      const o = state.objectives.find(x => x.id === b.dataset.id);
+      if (!o) return;
+      o.completed = !o.completed;
+      o.completedDate = o.completed ? todayISO() : null;
+      persist().then(renderAll);
+    });
+  });
   el.querySelectorAll('[data-action="del-obj"]').forEach(b => {
     b.addEventListener('click', () => {
       const o = state.objectives.find(x => x.id === b.dataset.id);
@@ -2556,6 +2670,7 @@ function addObjective(chiefAimId) {
   state.objectives.push({
     id: uid('obj'), chiefAimId,
     title: '', durationMonths: 3,
+    completed: false, completedDate: null,
     position: state.objectives.filter(o => o.chiefAimId === chiefAimId).length
   });
   persist().then(() => { renderObjectives(); renderGoalsByObj(); });
@@ -2660,6 +2775,7 @@ function renderPyramidMini() {
       <div style="font-family:Cormorant,serif;font-size:1.15rem;color:#fff;font-style:italic;line-height:1.5">
         ${state.dream ? escape(state.dream).replace(/\n/g,'<br>') : '<span style="color:var(--text-faint)">No dream written yet — open the Goal Pyramid to begin.</span>'}
       </div>
+      ${progressBar(dreamUnits(), 'Across the whole pyramid')}
     </div>
   `;
   el.appendChild(dreamCard);
@@ -2679,12 +2795,15 @@ function renderPyramidMini() {
     state.chiefAims.forEach(aim => {
       const objCount = state.objectives.filter(o => o.chiefAimId === aim.id).length;
       const r = document.createElement('div');
-      r.className = 'aim-row';
+      r.className = 'aim-row stacked';
       r.innerHTML = `
-        <span class="aim-bullet"></span>
-        <span style="flex:1;color:#fff">${escape(aim.name) || '<em style="color:var(--text-faint)">unnamed</em>'}</span>
-        <span style="font-size:0.7rem;color:var(--text-dim)">${objCount} objectives</span>
-        <span class="aim-mini-score">${aim.score.current}/${aim.score.target}</span>
+        <div class="aim-row-top">
+          <span class="aim-bullet"></span>
+          <span style="flex:1;color:#fff">${escape(aim.name) || '<em style="color:var(--text-faint)">unnamed</em>'}</span>
+          <span style="font-size:0.7rem;color:var(--text-dim)">${objCount} objective${objCount === 1 ? '' : 's'}</span>
+          <span class="aim-mini-score">${aim.score.current}/${aim.score.target}</span>
+        </div>
+        ${progressBar(aimUnits(aim), 'Complete', { small: true })}
       `;
       list.appendChild(r);
     });
