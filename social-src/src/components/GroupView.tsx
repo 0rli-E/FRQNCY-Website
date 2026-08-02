@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'preact/hooks';
 import Feed from './Feed';
 import PostComposer from './PostComposer';
+import GroupInviteBox from './GroupInviteBox';
 import { useAuth } from './AuthProvider';
 import {
   getGroupBySlug,
@@ -90,6 +91,7 @@ export default function GroupView() {
   }
 
   const accent = group.accent || '#C4973A';
+  const isPrivate = group.visibility === 'private';
 
   return (
     <div class="max-w-3xl mx-auto mt-6 space-y-6">
@@ -110,18 +112,26 @@ export default function GroupView() {
             </p>
           </div>
           <div class="flex flex-col items-end gap-2 shrink-0">
-            <button
-              type="button"
-              onClick={toggleMembership}
-              disabled={busy}
-              class={`text-sm px-4 py-1.5 rounded-full transition-colors disabled:opacity-50 ${
-                joined
-                  ? 'border border-card-border text-text-dim hover:text-text hover:border-gold/30'
-                  : 'bg-gold text-navy font-medium hover:bg-gold-light'
-              }`}
-            >
-              {busy ? '…' : joined ? 'Joined' : 'Join'}
-            </button>
+            {/* No Join button on a private group you're not in — the RLS policy
+                would reject the insert, so offering it would just fail. */}
+            {isPrivate && !joined ? (
+              <span class="text-xs text-text-dim border border-card-border rounded-full px-3 py-1.5">
+                Invite only
+              </span>
+            ) : (
+              <button
+                type="button"
+                onClick={toggleMembership}
+                disabled={busy}
+                class={`text-sm px-4 py-1.5 rounded-full transition-colors disabled:opacity-50 ${
+                  joined
+                    ? 'border border-card-border text-text-dim hover:text-text hover:border-gold/30'
+                    : 'bg-gold text-navy font-medium hover:bg-gold-light'
+                }`}
+              >
+                {busy ? '…' : joined ? 'Joined' : 'Join'}
+              </button>
+            )}
             <a href="/social/groups" class="text-xs text-text-dim hover:text-gold transition-colors">
               ← All groups
             </a>
@@ -129,10 +139,32 @@ export default function GroupView() {
         </div>
       </header>
 
+      {/* Members can invite. Flat by design — every member may invite, there is
+          no admin tier deciding who counts. Private groups only: an open group
+          needs no invite, the link is the invite. */}
+      {joined && isPrivate && <GroupInviteBox groupId={group.id} groupName={group.name} />}
+
       {/* Composer: only members post. Non-members see a join prompt; the feed
           stays readable (open groups are public). */}
       {joined ? (
         <PostComposer groupId={group.id} groupName={group.name} />
+      ) : isPrivate ? (
+        /* Private + not a member. RLS already returns no posts here, so say
+           why the page is empty rather than showing a bare "no posts yet". */
+        <div class="rounded-xl bg-card-bg border border-card-border p-6 text-center space-y-2">
+          <p class="text-sm text-text">This group is private.</p>
+          <p class="text-xs text-text-dim leading-relaxed">
+            {user
+              ? 'Only members can read what’s written here. You need an invite from someone already inside.'
+              : 'Only members can read what’s written here.'}
+          </p>
+          {!user && (
+            <a
+              href="/social/login"
+              class="inline-block mt-1 px-5 py-2 rounded-full bg-gold text-navy text-sm font-medium hover:bg-gold-light transition-colors"
+            >Sign in</a>
+          )}
+        </div>
       ) : (
         <div class="rounded-xl bg-card-bg border border-card-border p-5 text-center">
           <p class="text-sm text-text-dim mb-3">
@@ -149,7 +181,14 @@ export default function GroupView() {
         </div>
       )}
 
-      <Feed groupId={group.id} emptyLabel={`No posts in ${group.name} yet. ${joined ? 'Be the first.' : 'Join to start the conversation.'}`} />
+      {/* A private group you're not in returns no rows anyway — skip the feed
+          entirely so it can't read as "this group is empty". */}
+      {(!isPrivate || joined) && (
+        <Feed
+          groupId={group.id}
+          emptyLabel={`No posts in ${group.name} yet. ${joined ? 'Be the first.' : 'Join to start the conversation.'}`}
+        />
+      )}
     </div>
   );
 }
