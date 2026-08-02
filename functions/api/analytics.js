@@ -31,6 +31,10 @@ const ALLOWED_EVENTS = new Set([
   // Content & navigation
   'page_view', 'topic_view', 'explore_interaction', 'resource_click',
   'search_query', 'course_view', 'scroll_depth',
+  // Watch / video (resume-where-you-left-off)
+  'video_started', 'video_progress', 'video_completed',
+  // Courses — enrollment / lesson engagement
+  'course_enrolled', 'lesson_started', 'lesson_completed', 'course_login_prompted',
   // Sanctuary / Word Illuminator
   'word_illuminated', 'illuminator_opened',
   'practice_session_started', 'practice_session_completed',

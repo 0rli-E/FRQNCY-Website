@@ -645,6 +645,68 @@
       };
     },
 
+    /**
+     * Watch-progress store — resume-where-you-left-off for the /watch/ hub.
+     *
+     * Same one-row-per-user pattern as Sanctuary/VBRTN: stored in the shared
+     * `charts` table under `name = 'WatchProgress'`. The `data` column holds a
+     * map of `{ [videoId]: { pos, dur, pct, title, topicId, updatedAt } }`.
+     * Anonymous visitors keep localStorage (frqncy.watch.v1); logged-in users
+     * get cross-device sync via /assets/frqncy-watch-progress.js.
+     */
+    videoProgressStore(user) {
+      if (!user) throw new Error('videoProgressStore requires a logged-in user');
+      const userId = user.id;
+      const ROW_NAME = 'WatchProgress';
+
+      let rowId = null;
+      let rowPromise = null;
+      async function ensureRow() {
+        if (rowId) return rowId;
+        if (rowPromise) return rowPromise;
+        rowPromise = (async () => {
+          const { data: existing, error: selErr } = await client
+            .from('charts')
+            .select('id')
+            .eq('owner_id', userId)
+            .eq('name', ROW_NAME)
+            .maybeSingle();
+          if (selErr) throw selErr;
+          if (existing) { rowId = existing.id; return rowId; }
+          const { data: created, error: insErr } = await client
+            .from('charts')
+            .insert({ owner_id: userId, name: ROW_NAME, data: {}, dreams: [] })
+            .select('id')
+            .single();
+          if (insErr) throw insErr;
+          rowId = created.id;
+          return rowId;
+        })();
+        return rowPromise;
+      }
+      return {
+        async getState() {
+          const id = await ensureRow();
+          const { data, error } = await client
+            .from('charts')
+            .select('data')
+            .eq('id', id)
+            .single();
+          if (error) throw error;
+          const d = data?.data;
+          return (d && Object.keys(d).length) ? d : {};
+        },
+        async setState(state) {
+          const id = await ensureRow();
+          const { error } = await client
+            .from('charts')
+            .update({ data: state })
+            .eq('id', id);
+          if (error) throw error;
+        },
+      };
+    },
+
     /** Auth widget — drops a small "Log in / Profile" pill into a target element. */
     mountAuthPill(targetEl, opts = {}) {
       if (!targetEl) return;
