@@ -938,10 +938,48 @@ def _hex_to_rgb(hex_str: str) -> str:
     return f"{int(h[0:2], 16)}, {int(h[2:4], 16)}, {int(h[4:6], 16)}"
 
 
+# ──────────────── Structural guards ────────────────
+# LOCKED_TOPICS is a hand-maintained list, so it goes stale the moment a new
+# domain or a newly-enriched topic appears. These two guards are derived from
+# the data instead, and cannot drift.
+
+def _graph_non_topics() -> set[str]:
+    """Domain and pillar slugs from content.json.
+
+    A domain page (wellbeing, technology) is not a topic and must never be
+    written by the topic generator — its page is hand-shaped and far richer
+    than anything render_page() produces. Measured 2026-08-02: without this
+    guard a full `--all` run took wellbeing from 3999 words to 1679 and
+    technology from 3955 to 1101.
+    """
+    try:
+        data = json.loads((ROOT / "content.json").read_text())
+    except Exception:
+        return set()
+    out: set[str] = set()
+    for key in ("domains", "pillars"):
+        for row in data.get(key, []):
+            if row.get("slug"):
+                out.add(row["slug"])
+    return out
+
+
+def _visible_words(html: str) -> int:
+    """Rough word count of rendered text, for the shrink guard."""
+    return len(re.sub(r"<[^>]*>", " ", html).split())
+
+
+# A regenerated page is allowed to be a little shorter, never dramatically so.
+SHRINK_FLOOR = 0.80
+
+
 # ──────────────── Drive ────────────────
 def generate(slug: str, dry: bool = False, force: bool = False) -> None:
     if slug in LOCKED_TOPICS and not force:
         print(f"  ⌐  {slug}: LOCKED — skipping. Use --force to override.")
+        return
+    if slug in _graph_non_topics() and not force:
+        print(f"  ⌐  {slug}: is a domain/pillar, not a topic — skipping.")
         return
     brief_path = TOPICS_DIR / f"{slug}.yaml"
     if not brief_path.exists():
@@ -960,6 +998,19 @@ def generate(slug: str, dry: bool = False, force: bool = False) -> None:
     if dry:
         print(fresh)
         return
+    # Shrink guard — refuse to replace a substantially richer page. Catches
+    # hand-enriched topics whose committed page has outgrown the template,
+    # which a hand-maintained lock list will always discover too late.
+    if out_path.exists() and not force:
+        before = _visible_words(out_path.read_text())
+        after = _visible_words(fresh)
+        if before > 50 and after < before * SHRINK_FLOOR:
+            pct = round((after - before) / before * 100)
+            print(
+                f"  ⌐  {slug}: existing page is richer "
+                f"({before} → {after} words, {pct}%) — skipping. Use --force to override."
+            )
+            return
     out_path.write_text(fresh)
     print(f"  ✓  {slug} → {out_path.relative_to(ROOT)}")
 
