@@ -1,3 +1,19 @@
+## 2026-08-02 (addendum) — Second Miro to-do table migrated
+
+**Did:** Migrated the second Miro task table (widget 3458764678580279383) into the Notion TASK BOARD: 66 Project Overview tasks (Social Platform wiring, My FRQNCY, Membership/Revenue, Content, Harness, App, Agents, Strategy, Physical — with phases + statuses incl. 15 Done for history) + the 8-door × ~17-platform Social Launch rollout matrix compressed into 8 per-door rollout rows (all platform priorities + done-markers preserved in Notes). Added 5 new Area options to the TASK BOARD (Social Platform, My FRQNCY, Agents, Physical, Strategy). Skipped 2 exact duplicates (Supabase env = #3, APK build = #67). Tagged the Miro table DELETABLE (red banner).
+
+**Left:** Orlando deletes the tagged Miro table + the old kanban frames manually (API cannot delete). Rollout matrix door-rows are Later-urgency by design (wave-2 platforms). Not verified: whether any Miro table rows were edited between read and banner placement.
+
+## 2026-08-02 — Coordination protocol locked + Notion HQ becomes the tracker (Cowork session)
+
+**Did:** Built FRQNCY HQ in Notion (7 databases: TASK BOARD, Content Calendar, Partnerships (31 targets w/ rights postures), Sources & Rights, Accounts, Tools & Platforms (34 entries), archived Social Tasks) + 3 strategy doc pages. Imported ALL 68 Miro kanban cards into the Notion TASK BOARD with owner/area/urgency + Miro backlinks. Added Agent-ready / Blocked-by / Output-link fields (the agent queue). Wrote proposals/COORDINATION-PROTOCOL.md and wired it into CLAUDE.md. Marked Miro kanban + to-do frames as read-only/migrated (banners).
+
+**Opened:** The agent-queue dispatch model (Owner=Claude + Agent-ready + Open). frqncy-ops mirroring rule (dual-write: Notion + OPERATIONS.md + ops issues).
+
+**Finished:** Notion HQ structure; 68-card migration (verified: 9+36+6+17 = 68, swimlane milestones already in cards #40-47); protocol memory in CLAUDE.md.
+
+**Left:** (1) Miro kanban DELETION — API cannot delete items; Orlando deletes the 6 column frames manually (banner placed). (2) The strategy-memory git commit c6424dc still needs Orlando's 4 terminal commands (stale .git locks + SSH) — NOT pushed yet, verify with git log after. (3) HQ page not yet shared to the teamspace — Orlando one-click. (4) Notion rows not yet mirrored to frqncy-ops issues (rule starts now, backfill optional). (5) Acceptance criteria only exist on task descriptions, not yet per-row for all Claude-owned tasks. Nothing here is deployed/verified beyond what is stated.
+
 # OPERATIONS LOG
 
 **Every agent writes here before finishing a turn.** This is the shared record of what
@@ -151,6 +167,80 @@ is not deployed. I did not check the flow on mobile viewport, did not test an in
 skips the birth form, and did not exercise "Hand me another" or the recovery-question
 rotation. One cosmetic thing I noticed and left: `.nav.hidden` sets `height:0` but computes to
 48px, so the completion screen carries dead space under it.
+
+---
+
+## 2026-08-02 (Sanctuary — Phase 1.2, 1.3, 1.4 built by three parallel agents, integrated)
+
+**Did.** Orlando asked for three agents on the next three Sanctuary steps. Three Fable
+agents, one git worktree each, one Phase 1 item each — the max-3-concurrent-repo-agents cap
+in `proposals/COORDINATION-PROTOCOL.md`. Two integration commits on `vbrtn-live`:
+`1b264078c`-superseded → the surviving pair are the Weekly-Review/Monthly-Close merge and
+the Constellation commit (`git log -2 -- my-frqncy/dashboard/index.html`).
+
+**1.2 Weekly Review.** State `weeklyReviews` keyed by ISO week; the synthesis is derived
+live and never stored. The door is present every day but only *becomes* the roadmap's gold
+invitation on Sunday when that week is unwritten — no badge, no backlog, no "unreviewed"
+language. The panel always reviews a **complete** ISO week, so a midweek visitor reads last
+week whole rather than this week at two-sevenths — that is what prevents the wall of zeros.
+Empty sections don't render; a quiet week keeps its three questions. Beyond spec: last
+week's answers read back at the foot, because *"what would last week's you have wanted to
+know?"* is half a conversation.
+
+**1.3 Monthly Close.** State `monthEpigraphs` keyed `YYYY-MM`. "The last day of the month"
+became a window through the 7th, so someone who doesn't open the Sanctuary on the 31st still
+meets their month; past closes stay readable through a door in the Trail's foot, since a
+write-only epigraph betrays the word "saved". Goals render as the same pooled mirror the
+pyramid uses rather than a bare fraction. The word count is literal — lowercase, no stemming,
+counts shown as `×9` so the mechanism is inspectable — with the stoplist kept in the open as
+a commented editorial object rather than a magic blob.
+
+**1.4 Constellation summary — and a three-month-old bug found on the way.** The agent was
+told to establish what the visited-topics tracker actually stores before writing code. It
+found the feature unbuildable as specced, for a reason that matters beyond this feature:
+the tracker in `chat-widget.js` matches `/^\/v2\/([a-z0-9-]+)\/?$/`, and the `/v2/` prefix
+left the URL space in May — every `/v2/*` path now 301s away, so `location.pathname` never
+matches. **I verified this independently against prod**: the deployed widget still carries
+the `/v2/` matcher and `/v2/meditation/` 301s to `/meditation/`. The tracker has recorded
+nothing for ~3 months, and the only thing reading its key is a `.bak` file. It also stored a
+flat deduped slug list with no counts or dates, so "this month" and "three or more times"
+were unanswerable regardless. Fixed the matcher, kept the legacy list byte-identical, added
+`frqncy:visited.v2` as `{slug:{m,c}}` — month granularity only, deliberately no per-visit
+timestamps so it cannot become a reading diary; bounded at 400 slugs. The summary reads
+`/search.json` for real labels and is deliberately **not** in `DEFAULT_STATE`, so reading
+history never enters the synced blob even signed in.
+
+**Opened.** Nothing filed. Two notes: on a date that is both a Sunday and inside the
+month-close window (roughly once a month) two gold invitations stack in the evening block —
+correct but slightly loud, worth an eye. And the dashboard is now ~5,900 lines, well past the
+5,000-line split threshold.
+
+**Finished.** Integration verified, and it caught a real defect that neither agent could have
+seen alone. Agents 2 and 3 built on pre-Trail bases; agent 2 self-synced, agent 3 did not, so
+its dashboard half needed a three-way merge. Eleven conflicts total, all both-added-adjacent
+blocks, resolved keep-both — **except that keep-both is not automatically safe**: it
+duplicated `${trailLink}`, rendering "Look back" twice, and the three-way merge separately ate
+a shared context line, closing `bindWeeklyReview()` early and swallowing the Monthly Close
+comment banner. All three repaired from the originating commits. Verified after repair in
+headless Chromium at 390×844 and 1280×900 against a 50-day seeded practice: all three doors
+render once each with the right copy ("It's the week's edge. Look back?", "July is complete.
+Sit with it?"), each panel opens independently and closes on Esc, the constellation line
+renders `You've opened three topics this month. Two of them three or more times: Meditation
+and Water` with the deliberately-seeded nonexistent slug dropped rather than shown raw, and
+zero page errors. Inline JS parses (5 blocks, 0 failures), divs balance 281/281,
+`node --check chat-widget.js` clean.
+
+**Left.** **Not pushed.** Four dashboard commits now sit unpushed and prod is behind all of
+them. Not verified by anyone: the cloud-sync round-trip of `weeklyReviews` and
+`monthEpigraphs` (all three agents and I tested localStorage only), export/import carrying
+the new keys, the ISO-week key across a Dec/Jan boundary, month-rollover on a real 31st, and
+Safari/iOS. **`chat-widget.js` ships to every page on the site** — that blast radius was not
+re-tested beyond `node --check` and a local tracker round-trip, and `sw.js` VERSION was not
+bumped, so returning visitors may hold a stale widget; check both before deploying. One
+process failure worth recording: my first integration commit staged 52 files because a
+parallel agent wrote the shared git index between my `add` and my `commit`. Caught it, reset,
+and re-committed with explicit pathspecs — `git commit -- <paths>` is now the only safe form
+in this repo.
 
 ---
 
