@@ -31,6 +31,69 @@ Every entry states four things:
 
 ---
 
+## 2026-08-02 (Topic graph — /v2/ canonicals, topic hubs, the crypto hub consolidation)
+
+**Did.** Four commits on `vbrtn-live`.
+
+`1f45958cd` — every rich topic page was telling Google its canonical was
+`https://frqncy.network/v2/<slug>/`. That prefix was retired and now 301s back to the
+page declaring it, so 140 pages carried a canonical pointing at a redirect, which is
+discounted rather than honoured; `og:image` and `twitter:image` had the same problem,
+and a redirecting image URL drops the thumbnail for scrapers that don't follow 301s.
+Root cause was `data/topics/*.yaml` — 145 of 146 briefs hard-code the URLs and
+`scripts/generate_topic_page.py` copies them into the head. Fixed source and output
+together so a regen keeps the fix.
+
+`0614e19a2` — four media entries (The Correspondent, Waypoint, The Esports Observer,
+The Comedy Store) and three orgs (Sidewalk Labs, Growing Power, The Disclosure
+Project), with their profile pages. Beds to 77 and 120.
+
+`dc9a56725` — committed a topic-hub feature that had been sitting uncommitted in the
+working tree. A topic can now nest under a parent via a `hub` field; 21 crypto topics
+take `hub: t-crypto`, so the graph reads Money › Cryptocurrency › Bitcoin instead of
+hanging all 21 off Money. Domain grid hides hub children, sibling nav walks hub-mates,
+breadcrumbs gain the hop.
+
+`e71c60fc6` — the crypto hub consolidation, on Orlando's call that `/cryptocurrency/`
+wins over `/crypto/` (they are 96% the same page: 2119 of 2211 shared unique words,
+same title, h1 and headings). Three faults fixed: it canonicalised to `/crypto/` while
+the sitemap listed it, and its `og:image` pointed at `/og/crypto.png` which 404s; it
+had **no global header at all** because `sync-headers.mjs` only auto-discovers pages
+already carrying the marker and this one was never in the explicit list; and it linked
+only down to `/crypto/<slug>/`, so the 21 topic pages that now breadcrumb up to it had
+no route back down — and the hub change had also removed them from the Money domain
+grid, leaving them reachable only by search.
+
+**Opened.** One question for Orlando, unanswered: where the 19 `/crypto/<slug>/`
+ecosystem pages get rehomed. They are **not** duplicates of the topic pages — measured
+overlap is 11–20% — and they are richer (~1,900–2,700w vs ~1,500w), but they now have
+close to zero inbound links. They should not be deleted.
+
+**Finished.** Verified by measurement, not assumption: zero internal `/v2/` strings
+remain anywhere in the repo (the three survivors are third-party CDN URLs from Le
+Creuset, Business of Fashion and Medium that legitimately contain `/v2/`); all 146
+briefs parse; the hub round trip is 0 failures across all 21 children in both
+directions; both hubs now canonicalise to `/cryptocurrency/`, matching the sitemap.
+
+**Left.**
+- **Nothing pushed.** Branch is 15 ahead / 20 behind `origin/main`. None of this is live.
+- **The rendered page was never looked at.** A live Chrome owned the Playwright profile
+  the whole session, so `/cryptocurrency/` was verified structurally only — tag balance,
+  21 anchors opening and closing, CSS inside a head `<style>`. Nobody has seen it.
+- **Aligned Goods was not touched, deliberately.** Prod has **94** entries; this branch
+  has **88**. Missing here: `rancho-gordo`, `jacobsen-salt`, `force-of-nature-meat`,
+  `rahua-shampoo`, `ethique-bars`, `living-libations`. Editing the bed on this branch
+  and regenerating would delete all six. Do that work on a branch off fresh
+  `origin/main`.
+- **Watch is a stub** — `videos.json` has 2 entries, `playlists.json` 3, confirmed
+  identical in prod. Not filled; adding entries is research work, not generation.
+- **Courses not investigated** beyond confirming 7 entries and `/courses/` returning 200.
+- `og/robert-jay-gould.png` still 404s. That page has a brief and a built page but no
+  `content.json` entry, and `build-og.js` only generates from `content.json`, so it
+  never had input. Pre-existing, untouched.
+- `sitemap.xml` left dirty in the working tree by another agent (`lastmod` churn) — not
+  mine, not staged.
+
 ## 2026-08-02 (VBRTN — the cold walk through prod, ops#48)
 
 **Did.** Walked the whole VBRTN flow cold on live prod, from empty localStorage through a
