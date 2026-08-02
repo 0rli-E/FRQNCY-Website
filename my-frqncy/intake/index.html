@@ -578,7 +578,10 @@
   const wordmarkEl = document.getElementById('wordmark');
 
   // ── Insight derivation (what VBRTN already sees) ─────────────────
-  function derivePartialInsights(){
+  // mode 'growing' (session breaks) keeps the identity line and shows the two
+  // newest insights, so each break reads differently as the profile fills in.
+  // mode 'full' (the completion summary) shows the whole picture.
+  function derivePartialInsights(mode){
     const p = profile;
     const lines = [];
 
@@ -617,9 +620,7 @@
       lines.push(`Doors back to self: ${p.triggers.positive.slice(0,2).join(', ').toLowerCase()}.`);
     }
 
-    // Keep the identity line as an anchor, then show the two most recently
-    // earned insights — otherwise every session break reads identically,
-    // because the first three lines are all session-1 answers.
+    if(mode === 'full') return lines.slice(0, 6);
     return lines.length <= 3 ? lines : [lines[0], ...lines.slice(-2)];
   }
 
@@ -881,7 +882,7 @@
           </div>
         </details>
 
-        <div class="helper" style="margin-top:6px">Your birth details stay on this device. They're used only to draw your chart — never sent anywhere or saved on our servers.</div>
+        <div class="helper" style="margin-top:6px">Your birth details are used only to draw your chart, and are never sent to the companion — it only ever sees the chart they produce. They stay on this device unless you sign in, and then they sync to your account.</div>
 
         <div class="skip-card">
           <div class="skip-line">Not ready to enter this yet?</div>
@@ -1157,7 +1158,7 @@
     progressEl.innerHTML = '<span class="done"></span>'.repeat(SESSIONS);
     navEl.classList.add('hidden');
 
-    const insights = derivePartialInsights();
+    const insights = derivePartialInsights('full');
     const insightsHtml = insights.map(l => `<p>${escapeHtml(l)}</p>`).join('');
 
     const ti = profile.baseline.teachabilityIndex;
