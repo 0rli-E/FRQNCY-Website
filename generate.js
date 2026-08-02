@@ -156,6 +156,22 @@ const topicsByDomain  = new Map(DATA.domains.map(d => [d.id, []]));
 for (const d of DATA.domains) domainsByPillar.get(d.pillar)?.push(d);
 for (const t of DATA.topics)  topicsByDomain.get(t.domain)?.push(t);
 
+// ── Topic hubs ───────────────────────────────────────────────────
+// A topic may nest under another topic via a `hub` field (e.g. the crypto
+// sub-topics hang off t-crypto, so the flow reads Money → Cryptocurrency →
+// Bitcoin instead of Money → Bitcoin directly). topicsByHub maps a hub id to
+// its child topics; hubChildren() and topicHub() are the lookups used by the
+// domain grid, the topic-page children section, and the explore-map sync.
+const topicsByHub = new Map();
+for (const t of DATA.topics) {
+  if (t.hub) {
+    if (!topicsByHub.has(t.hub)) topicsByHub.set(t.hub, []);
+    topicsByHub.get(t.hub).push(t);
+  }
+}
+const hubChildren = id => topicsByHub.get(id) || [];
+const topicHub    = t => (t.hub ? DATA.topics.find(x => x.id === t.hub) : null);
+
 // resourcesFor(nid) — merges bed-sourced entities (people, books, orgs, media)
 // with content.json's remaining resources (tools, courses, platforms, apps, etc.).
 // Preserves the original content.json ordering. Falls back to pure content.json
@@ -1068,7 +1084,10 @@ ${FOOTER}
 // ── DOMAIN PAGE ──────────────────────────────────────────────────
 function domainPage(d) {
   const pillar = pillarMap.get(d.pillar);
-  const topics = topicsByDomain.get(d.id) || [];
+  // Hub children (e.g. the crypto sub-topics under t-crypto) are reached
+  // through their hub topic, not listed directly on the domain — so the
+  // domain grid shows the hub (Cryptocurrency) as the gateway.
+  const topics = (topicsByDomain.get(d.id) || []).filter(t => !t.hub);
 
   const tcards = topics.map(t => `<a href="../${t.slug}/index.html" class="ncard">
   <div class="ncard-type">Topic</div>
@@ -1111,7 +1130,13 @@ function topicPage(t) {
   //    already render as clickable person cards inside Curated Resources.
   const connected = relatedTopicsByEntities(t.id).slice(0, 6);
   const connectedIds = new Set(connected.map(x => x.topic.id));
-  const sameDomain = (topicsByDomain.get(t.domain) || [])
+  // Sibling pool for onward nav: a hub child (e.g. Bitcoin) walks among its
+  // hub-siblings (the other crypto sub-topics); a hub or plain topic walks
+  // among its domain peers, excluding hub children (which live a level down).
+  const siblingPool = t.hub
+    ? hubChildren(t.hub)
+    : (topicsByDomain.get(t.domain) || []).filter(r => !r.hub);
+  const sameDomain = siblingPool
     .filter(r => r.id !== t.id && !connectedIds.has(r.id))
     .slice(0, 6);
   const exploreCards = [
@@ -1130,12 +1155,30 @@ function topicPage(t) {
     </div>
   </section>` : '';
 
+  // Hub children — if this topic is a hub (e.g. Cryptocurrency), list the
+  // sub-topics that nest under it so the page is the gateway to Bitcoin,
+  // DeFi, Stablecoins, and the rest. Rendered above the generic Explore grid.
+  const children = hubChildren(t.id)
+    .slice()
+    .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
+  const childrenSection = children.length ? `<section>
+    <div class="section-label">In ${esc(t.label)}</div>
+    <div class="grid grid-sm">
+      ${children.map(c => `<a href="../${c.slug}/index.html" class="ncard">
+  <div class="ncard-type">Topic</div>
+  <h3>${esc(c.label)}</h3>
+  ${c.desc ? `<p>${esc(c.desc.slice(0, 85))}…</p>` : ''}
+  <span class="ncard-arrow">→</span>
+</a>`).join('\n')}
+    </div>
+  </section>` : '';
+
   // Prev / next mini-nav — chapter-book continuity. Order: alphabetical
   // within the topic's own domain, so a reader can keep walking the same
   // pillar without bouncing back to the explore graph. At the boundaries
   // (first / last topic in a domain) the corresponding side is omitted.
   // Per BACKEND-STATUS.md Phase 1 polish target.
-  const domainTopics = (topicsByDomain.get(t.domain) || [])
+  const domainTopics = siblingPool
     .slice()
     .sort((a, b) => (a.label || '').localeCompare(b.label || ''));
   const idxInDomain = domainTopics.findIndex(r => r.id === t.id);
@@ -1162,14 +1205,19 @@ function topicPage(t) {
   //  - BreadcrumbList (visible breadcrumb backing)
   //  - FAQPage (Q&A derived from the topic's editorial fields — eligible for
   //    featured-snippet rich results on long-tail queries)
+  // Breadcrumb trail: FRQNCY → pillar → domain → [hub] → topic. The hub level
+  // is inserted only when the topic nests under one (e.g. Cryptocurrency).
+  const hub = topicHub(t);
+  const breadcrumbTrail = [
+    { name: 'FRQNCY', item: 'https://frqncy.network/' },
+    { name: pillar.label, item: `https://frqncy.network/${pillar.slug}/` },
+    { name: domain.label, item: `https://frqncy.network/${domain.slug}/` },
+    ...(hub ? [{ name: hub.label, item: `https://frqncy.network/${hub.slug}/` }] : []),
+    { name: t.label, item: canonical },
+  ];
   const breadcrumb = {
     '@type': 'BreadcrumbList',
-    itemListElement: [
-      { '@type': 'ListItem', position: 1, name: 'FRQNCY', item: 'https://frqncy.network/' },
-      { '@type': 'ListItem', position: 2, name: pillar.label, item: `https://frqncy.network/${pillar.slug}/` },
-      { '@type': 'ListItem', position: 3, name: domain.label, item: `https://frqncy.network/${domain.slug}/` },
-      { '@type': 'ListItem', position: 4, name: t.label, item: canonical },
-    ],
+    itemListElement: breadcrumbTrail.map((b, i) => ({ '@type': 'ListItem', position: i + 1, name: b.name, item: b.item })),
   };
   const itemList = {
     '@type': 'ItemList',
@@ -1245,7 +1293,8 @@ function topicPage(t) {
     '@graph': [ article, itemList, breadcrumb, faq ],
   };
 
-  const crumb = `<a href="../${pillar.slug}/index.html">${esc(pillar.label)}</a><span class="sep">/</span><a href="../${domain.slug}/index.html">${esc(domain.label)}</a><span class="sep">/</span><span>${esc(t.label)}</span>`;
+  const hubCrumb = hub ? `<a href="../${hub.slug}/index.html">${esc(hub.label)}</a><span class="sep">/</span>` : '';
+  const crumb = `<a href="../${pillar.slug}/index.html">${esc(pillar.label)}</a><span class="sep">/</span><a href="../${domain.slug}/index.html">${esc(domain.label)}</a><span class="sep">/</span>${hubCrumb}<span>${esc(t.label)}</span>`;
 
   const vidSection    = videoSection(t.id);
   const courseCallout = courseSection(t.id);
@@ -1299,6 +1348,7 @@ nav(crumb) +
   ${vidSection}
   ${courseCallout}
   ${resourceSection(t.id, 'Curated Resources', res)}
+  ${childrenSection}
   ${exploreSection}
   ${prevNextSection}
 </main>
@@ -2006,11 +2056,14 @@ function syncExploreData() {
       additions.push(`+ link ${key}`);
     }
   }
-  // Add domain→topic for every topic.
+  // Add domain→topic for every topic — unless the topic nests under a hub
+  // topic, in which case the edge is hub→topic and the domain reaches it
+  // through the hub (e.g. d-money → t-crypto → t-bitcoin).
   for (const t of DATA.topics) {
-    const key = `${t.domain}|${t.id}`;
+    const parent = t.hub || t.domain;
+    const key = `${parent}|${t.id}`;
     if (!existingLinks.has(key)) {
-      data.links.push([t.domain, t.id]);
+      data.links.push([parent, t.id]);
       existingLinks.add(key);
       additions.push(`+ link ${key}`);
     }

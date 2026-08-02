@@ -583,7 +583,7 @@
     const lines = [];
 
     if(p.standing.texture && p.standing.recentFeeling){
-      lines.push(`A person ${textureToVerb(p.standing.texture)}, whose recent state has carried ${p.standing.recentFeeling}.`);
+      lines.push(`A person ${textureToVerb(p.standing.texture)}, whose recent state has been mostly ${p.standing.recentFeeling}.`);
     } else if(p.standing.texture){
       lines.push(`A person ${textureToVerb(p.standing.texture)}.`);
     }
@@ -602,9 +602,9 @@
     }
 
     if(p.meta.toward_away){
-      const t = p.meta.toward_away === 'toward' ? 'reaches toward'
-              : p.meta.toward_away === 'away' ? 'moves away from'
-              : 'paces between';
+      const t = p.meta.toward_away === 'toward' ? 'reaches toward what it wants'
+              : p.meta.toward_away === 'away' ? 'moves away from what it does not want'
+              : 'paces between the two';
       lines.push(`Whose mind ${t}.`);
     }
 
@@ -617,7 +617,10 @@
       lines.push(`Doors back to self: ${p.triggers.positive.slice(0,2).join(', ').toLowerCase()}.`);
     }
 
-    return lines.slice(0, 3);
+    // Keep the identity line as an anchor, then show the two most recently
+    // earned insights — otherwise every session break reads identically,
+    // because the first three lines are all session-1 answers.
+    return lines.length <= 3 ? lines : [lines[0], ...lines.slice(-2)];
   }
 
   function textureToVerb(t){
@@ -652,7 +655,7 @@
     stage.innerHTML = `
       <div class="splash">
         <div class="eyebrow-big">Begin to know yourself</div>
-        <h1>Twenty-five questions. About twelve minutes total. Three short sessions you can leave anytime — the room remembers.</h1>
+        <h1>Twenty-five questions. About twelve minutes total. Five short sessions you can leave anytime — the room remembers.</h1>
         <p class="lede">By question five, you may notice the questions are not the point. What you say back to yourself is.</p>
         <p class="lede-2">VBRTN reads each answer through your design, your meta-programs, and the patterns it learns over time. Nothing leaves this device until you sign in.</p>
         <button class="btn primary breathing" id="beginBtn" type="button" style="margin-top:24px">Begin</button>

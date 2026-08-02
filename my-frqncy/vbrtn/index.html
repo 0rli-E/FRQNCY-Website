@@ -468,16 +468,16 @@
     const desire = p.standing?.dominantDesire;
 
     if(texture && feeling){
-      lines.push(`A person ${textureVerb(texture)}, whose recent state has carried ${feeling}.`);
+      lines.push(`A person ${textureVerb(texture)}, whose recent state has been mostly ${feeling}.`);
     } else if(texture){
       lines.push(`A person ${textureVerb(texture)}.`);
     }
     if(desire) lines.push(`Reaching toward more ${desire}.`);
     if(p.design?.hd?.type) lines.push(`A ${p.design.hd.type} by design — strategy: ${p.design.hd.strategy.toLowerCase()}.`);
     if(p.meta?.toward_away){
-      const t = p.meta.toward_away === 'toward' ? 'reaches toward'
-              : p.meta.toward_away === 'away' ? 'moves away from'
-              : 'paces between';
+      const t = p.meta.toward_away === 'toward' ? 'reaches toward what it wants'
+              : p.meta.toward_away === 'away' ? 'moves away from what it does not want'
+              : 'paces between the two';
       lines.push(`Whose mind ${t}.`);
     }
     if(p.triggers?.positive?.length > 0){
