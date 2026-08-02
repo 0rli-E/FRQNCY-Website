@@ -31,6 +31,71 @@ Every entry states four things:
 
 ---
 
+## 2026-08-02 (Integration — everything merged to main, pushed, and verified live)
+
+**Did.** Reconciled the long-standing fork and shipped it. `vbrtn-live` was 24
+commits ahead of `origin/main` and 30 behind; both sides carried real work that
+had never met. Merged on a branch based on `origin/main` (so main's content wins
+by default) and pushed as `c0a0b490a`.
+
+Seven merge conflicts. `CLAUDE.md`, `OPERATIONS.md` and `scripts/board-sync.mjs`
+were pure additions or distinct log entries, resolved as unions so nothing from
+either side was dropped. `search.json`, `resources.json`, `entities.json` and
+`sitemap.xml` are `generate.js` output — hand-merging derived data produces a
+file that matches neither source, so they were taken from one side and
+regenerated from the merged `content.json` and beds.
+
+Also landed, before the merge: the generator guards (below), ~45 untracked
+proposals/handoffs/audit runs, `.githooks/` and `scripts/status.mjs` (in use but
+never committed), Android release signing, `about.html`'s Golden Circle sections,
+and `.gitignore` rules for dev screenshots and engine render intermediates.
+
+**Opened.** Nothing new filed. The `/crypto/<slug>/` rehoming question from the
+previous entry is still open.
+
+**Finished, and how it was verified.**
+- **The generator no longer guts pages.** Measured on a clean worktree: the full
+  CI pipeline (`draft_all_topics.py` + `generate_topic_page.py --all`) took **101
+  pages below 80% of their word count**, including two domain pages — wellbeing
+  3999→1679 and technology 3955→1101. Root cause is a slug collision: wellbeing
+  and technology each exist as *both* a domain and a topic in `content.json`, so
+  they share one URL and the thin topic template was overwriting the rich domain
+  page. These are the only two collisions in the graph. Added two guards derived
+  from `content.json` rather than hand-listed: neither script will touch a
+  domain/pillar slug, and `generate_topic_page.py` refuses to write a page that
+  comes out below 80% of the existing page's word count. Re-ran the full pipeline
+  with the guards in: **101 gutted pages → 0**, deep domain pages byte-identical,
+  zero deletions, and legitimate regeneration still happens (aliens 1389→1448).
+- **Prod verified after deploy**, not assumed. Canonicals are self-referential on
+  `/meditation/`, `/aliens/`, `/yoga/`, `/defi/`. `/cryptocurrency/` canonicalises
+  to itself, carries the global header, links `/bitcoin/`, and serves the OG image
+  that exists. Aligned Goods is **94** entries live. wellbeing/technology/money/
+  consciousness still 3999/3955/3972/3949 words. All key routes 200.
+- **CI ran the full pipeline on the pushed tree and committed back one line**
+  (`functions/api/_kb.js`) — no page damage, which is what the guards predict.
+
+**Left.**
+- **The `/cryptocurrency/` page has still never been looked at by a human or a
+  browser.** Playwright was unavailable all session (a live Chrome owned the
+  profile), so it is verified structurally and by curl only. Worth an eyeball.
+- **Legal/tax material was deliberately NOT pushed.** `LEGAL-STRUCTURE-PLAN`,
+  `GLOBAL-TAX-SCAN`, `WYOMING-VS-ESTONIA-DASHBOARD` and the social account
+  registry are now gitignored — this repo is **public**, and the tax scan carries
+  a "Personal layer (Orlando + Norman)" section with personal residency planning.
+  All four remain on disk. They belong in the private tracker; that move has not
+  been done.
+- **Two Wikipedia URLs were reverted, not replaced.** An agent had filled
+  `places.json` `url` fields for Bali and Sedona with Wikipedia links, against the
+  go-primary rule — and `generate.js` strips such links elsewhere. Restored to
+  empty; primary sources still need finding.
+- **A stale unmerged index entry** for `my-frqncy/dashboard/index.html` sits in
+  the main worktree from a parallel agent — no conflict markers in the file, no
+  merge in progress. Left alone; not mine to resolve.
+- **The `data/topics/_schema.yaml` comment still references the retired `v2/`
+  output path.** Cosmetic, untouched.
+- **Not investigated:** courses beyond a 200 and 7 entries; watch is still a stub
+  (2 videos, 3 playlists).
+
 ## 2026-08-02 (NRG — login persistence, capability gates, and the push to main)
 
 **Did.** Continued the NRG session below and shipped it. Three additions, then a push.
