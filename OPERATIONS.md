@@ -14,6 +14,89 @@
 
 **Left:** (1) Miro kanban DELETION — API cannot delete items; Orlando deletes the 6 column frames manually (banner placed). (2) The strategy-memory git commit c6424dc still needs Orlando's 4 terminal commands (stale .git locks + SSH) — NOT pushed yet, verify with git log after. (3) HQ page not yet shared to the teamspace — Orlando one-click. (4) Notion rows not yet mirrored to frqncy-ops issues (rule starts now, backfill optional). (5) Acceptance criteria only exist on task descriptions, not yet per-row for all Claude-owned tasks. Nothing here is deployed/verified beyond what is stated.
 
+## 2026-08-02 (NRG — migrations 025-028 APPLIED to prod, tested end-to-end, two real bugs found)
+
+**Did.** Orlando confirmed the Supabase access token was in place; the CLI was linked
+(it was not earlier in the session), so `supabase db query --linked -f` worked and the
+migrations that had been shipping as files-only were finally applied to the live database.
+
+- **025 applied + verified.** `blocks` and `reports` exist with their policies; the
+  `posts_select_all` policy now carries the block filter; and the
+  **`conversation_members` INSERT hole from migration 002 is CLOSED in production** —
+  its `WITH CHECK` is now the tightened membership-or-bootstrap expression.
+- **026 applied + verified.** `group_invites`, `has_group_invite`, both triggers, the
+  composed posts SELECT policy (blocks AND group gating) and the membership-gated posts
+  INSERT are all live.
+
+**Then I tested it end-to-end against the live database with real signed-up users**, driving
+PostgREST exactly as the app does. That found two genuine bugs neither review nor a build
+could have caught:
+
+- **027 — creating a private group was impossible.** `createGroup()` does
+  `.insert(...).select('*')`, which PostgREST sends as `INSERT ... RETURNING`; PostgreSQL
+  applies the SELECT policy to the returned row. 026's `groups_select` was
+  `visibility='open' OR is_group_member(id)`, and for a private group neither branch holds
+  at that instant — not open, and the creator is not yet a member, because
+  `trg_group_creator_join` is an AFTER INSERT trigger whose row the RETURNING evaluation
+  cannot see. The insert succeeded and was then rejected on read-back with 42501. Open
+  groups were unaffected, which is exactly why it hid until a private group was created.
+  Fixed by letting a creator always read their own group.
+- **028 — starting a DM has never worked, and this one is PRE-EXISTING, not mine.**
+  `StartConversationButton.tsx:81` and `StartGroupConversation.tsx:97` both do
+  `conversations.insert({}).select('id').single()`, while `conversations_select_member`
+  (migration 002) requires `is_conversation_member` — and a brand-new conversation has no
+  members yet, because the app adds them on the *next* call using the id it is trying to
+  read back. So every attempt to start a DM has failed with 42501 since migration 002. It
+  went unnoticed because NRG has had almost no real usage and the messaging round-trip was
+  never human-tested. A memberless conversation is now readable — the same bootstrap window
+  025 already carved out for `conversation_members` INSERT, disclosing nothing but an id and
+  two timestamps.
+
+027 and 028 written, applied, and pushed (`1c6244fb9`). Rebased onto `origin/main` first —
+it had moved 44 commits under me mid-session; no migration-number collision, no file overlap.
+
+**Opened.** Nothing filed.
+
+**Finished — verified against production, with the checks named.**
+- Full e2e suite passes: post visible before block → invisible to the blocker after, while
+  the author still sees their own; the blocked party cannot detect the block (`blocks`
+  returns `[]` to them); report inserts 201 and a duplicate returns 23505; private-group
+  posts return `[]` to both a non-member and anon; a non-member self-join returns **403**;
+  flipping visibility private→open returns **400** (the immutability trigger fires); and
+  **B inserting itself into A's conversation returns 403, where it was 201 before 025.**
+- Creator auto-join works — the trigger set `role: admin`.
+- **All test data removed and the removal verified**: 0 rows left across `auth.users`,
+  profiles, posts, groups, blocks, reports, conversations and conversation_members matching
+  the test prefix, with the 1 real post and 3 real profiles untouched and all 9 groups back
+  at `member_count` 0. Test posts were deleted *before* their groups on purpose —
+  `posts.group_id` is `ON DELETE SET NULL`, so the reverse order would have silently
+  promoted private test posts into the public feed.
+- Prod routes healthy after the migrations: `/`, `/social/`, `/social/groups/`,
+  `/social/g/townhall/`, `/social/messages`, `/social/profile/blocked`, `/donate`,
+  `/privacy-policy` all 200; the public feed still returns the real post.
+- The client capability gates now flip themselves on: `blocks`, `reports` and
+  `group_invites` all answer 200 to the anon key the browser uses, so Block/Report and
+  private-group creation become available without a redeploy.
+
+**Left.**
+- **The Notion half of the dual-write did NOT happen.** The Notion connector is not
+  authenticated in this session (only its `authenticate` tool is exposed), so no TASK BOARD
+  row was created or updated. Per COORDINATION-PROTOCOL.md this log is the fallback record;
+  someone needs to reflect this session on the board, or authenticate Notion so an agent can.
+- **Nobody has driven the moderation UI in a browser as a signed-in human.** The database
+  layer is now thoroughly tested; the React/Preact surfaces (overflow menu, report dialog,
+  blocked-accounts page, invite box) have only been verified as rendering and building.
+- The DM fix (028) is verified at the RLS layer — a conversation can now be created and read
+  back. The **full encrypted messaging round-trip is still untested**, which was already the
+  known gap in the go-live checklist.
+- Not checked: whether any older client code depends on the previous `groups_select` or
+  `conversations_select_member` behaviour in a way these widenings alter. Both changes only
+  ADD readable rows, so a regression would have to look like something newly visible rather
+  than newly hidden.
+- Google OAuth still disabled at the provider level; still a dashboard toggle, not code.
+
+---
+
 # OPERATIONS LOG
 
 **Every agent writes here before finishing a turn.** This is the shared record of what
