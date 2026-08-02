@@ -31,6 +31,66 @@ Every entry states four things:
 
 ---
 
+## 2026-08-02 (VBRTN — the cold walk through prod, ops#48)
+
+**Did.** Walked the whole VBRTN flow cold on live prod, from empty localStorage through a
+real 25-question intake to a companion reply. Two of ops#48's three checks pass.
+
+*The companion answers.* `POST /api/companion` returned **200** and a real, contextual reply
+that used the person's own material. Crucially the profile carried `music` as a bare
+free-text string — the exact shape that produced the `p.music.join is not a function` 500 —
+so the `asList()` coercion is confirmed working against the input that broke it, not just in
+principle. No "I went quiet for a moment".
+
+*The trail routes sensibly.* `purpose` now hands back akashic-records, astrology, human-design,
+mythology, near-death-experiences, oneness, pilgrimage and soul. No ML course. All twelve
+desires route coherently, and prod's `trail-data.json` is byte-identical to the local build.
+
+The intake itself is sound: all 25 questions render in order across the five sessions, nothing
+is skipped, and every field lands in the profile correctly typed. The birth form drives the
+**real ephemeris engine**, not the stub — a 1990-03-14 04:20 Lisbon birth returns Sun Pisces
+with real gates and an incarnation cross, no `_stub` flag anywhere.
+
+Four copy defects surfaced, all now fixed. The session breaks read identically at all four
+boundaries because `derivePartialInsights` returned `lines.slice(0, 3)` and the first three
+lines are always session-1 answers; it now anchors on the identity line and shows the two
+newest insights, while the completion screen asks for the full picture. "whose recent state
+has carried stressed" and a dangling "Whose mind moves away from." were grammar bugs on both
+the intake and the companion page. The splash said "Three short sessions" for a five-session
+intake.
+
+Separately, the privacy copy had gone stale against the cloud store that shipped yesterday.
+Signing in mirrors the entire profile — birth date, time, city and coordinates included — to
+Supabase, so "never sent anywhere or saved on our servers" and "clear this site's data and
+all of it is gone" were false for signed-in users, and the summary line claimed what you tell
+VBRTN stays on the device when the message is exactly what goes out. All three now describe
+what the code does. The stronger promise — that `avoiding` and the negative triggers are never
+sent — was checked against `slimProfile` and **holds**: it transmits a count, never the text.
+
+**Opened.** Nothing new filed.
+
+**Finished.** Nothing closed. ops#48 is two-thirds verified, not done.
+
+**Left.** *Cross-device sync is still unproven* — ops#48's second check. The plumbing is
+confirmed live in prod (`window.FRQNCYVbrtn` exposes load/save/onSync, `frqncy.vbrtnStore` is
+a function, the sync pill is honest), but an actual two-device round-trip needs a real
+logged-in account and I have no credentials. Nobody has watched a profile written on one
+device appear on another. That check is Orlando's or needs a test account.
+
+Two commits, **both unpushed**, so none of this is live: `78fb431a8` carries the session-break
+and privacy fixes. The other two copy fixes are **inside `dc9a56725` "Topic hubs: nest the 21
+crypto topics under Cryptocurrency"** — a parallel agent's bulk add swept my working tree into
+its commit mid-session. The code is intact but the attribution is wrong, which is the hazard
+CLAUDE.md warns about; do not trust that title to tell you what it contains.
+
+I did not re-verify the fixed copy on prod — it is verified on a local server only, since it
+is not deployed. I did not check the flow on mobile viewport, did not test an intake that
+skips the birth form, and did not exercise "Hand me another" or the recovery-question
+rotation. One cosmetic thing I noticed and left: `.nav.hidden` sets `height:0` but computes to
+48px, so the completion screen carries dead space under it.
+
+---
+
 ## 2026-08-02 (Tracker — the last three legacy to-do surfaces, ported)
 
 **Did.** Closed the gap between the Miro board and the tracker. Three surfaces on
