@@ -1,7 +1,7 @@
 import { useState, useEffect } from 'preact/hooks';
 import { useAuth } from './AuthProvider';
 import ReportDialog from './ReportDialog';
-import { blockUser, unblockUser, isBlocked } from '../lib/moderation';
+import { blockUser, unblockUser, isBlocked, moderationAvailable } from '../lib/moderation';
 
 interface Props {
   profileId: string;
@@ -24,17 +24,25 @@ export default function ProfileModerationActions({ profileId, username, onBlocke
   const [showReport, setShowReport] = useState(false);
   const [reported, setReported] = useState(false);
 
+  // Gated on migration 025 being applied — see moderationAvailable(). Renders
+  // nothing at all until then, rather than buttons that would error.
+  const [ready, setReady] = useState(false);
+
   useEffect(() => {
     if (!user) return;
     let cancelled = false;
     (async () => {
+      const ok = await moderationAvailable();
+      if (cancelled) return;
+      setReady(ok);
+      if (!ok) return;
       const b = await isBlocked(profileId);
       if (!cancelled) setBlocked(b);
     })();
     return () => { cancelled = true; };
   }, [user, profileId]);
 
-  if (!user) return null;
+  if (!user || !ready) return null;
 
   const doBlock = async () => {
     setBusy(true);

@@ -11,7 +11,7 @@ import ProjectBadge from './ProjectBadge';
 import CommentsThread from './CommentsThread';
 import CommentForm from './CommentForm';
 import ReportDialog from './ReportDialog';
-import { blockUser } from '../lib/moderation';
+import { blockUser, moderationAvailable } from '../lib/moderation';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Signature-verification cache.
@@ -219,7 +219,14 @@ export default function PostCard({
   const [selfHidden, setSelfHidden] = useState(false);
 
   // Nothing to report or block on your own post, and anon users can do neither.
-  const canModerate = Boolean(user && author_id && author_id !== user.id);
+  // Also gated on the moderation tables actually existing — offering a Block
+  // button that errors is worse than not offering one.
+  const [modReady, setModReady] = useState(false);
+  useEffect(() => {
+    if (user) moderationAvailable().then(setModReady);
+  }, [user]);
+
+  const canModerate = Boolean(user && author_id && author_id !== user.id && modReady);
 
   const handleBlock = async () => {
     if (!author_id || blocking) return;

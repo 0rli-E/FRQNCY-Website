@@ -148,6 +148,17 @@ export async function createGroup(input: NewGroup, userId: string): Promise<{ gr
   const slug = slugifyGroupName(input.name);
   if (!slug) return { group: null, error: 'Please choose a name with at least one letter or number.' };
 
+  // Refuse to mint a private group the database can't actually keep private.
+  // Without migration 026 the posts policy still returns group posts to
+  // everyone, so the group would carry a promise it cannot keep. Checked here
+  // as well as in the UI, because the UI is not the security boundary.
+  if (input.visibility === 'private' && !(await privateGroupsSupported())) {
+    return {
+      group: null,
+      error: 'Private groups aren’t available yet. Create it as an open group, or try again once private groups are switched on.',
+    };
+  }
+
   const { data, error } = await supabase
     .from('groups')
     .insert({
@@ -189,6 +200,36 @@ export async function createGroup(input: NewGroup, userId: string): Promise<{ gr
 }
 
 // ── Private groups + invites (migration 026) ─────────────────────────────────
+
+/**
+ * Is migration 026 applied?
+ *
+ * This gate is load-bearing, not cosmetic. Before 026 the posts SELECT policy
+ * is still `USING (true)` for group posts, so a group marked `private` would
+ * have world-readable posts — the label would be a lie, and people would write
+ * things into it believing otherwise. So private-group creation stays disabled
+ * until the migration that actually enforces privacy is in place.
+ *
+ * Probed once per page load and cached.
+ */
+let privateGroupsAvailability: Promise<boolean> | null = null;
+
+export function privateGroupsSupported(): Promise<boolean> {
+  if (!privateGroupsAvailability) {
+    privateGroupsAvailability = supabase
+      .from('group_invites')
+      .select('group_id')
+      .limit(1)
+      .then(({ error }) => {
+        if (error) {
+          console.warn('[groups] private groups unavailable — apply migration 026_private_groups.sql.');
+          return false;
+        }
+        return true;
+      });
+  }
+  return privateGroupsAvailability;
+}
 
 /**
  * Private groups the user belongs to. RLS already hides private groups they're

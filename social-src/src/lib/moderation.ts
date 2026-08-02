@@ -53,6 +53,37 @@ function isMissingSchema(message?: string | null): boolean {
   );
 }
 
+/**
+ * Is migration 025 actually applied to the database this build is talking to?
+ *
+ * The UI must not offer Block or Report before the tables exist — an action
+ * that silently fails is worse than no action, and moderation is the last
+ * place to be casual about that. Probed once per page load and cached.
+ *
+ * A signed-out user gets an empty result rather than an error (RLS filters to
+ * their own rows, of which there are none), so this distinguishes "table
+ * missing" from "nothing to see", which is what we need.
+ */
+let moderationAvailability: Promise<boolean> | null = null;
+
+export function moderationAvailable(): Promise<boolean> {
+  if (!moderationAvailability) {
+    moderationAvailability = supabase
+      .from('blocks')
+      .select('blocker_id')
+      .limit(1)
+      .then(({ error }) => {
+        if (error) {
+          moderationSchemaMissing = true;
+          console.warn('[moderation] schema missing — apply migration 025_moderation.sql.');
+          return false;
+        }
+        return true;
+      });
+  }
+  return moderationAvailability;
+}
+
 // ── Blocks ───────────────────────────────────────────────────────────────────
 
 /**

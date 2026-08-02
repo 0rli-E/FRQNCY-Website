@@ -10,6 +10,7 @@ import {
   leaveGroup,
   createGroup,
   groupsSchemaMissing,
+  privateGroupsSupported,
   type Group,
   type GroupInvite,
 } from '../lib/groups';
@@ -45,6 +46,10 @@ export default function GroupsDirectory() {
   // their members — so they get their own section.
   const [privateGroups, setPrivateGroups] = useState<Group[]>([]);
   const [invites, setInvites] = useState<GroupInvite[]>([]);
+  // Only offer the private option once the database can actually enforce it —
+  // see privateGroupsSupported(). Starts false so we never flash a choice we
+  // may have to take away.
+  const [canGoPrivate, setCanGoPrivate] = useState(false);
 
   const load = async () => {
     const list = await listOpenGroups();
@@ -68,6 +73,10 @@ export default function GroupsDirectory() {
     load();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [user?.id]);
+
+  useEffect(() => {
+    privateGroupsSupported().then(setCanGoPrivate);
+  }, []);
 
   const toggleMembership = async (g: Group) => {
     if (!user?.id) {
@@ -214,7 +223,14 @@ export default function GroupsDirectory() {
 
               {/* Visibility. Fixed at creation — migration 026 blocks changing
                   it later, because private → open would retroactively publish
-                  everything anyone had written in the group. */}
+                  everything anyone had written in the group.
+
+                  The whole block is hidden until the database can enforce
+                  privacy; until then every group is open and saying so once,
+                  plainly, beats offering a private option that wouldn't be. */}
+              {!canGoPrivate ? (
+                <p class="text-xs text-text-dim">Open group — anyone can read it and join.</p>
+              ) : (
               <div class="space-y-1.5">
                 <label
                   class={`flex items-start gap-2.5 rounded-lg border px-3 py-2 cursor-pointer transition-colors ${
@@ -259,6 +275,7 @@ export default function GroupsDirectory() {
                   would publish everything already written in it.
                 </p>
               </div>
+              )}
 
               {createError && <p class="text-xs text-amber-400">{createError}</p>}
               <div class="flex items-center gap-2">
