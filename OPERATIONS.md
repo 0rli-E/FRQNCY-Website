@@ -72,9 +72,11 @@ previously clipped. Inline JS parses (5 script blocks, 0 failures) and `<div>` o
 balance at 232 each. Console is clean but for the known `/api/analytics` 501, which is the
 static dev server refusing POST.
 
-**Left.** Not pushed — Orlando tests before push, and this sits on `vbrtn-live` behind the
-7 earlier Sanctuary commits (`82d8d75` → `d6a7c75`) that are also still unpushed; prod is
-behind all of it. Not verified: the cloud-store path (`SanctuaryCloudStore`) — I only
+**Left.** Not pushed — Orlando tests before push. It is the *only* unpushed dashboard
+commit: the 7 earlier Sanctuary commits (`82d8d75` → `d6a7c75`) that were stranded on
+`vbrtn-live` reached `origin/main` in the 2026-08-02 integration push and are live —
+confirmed by curling the deployed page for the Mind-Movie music markup. So prod is exactly
+one commit behind, and that commit is this one. Not verified: the cloud-store path (`SanctuaryCloudStore`) — I only
 exercised localStorage, so a signed-in user's round-trip of the new `objective.completed`
 key is unconfirmed, though it rides the same whole-blob write as every other key. Not
 verified: the three PDF exports, which I didn't regenerate and which may now want the
