@@ -1,0 +1,17 @@
+---
+import SocialLayout from '../../layouts/SocialLayout.astro';
+import BlockedAccountsPanel from '../../components/BlockedAccountsPanel';
+---
+
+<SocialLayout title="Blocked accounts" description="See and undo the accounts you've blocked on NRG.">
+  <div class="max-w-2xl mx-auto py-6 space-y-2">
+    <h1 class="font-heading text-3xl text-gold">Blocked accounts</h1>
+    <p class="text-sm text-text-dim">
+      People you've blocked. You're hidden from each other's posts and messages.
+      Nobody is told they've been blocked, and you can undo any of these.
+    </p>
+  </div>
+  <div class="max-w-2xl mx-auto">
+    <BlockedAccountsPanel client:load />
+  </div>
+</SocialLayout>

@@ -6,6 +6,7 @@ import FollowButton from './FollowButton';
 import StartConversationButton from './StartConversationButton';
 import Feed from './Feed';
 import EditProfileModal from './EditProfileModal';
+import ProfileModerationActions from './ProfileModerationActions';
 import { useAuth } from './AuthProvider';
 import { getProfile, type Profile } from '../lib/api';
 
@@ -35,7 +36,8 @@ export default function ProfilePage() {
     const path = window.location.pathname.replace(/\/+$/, '');
     const parts = path.split('/');
     const last = parts[parts.length - 1];
-    const stop = new Set(['', 'u', 'profile', 'index.html', 'keys', 'connections', 'bluesky-callback']);
+    // Keep in sync with STATIC_SUB_PATHS in functions/social/profile/[[path]].js
+    const stop = new Set(['', 'u', 'profile', 'index.html', 'keys', 'connections', 'blocked', 'bluesky-callback']);
     if (last && !stop.has(last)) {
       setUsername(decodeURIComponent(last));
     } else {
@@ -94,6 +96,13 @@ export default function ProfilePage() {
             <>
               <FollowButton username={username} />
               <StartConversationButton username={username} />
+              {profile && (
+                <ProfileModerationActions
+                  profileId={profile.id}
+                  username={username}
+                  onBlocked={() => setProfileVersion((v) => v + 1)}
+                />
+              )}
             </>
           )}
         </div>

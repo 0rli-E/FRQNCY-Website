@@ -30,6 +30,9 @@ interface FeedProps {
 
 interface PostRow {
   id: string;
+  /** Needed by PostCard's block/report menu — it acts on the author, not the
+      username string. Must stay in the select column list below. */
+  author_id: string;
   content: string;
   project_tag: string | null;
   link_url: string | null;
@@ -161,8 +164,8 @@ export default function Feed({ username, channel: channelFilter, groupId, emptyL
     // we fall back to the legacy set; the pill simply degrades to either
     // "↗ on Bluesky" (016 only) or hides entirely (no 016).
     const cols = includeBskyCol
-      ? 'id, content, project_tag, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, bluesky_uri, bluesky_reply_count, profiles!author_id(username, display_name, avatar_url, signing_public_key)'
-      : 'id, content, project_tag, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, profiles!author_id(username, display_name, avatar_url, signing_public_key)';
+      ? 'id, author_id, content, project_tag, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, bluesky_uri, bluesky_reply_count, profiles!author_id(username, display_name, avatar_url, signing_public_key)'
+      : 'id, author_id, content, project_tag, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, profiles!author_id(username, display_name, avatar_url, signing_public_key)';
     let q = supabase
       .from('posts')
       .select(cols)
@@ -275,6 +278,7 @@ export default function Feed({ username, channel: channelFilter, groupId, emptyL
     <PostCard
       key={post.id}
       id={post.id}
+      author_id={post.author_id ?? null}
       author={post.profiles?.display_name || 'Anonymous'}
       username={post.profiles?.username || 'anon'}
       avatar={post.profiles?.avatar_url || undefined}

@@ -5,6 +5,8 @@ import BlueskyReplies from './BlueskyReplies';
 
 interface PostRow {
   id: string;
+  /** Drives PostCard's block/report menu. Must stay in the select lists below. */
+  author_id: string;
   content: string;
   project_tag: string | null;
   project_tier: string | null;
@@ -77,7 +79,7 @@ export default function PostView() {
       let { data, error } = await supabase
         .from('posts')
         .select(
-          'id, content, project_tag, project_tier, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, bluesky_uri, profiles!author_id(username, display_name, avatar_url, signing_public_key, bluesky_handle)'
+          'id, author_id, content, project_tag, project_tier, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, bluesky_uri, profiles!author_id(username, display_name, avatar_url, signing_public_key, bluesky_handle)'
         )
         .eq('id', postId)
         .maybeSingle();
@@ -86,7 +88,7 @@ export default function PostView() {
         const fb = await supabase
           .from('posts')
           .select(
-            'id, content, project_tag, project_tier, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, profiles!author_id(username, display_name, avatar_url, signing_public_key)'
+            'id, author_id, content, project_tag, project_tier, link_url, link_preview, created_at, likes_count, comments_count, bookmarks_count, signature, signed_payload, profiles!author_id(username, display_name, avatar_url, signing_public_key)'
           )
           .eq('id', postId)
           .maybeSingle();
@@ -156,6 +158,7 @@ export default function PostView() {
 
       <PostCard
         id={post.id}
+        author_id={post.author_id ?? null}
         author={post.profiles?.display_name || 'Anonymous'}
         username={post.profiles?.username || 'anon'}
         avatar={post.profiles?.avatar_url || undefined}

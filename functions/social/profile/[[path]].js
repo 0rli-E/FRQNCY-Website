@@ -18,9 +18,15 @@
 // See proposals/NRG-EXPERT-CRITIQUE-2026-05-14.md and the
 // project_cf_pages_catchall_hijacks_static memory for the full history.
 
+// Every static page under /social/profile/ must be listed here. Anything not
+// listed is treated as a username and rewritten to the profile shell — so a
+// new sub-page that's missing from this array 404s into "no such user" in
+// production while still working perfectly against a local static server,
+// which does not run this function.
 const STATIC_SUB_PATHS = [
   '/social/profile/keys',
   '/social/profile/connections',
+  '/social/profile/blocked',
   '/social/profile/bluesky-callback',
   '/social/profile/bluesky-oauth-client.json',
 ];

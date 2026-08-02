@@ -10,6 +10,8 @@ import RichContent from './RichContent';
 import ProjectBadge from './ProjectBadge';
 import CommentsThread from './CommentsThread';
 import CommentForm from './CommentForm';
+import ReportDialog from './ReportDialog';
+import { blockUser } from '../lib/moderation';
 
 // ─────────────────────────────────────────────────────────────────────────────
 // Signature-verification cache.
@@ -24,6 +26,9 @@ const verifyCache: Map<string, VerifyState> = new Map();
 
 interface PostCardProps {
   id?: string;
+  /** Author's profile id. Required for the block/report menu — without it the
+      overflow menu falls back to share-only, since there's no one to act on. */
+  author_id?: string | null;
   author?: string;
   username?: string;
   avatar?: string;
@@ -59,6 +64,7 @@ interface PostCardProps {
 
 export default function PostCard({
   id,
+  author_id = null,
   author = 'Anonymous',
   username = 'anon',
   avatar,
@@ -202,6 +208,29 @@ export default function PostCard({
     }
   };
 
+  // ── Moderation (blocks + reports, migration 025) ──────────────────────────
+  const [menuOpen, setMenuOpen] = useState(false);
+  const [showReport, setShowReport] = useState(false);
+  const [reported, setReported] = useState(false);
+  const [blocking, setBlocking] = useState(false);
+  // Set after a successful block so the card disappears immediately. The RLS
+  // policy already hides it — but only on the next fetch, and waiting for that
+  // would leave the post you just blocked sitting on screen.
+  const [selfHidden, setSelfHidden] = useState(false);
+
+  // Nothing to report or block on your own post, and anon users can do neither.
+  const canModerate = Boolean(user && author_id && author_id !== user.id);
+
+  const handleBlock = async () => {
+    if (!author_id || blocking) return;
+    setBlocking(true);
+    const res = await blockUser(author_id);
+    setBlocking(false);
+    setMenuOpen(false);
+    if (res.ok) setSelfHidden(true);
+    else console.error('block failed:', res.error);
+  };
+
   const [shareCopied, setShareCopied] = useState(false);
   const [showQuote, setShowQuote] = useState(false);
   const [quoteText, setQuoteText] = useState('');
@@ -260,8 +289,30 @@ export default function PostCard({
     }
   };
 
+  // Blocked from this card — collapse it in place rather than vanishing the
+  // row, so the feed doesn't jump under the reader's finger.
+  if (selfHidden) {
+    return (
+      <article class="rounded-xl bg-card-bg border border-card-border px-5 py-4 text-xs text-text-dim">
+        You blocked @{username}. Their posts are hidden from you now.{' '}
+        <a href="/social/profile/blocked" class="text-gold-light hover:underline">
+          Manage blocked accounts
+        </a>
+      </article>
+    );
+  }
+
   return (
     <article class="rounded-xl bg-card-bg border border-card-border p-5 hover:border-gold/10 transition-colors">
+      {showReport && id && (
+        <ReportDialog
+          targetType="post"
+          targetId={id}
+          targetLabel={`@${username}: ${content.slice(0, 60)}${content.length > 60 ? '…' : ''}`}
+          onClose={() => setShowReport(false)}
+          onReported={() => setReported(true)}
+        />
+      )}
       {/* Header */}
       <div class="flex items-start gap-3">
         <a
@@ -302,11 +353,68 @@ export default function PostCard({
             )}
           </div>
         </div>
-        <button class="text-text-dim hover:text-text transition-colors p-1">
-          <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
-            <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
-          </svg>
-        </button>
+        {/* Overflow menu — report / block. Was a dead button until moderation
+            v1; it renders for signed-in users looking at someone else's post,
+            since there is nothing here to do to your own. */}
+        <div class="relative">
+          <button
+            type="button"
+            onClick={() => setMenuOpen((v) => !v)}
+            aria-label="Post options"
+            aria-expanded={menuOpen}
+            aria-haspopup="menu"
+            class="text-text-dim hover:text-text transition-colors p-1"
+          >
+            <svg class="w-4 h-4" fill="none" stroke="currentColor" viewBox="0 0 24 24">
+              <path stroke-linecap="round" stroke-linejoin="round" stroke-width="2" d="M12 5v.01M12 12v.01M12 19v.01" />
+            </svg>
+          </button>
+
+          {menuOpen && (
+            <>
+              {/* Click-catcher so the menu closes on any outside tap. */}
+              <div class="fixed inset-0 z-[90]" onClick={() => setMenuOpen(false)} />
+              <div
+                role="menu"
+                class="absolute right-0 top-8 z-[100] w-48 rounded-lg bg-navy-mid border border-card-border py-1 shadow-xl"
+              >
+                {canModerate ? (
+                  <>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={() => { setMenuOpen(false); setShowReport(true); }}
+                      class="w-full text-left px-3 py-2 text-xs text-text hover:bg-gold/10 transition-colors"
+                    >
+                      {reported ? 'Reported ✓' : 'Report post'}
+                    </button>
+                    <button
+                      type="button"
+                      role="menuitem"
+                      onClick={handleBlock}
+                      disabled={blocking}
+                      class="w-full text-left px-3 py-2 text-xs text-text hover:bg-gold/10 transition-colors disabled:opacity-40"
+                    >
+                      {blocking ? 'Blocking…' : `Block @${username}`}
+                    </button>
+                    <p class="px-3 pt-1.5 pb-1 text-[10px] leading-snug text-text-dim border-t border-card-border mt-1">
+                      Blocking hides you from each other. They aren't told.
+                    </p>
+                  </>
+                ) : (
+                  <button
+                    type="button"
+                    role="menuitem"
+                    onClick={() => { setMenuOpen(false); sharePost(); }}
+                    class="w-full text-left px-3 py-2 text-xs text-text hover:bg-gold/10 transition-colors"
+                  >
+                    Copy link to post
+                  </button>
+                )}
+              </div>
+            </>
+          )}
+        </div>
       </div>
 
       {/* Content — quote posts get an embedded card; everything else goes
