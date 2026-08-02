@@ -47,6 +47,81 @@ Every entry states four things:
 
 ---
 
+## 2026-08-02 (Ship — the last four branches, on Orlando's "yes ship")
+
+**Did.** Emptied the backlog. Every branch is now at zero commits `origin/main`
+lacks — `vbrtn-live`, `main`, `integrate-2026-08-01`, `roadmap-2026-08-02`,
+`vbrtn-cloudsync-fix`, `nrg-2026-08-02`. Main is `bc47a9c03`.
+
+- **`roadmap-2026-08-02`** — `/create`, `/read`, `/rich` (the funnel doors that
+  had been 404ing) plus `/privacy-policy` and `/terms`, which the site had never
+  had at all.
+- **`integrate-2026-08-01`** — the donation card path on `/donate`.
+- **`vbrtn-cloudsync-fix`** — VBRTN cloud-sync files so a signed-in profile
+  actually syncs, watch resume-where-you-left-off, courses soft login-gate,
+  sw v72→v75.
+- **`main` (local)** — courses progress panel on the social ProfilePage, and
+  migration 024 setting `security_invoker` on the two Courses-Room author views.
+
+**Reviewed before publishing, not merged on trust.** These were held back last
+session precisely because they carry outward-facing commitments.
+
+The **privacy policy's factual claims were checked against the running site**:
+Plausible is the analytics in prod and no `set-cookie` is sent, so the cookieless
+claim holds; Supabase, Resend, Stripe and Anthropic all appear in `functions/`.
+It claims **no legal entity** — "FRQNCY publishes frqncy.network", contact
+`hello@frqncy.network` — which is correct, since none is registered (ops#55). It
+is specific about birth data, including that avoidances and triggers are never
+sent to the model. The **terms encode the editorial line** rather than papering
+over it: no ranking of people, no leaderboards, stated as a design commitment.
+
+All **six public-domain sources** behind the funnel doors resolve 200 — two
+Gutenberg ids, three LibriVox slugs, two archive.org pages. Guessing those
+identifiers is a known way to ship dead links, so each was fetched.
+
+The **donation path was read before shipping because it moves money**. The donor
+names the amount, which is right for a gift, and the server still clamps:
+integer check, $1 floor so the card fee does not eat the gift, $10,000 ceiling,
+currency never taken from the client. No key or price hardcoded.
+
+**Finished, and how it was verified — all live in prod after deploy.**
+- `/create` `/read` `/rich` `/privacy-policy` `/terms` all **200**, from 404.
+- `/api/checkout-session` still **503** — `STRIPE_SECRET_KEY` absent from Pages
+  env. The path is shipped; **it cannot take a real dollar until Orlando adds
+  the key.** That switch is deliberately still his.
+- `sw.js` serving **v75**.
+- No regressions: home, aligned, courses, watch, social, social/profile,
+  my-frqncy, cryptocurrency, bitcoin, meditation, donate all 200; wellbeing /
+  technology / money still 3999 / 3955 / 3972 words.
+
+**The `social/` rebuild, which was the actual blocker.** All 31 conflicts on the
+`main` merge were in built Astro output. Hand-merging hashed bundles yields a
+tree matching neither side, so they were resolved to main's build and then
+**regenerated**: `astro build` off the merged source, `dist/` copied into
+`social/` as `astro.config` describes. Verified by content, not by the build
+exiting 0 — `social/profile/index.html` loads `ProfilePage.Dyqh5Oct.js` and that
+bundle carries the courses code including the `course_enrollments` query.
+**Gotcha for next time:** the build dies with `supabaseUrl is required` during
+static-route generation unless `social-src/.env` is present; the worktree also
+needs `node_modules` (1.2G) symlinked from the main checkout. Neither the `.env`
+nor the symlink was staged.
+
+**Left.**
+- **`STRIPE_SECRET_KEY` is not in the Cloudflare Pages env**, so donations,
+  goods and membership checkout are all still dead. One env var away.
+- **The new legal pages may be unreachable by navigation.** There is no global
+  footer component, so `/privacy-policy` and `/terms` resolve but nothing on the
+  site necessarily links to them. Not checked.
+- **`/cryptocurrency/` has still never been seen in a browser** — Playwright was
+  unavailable all session (a live Chrome owned the profile). Structural and curl
+  verification only.
+- **Migration 024 was already applied** to the linked Supabase project by an
+  earlier session; this only committed the record. Not independently re-verified
+  against the live database.
+- Legal/tax docs remain gitignored and on disk; **moving them into the private
+  tracker has not been done.**
+- The two Wikipedia URLs stripped from `places.json` still need primary sources.
+
 ## 2026-08-02 (Integration — everything merged to main, pushed, and verified live)
 
 **Did.** Reconciled the long-standing fork and shipped it. `vbrtn-live` was 24
