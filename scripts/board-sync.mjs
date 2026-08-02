@@ -48,6 +48,7 @@ const AREA = {
   'area:deploy': 'Deploy', 'area:visibility': 'Visibility', 'area:legal': 'Legal',
   'area:vbrtn': 'VBRTN', 'area:money': 'Money', 'area:content': 'Content',
   'area:social': 'Social', 'area:mvp': 'MVP', 'area:identity': 'Identity',
+  'area:app': 'App', 'area:auth': 'Auth', 'area:harness': 'Harness',
 };
 const RANK = { 'DO NOW': 0, Next: 1, Decision: 2, Later: 3, '': 4 };
 
