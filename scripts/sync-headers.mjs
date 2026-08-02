@@ -38,6 +38,11 @@ const TARGETS = [
   'crypto/index.html',
   'crypto/projects.html',
   'crypto/explorer.html',
+  // The crypto hub the topic graph actually points at. It is BESPOKE-LOCKed
+  // and carries no FRQNCY_GLOBAL_HEADER marker, so the auto-discovery loop
+  // below (marker-gated) never picked it up and the page has been running
+  // with no site nav at all. Listed explicitly so the inserter gives it one.
+  'cryptocurrency/index.html',
   'audio/index.html',
   'courses/index.html',
   'network-state/index.html',
