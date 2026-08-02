@@ -1,0 +1,342 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>CREATE — the free teaching · FRQNCY</title>
+  <meta name="theme-color" content="#0B1C3D">
+  <meta name="description" content="You came from a reel. Here is the book, free and complete — James Allen, As a Man Thinketh, plus the full audiobook.">
+  <meta name="robots" content="noindex, follow">
+  <link rel="canonical" href="https://frqncy.network/create">
+  <link rel="icon" type="image/svg+xml" href="favicon.svg">
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant:ital,wght@0,300;1,300&family=Jost:wght@300;400;500&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="nav-dropdown.css">
+  <style>
+    :root{--dark:#0B1C3D;--cream:#FFF;--mid:#3A4E72;--light-mid:#8A9AB8;--gold:#C4973A;--font-display:'Cormorant',Georgia,serif;--font-body:'Jost',sans-serif}
+    *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+    body{font-family:var(--font-body);color:var(--dark);background:var(--cream);overflow-x:hidden}
+    main{max-width:760px;margin:0 auto;padding:64px clamp(20px,5vw,60px) 120px}
+    .hero{text-align:center;padding:24px 0 48px;border-bottom:1px solid rgba(11,28,61,.08);margin-bottom:48px}
+    .eyebrow{font-size:10px;letter-spacing:.4em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;display:block}
+    h1{font-family:var(--font-display);font-weight:300;font-size:clamp(32px,5.2vw,54px);line-height:1.15;margin-bottom:22px}
+    h1 em{font-style:italic;color:var(--gold);display:block}
+    .lede{font-family:var(--font-display);font-style:italic;font-weight:300;font-size:clamp(17px,2.2vw,22px);line-height:1.6;color:var(--mid);max-width:600px;margin:0 auto}
+    h2{font-family:var(--font-display);font-weight:300;font-size:clamp(24px,3vw,32px);margin-bottom:16px}
+    p{font-size:15.5px;line-height:1.8;color:var(--mid);margin-bottom:16px;max-width:62ch}
+    section{margin-bottom:56px}
+    .gift{background:#F8FAFC;border:1px solid rgba(11,28,61,.07);border-radius:4px;padding:clamp(24px,4vw,36px)}
+    .gift .label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block}
+    .gift h2{margin-bottom:4px}
+    .byline{font-size:13px;letter-spacing:.06em;color:var(--light-mid);margin-bottom:18px}
+    .actions{display:flex;flex-wrap:wrap;gap:12px;margin-top:24px}
+    .btn{display:inline-block;padding:13px 26px;font-size:11px;letter-spacing:.26em;text-transform:uppercase;font-weight:500;text-decoration:none;border-radius:2px;transition:background .2s,color .2s,border-color .2s}
+    .btn-primary{color:#fff;background:var(--dark);border:1px solid var(--dark)}
+    .btn-primary:hover{background:var(--gold);border-color:var(--gold)}
+    .btn-ghost{color:var(--dark);background:transparent;border:1px solid rgba(11,28,61,.22)}
+    .btn-ghost:hover{border-color:var(--gold);color:var(--gold)}
+    .next-up{border-left:2px solid rgba(196,151,58,.35);padding-left:20px;margin-top:36px}
+    .next-up .t{font-family:var(--font-display);font-size:19px;color:var(--dark)}
+    .next-up .a{font-size:12.5px;color:var(--light-mid);margin-bottom:8px}
+    .next-up p{font-size:14px;margin-bottom:10px}
+    .next-up a{color:var(--gold);text-decoration:none;font-size:12px;letter-spacing:.16em;text-transform:uppercase;margin-right:18px}
+    .next-up a:hover{text-decoration:underline}
+    .experiment{border-top:1px solid rgba(11,28,61,.08);border-bottom:1px solid rgba(11,28,61,.08);padding:28px 0}
+    .experiment .label{font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:block}
+    form{background:#0B1C3D;border-radius:4px;padding:clamp(26px,4vw,38px);color:#C8D8F0}
+    form h2{color:#fff;margin-bottom:10px}
+    form p{color:#8FA8C8;font-size:14.5px}
+    label{display:block;font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:#E0C06A;font-weight:500;margin:22px 0 10px}
+    input[type=email]{width:100%;padding:14px 16px;font:inherit;font-size:15px;border:1px solid rgba(255,255,255,.16);border-radius:3px;background:rgba(255,255,255,.06);color:#fff}
+    input[type=email]::placeholder{color:rgba(255,255,255,.38)}
+    input[type=email]:focus{outline:none;border-color:var(--gold)}
+    button{display:inline-block;margin-top:16px;padding:14px 32px;font:inherit;font-size:11px;letter-spacing:.28em;text-transform:uppercase;font-weight:500;color:#0B1C3D;background:var(--gold);border:1px solid var(--gold);cursor:pointer;border-radius:2px}
+    button:hover{background:#E0C06A;border-color:#E0C06A}
+    .fineprint{font-size:12px;color:#6E88AC;margin-top:14px;line-height:1.6}
+    .fineprint a{color:#8FA8C8}
+    .status{margin-top:14px;font-size:14px;min-height:1.4rem}
+    .onward{text-align:center;padding-top:8px}
+    .onward p{margin:0 auto 22px}
+    footer.legal{margin-top:72px;padding-top:24px;border-top:1px solid rgba(11,28,61,.08);text-align:center;font-size:11.5px;letter-spacing:.06em;color:var(--light-mid)}
+    footer.legal a{color:var(--light-mid);margin:0 8px}
+  </style>
+<script src="/mobile-nav.js" defer></script>
+</head>
+<body>
+<a href="#main-content" class="skip-nav" style="position:absolute;top:-40px;left:0;background:#C4973A;color:#0B1C3D;padding:8px 16px;z-index:10000;font-size:14px;transition:top .2s;" onfocus="this.style.top='0'" onblur="this.style.top='-40px'">Skip to main content</a>
+
+  <!-- ▼▼ FRQNCY_GLOBAL_HEADER (canonical — source of truth: _chrome/global-header.html · do not edit inline; run `node scripts/sync-headers.mjs` to propagate) ▼▼ -->
+<style data-frqncy-header-critical>
+/* Critical inline CSS for #main-nav — prevents FOUC. Full styles live in nav-dropdown.css. */
+#main-nav{position:sticky;top:0;width:100%;z-index:500;padding:14px clamp(18px,3vw,40px);display:flex;align-items:center;justify-content:space-between;background:rgba(11,28,61,.92);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border-bottom:1px solid rgba(255,255,255,.06);font-family:'Jost',system-ui,sans-serif}
+#main-nav .nav-logo{font-family:'Cormorant',Georgia,serif;font-weight:300;font-size:20px;letter-spacing:.34em;color:#fff;text-decoration:none;text-transform:uppercase}
+#main-nav .nav-links{display:flex;gap:22px;list-style:none;margin:0;padding:0;align-items:center}
+#main-nav .nav-links a{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;color:rgba(255,255,255,.85);text-decoration:none;display:inline-flex;align-items:center;min-height:30px}
+#main-nav .nav-search{display:inline-flex;align-items:center;background:rgba(255,255,255,.07);border:1px solid rgba(255,255,255,.12);border-radius:2px}
+#main-nav .nav-search input{background:transparent;border:0;outline:0;color:#fff;font:inherit;font-size:10.5px;letter-spacing:.14em;width:clamp(120px,14vw,180px);padding:5px 9px}
+#main-nav .nav-search input::placeholder{color:rgba(255,255,255,.45)}
+#main-nav .nav-search button{background:transparent;border:0;color:rgba(255,255,255,.6);font-size:13px;padding:4px 9px;cursor:pointer}
+#main-nav .nav-back{font-size:10px;letter-spacing:.16em;color:rgba(255,255,255,.55);border:1px solid rgba(255,255,255,.14);padding:5px 9px;border-radius:2px;text-decoration:none}
+#main-nav .nav-back:hover{color:#fff;border-color:rgba(255,255,255,.32)}
+#main-nav .nav-cta-gold{font-size:10.5px;letter-spacing:.2em;text-transform:uppercase;border:1px solid rgba(196,151,58,.55);border-radius:2px;padding:5px 12px;color:#E0C06A !important;text-decoration:none;transition:background .2s,color .2s}
+#main-nav .nav-cta-gold:hover{background:rgba(196,151,58,.18);color:#fff !important}
+body.frqncy-home #main-nav .nav-back{display:none}
+/* Dropdown panel — inlined so the styling ships with every page, including
+   social/NRG pages that don't load nav-dropdown.css. */
+#main-nav .nav-dd{position:relative}
+#main-nav .nav-dd > a{display:inline-flex;align-items:center;gap:4px}
+#main-nav .nav-dd > a::after{content:'';display:inline-block;width:0;height:0;border-left:3px solid transparent;border-right:3px solid transparent;border-top:3.5px solid currentColor;opacity:.5;transition:opacity .2s,transform .2s}
+#main-nav .nav-dd:hover > a::after,#main-nav .nav-dd:focus-within > a::after{opacity:1;transform:rotate(180deg)}
+#main-nav .nav-dd-menu{position:absolute;top:calc(100% + 12px);left:50%;min-width:200px;background:rgba(11,28,61,.95);backdrop-filter:blur(20px);-webkit-backdrop-filter:blur(20px);border:1px solid rgba(255,255,255,.1);box-shadow:0 8px 32px rgba(0,0,0,.3);padding:8px 0;opacity:0;visibility:hidden;transform:translateX(-50%) translateY(-4px);transition:opacity .2s,visibility .2s,transform .2s;z-index:600}
+#main-nav .nav-dd:hover .nav-dd-menu,#main-nav .nav-dd:focus-within .nav-dd-menu{opacity:1;visibility:visible;transform:translateX(-50%) translateY(0)}
+#main-nav .nav-dd-menu::before{content:'';position:absolute;top:-14px;left:0;right:0;height:14px}
+#main-nav .nav-dd-menu a{display:flex !important;flex-direction:column !important;align-items:center !important;text-align:center !important;padding:10px 24px !important;text-decoration:none;transition:background .15s;font-size:11px !important;letter-spacing:.22em !important;text-transform:uppercase !important;font-weight:300 !important;font-family:'Jost',sans-serif !important;color:rgba(255,255,255,.85) !important;min-height:0}
+#main-nav .nav-dd-menu a:hover{background:rgba(196,151,58,.12)}
+#main-nav .nav-dd-menu a:hover .dd-label{color:#E0C06A}
+#main-nav .nav-dd-menu .dd-label{display:block !important;width:100% !important;text-align:center !important;font-weight:400 !important;color:rgba(255,255,255,.9);transition:color .15s;font-size:11px;letter-spacing:.22em;text-transform:uppercase}
+#main-nav .nav-dd-menu .dd-sub{display:block !important;width:100% !important;text-align:center !important;font-size:9px !important;letter-spacing:.12em !important;color:rgba(255,255,255,.45);margin-top:2px;font-weight:300 !important;text-transform:none !important}
+@media(max-width:720px){#main-nav .nav-links{display:none}#main-nav .nav-dd-menu{display:none !important}}
+/* Embed mode — when the page loads inside the FRQNCY mobile app's iframe shell
+   (URL has ?embed=1), hide the global nav and the floating donate button so
+   the app's own tab bar is the only persistent chrome. The page's body-level
+   navs (e.g. /my-frqncy/dashboard's own tab strip) stay intact. */
+body.frqncy-embed #main-nav{display:none !important}
+body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none !important}
+</style>
+<nav id="main-nav" aria-label="Main navigation">
+  <a href="/" class="nav-logo" aria-label="FRQNCY home">FRQNCY</a>
+  <ul class="nav-links">
+    <li class="nav-dd">
+      <a href="/about">About</a>
+      <div class="nav-dd-menu">
+        <a href="/start-here"><span class="dd-label">Start Here</span><span class="dd-sub">New to FRQNCY?</span></a>
+        <a href="/about"><span class="dd-label">Vision</span><span class="dd-sub">Our mission &amp; story</span></a>
+        <a href="/platform"><span class="dd-label">Platform</span><span class="dd-sub">How FRQNCY works</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/explore">Discover</a>
+      <div class="nav-dd-menu">
+        <a href="/explore"><span class="dd-label">Explore</span><span class="dd-sub">Network map</span></a>
+        <a href="/watch/index.html"><span class="dd-label">Watch</span><span class="dd-sub">Video &amp; audio library</span></a>
+        <a href="/courses/index.html"><span class="dd-label">Courses</span><span class="dd-sub">Learn deeper</span></a>
+        <a href="/music/"><span class="dd-label">Music</span><span class="dd-sub">Frequency-aligned listening</span></a>
+        <a href="/moon-calendar/"><span class="dd-label">Moon Calendar</span><span class="dd-sub">Thirteen moons · perpetual</span></a>
+        <a href="/mayan-calendar/"><span class="dd-label">Mayan Calendar</span><span class="dd-sub">Tzolk'in · Haab' · Long Count</span></a>
+        <a href="/aligned/"><span class="dd-label">Aligned Goods</span><span class="dd-sub">The best of everything, curated</span></a>
+        <a href="/browse"><span class="dd-label">Browse</span><span class="dd-sub">Everything FRQNCY publishes</span></a>
+      </div>
+    </li>
+    <li class="nav-dd">
+      <a href="/social/">Community</a>
+      <div class="nav-dd-menu">
+        <a href="/podcast"><span class="dd-label">Podcast</span><span class="dd-sub">Conversations</span></a>
+        <a href="/social/"><span class="dd-label">NRG</span><span class="dd-sub">Social layer</span></a>
+        <a href="/membership/"><span class="dd-label">Membership</span><span class="dd-sub">Network access</span></a>
+        <a href="/my-frqncy/dashboard/"><span class="dd-label">Sanctuary</span><span class="dd-sub">Your private dashboard</span></a>
+      </div>
+    </li>
+    <li class="nav-search-li">
+      <form action="/search" method="get" role="search" class="nav-search">
+        <input type="text" role="searchbox" name="q" placeholder="Search…" aria-label="Search the FRQNCY network" autocomplete="off">
+        <button type="submit" aria-label="Search">⌕</button>
+      </form>
+    </li>
+    <li>
+      <a href="/" class="nav-back" data-frqncy-back onclick="if(window.history.length>1){event.preventDefault();window.history.back();}" aria-label="Back one step">← Back</a>
+    </li>
+    <li>
+      <a href="/my-frqncy" class="nav-cta-gold">My FRQNCY</a>
+    </li>
+  </ul>
+</nav>
+<script>
+  // Tag the homepage so CSS can hide the back button there (it's redundant on /).
+  // Also tag embed mode (page loaded inside the FRQNCY mobile app iframe)
+  // so CSS can hide the global nav / donate button — the app provides its own chrome.
+  // In embed mode, preserve ?embed=1 across same-origin internal navigations
+  // so the chrome stays hidden as the user moves through the site.
+  (function(){
+    try {
+      var isHome = (location.pathname === '/' || location.pathname === '/index.html' || location.pathname === '');
+      if (isHome) document.body.classList.add('frqncy-home');
+      var params = new URLSearchParams(location.search);
+      var isEmbed = (params.get('embed') === '1');
+      if (isEmbed) {
+        document.body.classList.add('frqncy-embed');
+        // Intercept clicks on internal links and re-append embed=1 if missing.
+        document.addEventListener('click', function(ev){
+          var a = ev.target && ev.target.closest && ev.target.closest('a[href]');
+          if (!a) return;
+          var href = a.getAttribute('href') || '';
+          // Skip externals, fragments, mailto/tel, and links already carrying embed.
+          if (/^(https?:|mailto:|tel:|#)/.test(href) && !/^https?:\/\/(www\.)?frqncy\.network/.test(href)) return;
+          if (href.indexOf('embed=1') !== -1) return;
+          if (a.target && a.target !== '' && a.target !== '_self') return;
+          ev.preventDefault();
+          var sep = href.indexOf('?') === -1 ? '?' : '&';
+          location.href = href + sep + 'embed=1';
+        }, true);
+      }
+    } catch(_) {}
+  })();
+</script>
+<!-- Tiny floating Donate button — bottom-right on every page. Click opens a
+     popover with the EVM + SOL wallet addresses; the full /donate page link
+     sits at the top of the popover. -->
+<style data-frqncy-donate>
+  /* Stacks above the AI chat button (chat is bottom:24px, ~56px tall, z-index:9998).
+     Donate sits at bottom:95px so it clears the AI floater. */
+  #frq-donate-btn{position:fixed;right:18px;bottom:95px;z-index:9997;font-family:'Jost',system-ui,sans-serif;font-size:10.5px;letter-spacing:.22em;text-transform:uppercase;font-weight:500;color:#E0C06A;background:rgba(11,28,61,.92);border:1px solid rgba(196,151,58,.55);padding:9px 16px;border-radius:24px;cursor:pointer;backdrop-filter:blur(12px);-webkit-backdrop-filter:blur(12px);box-shadow:0 6px 24px rgba(11,28,61,.18);transition:background .2s,color .2s,transform .2s}
+  #frq-donate-btn:hover{background:#C4973A;color:#fff;transform:translateY(-1px)}
+  #frq-donate-btn .heart{margin-right:6px;display:inline-block}
+  #frq-donate-pop{position:fixed;right:18px;bottom:145px;z-index:9998;width:min(360px,calc(100vw - 36px));background:#fff;border:1px solid rgba(11,28,61,.1);border-radius:6px;box-shadow:0 16px 48px rgba(11,28,61,.18);padding:18px 18px 16px;font-family:'Jost',system-ui,sans-serif;display:none}
+  #frq-donate-pop.open{display:block}
+  #frq-donate-pop .frq-pop-title{font-family:'Cormorant',Georgia,serif;font-size:18px;font-weight:400;color:#0B1C3D;margin-bottom:4px}
+  #frq-donate-pop .frq-pop-sub{font-size:11px;color:#8A9AB8;margin-bottom:14px;line-height:1.5}
+  #frq-donate-pop .frq-pop-sub a{color:#C4973A;text-decoration:none}
+  #frq-donate-pop .frq-w-label{font-size:9px;letter-spacing:.22em;text-transform:uppercase;color:#C4973A;font-weight:500;margin-top:10px;display:block}
+  #frq-donate-pop .frq-w-addr{font-family:'SFMono-Regular',Menlo,monospace;font-size:11px;color:#0B1C3D;background:#F8FAFC;border:1px solid rgba(11,28,61,.08);padding:8px 10px;border-radius:3px;display:flex;align-items:center;justify-content:space-between;gap:8px;margin-top:4px;word-break:break-all}
+  #frq-donate-pop .frq-w-copy{flex:0 0 auto;font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:#C4973A;background:transparent;border:1px solid rgba(196,151,58,.5);padding:3px 8px;border-radius:2px;cursor:pointer;font-family:inherit}
+  #frq-donate-pop .frq-w-copy:hover{background:#C4973A;color:#fff}
+  #frq-donate-pop .frq-pop-foot{margin-top:14px;padding-top:12px;border-top:1px solid rgba(11,28,61,.06);font-size:10px;letter-spacing:.06em;color:#8A9AB8;line-height:1.5}
+  @media(max-width:480px){#frq-donate-btn{right:12px;bottom:80px;padding:8px 14px;font-size:10px}#frq-donate-pop{right:12px;bottom:128px}}
+</style>
+<button id="frq-donate-btn" type="button" aria-haspopup="dialog" aria-controls="frq-donate-pop" aria-label="Support FRQNCY">
+  <span class="heart" aria-hidden="true">♥</span>Donate
+</button>
+<div id="frq-donate-pop" role="dialog" aria-label="FRQNCY donation wallets">
+  <div class="frq-pop-title">Support FRQNCY</div>
+  <div class="frq-pop-sub">Full details + fiat options on <a href="/donate">/donate</a>.</div>
+  <span class="frq-w-label">EVM · ETH / Base / Arbitrum (USDC, ETH)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="evm">0xPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="evm">Copy</button>
+  </div>
+  <span class="frq-w-label">Solana (SOL / USDC-SPL)</span>
+  <div class="frq-w-addr">
+    <span data-frq-addr="sol">SOLPENDING — treasury multi-sig coming</span>
+    <button class="frq-w-copy" type="button" data-frq-copy="sol">Copy</button>
+  </div>
+  <div class="frq-pop-foot">Wallets are placeholders until the FRQNCY treasury multi-sig goes live. See the crypto stack spec.</div>
+</div>
+<script>
+  (function(){
+    var btn = document.getElementById('frq-donate-btn');
+    var pop = document.getElementById('frq-donate-pop');
+    if (!btn || !pop) return;
+    btn.addEventListener('click', function(e){
+      e.stopPropagation();
+      pop.classList.toggle('open');
+    });
+    document.addEventListener('click', function(e){
+      if (!pop.contains(e.target) && e.target !== btn) pop.classList.remove('open');
+    });
+    pop.addEventListener('click', function(e){
+      var t = e.target;
+      if (t && t.dataset && t.dataset.frqCopy) {
+        var which = t.dataset.frqCopy;
+        var addrEl = pop.querySelector('[data-frq-addr="' + which + '"]');
+        if (!addrEl) return;
+        var text = addrEl.textContent.trim();
+        if (navigator.clipboard && navigator.clipboard.writeText) {
+          navigator.clipboard.writeText(text).then(function(){
+            var orig = t.textContent;
+            t.textContent = 'Copied';
+            setTimeout(function(){ t.textContent = orig; }, 1200);
+          });
+        }
+      }
+    });
+  })();
+</script>
+<!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
+  <main id="main-content">
+    <div class="hero">
+      <span class="eyebrow">You commented CREATE</span>
+      <h1>You are not what happened to you.<em>You are what you think about what happened.</em></h1>
+      <p class="lede">James Allen wrote that a hundred years ago. Here is the whole book — free, complete, and yours already, because it belongs to everyone.</p>
+    </div>
+
+    <section class="gift">
+      <span class="label">Yours, free</span>
+      <h2>As a Man Thinketh</h2>
+      <p class="byline">James Allen, 1903 &nbsp;·&nbsp; public domain</p>
+      <p>Thirty pages. Most people finish it in one sitting and then re-read it for years. The claim is simple and testable: your outer life is the harvest of the seeds you plant in thought. Change the seed, change the harvest.</p>
+      <div class="actions">
+        <a class="btn btn-primary" href="https://www.gutenberg.org/ebooks/4507" rel="noopener">Read the full text</a>
+        <a class="btn btn-ghost" href="https://librivox.org/as-a-man-thinketh-by-james-allen/" rel="noopener">Listen free (LibriVox)</a>
+      </div>
+
+      <div class="next-up">
+        <div class="t">The Kybalion</div>
+        <div class="a">Three Initiates, 1908</div>
+        <p>When you want the next one: seven principles, three anonymous authors, still in print after a century.</p>
+        <a href="https://www.gutenberg.org/ebooks/14209" rel="noopener">Read</a><a href="https://librivox.org/the-kybalion-by-the-three-initiates/" rel="noopener">Listen</a>
+      </div>
+    </section>
+
+    <section class="experiment">
+      <span class="label">Try it as an experiment</span>
+      <p>For one week, catch a single recurring thought about yourself — the one that runs without asking permission. Don’t fight it. Just write it down each time you notice it. At the end of the week, read the list and ask whether you would plant those seeds on purpose.</p>
+      <p>We frame these as experiments rather than instructions on purpose. Nothing here asks you to believe anything. It asks you to test something and watch what happens.</p>
+    </section>
+
+    <section>
+      <form id="door-form">
+        <h2>There is more of this.</h2>
+        <p>One dispatch when there is something worth sending — another teaching, free at the source, in the same spirit as this one. No sequence, no countdown, no pressure to buy anything.</p>
+        <label for="email">Email</label>
+        <input id="email" type="email" name="email" placeholder="your@email.com" required autocomplete="email">
+        <button type="submit">Send me the next one</button>
+        <p class="status" id="door-status" role="status"></p>
+        <p class="fineprint">One click unsubscribes you, permanently. We never sell or share your address. See <a href="/privacy-policy">how we handle your data</a>.</p>
+      </form>
+    </section>
+
+    <section class="onward">
+      <h2>The teaching lives here, not on the reel.</h2>
+      <p>FRQNCY is a map of the things worth knowing — people, books, practices, places — held together so one thing leads honestly to the next. The reel was a doorway. This is the territory.</p>
+      <div class="actions" style="justify-content:center">
+        <a class="btn btn-primary" href="/consciousness/">The consciousness domain</a>
+        <a class="btn btn-ghost" href="/explore">Explore the whole network</a>
+      </div>
+    </section>
+
+    <footer class="legal">
+      <a href="/privacy-policy">Privacy</a>·<a href="/terms">Terms</a>·<a href="/about">About FRQNCY</a>
+      <div style="margin-top:10px">© 2026 FRQNCY</div>
+    </footer>
+  </main>
+
+<script>
+(function(){
+  var form = document.getElementById('door-form');
+  var status = document.getElementById('door-status');
+  if (!form || !status) return;
+  function set(msg, color){ status.textContent = msg; status.style.color = color; }
+  form.addEventListener('submit', async function(ev){
+    ev.preventDefault();
+    var el = form.querySelector('input[name="email"]');
+    var email = el && el.value.trim();
+    if (!email || !/^[^@\s]+@[^@\s]+\.[^@\s]+$/.test(email)) {
+      set('Please enter a valid email.', '#E8A87C'); el && el.focus(); return;
+    }
+    set('Sending\u2026', '#8FA8C8');
+    try {
+      var res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, source: 'door_create' })
+      });
+      if (res.status === 429) { set('A moment \u2014 that was very fast. Try again shortly.', '#E8A87C'); return; }
+      if (!res.ok) { set('Something went wrong on our side. Please try again.', '#E8A87C'); return; }
+      set('\u2726 You\u2019re in. The book above is yours to start now.', '#E0C06A');
+      form.reset();
+    } catch (e) {
+      set('Network error. Please try again.', '#E8A87C');
+    }
+  });
+})();
+</script>
+</body>
+</html>
