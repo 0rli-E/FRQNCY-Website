@@ -31,6 +31,73 @@ Every entry states four things:
 
 ---
 
+## 2026-08-02 (NRG — login persistence, capability gates, and the push to main)
+
+**Did.** Continued the NRG session below and shipped it. Three additions, then a push.
+
+*Login persistence.* `readSessionFromStorage` in `AuthProvider.tsx` returned null the moment
+the access token expired. Access tokens last an hour, so anyone returning after that booted
+straight into the signed-out UI until the SDK's background refresh landed — and if the
+orphaned `lock:sb-*-auth-token` this file already works around was stuck, it never landed.
+Now an expired token with a refresh token still yields the user, the refresh is fired without
+being awaited, and the first `INITIAL_SESSION` event (which can carry null before recovery
+finishes) no longer blanks the restored user. Auth options in `supabase.ts` are now stated
+explicitly instead of inherited; `storageKey` is deliberately left unset, since a hand-built
+key differing by one character would log everyone out at once.
+
+*Capability gates — this one mattered for safety.* Migrations 025/026 cannot be applied from
+this machine (no linked Supabase CLI project, no Management API token — as
+`reference_supabase_apply_migrations` documents, the PAT is Orlando's to generate). So the
+code would go live before the tables. One part of that gap was genuinely unsafe: `createGroup`
+would insert a group with `visibility='private'` while the posts policy was still
+`USING (true)` — labelled private, listed as private, world-readable. Private-group creation
+now refuses unless `group_invites` exists, checked inside `createGroup` and not only in the
+UI. Block/Report are likewise hidden until 025 lands, rather than rendering buttons that error.
+
+*Pushed to main* — `4bea817d5..42f374943`, 9 commits, fast-forward, 0 files deleted. SSH was
+refused again so the push went over the `gh` HTTPS URL ([[project_push_blocked]]).
+
+**Opened.** Nothing filed in the tracker.
+
+**Finished — verified in production, not assumed.**
+- **The CSP fix works.** Re-ran the same in-page probe that proved the breakage:
+  `WebAssembly.instantiate()` now returns OK (it was refused before), so libsodium loads and
+  the E2EE layer is no longer dead. `bsky.social` 200. `plc.directory` DID resolution 200.
+  Nostr: `nos.lol` and `relay.snort.social` both open. **Zero CSP refusals in the console.**
+  The libsodium WASM abort that fired on every NRG page load is gone.
+- `relay.damus.io` still errors — but with no CSP refusal logged, so that is the relay
+  refusing us, not our policy. 2 of 3 relays connect, and `nostr-publish.ts` fans out to all
+  three, so publishing works.
+- `/social/profile/blocked` serves the real page in prod rather than being swallowed as a
+  username lookup — the Pages Function allowlist entry is correct.
+- Townhall link present in both desktop and mobile nav; `/social/groups/`, `/social/g/townhall/`,
+  `/social/space/` all 200.
+- The private-groups gate was tested against the **live** database, which has neither
+  migration: the probe correctly reports unavailable and the visibility radios are absent.
+- Login fix verified in a headless browser against the built bundle across four scenarios,
+  with the token endpoint blocked so no refresh could ever complete: live session stays signed
+  in, expired-with-refresh stays signed in (was signed out before), expired without a refresh
+  token stays signed out, no session stays signed out.
+
+**Left — still specific.**
+- **Migrations 025 and 026 remain unapplied and have still never been executed anywhere.**
+  Until someone runs them: Block and Report are invisible, private groups cannot be created,
+  and the `conversation_members` INSERT hole from migration 002 is still open in production.
+  That last one is the sharpest item on this list — it is a live gap, not a pending feature.
+  Apply via the Management API recipe in `reference_supabase_apply_migrations` (needs a PAT
+  Orlando generates), or the dashboard SQL editor.
+- No moderation flow has been exercised end-to-end by a real signed-in user, because the
+  tables do not exist yet. The gates mean the UI is honest about that; they do not mean the
+  feature is tested.
+- The login fix is verified against the built bundle but **not against a real expired
+  Supabase session in prod** — I have no account credentials. The scenarios were synthesised.
+- Not checked: whether a self-hosted Bluesky PDS outside `*.host.bsky.network` resolves under
+  the new connect-src. Bluesky login should be retested end-to-end by a human.
+- Google OAuth is still disabled at the provider level, so that button still fails. Dashboard
+  toggle, not code.
+
+---
+
 ## 2026-08-02 (NRG — CSP fix, moderation v1, private groups, the Townhall)
 
 **Did.** Four things on branch `nrg-2026-08-02`, in a worktree off fresh `origin/main`.
