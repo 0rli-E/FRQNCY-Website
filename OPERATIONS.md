@@ -31,6 +31,60 @@ Every entry states four things:
 
 ---
 
+## 2026-08-02 (Sanctuary — the pooled progress roll-up, rebuilt)
+
+**Did.** Rebuilt Slice 1 of the Sanctuary improve-don't-rebuild plan — the pooled
+completion roll-up Orlando asked for on 2026-06-11 ("completion checkers at every pyramid
+tier, stronger progress bars"), built that day, left uncommitted, and wiped in a rebase.
+Commit `078d9465a` on `vbrtn-live`, one file, +131/−12.
+
+The model: the unit of completion is a goal. An objective that has goals completes when
+its goals do — derived, never hand-set, so a bar can't disagree with what's underneath it.
+An objective with no goals yet stands as its own hand-checkable unit, so a pyramid you
+haven't broken all the way down is still walkable. Aims pool their objectives; the Dream
+pools every aim. Bars are gold on a faint track, labelled `done/total`, and render as
+nothing at all when there's nothing to pool. No colour-coding for behind/ahead, no
+percentage headline, no comparison — it clears the Sanctuary principles as a mirror rather
+than a score. New helpers `objGoals/objUnits/objIsComplete/sumUnits/aimUnits/dreamUnits/
+poolPct/progressBar` sit above `renderScoreboard()`; bars wire into the scoreboard cards,
+each objective card, the Dream in the pyramid editor, and both tiers of the dashboard
+mini-pyramid. Schema addition is `objective.completed` / `.completedDate`, lazily read
+(`obj.completed ?`), so saved state loads with no migration and the cloud row is unchanged.
+
+Also fixed four display defects, three of them logged in the 2026-07-30 cold walk: chief-aim
+names clipped mid-word on the scoreboard (now ellipsis at rest, full text on focus); the
+same clip on objective titles; `1 objectives` never singularized (two sites); and the
+History header read `Last 365 days` while each row renders 30 cells. Fourth: the objective
+group head's `3/6 objectives` meant "3 of max 6" but would have read as completion sitting
+next to the new bars, so it's a plain count now — the max is already stated in the section head.
+
+**Opened.** Nothing filed. Two things worth an issue if they're wanted: the dashboard is
+now 4,962 lines, three lines short of the 5,000 threshold the Sanctuary `CLAUDE.md` sets
+for splitting CSS/JS out of the single file. And the derived (non-clickable) objective
+checkbox is distinguished from a hand-checkable one only by opacity and a tooltip.
+
+**Finished.** Verified against a seeded pyramid in headless Chromium (playwright-core,
+390×844 and 1280×900, screenshots taken): the arithmetic is right at every tier — an aim
+over one 3-goal objective with 2 done plus a 1-goal objective with 0 done reads 2/4; an aim
+over two goal-less objectives, one hand-checked, reads 1/2; the Dream reads 3/6; objective
+bars only appear where goals exist. `.score-name` scroll overflow measures 0 where it
+previously clipped. Inline JS parses (5 script blocks, 0 failures) and `<div>` open/close
+balance at 232 each. Console is clean but for the known `/api/analytics` 501, which is the
+static dev server refusing POST.
+
+**Left.** Not pushed — Orlando tests before push, and this sits on `vbrtn-live` behind the
+7 earlier Sanctuary commits (`82d8d75` → `d6a7c75`) that are also still unpushed; prod is
+behind all of it. Not verified: the cloud-store path (`SanctuaryCloudStore`) — I only
+exercised localStorage, so a signed-in user's round-trip of the new `objective.completed`
+key is unconfirmed, though it rides the same whole-blob write as every other key. Not
+verified: the three PDF exports, which I didn't regenerate and which may now want the
+pooled numbers on the pyramid one-pager. Not touched: the singular-objective case renders
+from a trivial ternary I read but didn't screenshot. `proposals/SANCTUARY-ROADMAP.md` not
+updated — Slice 1 is from the 2026-06-11 three-slice plan, not a numbered Phase item, and
+the roadmap remains stale on everything shipped since April.
+
+---
+
 ## 2026-08-01 (Operational identity — one company email owns every account)
 
 **Did.** Orlando's directive: move every AI service and piece of tooling FRQNCY depends
