@@ -31,6 +31,48 @@ Every entry states four things:
 
 ---
 
+## 2026-08-02 (Tracker — the last three legacy to-do surfaces, ported)
+
+**Did.** Closed the gap between the Miro board and the tracker. Three surfaces on
+`FRQNCY DASHBOARDS` still carried task state that no issue held; all three are now ported
+and stamped so they read as records rather than trackers.
+
+The `Weekly to dos — 19 July – 26 July` frame had eleven bullets. Seven already mapped onto
+existing issues. Four did not, and one of those matters more than the rest: **there was no
+issue anywhere for the legal entity.** Filed as ops#55, ops#56, ops#57, ops#58.
+
+`FRQNCY — Areas We're Working On` turned out to be nothing to merge — ten count-only summary
+tiles dated 28 Jun; the sixty-four items they count never existed on the board. Stamped
+SUPERSEDED rather than deleted, per keep-don't-delete.
+
+The `Social Media — Master To-Do` doc's open items were already issues, but its ✅/🔨 record
+of what was *already finished* had never been captured anywhere. That record is now ops#59,
+filed closed — it is a record, not work.
+
+Also caught a stale card: ops#1 closed when the integration push landed, but its card sat in
+DO NOW, so the board read 58 against 57 open. Removed and the lane reflowed.
+
+**Opened.** ops#55 (Wyoming LLC formation — `do-now`, blocks the bank account, Stripe,
+funding diligence and the identity migrations), ops#56 (Valentino funding talks),
+ops#57 (Team Canvas), ops#58 (Drive restructure — six existing issues all say "in Drive"
+and are queuing into a structure that does not exist).
+
+**Finished.** Board and tracker verified in agreement by counting both:
+`gh issue list --state open | jq length` returns 57, and the four lane frames read
+DO NOW (9) · Next (27) · Decision (6) · Later (15) = 57. Lane frames grown to `h=165000`
+so the new cards render inside their parent.
+
+**Left.** The board render is verified by DSL read-back, **not visually** — nobody has
+looked at it at 25× scale to confirm the new cards are legible. ops#55–#58 are filed from
+a Miro bullet each; the actual status behind them (is the LLC half-filed? where did the
+Valentino conversation stop?) is unknown and only Orlando can say. Separately, this session
+started on ops#4 and ops#5 (`/terms`, a real privacy policy, and the `/create` `/read`
+`/rich` landing pages) — research done and public-domain source links verified live, but
+**no page was written**; worktree `/tmp/frqncy-roadmap` on branch `roadmap-2026-08-02` off
+clean `origin/main`, currently empty of changes.
+
+---
+
 ## 2026-08-02 (Sanctuary — the pooled progress roll-up, rebuilt)
 
 **Did.** Rebuilt Slice 1 of the Sanctuary improve-don't-rebuild plan — the pooled
