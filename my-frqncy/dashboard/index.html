@@ -386,6 +386,71 @@ body[data-sanctuary-day="3"] .fr-step[data-fr-action="practice"]{display:none}
 }
 .privacy-banner .lock{color:var(--gold);font-size:1rem}
 
+/* ── THE TRAIL ──
+   The read-only look-back. Reuses the Illuminator's slide-out chrome
+   (`.illum-panel` / `.illum-backdrop` / `.illum-head`) so there's one
+   panel idiom in this room, not two. Nothing here is editable: the
+   trail is a record you visit, not a surface you work on. */
+.trail-link{
+  display:inline-flex;align-items:center;gap:0.4rem;
+  margin-top:1.1rem;padding:0;background:none;border:none;
+  font-family:'Cormorant',serif;font-style:italic;font-size:1rem;
+  color:var(--text-dim);cursor:pointer;transition:color .18s;
+}
+.trail-link:hover{color:var(--gold-light)}
+.trail-link .glyph{font-style:normal;font-size:0.7rem;color:var(--gold);opacity:0.8}
+.trail-body{
+  flex:1;overflow-y:auto;padding:1.1rem;
+}
+.trail-body::-webkit-scrollbar{width:6px}
+.trail-body::-webkit-scrollbar-thumb{background:rgba(196,151,58,0.2);border-radius:3px}
+.trail-day{
+  padding:0 0 1.3rem;margin-bottom:1.3rem;
+  border-bottom:1px solid var(--card-border);
+}
+.trail-day:last-of-type{border-bottom:none}
+.trail-day-head{
+  display:flex;align-items:baseline;justify-content:space-between;gap:0.8rem;
+  margin-bottom:0.7rem;
+}
+.trail-date{
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.1rem;
+  color:var(--gold-light);letter-spacing:0.02em;
+}
+.trail-ratio{
+  font-size:0.62rem;letter-spacing:0.14em;text-transform:uppercase;
+  color:var(--text-dim);white-space:nowrap;
+}
+.trail-intention{
+  font-family:'Cormorant',serif;font-size:1.15rem;color:#fff;
+  line-height:1.5;margin-bottom:0.5rem;
+}
+.trail-line{
+  display:flex;align-items:baseline;gap:0.6rem;
+  font-size:0.85rem;line-height:1.6;color:var(--text);
+  margin-top:0.35rem;
+}
+.trail-line .glyph{color:var(--gold);opacity:0.6;font-size:0.75rem;flex:0 0 12px;text-align:center}
+.trail-line em{font-style:italic;color:var(--text-dim)}
+.trail-empty{
+  padding:2rem 0.5rem;text-align:center;line-height:1.8;
+  font-family:'Cormorant',serif;font-style:italic;font-size:1.05rem;
+  color:var(--text-faint);
+}
+.trail-more{
+  display:block;width:100%;margin-top:0.5rem;padding:0.7rem;
+  border:1px dashed var(--card-border);border-radius:3px;background:transparent;
+  color:var(--text-faint);cursor:pointer;
+  font-family:'Jost',sans-serif;font-size:0.65rem;
+  letter-spacing:0.14em;text-transform:uppercase;text-indent:0.14em;
+  transition:border-color .18s,color .18s;
+}
+.trail-more:hover{border-color:var(--gold);color:var(--gold)}
+.trail-foot{
+  padding:0.9rem 1.1rem;border-top:1px solid var(--card-border);flex-shrink:0;
+  font-size:0.65rem;letter-spacing:0.1em;color:var(--text-faint);text-align:center;
+}
+
 /* ── PROGRESS POOL ──
    Completion pooled up the pyramid. A mirror, not a score: gold on a
    faint track, never green for "won", never red for "behind". A bar
@@ -1983,6 +2048,20 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
       <button type="submit" class="illum-send" id="illum-send">Illuminate</button>
     </div>
   </form>
+</aside>
+
+<!-- The Trail — read-only look-back. Borrows the Illuminator's panel
+     chrome deliberately; only the body styling is its own. -->
+<div class="illum-backdrop" id="trail-backdrop" aria-hidden="true"></div>
+<aside class="illum-panel" id="trail-panel" role="dialog" aria-modal="true" aria-labelledby="trail-title" aria-hidden="true">
+  <header class="illum-head">
+    <h3 id="trail-title"><span class="glyph">·</span> The Trail</h3>
+    <div class="illum-head-actions">
+      <button type="button" class="illum-icon-btn" id="trail-close" title="Close" aria-label="Close the trail">×</button>
+    </div>
+  </header>
+  <div class="trail-body" id="trail-body"></div>
+  <div class="trail-foot">Held privately on this device.</div>
 </aside>
 
 <script>
@@ -4552,12 +4631,14 @@ document.addEventListener('keydown', e => {
   const modalBg = document.getElementById('modal-bg');
   if (modalBg?.classList.contains('open')) { closeModal(); return; }
   if (illumEls.panel?.classList.contains('open')) { closeChatPanel(); return; }
+  if (document.getElementById('trail-panel')?.classList.contains('open')) { closeTrail(); return; }
 });
 
 // Number keys 1-5 jump tabs (skip when typing in inputs/textareas/contenteditable)
 document.addEventListener('keydown', e => {
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   if (illumEls.panel?.classList.contains('open')) return;
+  if (document.getElementById('trail-panel')?.classList.contains('open')) return;
   if (document.getElementById('modal-bg')?.classList.contains('open')) return;
   const tag = (e.target && e.target.tagName) || '';
   if (tag === 'INPUT' || tag === 'TEXTAREA' || tag === 'SELECT') return;
@@ -4648,6 +4729,133 @@ function renderAll() {
    recently passed. Saves on input via the existing persist() so changes
    sync to cloud the same way every other field does.
 */
+/* ════════════════════════════════════════════════════════════════
+   THE TRAIL (Phase 1.1) — the read-only look-back.
+
+   Every day the user has written on, newest first, each paired with
+   how much of that day's practice was kept. Read-only on purpose: the
+   Today card is where you write, the trail is where you read. Days
+   with nothing on them are skipped without comment — a gap in the
+   trail is not a failure to be shown.
+
+   Sixty days at a time; older ones load on request rather than all at
+   once, so a long practice doesn't build a huge DOM on open.
+   ════════════════════════════════════════════════════════════════ */
+const TRAIL_PAGE = 60;
+let trailWindow = TRAIL_PAGE;
+
+// `new Date('2026-08-01')` parses as UTC midnight and renders as the day
+// before in any negative-offset timezone. The trail is entirely local, so
+// build the date locally.
+function parseISODate(iso) {
+  const [y, m, d] = String(iso).split('-').map(Number);
+  return new Date(y, (m || 1) - 1, d || 1);
+}
+
+// A habit only counts against a day if it already existed on that day —
+// otherwise adding a habit today would retroactively make every past day
+// look incomplete. Archived habits still count for the days they were kept.
+function habitsExistingOn(iso) {
+  return (state.habits || []).filter(h => !h.createdAt || String(h.createdAt).slice(0, 10) <= iso);
+}
+
+function trailEntries() {
+  const intentions = state.dailyIntentions || {};
+  const logs = state.habitLogs || {};
+  const dates = new Set([...Object.keys(intentions), ...Object.keys(logs)]);
+  const FIELDS = ['intention', 'reflection', 'kept', 'missed', 'cueIfThen'];
+
+  return [...dates]
+    .map(date => {
+      const e = intentions[date] || {};
+      const written = FIELDS.filter(f => (e[f] || '').trim()).map(f => [f, e[f].trim()]);
+      const dayLog = logs[date] || {};
+      const habitDone = Object.keys(dayLog).filter(id => dayLog[id]).length;
+      return { date, written, habitDone, habitTotal: habitsExistingOn(date).length };
+    })
+    // A day with neither writing nor a kept practice is quietly skipped.
+    .filter(d => d.written.length || d.habitDone)
+    .sort((a, b) => b.date.localeCompare(a.date));
+}
+
+function trailDayLabel(iso) {
+  const today = todayISO();
+  if (iso === today) return 'Today';
+  const y = new Date(); y.setDate(y.getDate() - 1);
+  if (iso === dateISO(y)) return 'Yesterday';
+  const d = parseISODate(iso);
+  const label = formatDate(d);
+  return d.getFullYear() === new Date().getFullYear() ? label : `${label}, ${d.getFullYear()}`;
+}
+
+const TRAIL_GLYPHS = {
+  reflection: { glyph: '◇', lead: 'What it served' },
+  kept:       { glyph: '✦', lead: 'Kept' },
+  missed:     { glyph: '·', lead: 'Missed' },
+  cueIfThen:  { glyph: '›', lead: 'Cue' },
+};
+
+function renderTrail() {
+  const el = document.getElementById('trail-body');
+  if (!el) return;
+  const all = trailEntries();
+
+  if (!all.length) {
+    el.innerHTML = `<div class="trail-empty">Nothing behind you yet.<br>Write today's intention, and tomorrow this is where it will be.</div>`;
+    return;
+  }
+
+  const shown = all.slice(0, trailWindow);
+  el.innerHTML = shown.map(day => {
+    const intention = day.written.find(([f]) => f === 'intention');
+    const rest = day.written.filter(([f]) => f !== 'intention');
+    // No ratio on today — the day isn't over, and a running "0 of 2" at the
+    // top of your own record reads as a verdict on a morning still in progress.
+    const ratio = (day.habitTotal && day.date !== todayISO())
+      ? `<span class="trail-ratio">${day.habitDone} of ${day.habitTotal} kept</span>`
+      : '';
+    return `
+      <article class="trail-day">
+        <div class="trail-day-head">
+          <span class="trail-date">${escape(trailDayLabel(day.date))}</span>
+          ${ratio}
+        </div>
+        ${intention ? `<div class="trail-intention">${escape(intention[1])}</div>` : ''}
+        ${rest.map(([f, v]) => {
+          const g = TRAIL_GLYPHS[f] || { glyph: '·', lead: '' };
+          return `<div class="trail-line"><span class="glyph" aria-hidden="true">${g.glyph}</span><span><em>${g.lead} —</em> ${escape(v)}</span></div>`;
+        }).join('')}
+      </article>`;
+  }).join('')
+    + (all.length > shown.length
+        ? `<button type="button" class="trail-more" id="trail-more">Further back · ${all.length - shown.length} more</button>`
+        : '');
+
+  const more = document.getElementById('trail-more');
+  if (more) more.addEventListener('click', () => {
+    trailWindow += TRAIL_PAGE;
+    renderTrail();
+  });
+}
+
+function openTrail() {
+  trailWindow = TRAIL_PAGE;
+  renderTrail();
+  document.getElementById('trail-panel')?.classList.add('open');
+  document.getElementById('trail-backdrop')?.classList.add('open');
+  document.getElementById('trail-panel')?.setAttribute('aria-hidden', 'false');
+  document.getElementById('trail-close')?.focus();
+}
+function closeTrail() {
+  document.getElementById('trail-panel')?.classList.remove('open');
+  document.getElementById('trail-backdrop')?.classList.remove('open');
+  document.getElementById('trail-panel')?.setAttribute('aria-hidden', 'true');
+}
+function bindTrail() {
+  document.getElementById('trail-close')?.addEventListener('click', closeTrail);
+  document.getElementById('trail-backdrop')?.addEventListener('click', closeTrail);
+}
+
 function renderToday() {
   const el = document.getElementById('today-section');
   if (!el) return;
@@ -4732,6 +4940,13 @@ function renderToday() {
     ? `<div class="yesterday-cue">${escape(yesterdayEntry.cueIfThen)}</div>`
     : '';
 
+  // "Look back" only appears once there is something behind you — on day
+  // one it would open onto an empty room and read as a broken feature.
+  const trailCount = trailEntries().length;
+  const trailLink = trailCount
+    ? `<button type="button" class="trail-link" id="trail-open" aria-label="Look back — read your past days"><span class="glyph" aria-hidden="true">·</span> Look back</button>`
+    : '';
+
   el.innerHTML = `
     <div class="today-card">
       <div class="breathing-dot" aria-hidden="true" title="Quiet, repeated devotion is the work."></div>
@@ -4761,6 +4976,7 @@ function renderToday() {
           <span class="evening-glyph" aria-hidden="true">›</span>
           <input class="evening-input" id="evening-cue" type="text" placeholder="cue for tomorrow — when X, then Y" value="${escape(todayEntry.cueIfThen || '')}" aria-label="If-then cue for tomorrow">
         </div>
+        ${trailLink}
       </div>
       <div class="today-glance">
         <div class="today-glance-block">
@@ -4803,6 +5019,8 @@ function renderToday() {
       clearTimeout(h2); h2 = setTimeout(() => persist().then(() => flashSaveChip(yIn)), 300);
     });
   }
+
+  document.getElementById('trail-open')?.addEventListener('click', openTrail);
 
   // Evening review: kept / missed / cue. Saves to state.dailyIntentions[today].
   // The cue (if-then) surfaces as the "yesterday's cue" line tomorrow morning.
@@ -4925,6 +5143,7 @@ function syncTabsScrollable() {
   bindMusicUpload();
   renderMindMovieMusic();
   bindNourishment();
+  bindTrail();
   document.getElementById('mm-play-btn')?.addEventListener('click', () => MindMovie.play());
   document.getElementById('vb-pdf-btn')?.addEventListener('click', () => VisionPDF.download());
   document.getElementById('habits-pdf-btn')?.addEventListener('click', () => HabitsPDF.download());
