@@ -156,7 +156,78 @@ The `frqncy-content__search_topics`, `frqncy-content__list_topics`, etc. tools a
 2. Show the user the diff.
 3. Commit with a descriptive message.
 4. Push if there's a remote.
-5. Update this CLAUDE.md if you discovered something a future agent should know.
+5. **Append an entry to `OPERATIONS.md`** — see below. This is not optional.
+6. Update this CLAUDE.md if you discovered something a future agent should know.
+
+## Tracking — where state lives
+
+**PROTOCOL (2026-08-02): read `proposals/COORDINATION-PROTOCOL.md` before touching any task state.**
+The live task tracker is the **Notion TASK BOARD** (FRQNCY HQ → 🏗 TASK BOARD). The dual-write rule is mandatory: any task state change = (1) update the Notion row, (2) append OPERATIONS.md at session end, (3) mirror to frqncy-ops when operational/legal/financial. Miro and markdown to-dos are read-only views. Agent queue = Owner:Claude + Agent-ready + Open; claim by setting In progress BEFORE starting; max 3 concurrent repo-touching agents.
+
+
+
+**One source of truth, many generated views. Never create a second writable tracker.**
+
+Two systems that both hold task state disagree within weeks, after which neither is
+trusted. That is exactly how four mutually-contradicting status docs ended up in
+`proposals/`. If asked for a Trello / Notion / second board, generate it from the
+tracker or explain why not.
+
+- **Task state → `0rli-E/frqncy-ops` issues (private).** File work there, not in
+  `proposals/`. The main repo is **public**, so operational, legal, security and money
+  detail belongs in the private tracker.
+- **`node scripts/status.mjs`** — run this *instead of* reading a roadmap doc. It probes
+  git divergence, every branch ahead of origin, prod routes, companion health, data beds
+  and status-doc age. Derived, so it cannot go stale.
+- **`node scripts/board-sync.mjs`** — regenerates the human view (`--md` for markdown,
+  default emits Miro DSL). The Miro board is a *printout*; edits made there are discarded
+  on the next regeneration.
+- Roadmap docs in `proposals/` are **orientation, not status**. `MASTER-ROADMAP.md` and
+  `BACKEND-STATUS.md` are months stale — treat their claims as historical.
+
+## Parallel agents — how not to collide
+
+Multiple agents and terminals write to this repo at once. A git snapshot here is valid
+for **minutes, not for a session**. Branches move under you mid-task; this has happened
+repeatedly and has destroyed live pages.
+
+**Guards are installed** via `core.hooksPath = .githooks` (set this if you clone fresh):
+- `pre-commit` blocks a commit staging more than 20 deletions. Override with
+  `FRQNCY_ALLOW_DELETIONS=1` when the bulk delete is genuinely intended.
+- `pre-push` blocks pushing to `main` when `main` has commits you lack, which would
+  discard them. Override with `FRQNCY_ALLOW_DIVERGED=1` once you have actually reconciled.
+
+**Rules that prevent the collisions the hooks only catch:**
+
+1. **Work in your own worktree on your own branch.** A worktree has its own index, so
+   there is no `index.lock` race and no chance of staging another agent's files.
+   Ship via a worktree branched off fresh `origin/main`.
+2. **Never `git add -A` or `git add .`** when other agents may be active. Stage explicit
+   paths. Every destructive incident on record began with a bulk add.
+3. **Stage and commit in a single shell invocation** — `git add <paths> && git commit -m "..."`.
+   The race lives in the gap between the two.
+4. **Re-check `git rev-parse HEAD` immediately before acting on branch state**, not just
+   when you first looked. If it moved, a parallel commit ran — inspect `git log -1 --stat`
+   before doing anything else.
+5. **Read `git diff --cached --stat` before every commit.** If a "build 8 pages" commit
+   shows thousands of deletions, abort. That is the failure the pre-commit hook exists for.
+6. **Do not trust commit messages** for attribution — auto-sync agents have committed
+   unrelated work under unrelated titles. Use `git log --oneline -- <path>` then
+   `git show <sha> --stat` to find where something actually landed.
+7. **`git cherry` / patch-id is unreliable** once `main` carries squashed publishes. It will
+   report commits as missing that are already upstream. Reconcile by content — see
+   `scripts/status.mjs` and the reconciliation notes in the ops tracker.
+
+## OPERATIONS.md — the shared log
+
+Before handing control back, append an entry to the top of `OPERATIONS.md` covering
+**Did / Opened / Finished / Left**. One entry per working session, not per tool call.
+Skip it only if nothing changed state.
+
+The part that matters most is **Left**: what is unfinished, blocked, or *unverified*.
+Say explicitly what you did not check. "Committed" is not "deployed" and "deployed" is
+not "works" — never record something as finished that you did not verify, and name the
+verification method when you do.
 
 ## Style
 
