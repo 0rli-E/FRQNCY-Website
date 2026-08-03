@@ -233,6 +233,76 @@ re-querying it after writing: every Social Platform / Auth / Deploy row now read
 
 ---
 
+## 2026-08-03 (#63 Know the Score — /api/scoreboard v1)
+
+**Did.** Built `/api/scoreboard` as a Cloudflare Pages Function returning plain HTML. Branch
+`scoreboard-0803` off fresh `origin/main`, own worktree, explicit paths staged.
+
+Built ON the existing analytics work rather than beside it: same env var names as
+`functions/api/analytics.js` (`PUBLIC_SUPABASE_URL` + `SUPABASE_SERVICE_ROLE_KEY`), same
+service-role REST shape, same never-surface-a-stack-trace posture. Read-only; it never writes.
+
+**The design decision that matters: the raw row count is not the score.** `subscribers` holds 9
+rows, but that includes smoke tests, a deploy pre-check, a Resend verification and the founder's
+own addresses. A page reporting "9 subscribers" would be worse than no page. So the scoreboard
+reports four numbers and shows its working:
+- **active · not us — 2** (the honest headline)
+- active incl. team — 4
+- unsubscribed — 1
+- excluded as test/ops — 4
+
+Every excluded row is listed on the page with the rule that caught it, because silent filtering is
+how a dashboard starts lying. Exclusions are the two from the brief (`frqncy.test.*`,
+`*+resendtest*`) plus three ops sources found in the live data, not guessed: `smoke`,
+`deploy_precheck`, `resend-verification`. Team addresses are NOT excluded — they are counted and
+shown separately so the external number needs no subtraction.
+
+**Two findings the page surfaces because they are true:**
+- **No `door_*` signups exist at all.** Every subscriber came from `frqncy_website_overlay` or
+  `newsletter_page`. The funnel doors (/create, /read, /rich) have produced zero emails.
+- **`analytics_events` is completely empty — 0 rows.** The `/api/analytics` collector is deployed
+  and the table exists, but not one event has ever been recorded. There is no page-view or funnel
+  data behind anything; the page says so rather than implying coverage it lacks.
+
+No leaderboard and no ranking of people — counts and sources only, per editorial values. No email
+address is ever rendered, only the source label and the matched rule, so the page leaks no contact
+details even if the URL is shared.
+
+**Opened.** Nothing filed.
+
+**Finished — acceptance criteria, and how each was checked.**
+- **Numbers match a manual count — verified by INDEPENDENT COMPUTATION, not assertion.** The
+  classifier is exported from the function and was run in Node against the live rows; the same
+  classification was then re-expressed as a standalone SQL query and run against the database.
+  Both produced identical figures: raw 9 · excluded 4 · counted 5 · team 3 · external 2 ·
+  unsubscribed 1 · active-incl-team 4 · **active-not-us 2**. Per-row decisions were printed and
+  eyeballed too.
+- **noindex** — `<meta name="robots" content="noindex, nofollow, noarchive">`, an `X-Robots-Tag`
+  response header saying the same, `Cache-Control: no-store`, and a `Disallow: /api/scoreboard`
+  line added to `robots.txt`.
+- **Unlinked** — new file; nothing anywhere links to it. Deliberately paired with rendering no
+  personal data, since an unlinked URL is not a secret.
+
+**Left.**
+- **Not yet verified in production.** At the time of writing this is committed, not deployed, and
+  I have not confirmed `SUPABASE_SERVICE_ROLE_KEY` is present in the Cloudflare Pages environment.
+  If it is missing the page renders a clear "Supabase environment variables are not configured"
+  state naming the two vars — by design, not a crash — but the numbers will not appear until the
+  key is set. That switch is Orlando's.
+- The 7-day trend buckets by **UTC day**, so a signup late in the evening local time lands on the
+  next day's bar. Fine at this volume; worth knowing before reading the shape too closely.
+- The exclusion rules are hard-coded in the function. That is deliberate for v1 — they are visible
+  on the page and in one file — but it means a new ops source starts being counted as a human
+  until someone adds it.
+- Task dispatch note: this was sent as a `frqncy-harness agent` run with
+  `--model claude-sdk/claude-sonnet-4-6`, which **failed instantly** — that lane needs
+  `ANTHROPIC_API_KEY`, which is not set. A retry on `claude-code/sonnet` also failed: that
+  subscription lane refuses tools outright. Only `openrouter/*` remains as a tool-using harness
+  lane. Built directly instead. Two abandoned `gtr` sandboxes were removed; five older
+  `frqncy-harness-*` worktrees remain under `<repo>-worktrees/` from previous runs.
+
+---
+
 # OPERATIONS LOG
 
 **Every agent writes here before finishing a turn.** This is the shared record of what
