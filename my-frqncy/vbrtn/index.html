@@ -479,15 +479,16 @@
       lines.push(`A person ${textureVerb(texture)}.`);
     }
     if(desire) lines.push(`Reaching toward more ${desire}.`);
-    if(p.design?.hd?.type) lines.push(`A ${p.design.hd.type} by design — strategy: ${p.design.hd.strategy.toLowerCase()}.`);
+    if(p.design?.hd?.type && p.design.hd.strategy) lines.push(`A ${p.design.hd.type} by design — strategy: ${String(p.design.hd.strategy).toLowerCase()}.`);
     if(p.meta?.toward_away){
       const t = p.meta.toward_away === 'toward' ? 'reaches toward what it wants'
               : p.meta.toward_away === 'away' ? 'moves away from what it does not want'
               : 'paces between the two';
       lines.push(`Whose mind ${t}.`);
     }
-    if(p.triggers?.positive?.length > 0){
-      lines.push(`Doors back to self: ${p.triggers.positive.slice(0,2).join(', ').toLowerCase()}.`);
+    const doors = asList(p.triggers && p.triggers.positive);
+    if(doors.length > 0){
+      lines.push(`Doors back to self: ${doors.slice(0,2).join(', ').toLowerCase()}.`);
     }
     if(p.rememberOne) lines.push(`Asked to be remembered as: ${p.rememberOne}`);
     return lines.slice(0, 4);
@@ -727,7 +728,11 @@
       if(detected.length){
         if(!profile.meta) profile.meta = { modalOperators:{ necessity:[], impossibility:[] } };
         if(!profile.meta.modalOperators) profile.meta.modalOperators = { necessity:[], impossibility:[] };
-        detected.forEach(d => { const l = profile.meta.modalOperators[d.kind]; if(l) l.push({ text:d.match, at:Date.now(), source:'companion' }); });
+        detected.forEach(d => {
+          const mo = profile.meta.modalOperators;
+          if(!Array.isArray(mo[d.kind])) mo[d.kind] = asList(mo[d.kind]).map(t => ({ text:t }));
+          mo[d.kind].push({ text:d.match, at:Date.now(), source:'companion' });
+        });
       }
       saveProfile(profile);
 

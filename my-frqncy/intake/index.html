@@ -583,6 +583,14 @@
   const navEl = document.getElementById('nav');
   const wordmarkEl = document.getElementById('wordmark');
 
+  // Free-text fields have shipped as bare strings before (the `music` 500).
+  // Coerce anything into a clean string list rather than trusting the shape.
+  function asList(v){
+    if(Array.isArray(v)) return v.map(x => (x && typeof x === 'object') ? x.text : x).filter(x => typeof x === 'string' && x.trim()).map(x => x.trim());
+    if(typeof v === 'string' && v.trim()) return [v.trim()];
+    return [];
+  }
+
   // ── Insight derivation (what VBRTN already sees) ─────────────────
   // mode 'growing' (session breaks) keeps the identity line and shows the two
   // newest insights, so each break reads differently as the profile fills in.
@@ -606,8 +614,8 @@
       if(pull) lines.push(`Pulled toward: ${pull.toLowerCase()}.`);
     }
 
-    if(p.design.hd && p.design.hd.type){
-      lines.push(`A ${p.design.hd.type} by design — strategy: ${p.design.hd.strategy.toLowerCase()}.`);
+    if(p.design.hd && p.design.hd.type && p.design.hd.strategy){
+      lines.push(`A ${p.design.hd.type} by design — strategy: ${String(p.design.hd.strategy).toLowerCase()}.`);
     }
 
     if(p.meta.toward_away){
@@ -622,8 +630,9 @@
       if(s.length > 0) lines.push(`Carrying a "have to" sentence the companion will come back to.`);
     }
 
-    if(p.triggers.positive && p.triggers.positive.length > 0){
-      lines.push(`Doors back to self: ${p.triggers.positive.slice(0,2).join(', ').toLowerCase()}.`);
+    const doors = asList(p.triggers && p.triggers.positive);
+    if(doors.length > 0){
+      lines.push(`Doors back to self: ${doors.slice(0,2).join(', ').toLowerCase()}.`);
     }
 
     if(mode === 'full') return lines.slice(0, 6);
