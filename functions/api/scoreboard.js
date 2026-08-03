@@ -259,7 +259,11 @@ function page(body, now) {
 // ─── Handler ─────────────────────────────────────────────────────────────────
 
 export async function onRequest({ request, env }) {
-  if (request.method !== 'GET') {
+  // HEAD is answered exactly like GET (the runtime drops the body). Returning
+  // 405 to HEAD is what a `curl -I` does by default, so an unfriendly 405 here
+  // reads as "the page is broken" to anyone spot-checking it — it fooled me
+  // once already while verifying this very function.
+  if (request.method !== 'GET' && request.method !== 'HEAD') {
     return new Response('Method not allowed', { status: 405 });
   }
 
