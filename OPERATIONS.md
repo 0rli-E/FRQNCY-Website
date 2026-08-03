@@ -188,6 +188,51 @@ the toss `/social/profile/blocked` would be served as a lookup for a user named 
 
 ---
 
+## 2026-08-03 (Notion dual-write completed — the TASK BOARD now matches reality)
+
+**Did.** Orlando ran `/mcp` and authorised the Notion connector for this session (it had been
+authorised on claude.ai, which does not carry over — MCP auth is per Claude Code session). With
+it live I completed the dual-write COORDINATION-PROTOCOL.md requires and that the last three
+sessions could only record here.
+
+Searched the board before writing, per the protocol's update-never-duplicate rule — and much of
+this work already had rows.
+
+**Updated (existing rows):**
+- **#64 Auth: returning users render as logged out after an hour** → **Done**, with the commit
+  and the four-scenario verification method.
+- **#12 Deploy NRG** and **Deploy social platform to /social/\*** → **Done**. Both still said
+  "built, not deployed".
+- **#65 OAuth providers** → kept Open (Orlando's), noted re-verified still off: exactly one
+  enabled provider, email; the Google button has been dead ≥ 7 weeks; the credential half is
+  irreducibly his.
+- **#66 Session lifetime settings** → kept Open (Orlando's), noted it is genuinely
+  dashboard-only and now the last remaining suspect if anyone still reports being logged out.
+- **Wire messages / chat** → noted both its blockers are cleared: starting a DM had never worked
+  since migration 002 (fixed by 028) and E2EE could not run at all until the CSP fix.
+- **Apply Supabase migrations 002+003** → **Done** (001–028 verified applied by direct SQL).
+- **Wire Feed to read posts**, **Wire PostComposer to write posts**, **Public profile pages**
+  → **Done**, each with what was actually exercised in the browser.
+
+**Created (new rows):** NRG moderation v1 · NRG private groups + Townhall · the CSP fix · the
+user-created-group 404 / dead 200-rewrites — all Done with commit links; plus two Open,
+Agent-ready rows for what genuinely remains: the untested encrypted DM round-trip, and the
+unreachable non-member private-group copy.
+
+**Finished.** The board no longer disagrees with production on anything I checked. Verified by
+re-querying it after writing: every Social Platform / Auth / Deploy row now reads correctly.
+
+**Left.**
+- **I marked Done only what I exercised myself.** Sibling Miro-import rows — bookmarks, comments
+  thread, follow button, search, notifications/mentions — stay **Open** even though their
+  queries were observed firing in the network log, so they are probably built too. Someone should
+  exercise them and correct the board; I did not want to mark work Done on inference.
+- `frqncy-ops` issue mirroring for this session was not done — nothing here is legal/money/
+  security-sensitive, but the protocol's third leg is untouched.
+- The two new Open rows are unstarted.
+
+---
+
 # OPERATIONS LOG
 
 **Every agent writes here before finishing a turn.** This is the shared record of what
