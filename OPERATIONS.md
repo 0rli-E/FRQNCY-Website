@@ -127,6 +127,65 @@ it had moved 44 commits under me mid-session; no migration-number collision, no 
 
 ---
 
+## 2026-08-03 (Doors — email capture + free audio on the four dead door pages)
+
+**Did.** `/money/`, `/spirituality/`, `/books/` and `/breathwork/` were returning 200
+but collecting nothing — no `/api/subscribe` call on any of them. All four now carry
+the door capture block: email form posting `door_money` / `door_spirituality` /
+`door_books` / `door_breathwork`, plus the "Also free — in audio" block linking the
+free audio course with `rel="sponsored"` and the affiliate disclosure in place, in the
+same wording the welcome email uses.
+
+**The part worth recording: two of the four could not be hand-edited.** A sentinel test
+(plant a marker, run the full pipeline, see what survives) showed `books/index.html` is
+rewritten by `generate.js` and `breathwork/index.html` by
+`scripts/generate_topic_page.py`. A raw HTML edit to either would have looked correct in
+the diff, passed review, deployed, and then silently vanished on the next regen. So:
+- `money` and `spirituality` — edited directly (both survive regen).
+- `books` — added `doorCaptureBlock()` to `generate.js` and an opt-in `doorSource`
+  parameter on `entityIndexPage()`, passed **only** for Books. Confirmed it does not
+  leak into the people/orgs/media/music/places/papers indexes, which share that function.
+- `breathwork` — added a `module: bespoke` section (`slot: door_capture`) to
+  `data/topics/breathwork.yaml`, which is the mechanism the Python generator already has
+  for preserving hand-written regions across regens.
+
+**Finished, and how it was verified.**
+- **Durability:** re-ran the whole pipeline — `generate.js`, `draft_all_topics.py`,
+  `generate_topic_page.py --all` — and the block is still present on all four with the
+  right source. This is the test the task did not ask for and the one that mattered.
+- **Rendered, not inferred:** loaded all four in Playwright at 390×844 and measured the
+  live DOM. Block visible on each, label gold `rgb(196,151,58)` on navy
+  `rgb(11,28,61)`, single column on mobile, **no horizontal overflow**, form handler
+  bound, block inside `<main>`, `rel="sponsored noopener"` and the correct affiliate
+  href on every one.
+- **No collateral:** stripping the block back out leaves each page byte-identical to
+  `origin/main` apart from two newlines before `</main>`. Six files touched, nothing else.
+- Console errors on the local server are `/api/analytics` 501s (Python's `http.server`
+  has no POST) and a Plausible localhost notice — not from this change.
+
+**Left.**
+- **No end-to-end POST was fired.** `source` is free text capped at 64 chars in
+  `functions/api/subscribe.js`, so all four values are accepted without an allowlist
+  change — but nobody has submitted the form from a deployed page and confirmed the row
+  lands in Supabase with the right `source`. That needs the deploy. I deliberately did
+  not POST from the worktree: it writes a real subscriber row and sends a real welcome
+  email through Resend, and it would have tested the unchanged endpoint rather than
+  this change.
+- **No screenshot.** Playwright's capture timed out at 5s on every page and format;
+  verification is measured computed styles and geometry, not an image.
+- **Not pushed, and not merged.** Branch `doors-capture-0803` off `04e9d2ee7`.
+- **Notion row not claimed** — no Notion access in this session, so the claim is
+  recorded here instead, per the task's own fallback.
+- The task cited "CLAUDE.md rules 8-12". **No such rules exist** — the parallel-agents
+  list runs 1-7. Those were followed (own worktree, explicit paths, single-invocation
+  staging, HEAD re-checked, `--cached` read before commit).
+- Editorial note, not a blocker: the money page now carries a Kevin Trudeau affiliate
+  link. That is the funnel plan of record (`proposals/KEVINTRUDEAU-LAUNCH.md`) and it is
+  disclosed, but the money-page source canon is otherwise
+  Clason/Hill/Wattles/Kiyosaki/Maloney. Flagging it as a deliberate call rather than
+  letting it pass unremarked.
+
+
 ## 2026-08-03 (NRG — clicked through every moderation surface as a signed-in user; found that user-created groups 404'd)
 
 **Did.** Orlando asked for a real click-through, so I drove production in a browser with two

@@ -2263,7 +2263,95 @@ const HUB_HERO_BG = {
   '/music/':  'https://images.unsplash.com/photo-1493225457124-a3eb161ffa5f?auto=format&fit=crop&q=85&w=3840',
 };
 
-function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intro, showFilters = true }) {
+// ── Door capture block ─────────────────────────────────────────
+// Email capture + the free audio course, emitted only on pages that opt in
+// via doorSource. Kept identical to the hand-placed copies on /money/ and
+// /spirituality/ and the YAML-brief copy on /breathwork/ — if you change one,
+// change all four. The affiliate link carries rel=sponsored and an in-place
+// disclosure, matching functions/api/subscribe.js.
+function doorCaptureBlock(source) {
+  return `
+<!-- ▼▼ FRQNCY_DOOR_CAPTURE (source: __SRC__) — email capture + the free audio course.
+     The affiliate link is disclosed in place, per proposals/EDITORIAL-STANDARDS.md and
+     the same wording used in the welcome email (functions/api/subscribe.js). ▼▼ -->
+<section class="frqd" aria-labelledby="frqd-title">
+<style>
+.frqd{margin:4rem auto 0;padding:2.5rem clamp(1.25rem,5vw,2.5rem);max-width:1040px;border-top:1px solid rgba(196,151,58,0.22)}
+.frqd-grid{display:grid;grid-template-columns:1fr;gap:2.5rem}
+@media(min-width:820px){.frqd-grid{grid-template-columns:1.15fr 1fr;gap:3rem}}
+.frqd-label{display:block;font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:#C4973A;margin-bottom:.85rem}
+.frqd h2,.frqd h3{font-family:'Cormorant',Georgia,serif;font-weight:300;line-height:1.2;margin:0 0 .75rem;color:inherit}
+.frqd h2{font-size:clamp(22px,3vw,30px)}
+.frqd h3{font-size:clamp(19px,2.4vw,24px)}
+.frqd p{font-size:15px;line-height:1.75;margin:0 0 1rem;opacity:.85}
+.frqd label{display:block;font-size:10px;letter-spacing:.2em;text-transform:uppercase;opacity:.7;margin-bottom:.4rem}
+.frqd input{width:100%;padding:.8rem .9rem;font:inherit;font-size:15px;color:inherit;background:rgba(255,255,255,.05);border:1px solid rgba(196,151,58,.3);border-radius:2px}
+.frqd input:focus{outline:2px solid rgba(196,151,58,.55);outline-offset:2px}
+.frqd button{margin-top:.85rem;padding:.8rem 1.6rem;font:inherit;font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:#C4973A;background:transparent;border:1px solid rgba(196,151,58,.55);border-radius:2px;cursor:pointer;transition:background .2s,color .2s}
+.frqd button:hover{background:rgba(196,151,58,.14)}
+.frqd-btn{display:inline-block;margin-top:.35rem;padding:.8rem 1.6rem;font-size:11px;letter-spacing:.2em;text-transform:uppercase;text-decoration:none;color:#C4973A;border:1px solid rgba(196,151,58,.55);border-radius:2px;transition:background .2s}
+.frqd-btn:hover{background:rgba(196,151,58,.14)}
+.frqd-status{min-height:1.2em;font-size:13.5px;margin:.75rem 0 0}
+.frqd-fine{font-size:12px;line-height:1.7;opacity:.6;margin:.9rem 0 0}
+.frqd-fine a{color:inherit}
+</style>
+  <div class="frqd-grid">
+    <div>
+      <span class="frqd-label">There is more of this</span>
+      <h2 id="frqd-title">One dispatch, when there is something worth sending.</h2>
+      <p>Another teaching, free at its source, in the same spirit as what is on this page. No sequence, no countdown, nothing to buy.</p>
+      <form id="frqd-form" novalidate>
+        <label for="frqd-email">Email</label>
+        <input id="frqd-email" type="email" name="email" placeholder="your@email.com" required autocomplete="email">
+        <button type="submit">Send me the next one</button>
+        <p class="frqd-status" id="frqd-status" role="status" aria-live="polite"></p>
+        <p class="frqd-fine">One click unsubscribes you, permanently. We never sell or share your address. See <a href="/privacy-policy">how we handle your data</a>.</p>
+      </form>
+    </div>
+    <aside>
+      <span class="frqd-label">Also free — in audio</span>
+      <h3>How wanting actually works</h3>
+      <p>Kevin Trudeau on desire treated as a compass rather than a problem. Put it on in the car or on a walk. It is the same place FRQNCY starts, which is why we hand it over first rather than last.</p>
+      <a class="frqd-btn" href="https://freeyourwish.kevintrudeau.com/?ref=2b9q35" rel="sponsored noopener" target="_blank">Listen free</a>
+      <p class="frqd-fine">The audio course link is an affiliate link. If you later buy something through it, FRQNCY earns a share. It costs you nothing extra, and we would hand it over either way.</p>
+    </aside>
+  </div>
+<script>
+(function(){
+  var form = document.getElementById('frqd-form');
+  if (!form) return;
+  var out = document.getElementById('frqd-status');
+  function set(msg, colour){ if(out){ out.textContent = msg; out.style.color = colour; } }
+  form.addEventListener('submit', async function(ev){
+    ev.preventDefault();
+    var el = document.getElementById('frqd-email');
+    var email = (el && el.value || '').trim();
+    if (!/^[^@\\s]+@[^@\\s]+\\.[^@\\s]+$/.test(email)) {
+      set('Please enter a valid email.', '#E8A87C'); el && el.focus(); return;
+    }
+    set('Sending\\u2026', '#8FA8C8');
+    try {
+      var res = await fetch('/api/subscribe', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ email: email, source: '__SRC__' })
+      });
+      if (res.status === 429) { set('A moment \\u2014 that was very fast. Try again shortly.', '#E8A87C'); return; }
+      if (!res.ok) { set('Something went wrong on our side. Please try again.', '#E8A87C'); return; }
+      set('\\u2726 You\\u2019re in. The audio course is yours to start now.', '#E0C06A');
+      form.reset();
+    } catch (e) {
+      set('Network error. Please try again.', '#E8A87C');
+    }
+  });
+})();
+</script>
+</section>
+<!-- ▲▲ FRQNCY_DOOR_CAPTURE ▲▲ -->
+`.split('__SRC__').join(source);
+}
+
+function entityIndexPage({ label, eyebrow, entities, slugFn, canonicalPath, intro, showFilters = true, doorSource = null }) {
   // For each entity, derive the set of pillars it touches. A person teaching
   // topics across Well-being and Consciousness shows under BOTH Education and
   // Research filters. Appears_in can contain topic, domain, or pillar ids —
@@ -2405,6 +2493,7 @@ nav(`<a href="../index.html">FRQNCY</a><span class="sep">/</span><span>${esc(lab
     <div class="grid grid-sm" id="entity-grid">${cards}</div>
     ${showAllBtn}
   </section>
+${doorSource ? doorCaptureBlock(doorSource) : ''}
 </main>
 <script>
 (function() {
@@ -2497,7 +2586,7 @@ if (BOOKS) {
     bookCount++;
   }
   fs.writeFileSync(path.join(BOOKS_OUT, 'index.html'),
-    entityIndexPage({ label: 'Books', eyebrow: 'Book', entities: BOOKS.books, slugFn: bookSlug, canonicalPath: '/books/', outPath: BOOKS_OUT }));
+    entityIndexPage({ label: 'Books', eyebrow: 'Book', entities: BOOKS.books, slugFn: bookSlug, canonicalPath: '/books/', outPath: BOOKS_OUT, doorSource: 'door_books' }));
   console.log(`  books:  ${bookCount} profiles + 1 index → ./books/`);
 }
 
