@@ -78,29 +78,32 @@
 # (e.g. /social/profile/<username>). _redirects can't express this
 # selectively — see the cf-pages-catchall-hijacks-static memory.
 
-# Backup: /social/u/* still works as a clean dynamic-profile namespace
-# (no static-file collision possible) for any new code that wants to
-# route there directly.
-/social/u/*             /social/profile/index.html 200
-
-# Dynamic channel route — same shell for every channel slug. The Astro build
-# emits /social/channel/<seed>/index.html for the seeds in getStaticPaths;
-# this redirect routes any other slug to one of them so the Preact ChannelView
-# can read the slug from location.pathname and filter the feed.
-/social/channel/*       /social/channel/research/index.html 200
-
-# Dynamic group route — same shell for every group slug. The Astro build emits
-# /social/g/<seed>/index.html for the seeds in getStaticPaths; this routes any
-# user-created slug to one of them so the Preact GroupView reads the slug from
-# location.pathname and loads that group. Deliberately under /social/g/* (not
-# /social/groups/*) so this 200-rewrite catchall can't hijack the static
-# /social/groups directory page (see cf-pages-catchall-hijacks-static).
-/social/g/*             /social/g/townhall/index.html 200
-
-# Dynamic single-post route — same shell for every post id. The Astro build
-# emits /social/post/shell/index.html; this redirect routes any post id to
-# it so the Preact PostView can fetch the post by id from the URL.
-/social/post/*          /social/post/shell/index.html 200
+# ── 200-rewrites DO NOT WORK ON THIS DEPLOYMENT — do not add more ───────────
+#
+# Verified against production 2026-08-03: every 301 rule in this file resolves
+# correctly, while every `... 200` rewrite fell through to the `/*  /404.html
+# 404` catch-all below. The four rules that used to live here —
+# /social/u/*, /social/channel/*, /social/g/*, /social/post/* — were all dead.
+#
+# The user-visible damage: **every group a user created returned 404.** Only
+# the nine seeded groups worked, because Astro emits a real static directory
+# for each of those via getStaticPaths, so the rewrite was never exercised for
+# them and the breakage stayed hidden until somebody actually made a group.
+# Non-seeded channel slugs and the whole /social/u/ namespace were dead too.
+#
+# All four are now Pages Functions, which demonstrably DO work here (that is
+# why /social/post/<real id> and /social/profile/<username> resolved while the
+# rewrite-backed paths did not):
+#
+#   functions/social/g/[[path]].js        — user-created group slugs
+#   functions/social/channel/[[path]].js  — non-seeded channel slugs
+#   functions/social/u/[[path]].js        — the clean profile namespace
+#   functions/social/post/[id].js         — already existed, adds OG meta
+#   functions/social/profile/[[path]].js  — already existed
+#
+# Each defers to the static asset first and only serves a shell when there
+# isn't one. If you need another dynamic route under /social/, write a Function
+# — adding a `200` line here will silently 404.
 
 # Legacy leaderboard URL → /social/space (cooperation-over-competition)
 /social/leaderboard     /social/space              301
