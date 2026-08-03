@@ -135,6 +135,52 @@ it had moved 44 commits under me mid-session; no migration-number collision, no 
 
 ---
 
+## 2026-08-03 (Sanctuary — quote set curated; the file split deliberately NOT started)
+
+**Did.** Verified first that Phase 1.1–1.4 are **live on prod**, rather than trusting the
+log: `frqncy.network/my-frqncy/dashboard/` is 5,926 lines, byte-identical to `origin/main`,
+carrying `pool-track` / `trail-body` / `weekly-panel` / `mc-panel` / `constellation-visits`.
+The `chat-widget.js` fix shipped with it — prod's matcher is now
+`/^\/(?:[a-z0-9-]+\/)?([a-z0-9-]+)\/?$/i` with `visited.v2` live, so the visit tracker that
+had recorded nothing since May is working again in production.
+
+Also closed the cloud-sync risk I logged as unverified, by reading the code rather than
+guessing: `attachCloudStore()` does `state = { ...DEFAULT_STATE, ...cloudState }`, so a cloud
+row predating `weeklyReviews`/`monthEpigraphs` picks them up from defaults instead of dropping
+them, and `setState` writes the whole blob back. New state keys are safe across sign-in.
+(Unrelated pre-existing race, worth someone's attention: that same line replaces local state
+wholesale when the cloud row is non-empty, so anything typed in the seconds before the async
+attach is clobbered. Not new, but there are more write surfaces now.)
+
+Then built the data half of **Phase 1.5**, the quote pill: `assets/sanctuary-quotes.json`, 38
+contemplative lines, each drawn from a book already in the FRQNCY corpus so the teaching lives
+on the site and the pill can link to its source. Text, attribution and `source_url` copied
+programmatically out of `books.json` rather than retyped — all 38 have a working source URL and
+none exceeds 112 characters. Curated, not length-filtered: prescriptive manifestation lines are
+out (the private room offers, it does not instruct), as are fragments that need their
+surrounding page and anything that ranks people. The file documents its own consumer contract
+(`index = dayOfYear % length`) and marks itself hand-edited, per the roadmap's "editable, not
+generated".
+
+**Opened.** Nothing filed.
+
+**Finished.** The quote set, committed alone. Verified: the file parses, every entry has
+text + attribution + source_url, 33 distinct topic slugs are carried for later filtering, and
+the deterministic pick is stable across repeated calls on one date, differs the next day, and
+yields 38 distinct lines over 38 consecutive days.
+
+**Left.** **The dashboard file split did not start, on purpose.** It is the item I'd otherwise
+rank first — 5,926 lines against the 5,000 threshold its own CLAUDE.md sets — but another agent
+has uncommitted edits in `my-frqncy/dashboard/index.html` (PWA meta tags, ~70 min old) and
+committed elsewhere in the repo five minutes before I looked. A 5,000-line restructure of a file
+someone else has open is how this repo has lost work before: git commits whole files, so
+whoever writes last reverts the other wholesale. **Do the split in a quiet window, and check
+`git status` on that file first.** For the same reason the quote pill's Today-panel wiring is
+not done — it is perhaps ten lines and should ride along with whoever next has the dashboard
+cleanly. The pill is therefore **not visible to any user yet**: this commit is data only, and
+nothing reads the file. Also still unverified from the previous session: export/import of the
+new state keys, ISO-week across a Dec/Jan boundary, month rollover on a real 31st, Safari/iOS.
+
 # OPERATIONS LOG
 
 **Every agent writes here before finishing a turn.** This is the shared record of what
