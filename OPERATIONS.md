@@ -127,6 +127,67 @@ it had moved 44 commits under me mid-session; no migration-number collision, no 
 
 ---
 
+## 2026-08-03 (NRG — clicked through every moderation surface as a signed-in user; found that user-created groups 404'd)
+
+**Did.** Orlando asked for a real click-through, so I drove production in a browser with two
+signed-up accounts, using the actual sign-in form rather than injected sessions.
+
+**It found a bug that mattered: every group a user created returned 404.** Creating the
+group succeeded and then dropped the creator on the site's 404 page. Cause: Cloudflare Pages
+is not honouring `... 200` rewrites in `_redirects` on this deployment. Isolated by rule type
+against prod — every 301 resolves correctly (`/manifestation/*`, `/v2/*`, `/v2/music/*`),
+while **all four** 200-rewrites fell through to the `/*  /404.html  404` catch-all. Pages
+Functions work fine, which is exactly why `/social/post/<real id>` and
+`/social/profile/<username>` resolved while the rewrite-backed paths did not. It stayed
+hidden because Astro emits a real static directory for each of the nine seeded groups, so the
+rewrite was never exercised for them — only a user-created slug hits it, and nobody had made
+one. The same breakage covered non-seeded channel slugs and the whole `/social/u/` namespace.
+
+Replaced the four dead rules with Pages Functions (`functions/social/g/`, `/channel/`, `/u/`),
+each deferring to the static asset first and only serving a shell when there isn't one, and
+left a comment in `_redirects` so nobody adds a fifth rewrite and watches it 404. Also retired
+`functions/social/profile/[[username]].js` into `scratch/` — two catch-alls in one directory
+is ambiguous routing, and that one lacks the `STATIC_SUB_PATHS` allowlist, so if it ever won
+the toss `/social/profile/blocked` would be served as a lookup for a user named "blocked".
+
+**Finished — every moderation surface exercised in a real browser, and verified.**
+- Sign-in through the real form; post created (201).
+- `⋯` menu on another user's post offers Report and Block, with the "they aren't told" note.
+- Report dialog: opens, **refuses to submit with no reason picked** and says why, accepts a
+  reason + detail, and confirms with the "it's on file" panel.
+- Block: the card collapses in place to "You blocked @…" rather than yanking the row.
+- `/social/profile/blocked` lists the account; Unblock returns the empty state; the blocked
+  author's post reappears in the feed afterwards.
+- Profile page shows Report / Block / Follow, and the block confirmation copy reads correctly.
+- **Private group creation now offers the private option** (the capability gate opened by
+  itself once 026 was applied), with the immutability warning. Created one: the creator's page
+  renders the name, the private marker, the invite box, the composer and "Joined".
+- A non-member gets no join button, no composer, and the group is absent from the directory.
+- Routing verified after deploy: the previously-404 `/social/g/<user slug>`,
+  `/social/channel/curate`, `/social/u/<name>` all 200, with no regression on
+  `/social/g/townhall/`, `/social/groups/`, `/social/profile/*`, `/social/post/<id>`.
+- **All test data removed and the removal verified** — 0 rows for uitest users, posts, groups,
+  blocks and reports; the 1 real post and 3 real profiles untouched; all 9 groups back to
+  member_count 0. Posts deleted before groups on purpose (`posts.group_id` is
+  `ON DELETE SET NULL`, so the reverse order publishes private posts into the public feed).
+
+**Left.**
+- **A non-member opening a private group sees "That group doesn't exist (yet)", not the
+  "This group is private" copy I wrote.** RLS hides the row entirely, so `getGroupBySlug`
+  returns null and GroupView takes the not-found branch. Arguably the better behaviour —
+  it hides existence — but it means that copy is unreachable for private groups and should
+  either be removed or the component taught to distinguish the two cases.
+- Two failures in my harness that were NOT product bugs, recorded so nobody re-chases them:
+  a plain click on a submit button does not trigger Preact's `onSubmit` here (`requestSubmit()`
+  does, and real users are unaffected), and `innerText` returns CSS-uppercased text so
+  case-sensitive assertions on styled headings fail.
+- Encrypted DM round-trip still untested end-to-end; 028 only proved a conversation can be
+  created and read back.
+- The Notion half of the dual-write still did not happen — connector unauthenticated.
+- Google OAuth still off at the provider level.
+
+---
+
 # OPERATIONS LOG
 
 **Every agent writes here before finishing a turn.** This is the shared record of what
