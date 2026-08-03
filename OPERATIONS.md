@@ -181,6 +181,69 @@ cleanly. The pill is therefore **not visible to any user yet**: this commit is d
 nothing reads the file. Also still unverified from the previous session: export/import of the
 new state keys, ISO-week across a Dec/Jan boundary, month rollover on a real 31st, Safari/iOS.
 
+## 2026-08-03 (Sanctuary — prod smoke-check of 1.1–1.4, and the next phase queued)
+
+**Did.** The harness command for this task **did not run**: `claude-sdk/*` requires
+`ANTHROPIC_API_KEY` and it is not set (`frqncy-harness doctor` confirms; `OPENROUTER_API_KEY`,
+`TAVILY`, `BRAVE` are set). It errored before taking any action, leaving a clean, empty gtr
+sandbox at `../FRQNCY WEBSITE-worktrees/frqncy-harness-25c129a1a9c3` (0 changed files) —
+removable. **Re-run on `--model openrouter/<model>`**, which is an API lane and does support
+tools; `claude-code/*` will not work for this task because that lane has no tools at all.
+
+So I ran the smoke-check directly instead, headless Chromium against the live site.
+
+**Phase → URL → seen/not-seen**, all at `https://frqncy.network/my-frqncy/dashboard/`:
+
+| Phase | Surface | Cold visitor, no state | Practitioner, seeded state |
+|---|---|---|---|
+| 1.1 | The Trail | not seen (correct) | **SEEN** — 4,334 chars of record, days + ratios |
+| 1.2 | Weekly Review | not seen (correct) | **SEEN** — door "The week's edge"; panel "July 27 – August 2", Meditation 7 of 7 kept, Walk 3 of 7 |
+| 1.3 | Monthly Close | not seen (correct) | **SEEN** — door "July is complete. Sit with it?"; panel goals 1/2, Meditation · 31 days |
+| 1.4 | Constellation | not seen (correct) | **SEEN** — "You've opened three topics this month. Two of them three or more times: Meditation and Water." |
+
+Zero page errors in both passes.
+
+**Read the "not seen" column carefully — it is not a defect.** A visitor with no state gets
+`today-section` hidden and no doors at all, by design: the Today card self-hides on empty
+state, the Trail link only appears once something is behind you, and the Constellation section
+hides entirely rather than showing a new reader an empty ledger. **A curl, or a fresh browser
+visit, will therefore report all four features missing on a working deployment.** Any future
+smoke-check of this surface must seed `localStorage['frqncy.sanctuary.v1']` (and
+`frqncy:visited.v2` for 1.4) before concluding anything. Note also that 1.2's door showed its
+quiet form rather than the gold Sunday invitation — correct, today is Monday.
+
+**Opened — NEXT AGENT-READY TASK ROW.** Recorded here because the Notion TASK BOARD is not
+reachable from this session; **this needs transcribing into Notion to be real**, per the
+dual-write rule in `proposals/COORDINATION-PROTOCOL.md`.
+
+> **Title:** Sanctuary 1.5 — wire the daily quote pill into the Today panel
+> **Owner:** Claude · **Agent-ready:** ✓ · **Status:** Open · **Branch:** `sanctuary-quote-pill`
+> **Why it is next:** lowest-numbered open Phase 1 item, and its data dependency already
+> shipped — `assets/sanctuary-quotes.json` (38 curated, attributed lines) is committed and
+> nothing reads it. This is roughly ten lines of render plus CSS.
+> **Acceptance criteria:**
+> 1. One line renders on the Today panel, drawn as `dayOfYear % quotes.length` — same line all
+>    day, changes at midnight, no randomness and no per-user state stored.
+> 2. Attribution is visible and the line links to the quote's `source_url`.
+> 3. The fetch failing (offline, 404) degrades to no pill — never a broken or empty slot.
+> 4. Adding or removing an entry in the JSON changes what renders, with no code edit — the
+>    file stays hand-editable per the roadmap's "editable, not generated".
+> 5. Verified by screenshot at 390×844 and 1280×900, and by proving two different dates
+>    produce two different lines.
+> **Blocked by:** nothing. **But sequencing note:** if the dashboard file split has not yet
+> happened, keep this edit small and delimited — see Left, below.
+
+**Finished.** 1.1–1.4 confirmed rendering in production against real state. That closes the
+"nobody has looked at it" gap left in the 2026-08-02 entries.
+
+**Left.** The **file split is still not done and is still the right next structural job** —
+`my-frqncy/dashboard/index.html` is 5,926 lines against the 5,000 threshold its own CLAUDE.md
+sets. It was deferred earlier today because another agent had uncommitted edits in that file;
+that is still true as of this entry, so check `git status --porcelain my-frqncy/dashboard/index.html`
+before starting. Unchanged from before and still unverified by anyone: export/import of
+`weeklyReviews` / `monthEpigraphs`, ISO-week across a Dec/Jan boundary, month rollover on a
+real 31st, and Safari/iOS. The smoke-check above was Chromium only.
+
 # OPERATIONS LOG
 
 **Every agent writes here before finishing a turn.** This is the shared record of what
