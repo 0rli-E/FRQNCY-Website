@@ -23,7 +23,19 @@ The disclosure line, used verbatim everywhere:
 
 That last clause is the abundance frame doing real work. It is also true, which is why it can be said.
 
-## Two entries, two first emails (split 2026-08-03)
+## v2 — Welcome always, gift later, instant on the page (locked 2026-08-03, supersedes the split below)
+
+Orlando's final architecture, three lanes:
+
+1. **Everyone gets the welcome, immediately.** One email, "Welcome to FRQNCY", no pitch, no affiliate content, regardless of signup source.
+2. **Everyone gets the audio course ~24h later, as a gift.** Subject "A gift for you — the audio course". Sent via Resend `scheduled_at: 'in 24 hours'` at signup time — no cron, no worker. The scheduled email's id is stored in the subscriber row (`metadata.scheduled_gift_id`) and **the unsubscribe route cancels it** — leaving within the first day means genuinely no further mail.
+3. **People who want the audio now never wait for email.** The keyword pages (/create /read /rich) carry a direct "Start listening free" block linking straight to `freeyourwish.kevintrudeau.com/?ref=2b9q35`, with the disclosure on the page itself (per /terms: disclosure lives where the link lives).
+
+Why the delay makes the gift better: on day 0 the welcome does one job (you're in, here's the network). On day 1 the gift arrives unasked — which reads as generosity, not funnel mechanics. And the people for whom the audio was the whole point already have it, from the page, instantly.
+
+**Verified:** syntax on both functions; gift email reframed ("A gift, one day in." — the "you asked for it" line is gone); welcome carries no affiliate content; both carry unsubscribe link + RFC 8058 headers; audio block present on all three keyword pages with `rel="sponsored"` and disclosure. **Not verified:** `scheduled_at`/cancel behavior has never run against the live Resend API — after deploy, sign up with a +alias, confirm the gift shows as "Scheduled" in Resend, unsubscribe, confirm it flips to cancelled.
+
+## ~~Two entries, two first emails~~ (superseded by v2 above — kept for history, split 2026-08-03)
 
 Orlando's correction after the first deploy: the audio-course mail was going to *everyone*, including newsletter signups who were never promised a course. Wrong — the promise made at signup decides the first email. `subscribe.js` now routes on `source`:
 

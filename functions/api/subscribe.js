@@ -177,16 +177,21 @@ export async function onRequestPost({ request, env }) {
       const unsubToken = await makeUnsubToken(email, env.UNSUBSCRIBE_SECRET || SERVICE_KEY);
       const unsubUrl = `https://frqncy.network/api/unsubscribe?t=${unsubToken}`;
 
-      // Two entries, two first emails. Door/keyword signups (source door_*)
-      // were promised the free audio course — deliver exactly that. Everyone
-      // else (newsletter, homepage) gets the welcome, with no affiliate pitch
-      // in their first contact. The promise made at signup decides the mail.
-      const wantsAudio = source.startsWith('door_');
-      const subject = wantsAudio ? 'Your free audio course' : 'Welcome to FRQNCY';
-      const html = wantsAudio ? audioCourseEmailHTML(email, unsubUrl) : welcomeEmailHTML(email, unsubUrl);
-      const text = wantsAudio ? audioCourseEmailText(email, unsubUrl) : welcomeEmailText(email, unsubUrl);
+      // Email architecture (locked 2026-08-03, Orlando):
+      //   1. EVERYONE gets the welcome immediately. It welcomes; it sells nothing.
+      //   2. EVERYONE gets the audio course ~24h later as a GIFT, via Resend's
+      //      scheduled_at — no cron, scheduled at signup time.
+      //   3. People who want the audio NOW clicked the direct referral link on
+      //      the landing page — the site hands it over, no email gate.
+      // The scheduled email's id is stored on the subscriber row so the
+      // unsubscribe route can cancel it — nobody who leaves in the first 24h
+      // may receive mail after leaving.
+      const commonHeaders = {
+        'List-Unsubscribe': `<${unsubUrl}>`,
+        'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
+      };
 
-      const resendResp = await fetch('https://api.resend.com/emails', {
+      const welcomeResp = await fetch('https://api.resend.com/emails', {
         method: 'POST',
         headers: {
           Authorization: `Bearer ${env.RESEND_API_KEY}`,
@@ -195,18 +200,61 @@ export async function onRequestPost({ request, env }) {
         body: JSON.stringify({
           from,
           to: [email],
-          subject,
-          html,
-          text,
-          headers: {
-            'List-Unsubscribe': `<${unsubUrl}>`,
-            'List-Unsubscribe-Post': 'List-Unsubscribe=One-Click',
-          },
+          subject: 'Welcome to FRQNCY',
+          html: welcomeEmailHTML(email, unsubUrl),
+          text: welcomeEmailText(email, unsubUrl),
+          headers: commonHeaders,
         }),
       });
-      if (!resendResp.ok) {
-        const t = await resendResp.text();
-        console.warn('Resend send failed (subscription saved anyway)', resendResp.status, t);
+      if (!welcomeResp.ok) {
+        const t = await welcomeResp.text();
+        console.warn('Resend welcome send failed (subscription saved anyway)', welcomeResp.status, t);
+      }
+
+      // The gift, tomorrow. Best-effort: a failure here must never break signup.
+      try {
+        const giftResp = await fetch('https://api.resend.com/emails', {
+          method: 'POST',
+          headers: {
+            Authorization: `Bearer ${env.RESEND_API_KEY}`,
+            'content-type': 'application/json',
+          },
+          body: JSON.stringify({
+            from,
+            to: [email],
+            subject: 'A gift for you — the audio course',
+            html: audioCourseEmailHTML(email, unsubUrl),
+            text: audioCourseEmailText(email, unsubUrl),
+            headers: commonHeaders,
+            scheduled_at: 'in 24 hours',
+          }),
+        });
+        if (giftResp.ok) {
+          const gift = await giftResp.json().catch(() => null);
+          if (gift?.id) {
+            // Remember the scheduled send so unsubscribe can cancel it.
+            await fetch(`${SUPABASE_URL}/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}`, {
+              method: 'PATCH',
+              headers: {
+                apikey: SERVICE_KEY,
+                Authorization: `Bearer ${SERVICE_KEY}`,
+                'content-type': 'application/json',
+                Prefer: 'return=minimal',
+              },
+              body: JSON.stringify({
+                metadata: {
+                  ...(subscriber?.metadata || {}),
+                  scheduled_gift_id: gift.id,
+                },
+              }),
+            }).catch((e) => console.warn('Could not store scheduled_gift_id', e));
+          }
+        } else {
+          const t = await giftResp.text();
+          console.warn('Resend gift schedule failed (welcome already sent)', giftResp.status, t);
+        }
+      } catch (err) {
+        console.warn('Gift scheduling threw (welcome already sent)', err);
       }
     } catch (err) {
       console.warn('Resend threw (subscription saved anyway)', err);
@@ -327,15 +375,15 @@ function audioCourseEmailHTML(email, unsubUrl = 'https://frqncy.network/api/unsu
           <div style="font-family:Georgia,'Cormorant Garamond',serif;font-size:24px;letter-spacing:0.28em;color:#fff;">FRQNCY</div>
         </td></tr>
         <tr><td style="padding-bottom:24px;">
-          <h1 style="font-family:Georgia,'Cormorant Garamond',serif;font-weight:300;font-size:28px;line-height:1.25;color:#fff;margin:0 0 8px 0;">Here is the <em style="color:#E0C06A;">audio course</em>.</h1>
-          <p style="color:#7090B8;font-size:14px;letter-spacing:0.04em;margin:0;">You asked for it. No hoops.</p>
+          <h1 style="font-family:Georgia,'Cormorant Garamond',serif;font-weight:300;font-size:28px;line-height:1.25;color:#fff;margin:0 0 8px 0;">A <em style="color:#E0C06A;">gift</em>, one day in.</h1>
+          <p style="color:#7090B8;font-size:14px;letter-spacing:0.04em;margin:0;">The audio course. Yours, free.</p>
         </td></tr>
         <tr><td align="center" style="padding:8px 0 28px 0;">
           <a href="${FREE_COURSE_URL}" style="display:inline-block;background:transparent;border:1px solid rgba(196,151,58,0.5);color:#C4973A;text-decoration:none;padding:14px 32px;border-radius:2px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Listen free</a>
         </td></tr>
         <tr><td style="padding-bottom:24px;color:#C8D8F0;font-size:15px;line-height:1.7;">
           <p style="margin:0 0 16px 0;">It is Kevin Trudeau on how wanting actually works. Put it on in the car, on a walk, anywhere you would otherwise be scrolling.</p>
-          <p style="margin:0 0 16px 0;">We hand it over first because it treats desire as a compass rather than a problem. That is the same place FRQNCY starts.</p>
+          <p style="margin:0 0 16px 0;">We give it as a gift because it treats desire as a compass rather than a problem. That is the same place FRQNCY starts.</p>
           <p style="margin:0;">FRQNCY is a network of people building their dream life. 146 maps of how money, energy, mind and matter work. All of it free to read. The thesis is never behind a wall.</p>
         </td></tr>
         <tr><td style="padding-bottom:28px;color:#7090B8;font-size:14px;line-height:2;">
@@ -363,14 +411,14 @@ function audioCourseEmailHTML(email, unsubUrl = 'https://frqncy.network/api/unsu
 
 function audioCourseEmailText(email, unsubUrl = 'https://frqncy.network/api/unsubscribe') {
   return [
-    'Here is the audio course. You asked for it. No hoops.',
+    'A gift, one day in — the audio course. Yours, free.',
     '',
     FREE_COURSE_URL,
     '',
     'It is Kevin Trudeau on how wanting actually works. Put it on in the car,',
     'on a walk, anywhere you would otherwise be scrolling.',
     '',
-    'We hand it over first because it treats desire as a compass rather than a',
+    'We give it as a gift because it treats desire as a compass rather than a',
     'problem. That is the same place FRQNCY starts.',
     '',
     'FRQNCY is a network of people building their dream life. 146 maps of how',
