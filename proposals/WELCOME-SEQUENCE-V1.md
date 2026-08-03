@@ -23,10 +23,21 @@ The disclosure line, used verbatim everywhere:
 
 That last clause is the abundance frame doing real work. It is also true, which is why it can be said.
 
-## Email 1 — the handover (LIVE in code)
+## Two entries, two first emails (split 2026-08-03)
+
+Orlando's correction after the first deploy: the audio-course mail was going to *everyone*, including newsletter signups who were never promised a course. Wrong — the promise made at signup decides the first email. `subscribe.js` now routes on `source`:
+
+| Signup source | First email | Why |
+|---|---|---|
+| `door_*` (create/read/rich keyword pages, door pages when wired) | **"Your free audio course"** — the handover below | They came for the course; deliver it, first screen, with disclosure |
+| everything else (`newsletter_page`, `frqncy_website`, …) | **"Welcome to FRQNCY"** — no pitch, no affiliate link, no disclosure needed | They joined the network, not a funnel; first contact carries nothing to sell |
+
+The generic welcome: "You're in." → the locked hero line as sub → 146 maps, free, never behind a wall → Explore button → the four doors → abundance close. The audio course reaches these people later as a **follow-up** (email 2 or 3 slot), where it is an offer among equals rather than a bait-and-switch.
+
+## Email 1a — the handover (door signups)
 
 **Subject:** Your free audio course
-**Sends:** immediately on signup, to new addresses only (`isNew` gate)
+**Sends:** immediately on signup, to new addresses only (`isNew` gate), `source` starting `door_`
 
 **Shape:** logo → headline "Here is the audio course." → sub "You asked for it. No hoops." → the button, above the fold → three short paragraphs → the four doors → the abundance close → disclosure.
 

@@ -170,7 +170,6 @@ export async function onRequestPost({ request, env }) {
   if (isNew && env.RESEND_API_KEY) {
     try {
       const from = env.RESEND_FROM || 'FRQNCY <onboarding@resend.dev>';
-      const subject = 'Your free audio course';
 
       // Unsubscribe is not optional: CAN-SPAM requires a working opt-out, and
       // Gmail/Yahoo bulk-sender rules require RFC 8058 one-click. The token is
@@ -178,8 +177,14 @@ export async function onRequestPost({ request, env }) {
       const unsubToken = await makeUnsubToken(email, env.UNSUBSCRIBE_SECRET || SERVICE_KEY);
       const unsubUrl = `https://frqncy.network/api/unsubscribe?t=${unsubToken}`;
 
-      const html = welcomeEmailHTML(email, unsubUrl);
-      const text = welcomeEmailText(email, unsubUrl);
+      // Two entries, two first emails. Door/keyword signups (source door_*)
+      // were promised the free audio course — deliver exactly that. Everyone
+      // else (newsletter, homepage) gets the welcome, with no affiliate pitch
+      // in their first contact. The promise made at signup decides the mail.
+      const wantsAudio = source.startsWith('door_');
+      const subject = wantsAudio ? 'Your free audio course' : 'Welcome to FRQNCY';
+      const html = wantsAudio ? audioCourseEmailHTML(email, unsubUrl) : welcomeEmailHTML(email, unsubUrl);
+      const text = wantsAudio ? audioCourseEmailText(email, unsubUrl) : welcomeEmailText(email, unsubUrl);
 
       const resendResp = await fetch('https://api.resend.com/emails', {
         method: 'POST',
@@ -211,6 +216,86 @@ export async function onRequestPost({ request, env }) {
   return json({ ok: true, isNew }, 200, origin);
 }
 
+// ── Generic welcome (newsletter / homepage signups — no affiliate) ─
+// The person joined FRQNCY itself, not a course funnel. First contact
+// carries no pitch and no affiliate link, so no disclosure is needed.
+// The audio course reaches them later as a follow-up (sequence doc).
+
+function welcomeEmailHTML(email, unsubUrl = 'https://frqncy.network/api/unsubscribe') {
+  return `<!DOCTYPE html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Welcome to FRQNCY</title>
+</head>
+<body style="margin:0;padding:0;background:#0B1C3D;font-family:-apple-system,BlinkMacSystemFont,'Segoe UI',sans-serif;color:#C8D8F0;">
+  <table width="100%" cellpadding="0" cellspacing="0" style="background:#0B1C3D;padding:40px 20px;">
+    <tr><td align="center">
+      <table width="540" cellpadding="0" cellspacing="0" style="max-width:540px;background:rgba(255,255,255,0.025);border:1px solid rgba(255,255,255,0.08);border-radius:8px;padding:48px 40px;">
+        <tr><td align="center" style="padding-bottom:32px;">
+          <div style="font-family:Georgia,'Cormorant Garamond',serif;font-size:24px;letter-spacing:0.28em;color:#fff;">FRQNCY</div>
+        </td></tr>
+        <tr><td style="padding-bottom:24px;">
+          <h1 style="font-family:Georgia,'Cormorant Garamond',serif;font-weight:300;font-size:28px;line-height:1.25;color:#fff;margin:0 0 8px 0;">You're <em style="color:#E0C06A;">in</em>.</h1>
+          <p style="color:#7090B8;font-size:14px;letter-spacing:0.04em;margin:0;">A network of people, building their dream life.</p>
+        </td></tr>
+        <tr><td style="padding-bottom:24px;color:#C8D8F0;font-size:15px;line-height:1.7;">
+          <p style="margin:0 0 16px 0;">FRQNCY is 146 maps of how money, energy, mind and matter work. All of it free to read. The thesis is never behind a wall.</p>
+          <p style="margin:0;">Start anywhere. The maps connect, so wherever you walk in is the right door.</p>
+        </td></tr>
+        <tr><td align="center" style="padding:8px 0 28px 0;">
+          <a href="https://frqncy.network/explore.html" style="display:inline-block;background:transparent;border:1px solid rgba(196,151,58,0.5);color:#C4973A;text-decoration:none;padding:14px 32px;border-radius:2px;font-size:12px;letter-spacing:0.18em;text-transform:uppercase;">Explore the network</a>
+        </td></tr>
+        <tr><td style="padding-bottom:28px;color:#7090B8;font-size:14px;line-height:2;">
+          <p style="margin:0 0 8px 0;color:#4A6280;font-size:11px;letter-spacing:0.14em;text-transform:uppercase;">Or walk in where you were already headed</p>
+          <a href="https://frqncy.network/money" style="color:#C8D8F0;text-decoration:none;">Money</a> &nbsp;·&nbsp;
+          <a href="https://frqncy.network/spirituality" style="color:#C8D8F0;text-decoration:none;">Spirituality</a> &nbsp;·&nbsp;
+          <a href="https://frqncy.network/books" style="color:#C8D8F0;text-decoration:none;">Books</a> &nbsp;·&nbsp;
+          <a href="https://frqncy.network/breathwork" style="color:#C8D8F0;text-decoration:none;">Breathwork</a>
+        </td></tr>
+        <tr><td style="padding-bottom:24px;color:#C8D8F0;font-size:15px;line-height:1.7;">
+          <p style="margin:0;">We write when there is something worth opening. If this is not for you, <a href="${unsubUrl}" style="color:#C4973A;">unsubscribe here</a> and we will not find you again.</p>
+        </td></tr>
+        <tr><td style="border-top:1px solid rgba(255,255,255,0.08);padding-top:20px;color:#4A6280;font-size:11px;line-height:1.6;letter-spacing:0.03em;text-align:center;">
+          <p style="margin:0 0 10px 0;"><a href="${unsubUrl}" style="color:#7090B8;text-decoration:underline;">Unsubscribe</a> — one press, no questions.</p>
+          <p style="margin:0 0 6px 0;">© 2026 FRQNCY</p>
+          <p style="margin:0;"><a href="https://frqncy.network" style="color:#7090B8;text-decoration:none;">frqncy.network</a></p>
+        </td></tr>
+      </table>
+    </td></tr>
+  </table>
+</body>
+</html>`;
+}
+
+function welcomeEmailText(email, unsubUrl = 'https://frqncy.network/api/unsubscribe') {
+  return [
+    "You're in.",
+    '',
+    'FRQNCY is a network of people, building their dream life. 146 maps of how',
+    'money, energy, mind and matter work. All of it free to read. The thesis is',
+    'never behind a wall.',
+    '',
+    'Start anywhere. The maps connect, so wherever you walk in is the right door.',
+    '',
+    'Explore the network: https://frqncy.network/explore.html',
+    '',
+    'Or walk in where you were already headed:',
+    '  Money        https://frqncy.network/money',
+    '  Spirituality https://frqncy.network/spirituality',
+    '  Books        https://frqncy.network/books',
+    '  Breathwork   https://frqncy.network/breathwork',
+    '',
+    'We write when there is something worth opening. If this is not for you,',
+    'unsubscribe here and we will not find you again:',
+    unsubUrl,
+    '',
+    '— FRQNCY',
+    '',
+    '© 2026 FRQNCY · frqncy.network',
+  ].join('\n');
+}
+
 // Reject anything that isn't POST/OPTIONS
 export async function onRequest(context) {
   const { request } = context;
@@ -227,7 +312,7 @@ export async function onRequest(context) {
 // editorial standards). Keep the disclosure in the same email as the link.
 const FREE_COURSE_URL = 'https://freeyourwish.kevintrudeau.com/?ref=2b9q35';
 
-function welcomeEmailHTML(email, unsubUrl = 'https://frqncy.network/api/unsubscribe') {
+function audioCourseEmailHTML(email, unsubUrl = 'https://frqncy.network/api/unsubscribe') {
   return `<!DOCTYPE html>
 <html>
 <head>
@@ -276,7 +361,7 @@ function welcomeEmailHTML(email, unsubUrl = 'https://frqncy.network/api/unsubscr
 </html>`;
 }
 
-function welcomeEmailText(email, unsubUrl = 'https://frqncy.network/api/unsubscribe') {
+function audioCourseEmailText(email, unsubUrl = 'https://frqncy.network/api/unsubscribe') {
   return [
     'Here is the audio course. You asked for it. No hoops.',
     '',
