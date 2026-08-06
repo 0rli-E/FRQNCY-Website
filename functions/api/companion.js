@@ -118,6 +118,24 @@ function buildContext(p) {
   if (s.pull)     L.push(`What pulls them: ${s.pull}.`);
   if (s.threeYearTrue) L.push(`What they want to be true in three years: "${s.threeYearTrue}".`);
 
+  // What the coaching is actually for. Comes from the Sanctuary, which the
+  // companion was previously blind to — a coach that cannot see the goals is
+  // just a mirror.
+  const g = p.goals || null;
+  if (g) {
+    if (g.dream) L.push(`The life they are building toward, in their own words: "${g.dream}".`);
+    const aims = Array.isArray(g.chiefAims) ? g.chiefAims : [];
+    if (aims.length) {
+      L.push(`Their chief aims: ${aims.map((a) => (a.current != null && a.target != null ? `${a.name} (at ${a.current} of ${a.target})` : a.name)).join('; ')}. This is what the work is for — speak to these in the words they chose.`);
+    }
+    const objs = asList(g.objectives);
+    if (objs.length) L.push(`Objectives standing under those aims: ${objs.join('; ')}.`);
+    const tm = asList(g.thisMonth);
+    if (tm.length) {
+      L.push(`Still open this month: ${tm.join('; ')}. Never scold a slip, never measure them against their past self. If it serves, offer the smallest version that still counts as done.`);
+    }
+  }
+
   const mp = [];
   if (m.toward_away)         mp.push(m.toward_away === 'away' ? 'moves away from what they don\'t want' : m.toward_away === 'toward' ? 'moves toward what they want' : 'moves both toward and away');
   if (m.options_procedures)  mp.push(m.options_procedures === 'procedures' ? 'wants a clear step-by-step' : m.options_procedures === 'options' ? 'wants a few possibilities to choose between' : 'varies between steps and options');

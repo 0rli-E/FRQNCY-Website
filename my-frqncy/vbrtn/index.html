@@ -211,6 +211,34 @@
     return [];
   }
 
+  // The Sanctuary holds the dream, the chief aims, the objectives and the
+  // monthly goals. The companion is a coach — without these it is coaching
+  // toward nothing. Read-only, compact, and it stays silent when empty.
+  function sanctuaryGoals(){
+    try{
+      const raw = localStorage.getItem('frqncy.sanctuary.v1');
+      if(!raw) return null;
+      const s = JSON.parse(raw) || {};
+      const clip = (v, n) => String(v == null ? '' : v).trim().slice(0, n);
+      const aims = (Array.isArray(s.chiefAims) ? s.chiefAims : []).slice(0,3).map(a => {
+        const name = clip(a && a.name, 120);
+        if(!name) return null;
+        const sc = (a && a.score) || {};
+        return { name, current: typeof sc.current === 'number' ? sc.current : null,
+                        target:  typeof sc.target  === 'number' ? sc.target  : null };
+      }).filter(Boolean);
+      const objectives = (Array.isArray(s.objectives) ? s.objectives : [])
+        .slice(0,3).map(o => clip(o && o.title, 120)).filter(Boolean);
+      const month = new Date().toISOString().slice(0,7);
+      const thisMonth = (Array.isArray(s.goals) ? s.goals : [])
+        .filter(g => g && g.month === month && !g.completed)
+        .slice(0,5).map(g => clip(g.title, 120)).filter(Boolean);
+      const dream = clip(s.dream, 300) || null;
+      if(!dream && !aims.length && !objectives.length && !thisMonth.length) return null;
+      return { dream, chiefAims: aims, objectives, thisMonth };
+    }catch(e){ return null; }
+  }
+
   function slimProfile(p){
     if(!p) return {};
     const hd = p.design && p.design.hd, gk = p.design && p.design.gk, astro = p.design && p.design.astro;
@@ -218,6 +246,7 @@
     const trig = p.triggers || {};
     return {
       rememberOne: p.rememberOne || null,
+      goals: sanctuaryGoals(),
       hd:    (hd && hd.type && !hd._stub) ? { type:hd.type, strategy:hd.strategy, authority:hd.authority, profile:hd.profile } : null,
       gk:    (gk && !gk._stub) ? { lifesWork:gk.lifesWork, evolution:gk.evolution, radiance:gk.radiance, purpose:gk.purpose } : null,
       astro: (astro && !astro._stub && astro.sun) ? { sun:astro.sun, moon:astro.moon, rising:astro.rising } : null,
