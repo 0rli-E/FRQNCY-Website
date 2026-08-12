@@ -80,15 +80,19 @@
         cachedUser = u;
         return u;
       },
-      async signUp({ email, password, username, displayName }) {
+      async signUp({ email, password, username, displayName, redirectTo }) {
         if (!client) await frqncy.ready;
         const meta = {};
         if (username)    meta.username     = username;
         if (displayName) meta.display_name = displayName;
+        // Come back to the page they signed up from, not to NRG. Sending
+        // everyone to /social/login/ was fine when that was the only door;
+        // now that any page can sign you in, landing somewhere you never
+        // asked for reads as being thrown out of what you were doing.
         const { data, error } = await client.auth.signUp({
           email,
           password,
-          options: { data: meta, emailRedirectTo: `${location.origin}/social/login/` },
+          options: { data: meta, emailRedirectTo: redirectTo || `${location.origin}/social/login/` },
         });
         if (error) throw error;
         notifyUserChange(data.user);
@@ -101,11 +105,18 @@
         notifyUserChange(data.user);
         return data;
       },
-      async signInMagic(email) {
+      /**
+       * Magic link. `opts.redirectTo` decides where the link lands — default is
+       * the page you asked from, so the link continues what you were doing
+       * instead of dropping you into NRG. Any target must be allowed under
+       * Supabase Auth → URL Configuration → Redirect URLs; if it is not,
+       * Supabase silently falls back to the Site URL.
+       */
+      async signInMagic(email, opts = {}) {
         if (!client) await frqncy.ready;
         const { error } = await client.auth.signInWithOtp({
           email,
-          options: { emailRedirectTo: `${location.origin}/social/login/` },
+          options: { emailRedirectTo: opts.redirectTo || location.href },
         });
         if (error) throw error;
       },

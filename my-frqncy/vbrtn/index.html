@@ -152,6 +152,10 @@
   .empty{text-align:center;padding:80px 24px}
   .empty h1{font-family:'Cormorant Garamond',serif;font-style:italic;font-weight:500;font-size:34px;color:var(--ink);margin:0 0 16px 0;line-height:1.2}
   .empty p{font-family:'Cormorant Garamond',serif;font-style:italic;font-size:17px;color:var(--gold-soft);line-height:1.55;max-width:42ch;margin:0 auto 32px}
+  .empty-alt{font-family:'Inter',system-ui,sans-serif!important;font-style:normal!important;font-size:13px!important;
+    color:var(--ink-dim)!important;margin:32px auto 0!important}
+  .empty-alt button{background:none;border:none;padding:0;font:inherit;color:var(--gold,#d9c38a);
+    text-decoration:underline;cursor:pointer}
 
   .foot{text-align:center;padding:40px 24px 24px;font-size:11px;color:var(--ink-dim);font-family:'Cormorant Garamond',serif;font-style:italic;font-size:13px;letter-spacing:.04em}
   .foot a{color:var(--gold-dim)}
@@ -1100,20 +1104,33 @@
   }
 
   function renderEmpty(){
+    // This is the state a NEW DEVICE lands in — the phone that has never seen
+    // the intake. It is therefore the one screen where signing in matters most,
+    // and until now it was the only screen with no way to do it: the account
+    // control lived in the topbar of the profile view, which you cannot reach
+    // without a profile. So the answer to "the companion doesn't have my data
+    // on this phone" was "answer 25 questions again". Not any more.
     shell.innerHTML = `
       <div class="topbar">
         <div class="wordmark">VBRTN</div>
+        <nav class="topbar-nav">
+          <span class="acct" id="acctSlot"></span>
+        </nav>
       </div>
       <div class="empty">
         <h1>The companion does not yet know you.</h1>
         <p>VBRTN reads your intake to begin. About twelve minutes — twenty-five questions across three short sessions you can leave anytime.</p>
         <a class="btn primary" href="/my-frqncy/intake/">Begin the intake →</a>
+        <p class="empty-alt">Already answered it on another device? <button type="button" id="emptySignIn">Sign in and bring it here</button></p>
       </div>
     `;
+    const b = document.getElementById('emptySignIn');
+    if(b) b.addEventListener('click', openSignIn);
   }
 
   // ── Boot ─────────────────────────────────────────────
   renderAll(loadProfile());
+  acctInit();
   // Re-render when a cloud profile arrives after sign-in (e.g. a fresh device).
   // ── Signing in, without leaving the room ──────────────────────────
   // The intake lives in localStorage on whatever device answered it, so on a
@@ -1215,6 +1232,10 @@
 
     setTimeout(() => email.focus(), 60);
   }
+
+  // The sync pill in the footer (rendered by frqncy-vbrtn-store.js) offers the
+  // same sign-in. Expose the sheet so it can open here instead of navigating.
+  window.FRQNCYVbrtnSignIn = openSignIn;
 
   // Paint the account control on first render and whenever auth changes.
   function acctInit(){

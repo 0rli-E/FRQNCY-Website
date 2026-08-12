@@ -153,9 +153,23 @@
       html = '<span class="vbrtn-sync-dot warn"></span>Saved on this device · cloud unavailable';
     } else {
       html = '<span class="vbrtn-sync-dot"></span>Saved on this device · '
-           + '<a class="vbrtn-sync-link" href="/social/login/?next=' + next + '">sign in to keep it everywhere</a>';
+           + '<a class="vbrtn-sync-link" data-vbrtn-signin href="/social/login/?next=' + next + '">sign in to keep it everywhere</a>';
     }
     el.innerHTML = html;
+
+    // Prefer signing in WITHOUT leaving the page. The href stays as a real
+    // fallback (no JS, or a surface with no sheet), but following it is the bad
+    // outcome: VBRTN installs as an app scoped to /my-frqncy/, so /social/login/
+    // opens a browser tab and abandons whatever you were in the middle of.
+    const link = el.querySelector('[data-vbrtn-signin]');
+    if (link) {
+      link.addEventListener('click', function (e) {
+        const open = (window.frqncyAuth && window.frqncyAuth.open) || window.FRQNCYVbrtnSignIn;
+        if (typeof open !== 'function') return;   // let the href do its job
+        e.preventDefault();
+        open();
+      });
+    }
   }
 
   // Inject the tiny status-pill styling once (so pages only add a <div>).

@@ -184,6 +184,21 @@
         btn.focus(); // Return focus to hamburger button on Escape
       }
     });
+
+    // Universal sign-in. This script is the only one loaded by effectively
+    // every page on the site, which makes it the seam where a site-wide
+    // account control can exist without touching 1400 HTML files (and without
+    // the generators clobbering it on the next rebuild). Loaded LAST, after
+    // the drawer exists, so the control can mount into both navs.
+    //
+    // It costs a logged-out reader nothing: frqncy-auth.js does not fetch the
+    // Supabase SDK until there is a session to restore or a click to answer.
+    if (!window.frqncyAuth && !document.querySelector('script[src*="frqncy-auth.js"]')) {
+      var authScript = document.createElement('script');
+      authScript.src = '/assets/frqncy-auth.js';
+      authScript.async = true;
+      document.head.appendChild(authScript);
+    }
   }
 
   if (document.readyState === 'loading') {
