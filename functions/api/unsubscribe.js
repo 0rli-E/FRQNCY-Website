@@ -209,6 +209,32 @@ export async function onRequestPost({ request, env }) {
     );
   }
 
+  // Cancel any still-pending scheduled email (the 24h audio gift) BEFORE
+  // flipping the row: someone who unsubscribes must not hear from us tomorrow.
+  // Best-effort — a cancel failure must not block the unsubscribe itself.
+  if (env.RESEND_API_KEY) {
+    try {
+      const rowResp = await fetch(
+        `${SUPABASE_URL}/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}&select=metadata`,
+        { headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}` } }
+      );
+      const rows = rowResp.ok ? await rowResp.json().catch(() => []) : [];
+      const giftId = rows?.[0]?.metadata?.scheduled_gift_id;
+      if (giftId && /^[A-Za-z0-9-]+$/.test(giftId)) {
+        const cancelResp = await fetch(`https://api.resend.com/emails/${giftId}/cancel`, {
+          method: 'POST',
+          headers: { Authorization: `Bearer ${env.RESEND_API_KEY}` },
+        });
+        if (!cancelResp.ok) {
+          // Already sent, already cancelled, or too close to send time — log, move on.
+          console.warn('Gift cancel returned', cancelResp.status, await cancelResp.text().catch(() => ''));
+        }
+      }
+    } catch (err) {
+      console.warn('Gift cancel threw (unsubscribe continues)', err);
+    }
+  }
+
   const resp = await fetch(
     `${SUPABASE_URL}/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}`,
     {

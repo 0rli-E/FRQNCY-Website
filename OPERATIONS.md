@@ -157,6 +157,33 @@ Mac if he wants the in-app VBRTN card, though the EXISTING APK reaches VBRTN via
 once this deploys, since the shell loads the live site. Cross-device sync (ops#48) is still unwatched.
 Committing through the bridge left stale git locks that it lacks permission to unlink; they were
 moved to `_to_delete/locks/` and Orlando should delete that directory.
+
+## 2026-08-07 — Social automation blueprint: idea→post pipeline on the real stack (Cowork session)
+
+**Did:** Researched the Aug-2026 automation surface of the full social stack (3 parallel research agents, ~25 primary sources, cited in the doc) and wrote `proposals/SOCIAL-AUTOMATION-BLUEPRINT.md` — stage-by-stage idea→script→voice→captions→visuals→assemble→schedule→funnel→analytics, with steady-state costs (≈$86–115/mo), platform-policy guardrails, and a 5-phase build order. The five findings that change the plan: (1) ElevenLabs `/with-timestamps` returns char-level timing with the audio → the faster-whisper alignment step is deletable; (2) Postiz has a full public API + official MCP — `/upload` + per-channel draft posts in one call = the approval gate; API on every hosted paid tier; self-host cannot post public TikTok/YT (platform app audits block it) → hosted Standard $29 recommended; (3) CreatorFlow has no API but its account-wide automations already cover all future posts (live on the 3 doors since 08-03) — the per-post keyword step no longer exists; (4) Higgsfield now has an official MCP server + CLI (agent-scriptable); Suno still has no public API (invite-only partner program July 2026) — batch months stay; (5) `claude -p`/Agent SDK draws from the Max subscription at $0 marginal (June metered-credit change cancelled) → Claude-native nightly conductor on the Mac, n8n NOT needed for this lane (stays for Telegram personas). Notion TASK BOARD row added (Done, Owner Claude, Area Social).
+
+**Opened:** books-RICH dead-end re-flagged (old books reel CTA says RICH; books answers READ/BOOKS only since 08-03 — recaption the reel or re-add the keyword). Blueprint §8 decisions parked for Orlando: hosted Postiz yes/no · draft-gate vs auto-schedule+veto · Metricool defer · CreatorFlow email gate stays OFF.
+
+**Left / UNVERIFIED:** The blueprint is research + design only — NO code was run. The `el_words.py` / `schedule.sh` / launchd skeletons in §7 are unexecuted paste-fodder; no Postiz account or API key confirmed to exist. Postiz auth header + base URL verified against live docs today; ElevenLabs PVC-on-v3 remains per official docs NOT ready (one third-party source claims otherwise — unresolved; use `eleven_multilingual_v2`). Whether the Cowork cloud sandbox can reach `api.postiz.com` for the Monday memo: untested. NOT yet committed — git write ops through the device bridge leave stale lock files behind (the sandbox blocks unlink inside .git), so both files sit STAGED in the index; stale locks parked in _to_delete/. Orlando: rm -f .git/index.lock, re-add the two paths, commit, push (commands in chat; the Notion row's Output link is the GitHub blob URL and goes live only after push). Build phases 1–2 (EL timestamp adapter + manifest produce.sh + schedule.sh) are the next agent-ready work; not started.
+
+## 2026-08-07 — VBRTN to the phones: APK delivered, iOS pin path handed over, reconcile row closed, #20 brief written
+
+**Did.** Session goal (Orlando): get VBRTN testable on Android + iPhone asap. Verified the state against prod + git + the Notion board rather than the docs — which mattered, because the Aug-6 evening session (e9f746e35 companion-reads-Sanctuary-goals, 80e455ace free-text-shape fixes, pushed with the iOS-installability pair) had logged **nothing**: no OPERATIONS entry, no board update. Confirmed by curl that prod serves e9f746e35's code (`sanctuaryGoals` present on /my-frqncy/vbrtn/), all install tags + /apple-touch-icon.png live, dashboard/intake/trail-data/store all 200. Then: (1) **Android** — delivered the existing debug APK (Jul 10 build, confirmed current: nothing in app/ changed since, and the Capacitor shell loads frqncy.network live so content is today's) to Orlando through the Claude chat for direct phone-side download; documented the unknown-sources/Play-Protect caveats. (2) **iPhone** — handed the Add-to-Home-Screen path that b062dd701+81bccbd36 built (no Xcode needed); pin either /my-frqncy/ ("My FRQNCY") or /my-frqncy/vbrtn/ ("VBRTN"). (3) Gave Orlando the two-phone cross-device sync script — the last unverified check of ops#48. (4) Closed the Notion row "AGENT vbrtn · Reconcile + land the 4 uncommitted my-frqncy files" as OVERTAKEN BY EVENTS, evidence in the row's Notes. (5) Wrote the **#20 membership-boundary decision brief** (options A/defer, B/artifact line — recommended, C/compute line; two riders) — delivered as a file and written into the Notion #20 row body.
+
+**Opened.** Nothing new filed.
+
+**Finished, and how verified.** The reconcile row: main-checkout tree clean of my-frqncy changes (git status, 2026-08-07); all four files landed via deliberate commits (b062dd701, 81bccbd36, 80e455ace, e9f746e35 — git log per file); prod /my-frqncy/dashboard/ and /my-frqncy/vbrtn/ 200 with newest code (curl). **Drop justification per the row's acceptance criterion 3:** the anonymous +4/−17 intake / +4/−9 vbrtn simplification was superseded by 80e455ace's deliberate crash fixes rather than individually adjudicated; it survives nowhere (not in tree, not in stash — stash@{0} is an old rebase auto-stash), and the vbrtn-reconcile-0803 branch was never created or needed.
+
+**Left / UNVERIFIED.** (1) **Cross-device sync is still unproven** until Orlando reports the two-phone round-trip — nothing in this session verified it; ops#48 stays two-thirds. (2) **#20 awaits Orlando's one-sentence call**; the AI HD reading worker stays blocked on it. (3) The APK has still never been installed on a device — debug-signed, expect the Play Protect prompt; no phone screenshots exist from this session, nothing visual verified. (4) The Aug-6 session's protocol skip (no log, no board write) is now a repeating pattern — second time an unlogged push landed on main. (5) An untracked apple-touch-icon.png sits in the main checkout duplicating an asset prod already serves — left alone, not mine. (6) This entry is committed on email-split-0803 (the checkout's current branch, 5 ahead / 11 behind); it reaches main when that branch ships — the branch itself, with email v2, remains unpushed and undeployed.
+
+## 2026-08-03 — Email flow v2 (welcome→gift), CreatorFlow live on 3 accounts, 4 agent tasks queued
+
+**Did:** (1) Email architecture v2 per Orlando: EVERYONE gets the welcome immediately (no pitch); EVERYONE gets the audio course ~24h later as a gift via Resend `scheduled_at: 'in 24 hours'` (no cron); the scheduled id is stored in `metadata.scheduled_gift_id` and `/api/unsubscribe` cancels it before flipping the row — leaving inside the first day means no further mail. Gift email reframed ("A gift, one day in." — "you asked for it" removed). Source-split from earlier today superseded; doc updated. (2) Added the direct audio block to create/read/rich (link straight to `freeyourwish.kevintrudeau.com/?ref=2b9q35`, `rel="sponsored"`, disclosure on the page). (3) CreatorFlow: 3 comment-to-DM automations LIVE — spirituality (CREATE, THINK → /create), books (READ, BOOKS → /read), money (RICH, WEALTH → /rich); any post/reel current+future; DM-only, no public replies; email gate OFF; Growth Plan 10k DMs/mo. (4) Created 4 agent-ready Notion rows with branch names + acceptance criteria for the SDK lanes: frqncy-network (doors-capture-0803), nrg (scoreboard-0803), vbrtn (vbrtn-reconcile-0803), sanctuary (sanctuary-verify-0803).
+
+**Opened:** books no longer listens for RICH (Orlando's correction: READ+BOOKS) — the old books reel saying "comment RICH" now dead-ends; decision pending. THINK was my pick for spirituality's second keyword.
+
+**Left / UNVERIFIED:** Email v2 is in the WORKING TREE on branch email-split-0803 — not committed, not deployed. `scheduled_at` + cancel have NEVER run against live Resend; after deploy: +alias signup → gift shows Scheduled in Resend → unsubscribe → confirm cancelled. Repeated-signup edge: re-subscribing after unsubscribe does not re-send (isNew gate) — acceptable, not designed. 4 uncommitted my-frqncy files still in the main checkout (handed to the vbrtn agent task — do NOT bulk-add them with this commit). CreatorFlow DMs point at pages whose capture works but whose new audio block is only in the tree.
+
 ## 2026-08-02 (addendum 4) — Welcome email rewritten + unsubscribe built
 
 **Did:** (1) Fixed the root SPF record — `v=spf1 include:_spf.google.com ~all`, replacing the leftover Namecheap forwarder include; Cloudflare confirmed "DNS record updated successfully". (2) Rewrote the welcome email in `functions/api/subscribe.js`. The old template opened with "You are love and light." as direct self-description — a banished phrase in FRQNCY-VOICE-PLAYBOOK § Never-Use Terms — and delivered nothing. New version leads with the free audio course (affiliate link `freeyourwish.kevintrudeau.com/?ref=2b9q35`, a link not a file, so nothing needs hosting), button above the fold, FTC disclosure in the same email, four door links, abundance close. Subject → "Your free audio course". (3) Built `functions/api/unsubscribe.js`: RFC 8058 one-click + a confirmation page, with `List-Unsubscribe` / `List-Unsubscribe-Post` headers now set on every send. Token is the address AES-GCM-encrypted, so no email in any URL or log; GET never mutates (scanner prefetch would otherwise unsubscribe people silently); `unsubscribed_at` already existed in migration 003, so no schema change. (4) Wrote `proposals/WELCOME-SEQUENCE-V1.md` (emails 2 + 3 drafted, app-download evolution noted) and `proposals/NOTE-TO-FIRST-TWO-SUBSCRIBERS.md`.
@@ -461,6 +488,115 @@ details even if the URL is shared.
   `frqncy-harness-*` worktrees remain under `<repo>-worktrees/` from previous runs.
 
 ---
+
+## 2026-08-03 (Sanctuary — quote set curated; the file split deliberately NOT started)
+
+**Did.** Verified first that Phase 1.1–1.4 are **live on prod**, rather than trusting the
+log: `frqncy.network/my-frqncy/dashboard/` is 5,926 lines, byte-identical to `origin/main`,
+carrying `pool-track` / `trail-body` / `weekly-panel` / `mc-panel` / `constellation-visits`.
+The `chat-widget.js` fix shipped with it — prod's matcher is now
+`/^\/(?:[a-z0-9-]+\/)?([a-z0-9-]+)\/?$/i` with `visited.v2` live, so the visit tracker that
+had recorded nothing since May is working again in production.
+
+Also closed the cloud-sync risk I logged as unverified, by reading the code rather than
+guessing: `attachCloudStore()` does `state = { ...DEFAULT_STATE, ...cloudState }`, so a cloud
+row predating `weeklyReviews`/`monthEpigraphs` picks them up from defaults instead of dropping
+them, and `setState` writes the whole blob back. New state keys are safe across sign-in.
+(Unrelated pre-existing race, worth someone's attention: that same line replaces local state
+wholesale when the cloud row is non-empty, so anything typed in the seconds before the async
+attach is clobbered. Not new, but there are more write surfaces now.)
+
+Then built the data half of **Phase 1.5**, the quote pill: `assets/sanctuary-quotes.json`, 38
+contemplative lines, each drawn from a book already in the FRQNCY corpus so the teaching lives
+on the site and the pill can link to its source. Text, attribution and `source_url` copied
+programmatically out of `books.json` rather than retyped — all 38 have a working source URL and
+none exceeds 112 characters. Curated, not length-filtered: prescriptive manifestation lines are
+out (the private room offers, it does not instruct), as are fragments that need their
+surrounding page and anything that ranks people. The file documents its own consumer contract
+(`index = dayOfYear % length`) and marks itself hand-edited, per the roadmap's "editable, not
+generated".
+
+**Opened.** Nothing filed.
+
+**Finished.** The quote set, committed alone. Verified: the file parses, every entry has
+text + attribution + source_url, 33 distinct topic slugs are carried for later filtering, and
+the deterministic pick is stable across repeated calls on one date, differs the next day, and
+yields 38 distinct lines over 38 consecutive days.
+
+**Left.** **The dashboard file split did not start, on purpose.** It is the item I'd otherwise
+rank first — 5,926 lines against the 5,000 threshold its own CLAUDE.md sets — but another agent
+has uncommitted edits in `my-frqncy/dashboard/index.html` (PWA meta tags, ~70 min old) and
+committed elsewhere in the repo five minutes before I looked. A 5,000-line restructure of a file
+someone else has open is how this repo has lost work before: git commits whole files, so
+whoever writes last reverts the other wholesale. **Do the split in a quiet window, and check
+`git status` on that file first.** For the same reason the quote pill's Today-panel wiring is
+not done — it is perhaps ten lines and should ride along with whoever next has the dashboard
+cleanly. The pill is therefore **not visible to any user yet**: this commit is data only, and
+nothing reads the file. Also still unverified from the previous session: export/import of the
+new state keys, ISO-week across a Dec/Jan boundary, month rollover on a real 31st, Safari/iOS.
+
+## 2026-08-03 (Sanctuary — prod smoke-check of 1.1–1.4, and the next phase queued)
+
+**Did.** The harness command for this task **did not run**: `claude-sdk/*` requires
+`ANTHROPIC_API_KEY` and it is not set (`frqncy-harness doctor` confirms; `OPENROUTER_API_KEY`,
+`TAVILY`, `BRAVE` are set). It errored before taking any action, leaving a clean, empty gtr
+sandbox at `../FRQNCY WEBSITE-worktrees/frqncy-harness-25c129a1a9c3` (0 changed files) —
+removable. **Re-run on `--model openrouter/<model>`**, which is an API lane and does support
+tools; `claude-code/*` will not work for this task because that lane has no tools at all.
+
+So I ran the smoke-check directly instead, headless Chromium against the live site.
+
+**Phase → URL → seen/not-seen**, all at `https://frqncy.network/my-frqncy/dashboard/`:
+
+| Phase | Surface | Cold visitor, no state | Practitioner, seeded state |
+|---|---|---|---|
+| 1.1 | The Trail | not seen (correct) | **SEEN** — 4,334 chars of record, days + ratios |
+| 1.2 | Weekly Review | not seen (correct) | **SEEN** — door "The week's edge"; panel "July 27 – August 2", Meditation 7 of 7 kept, Walk 3 of 7 |
+| 1.3 | Monthly Close | not seen (correct) | **SEEN** — door "July is complete. Sit with it?"; panel goals 1/2, Meditation · 31 days |
+| 1.4 | Constellation | not seen (correct) | **SEEN** — "You've opened three topics this month. Two of them three or more times: Meditation and Water." |
+
+Zero page errors in both passes.
+
+**Read the "not seen" column carefully — it is not a defect.** A visitor with no state gets
+`today-section` hidden and no doors at all, by design: the Today card self-hides on empty
+state, the Trail link only appears once something is behind you, and the Constellation section
+hides entirely rather than showing a new reader an empty ledger. **A curl, or a fresh browser
+visit, will therefore report all four features missing on a working deployment.** Any future
+smoke-check of this surface must seed `localStorage['frqncy.sanctuary.v1']` (and
+`frqncy:visited.v2` for 1.4) before concluding anything. Note also that 1.2's door showed its
+quiet form rather than the gold Sunday invitation — correct, today is Monday.
+
+**Opened — NEXT AGENT-READY TASK ROW.** Recorded here because the Notion TASK BOARD is not
+reachable from this session; **this needs transcribing into Notion to be real**, per the
+dual-write rule in `proposals/COORDINATION-PROTOCOL.md`.
+
+> **Title:** Sanctuary 1.5 — wire the daily quote pill into the Today panel
+> **Owner:** Claude · **Agent-ready:** ✓ · **Status:** Open · **Branch:** `sanctuary-quote-pill`
+> **Why it is next:** lowest-numbered open Phase 1 item, and its data dependency already
+> shipped — `assets/sanctuary-quotes.json` (38 curated, attributed lines) is committed and
+> nothing reads it. This is roughly ten lines of render plus CSS.
+> **Acceptance criteria:**
+> 1. One line renders on the Today panel, drawn as `dayOfYear % quotes.length` — same line all
+>    day, changes at midnight, no randomness and no per-user state stored.
+> 2. Attribution is visible and the line links to the quote's `source_url`.
+> 3. The fetch failing (offline, 404) degrades to no pill — never a broken or empty slot.
+> 4. Adding or removing an entry in the JSON changes what renders, with no code edit — the
+>    file stays hand-editable per the roadmap's "editable, not generated".
+> 5. Verified by screenshot at 390×844 and 1280×900, and by proving two different dates
+>    produce two different lines.
+> **Blocked by:** nothing. **But sequencing note:** if the dashboard file split has not yet
+> happened, keep this edit small and delimited — see Left, below.
+
+**Finished.** 1.1–1.4 confirmed rendering in production against real state. That closes the
+"nobody has looked at it" gap left in the 2026-08-02 entries.
+
+**Left.** The **file split is still not done and is still the right next structural job** —
+`my-frqncy/dashboard/index.html` is 5,926 lines against the 5,000 threshold its own CLAUDE.md
+sets. It was deferred earlier today because another agent had uncommitted edits in that file;
+that is still true as of this entry, so check `git status --porcelain my-frqncy/dashboard/index.html`
+before starting. Unchanged from before and still unverified by anyone: export/import of
+`weeklyReviews` / `monthEpigraphs`, ISO-week across a Dec/Jan boundary, month rollover on a
+real 31st, and Safari/iOS. The smoke-check above was Chromium only.
 
 # OPERATIONS LOG
 
