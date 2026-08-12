@@ -1,3 +1,65 @@
+## 2026-08-12 — Universal login: one account, reachable from anywhere on the site
+
+**Did.** Built `assets/frqncy-auth.js` — a site-wide sign-in sheet + account control — and wired
+it in through `mobile-nav.js`, the one script effectively every page already loads (1413 of 1467
+HTML files), so it reaches the whole site without a 1400-file diff and without the generators
+clobbering it on the next rebuild. Explicit `<script>` tags added on the four My FRQNCY surfaces
+that do not load mobile-nav (`my-frqncy.html`, `charts/`, `intake/`, `practice/`).
+
+The finding that reframed the task: **the session was already universal.** Every surface — static
+site, My FRQNCY, Sanctuary, VBRTN, Courses rooms, NRG — uses the same Supabase project
+(`vyazlspbmwmlyncdlezh`) and the same publishable key on one origin, so supabase-js has been
+writing one `sb-<ref>-auth-token` key for all of them the whole time. Nothing needed unifying at
+the session layer. What was missing was a *door*: `social-auth.js` deliberately renders nothing
+when logged out (task #15), so 1400+ pages offered no sign-in at all, and the only door that
+existed — `/social/login/` — throws you out of the installed VBRTN app (scoped to `/my-frqncy/`)
+into a browser tab.
+
+Four real bugs fixed on the way, not polish:
+1. **VBRTN's empty state had no way in.** The account control the 08-12 Cowork session added lives
+   in the topbar of the *profile* view — unreachable without a profile. So the screen a NEW PHONE
+   lands on ("the companion does not yet know you") was the one screen with no sign-in on it, and
+   the answer to "my data isn't on this phone" was to answer 25 questions again. Now carries the
+   control plus an explicit "Already answered it on another device?".
+2. **The sheet was painted through.** A positioned div loses the stacking fight to topic-page
+   heroes — the hero type rendered over the card. Now a `<dialog>` + `showModal()`, i.e. the
+   browser top layer, which also brings focus trapping and Escape.
+3. **Sign-in was buried on phones.** Nav links collapse into the hamburger at 720px — exactly how
+   VBRTN's own login went unfound. The phone now gets a copy in the bar beside the hamburger.
+4. **Magic links always landed in NRG.** `emailRedirectTo` was hardcoded to `/social/login/`; it
+   now returns to the page that asked. The VBRTN sync pill likewise opens the sheet instead of
+   navigating (href kept as a no-JS fallback).
+
+Logged-out cost is zero: the Supabase SDK is not fetched until there is a stored session, a
+magic-link token in the URL, or a click.
+
+**Opened.** Nothing filed. One question for Orlando: whether `https://frqncy.network/**` is in
+Supabase Auth → URL Configuration → Redirect URLs (needed only for the magic-link path).
+
+**Finished, and how verified.** `scripts/test-universal-login.mjs` — 25 assertions, all passing,
+real Chromium at 390px and 1280px against a real Supabase account
+(`orlando.eisenreich+ulogin0812@gmail.com`, created for this; `mailer_autoconfirm` is on so no
+mail was sent) driving the local checkout on :8787. Covers: sign-in from a topic page without
+leaving it; that session then live on home / explore / watch / My FRQNCY / Sanctuary dashboard /
+courses / VBRTN / NRG with no second login; sign-out on one surface propagating to the others;
+the SDK genuinely absent while logged out; the dialog on top; the phone bar visible at 390px
+without opening a menu; zero page errors. Screenshots taken at 390px (fonts blocked in the
+sandbox, so type renders in fallback faces — layout is real, typography is not).
+
+**Left / UNVERIFIED.** (1) **Nothing here has run on production.** It is committed and pushed as
+`universal-login-0812` (947a7a11b) off fresh `origin/main` (d800eb20c); it deploys only when that
+branch reaches main — `git push origin universal-login-0812:main`. (2) **No physical phone has
+touched it**, and no real cross-device pull has been watched end to end — ops#48 stays open; the
+tests prove one browser profile carrying a session across surfaces, not two devices. (3) The
+**magic-link redirect** is mechanically tested but its target must be allowed in Supabase's
+redirect allowlist; if it is not, Supabase silently falls back to the Site URL. Password sign-in,
+the primary path, needs no allowlist. (4) A **test account row now exists** in Supabase auth —
+Orlando deletes it when convenient; I do not run permanent deletions against production auth.
+(5) The 15 pages loading `social-auth.js` now have two auth modules painting into the same nav;
+they are de-duplicated by check (my control skips the name when its avatar is present) but that
+coexistence was tested on `/watch/` and `/courses/` only, not on all 15. (6) Notion TASK BOARD
+row NOT written this session — the dual-write is outstanding.
+
 ## 2026-08-07 (addendum — the Gene Keys work is DEPLOYED and verified on prod)
 
 Corrects the "Nothing is deployed" line in the entry below: Orlando pushed `vbrtn-ship-0807`
