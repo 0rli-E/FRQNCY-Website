@@ -1,3 +1,70 @@
+## 2026-08-07 (VBRTN — Gene Keys given meaning, chat→Sanctuary write-back, the missing way in)
+
+**Did.** Orlando's goal: VBRTN fully live — questionnaire + Human Design + Gene Keys producing real
+advice, testable on his Android phone, with the Sanctuary tracking goals that update from the chat,
+on a free or cheap model. Audited the chain against prod rather than the docs, and found three gaps.
+
+*Gene Keys were a number, not a teaching.* `hd-engine.js` computes the four spheres correctly but
+returns only gate numbers, so `buildContext` emitted "Gene Keys — Life's Work 43, Evolution 23…"
+while VOICE separately instructed the model to speak in Shadow/Gift/Siddhi terms. Qwen was therefore
+inventing the person's Shadow every time, confidently. New `my-frqncy/charts/gene-keys.js` carries
+all 64 spectra (web-verified against genekeys.com per-key pages, cross-checked against independent
+tables); the client resolves and sends the names, the server renders them and is told never to name
+a key not listed. Only the three single-word labels — Rudd's long-form prose is his book, kept out
+deliberately. Bare numbers still render, explicitly tagged not to interpret.
+
+*The coach could read goals but never write them.* e9f746e35 (Aug 6) gave the companion read access
+to `frqncy.sanctuary.v1`; there was no reverse path, so telling VBRTN you had shipped something left
+it open in the Sanctuary forever. New `functions/api/sanctuary-extract.js` PROPOSES; the person taps
+to accept. It never writes on its own — the design rule is that an agent silently editing your goals
+is a manager, not a mirror. The endpoint validates the model against reality instead of trusting it:
+a completion must name a genuinely open goal, an aim must genuinely exist, an unchanged score drops.
+Every failure path returns `{proposals:[]}` with 200 so failed bookkeeping can never break the
+conversation above it. Client writes to cloud AND localStorage, because a signed-in Sanctuary is
+authoritative in the cloud (`attachCloudStore` adopts cloud state on load) and a local-only write
+would silently vanish. Dates use local parts, not `toISOString`, which would file an evening entry
+under tomorrow for anyone east of Greenwich — i.e. Orlando.
+
+*Nothing pointed at VBRTN.* `/my-frqncy/` offered four cards, none the companion; the mobile app is
+NAMED vbrtn and every one of its cards pointed elsewhere. Finish intake, leave, and the only way
+back was typing the URL. Added first-position on both. Also removed "unlock the deeper layers" from
+the app's membership card — membership is support, never unlock.
+
+Built on `vbrtn-live-0807`, a worktree off fresh `origin/main` (NOT the `email-split-0803` checkout,
+which still carries unpushed email v2). Commit `3a064b07d`, 6 files, +578/−4, zero deletions.
+
+**Opened.** Nothing filed. Three findings worth tracking, from a parallel audit of Orlando's question
+about breathwork/timer/video: the practice TIMER is real and finished (wall-clock ring, Supabase
+`practice_logs`, proper RLS) but effectively orphaned — the Sanctuary links to it from nowhere, it
+has no duration picker, and its "read →" affordance has no handler. BREATHWORK on the web is a 6s
+CSS pulse and a label in a picker; the only real breath mechanic in the repo is the app's breath-hold
+alarm dismiss. VIDEO: `videos.json` is healthy (367 entries, NOT a stub as previously recorded) but
+feeds `/watch/` alone; nothing in my-frqncy has an iframe. Also: `breathwork/` and `meditation/`
+topic pages ship `t-vcard` buttons with no `openVid` handler — stale generated output, dead clicks.
+
+**Finished — with the method, and only what was actually checked.** 64/64 keys present, `_stub` and
+out-of-range gates return null. 18 parser cases pass: hallucinated completions dropped, fake aims
+dropped, markdown fences and `<think>` blocks stripped, garbage and non-objects returning []. 19
+mutation cases pass against a realistic state blob, including dream/aims/objectives preserved,
+score history never dropped, duplicate adds no-op, and corrupt storage survived. A prompt-injection
+attempt through a profile value is flattened to one line and clipped, so it cannot forge the
+`--- END WHAT YOU KNOW ---` boundary. `node --check` clean on all three JS files; `npm run lint`
+green; all inline scripts syntax-checked and tag balance verified on the edited HTML. Prod was
+confirmed serving e9f746e35 before any of this started, and `/api/companion` answered 200 in 1.9s.
+
+**Left / UNVERIFIED — read before assuming any of this works.** **Nothing is deployed.** The commit
+sits on `vbrtn-live-0807`; neither sandbox can reach GitHub (SSH :22 forbidden, HTTPS 403 via the
+proxy), so the push is Orlando's — `git -C /tmp/vbrtn-live-0807 push origin vbrtn-live-0807:main`,
+a clean fast-forward. **Nothing has run in a browser** — no phone, no desktop, no screenshot; all
+confidence rests on logic tests. `/api/sanctuary-extract` has NEVER been called against the live
+Workers AI binding, so its real-world precision is unmeasured — expect both misses and false
+proposals until it is watched on real conversations. The client-side regex gate before it is crude.
+The APK could NOT be rebuilt: `app/node_modules` is macOS-native and device_bash runs a Linux VM
+(rollup native binary mismatch), and the VM has no network to reinstall — Orlando rebuilds on the
+Mac if he wants the in-app VBRTN card, though the EXISTING APK reaches VBRTN via the My FRQNCY card
+once this deploys, since the shell loads the live site. Cross-device sync (ops#48) is still unwatched.
+Committing through the bridge left stale git locks that it lacks permission to unlink; they were
+moved to `_to_delete/locks/` and Orlando should delete that directory.
 ## 2026-08-02 (addendum 4) — Welcome email rewritten + unsubscribe built
 
 **Did:** (1) Fixed the root SPF record — `v=spf1 include:_spf.google.com ~all`, replacing the leftover Namecheap forwarder include; Cloudflare confirmed "DNS record updated successfully". (2) Rewrote the welcome email in `functions/api/subscribe.js`. The old template opened with "You are love and light." as direct self-description — a banished phrase in FRQNCY-VOICE-PLAYBOOK § Never-Use Terms — and delivered nothing. New version leads with the free audio course (affiliate link `freeyourwish.kevintrudeau.com/?ref=2b9q35`, a link not a file, so nothing needs hosting), button above the fold, FTC disclosure in the same email, four door links, abundance close. Subject → "Your free audio course". (3) Built `functions/api/unsubscribe.js`: RFC 8058 one-click + a confirmation page, with `List-Unsubscribe` / `List-Unsubscribe-Post` headers now set on every send. Token is the address AES-GCM-encrypted, so no email in any URL or log; GET never mutates (scanner prefetch would otherwise unsubscribe people silently); `unsubscribed_at` already existed in migration 003, so no schema change. (4) Wrote `proposals/WELCOME-SEQUENCE-V1.md` (emails 2 + 3 drafted, app-download evolution noted) and `proposals/NOTE-TO-FIRST-TWO-SUBSCRIBERS.md`.
