@@ -162,7 +162,9 @@
   }
 
   /* Gene Keys spectrum in the design readout */
-  .gk-row{margin:0 0 6px}
+  .chart dt.gk-dt, .chart dd.gk-dd{grid-column:1 / -1}
+  .chart dt.gk-dt{margin-top:6px}
+  .gk-row{margin:0 0 7px;display:flex;flex-wrap:wrap;gap:2px 8px;align-items:baseline}
   .gk-row:last-child{margin-bottom:0}
   .gk-sphere{color:var(--gold-light,#d9c38a);white-space:nowrap}
   .gk-spec{opacity:.85}
@@ -742,7 +744,7 @@
             <dt>Strategy</dt><dd>${escapeHtml(hd.strategy)}</dd>
             <dt>Authority</dt><dd>${escapeHtml(hd.authority)}</dd>
             <dt>Profile</dt><dd>${escapeHtml(hd.profile)}</dd>
-            ${p.design.gk && !p.design.gk._stub ? `<dt>Gene Keys</dt><dd id="gk-cell">\u2026</dd>` : ''}
+            ${p.design.gk && !p.design.gk._stub ? `<dt class="gk-dt">Gene Keys</dt><dd class="gk-dd" id="gk-cell">\u2026</dd>` : ''}
             ${p.design.astro ? `<dt>Sun · Moon · Rising</dt><dd>${p.design.astro.sun} · ${p.design.astro.moon} · ${p.design.astro.rising}</dd>` : ''}
           </dl>
           ${hd._stub ? '<div class="note">Placeholder values. The chart engine ships next; your real chart populates here when it does.</div>' : ''}
