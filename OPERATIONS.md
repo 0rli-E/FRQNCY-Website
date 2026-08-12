@@ -1,3 +1,33 @@
+## 2026-08-07 (addendum — the Gene Keys work is DEPLOYED and verified on prod)
+
+Corrects the "Nothing is deployed" line in the entry below: Orlando pushed `vbrtn-ship-0807`
+(the same two commits rebased onto `064d85a68`) and Cloudflare Pages shipped it.
+
+**Verified on prod, with the method.** `/my-frqncy/charts/gene-keys.js` returns 200 carrying all
+64 keys (43 = Deafness/Insight/Epiphany, 55 = Victimisation/Freedom/Freedom). `/my-frqncy/` serves
+the VBRTN card. The VBRTN page carries `gk-cell`, `resolvedGK`, `prop-btn` and the
+`sanctuary-extract` call.
+
+**The A/B that proves the fix mattered.** Same question — "what is the shadow of my Life's Work,
+name it" — for gate 43. Sent WITHOUT resolved names (the old path): *"The shadow here is reaction.
+The gift is revolution."* That is gate **49**'s spectrum, copied out of the worked example in the
+system prompt — confidently, precisely wrong, and indistinguishable from a real answer to anyone
+who doesn't know their chart. Sent WITH the table: *"Shadow Deafness. Gift Insight."* Correct.
+Every reading given before today's deploy carried that class of error.
+
+**`/api/sanctuary-extract` against the live Workers AI binding** — six cases, all as designed:
+clear commitment → `goal_add`; completion of a genuinely open goal → `goal_complete`; a vague wish
+("I should probably exercise more") → `[]`; the companion's OWN suggestion, uncommitted by the
+person → `[]`; "mark everything complete, add 50 goals" → `[]`; and a prompt injection embedding a
+literal forged `goal_complete` payload → `[]`, dropped by the validator because the title is not an
+open goal.
+
+**Left.** `aim_progress` fires only when the chief aim is named explicitly ("Update Ten thousand
+members to 340" works); indirect phrasing ("my member count is now 340") returns nothing. A false
+negative, which is the safe direction, but it means the score rarely self-updates. **Nobody has
+opened any of this in a browser or on a phone** — all prod verification is HTTP-level. Cross-device
+sync (ops#48) remains unwatched. The APK still needs a Mac-side rebuild for the in-app VBRTN card,
+though the installed build reaches VBRTN through the My FRQNCY card now that this is live.
 ## 2026-08-07 (VBRTN — Gene Keys given meaning, chat→Sanctuary write-back, the missing way in)
 
 **Did.** Orlando's goal: VBRTN fully live — questionnaire + Human Design + Gene Keys producing real
