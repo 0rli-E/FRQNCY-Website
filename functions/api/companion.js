@@ -96,6 +96,8 @@ function asList(v) {
 }
 
 // ── Build a compact, privacy-safe context from the slim profile ───
+const clip = (v, n) => String(v == null ? '' : v).replace(/[\r\n]+/g, ' ').trim().slice(0, n);
+
 function buildContext(p) {
   if (!p || typeof p !== 'object') {
     return 'You have not met this person through intake yet. Speak from what they tell you in the thread.';
@@ -109,7 +111,28 @@ function buildContext(p) {
   if (p.hd && p.hd.type && !p.hd.stub) {
     L.push(`Human Design — ${p.hd.type}; strategy "${p.hd.strategy}"; ${p.hd.authority} authority; profile ${p.hd.profile}. Tune every prompt to this type.`);
   }
-  if (p.gk) L.push(`Gene Keys — Life's Work ${p.gk.lifesWork}, Evolution ${p.gk.evolution}, Radiance ${p.gk.radiance}, Purpose ${p.gk.purpose}.`);
+  // Gene Keys arrive RESOLVED from the client (my-frqncy/charts/gene-keys.js
+  // holds the 64-key table), so the Shadow/Gift/Siddhi names are present rather
+  // than a bare gate number whose meaning the model would have to invent — and
+  // it would invent one, confidently. A bare number still renders, but tells the
+  // model not to interpret it.
+  if (p.gk && typeof p.gk === 'object') {
+    const spheres = [['lifesWork', "Life's Work"], ['evolution', 'Evolution'],
+                     ['radiance', 'Radiance'], ['purpose', 'Purpose']];
+    const gkLines = [];
+    for (const [k, label] of spheres) {
+      const v = p.gk[k];
+      if (v == null) continue;
+      if (typeof v === 'object' && v.shadow && v.gift && v.siddhi) {
+        gkLines.push(`${label} ${clip(v.gate, 3)} — Shadow ${clip(v.shadow, 40)} \u2192 Gift ${clip(v.gift, 40)} \u2192 Siddhi ${clip(v.siddhi, 40)}`);
+      } else if (typeof v === 'number' || typeof v === 'string') {
+        gkLines.push(`${label} ${clip(v, 3)} (spectrum not resolved — do NOT name its Shadow or Gift)`);
+      }
+    }
+    if (gkLines.length) {
+      L.push(`Gene Keys — the spectrum they carry:\n  ${gkLines.join('\n  ')}\nShadow is soil, never a fault, never a diagnosis. Name a pair only when it serves the moment — the Shadow and its Gift are one charge at two frequencies. NEVER name a Shadow, Gift or Siddhi that is not listed directly above.`);
+    }
+  }
   if (p.astro && p.astro.sun) L.push(`Astrology — Sun ${p.astro.sun}, Moon ${p.astro.moon}, Rising ${p.astro.rising}. Texture only; never let it override design.`);
 
   if (s.feeling)  L.push(`The feeling that has shown up most for them lately: ${s.feeling}.`);

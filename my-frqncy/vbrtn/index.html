@@ -161,6 +161,24 @@
     .knows-grid{grid-template-columns:1fr}
   }
 
+  /* Gene Keys spectrum in the design readout */
+  .gk-row{margin:0 0 6px}
+  .gk-row:last-child{margin-bottom:0}
+  .gk-sphere{color:var(--gold-light,#d9c38a);white-space:nowrap}
+  .gk-spec{opacity:.85}
+  .gk-arrow{opacity:.5;padding:0 2px}
+
+  /* A proposal VBRTN offers to the Sanctuary — never a silent write */
+  .prop{border:1px solid var(--gold-dim,#5a4c2a);border-radius:3px;padding:12px 14px;margin:10px 0 4px;background:rgba(217,195,138,.05)}
+  .prop-label{font-size:11px;letter-spacing:.14em;text-transform:uppercase;opacity:.65;margin-bottom:5px}
+  .prop-title{font-style:italic;margin-bottom:10px;line-height:1.45}
+  .prop-actions{display:flex;gap:8px;flex-wrap:wrap}
+  .prop-btn{font:inherit;font-size:13px;padding:6px 13px;border-radius:3px;cursor:pointer;border:1px solid var(--gold-dim,#5a4c2a);background:transparent;color:inherit;transition:background .18s,border-color .18s}
+  .prop-btn.yes{background:rgba(217,195,138,.14)}
+  .prop-btn:hover{background:rgba(217,195,138,.22)}
+  .prop-btn:disabled{opacity:.5;cursor:default}
+  .prop-done{font-size:13px;opacity:.7;font-style:italic}
+
   @media (prefers-reduced-motion: reduce){
     *{transition-duration:0.01ms !important;animation-duration:0.01ms !important}
   }
@@ -193,6 +211,44 @@
   function saveProfile(p){
     if(window.FRQNCYVbrtn){ window.FRQNCYVbrtn.save(p); return; }
     localStorage.setItem(STORE_KEY, JSON.stringify(p));
+  }
+
+  // The 64-key Gene Keys spectrum. Loaded as a module so the table lives in
+  // exactly one place (my-frqncy/charts/gene-keys.js) instead of being copied
+  // here and drifting. Until it resolves — and if it never does — every
+  // consumer falls back to bare gate numbers rather than breaking.
+  let GK = null;
+  import('/my-frqncy/charts/gene-keys.js')
+    .then(m => { GK = m; try{ paintGeneKeys(); }catch(e){} })
+    .catch(() => {});
+
+  // Send the spectrum, not just the gate number. A model handed "Life's Work 43"
+  // and nothing else invents a Shadow for it, confidently; handed the names, it
+  // speaks the person's actual keys.
+  function resolvedGK(gk){
+    if(!gk || gk._stub) return null;
+    if(GK){
+      const r = GK.resolveGeneKeys(gk);
+      if(r) return r;
+    }
+    return { lifesWork:gk.lifesWork, evolution:gk.evolution, radiance:gk.radiance, purpose:gk.purpose };
+  }
+
+  function paintGeneKeys(){
+    const cell = document.getElementById('gk-cell');
+    if(!cell) return;
+    const prof = loadProfile();
+    const gk = prof && prof.design && prof.design.gk;
+    if(!gk || gk._stub){ cell.textContent = '\u2014'; return; }
+    const r = GK && GK.resolveGeneKeys(gk);
+    if(!r){
+      cell.textContent = [gk.lifesWork, gk.evolution, gk.radiance, gk.purpose].filter(v => v != null).join(' \u00b7 ');
+      return;
+    }
+    cell.innerHTML = GK.SPHERES.filter(sp => r[sp.key]).map(sp => {
+      const k = r[sp.key];
+      return `<div class="gk-row"><span class="gk-sphere">${escapeHtml(k.label)} ${k.gate}</span> <span class="gk-spec">${escapeHtml(k.shadow)} <span class="gk-arrow">\u2192</span> ${escapeHtml(k.gift)} <span class="gk-arrow">\u2192</span> ${escapeHtml(k.siddhi)}</span></div>`;
+    }).join('');
   }
 
   const shell = document.getElementById('shell');
@@ -248,7 +304,7 @@
       rememberOne: p.rememberOne || null,
       goals: sanctuaryGoals(),
       hd:    (hd && hd.type && !hd._stub) ? { type:hd.type, strategy:hd.strategy, authority:hd.authority, profile:hd.profile } : null,
-      gk:    (gk && !gk._stub) ? { lifesWork:gk.lifesWork, evolution:gk.evolution, radiance:gk.radiance, purpose:gk.purpose } : null,
+      gk:    resolvedGK(gk),
       astro: (astro && !astro._stub && astro.sun) ? { sun:astro.sun, moon:astro.moon, rising:astro.rising } : null,
       standing: {
         feeling: (p.standing && p.standing.recentFeeling) || null,
@@ -686,7 +742,7 @@
             <dt>Strategy</dt><dd>${escapeHtml(hd.strategy)}</dd>
             <dt>Authority</dt><dd>${escapeHtml(hd.authority)}</dd>
             <dt>Profile</dt><dd>${escapeHtml(hd.profile)}</dd>
-            ${p.design.gk ? `<dt>Life's Work GK</dt><dd>${p.design.gk.lifesWork}</dd><dt>Evolution GK</dt><dd>${p.design.gk.evolution}</dd>` : ''}
+            ${p.design.gk && !p.design.gk._stub ? `<dt>Gene Keys</dt><dd id="gk-cell">\u2026</dd>` : ''}
             ${p.design.astro ? `<dt>Sun · Moon · Rising</dt><dd>${p.design.astro.sun} · ${p.design.astro.moon} · ${p.design.astro.rising}</dd>` : ''}
           </dl>
           ${hd._stub ? '<div class="note">Placeholder values. The chart engine ships next; your real chart populates here when it does.</div>' : ''}
@@ -711,6 +767,7 @@
     `;
 
     shell.innerHTML = html;
+    paintGeneKeys();
 
     // ── Wire the companion thread ──────────────────────────
     const log = document.getElementById('threadLog');
@@ -739,6 +796,152 @@
       if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); if(!sendBtn.disabled) send(); }
     });
     sendBtn.addEventListener('click', send);
+
+    // ── Chat → Sanctuary ────────────────────────────────────────
+    // VBRTN could read the goals it was coaching toward but never update them,
+    // so anything committed in conversation had to be re-typed by hand into a
+    // second surface. Now it PROPOSES and the person taps to accept.
+    //
+    // It never writes on its own. An agent that silently edits your goals is a
+    // manager, not a mirror — and a goal you did not choose is not yours.
+
+    const uid = (pre) => pre + '-' + Date.now().toString(36) + Math.random().toString(36).slice(2,7);
+    // Local date parts, matching the Sanctuary's own dateISO() — toISOString()
+    // is UTC and would file an evening entry under tomorrow for anyone east of
+    // Greenwich, which is where Orlando is.
+    function dayNow(){
+      const d = new Date();
+      return d.getFullYear() + '-' + String(d.getMonth()+1).padStart(2,'0') + '-' + String(d.getDate()).padStart(2,'0');
+    }
+    const monthNow = () => dayNow().slice(0,7);
+
+    // Read-modify-write against whichever store is authoritative.
+    // A signed-in person's Sanctuary lives in the cloud and the dashboard adopts
+    // cloud state on load, so a localStorage-only write would silently vanish
+    // the next time they opened it. Write both, cloud first for truth.
+    async function sanctuaryWrite(mutate){
+      let cloud = null;
+      try{
+        if(window.frqncy){
+          await window.frqncy.ready;
+          const user = await window.frqncy.auth.getUser();
+          if(user) cloud = window.frqncy.sanctuaryStore(user);
+        }
+      }catch(e){ cloud = null; }
+
+      let st = null;
+      if(cloud){ try{ st = await cloud.getState(); }catch(e){ st = null; } }
+      if(!st){
+        try{ const raw = localStorage.getItem('frqncy.sanctuary.v1'); st = raw ? JSON.parse(raw) : null; }
+        catch(e){ st = null; }
+      }
+      if(!st || typeof st !== 'object') st = {};
+      if(!Array.isArray(st.goals))      st.goals = [];
+      if(!Array.isArray(st.chiefAims))  st.chiefAims = [];
+      if(!Array.isArray(st.objectives)) st.objectives = [];
+
+      if(!mutate(st)) return false;
+
+      try{ localStorage.setItem('frqncy.sanctuary.v1', JSON.stringify(st)); }catch(e){}
+      if(cloud){ try{ await cloud.setState(st); }catch(e){ /* local write still stands */ } }
+      return true;
+    }
+
+    function applyProposal(pr){
+      return sanctuaryWrite(st => {
+        if(pr.type === 'goal_add'){
+          const month = monthNow();
+          if(st.goals.some(g => g && g.title === pr.title && g.month === month)) return false;
+          st.goals.push({ id: uid('goal'), objectiveId: null, title: pr.title,
+                          month, completed: false, completedDate: null });
+          return true;
+        }
+        if(pr.type === 'goal_complete'){
+          const month = monthNow();
+          const g = st.goals.find(x => x && x.title === pr.title && x.month === month && !x.completed);
+          if(!g) return false;
+          g.completed = true;
+          g.completedDate = dayNow();
+          return true;
+        }
+        if(pr.type === 'aim_progress'){
+          const a = st.chiefAims.find(x => x && x.name === pr.name);
+          if(!a) return false;
+          if(!a.score || typeof a.score !== 'object') a.score = { current: null, target: null, history: [] };
+          if(!Array.isArray(a.score.history)) a.score.history = [];
+          a.score.history.push({ date: dayNow(), value: pr.current });
+          a.score.current = pr.current;
+          return true;
+        }
+        return false;
+      });
+    }
+
+    function proposalCopy(pr){
+      if(pr.type === 'goal_add')      return { label: 'Add to this month', body: pr.title, yes: 'Add it' };
+      if(pr.type === 'goal_complete') return { label: 'Mark as done',      body: pr.title, yes: 'Mark done' };
+      if(pr.type === 'aim_progress')  return { label: 'Update your score',
+        body: pr.name + ' — ' + pr.current + (pr.target != null ? ' of ' + pr.target : ''), yes: 'Update' };
+      return null;
+    }
+
+    function renderProposals(list){
+      list.forEach(pr => {
+        const copy = proposalCopy(pr);
+        if(!copy) return;
+        const card = document.createElement('div');
+        card.className = 'prop';
+        card.innerHTML = '<div class="prop-label">' + escapeHtml(copy.label) + '</div>' +
+                         '<div class="prop-title">' + escapeHtml(copy.body) + '</div>' +
+                         '<div class="prop-actions"></div>';
+        const actions = card.querySelector('.prop-actions');
+        const yes = document.createElement('button');
+        yes.type = 'button'; yes.className = 'prop-btn yes'; yes.textContent = copy.yes;
+        const no = document.createElement('button');
+        no.type = 'button'; no.className = 'prop-btn'; no.textContent = 'Not now';
+        actions.append(yes, no);
+
+        yes.addEventListener('click', async () => {
+          yes.disabled = true; no.disabled = true;
+          const done = await applyProposal(pr);
+          actions.innerHTML = '';
+          const said = document.createElement('span');
+          said.className = 'prop-done';
+          said.textContent = done ? 'In your Sanctuary.' : 'It was already there.';
+          actions.appendChild(said);
+        });
+        // "Not now" leaves no trace and no nagging — no badge, no backlog.
+        no.addEventListener('click', () => { card.remove(); });
+
+        log.appendChild(card);
+        card.scrollIntoView({ block:'end', behavior:'smooth' });
+      });
+    }
+
+    // Cheap client-side gate before spending a model call: either there is
+    // something trackable to complete, or the sentence sounds like a commitment.
+    const COMMIT_RE = /\b(i'?ll|i will|i'?m going to|i am going to|going to|i want to|i need to|tomorrow|tonight|this week|next week|by (?:mon|tue|wed|thu|fri|sat|sun)|finished|i'?ve done|i did|done|completed|shipped|wrote|launched)\b/i;
+
+    async function maybeProposeSanctuary(userText, replyText){
+      const goals = sanctuaryGoals();
+      if(!goals && !COMMIT_RE.test(userText)) return;
+      if(goals && !COMMIT_RE.test(userText)) return;
+      try{
+        const res = await fetch('/api/sanctuary-extract', {
+          method:'POST',
+          headers:{ 'Content-Type':'application/json' },
+          body: JSON.stringify({
+            messages: [{ role:'user', content:userText }, { role:'assistant', content:replyText }],
+            goals: goals || {}
+          })
+        });
+        const data = await res.json().catch(() => null);
+        const list = data && Array.isArray(data.proposals) ? data.proposals : [];
+        if(list.length) renderProposals(list);
+      }catch(e){
+        // Silent. The conversation matters more than the bookkeeping.
+      }
+    }
 
     async function send(){
       const text = inp.value.trim();
@@ -790,6 +993,7 @@
           if(!pr.history.interactions) pr.history.interactions = [];
           pr.history.interactions.push({ at: Date.now(), kind:'companion-vbrtn', text: reply });
           saveProfile(pr);
+          maybeProposeSanctuary(text, reply);
         } else {
           addBubble('vbrtn', 'I went quiet for a moment. Say it once more?');
         }
