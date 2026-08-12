@@ -1,3 +1,43 @@
+## 2026-08-12 — VBRTN in the Android app: companion tab, wake media, learning signals, APK built
+
+**Did.** Made VBRTN testable on Android and produced the debug APK. Four moves:
+1. **Companion tab in the app shell.** Fifth tab (`vbrtn`, waveform icon) in `app/src/index.html`
+   + a `/vbrtn` route in `app/src/main.ts` that loads the live
+   `https://frqncy.network/my-frqncy/vbrtn/` in the iframe shell — chat via `/api/companion`
+   (keyless Workers-AI lane, verified live with a real request), intake, recovery questions,
+   Sanctuary read/propose-write all included. The home "speak with vbrtn" card now routes there
+   so the tab highlights.
+2. **Wake media.** Bedside gains a "wake with" row: paste a YouTube or direct-audio link (stored
+   at `frqncy.bedside.wake_media`, localStorage only). The native alarm still rings with the
+   bundled tone — reliability never depends on the network; the link surfaces on `wake.html` as
+   the first post-arrival button (direct audio plays via NativeAudio when present, everything
+   else opens via `@capacitor/browser`, which is installed).
+3. **Aggregate learning v0.** `vbrtn_signal` event allow-listed in `functions/api/analytics.js`
+   (→ Supabase `analytics_events`); `my-frqncy/vbrtn/index.html` now sends fire-and-forget
+   anonymized pattern signals — HD-type shape, state word, intervention kind, landed/rotated —
+   on exchange, recovery-shown (deduped), recovery-rotated, and proposal accept/decline. No user
+   content ever leaves the device, per the cause doc's privacy floor. Per-user learning was
+   already live (profile, modal-operator capture from chat, recovery rotation).
+4. **Built the APK locally** — `vite build` + `cap sync android` + `gradlew assembleDebug`
+   (Android Studio jbr + `/opt/homebrew/share/android-commandlinetools`). BUILD SUCCESSFUL, 12 MB,
+   sha256 `78d805f6…445a9f`. Copied to `~/Desktop/VBRTN-debug-2026-08-12.apk`.
+
+**Opened.** Nothing filed.
+
+**Finished, and how verified.** Web bundle built clean (new hashes `bedside-CBhmriEw`,
+`wake-BJrhBJ4x`, `main-CMNV9fJs` confirmed inside `android/app/src/main/assets/public/`); all
+four touched HTML files' inline scripts parse under `new Function`; `analytics.js` passes
+`node --check`; Gradle build succeeded. `/api/companion` answered live via the workers-ai lane.
+
+**Left.** (1) NOT verified on a physical phone — install the Desktop APK and walk the checklist
+in `app/docs/SHIPPING-2026-04-29.md` (arm → lock → fire → breath-hold → wake screen shows the
+media button if a link is set). (2) The `vbrtn_signal` allowlist entry and the signal sender only
+go live when this branch reaches `main` (Cloudflare Pages deploys from main) — until then the
+client sender fails silently by design. Whether `analytics_events` accepts the row shape was NOT
+verified against Supabase. (3) The companion tab needs network; offline it shows the standard
+frame-error screen. (4) Notion TASK BOARD row not created for this session — mirror per
+`proposals/COORDINATION-PROTOCOL.md` if this becomes tracked work.
+
 ## 2026-08-12 — Universal login: one account, reachable from anywhere on the site
 
 **Did.** Built `assets/frqncy-auth.js` — a site-wide sign-in sheet + account control — and wired

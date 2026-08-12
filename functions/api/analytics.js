@@ -38,6 +38,11 @@ const ALLOWED_EVENTS = new Set([
   // Sanctuary / Word Illuminator
   'word_illuminated', 'illuminator_opened',
   'practice_session_started', 'practice_session_completed',
+  // VBRTN — anonymized aggregate-learning signal (see the companion cause doc:
+  // proposals/MY-FRQNCY-VBRTN-COMPANION-2026-05-22.md, "Aggregate" section).
+  // Properties carry PATTERNS only — user shape (HD type), state word,
+  // intervention kind, landed/rotated/accepted — never the user's words.
+  'vbrtn_signal',
   // Identity / auth
   'signup', 'login', 'key_backed_up',
   // Social (NRG)

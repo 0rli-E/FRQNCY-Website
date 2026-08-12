@@ -118,6 +118,14 @@ function navigate(route: string) {
     setActiveTab('/explore');
     return;
   }
+  if (route === '/vbrtn') {
+    // The companion is a live surface — chat runs through /api/companion on
+    // the site's own origin (free Workers AI lane, Claude when keyed), the
+    // intake and Sanctuary read/propose-write all live there. Loading it in
+    // the iframe shell keeps the tab bar visible and the API same-origin.
+    openExternal('https://frqncy.network/my-frqncy/vbrtn/', '/vbrtn');
+    return;
+  }
   if (route.startsWith('/app/')) {
     const resolvedSrc = new URL(route.replace(/^\//, './'), window.location.href).toString();
     // Skip reload if the iframe is already on this URL — preserves in-page

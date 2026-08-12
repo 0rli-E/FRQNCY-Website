@@ -301,6 +301,28 @@
 
   const shell = document.getElementById('shell');
 
+  // ── Aggregate learning, v0 — anonymized signals ────────
+  // The network learns which intervention SHAPES work for which user SHAPES,
+  // never content. What leaves the device: the HD type, the current feeling
+  // word, the intervention kind, and whether it landed. What never leaves:
+  // anything the user wrote. Fire-and-forget — the conversation never waits
+  // on the bookkeeping, and a blocked request changes nothing.
+  const SIGNAL_SESSION = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+  function signal(kind, extra){
+    try{
+      const p = loadProfile() || {};
+      const props = Object.assign({
+        shape: (p.design && p.design.hd && !p.design.hd._stub && p.design.hd.type) || 'unknown',
+        state: (p.standing && p.standing.recentFeeling) || null,
+        intervention: kind
+      }, extra || {});
+      fetch('/api/analytics', {
+        method:'POST', headers:{ 'Content-Type':'application/json' },
+        body: JSON.stringify({ event_type:'vbrtn_signal', session_id: SIGNAL_SESSION, properties: props })
+      }).catch(()=>{});
+    }catch(e){}
+  }
+
   function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
   function cap(s){ if(!s) return s; return s[0].toUpperCase() + s.slice(1); }
 
@@ -685,6 +707,8 @@
     rot[currentKind] = (currentIdx + 1) % arr.length;
     rot.lastKind = currentKind;
     setRecoveryRotation(rot);
+    // A rotation is a signal the shown angle did not land for this shape.
+    signal('recovery-rotated', { kind: currentKind, prompt: currentIdx, landed: false });
     renderAll(loadProfile());
   }
 
@@ -965,9 +989,10 @@
           said.className = 'prop-done';
           said.textContent = done ? 'In your Sanctuary.' : 'It was already there.';
           actions.appendChild(said);
+          signal('proposal', { kind: pr.type, landed: true });
         });
         // "Not now" leaves no trace and no nagging — no badge, no backlog.
-        no.addEventListener('click', () => { card.remove(); });
+        no.addEventListener('click', () => { card.remove(); signal('proposal', { kind: pr.type, landed: false }); });
 
         log.appendChild(card);
         card.scrollIntoView({ block:'end', behavior:'smooth' });
@@ -1042,6 +1067,7 @@
         const reply = data && data.response ? data.response : null;
         stored.push({ role:'user', content: text });
         if(reply){
+          signal('exchange', { landed: true, via: (data && data.via) || null });
           addBubble('vbrtn', reply);
           stored.push({ role:'assistant', content: reply });
           const pr = loadProfile() || profile;
@@ -1072,6 +1098,13 @@
       const rotateBtn = document.getElementById('rotateBtn');
       if(rotateBtn){
         rotateBtn.addEventListener('click', ()=> rotateRecovery(recovery.kind, recovery.idx));
+      }
+      // One impression per distinct card per page-session — re-renders
+      // (cloud sync, rotation) must not double-count the same showing.
+      const shownKey = recovery.kind + ':' + recovery.idx;
+      if(signal._lastShown !== shownKey){
+        signal._lastShown = shownKey;
+        signal('recovery-shown', { kind: recovery.kind, prompt: recovery.idx });
       }
     }
   }

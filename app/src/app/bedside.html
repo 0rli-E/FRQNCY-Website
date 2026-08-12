@@ -361,6 +361,56 @@
         border: 1px solid rgba(245, 245, 245, 0.18);
         color: rgba(245, 245, 245, 0.7);
       }
+      /* Wake-media editor — collapsed under the "wake with" row. Same visual
+         language as the sheet inputs elsewhere: faint gold border, navy fill. */
+      .wake-media-editor {
+        padding: 4px 0 16px;
+        border-top: 1px solid rgba(245, 245, 245, 0.06);
+      }
+      .wake-media-editor input {
+        width: 100%;
+        margin-top: 12px;
+        padding: 12px 14px;
+        background: rgba(245, 245, 245, 0.04);
+        border: 1px solid rgba(196, 151, 58, 0.22);
+        border-radius: 12px;
+        color: rgba(245, 245, 245, 0.92);
+        font-family: inherit;
+        font-size: 14px;
+        outline: none;
+        transition: border-color 200ms ease;
+      }
+      .wake-media-editor input:focus { border-color: rgba(196, 151, 58, 0.55); }
+      .wake-media-editor input::placeholder { color: rgba(245, 245, 245, 0.4); }
+      .wake-media-actions { display: flex; gap: 10px; margin-top: 10px; }
+      .wake-media-actions button {
+        flex: 1;
+        padding: 10px 12px;
+        border-radius: 10px;
+        font-size: 12.5px;
+        letter-spacing: 0.5px;
+        font-family: inherit;
+        cursor: pointer;
+        -webkit-tap-highlight-color: transparent;
+      }
+      #wake-media-save {
+        background: rgba(196, 151, 58, 0.18);
+        border: 1px solid rgba(196, 151, 58, 0.5);
+        color: #C4973A;
+      }
+      #wake-media-tone {
+        background: none;
+        border: 1px solid rgba(245, 245, 245, 0.14);
+        color: rgba(245, 245, 245, 0.65);
+      }
+      .wake-media-note {
+        margin-top: 10px;
+        font-size: 11.5px;
+        font-weight: 300;
+        line-height: 1.5;
+        color: rgba(245, 245, 245, 0.45);
+      }
+
       /* Native time input is functionally retained (showPicker / focus
          fallback) but visually invisible — the big 06:45 button is the
          only control the user sees. */
@@ -536,6 +586,24 @@
             <span class="toggle-sub">one question after arriving — no answer needed</span>
           </div>
           <div class="switch on" id="reflection" role="switch" tabindex="0" aria-checked="true" aria-label="Post-wake reflection prompt"></div>
+        </div>
+        <div class="toggle-row">
+          <div class="toggle-text">
+            <span class="toggle-label">wake with</span>
+            <span class="toggle-sub" id="wake-media-sub">the 432Hz tone</span>
+          </div>
+          <button class="time-edit" id="wake-media-change" type="button">change</button>
+        </div>
+        <div class="wake-media-editor" id="wake-media-editor" hidden>
+          <input type="url" id="wake-media-url" inputmode="url" autocapitalize="none"
+                 autocomplete="off" spellcheck="false"
+                 placeholder="paste a youtube or audio link"
+                 aria-label="YouTube or audio link to open after waking" />
+          <div class="wake-media-actions">
+            <button id="wake-media-save" type="button">use this link</button>
+            <button id="wake-media-tone" type="button">just the tone</button>
+          </div>
+          <p class="wake-media-note">the alarm always rings with the gentle tone — your link opens on the wake screen, right after you arrive.</p>
         </div>
 
         <button class="arm-btn" id="arm">set for tonight</button>
@@ -985,6 +1053,70 @@
         oemModal.close();
         // Don't set the ack flag — they'll see the prompt next arm.
       });
+
+      // --- Wake media -----------------------------------------------------
+      // What plays AFTER the user arrives: default is nothing beyond the
+      // native tone; the user can paste a YouTube or direct-audio link which
+      // wake.html surfaces as a one-tap "open my wake sound" the moment the
+      // breath-hold completes. The native alarm tone is untouched — reliable
+      // wake never depends on the network.
+      const WAKE_MEDIA_KEY = 'frqncy.bedside.wake_media';
+      const wakeMediaSub = document.getElementById('wake-media-sub');
+      const wakeMediaChange = document.getElementById('wake-media-change');
+      const wakeMediaEditor = document.getElementById('wake-media-editor');
+      const wakeMediaUrl = document.getElementById('wake-media-url');
+      const wakeMediaSave = document.getElementById('wake-media-save');
+      const wakeMediaTone = document.getElementById('wake-media-tone');
+
+      function loadWakeMedia() {
+        try { return JSON.parse(localStorage.getItem(WAKE_MEDIA_KEY) || 'null'); }
+        catch { return null; }
+      }
+      function saveWakeMedia(m) {
+        try {
+          if (m) localStorage.setItem(WAKE_MEDIA_KEY, JSON.stringify(m));
+          else localStorage.removeItem(WAKE_MEDIA_KEY);
+        } catch {}
+      }
+      function wakeMediaLabel(m) {
+        if (!m || m.kind !== 'link') return 'the 432Hz tone';
+        if (/youtube\.com|youtu\.be/i.test(m.url)) return 'the tone, then your youtube link';
+        if (/\.(mp3|m4a|wav|ogg)(\?|$)/i.test(m.url)) return 'the tone, then your audio';
+        return 'the tone, then your link';
+      }
+      function renderWakeMedia() {
+        const m = loadWakeMedia();
+        wakeMediaSub.textContent = wakeMediaLabel(m);
+        if (m && m.kind === 'link') wakeMediaUrl.value = m.url;
+      }
+      wakeMediaChange.addEventListener('click', () => {
+        const showing = !wakeMediaEditor.hidden;
+        wakeMediaEditor.hidden = showing;
+        wakeMediaChange.textContent = showing ? 'change' : 'close';
+        if (!showing) setTimeout(() => wakeMediaUrl.focus(), 60);
+      });
+      wakeMediaSave.addEventListener('click', () => {
+        const raw = (wakeMediaUrl.value || '').trim();
+        let u = null;
+        try { u = new URL(raw); } catch {}
+        if (!u || (u.protocol !== 'https:' && u.protocol !== 'http:')) {
+          showToast('that doesn’t look like a link. paste the full url — starting with https://', 5000);
+          return;
+        }
+        saveWakeMedia({ kind: 'link', url: u.toString(), setAt: Date.now() });
+        renderWakeMedia();
+        wakeMediaEditor.hidden = true;
+        wakeMediaChange.textContent = 'change';
+        showToast('saved. it opens on the wake screen tomorrow.', 4000);
+      });
+      wakeMediaTone.addEventListener('click', () => {
+        saveWakeMedia(null);
+        wakeMediaUrl.value = '';
+        renderWakeMedia();
+        wakeMediaEditor.hidden = true;
+        wakeMediaChange.textContent = 'change';
+      });
+      renderWakeMedia();
 
       toSleep.addEventListener('click', () => {
         window.location.href = './sleep.html';

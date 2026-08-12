@@ -262,6 +262,7 @@
         <div class="reflection-note">private. saved on this phone only. never shown back to you.</div>
         <div class="reflection-note soft">yours to keep, or let go.</div>
         <div class="next">
+          <button id="wake-media" type="button" hidden>open my wake sound</button>
           <button id="movement" type="button">move with me · 3 min</button>
           <button id="close" type="button">carry on</button>
         </div>
@@ -603,6 +604,55 @@
         try { window.open(pick.url, '_blank'); } catch {}
         setMovementState('idle', movementDefaultLabel);
       }
+
+      // --- Wake media (set on Bedside) -----------------------------------
+      // If the user chose a YouTube / audio link as their wake medium, it
+      // surfaces here as the first affordance after arrival. Direct audio
+      // plays in-app when the NativeAudio plugin is present; everything else
+      // (YouTube included) opens in the in-app browser. The native alarm
+      // tone already did the waking — this is the texture on top.
+      const wakeMediaBtn = document.getElementById('wake-media');
+      const wakeMedia = (() => {
+        try { return JSON.parse(localStorage.getItem('frqncy.bedside.wake_media') || 'null'); }
+        catch { return null; }
+      })();
+      let wakeMediaAssetId = null;
+      async function stopWakeMedia() {
+        if (NativeAudio && wakeMediaAssetId) {
+          try { await NativeAudio.stop({ assetId: wakeMediaAssetId }); } catch {}
+          try { await NativeAudio.unload({ assetId: wakeMediaAssetId }); } catch {}
+        }
+        wakeMediaAssetId = null;
+      }
+      if (wakeMedia && wakeMedia.kind === 'link' && wakeMedia.url) {
+        const isYouTube = /youtube\.com|youtu\.be/i.test(wakeMedia.url);
+        const isDirectAudio = /\.(mp3|m4a|wav|ogg)(\?|$)/i.test(wakeMedia.url);
+        wakeMediaBtn.hidden = false;
+        wakeMediaBtn.textContent = isYouTube ? 'play my wake video' : 'play my wake sound';
+        wakeMediaBtn.addEventListener('click', async () => {
+          if (wakeMediaAssetId) return; // playing — the once-stop listener owns this tap
+          if (NativeAudio && isDirectAudio) {
+            try {
+              wakeMediaAssetId = 'frqncy.wakemedia';
+              await NativeAudio.preload({ assetId: wakeMediaAssetId, assetPath: wakeMedia.url, audioChannelNum: 1, isUrl: true });
+              await NativeAudio.play({ assetId: wakeMediaAssetId });
+              wakeMediaBtn.textContent = 'playing · tap to stop';
+              wakeMediaBtn.addEventListener('click', () => {
+                stopWakeMedia();
+                wakeMediaBtn.textContent = 'play my wake sound';
+              }, { once: true });
+              return;
+            } catch {
+              wakeMediaAssetId = null;
+            }
+          }
+          if (Browser) {
+            try { await Browser.open({ url: wakeMedia.url }); return; } catch {}
+          }
+          try { window.open(wakeMedia.url, '_blank'); } catch {}
+        });
+      }
+      window.addEventListener('pagehide', () => { stopWakeMedia(); });
 
       movementBtn.addEventListener('click', () => {
         if (movementBtn.disabled) return;
