@@ -302,8 +302,15 @@ function watchDeepLinks() {
 // behind Bedside.
 function watchAlarmFired() {
   try {
-    void FrqncyAlarm.addListener('alarmFired', (event) => {
-      recordAlarmFired(event.firedAt || Date.now());
+    // addListener REJECTS (not throws) on web where the native plugin isn't
+    // implemented — the try/catch alone leaves an unhandled rejection in the
+    // console on every dev load. Swallow it; the gate just stays strict.
+    Promise.resolve(
+      FrqncyAlarm.addListener('alarmFired', (event) => {
+        recordAlarmFired(event.firedAt || Date.now());
+      }),
+    ).catch(() => {
+      /* Plugin not available — gate stays strict. */
     });
   } catch {
     /* Plugin not available — gate stays strict. */
