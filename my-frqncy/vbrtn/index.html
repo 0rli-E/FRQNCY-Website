@@ -162,6 +162,47 @@
     .knows-grid{grid-template-columns:1fr}
   }
 
+  /* Chat-first: the thread IS the surface. Everything else is reference,
+     folded away until asked for. */
+  .morning.compact{margin:0 0 14px;padding:0;border:none;background:none}
+  .morning.compact h1{font-size:19px;line-height:1.4;margin:2px 0 0;font-weight:400}
+  .morning.compact .sub{font-size:13px;margin-top:4px;opacity:.75}
+  .thread .thread-log{min-height:52vh}
+  .extras{margin-top:22px;border-top:1px solid var(--card-border,rgba(255,255,255,.08));padding-top:6px}
+  .extras>summary{cursor:pointer;list-style:none;padding:12px 2px;font-size:11px;letter-spacing:.14em;
+    text-transform:uppercase;color:var(--ink-dim);display:flex;align-items:center;gap:8px}
+  .extras>summary::-webkit-details-marker{display:none}
+  .extras>summary::after{content:'\u2304';margin-left:auto;transition:transform .2s}
+  .extras[open]>summary::after{transform:rotate(180deg)}
+  .extras>summary:hover{color:var(--gold)}
+
+  /* Sign in, inline — the installed app must never bounce you to a browser tab */
+  .acct{display:flex;align-items:center;gap:10px}
+  .acct-btn{background:transparent;border:1px solid var(--gold-dim,#5a4c2a);color:var(--gold,#d9c38a);
+    font:inherit;font-size:12px;padding:5px 12px;border-radius:999px;cursor:pointer}
+  .acct-btn:hover{background:rgba(217,195,138,.12)}
+  .acct-who{font-size:11px;color:var(--ink-dim);max-width:44vw;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+  .sheet{position:fixed;inset:0;background:rgba(4,10,24,.86);display:flex;align-items:flex-end;
+    justify-content:center;z-index:60;padding:0}
+  .sheet-card{background:var(--card,#0f1b33);border:1px solid var(--card-border,rgba(255,255,255,.1));
+    border-radius:14px 14px 0 0;padding:22px 20px calc(22px + env(safe-area-inset-bottom));width:100%;max-width:520px}
+  .sheet-card h2{font-family:'Cormorant Garamond',serif;font-size:22px;margin:0 0 4px;font-weight:400}
+  .sheet-card p.lede{font-size:13px;color:var(--ink-dim);margin:0 0 16px;line-height:1.5}
+  .sheet-card label{display:block;font-size:11px;letter-spacing:.1em;text-transform:uppercase;
+    color:var(--ink-dim);margin:12px 0 5px}
+  .sheet-card input{width:100%;box-sizing:border-box;background:rgba(255,255,255,.04);
+    border:1px solid var(--card-border,rgba(255,255,255,.14));border-radius:6px;color:var(--ink,#eef2f8);
+    font:inherit;font-size:16px;padding:11px 12px}
+  .sheet-card input:focus{outline:none;border-color:var(--gold-dim,#5a4c2a)}
+  .sheet-actions{display:flex;gap:9px;margin-top:18px;flex-wrap:wrap}
+  .sheet-actions .btn{flex:1;min-width:120px;text-align:center;padding:11px 16px;font-size:14px}
+  .sheet-msg{font-size:13px;margin-top:12px;line-height:1.5}
+  .sheet-msg.err{color:#e8a0a0}
+  .sheet-msg.ok{color:var(--gold-light,#d9c38a)}
+  .sheet-alt{margin-top:14px;font-size:12px;color:var(--ink-dim);text-align:center}
+  .sheet-alt button{background:none;border:none;color:var(--gold,#d9c38a);font:inherit;font-size:12px;
+    text-decoration:underline;cursor:pointer;padding:0}
+
   /* Gene Keys spectrum in the design readout */
   .chart dt.gk-dt, .chart dd.gk-dd{grid-column:1 / -1}
   .chart dt.gk-dt{margin-top:6px}
@@ -662,12 +703,12 @@
       <div class="topbar">
         <div class="wordmark">VBRTN</div>
         <nav class="topbar-nav">
-          <a href="/my-frqncy/intake/">Intake</a>
+          <span class="acct" id="acctSlot"></span>
           <a href="/my-frqncy/dashboard/">Sanctuary</a>
         </nav>
       </div>
 
-      <section class="morning">
+      <section class="morning compact">
         <div class="label">Today</div>
         <h1>${escapeHtml(morn.primary)}</h1>
         ${morn.sub ? `<div class="sub">${escapeHtml(morn.sub)}</div>` : ''}
@@ -693,8 +734,12 @@
       </section>
     `;
 
+    // Everything below the thread is REFERENCE, not the surface. VBRTN is a
+    // conversation; the design, the trail and the recovery card are what it is
+    // working FROM. They stay one tap away instead of pushing the chat off screen.
+    let extra = '';
     if(recovery){
-      html += `
+      extra += `
         <section class="recovery">
           <div class="label">A sentence the companion came back to</div>
           <div class="echo">You wrote: <span class="quoted">${escapeHtml(recovery.sentence)}</span></div>
@@ -708,7 +753,7 @@
     }
 
     if(insights.length > 0){
-      html += `
+      extra += `
         <section class="sees">
           <div class="label">What VBRTN sees</div>
           ${insights.map(l => `<p>${escapeHtml(l)}</p>`).join('')}
@@ -734,10 +779,10 @@
       `;
     }
 
-    html += `<section class="trail" id="trailSection"><div class="label">A trail VBRTN hands you</div><p class="trail-empty">Gathering your trail…</p></section>`;
+    extra += `<section class="trail" id="trailSection"><div class="label">A trail VBRTN hands you</div><p class="trail-empty">Gathering your trail…</p></section>`;
 
     if(hd && hd.type){
-      html += `
+      extra += `
         <section class="chart">
           <div class="label">Your design</div>
           <dl>
@@ -754,7 +799,7 @@
     }
 
     if(remember){
-      html += `
+      extra += `
         <section class="sees" style="border-color:var(--gold-dim)">
           <div class="label">You asked the companion to remember</div>
           <p>${escapeHtml(remember)}</p>
@@ -762,15 +807,19 @@
       `;
     }
 
-    html += `
+    extra += `
       <div class="actions-row">
         <a class="btn primary" href="/my-frqncy/dashboard/">Open the Sanctuary →</a>
         <a class="btn ghost" href="/my-frqncy/intake/">Update intake</a>
       </div>
     `;
+    if(extra){
+      html += `<details class="extras"><summary>What VBRTN is working with</summary>${extra}</details>`;
+    }
 
     shell.innerHTML = html;
     paintGeneKeys();
+    acctInit();
 
     // ── Wire the companion thread ──────────────────────────
     const log = document.getElementById('threadLog');
@@ -1066,7 +1115,121 @@
   // ── Boot ─────────────────────────────────────────────
   renderAll(loadProfile());
   // Re-render when a cloud profile arrives after sign-in (e.g. a fresh device).
-  if(window.FRQNCYVbrtn) window.FRQNCYVbrtn.onSync(function(){ renderAll(loadProfile()); });
+  // ── Signing in, without leaving the room ──────────────────────────
+  // The intake lives in localStorage on whatever device answered it, so on a
+  // second device VBRTN meets a stranger. Signing in is what carries the profile
+  // across — the store already mirrors to the cloud and merges newest-wins; what
+  // was missing was any way to sign in from here.
+  //
+  // It is a sheet on this page rather than a link to /social/login/ on purpose:
+  // the installed app is scoped to /my-frqncy/, so sending someone to /social/
+  // would bounce them out of the app into a browser tab mid-task.
+  function acctRender(user){
+    const slot = document.getElementById('acctSlot');
+    if(!slot) return;
+    slot.innerHTML = '';
+    if(user){
+      const who = document.createElement('span');
+      who.className = 'acct-who';
+      who.textContent = user.email || 'signed in';
+      const out = document.createElement('button');
+      out.type='button'; out.className='acct-btn'; out.textContent='Sign out';
+      out.addEventListener('click', async () => {
+        try{ await window.frqncy.auth.signOut(); }catch(e){}
+        acctRender(null);
+      });
+      slot.append(who, out);
+    } else {
+      const b = document.createElement('button');
+      b.type='button'; b.className='acct-btn'; b.textContent='Sign in';
+      b.addEventListener('click', openSignIn);
+      slot.appendChild(b);
+    }
+  }
+
+  function openSignIn(){
+    if(document.getElementById('vbrtnSheet')) return;
+    const wrap = document.createElement('div');
+    wrap.className = 'sheet'; wrap.id = 'vbrtnSheet';
+    wrap.innerHTML = `
+      <div class="sheet-card" role="dialog" aria-modal="true" aria-label="Sign in">
+        <h2>Bring your profile with you</h2>
+        <p class="lede">Your intake lives on the device that answered it. Sign in and it follows you — this phone, your laptop, the same conversation.</p>
+        <label for="acEmail">Email</label>
+        <input id="acEmail" type="email" inputmode="email" autocomplete="email" autocapitalize="none" spellcheck="false" placeholder="you@example.com">
+        <label for="acPass">Password</label>
+        <input id="acPass" type="password" autocomplete="current-password" placeholder="Your password">
+        <div class="sheet-actions">
+          <button class="btn primary" id="acGo" type="button">Sign in</button>
+          <button class="btn ghost" id="acClose" type="button">Not now</button>
+        </div>
+        <div class="sheet-msg" id="acMsg"></div>
+        <div class="sheet-alt">No password, or forgotten it? <button id="acMagic" type="button">Email me a sign-in link</button></div>
+      </div>`;
+    document.body.appendChild(wrap);
+    const email = wrap.querySelector('#acEmail');
+    const pass  = wrap.querySelector('#acPass');
+    const msg   = wrap.querySelector('#acMsg');
+    const go    = wrap.querySelector('#acGo');
+    const close = () => wrap.remove();
+    const say = (t, cls) => { msg.className = 'sheet-msg ' + (cls||''); msg.textContent = t; };
+
+    wrap.querySelector('#acClose').addEventListener('click', close);
+    wrap.addEventListener('click', (e) => { if(e.target === wrap) close(); });
+
+    if(!window.frqncy){
+      say('This surface needs to be online to sign in. Your profile is safe on this device either way.', 'err');
+      go.disabled = true;
+    }
+
+    go.addEventListener('click', async () => {
+      const em = (email.value||'').trim(), pw = pass.value||'';
+      if(!em || !pw){ say('Both fields, then.', 'err'); return; }
+      go.disabled = true; say('Signing in…');
+      try{
+        await window.frqncy.ready;
+        const r = await window.frqncy.auth.signIn({ email: em, password: pw });
+        if(r && r.error) throw new Error(r.error.message || 'Sign in failed');
+        say('Signed in. Pulling your profile…', 'ok');
+        // The store attaches on the auth event, merges newest-wins, then fires
+        // onSync -> renderAll. Close once that has had a moment to land.
+        setTimeout(() => { close(); acctRender({ email: em }); }, 1400);
+      }catch(err){
+        go.disabled = false;
+        say((err && err.message) ? err.message : 'That did not work. Check the address and password.', 'err');
+      }
+    });
+
+    wrap.querySelector('#acMagic').addEventListener('click', async () => {
+      const em = (email.value||'').trim();
+      if(!em){ say('Put your email in first and I will send the link there.', 'err'); return; }
+      try{
+        await window.frqncy.ready;
+        const r = await window.frqncy.auth.signInMagic(em);
+        if(r && r.error) throw new Error(r.error.message || 'Could not send it');
+        say('Sent. Open the link on THIS phone so it signs in here.', 'ok');
+      }catch(err){
+        say((err && err.message) ? err.message : 'Could not send the link.', 'err');
+      }
+    });
+
+    setTimeout(() => email.focus(), 60);
+  }
+
+  // Paint the account control on first render and whenever auth changes.
+  function acctInit(){
+    acctRender(null);
+    if(!window.frqncy) return;
+    window.frqncy.ready
+      .then(() => window.frqncy.auth.getUser())
+      .then(u => acctRender(u))
+      .catch(() => {});
+    if(typeof window.frqncy.onAuth === 'function'){
+      window.frqncy.onAuth((u) => { acctRender(u); });
+    }
+  }
+
+  if(window.FRQNCYVbrtn) window.FRQNCYVbrtn.onSync(function(){ renderAll(loadProfile()); acctInit(); });
 })();
 </script>
 </body>
