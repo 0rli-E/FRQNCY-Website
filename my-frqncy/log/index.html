@@ -8,10 +8,11 @@
 <meta name="mobile-web-app-capable" content="yes">
 <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 <meta name="apple-mobile-web-app-title" content="My FRQNCY">
-<title>My FRQNCY — Sanctuary</title>
-<meta name="description" content="Your private space inside the FRQNCY network. The dashboard, your charts, your intake, your daily practice.">
+<title>Your Log — My FRQNCY</title>
+<meta name="description" content="Everything you set in motion across FRQNCY — courses, practice, watching, the Sanctuary, VBRTN, NRG — read back in one place. Visible only to you.">
 <meta name="theme-color" content="#0B1C3D">
-<link rel="canonical" href="https://frqncy.network/my-frqncy/">
+<meta name="robots" content="noindex">
+<link rel="canonical" href="https://frqncy.network/my-frqncy/log/">
 <link rel="icon" type="image/svg+xml" href="/favicon.svg">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -19,23 +20,40 @@
 <link rel="stylesheet" href="/nav-dropdown.css">
 <script src="/mobile-nav.js" defer></script>
 <script src="/chat-widget.js" defer></script>
+<script src="/assets/frqncy-supabase.js?v=20260812" defer></script>
 <style>
 *,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
 :root{--navy:#0B1C3D;--gold:#C4973A;--gold-light:#E0C06A;--text:#C8D8F0;--text-dim:#7090B8;--card-bg:rgba(255,255,255,0.025);--card-border:rgba(255,255,255,0.08)}
 html,body{background:var(--navy);color:var(--text);font-family:'Jost',sans-serif;font-weight:300;min-height:100vh;line-height:1.65;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
-main{max-width:880px;margin:96px auto 4rem;padding:0 clamp(1.25rem,5vw,2.5rem)}
+main{max-width:760px;margin:96px auto 4rem;padding:0 clamp(1.25rem,5vw,2.5rem)}
 .eyebrow{font-size:0.62rem;letter-spacing:0.32em;text-transform:uppercase;color:var(--gold);margin-bottom:1rem;text-align:center}
 h1{font-family:'Cormorant',serif;font-size:clamp(2.6rem,6vw,4.4rem);font-weight:300;color:#fff;text-align:center;line-height:1.05;letter-spacing:0.005em;margin-bottom:1.4rem}
 h1 em{font-style:italic;color:var(--gold-light)}
-.lede{font-size:1.05rem;color:var(--text);max-width:620px;margin:0 auto 3rem;text-align:center;line-height:1.85}
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:1.1rem;margin-top:2rem}
-.card{display:block;background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1.4rem 1.5rem;transition:border-color .2s,background .2s,transform .2s}
-.card:hover{border-color:rgba(196,151,58,0.42);background:rgba(255,255,255,0.05);transform:translateY(-1px)}
-.card .eyebrow{text-align:left;margin-bottom:0.6rem;opacity:0.85}
-.card h3{font-family:'Cormorant',serif;font-size:1.5rem;font-weight:400;color:#fff;margin-bottom:0.5rem;line-height:1.2}
-.card p{font-size:0.86rem;color:var(--text-dim);line-height:1.65}
-.card-go{display:block;font-size:0.66rem;letter-spacing:0.18em;text-transform:uppercase;color:var(--gold);margin-top:0.9rem;padding-top:0.7rem;border-top:1px solid rgba(255,255,255,0.06)}
+.lede{font-size:1.05rem;color:var(--text);max-width:620px;margin:0 auto 2.6rem;text-align:center;line-height:1.85}
+.gate{max-width:460px;margin:0 auto;background:var(--card-bg);border:1px solid var(--card-border);border-radius:4px;padding:1.6rem 1.7rem;text-align:center}
+.gate h3{font-family:'Cormorant',serif;font-size:1.5rem;font-weight:400;color:#fff;margin-bottom:0.6rem}
+.gate p{font-size:0.88rem;color:var(--text-dim);margin-bottom:1.2rem}
+.gate button{font-family:inherit;font-size:0.68rem;letter-spacing:0.18em;text-transform:uppercase;background:var(--gold);color:var(--navy);border:1px solid var(--gold);border-radius:3px;padding:11px 26px;cursor:pointer;font-weight:500}
+.gate button:hover{opacity:0.85}
+.gate .alt{display:block;margin-top:0.9rem;font-size:0.72rem;color:var(--text-dim)}
+.gate .alt a{color:var(--gold);border-bottom:1px solid rgba(196,151,58,0.35)}
+.totals{display:flex;flex-wrap:wrap;gap:0.5rem;justify-content:center;margin:0 auto 2.6rem;max-width:640px}
+.totals span{font-size:0.66rem;letter-spacing:0.14em;text-transform:uppercase;color:var(--text-dim);border:1px solid var(--card-border);border-radius:16px;padding:5px 13px;white-space:nowrap}
+.totals span b{color:var(--gold-light);font-weight:500;margin-right:4px}
+.day{margin-bottom:2.2rem}
+.day h2{font-family:'Cormorant',serif;font-size:1.35rem;font-weight:400;color:#fff;margin-bottom:0.8rem;padding-bottom:0.45rem;border-bottom:1px solid rgba(255,255,255,0.07)}
+.entry{display:flex;align-items:baseline;gap:0.85rem;padding:0.42rem 0;font-size:0.9rem}
+.entry .when{flex:0 0 3.1rem;font-size:0.7rem;color:var(--text-dim);letter-spacing:0.06em;text-align:right;font-variant-numeric:tabular-nums}
+.entry .chip{flex:0 0 5.4rem;font-size:0.58rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--gold);opacity:0.85}
+.entry .what{flex:1;color:var(--text);line-height:1.5;min-width:0}
+.entry .what a{border-bottom:1px solid rgba(196,151,58,0.3);transition:border-color .2s,color .2s}
+.entry .what a:hover{color:var(--gold-light);border-color:var(--gold-light)}
+.entry .what .snip{color:var(--text-dim);font-style:italic}
+.quiet{max-width:520px;margin:0 auto;text-align:center;font-size:0.92rem;color:var(--text-dim);line-height:1.8}
+.quiet a{color:var(--gold);border-bottom:1px solid rgba(196,151,58,0.35)}
+.loading{text-align:center;font-size:0.8rem;letter-spacing:0.16em;text-transform:uppercase;color:var(--text-dim)}
+@media(max-width:540px){.entry{flex-wrap:wrap;gap:0.35rem 0.7rem}.entry .when{flex-basis:2.8rem}.entry .chip{flex-basis:auto}.entry .what{flex-basis:100%;padding-left:0}}
 </style>
 </head>
 <body>
@@ -227,53 +245,311 @@ body.frqncy-embed #frq-donate-btn,body.frqncy-embed #frq-donate-pop{display:none
 <!-- ▲▲ FRQNCY_GLOBAL_HEADER ▲▲ -->
 
 <main>
-  <p class="eyebrow">Sanctuary · your private space</p>
-  <h1>My <em>FRQNCY</em></h1>
-  <p class="lede">A quiet room inside the network. Your chart, your daily practice, your dream held in one place — visible only to you, persisted on your device.</p>
+  <p class="eyebrow">One account · one record</p>
+  <h1>Your <em>Log</em></h1>
+  <p class="lede">Everything you set in motion across FRQNCY, read back in one place. Lessons, sittings, pages, posts. Visible only to you.</p>
 
-  <div class="grid">
-    <a class="card" href="/my-frqncy/vbrtn/">
-      <span class="eyebrow">◈ Companion</span>
-      <h3>VBRTN</h3>
-      <p>The one who walks beside you. It knows your design, your Gene Keys and what you are reaching toward — and answers in your own frame.</p>
-      <span class="card-go">Speak →</span>
-    </a>
-    <a class="card" href="/my-frqncy/dashboard/">
-      <span class="eyebrow">✦ Scoreboard</span>
-      <h3>Dashboard</h3>
-      <p>The single page that holds today's practice, the pyramid of where you're headed, the word illuminator, and the earth rhythms.</p>
-      <span class="card-go">Enter →</span>
-    </a>
-    <a class="card" href="/my-frqncy/charts/">
-      <span class="eyebrow">✧ Constellation</span>
-      <h3>Charts</h3>
-      <p>Your Human Design chart, your Gene Keys, your numerology — the map of who you are, read back to you in plain language.</p>
-      <span class="card-go">Read →</span>
-    </a>
-    <a class="card" href="/my-frqncy/intake/">
-      <span class="eyebrow">◇ Begin</span>
-      <h3>Intake</h3>
-      <p>The first conversation. Tell the Sanctuary who you are, what you're working on, and what you need. It listens and remembers.</p>
-      <span class="card-go">Start →</span>
-    </a>
-    <a class="card" href="/my-frqncy/practice/">
-      <span class="eyebrow">▲ Discipline</span>
-      <h3>Daily Practice</h3>
-      <p>The small set of things, repeated. Meditation. Movement. Word. The practice the dashboard is keeping score for.</p>
-      <span class="card-go">Open →</span>
-    </a>
-    <a class="card" href="/my-frqncy/log/">
-      <span class="eyebrow">☰ The record</span>
-      <h3>Your Log</h3>
-      <p>Everything you set in motion across FRQNCY — courses, practice, watching, the Sanctuary, VBRTN, NRG — read back in one place.</p>
-      <span class="card-go">Read →</span>
-    </a>
-  </div>
+  <div id="log-root"><p class="loading">Reading…</p></div>
 </main>
 
 <footer style="border-top:1px solid rgba(255,255,255,0.05);padding:2.5rem 1.5rem;text-align:center">
   <span style="font-family:'Cormorant',serif;letter-spacing:0.3em;color:rgba(255,255,255,0.3);text-transform:uppercase;font-size:0.9rem">FRQNCY</span><br>
   <span style="font-size:0.7rem;letter-spacing:0.1em;color:rgba(255,255,255,0.3);margin-top:0.4rem;display:inline-block">© 2026 · Sanctuary · Your private space</span>
 </footer>
+
+<script>
+(function () {
+  'use strict';
+
+  var root = document.getElementById('log-root');
+  var renderedFor = null; // user id currently painted, '' for signed-out
+
+  var SURFACE_LABEL = {
+    topics: 'Topics', courses: 'Courses', watch: 'Watch', practice: 'Practice',
+    sanctuary: 'Sanctuary', vbrtn: 'VBRTN', nrg: 'NRG'
+  };
+
+  function esc(s) {
+    return String(s == null ? '' : s).replace(/[&<>"']/g, function (c) {
+      return { '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c];
+    });
+  }
+  function pad(n) { return String(n).padStart(2, '0'); }
+  function dayKey(d) { return d.getFullYear() + '-' + pad(d.getMonth() + 1) + '-' + pad(d.getDate()); }
+  function timeOf(d) { return pad(d.getHours()) + ':' + pad(d.getMinutes()); }
+  function snippet(s, n) {
+    s = String(s || '').replace(/\s+/g, ' ').trim();
+    return s.length > n ? s.slice(0, n - 1).trimEnd() + '…' : s;
+  }
+  function dayLabel(key) {
+    var now = new Date();
+    var today = dayKey(now);
+    var y = new Date(now); y.setDate(y.getDate() - 1);
+    if (key === today) return 'Today';
+    if (key === dayKey(y)) return 'Yesterday';
+    var parts = key.split('-').map(Number);
+    var d = new Date(parts[0], parts[1] - 1, parts[2]);
+    var label = d.toLocaleDateString('en-GB', { weekday: 'long', day: 'numeric', month: 'long' });
+    if (parts[0] !== now.getFullYear()) label += ' ' + parts[0];
+    return label;
+  }
+
+  function gate() {
+    root.innerHTML =
+      '<div class="gate">' +
+        '<h3>This page reads from your account.</h3>' +
+        '<p>Sign in and the record assembles itself — courses, practice, watching, the Sanctuary, VBRTN, NRG.</p>' +
+        '<button type="button" id="log-signin">Sign in</button>' +
+        '<span class="alt">No account yet? The same button creates one.</span>' +
+      '</div>';
+    var btn = document.getElementById('log-signin');
+    btn.addEventListener('click', function () {
+      if (window.frqncyAuth && window.frqncyAuth.open) window.frqncyAuth.open();
+      else location.href = '/social/login/?next=' + encodeURIComponent(location.pathname);
+    });
+  }
+
+  function quietEmpty() {
+    root.innerHTML =
+      '<p class="quiet">Nothing recorded yet. The log fills as you move — ' +
+      'open a <a href="/explore">topic</a>, finish a <a href="/courses/">lesson</a>, ' +
+      'sit a <a href="/my-frqncy/practice/">practice</a>, post on <a href="/social/">NRG</a>.</p>';
+  }
+
+  // ── Load every source; a source that fails contributes nothing ──────────
+  function loadAll(user) {
+    var c = window.frqncy.client;
+    var uid = user.id;
+
+    function q(p) { return p.catch(function () { return null; }); }
+
+    return Promise.all([
+      q(window.frqncy.journeyStore(user).getState()),
+      q(c.from('practice_logs')
+        .select('practice_slug, started_at, duration_minutes')
+        .eq('user_id', uid).order('started_at', { ascending: false }).limit(200)
+        .then(function (r) { if (r.error) throw r.error; return r.data; })),
+      q(c.from('course_enrollments')
+        .select('course_slug, enrolled_at, status').eq('user_id', uid)
+        .then(function (r) { if (r.error) throw r.error; return r.data; })),
+      q(c.from('course_lesson_progress')
+        .select('course_slug, lesson_id, completed_at').eq('user_id', uid)
+        .not('completed_at', 'is', null)
+        .then(function (r) { if (r.error) throw r.error; return r.data; })),
+      q(window.frqncy.videoProgressStore(user).getState()),
+      q(window.frqncy.sanctuaryStore(user).getState()),
+      q(window.frqncy.vbrtnStore(user).getState()),
+      q(c.from('posts')
+        .select('id, content, created_at').eq('author_id', uid)
+        .order('created_at', { ascending: false }).limit(100)
+        .then(function (r) { if (r.error) throw r.error; return r.data; })),
+      q(c.from('comments')
+        .select('post_id, content, created_at').eq('author_id', uid)
+        .order('created_at', { ascending: false }).limit(100)
+        .then(function (r) { if (r.error) throw r.error; return r.data; })),
+      q(fetch('/search.json').then(function (r) { return r.json(); })),
+      q(fetch('/courses.json').then(function (r) { return r.json(); }))
+    ]);
+  }
+
+  // ── Normalise every source into { t, dayOnly, s, html, count-keys } ─────
+  function assemble(res) {
+    var journey = res[0], practice = res[1], enrolls = res[2], lessons = res[3],
+        watch = res[4], sanctuary = res[5], vbrtn = res[6], posts = res[7],
+        comments = res[8], search = res[9], coursesData = res[10];
+
+    var topicBySlug = {};
+    (Array.isArray(search) ? search : []).forEach(function (t) {
+      if (t && t.slug) topicBySlug[String(t.slug).toLowerCase()] = t.label || t.slug;
+    });
+    var courses = Array.isArray(coursesData) ? coursesData : ((coursesData && coursesData.courses) || []);
+    var courseBySlug = {};
+    courses.forEach(function (cr) {
+      var lessonById = {};
+      (cr.lessons || []).forEach(function (l) { lessonById[l.id] = l.title || l.id; });
+      courseBySlug[cr.slug] = { title: cr.title || cr.slug, lessons: lessonById };
+    });
+
+    var out = [];
+    var totals = { lessons: 0, practice: 0, videos: 0, topics: 0, posts: 0 };
+    function add(t, s, html, href, dayOnly) {
+      var d = (t instanceof Date) ? t : new Date(t);
+      if (isNaN(d)) return;
+      out.push({ d: d, day: dayKey(d), dayOnly: !!dayOnly, s: s,
+                 html: href ? '<a href="' + esc(href) + '">' + html + '</a>' : html });
+    }
+
+    // Journey (topics + sanctuary/vbrtn day-touches)
+    var sanctuaryTouchDays = {};
+    ((journey && journey.entries) || []).forEach(function (e) {
+      if (!e || !e.t) return;
+      if (e.s === 'topics' && e.k === 'read') {
+        var label = topicBySlug[String(e.ref || '').toLowerCase()];
+        if (!label) return; // not a real topic — ignored at display time
+        totals.topics++;
+        add(e.t, 'topics', 'Read ' + esc(label), e.url || ('/' + e.ref + '/'));
+      } else if (e.s === 'sanctuary') {
+        sanctuaryTouchDays[dayKey(new Date(e.t))] = e; // maybe superseded below
+      } else if (e.s === 'vbrtn') {
+        add(e.t, 'vbrtn', esc(e.title || 'Time with VBRTN'), e.url || '/my-frqncy/vbrtn/', true);
+      }
+    });
+
+    // Practice — the rows are already a log
+    (practice || []).forEach(function (r) {
+      totals.practice++;
+      var name = String(r.practice_slug || 'practice').replace(/-/g, ' ');
+      name = name.charAt(0).toUpperCase() + name.slice(1);
+      var mins = r.duration_minutes ? ' · ' + r.duration_minutes + ' min' : '';
+      add(r.started_at, 'practice', 'Practised ' + esc(name) + esc(mins), '/my-frqncy/practice/');
+    });
+
+    // Courses
+    (enrolls || []).forEach(function (r) {
+      var cr = courseBySlug[r.course_slug];
+      add(r.enrolled_at, 'courses', 'Enrolled in ' + esc(cr ? cr.title : r.course_slug),
+          '/courses/' + r.course_slug + '/');
+    });
+    (lessons || []).forEach(function (r) {
+      var cr = courseBySlug[r.course_slug];
+      var lt = cr ? (cr.lessons[r.lesson_id] || r.lesson_id) : r.lesson_id;
+      totals.lessons++;
+      add(r.completed_at, 'courses',
+          'Completed ' + esc(lt) + (cr ? ' <span class="snip">· ' + esc(cr.title) + '</span>' : ''),
+          '/courses/' + r.course_slug + '/');
+    });
+
+    // Watch
+    Object.keys(watch || {}).forEach(function (vid) {
+      var e = watch[vid];
+      if (!e || !e.updatedAt || !(e.pct >= 1)) return;
+      if (e.completed) { totals.videos++; }
+      var text = e.completed ? 'Finished ' + esc(e.title || 'a video')
+                             : 'Watched ' + esc(e.title || 'a video') + ' <span class="snip">· ' + Math.round(e.pct) + '%</span>';
+      add(e.updatedAt, 'watch', text, '/watch/');
+    });
+
+    // Sanctuary — date-keyed records straight from the blob
+    var sancDaysCovered = {};
+    if (sanctuary) {
+      var di = sanctuary.dailyIntentions || {};
+      Object.keys(di).forEach(function (day) {
+        if (di[day] && di[day].intention) {
+          add(day + 'T12:00:00', 'sanctuary', 'Set the day’s intention', '/my-frqncy/dashboard/', true);
+          sancDaysCovered[day] = true;
+        }
+        if (di[day] && di[day].reflection) {
+          add(day + 'T12:00:00', 'sanctuary', 'Closed the day with a reflection', '/my-frqncy/dashboard/', true);
+          sancDaysCovered[day] = true;
+        }
+      });
+      var hl = sanctuary.habitLogs || {};
+      Object.keys(hl).forEach(function (day) {
+        var n = Object.keys(hl[day] || {}).length;
+        if (!n) return;
+        add(day + 'T12:00:00', 'sanctuary', n + ' habit' + (n === 1 ? '' : 's') + ' marked', '/my-frqncy/dashboard/', true);
+        sancDaysCovered[day] = true;
+      });
+      var nl = (sanctuary.nourishment && sanctuary.nourishment.logs) || {};
+      Object.keys(nl).forEach(function (day) {
+        add(day + 'T12:00:00', 'sanctuary', 'Nourishment check-in', '/my-frqncy/dashboard/', true);
+        sancDaysCovered[day] = true;
+      });
+    }
+    // Generic "tended" touches only for days with no specific record
+    Object.keys(sanctuaryTouchDays).forEach(function (day) {
+      if (sancDaysCovered[day]) return;
+      var e = sanctuaryTouchDays[day];
+      add(e.t, 'sanctuary', esc(e.title || 'Tended the Sanctuary'), e.url || '/my-frqncy/dashboard/', true);
+    });
+
+    // VBRTN — the one-time intake milestones
+    if (vbrtn && vbrtn.baseline) {
+      if (vbrtn.baseline.intakeStartedAt) {
+        add(vbrtn.baseline.intakeStartedAt, 'vbrtn', 'Began the VBRTN intake', '/my-frqncy/vbrtn/');
+      }
+      if (vbrtn.baseline.intakeCompletedAt) {
+        add(vbrtn.baseline.intakeCompletedAt, 'vbrtn', 'Completed the VBRTN intake', '/my-frqncy/vbrtn/');
+      }
+    }
+
+    // NRG
+    (posts || []).forEach(function (p) {
+      totals.posts++;
+      add(p.created_at, 'nrg',
+          'Posted <span class="snip">“' + esc(snippet(p.content, 80)) + '”</span>',
+          '/social/post/' + p.id);
+    });
+    (comments || []).forEach(function (cm) {
+      add(cm.created_at, 'nrg',
+          'Replied <span class="snip">“' + esc(snippet(cm.content, 80)) + '”</span>',
+          cm.post_id ? '/social/post/' + cm.post_id : '/social/');
+    });
+
+    return { entries: out, totals: totals };
+  }
+
+  function render(assembled) {
+    var entries = assembled.entries;
+    if (!entries.length) { quietEmpty(); return; }
+
+    // Newest day first; within a day, timed entries newest first, day-only last.
+    entries.sort(function (a, b) {
+      if (a.day !== b.day) return a.day < b.day ? 1 : -1;
+      if (a.dayOnly !== b.dayOnly) return a.dayOnly ? 1 : -1;
+      return b.d - a.d;
+    });
+
+    var t = assembled.totals;
+    var chips = [];
+    if (t.lessons)  chips.push('<span><b>' + t.lessons + '</b>lesson' + (t.lessons === 1 ? '' : 's') + ' completed</span>');
+    if (t.practice) chips.push('<span><b>' + t.practice + '</b>practice' + (t.practice === 1 ? '' : 's') + ' logged</span>');
+    if (t.videos)   chips.push('<span><b>' + t.videos + '</b>video' + (t.videos === 1 ? '' : 's') + ' finished</span>');
+    if (t.topics)   chips.push('<span><b>' + t.topics + '</b>topic' + (t.topics === 1 ? '' : 's') + ' read</span>');
+    if (t.posts)    chips.push('<span><b>' + t.posts + '</b>post' + (t.posts === 1 ? '' : 's') + ' on NRG</span>');
+
+    var html = chips.length ? '<div class="totals">' + chips.join('') + '</div>' : '';
+    var curDay = null;
+    entries.forEach(function (e) {
+      if (e.day !== curDay) {
+        if (curDay !== null) html += '</div>';
+        html += '<section class="day"><h2>' + esc(dayLabel(e.day)) + '</h2><div>';
+        curDay = e.day;
+      }
+      html += '<div class="entry">' +
+        '<span class="when">' + (e.dayOnly ? '' : esc(timeOf(e.d))) + '</span>' +
+        '<span class="chip">' + esc(SURFACE_LABEL[e.s] || e.s) + '</span>' +
+        '<span class="what">' + e.html + '</span>' +
+      '</div>';
+    });
+    if (curDay !== null) html += '</div></section>';
+    root.innerHTML = html;
+  }
+
+  function onUser(user) {
+    var key = user ? user.id : '';
+    if (key === renderedFor) return;
+    renderedFor = key;
+    if (!user) { gate(); return; }
+    root.innerHTML = '<p class="loading">Reading…</p>';
+    loadAll(user).then(function (res) {
+      if (renderedFor !== key) return; // signed out / switched meanwhile
+      render(assemble(res));
+    }).catch(function () {
+      root.innerHTML = '<p class="quiet">The record could not be read just now. It is still yours — try again in a moment.</p>';
+    });
+  }
+
+  function boot() {
+    if (!window.frqncy || !window.frqncy.ready) { setTimeout(boot, 120); return; }
+    window.frqncy.ready.then(function () {
+      window.frqncy.onAuth(onUser);
+      return window.frqncy.auth.getUser();
+    }).then(onUser).catch(function () { gate(); });
+  }
+  if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', boot);
+  else boot();
+})();
+</script>
 </body>
 </html>

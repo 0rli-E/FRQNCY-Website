@@ -38,6 +38,53 @@ verified against Supabase. (3) The companion tab needs network; offline it shows
 frame-error screen. (4) Notion TASK BOARD row not created for this session — mirror per
 `proposals/COORDINATION-PROTOCOL.md` if this becomes tracked work.
 
+## 2026-08-12 — Your Log: one profile's record across every surface
+
+**Did.** Built the second half of the one-account story: the universal login (947a7a11b, earlier
+today) let one profile sign in everywhere; nothing yet read back what that profile *does*. Now
+`/my-frqncy/log/` does — one day-grouped record across courses, watch, topics, practice, the
+Sanctuary, VBRTN and NRG, plus a totals strip (plain counts, no streaks, no ranking).
+
+The design principle: **the log is a view, not a second tracker.** Courses
+(`course_enrollments`/`course_lesson_progress`), practice (`practice_logs`), watch
+(`charts` name=`WatchProgress`) and NRG (`posts`/`comments`) already leave queryable per-user
+rows — the page reads those directly. Only the three surfaces with nothing queryable write
+anything new: topic reads, Sanctuary day-touches and VBRTN day-touches drop entries into a new
+`charts` row name=`Journey` (`{entries:[{t,s,k,ref,title,url}]}`, deduped per thing per local
+day, capped 400). **Zero DB migration** — same table, same RLS as every other store.
+
+Where it lives: `assets/frqncy-supabase.js` gained `journeyStore(user)` + a `journeyNote()`
+helper (debounced, day-deduped via `frqncy.journey.day.v1`, never throws into the page);
+`sanctuaryStore.setState`/`vbrtnStore.setState` note their day-touch; boot journals a topic
+read for signed-in visitors (single-segment clean URLs, filtered against `search.json` at
+display time, local date parts not toISOString). Logged-out readers are never recorded and
+still download no auth code. My FRQNCY hub gained a "Your Log" card; `sw.js` bumped v76.
+
+**Opened.** Nothing filed.
+
+**Finished, and how verified.** `scripts/test-progress-log.mjs` — 22 assertions, all passing,
+real Chromium at 390px against a real Supabase account (`orlando.eisenreich+log0812@gmail.com`,
+created for this via the auth API; `mailer_autoconfirm` on). Covers: a signed-in topic visit
+journaling itself with the page doing nothing; seeding one record per surface through the real
+stores (including an actual NRG `posts` insert, which RLS allowed); the log page reading all
+seven surfaces back under a "Today" group with correct copy; the totals strip; no
+streak/ranking language; signed-out gate with the sheet opening in place; zero page errors.
+Screenshots at 390px verified by eye (fonts blocked in sandbox — layout real, type fallback).
+
+**Left / UNVERIFIED.** (1) **Not on production** — committed as `progress-log-0812` off
+`review-0812`; deploys only when that chain reaches main. (2) **Test data now lives in prod
+Supabase**: account `+log0812` with charts rows (Journey/Sanctuary/VBRTN/WatchProgress), a
+meditation-101 enrollment + lesson, one practice log, and one NRG post ("Progress-log test
+post — safe to delete", visible in the public feed until deleted) — Orlando deletes the
+account + post when convenient; I don't run permanent deletions against production auth.
+(3) The Sanctuary/VBRTN day-touch fires only on *cloud* saves (signed-in) — logged-out local
+activity is not retro-journaled on later sign-in. (4) Two tabs appending Journey entries in
+the same second can lose one (read-merge-write, no lock) — accepted for v1. (5) The dashboard's
+own `persist()` writes the whole Sanctuary blob on every edit; the day-dedupe means only the
+first save of the day journals, verified in test but not against the live dashboard UI.
+(6) NRG posts render in the log via `/social/post/<id>` links — link target not clicked
+through in the test.
+
 ## 2026-08-12 — Universal login: one account, reachable from anywhere on the site
 
 **Did.** Built `assets/frqncy-auth.js` — a site-wide sign-in sheet + account control — and wired

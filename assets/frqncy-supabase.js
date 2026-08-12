@@ -57,6 +57,57 @@
     }
   }
 
+  // ── Journey — the account's own record of movement across surfaces ──────
+  // Courses, practice, watch and NRG already leave queryable rows behind.
+  // The surfaces that don't — topic pages, the Sanctuary, VBRTN — drop a
+  // small entry here instead: one `charts` row per user (name='Journey'),
+  // deduped to one entry per thing per local day and capped. Read back by
+  // /my-frqncy/log/. Only ever written for a signed-in user; a logged-out
+  // reader is never recorded.
+  const JOURNEY_CAP     = 400;
+  const JOURNEY_DAY_KEY = 'frqncy.journey.day.v1';
+
+  // Local date parts, not toISOString() — an evening entry east of Greenwich
+  // must not file under tomorrow.
+  function localDay(d) {
+    d = d || new Date();
+    const p = (n) => String(n).padStart(2, '0');
+    return d.getFullYear() + '-' + p(d.getMonth() + 1) + '-' + p(d.getDate());
+  }
+
+  // One write per (surface|kind|ref) per day, checked locally so routine
+  // saves (the Sanctuary persists on every edit) cost no extra reads.
+  function journeySeenToday(key) {
+    try {
+      let map = {};
+      try { map = JSON.parse(localStorage.getItem(JOURNEY_DAY_KEY) || '{}') || {}; } catch (_) {}
+      if (map[key] === localDay()) return true;
+      map[key] = localDay();
+      const keys = Object.keys(map);
+      if (keys.length > 300) keys.slice(0, keys.length - 300).forEach((k) => { delete map[k]; });
+      localStorage.setItem(JOURNEY_DAY_KEY, JSON.stringify(map));
+      return false;
+    } catch (_) { return false; }
+  }
+
+  let journeyPending = [];
+  let journeyTimer   = null;
+  function journeyNote(entry) {
+    try {
+      if (!cachedUser || !client) return;
+      const key = [entry.s, entry.k, entry.ref || ''].join('|');
+      if (journeySeenToday(key)) return;
+      journeyPending.push(Object.assign({ t: new Date().toISOString() }, entry));
+      if (journeyTimer) return;
+      journeyTimer = setTimeout(() => {
+        journeyTimer = null;
+        const batch = journeyPending.splice(0);
+        if (!batch.length || !cachedUser) return;
+        try { frqncy.journeyStore(cachedUser).append(batch).catch(() => {}); } catch (_) {}
+      }, 1200);
+    } catch (_) { /* the record is never allowed to break the page */ }
+  }
+
   // ── Public API ──────────────────────────────────────────────────────────
   const frqncy = {
     /** Resolves when the SDK is ready. Always await this first. */
@@ -189,6 +240,7 @@
             .update({ data: state })
             .eq('id', id);
           if (error) throw error;
+          journeyNote({ s: 'sanctuary', k: 'tended', title: 'Tended the Sanctuary', url: '/my-frqncy/dashboard/' });
         },
         async getImages() {
           // List images in the user's chart-exports/<uid>/ folder
@@ -652,6 +704,7 @@
             .update({ data: state })
             .eq('id', id);
           if (error) throw error;
+          journeyNote({ s: 'vbrtn', k: 'session', title: 'Time with VBRTN', url: '/my-frqncy/vbrtn/' });
         },
       };
     },
@@ -718,6 +771,92 @@
       };
     },
 
+    /**
+     * Journey store — the per-account record behind /my-frqncy/log/.
+     *
+     * Same one-row-per-user pattern as the other stores: `charts` table,
+     * name = 'Journey'. The `data` column holds { entries: [...] } where an
+     * entry is { t: ISO, s: surface, k: kind, ref, title, url }. Appends are
+     * deduped to one entry per (surface, kind, ref) per local day and the
+     * list is capped at the newest JOURNEY_CAP entries. Most surfaces never
+     * touch this directly — they call nothing, and the log page derives
+     * their history from the rows they already write (course progress,
+     * practice logs, watch positions, NRG posts). Only topic reads and the
+     * Sanctuary / VBRTN day-touches land here, via journeyNote().
+     */
+    journeyStore(user) {
+      if (!user) throw new Error('journeyStore requires a logged-in user');
+      const userId = user.id;
+      const ROW_NAME = 'Journey';
+
+      let rowId = null;
+      let rowPromise = null;
+      async function ensureRow() {
+        if (rowId) return rowId;
+        if (rowPromise) return rowPromise;
+        rowPromise = (async () => {
+          const { data: existing, error: selErr } = await client
+            .from('charts')
+            .select('id')
+            .eq('owner_id', userId)
+            .eq('name', ROW_NAME)
+            .maybeSingle();
+          if (selErr) throw selErr;
+          if (existing) { rowId = existing.id; return rowId; }
+          const { data: created, error: insErr } = await client
+            .from('charts')
+            .insert({ owner_id: userId, name: ROW_NAME, data: {}, dreams: [] })
+            .select('id')
+            .single();
+          if (insErr) throw insErr;
+          rowId = created.id;
+          return rowId;
+        })();
+        return rowPromise;
+      }
+      return {
+        async getState() {
+          const id = await ensureRow();
+          const { data, error } = await client
+            .from('charts')
+            .select('data')
+            .eq('id', id)
+            .single();
+          if (error) throw error;
+          const d = data?.data;
+          return (d && Array.isArray(d.entries)) ? d : { entries: [] };
+        },
+        async append(newEntries) {
+          const id = await ensureRow();
+          const { data, error } = await client
+            .from('charts')
+            .select('data')
+            .eq('id', id)
+            .single();
+          if (error) throw error;
+          const cur = (data?.data && Array.isArray(data.data.entries)) ? data.data.entries : [];
+          const dayKey = (e) => [e.s, e.k, e.ref || '', localDay(new Date(e.t))].join('|');
+          const seen = new Set(cur.map(dayKey));
+          const add = [];
+          for (const e of newEntries || []) {
+            if (!e || !e.s || !e.k) continue;
+            const key = dayKey(e);
+            if (seen.has(key)) continue;
+            seen.add(key);
+            add.push(e);
+          }
+          if (!add.length) return cur;
+          const next = cur.concat(add).slice(-JOURNEY_CAP);
+          const { error: updErr } = await client
+            .from('charts')
+            .update({ data: { entries: next } })
+            .eq('id', id);
+          if (updErr) throw updErr;
+          return next;
+        },
+      };
+    },
+
     /** Auth widget — drops a small "Log in / Profile" pill into a target element. */
     mountAuthPill(targetEl, opts = {}) {
       if (!targetEl) return;
@@ -757,6 +896,31 @@
     // Prime the cache
     const { data } = await client.auth.getUser();
     cachedUser = data?.user || null;
+
+    // Journal a topic read — signed-in visitors only (this file only loads
+    // for them anyway), single-segment clean URLs only, once per local day.
+    // The log page filters entries against /search.json, so a non-topic slug
+    // that slips through here is ignored at display time, same contract as
+    // the constellation's visited list.
+    function noteTopicVisit() {
+      try {
+        const m = location.pathname.match(/^\/([a-z0-9-]+)(?:\/|\/index\.html)?$/i);
+        if (!m) return;
+        const slug = m[1].toLowerCase();
+        const NOT_TOPICS = ['explore', 'browse', 'search', 'my-frqncy', 'dashboard', 'index',
+          '404', 'admin', 'login', 'account', 'courses', 'watch', 'social', 'music', 'aligned',
+          'podcast', 'membership', 'donate', 'platform', 'about', 'start-here', 'terms',
+          'privacy-policy', 'create', 'read', 'rich', 'fund', 'moon-calendar', 'mayan-calendar', 'contact'];
+        if (NOT_TOPICS.indexOf(slug) !== -1) return;
+        const title = slug.replace(/-/g, ' ').replace(/^./, (c) => c.toUpperCase());
+        journeyNote({ s: 'topics', k: 'read', ref: slug, title: title, url: '/' + slug + '/' });
+      } catch (_) {}
+    }
+    if (cachedUser) noteTopicVisit();
+    else {
+      let off = frqncy.onAuth((u) => { if (u) { noteTopicVisit(); if (off) off(); } });
+    }
+
     return frqncy;
   })();
 
