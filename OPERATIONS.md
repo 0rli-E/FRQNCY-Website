@@ -1,3 +1,35 @@
+## 2026-08-16 — VBRTN live click-through: full loop verified, one real bug found
+
+**Did.** Automated click-through of the LIVE `https://frqncy.network/my-frqncy/vbrtn/` with
+Playwright (headless Chrome, 412×915, `/api/analytics` blocked so no test pollution). Covered:
+fresh-visitor empty state; footer sign-in → `/social/login/?next=` round-trip target; "Begin the
+intake" → Session 1 questions advance; seeded-profile surface (morning open, room-knows stats,
+insights, trail + "Hand me another", Your design incl. Gene Keys spectrum resolution, remember-one);
+and a real companion chat round-trip — `/api/companion` HTTP 200 via the workers-ai lane, on-voice
+Generator-aware reply rendered in the thread. Zero console errors, page errors, or failed requests
+across every page tested.
+
+**Opened.** Nothing filed yet — bug below should become a tracker issue.
+
+**Finished, and how verified.** All flows above verified by driving the production site and
+reading screenshots + network responses (scripts in session scratchpad: `vbrtn-clickthrough.mjs`,
+`vbrtn-recovery-test.mjs`, `vbrtn-auth-intake-test.mjs`).
+
+**Left.** (1) **BUG (live + local): the recovery card never surfaces from intake answers.**
+Intake's `setField` writes `meta.modalOperators.necessity/impossibility` as plain strings
+(textarea questions, `my-frqncy/intake/index.html:562`), but `getCurrentRecovery` reads
+`necessity?.[0]?.text` (`my-frqncy/vbrtn/index.html:684`) — object shape only. Empirically
+confirmed: string shape → no card; `[{text}]` shape → card + rotate work. Only chat-detected
+operators (normalized at index.html:1046) ever populate it. Fix: normalize with `asList()` in
+`getCurrentRecovery`. Not fixed — this was a verification session. (2) Copy mismatch: VBRTN
+empty state says "three short sessions", intake says "Session 1 of 5" / five sessions.
+(3) Cosmetic: "Your design" prints `Strategy — undefined` when `hd.strategy` is missing (guard
+at index.html:812 checks only `hd.type`); chart-computed profiles always carry strategy, so
+low-priority. (4) Live is still origin/main (`d800eb20c`) — the review-0812 VBRTN work
+(empty-state sign-in button, aggregate-learning signals) is NOT deployed until merged. (5) Not
+tested: actually signing in (no test account used), sessions 2–5 of the intake, Sanctuary
+proposal accept/decline cards, and the surface inside the Android app shell.
+
 ## 2026-08-12 — VBRTN in the Android app: companion tab, wake media, learning signals, APK built
 
 **Did.** Made VBRTN testable on Android and produced the debug APK. Four moves:
