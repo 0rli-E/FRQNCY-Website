@@ -1,3 +1,29 @@
+## 2026-08-20 — VBRTN iOS: native-app strategy written, decision #3 amended for iOS
+
+**Did.** Orlando asked to focus on the Apple app and make it "a real app, not a wrapper."
+Wrote `proposals/VBRTN-IOS-NATIVE-STRATEGY-2026-08-20.md` as the iOS sibling to the morning's
+`VBRTN-APP-STRATEGY-2026-08-20.md`. Four decisions put to Orlando and locked: **SwiftUI
+native** for iOS (amends the morning's "Capacitor shell" decision #3 — that now applies to
+Android only), hybrid model router (free Qwen / member Claude, unchanged), Supabase + RLS as
+memory canon (unchanged), v1 scope = chat + intake + morning open (alarm moves post-1.0 on
+iOS). Plan: new project at `app/ios-native/`, thin SwiftUI client (SPM packages: Core / Chat /
+Intake / Design / MemoryUI) over the shared Layers 1–4, typed `{type,payload}` message
+renderers as the client plugin seam, APNs morning open, ~6–7 weeks to a submitted 1.0 riding
+the shared backend phases. Memory `vbrtn-app-strategy-locked` updated with the amendment.
+
+**Opened.** Four questions pending Orlando: Apple Developer enrollment (entity?), store
+identity (VBRTN vs FRQNCY), localization (English-only 1.0 proposed), morning-open delivery
+(local notification Phase A → server push Phase C proposed).
+
+**Finished, and how verified.** Strategy doc only — no code, nothing to run. Not verified
+against Xcode; `app/ios/` Capacitor shell untouched (its 2026-08-19 first-build fixes remain
+uncommitted on review-0812, now parked as reference per the amendment).
+
+**Left.** No scaffold started. Backend Phase 1–2 (chat-first Android shell, server memory)
+still the next build steps from the morning session; iOS Phase A can start once the Apple
+Developer question is answered. Notion TASK BOARD not updated (no task state changed —
+planning only); create rows when Phase A starts.
+
 ## 2026-08-20 — VBRTN: bugs from the 08-16 click-through fixed, review-0812 shipped to main
 
 **Did.** (1) Fixed all three findings from the 2026-08-16 live click-through in
