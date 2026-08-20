@@ -525,7 +525,10 @@ async function runExtractor(env, uid, userText, replyText) {
       target.modalOperators[kind] = merged;
     };
 
-    if (parsed && data.profile && typeof data.profile === 'object') {
+    if (parsed) {
+      // A person can start talking before any intake — grow a minimal
+      // profile scaffold so their sentences still accumulate.
+      if (!data.profile || typeof data.profile !== 'object') data.profile = {};
       if (!data.profile.meta) data.profile.meta = {};
       mergeModal(data.profile.meta, 'necessity');
       mergeModal(data.profile.meta, 'impossibility');
@@ -641,9 +644,23 @@ export async function onRequestPost(ctx) {
       ]);
       if (row && row.data) {
         const mem = normalizeVbrtnData(row.data);
-        if (mem.profile) {
+        // The server profile speaks for the person only when it has substance
+        // (an intake reached the cloud). An extractor-grown scaffold must not
+        // outrank a rich client-sent slice — instead its captured sentences
+        // join whatever the client brought.
+        const substantial = mem.profile && (mem.profile.standing || mem.profile.design
+          || (mem.profile._intakeAnswers && Object.keys(mem.profile._intakeAnswers).length));
+        if (substantial) {
           const slim = slimFromFull(stripNegatives(mem.profile), goals);
           if (slim) contextProfile = slim;
+        } else if (mem.profile && mem.profile.meta && mem.profile.meta.modalOperators) {
+          const mo = mem.profile.meta.modalOperators;
+          const base = contextProfile || {};
+          const baseMo = base.modalOperators || {};
+          contextProfile = { ...base, goals: base.goals || goals, modalOperators: {
+            necessity: [...new Set([...asList(baseMo.necessity), ...asList(mo.necessity)])].slice(-3),
+            impossibility: [...new Set([...asList(baseMo.impossibility), ...asList(mo.impossibility)])].slice(-3),
+          } };
         }
         extra = { memories: mem.memories };
       } else if (goals && contextProfile) {
