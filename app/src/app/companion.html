@@ -860,13 +860,17 @@
       }
 
       // ── Chat — streaming against /api/companion ──────────────────
-      async function send(){
-        const text = inp.value.trim();
-        if(!text || sending) return;
-        sending = true; sendBtn.disabled = true;
-        inp.value = ''; autosize();
-        addMsg('user', text);
+      // Free models still emit markdown sometimes; the thread renders plain
+      // text, so scrub the markers before they show as literal asterisks.
+      function sanitizeReply(t){
+        return String(t || '')
+          .replace(/\*\*(.+?)\*\*/g, '$1')
+          .replace(/(^|[\s(])\*([^*\n]+)\*(?=[\s).,!?:;]|$)/g, '$1$2')
+          .replace(/^#{1,4}\s+/gm, '')
+          .replace(/^\s*[-•]\s+/gm, '— ');
+      }
 
+      function recordUserTurn(text){
         const profile = loadProfile();
         if(!profile.history) profile.history = { interactions: [], lastSeen:null, journalEntries:[], habitShape:{} };
         if(!profile.history.interactions) profile.history.interactions = [];
@@ -883,25 +887,43 @@
           });
         }
         saveProfile(profile);
+        return profile;
+      }
 
-        const prior = storedThread(profile).slice(-12);
-        const payload = prior.length ? prior : [{ role:'user', content: text }];
-        if(prior.length && prior[prior.length - 1].content !== text) payload.push({ role:'user', content: text });
+      function recordReply(text){
+        const pr = loadProfile();
+        if(!pr.history) pr.history = { interactions: [] };
+        if(!pr.history.interactions) pr.history.interactions = [];
+        pr.history.interactions.push({ at: Date.now(), kind:'companion-vbrtn', text });
+        saveProfile(pr);
+      }
 
-        const bubble = addMsg('vbrtn', '…', { thinking: true });
-        let reply = '';
-        let via = null;
+      function companionHeaders(){
+        const headers = { 'Content-Type': 'application/json' };
+        const token = authToken();
+        if(token) headers.Authorization = 'Bearer ' + token;
+        return headers;
+      }
+
+      // One streaming attempt. A congested pool must never hold the person:
+      // 25s to first token, 30s idle mid-stream, then we abort and keep
+      // whatever arrived.
+      async function streamOnce(payload, profile, bubble){
+        const controller = new AbortController();
+        let idleTimer = null;
+        const armIdle = (ms) => { if(idleTimer) clearTimeout(idleTimer); idleTimer = setTimeout(() => controller.abort(), ms); };
+        armIdle(25000);
+        let reply = '', via = null;
         try{
-          const token = authToken();
-          const headers = { 'Content-Type': 'application/json' };
-          if(token) headers.Authorization = 'Bearer ' + token;
-          const body = {
-            profile: slimProfile(profile),
-            messages: payload,
-            threadId: localStorage.getItem(THREAD_KEY) || undefined,
-            stream: true,
-          };
-          const res = await fetch(API_BASE + '/api/companion', { method:'POST', headers, body: JSON.stringify(body) });
+          const res = await fetch(API_BASE + '/api/companion', {
+            method:'POST', headers: companionHeaders(), signal: controller.signal,
+            body: JSON.stringify({
+              profile: slimProfile(profile),
+              messages: payload,
+              threadId: localStorage.getItem(THREAD_KEY) || undefined,
+              stream: true,
+            }),
+          });
           if(!res.ok) throw new Error('companion ' + res.status);
           const ctype = res.headers.get('Content-Type') || '';
           if(ctype.includes('text/event-stream') && res.body){
@@ -913,66 +935,121 @@
             const reader = res.body.getReader();
             const decoder = new TextDecoder();
             let buf = '';
-            while(true){
-              const { done, value } = await reader.read();
-              if(done) break;
-              buf += decoder.decode(value, { stream: true });
-              const parts = buf.split('\n\n');
-              buf = parts.pop() || '';
-              for(const part of parts){
-                const line = part.trim();
-                if(!line.startsWith('data:')) continue;
-                let ev;
-                try{ ev = JSON.parse(line.slice(5).trim()); }catch(e){ continue; }
-                if(ev.delta){
-                  reply += ev.delta;
-                  bubble.textContent = reply;
-                  bubble.appendChild(cursor);
-                  scrollDown();
+            try{
+              while(true){
+                const { done, value } = await reader.read();
+                if(done) break;
+                armIdle(30000);
+                buf += decoder.decode(value, { stream: true });
+                const parts = buf.split('\n\n');
+                buf = parts.pop() || '';
+                for(const part of parts){
+                  const line = part.trim();
+                  if(!line.startsWith('data:')) continue;
+                  let ev;
+                  try{ ev = JSON.parse(line.slice(5).trim()); }catch(e){ continue; }
+                  if(ev.delta){
+                    reply += ev.delta;
+                    bubble.textContent = sanitizeReply(reply);
+                    bubble.appendChild(cursor);
+                    scrollDown();
+                  }
+                  if(ev.done){
+                    via = ev.via || null;
+                    if(ev.threadId) localStorage.setItem(THREAD_KEY, ev.threadId);
+                  }
                 }
-                if(ev.done){
-                  via = ev.via || null;
-                  if(ev.threadId) localStorage.setItem(THREAD_KEY, ev.threadId);
-                }
-                if(ev.error && !reply) throw new Error(ev.error);
               }
-            }
+            }catch(e){ /* aborted or upstream died — keep the partial reply */ }
             cursor.remove();
           } else {
             const data = await res.json().catch(() => null);
             reply = (data && data.response) || '';
             via = (data && data.via) || null;
             if(data && data.threadId) localStorage.setItem(THREAD_KEY, data.threadId);
-            bubble.classList.remove('thinking');
-            bubble.textContent = reply || 'I went quiet for a moment. Say it once more?';
           }
-          if(reply){
-            signal('exchange', { landed: true, via });
-            const pr = loadProfile();
-            if(!pr.history) pr.history = { interactions: [] };
-            if(!pr.history.interactions) pr.history.interactions = [];
-            pr.history.interactions.push({ at: Date.now(), kind:'companion-vbrtn', text: reply });
-            saveProfile(pr);
-          } else {
-            bubble.textContent = 'I went quiet for a moment. Say it once more?';
+        } finally {
+          if(idleTimer) clearTimeout(idleTimer);
+        }
+        return { reply: reply.trim(), via };
+      }
+
+      async function jsonOnce(payload, profile){
+        const res = await fetch(API_BASE + '/api/companion', {
+          method:'POST', headers: companionHeaders(),
+          signal: (typeof AbortSignal !== 'undefined' && AbortSignal.timeout) ? AbortSignal.timeout(45000) : undefined,
+          body: JSON.stringify({ profile: slimProfile(profile), messages: payload, threadId: localStorage.getItem(THREAD_KEY) || undefined }),
+        });
+        const data = await res.json().catch(() => null);
+        if(data && data.threadId) localStorage.setItem(THREAD_KEY, data.threadId);
+        return { reply: ((data && data.response) || '').trim(), via: (data && data.via) || null };
+      }
+
+      async function deliver(text){
+        const profile = recordUserTurn(text);
+        const prior = storedThread(profile).slice(-20);
+        const payload = prior.length ? prior : [{ role:'user', content: text }];
+        if(prior.length && prior[prior.length - 1].content !== text) payload.push({ role:'user', content: text });
+        const bubble = addMsg('vbrtn', '…', { thinking: true });
+        let reply = '', via = null;
+        try{
+          const r1 = await streamOnce(payload, profile, bubble);
+          reply = r1.reply; via = r1.via;
+          if(!reply){
+            // Empty stream (~1 in 10 on busy pools) — one silent retry, JSON lane.
+            const r2 = await jsonOnce(payload, profile);
+            reply = r2.reply; via = r2.via;
           }
-        }catch(err){
-          bubble.classList.remove('thinking');
-          bubble.textContent = navigator.onLine
+        }catch(err){ /* handled below */ }
+        bubble.classList.remove('thinking');
+        if(reply){
+          bubble.textContent = sanitizeReply(reply);
+          recordReply(sanitizeReply(reply));
+          signal('exchange', { landed: true, via });
+        } else {
+          const msg = navigator.onLine
             ? 'I went quiet for a moment. Say it once more?'
             : "I can't reach you from here — the companion needs a connection. Your words are saved.";
-        }finally{
-          sending = false;
-          sendBtn.disabled = inp.value.trim().length === 0;
-          inp.focus();
+          bubble.textContent = msg;
+          // Persist the fallback too — a reload must never leave their
+          // message hanging with no reply at all.
+          recordReply(msg);
         }
+        scrollDown();
+      }
+
+      let pendingText = null;
+
+      async function send(){
+        const text = inp.value.trim();
+        if(!text) return;
+        if(sending){
+          // Mid-stream sends queue instead of silently vanishing.
+          pendingText = pendingText ? pendingText + '\n' + text : text;
+          addMsg('user', text);
+          inp.value = ''; autosize();
+          return;
+        }
+        sending = true;
+        inp.value = ''; autosize();
+        addMsg('user', text);
+        await deliver(text);
+        while(pendingText){
+          const queued = pendingText; pendingText = null;
+          await deliver(queued);
+        }
+        sending = false;
+        sendBtn.disabled = inp.value.trim().length === 0;
+        inp.focus();
       }
 
       function autosize(){
         inp.style.height = 'auto';
         inp.style.height = Math.min(inp.scrollHeight, 130) + 'px';
       }
-      inp.addEventListener('input', () => { sendBtn.disabled = inp.value.trim().length === 0 || sending; autosize(); });
+      // Send stays enabled during a stream — taps queue (handled in send())
+      // instead of dying against a disabled button.
+      inp.addEventListener('input', () => { sendBtn.disabled = inp.value.trim().length === 0; autosize(); });
       inp.addEventListener('keydown', (e) => { if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); send(); } });
       sendBtn.addEventListener('click', send);
 
@@ -1383,6 +1460,13 @@
             <div class="q-row"><button class="chip dim" id="exportBtn">Export everything</button>
             <button class="chip danger" id="eraseBtn">Erase everything</button></div>
             <div id="exportOut"></div>`;
+        } else {
+          // The promise "see it, export it, erase it" can't be sign-in-gated —
+          // signed-out people have data too, right here on the device.
+          html += `<div class="mem-note" style="margin-top:22px">Your data — it all lives on this device</div>
+            <div class="q-row"><button class="chip dim" id="exportLocalBtn">Export everything</button>
+            <button class="chip danger" id="eraseLocalBtn">Erase everything</button></div>
+            <div id="exportOut"></div>`;
         }
         body.innerHTML = html;
         const signin = $('signinBtn');
@@ -1393,6 +1477,20 @@
         if(cont) cont.addEventListener('click', () => {
           $('menuOverlay').classList.remove('open');
           if(!intakeCard) runIntake();
+        });
+        const expLocal = $('exportLocalBtn');
+        if(expLocal) expLocal.addEventListener('click', () => {
+          const out = $('exportOut');
+          const payload = { exportedAt: new Date().toISOString(), surface: 'VBRTN (this device)',
+            profile: loadProfile(), threadId: localStorage.getItem(THREAD_KEY) || null };
+          out.innerHTML = `<textarea class="export-box" readonly></textarea><div class="mem-note">Long-press to select and copy. This is everything on this device.</div>`;
+          out.querySelector('textarea').value = JSON.stringify(payload, null, 2);
+        });
+        const delLocal = $('eraseLocalBtn');
+        if(delLocal) delLocal.addEventListener('click', () => {
+          if(!confirm('Erase everything VBRTN holds on this device — profile, memory, the whole conversation? This cannot be undone.')) return;
+          [STORE_KEY, THREAD_KEY, INTAKE_POS_KEY, MORNING_KEY, RECOVERY_ROTATION_KEY, SYNC_META_KEY].forEach(k => localStorage.removeItem(k));
+          location.reload();
         });
         $('newThreadBtn').addEventListener('click', () => {
           localStorage.removeItem(THREAD_KEY);

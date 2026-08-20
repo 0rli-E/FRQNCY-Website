@@ -72,7 +72,7 @@ const orModels = (env, premium) => {
   return premium ? [env.VBRTN_PREMIUM_MODEL || PREMIUM_MODEL_DEFAULT, ...base] : base;
 };
 const MAX_TOKENS  = 1000;  // room for a real answer when the moment asks for one
-const MAX_HISTORY = 12;    // bound the thread we send to the model
+const MAX_HISTORY = 20;    // bound the thread we send to the model
 const MAX_CONTENT = 4000;  // max chars per message
 const MAX_MEMORIES = 100;  // L4 cap per person
 const MAX_MODAL    = 10;   // captured sentences kept per operator kind
@@ -114,7 +114,7 @@ WHAT YOU KNOW STAYS IN THE BACKGROUND. Most replies shouldn't reference their pr
 
 WHAT YOU NEVER SOUND LIKE. Not a therapist, not a guru, not a life coach, not an AI assistant. No "Sure!", "Great question", "Let's dive in", "As an AI". No announcing what you're about to do. No bullet lists or numbered steps in casual conversation. No hypnotic vagueness ("notice what wants to arrive", "let your awareness settle") — say the plain thing. No spiritual filler — never "high vibe", "sacred space", "the universe has a plan", "do the work". No walls of text, ever. NEVER use markdown — no bold, no asterisks, no bullet points, no headers; formatting renders as literal characters here. A practical question gets a real answer in flowing prose: two or three options in plain sentences, then stop. ONE EXCEPTION: when they explicitly ask for a list, steps, or "three things", give exactly that — plain numbered lines (1. 2. 3.), each on its own line, still no asterisks or bold.
 
-NEVER INVENT THEIR LIFE. You may reference only what they actually said — in this conversation or in WHAT YOU KNOW. No invented times, places, habits, or history, however plausible ("you've been at it till 3am" is fiction unless they said it). If you want to extrapolate, ask, or mark the guess out loud: "I'm guessing this happens late at night — true?". One invented detail costs you all the trust the real memory earned. And when you genuinely don't know enough to say something real, say that plainly — "I don't know you well enough here yet. What's underneath it?" is a good reply, and a better one than faked depth.
+NEVER INVENT THEIR LIFE. You may reference only what they actually said — in this conversation or in WHAT YOU KNOW. No invented times, places, habits, or history, however plausible ("you've been at it till 3am" is fiction unless they said it). If you want to extrapolate, ask, or mark the guess out loud: "I'm guessing this happens late at night — true?". One invented detail costs you all the trust the real memory earned. And when you genuinely don't know enough to say something real, say that plainly — "I don't know you well enough here yet. What's underneath it?" is a good reply, and a better one than faked depth. The recent conversation IS visible to you, right above — never claim "each chat starts fresh" or that you have no history. If they reference something that has slipped out of your view, say that honestly: "that part's slipped out of my short-term view — remind me?"
 
 A QUESTION IS NEVER THE WHOLE REPLY. Before any question, at least one sentence that says something true about their situation. When they demand a verdict ("just tell me what to do"), never hand one and never deflect with a quip or a bare label — react to the frustration first, reflect in plain words what they already know, then at most one question. And "what would actually happen if…?" is your strongest question, which is exactly why it appears at most once per conversation — other doors: "who says?", "what's the actual number?", "since when is that true?".
 
@@ -886,8 +886,11 @@ async function runOpenRouter(env, clean, context, premium) {
   let lastErr = null;
   for (const model of orModels(env, premium)) {
     try {
+      // A congested free pool must not hold the person hostage — 15s per
+      // model, then the next rung answers instead.
       const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
+        signal: AbortSignal.timeout(15000),
         headers: {
           Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
           'Content-Type': 'application/json',
@@ -931,15 +934,50 @@ async function openrouterStreamSetup(env, clean, context, premium) {
         lastErr = new Error('openrouter stream ' + attempt.status);
         continue;
       }
-      return attempt;
+      // First-token watchdog: a 200 that then hangs (congested pool) must not
+      // hold the person for 20s+ — probe for the first bytes, else next rung.
+      const probed = await probeFirstChunk(attempt.body, 7000);
+      if (!probed) { lastErr = new Error('openrouter first-token timeout on ' + model); continue; }
+      return probed;
     } catch (err) { lastErr = err; }
   }
   throw lastErr || new Error('openrouter: no stream');
 }
 
-async function* openrouterBodyDeltas(res) {
+/**
+ * Read the stream's first chunk within `ms`; return a reconstructed stream
+ * with that chunk prepended, or null on timeout/immediate end.
+ */
+async function probeFirstChunk(stream, ms) {
+  const reader = stream.getReader();
+  let timedOut = false;
+  const timer = setTimeout(() => { timedOut = true; reader.cancel().catch(() => {}); }, ms);
+  let first;
+  try { first = await reader.read(); } catch { first = { done: true }; }
+  clearTimeout(timer);
+  if (timedOut || first.done || !first.value) {
+    try { reader.releaseLock(); } catch { /* no-op */ }
+    return null;
+  }
+  return new ReadableStream({
+    async start(controller) {
+      controller.enqueue(first.value);
+      try {
+        while (true) {
+          const { done, value } = await reader.read();
+          if (done) break;
+          controller.enqueue(value);
+        }
+      } catch { /* upstream died mid-stream — deliver what we have */ }
+      controller.close();
+    },
+    cancel() { reader.cancel().catch(() => {}); },
+  });
+}
+
+async function* openrouterBodyDeltas(stream) {
   const think = makeThinkFilter();
-  for await (const data of sseData(res.body)) {
+  for await (const data of sseData(stream)) {
     if (data === '[DONE]') break;
     let ev;
     try { ev = JSON.parse(data); } catch { continue; }
@@ -990,8 +1028,8 @@ async function runModelStream(env, clean, context, premium) {
   }
   if (env.OPENROUTER_API_KEY) {
     try {
-      const res = await openrouterStreamSetup(env, clean, context, premium);
-      return { via: 'openrouter', deltas: openrouterBodyDeltas(res) };
+      const orStream = await openrouterStreamSetup(env, clean, context, premium);
+      return { via: 'openrouter', deltas: openrouterBodyDeltas(orStream) };
     } catch { /* free pools busy — fall through */ }
   }
   if (!env.AI) throw new Error('no lane');
