@@ -1,6 +1,6 @@
 # VBRTN App Strategy — from wrapper to companion
 
-**Date:** 2026-08-20 · **Status:** proposal, awaiting Orlando's calls on the four open decisions
+**Date:** 2026-08-20 · **Status:** decisions locked 2026-08-20 (Orlando) — ready to build Phase 1
 **Parent doc:** `MY-FRQNCY-VBRTN-COMPANION-2026-05-22.md` (the cause). This doc is the *build shape*.
 
 ## The one-line goal
@@ -121,11 +121,14 @@ reads, native feel, alarm untouched):
 
 iOS inherits all of it — same bundle, same APIs — once the Xcode build lands.
 
-## Open decisions (Orlando)
+## Decisions — locked 2026-08-20 (Orlando)
 
-1. **Memory canon** — server-canonical per login (recommended; required for
-   cross-device + background AI) vs local-first with sync vs local-only.
-2. **Chat retention** — full transcripts in L3 vs summaries + L4 memories only.
-3. **Shell** — stay Capacitor (recommended) vs native Kotlin rewrite.
-4. **Model/membership line** — free Qwen for all + Claude for members, or Claude for
-   everyone (cost). Ties to Notion task #20 (membership boundary).
+1. **Memory canon: server-canonical.** Supabase per-user rows (RLS), device keeps a
+   working copy. Negative-trigger names still never stored server-side in plaintext.
+2. **Chat retention: full transcripts + extracted memories.** L3 keeps messages
+   (RLS, encrypted at rest); export + delete ship with Phase 2.
+3. **Shell: Capacitor, local bundle.** Chat UI in the existing app bundle; alarm
+   Kotlin and iOS pipeline untouched.
+4. **Model line: free Qwen for all, Claude for members.** The daily companion thread
+   is free in perpetuity; the Claude voice, long-form readings and synthesis are
+   member surfaces. Feeds the #20 membership-boundary answer.

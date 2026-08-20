@@ -15,6 +15,12 @@ both branches. SSH remote auth is broken in non-interactive shells (publickey de
 via HTTPS + `gh` credential helper instead. (4) Notion TASK BOARD row created (Done, Owner:
 Claude, Area: VBRTN).
 
+**Also (same session, later):** wrote `proposals/VBRTN-APP-STRATEGY-2026-08-20.md` — the
+wrapper→real-app plan (five composable layers, lens plugins, five phases). Orlando locked all
+four decisions: server-canonical memory in Supabase, full transcripts + extracted memories,
+Capacitor local-bundle shell, free-Qwen/member-Claude model line. Next build step: Phase 1
+(chat-first shell in `app/src`).
+
 **Opened.** Nothing.
 
 **Finished, and how verified.** Inline script parse-checked (`new Function`); asList shapes
