@@ -388,7 +388,7 @@
     return {
       rememberOne: p.rememberOne || null,
       goals: sanctuaryGoals(),
-      hd:    (hd && hd.type && !hd._stub) ? { type:hd.type, strategy:hd.strategy, authority:hd.authority, profile:hd.profile, centers:hd.centers || null, incarnationCross:hd.incarnationCross || null } : null,
+      hd:    (hd && hd.type && !hd._stub) ? { type:hd.type, strategy:hd.strategy, authority:hd.authority, profile:hd.profile, centers:hd.centers || null, incarnationCross:hd.incarnationCross || null, gates:hd.gates || null } : null,
       gk:    resolvedGK(gk),
       astro: (astro && !astro._stub && astro.sun) ? { sun:astro.sun, moon:astro.moon, rising:astro.rising } : null,
       standing: {

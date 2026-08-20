@@ -41,6 +41,7 @@
 
 import { resolveGeneKeys } from './_gene-keys.js';
 import { AUTHORITY_PLAYBOOK, PROFILE_LINES, CENTER_MEANINGS, SIGN_NOTES } from './_hd-meanings.js';
+import { gateLine } from './_hd-gates.js';
 
 // Free-lane models, tried in order. Llama 3.3 70B is markedly stronger than
 // the 30B Qwen for open conversation; Qwen stays as fallback and runs the
@@ -171,6 +172,17 @@ const LENSES = [
     if (p.hd.incarnationCross && !/computed when/.test(String(p.hd.incarnationCross))) {
       L.push(`Incarnation cross: ${clip(p.hd.incarnationCross, 90)}.`);
     }
+    // Their most defining gates (personality sun/earth lead the list from the
+    // chart engine) — per-gate keynotes from ./_hd-gates.js. A slice, not the
+    // whole chart: enough to speak to THEIR energies specifically.
+    const g = p.hd.gates || {};
+    const pers = (Array.isArray(g.personality) ? g.personality : []).slice(0, 4);
+    const des = (Array.isArray(g.design) ? g.design : []).slice(0, 2);
+    const gLines = [
+      ...pers.map((n) => gateLine(n)).filter(Boolean).map((t) => `${t} (personality)`),
+      ...des.map((n) => gateLine(n)).filter(Boolean).map((t) => `${t} (design/body)`),
+    ];
+    if (gLines.length) L.push(`Defining gates in their chart:\n  ${gLines.join('\n  ')}`);
     return L;
   },
   // Gene Keys arrive RESOLVED from the client (my-frqncy/charts/gene-keys.js
@@ -320,7 +332,7 @@ function slimFromFull(p, goals) {
   return {
     rememberOne: p.rememberOne || null,
     goals: goals || null,
-    hd: (hd && hd.type && !hd._stub) ? { type: hd.type, strategy: hd.strategy, authority: hd.authority, profile: hd.profile, centers: hd.centers || null, incarnationCross: hd.incarnationCross || null } : null,
+    hd: (hd && hd.type && !hd._stub) ? { type: hd.type, strategy: hd.strategy, authority: hd.authority, profile: hd.profile, centers: hd.centers || null, incarnationCross: hd.incarnationCross || null, gates: hd.gates || null } : null,
     gk: resolved,
     astro: (astro && !astro._stub && astro.sun) ? { sun: astro.sun, moon: astro.moon, rising: astro.rising } : null,
     standing: {
@@ -603,6 +615,10 @@ async function runExtractor(env, uid, userText, replyText) {
 }
 
 // ── CORS ──────────────────────────────────────────────────────────
+// Exposed for the offline prompt-eval harness (scratchpad A/B runner) — the
+// deployed function ignores extra exports.
+export { buildContext as _buildContext, DATA_GUARD as _DATA_GUARD, VOICE as _VOICE };
+
 function getCorsHeaders(request) {
   const origin = request.headers.get('Origin') || '';
   const allowedOrigins = [
