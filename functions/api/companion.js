@@ -434,9 +434,11 @@ async function persistExchange(env, uid, threadId, userText, replyText, via) {
   await sbFetch(env, `/rest/v1/vbrtn_messages`, {
     method: 'POST',
     headers: { Prefer: 'return=minimal' },
+    // PostgREST batch inserts demand IDENTICAL keys on every row — a missing
+    // `via` on the user row 400s the whole pair (found live, 2026-08-20).
     body: JSON.stringify([
-      { thread_id: threadId, user_id: uid, role: 'user', content: clip2(userText, MAX_CONTENT) },
-      { thread_id: threadId, user_id: uid, role: 'assistant', content: clip2(replyText, MAX_CONTENT * 2), via },
+      { thread_id: threadId, user_id: uid, role: 'user', content: clip2(userText, MAX_CONTENT), via: null },
+      { thread_id: threadId, user_id: uid, role: 'assistant', content: clip2(replyText, MAX_CONTENT * 2), via: via || null },
     ]),
   });
   await sbFetch(env, `/rest/v1/vbrtn_threads?id=eq.${threadId}`, {
