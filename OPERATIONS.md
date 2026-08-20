@@ -61,6 +61,35 @@ still the next build steps from the morning session; iOS Phase A can start once 
 Developer question is answered. Notion TASK BOARD not updated (no task state changed —
 planning only); create rows when Phase A starts.
 
+## 2026-08-21 (late) — Opus pilots' findings fixed; Orlando's six strategy rulings shipped
+
+**Did.** Two Opus test-pilots drove the exact app bundle against prod. Persona pilot verdict:
+"a ChatGPT-accustomed user would stay" — its 5 ranked fixes shipped (memory screen now shows
+the WHOLE intake; NEVER-INVENT-THEIR-LIFE + honest-ignorance prompt rules; intake reflections
+echo the person's words; explicit list requests honored; per-session counters + persistent
+continue-intake + birth-data CTA; opaque overlays, pulsing thinking bubble). Adversarial pilot:
+safety core ALL PASS (injection, trigger-name privacy across 23 payloads, crisis, medical,
+XSS, offline, reload); its 6 product bugs fixed (first-token watchdog server+client killing
+the 20s-median/10%-empty ship-blocker — live post-deploy: 9.1s first byte with graceful
+fallback; mid-stream sends queue; history window 20 + never-deny-visible-history rule;
+markdown scrubbed client-side; signed-out local Export/Erase; fallback replies persist).
+Orlando's strategy rulings also shipped same evening: mirror-with-memory welcome; premium
+moments (moment:'reading'/'synthesis' leads with anthropic/claude-haiku-4.5 via OpenRouter —
+DORMANT until he buys the one-time $10 credit); intake completion now requests a first
+reading; public-domain I Ching layer (_iching.js, 64 hexagrams, Legge-grounded, mapping
+spot-verified) attached to each person's defining gates; NO leave-the-app hand-offs (standing
+rule, memory'd). Orlando live-tested mid-stream: "way better than before."
+
+**Finished, and how verified.** 7/7 endpoint groups, 34/34 + 11/11 UI checks after the send-
+pipeline rewrite; live stream latency sampled post-deploy. APK v1.4 on Desktop.
+
+**Left.** (1) Tomorrow's agreed direction: FEED IT MORE DATA — line-level keynotes (384),
+PD astrology material, Orlando's personal chart report into his private row, progressive
+profiling (one question/day), weekly synthesis trigger. (2) $10 OpenRouter credit still
+unbought — premium reading falls to free lane until then. (3) v1.4 on a phone: sign-in sheet
+and first-reading arc still founder-untested. (4) GLM probe at 7s could tighten to 5s if
+latency still bothers.
+
 ## 2026-08-21 — VBRTN voice: the multi-agent improvement round (Orlando's ask)
 
 **Did.** Ran the full loop Orlando requested: (1) a fork agent dissected his reference ChatGPT
