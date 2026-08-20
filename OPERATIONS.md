@@ -26,6 +26,52 @@ still the next build steps from the morning session; iOS Phase A can start once 
 Developer question is answered. Notion TASK BOARD not updated (no task state changed —
 planning only); create rows when Phase A starts.
 
+## 2026-08-20 — VBRTN v1 SHIPPED: chat-first app, server-canonical memory, the extractor — live-verified
+
+**Did.** Built and deployed Phases 1–3 of `proposals/VBRTN-APP-STRATEGY-2026-08-20.md` in one
+session (commits b0d4e3e3c → 5fdb54e52 on main). (1) **DB:** migration 029 (vbrtn_threads +
+vbrtn_messages, per-user RLS) written AND applied to prod via the Supabase Management API
+(token from the CLI keychain entry); tables + all 7 policies verified live. Found the
+migrations README's idempotency claim false for CREATE POLICY — do NOT `supabase db push` the
+full set. (2) **/api/companion v2:** optional Supabase JWT → server loads the charts
+`name='VBRTN'` row + Sanctuary goals, derives the prompt slice server-side (GK spectra resolve
+via `functions/api/_gene-keys.js`), hydrates stored history, streams SSE (both lanes, stateful
+cross-chunk <think> scrubber), persists each exchange, then a post-turn extractor (free
+Workers-AI lane) grows semantic memories, modal-operator captures and felt state onto the row.
+Anonymous contract unchanged. (3) **/api/vbrtn-data:** full export + permanent erasure.
+(4) **Memory-row contract** unified: `data={profile,memories,state,updatedAt}`; legacy
+top-level rows read fine and migrate on next write; web store (`vbrtnStore` in
+frqncy-supabase.js) now read-modify-write and strips negative-trigger names (count only in
+cloud; local names graft back after cloud-wins merge). (5) **App:** `app/src/app/companion.html`
+— chat-first surface with streaming thread, the full 24-question intake asked in-thread (same
+ids/fields as web), real on-device chart computation (hd-engine bundled), morning open,
+recovery card, memory-transparency screen with per-memory delete, thread list, export/erase,
+universal sign-in. `/vbrtn` is now a LOCAL page; the companion is the app's opening surface.
+APK on Desktop: `VBRTN-v1-debug-2026-08-20.apk` (sha256 3613e99c…). (6) Web page sends JWT +
+threadId when signed in. (7) Three live-found bugs fixed post-deploy: PostgREST batch insert
+needs uniform row keys; extractor read `response` before `choices` (live shape crashed it —
+now noted on `state._extractor`); extractor scaffold must not outrank a rich client slice.
+
+**Opened.** Nothing filed.
+
+**Finished, and how verified.** 6 endpoint unit tests (mocked env/fetch) + 30 Playwright UI
+checks on the built bundle (zero console errors) + **21/21 LIVE production checks** with a
+throwaway confirmed user (created via admin API, deleted after): RLS write, authed chat,
+threadId, SSE streaming with no think-leakage, 2 exchanges persisted and readable via GET,
+extractor captured memory + feeling on the row in canonical shape, export complete, erasure
+verified empty via service role, anonymous contract intact. Web surface smoke-tested live
+(recovery-card fix + on-voice reply, zero console errors). Gradle assembleDebug clean.
+
+**Left.** (1) APK not tested on a physical phone — install from Desktop and walk: first-run
+welcome → intake in thread → birth data draws the real chart → sign in (settings or menu) →
+chat streams → memory screen shows what it noticed. (2) Signed-in **app** flow only verified at
+the API + RLS level, not through the webview UI (frqncyAuth.open() sheet inside the app is
+unexercised). (3) Extractor runs on every exchange incl. web — cost is $0 (Workers AI) but
+latency of memory growth is one model call (~5 s) behind the reply. (4) `state._extractor`
+debug note is exported with user data (harmless, documented here). (5) Phase 4/5 items
+(transits, WDYLT, TBS, voice, mindmovies, Claude member lane secret) not started.
+(6) Sanctuary-goals lens live but unverified against a real Sanctuary row (test user had none).
+
 ## 2026-08-20 — VBRTN: bugs from the 08-16 click-through fixed, review-0812 shipped to main
 
 **Did.** (1) Fixed all three findings from the 2026-08-16 live click-through in

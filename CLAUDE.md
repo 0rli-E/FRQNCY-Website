@@ -101,6 +101,16 @@ Read these before changing anything structural:
 
 ## What's currently in motion
 
+**VBRTN v1 (2026-08-20):** the Android app is chat-first — `/vbrtn` is a LOCAL surface
+(`app/src/app/companion.html`), not an iframe to the live site. `/api/companion` v2 is
+stateful for signed-in callers: server-canonical memory in the `charts` row `name='VBRTN'`
+(canonical shape `data={profile,memories,state,updatedAt}`; legacy top-level rows migrate on
+write) + `vbrtn_threads`/`vbrtn_messages` (migration 029, applied), SSE streaming, and a
+post-turn extractor on the free Workers-AI lane. Export/erase at `/api/vbrtn-data`.
+Privacy floor: negative-trigger names never leave the device (count only in the cloud).
+Strategy + phases: `proposals/VBRTN-APP-STRATEGY-2026-08-20.md`. iOS goes native SwiftUI
+separately (`proposals/VBRTN-IOS-NATIVE-STRATEGY-2026-08-20.md`).
+
 As of 2026-05-13:
 
 1. **FRQNCY mobile app is source-complete and waiting on APK build** at `app/`. Capacitor 7 hybrid, all 8 Kotlin classes + 4 supporting Kotlin files compile clean against API 35 + AppCompat 1.7 + Capacitor 7.6.2 (empirically verified with kotlinc). Web bundle synced into `android/app/src/main/assets/public/`. Branded splash + launcher + notification icons. 4 bundled audio variants (morning/evening/stillness/release). First-launch home welcome, two-phase pre-wake, snooze cap at 2, accessibility (3 dismiss modes + haptic-only wake), error toasts, smart resume, audio focus recovery, telemetry endpoint live in `functions/api/alarm-error.js`. **READ FIRST:** `app/docs/SHIPPING-2026-04-29.md` for the latest state and the to-APK terminal commands. `app/docs/PERFECT-WEEK-ROADMAP-2026-05-03.md` for the day-by-day delivery log.
