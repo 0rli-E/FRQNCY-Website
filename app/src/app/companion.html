@@ -61,7 +61,8 @@
                   border-bottom-right-radius: 4px; }
       .msg.vbrtn { margin-right: auto; background: var(--panel); border: 1px solid var(--panel-line);
                    border-bottom-left-radius: 4px; color: var(--ink); }
-      .msg.vbrtn.thinking { color: var(--ink-dim); }
+      .msg.vbrtn.thinking { color: var(--ink-dim); animation: thinkpulse 1.1s ease-in-out infinite; }
+      @keyframes thinkpulse { 0%,100% { opacity: 0.35; } 50% { opacity: 0.9; } }
       .msg.vbrtn .cursor { display: inline-block; width: 7px; height: 15px; background: var(--gold-soft);
                            vertical-align: text-bottom; margin-left: 2px; animation: blink 900ms steps(1) infinite; }
       @keyframes blink { 50% { opacity: 0; } }
@@ -156,7 +157,8 @@
 
       /* ── Overlays ────────────────────────────────────── */
       .overlay {
-        position: fixed; inset: 0; background: rgba(6, 13, 30, 0.92); z-index: 40;
+        position: fixed; inset: 0; background: rgba(6, 13, 30, 0.98); z-index: 40;
+        -webkit-backdrop-filter: blur(14px); backdrop-filter: blur(14px);
         display: none; flex-direction: column; padding: calc(env(safe-area-inset-top, 0px) + 14px) 16px 16px;
       }
       .overlay.open { display: flex; }
@@ -1023,6 +1025,8 @@
         return q.reflection || null;
       }
 
+      let birthStandalone = false; // birth card opened from the design drawer, outside the intake flow
+
       function intakeAnswered(q, val, skipped){
         if(intakeCard){ intakeCard.remove(); intakeCard = null; }
         const profile = loadProfile();
@@ -1030,21 +1034,40 @@
           commitAnswer(q, val, profile);
           const label = answerLabel(q, val);
           if(label) addMsg('user', label);
-          const r = reflectionFor(q, val);
+          let r = reflectionFor(q, val);
+          // Free-text answers deserve proof of being heard — echo their own
+          // words back instead of a reflection that fits anyone.
+          if(r && q.type === 'textarea' && typeof val === 'string' && val.trim()){
+            const frag = val.trim().replace(/\s+/g, ' ').slice(0, 70);
+            r = `“${frag}${val.trim().length > 70 ? '…' : ''}” — ${r.charAt(0).toLowerCase() + r.slice(1)}`;
+          }
           if(r) addReflection(r);
           if(q.id === 'birthData' && val){
             const p2 = loadProfile();
             if(p2.design && p2.design.hd && p2.design.hd.type){
               addReflection(`Your chart is drawn — a ${p2.design.hd.type}, ${String(p2.design.hd.strategy || '').toLowerCase()}. It lives under “design”, above.`);
             }
+            pushCloud(loadProfile());
           }
         } else {
           addMsg('user', 'Skip for now');
+        }
+        if(birthStandalone && q.id === 'birthData'){
+          birthStandalone = false;
+          return; // out-of-flow chart entry — don't advance or resume the intake
         }
         const pos = loadIntakePos() + 1;
         saveIntakePos(pos);
         signal('intake-step', { step: q.id, skipped: !!skipped });
         setTimeout(() => runIntake(), 350);
+      }
+
+      function openBirthCard(){
+        const q = QUESTIONS.find((x) => x.id === 'birthData');
+        if(!q || intakeCard) return;
+        birthStandalone = true;
+        addMsg('vbrtn', 'Your chart comes from your birth — date, timezone, and the time if you have it.');
+        intakeCard = renderQuestionCard(q, QUESTIONS.indexOf(q));
       }
 
       function runIntake(){
@@ -1071,7 +1094,11 @@
       function renderQuestionCard(q, pos){
         const card = document.createElement('div');
         card.className = 'card';
-        let inner = `<div class="progress">${pos + 1} of ${QUESTIONS.length}</div>`;
+        // "3 of 25" up front scares people off a five-round conversation —
+        // count within the session instead.
+        const sessionQs = QUESTIONS.filter((x) => x.session === q.session);
+        const within = sessionQs.indexOf(q) + 1;
+        let inner = `<div class="progress">Session ${q.session} of 5 · ${within} of ${sessionQs.length}</div>`;
         inner += `<div class="q-question">${escapeHtml(q.question)}</div>`;
         if(q.hint) inner += `<div class="q-hint">${escapeHtml(q.hint)}</div>`;
         card.innerHTML = inner;
@@ -1221,7 +1248,12 @@
         const hd = p.design && p.design.hd, gk = p.design && p.design.gk, astro = p.design && p.design.astro;
         const body = $('designBody');
         if(!hd || !hd.type){
-          body.innerHTML = `<div class="mem-note">Your chart is not drawn yet. It comes from your birth data — date, time, timezone — in the intake. The companion works without it; it works sharper with it.</div>`;
+          body.innerHTML = `<div class="mem-note">Your chart is not drawn yet. It comes from your birth data — date, time, timezone. The companion works without it; it works sharper with it.</div>
+            <div class="q-row"><button class="chip" id="addBirthBtn">Add my birth data</button></div>`;
+          $('addBirthBtn').addEventListener('click', () => {
+            $('designOverlay').classList.remove('open');
+            openBirthCard();
+          });
           return;
         }
         let html = `<dl class="dl"><dt>Type</dt><dd>${escapeHtml(hd.type)}</dd>`;
@@ -1248,9 +1280,29 @@
         const nec = asList(p.meta && p.meta.modalOperators && p.meta.modalOperators.necessity);
         const imp = asList(p.meta && p.meta.modalOperators && p.meta.modalOperators.impossibility);
         html += `<div class="mem-note">Everything VBRTN knows about you sits here — visible, yours, deletable. Nothing on this screen is ever used to rank you.</div>`;
-        if(p.rememberOne) html += `<div class="mem-item"><span class="kind">forever</span><span>${escapeHtml(p.rememberOne)}</span></div>`;
-        nec.forEach(t => { html += `<div class="mem-item"><span class="kind">have-to</span><span>${escapeHtml(t)}</span></div>`; });
-        imp.forEach(t => { html += `<div class="mem-item"><span class="kind">can't</span><span>${escapeHtml(t)}</span></div>`; });
+        const item = (kind, text) => text ? `<div class="mem-item"><span class="kind">${kind}</span><span>${escapeHtml(text)}</span></div>` : '';
+        if(p.rememberOne) html += item('forever', p.rememberOne);
+        // The intake, visible — the screen's promise is only true if what you
+        // answered actually shows up here.
+        const s = p.standing || {}, d = p.design || {}, t = p.triggers || {}, b = p.baseline || {};
+        const textureWords = { stride:'hitting my stride', building:'slowly building', holding:'holding it together', surviving:'just getting through', 'catching-breath':'catching my breath', restart:'starting over', searching:'looking for what is next', returning:'coming back to myself' };
+        html += item('where you are', s.texture ? (textureWords[s.texture] || s.texture) : null);
+        html += item('feeling most', s.recentFeeling);
+        html += item('wanting more', s.dominantDesire);
+        html += item('what pulls', s.pull);
+        html += item('postponing', s.avoiding);
+        html += item('returning pattern', d.cannotChange);
+        if(d.hd && d.hd.type) html += item('design', `${d.hd.type} · ${d.hd.authority || ''} authority · ${d.hd.profile || ''}`.replace(/ ·  ·? ?$/, ''));
+        nec.forEach(x => { html += item('have-to', x); });
+        imp.forEach(x => { html += item("can't", x); });
+        asList(t.positive).forEach(x => { html += item('door back', x); });
+        asList(t.music).forEach(x => { html += item('music', x); });
+        html += item('your place', t.place);
+        html += item('landed as true', t.witnessedTruth);
+        const negs = asList(t.negative);
+        if(negs.length) html += `<div class="mem-item"><span class="kind">pulls you down</span><span>${negs.map(escapeHtml).join(' · ')}<br><span style="color:var(--ink-dim);font-size:12px">these stay on this device — never sent anywhere, never named back to you</span></span></div>`;
+        if(b.teachabilityIndex != null) html += item('teachability', `${b.teachabilityIndex}/100 — your own number, never a ranking`);
+        if(b.chiefAimDistance != null) html += item('felt distance', `${b.chiefAimDistance}/10 from the life you want`);
         body.innerHTML = html + `<div class="mem-note" id="cloudMems">…</div>`;
         const cloudEl = $('cloudMems');
         if(!authToken()){
@@ -1287,6 +1339,7 @@
         html += `<div class="mem-note">${user ? 'Signed in as ' + escapeHtml((user.user_metadata && user.user_metadata.username) || user.email || 'you') + ' — one account, every surface.' : 'Not signed in. Sign in and your intake, memory and conversations follow you to every device.'}</div>`;
         html += `<div class="q-row" style="margin-bottom:18px">`;
         if(!user) html += `<button class="chip" id="signinBtn">Sign in</button>`;
+        if(loadIntakePos() < QUESTIONS.length) html += `<button class="chip" id="contIntakeBtn">Continue the intake</button>`;
         html += `<button class="chip dim" id="newThreadBtn">Begin a new conversation</button></div>`;
         if(user){
           html += `<div class="mem-note">Conversations</div><div id="thrList">…</div>`;
@@ -1299,6 +1352,11 @@
         const signin = $('signinBtn');
         if(signin) signin.addEventListener('click', () => {
           if(window.frqncyAuth && typeof window.frqncyAuth.open === 'function') window.frqncyAuth.open();
+        });
+        const cont = $('contIntakeBtn');
+        if(cont) cont.addEventListener('click', () => {
+          $('menuOverlay').classList.remove('open');
+          if(!intakeCard) runIntake();
         });
         $('newThreadBtn').addEventListener('click', () => {
           localStorage.removeItem(THREAD_KEY);
