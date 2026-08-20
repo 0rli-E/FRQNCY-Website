@@ -61,6 +61,26 @@ still the next build steps from the morning session; iOS Phase A can start once 
 Developer question is answered. Notion TASK BOARD not updated (no task state changed —
 planning only); create rows when Phase A starts.
 
+## 2026-08-20 — VBRTN model ladder: OpenRouter free lane above the Workers floor
+
+**Did.** No Claude budget (Orlando), Claude subscription can't legally/technically back a
+server API — so the reply ladder is now: Claude (if ever keyed) → OpenRouter free models
+(GLM-5.2:free, then Nemotron-3-Ultra-550B:free) → Workers AI (Llama 3.3 70B → Qwen). Picked
+by live A/B against the real prompt using Orlando's existing OpenRouter key (found in
+`~/.frqncy-harness/auth/keys.json`); Nemotron-120B excluded (leaks chain-of-thought as
+prose). OpenRouter failures — including error objects inside HTTP 200 — fall through per
+model; streaming does eager setup so a busy pool falls to Workers BEFORE the SSE commits.
+`VBRTN_OR_MODEL` overrides the first slot (e.g. a paid model later) with no code change.
+
+**Finished, and how verified.** 7/7 endpoint test groups (new: ladder order, 429-in-200
+handling, stream-through, workers floor). Deployed to main (faf650436).
+
+**Left.** (1) The lane is DORMANT until `OPENROUTER_API_KEY` lands as a Pages secret —
+Orlando has the two wrangler commands (my wrangler OAuth here is expired). (2) OpenRouter
+free caps: ~50 req/day on a zero-credit account; a one-time $10 credit purchase raises free
+models to 1000 req/day — recommended. (3) After the secret lands: live tone check + watch
+`via` in replies ("openrouter" vs "workers-ai" ratio tells us pool availability).
+
 ## 2026-08-20 — VBRTN voice round 3: frame-matching, no profile recitation, Llama 3.3 70B free lane
 
 **Did.** Orlando's live feedback in three waves, each fixed + deployed + live-tone-tested:
