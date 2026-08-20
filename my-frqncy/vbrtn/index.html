@@ -681,8 +681,10 @@
   function setRecoveryRotation(obj){ localStorage.setItem(RECOVERY_ROTATION_KEY, JSON.stringify(obj)); }
 
   function getCurrentRecovery(p){
-    const nec = p.meta?.modalOperators?.necessity?.[0]?.text;
-    const imp = p.meta?.modalOperators?.impossibility?.[0]?.text;
+    // Intake stores these as plain strings, chat capture as [{text}] — asList
+    // accepts both, so an intake answer alone is enough to surface the card.
+    const nec = asList(p.meta?.modalOperators?.necessity)[0];
+    const imp = asList(p.meta?.modalOperators?.impossibility)[0];
     if(!nec && !imp) return null;
 
     const rot = getRecoveryRotation();
@@ -815,9 +817,9 @@
           <div class="label">Your design</div>
           <dl>
             <dt>Type</dt><dd>${escapeHtml(hd.type)}</dd>
-            <dt>Strategy</dt><dd>${escapeHtml(hd.strategy)}</dd>
-            <dt>Authority</dt><dd>${escapeHtml(hd.authority)}</dd>
-            <dt>Profile</dt><dd>${escapeHtml(hd.profile)}</dd>
+            ${hd.strategy ? `<dt>Strategy</dt><dd>${escapeHtml(hd.strategy)}</dd>` : ''}
+            ${hd.authority ? `<dt>Authority</dt><dd>${escapeHtml(hd.authority)}</dd>` : ''}
+            ${hd.profile ? `<dt>Profile</dt><dd>${escapeHtml(hd.profile)}</dd>` : ''}
             ${p.design.gk && !p.design.gk._stub ? `<dt class="gk-dt">Gene Keys</dt><dd class="gk-dd" id="gk-cell">\u2026</dd>` : ''}
             ${p.design.astro ? `<dt>Sun · Moon · Rising</dt><dd>${p.design.astro.sun} · ${p.design.astro.moon} · ${p.design.astro.rising}</dd>` : ''}
           </dl>
@@ -1152,7 +1154,7 @@
       </div>
       <div class="empty">
         <h1>The companion does not yet know you.</h1>
-        <p>VBRTN reads your intake to begin. About twelve minutes — twenty-five questions across three short sessions you can leave anytime.</p>
+        <p>VBRTN reads your intake to begin. About twelve minutes — twenty-five questions across five short sessions you can leave anytime.</p>
         <a class="btn primary" href="/my-frqncy/intake/">Begin the intake →</a>
         <p class="empty-alt">Already answered it on another device? <button type="button" id="emptySignIn">Sign in and bring it here</button></p>
       </div>
