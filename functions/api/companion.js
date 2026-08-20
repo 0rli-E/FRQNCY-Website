@@ -480,7 +480,17 @@ async function runExtractor(env, uid, userText, replyText) {
       max_tokens: 400,
       temperature: 0.1,
     });
-    let text = (result && (result.response || (result.choices && result.choices[0]?.message?.content))) || '';
+    // Same extraction order as the chat lane: `choices` first — live, this
+    // model returns choices[] alongside a NON-string `response` field, and
+    // reading `response` first crashed the pass (state._extractor, 2026-08-20).
+    let text = '';
+    if (result && result.choices && typeof result.choices[0]?.message?.content === 'string') {
+      text = result.choices[0].message.content;
+    } else if (result && typeof result.response === 'string') {
+      text = result.response;
+    } else if (typeof result === 'string') {
+      text = result;
+    }
     text = text.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
     const jsonMatch = text.match(/\{[\s\S]*\}/);
     if (jsonMatch) {
