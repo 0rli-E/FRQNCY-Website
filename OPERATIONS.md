@@ -61,6 +61,38 @@ still the next build steps from the morning session; iOS Phase A can start once 
 Developer question is answered. Notion TASK BOARD not updated (no task state changed —
 planning only); create rows when Phase A starts.
 
+## 2026-08-21 — VBRTN voice: the multi-agent improvement round (Orlando's ask)
+
+**Did.** Ran the full loop Orlando requested: (1) a fork agent dissected his reference ChatGPT
+transcript (14 teachable techniques — reframe-as-reveal, mechanism narration, body-before-
+meaning, anti-dependency closes…); (2) a research agent surveyed companion-prompt best
+practice (rule-lines > prose, shape menus for rhythm, example-variety vs parroting, recency-
+slot checklists — sourced); (3) an eval agent designed a 14-case battery with 3 personas +
+6-dim rubric (incl. trap pairs: design MUST fire on decision-pressure, MUST stay silent on
+grief); (4) built a candidate v2 prompt from all inputs and A/B'd it against the shipping
+prompt on a fixed model (Nemotron-550B) via the real context builder; (5) a strict judge
+agent scored both. **Verdict: the shipping prompt won 23–18** — the candidate's extra
+machinery caused catchphrases, question pileups, and chart-analysis over a grief message.
+Ported the six surgical fixes the test earned (markdown ban, substance floor, EA
+no-same-day-tiebreak in the authority playbook, permission-not-orders, question-stem
+rationing, crisis lockout) — deployed, markdown case re-verified live. ALSO: design-depth
+shipped (full chart in context: authority playbooks, profile lines, center meanings,
+incarnation cross, per-person gate keynotes via new `_hd-gates.js` — 64 original entries,
+agent-drafted, copyright-clean); live 6/2-Emotional test reply now names the person's
+mechanics the way Orlando's reference transcript does. A licensing-research agent produced
+the official buy-list for the HD/Gene Keys source books (~$520) + rights-holder contacts and
+draft inquiry emails (report in session log; keep verbatim third-party texts out of the
+product corpus unless licensed — our original-language layer is the shipped approach).
+Two Opus agents dispatched to test-drive the app bundle Q&A against prod (reports pending).
+
+**Finished, and how verified.** 7/7 endpoint test groups after every change; 28-reply A/B
+executed on production-identical context; judge report archived in session tasks; live
+post-deploy checks (markdown ban, 6/2 reply, invoice case).
+
+**Left.** (1) Opus test-pilot reports pending at session end — read task outputs next
+session if not processed. (2) Licensing emails drafted, not sent — Orlando decides.
+(3) v1.2 APK on Desktop has the gates layer; not yet on a phone.
+
 ## 2026-08-20 — VBRTN model ladder: OpenRouter free lane above the Workers floor
 
 **Did.** No Claude budget (Orlando), Claude subscription can't legally/technically back a
