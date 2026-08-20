@@ -188,6 +188,10 @@
   <body>
     <div id="shell">
       <header id="topbar">
+        <svg class="mark" viewBox="0 0 24 24" width="22" height="22" aria-hidden="true" style="flex:0 0 auto">
+          <path d="M3.5 12h2.6l2.2-5.4 3.4 10.8 3.4-10.8 2.2 5.4h3.2" fill="none" stroke="#C4973A" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/>
+          <circle cx="3.5" cy="12" r="1.1" fill="#C4973A"/><circle cx="20.5" cy="12" r="1.1" fill="#C4973A"/>
+        </svg>
         <div class="wordmark">VBRTN</div>
         <button class="topbtn" id="designBtn" aria-label="Your design">design</button>
         <button class="topbtn" id="memBtn" aria-label="What VBRTN knows">knows you</button>
@@ -1362,10 +1366,15 @@
         const p = loadProfile();
         const pos = loadIntakePos();
         const answered = Object.keys(p._intakeAnswers || {}).length;
+        const msgs = storedThread(p);
 
-        if(answered === 0 && pos === 0){
+        // First contact only — a person who already spoke (even "just talk
+        // first", zero intake) gets their thread back, never the welcome
+        // screen again. Leaving and returning must not LOOK like deletion.
+        if(answered === 0 && pos === 0 && msgs.length === 0){
+          addHtml('openline', `<svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" style="display:block;margin:26px auto 10px"><path d="M3.5 12h2.6l2.2-5.4 3.4 10.8 3.4-10.8 2.2 5.4h3.2" fill="none" stroke="#C4973A" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="3.5" cy="12" r="1.1" fill="#C4973A"/><circle cx="20.5" cy="12" r="1.1" fill="#C4973A"/></svg>`);
           addHtml('openline', 'welcome to vbrtn');
-          addMsg('vbrtn', "I'm the companion — one agent, walking beside you toward who you already are. Before I can reflect anything true, I need to meet you: about twelve minutes, twenty-five questions, five short sessions you can leave anytime. Everything you tell me stays yours — visible, exportable, erasable.");
+          addMsg('vbrtn', "Hey — I'm VBRTN. The more I know you, the more useful I get: your design, how you move, what pulls you down and what brings you back. Meeting you takes about twelve minutes — five short rounds of questions, leave anytime, pick up where you left off. And everything you tell me stays yours: you can see it, export it, or erase it whenever you want.");
           const startRow = document.createElement('div');
           startRow.className = 'q-row';
           const begin = document.createElement('button');
@@ -1390,7 +1399,6 @@
         }
 
         // Replay the stored thread.
-        const msgs = storedThread(p);
         msgs.slice(-40).forEach(m => addMsg(m.role === 'user' ? 'user' : 'vbrtn', m.content));
 
         if(pos < QUESTIONS.length){

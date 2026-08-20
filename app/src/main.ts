@@ -164,7 +164,7 @@ function openExternal(url: string, tabRoute?: string) {
   // body.frqncy-embed which hides the site's #main-nav and the floating donate
   // button. The app's own tab bar becomes the only persistent chrome.
   bumpNavGeneration();
-  const target = withEmbed(url);
+  const target = withSso(withEmbed(url));
   if (frame.src !== target) {
     startLoading();
     frame.src = target;
@@ -175,6 +175,56 @@ function openExternal(url: string, tabRoute?: string) {
   // currently-active tab if one is set.
   if (tabRoute) setActiveTab(tabRoute);
 }
+
+// ── One account across both origins ─────────────────────────────────────
+//
+// The shell's local pages (companion, settings) hold the Supabase session on
+// THIS webview origin; live frqncy.network surfaces in the iframe hold their
+// own. Two hand-offs keep them one account:
+//   outbound — every frqncy.network URL we load gets the local session
+//     appended as a #frqncy_sso fragment; frqncy-auth.js on the site consumes
+//     it via setSession and strips the hash. Fragments never hit the network.
+//   inbound  — when someone signs in ON a site surface inside the iframe,
+//     frqncy-auth.js postMessages the session to this shell (targetOrigin
+//     restricted to the app origins); we store it for the local pages.
+
+const SB_SESSION_KEY = 'sb-vyazlspbmwmlyncdlezh-auth-token';
+
+function localSession(): { access_token?: string; refresh_token?: string } | null {
+  try {
+    let s = JSON.parse(localStorage.getItem(SB_SESSION_KEY) || 'null');
+    if (s && s.currentSession) s = s.currentSession;
+    return s && s.access_token && s.refresh_token ? s : null;
+  } catch {
+    return null;
+  }
+}
+
+function withSso(url: string): string {
+  try {
+    const u = new URL(url, window.location.href);
+    if (u.hostname !== 'frqncy.network' || u.hash) return url;
+    const s = localSession();
+    if (!s) return url;
+    const payload = btoa(JSON.stringify({ access_token: s.access_token, refresh_token: s.refresh_token }));
+    u.hash = 'frqncy_sso=' + encodeURIComponent(payload);
+    return u.toString();
+  } catch {
+    return url;
+  }
+}
+
+window.addEventListener('message', (ev: MessageEvent) => {
+  if (ev.origin !== 'https://frqncy.network') return;
+  const d = ev.data;
+  if (!d || d.type !== 'frqncy:session' || !d.session || !d.session.access_token) return;
+  try {
+    localStorage.setItem(SB_SESSION_KEY, JSON.stringify(d.session));
+    window.dispatchEvent(new CustomEvent('frqncy:auth', { detail: { user: d.session.user || null } }));
+  } catch {
+    /* storage unavailable — session stays iframe-side only */
+  }
+});
 
 function withEmbed(url: string): string {
   try {

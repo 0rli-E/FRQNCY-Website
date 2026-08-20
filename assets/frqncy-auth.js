@@ -86,7 +86,44 @@
     try {
       window.dispatchEvent(new CustomEvent('frqncy:auth', { detail: { user: cachedUser } }));
     } catch (e) { /* older browsers */ }
+    if (cachedUser) broadcastToShell();
     paint();
+  }
+
+  // ── VBRTN app-shell hand-off ──────────────────────────────────────────────
+  // The mobile shell embeds this site in an iframe on its own webview origin.
+  // Signing in HERE should sign the shell's local pages in too: post the
+  // session to the parent, targetOrigin-restricted to the app origins, so the
+  // browser guarantees no other embedder can receive it.
+  var SHELL_ORIGINS = ['https://localhost', 'capacitor://localhost', 'http://localhost:5173'];
+  function broadcastToShell() {
+    if (window.parent === window) return;
+    var s = storedSession();
+    if (!s || !s.access_token) return;
+    for (var i = 0; i < SHELL_ORIGINS.length; i++) {
+      try { window.parent.postMessage({ type: 'frqncy:session', session: s }, SHELL_ORIGINS[i]); } catch (e) {}
+    }
+  }
+
+  // The inverse direction: the shell appends its session to any site URL it
+  // loads as a #frqncy_sso fragment (never sent over the network). Consume it,
+  // adopt the session, and strip the hash before anything else reads it.
+  function consumeShellSso() {
+    var m = (location.hash || '').match(/frqncy_sso=([^&]+)/);
+    if (!m) return;
+    try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    var payload = null;
+    try { payload = JSON.parse(atob(decodeURIComponent(m[1]))); } catch (e) { return; }
+    if (!payload || !payload.access_token || !payload.refresh_token) return;
+    if (storedSession()) return; // already signed in here — don't overwrite
+    ensureClient()
+      .then(function () {
+        return window.frqncy.auth.setSession({
+          access_token: payload.access_token,
+          refresh_token: payload.refresh_token,
+        });
+      })
+      .catch(function () { /* invalid or expired hand-off — stay signed out */ });
   }
 
   // ── The Supabase client, loaded only when actually needed ─────────────────
@@ -429,6 +466,8 @@
   // ── Boot ──────────────────────────────────────────────────────────────────
   function boot() {
     cachedUser = storedUser();
+    consumeShellSso();
+    if (cachedUser) broadcastToShell();
     paint();
 
     // The mobile drawer is built by mobile-nav.js at DOMContentLoaded. On pages
