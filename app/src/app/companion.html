@@ -1,0 +1,1419 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <meta name="theme-color" content="#0B1C3D" />
+    <title>VBRTN — companion</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,500;1,400;1,500&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet" />
+    <style>
+      :root {
+        --bg: #0B1C3D;
+        --panel: rgba(245, 245, 245, 0.04);
+        --panel-line: rgba(245, 245, 245, 0.08);
+        --ink: #F5F5F5;
+        --ink-soft: rgba(245, 245, 245, 0.72);
+        --ink-dim: rgba(245, 245, 245, 0.42);
+        --gold: #C4973A;
+        --gold-soft: rgba(196, 151, 58, 0.75);
+        --gold-faint: rgba(196, 151, 58, 0.14);
+        --serif: 'Cormorant Garamond', Georgia, serif;
+        --sans: 'Inter', -apple-system, system-ui, sans-serif;
+      }
+      * { box-sizing: border-box; }
+      html, body {
+        margin: 0; padding: 0; height: 100%;
+        background: var(--bg); color: var(--ink);
+        font-family: var(--sans); font-weight: 400; line-height: 1.55;
+        -webkit-font-smoothing: antialiased;
+      }
+      #shell { display: flex; flex-direction: column; height: 100dvh; }
+
+      /* ── Top bar ─────────────────────────────────────── */
+      #topbar {
+        display: flex; align-items: center; gap: 10px;
+        padding: calc(env(safe-area-inset-top, 0px) + 12px) 16px 10px;
+        border-bottom: 1px solid var(--panel-line);
+        flex: 0 0 auto;
+      }
+      .wordmark {
+        font-family: var(--serif); font-style: italic; font-size: 15px;
+        letter-spacing: 0.18em; color: var(--gold); text-transform: uppercase;
+        flex: 1 1 auto;
+      }
+      .topbtn {
+        background: none; border: 1px solid var(--panel-line); color: var(--ink-soft);
+        border-radius: 999px; padding: 6px 12px; font-family: inherit; font-size: 12px;
+        letter-spacing: 0.03em; cursor: pointer;
+      }
+      .topbtn.gold { border-color: rgba(196, 151, 58, 0.5); color: var(--gold); }
+
+      /* ── Thread ──────────────────────────────────────── */
+      #thread {
+        flex: 1 1 auto; overflow-y: auto; -webkit-overflow-scrolling: touch;
+        padding: 18px 16px 12px; scroll-behavior: smooth;
+      }
+      .msg { max-width: 86%; margin: 0 0 12px; padding: 10px 14px; border-radius: 16px;
+             font-size: 15px; white-space: pre-wrap; word-wrap: break-word; }
+      .msg.user { margin-left: auto; background: var(--gold-faint); border: 1px solid rgba(196, 151, 58, 0.25);
+                  border-bottom-right-radius: 4px; }
+      .msg.vbrtn { margin-right: auto; background: var(--panel); border: 1px solid var(--panel-line);
+                   border-bottom-left-radius: 4px; color: var(--ink); }
+      .msg.vbrtn.thinking { color: var(--ink-dim); }
+      .msg.vbrtn .cursor { display: inline-block; width: 7px; height: 15px; background: var(--gold-soft);
+                           vertical-align: text-bottom; margin-left: 2px; animation: blink 900ms steps(1) infinite; }
+      @keyframes blink { 50% { opacity: 0; } }
+
+      .dayline {
+        text-align: center; font-family: var(--serif); font-style: italic;
+        font-size: 12px; letter-spacing: 0.16em; text-transform: uppercase;
+        color: var(--ink-dim); margin: 18px 0 14px;
+      }
+      .openline {
+        font-family: var(--serif); font-style: italic; font-size: 20px; line-height: 1.4;
+        color: var(--ink); margin: 4px 0 4px; max-width: 92%;
+      }
+      .openline .sub { display: block; font-size: 15px; color: var(--gold-soft); margin-top: 8px; }
+      .reflection {
+        font-family: var(--serif); font-style: italic; font-size: 15.5px;
+        color: var(--gold-soft); margin: 2px 0 16px; max-width: 88%;
+      }
+
+      /* ── Cards in the thread ─────────────────────────── */
+      .card {
+        background: var(--panel); border: 1px solid var(--panel-line); border-radius: 16px;
+        padding: 16px; margin: 4px 0 14px; max-width: 94%;
+      }
+      .card .label {
+        font-family: var(--serif); font-style: italic; font-size: 11.5px;
+        letter-spacing: 0.2em; text-transform: uppercase; color: var(--gold); margin-bottom: 10px;
+      }
+      .card .sentence { font-family: var(--serif); font-style: italic; font-size: 17px; color: var(--ink); margin-bottom: 8px; }
+      .card .prompt { font-size: 15px; color: var(--ink); }
+      .card .frame { font-size: 12.5px; color: var(--ink-dim); margin-top: 8px; }
+      .card .cardbtns { display: flex; gap: 8px; margin-top: 12px; flex-wrap: wrap; }
+
+      .chip {
+        background: transparent; border: 1px solid rgba(196, 151, 58, 0.5); color: var(--gold);
+        border-radius: 999px; padding: 8px 16px; font-family: inherit; font-size: 13.5px;
+        cursor: pointer; letter-spacing: 0.02em;
+      }
+      .chip.dim { border-color: var(--panel-line); color: var(--ink-dim); }
+      .chip:active { background: var(--gold-faint); }
+
+      /* Intake question card */
+      .q-question { font-size: 16.5px; font-weight: 500; color: var(--ink); margin-bottom: 4px; }
+      .q-hint { font-size: 13px; color: var(--ink-dim); margin-bottom: 12px; }
+      .q-tiles { display: grid; gap: 8px; }
+      .q-tiles.cols2 { grid-template-columns: 1fr 1fr; }
+      .q-tile {
+        background: transparent; border: 1px solid var(--panel-line); color: var(--ink-soft);
+        border-radius: 12px; padding: 12px 10px; font-family: inherit; font-size: 13.5px;
+        cursor: pointer; text-align: left; line-height: 1.35;
+      }
+      .q-tile.selected { border-color: var(--gold); color: var(--ink); background: var(--gold-faint); }
+      .q-text {
+        width: 100%; background: rgba(245,245,245,0.03); border: 1px solid var(--panel-line);
+        border-radius: 12px; color: var(--ink); font-family: inherit; font-size: 15px;
+        padding: 12px; min-height: 74px; resize: vertical; outline: none;
+      }
+      .q-text::placeholder { color: var(--ink-dim); font-family: var(--serif); font-style: italic; }
+      .q-row { margin-top: 10px; display: flex; gap: 8px; align-items: center; flex-wrap: wrap; }
+      .q-slider { width: 100%; accent-color: var(--gold); margin: 14px 0 4px; }
+      .q-slider-labels { display: flex; justify-content: space-between; font-size: 12px; color: var(--ink-dim); }
+      .q-slider-value { text-align: center; font-family: var(--serif); font-style: italic; font-size: 22px; color: var(--gold); }
+      .q-field { margin-bottom: 10px; }
+      .q-field label { display: block; font-size: 12.5px; color: var(--ink-dim); margin-bottom: 5px; }
+      .q-input {
+        width: 100%; background: rgba(245,245,245,0.03); border: 1px solid var(--panel-line);
+        border-radius: 10px; color: var(--ink); font-family: inherit; font-size: 15px; padding: 10px 12px; outline: none;
+      }
+      .q-check { display: flex; gap: 8px; align-items: center; font-size: 13px; color: var(--ink-soft); margin-top: 8px; }
+      .progress { font-size: 11.5px; letter-spacing: 0.14em; text-transform: uppercase; color: var(--ink-dim); margin-bottom: 8px; }
+
+      /* ── Composer ────────────────────────────────────── */
+      #composer {
+        flex: 0 0 auto; display: flex; gap: 10px; align-items: flex-end;
+        padding: 10px 14px calc(env(safe-area-inset-bottom, 0px) + 12px);
+        border-top: 1px solid var(--panel-line); background: var(--bg);
+      }
+      #inp {
+        flex: 1 1 auto; background: rgba(245,245,245,0.05); border: 1px solid var(--panel-line);
+        border-radius: 20px; color: var(--ink); font-family: inherit; font-size: 15px;
+        padding: 11px 16px; max-height: 130px; resize: none; outline: none; line-height: 1.4;
+      }
+      #inp::placeholder { color: var(--ink-dim); }
+      #sendBtn {
+        flex: 0 0 auto; width: 42px; height: 42px; border-radius: 50%;
+        background: var(--gold); color: #0B1C3D; border: none; font-size: 18px;
+        cursor: pointer; display: grid; place-items: center;
+      }
+      #sendBtn:disabled { opacity: 0.35; }
+      #netline { font-size: 12px; color: var(--ink-dim); text-align: center; padding: 4px 0 6px; display: none; }
+      body.offline #netline { display: block; }
+
+      /* ── Overlays ────────────────────────────────────── */
+      .overlay {
+        position: fixed; inset: 0; background: rgba(6, 13, 30, 0.92); z-index: 40;
+        display: none; flex-direction: column; padding: calc(env(safe-area-inset-top, 0px) + 14px) 16px 16px;
+      }
+      .overlay.open { display: flex; }
+      .overlay .ohead { display: flex; align-items: center; gap: 10px; margin-bottom: 14px; }
+      .overlay .otitle { font-family: var(--serif); font-style: italic; font-size: 15px;
+                         letter-spacing: 0.14em; text-transform: uppercase; color: var(--gold); flex: 1; }
+      .overlay .obody { flex: 1; overflow-y: auto; -webkit-overflow-scrolling: touch; }
+      .mem-item { border: 1px solid var(--panel-line); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
+                  font-size: 14px; color: var(--ink-soft); display: flex; gap: 10px; align-items: flex-start; }
+      .mem-item .kind { font-size: 10.5px; letter-spacing: 0.12em; text-transform: uppercase; color: var(--gold-soft);
+                        border: 1px solid rgba(196,151,58,0.3); border-radius: 999px; padding: 2px 8px; flex: 0 0 auto; margin-top: 2px; }
+      .mem-item .del { margin-left: auto; background: none; border: none; color: var(--ink-dim); font-size: 16px; cursor: pointer; flex: 0 0 auto; }
+      .mem-note { font-size: 13px; color: var(--ink-dim); margin: 14px 0; line-height: 1.6; }
+      .dl { display: grid; grid-template-columns: auto 1fr; gap: 6px 16px; font-size: 14.5px; }
+      .dl dt { color: var(--ink-dim); } .dl dd { margin: 0; color: var(--ink); }
+      .gkrow { margin-bottom: 8px; font-size: 13.5px; color: var(--ink-soft); }
+      .gkrow b { color: var(--gold-soft); font-weight: 500; }
+      .thr-item { border: 1px solid var(--panel-line); border-radius: 12px; padding: 12px 14px; margin-bottom: 10px;
+                  font-size: 14.5px; color: var(--ink); cursor: pointer; }
+      .thr-item .when { font-size: 12px; color: var(--ink-dim); margin-top: 3px; }
+      .export-box { width: 100%; height: 40vh; background: rgba(245,245,245,0.03); border: 1px solid var(--panel-line);
+                    border-radius: 12px; color: var(--ink-soft); font-size: 11px; font-family: ui-monospace, monospace; padding: 10px; }
+      .danger { border-color: rgba(220, 90, 90, 0.5); color: #dc8a8a; }
+    </style>
+    <!-- Universal sign-in — same Supabase project + session as the site. -->
+    <script src="../assets/frqncy-supabase.js" defer></script>
+    <script src="../assets/frqncy-auth.js" defer></script>
+  </head>
+  <body>
+    <div id="shell">
+      <header id="topbar">
+        <div class="wordmark">VBRTN</div>
+        <button class="topbtn" id="designBtn" aria-label="Your design">design</button>
+        <button class="topbtn" id="memBtn" aria-label="What VBRTN knows">knows you</button>
+        <button class="topbtn gold" id="menuBtn" aria-label="Menu">&#8942;</button>
+      </header>
+
+      <main id="thread" aria-live="polite"></main>
+
+      <div id="netline">offline — the companion needs a connection; your words wait here</div>
+      <footer id="composer">
+        <textarea id="inp" rows="1" placeholder="Say what's true right now…" aria-label="Message VBRTN"></textarea>
+        <button id="sendBtn" aria-label="Send" disabled>&#8593;</button>
+      </footer>
+    </div>
+
+    <!-- What VBRTN knows -->
+    <div class="overlay" id="memOverlay" role="dialog" aria-label="What VBRTN knows about you">
+      <div class="ohead">
+        <div class="otitle">what vbrtn knows</div>
+        <button class="topbtn" data-close="memOverlay">close</button>
+      </div>
+      <div class="obody" id="memBody"></div>
+    </div>
+
+    <!-- Your design -->
+    <div class="overlay" id="designOverlay" role="dialog" aria-label="Your design">
+      <div class="ohead">
+        <div class="otitle">your design</div>
+        <button class="topbtn" data-close="designOverlay">close</button>
+      </div>
+      <div class="obody" id="designBody"></div>
+    </div>
+
+    <!-- Menu: conversations, account, data -->
+    <div class="overlay" id="menuOverlay" role="dialog" aria-label="Menu">
+      <div class="ohead">
+        <div class="otitle">vbrtn</div>
+        <button class="topbtn" data-close="menuOverlay">close</button>
+      </div>
+      <div class="obody" id="menuBody"></div>
+    </div>
+
+    <script type="module">
+      // ═══════════════════════════════════════════════════════════════
+      // VBRTN companion — the chat-first surface (v1).
+      // Strategy: proposals/VBRTN-APP-STRATEGY-2026-08-20.md
+      //   • Everything is a message: the intake, the morning open, the
+      //     recovery card and the thread all live in one scroll.
+      //   • Memory is server-canonical when signed in (charts row 'VBRTN'
+      //     + vbrtn_threads/messages via /api/companion); this page keeps a
+      //     local working copy so the thread still reads offline.
+      //   • Negative-trigger NAMES never leave this device.
+      // ═══════════════════════════════════════════════════════════════
+
+      const API_BASE = 'https://frqncy.network';
+      const SUPABASE_URL = 'https://vyazlspbmwmlyncdlezh.supabase.co';
+      const SUPABASE_ANON = 'sb_publishable_zFdrbkExarUfR2PAe4FcAQ_yvcL31CI';
+      const AUTH_STORAGE_KEY = 'sb-vyazlspbmwmlyncdlezh-auth-token';
+
+      const STORE_KEY = 'frqncy:vbrtn:profile';
+      const THREAD_KEY = 'frqncy:vbrtn:threadId';
+      const INTAKE_POS_KEY = 'frqncy:vbrtn:intakePos';
+      const MORNING_KEY = 'frqncy:vbrtn:morningShown';
+      const RECOVERY_ROTATION_KEY = 'frqncy:vbrtn:recoveryRotation';
+      const SYNC_META_KEY = 'frqncy:vbrtn:cloudSyncedAt';
+
+      // ── Small utils ──────────────────────────────────────────────
+      const $ = (id) => document.getElementById(id);
+      function escapeHtml(s){ return String(s).replace(/[&<>"']/g, c => ({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c])); }
+      function asList(v){
+        if(Array.isArray(v)) return v.map(x => (x && typeof x === 'object') ? x.text : x).filter(x => typeof x === 'string' && x.trim()).map(x => x.trim());
+        if(typeof v === 'string' && v.trim()) return [v.trim()];
+        return [];
+      }
+      function setField(obj, path, value){
+        const parts = path.split('.');
+        let o = obj;
+        for(let i = 0; i < parts.length - 1; i++){
+          if(!o[parts[i]]) o[parts[i]] = {};
+          o = o[parts[i]];
+        }
+        o[parts[parts.length - 1]] = value;
+      }
+      function simpleHash(s){ let h = 0; for(let i=0;i<s.length;i++){ h = ((h<<5)-h) + s.charCodeAt(i); h |= 0; } return Math.abs(h); }
+
+      // ── Profile (local working copy, same shape as the web surface) ──
+      function freshProfile(){
+        return {
+          standing:{texture:null,recentFeeling:null,dominantDesire:null,avoiding:'',pull:''},
+          design:{birth:null,priorFamiliarity:null,cannotChange:'',hd:null,gk:null,astro:null},
+          meta:{ toward_away:null,internal_external:null,options_procedures:null,
+                 general_specific:null,sameness_difference:null,convincer:null,
+                 modalOperators:{necessity:[],impossibility:[]} },
+          triggers:{negative:[],positive:[],music:'',place:'',witnessedTruth:''},
+          rememberOne:'',
+          baseline:{ intakeStartedAt:Date.now(), intakeCompletedAt:null, desireToLearn:null,
+                     willingnessToChange:null, teachabilityIndex:null, chiefAimDistance:null, recentFeelingAtIntake:null },
+          state:{stateOctave:'',lastSevenJournalTones:[],ti:{current:null,history:[]},chiefAimDistance:{current:null,history:[]}},
+          history:{interactions:[],lastSeen:null,journalEntries:[],habitShape:{}},
+          _intakeAnswers:{}
+        };
+      }
+      function loadProfile(){
+        try{ const raw = localStorage.getItem(STORE_KEY); return raw ? JSON.parse(raw) : freshProfile(); }
+        catch(e){ return freshProfile(); }
+      }
+      function saveProfile(p){ try{ localStorage.setItem(STORE_KEY, JSON.stringify(p)); }catch(e){} }
+      function intakeDone(p){ return !!(p && p._intakeAnswers && Object.keys(p._intakeAnswers).length > 0); }
+
+      // ── Auth (session shared with the site's universal sign-in) ──
+      function authSession(){
+        try{
+          const raw = localStorage.getItem(AUTH_STORAGE_KEY);
+          if(!raw) return null;
+          let s = JSON.parse(raw);
+          if(s && s.currentSession) s = s.currentSession;
+          if(!s || !s.access_token) return null;
+          if(s.expires_at && (s.expires_at * 1000) < Date.now()) return s.refresh_token ? s : null;
+          return s;
+        }catch(e){ return null; }
+      }
+      const authToken = () => { const s = authSession(); return s ? s.access_token : null; };
+      const authUser  = () => { const s = authSession(); return (s && s.user) ? s.user : null; };
+
+      // ── Aggregate learning signals (patterns only, never content) ──
+      const SIGNAL_SESSION = Math.random().toString(36).slice(2, 10) + Date.now().toString(36);
+      function signal(kind, extra){
+        try{
+          const p = loadProfile() || {};
+          const props = Object.assign({
+            shape: (p.design && p.design.hd && !p.design.hd._stub && p.design.hd.type) || 'unknown',
+            state: (p.standing && p.standing.recentFeeling) || null,
+            intervention: kind, surface: 'app'
+          }, extra || {});
+          fetch(API_BASE + '/api/analytics', {
+            method:'POST', headers:{ 'Content-Type':'application/json' },
+            body: JSON.stringify({ event_type:'vbrtn_signal', session_id: SIGNAL_SESSION, properties: props })
+          }).catch(()=>{});
+        }catch(e){}
+      }
+
+      // ── Chart engine (real HD/GK/astro, bundled with the app) ────
+      let GK = null, hdCompute = null;
+      import(/* @vite-ignore */ new URL('../assets/charts/gene-keys.js', location.href).href)
+        .then(m => { GK = m; }).catch(() => {});
+      import(/* @vite-ignore */ new URL('../assets/charts/hd-engine.js', location.href).href)
+        .then(m => { hdCompute = m.computeChart; }).catch(() => {});
+
+      function resolvedGK(gk){
+        if(!gk || gk._stub) return null;
+        if(GK){ const r = GK.resolveGeneKeys(gk); if(r) return r; }
+        return { lifesWork:gk.lifesWork, evolution:gk.evolution, radiance:gk.radiance, purpose:gk.purpose };
+      }
+
+      function buildDesignFromBirth(birth){
+        if(hdCompute && birth && birth.date && birth.time && !birth.timeUnknown && birth.tzOffset != null){
+          try{
+            const dp = birth.date.split('-').map(Number);
+            const tp = birth.time.split(':').map(Number);
+            const r = hdCompute({
+              year: dp[0], month: dp[1], day: dp[2], hour: tp[0], minute: tp[1], second: 0,
+              tzOffsetMinutes: birth.tzOffset,
+              lat: (birth.lat != null ? birth.lat : undefined),
+              lon: (birth.lon != null ? birth.lon : undefined)
+            });
+            return {
+              hd: { type: r.hd.type, strategy: r.hd.strategy, authority: r.hd.authority, profile: r.hd.profile,
+                    centers: { defined: r.hd.definedCenters, open: r.hd.openCenters },
+                    incarnationCross: r.hd.incarnationCross,
+                    gates: { personality: r.hd.personalityGates, design: r.hd.designGates } },
+              gk: { lifesWork: r.gk.lifesWork, evolution: r.gk.evolution, radiance: r.gk.radiance, purpose: r.gk.purpose },
+              astro: { sun: r.astro.sun, moon: r.astro.moon, rising: r.astro.rising }
+            };
+          }catch(e){ /* fall through */ }
+        }
+        // Honest absence — no invented chart. The design stays unknown until
+        // the engine can compute it (needs date + time + timezone).
+        return { hd: null, gk: null, astro: null };
+      }
+
+      // ── Slim, privacy-safe slice (context fallback + cloud slim) ──
+      function slimProfile(p){
+        if(!p) return {};
+        const hd = p.design && p.design.hd, gk = p.design && p.design.gk, astro = p.design && p.design.astro;
+        const mo = (p.meta && p.meta.modalOperators) || {};
+        const trig = p.triggers || {};
+        return {
+          rememberOne: p.rememberOne || null,
+          goals: null,
+          hd:    (hd && hd.type && !hd._stub) ? { type:hd.type, strategy:hd.strategy, authority:hd.authority, profile:hd.profile } : null,
+          gk:    resolvedGK(gk),
+          astro: (astro && !astro._stub && astro.sun) ? { sun:astro.sun, moon:astro.moon, rising:astro.rising } : null,
+          standing: {
+            feeling: (p.standing && p.standing.recentFeeling) || null,
+            texture: (p.standing && p.standing.texture) || null,
+            desire:  (p.standing && p.standing.dominantDesire) || null,
+            pull:    (p.standing && p.standing.pull) || null,
+            threeYearTrue: (p.standing && p.standing.threeYearTrue) || null
+          },
+          meta: {
+            toward_away: (p.meta && p.meta.toward_away) || null,
+            internal_external: (p.meta && p.meta.internal_external) || null,
+            options_procedures: (p.meta && p.meta.options_procedures) || null,
+            general_specific: (p.meta && p.meta.general_specific) || null,
+            sameness_difference: (p.meta && p.meta.sameness_difference) || null,
+            convincer: (p.meta && p.meta.convincer) || null
+          },
+          modalOperators: {
+            necessity:     asList(mo.necessity).slice(-3),
+            impossibility: asList(mo.impossibility).slice(-3)
+          },
+          positiveTriggers: asList(trig.positive).slice(0, 5),
+          music: asList(trig.music).slice(0, 5),
+          place: trig.place || null,
+          negativeTriggerCount: asList(trig.negative).length,
+          baseline: {
+            teachabilityIndex: (p.baseline && p.baseline.teachabilityIndex != null) ? p.baseline.teachabilityIndex : null,
+            chiefAimDistance:  (p.baseline && p.baseline.chiefAimDistance != null) ? p.baseline.chiefAimDistance : null
+          }
+        };
+      }
+
+      // Full profile minus negative-trigger names — the only shape allowed to
+      // leave the device for storage.
+      function cloudSafeProfile(p){
+        const out = JSON.parse(JSON.stringify(p || {}));
+        if(out.triggers){ out.triggers = { ...out.triggers, negative: [] }; out.triggers.negativeCount = asList((p.triggers||{}).negative).length; }
+        return out;
+      }
+
+      // ── Cloud sync — charts row name='VBRTN' (RLS: own row only) ──
+      async function sbRest(path, init = {}){
+        const token = authToken();
+        if(!token) throw new Error('no session');
+        const res = await fetch(SUPABASE_URL + path, {
+          ...init,
+          headers: { apikey: SUPABASE_ANON, Authorization: 'Bearer ' + token,
+                     'Content-Type': 'application/json', ...(init.headers || {}) },
+        });
+        if(!res.ok) throw new Error('sb ' + res.status);
+        const text = await res.text();
+        return text ? JSON.parse(text) : null;
+      }
+
+      async function pullCloud(){
+        const user = authUser();
+        if(!user) return null;
+        const rows = await sbRest(`/rest/v1/charts?owner_id=eq.${user.id}&name=eq.VBRTN&select=id,data,updated_at&limit=1`).catch(() => null);
+        return rows && rows[0] ? rows[0] : null;
+      }
+
+      // Read-modify-write: never clobber the memories/state the server-side
+      // extractor wrote — only the profile layers this device owns.
+      async function pushCloud(p){
+        const user = authUser();
+        if(!user) return;
+        try{
+          const row = await pullCloud();
+          const data = (row && row.data && typeof row.data === 'object') ? row.data : {};
+          data.profile = cloudSafeProfile(p);
+          delete data.slim; // the server derives the prompt slice itself
+          data.updatedAt = new Date().toISOString();
+          if(row){
+            await sbRest(`/rest/v1/charts?id=eq.${row.id}`, {
+              method: 'PATCH', headers: { Prefer: 'return=minimal' },
+              body: JSON.stringify({ data, updated_at: data.updatedAt }),
+            });
+          } else {
+            await sbRest('/rest/v1/charts', {
+              method: 'POST', headers: { Prefer: 'return=minimal' },
+              body: JSON.stringify({ owner_id: user.id, name: 'VBRTN', data, is_public: false }),
+            });
+          }
+          localStorage.setItem(SYNC_META_KEY, data.updatedAt);
+        }catch(e){ /* offline or signed out — local copy remains canonical-for-now */ }
+      }
+
+      async function hydrateFromCloud(){
+        const row = await pullCloud().catch(() => null);
+        if(!row || !row.data) return;
+        const local = loadProfile();
+        const localHas = intakeDone(local);
+        // Canonical rows nest the profile; legacy rows ARE the profile.
+        const cloudProfile = (row.data.profile && typeof row.data.profile === 'object') ? row.data.profile
+          : ((row.data.standing || row.data._intakeAnswers) ? row.data : null);
+        const cloudHas = cloudProfile && cloudProfile._intakeAnswers && Object.keys(cloudProfile._intakeAnswers).length > 0;
+        if(cloudHas && !localHas){
+          // A returning person on a fresh device: the account remembers.
+          const merged = cloudProfile;
+          merged.triggers = merged.triggers || {};
+          if(!Array.isArray(merged.triggers.negative)) merged.triggers.negative = [];
+          saveProfile(merged);
+          localStorage.setItem(INTAKE_POS_KEY, String(QUESTIONS.length));
+          renderBoot(true);
+        } else if(localHas){
+          pushCloud(local);
+        }
+      }
+
+      // ── Morning open (ported from the web surface) ───────────────
+      function generateMorningOpen(p){
+        const hd = p.design && p.design.hd;
+        const feeling = p.standing && p.standing.recentFeeling;
+        const desire = p.standing && p.standing.dominantDesire;
+        const texture = p.standing && p.standing.texture;
+        if(hd && hd.type){
+          const designPrompts = {
+            'Generator': ['What are you responding to today?','Notice what your body says yes to before noon. Follow that.','You are designed to wait, then move. What just arrived in front of you?'],
+            'Manifesting Generator': ['What are you responding to — and who needs to know your next move?','Two engines today. Respond first, then inform.','You will want to skip steps. The skipped step is where you go back for resistance.'],
+            'Projector': ['Who saw you yesterday? That is the room to be in today.','Wait for the invitation. The invitation is closer than it looks.','You see the others; today, let one of them see you back.'],
+            'Manifestor': ['What needs to be initiated this morning?','Inform the people who will be affected. Then move.','Your anger is information. Read it before you act on it.'],
+            'Reflector': ['What does the room feel like today? You are the room\'s instrument.','No decisions today that cannot wait twenty-eight days.','Watch the moon. Watch yourself in it.']
+          };
+          const arr = designPrompts[hd.type] || designPrompts['Generator'];
+          const idx = simpleHash(new Date().toDateString() + hd.type) % arr.length;
+          return { primary: arr[idx], sub: subForState(feeling, desire) };
+        }
+        if(feeling || desire){
+          const primary = feeling ? feelingToMorningLine(feeling)
+            : `You are reaching for more ${desire}. The first move today is a small one in that direction.`;
+          return { primary, sub: desire && feeling ? `And: more ${desire}.` : null };
+        }
+        if(texture) return { primary: textureToMorningLine(texture), sub: null };
+        return { primary: 'Begin where you are. Not where you should be.', sub: null };
+      }
+      function subForState(feeling, desire){
+        if(feeling && desire) return `Carrying ${feeling}. Reaching for ${desire}.`;
+        if(feeling) return `Today you are carrying ${feeling}. Notice it; do not argue with it.`;
+        if(desire) return `Reaching for more ${desire}.`;
+        return null;
+      }
+      function feelingToMorningLine(f){
+        const lines = {
+          tired: 'Tired is data. Today, the first move is to rest something you are not consciously carrying.',
+          stressed: 'Stress is the body running ahead of itself. Slow the body first. The mind follows.',
+          anxious: 'Anxiety is the body knowing something the mind has not yet named. Name one thing today.',
+          overwhelmed: 'Overwhelm means inputs outran capacity. Cut one input today. That is the entire move.',
+          sad: 'Sadness is grief that has not been formally introduced. Today, introduce it.',
+          lonely: 'Loneliness is the body asking for a specific kind of contact. Notice which kind, before deciding what to do.',
+          frustrated: 'Frustration is the body saying something is asking to be responded to, not initiated. What are you trying to start that needs you to wait?',
+          angry: 'Anger is power that has not yet found its direction. Today, find the direction.',
+          numb: 'Numb is the body saying "too much, too fast." Slow down. Today is small.',
+          restless: 'Restless is asking. What is it asking for?',
+          hopeful: 'Hope is unfinished — by design. What is the next finished thing?',
+          curious: 'Curiosity pulls without pushing. Follow it for one move today.',
+          excited: 'Excitement is desire that has not been disciplined. Both halves matter today.',
+          grateful: 'Gratitude is the first frequency above survival. Notice you arrived there.',
+          content: 'Content is rare. Stay in it longer than your mind wants to.',
+          peaceful: 'Peace is rarely loud. The fact that you notice it is the proof.',
+          alive: 'Alive is the baseline. What follows has to live up to it.'
+        };
+        return lines[f] || 'You are carrying something. The first move is to name it.';
+      }
+      function textureToMorningLine(t){
+        const lines = {
+          stride: 'You are in stride. Do not over-control it.',
+          building: 'Slow building is the real kind. Today is one brick.',
+          holding: 'You are holding it together. That is the work. Notice it.',
+          surviving: 'Just getting through is its own strength. Today is small. That is enough.',
+          'catching-breath': 'Today is for breath. The work asks for nothing.',
+          restart: 'Starting over is choosing the form again. What are you choosing?',
+          searching: 'Looking means you have not given up. Today, look in one specific place.',
+          returning: 'Coming back is the one motion the door does not lock against.'
+        };
+        return lines[t] || 'Begin where you are.';
+      }
+
+      // ── Modal-operator recovery ──────────────────────────────────
+      const RECOVERY_NECESSITY = [
+        { stem: 'What would happen if you did not?', frame: 'Recover the consequence.' },
+        { stem: 'What would you choose if you were not supposed to?', frame: 'Shift from necessity to possibility.' },
+        { stem: 'Whose voice is the "have to" in?', frame: 'Recover the locus of authority.' }
+      ];
+      const RECOVERY_IMPOSSIBILITY = [
+        { stem: 'What stops you?', frame: 'Surface the specific constraint.' },
+        { stem: 'What would happen if you did?', frame: 'Surface the feared consequence.' },
+        { stem: 'What would have to be true for you to be able to?', frame: 'Open the conditions.' }
+      ];
+      function getRecoveryRotation(){ try{ return JSON.parse(localStorage.getItem(RECOVERY_ROTATION_KEY) || '{}'); }catch(e){ return {}; } }
+      function setRecoveryRotation(o){ localStorage.setItem(RECOVERY_ROTATION_KEY, JSON.stringify(o)); }
+      function getCurrentRecovery(p){
+        const nec = asList(p.meta && p.meta.modalOperators && p.meta.modalOperators.necessity)[0];
+        const imp = asList(p.meta && p.meta.modalOperators && p.meta.modalOperators.impossibility)[0];
+        if(!nec && !imp) return null;
+        const rot = getRecoveryRotation();
+        let kind;
+        if(nec && imp) kind = (rot.lastKind === 'necessity') ? 'impossibility' : 'necessity';
+        else if(nec) kind = 'necessity';
+        else kind = 'impossibility';
+        const arr = kind === 'necessity' ? RECOVERY_NECESSITY : RECOVERY_IMPOSSIBILITY;
+        const idx = (rot[kind] || 0) % arr.length;
+        return { kind, sentence: kind === 'necessity' ? nec : imp, prompt: arr[idx].stem, frame: arr[idx].frame, idx };
+      }
+
+      function detectModalOperators(text){
+        const found = [];
+        const necessityPatterns = [
+          { re: /\bi\s+have\s+to\s+([^.,!?\n]+)/i }, { re: /\bi\s+should\s+([^.,!?\n]+)/i },
+          { re: /\bi\s+must\s+([^.,!?\n]+)/i }, { re: /\bi\s+need\s+to\s+([^.,!?\n]+)/i },
+          { re: /\bi\s+ought\s+to\s+([^.,!?\n]+)/i }
+        ];
+        const impossibilityPatterns = [
+          { re: /\bi\s+can'?t\s+([^.,!?\n]+)/i }, { re: /\bi\s+cannot\s+([^.,!?\n]+)/i },
+          { re: /\bi\s+won'?t\s+([^.,!?\n]+)/i }, { re: /\bi\s+couldn'?t\s+([^.,!?\n]+)/i }
+        ];
+        necessityPatterns.forEach(pt => { const m = text.match(pt.re); if(m) found.push({ kind:'necessity', match: m[0].trim() }); });
+        impossibilityPatterns.forEach(pt => { const m = text.match(pt.re); if(m) found.push({ kind:'impossibility', match: m[0].trim() }); });
+        return found;
+      }
+
+      // ── The intake — 24 questions, asked in the thread ───────────
+      // Ported verbatim from my-frqncy/intake (same ids, same field paths,
+      // same reflections) so a profile begun on any surface continues here.
+      const QUESTIONS = [
+        { id:'texture', session:1, sessionTitle:'Where you stand',
+          question:"Which of these best describes where you are in your life right now?",
+          hint:'Pick the one that comes first. The body knows before the mind catches up.',
+          type:'tiles', cols:2,
+          options:[
+            {v:'stride', l:'Hitting my stride', r:'Stride is its own gravity. Notice it; do not over-control it.'},
+            {v:'building', l:'Slowly building', r:'Slow building is the real kind. The fast kind collapses.'},
+            {v:'holding', l:'Holding it together', r:'Holding it together is heavier than moving. The fact that you are still holding is the work.'},
+            {v:'surviving', l:'Just getting through', r:'Just getting through is its own strength. Naming it changes the load.'},
+            {v:'catching-breath', l:'Catching my breath', r:'Breath is the part of the work that asks for nothing.'},
+            {v:'restart', l:'Starting over', r:'Starting over is choosing the form again. Most people never get the chance.'},
+            {v:'searching', l:'Looking for what is next', r:'Looking means you have not given up. That alone is more than most.'},
+            {v:'returning', l:'Coming back to myself', r:'Coming back is the one motion the door does not lock against.'}
+          ], field:'standing.texture' },
+        { id:'recentFeeling', session:1, sessionTitle:'Where you stand',
+          question:"In the last thirty days, which feeling has shown up most?",
+          hint:'There is no wrong answer. The honest one is the useful one.',
+          type:'tiles', cols:2,
+          options:[
+            {v:'tired', l:'Tired', r:'Tired is data. What has been carried that does not need to be carried?'},
+            {v:'stressed', l:'Stressed', r:'Stress is the body running ahead of itself. The first move is slowing the body down.'},
+            {v:'anxious', l:'Anxious', r:'Anxiety is the body knowing something the mind has not yet named.'},
+            {v:'overwhelmed', l:'Overwhelmed', r:'Overwhelm means the inputs outran the capacity. Cut inputs, do not add strength.'},
+            {v:'sad', l:'Sad', r:'Sadness is grief that has not been formally introduced. It deserves the introduction.'},
+            {v:'lonely', l:'Lonely', r:'Loneliness is the body asking for a particular kind of contact. Notice which kind.'},
+            {v:'frustrated', l:'Frustrated', r:'Frustration is Generator language. Something is asking to be responded to, not initiated.'},
+            {v:'angry', l:'Angry', r:'Anger is power that has not yet found its direction.'},
+            {v:'numb', l:'Numb', r:'Numb is the body saying "too much, too fast." Not a verdict.'},
+            {v:'restless', l:'Restless', r:'Restless is asking. The question is what it is asking for.'},
+            {v:'hopeful', l:'Hopeful', r:'Hope is unfinished. That is the design.'},
+            {v:'curious', l:'Curious', r:'Curiosity pulls without pushing. The most underrated state.'},
+            {v:'excited', l:'Excited', r:'Excitement is desire that has not yet been disciplined. Both halves are useful.'},
+            {v:'grateful', l:'Grateful', r:'Gratitude is the first frequency above survival. Notice you arrived there.'},
+            {v:'content', l:'Content', r:'Content is rare. Most people skip it on the way to wanting more.'},
+            {v:'peaceful', l:'Peaceful', r:'Peace is rarely loud. The fact that you notice it is the proof.'},
+            {v:'alive', l:'Alive', r:'Alive is the baseline. What follows has to live up to it.'}
+          ], field:'standing.recentFeeling' },
+        { id:'dominantDesire', session:1, sessionTitle:'Where you stand',
+          question:"What do you want more of right now? Pick the closest.",
+          hint:'You will refine the specifics later. This is just the direction.',
+          type:'tiles', cols:2,
+          options:[
+            {v:'freedom', l:'Freedom', r:'Freedom is worth specifying. The companion will come back to ask what kind.'},
+            {v:'peace', l:'Peace', r:'Peace is rarer than people admit. Picking it is a real choice.'},
+            {v:'purpose', l:'Purpose', r:'Purpose is the question the second half of life asks louder than the first.'},
+            {v:'love', l:'Love', r:'Love is the only frequency that does not ration itself when it grows.'},
+            {v:'health', l:'Health', r:'Health is the body asking for attention. The companion will help name which kind.'},
+            {v:'time', l:'Time', r:'Time is the only resource you cannot make more of. Choosing what it is for is the practice.'},
+            {v:'money', l:'Money', r:'Money is energy held in waiting. The question is always what for.'},
+            {v:'creativity', l:'Creativity', r:'Creativity is the channel through which something not-yet enters the room.'},
+            {v:'growth', l:'Growth', r:'Growth is the orientation, not the destination. The companion will keep that in mind.'},
+            {v:'impact', l:'Impact', r:'Impact is the externalisation of internal work. Both halves count.'},
+            {v:'adventure', l:'Adventure', r:'Adventure is the body wanting to be larger than the room. We can build the room around that.'},
+            {v:'stability', l:'Stability', r:'Stability is the ground that lets the rest of the work happen. Naming it is not small.'}
+          ], field:'standing.dominantDesire' },
+        { id:'avoiding', session:1, sessionTitle:'Where you stand',
+          question:"What's the thing you keep postponing — the one you know you'll have to face?",
+          hint:'Optional. Skip if it is not ready to be named.',
+          type:'textarea', placeholder:'The thing that keeps moving to next week…',
+          reflection:'Naming it is most of the work. Notice — the room did not change. You did.',
+          optional:true, field:'standing.avoiding' },
+        { id:'pull', session:1, sessionTitle:'Where you stand',
+          question:"What pulls you?",
+          hint:'A person, a place, a topic, a feeling. Whatever surfaces first.',
+          type:'textarea', placeholder:'What pulls…',
+          reflection:'Whatever pulls is the direction. Trust the pull — it knows things the plan does not.',
+          field:'standing.pull' },
+        { id:'birthData', session:2, sessionTitle:'The map you came in with',
+          question:"Your birth — date, place, and time if you have it.",
+          hint:'This generates your Human Design chart, your Gene Keys, and your natal astrology. Time unknown still works — just less precise. You can skip and come back later.',
+          type:'birthForm',
+          reflection:'Your chart is one of about eight billion configurations. The one you got is the one that fits the work you came here to do.',
+          optional:true, field:'design.birth' },
+        { id:'priorFamiliarity', session:2, sessionTitle:'The map you came in with',
+          question:"Have you read or worked with Human Design, Gene Keys, or astrology before?",
+          type:'tiles', cols:2,
+          options:[
+            {v:'none', l:'None of it', r:'Then we start fresh. The system reveals itself in its own time.'},
+            {v:'little', l:'A little', r:'A little is plenty for now. The deeper material waits for the right question.'},
+            {v:'lot', l:'A lot', r:'Then the companion will not over-translate. We will speak the actual language.'},
+            {v:'teach', l:'I teach it', r:'Then the companion will sometimes ask you to teach it back. The mirror works both ways.'}
+          ], field:'design.priorFamiliarity' },
+        { id:'cannotChange', session:2, sessionTitle:'The map you came in with',
+          question:"What's a pattern about you that keeps coming back, no matter what you try?",
+          hint:'A habit, a feeling, a kind of relationship — whatever returns every few years.',
+          type:'textarea', placeholder:'The pattern that returns…',
+          reflection:'That pattern is probably not a flaw. It is likely the shape of how you are supposed to move.',
+          field:'design.cannotChange' },
+        { id:'toward_away', session:3, sessionTitle:'How your mind moves',
+          question:"When you set out, are you moving toward something you want, or away from something you don't?",
+          type:'tiles', cols:1,
+          options:[
+            {v:'toward', l:'Toward what I want', r:'Toward types lead with vision. The companion will speak in what you are reaching for.'},
+            {v:'away', l:'Away from what I don\'t', r:'Away From types lead with relief. The companion will speak in what you are moving past.'},
+            {v:'both', l:'Both, depending', r:'The rarer configuration. The companion will pace between the two.'}
+          ], field:'meta.toward_away' },
+        { id:'internal_external', session:3, sessionTitle:'How your mind moves',
+          question:"How do you know you've done good work?",
+          type:'tiles', cols:1,
+          options:[
+            {v:'internal', l:'I feel it inside', r:'Internal frame. The companion mirrors what you already know, never verifies it.'},
+            {v:'external', l:'Someone tells me', r:'External frame. The companion names the work back to you so you can hear it.'},
+            {v:'mixed', l:'Both, but one weighs more', r:'Mixed. The companion holds both and leans to the heavier side as it learns you.'}
+          ], field:'meta.internal_external' },
+        { id:'options_procedures', session:3, sessionTitle:'How your mind moves',
+          question:"Step-by-step, or a few possibilities you choose between?",
+          type:'tiles', cols:1,
+          options:[
+            {v:'procedures', l:'Step-by-step', r:'Procedures. The companion sequences your moves.'},
+            {v:'options', l:'A few possibilities', r:'Options. The companion hands you doors instead of paths.'},
+            {v:'depends', l:'Depends', r:'Then we match the context.'}
+          ], field:'meta.options_procedures' },
+        { id:'general_specific', session:3, sessionTitle:'How your mind moves',
+          question:"When someone explains something to you, what do you want first — the overview, or the steps?",
+          type:'tiles', cols:1,
+          options:[
+            {v:'general', l:'The overview first', r:'General sort. The companion opens with the frame.'},
+            {v:'specific', l:'The steps first', r:'Specific sort. The companion opens with the part.'},
+            {v:'both', l:'Overview, then steps', r:'The companion leads with the frame and follows with the part.'}
+          ], field:'meta.general_specific' },
+        { id:'sameness_difference', session:3, sessionTitle:'How your mind moves',
+          question:"When something new shows up in your life, what hits first — what's familiar about it, or what's different?",
+          type:'tiles', cols:1,
+          options:[
+            {v:'sameness', l:'What is familiar about it', r:'Sameness sort. Change reads as discontinuity — the companion frames new moves as continuations.'},
+            {v:'difference', l:'What is different about it', r:'Difference sort. You sort for what is new. The companion offers unopened doors.'},
+            {v:'both', l:'Both, roughly equally', r:'Then we match the context.'}
+          ], field:'meta.sameness_difference' },
+        { id:'convincer', session:3, sessionTitle:'How your mind moves',
+          question:"How many times do you need to experience something to trust it?",
+          type:'tiles', cols:2,
+          options:[
+            {v:'once', l:'Once', r:'Automatic convincer. The first instance lands. The companion writes for the first read.'},
+            {v:'few', l:'A few times', r:'Number-of-examples. The companion returns to the same insight from different angles.'},
+            {v:'many', l:'Many times', r:'Consistent. The companion knows nothing is settled — it keeps being said.'},
+            {v:'reconvinced', l:'Always reconvinced', r:'Then the relationship is the practice, not the conclusion.'}
+          ], field:'meta.convincer' },
+        { id:'haveToSentence', session:3, sessionTitle:'How your mind moves',
+          question:'And one in your own voice — what sentence do you catch yourself saying that starts with "I have to"?',
+          hint:'Stay in your own words. Whatever first surfaces.',
+          type:'textarea', placeholder:'I have to…',
+          reflection:'That sentence has a voice in it. Whose? The "have to" is rarely yours alone.',
+          field:'meta.modalOperators.necessity' },
+        { id:'cantSentence', session:3, sessionTitle:'How your mind moves',
+          question:'And the other side — what do you catch yourself saying you "can\'t" do?',
+          hint:'The closed door you keep walking past. One sentence.',
+          type:'textarea', placeholder:'I can\'t…',
+          reflection:'"Can\'t" is a closed door. Sometimes it is not locked — just heavier than it looks.',
+          field:'meta.modalOperators.impossibility' },
+        { id:'negativeTriggers', session:4, sessionTitle:'Your doors',
+          question:"What reliably ruins your day in under sixty seconds?",
+          hint:'Up to three, one per line. These stay on this device — they are never sent anywhere, and the companion never names them back.',
+          type:'list', max:3, placeholder:'Something that pulls you down fast…',
+          reflection:'Not weaknesses. Locators. Each one points at something asking to be met.',
+          field:'triggers.negative' },
+        { id:'positiveTriggers', session:4, sessionTitle:'Your doors',
+          question:"What reliably brings you back?",
+          hint:'Up to three. Doors the companion can hand you when you are far from yourself.',
+          type:'list', max:3, placeholder:'Something that returns you to yourself…',
+          reflection:'Hold these. When you are far from yourself, these are the doors back.',
+          field:'triggers.positive' },
+        { id:'music', session:4, sessionTitle:'Your doors',
+          question:"What music does to you what nothing else can?",
+          hint:'A song, an artist, a frequency. Optional.',
+          type:'textarea', placeholder:'The sound that works on you…',
+          reflection:'Music bypasses the mind. The companion holds this for the Mindmovie that is coming.',
+          optional:true, field:'triggers.music' },
+        { id:'place', session:4, sessionTitle:'Your doors',
+          question:"Where do you feel most yourself?",
+          hint:'A kitchen at 7am. A trail you walk alone. Wherever you become more you.',
+          type:'textarea', placeholder:'Where, when, with whom…',
+          reflection:'That place is a state. Once you know what it is made of, you can build it anywhere.',
+          field:'triggers.place' },
+        { id:'witnessedTruth', session:4, sessionTitle:'Your doors',
+          question:"What's the last thing someone said about you that landed as true?",
+          hint:'A friend, a partner, a stranger. The sentence the body knew before the mind agreed.',
+          type:'textarea', placeholder:'They said…',
+          reflection:'People rarely tell us the true things. When they do, the body knows.',
+          field:'triggers.witnessedTruth' },
+        { id:'rememberOne', session:5, sessionTitle:'What to remember',
+          question:"If VBRTN could remember one thing about you forever, what would you want it to be?",
+          hint:'One line. This becomes the companion\'s opening line in every session.',
+          type:'textarea', placeholder:'The one thing…',
+          reflection:'That is the seed. The companion will speak to that part of you, first, every time.',
+          field:'rememberOne' },
+        { id:'desireToLearn', session:5, sessionTitle:'What to remember',
+          question:"How strong is your hunger to learn right now?",
+          hint:'Honest read. It shifts week to week — the truth right now is the useful one.',
+          type:'slider', min:1, max:10, labels:['Low','High'], defaultV:5,
+          reflection:'Even a low score is information. Desire shifts, and the companion learns the shape of yours.',
+          field:'baseline.desireToLearn' },
+        { id:'willingnessToChange', session:5, sessionTitle:'What to remember',
+          question:"What is your willingness to change today?",
+          hint:'Willingness is harder to move than desire — it touches identity.',
+          type:'slider', min:1, max:10, labels:['Low','High'], defaultV:5,
+          reflection:'Willingness is harder than desire — it touches identity. The companion notices when it shifts.',
+          field:'baseline.willingnessToChange' },
+        { id:'chiefAimDistance', session:5, sessionTitle:'What to remember',
+          question:"And how far do you feel from the life you want?",
+          hint:'1 = already there. 10 = impossibly far. Asked again every thirty days; the trend is the work.',
+          type:'slider', min:1, max:10, labels:['Already there','Impossibly far'], defaultV:5,
+          reflection:'This is the baseline. Not the verdict. The number changes. The trend is the work.',
+          field:'baseline.chiefAimDistance' }
+      ];
+
+      function loadIntakePos(){ const r = localStorage.getItem(INTAKE_POS_KEY); return r ? parseInt(r, 10) : 0; }
+      function saveIntakePos(n){ localStorage.setItem(INTAKE_POS_KEY, String(n)); }
+
+      // ── Thread rendering ─────────────────────────────────────────
+      const thread = $('thread');
+      const inp = $('inp');
+      const sendBtn = $('sendBtn');
+      let sending = false;
+
+      function scrollDown(){ requestAnimationFrame(() => { thread.scrollTop = thread.scrollHeight; }); }
+      function addMsg(role, text, opts = {}){
+        const el = document.createElement('div');
+        el.className = 'msg ' + (role === 'user' ? 'user' : 'vbrtn') + (opts.thinking ? ' thinking' : '');
+        el.textContent = text;
+        thread.appendChild(el);
+        scrollDown();
+        return el;
+      }
+      function addHtml(cls, html){
+        const el = document.createElement('div');
+        el.className = cls;
+        el.innerHTML = html;
+        thread.appendChild(el);
+        scrollDown();
+        return el;
+      }
+      function addReflection(text){ return addHtml('reflection', escapeHtml(text)); }
+
+      function asQuote(s){ return String(s || '').trim().replace(/[.,;:!?\s]+$/, ''); }
+      function threadSeed(p){
+        const r = asQuote(p.rememberOne), f = p.standing && p.standing.recentFeeling;
+        if(r) return `You asked to be remembered as “${r}”. I'm here. What's moving in you right now?`;
+        if(f) return `You've been carrying ${f}. I'm here, and I'm listening. Where do you want to begin?`;
+        return `I'm here. Say what's true right now — one line, or many.`;
+      }
+
+      function storedThread(p){
+        const inter = (p && p.history && p.history.interactions) || [];
+        const out = [];
+        inter.forEach(it => {
+          if(it.kind === 'companion-user') out.push({ role:'user', content: it.text });
+          else if(it.kind === 'companion-vbrtn') out.push({ role:'assistant', content: it.text });
+        });
+        return out;
+      }
+
+      // ── Chat — streaming against /api/companion ──────────────────
+      async function send(){
+        const text = inp.value.trim();
+        if(!text || sending) return;
+        sending = true; sendBtn.disabled = true;
+        inp.value = ''; autosize();
+        addMsg('user', text);
+
+        const profile = loadProfile();
+        if(!profile.history) profile.history = { interactions: [], lastSeen:null, journalEntries:[], habitShape:{} };
+        if(!profile.history.interactions) profile.history.interactions = [];
+        profile.history.interactions.push({ at: Date.now(), kind:'companion-user', text });
+        profile.history.lastSeen = Date.now();
+        const detected = detectModalOperators(text);
+        if(detected.length){
+          if(!profile.meta) profile.meta = { modalOperators:{ necessity:[], impossibility:[] } };
+          if(!profile.meta.modalOperators) profile.meta.modalOperators = { necessity:[], impossibility:[] };
+          detected.forEach(d => {
+            const mo = profile.meta.modalOperators;
+            if(!Array.isArray(mo[d.kind])) mo[d.kind] = asList(mo[d.kind]).map(t => ({ text:t }));
+            mo[d.kind].push({ text:d.match, at:Date.now(), source:'companion' });
+          });
+        }
+        saveProfile(profile);
+
+        const prior = storedThread(profile).slice(-12);
+        const payload = prior.length ? prior : [{ role:'user', content: text }];
+        if(prior.length && prior[prior.length - 1].content !== text) payload.push({ role:'user', content: text });
+
+        const bubble = addMsg('vbrtn', '…', { thinking: true });
+        let reply = '';
+        let via = null;
+        try{
+          const token = authToken();
+          const headers = { 'Content-Type': 'application/json' };
+          if(token) headers.Authorization = 'Bearer ' + token;
+          const body = {
+            profile: slimProfile(profile),
+            messages: payload,
+            threadId: localStorage.getItem(THREAD_KEY) || undefined,
+            stream: true,
+          };
+          const res = await fetch(API_BASE + '/api/companion', { method:'POST', headers, body: JSON.stringify(body) });
+          if(!res.ok) throw new Error('companion ' + res.status);
+          const ctype = res.headers.get('Content-Type') || '';
+          if(ctype.includes('text/event-stream') && res.body){
+            bubble.classList.remove('thinking');
+            bubble.textContent = '';
+            const cursor = document.createElement('span');
+            cursor.className = 'cursor';
+            bubble.appendChild(cursor);
+            const reader = res.body.getReader();
+            const decoder = new TextDecoder();
+            let buf = '';
+            while(true){
+              const { done, value } = await reader.read();
+              if(done) break;
+              buf += decoder.decode(value, { stream: true });
+              const parts = buf.split('\n\n');
+              buf = parts.pop() || '';
+              for(const part of parts){
+                const line = part.trim();
+                if(!line.startsWith('data:')) continue;
+                let ev;
+                try{ ev = JSON.parse(line.slice(5).trim()); }catch(e){ continue; }
+                if(ev.delta){
+                  reply += ev.delta;
+                  bubble.textContent = reply;
+                  bubble.appendChild(cursor);
+                  scrollDown();
+                }
+                if(ev.done){
+                  via = ev.via || null;
+                  if(ev.threadId) localStorage.setItem(THREAD_KEY, ev.threadId);
+                }
+                if(ev.error && !reply) throw new Error(ev.error);
+              }
+            }
+            cursor.remove();
+          } else {
+            const data = await res.json().catch(() => null);
+            reply = (data && data.response) || '';
+            via = (data && data.via) || null;
+            if(data && data.threadId) localStorage.setItem(THREAD_KEY, data.threadId);
+            bubble.classList.remove('thinking');
+            bubble.textContent = reply || 'I went quiet for a moment. Say it once more?';
+          }
+          if(reply){
+            signal('exchange', { landed: true, via });
+            const pr = loadProfile();
+            if(!pr.history) pr.history = { interactions: [] };
+            if(!pr.history.interactions) pr.history.interactions = [];
+            pr.history.interactions.push({ at: Date.now(), kind:'companion-vbrtn', text: reply });
+            saveProfile(pr);
+          } else {
+            bubble.textContent = 'I went quiet for a moment. Say it once more?';
+          }
+        }catch(err){
+          bubble.classList.remove('thinking');
+          bubble.textContent = navigator.onLine
+            ? 'I went quiet for a moment. Say it once more?'
+            : "I can't reach you from here — the companion needs a connection. Your words are saved.";
+        }finally{
+          sending = false;
+          sendBtn.disabled = inp.value.trim().length === 0;
+          inp.focus();
+        }
+      }
+
+      function autosize(){
+        inp.style.height = 'auto';
+        inp.style.height = Math.min(inp.scrollHeight, 130) + 'px';
+      }
+      inp.addEventListener('input', () => { sendBtn.disabled = inp.value.trim().length === 0 || sending; autosize(); });
+      inp.addEventListener('keydown', (e) => { if(e.key === 'Enter' && !e.shiftKey){ e.preventDefault(); send(); } });
+      sendBtn.addEventListener('click', send);
+
+      // ── Intake-in-thread engine ──────────────────────────────────
+      let intakeCard = null;
+
+      function commitAnswer(q, val, profile){
+        if(q.field === 'meta.modalOperators.necessity'){
+          if(val) profile.meta.modalOperators.necessity = [{ text: val, at: Date.now() }];
+        } else if(q.field === 'meta.modalOperators.impossibility'){
+          if(val) profile.meta.modalOperators.impossibility = [{ text: val, at: Date.now() }];
+        } else if(q.field === 'meta.convincer'){
+          profile.meta.convincer = { mode: val, count: null };
+        } else if(q.field === 'design.birth'){
+          if(val){
+            profile.design.birth = val;
+            const design = buildDesignFromBirth(val);
+            if(design.hd){
+              profile.design.hd = design.hd;
+              profile.design.gk = design.gk;
+              profile.design.astro = design.astro;
+            }
+          }
+        } else if(val !== null && val !== undefined && val !== ''){
+          setField(profile, q.field, val);
+        }
+        if(q.field === 'standing.recentFeeling') profile.baseline.recentFeelingAtIntake = val;
+        if(q.field === 'baseline.desireToLearn' || q.field === 'baseline.willingnessToChange'){
+          const d = profile.baseline.desireToLearn, w = profile.baseline.willingnessToChange;
+          if(d != null && w != null){
+            profile.baseline.teachabilityIndex = d * w;
+            profile.state.ti = { current: d * w, history: [{ at: Date.now(), value: d * w }] };
+          }
+        }
+        if(q.field === 'baseline.chiefAimDistance'){
+          profile.state.chiefAimDistance = { current: val, history: [{ at: Date.now(), value: val }] };
+        }
+        profile._intakeAnswers[q.id] = { value: val, at: Date.now() };
+        saveProfile(profile);
+      }
+
+      function answerLabel(q, val){
+        if(q.type === 'tiles'){ const o = (q.options || []).find(o => o.v === val); return o ? o.l : String(val); }
+        if(q.type === 'list') return asList(val).join('\n');
+        if(q.type === 'birthForm') return val ? `Born ${val.date}${val.time ? ' at ' + val.time : ''}${val.city ? ' — ' + val.city : ''}` : '';
+        return String(val);
+      }
+      function reflectionFor(q, val){
+        if(q.type === 'tiles'){ const o = (q.options || []).find(o => o.v === val); return (o && o.r) || q.reflection || null; }
+        return q.reflection || null;
+      }
+
+      function intakeAnswered(q, val, skipped){
+        if(intakeCard){ intakeCard.remove(); intakeCard = null; }
+        const profile = loadProfile();
+        if(!skipped){
+          commitAnswer(q, val, profile);
+          const label = answerLabel(q, val);
+          if(label) addMsg('user', label);
+          const r = reflectionFor(q, val);
+          if(r) addReflection(r);
+          if(q.id === 'birthData' && val){
+            const p2 = loadProfile();
+            if(p2.design && p2.design.hd && p2.design.hd.type){
+              addReflection(`Your chart is drawn — a ${p2.design.hd.type}, ${String(p2.design.hd.strategy || '').toLowerCase()}. It lives under “design”, above.`);
+            }
+          }
+        } else {
+          addMsg('user', 'Skip for now');
+        }
+        const pos = loadIntakePos() + 1;
+        saveIntakePos(pos);
+        signal('intake-step', { step: q.id, skipped: !!skipped });
+        setTimeout(() => runIntake(), 350);
+      }
+
+      function runIntake(){
+        const pos = loadIntakePos();
+        if(pos >= QUESTIONS.length){
+          const profile = loadProfile();
+          if(!profile.baseline.intakeCompletedAt){
+            profile.baseline.intakeCompletedAt = Date.now();
+            saveProfile(profile);
+            addMsg('vbrtn', threadSeed(profile));
+            pushCloud(profile);
+            signal('intake-complete', {});
+          }
+          return;
+        }
+        const q = QUESTIONS[pos];
+        const prev = pos > 0 ? QUESTIONS[pos - 1] : null;
+        if(!prev || prev.session !== q.session){
+          addHtml('dayline', `Session ${q.session} of 5 — ${escapeHtml(q.sessionTitle)}`);
+        }
+        intakeCard = renderQuestionCard(q, pos);
+      }
+
+      function renderQuestionCard(q, pos){
+        const card = document.createElement('div');
+        card.className = 'card';
+        let inner = `<div class="progress">${pos + 1} of ${QUESTIONS.length}</div>`;
+        inner += `<div class="q-question">${escapeHtml(q.question)}</div>`;
+        if(q.hint) inner += `<div class="q-hint">${escapeHtml(q.hint)}</div>`;
+        card.innerHTML = inner;
+
+        const area = document.createElement('div');
+        card.appendChild(area);
+        const row = document.createElement('div');
+        row.className = 'q-row';
+
+        if(q.type === 'tiles'){
+          const grid = document.createElement('div');
+          grid.className = 'q-tiles' + (q.cols === 2 ? ' cols2' : '');
+          (q.options || []).forEach(o => {
+            const b = document.createElement('button');
+            b.className = 'q-tile'; b.type = 'button'; b.textContent = o.l;
+            b.addEventListener('click', () => intakeAnswered(q, o.v, false));
+            grid.appendChild(b);
+          });
+          area.appendChild(grid);
+        }
+        else if(q.type === 'textarea'){
+          const ta = document.createElement('textarea');
+          ta.className = 'q-text'; ta.placeholder = q.placeholder || '';
+          area.appendChild(ta);
+          const ok = document.createElement('button');
+          ok.className = 'chip'; ok.type = 'button'; ok.textContent = 'That\'s it';
+          ok.addEventListener('click', () => { const v = ta.value.trim(); if(v || q.optional) intakeAnswered(q, v || null, !v); });
+          row.appendChild(ok);
+        }
+        else if(q.type === 'list'){
+          const inputs = [];
+          for(let i = 0; i < (q.max || 3); i++){
+            const f = document.createElement('input');
+            f.className = 'q-input'; f.placeholder = q.placeholder || ''; f.style.marginBottom = '8px';
+            area.appendChild(f); inputs.push(f);
+          }
+          const ok = document.createElement('button');
+          ok.className = 'chip'; ok.type = 'button'; ok.textContent = 'That\'s them';
+          ok.addEventListener('click', () => {
+            const vals = inputs.map(f => f.value.trim()).filter(Boolean);
+            if(vals.length || q.optional) intakeAnswered(q, vals, vals.length === 0);
+          });
+          row.appendChild(ok);
+        }
+        else if(q.type === 'slider'){
+          const val = document.createElement('div'); val.className = 'q-slider-value'; val.textContent = q.defaultV;
+          const s = document.createElement('input');
+          s.type = 'range'; s.min = q.min; s.max = q.max; s.value = q.defaultV; s.className = 'q-slider';
+          s.addEventListener('input', () => { val.textContent = s.value; });
+          const labels = document.createElement('div');
+          labels.className = 'q-slider-labels';
+          labels.innerHTML = `<span>${escapeHtml(q.labels[0])}</span><span>${escapeHtml(q.labels[1])}</span>`;
+          area.append(val, s, labels);
+          const ok = document.createElement('button');
+          ok.className = 'chip'; ok.type = 'button'; ok.textContent = 'Set';
+          ok.addEventListener('click', () => intakeAnswered(q, parseInt(s.value, 10), false));
+          row.appendChild(ok);
+        }
+        else if(q.type === 'birthForm'){
+          const browserOff = -(new Date().getTimezoneOffset());
+          const OFFSETS = [-720,-660,-600,-570,-540,-480,-420,-360,-300,-270,-240,-210,-180,-120,-60,0,60,120,180,210,240,270,300,330,345,360,390,420,480,525,540,570,600,630,660,690,720,765,840];
+          if(!OFFSETS.includes(browserOff)) OFFSETS.push(browserOff);
+          const fmtOff = (m)=>{ const sg=m<0?'-':'+'; const a=Math.abs(m); return 'UTC'+sg+String(Math.floor(a/60)).padStart(2,'0')+':'+String(a%60).padStart(2,'0'); };
+          area.innerHTML = `
+            <div class="q-field"><label>Date of birth</label><input type="date" class="q-input" id="bdate"></div>
+            <div class="q-field"><label>Time of birth</label><input type="time" class="q-input" id="btime">
+              <label class="q-check"><input type="checkbox" id="btime-unknown"> Time unknown — work without it</label></div>
+            <div class="q-field"><label>City of birth</label><input type="text" class="q-input" id="bcity" placeholder="City, country"></div>
+            <div class="q-field"><label>Timezone at birth (incl. daylight saving)</label>
+              <select class="q-input" id="btz">${OFFSETS.sort((a,b)=>a-b).map(m=>`<option value="${m}" ${m===browserOff?'selected':''}>${fmtOff(m)}</option>`).join('')}</select></div>
+            <div class="q-hint">Birth details stay in your profile and are used only to draw your chart — the companion only ever sees the chart they produce.</div>`;
+          const ok = document.createElement('button');
+          ok.className = 'chip'; ok.type = 'button'; ok.textContent = 'Draw my chart';
+          ok.addEventListener('click', () => {
+            const date = card.querySelector('#bdate').value;
+            const time = card.querySelector('#btime').value;
+            const timeUnknown = card.querySelector('#btime-unknown').checked;
+            const city = card.querySelector('#bcity').value.trim();
+            const tz = parseInt(card.querySelector('#btz').value, 10);
+            if(!date){ return; }
+            intakeAnswered(q, { date, time: timeUnknown ? '' : time, timeUnknown, city, tzOffset: tz }, false);
+          });
+          row.appendChild(ok);
+        }
+
+        if(q.optional){
+          const skip = document.createElement('button');
+          skip.className = 'chip dim'; skip.type = 'button'; skip.textContent = 'Skip for now';
+          skip.addEventListener('click', () => intakeAnswered(q, null, true));
+          row.appendChild(skip);
+        }
+        if(row.children.length) card.appendChild(row);
+        thread.appendChild(card);
+        scrollDown();
+        return card;
+      }
+
+      // ── Recovery card in the thread ──────────────────────────────
+      function maybeAddRecovery(p){
+        const rec = getCurrentRecovery(p);
+        if(!rec) return;
+        const card = document.createElement('div');
+        card.className = 'card';
+        card.innerHTML = `
+          <div class="label">a question that opens</div>
+          <div class="sentence">“${escapeHtml(rec.sentence)}”</div>
+          <div class="prompt">${escapeHtml(rec.prompt)}</div>
+          <div class="frame">${escapeHtml(rec.frame)}</div>`;
+        const btns = document.createElement('div');
+        btns.className = 'cardbtns';
+        const another = document.createElement('button');
+        another.className = 'chip dim'; another.textContent = 'Ask me differently';
+        another.addEventListener('click', () => {
+          const arr = rec.kind === 'necessity' ? RECOVERY_NECESSITY : RECOVERY_IMPOSSIBILITY;
+          const rot = getRecoveryRotation();
+          rot[rec.kind] = (rec.idx + 1) % arr.length;
+          rot.lastKind = rec.kind;
+          setRecoveryRotation(rot);
+          signal('recovery-rotated', { kind: rec.kind, prompt: rec.idx, landed: false });
+          card.remove();
+          maybeAddRecovery(loadProfile());
+        });
+        const answer = document.createElement('button');
+        answer.className = 'chip'; answer.textContent = 'Answer it';
+        answer.addEventListener('click', () => {
+          inp.value = '';
+          inp.focus();
+          inp.placeholder = rec.prompt;
+        });
+        btns.append(answer, another);
+        card.appendChild(btns);
+        thread.appendChild(card);
+        scrollDown();
+        signal('recovery-shown', { kind: rec.kind, prompt: rec.idx });
+      }
+
+      // ── Overlays ─────────────────────────────────────────────────
+      document.querySelectorAll('[data-close]').forEach(b =>
+        b.addEventListener('click', () => $(b.dataset.close).classList.remove('open')));
+
+      $('designBtn').addEventListener('click', () => { renderDesign(); $('designOverlay').classList.add('open'); });
+      $('memBtn').addEventListener('click', () => { renderMemory(); $('memOverlay').classList.add('open'); });
+      $('menuBtn').addEventListener('click', () => { renderMenu(); $('menuOverlay').classList.add('open'); });
+
+      function renderDesign(){
+        const p = loadProfile();
+        const hd = p.design && p.design.hd, gk = p.design && p.design.gk, astro = p.design && p.design.astro;
+        const body = $('designBody');
+        if(!hd || !hd.type){
+          body.innerHTML = `<div class="mem-note">Your chart is not drawn yet. It comes from your birth data — date, time, timezone — in the intake. The companion works without it; it works sharper with it.</div>`;
+          return;
+        }
+        let html = `<dl class="dl"><dt>Type</dt><dd>${escapeHtml(hd.type)}</dd>`;
+        if(hd.strategy) html += `<dt>Strategy</dt><dd>${escapeHtml(hd.strategy)}</dd>`;
+        if(hd.authority) html += `<dt>Authority</dt><dd>${escapeHtml(hd.authority)}</dd>`;
+        if(hd.profile) html += `<dt>Profile</dt><dd>${escapeHtml(hd.profile)}</dd>`;
+        if(astro && astro.sun) html += `<dt>Sun · Moon · Rising</dt><dd>${escapeHtml(astro.sun)} · ${escapeHtml(astro.moon)} · ${escapeHtml(astro.rising)}</dd>`;
+        html += '</dl>';
+        const r = resolvedGK(gk);
+        if(r && GK){
+          html += `<div style="margin-top:18px" class="mem-note">Gene Keys — your spectrum</div>`;
+          (GK.SPHERES || []).forEach(sp => {
+            const k = r[sp.key];
+            if(k && k.shadow) html += `<div class="gkrow"><b>${escapeHtml(k.label)} ${k.gate}</b> — ${escapeHtml(k.shadow)} → ${escapeHtml(k.gift)} → ${escapeHtml(k.siddhi)}</div>`;
+          });
+        }
+        body.innerHTML = html;
+      }
+
+      async function renderMemory(){
+        const body = $('memBody');
+        const p = loadProfile();
+        let html = '';
+        const nec = asList(p.meta && p.meta.modalOperators && p.meta.modalOperators.necessity);
+        const imp = asList(p.meta && p.meta.modalOperators && p.meta.modalOperators.impossibility);
+        html += `<div class="mem-note">Everything VBRTN knows about you sits here — visible, yours, deletable. Nothing on this screen is ever used to rank you.</div>`;
+        if(p.rememberOne) html += `<div class="mem-item"><span class="kind">forever</span><span>${escapeHtml(p.rememberOne)}</span></div>`;
+        nec.forEach(t => { html += `<div class="mem-item"><span class="kind">have-to</span><span>${escapeHtml(t)}</span></div>`; });
+        imp.forEach(t => { html += `<div class="mem-item"><span class="kind">can't</span><span>${escapeHtml(t)}</span></div>`; });
+        body.innerHTML = html + `<div class="mem-note" id="cloudMems">…</div>`;
+        const cloudEl = $('cloudMems');
+        if(!authToken()){
+          cloudEl.textContent = 'Sign in and the companion also keeps what it notices across conversations — synced to your account, readable right here.';
+          return;
+        }
+        try{
+          const row = await pullCloud();
+          const mems = (row && row.data && Array.isArray(row.data.memories)) ? row.data.memories : [];
+          if(!mems.length){ cloudEl.textContent = 'Across conversations: nothing noted yet. It grows as you speak.'; return; }
+          cloudEl.outerHTML = mems.map((m, i) =>
+            `<div class="mem-item" data-mi="${i}"><span class="kind">${escapeHtml(m.kind || 'noted')}</span><span>${escapeHtml(m.content)}</span><button class="del" data-del="${i}" aria-label="Forget this">×</button></div>`
+          ).join('');
+          $('memBody').querySelectorAll('[data-del]').forEach(b => b.addEventListener('click', async () => {
+            const idx = parseInt(b.dataset.del, 10);
+            try{
+              const row2 = await pullCloud();
+              if(!row2) return;
+              const data = row2.data || {};
+              data.memories = (data.memories || []).filter((_, i) => i !== idx);
+              await sbRest(`/rest/v1/charts?id=eq.${row2.id}`, { method:'PATCH', headers:{ Prefer:'return=minimal' }, body: JSON.stringify({ data }) });
+              b.closest('.mem-item').remove();
+            }catch(e){}
+          }));
+        }catch(e){
+          cloudEl.textContent = 'The account memory is unreachable right now.';
+        }
+      }
+
+      async function renderMenu(){
+        const body = $('menuBody');
+        const user = authUser();
+        let html = '';
+        html += `<div class="mem-note">${user ? 'Signed in as ' + escapeHtml((user.user_metadata && user.user_metadata.username) || user.email || 'you') + ' — one account, every surface.' : 'Not signed in. Sign in and your intake, memory and conversations follow you to every device.'}</div>`;
+        html += `<div class="q-row" style="margin-bottom:18px">`;
+        if(!user) html += `<button class="chip" id="signinBtn">Sign in</button>`;
+        html += `<button class="chip dim" id="newThreadBtn">Begin a new conversation</button></div>`;
+        if(user){
+          html += `<div class="mem-note">Conversations</div><div id="thrList">…</div>`;
+          html += `<div class="mem-note" style="margin-top:22px">Your data</div>
+            <div class="q-row"><button class="chip dim" id="exportBtn">Export everything</button>
+            <button class="chip danger" id="eraseBtn">Erase everything</button></div>
+            <div id="exportOut"></div>`;
+        }
+        body.innerHTML = html;
+        const signin = $('signinBtn');
+        if(signin) signin.addEventListener('click', () => {
+          if(window.frqncyAuth && typeof window.frqncyAuth.open === 'function') window.frqncyAuth.open();
+        });
+        $('newThreadBtn').addEventListener('click', () => {
+          localStorage.removeItem(THREAD_KEY);
+          const p = loadProfile();
+          p.history.interactions = (p.history.interactions || []).filter(it => it.kind !== 'companion-user' && it.kind !== 'companion-vbrtn');
+          saveProfile(p);
+          $('menuOverlay').classList.remove('open');
+          renderBoot(true);
+        });
+        if(user){
+          try{
+            const res = await fetch(API_BASE + '/api/companion?threads=1', { headers: { Authorization: 'Bearer ' + authToken() } });
+            const data = await res.json();
+            const list = (data && data.threads) || [];
+            $('thrList').innerHTML = list.length
+              ? list.map(t => `<div class="thr-item" data-thr="${t.id}">${escapeHtml(t.title || 'Untitled')}<div class="when">${new Date(t.updated_at).toLocaleDateString()}</div></div>`).join('')
+              : '<div class="mem-note">No conversations on the account yet.</div>';
+            body.querySelectorAll('[data-thr]').forEach(el => el.addEventListener('click', async () => {
+              localStorage.setItem(THREAD_KEY, el.dataset.thr);
+              try{
+                const r = await fetch(API_BASE + `/api/companion?thread=${el.dataset.thr}`, { headers: { Authorization: 'Bearer ' + authToken() } });
+                const d = await r.json();
+                const p = loadProfile();
+                p.history.interactions = (p.history.interactions || []).filter(it => it.kind !== 'companion-user' && it.kind !== 'companion-vbrtn');
+                (d.messages || []).forEach(m => p.history.interactions.push({
+                  at: new Date(m.created_at).getTime() || Date.now(),
+                  kind: m.role === 'user' ? 'companion-user' : 'companion-vbrtn',
+                  text: m.content,
+                }));
+                saveProfile(p);
+              }catch(e){}
+              $('menuOverlay').classList.remove('open');
+              renderBoot(true);
+            }));
+          }catch(e){ const el = $('thrList'); if(el) el.innerHTML = '<div class="mem-note">Unreachable right now.</div>'; }
+          $('exportBtn').addEventListener('click', async () => {
+            const out = $('exportOut');
+            out.innerHTML = '<div class="mem-note">Gathering…</div>';
+            try{
+              const res = await fetch(API_BASE + '/api/vbrtn-data', { headers: { Authorization: 'Bearer ' + authToken() } });
+              const text = await res.text();
+              out.innerHTML = `<textarea class="export-box" readonly></textarea><div class="mem-note">Long-press to select and copy. This is everything.</div>`;
+              out.querySelector('textarea').value = text;
+            }catch(e){ out.innerHTML = '<div class="mem-note">Export is unreachable right now.</div>'; }
+          });
+          $('eraseBtn').addEventListener('click', async () => {
+            if(!confirm('Erase everything VBRTN holds about you — profile, memory, every conversation — on this device and on your account? This cannot be undone.')) return;
+            try{
+              await fetch(API_BASE + '/api/vbrtn-data', { method:'DELETE', headers: { Authorization: 'Bearer ' + authToken() } });
+            }catch(e){}
+            [STORE_KEY, THREAD_KEY, INTAKE_POS_KEY, MORNING_KEY, RECOVERY_ROTATION_KEY, SYNC_META_KEY].forEach(k => localStorage.removeItem(k));
+            location.reload();
+          });
+        }
+      }
+
+      // ── Network state ────────────────────────────────────────────
+      function paintNet(){ document.body.classList.toggle('offline', !navigator.onLine); }
+      window.addEventListener('online', paintNet);
+      window.addEventListener('offline', paintNet);
+
+      // ── Boot ─────────────────────────────────────────────────────
+      function renderBoot(clear){
+        if(clear) thread.innerHTML = '';
+        const p = loadProfile();
+        const pos = loadIntakePos();
+        const answered = Object.keys(p._intakeAnswers || {}).length;
+
+        if(answered === 0 && pos === 0){
+          addHtml('openline', 'welcome to vbrtn');
+          addMsg('vbrtn', "I'm the companion — one agent, walking beside you toward who you already are. Before I can reflect anything true, I need to meet you: about twelve minutes, twenty-five questions, five short sessions you can leave anytime. Everything you tell me stays yours — visible, exportable, erasable.");
+          const startRow = document.createElement('div');
+          startRow.className = 'q-row';
+          const begin = document.createElement('button');
+          begin.className = 'chip'; begin.textContent = 'Begin the intake';
+          begin.addEventListener('click', () => { startRow.remove(); signal('intake-start', {}); runIntake(); });
+          const later = document.createElement('button');
+          later.className = 'chip dim'; later.textContent = 'Just talk first';
+          later.addEventListener('click', () => { startRow.remove(); addMsg('vbrtn', threadSeed(p)); });
+          startRow.append(begin, later);
+          thread.appendChild(startRow);
+          scrollDown();
+          return;
+        }
+
+        // Morning open — once per local day, only when the intake has begun.
+        const today = new Date().toDateString();
+        const morn = generateMorningOpen(p);
+        addHtml('dayline', today);
+        if(localStorage.getItem(MORNING_KEY) !== today || clear){
+          localStorage.setItem(MORNING_KEY, today);
+          addHtml('openline', escapeHtml(morn.primary) + (morn.sub ? `<span class="sub">${escapeHtml(morn.sub)}</span>` : ''));
+        }
+
+        // Replay the stored thread.
+        const msgs = storedThread(p);
+        msgs.slice(-40).forEach(m => addMsg(m.role === 'user' ? 'user' : 'vbrtn', m.content));
+
+        if(pos < QUESTIONS.length){
+          // Mid-intake: pick up exactly where they left off.
+          const cont = document.createElement('div');
+          cont.className = 'q-row';
+          const b = document.createElement('button');
+          b.className = 'chip';
+          b.textContent = answered > 0 ? 'Continue the intake' : 'Begin the intake';
+          b.addEventListener('click', () => { cont.remove(); runIntake(); });
+          cont.appendChild(b);
+          thread.appendChild(cont);
+        } else {
+          if(!msgs.length) addMsg('vbrtn', threadSeed(p));
+          maybeAddRecovery(p);
+        }
+        scrollDown();
+      }
+
+      paintNet();
+      renderBoot(false);
+      window.addEventListener('frqncy:auth', (e) => { if(e.detail && e.detail.user) hydrateFromCloud(); });
+      if(authUser()) hydrateFromCloud();
+    </script>
+  </body>
+</html>

@@ -19,6 +19,7 @@ export default defineConfig({
         alarm: resolve(__dirname, 'src/app/alarm.html'),
         bedside: resolve(__dirname, 'src/app/bedside.html'),
         settings: resolve(__dirname, 'src/app/settings.html'),
+        companion: resolve(__dirname, 'src/app/companion.html'),
       },
     },
   },

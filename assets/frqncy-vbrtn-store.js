@@ -121,6 +121,13 @@
       const local = localLoad();
       const winner = chooseProfile(local, remote);
       if (winner) {
+        // Negative-trigger names live ONLY on this device (the cloud copy
+        // carries a count). When the cloud copy wins, graft the local names
+        // back in so the person's own device never forgets them.
+        if (winner === remote && local && local.triggers && Array.isArray(local.triggers.negative)
+            && local.triggers.negative.length && winner.triggers) {
+          winner.triggers.negative = local.triggers.negative;
+        }
         localSave(winner);
         // If the winning copy isn't already what's in the cloud, push it up.
         if (!remote || activityTime(winner) > activityTime(remote)) {

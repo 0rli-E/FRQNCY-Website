@@ -119,11 +119,17 @@ function navigate(route: string) {
     return;
   }
   if (route === '/vbrtn') {
-    // The companion is a live surface — chat runs through /api/companion on
-    // the site's own origin (free Workers AI lane, Claude when keyed), the
-    // intake and Sanctuary read/propose-write all live there. Loading it in
-    // the iframe shell keeps the tab bar visible and the API same-origin.
-    openExternal('https://frqncy.network/my-frqncy/vbrtn/', '/vbrtn');
+    // The companion is a LOCAL surface as of v1 (VBRTN-APP-STRATEGY
+    // 2026-08-20): the chat-first page ships in the bundle and talks to
+    // https://frqncy.network/api/companion cross-origin (allow-listed there).
+    // Native chrome stays; the thread reads offline from the local mirror.
+    const resolvedSrc = new URL('./app/companion.html', window.location.href).toString();
+    if (frame.src !== resolvedSrc) {
+      startLoading();
+      frame.src = resolvedSrc;
+    }
+    showSurface('frame');
+    setActiveTab('/vbrtn');
     return;
   }
   if (route.startsWith('/app/')) {
@@ -441,7 +447,10 @@ async function bootstrap() {
   // Record the boot navigation generation so any async work that fires
   // before our routing decision can compare against it.
   const bootGen = bumpNavGeneration();
-  const initialRoute = shouldSmartResume() ? '/app/bedside.html' : '/';
+  // Chat-first: the companion IS the app's opening surface (it carries its
+  // own first-run welcome + intake invitation). Smart resume still wins —
+  // the bedside ritual outranks chat when a wake-up is live.
+  const initialRoute = shouldSmartResume() ? '/app/bedside.html' : '/vbrtn';
 
   // Apply the initial route only if no deep-link / user-interaction has
   // already navigated us in the meantime. (Capacitor delivers a pending

@@ -684,6 +684,30 @@
         })();
         return rowPromise;
       }
+      // Canonical row shape (VBRTN-APP-STRATEGY 2026-08-20): data = { profile,
+      // memories, state, updatedAt }. `memories`/`state` are written by the
+      // companion's server-side extractor — this store must never clobber
+      // them, so setState is a read-modify-write. Legacy rows hold the
+      // profile blob at the top level of `data`; read both, write canonical.
+      // Privacy floor: negative-trigger NAMES never leave the device — the
+      // cloud copy carries only their count.
+      function stripNegativeNames(p) {
+        if (!p || typeof p !== 'object') return p;
+        const out = JSON.parse(JSON.stringify(p));
+        if (out.triggers && out.triggers.negative != null) {
+          const n = Array.isArray(out.triggers.negative) ? out.triggers.negative.filter(Boolean).length
+                  : (String(out.triggers.negative).trim() ? 1 : 0);
+          out.triggers.negative = [];
+          out.triggers.negativeCount = n;
+        }
+        return out;
+      }
+      function readProfileFrom(d) {
+        if (!d || typeof d !== 'object' || !Object.keys(d).length) return null;
+        if (d.profile && typeof d.profile === 'object') return d.profile;
+        if (d.standing || d._intakeAnswers || d.meta) return d; // legacy shape
+        return null;
+      }
       return {
         async getState() {
           const id = await ensureRow();
@@ -693,15 +717,26 @@
             .eq('id', id)
             .single();
           if (error) throw error;
-          // An empty {} (freshly-created row) reads as "no profile yet".
-          const d = data?.data;
-          return (d && Object.keys(d).length) ? d : null;
+          return readProfileFrom(data?.data);
         },
         async setState(state) {
           const id = await ensureRow();
+          const { data: current, error: readErr } = await client
+            .from('charts')
+            .select('data')
+            .eq('id', id)
+            .single();
+          if (readErr) throw readErr;
+          const d = (current && current.data && typeof current.data === 'object') ? current.data : {};
+          const next = {
+            profile: stripNegativeNames(state),
+            memories: Array.isArray(d.memories) ? d.memories : [],
+            state: (d.state && typeof d.state === 'object') ? d.state : {},
+            updatedAt: new Date().toISOString(),
+          };
           const { error } = await client
             .from('charts')
-            .update({ data: state })
+            .update({ data: next })
             .eq('id', id);
           if (error) throw error;
           journeyNote({ s: 'vbrtn', k: 'session', title: 'Time with VBRTN', url: '/my-frqncy/vbrtn/' });

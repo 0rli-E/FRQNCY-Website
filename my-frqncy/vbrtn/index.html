@@ -248,6 +248,21 @@
   'use strict';
   const STORE_KEY = 'frqncy:vbrtn:profile';
   const RECOVERY_ROTATION_KEY = 'frqncy:vbrtn:recoveryRotation';
+  const THREAD_KEY = 'frqncy:vbrtn:threadId';
+
+  // Signed-in callers speak to /api/companion with their Supabase JWT — the
+  // server then uses the account's canonical memory (profile + extractor
+  // memories) and persists the exchange to the account's thread. Same key
+  // the universal sign-in (frqncy-auth.js) maintains.
+  function vbrtnAuthToken(){
+    try{
+      let s = JSON.parse(localStorage.getItem('sb-vyazlspbmwmlyncdlezh-auth-token') || 'null');
+      if(s && s.currentSession) s = s.currentSession;
+      if(!s || !s.access_token) return null;
+      if(s.expires_at && (s.expires_at * 1000) < Date.now()) return null;
+      return s.access_token;
+    }catch(e){ return null; }
+  }
 
   function loadProfile(){
     if(window.FRQNCYVbrtn) return window.FRQNCYVbrtn.load();
@@ -1059,12 +1074,20 @@
 
       const thinking = addBubble('vbrtn', '…', { thinking:true });
       try{
+        const token = vbrtnAuthToken();
+        const headers = { 'Content-Type':'application/json' };
+        if(token) headers.Authorization = 'Bearer ' + token;
         const res = await fetch('/api/companion', {
           method:'POST',
-          headers:{ 'Content-Type':'application/json' },
-          body: JSON.stringify({ profile: slimProfile(profile), messages: payload })
+          headers,
+          body: JSON.stringify({
+            profile: slimProfile(profile),
+            messages: payload,
+            threadId: localStorage.getItem(THREAD_KEY) || undefined
+          })
         });
         const data = await res.json().catch(()=>null);
+        if(data && data.threadId){ try{ localStorage.setItem(THREAD_KEY, data.threadId); }catch(e){} }
         thinking.remove();
         const reply = data && data.response ? data.response : null;
         stored.push({ role:'user', content: text });

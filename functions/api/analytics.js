@@ -81,6 +81,8 @@ function isAllowedOrigin(origin) {
   if (origin.endsWith('.frqncy-website.pages.dev')) return true;
   // Local dev
   if (origin === 'http://localhost:4321' || origin === 'http://localhost:3000') return true;
+  // The VBRTN app shell (Capacitor webview + vite dev)
+  if (origin === 'https://localhost' || origin === 'capacitor://localhost' || origin === 'http://localhost:5173') return true;
   return false;
 }
 
