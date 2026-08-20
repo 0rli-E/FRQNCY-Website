@@ -11,9 +11,11 @@ Intake / Design / MemoryUI) over the shared Layers 1–4, typed `{type,payload}`
 renderers as the client plugin seam, APNs morning open, ~6–7 weeks to a submitted 1.0 riding
 the shared backend phases. Memory `vbrtn-app-strategy-locked` updated with the amendment.
 
-**Opened.** Four questions pending Orlando: Apple Developer enrollment (entity?), store
-identity (VBRTN vs FRQNCY), localization (English-only 1.0 proposed), morning-open delivery
-(local notification Phase A → server push Phase C proposed).
+**Opened.** Four questions were pending Orlando; answered same session: no Apple Developer
+account yet (→ the only external blocker; individual enrollment recommended), store identity
+VBRTN (`network.frqncy.vbrtn`), English-only 1.0, morning-open delivery defaulted to the
+proposal (local notification Phase A → server push Phase C). Still open: individual vs.
+wait-for-org enrollment.
 
 **Finished, and how verified.** Strategy doc only — no code, nothing to run. Not verified
 against Xcode; `app/ios/` Capacitor shell untouched (its 2026-08-19 first-build fixes remain

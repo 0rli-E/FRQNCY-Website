@@ -1,6 +1,6 @@
 # VBRTN iOS — the native companion app
 
-**Date:** 2026-08-20 · **Status:** decisions locked 2026-08-20 (Orlando) — ready to scaffold
+**Date:** 2026-08-20 · **Status:** decisions locked + open questions answered 2026-08-20 (Orlando) — scaffold can start; Apple Developer enrollment is the only external blocker
 **Sibling doc:** `VBRTN-APP-STRATEGY-2026-08-20.md` (the shared build shape — Layers 1–4 and the Android/Capacitor client). This doc is the **iOS client**.
 **Parent doc:** `MY-FRQNCY-VBRTN-COMPANION-2026-05-22.md` (the cause).
 
@@ -123,15 +123,20 @@ Memory canon (server-canonical, Supabase RLS), chat retention (full transcripts 
 model line (free/member split), the lens-plugin runtime, the privacy floor, the typed
 message contract — all locked in the sibling doc and consumed here as-is.
 
-## Open questions for Orlando
+## Open questions — answered 2026-08-20 (Orlando, same day)
 
-1. **Apple Developer account** — enrolled? Under which entity (personal vs. FRQNCY org)?
-   Org enrollment needs a D-U-N-S number and takes days-to-weeks — start now if not done.
-2. **Store identity** — ship as "VBRTN" (distinct brand, cleaner) or "FRQNCY" (network
-   brand, one app forever)? Affects bundle id, marketing, and whether the alarm/bedside
-   surfaces ever justify their own app.
-3. **Localization** — English-only 1.0, or German at launch? The Milton-Model voice needs
-   real per-language work, not translation; English-only 1.0 is the honest default.
-4. **Morning-open delivery** — server-computed push (needs the cron Worker + APNs keys,
-   design-aware, correct) vs. local notification (ships in Phase A, dumber). Proposal:
-   local in Phase A, server push in Phase C.
+1. **Apple Developer account — not enrolled yet.** This is the long pole; nothing ships
+   to TestFlight without it. Recommendation: enroll as an **individual** now ($99/yr,
+   approval usually within 48h) rather than waiting on an organization account (needs a
+   legal entity + D-U-N-S number, days-to-weeks). Trade-off to accept knowingly: on an
+   individual account the App Store seller line shows the personal name, not "FRQNCY".
+   Apple supports app transfer to an org account later, so this is reversible when a
+   FRQNCY legal entity exists. → Enrollment sub-decision (individual vs. wait-for-org)
+   still Orlando's; individual recommended.
+2. **Store identity: VBRTN.** Locked. Bundle id `network.frqncy.vbrtn`, display name
+   VBRTN, store listing carries the "by FRQNCY" line in the copy.
+3. **Localization: English-only 1.0.** Locked. German (and the per-language Milton-Model
+   voice work it requires) is a post-1.0 project.
+4. **Morning-open delivery: no preference stated** — the proposal stands as default:
+   locally scheduled notification in Phase A, server-computed design-aware APNs push in
+   Phase C.
