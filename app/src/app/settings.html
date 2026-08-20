@@ -157,12 +157,38 @@
         outline: 2px solid rgba(196, 151, 58, 0.9);
         outline-offset: 2px;
       }
+      .acct-note {
+        padding: 10px 0 4px;
+        font-size: 12.5px;
+        font-weight: 300;
+        line-height: 1.55;
+        color: rgba(245, 245, 245, 0.5);
+      }
     </style>
+    <!-- Universal sign-in (assets/frqncy-auth.js) — same Supabase project as
+         the site, so the account is one and the same. The session lives in
+         THIS webview's origin; the live surfaces loaded in the shell's iframe
+         (VBRTN, Sanctuary) carry their own door and their own copy of the
+         session on the frqncy.network origin. -->
+    <script src="../assets/frqncy-supabase.js" defer></script>
+    <script src="../assets/frqncy-auth.js" defer></script>
   </head>
   <body>
     <div class="wrap">
       <h1 class="sr-only">You — settings</h1>
       <p class="eyebrow" aria-hidden="true">you</p>
+
+      <div class="section">
+        <div class="section-title">account</div>
+        <div class="row">
+          <span id="acct-state">not signed in</span>
+          <span class="row-value"><span data-frqncy-auth-slot></span></span>
+        </div>
+        <div class="acct-note">
+          one account, every surface — the same sign-in as frqncy.network.
+          your intake, Sanctuary and companion follow it.
+        </div>
+      </div>
 
       <div class="section">
         <div class="section-title">content</div>
@@ -631,6 +657,26 @@
         try { localStorage.setItem(HAPTIC_WAKE_KEY, v); } catch {}
       });
       loadHapticPref();
+
+      // Account row — mirror the universal sign-in state that frqncy-auth.js
+      // paints into the slot. The "who" link the control renders points at
+      // /my-frqncy/ (site-relative); in the app shell that path doesn't exist
+      // locally, so retarget it at the live site whenever the control repaints.
+      const acctState = document.getElementById('acct-state');
+      function paintAcct(user) {
+        acctState.textContent = user
+          ? 'signed in · ' + ((user.user_metadata && user.user_metadata.username) || user.email || 'you')
+          : 'not signed in';
+        document.querySelectorAll('a.frqa-who').forEach((a) => {
+          a.href = 'https://frqncy.network/my-frqncy/';
+        });
+      }
+      window.addEventListener('load', () => {
+        if (window.frqncyAuth && typeof window.frqncyAuth.onAuth === 'function') {
+          window.frqncyAuth.onAuth(paintAcct);
+        }
+      });
+      window.addEventListener('frqncy:auth', (e) => paintAcct(e.detail && e.detail.user));
 
       // Initial hydrate.
       loadSyncStatus();
