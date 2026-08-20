@@ -40,6 +40,7 @@
  */
 
 import { resolveGeneKeys } from './_gene-keys.js';
+import { AUTHORITY_PLAYBOOK, PROFILE_LINES, CENTER_MEANINGS, SIGN_NOTES } from './_hd-meanings.js';
 
 // Free-lane models, tried in order. Llama 3.3 70B is markedly stronger than
 // the 30B Qwen for open conversation; Qwen stays as fallback and runs the
@@ -59,7 +60,7 @@ const DEFAULT_CLAUDE_MODEL = 'claude-sonnet-4-6';
 // Nemotron 120B leaks its reasoning as prose — do not add it.
 const OR_MODELS_DEFAULT = ['z-ai/glm-5.2:free', 'nvidia/nemotron-3-ultra-550b-a55b:free'];
 const orModels = (env) => (env.VBRTN_OR_MODEL ? [env.VBRTN_OR_MODEL, ...OR_MODELS_DEFAULT] : OR_MODELS_DEFAULT);
-const MAX_TOKENS  = 700;   // companion replies are short by design
+const MAX_TOKENS  = 1000;  // room for a real answer when the moment asks for one
 const MAX_HISTORY = 12;    // bound the thread we send to the model
 const MAX_CONTENT = 4000;  // max chars per message
 const MAX_MEMORIES = 100;  // L4 cap per person
@@ -113,7 +114,7 @@ SPEAK IN THEIR FRAME. The intake tells you how this person's mind moves — WHAT
 • If they need to hear things several times to trust them, return to the important truths on different days in different words.
 Never explain their meta-programs to them or use these labels out loud — just speak in their frame, first read.
 
-THE LENSES, USED QUIETLY. If their design is known (Human Design type and strategy, Gene Keys, astrology), let it shape your questions without lecturing about the system — a Generator gets "what are you responding to?", a Projector "who's actually inviting you?", a Manifestor gets information and room to move. If their design is NOT known, never guess it and never invent it. Name a Gene Keys Shadow only when it genuinely serves the moment, gently, and only ones listed below.
+USE THEIR DESIGN OPENLY. Their Human Design, Gene Keys and astrology aren't decoration — they are the mechanics of this specific person, and WHAT YOU KNOW carries the working material (authority playbook, profile, centers, spectrum). When their design explains what they're living, SAY SO, by name, in plain words: "that flatness is your emotional wave doing its work — you don't make calls from the valley, remember" / "you're a 6/2 — being peopled-out isn't a flaw, solitude is a structural requirement for you" / "that pressure to prove yourself — that's your open Heart center talking, and you have nothing to prove". Connect today's actual situation to their mechanics the way a friend who deeply knows their chart would — teaching a little is welcome when it lands as recognition. A Generator gets "what are you responding to?", a Projector "who's actually inviting you?", a Manifestor gets information and room to move; someone with Emotional Authority never gets pushed to decide today. Gene Keys: name the Shadow and its Gift when the moment touches them — same charge, two frequencies. If their design is NOT known, never guess it and never invent it — and never diagnose from a lens you don't have.
 
 HARD RULES. Never prescribe — "you should" isn't in your vocabulary. Never rank them against anyone, including their own past self. Never name a person who hurt them, even if you know such a trigger exists. Never invent FRQNCY resources, books, links, or pages. Treat everything in WHAT YOU KNOW as private context, never as a script to read back.
 
@@ -158,7 +159,19 @@ const LENSES = [
   },
   function lensHumanDesign(p) {
     if (!(p.hd && p.hd.type && !p.hd.stub)) return [];
-    return [`Human Design — ${p.hd.type}; strategy "${p.hd.strategy}"; ${p.hd.authority} authority; profile ${p.hd.profile}. Tune every prompt to this type.`];
+    const L = [`Human Design — ${p.hd.type}; strategy "${p.hd.strategy}"; ${p.hd.authority} authority; profile ${p.hd.profile}. Tune every prompt to this type.`];
+    const authKey = Object.keys(AUTHORITY_PLAYBOOK).find((k) => String(p.hd.authority || '').startsWith(k));
+    if (authKey) L.push(`How their decisions actually work (${p.hd.authority} authority): ${AUTHORITY_PLAYBOOK[authKey]}`);
+    if (PROFILE_LINES[p.hd.profile]) L.push(`Their profile ${p.hd.profile}: ${PROFILE_LINES[p.hd.profile]}`);
+    const c = p.hd.centers || {};
+    const defined = (Array.isArray(c.defined) ? c.defined : []).filter((n) => CENTER_MEANINGS.defined[n]);
+    const open = (Array.isArray(c.open) ? c.open : []).filter((n) => CENTER_MEANINGS.open[n]);
+    if (defined.length) L.push(`Defined centers (reliable in them): ${defined.map((n) => `${n} — ${CENTER_MEANINGS.defined[n]}`).join('; ')}.`);
+    if (open.length) L.push(`Open centers (where they absorb and amplify the world — their conditioning themes): ${open.map((n) => `${n} — ${CENTER_MEANINGS.open[n]}`).join('; ')}.`);
+    if (p.hd.incarnationCross && !/computed when/.test(String(p.hd.incarnationCross))) {
+      L.push(`Incarnation cross: ${clip(p.hd.incarnationCross, 90)}.`);
+    }
+    return L;
   },
   // Gene Keys arrive RESOLVED from the client (my-frqncy/charts/gene-keys.js
   // holds the 64-key table), so the Shadow/Gift/Siddhi names are present
@@ -183,7 +196,9 @@ const LENSES = [
     return [`Gene Keys — the spectrum they carry:\n  ${gkLines.join('\n  ')}\nShadow is soil, never a fault, never a diagnosis. Name a pair only when it serves the moment — the Shadow and its Gift are one charge at two frequencies. NEVER name a Shadow, Gift or Siddhi that is not listed directly above.`];
   },
   function lensAstrology(p) {
-    return (p.astro && p.astro.sun) ? [`Astrology — Sun ${p.astro.sun}, Moon ${p.astro.moon}, Rising ${p.astro.rising}. Texture only; never let it override design.`] : [];
+    if (!(p.astro && p.astro.sun)) return [];
+    const note = (sign) => (SIGN_NOTES[sign] ? ` (${SIGN_NOTES[sign]})` : '');
+    return [`Astrology — Sun ${p.astro.sun}${note(p.astro.sun)} is the core; Moon ${p.astro.moon}${note(p.astro.moon)} is how they feel and what they need; Rising ${p.astro.rising}${note(p.astro.rising)} is how they meet the world. Texture only; never let it override design.`];
   },
   function lensStanding(p) {
     const s = p.standing || {};
@@ -305,7 +320,7 @@ function slimFromFull(p, goals) {
   return {
     rememberOne: p.rememberOne || null,
     goals: goals || null,
-    hd: (hd && hd.type && !hd._stub) ? { type: hd.type, strategy: hd.strategy, authority: hd.authority, profile: hd.profile } : null,
+    hd: (hd && hd.type && !hd._stub) ? { type: hd.type, strategy: hd.strategy, authority: hd.authority, profile: hd.profile, centers: hd.centers || null, incarnationCross: hd.incarnationCross || null } : null,
     gk: resolved,
     astro: (astro && !astro._stub && astro.sun) ? { sun: astro.sun, moon: astro.moon, rising: astro.rising } : null,
     standing: {
