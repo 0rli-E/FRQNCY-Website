@@ -8,7 +8,9 @@ import PackageDescription
 
 let package = Package(
     name: "VBRTNKit",
-    platforms: [.iOS(.v17)],
+    // macOS is never shipped — it exists so VBRTNCore can be type-checked and
+    // logic-tested on a Mac with CommandLineTools alone (no Xcode needed).
+    platforms: [.iOS(.v17), .macOS(.v13)],
     products: [
         .library(name: "VBRTNCore", targets: ["VBRTNCore"]),
         .library(name: "VBRTNUI", targets: ["VBRTNUI"]),
@@ -24,6 +26,13 @@ let package = Package(
         ),
         .target(
             name: "VBRTNUI",
+            dependencies: ["VBRTNCore"]
+        ),
+        // Logic checks runnable on a bare Mac: `swift run CoreCheck`.
+        // Not part of the app; exists because XCTest is unavailable under
+        // CommandLineTools and the core deserves executed verification.
+        .executableTarget(
+            name: "CoreCheck",
             dependencies: ["VBRTNCore"]
         ),
     ]
