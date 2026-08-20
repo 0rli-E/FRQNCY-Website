@@ -1946,3 +1946,4 @@ otherwise have shipped — a book slug rename that would have 404'd an indexed, 
   table-delete.
 - Issues do not auto-close: `status.mjs` will show a route green while its issue sits open.
 - GitHub Projects kanban is blocked on a token scope (`gh auth refresh -s project`).
+
