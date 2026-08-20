@@ -1,0 +1,41 @@
+# VBRTN — native iOS app (XcodeGen manifest)
+# Generate the Xcode project with:  xcodegen generate
+# Strategy: proposals/VBRTN-IOS-NATIVE-STRATEGY-2026-08-20.md
+name: VBRTN
+options:
+  bundleIdPrefix: network.frqncy
+  deploymentTarget:
+    iOS: "17.0"
+  createIntermediateGroups: true
+packages:
+  VBRTNKit:
+    path: VBRTNKit
+targets:
+  VBRTN:
+    type: application
+    platform: iOS
+    sources:
+      - path: VBRTN
+    dependencies:
+      - package: VBRTNKit
+        product: VBRTNUI
+    info:
+      path: VBRTN/Info.plist
+      properties:
+        CFBundleDisplayName: VBRTN
+        CFBundleShortVersionString: "1.0"
+        CFBundleVersion: "1"
+        UILaunchScreen: {}
+        UISupportedInterfaceOrientations:
+          - UIInterfaceOrientationPortrait
+        # Dark-first by design — the FRQNCY register commits to it.
+        UIUserInterfaceStyle: Dark
+        # No custom crypto — standard exemption, keeps TestFlight simple.
+        ITSAppUsesNonExemptEncryption: false
+    settings:
+      base:
+        PRODUCT_BUNDLE_IDENTIFIER: network.frqncy.vbrtn
+        TARGETED_DEVICE_FAMILY: "1"
+        CODE_SIGN_STYLE: Automatic
+        SWIFT_VERSION: "5.9"
+        INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents: YES

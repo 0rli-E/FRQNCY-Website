@@ -1,3 +1,38 @@
+## 2026-08-20 — VBRTN iOS: the native app is written (Phase A+B client, uncompiled)
+
+**Did.** Built the complete native SwiftUI app at `app/ios-native/` per the iOS strategy doc:
+XcodeGen manifest (bundle `network.frqncy.vbrtn`, iOS 17+, dark-first), local package
+VBRTNKit (VBRTNCore logic / VBRTNUI surfaces), 22 Swift files. Feature parity with the
+Android chat-first client shipped earlier today: thread home with SSE streaming against
+`/api/companion` v2 (thin-client mode ready), full 24-question intake-in-thread (verbatim
+bank, same field paths), on-device chart engine running the SAME hd-engine/vsop87/gene-keys
+JS via JavaScriptCore, morning open (in-thread + local 08:00 notification toggle),
+modal-operator detect + recovery card with rotation, universal sign-in (Supabase email+
+password, Keychain), cloud profile sync (charts row name='VBRTN', read-modify-write,
+negative-trigger names stripped), threads list/switch, memory-transparency screen with
+per-record delete, export via share sheet, erase with confirm, vbrtn_signal analytics
+(surface:'ios').
+
+**Opened.** Nothing new. Apple Developer enrollment in progress (Orlando, same evening).
+
+**Finished, and how verified.** All 22 Swift files pass `xcrun swiftc -parse` (syntax only —
+NO type check possible: Xcode still not installed, CommandLineTools has no iOS SDK).
+`xcodegen generate` produces VBRTN.xcodeproj clean. Chart engine verified for real: the
+module-syntax strip + classic-script evaluation runs in Node `vm` (same mode as JSCore) and
+computes a correct full chart (found + fixed: hd-engine.js now imports vsop87-data.js — the
+"dependency-free" header is stale; bundled it). Live SSE smoke test against production
+`/api/companion` with the exact app payload shape: delta/done grammar confirmed, leading
+"\n\n" delta observed → display trim added.
+
+**Left.** NOT compiled against the iOS SDK — expect a first-compile pass of small type
+fixes (Orlando: install Xcode from the App Store, then `sudo xcode-select -s
+/Applications/Xcode.app`, accept license, `xcodebuild -downloadPlatform iOS`, then in
+`app/ios-native`: `xcodegen generate` if needed and open VBRTN.xcodeproj). Not run on any
+device/simulator; auth flow untested against real accounts; morning notification untested.
+App icon is an empty placeholder. Sign in with Apple deferred until the paid dev account.
+The old Capacitor iOS shell (`app/ios/`) untouched and parked; its 08-19 fixes remain
+uncommitted on this branch.
+
 ## 2026-08-20 — VBRTN iOS: native-app strategy written, decision #3 amended for iOS
 
 **Did.** Orlando asked to focus on the Apple app and make it "a real app, not a wrapper."
