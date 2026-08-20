@@ -61,6 +61,31 @@ still the next build steps from the morning session; iOS Phase A can start once 
 Developer question is answered. Notion TASK BOARD not updated (no task state changed —
 planning only); create rows when Phase A starts.
 
+## 2026-08-20 — VBRTN voice round 3: frame-matching, no profile recitation, Llama 3.3 70B free lane
+
+**Did.** Orlando's live feedback in three waves, each fixed + deployed + live-tone-tested:
+(1) "How's the stretch feeling today?" — the model recited the profile's feeling word on a
+bare greeting; global rules didn't land on Qwen, an INLINE guard on the feeling context line
+did ("never open with this word"). Greetings now plain across repeated runs. (2) "Answers
+should be based on the NLP test answers" — new SPEAK IN THEIR FRAME section: toward/away
+phrasing, options-vs-procedures shaped offers, internal/external mirroring, convincer
+repetition; verified live — the same message gets differently-shaped replies per meta-program
+profile. Examples marked register-not-scripts (Qwen was parroting them verbatim);
+no-catchphrase rule added. (3) "Bla bla and then a question… ChatGPT is not even close" —
+honest cause is the model class. Free lane now tries **Llama 3.3 70B** before Qwen (fallback
+chain, setup-failure-only during streams; extractor stays on Qwen), and the prompt's
+one-liner LENGTH rule was replaced with depth-matching + "say something specific and true
+before any question". Live samples confirm the step up. The real ceiling-lifter remains the
+already-wired Claude lane — Orlando has the two wrangler commands to set ANTHROPIC_API_KEY.
+
+**Finished, and how verified.** 6/6 endpoint tests each round; three live production tone
+tests (greeting x3 stable, frame A/B differentiation visible, via=workers-ai on Llama).
+
+**Left.** (1) Free-lane quality is now decent, not frontier — the Claude secret is the
+remaining lever and needs Orlando's key. (2) Llama pricing: Workers AI included allocation
+should cover current usage; watch the CF dashboard if usage grows. (3) "Have something to
+say" only partly lands on Llama — revisit after the Claude flip rather than over-tuning.
+
 ## 2026-08-20 — VBRTN v1.1: Orlando's four phone-test findings fixed same evening
 
 **Did.** Orlando installed the v1 APK and found four things; all fixed and shipped
