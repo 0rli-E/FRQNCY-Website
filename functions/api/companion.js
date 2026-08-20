@@ -42,6 +42,7 @@
 import { resolveGeneKeys } from './_gene-keys.js';
 import { AUTHORITY_PLAYBOOK, PROFILE_LINES, CENTER_MEANINGS, SIGN_NOTES } from './_hd-meanings.js';
 import { gateLine } from './_hd-gates.js';
+import { HEXAGRAMS } from './_iching.js';
 
 // Free-lane models, tried in order. Llama 3.3 70B is markedly stronger than
 // the 30B Qwen for open conversation; Qwen stays as fallback and runs the
@@ -193,9 +194,17 @@ const LENSES = [
     const g = p.hd.gates || {};
     const pers = (Array.isArray(g.personality) ? g.personality : []).slice(0, 4);
     const des = (Array.isArray(g.design) ? g.design : []).slice(0, 2);
+    // Each gate carries its I Ching root (gate N = hexagram N, King Wen) —
+    // public-domain depth from ./_iching.js, grounded in Legge 1899.
+    const withHex = (n, suffix) => {
+      const t = gateLine(n);
+      if (!t) return null;
+      const hx = HEXAGRAMS[n];
+      return `${t} (${suffix})${hx ? `. Its I Ching root, ${hx.name}: ${hx.essence}.` : ''}`;
+    };
     const gLines = [
-      ...pers.map((n) => gateLine(n)).filter(Boolean).map((t) => `${t} (personality)`),
-      ...des.map((n) => gateLine(n)).filter(Boolean).map((t) => `${t} (design/body)`),
+      ...pers.map((n) => withHex(n, 'personality')).filter(Boolean),
+      ...des.map((n) => withHex(n, 'design/body')).filter(Boolean),
     ];
     if (gLines.length) L.push(`Defining gates in their chart:\n  ${gLines.join('\n  ')}`);
     return L;
