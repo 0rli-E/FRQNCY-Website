@@ -61,6 +61,34 @@ still the next build steps from the morning session; iOS Phase A can start once 
 Developer question is answered. Notion TASK BOARD not updated (no task state changed —
 planning only); create rows when Phase A starts.
 
+## 2026-08-20 — VBRTN v1.1: Orlando's four phone-test findings fixed same evening
+
+**Did.** Orlando installed the v1 APK and found four things; all fixed and shipped
+(4a090fe22 on main; APK `VBRTN-v1.1-debug-2026-08-20.apk` on Desktop, sha256 35107e29…).
+(1) **Voice** — the Milton-register VOICE prompt read as stilted; rewritten to plain human
+speech (contractions, match their length, one question at a time; the modal-operator
+curiosity, quiet design lenses and never-prescribe/never-rank rules survive in plain words).
+Welcome copy softened to match. Live tone check after deploy: "Hey. How's the stretch feeling
+today?" — reads human. This intentionally diverges from the cause doc's Milton section on
+REGISTER (not on method) per Orlando's direct feedback. (2) **"Chat deletes itself"** —
+renderBoot showed the welcome screen whenever the intake hadn't begun, hiding the stored
+thread on every re-entry; thread now always replays, welcome only on true first contact.
+(3) **"Not logged in across the app"** — the app's local origin and the frqncy.network
+iframe surfaces each held their own Supabase session; built a two-way hand-off (outbound
+`#frqncy_sso` fragment → `setSession`; inbound postMessage targetOrigin-locked to the app
+origins). (4) **"No logo"** — the launcher was the stock Capacitor icon; replaced with the
+gold waveform on navy at all densities (adaptive foreground + legacy square/round), same
+mark added to the chat topbar and welcome.
+
+**Finished, and how verified.** 34/34 Playwright UI checks (incl. 4 new talk-first
+persistence checks), zero console errors; 6/6 endpoint tests; gradle clean; deployed and
+live tone-tested with three message shapes.
+
+**Left.** (1) The session hand-off is code-reviewed + type-checked but NOT exercised on a
+device (needs a real sign-in in the app, then opening a site surface — Orlando's next test
+run covers it). (2) v1.1 APK not yet on a phone. (3) Voice quality on the free Qwen lane is
+now acceptable; the Claude lane (member tier) remains the real ceiling — one Pages secret away.
+
 ## 2026-08-20 — VBRTN v1 SHIPPED: chat-first app, server-canonical memory, the extractor — live-verified
 
 **Did.** Built and deployed Phases 1–3 of `proposals/VBRTN-APP-STRATEGY-2026-08-20.md` in one
