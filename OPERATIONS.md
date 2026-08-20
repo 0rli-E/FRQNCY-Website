@@ -75,11 +75,15 @@ model; streaming does eager setup so a busy pool falls to Workers BEFORE the SSE
 **Finished, and how verified.** 7/7 endpoint test groups (new: ladder order, 429-in-200
 handling, stream-through, workers floor). Deployed to main (faf650436).
 
-**Left.** (1) The lane is DORMANT until `OPENROUTER_API_KEY` lands as a Pages secret —
-Orlando has the two wrangler commands (my wrangler OAuth here is expired). (2) OpenRouter
-free caps: ~50 req/day on a zero-credit account; a one-time $10 credit purchase raises free
-models to 1000 req/day — recommended. (3) After the secret lands: live tone check + watch
-`via` in replies ("openrouter" vs "workers-ai" ratio tells us pool availability).
+**ACTIVATED same evening:** Orlando ran `wrangler login` in-session; Claude set the
+`OPENROUTER_API_KEY` secret from the harness keychain and triggered a redeploy. Verified
+LIVE: `via=openrouter` on JSON and streaming lanes; sample replies notably sharper
+("That 'have to' carries weight. What would actually happen if you didn't call?" /
+"Rough one. Want to vent, or would a distraction be better right now?").
+
+**Left.** (1) OpenRouter free caps: ~50 req/day on a zero-credit account; a one-time $10
+credit purchase raises free models to 1000 req/day — recommended before real users arrive.
+(2) Watch the `via` ratio ("openrouter" vs "workers-ai") to see pool availability.
 
 ## 2026-08-20 — VBRTN voice round 3: frame-matching, no profile recitation, Llama 3.3 70B free lane
 
