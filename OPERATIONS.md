@@ -1,3 +1,37 @@
+## 2026-08-20 — VBRTN: bugs from the 08-16 click-through fixed, review-0812 shipped to main
+
+**Did.** (1) Fixed all three findings from the 2026-08-16 live click-through in
+`my-frqncy/vbrtn/index.html`: `getCurrentRecovery` now normalizes modal operators with
+`asList()` so the plain-string shape the intake writes surfaces the recovery card (the
+[{text}] chat shape already worked); the "Your design" card renders Strategy/Authority/Profile
+rows only when present (no more "Strategy — undefined"); empty-state copy now says "five short
+sessions" matching the intake's Session-of-5. (2) Committed the in-flight app settings account
+section (universal sign-in via `app/public/assets/frqncy-{auth,supabase}.js`, byte-identical to
+the site originals; who-link retargeted at the live site). Built + cap-synced — new
+`settings-D5BNlOFU.js` chunk and both auth scripts confirmed inside
+`android/app/src/main/assets/public/`. (3) Fast-forwarded `main` to `review-0812`
+(d800eb20c → 339f6e635, 18 commits incl. the 08-12 VBRTN Android work + Your Log) and pushed
+both branches. SSH remote auth is broken in non-interactive shells (publickey denied); pushed
+via HTTPS + `gh` credential helper instead. (4) Notion TASK BOARD row created (Done, Owner:
+Claude, Area: VBRTN).
+
+**Opened.** Nothing.
+
+**Finished, and how verified.** Inline script parse-checked (`new Function`); asList shapes
+unit-checked in node; Vite build + `cap sync android` clean. Deploy verified LIVE: polled
+production until `https://frqncy.network/my-frqncy/vbrtn/` served both the "five short
+sessions" copy and the `asList(p.meta?.modalOperators…)` fix (~80s after push). The
+`vbrtn_signal` allowlist and empty-state sign-in from 08-12 are therefore now live too.
+
+**Left.** (1) The recovery-card fix is verified deployed but NOT re-verified end-to-end in a
+browser with a seeded string-shape profile — re-run the 08-16 Playwright pass to close it.
+(2) Whether Supabase `analytics_events` accepts the now-live `vbrtn_signal` row shape is still
+unverified. (3) iOS first-build fixes remain uncommitted on the working tree by design (commit
+after device verification); still blocked on Xcode not being installed. (4) Android APK still
+untested on a physical phone (Desktop APK is from 08-12, now one bundle behind — rebuild via
+/app-apk before testing). (5) settings.html account row untested in a running shell (webview
+origin session behavior assumed from frqncy-auth.js contract).
+
 ## 2026-08-16 — VBRTN live click-through: full loop verified, one real bug found
 
 **Did.** Automated click-through of the LIVE `https://frqncy.network/my-frqncy/vbrtn/` with
