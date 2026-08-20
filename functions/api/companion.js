@@ -467,7 +467,10 @@ Never invent. Never include anything the person did not themselves express. The 
 
 async function runExtractor(env, uid, userText, replyText) {
   if (!env.AI || !sbReady(env)) return;
-  let parsed;
+  // Extraction is best-effort, but a silent failure is undebuggable — the
+  // outcome (never the person's words) is noted on state._extractor.
+  const note = { at: new Date().toISOString(), ok: false };
+  let parsed = null;
   try {
     const result = await env.AI.run(WORKERS_MODEL, {
       messages: [
@@ -480,9 +483,15 @@ async function runExtractor(env, uid, userText, replyText) {
     let text = (result && (result.response || (result.choices && result.choices[0]?.message?.content))) || '';
     text = text.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
     const jsonMatch = text.match(/\{[\s\S]*\}/);
-    if (!jsonMatch) return;
-    parsed = JSON.parse(jsonMatch[0]);
-  } catch { return; }
+    if (jsonMatch) {
+      parsed = JSON.parse(jsonMatch[0]);
+      note.ok = true;
+    } else {
+      note.err = 'no JSON in model output (' + text.slice(0, 60).replace(/\s+/g, ' ') + '…)';
+    }
+  } catch (e) {
+    note.err = String((e && e.message) || e).slice(0, 140);
+  }
 
   try {
     const row = await loadVbrtnRow(env, uid);
@@ -506,28 +515,30 @@ async function runExtractor(env, uid, userText, replyText) {
       target.modalOperators[kind] = merged;
     };
 
-    if (data.profile && typeof data.profile === 'object') {
+    if (parsed && data.profile && typeof data.profile === 'object') {
       if (!data.profile.meta) data.profile.meta = {};
       mergeModal(data.profile.meta, 'necessity');
       mergeModal(data.profile.meta, 'impossibility');
     }
 
     const mems = Array.isArray(data.memories) ? data.memories : [];
-    const incoming = (Array.isArray(parsed.memories) ? parsed.memories : [])
+    const incoming = (parsed && Array.isArray(parsed.memories) ? parsed.memories : [])
       .filter((m) => m && typeof m.content === 'string' && m.content.trim())
       .slice(0, 2)
       .map((m) => ({ kind: ['fact', 'win', 'theme'].includes(m.kind) ? m.kind : 'fact', content: clip(m.content, 300), at: now }));
     const fresh = incoming.filter((m) => !mems.some((e) => e.content === m.content));
     data.memories = mems.concat(fresh).slice(-MAX_MEMORIES);
 
-    if (typeof parsed.feeling === 'string' && parsed.feeling.trim()) {
+    if (parsed && typeof parsed.feeling === 'string' && parsed.feeling.trim()) {
       if (!data.state) data.state = {};
       data.state.lastFeeling = clip(parsed.feeling, 40);
       data.state.lastFeelingAt = now;
     }
+    if (!data.state) data.state = {};
+    data.state._extractor = note;
     data.updatedAt = now;
     await saveVbrtnData(env, uid, row ? row.id : null, data);
-  } catch { /* best-effort */ }
+  } catch { /* the row itself is unreachable — nothing to note on */ }
 }
 
 // ── CORS ──────────────────────────────────────────────────────────
