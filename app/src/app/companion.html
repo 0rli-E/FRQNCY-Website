@@ -1070,6 +1070,42 @@
         intakeCard = renderQuestionCard(q, QUESTIONS.indexOf(q));
       }
 
+      // The first reading — the moment that decides whether the mirror is
+      // believed. Marked moment:'reading' so the server leads with the premium
+      // model (cents; falls back to the free ladder without credits).
+      async function requestReading(){
+        const profile = loadProfile();
+        const bubble = addMsg('vbrtn', '…', { thinking: true });
+        try{
+          const token = authToken();
+          const headers = { 'Content-Type': 'application/json' };
+          if(token) headers.Authorization = 'Bearer ' + token;
+          const res = await fetch(API_BASE + '/api/companion', {
+            method: 'POST', headers,
+            body: JSON.stringify({
+              profile: slimProfile(profile),
+              messages: [{ role: 'user', content: "I've just finished telling you about myself. Look at everything you now know about me and tell me what you actually see — the person, not a summary. Then tell me where we begin." }],
+              threadId: localStorage.getItem(THREAD_KEY) || undefined,
+              moment: 'reading',
+            }),
+          });
+          const data = await res.json().catch(() => null);
+          bubble.classList.remove('thinking');
+          const reply = (data && data.response) || threadSeed(profile);
+          bubble.textContent = reply;
+          if(data && data.threadId) localStorage.setItem(THREAD_KEY, data.threadId);
+          const pr = loadProfile();
+          if(!pr.history.interactions) pr.history.interactions = [];
+          pr.history.interactions.push({ at: Date.now(), kind: 'companion-vbrtn', text: reply });
+          saveProfile(pr);
+          signal('reading', { via: (data && data.via) || null });
+          scrollDown();
+        }catch(e){
+          bubble.classList.remove('thinking');
+          bubble.textContent = threadSeed(profile);
+        }
+      }
+
       function runIntake(){
         const pos = loadIntakePos();
         if(pos >= QUESTIONS.length){
@@ -1077,9 +1113,9 @@
           if(!profile.baseline.intakeCompletedAt){
             profile.baseline.intakeCompletedAt = Date.now();
             saveProfile(profile);
-            addMsg('vbrtn', threadSeed(profile));
             pushCloud(profile);
             signal('intake-complete', {});
+            requestReading();
           }
           return;
         }
@@ -1432,7 +1468,7 @@
         if(answered === 0 && pos === 0 && msgs.length === 0){
           addHtml('openline', `<svg viewBox="0 0 24 24" width="44" height="44" aria-hidden="true" style="display:block;margin:26px auto 10px"><path d="M3.5 12h2.6l2.2-5.4 3.4 10.8 3.4-10.8 2.2 5.4h3.2" fill="none" stroke="#C4973A" stroke-width="2.1" stroke-linecap="round" stroke-linejoin="round"/><circle cx="3.5" cy="12" r="1.1" fill="#C4973A"/><circle cx="20.5" cy="12" r="1.1" fill="#C4973A"/></svg>`);
           addHtml('openline', 'welcome to vbrtn');
-          addMsg('vbrtn', "Hey — I'm VBRTN. The more I know you, the more useful I get: your design, how you move, what pulls you down and what brings you back. Meeting you takes about twelve minutes — five short rounds of questions, leave anytime, pick up where you left off. And everything you tell me stays yours: you can see it, export it, or erase it whenever you want.");
+          addMsg('vbrtn', "Hey — I'm VBRTN. Think of me as a mirror with a memory: I hold what you tell me — your design, how you move, what pulls you down, what brings you back — and I reflect it back when it actually matters. Meeting you takes about twelve minutes, five short rounds, leave anytime and pick up where you left off. Everything you tell me stays yours: you can see it, export it, or erase it whenever you want.");
           const startRow = document.createElement('div');
           startRow.className = 'q-row';
           const begin = document.createElement('button');

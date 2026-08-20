@@ -60,7 +60,16 @@ const DEFAULT_CLAUDE_MODEL = 'claude-sonnet-4-6';
 // strongest when it answers; Nemotron 550B is the dependable second;
 // Nemotron 120B leaks its reasoning as prose — do not add it.
 const OR_MODELS_DEFAULT = ['z-ai/glm-5.2:free', 'nvidia/nemotron-3-ultra-550b-a55b:free'];
-const orModels = (env) => (env.VBRTN_OR_MODEL ? [env.VBRTN_OR_MODEL, ...OR_MODELS_DEFAULT] : OR_MODELS_DEFAULT);
+// Weighted moments (body.moment: 'reading' | 'synthesis'): the few exchanges
+// that define whether someone believes in the companion — the first reflection
+// after intake, the weekly synthesis — lead with a PAID frontier model
+// (cents per call, needs OpenRouter credits; without credits it falls straight
+// through to the free ladder). Everyday chat never pays.
+const PREMIUM_MODEL_DEFAULT = 'anthropic/claude-haiku-4.5';
+const orModels = (env, premium) => {
+  const base = env.VBRTN_OR_MODEL ? [env.VBRTN_OR_MODEL, ...OR_MODELS_DEFAULT] : [...OR_MODELS_DEFAULT];
+  return premium ? [env.VBRTN_PREMIUM_MODEL || PREMIUM_MODEL_DEFAULT, ...base] : base;
+};
 const MAX_TOKENS  = 1000;  // room for a real answer when the moment asks for one
 const MAX_HISTORY = 12;    // bound the thread we send to the model
 const MAX_CONTENT = 4000;  // max chars per message
@@ -685,7 +694,8 @@ export async function onRequestPost(ctx) {
   try { body = await request.json(); }
   catch { return jsonError('Invalid JSON body', 400, CORS); }
 
-  const { profile, messages, threadId, stream } = body || {};
+  const { profile, messages, threadId, stream, moment } = body || {};
+  const premium = moment === 'reading' || moment === 'synthesis';
   if (!Array.isArray(messages) || messages.length === 0) {
     return jsonError('messages array required', 400, CORS);
   }
@@ -761,7 +771,7 @@ export async function onRequestPost(ctx) {
   // ── Streaming lane ──────────────────────────────────────────────
   if (stream) {
     try {
-      const s = await runModelStream(env, clean, context);
+      const s = await runModelStream(env, clean, context, premium);
       const encoder = new TextEncoder();
       let full = '';
       const out = new ReadableStream({
@@ -809,7 +819,7 @@ export async function onRequestPost(ctx) {
   }
   if (env.OPENROUTER_API_KEY) {
     try {
-      const text = await runOpenRouter(env, clean, context);
+      const text = await runOpenRouter(env, clean, context, premium);
       finish(text, 'openrouter');
       return ok(text, 'openrouter', CORS, activeThreadId);
     } catch (err) {
@@ -862,10 +872,10 @@ function scrubThink(text) {
   return t;
 }
 
-async function runOpenRouter(env, clean, context) {
+async function runOpenRouter(env, clean, context, premium) {
   const system = VOICE + DATA_GUARD + context + '\n--- END WHAT YOU KNOW ---';
   let lastErr = null;
-  for (const model of orModels(env)) {
+  for (const model of orModels(env, premium)) {
     try {
       const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
@@ -892,10 +902,10 @@ async function runOpenRouter(env, clean, context) {
 
 // Eager setup (so a busy free pool falls through to Workers AI BEFORE we
 // commit to an SSE response), lazy body.
-async function openrouterStreamSetup(env, clean, context) {
+async function openrouterStreamSetup(env, clean, context, premium) {
   const system = VOICE + DATA_GUARD + context + '\n--- END WHAT YOU KNOW ---';
   let lastErr = null;
-  for (const model of orModels(env)) {
+  for (const model of orModels(env, premium)) {
     try {
       const attempt = await fetch('https://openrouter.ai/api/v1/chat/completions', {
         method: 'POST',
@@ -964,14 +974,14 @@ async function runWorkersAI(env, clean, context) {
 
 // ── Model calls — streaming ───────────────────────────────────────
 // Returns { via, deltas } where deltas is an async iterable of text pieces.
-async function runModelStream(env, clean, context) {
+async function runModelStream(env, clean, context, premium) {
   if (env.ANTHROPIC_API_KEY) {
     try { return { via: 'claude', deltas: claudeDeltas(env, clean, context) }; }
     catch { /* fall through */ }
   }
   if (env.OPENROUTER_API_KEY) {
     try {
-      const res = await openrouterStreamSetup(env, clean, context);
+      const res = await openrouterStreamSetup(env, clean, context, premium);
       return { via: 'openrouter', deltas: openrouterBodyDeltas(res) };
     } catch { /* free pools busy — fall through */ }
   }
