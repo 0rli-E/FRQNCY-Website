@@ -48,6 +48,17 @@ const WORKERS_MODELS = ['@cf/meta/llama-3.3-70b-instruct-fp8-fast', '@cf/qwen/qw
 const EXTRACTOR_MODEL = '@cf/qwen/qwen3-30b-a3b-fp8';
 const needsNoThink = (m) => m.includes('qwen');
 const DEFAULT_CLAUDE_MODEL = 'claude-sonnet-4-6';
+
+// OpenRouter lane (env.OPENROUTER_API_KEY) — frontier-class free models,
+// tried in order, congestion-prone by nature: any failure falls through to
+// the next model and finally to Workers AI, so the companion never goes
+// silent because a free pool is busy. Override the first slot with
+// env.VBRTN_OR_MODEL (e.g. a paid model id) without a code change.
+// Chosen 2026-08-20 by live A/B with the real prompt: GLM-5.2 free is the
+// strongest when it answers; Nemotron 550B is the dependable second;
+// Nemotron 120B leaks its reasoning as prose — do not add it.
+const OR_MODELS_DEFAULT = ['z-ai/glm-5.2:free', 'nvidia/nemotron-3-ultra-550b-a55b:free'];
+const orModels = (env) => (env.VBRTN_OR_MODEL ? [env.VBRTN_OR_MODEL, ...OR_MODELS_DEFAULT] : OR_MODELS_DEFAULT);
 const MAX_TOKENS  = 700;   // companion replies are short by design
 const MAX_HISTORY = 12;    // bound the thread we send to the model
 const MAX_CONTENT = 4000;  // max chars per message
@@ -759,6 +770,15 @@ export async function onRequestPost(ctx) {
       // Fall through to the keyless lane rather than failing the user.
     }
   }
+  if (env.OPENROUTER_API_KEY) {
+    try {
+      const text = await runOpenRouter(env, clean, context);
+      finish(text, 'openrouter');
+      return ok(text, 'openrouter', CORS, activeThreadId);
+    } catch (err) {
+      // Free pools busy — the Workers lane below always answers.
+    }
+  }
   if (!env.AI) {
     return jsonError('The companion is not reachable right now. Try again in a moment.', 500, CORS);
   }
@@ -799,6 +819,82 @@ async function runClaude(env, clean, context) {
   return text;
 }
 
+function scrubThink(text) {
+  let t = String(text || '').replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+  if (t.includes('<think>')) t = t.replace(/<think>[\s\S]*/g, '').trim();
+  return t;
+}
+
+async function runOpenRouter(env, clean, context) {
+  const system = VOICE + DATA_GUARD + context + '\n--- END WHAT YOU KNOW ---';
+  let lastErr = null;
+  for (const model of orModels(env)) {
+    try {
+      const res = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://frqncy.network',
+          'X-Title': 'VBRTN',
+        },
+        body: JSON.stringify({ model, max_tokens: MAX_TOKENS, temperature: 0.85,
+          messages: [{ role: 'system', content: system }, ...clean] }),
+      });
+      const data = await res.json().catch(() => null);
+      // OpenRouter reports upstream failures as an `error` object, sometimes
+      // inside an HTTP 200 — status alone is not the truth.
+      if (!res.ok || !data || data.error) throw new Error('openrouter ' + (data && data.error ? JSON.stringify(data.error).slice(0, 80) : res.status));
+      const text = scrubThink(data.choices && data.choices[0] && data.choices[0].message && data.choices[0].message.content);
+      if (text) return text;
+      throw new Error('openrouter empty from ' + model);
+    } catch (err) { lastErr = err; }
+  }
+  throw lastErr || new Error('openrouter: no model answered');
+}
+
+// Eager setup (so a busy free pool falls through to Workers AI BEFORE we
+// commit to an SSE response), lazy body.
+async function openrouterStreamSetup(env, clean, context) {
+  const system = VOICE + DATA_GUARD + context + '\n--- END WHAT YOU KNOW ---';
+  let lastErr = null;
+  for (const model of orModels(env)) {
+    try {
+      const attempt = await fetch('https://openrouter.ai/api/v1/chat/completions', {
+        method: 'POST',
+        headers: {
+          Authorization: `Bearer ${env.OPENROUTER_API_KEY}`,
+          'Content-Type': 'application/json',
+          'HTTP-Referer': 'https://frqncy.network',
+          'X-Title': 'VBRTN',
+        },
+        body: JSON.stringify({ model, max_tokens: MAX_TOKENS, temperature: 0.85, stream: true,
+          messages: [{ role: 'system', content: system }, ...clean] }),
+      });
+      if (!attempt.ok || !attempt.body || !(attempt.headers.get('content-type') || '').includes('event-stream')) {
+        lastErr = new Error('openrouter stream ' + attempt.status);
+        continue;
+      }
+      return attempt;
+    } catch (err) { lastErr = err; }
+  }
+  throw lastErr || new Error('openrouter: no stream');
+}
+
+async function* openrouterBodyDeltas(res) {
+  const think = makeThinkFilter();
+  for await (const data of sseData(res.body)) {
+    if (data === '[DONE]') break;
+    let ev;
+    try { ev = JSON.parse(data); } catch { continue; }
+    if (ev.error) { if (ev.error.message) throw new Error('openrouter mid-stream'); continue; }
+    const tok = (ev.choices && ev.choices[0] && ev.choices[0].delta && ev.choices[0].delta.content) || '';
+    if (!tok) continue;
+    const cleanTok = think(tok);
+    if (cleanTok) yield cleanTok;
+  }
+}
+
 async function runWorkersAI(env, clean, context) {
   let lastErr = null;
   for (const model of WORKERS_MODELS) {
@@ -835,6 +931,12 @@ async function runModelStream(env, clean, context) {
   if (env.ANTHROPIC_API_KEY) {
     try { return { via: 'claude', deltas: claudeDeltas(env, clean, context) }; }
     catch { /* fall through */ }
+  }
+  if (env.OPENROUTER_API_KEY) {
+    try {
+      const res = await openrouterStreamSetup(env, clean, context);
+      return { via: 'openrouter', deltas: openrouterBodyDeltas(res) };
+    } catch { /* free pools busy — fall through */ }
   }
   if (!env.AI) throw new Error('no lane');
   return { via: 'workers-ai', deltas: workersDeltas(env, clean, context) };
