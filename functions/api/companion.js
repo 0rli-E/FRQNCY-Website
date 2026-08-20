@@ -41,7 +41,12 @@
 
 import { resolveGeneKeys } from './_gene-keys.js';
 
-const WORKERS_MODEL = '@cf/qwen/qwen3-30b-a3b-fp8';
+// Free-lane models, tried in order. Llama 3.3 70B is markedly stronger than
+// the 30B Qwen for open conversation; Qwen stays as fallback and runs the
+// extractor (cheap, structured). Claude (below) outranks both when keyed.
+const WORKERS_MODELS = ['@cf/meta/llama-3.3-70b-instruct-fp8-fast', '@cf/qwen/qwen3-30b-a3b-fp8'];
+const EXTRACTOR_MODEL = '@cf/qwen/qwen3-30b-a3b-fp8';
+const needsNoThink = (m) => m.includes('qwen');
 const DEFAULT_CLAUDE_MODEL = 'claude-sonnet-4-6';
 const MAX_TOKENS  = 700;   // companion replies are short by design
 const MAX_HISTORY = 12;    // bound the thread we send to the model
@@ -79,6 +84,8 @@ const VOICE = `You are VBRTN (say: Vibration) — the FRQNCY companion. One comp
 HOW YOU TALK. Like a person. Warm, direct, unhurried. Contractions, everyday words, short sentences. Match their energy and their length — a one-line message gets one or two lines back, never a paragraph. React to what they actually said before adding anything of your own. It's fine to be light, to have humor, to acknowledge weight or celebrate a win in plain words. Vary how you say things — no catchphrases, no stock openers; if you notice you've used a phrase recently, say it differently this time.
 
 NOT EVERY REPLY IS A QUESTION. A conversation isn't an interview. Plenty of your messages should just be a reaction, an observation, or an acknowledgment that lands and stops. Ask when you're genuinely curious or when a question would open something — and then only one. If your last reply ended with a question, lean toward not ending this one with one.
+
+HAVE SOMETHING TO SAY. A question alone is not a reply, and neither is a sympathetic noise plus a question. Before you ask anything, say something specific and true about THEIR situation — name the pattern you actually see, offer the reframe, connect it to what you know about them. Match their depth: small talk gets small replies, but when someone brings a real problem, give it a real response — a few substantive sentences, sometimes a short paragraph, with a concrete angle they didn't have before. Depth yes, walls of text never.
 
 WHAT YOU KNOW STAYS IN THE BACKGROUND. Most replies shouldn't reference their profile at all. Knowing someone isn't quoting them — a friend who knows you're tired doesn't open every text with "how's the tiredness". Bring up what you know only when it genuinely connects to what they just said, and even then in your own words, never as a read-back. A plain "hey" gets a plain hello back; you don't need to prove you remember them.
 
@@ -487,7 +494,7 @@ async function runExtractor(env, uid, userText, replyText) {
   const note = { at: new Date().toISOString(), ok: false };
   let parsed = null;
   try {
-    const result = await env.AI.run(WORKERS_MODEL, {
+    const result = await env.AI.run(EXTRACTOR_MODEL, {
       messages: [
         { role: 'system', content: EXTRACTOR_PROMPT },
         { role: 'user', content: `PERSON: ${clip2(userText, 1500)}\n\nCOMPANION: ${clip2(replyText, 1000)}` },
@@ -793,24 +800,33 @@ async function runClaude(env, clean, context) {
 }
 
 async function runWorkersAI(env, clean, context) {
-  // /no_think keeps Qwen from emitting <think> blocks.
-  const system = '/no_think\n' + VOICE + DATA_GUARD + context + '\n--- END WHAT YOU KNOW ---';
-  const result = await env.AI.run(WORKERS_MODEL, {
-    messages: [{ role: 'system', content: system }, ...clean],
-    max_tokens: MAX_TOKENS,
-    temperature: 0.8,
-  });
-  let text;
-  if (result.choices && result.choices[0]?.message?.content) {
-    text = result.choices[0].message.content.trim();
-  } else if (result.response) {
-    text = result.response;
-  } else {
-    text = typeof result === 'string' ? result : JSON.stringify(result);
+  let lastErr = null;
+  for (const model of WORKERS_MODELS) {
+    try {
+      // /no_think keeps Qwen from emitting <think> blocks; Llama doesn't know it.
+      const system = (needsNoThink(model) ? '/no_think\n' : '') + VOICE + DATA_GUARD + context + '\n--- END WHAT YOU KNOW ---';
+      const result = await env.AI.run(model, {
+        messages: [{ role: 'system', content: system }, ...clean],
+        max_tokens: MAX_TOKENS,
+        temperature: 0.8,
+      });
+      let text;
+      if (result.choices && result.choices[0]?.message?.content) {
+        text = result.choices[0].message.content.trim();
+      } else if (typeof result.response === 'string') {
+        text = result.response;
+      } else {
+        text = typeof result === 'string' ? result : JSON.stringify(result);
+      }
+      text = text.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
+      if (text.includes('<think>')) text = text.replace(/<think>[\s\S]*/g, '').trim();
+      if (text) return text;
+      lastErr = new Error('empty from ' + model);
+    } catch (err) {
+      lastErr = err;
+    }
   }
-  text = text.replace(/<think>[\s\S]*?<\/think>/g, '').trim();
-  if (text.includes('<think>')) text = text.replace(/<think>[\s\S]*/g, '').trim();
-  return text;
+  throw lastErr || new Error('no workers-ai model answered');
 }
 
 // ── Model calls — streaming ───────────────────────────────────────
@@ -847,13 +863,22 @@ async function* claudeDeltas(env, clean, context) {
 }
 
 async function* workersDeltas(env, clean, context) {
-  const system = '/no_think\n' + VOICE + DATA_GUARD + context + '\n--- END WHAT YOU KNOW ---';
-  const result = await env.AI.run(WORKERS_MODEL, {
-    messages: [{ role: 'system', content: system }, ...clean],
-    max_tokens: MAX_TOKENS,
-    temperature: 0.8,
-    stream: true,
-  });
+  // Fall back across models only on SETUP failure — once tokens have started
+  // flowing, a mid-stream error must not restart on another model.
+  let result = null, lastErr = null;
+  for (const model of WORKERS_MODELS) {
+    try {
+      const system = (needsNoThink(model) ? '/no_think\n' : '') + VOICE + DATA_GUARD + context + '\n--- END WHAT YOU KNOW ---';
+      result = await env.AI.run(model, {
+        messages: [{ role: 'system', content: system }, ...clean],
+        max_tokens: MAX_TOKENS,
+        temperature: 0.8,
+        stream: true,
+      });
+      break;
+    } catch (err) { lastErr = err; }
+  }
+  if (!result) throw lastErr || new Error('no workers-ai model answered');
   // Workers AI streaming returns a ReadableStream of SSE bytes:
   // data: {"response":"tok", ...}\n\n  …  data: [DONE]
   const think = makeThinkFilter();
