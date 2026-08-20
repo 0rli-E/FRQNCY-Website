@@ -170,7 +170,7 @@ const LENSES = [
   function lensStanding(p) {
     const s = p.standing || {};
     const L = [];
-    if (s.feeling)  L.push(`The feeling that has shown up most for them lately: ${s.feeling}.`);
+    if (s.feeling)  L.push(`The feeling that has shown up most for them lately: ${s.feeling}. (Background only — never open with this word, never ask "how's the ${s.feeling}"; if you greet them, greet them plainly.)`);
     if (s.texture)  L.push(`The texture of their life right now: ${s.texture}.`);
     if (s.desire)   L.push(`What they are reaching toward: ${s.desire}.`);
     if (s.pull)     L.push(`What pulls them: ${s.pull}.`);
