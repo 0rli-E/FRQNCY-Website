@@ -1,83 +1,133 @@
-# Domain coverage report (v2 + LLM-enriched)
+# Domain coverage report (v2)
 
-Generated 2026-05-03T08:25:46.044Z; enriched 2026-05-03T08:31:53.410Z by `claude-opus-4-7 (in-conversation editorial pass)`.
+Generated 2026-09-06T12:03:49.646Z from `content.json` (8 pillars, 18 domains) + `search.json` (245 topics).
 
-**Model:** domain validity is judged by the real-world *scope* of the subject, not by current topic count. LLM suggestions are conservative — surface for Orlando to judge, never auto-merged.
+**Model:** domain validity is judged by the real-world *scope* of the subject, not by current topic count. A small topic list inside a wide subject is a coverage gap, not a cull candidate. Topic count alone is never the verdict.
+
+Editorial gate intact — this report surfaces structure for Orlando to judge. No auto-merges, no auto-recommendations on adding/cutting domains or pillars.
 
 ## Domains — coverage view
 
-### Society & Networks — 10 topics
+Each domain section shows current topics tagged here as their *primary* domain. Topics may legitimately cross-list (schema follow-up pending). The two human-review prompts at the end of each section need an LLM/agent pass to fill in (v0.1).
+
+### Society & Networks — 16 topics
 
 *Collective human systems — how people organise, govern, move, and shape the world together.*
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Collective Intelligence** _(Network State)_
-- **Community** _(Network State)_
-- **Diaspora** _(Network State)_
-- **Education Systems** _(Network State)_
-- **Future Cities** _(Network State)_
-- **Governance** _(Network State)_
-- **History** _(Network State)_
-- **Indigenous Wisdom** _(Network State)_
-- **Peace** _(Network State)_
-- **Social Movements** _(Network State)_
+- **Charter Cities** _(Settle)_ — Cities built from scratch with their own legal frameworks — special economic zones, ZEDEs, frontier jurisdictions. Próspera, Ciudad Morazán,
+- **Collective Intelligence** _(Settle)_ — The wisdom that emerges when many minds work together — swarm intelligence, distributed cognition, and shared sense-making.
+- **Community** _(Settle)_ — The art of living together — building belonging, trust, and shared life with others.
+- **Diaspora** _(Settle)_ — Communities living away from their ancestral homelands — the cultures, identities, and networks that bridge worlds.
+- **Eco-Villages** _(Settle)_ — Intentional communities living lightly on the land — regenerative agriculture, local energy, shared infrastructure, decisions made face-to-f
+- **Education Systems** _(Settle)_ — How societies pass knowledge to the next generation — and how those systems need to change.
+- **Future Cities** _(Settle)_ — Urban design for human and ecological thriving — the cities we need to build and the ones we need to transform.
+- **Governance** _(Settle)_ — How communities make decisions together — from ancient councils to digital democracy.
+- **History** _(Settle)_ — The suppressed and forgotten chapters of human civilisation — lost cultures, ancient advanced knowledge, and the researchers challenging the
+- **Homeschooling** _(Settle)_ — Education outside the institution. Microschools, pods, unschooling, classical at home, hybrid models — the actual operating systems parents 
+- **Indigenous Wisdom** _(Settle)_ — The knowledge systems of the world's original peoples — deep ecological intelligence developed across millennia.
+- **Network Schools** _(Settle)_ — Education organised as a network rather than a building — pop-up cities, microschool co-ops, online cohorts, alternative academies. The inst
+- **Network States** _(Settle)_ — Distributed digital communities forming the political and economic substrate of what might become tomorrow’s nations. The framing comes from
+- **Peace** _(Settle)_ — More than the absence of war — active peace-building, reconciliation, and the conditions for human flourishing.
+- **Social Movements** _(Settle)_ — Organised collective action for change — how societies transform through protest, organising, and cultural shift.
+- **Tax & Sovereignty** _(Settle)_ — Jurisdictional design as a personal practice. Where you live, where you incorporate, where your capital sits — and the people building zones
 
-**Likely missing topics**:
-  - Migration & Borders — How humans move and are blocked from moving — central to collective human systems and absent from the list.
-  - Family & Kinship — The smallest social unit; foundational to how societies organise but currently uncovered.
-  - Citizenship & Sovereignty — Passports, statelessness, the sovereign-individual frame — directly aligned with the network-state thread.
-  - Civic Tech — Tools that serve democratic participation; bridges Society & Networks with Technology.
-  - Power & Politics — How power is held and flows; History touches it but the topic itself is missing.
-  - Grassroots Organising — Distinct from Social Movements — movements are waves, organising is the method.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
-**Off-topic membership flags**: _none surfaced._
+### Places — 0 topics
 
-### Business — 6 topics
+*The physical spaces shaping consciousness — retreat centers, sacred sites, monasteries, coworking communities, and intentional homes. Where the network meets the ground.*
+
+**Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
+
+_No topics currently tagged with this domain as primary._
+
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
+
+### Business — 7 topics
 
 *How enterprises are built, run, and scaled — regenerative models, social enterprise, and the organisations creating real-world impact.*
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Circular Economy** _(Fund)_
-- **Entrepreneurship** _(Fund)_
-- **Leadership** _(Fund)_
-- **Regenerative Business** _(Fund)_
-- **Social Enterprise** _(Fund)_
-- **Start-ups** _(Fund)_
+- **Circular Economy** _(Fund)_ — Economic systems designed to eliminate waste — where the end of one product becomes the start of another.
+- **Companies** _(Fund)_ — FRQNCY-aligned companies — for-profit builders making products and tools that serve human flourishing. The merchants of the network.
+- **Entrepreneurship** _(Fund)_ — Starting things — finding a real problem, shipping a first version, and surviving long enough to learn what the next one should be.
+- **Leadership** _(Fund)_ — Holding a direction without holding people down — the inner work and outer practice of leading something worth leading.
+- **Regenerative Business** _(Fund)_ — Companies that give back more than they take — business as a restorative force in the world.
+- **Social Enterprise** _(Fund)_ — Business models that put mission first — companies designed to serve people and planet, not just profit.
+- **Start-ups** _(Fund)_ — The early company — venture-scale risk, the hunt for product-market fit, and the unreasonable energy it takes to ship a first version.
 
-**Likely missing topics**:
-  - Organisational Design — How companies are structured; central craft of running a business.
-  - Cooperatives & Mutuals — Non-extractive ownership models; aligns with FRQNCY's cooperation-over-competition value.
-  - Strategy — Long-term direction-setting; one of the load-bearing crafts of business.
-  - Supply Chains — Sourcing, trade routes, ethical procurement — large omission for any serious business coverage.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
-**Off-topic membership flags**: _none surfaced._
-
-### Money — 8 topics
+### Money — 55 topics
 
 *Capital, finance, and the new monetary systems — from conscious capital and impact investing to crypto, DeFi, and the sovereign individual.*
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Conscious Capital** _(Fund)_
-- **Cryptocurrency** _(Fund)_
-- **DAOs** _(Fund)_
-- **Debit & Credit Cards** _(Fund)_
-- **DeFi** _(Fund)_
-- **Impact Investing** _(Fund)_
-- **Personal Finance** _(Fund)_
-- **Prosperity Mindset** _(Fund)_
+- **Aluminum** _(Fund)_ — Light, abundant, energy-intensive to produce. The metal of cans, planes, and grid transmission lines — a hidden energy commodity.
+- **Bitcoin** _(Fund)_ — The original. Digital scarcity, sound money, the first credible separation of money from state.
+- **Bonds** _(Fund)_ — Debt instruments — sovereign, corporate, and municipal — and the yield curve as the deepest signal in the financial system.
+- **Carbon Credits** _(Fund)_ — The contested attempt to monetise the atmosphere. Compliance markets, voluntary offsets, and the open question of whether climate is somethi
+- **Cobalt** _(Fund)_ — Battery metal with a problem. Most of it comes from the DRC, much of that from artisanal mines. The supply-chain transparency test of the el
+- **Commodities** _(Fund)_ — Raw materials traded as financial assets — the ground-truth layer beneath paper claims. Metals, energy, agriculture; what every economy ulti
+- **Conscious Capital** _(Fund)_ — Investment and finance as a force for good — capital aligned with values, not just returns.
+- **Copper** _(Fund)_ — Doctor Copper — the metal that diagnoses the global economy. Required by every grid, every electric vehicle, every electrification path forw
+- **Cotton** _(Fund)_ — The textile that built the modern fashion economy. Water-intensive, pesticide-intensive, and the centerpiece of fast-fashion's true cost.
+- **Crypto Privacy** _(Fund)_ — Financial privacy as a right, not a permission. Monero, Zcash, ZK rollups — and the ongoing fight to keep transactions unsurveilled.
+- **Cryptocurrency** _(Fund)_ — Digital assets, monetary networks, and the new financial layer being built on top of the internet — from Bitcoin as sound money to Ethereum 
+- **DAOs** _(Fund)_ — Decentralised Autonomous Organisations — internet-native entities governed by code and community rather than hierarchy.
+- **DeAI** _(Fund)_ — Decentralised AI. Compute marketplaces, model coordination, on-chain inference — and the bet that AI's most consequential layer should not b
+- **Debit & Credit Cards** _(Fund)_ — Cards that move with intention. Built for travel, for sovereignty, or for participation in the new financial layer.
+- **DeFi** _(Fund)_ — Decentralised Finance — financial instruments and markets built on blockchain, without banks.
+- **DePIN** _(Fund)_ — Decentralised physical infrastructure. Wireless, energy grids, storage, GPUs — coordinated by tokens, not corporations.
+- **DeSci** _(Fund)_ — Decentralised science. Funding, peer review, IP — rebuilt outside the journal-cartel model.
+- **Diamonds** _(Fund)_ — De Beers built a market on the suggestion they were rare. Lab-grown gems are unbuilding it. A study in marketing-as-monopoly and how stores 
+- **ETFs** _(Fund)_ — Exchange-traded funds — baskets of assets bought and sold like single shares, the most efficient way most people own the market.
+- **GameFi** _(Fund)_ — Player-owned worlds. Games where assets, identity, and progress are real, portable, and yours.
+- **Gold** _(Fund)_ — The 5,000-year benchmark of monetary truth. Cannot be printed, cannot be debased, cannot be issued by decree. Sound money's longest-running 
+- **Hydrogen** _(Fund)_ — The most abundant element, and the most argued-about energy carrier. Green, blue, grey — colours that hide very different climate maths.
+- **Impact Investing** _(Fund)_ — Capital directed toward measurable social and environmental outcomes alongside financial returns.
+- **Internet Capital Markets** _(Fund)_ — Fundraising, equity-like primitives, and tokenised cap tables — the slow remaking of how startups raise and how investors participate.
+- **Iron Ore** _(Fund)_ — The China property-bubble proxy. The metal modernity is built from, priced to within an inch of Beijing's construction policy.
+- **Layer 1s** _(Fund)_ — The base chains. Bitcoin, Ethereum, Solana — and the trade-offs each makes between security, decentralisation, and scale.
+- **Layer 2s** _(Fund)_ — Scaling Ethereum. Rollups, sidechains, app-specific chains — the layer making the base layer usable.
+- **Lead** _(Fund)_ — The metal of car batteries, ammunition, and (still) too many old pipes. Industrially essential, ethically complicated.
+- **Lithium** _(Fund)_ — The energy-transition kingmaker. Battery metal at the centre of EV economics, grid storage, and supply concentrated in Latin America's Lithi
+- **Memes** _(Fund)_ — Cultural assets traded as financial primitives. The sharpest test of what value actually is in a fully-permissionless market.
+- **Modular** _(Fund)_ — Blockchains decomposed into specialised layers — execution, settlement, data availability. The architectural bet on composability over monol
+- **Natural Gas** _(Fund)_ — The bridge fuel of the energy transition — and the geopolitical lever that reshapes alliances. Russia, Qatar, US shale, and the contested ar
+- **Neobanks** _(Fund)_ — Crypto-native banking rails. Cards, payments, and savings without the legacy correspondent-bank stack underneath.
+- **NFTs** _(Fund)_ — Digital ownership as a primitive. Art, collectibles, identity, in-game assets — and the boom-bust pedagogy of all four.
+- **Nickel** _(Fund)_ — Battery metal. Indonesian dominance, the LME's 2022 short-squeeze suspension, and the unglamorous logistics of the EV future.
+- **Oil** _(Fund)_ — The macro asset that connects money to geopolitics. Petrodollar architecture, OPEC dynamics, and the unwinding of the post-Bretton-Woods con
+- **Oracles** _(Fund)_ — The connective tissue between chains and reality. How smart contracts learn what's true off-chain.
+- **Palladium** _(Fund)_ — The metal in your catalytic converter — and one of the most volatile commodities in the world. A study in how supply chains create monetary 
+- **Personal Finance** _(Fund)_ — The household level of money — earning, saving, spending, debt, and the slow craft of staying free.
+- **Platinum** _(Fund)_ — Rarer than gold and central to catalytic conversion, hydrogen fuel cells, and high-end industry. Where monetary scarcity meets industrial de
+- **Prediction Markets** _(Fund)_ — Crowd-sourced probability. The most efficient information aggregator humanity has built — and one of the most regulated.
+- **Prosperity Mindset** _(Fund)_ — Wealth as a state of consciousness first — the philosophy, psychology, and practical wisdom of financial abundance.
+- **Rare Earths** _(Fund)_ — Seventeen elements your phone, your wind turbine, and your missile system all share. Mostly mined and refined in China — the geopolitical bo
+- **Real World Assets** _(Fund)_ — Tokenised treasuries, real estate, private credit. Bringing the physical balance sheet on-chain.
+- **Silver** _(Fund)_ — Gold's working-class twin — half store-of-value, half industrial necessity. The metal solar panels, electronics, and high-end optics depend 
+- **SocialFi** _(Fund)_ — Your graph, your audience, your monetisation — without the platform middleman that owns all three today.
+- **Stablecoins** _(Fund)_ — Digital dollars and the rails underneath them. The fastest-growing crypto category and the regulatory front line.
+- **Staking** _(Fund)_ — Putting capital to work securing networks. Yield that pays for the infrastructure rather than extracting from it.
+- **Stocks** _(Fund)_ — Equity in publicly traded companies — the public market layer of capital allocation, indexes, dividends, and the long-term arc of productive
+- **Store of Value** _(Fund)_ — Digital commodities. Where the sound-money case lives natively on-chain.
+- **Sugar** _(Fund)_ — A globally-traded crop with deep ethical roots — slavery, monoculture, modern public-health crisis. Commodity and contested substance at onc
+- **Tin** _(Fund)_ — The solder of every circuit board. Indonesian dominance, conflict-mineral status, the metal that holds modern electronics together.
+- **Uranium** _(Fund)_ — The densest energy source we know how to use. Fueling roughly a tenth of global electricity and the centerpiece of the contested nuclear-ren
+- **Wheat** _(Fund)_ — Food security signal. War-time pricing, the Black Sea grain corridor, and how a cereal becomes a barometer of geopolitical stability.
+- **Zinc** _(Fund)_ — Galvanises steel against rust. Quietly essential, mostly invisible, traded mostly as an industrial input rather than a story.
 
-**Likely missing topics**:
-  - Banking — Traditional banking versus alternatives; the legacy half of the financial story.
-  - Tax & Sovereignty — Personal taxation and jurisdictional choices; key for the sovereign-individual thread.
-  - Gold & Hard Money — Sound-money tradition outside crypto; Money domain is currently crypto-heavy.
-  - Stablecoins — The bridge layer between fiat and crypto; large gap given DeFi/DAOs are present.
-  - Inflation & Monetary Policy — Macro context for everything else in the domain; missing makes the coverage feel partial.
-
-**Off-topic membership flags**:
-  - Prosperity Mindset (`t-wealth-mind`) — Mindset / inner-game topic, not a money mechanism. Primary domain probably belongs in Lifestyle or Well-being; cross-list to Money is fine, but as primary it pollutes the financial-systems character of this domain.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
 ### Energy — 10 topics
 
@@ -85,24 +135,19 @@ Generated 2026-05-03T08:25:46.044Z; enriched 2026-05-03T08:31:53.410Z by `claude
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Bioenergy** _(Fund)_
-- **Energy Policy** _(Fund)_
-- **Energy Storage** _(Fund)_
-- **Geothermal** _(Fund)_
-- **Grid Technology** _(Fund)_
-- **Hydropower** _(Fund)_
-- **Nuclear & Fusion** _(Fund)_
-- **Renewable Energy** _(Fund)_
-- **Solar** _(Fund)_
-- **Wind Energy** _(Fund)_
+- **Bioenergy** _(Fund)_ — Energy from biological material — from biogas to advanced biofuels, biomass and beyond.
+- **Energy Policy** _(Fund)_ — The governance of energy systems — the laws, incentives, and international agreements shaping the energy transition.
+- **Energy Storage** _(Fund)_ — Batteries, flywheels, and hydrogen — the technologies that make intermittent renewables reliable.
+- **Geothermal** _(Fund)_ — Earth's internal heat as power — stable, baseload renewable energy from the planet itself.
+- **Grid Technology** _(Fund)_ — Smart grids, microgrids, and the infrastructure of energy distribution — how power gets from source to use.
+- **Hydropower** _(Fund)_ — Water as power — from millennia of waterwheels to modern hydro and small-scale run-of-river systems.
+- **Nuclear & Fusion** _(Fund)_ — Energy from the atom — the controversial legacy of fission and the slow march toward fusion as a possible clean baseload.
+- **Renewable Energy** _(Fund)_ — Energy from inexhaustible sources — wind, solar, hydro, and geothermal as the foundations of a post-carbon world.
+- **Solar** _(Fund)_ — The sun as power source — photovoltaics and concentrated solar as the fastest-growing energy technology in history.
+- **Wind Energy** _(Fund)_ — Capturing the motion of air — onshore and offshore wind as mature, scalable clean energy.
 
-**Likely missing topics**:
-  - Subtle Energy / Prana / Qi — The domain description literally promises 'the subtle energies that move through all living systems' — currently zero topics deliver this half.
-  - Hydrogen Economy — Major future-energy vector; common pairing with renewables and storage.
-  - Energy Sovereignty — Household and community energy independence — fits FRQNCY's sovereign-individual editorial frame.
-  - Free Energy / Tesla Tradition — Suppressed-knowledge thread that fits FRQNCY's editorial appetite (see History topic) but is absent here.
-
-**Off-topic membership flags**: _none surfaced._
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
 ### Lifestyle — 13 topics
 
@@ -110,59 +155,51 @@ Generated 2026-05-03T08:25:46.044Z; enriched 2026-05-03T08:31:53.410Z by `claude
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Body Care** _(Education)_
-- **Coffee & Tea** _(Education)_
-- **Cookware** _(Education)_
-- **Detox** _(Education)_
-- **Minimalism** _(Education)_
-- **Movement** _(Education)_
-- **Nutrition** _(Education)_
-- **Personal Development** _(Education)_
-- **Plant Medicine** _(Education)_
-- **Sleep** _(Education)_
-- **Sustainable Living** _(Education)_
-- **Tools & Carry** _(Education)_
-- **Water** _(Education)_
+- **Body Care** _(Educate)_ — What you put on your skin enters your body. Soaps, toothpaste, deodorants — clean, transparent, simple.
+- **Coffee & Tea** _(Educate)_ — The daily ritual. Beans, leaves, brewing tools — what you reach for first in the morning, made the way it deserves.
+- **Cookware** _(Educate)_ — The pots, pans, and knives you use every day. Multigenerational, tactile, the opposite of disposable.
+- **Detox** _(Educate)_ — Clearing the body, mind, and environment of what burdens them — fasting, cleansing, and conscious simplification.
+- **Minimalism** _(Educate)_ — Intentional reduction — creating space for what matters by releasing what doesn't.
+- **Movement** _(Educate)_ — The body in motion — from exercise and sport to somatic practice and daily physical awareness.
+- **Nutrition** _(Educate)_ — Food as medicine — the science and art of nourishing the body optimally.
+- **Personal Development** _(Educate)_ — The inner and outer work of becoming — habits, mindset, communication, and the lifelong practice of self-mastery.
+- **Plant Medicine** _(Educate)_ — Healing plants and fungi — from adaptogenic herbs to entheogenic ceremony.
+- **Sleep** _(Educate)_ — The foundation of health and cognition — the science and practice of deep, restorative rest.
+- **Sustainable Living** _(Educate)_ — Living within planetary limits — practical choices that reduce footprint and increase rootedness.
+- **Tools & Carry** _(Educate)_ — The objects you use every day that should last a decade. The opposite of fast fashion for things.
+- **Water** _(Educate)_ — The element that carries information. What we drink, what we are made of, and what listens.
 
-**Likely missing topics**:
-  - Travel & Pilgrimage — Conscious travel and pilgrimage are core lifestyle themes for the FRQNCY reader; large omission.
-  - Home & Sanctuary — The physical living space as a daily-practice surface — distinct from architecture, sits squarely in lifestyle.
-  - Relationships & Intimacy — Romantic and platonic relationships are central to a life of intention; currently uncovered.
-  - Daily Practice & Rituals — The connective tissue of conscious living; the 'how to actually do it' meta-topic is missing.
-  - Fasting — Distinct from Nutrition — a deliberate practice with its own tradition.
-  - Time & Attention — How a conscious person spends their time and attention; foundational lifestyle question.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
-**Off-topic membership flags**:
-  - Detox (`t-detox`) — Healing-modality framing; reads as Well-being primary more naturally than Lifestyle. Soft flag — defensible either way, raised so Orlando can decide.
-  - Plant Medicine (`t-plantmed`) — Plant medicine traditions are healing practices; primary domain probably Well-being (alongside Ayurveda, TCM). Currently here likely because of the daily-conscious-living adjacency. Soft flag.
-
-### Well-being — 13 topics
+### Well-being — 19 topics
 
 *Healing and wholeness — the full spectrum of human health across body, mind, and spirit.*
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Ayurveda** _(Education)_
-- **Breathwork** _(Education)_
-- **EFT & Tapping** _(Education)_
-- **Energy Healing** _(Education)_
-- **Kriya Yoga** _(Education)_
-- **Meditation** _(Education)_
-- **Mental Health** _(Education)_
-- **Siddha Yoga** _(Education)_
-- **Somatic Therapy** _(Education)_
-- **Sound Healing** _(Education)_
-- **Supplements** _(Education)_
-- **Traditional Chinese Medicine** _(Education)_
-- **Yoga** _(Education)_
+- **Ayurveda** _(Educate)_ — India's living medical tradition — diagnosing and balancing the elemental constitutions that move through every body.
+- **Breathwork** _(Educate)_ — The breath as a tool — conscious breathing practices that regulate the nervous system and unlock altered states.
+- **EFT & Tapping** _(Educate)_ — Emotional Freedom Techniques — combining acupressure tapping with modern psychology to release emotional blocks and reprogram limiting belie
+- **Energy Healing** _(Educate)_ — Working with the subtle body — reiki, acupuncture, and other modalities that address the energetic layer of health.
+- **Grounding** _(Educate)_ — Direct skin-to-earth contact restores the body's electrical baseline. Walking barefoot on soil, sand, grass, or stone. The original biologic
+- **Homeopathy** _(Educate)_ — Like cures like — the medical system Samuel Hahnemann codified in 1796, scaled across two centuries into a global pharmacopoeia of remedies 
+- **Kriya Yoga** _(Educate)_ — The ancient science of energy and breath — the meditation techniques transmitted through Lahiri Mahasaya and Paramhansa Yogananda that accel
+- **Longevity** _(Educate)_ — Not just length of life but the quality of the years across it. Healthspan ahead of lifespan. The Blue Zones, fasting, sauna, cold exposure,
+- **Meditation** _(Educate)_ — The practice of conscious attention — sitting with what is, training the mind toward presence.
+- **Mental Health** _(Educate)_ — The full spectrum of psychological wellbeing — from everyday emotional literacy to clinical care and beyond.
+- **Peptides** _(Educate)_ — Short chains of amino acids — the body's own signalling molecules, now used for healing, recovery, longevity, performance. BPC-157, TB-500, 
+- **Recovery** _(Educate)_ — The discipline of letting the body repair itself between efforts. Sleep, sauna, cold plunge, contrast hydrotherapy, breathwork, light therap
+- **Siddha Yoga** _(Educate)_ — The path of grace through the Siddha lineage — shaktipat initiation, self-inquiry, and the teachings of Swami Muktananda and Gurumayi.
+- **Somatic Therapy** _(Educate)_ — Healing stored in the body — trauma-informed approaches that work through sensation and movement rather than talk alone.
+- **Sound Healing** _(Educate)_ — Frequency as medicine — the use of vibration, music, and resonance to heal body and mind.
+- **Supplements** _(Educate)_ — What you put inside the body. Single ingredients, third-party tested, no proprietary blends.
+- **Traditional Chinese Medicine** _(Educate)_ — Acupuncture, herbs, and meridian theory — a multi-millennial system for reading the body as a flow of qi and bringing it back into balance.
+- **Wellbeing** _(Educate)_ — The state of the whole person in good order — body breathing, mind clear, heart open, life aligned with what matters. Not the absence of dis
+- **Yoga** _(Educate)_ — The union of body, breath, and mind — one of humanity's oldest and most refined movement-meditation systems.
 
-**Likely missing topics**:
-  - Trauma & Healing — Distinct from Somatic Therapy; the broader frame of trauma and recovery is missing.
-  - Sexuality & Sacred Sex — Body/mind/spirit wholeness; legitimate Well-being topic largely uncovered in FRQNCY.
-  - Nature Therapy — Forest bathing, ecotherapy — well-evidenced healing modality, currently absent.
-  - Fitness & Strength — Physical health is half the body axis of well-being; Movement covers part but not strength/conditioning.
-
-**Off-topic membership flags**: _none surfaced._
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
 ### Food & Agriculture — 8 topics
 
@@ -170,52 +207,42 @@ Generated 2026-05-03T08:25:46.044Z; enriched 2026-05-03T08:31:53.410Z by `claude
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Aquaculture** _(Education)_
-- **Cuisine** _(Education)_
-- **Fermentation** _(Education)_
-- **Food Sovereignty** _(Education)_
-- **Food Systems** _(Education)_
-- **Permaculture** _(Education)_
-- **Regenerative Farming** _(Education)_
-- **Urban Farming** _(Education)_
+- **Aquaculture** _(Educate)_ — Farming the water — the sustainable cultivation of fish, shellfish, algae, and other aquatic organisms.
+- **Cuisine** _(Educate)_ — Cooking as culture — the traditions, flavours, and knowledge that different peoples have built around food.
+- **Fermentation** _(Educate)_ — The ancient art of transformation — microbes, cultures, and the living foods that feed the gut.
+- **Food Sovereignty** _(Educate)_ — The right of peoples to define their own food systems — local control over seeds, land, and the food supply.
+- **Food Systems** _(Educate)_ — The full chain from soil to fork — understanding food production, distribution, and consumption as an integrated whole.
+- **Permacultures** _(Educate)_ — Design science for sustainable human habitats — mimicking the patterns and resilience of natural ecosystems.
+- **Regenerative Farming** _(Educate)_ — Agriculture that rebuilds soil health, sequesters carbon, and restores ecosystems rather than depleting them.
+- **Urban Farming** _(Educate)_ — Growing food in cities — rooftop gardens, vertical farms, and community plots reclaiming urban space.
 
-**Likely missing topics**:
-  - Foraging & Wildcrafting — Gathering as the original food relationship; sits alongside farming, currently absent.
-  - Seeds & Heirloom Varieties — The biodiversity foundation under regenerative farming and food sovereignty.
-  - Soil Science — Underpins regenerative farming and permaculture; the topic itself is missing.
-  - Hunting & Fishing — Original human food relationships; cultural and practical, currently absent.
-  - Indigenous Foodways — Cross-pollinates with Indigenous Wisdom; food traditions of original peoples.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
-**Off-topic membership flags**: _none surfaced._
-
-### Sciences — 14 topics
+### Sciences — 15 topics
 
 *Empirical exploration of reality — the disciplines that probe the deep structure of life, matter, and mind.*
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Anthropology** _(Research)_
-- **Astrophysics** _(Research)_
-- **Biology** _(Research)_
-- **Chemistry** _(Research)_
-- **Earth Science** _(Research)_
-- **Ecology** _(Research)_
-- **Genetics** _(Research)_
-- **Mathematics** _(Research)_
-- **Medicine** _(Research)_
-- **Neuroscience** _(Research)_
-- **Physics** _(Research)_
-- **Psychology** _(Research)_
-- **Quantum Grammar** _(Research)_
-- **Quantum Physics** _(Research)_
+- **Anthropology** _(Research)_ — The study of being human — culture, kinship, ritual, language. How wildly different ways of life answer the same questions.
+- **Astrophysics** _(Research)_ — The physics of stars, galaxies, and the cosmos — understanding the universe at the largest scales.
+- **Biology** _(Research)_ — The study of life in all its forms — from cells and genes to ecosystems and evolution.
+- **Chemistry** _(Research)_ — The science of matter and its transformations — the bridge between physics and biology.
+- **Earth Science** _(Research)_ — The deep biography of the planet — plate tectonics, mineralogy, hydrology, the slow rhythms that shaped every landscape.
+- **Ecology** _(Research)_ — The study of relationships between living organisms and their environments — the science of interconnection.
+- **Genetics** _(Research)_ — The science of heredity and DNA — how traits are encoded, expressed, and passed on.
+- **Mathematics** _(Research)_ — The language of pattern and structure — the abstract discipline that underlies all of science.
+- **Medicine** _(Research)_ — The science and practice of healing the human body — from diagnostics to treatment to prevention.
+- **Neuroscience** _(Research)_ — The science of the brain and nervous system — mapping the biological substrate of thought, feeling, and consciousness.
+- **Physics** _(Research)_ — The study of matter, motion, and force — from Newton's laws to relativity, the framework underneath every other physical science.
+- **Psychology** _(Research)_ — The science of mind and behaviour — how humans perceive, think, feel, and act.
+- **Quantum Grammar** _(Research)_ — A framework exploring how language, syntax, and meaning operate at a fundamental level — bridging quantum principles with the structure of c
+- **Quantum Physics** _(Research)_ — The behaviour of matter and energy at the smallest scales — where reality gets strange, probabilistic, and deeply interconnected.
+- **Technology** _(Research)_ — The applied edge — the tools, instruments, and systems that extend what humans can do. Treated here as a means, not an end. The good kind: t
 
-**Likely missing topics**:
-  - Linguistics — The science of language; cross-cuts Communication but the science itself belongs here.
-  - Cognitive Science — Distinct from Neuroscience — the interdisciplinary study of mind.
-  - Pharmacology — Distinct discipline, currently subsumed under Medicine.
-
-**Off-topic membership flags**:
-  - Quantum Grammar (`t-quantum-grammar`) — Quantum Grammar (David Wynn Miller / parse-syntax-grammar) is a fringe legal-language sovereignty system, not an empirical science. The Sciences domain promises 'empirical exploration of reality' — this topic doesn't meet that bar. Belongs in Metaphysics, Society & Networks (sovereign-individual frame), or Communication (language as power). Strong flag.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
 ### Nature & Cosmos — 10 topics
 
@@ -223,166 +250,142 @@ Generated 2026-05-03T08:25:46.044Z; enriched 2026-05-03T08:31:53.410Z by `claude
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Animals & Wildlife** _(Research)_
-- **Astrology** _(Research)_
-- **Biodiversity** _(Research)_
-- **Climate** _(Research)_
-- **Cosmos** _(Research)_
-- **Energy Fields** _(Research)_
-- **Forests** _(Research)_
-- **Natural Cycles** _(Research)_
-- **Oceans** _(Research)_
-- **Sacred Geometry** _(Research)_
+- **Animals & Wildlife** _(Research)_ — The other minds we share the planet with — behaviour, intelligence, conservation, and what it means to live alongside the wild.
+- **Astrology** _(Research)_ — The ancient map of cosmic rhythms — how planetary cycles reflect and inform human experience.
+- **Biodiversity** _(Research)_ — The richness of life on Earth — the species, ecosystems, and genetic diversity we depend on and are losing.
+- **Climate** _(Research)_ — The science and crisis of Earth's changing atmosphere — the most urgent challenge of this century.
+- **Cosmos** _(Research)_ — The universe in its totality — its origin, structure, and our place within it.
+- **Energy Fields** _(Research)_ — The electromagnetic and subtle energetic phenomena that permeate living systems and space.
+- **Forests** _(Research)_ — The lungs of the planet — ancient wood-wide webs of intelligence and interdependence.
+- **Natural Cycles** _(Research)_ — The rhythms of moon, season, and breath — the patterns that govern organic life.
+- **Oceans** _(Research)_ — The world's largest ecosystem — covering 71% of Earth and generating over half our oxygen.
+- **Sacred Geometry** _(Research)_ — The mathematical patterns underlying nature and cosmology — from the golden ratio to the Flower of Life.
 
-**Likely missing topics**:
-  - Mountains & Wilderness — Major nature category present in every reader's mental map of nature; currently absent.
-  - Rivers & Watersheds — Companion to Oceans; freshwater systems are conspicuously missing.
-  - Stars & Constellations — Sub-topic of Cosmos but with its own deep human history; pairs with Astrology.
-  - Weather & Atmosphere — The everyday face of climate; distinct from the Climate topic.
-  - Seasons & Solar Year — Distinct from generic Natural Cycles; the calendar of nature.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
-**Off-topic membership flags**: _none surfaced._
+### Consciousness — 29 topics
 
-### Metaphysics — 21 topics
-
-*The architecture of reality — consciousness, dimensions, sacred law, and the invisible structures that underpin the visible world.*
+*The architecture of reality — what is there before what appears. Consciousness, dimensions, sacred law, and the invisible structures that underpin the visible world.*
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Akashic Records** _(Research)_
-- **Buddhism** _(Research)_
-- **Channeling** _(Research)_
-- **Christianity** _(Research)_
-- **Dimensions** _(Research)_
-- **Extraterrestrial Life** _(Research)_
-- **Hinduism** _(Research)_
-- **Human Design** _(Research)_
-- **Manifestation** _(Research)_
-- **Merkaba** _(Research)_
-- **Mythology** _(Research)_
-- **Near-Death Experiences** _(Research)_
-- **Oneness** _(Research)_
-- **Remote Viewing** _(Research)_
-- **Sacred Law** _(Research)_
-- **Soul** _(Research)_
-- **Source** _(Research)_
-- **Sufism** _(Research)_
-- **Synchronicity** _(Research)_
-- **Taoism** _(Research)_
-- **Vibration** _(Research)_
+- **Akashic Records** _(Research)_ — The concept of a universal field containing the imprint of all events, thoughts, and experiences.
+- **Buddhism** _(Research)_ — The teaching of awakening — how attention, ethics, and insight loosen the self enough to see clearly. From the Buddha's silence to the livin
+- **Channeling** _(Research)_ — Receiving transmission from non-physical intelligence — guides, higher selves, and entities communicating through human vessels.
+- **Christianity** _(Research)_ — The teachings of Christ and the long contemplative tradition that has carried them — read for the inner work, not the institution.
+- **Conscious Creation** _(Research)_ — The art of consciously creating reality — the principles, practices, and traditions behind turning thought into form.
+- **Crystals** _(Research)_ — Lattice-structured mineral consciousness. Quartz, amethyst, citrine, selenite, kyanite, moldavite, tourmaline — the transparent and semi-tra
+- **Dimensions** _(Research)_ — Beyond the three spatial dimensions — higher-dimensional reality as explored through physics, mysticism, and consciousness.
+- **Extraterrestrial Life** _(Research)_ — Evidence, contact, and the implications of non-human intelligence — from UAP disclosure to ancient astronaut theory and the search for life 
+- **Hinduism** _(Research)_ — The oldest living family of traditions — the Vedas, the Upanishads, bhakti, jnana, and the many faces of the divine pointing back to one.
+- **Human Design** _(Research)_ — A synthesis of astrology, the I Ching, Kabbalah, the Hindu-Brahmin chakra system, and quantum physics — mapping your energetic blueprint for
+- **Intuitive Abilities** _(Research)_ — The latent capacities humans have always reported and rarely trained — intuition, claircognisance, remote sensing, energy reading. Treated h
+- **Merkaba** _(Research)_ — The light-body — sacred geometry applied to human energy fields and consciousness.
+- **Mythology** _(Research)_ — The stories cultures tell to remember what they cannot otherwise hold — gods, ancestors, and the layered cosmologies of every people.
+- **Near-Death Experiences** _(Research)_ — Accounts and science of consciousness beyond physical death — what NDEs reveal about the soul, reality, and what awaits.
+- **New Earth** _(Research)_ — The thesis that Earth is shifting frequency — that a parallel, higher-vibrational version of the planet is forming, and that a wave of souls
+- **Oneness** _(Research)_ — The non-dual understanding that all existence is one — the mystical foundation underlying most wisdom traditions.
+- **Pilgrimage** _(Research)_ — The journey itself as practice — walking the Camino, circling Kailash, returning to the well. Movement toward a place that reorganises the i
+- **Portals** _(Research)_ — Doorways between worlds. The places, practices, and states where the membrane thins — vortex sites, plant-medicine ceremonies, meditation ga
+- **Remote Viewing** _(Research)_ — The scientifically studied ability to perceive distant targets through non-local consciousness — developed in US government intelligence pro
+- **Sacred Law** _(Research)_ — The universal principles governing existence — natural law as understood across indigenous, hermetic, and contemplative traditions.
+- **Sacred Sites** _(Research)_ — Places on Earth that hold a frequency — vortex sites, ancient temples, ceremonial valleys, mountains the local peoples have always called ho
+- **Soul** _(Research)_ — The individual spark of consciousness — its nature, purpose, and relationship to the universal.
+- **Source** _(Research)_ — The origin of existence — the ground of being from which all phenomena arise.
+- **Spiritual Technology** _(Research)_ — Methods for shifting consciousness with the precision of a tool — repeatable, fast, mostly bloodless. The thesis: enlightenment doesn't have
+- **Stones** _(Research)_ — The opaque, grounding, ancestral mineral kingdom. Jade, obsidian, turquoise, lapis lazuli, onyx, hematite, jasper, river-tumbled granite — t
+- **Sufism** _(Research)_ — The mystical heart of Islam — annihilation of the ego in the divine beloved, expressed through poetry, dance, and disciplined remembrance.
+- **Synchronicity** _(Research)_ — Meaningful coincidence — Jung's concept of acausal connecting principle linking inner and outer events.
+- **Taoism** _(Research)_ — The Way of returning. Lao Tzu, Chuang Tzu, and the tradition of moving with rather than against.
+- **Vibration** _(Research)_ — Everything is frequency — the understanding that matter, thought, and emotion all operate as oscillating energy.
 
-**Likely missing topics**:
-  - Hermeticism — Central to Western esoteric metaphysics; significant editorial gap.
-  - Kabbalah — Jewish mystical tradition; companion to Hermeticism in Western esotericism.
-  - Reincarnation & Past Lives — Specific metaphysical claim with strong editorial appetite at FRQNCY; missing as its own topic.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
-**Off-topic membership flags**: _none surfaced._
-
-### Arts & Culture — 12 topics
+### Arts & Culture — 13 topics
 
 *Expression of the human spirit — music, image, story, and movement as the languages that reach where words cannot.*
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Architecture** _(Media)_
-- **Audio** _(Media)_
-- **Dance** _(Media)_
-- **Fashion** _(Media)_
-- **Film** _(Media)_
-- **Literature** _(Media)_
-- **Music** _(Media)_
-- **Photography** _(Media)_
-- **Poetry** _(Media)_
-- **Storytelling** _(Media)_
-- **Theater** _(Media)_
-- **Visual Art** _(Media)_
+- **Architecture** _(Broadcast)_ — The art of shaping space — how buildings form the invisible container of human experience.
+- **Audio** _(Broadcast)_ — Headphones, speakers, sound made with care. The hardware of how you actually hear the music, the conversation, the silence.
+- **Dance** _(Broadcast)_ — The body as instrument — movement as communication before language.
+- **Fashion** _(Broadcast)_ — Clothing as culture, identity, and expression — where design meets the body.
+- **Film** _(Broadcast)_ — Moving image as storytelling — cinema at its best as the collective dream of a culture.
+- **Literature** _(Broadcast)_ — Books that change the inside of the reader — the novels, essays, and traditions that survive their century by carrying real weight.
+- **Music** _(Broadcast)_ — Sound organised into meaning — perhaps the most universal human art form.
+- **Photography** _(Broadcast)_ — The art of the decisive moment — freezing light and time into meaning.
+- **Poetry** _(Broadcast)_ — Language at its most compressed and alive — where sound, image, and meaning converge.
+- **Sculpture** _(Broadcast)_ — Form pulled out of resistance — stone, bronze, wood, clay, light, ice. The most physical of the arts. From Greek marbles and African carved 
+- **Storytelling** _(Broadcast)_ — The ancient technology of narrative — how stories shape identity, culture, and what we believe is possible.
+- **Theater** _(Broadcast)_ — Live performance as ritual — the oldest form of communal storytelling.
+- **Visual Art** _(Broadcast)_ — Painting, sculpture, installation, and image — art that speaks through what is seen.
 
-**Likely missing topics**:
-  - Sculpture — Distinct from Visual Art; major form with its own tradition.
-  - Crafts & Artisanal Trades — Woodworking, ceramics, weaving — the maker traditions; currently uncovered as a topic.
-  - Design — Graphic, industrial, type — broader than Product Design and missing as a culture topic.
-  - Cultural Heritage — Folk arts, preservation, lineage — the conservation half of culture.
-  - Performance Art — Distinct from Theater and Dance; live experimental performance as its own form.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
-**Off-topic membership flags**: _none surfaced._
-
-### Communication — 9 topics
+### Communication — 10 topics
 
 *How humans connect and express meaning — from language and dialogue to journalism and broadcast.*
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Broadcasting** _(Media)_
-- **Dialogue** _(Media)_
-- **Journalism** _(Media)_
-- **Language** _(Media)_
-- **Nonviolent Communication** _(Media)_
-- **Public Speaking** _(Media)_
-- **Social Media** _(Media)_
-- **Translation** _(Media)_
-- **Writing** _(Media)_
+- **Broadcasting** _(Broadcast)_ — One-to-many communication — radio, television, podcasting, and the architecture of public attention.
+- **Dialogue** _(Broadcast)_ — Conversation as a practice — creating the conditions for genuine mutual understanding.
+- **Etiquette** _(Broadcast)_ — The social grammar that lets people meet without friction — how to enter a room, hold disagreement, write a thank-you that means something. 
+- **Journalism** _(Broadcast)_ — Bearing witness and telling truth — the essential craft of documenting reality for the public good.
+- **Language** _(Broadcast)_ — The system of meaning that makes humans human — and how the languages we speak shape the thoughts we can think.
+- **Nonviolent Communication** _(Broadcast)_ — Marshall Rosenberg's framework for compassionate connection — needs, feelings, and the language of empathy.
+- **Public Speaking** _(Broadcast)_ — The art of moving people with words — presence, clarity, and the power to shift a room.
+- **Social Media** _(Broadcast)_ — Digital platforms as public squares — and the profound effects they have on attention, identity, and collective sense-making.
+- **Translation** _(Broadcast)_ — The work of crossing linguistic borders — and what is always gained and lost in the crossing.
+- **Writing** _(Broadcast)_ — Sentences that hold weight — the written craft, from notebooks to long-form, from lyric to argument.
 
-**Likely missing topics**:
-  - Listening — Counterpoint to Speaking; deserves its own topic in any serious communication domain.
-  - Conflict Resolution — Companion to Nonviolent Communication; the harder cases NVC is built for.
-  - Body Language & Nonverbal — Distinct from NVC; nonverbal communication as its own field.
-  - Marketing & PR — A communication craft FRQNCY may want to address with its own editorial frame.
-  - Internet & Web — Communication infrastructure; sits between Communication and Technology but the topic itself is missing.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
-**Off-topic membership flags**: _none surfaced._
-
-### Technology — 11 topics
+### Technology — 12 topics
 
 *Tools shaping the future — the technologies being built now that will define how humanity lives and works.*
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **AR / VR** _(Builder)_
-- **Artificial Intelligence** _(Builder)_
-- **Biotechnology** _(Builder)_
-- **Blockchain** _(Builder)_
-- **Cybersecurity** _(Builder)_
-- **Decentralised AI** _(Builder)_
-- **Decentralized Networks** _(Builder)_
-- **Privacy & Sovereignty** _(Builder)_
-- **Quantum Computing** _(Builder)_
-- **Robotics** _(Builder)_
-- **Web3** _(Builder)_
+- **AI Agent Law** _(Build)_ — The legal frontier opening as autonomous agents start to act — contracts signed by software, liability when an agent misbehaves, agent perso
+- **AR / VR** _(Build)_ — Augmented and virtual reality — technologies blending the digital and physical to create new perceptual worlds.
+- **Artificial Intelligence** _(Build)_ — Machine learning, neural networks, and the development of non-human intelligence — the most consequential technology of our time.
+- **Biotechnology** _(Build)_ — Using biology as technology — engineering living systems to solve human problems.
+- **Blockchain** _(Build)_ — Distributed ledger technology — trustless systems for recording transactions and governing without central authority.
+- **Cybersecurity** _(Build)_ — The protection of digital systems, data, and people — increasingly critical as life moves online.
+- **Decentralised AI** _(Build)_ — AI infrastructure owned by networks, not corporations — protocols that coordinate machine intelligence, computation, and inference on open, 
+- **Decentralized Networks** _(Build)_ — Peer-to-peer architectures that remove single points of control — the infrastructure of a more open internet.
+- **Privacy & Sovereignty** _(Build)_ — Tools that keep you the owner of your data, your money, and your attention. The digital floor of an alternative society.
+- **Quantum Computing** _(Build)_ — Computing that harnesses quantum mechanical phenomena — with the potential to solve problems beyond classical computers.
+- **Robotics** _(Build)_ — The design and engineering of autonomous machines — from industrial robots to soft bio-inspired forms.
+- **Web3** _(Build)_ — A vision of a decentralised web owned by users rather than corporations — still being built, still contested.
 
-**Likely missing topics**:
-  - Internet of Things — Major tech category; bridges hardware and software, currently absent.
-  - Open Hardware — Companion to Open Source on the hardware side; aligns with FRQNCY values.
-  - Drones & Aerospace — Major tech surface; absent from the current list.
-  - 3D Printing & Manufacturing — Distributed manufacturing; cleanly inside Technology and missing.
-  - Wearables — Consumer-facing tech category that cross-pollinates with Well-being.
-  - Software Engineering — The practice of building software; the discipline behind most Builder topics.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
-**Off-topic membership flags**: _none surfaced._
-
-### Creation — 8 topics
+### Creation — 9 topics
 
 *Building what has never existed — design, systems, emergence, and the act of bringing new things into the world.*
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Biomimicry** _(Builder)_
-- **Co-creation** _(Builder)_
-- **Emergence** _(Builder)_
-- **Future Tech** _(Builder)_
-- **Open Source** _(Builder)_
-- **Product Design** _(Builder)_
-- **Prototyping** _(Builder)_
-- **Systems Thinking** _(Builder)_
+- **Biomimicry** _(Build)_ — Nature as design teacher — innovation inspired by 3.8 billion years of biological evolution.
+- **Co-creation** _(Build)_ — Creating together — practices and processes that harness collective intelligence to build more than any individual could.
+- **DIY** _(Build)_ — Do it yourself. The autonomy practice of making, fixing, building, growing — what you need with your own hands. Where dependency on systems 
+- **Emergence** _(Build)_ — How complex behaviour arises from simple rules — the property that makes life, consciousness, and cities possible.
+- **Future Tech** _(Build)_ — Technologies that don't fully exist yet — the horizon of what's coming next.
+- **Open Source** _(Build)_ — Building in public — code, knowledge, and tools shared freely for anyone to use and improve.
+- **Product Design** _(Build)_ — Designing objects, systems, and experiences people love to use — where function meets form.
+- **Prototyping** _(Build)_ — Making to learn — the practice of building rough versions fast to discover what works.
+- **Systems Thinking** _(Build)_ — Seeing wholes, not parts — the discipline of understanding complex, interconnected systems.
 
-**Likely missing topics**:
-  - Craftsmanship — Making with hands; the embodied half of creation distinct from systems and design.
-  - Innovation & Invention — Distinct from Product Design; the act of inventing as its own topic.
-  - Design Thinking — Methodology that links Creation, Communication, and Builder pillars.
-  - Speculative Design / Worldbuilding — Imagined-futures craft; deeply FRQNCY in spirit and currently uncovered.
-  - Improvisation — Creation in real time; pairs with Co-creation and Emergence.
-  - Apprenticeship & Mastery — How creative skill is transmitted; meta-topic for any creation domain.
-
-**Off-topic membership flags**: _none surfaced._
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
 ### Play & Recreation — 8 topics
 
@@ -390,94 +393,156 @@ Generated 2026-05-03T08:25:46.044Z; enriched 2026-05-03T08:31:53.410Z by `claude
 
 **Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-- **Esports** _(Builder)_
-- **Festivals & Events** _(Builder)_
-- **Games & Gaming** _(Builder)_
-- **Humor & Comedy** _(Builder)_
-- **Leisure & Rest** _(Builder)_
-- **Outdoor Adventure** _(Builder)_
-- **Play & Creativity** _(Builder)_
-- **Sports** _(Builder)_
+- **Esports** _(Build)_ — Competitive gaming at scale — the convergence of sport, entertainment, and digital culture.
+- **Festivals & Events** _(Build)_ — Gathering in celebration — music festivals, cultural events, and the ancient human need for seasonal ritual.
+- **Games & Gaming** _(Build)_ — Video games as art, culture, and community — one of the defining media forms of the 21st century.
+- **Humor & Comedy** _(Build)_ — Laughter as wisdom — the way comedy reveals truth by approaching it from the side.
+- **Leisure & Rest** _(Build)_ — The art of doing nothing — rest, idleness, and the case for a less productive life.
+- **Outdoor Adventure** _(Build)_ — The wild as playground — hiking, climbing, surfing, and the practice of moving through the natural world.
+- **Play & Creativity** _(Build)_ — Play as the engine of innovation — how unstructured exploration leads to the most original thinking.
+- **Sports** _(Build)_ — Physical competition as culture — athleticism, teamwork, and the stories we tell through games.
 
-**Likely missing topics**:
-  - Travel & Vacation — Major recreation surface for most readers; currently uncovered.
-  - Hobbies & Collecting — Leisure activity category distinct from sports and gaming.
-  - Adventure Sports — Distinct from generic Sports and Outdoor Adventure; extreme/edge-of-skill recreation.
-  - Children's Play — Generative play across ages; companion to Play & Creativity but with its own developmental frame.
-  - Board Games & Tabletop — Distinct from digital gaming; foundational social play form.
-  - Music & Dance Festivals — Distinct from generic Festivals & Events; the music/dance festival as a recreation form.
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
 
-**Off-topic membership flags**: _none surfaced._
+### Curation — 5 topics
 
-## Pillars — primary-tag view + drift QA
+*Choosing well, on every scale — from a single book pick to the full editorial line of the network. The discipline that turns information into meaning.*
 
-Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every domain (many-to-many) — the `pillar` field on a topic is a primary-tag, not a partition. Per-pillar drift QA below compares **vision** (content.json), **communication** (site copy), and **fact** (what is shipped).
+**Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
 
-### Network State — 10 primary-tagged topics
+- **Aligned Goods** _(Curate)_ — The FRQNCY-picked tools, books, and objects across every category. Curation expressed as a department store.
+- **Criticism** _(Curate)_ — The lineage of people who told us what was good and what was not — Ruskin, Sontag, Berger — and the craft of doing it without becoming a hat
+- **Curation Craft** _(Curate)_ — The actual practice of choosing well. How a serious curator reads, watches, holds the editorial line, and protects the work against drift.
+- **Discernment** _(Curate)_ — The ability to know — quickly — what is real, what is alive, what is worth attention. Trained through practice, sharpened by the editorial b
+- **Editorial Line** _(Curate)_ — What FRQNCY says yes to and what it does not. The standards that turn an aggregator into a publication.
+
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
+
+### Commerce — 6 topics
+
+*Exchanging value openly — storefronts, memberships, referrals, affiliates, tipping, marketplaces. The infrastructure that lets the work, the goods, and the access reach the people who want them.*
+
+**Scope intent:** _not yet documented in content.json — add a `scope_intent` field to anchor what this domain should cover._
+
+- **Affiliates** _(Sell)_ — Referral economics done with integrity. Recommending what you actually use, and earning when others act on it. The honest version of the kic
+- **Donations & Tipping** _(Sell)_ — The voluntary half of commerce. Tipping creators, funding free work, supporting the projects that need to exist regardless of what they earn
+- **Marketplaces** _(Sell)_ — Two-sided markets where producers meet buyers. Etsy, Substack, Echo, Shopify — the operating systems of how people exchange in the new econo
+- **Membership** _(Sell)_ — The recurring relationship — between a network and the people it serves. How belonging is offered, priced, and held.
+- **Referrals** _(Sell)_ — Word of mouth, structured. The mechanism FRQNCY uses to grow without paid acquisition — and to reward the people who carry it forward.
+- **Storefronts** _(Sell)_ — The shopfront as a curatorial act. From the FRQNCY Aligned Goods page to a founder's first checkout flow — how to sell without selling out.
+
+- **Likely missing topics:** _v0.1 — agent pass not yet wired_
+- **Off-topic membership flags:** _v0.1 — agent pass not yet wired_
+
+## Pillars — primary-tag view
+
+Pillars are operating-mode verbs (what FRQNCY actively does). They apply to every topic in the broader sense. The `pillar` field on each topic is a *primary-tag*, not a partition — schema follow-up pending. This list shows which topics carry which pillar as their primary tag.
+
+### Settle — 16 primary-tagged topics
 
 *The sovereign community — physical and digital spaces where a new kind of society takes root, governed by shared values rather than geography.*
 
+- Charter Cities _(Society & Networks)_
 - Collective Intelligence _(Society & Networks)_
 - Community _(Society & Networks)_
 - Diaspora _(Society & Networks)_
+- Eco-Villages _(Society & Networks)_
 - Education Systems _(Society & Networks)_
 - Future Cities _(Society & Networks)_
 - Governance _(Society & Networks)_
 - History _(Society & Networks)_
+- Homeschooling _(Society & Networks)_
 - Indigenous Wisdom _(Society & Networks)_
+- Network Schools _(Society & Networks)_
+- Network States _(Society & Networks)_
 - Peace _(Society & Networks)_
 - Social Movements _(Society & Networks)_
+- Tax & Sovereignty _(Society & Networks)_
 
-**Vision:** The sovereign community — physical and digital spaces where a new kind of society takes root, governed by shared values rather than geography.
+- **Communication / fact / vision drift check:** _pillar QA pending — needs an LLM pass over site copy + shipped reality + stated intent._
 
-**Communication:** network-state/ landing page exists with vision-aligned copy. Index.html mentions 'network states' in keywords and references the concept in body copy ('a parallel society... coworking first... the network state we are becoming'). NOT surfaced as a pillar card on home or about — appears only as inline copy.
-
-**Fact:** 10 topics tagged primary (Collective Intelligence, Community, Diaspora, Education Systems, Future Cities, Governance, History, Indigenous Wisdom, Peace, Social Movements). network-state/ page = 326 lines. No physical Sanctuary / coworking / land yet. Sanctuary nav item points to /my-frqncy/dashboard/ (the user's private dashboard, not a place).
-
-**Drift findings:**
-  - [medium] _communication-vs-fact_ — Pillar landing page + 10 topics exist, but neither home nor about surfaces Network State as a pillar card — readers won't see it as one of the load-bearing things FRQNCY does. The 'Sanctuary' card on home/about is closer to what a reader would associate with this pillar (place / community / land), but Sanctuary is not in content.json's pillars[].
-  - [medium] _vision-vs-fact_ — Vision promises 'physical and digital spaces' — the digital half (topic graph, soon social) is real; the physical half (coworking → building → land, per home copy) is unshipped, which is fine for a vision but should be honestly framed as 'becoming' (the home copy already does this — keep that framing intact).
-
-### Fund — 24 primary-tagged topics
+### Fund — 72 primary-tagged topics
 
 *Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.*
 
+- Aluminum _(Money)_
 - Bioenergy _(Energy)_
+- Bitcoin _(Money)_
+- Bonds _(Money)_
+- Carbon Credits _(Money)_
 - Circular Economy _(Business)_
+- Cobalt _(Money)_
+- Commodities _(Money)_
+- Companies _(Business)_
 - Conscious Capital _(Money)_
+- Copper _(Money)_
+- Cotton _(Money)_
+- Crypto Privacy _(Money)_
 - Cryptocurrency _(Money)_
 - DAOs _(Money)_
+- DeAI _(Money)_
 - Debit & Credit Cards _(Money)_
 - DeFi _(Money)_
+- DePIN _(Money)_
+- DeSci _(Money)_
+- Diamonds _(Money)_
 - Energy Policy _(Energy)_
 - Energy Storage _(Energy)_
 - Entrepreneurship _(Business)_
+- ETFs _(Money)_
+- GameFi _(Money)_
 - Geothermal _(Energy)_
+- Gold _(Money)_
 - Grid Technology _(Energy)_
+- Hydrogen _(Money)_
 - Hydropower _(Energy)_
 - Impact Investing _(Money)_
+- Internet Capital Markets _(Money)_
+- Iron Ore _(Money)_
+- Layer 1s _(Money)_
+- Layer 2s _(Money)_
+- Lead _(Money)_
 - Leadership _(Business)_
+- Lithium _(Money)_
+- Memes _(Money)_
+- Modular _(Money)_
+- Natural Gas _(Money)_
+- Neobanks _(Money)_
+- NFTs _(Money)_
+- Nickel _(Money)_
 - Nuclear & Fusion _(Energy)_
+- Oil _(Money)_
+- Oracles _(Money)_
+- Palladium _(Money)_
 - Personal Finance _(Money)_
+- Platinum _(Money)_
+- Prediction Markets _(Money)_
 - Prosperity Mindset _(Money)_
+- Rare Earths _(Money)_
+- Real World Assets _(Money)_
 - Regenerative Business _(Business)_
 - Renewable Energy _(Energy)_
+- Silver _(Money)_
 - Social Enterprise _(Business)_
+- SocialFi _(Money)_
 - Solar _(Energy)_
+- Stablecoins _(Money)_
+- Staking _(Money)_
 - Start-ups _(Business)_
+- Stocks _(Money)_
+- Store of Value _(Money)_
+- Sugar _(Money)_
+- Tin _(Money)_
+- Uranium _(Money)_
+- Wheat _(Money)_
 - Wind Energy _(Energy)_
+- Zinc _(Money)_
 
-**Vision:** Capital allocation — directing resources toward the builders, researchers, and creators working at the frontier of conscious civilisation.
+- **Communication / fact / vision drift check:** _pillar QA pending — needs an LLM pass over site copy + shipped reality + stated intent._
 
-**Communication:** Strong, consistent across home + about + pillar page. Home: 'An actual fund. Money gathered, deployed into aligned projects and people. Sovereign custody.' About: 'A real fund. Sovereign custody. We invest in aligned projects and the people building them, and we fund the work of FRQNCY itself.' fund/ = 493 lines (the most developed pillar page).
-
-**Fact:** 24 primary-tagged topics across Money, Energy, Business. Stripe payments shipped (recent commits: course one-time-payment + access ledger). No actual outbound investments yet. Vision/Echo/Legion mentioned in nav as 'roadmap' items — these aren't explained on the public surface.
-
-**Drift findings:**
-  - [low] _vision-vs-fact_ — Stripe payments currently power Education (course sales), not Fund (capital allocation). Reader sees 'Fund' framing on infrastructure that's actually serving Education. Defensible — courses generate the capital that becomes the fund — but worth being explicit about this loop in the Fund page so it doesn't read as overclaim.
-  - [low] _communication-internal-clarity_ — Nav surfaces 'Vision, Echo, Legion & roadmap' under Fund but these names aren't explained anywhere obvious to a first-time reader. Either define them on /fund/ or rename to something self-explanatory.
-
-### Education — 34 primary-tagged topics
+### Educate — 40 primary-tagged topics
 
 *Transmitting what's known — curating the best teachers, courses, and wisdom traditions so knowledge flows to those who need it.*
 
@@ -494,15 +559,20 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 - Fermentation _(Food & Agriculture)_
 - Food Sovereignty _(Food & Agriculture)_
 - Food Systems _(Food & Agriculture)_
+- Grounding _(Well-being)_
+- Homeopathy _(Well-being)_
 - Kriya Yoga _(Well-being)_
+- Longevity _(Well-being)_
 - Meditation _(Well-being)_
 - Mental Health _(Well-being)_
 - Minimalism _(Lifestyle)_
 - Movement _(Lifestyle)_
 - Nutrition _(Lifestyle)_
-- Permaculture _(Food & Agriculture)_
+- Peptides _(Well-being)_
+- Permacultures _(Food & Agriculture)_
 - Personal Development _(Lifestyle)_
 - Plant Medicine _(Lifestyle)_
+- Recovery _(Well-being)_
 - Regenerative Farming _(Food & Agriculture)_
 - Siddha Yoga _(Well-being)_
 - Sleep _(Lifestyle)_
@@ -514,77 +584,73 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 - Traditional Chinese Medicine _(Well-being)_
 - Urban Farming _(Food & Agriculture)_
 - Water _(Lifestyle)_
+- Wellbeing _(Well-being)_
 - Yoga _(Well-being)_
 
-**Vision:** Transmitting what's known — curating the best teachers, courses, and wisdom traditions so knowledge flows to those who need it.
+- **Communication / fact / vision drift check:** _pillar QA pending — needs an LLM pass over site copy + shipped reality + stated intent._
 
-**Communication:** About: 'The masters we point you to, and — in time — the ones we become. Personalised through your chart. Curated first, produced second.' Home detail card present. education/ landing exists.
-
-**Fact:** 34 primary-tagged topics (largest pillar). Courses with Stripe payments + access ledger shipped. 'Read First' recently added. Master-curation visible across books/people/orgs. 'Personalised through your chart' is a Human Design integration claim — Human Design topic exists but the chart-personalisation feature is unclear status (verify before next pass).
-
-**Drift findings:**
-  - [low] _vision-vs-fact_ — About copy promises 'personalised through your chart' — this is an unshipped or partially-shipped feature. Either ship the chart-driven personalisation or soften the promise to 'in time, personalised' to match the framing used for Network State.
-
-### Research — 45 primary-tagged topics
+### Research — 54 primary-tagged topics
 
 *Exploring what isn't known yet — mapping the edges of science, philosophy, and consciousness where the next discoveries live.*
 
-- Akashic Records _(Metaphysics)_
+- Akashic Records _(Consciousness)_
 - Animals & Wildlife _(Nature & Cosmos)_
 - Anthropology _(Sciences)_
 - Astrology _(Nature & Cosmos)_
 - Astrophysics _(Sciences)_
 - Biodiversity _(Nature & Cosmos)_
 - Biology _(Sciences)_
-- Buddhism _(Metaphysics)_
-- Channeling _(Metaphysics)_
+- Buddhism _(Consciousness)_
+- Channeling _(Consciousness)_
 - Chemistry _(Sciences)_
-- Christianity _(Metaphysics)_
+- Christianity _(Consciousness)_
 - Climate _(Nature & Cosmos)_
+- Conscious Creation _(Consciousness)_
 - Cosmos _(Nature & Cosmos)_
-- Dimensions _(Metaphysics)_
+- Crystals _(Consciousness)_
+- Dimensions _(Consciousness)_
 - Earth Science _(Sciences)_
 - Ecology _(Sciences)_
 - Energy Fields _(Nature & Cosmos)_
-- Extraterrestrial Life _(Metaphysics)_
+- Extraterrestrial Life _(Consciousness)_
 - Forests _(Nature & Cosmos)_
 - Genetics _(Sciences)_
-- Hinduism _(Metaphysics)_
-- Human Design _(Metaphysics)_
-- Manifestation _(Metaphysics)_
+- Hinduism _(Consciousness)_
+- Human Design _(Consciousness)_
+- Intuitive Abilities _(Consciousness)_
 - Mathematics _(Sciences)_
 - Medicine _(Sciences)_
-- Merkaba _(Metaphysics)_
-- Mythology _(Metaphysics)_
+- Merkaba _(Consciousness)_
+- Mythology _(Consciousness)_
 - Natural Cycles _(Nature & Cosmos)_
-- Near-Death Experiences _(Metaphysics)_
+- Near-Death Experiences _(Consciousness)_
 - Neuroscience _(Sciences)_
+- New Earth _(Consciousness)_
 - Oceans _(Nature & Cosmos)_
-- Oneness _(Metaphysics)_
+- Oneness _(Consciousness)_
 - Physics _(Sciences)_
+- Pilgrimage _(Consciousness)_
+- Portals _(Consciousness)_
 - Psychology _(Sciences)_
 - Quantum Grammar _(Sciences)_
 - Quantum Physics _(Sciences)_
-- Remote Viewing _(Metaphysics)_
+- Remote Viewing _(Consciousness)_
 - Sacred Geometry _(Nature & Cosmos)_
-- Sacred Law _(Metaphysics)_
-- Soul _(Metaphysics)_
-- Source _(Metaphysics)_
-- Sufism _(Metaphysics)_
-- Synchronicity _(Metaphysics)_
-- Taoism _(Metaphysics)_
-- Vibration _(Metaphysics)_
+- Sacred Law _(Consciousness)_
+- Sacred Sites _(Consciousness)_
+- Soul _(Consciousness)_
+- Source _(Consciousness)_
+- Spiritual Technology _(Consciousness)_
+- Stones _(Consciousness)_
+- Sufism _(Consciousness)_
+- Synchronicity _(Consciousness)_
+- Taoism _(Consciousness)_
+- Technology _(Sciences)_
+- Vibration _(Consciousness)_
 
-**Vision:** Exploring what isn't known yet — mapping the edges of science, philosophy, and consciousness where the next discoveries live.
+- **Communication / fact / vision drift check:** _pillar QA pending — needs an LLM pass over site copy + shipped reality + stated intent._
 
-**Communication:** About: 'First-principles inquiry across every isle of the network — and the isles not yet on the map. We ask what something is at its very core.' Home detail card present. research/ exists.
-
-**Fact:** 45 primary-tagged topics (largest by count, mostly because Sciences + Nature & Cosmos + Metaphysics all default to Research). Topic pages curate existing knowledge from books/people/papers. No original research output yet.
-
-**Drift findings:**
-  - [medium] _vision-vs-fact_ — Vision says 'exploring what isn't known yet' and 'mapping the edges where the next discoveries live' — current Research output is closer to high-quality curation of existing knowledge than original frontier inquiry. Either the vision should soften to 'mapping the edges of what's known and unknown' OR Research should start producing original framings (essays, dossiers, syntheses) that earn the 'frontier inquiry' framing.
-
-### Media — 21 primary-tagged topics
+### Broadcast — 23 primary-tagged topics
 
 *Spreading the signal — amplifying the voices, stories, and art that shift perception and move culture toward something more alive.*
 
@@ -593,6 +659,7 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 - Broadcasting _(Communication)_
 - Dance _(Arts & Culture)_
 - Dialogue _(Communication)_
+- Etiquette _(Communication)_
 - Fashion _(Arts & Culture)_
 - Film _(Arts & Culture)_
 - Journalism _(Communication)_
@@ -603,6 +670,7 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 - Photography _(Arts & Culture)_
 - Poetry _(Arts & Culture)_
 - Public Speaking _(Communication)_
+- Sculpture _(Arts & Culture)_
 - Social Media _(Communication)_
 - Storytelling _(Arts & Culture)_
 - Theater _(Arts & Culture)_
@@ -610,20 +678,13 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 - Visual Art _(Arts & Culture)_
 - Writing _(Communication)_
 
-**Vision:** Spreading the signal — amplifying the voices, stories, and art that shift perception and move culture toward something more alive.
+- **Communication / fact / vision drift check:** _pillar QA pending — needs an LLM pass over site copy + shipped reality + stated intent._
 
-**Communication:** Home: 'The voice of the network. A swarm of .frqncies all over social media, super aligned with the good in the world. Podcast. Video. Writing.' About: 'The FRQNCY podcast, YouTube, writing, and newsletter. A growing swarm of .frqncies across every isle of passion.' broadcast/ exists.
-
-**Fact:** 21 primary-tagged topics. podcast.html exists. Substack newsletter linked. YouTube channel claim unverified from this scan. 'Swarm of .frqncies' (sub-channels like crypto.frqncy, publicspeaking.frqncy) is referenced as a roadmap item on podcast.html — sub-channel surfaces unclear.
-
-**Drift findings:**
-  - [medium] _communication-vs-fact_ — About claims 'FRQNCY podcast, YouTube, writing, and newsletter' as if all four are actively shipping. Verify YouTube actually exists and produces; verify podcast publishes regularly. If any are aspirational, frame as 'becoming' the way Network State copy does, otherwise this reads as overclaim.
-  - [low] _communication-internal-clarity_ — '.frqncies' (channel suffix concept) is named in copy without explanation for first-time readers. Worth a one-liner gloss on the Media page.
-
-### Builder — 27 primary-tagged topics
+### Build — 29 primary-tagged topics
 
 *Creating products, tools, and experiences — the hands-on arm of the network, turning ideas into things people can actually use.*
 
+- AI Agent Law _(Technology)_
 - AR / VR _(Technology)_
 - Artificial Intelligence _(Technology)_
 - Biomimicry _(Creation)_
@@ -633,6 +694,7 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 - Cybersecurity _(Technology)_
 - Decentralised AI _(Technology)_
 - Decentralized Networks _(Technology)_
+- DIY _(Creation)_
 - Emergence _(Creation)_
 - Esports _(Play & Recreation)_
 - Festivals & Events _(Play & Recreation)_
@@ -652,50 +714,29 @@ Pillars are nouns naming what FRQNCY is and does. Every pillar applies to every 
 - Systems Thinking _(Creation)_
 - Web3 _(Technology)_
 
-**Vision:** Creating products, tools, and experiences — the hands-on arm of the network, turning ideas into things people can actually use.
+- **Communication / fact / vision drift check:** _pillar QA pending — needs an LLM pass over site copy + shipped reality + stated intent._
 
-**Communication:** About: 'Products, experiences, software, real estate — whatever the network calls for. We support what is already aligned. We build what is not yet here.' Home detail card present.
-
-**Fact:** 27 primary-tagged topics. Strongest fact-aligned pillar: the harness (frqncy-harness, public on GitHub), the Capacitor mobile app (alarm v0 shipped 2026-04-29), the social platform scaffold, FRQNCY content MCP server, the website itself. Real shipped surfaces.
-
-**Drift findings:**
-  - [none] _aligned_ — Vision, communication, and fact are tightly aligned. Builder is the cleanest pillar in the QA. Maintain.
-
-### Curate — 0 primary-tagged topics
+### Curate — 5 primary-tagged topics
 
 *Picking with care — sifting the world's signal from its noise so what reaches FRQNCY is honest, alive, and worth attention.*
 
-_No topics carry this pillar as primary._
+- Aligned Goods _(Curation)_
+- Criticism _(Curation)_
+- Curation Craft _(Curation)_
+- Discernment _(Curation)_
+- Editorial Line _(Curation)_
 
-**Vision:** Picking with care — sifting the world's signal from its noise so what reaches FRQNCY is honest, alive, and worth attention.
+- **Communication / fact / vision drift check:** _pillar QA pending — needs an LLM pass over site copy + shipped reality + stated intent._
 
-**Communication:** curate/ landing page exists (276 lines). NOT surfaced as a pillar card on home or about. The word 'curated' appears as adjective in copy ('766+ vetted resources... curated maps') but Curate is never named as one of FRQNCY's pillars to a reader.
-
-**Fact:** 0 primary-tagged topics. The actual curation activity (resources.json with 766 entries, books/people/orgs/media editorial selection, FRQNCY picks across topic pages) is real and ongoing — but it's not attributed to a named pillar surface anywhere a reader can see.
-
-**Drift findings:**
-  - [high] _communication-vs-fact_ — FRQNCY does enormous amounts of curation (the entire /people/, /books/, /orgs/, /media/, resources.json operation IS curation) — but the pillar named 'Curate' is invisible in user-facing communication. Readers won't connect what they're seeing to the named operating mode. Either: (a) add Curate as a pillar card on home + about with the resources.json work as evidence, (b) rename Curate to something already-communicated, or (c) accept it as an internal operating-mode tag and don't expect public surface.
-  - [medium] _fact-vs-schema_ — Zero primary-tagged topics is a schema artifact, not a content gap (per the many-to-many rule, Curate applies to every topic broadly). But the curate/ page would benefit from explicitly listing what's been curated — books surfaced, people surfaced, the picks framework — to make the fact visible.
-
-### Sell — 0 primary-tagged topics
+### Sell — 6 primary-tagged topics
 
 *Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.*
 
-_No topics carry this pillar as primary._
+- Affiliates _(Commerce)_
+- Donations & Tipping _(Commerce)_
+- Marketplaces _(Commerce)_
+- Membership _(Commerce)_
+- Referrals _(Commerce)_
+- Storefronts _(Commerce)_
 
-**Vision:** Exchanging value — letting the work, goods, and access that emerge from FRQNCY meet the people who want them, fairly and openly.
-
-**Communication:** sell/ landing page exists (276 lines). Word 'Sell' does not appear anywhere on home or about. Aligned Goods nav item exists ('the best of everything, curated') but isn't framed as Sell.
-
-**Fact:** 0 primary-tagged topics. Stripe payments are LIVE for course one-time-payments (recent commit: 'Stripe: add course one-time-payment mode + access ledger Phase 3 Wk 5 Fri'). Aligned Goods page exists. Selling IS happening — just framed under Education / Aligned, not under the Sell pillar.
-
-**Drift findings:**
-  - [high] _communication-vs-fact_ — FRQNCY actively sells things (courses via Stripe, planned Aligned Goods) but the pillar named 'Sell' is invisible to readers — no card on home, no card on about, the word doesn't appear in front-page copy. The infrastructure is shipped; the framing is missing.
-  - [medium] _vision-vs-positioning_ — 'Sell' as a pillar name may itself be the friction — FRQNCY's editorial voice generally avoids commercial framing. Consider whether the underlying activity is better surfaced as 'Aligned Goods' or 'Marketplace' (already-used terms) rather than the bare verb 'Sell'. If keeping Sell as the canonical pillar name, the sell/ page should articulate why the bare framing is intentional (transparent value exchange as an editorial value).
-
-## Global drift findings
-
-Cross-cutting issues that span multiple pillars or sit between schema and user-facing copy.
-
-- [high] _schema-vs-communication_ — About.html and home detail-cards display 6 pillars: Research, Education, Builder, Media, Fund, Sanctuary. content.json declares 8 different pillars: Network State, Fund, Education, Research, Media, Builder, Curate, Sell. 'Sanctuary' appears as a pillar in user-facing copy but is NOT in content.json. 'Network State', 'Curate', 'Sell' are in content.json but NOT shown as pillar cards anywhere. This is the single biggest drift in the system — the user-facing pillar story and the canonical schema disagree on three of eight pillars. Resolve by either: (a) adding Sanctuary to content.json pillars[] (and clarifying its relationship to Network State), (b) updating about.html + home to display Network State / Curate / Sell cards, or (c) reconciling so Sanctuary IS Network State under a different label.
-- [medium] _schema-vs-communication_ — Sanctuary is overloaded in the site: it's a pillar card on about.html, a private-dashboard nav item (/my-frqncy/dashboard/), AND conceptually a future physical-space (per Network State copy: 'A place to think, rest, build, and meet others at your frequency'). One word, three referents. Pick a canonical meaning before the schema reconciliation above.
+- **Communication / fact / vision drift check:** _pillar QA pending — needs an LLM pass over site copy + shipped reality + stated intent._
