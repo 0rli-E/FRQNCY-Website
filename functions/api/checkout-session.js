@@ -5,17 +5,18 @@
  * POST /api/checkout-session
  * Body shapes:
  *   Membership (subscription mode):
- *     { tier: 'monthly' | 'annual', user_id, email, ref_code? }
+ *     { tier: 'monthly' | 'annual', ref_code? }           (Bearer token required)
  *   Course (one-time payment mode):
- *     { kind: 'course', course_slug, stripe_price_id, user_id, email }
+ *     { kind: 'course', course_slug, stripe_price_id? }   (Bearer token required)
  * Returns: { url: <stripe_checkout_url> }
  *
  * Required env vars (Cloudflare Pages → Settings → Environment variables):
  *   STRIPE_SECRET_KEY               — sk_test_... (test mode first)
  *   STRIPE_PRICE_MONTHLY            — price_xxx for the monthly Network Member price
  *   STRIPE_PRICE_ANNUAL             — price_xxx for the annual Network Member price
- *   (Course price IDs come in the request body — looked up from courses.json
- *   client-side, so each course can be priced independently without a redeploy.)
+ *   PUBLIC_SUPABASE_URL / PUBLIC_SUPABASE_ANON_KEY — to verify the session
+ *   (Course price IDs are read server-side from courses.json, so each course
+ *   can be priced independently without a redeploy, but never by the client.)
  *
  * Stripe is called via the REST API directly — no SDK dependency, since Pages
  * Functions don't bundle node_modules cleanly. fetch() with form-urlencoded
@@ -63,12 +64,34 @@ const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 const UUID_RE  = /^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i;
 const REF_RE   = /^[A-Z0-9]{4,12}$/;
 
+// Verify a Supabase Bearer token (same pattern as check-rewards.js) and
+// return the account's id + email, or { error, status }.
+async function verifySession(request, env) {
+  const m = (request.headers.get('authorization') || '').match(/^Bearer\s+(.+)$/i);
+  if (!m) return { error: 'Sign in to check out.', status: 401 };
+  if (!env.PUBLIC_SUPABASE_URL || !env.PUBLIC_SUPABASE_ANON_KEY) {
+    return { error: 'Checkout auth not configured.', status: 503 };
+  }
+  try {
+    const r = await fetch(`${env.PUBLIC_SUPABASE_URL}/auth/v1/user`, {
+      headers: { apikey: env.PUBLIC_SUPABASE_ANON_KEY, Authorization: `Bearer ${m[1]}` },
+    });
+    if (!r.ok) return { error: 'Invalid or expired session.', status: 401 };
+    const u = await r.json();
+    if (!u || !UUID_RE.test(u.id || '')) return { error: 'Invalid session.', status: 401 };
+    return { id: u.id, email: u.email };
+  } catch (err) {
+    console.error('Token verification failed:', err);
+    return { error: 'Could not verify session.', status: 502 };
+  }
+}
+
 function json(body, status = 200, origin = '') {
   const headers = {
     'content-type': 'application/json; charset=utf-8',
     'cache-control': 'no-store',
     'access-control-allow-methods': 'POST, OPTIONS',
-    'access-control-allow-headers': 'content-type',
+    'access-control-allow-headers': 'content-type, authorization',
     'access-control-max-age': '86400',
     'vary': 'origin',
   };
@@ -246,14 +269,19 @@ export async function onRequestPost({ request, env }) {
   }
 
   // membership + course both require an authenticated FRQNCY user + email.
-  const userId = String(body.user_id || '').trim();
-  const email  = String(body.email || '').trim().toLowerCase();
+  // Identity comes from the verified Supabase session, never the body — a
+  // body user_id would let anyone attach a purchase (or a cancellation) to
+  // someone else's account, since the webhook upserts on user_id.
+  const authed = await verifySession(request, env);
+  if (authed.error) return json({ error: authed.error }, authed.status, origin);
+  const userId = authed.id;
+  const email  = String(authed.email || '').trim().toLowerCase();
 
-  if (!UUID_RE.test(userId)) {
-    return json({ error: 'user_id must be a UUID.' }, 400, origin);
+  if (body.user_id && String(body.user_id).trim() !== userId) {
+    return json({ error: 'user_id does not match the signed-in account.' }, 403, origin);
   }
   if (!EMAIL_RE.test(email) || email.length > 254) {
-    return json({ error: 'A valid email is required.' }, 400, origin);
+    return json({ error: 'Your account needs a valid email to check out.' }, 400, origin);
   }
 
   if (kind === 'course') {
@@ -263,13 +291,34 @@ export async function onRequestPost({ request, env }) {
     if (!/^[a-z0-9-]{2,60}$/.test(courseSlug)) {
       return json({ error: 'course_slug must be a kebab-case slug.' }, 400, origin);
     }
-    if (!/^price_[A-Za-z0-9]+$/.test(priceId)) {
+    if (priceId && !/^price_[A-Za-z0-9]+$/.test(priceId)) {
       return json({ error: 'stripe_price_id must be a valid Stripe price ID.' }, 400, origin);
+    }
+
+    // PRICE IS SERVER-AUTHORITATIVE, as for goods: the price comes from the
+    // canonical courses.json entry for this slug. A client-sent price that
+    // disagrees is rejected — otherwise the cheapest course's price could
+    // buy the dearest course.
+    let course = null;
+    try {
+      const cr = await fetch(new URL('/courses.json', request.url).toString(), { cf: { cacheTtl: 60 } });
+      const courses = await cr.json();
+      course = Array.isArray(courses) ? courses.find((c) => c.slug === courseSlug) : null;
+    } catch (err) {
+      console.error('courses.json lookup failed:', err);
+      return json({ error: 'Course catalogue unavailable, try again shortly.' }, 503, origin);
+    }
+    const canonicalPrice = course && (course.stripe_price_id || course.pricing?.stripe_price_id);
+    if (!canonicalPrice) {
+      return json({ error: 'That course is not for sale yet.' }, 404, origin);
+    }
+    if (priceId && priceId !== canonicalPrice) {
+      return json({ error: 'Price does not match this course.' }, 400, origin);
     }
 
     payload = {
       mode: 'payment',
-      'line_items[0][price]': priceId,
+      'line_items[0][price]': canonicalPrice,
       'line_items[0][quantity]': 1,
       customer_email: email,
       client_reference_id: userId,

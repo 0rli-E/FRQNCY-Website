@@ -1,6 +1,6 @@
 import { useEffect, useRef, useMemo } from 'preact/hooks';
 import { useAuth } from './AuthProvider';
-import { useMessages, type MessageRow } from '../lib/useMessages';
+import { useMessages, isInertImageMime, type MessageRow } from '../lib/useMessages';
 import MessageInput from './MessageInput';
 
 interface ChatWindowProps {
@@ -225,7 +225,8 @@ function EncryptedMedia({ message }: { message: MessageRow }) {
   const state = message._media_state;
   const url = message._decrypted_media_url;
   const mime = message.encrypted_media_mime || '';
-  const isImage = mime.startsWith('image/');
+  // Inline only inert raster types — never image/svg+xml (scriptable).
+  const isImage = isInertImageMime(mime);
 
   if (state === 'failed') {
     return (

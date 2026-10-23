@@ -126,10 +126,13 @@ function extractMeta(html, baseUrl) {
     else if (prop === 'og:url' && !out.url) out.url = content;
   }
 
-  // Resolve a relative image path against the page URL
+  // Resolve a relative image path against the page URL; only http(s) images
+  // survive (no javascript:/data: URLs handed to the client).
   if (out.image && !/^https?:\/\//i.test(out.image)) {
     try { out.image = new URL(out.image, baseUrl).toString(); } catch (_) { out.image = ''; }
   }
+  if (out.image && !/^https?:\/\//i.test(out.image)) out.image = '';
+  if (out.url && !/^https?:\/\//i.test(out.url)) out.url = baseUrl;
 
   // Cap field lengths so a malicious page can't return megabytes of metadata
   out.title       = (out.title       || '').slice(0, 200);
@@ -161,17 +164,30 @@ async function fetchTextWithCap(url) {
   const ctrl = new AbortController();
   const timer = setTimeout(() => ctrl.abort(), FETCH_TIMEOUT_MS);
   try {
-    const res = await fetch(url, {
-      method: 'GET',
-      redirect: 'follow',
-      headers: {
-        // Some sites refuse default fetch UAs; mimic a real browser politely.
-        'User-Agent': 'Mozilla/5.0 (compatible; FRQNCYbot/1.0; +https://frqncy.network)',
-        'Accept': 'text/html,application/xhtml+xml',
-        'Accept-Language': 'en',
-      },
-      signal: ctrl.signal,
-    });
+    // Redirects are followed by hand so every hop passes validateUrl — an
+    // automatic follow would let a public URL bounce into a private host.
+    let res;
+    let current = url;
+    for (let hop = 0; ; hop++) {
+      res = await fetch(current, {
+        method: 'GET',
+        redirect: 'manual',
+        headers: {
+          // Some sites refuse default fetch UAs; mimic a real browser politely.
+          'User-Agent': 'Mozilla/5.0 (compatible; FRQNCYbot/1.0; +https://frqncy.network)',
+          'Accept': 'text/html,application/xhtml+xml',
+          'Accept-Language': 'en',
+        },
+        signal: ctrl.signal,
+      });
+      if (res.status < 300 || res.status >= 400) break;
+      const loc = res.headers.get('Location');
+      if (!loc || hop >= 4) return { ok: false, status: 508 };
+      let next;
+      try { next = validateUrl(new URL(loc, current).toString()); } catch (_) { next = null; }
+      if (!next) return { ok: false, status: 400 };
+      current = next.toString();
+    }
     if (!res.ok) return { ok: false, status: res.status };
     const ct = res.headers.get('Content-Type') || '';
     if (!/text\/html|application\/xhtml/i.test(ct)) {

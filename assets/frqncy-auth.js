@@ -95,7 +95,20 @@
   // Signing in HERE should sign the shell's local pages in too: post the
   // session to the parent, targetOrigin-restricted to the app origins, so the
   // browser guarantees no other embedder can receive it.
-  var SHELL_ORIGINS = ['https://localhost', 'capacitor://localhost', 'http://localhost:5173'];
+  // Production shells only. (The vite dev preview on localhost:5173 is not
+  // listed: any local process on a desktop could serve that origin and frame
+  // the site to collect the session.)
+  var SHELL_ORIGINS = ['https://localhost', 'capacitor://localhost'];
+
+  // True only when this page is framed directly by one of the app shells.
+  // ancestorOrigins is browser-reported, so a page cannot fake it.
+  function framedByShell() {
+    if (window.parent === window) return false;
+    try {
+      var anc = location.ancestorOrigins;
+      return !!(anc && anc.length && SHELL_ORIGINS.indexOf(anc[0]) !== -1);
+    } catch (e) { return false; }
+  }
   function broadcastToShell() {
     if (window.parent === window) return;
     var s = storedSession();
@@ -112,6 +125,10 @@
     var m = (location.hash || '').match(/frqncy_sso=([^&]+)/);
     if (!m) return;
     try { history.replaceState(null, '', location.pathname + location.search); } catch (e) {}
+    // Only the app shell may hand over a session. A #frqncy_sso link opened
+    // in a normal browser could otherwise sign a visitor into an attacker's
+    // account, and local data would then sync into it.
+    if (!framedByShell()) return;
     var payload = null;
     try { payload = JSON.parse(atob(decodeURIComponent(m[1]))); } catch (e) { return; }
     if (!payload || !payload.access_token || !payload.refresh_token) return;

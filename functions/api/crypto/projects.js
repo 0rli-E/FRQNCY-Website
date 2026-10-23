@@ -195,7 +195,9 @@ export async function onRequest(context) {
   }
 
   const url = new URL(request.url);
-  const forceRefresh = url.searchParams.get("refresh") === "true";
+  // Cache bypass is an operator action (it costs upstream quota), keyed by a
+  // secret: ?refresh=<CRYPTO_REFRESH_TOKEN>. Without the env var it is off.
+  const forceRefresh = !!env.CRYPTO_REFRESH_TOKEN && url.searchParams.get("refresh") === env.CRYPTO_REFRESH_TOKEN;
   const filterTier = url.searchParams.get("tier");
   const filterChapter = url.searchParams.get("chapter");
 

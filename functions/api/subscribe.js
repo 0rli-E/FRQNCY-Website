@@ -119,9 +119,27 @@ export async function onRequestPost({ request, env }) {
     return json({ ok: false, error: 'Subscription is temporarily unavailable. Please try again shortly.' }, 503, origin);
   }
 
-  // ── Upsert subscriber via Supabase REST ─────────────────────────
-  // Using service-role key bypasses RLS so we can also read the existing row
-  // (e.g. to detect "already confirmed" and skip the welcome email).
+  // ── Existing address? Then this request changes nothing ─────────
+  // A known row is never rewritten from here: re-posting must not revive an
+  // address that unsubscribed (anyone can POST anyone's email), and must not
+  // replace metadata — that would drop scheduled_gift_id, so a later
+  // unsubscribe could no longer cancel the gift.
+  const existingResp = await fetch(
+    `${SUPABASE_URL}/rest/v1/subscribers?email=eq.${encodeURIComponent(email)}&select=id&limit=1`,
+    { headers: { apikey: SERVICE_KEY, Authorization: `Bearer ${SERVICE_KEY}` } }
+  );
+  if (!existingResp.ok) {
+    console.error('Supabase lookup failed', existingResp.status, await existingResp.text());
+    return json({ ok: false, error: 'Could not save your subscription. Please try again.' }, 502, origin);
+  }
+  const existing = await existingResp.json().catch(() => []);
+  if (Array.isArray(existing) && existing.length) {
+    return json({ ok: true, isNew: false }, 200, origin);
+  }
+
+  // ── Insert the new subscriber via Supabase REST ─────────────────
+  // ignore-duplicates: a concurrent insert of the same address wins the race
+  // and this one becomes a no-op (empty representation → not new).
   const upsertResp = await fetch(
     `${SUPABASE_URL}/rest/v1/subscribers?on_conflict=email`,
     {
@@ -130,7 +148,7 @@ export async function onRequestPost({ request, env }) {
         apikey: SERVICE_KEY,
         Authorization: `Bearer ${SERVICE_KEY}`,
         'content-type': 'application/json',
-        Prefer: 'resolution=merge-duplicates,return=representation',
+        Prefer: 'resolution=ignore-duplicates,return=representation',
       },
       body: JSON.stringify([{
         email,
@@ -156,15 +174,9 @@ export async function onRequestPost({ request, env }) {
   const rows = await upsertResp.json().catch(() => []);
   const subscriber = Array.isArray(rows) ? rows[0] : null;
 
-  // Detect whether this was a brand-new subscriber so we only send the welcome
-  // email once per email address. If created_at == confirmed_at within ~5s,
-  // we treat it as new.
-  let isNew = true;
-  if (subscriber?.created_at && subscriber?.confirmed_at) {
-    const created = new Date(subscriber.created_at).getTime();
-    const confirmed = new Date(subscriber.confirmed_at).getTime();
-    isNew = Math.abs(confirmed - created) < 5_000;
-  }
+  // Only a row this request actually inserted counts as new, so the welcome
+  // email goes out once per address.
+  const isNew = !!subscriber;
 
   // ── Send welcome email via Resend (optional) ────────────────────
   if (isNew && env.RESEND_API_KEY) {
