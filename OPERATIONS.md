@@ -1,3 +1,66 @@
+## 2026-10-23 — Security pass: site API, NRG client, RLS (030), harness
+
+**Did.** Orlando asked to check all FRQNCY + harness code and make it secure alongside the
+newest updates. Three parallel read-only audits (Functions/Workers; Supabase RLS + client
+auth; frqncy-harness incl. its uncommitted v0.23 Telegram WIP), each finding re-verified
+against the code before fixing. Site fixes on branch `security-1023` (worktree
+`../FRQNCY-security-1023`, off `ea1d1cb77` = GitHub main):
+- `/api/checkout-session`: membership + course now require a verified Supabase session
+  (identity from the token, never the body); course price read server-side from
+  `courses.json` — a client price that disagrees is rejected. Webhook grants a course only
+  on `payment_status === 'paid'`. (Dormant until STRIPE_SECRET_KEY exists.)
+- `/api/companion`: 64 KB body cap, client profile deep-clipped, paid lanes (premium
+  OpenRouter model, Anthropic) for signed-in users only — anonymous loops can't burn credits.
+- `/api/subscribe`: an existing row is never rewritten — re-posting can't revive an
+  unsubscribed address or drop `scheduled_gift_id`.
+- `/api/export`: public posts only (`group_id=is.null`) — private-group posts leaked.
+- `/api/link-preview`: redirects followed by hand with every hop re-validated; image/url
+  must be http(s). `/api/crypto/*`: `?refresh=` needs `CRYPTO_REFRESH_TOKEN` (unset = off).
+- `assets/frqncy-auth.js` (+ app copy): `#frqncy_sso` honoured only when framed by an app
+  shell (`ancestorOrigins`) — a crafted link could sign a visitor into an attacker account.
+  `localhost:5173` dropped from shell origins + frame-ancestors.
+- NRG (`social-src` → rebuilt `social/`): DM attachments keep their MIME only for inert
+  raster types (sender-set `image/svg+xml` on a same-origin blob = script);
+  link-preview cards render only http(s). Verified inside the loaded bundles.
+- `supabase/migrations/030_security_hardening.sql`: practice_scores security_invoker
+  (every user's practice + mood was public); comments/likes inherit post visibility
+  (private-group leak); notifications from the real actor only; ref_signups can't
+  self-promote; DM bootstrap creator-only; group admin role creator-only; teacher badge
+  re-stamped on edit; vbrtn message thread ownership; friendships; anon INSERT dropped on
+  subscribers + analytics_events; counters/badges frozen for client roles.
+Harness (`frqncy-harness`): a live Telegram bot token + OpenRouter key were hard-coded in
+`scripts/setup-live.sh` inside 2 UNPUSHED commits — history rewritten (aaa1a96..main), old
+objects gc'd, script now reads env; never reached GitHub. Then commit `75ccec1`: serve pins
+the route model + binds 127.0.0.1; claude/codex prompt after `--` (no flag injection);
+updater `npm ci --ignore-scripts` + root-owned updater.mjs; invite codes 128-bit, /join
+private-chat-only + rate-limited; photo text / forwarded voice never routed as commands;
+persona slug can't traverse paths; config/invites written 0600. In the uncommitted v0.23
+WIP: daily spend cap now fails CLOSED on read errors. `~/.frqncy-harness/config.json` chmod 600.
+
+**Opened.** Nothing on the board yet.
+
+**Finished, and how verified.** All changed JS `node --check`; node smoke test with stubbed
+fetch: course w/o auth 401, wrong price 400, unpriced 404, spoofed user_id 403, valid 200;
+subscribe known address → 0 writes; companion 200 KB body → 413. NRG `astro build` OK,
+fixes confirmed in `ConversationsList.C5CVNPV5.js` / `ProjectBadge.B9dxPT9L.js`. Every
+policy/column/function named in 030 checked against 001–029 and the final per-table policy
+set (no other permissive policy ORs the old rule back). Harness: tsc clean, vitest
+1561/1561 on the WIP tree; clean-HEAD run = same 19 pre-existing env failures as before
+the change, +2 new tests passing. `claude -p ... -- "--settings …"` confirmed to take the
+text as a prompt.
+
+**Left.** NOT pushed, NOT deployed, 030 NOT applied — it has never run against Postgres
+(no local DB; Docker/colima down): apply on a branch/staging DB first, then walk start-a-DM,
+join/create group, like, comment, referral attribution. Nothing tested in a browser.
+Harness `main` is 2+1 commits ahead of GitHub (push is safe now); live daemon still runs the
+OLD `dist/` (rebuild + restart not done — would ship the v0.23 WIP too). Claude CLI OAuth on
+this Mac has EXPIRED → the daemon's default `claude-code/sonnet` lane fails until re-login.
+Not fixed, by decision: Turnstile/double opt-in on subscribe, `isNew` enumeration, KV-backed
+rate limits, analytics unverified user_id, scoreboard team emails in source, CSP
+`unsafe-inline` + whole-CDN hosts, NRG keys in localStorage, RPC helpers leaking
+block/membership facts, Telegram per-user (from.id) admin model, signed updater bundles,
+web_fetch private-IP block, stdout capture cross-talk (WIP), `npm audit` (registry blocked).
+
 ## 2026-08-20 — VBRTN iOS: the native app is written (Phase A+B client, uncompiled)
 
 **Did.** Built the complete native SwiftUI app at `app/ios-native/` per the iOS strategy doc:

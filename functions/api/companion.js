@@ -76,6 +76,22 @@ const MAX_HISTORY = 20;    // bound the thread we send to the model
 const MAX_CONTENT = 4000;  // max chars per message
 const MAX_MEMORIES = 100;  // L4 cap per person
 const MAX_MODAL    = 10;   // captured sentences kept per operator kind
+const MAX_BODY     = 64 * 1024; // bytes — a whole request, profile included
+
+// Bound an untrusted, client-sent profile before any lens reads it: every
+// string clipped, every array shortened, nesting capped. Lenses clip the
+// fields they print, but this is the backstop for the ones they don't.
+function capProfile(v, depth = 0) {
+  if (depth > 6) return undefined;
+  if (typeof v === 'string') return v.slice(0, 1000);
+  if (Array.isArray(v)) return v.slice(0, 60).map((x) => capProfile(x, depth + 1));
+  if (v && typeof v === 'object') {
+    const out = {};
+    for (const k of Object.keys(v).slice(0, 80)) out[k] = capProfile(v[k], depth + 1);
+    return out;
+  }
+  return v;
+}
 
 // ── In-memory rate limiter (per edge isolate) ─────────────────────
 const RATE_WINDOW_MS = 60_000;
@@ -172,11 +188,11 @@ const clip = (v, n) => String(v == null ? '' : v).replace(/[\r\n]+/g, ' ').trim(
 
 const LENSES = [
   function lensRemember(p) {
-    return p.rememberOne ? [`They asked to be remembered, forever, as: "${p.rememberOne}". Let this seed inform how you meet them.`] : [];
+    return p.rememberOne ? [`They asked to be remembered, forever, as: "${clip(p.rememberOne, 300)}". Let this seed inform how you meet them.`] : [];
   },
   function lensHumanDesign(p) {
     if (!(p.hd && p.hd.type && !p.hd.stub)) return [];
-    const L = [`Human Design — ${p.hd.type}; strategy "${p.hd.strategy}"; ${p.hd.authority} authority; profile ${p.hd.profile}. Tune every prompt to this type.`];
+    const L = [`Human Design — ${clip(p.hd.type, 40)}; strategy "${clip(p.hd.strategy, 60)}"; ${clip(p.hd.authority, 40)} authority; profile ${clip(p.hd.profile, 10)}. Tune every prompt to this type.`];
     const authKey = Object.keys(AUTHORITY_PLAYBOOK).find((k) => String(p.hd.authority || '').startsWith(k));
     if (authKey) L.push(`How their decisions actually work (${p.hd.authority} authority): ${AUTHORITY_PLAYBOOK[authKey]}`);
     if (PROFILE_LINES[p.hd.profile]) L.push(`Their profile ${p.hd.profile}: ${PROFILE_LINES[p.hd.profile]}`);
@@ -699,12 +715,18 @@ export async function onRequestPost(ctx) {
     return jsonError('A breath, then continue — too many messages too fast.', 429, CORS);
   }
 
+  if (Number(request.headers.get('content-length') || 0) > MAX_BODY) {
+    return jsonError('Message too large', 413, CORS);
+  }
   let body;
-  try { body = await request.json(); }
-  catch { return jsonError('Invalid JSON body', 400, CORS); }
+  try {
+    const raw = await request.text();
+    if (raw.length > MAX_BODY) return jsonError('Message too large', 413, CORS);
+    body = JSON.parse(raw);
+  } catch { return jsonError('Invalid JSON body', 400, CORS); }
 
-  const { profile, messages, threadId, stream, moment } = body || {};
-  const premium = moment === 'reading' || moment === 'synthesis';
+  const { messages, threadId, stream, moment } = body || {};
+  const profile = capProfile(body && body.profile);
   if (!Array.isArray(messages) || messages.length === 0) {
     return jsonError('messages array required', 400, CORS);
   }
@@ -720,6 +742,9 @@ export async function onRequestPost(ctx) {
 
   // ── Memory: signed-in callers get the server-canonical profile ──
   const user = await verifyUser(env, request);
+  // Paid lanes (the premium OpenRouter model, the Anthropic upgrade) are for
+  // signed-in people only — an anonymous loop must never spend credits.
+  const premium = !!user && (moment === 'reading' || moment === 'synthesis');
   let contextProfile = stripNegatives(profile);
   let extra = null;
   let activeThreadId = null;
@@ -780,7 +805,7 @@ export async function onRequestPost(ctx) {
   // ── Streaming lane ──────────────────────────────────────────────
   if (stream) {
     try {
-      const s = await runModelStream(env, clean, context, premium);
+      const s = await runModelStream(env, clean, context, premium, !!user);
       const encoder = new TextEncoder();
       let full = '';
       const out = new ReadableStream({
@@ -817,7 +842,7 @@ export async function onRequestPost(ctx) {
   }
 
   // ── JSON lane (v1 contract) ─────────────────────────────────────
-  if (env.ANTHROPIC_API_KEY) {
+  if (env.ANTHROPIC_API_KEY && user) {
     try {
       const text = await runClaude(env, clean, context);
       finish(text, 'claude');
@@ -1021,8 +1046,8 @@ async function runWorkersAI(env, clean, context) {
 
 // ── Model calls — streaming ───────────────────────────────────────
 // Returns { via, deltas } where deltas is an async iterable of text pieces.
-async function runModelStream(env, clean, context, premium) {
-  if (env.ANTHROPIC_API_KEY) {
+async function runModelStream(env, clean, context, premium, signedIn) {
+  if (env.ANTHROPIC_API_KEY && signedIn) {
     try { return { via: 'claude', deltas: claudeDeltas(env, clean, context) }; }
     catch { /* fall through */ }
   }

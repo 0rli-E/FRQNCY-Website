@@ -23,6 +23,10 @@ interface LinkPreviewCardProps {
  */
 export default function LinkPreviewCard({ preview, onRemove, compact }: LinkPreviewCardProps) {
   if (!preview || !preview.url) return null;
+  // link_preview is author-written JSON: only http(s) URLs become links or
+  // images (no javascript:/data: hrefs).
+  if (!/^https?:\/\//i.test(preview.url)) return null;
+  if (preview.image && !/^https?:\/\//i.test(preview.image)) preview = { ...preview, image: '' };
 
   let host = '';
   try { host = new URL(preview.url).hostname.replace(/^www\./, ''); } catch (_) { host = preview.site_name || ''; }

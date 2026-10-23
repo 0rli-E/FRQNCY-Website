@@ -11,6 +11,13 @@ import {
 } from './crypto';
 import { encryptFileForRecipients, decryptFileWithOwnKey } from './encrypted-upload';
 
+/** Raster image types that cannot carry script — the only attachment MIMEs
+ *  rendered inline or kept on a decrypted blob. */
+const INERT_IMAGE_MIME = /^image\/(jpeg|png|webp|gif|avif)$/i;
+export function isInertImageMime(mime: string | null | undefined): boolean {
+  return !!mime && INERT_IMAGE_MIME.test(mime);
+}
+
 export interface MessageRow {
   id: string;
   conversation_id: string;
@@ -468,9 +475,14 @@ export function useMessages(conversationId: string | null): UseMessagesResult {
           if (!decryptedBlob) throw new Error('decrypt failed');
           // Re-tag the blob with the original MIME so <img>/download links work
           // even on the raw single-recipient path (which didn't preserve mime).
-          const mimedBlob = m.encrypted_media_mime
-            ? new Blob([await decryptedBlob.arrayBuffer()], { type: m.encrypted_media_mime })
-            : decryptedBlob;
+          // The MIME is SENDER-controlled: only inert raster types keep it.
+          // Anything else (image/svg+xml, text/html…) becomes an opaque
+          // download — a blob: URL inherits this origin, so a renderable
+          // type opened in a tab would run the sender's script here.
+          const safeMime = isInertImageMime(m.encrypted_media_mime)
+            ? m.encrypted_media_mime!
+            : 'application/octet-stream';
+          const mimedBlob = new Blob([await decryptedBlob.arrayBuffer()], { type: safeMime });
           const objUrl = URL.createObjectURL(mimedBlob);
           mediaUrlCacheRef.current.set(m.id, objUrl);
           if (cancelled) {

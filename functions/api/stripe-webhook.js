@@ -162,6 +162,10 @@ async function handleCheckoutCompleted(env, evt) {
   const kind = s.metadata?.kind || (s.mode === 'payment' ? 'course' : 'membership');
 
   if (kind === 'course') {
+    if (s.payment_status !== 'paid') {
+      console.warn(`course checkout ${s.id} completed with payment_status=${s.payment_status} — not granting`);
+      return;
+    }
     const courseSlug = s.metadata?.course_slug;
     if (!courseSlug) {
       console.warn('course checkout completed without course_slug — ignoring');

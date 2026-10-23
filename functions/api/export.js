@@ -106,7 +106,7 @@ export async function onRequestGet({ request, env }) {
 
     // 2. Fetch signed posts (oldest first — stable export order).
     const posts = await supabaseFetch(
-      `posts?author_id=eq.${user.id}&select=id,signed_payload,signature,created_at&order=created_at.asc`,
+      `posts?author_id=eq.${user.id}&group_id=is.null&select=id,signed_payload,signature,created_at&order=created_at.asc`,
     );
     const postsSigned = posts.filter((p) => !!p.signature);
 

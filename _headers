@@ -7,8 +7,8 @@
   Permissions-Policy: camera=(), microphone=(), geolocation=(), interest-cohort=()
   # frame-ancestors permits FRQNCY's own Capacitor mobile app to embed live site
   # content in its iframe shell: https://localhost (Android), capacitor://localhost
-  # (iOS), http://localhost:5173 (vite dev preview). Risk is negligible — only
-  # device-local origins, no public web origin can frame the site.
+  # (iOS). The vite dev preview (localhost:5173) is deliberately NOT listed —
+  # any desktop process can serve that origin. No public web origin can frame.
   #
   # This CSP must stay a SINGLE rule under /*. Cloudflare Pages JOINS values when
   # several _headers rules set the same header, and joined CSP values are enforced
@@ -26,7 +26,7 @@
   # (ATProto OAuth, DID resolution, cross-post), the three Nostr relays in
   # nostr-publish.ts, and api.ethos.network (read-only vouch lookups). All were
   # blocked before, which silently disabled every one of those shipped features.
-  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://plausible.io https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://plausible.io https://*.workers.dev https://*.supabase.co wss://*.supabase.co https://cloudflareinsights.com https://bsky.social https://api.bsky.app https://*.host.bsky.network https://plc.directory https://api.ethos.network wss://relay.damus.io wss://nos.lol wss://relay.snort.social; frame-src https://www.youtube.com https://player.vimeo.com https://www.gaia.com; frame-ancestors 'self' https://localhost capacitor://localhost http://localhost:5173
+  Content-Security-Policy: default-src 'self'; script-src 'self' 'unsafe-inline' 'wasm-unsafe-eval' https://plausible.io https://cdnjs.cloudflare.com https://cdn.jsdelivr.net https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src 'self' https://fonts.gstatic.com; img-src 'self' data: https:; connect-src 'self' https://plausible.io https://*.workers.dev https://*.supabase.co wss://*.supabase.co https://cloudflareinsights.com https://bsky.social https://api.bsky.app https://*.host.bsky.network https://plc.directory https://api.ethos.network wss://relay.damus.io wss://nos.lol wss://relay.snort.social; frame-src https://www.youtube.com https://player.vimeo.com https://www.gaia.com; frame-ancestors 'self' https://localhost capacitor://localhost
 
 # Favicon + manifest — cache forever (immutable per deploy)
 /favicon.svg
